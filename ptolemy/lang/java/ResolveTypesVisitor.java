@@ -55,12 +55,12 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
 
     /** Resolve the name of the type. */
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
-        Scope env = (Scope) args.get(0);
+        Scope scope = (Scope) args.get(0);
 
         NameNode name = node.getName();
 
         NameNode newName = (NameNode) StaticResolution.resolveAName(
-                name, env, null, _currentPackage, CG_USERTYPE);
+                name, scope, null, _currentPackage, CG_USERTYPE);
 
         // this is not necessary, but by convention ...
         node.setName(newName);
@@ -80,7 +80,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
         TNLManip.traverseList(this, 
-         TNLManip.addFirst(node.getDefinedProperty(ENVIRON_KEY)), 
+         TNLManip.addFirst(node.getDefinedProperty(SCOPE_KEY)), 
          node.getDefTypes());
 
         return null;
@@ -122,12 +122,12 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     protected Object _visitNodeWithScope(TreeNode node) {
 
         // scope for this class is argument for children
-        LinkedList childArgs = TNLManip.addFirst(node.getDefinedProperty(ENVIRON_KEY));
+        LinkedList childArgs = TNLManip.addFirst(node.getDefinedProperty(SCOPE_KEY));
 
         TNLManip.traverseList(this, childArgs, node.children());
 
-        // remove the ENVIRON_KEY property which is no longer needed
-        node.removeProperty(ENVIRON_KEY);
+        // remove the SCOPE_KEY property which is no longer needed
+        node.removeProperty(SCOPE_KEY);
 
         return null;
     }
@@ -135,7 +135,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
     /** Handle ClassDeclNodes and InterfaceDeclNodes. */
     protected Object _visitUserTypeNode(UserTypeDeclNode node, LinkedList args) {
         // scope for this class is argument for children
-        LinkedList childArgs = TNLManip.addFirst(node.getDefinedProperty(ENVIRON_KEY));
+        LinkedList childArgs = TNLManip.addFirst(node.getDefinedProperty(SCOPE_KEY));
 
 	//System.out.println("ResolveTypesVisitor:_visitUserTypeNode: " +
 	//		   node.getName().getIdent() + 
@@ -143,8 +143,8 @@ public class ResolveTypesVisitor extends ResolveVisitorBase
         TNLManip.traverseList(this, childArgs, node.getInterfaces());
         TNLManip.traverseList(this, childArgs, node.getMembers());
 
-        // remove the ENVIRON_KEY property which is no longer needed
-        node.removeProperty(ENVIRON_KEY);
+        // remove the SCOPE_KEY property which is no longer needed
+        node.removeProperty(SCOPE_KEY);
 
         return null;
     }

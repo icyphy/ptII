@@ -124,12 +124,12 @@ public class Scope {
         return lookupFirst(name, Decl.CG_ANY, true);
     }
 
-    /** Copy the declList from env. */
-    public void copyDeclList(Scope env) {
-	// FIXME: This is a little strange, but if two envs share a declList
+    /** Copy the declList from scope. */
+    public void copyDeclList(Scope scope) {
+	// FIXME: This is a little strange, but if two scopes share a declList
 	// then copyDeclList will effectively set them to null
         _declList.clear();
-        _declList.addAll(env._declList);
+        _declList.addAll(scope._declList);
     }
 
     /** Lookup a decl by name in the current scope, do not look

@@ -48,14 +48,14 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = Decl.java \
-        Environ.java \
-        EnvironIter.java \
         GenerateVisitor.java \
         Interrogator.java \
 	ITreeNode.java \
         IVisitor.java \
         NullValue.java \
         PropertyMap.java \
+        Scope.java \
+        ScopeIterator.java \
         StringManip.java \
         TNLManip.java \
         TrackedPropertyMap.java \

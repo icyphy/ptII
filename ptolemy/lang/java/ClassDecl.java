@@ -186,7 +186,7 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
     }
 
     protected void _buildScope() {
-	//System.out.println("ClassDecl._buildScope(): Building env " +
+	//System.out.println("ClassDecl._buildScope(): Building scope " +
         //				 "for class " + fullName());
         loadSource();
 

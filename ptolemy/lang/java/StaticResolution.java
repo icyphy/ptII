@@ -144,14 +144,14 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                 PackageDecl pkgDecl =
                     (PackageDecl) unitNode.getDefinedProperty(PACKAGE_KEY);
 
-                Scope pkgEnv = pkgDecl.getScope();
+                Scope pkgScope = pkgDecl.getScope();
 
                 //String className = StringManip.baseFilename(noExtensionFilename);
 		// FIXME: we should change the name of noExtensionFilename
 		// to className everywhere in this method.
 		String className = noExtensionFilename;
                 ClassDecl classDecl =
-		    (ClassDecl) pkgEnv.lookupProper(StringManip.unqualifiedPart(className),
+		    (ClassDecl) pkgScope.lookupProper(StringManip.unqualifiedPart(className),
 						    CG_USERTYPE);
 
                 if (classDecl != null) {
@@ -161,7 +161,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 					    "CompileUnit(): could" +
 					    " not find ClassDecl associated" +
 					    " with class " + className +
-					    " pkgEnv: " + pkgEnv +
+					    " pkgScope: " + pkgScope +
 					    " " + unitNode.toString());
                 }
             }
@@ -199,7 +199,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         }
     }
 
-    public static final TreeNode resolveAName(NameNode name, Scope env,
+    public static final TreeNode resolveAName(NameNode name, Scope scope,
             TypeNameNode currentClass, JavaDecl currentPackage,
             int categories) {
 
@@ -212,7 +212,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             return name;
         }
 
-        ScopeIteratorator possibles = _findPossibles(name, env, currentClass,
+        ScopeIterator possibles = _findPossibles(name, scope, currentClass,
                 currentPackage, categories);
 
         if (((categories & CG_METHOD) == 0) && possibles.moreThanOne()) {
@@ -224,7 +224,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             } else {
                 throw new RuntimeException("ambiguous reference to " +
 					 name.getIdent() +
-					 " in scope " + env);
+					 " in scope " + scope);
             }
         }
 
@@ -354,14 +354,14 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      */
     public static JavaDecl findDecl(CompileUnitNode compileUnit,
             String qualifiedName, int category) {
-        Scope env = (Scope) compileUnit.getDefinedProperty(ENVIRON_KEY);
+        Scope scope = (Scope) compileUnit.getDefinedProperty(SCOPE_KEY);
         NameNode nameNode = (NameNode) makeNameNode(qualifiedName);
 
         // is this really necessary?
         PackageDecl pkgDecl =
             (PackageDecl) compileUnit.getDefinedProperty(PACKAGE_KEY);
 
-        ScopeIteratorator scopeIter = _findPossibles(nameNode, env, null,
+        ScopeIterator scopeIter = _findPossibles(nameNode, scope, null,
                 pkgDecl, category);
 
         // no check for multiple matches (this should be handled by
@@ -388,14 +388,14 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     public static MemberDecl findInvokableDecl(CompileUnitNode compileUnit,
             String qualifiedName, int category, List methodArgs,
             TypeVisitor typeVisitor) {
-        Scope env = (Scope) compileUnit.getDefinedProperty(ENVIRON_KEY);
+        Scope scope = (Scope) compileUnit.getDefinedProperty(SCOPE_KEY);
         NameNode nameNode = (NameNode) makeNameNode(qualifiedName);
 
         // is this really necessary?
         PackageDecl pkgDecl =
             (PackageDecl) compileUnit.getDefinedProperty(PACKAGE_KEY);
 
-        ScopeIteratorator scopeIter = _findPossibles(nameNode, env, null,
+        ScopeIterator scopeIter = _findPossibles(nameNode, scope, null,
                 pkgDecl, category);
 
         ResolveFieldVisitor resolveFieldVisitor =
@@ -547,28 +547,28 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         //      "UNNAMED_PACKAGE: " + UNNAMED_PACKAGE.getScope().toString());
 
         // dummy scope
-        Scope env = new Scope();
+        Scope scope = new Scope();
 
         System.out.println("StaticResolution<static>: --- loading java.lang package ---" + (System.currentTimeMillis() - startTime));
 
 	// JAVA_LANG_PACKAGE is only used in FindExtraImportsVisitor
 	NameNode javaLangName = (NameNode) makeNameNode("java.lang");
-        System.out.println("StaticResolution<static>: env: " + env.toString());
-	JAVA_LANG_PACKAGE = _importPackage(env, javaLangName);
+        System.out.println("StaticResolution<static>: scope: " + scope.toString());
+	JAVA_LANG_PACKAGE = _importPackage(scope, javaLangName);
 
 
         System.out.println("StaticResolution<static>: --- require class on Object ---" + (System.currentTimeMillis() - startTime));
 
 	System.out.println("Each call to loadClassName() uses reflection and prints a +");
 	System.out.println("Each call to _loadCanonicalFile() parses a file and prints a .");
-        OBJECT_DECL = _requireClass(env, "Object");
+        OBJECT_DECL = _requireClass(scope, "Object");
 
         System.out.println("\nStaticResolution<static>: --- done require class on Object ---" + (System.currentTimeMillis() - startTime));
 
         OBJECT_TYPE = OBJECT_DECL.getDefType();
 
         System.out.println("StaticResolution<static>: --- require class on Cloneable ---" + (System.currentTimeMillis() - startTime));
-        CLONEABLE_DECL = _requireClass(env, "Cloneable");
+        CLONEABLE_DECL = _requireClass(scope, "Cloneable");
         CLONEABLE_TYPE = CLONEABLE_DECL.getDefType();
 
         // virtual class for arrays
@@ -607,11 +607,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         ARRAY_CLONE_DECL  = (MethodDecl) JavaDecl.getDecl((NamedNode) arrayCloneNode);
 
         System.out.println("StaticResolution<static>: --- require class on String ---" + (System.currentTimeMillis() - startTime));
-        STRING_DECL = _requireClass(env, "String");
+        STRING_DECL = _requireClass(scope, "String");
         STRING_TYPE = STRING_DECL.getDefType();
 
         System.out.println("StaticResolution<static>: --- require class on Class ---" + (System.currentTimeMillis() - startTime));
-        CLASS_DECL  = _requireClass(env, "Class");
+        CLASS_DECL  = _requireClass(scope, "Class");
         CLASS_TYPE  = CLASS_DECL.getDefType();
 
         System.out.println("StaticResolution<static>: --- 1st buildScopements ---" + (System.currentTimeMillis() - startTime));
@@ -619,7 +619,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         System.out.println("StaticResolution<static>: --- after buildScopements ---" + (System.currentTimeMillis() - startTime));
     }
 
-    public static PackageDecl _importPackage(Scope env, NameNode name) {
+    public static PackageDecl _importPackage(Scope scope, NameNode name) {
 	// The getScope() call is what loads up the scope with
 	// info about what is in the package by looking in the
 	// appropriate directory
@@ -628,20 +628,20 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
         PackageDecl decl = (PackageDecl) name.getDefinedProperty(DECL_KEY);
 
-        Scope packageEnv = decl.getScope();
+        Scope packageScope = decl.getScope();
 
-        Iterator declItr = packageEnv.allProperDecls();
+        Iterator declItr = packageScope.allProperDecls();
 
         while (declItr.hasNext()) {
             JavaDecl type = (JavaDecl) declItr.next();
             if (type.category != CG_PACKAGE) {
-                env.add(type); // conflicts appear on use only
+                scope.add(type); // conflicts appear on use only
             }
         }
 	
         //System.out.println("StaticResolution._importPackage(" +
         //        name.getIdent() + ") :" +
-        //        env.toString());
+        //        scope.toString());
         return decl;
     }
 
@@ -649,19 +649,19 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private static ScopeIteratorator _findPossibles(NameNode name, Scope env,
+    private static ScopeIterator _findPossibles(NameNode name, Scope scope,
 					    TypeNameNode currentClass,
 					    JavaDecl currentPackage,
 					    int categories) {
 
 	//System.out.println("StaticResolution._findPossibles():" +  name.getIdent() + " " + currentPackage);
-        ScopeIteratorator possibles = new ScopeIterator();
+        ScopeIterator possibles = new ScopeIterator();
 
         if (name.getQualifier() == AbsentTreeNode.instance) {
             if ((categories &
                     (CG_FIELD | CG_METHOD | CG_LOCALVAR |
 		     CG_FORMAL | CG_USERTYPE)) != 0) {
-                possibles = env.lookupFirst(name.getIdent(), categories);
+                possibles = scope.lookupFirst(name.getIdent(), categories);
             } else {
                 //System.out.println("StaticResolution._findPossibles(): looking up package " + name.getIdent());
                 possibles = ((Scope) SYSTEM_PACKAGE.getScope())
@@ -686,7 +686,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 
             name.setQualifier(
                     resolveAName((NameNode) name.getQualifier(),
-				 env, currentClass,
+				 scope, currentClass,
 				 currentPackage, newCategories));
 
             JavaDecl container = JavaDecl.getDecl(name.getQualifier());
@@ -737,9 +737,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
   				      classDeclNode.getModifiers(),
   				      classDeclNode, currentPackage);
   	    System.out.println("possibles.hasNext false, reflection: " + classDecl);
-  	    classDecl.setScope(env);
-  	    env.add(classDecl);
-  	    possibles = ((Scope) env).lookupFirst(name.getIdent(), categories);
+  	    classDecl.setScope(scope);
+  	    scope.add(classDecl);
+  	    possibles = ((Scope) scope).lookupFirst(name.getIdent(), categories);
 	}
 
         if (!possibles.hasNext()) {
@@ -747,11 +747,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             if ((categories & CG_PACKAGE) != 0) {
                 message += "\n\nClasspath error?\n\n";
             }
-	    String envString = env.toString();
+	    String scopeString = scope.toString();
 
             message += "Symbol name: \"" +
                 name.getIdent() + "\" is undefined in the scope.\n" +
-                "Able to find: " + envString + "\n" +
+                "Able to find: " + scopeString + "\n" +
 		"Current Class: " +
 		((currentClass == null) ? "null " : currentClass.toString()) +
 		"Current Package: " +
@@ -804,10 +804,10 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     // Load classes into the scope.
     // This method is only called a few times to bootstrap the JDK system
     // classes like Object
-    private static final ClassDecl _requireClass(Scope env, String name) {
+    private static final ClassDecl _requireClass(Scope scope, String name) {
 	ClassDecl classDecl = null;
 	//System.out.println("StaticResolution._requireClass() " + name);
-        Decl decl = env.lookup(name);
+        Decl decl = scope.lookup(name);
 
         if (decl == null) {
 	    System.out.println("StaticResolution:_requireClass(): using refl");
@@ -830,9 +830,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		    throw new RuntimeException("could not find class or " +
 					     "interface \"" + name + 
 					     "\" in bootstrap scope: "
-					     + env);
+					     + scope);
 		}
-		env.add(classDecl);
+		scope.add(classDecl);
 	    } {
 		ClassDeclNode classDeclNode =
 		    ASTReflect.ASTClassDeclNode(myClass);
@@ -849,9 +849,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 		    throw new RuntimeException("could not find class or " +
 					     "interface \"" + name + 
 					     "\" in bootstrap scope: "
-					     + env);
+					     + scope);
 		}
-		env.add(classDecl);
+		scope.add(classDecl);
 	    }
             // No need to call loadSource(), we have already loaded
             // the class declarations via reflection.   Note that

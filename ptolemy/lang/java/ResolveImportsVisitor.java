@@ -49,8 +49,8 @@ public class ResolveImportsVisitor extends JavaVisitor
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _compileUnit = node;
-        _fileEnv = (Scope) node.getDefinedProperty(ENVIRON_KEY); // file scope
-        _importEnv = _fileEnv.parent().parent();
+        _fileScope = (Scope) node.getDefinedProperty(SCOPE_KEY); // file scope
+        _importScope = _fileScope.parent().parent();
 
         // initialize importedPackages property
         if (!node.hasProperty(IMPORTED_PACKAGES_KEY)) {
@@ -77,7 +77,7 @@ public class ResolveImportsVisitor extends JavaVisitor
                 (Scope) StaticResolution.SYSTEM_PACKAGE.getScope(), null, null,
                 CG_USERTYPE);
 
-        JavaDecl old = (JavaDecl) _fileEnv.lookupProper(name.getIdent());
+        JavaDecl old = (JavaDecl) _fileScope.lookupProper(name.getIdent());
         JavaDecl current = (JavaDecl) name.getProperty(DECL_KEY);
 
         if ((old != null) && (old != current)) {
@@ -87,7 +87,7 @@ public class ResolveImportsVisitor extends JavaVisitor
             }
         }
 
-        _importEnv.add((ClassDecl) name.getDefinedProperty(DECL_KEY));
+        _importScope.add((ClassDecl) name.getDefinedProperty(DECL_KEY));
 
         return null;
     }
@@ -126,16 +126,16 @@ public class ResolveImportsVisitor extends JavaVisitor
 
         _importedPackages.add(importedPackage);
 
-        Scope pkgEnv = importedPackage.getScope();
+        Scope pkgScope = importedPackage.getScope();
 
-        Iterator envItr = pkgEnv.allProperDecls();
+        Iterator scopeItr = pkgScope.allProperDecls();
 
-        while (envItr.hasNext()) {
-            JavaDecl type = (JavaDecl) envItr.next();
+        while (scopeItr.hasNext()) {
+            JavaDecl type = (JavaDecl) scopeItr.next();
 
             if (type.category != CG_PACKAGE) {
                 //System.out.println("_importOnDemand: adding " + type.toString());
-                _importEnv.add(type); // conflicts appear on use only
+                _importScope.add(type); // conflicts appear on use only
             }
         }
 
@@ -159,10 +159,10 @@ public class ResolveImportsVisitor extends JavaVisitor
     protected CompileUnitNode _compileUnit = null;
 
     /** The file scope. */
-    protected Scope _fileEnv = null;
+    protected Scope _fileScope = null;
 
     /** The import scope. */
-    protected Scope _importEnv = null;
+    protected Scope _importScope = null;
 
     /** The Collection of imported packages for this compile unit. */
     protected Collection _importedPackages = null;

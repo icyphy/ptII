@@ -75,7 +75,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         _currentPackage = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
         NameContext c = new NameContext();
-        c.scope = (Scope) node.getDefinedProperty(ENVIRON_KEY);
+        c.scope = (Scope) node.getDefinedProperty(SCOPE_KEY);
 
         LinkedList childArgs = TNLManip.addFirst(c);
 
@@ -95,18 +95,18 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         node.setInitExpr((TreeNode) node.getInitExpr().accept(this, args));
 
         NameContext ctx = (NameContext) args.get(0);
-        Scope env = ctx.scope;
+        Scope scope = ctx.scope;
 
         NameNode name = node.getName();
         String varName = name.getIdent();
 
-        Decl other = env.lookup(varName, CG_FORMAL);
+        Decl other = scope.lookup(varName, CG_FORMAL);
 
         if (other != null) {
             throw new RuntimeException("declaration shadows " + varName);
         }
 
-        other = env.lookupProper(varName, CG_LOCALVAR);
+        other = scope.lookupProper(varName, CG_LOCALVAR);
 
         if (other != null) {
             throw new RuntimeException("redeclaration of " + varName);
@@ -115,7 +115,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         LocalVarDecl d = new LocalVarDecl(varName, node.getDefType(),
                 node.getModifiers(), node);
 
-        env.add(d);
+        scope.add(d);
         name.setProperty(DECL_KEY, d);
 
         return node;
@@ -128,8 +128,8 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         subCtx.encLoop = null;
         subCtx.breakTarget = null;
 
-        Scope newEnv1 = new Scope(ctx.scope);
-        subCtx.scope = newEnv1;
+        Scope newScope1 = new Scope(ctx.scope);
+        subCtx.scope = newScope1;
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
 
@@ -137,7 +137,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
                 node.getParams()));
 
         TreeNode body = node.getBody();
-        subCtx.scope = new Scope(newEnv1);
+        subCtx.scope = new Scope(newScope1);
 
         if (body != AbsentTreeNode.instance) {
             node.setBody((BlockNode) body.accept(this, childArgs));
@@ -153,15 +153,15 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         subCtx.encLoop = null;
         subCtx.breakTarget = null;
 
-        Scope newEnv1 = new Scope(ctx.scope);
-        subCtx.scope = newEnv1;
+        Scope newScope1 = new Scope(ctx.scope);
+        subCtx.scope = newScope1;
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
 
         node.setParams(TNLManip.traverseList(this, childArgs,
                 node.getParams()));
 
-        subCtx.scope = new Scope(newEnv1);
+        subCtx.scope = new Scope(newScope1);
 
         node.setConstructorCall((ConstructorCallNode)
                 node.getConstructorCall().accept(this, childArgs));
@@ -177,12 +177,12 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
     public Object visitParameterNode(ParameterNode node, LinkedList args) {
         NameContext ctx = (NameContext) args.get(0);
-        Scope env = ctx.scope;
+        Scope scope = ctx.scope;
 
         NameNode name = node.getName();
         String varName = name.getIdent();
 
-        Decl other = env.lookup(varName, CG_FORMAL | CG_LOCALVAR);
+        Decl other = scope.lookup(varName, CG_FORMAL | CG_LOCALVAR);
 
         if (other != null) {
             throw new RuntimeException("declaration shadows " + varName);
@@ -192,7 +192,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
                 node.getDefType(), node.getModifiers(), node);
 
         name.setProperty(DECL_KEY, d);
-        env.add(d);
+        scope.add(d);
 
         return node;
     }
@@ -201,7 +201,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext ctx = (NameContext) args.get(0);
 
         NameContext subctx = (NameContext) ctx.clone();
-        subctx.scope = new Scope(ctx.environ);
+        subctx.scope = new Scope(ctx.scope);
 
         node.setStmts(TNLManip.traverseList(this, TNLManip.addFirst(subctx),
                 node.getStmts()));
@@ -217,7 +217,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         Decl other = ctx.scope.lookup(labelString, CG_STMTLABEL);
 
-        Scope newEnv = new Scope(ctx.scope);
+        Scope newScope = new Scope(ctx.scope);
 
         if (other != null) {
             throw new RuntimeException("duplicate " + labelString);
@@ -227,10 +227,10 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         label.setProperty(DECL_KEY, d);
 
-        newEnv.add(d);
+        newScope.add(d);
 
         NameContext subCtx = (NameContext) ctx.clone();
-        subCtx.scope = newEnv;
+        subCtx.scope = newScope;
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
 
@@ -245,7 +245,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         node.setExpr((ExprNode) node.getExpr().accept(this, args));
 
         subCtx.breakTarget = node;
-        subCtx.scope = new Scope(ctx.environ);
+        subCtx.scope = new Scope(ctx.scope);
 
         node.setSwitchBlocks(
                 TNLManip.traverseList(this, TNLManip.addFirst(subCtx),
@@ -262,7 +262,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
 
         subCtx.breakTarget = node;
         subCtx.encLoop = node;
-        subCtx.scope = new Scope(ctx.environ);
+        subCtx.scope = new Scope(ctx.scope);
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
         node.setForeStmt((TreeNode) node.getForeStmt().accept(this, childArgs));
@@ -275,7 +275,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext ctx = (NameContext) args.get(0);
         NameContext subCtx = (NameContext) ctx.clone();
 
-        subCtx.scope = new Scope(ctx.environ);
+        subCtx.scope = new Scope(ctx.scope);
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
 
@@ -329,7 +329,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
         NameContext ctx = (NameContext) args.get(0);
 
         NameContext subCtx = (NameContext) ctx.clone();
-        subCtx.scope = new Scope(ctx.environ);
+        subCtx.scope = new Scope(ctx.scope);
 
         LinkedList childArgs = TNLManip.addFirst(subCtx);
 
@@ -424,7 +424,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
     }
 
     protected static JumpStmtNode _resolveJump(JumpStmtNode node, TreeNode noLabel,
-            Scope env) {
+            Scope scope) {
         TreeNode label = node.getLabel();
 
         if (label == AbsentTreeNode.instance) {
@@ -434,7 +434,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor
             String labelString = labelName.getIdent();
 
             StmtLblDecl dest = (StmtLblDecl)
-                env.lookup(labelString, CG_STMTLABEL);
+                scope.lookup(labelString, CG_STMTLABEL);
 
             if (dest == null) {
                 throw new RuntimeException("label " + labelString + " not found");

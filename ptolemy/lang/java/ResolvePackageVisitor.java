@@ -69,9 +69,9 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
         _pkgDecl = (PackageDecl) node.getDefinedProperty(PACKAGE_KEY);
 
-        Scope scope = (Scope) node.getDefinedProperty(ENVIRON_KEY);
+        Scope scope = (Scope) node.getDefinedProperty(SCOPE_KEY);
 
-        _pkgEnv  = (Scope) scope.parent();
+        _pkgScope  = (Scope) scope.parent();
 
         LinkedList childArgs = new LinkedList();
         childArgs.addLast(scope);            // enclosing scope =
@@ -99,18 +99,18 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
     public Object visitBlockNode(BlockNode node, LinkedList args) {
         // make a new scope for inner class declarations
 
-        Scope env = _makeScope(node, args);
+        Scope scope = _makeScope(node, args);
 
-        _visitList(node.getStmts(), env);
+        _visitList(node.getStmts(), scope);
         return null;
     }
 
     public Object visitAllocateAnonymousClassNode(AllocateAnonymousClassNode node, LinkedList args) {
-        Scope env = _makeScope(node, args);
+        Scope scope = _makeScope(node, args);
 
         ClassDecl decl = new ClassDecl("<anon>", null);
         decl.setSource(node);
-        decl.setScope(env);
+        decl.setScope(scope);
 
         // FIXME : will this name be resolved???
 
@@ -120,7 +120,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
         node.setProperty(DECL_KEY, decl);
 
         LinkedList listArgs = new LinkedList();
-        listArgs.addLast(env);                  // last scope
+        listArgs.addLast(scope);                  // last scope
         listArgs.addLast(Boolean.TRUE);         // inner class = true
         listArgs.addLast(NullValue.instance);   // no enclosing decl
         TNLManip.traverseList(this, listArgs, node.getMembers());
@@ -137,14 +137,14 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
     protected Object _visitUserTypeDeclNode(UserTypeDeclNode node,
             LinkedList args, boolean isClass) {
-        Scope encEnv = (Scope) args.get(0);
+        Scope encScope = (Scope) args.get(0);
 
         // inner class change
         boolean isInner = ((Boolean) args.get(1)).booleanValue();
 
         String className = ((NameNode) node.getName()).getIdent();
 
-        Decl other = encEnv.lookupProper(className);
+        Decl other = encScope.lookupProper(className);
 
         if (other != null) {
             throw new RuntimeException("attempt to redefine " + other.getName() +
@@ -157,7 +157,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
             ocl = null;
         } else {
             // lookup in package
-            ocl = (ClassDecl) _pkgEnv.lookupProper(className);
+            ocl = (ClassDecl) _pkgScope.lookupProper(className);
         }
 
         if ((ocl != null) &&
@@ -213,23 +213,23 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
 
             // add to the package scope if it's an top-level class
             if (!isInner) {
-                _pkgEnv.add(cl);
+                _pkgScope.add(cl);
             }
 
             ocl = cl;
         }
 
-        Scope env = new Scope(encEnv);
-        node.setProperty(ENVIRON_KEY, env);
+        Scope scope = new Scope(encScope);
+        node.setProperty(SCOPE_KEY, scope);
 
         // JUST TRY THIS
-        ocl.setScope(env);
-        encEnv.add(ocl);
+        ocl.setScope(scope);
+        encScope.add(ocl);
 
         node.getName().setProperty(DECL_KEY, ocl);
 
         LinkedList memberArgs = new LinkedList();
-        memberArgs.addLast(env);                  // scope for this class
+        memberArgs.addLast(scope);                  // scope for this class
         memberArgs.addLast(Boolean.TRUE);         // inner class = true
         memberArgs.addLast(ocl);                  // last class decl
         TNLManip.traverseList(this, memberArgs, node.getMembers());
@@ -238,17 +238,17 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
     }
 
     protected static Scope _makeScope(TreeNode node, LinkedList args) {
-        Scope encEnv = (Scope) args.get(0);
+        Scope encScope = (Scope) args.get(0);
 
-        Scope env = new Scope(encEnv);
-        node.setProperty(ENVIRON_KEY, env);
+        Scope scope = new Scope(encScope);
+        node.setProperty(SCOPE_KEY, scope);
 
-        return env;
+        return scope;
     }
 
-    protected void _visitList(List nodeList, Scope env) {
+    protected void _visitList(List nodeList, Scope scope) {
         LinkedList listArgs = new LinkedList();
-        listArgs.addLast(env);                  // last scope
+        listArgs.addLast(scope);                  // last scope
         listArgs.addLast(Boolean.TRUE);         // inner class = true
         listArgs.addLast(NullValue.instance);   // no enclosing decl
         TNLManip.traverseList(this, listArgs, nodeList);
@@ -258,5 +258,5 @@ public class ResolvePackageVisitor extends ResolveVisitorBase
     protected PackageDecl _pkgDecl = null;
 
     /** The package scope. */
-    protected Scope _pkgEnv = null;
+    protected Scope _pkgScope = null;
 }

@@ -136,9 +136,9 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
     public Object visitThisConstructorCallNode(ThisConstructorCallNode node, LinkedList args) {
         FieldContext ctx = (FieldContext) args.get(0);
         ClassDecl classDecl = ctx.currentClassDecl;
-        Scope classEnv = classDecl.getScope();
+        Scope classScope = classDecl.getScope();
 
-        ScopeIteratorator methods = classEnv.lookupFirstProper(classDecl.getName(),
+        ScopeIterator methods = classScope.lookupFirstProper(classDecl.getName(),
                 CG_CONSTRUCTOR);
 
         node.setArgs(TNLManip.traverseList(this, args, node.getArgs()));
@@ -160,9 +160,9 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
             return AbsentTreeNode.instance;
         }
 
-        Scope superEnv = superDecl.getScope();
+        Scope superScope = superDecl.getScope();
 
-        ScopeIteratorator methods = superEnv.lookupFirstProper(superDecl.getName(),
+        ScopeIterator methods = superScope.lookupFirstProper(superDecl.getName(),
                 CG_CONSTRUCTOR);
 
         node.setArgs(TNLManip.traverseList(this, args, node.getArgs()));
@@ -338,7 +338,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
                         typeName.getName().getIdent());
             }
 
-            ScopeIteratorator methods = typeDecl.getScope().lookupFirstProper(
+            ScopeIterator methods = typeDecl.getScope().lookupFirstProper(
                     typeDecl.getName(), CG_CONSTRUCTOR);
 
             MethodDecl constructor = resolveCall(methods, node.getArgs());
@@ -371,7 +371,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
         ClassDecl superDecl = (ClassDecl) node.getDefinedProperty(SUPERCLASS_KEY);
 
-        ScopeIteratorator methods = superDecl.getScope().lookupFirstProper(
+        ScopeIterator methods = superDecl.getScope().lookupFirstProper(
                 superDecl.getName(), CG_CONSTRUCTOR);
 
         MethodDecl constructor = resolveCall(methods, node.getSuperArgs());
@@ -454,7 +454,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
 
     protected void resolveAField(FieldAccessNode node, boolean thisAccess, boolean isSuper,
             FieldContext ctx) {
-        ScopeIteratorator resolutions;
+        ScopeIterator resolutions;
         TypeNode oType = _typeVisitor.accessedObjectType(node);
         ClassDecl typeDecl;
 
@@ -499,7 +499,7 @@ public class ResolveFieldVisitor extends ReplacementJavaVisitor
         //checkFieldAccess(d, typeDecl, thisAccess, isSuper, false, ctx, position());
     }
 
-    public MethodDecl resolveCall(ScopeIteratorator methods, List args) {
+    public MethodDecl resolveCall(ScopeIterator methods, List args) {
 
         Decl aMethod = methods.head();
         Decl d;
