@@ -847,41 +847,10 @@ public class DDFDirector extends Director {
             throws IllegalActionException {
         Iterator inputPorts = actor.inputPortList().iterator();
         while (inputPorts.hasNext()) {
-            IOPort inputPort = (IOPort)inputPorts.next();
-
-            //The default value for tokenConsumptionRate is 1.
-            int tokenConsumptionRate = 1;
-            Variable parameter = SDFUtilities.getRateVariable(
-                    inputPort, "tokenConsumptionRate");
-
-            if (parameter != null) {
-                Token token = parameter.getToken();
-                // If token is ArrayToken, then each channel has a
-                // corresponding tokenConsumptionRate in the array.
-                if (token instanceof ArrayToken) {
-                    Token[] tokens = ((ArrayToken)token).arrayValue();
-                    if (tokens.length  < inputPort.getWidth()) {
-                        throw new IllegalActionException(this,
-                                (ComponentEntity)actor, "The length of " +
-                                "tokenConsumptionRate array is less than " +
-                                "port width.");
-                    }
-                    for (int i = 0; i < inputPort.getWidth(); i++) {
-                        int channelRate = ((IntToken)tokens[i]).intValue();
-                        if (!inputPort.hasToken(i, channelRate)) {
-                            return false;
-                        }
-                    }
-                    continue;
-
-                } else { // All the channels in the port has same
-                         // tokenConsumptionRate.
-                    tokenConsumptionRate = ((IntToken)token).intValue();
-                }
-            }
-
+            IOPort inputPort = (IOPort)inputPorts.next();            
+            int[] rate = _getTokenConsumptionRate(inputPort);
             for (int i = 0; i < inputPort.getWidth(); i++) {
-                if (!inputPort.hasToken(i, tokenConsumptionRate)) {
+                if (!inputPort.hasToken(i, rate[i])) {
                     return false;
                 }
             }
