@@ -37,6 +37,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Mailbox;
+import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -172,7 +173,13 @@ public class ProcessDirector extends Director {
                 if (_debugging) {
                     _debug("Deadlock detected.");
                 }
-                _notDone = _resolveDeadlock();
+                try {
+					_notDone = _resolveDeadlock();
+				} catch (IllegalActionException e) {
+					// stop all threads.
+                    stop();
+                    throw e;
+				}
             }
         }
     }
@@ -387,26 +394,20 @@ public class ProcessDirector extends Director {
         }
     }
 
-    /** Throw an IllegalActionException as an indication that this method
-     *  should not be used within process domains.
-     *
-     *  @exception IllegalActionException Always thrown. This method
-     *   should not be invoked within the process domains.
+    /** Do nothing.  Input transfers in process domains are handled by
+     *  branches, which transfer inputs in a separate thread.
+     *  @return False, to indicate that no tokens were transfered.
      */
-    public boolean transferInputs(IOPort port) throws IllegalActionException {
-        throw new IllegalActionException(this, "transferInputs() is not " +
-                "intended for use by directors in the process domains.");
+    public boolean transferInputs(IOPort port) {
+        return false;
     }
 
-    /** Throw an IllegalActionException as an indication that this method
-     *  should not be used within process domains.
-     *
-     *  @exception IllegalActionException Always thrown. This method
-     *   should not be invoked within the process domains.
+    /** Do nothing.  Output transfers in process domains are handled by
+     *  branches, which transfer inputs in a separate thread.
+     *  @return False, to indicate that no tokens were transfered.
      */
-    public boolean transferOutputs(IOPort port) throws IllegalActionException {
-        throw new IllegalActionException(this, "transferOutputs() is not " +
-                "intended for use by directors in the process domains.");
+    public boolean transferOutputs(IOPort port) {
+        return false;
     }
 
     /** End the execution of the model under the control of this
@@ -433,7 +434,6 @@ public class ProcessDirector extends Director {
                 .deepEntityList().iterator();
             Iterator actorPorts;
             ProcessReceiver nextReceiver;
-            LinkedList receiversList = new LinkedList();
             while (actors.hasNext()) {
                 Actor actor = (Actor)actors.next();
                 actorPorts = actor.inputPortList().iterator();
@@ -445,20 +445,18 @@ public class ProcessDirector extends Director {
                         for (int j = 0; j < receivers[i].length; j++) {
                             nextReceiver = (ProcessReceiver)receivers[i][j];
                             nextReceiver.requestFinish();
-                            receiversList.addFirst(nextReceiver);
                         }
                     }
                 }
             }
 
-            // Now wake up all the receivers.
-            //FIXME: for PN, this notification is already done by
-            //PNQueueReceiver.requestFinish() in the loop above.
-            //If all process domain receivers do the same, then this
-            //is not needed.
-            (new NotifyThread(receiversList)).start();
+            // Now wake up threads that depend on the manager.
+            // FIXME: For some reason, this isn't sufficient.
+            // Have to click the stop button twice.
+            Manager manager = ((Actor)getContainer()).getManager();
+            (new NotifyThread(manager)).start();
 
-            // wait until all process threads stop
+            // Wait until all process threads stop.
             synchronized (this) {
                 while (_activeActorCount > 0) {
                     try {
