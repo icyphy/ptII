@@ -347,7 +347,6 @@ public class TypedIOPort extends IOPort implements Typeable {
                                     farType.convert(tokenArray[k]));
                         }
                     }
-                    farReceivers[i][j].putArray(tokenArray, vectorLength);
                 }
             }
         } catch (ArrayIndexOutOfBoundsException ex) {
@@ -622,7 +621,6 @@ public class TypedIOPort extends IOPort implements Typeable {
                 farReceivers = getRemoteReceivers();
                 if (farReceivers == null ||
                         farReceivers[channelIndex] == null) {
-                    System.out.println("returning now...");
                     return;
                 }
             } finally {
@@ -675,17 +673,17 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param typeTerm An InequalityTerm.
      */
     public void setTypeAtLeast(InequalityTerm typeTerm) {
-        Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
-        _constraints.add(ineq);
+        Inequality inequality = new Inequality(typeTerm, this.getTypeTerm());
+        _constraints.add(inequality);
     }
 
     /** Constrain the type of this port to be equal to or less
      *  than the argument.
      */
     public void setTypeAtMost(Type type) {
-        Inequality ineq = new Inequality(this.getTypeTerm(),
+        Inequality inequality = new Inequality(this.getTypeTerm(),
                 new TypeConstant(type));
-        _constraints.add(ineq);
+        _constraints.add(inequality);
     }
 
     /** Set the type of this port. The type is represented by an instance
@@ -723,12 +721,12 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param equal A Typeable object.
      */
     public void setTypeSameAs(Typeable equal) {
-        Inequality ineq = new Inequality(this.getTypeTerm(),
+        Inequality inequality = new Inequality(this.getTypeTerm(),
                 equal.getTypeTerm());
-        _constraints.add(ineq);
-        ineq = new Inequality(equal.getTypeTerm(),
+        _constraints.add(inequality);
+        inequality = new Inequality(equal.getTypeTerm(),
                 this.getTypeTerm());
-        _constraints.add(ineq);
+        _constraints.add(inequality);
     }
 
     /** Transfer data from this port to the ports it is connected to
