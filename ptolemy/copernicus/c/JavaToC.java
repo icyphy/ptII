@@ -74,6 +74,11 @@ public class JavaToC {
 
         boolean generateSingleClass = compileMode.equals("singleClass");
 
+        if (verbose) {
+            System.out.println("JavaToC.convert(): classpath is: "
+                    + classPath); 
+        }
+
         // Initialize code generation
         Scene.v().setSootClassPath(classPath);
         HeaderFileGenerator hGenerator = new HeaderFileGenerator();
