@@ -31,6 +31,7 @@ package ptolemy.copernicus.java;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.expr.*;
+import ptolemy.data.type.RecordType;
 import ptolemy.copernicus.kernel.*;
 import ptolemy.kernel.util.*;
 
@@ -1106,6 +1107,43 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         int argCount = node.jjtGetNumChildren();
         _generateAllChildren(node);
         // The first child is the token on which to invoke the method.
+
+        // Handle indexing into a record.
+        ptolemy.data.type.Type baseTokenType = 
+            ((ASTPtRootNode)node.jjtGetChild(0)).getType();
+        if(argCount == 1 &&
+                baseTokenType instanceof RecordType) {
+            RecordType type = (RecordType)baseTokenType;
+            if(type.labelSet().contains(node.getMethodName())) {
+                Local originalBaseLocal = (Local)
+                    _nodeToLocal.get(node.jjtGetChild(0));
+                Local baseLocal = Jimple.v().newLocal("base", 
+                        RefType.v(PtolemyUtilities.recordTokenClass));
+                _body.getLocals().add(baseLocal);
+                // Cast the record.
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                baseLocal, 
+                                Jimple.v().newCastExpr(
+                                        originalBaseLocal,
+                                        RefType.v(PtolemyUtilities.recordTokenClass))));
+
+                // invoke get()
+                Local returnLocal = Jimple.v().newLocal("returnValue", 
+                        RefType.v(PtolemyUtilities.tokenClass));
+                _body.getLocals().add(returnLocal);
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                returnLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        baseLocal,
+                                        PtolemyUtilities.recordGetMethod,
+                                        StringConstant.v(node.getMethodName()))));
+                _nodeToLocal.put(node, returnLocal);
+                                
+                return;
+            }
+        }        
 
         // The array of token types that the method takes.
         ptolemy.data.type.Type[] argTypes =
