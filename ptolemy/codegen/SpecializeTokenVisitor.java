@@ -73,6 +73,9 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
         _declToTermMap = declToTermMap;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Use the CompileUnitNodes (which presumably contain classes in a
      *  hierarchy), to return a Map from all Token declarations that appear
      *  in the compile units to TypeNameNodes representing the most specific
@@ -132,15 +135,15 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                     (value == PtolemyTypeIdentifier.TOKEN_DECL) ||
                     (value == PtolemyTypeIdentifier.SCALAR_TOKEN_DECL) ||
                     (value == PtolemyTypeIdentifier.MATRIX_TOKEN_DECL)) {
-                System.err.println("Warning: SpecializeTokenVisitor" 
+                System.err.println("Warning: SpecializeTokenVisitor"
 				   + ".specializeTokens(): "
 				   + "could not solve for specific "
                                    + "token type for declaration '"
 				   + typedDecl.getName()
 				   + "' in "
 				   + actorInfo.actor.getName()
-				   + ".\n term = " + value 
-				   + " which is unsupported. \n" 
+				   + ".\n term = " + value
+				   + " which is unsupported. \n"
 				   + "Try setting the type with something like"
 				   + "\n'fileWriter.input.setTypeEquals"
 				   + "(BaseType.INT);'");
@@ -151,8 +154,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                         PtolemyTypeIdentifier.TOKEN_TYPE.clone());
 
 		// FIXME: This is totally wrong
-                //System.err.println("Warning: SpecializeTokenVisitor" 
-		//		   + ".specializeTokens(): defaulting to " 
+                //System.err.println("Warning: SpecializeTokenVisitor"
+		//		   + ".specializeTokens(): defaulting to "
 		//		   + "integer");
                 //declToTokenTypeMap.put(typedDecl,
                 //        PtolemyTypeIdentifier.INT_TOKEN_TYPE.clone());
@@ -348,14 +351,14 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                     InequalityTerm firstArgTerm = null;
 		    try {
 			firstArgTerm = (InequalityTerm) argTerms.get(0);
-		    } catch (java.lang.ClassCastException e) {
+		    } catch (ClassCastException e) {
 			System.err.println("SpecializeTokenVisitor."
 					   + "visitMethodCallNode: " + e
 					   + "\n node = " + node
 					   + "\n node.getArgs() = " + node.getArgs()
 					   + "\n args = " + args
 					   + "\n argTerms = " + argTerms
-					   + "\n argTerms.get(0) = " 
+					   + "\n argTerms.get(0) = "
 					   + (( argTerms == null) ?
 					      "null" : argTerms.get(0))
 					   );
@@ -474,16 +477,21 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     }
 
     public Object visitCastNode(CastNode node, LinkedList args) {
-        // assume that all casts succeed
+        // Assume that all casts succeed.
 
-        InequalityTerm term =
-            (InequalityTerm) node.getExpr().accept(this, null);
-
-        if (term != null) {
-            _solver.addInequality(new Inequality(term,
-                    _makeConstantTerm(node.getDtype(), null)));
+        InequalityTerm term = null;
+        try {
+            term = (InequalityTerm) node.getExpr().accept(this, null);
+            if (term != null) {
+                _solver.addInequality(new Inequality(term,
+                        _makeConstantTerm(node.getDtype(), null)));
+            }
+        } catch (RuntimeException exception) {
+            System.err.println("SpecializedTokenVisitor.CastNode(): "
+                    + "RuntimeException was thrown on: \n"
+                    + node);
+            throw exception;
         }
-
         return term;
     }
 
@@ -499,6 +507,9 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
 
         return leftTerm;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     protected InequalityTerm _visitExprNode(ExprNode node) {
         _defaultVisit(node, null);
@@ -566,6 +577,9 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
                 JavaDecl.getDecl((NamedNode) type), decl);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
     protected ActorCodeGeneratorInfo _actorInfo;
 
     protected PtolemyTypeIdentifier _typeID;
@@ -578,7 +592,8 @@ public class SpecializeTokenVisitor extends ResolveVisitorBase {
     protected static final DirectedAcyclicGraph _cpo;
     protected InequalitySolver _solver;
 
-    // inner classes
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     protected static class ConstantTerm implements InequalityTerm {
         public ConstantTerm(ClassDecl classDecl, TypedDecl decl) {
