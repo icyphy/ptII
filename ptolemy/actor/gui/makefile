@@ -85,6 +85,8 @@ JSRCS = \
 	JNLPUtilities.java \
 	JVMTableau.java \
 	LocationAttribute.java \
+	MatrixPane.java \
+	MatrixTokenTableau.java \
 	ModelDirectory.java \
 	ModelFrame.java \
 	ModelPane.java \
@@ -115,6 +117,8 @@ JSRCS = \
 	TextEffigy.java \
 	Tableau.java \
 	TableauFactory.java \
+	TokenEffigy.java \
+	TokenTableau.java \
 	TokenEffigy.java \
 	WindowPropertiesAttribute.java
 
