@@ -347,15 +347,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         return _cachedInputPorts;
     }
 
-    /** Return an enumeration of the input ports.
-     *  This method is read-synchronized on the workspace.
-     *  @deprecated Use inputPortList() instead;
-     *  @return An enumeration of input TypedIOPort objects.
-     */
-    public Enumeration inputPorts() {
-        return Collections.enumeration(inputPortList());
-    }
-
     /** Return true.
      *  @return True.
      */
@@ -472,15 +463,6 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             }
         }
         return _cachedOutputPorts;
-    }
-
-    /** Return an enumeration of the output ports.
-     *  This method is read-synchronized on the workspace.
-     *  @deprecated Use outputPortList() instead.
-     *  @return An enumeration of output TypedIOPort objects.
-     */
-    public Enumeration outputPorts() {
-        return Collections.enumeration(outputPortList());
     }
 
     /** Execute actions on the last chosen transition. Change state
