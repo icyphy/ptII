@@ -149,7 +149,7 @@ public class AppletWriter extends SceneTransformer {
 	// but I'd rather keep things uniform with the other generators?
 	int start = _targetPackage.indexOf('.');
 	// _codeBase has one more level than _targetPackage.
-	StringBuffer buffer = new StringBuffer("../..");
+	StringBuffer buffer = new StringBuffer("..");
         while (start != -1) {
 	    buffer.append("/..");
             start = _targetPackage.indexOf('.', start + 1);
