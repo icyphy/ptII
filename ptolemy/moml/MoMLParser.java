@@ -789,6 +789,15 @@ public class MoMLParser extends HandlerBase {
         _handler = handler;
     }
 
+    /**  Set the list of MoMLFilters used to translate names.
+     *  Note that this method is static.  The specified MoMLFilters
+     *  will filter all MoML for any instances of this class.
+     *  @param filterList The List of MoMLFilters.
+     */
+    public void setMoMLFilters(List filterList) {
+        _filterList = filterList;
+    }
+
     /** Set the top-level entity.  This can be used to associate this
      *  parser with a pre-existing model, which can then be modified
      *  via incremental parsing.  This calls reset().
