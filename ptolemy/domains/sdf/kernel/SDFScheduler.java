@@ -1369,7 +1369,11 @@ public class SDFScheduler extends Scheduler {
             buffer.append("<relation name=\"");
             buffer.append(relation.getName(container));
             buffer.append("\">\n");
-            buffer.append("<property name=\"bufferSize\" class=\"ptolemy.data.expr.Parameter\" value=\"" + bufferSize + "\"/>\n");
+            // Use Variable rather than Parameter so that the change
+            // is not persistent.
+            buffer.append("<property name=\"bufferSize\" "
+                    + "class=\"ptolemy.data.expr.Variable\" "
+                    +  "value=\"" + bufferSize + "\"/>\n");
             buffer.append("</relation>\n");
 
             if (_debugging) {
@@ -1378,9 +1382,12 @@ public class SDFScheduler extends Scheduler {
             }
         }
         buffer.append("</group>");
-        container.requestChange(new MoMLChangeRequest(
-                this, container, buffer.toString()));
-
+        MoMLChangeRequest request = new MoMLChangeRequest(
+                this, container, buffer.toString());
+        // Indicate that the change is non-persistent, so that
+        // the UI doesn't prompt to save.
+        request.setPersistent(false);
+        container.requestChange(request);
     }
 
     /** Push the rates calculated for this system up to the contained Actor.
