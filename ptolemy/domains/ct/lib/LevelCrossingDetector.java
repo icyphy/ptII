@@ -351,8 +351,6 @@ public class LevelCrossingDetector extends Transformer
     // the current input token.
     private  Token _inputToken;
 
-    // Indeicating whether the 'level' value has changed.
+    // Indicating whether the 'level' value has changed.
     private boolean _levelChanged;
-
-
 }
