@@ -100,4 +100,9 @@ public interface Nameable {
      * that has newlines.
      */ 
     public static final int PRETTYPRINT = 3;
+
+    /**
+     * The description() method returns only the relations.
+     */ 
+    public static final int RELATIONS = 4;
 }
