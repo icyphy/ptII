@@ -350,12 +350,12 @@ GCJ_FLAGS =	-g -O3 -fno-bounds-check
 
 gcj: $(MODEL)_gcj
 
-$(MODEL)_gcj:
+$(MODEL)_gcj: $(TREESHAKE_PREFIX)_codegen.jar
 	@echo "Running GCJ on treeshake_codegen.jar"
 	$(GCJ) $(GCJ_FLAGS) --main=$(TARGETPACKAGE).Main -o $(MODEL)_gcj $(TREESHAKE_PREFIX)_codegen.jar
 
 
-gcjRun:
+gcjRun: ./$(MODEL)_gcj
 	./$(MODEL)_gcj
 
 profileGcj: $(MODEL)_gcj
