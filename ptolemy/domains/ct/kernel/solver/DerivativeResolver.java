@@ -169,7 +169,7 @@ public class DerivativeResolver extends ODESolver
             next.fire();
         }
         
-        this.setConvergence(true);
+        this._setConverged(true);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -302,6 +302,28 @@ public class CTBaseIntegrator extends TypedAtomicActor
         _history.clear();
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isStateAccurate()
+     */
+    public boolean isStateAccurate() {
+        try {
+            // We check the validity of the input
+            // If it is NaN, or Infinity, an exception is thrown.
+            double f_dot = ((DoubleToken)input.get(0)).doubleValue();
+            if (Double.isNaN(f_dot) || Double.isInfinite(f_dot)) {
+                throw new InternalErrorException("The input of " +
+                        getName() + " is not valid because" +
+                        " it is a result of divide-by-zero.");
+            }
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(getName() +
+                    " can't read input." + e.getMessage());
+        }
+        ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
+        _successful = solver.integratorIsAccurate(this);
+        return _successful;
+    }
+
     /** Return true if this integration step is accurate from this
      *  integrator's point of view.
      *  This method delegates to the integratorIsAccurate() method of
@@ -313,6 +335,13 @@ public class CTBaseIntegrator extends TypedAtomicActor
      */
     public boolean isThisStepAccurate() {
         return isStateAccurate() && isOutputAccurate();
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isOutputAccurate()
+     */
+    public boolean isOutputAccurate() {
+        return true;
     }
 
     /** Mark and remember the current state. This remembered state can be
@@ -726,32 +755,4 @@ public class CTBaseIntegrator extends TypedAtomicActor
         private double[] _data = new double[2];
     }
 
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isStateAccurate()
-     */
-    public boolean isStateAccurate() {
-        try {
-            // We check the validity of the input
-            // If it is NaN, or Infinity, an exception is thrown.
-            double f_dot = ((DoubleToken)input.get(0)).doubleValue();
-            if (Double.isNaN(f_dot) || Double.isInfinite(f_dot)) {
-                throw new InternalErrorException("The input of " +
-                        getName() + " is not valid because" +
-                        " it is a result of divide-by-zero.");
-            }
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(getName() +
-                    " can't read input." + e.getMessage());
-        }
-        ODESolver solver = ((CTDirector)getDirector()).getCurrentODESolver();
-        _successful = solver.integratorIsAccurate(this);
-        return _successful;
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isOutputAccurate()
-     */
-    public boolean isOutputAccurate() {
-        return true;
-    }
 }

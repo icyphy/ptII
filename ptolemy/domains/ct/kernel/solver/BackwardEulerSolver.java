@@ -97,17 +97,6 @@ public class BackwardEulerSolver extends FixedStepSolver {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Return 0 to indicate that no history information is needed by
-     *  this solver.
-     *  @return 0.
-     */
-    public int getHistoryCapacityRequirement() {
-        return 0;
-    }
-
     /* (non-Javadoc)
      * @see ptolemy.domains.ct.kernel.ODESolver#fireDynamicActors()
      */
@@ -166,6 +155,17 @@ public class BackwardEulerSolver extends FixedStepSolver {
         incrementRoundCount();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return 0 to indicate that no history information is needed by
+     *  this solver.
+     *  @return 0.
+     */
+    public int getHistoryCapacityRequirement() {
+        return 0;
+    }
+
     /** Return 1 to indicate that an integrator under this solver needs
      *  one auxiliary variable.
      *  @return 1.
@@ -193,7 +193,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
             integrator.getState() + f*(dir.getCurrentStepSize());
         double error = Math.abs(tentativeState-integrator.getTentativeState());
         if ( !(error < dir.getValueResolution())) {
-            _voteForConvergence(false);
+            _voteForConverged(false);
         }
         integrator.setTentativeState(tentativeState);
         integrator.setTentativeDerivative(f);
@@ -223,13 +223,13 @@ public class BackwardEulerSolver extends FixedStepSolver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         private methods                   ////
 
-    /** Vote on whether a fixed point has reached.
-     *  @param converge True if vote for convergence.
+    /** Vote on whether states have converged.
+     *  @param converged True if vote for convergence.
      */
-    protected void _voteForConvergence(boolean converge) {
-        setConvergence(isConverged() && converge);
+    private void _voteForConverged(boolean converged) {
+        _setConverged(isConverged() && converged);
     }
 
     ///////////////////////////////////////////////////////////////////

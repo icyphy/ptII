@@ -33,6 +33,7 @@ import java.util.Set;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Director;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
 import ptolemy.actor.sched.StaticSchedulingDirector;
@@ -145,29 +146,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
         this(null);
     }
 
-    /** Construct a director in the workspace with an empty name.
-     *  If the argument is null, then the default workspace will be used.
-     *  The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  All the parameters take their default values. A CTScheduler
-     *  is created.
-     *  @param workspace The workspace of this object.
-     */
-    public CTDirector(Workspace workspace) {
-        super(workspace);
-        _initParameters();
-        try {
-            setScheduler(new CTScheduler(workspace));
-        } catch(IllegalActionException e) {
-            // Should never occur.
-            throw new InternalErrorException(this.getFullName() +
-                    "Error setting a CTScheduler.");
-        } catch (NameDuplicationException ex) {
-            throw new InternalErrorException("There is already a scheduler" +
-                    " with name " + this.getFullName());
-        }
-    }
-
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -188,6 +166,29 @@ public abstract class CTDirector extends StaticSchedulingDirector
         _initParameters();
         try {
             setScheduler(new CTScheduler(container.workspace()));
+        } catch(IllegalActionException e) {
+            // Should never occur.
+            throw new InternalErrorException(this.getFullName() +
+                    "Error setting a CTScheduler.");
+        } catch (NameDuplicationException ex) {
+            throw new InternalErrorException("There is already a scheduler" +
+                    " with name " + this.getFullName());
+        }
+    }
+
+    /** Construct a director in the workspace with an empty name.
+     *  If the argument is null, then the default workspace will be used.
+     *  The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  All the parameters take their default values. A CTScheduler
+     *  is created.
+     *  @param workspace The workspace of this object.
+     */
+    public CTDirector(Workspace workspace) {
+        super(workspace);
+        _initParameters();
+        try {
+            setScheduler(new CTScheduler(workspace));
         } catch(IllegalActionException e) {
             // Should never occur.
             throw new InternalErrorException(this.getFullName() +
@@ -435,6 +436,30 @@ public abstract class CTDirector extends StaticSchedulingDirector
         return _errorTolerance;
     }
 
+    /** Return the enclosing CT general director of this director. For 
+     *  CTMultiSolverDirector, null is always returned. Subclasses of this
+     *  class, {@link ptolemy.domains.ct.kernel.CTEmbeddedDirector},
+     *  may override this method.
+     *
+     *  @return Null as the enclosing CT general director of this director.
+     */
+    public CTGeneralDirector getEnclosingCTGeneralDirector() {
+        return null;
+    }
+
+    /** Get the current execution phase of this director.
+     *  @return The current execution phase of this director.
+     */
+    public CTExecutionPhase getExecutionPhase() {
+        CTGeneralDirector executiveDirector = 
+            getEnclosingCTGeneralDirector();
+        if (executiveDirector != null) {
+            return getEnclosingCTGeneralDirector().getExecutionPhase();
+        } else {
+            return _executionPhase;
+        }
+    }
+
     /** Return the initial step size. This method is final
      *  for performance reason.
      *  @return The initial step size.
@@ -491,29 +516,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  step size.
      *  @return The iteration begin time plus the current step size.
      */
-    public double getNextIterationTime() {
-        return getModelNextIterationTime().getTimeValue();
-    }
-
-    /** Return the current iteration begin time plus the current
-     *  step size.
-     *  @return The iteration begin time plus the current step size.
-     */
     public Time getModelNextIterationTime() {
         return getIterationBeginTime().add(getCurrentStepSize());
-    }
-
-    /** Return the ODE solver.
-     *  @return The default ODE solver
-     */
-    public abstract ODESolver getODESolver();
-
-    /** Return the start time parameter value. This method is final
-     *  for performance reason.
-     *  @return the start time.
-     */
-    public final double getStartTime() {
-        return getModelStartTime().getTimeValue();
     }
 
     /** Return the start time parameter value. This method is final
@@ -528,16 +532,37 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  for performance reason.
      *  @return the stop time.
      */
-    public final double getStopTime() {
-        return getModelStopTime().getTimeValue();
+    public final Time getModelStopTime() {
+        return _stopTime;
+    }
+
+    /** Return the current iteration begin time plus the current
+     *  step size.
+     *  @return The iteration begin time plus the current step size.
+     */
+    public double getNextIterationTime() {
+        return getModelNextIterationTime().getTimeValue();
+    }
+
+    /** Return the ODE solver.
+     *  @return The default ODE solver associated with this director.
+     */
+    public abstract ODESolver getODESolver();
+
+    /** Return the start time parameter value. This method is final
+     *  for performance reason.
+     *  @return the start time.
+     */
+    public final double getStartTime() {
+        return getModelStartTime().getTimeValue();
     }
 
     /** Return the stop time. This method is final
      *  for performance reason.
      *  @return the stop time.
      */
-    public final Time getModelStopTime() {
-        return _stopTime;
+    public final double getStopTime() {
+        return getModelStopTime().getTimeValue();
     }
 
     /** Return the suggested next step size. The suggested step size is
@@ -901,6 +926,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
         _discretePhase = discrete;
     }
 
+    /** Set the execution phase to the given phase.
+     *  @param phase The current phase of the CT director.
+     */
+    protected final void _setExecutionPhase(CTExecutionPhase phase) {
+        _executionPhase = phase;
+    }
+
     /** Set the iteration begin time. The iteration begin time is
      *  the start time for one integration step. This variable is used
      *  when the integration step is failed, and need to be restarted
@@ -938,6 +970,9 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  its postfire().
      */
     protected boolean _postfireReturns = true;
+
+    // The real starting time in term of system millisecond counts.
+    protected long _timeBase;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -981,6 +1016,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         // A simulation always starts with a discrete phase execution
        _breakpointIteration = true;
        _discretePhase = true;
+       _executionPhase = CTExecutionPhase.UNKNOWN_PHASE; 
 
        // clear the existing breakpoint table or 
        // create a breakpoint table if necessary
@@ -997,11 +1033,38 @@ public abstract class CTDirector extends StaticSchedulingDirector
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // Indicate whether this is a breakpoint iteration.
+    private boolean _breakpointIteration = false;
+
+    // A table for breakpoints.
+    private TotallyOrderedSet _breakPoints;
+
     // FIXME: are all the following private variables initialized before using?
     // Yes, in the _initializeLocalVariables() method.
     
     // Current ODE solver.
     private ODESolver _currentSolver = null;
+
+    // Simulation step sizes.
+    private double _currentStepSize;
+
+    // Indicate that this is the discrete phase.
+    private boolean _discretePhase;
+    private double _errorTolerance;
+    
+    // The private variable indicates the current execution phase of this
+    // director.
+    private CTExecutionPhase _executionPhase;
+    private double _initStepSize;
+
+    // The begin time of a iteration. This value is remembered so that
+    // we don't need to resolve it from the iteration end time and step size.
+    private Time _iterationBeginTime;
+    
+    private Time _iterationEndTime;
+    private int _maxIterations;
+    private double _maxStepSize;
+    private double _minStepSize;
 
     /** Collection of actors that have been prefired(). */
     private Set _prefiredActors = new HashSet();
@@ -1009,33 +1072,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
     // Local copies of parameters.
     private Time _startTime;
     private Time _stopTime;
-    private double _initStepSize;
-    private double _minStepSize;
-    private double _maxStepSize;
-    private int _maxIterations;
-    private double _errorTolerance;
-    private double _valueResolution;
-
-    // The real starting time in term of system millisecond counts.
-    protected long _timeBase;
-
-    // Indicate whether this is a breakpoint iteration.
-    private boolean _breakpointIteration = false;
-
-    // Simulation step sizes.
-    private double _currentStepSize;
     private double _suggestedNextStepSize;
 
-    // A table for breakpoints.
-    private TotallyOrderedSet _breakPoints;
-
-    // The begin time of a iteration. This value is remembered so that
-    // we don't need to resolve it from the iteration end time and step size.
-    private Time _iterationBeginTime;
-    
-    private Time _iterationEndTime;
-
-    // Indicate that this is the discrete phase.
-    private boolean _discretePhase;
-
+    private double _valueResolution;
 }

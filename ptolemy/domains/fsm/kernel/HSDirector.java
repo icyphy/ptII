@@ -40,6 +40,7 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.util.Time;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.ct.kernel.CTDirector;
+import ptolemy.domains.ct.kernel.CTExecutionPhase;
 import ptolemy.domains.ct.kernel.CTGeneralDirector;
 import ptolemy.domains.ct.kernel.CTReceiver;
 import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
@@ -79,15 +80,6 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         super();
     }
 
-    /** Construct a director in the  workspace with an empty name.
-     *  The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace of this director.
-     */
-    public HSDirector(Workspace workspace) {
-        super(workspace);
-    }
-
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -105,8 +97,31 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         super(container, name);
     }
 
+    /** Construct a director in the  workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace of this director.
+     */
+    public HSDirector(Workspace workspace) {
+        super(workspace);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Implementations of this method should emit the tentative outputs.
+     *  @exception IllegalActionException If the data transfer is not
+     *       completed.
+     */
+    public void emitTentativeOutputs() throws IllegalActionException {
+        Iterator actors = _enabledRefinements.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            if (actor instanceof CTCompositeActor) {
+                ((CTCompositeActor)actor).emitTentativeOutputs();
+            }
+        }
+    }
 
     /** Set the values of input variables in the mode controller. Examine
      *  the preemptive outgoing transitions of its current state. Throw an
@@ -148,7 +163,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         Transition tr;
         
         // only check transition during event generating phase.
-        if (isFiringEventGeneratorsPhase()) {
+        if (getExecutionPhase() == 
+            CTExecutionPhase.FIRINGEVENTGENERATORS_PHASE) {
             tr = _ctrl._chooseTransition(_st.preemptiveTransitionList());
         } else {
             tr = null;
@@ -198,7 +214,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         _ctrl._readOutputsFromRefinement();
 
         // only check transition during event generating phase.
-        if (isFiringEventGeneratorsPhase()) {
+        if (getExecutionPhase() == 
+            CTExecutionPhase.FIRINGEVENTGENERATORS_PHASE) {
             // Note that the output actions associated with the transition
             // are executed.
             tr = _ctrl._chooseTransition(_st.nonpreemptiveTransitionList());
@@ -241,12 +258,89 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return;
     }
 
+    /** Return the current step size used by the solver.
+     *  @return The current step size.
+     */
+    public double getCurrentStepSize() {
+        CTGeneralDirector executiveDirector = 
+            getEnclosingCTGeneralDirector();
+        if (executiveDirector != null) {
+            return getEnclosingCTGeneralDirector().getCurrentStepSize();
+        } else {
+            // This should never happen because a modal model with
+            // an HSDirector must be used inside a CT model.
+            throw new InternalErrorException("A modal model with " +
+                "an HSDirector must be used inside a CT model.");
+        }
+    }
+
     /** Return the current time obtained from the executive director, if
      *  there is one, and otherwise return the local view of current time.
      *  @return The current time.
      */
     public double getCurrentTime() {
         return getModelTime().getTimeValue();
+    }
+
+    /** Return the enclosing CT general director of this director, or null if
+     *  this director is at the top level or the enclosing director is
+     *  not a CT general director.
+     *
+     *  @return The enclosing CT general director of this director, if there 
+     *  is any.
+     */
+    public CTGeneralDirector getEnclosingCTGeneralDirector() {
+        CompositeActor container = (CompositeActor)getContainer();
+        Director executiveDirector = container.getExecutiveDirector();
+        if (executiveDirector instanceof CTGeneralDirector) {
+            return (CTGeneralDirector) executiveDirector;
+        } else {
+            // This should never happen because a modal model with
+            // an HSDirector must be used inside a CT model.
+            throw new InternalErrorException("A modal model with " +
+                "an HSDirector must be used inside a CT model.");
+        }
+    }
+
+    /** Get the current execution phase of this director.
+     *  @return The current execution phase of this director.
+     */
+    public CTExecutionPhase getExecutionPhase() {
+        CTGeneralDirector executiveDirector = 
+            getEnclosingCTGeneralDirector();
+        if (executiveDirector != null) {
+            return getEnclosingCTGeneralDirector().getExecutionPhase();
+        } else {
+            // This should never happen because a modal model with
+            // an HSDirector must be used inside a CT model.
+            throw new InternalErrorException("A modal model with " +
+                "an HSDirector must be used inside a CT model.");
+        }
+    }
+
+    /** Return the begin time of the current iteration. 
+     *  @return The begin time of the current iteration.
+     */
+    public Time getIterationBeginTime() {
+        CTGeneralDirector executiveDirector = 
+            getEnclosingCTGeneralDirector();
+        if (executiveDirector != null) {
+            return getEnclosingCTGeneralDirector().getIterationBeginTime();
+        } else {
+            // This should never happen because a modal model with
+            // an HSDirector must be used inside a CT model.
+            throw new InternalErrorException("A modal model with " +
+                "an HSDirector must be used inside a CT model.");
+        }
+    }
+
+    /** Return the next iteration time obtained from the executive director.
+     *  @return The next iteration time.
+     */
+    public Time getModelNextIterationTime() {
+        CompositeActor cont = (CompositeActor)getContainer();
+        Director execDir = (Director)cont.getExecutiveDirector();
+        return execDir.getModelNextIterationTime();
     }
 
     /** Return the current time obtained from the executive director, if
@@ -270,13 +364,33 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return getModelNextIterationTime().getTimeValue();
     }
 
-    /** Return the next iteration time obtained from the executive director.
-     *  @return The next iteration time.
+    /** Return the ODE solver.
+     *  @return The default ODE solver associated with this director.
      */
-    public Time getModelNextIterationTime() {
-        CompositeActor cont = (CompositeActor)getContainer();
-        Director execDir = (Director)cont.getExecutiveDirector();
-        return execDir.getModelNextIterationTime();
+    public ODESolver getODESolver() {
+        CTGeneralDirector executiveDirector = 
+            getEnclosingCTGeneralDirector();
+        if (executiveDirector != null) {
+            return getEnclosingCTGeneralDirector().getODESolver();
+        } else {
+            // This should never happen because a modal model with
+            // an HSDirector must be used inside a CT model.
+            throw new InternalErrorException("A modal model with " +
+                "an HSDirector must be used inside a CT model.");
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#goToMarkedState()
+     */
+    public void goToMarkedState() throws IllegalActionException {
+        Iterator actors = _enabledRefinements.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            if (actor instanceof CTCompositeActor) {
+                ((CTCompositeActor)actor).goToMarkedState();
+            }
+        }
     }
 
     /** Return true if the current refinement produces events.
@@ -317,6 +431,35 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 }
             }
         }
+    }
+
+    /** Return true if this is the discrete phase execution.
+     *  @return True if this is the discrete phase execution.
+     */
+    public boolean isDiscretePhase() {
+        CTGeneralDirector executiveDirector = 
+            getEnclosingCTGeneralDirector();
+        if (executiveDirector != null) {
+            return getEnclosingCTGeneralDirector().isDiscretePhase();
+        } else {
+            // This should never happen because a modal model with
+            // an HSDirector must be used inside a CT model.
+            throw new InternalErrorException("A modal model with " +
+                "an HSDirector must be used inside a CT model.");
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#isOutputAccurate()
+     */
+    public boolean isOutputAccurate() {
+        return isThisStepAccurate();
+    }
+
+    // FIXME: do we need to seperate isStateAccurate and isOutputAccurate?
+    // For example, in HSDirector, there is no difference actually.
+    public boolean isStateAccurate() {
+        return isThisStepAccurate();
     }
 
     /** Return true if there are no refinements, or if the current
@@ -408,6 +551,23 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     "FIXME:: HSDirector.isThisStepAccurate() throws exception ");
             e.printStackTrace();
             return result;
+        }
+    }
+    
+    // FIXME: the following methods are to support CT domains only. 
+    // They are not fully developed and commented. They are related to
+    // CTEmbeddedDirector. Actually, most methods are the same.
+    
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#markState()
+     */
+    public void markState() {
+        Iterator actors = _enabledRefinements.iterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            if (actor instanceof CTCompositeActor) {
+                ((CTCompositeActor)actor).markState();
+            }
         }
     }
 
@@ -612,232 +772,23 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     // Cached reference to mode controller.
     private FSMActor _ctrl = null;
 
-    // Cached reference to current state.
-    private State _st = null;
-
-    // Lcoal variable to indicate whether the transition is accurate.
-    private boolean _transitionAccurate = true;
-
     // Lcoal variable to indicate the distance to boundary.
     private double _distanceToBoundary = 0.0;
+
+    private Transition _enabledTransition;
 
     // Lcoal variable to indicate the last distance to boundary.
     private double _lastDistanceToBoundary = 0.0;
 
     // Lcoal variable to indicate the last step size.
     private double _lastStepSize = 0.0;
-
-    private Transition _enabledTransition;
     // Lcoal variable to indicate the last transition accurate or not.
     private boolean _lastTransitionAccurate = true;
-    
-    // FIXME: the following methods are to support CT domains only. 
-    // They are not fully developed and commented. They are related to
-    // CTEmbeddedDirector. Actually, most methods are the same.
-    
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#markState()
-     */
-    public void markState() {
-        Iterator actors = _enabledRefinements.iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
-            if (actor instanceof CTCompositeActor) {
-                ((CTCompositeActor)actor).markState();
-            }
-        }
-    }
 
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#emitTentativeOutputs()
-     */
-    public void emitTentativeOutputs() throws IllegalActionException {
-        Iterator actors = _enabledRefinements.iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
-            if (actor instanceof CTCompositeActor) {
-                ((CTCompositeActor)actor).emitTentativeOutputs();
-            }
-        }
-    }
+    // Cached reference to current state.
+    private State _st = null;
 
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#goToMarkedState()
-     */
-    public void goToMarkedState() throws IllegalActionException {
-        Iterator actors = _enabledRefinements.iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
-            if (actor instanceof CTCompositeActor) {
-                ((CTCompositeActor)actor).goToMarkedState();
-            }
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#getCurrentStepSize()
-     */
-    public double getCurrentStepSize() {
-        CompositeActor cont = (CompositeActor)getContainer();
-        CTDirector execDir = (CTDirector)cont.getExecutiveDirector();
-        if (execDir != null) {
-            return execDir.getCurrentStepSize();
-        } else {
-            throw new InternalErrorException("HSDirector can only be used " +
-                "in a CT model.");
-        }
-    }
-
-    /** Return the ODE solver.
-     *  @return The default ODE solver
-     */
-    public ODESolver getODESolver() {
-        CompositeActor container = (CompositeActor)getContainer();
-        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
-        return exe.getODESolver();  
-    }
-
-    /** Return true if this is the discrete phase execution.
-     *  @return True if this is the discrete phase execution.
-     */
-    public boolean isDiscretePhase() {
-        CompositeActor container = (CompositeActor)getContainer();
-        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
-        return exe.isDiscretePhase();
-    }
-
-    /** Return true if this is the discrete phase execution.
-     *  @return True if this is the discrete phase execution.
-     */
-    public boolean isPureDiscretePhase() {
-        CompositeActor container = (CompositeActor)getContainer();
-        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
-        return exe.isPureDiscretePhase();
-    }
-
-    /** Return true if this is the discrete phase execution.
-     *  @return True if this is the discrete phase execution.
-     */
-    public boolean isWaveformGeneratingPhase() {
-        CompositeActor container = (CompositeActor)getContainer();
-        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
-        return exe.isWaveformGeneratingPhase();
-    }
-
-    /** Return true if this is the discrete phase execution.
-     *  @return True if this is the discrete phase execution.
-     */
-    public boolean isEventGeneratingPhase() {
-        CompositeActor container = (CompositeActor)getContainer();
-        Director exe = container.getExecutiveDirector();
-        // NOTE: Only CTDirector distinguish Continuous phase execution and 
-        // Discrete phase executions. 
-        if (exe instanceof CTGeneralDirector) {
-            return ((CTGeneralDirector)exe).isEventGeneratingPhase();
-        } else {
-            return true;
-        }
-    }
-
-    public boolean isCreatingIterationStartingStatesPhase() {
-        CompositeActor container = (CompositeActor)getContainer();
-        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
-        return exe.isCreatingIterationStartingStatesPhase();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#isStateAccurate()
-     */
-    
-    // FIXME: do we need to seperate isStateAccurate and isOutputAccurate?
-    // For example, in HSDirector, there is no difference actually.
-    public boolean isStateAccurate() {
-        return isThisStepAccurate();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTTransparentDirector#isOutputAccurate()
-     */
-    public boolean isOutputAccurate() {
-        return isThisStepAccurate();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isSolvingStatesPhase()
-     */
-    public boolean isSolvingStatesPhase() {
-        CompositeActor container = (CompositeActor)getContainer();
-        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
-        return exe.isSolvingStatesPhase();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isProducingOutputsPhase()
-     */
-    public boolean isProducingOutputsPhase() {
-        CompositeActor container = (CompositeActor)getContainer();
-        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
-        return exe.isProducingOutputsPhase();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isUpdatingContinuousStatesPhase()
-     */
-    public boolean isUpdatingContinuousStatesPhase() {
-        CompositeActor container = (CompositeActor)getContainer();
-        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
-        return exe.isUpdatingContinuousStatesPhase();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isPrefiringDynamicActorsPhase()
-     */
-    public boolean isPrefiringDynamicActorsPhase() {
-        CompositeActor container = (CompositeActor)getContainer();
-        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
-        return exe.isPrefiringDynamicActorsPhase();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isFiringEventGeneratorsPhase()
-     */
-    public boolean isFiringEventGeneratorsPhase() {
-        CompositeActor container = (CompositeActor)getContainer();
-        Director exe = container.getExecutiveDirector();
-        // NOTE: Only CTDirector distinguish Continuous phase execution and 
-        // Discrete phase executions. 
-        if (exe instanceof CTGeneralDirector) {
-            return ((CTGeneralDirector)exe).isFiringEventGeneratorsPhase();
-        } else {
-            return true;
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isFiringDynamicActorsPhase()
-     */
-    public boolean isFiringDynamicActorsPhase() {
-        CompositeActor container = (CompositeActor)getContainer();
-        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
-        return exe.isFiringDynamicActorsPhase();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isFiringStateTransitionActorsPhase()
-     */
-    public boolean isFiringStateTransitionActorsPhase() {
-        CompositeActor container = (CompositeActor)getContainer();
-        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
-        return exe.isFiringStateTransitionActorsPhase();
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#getIterationBeginTime()
-     */
-    public Time getIterationBeginTime() {
-        CompositeActor container = (CompositeActor)getContainer();
-        CTGeneralDirector exe = (CTGeneralDirector) container.getExecutiveDirector();
-        return exe.getIterationBeginTime();
-    }
+    // Lcoal variable to indicate whether the transition is accurate.
+    private boolean _transitionAccurate = true;
 
 }

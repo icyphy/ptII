@@ -97,6 +97,62 @@ public class TrapezoidalRuleSolver extends ODESolver {
         }
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.ODESolver#fireDynamicActors()
+     */
+    public void fireDynamicActors() throws IllegalActionException {
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
+        }
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
+            throw new IllegalActionException( dir,
+                    " must have a director to fire.");
+        }
+        // prediction
+        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
+        Iterator actors = schedule.get(
+                CTSchedule.DYNAMIC_ACTORS).actorIterator();
+        while (actors.hasNext()) {
+            Actor next = (Actor)actors.next();
+            _debug("Guessing..."+((Nameable)next).getName());
+            next.fire();
+        }
+        
+        if (getRoundCount() == 0) {
+            dir.setModelTime(
+                dir.getModelTime().add(dir.getCurrentStepSize()));
+        }
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.ODESolver#fireStateTransitionActors()
+     */
+    public void fireStateTransitionActors() throws IllegalActionException {
+        CTDirector dir = (CTDirector)getContainer();
+        if (dir == null) {
+            throw new IllegalActionException( this,
+                    " must have a CT director.");
+        }
+        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
+        if (scheduler == null) {
+            throw new IllegalActionException( dir,
+                    " must have a director to fire.");
+        }
+        // prediction
+        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
+        Iterator actors = schedule.get(
+                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
+        while (actors.hasNext()) {
+            Actor next = (Actor)actors.next();
+            _debug("Guessing..."+((Nameable)next).getName());
+            next.fire();
+        }
+        incrementRoundCount();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -147,7 +203,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
             double error =
                 Math.abs(tentativeState-integrator.getTentativeState());
             if ( !(error < dir.getValueResolution())) {
-                _voteForConvergence(false);
+                _voteForConverged(false);
             }
             integrator.setTentativeDerivative(f2);
         }
@@ -287,12 +343,15 @@ public class TrapezoidalRuleSolver extends ODESolver {
         return true;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
     /** Vote for whether a fixed point has reached. The final result
      *  is the <i>and</i> of all votes.
-     *  @param converge True if vote for converge.
+     *  @param converged True if vote for converge.
      */
-    protected void _voteForConvergence(boolean converge) {
-        setConvergence(isConverged() && converge);
+    private void _voteForConverged(boolean converged) {
+        _setConverged(isConverged() && converged);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -300,60 +359,4 @@ public class TrapezoidalRuleSolver extends ODESolver {
 
     /** Name of this Solver. */
     private static final String _DEFAULT_NAME="CT_Trapezoidal_Rule_Solver" ;
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.ODESolver#fireDynamicActors()
-     */
-    public void fireDynamicActors() throws IllegalActionException {
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-        if (scheduler == null) {
-            throw new IllegalActionException( dir,
-                    " must have a director to fire.");
-        }
-        // prediction
-        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-        Iterator actors = schedule.get(
-                CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
-            _debug("Guessing..."+((Nameable)next).getName());
-            next.fire();
-        }
-        
-        if (getRoundCount() == 0) {
-            dir.setModelTime(
-                dir.getModelTime().add(dir.getCurrentStepSize()));
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.ODESolver#fireStateTransitionActors()
-     */
-    public void fireStateTransitionActors() throws IllegalActionException {
-        CTDirector dir = (CTDirector)getContainer();
-        if (dir == null) {
-            throw new IllegalActionException( this,
-                    " must have a CT director.");
-        }
-        CTScheduler scheduler = (CTScheduler)dir.getScheduler();
-        if (scheduler == null) {
-            throw new IllegalActionException( dir,
-                    " must have a director to fire.");
-        }
-        // prediction
-        CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
-        Iterator actors = schedule.get(
-                CTSchedule.STATE_TRANSITION_ACTORS).actorIterator();
-        while (actors.hasNext()) {
-            Actor next = (Actor)actors.next();
-            _debug("Guessing..."+((Nameable)next).getName());
-            next.fire();
-        }
-        incrementRoundCount();
-    }
 }

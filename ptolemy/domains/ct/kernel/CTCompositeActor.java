@@ -84,23 +84,6 @@ public class CTCompositeActor extends TypedCompositeActor
         setClassName("ptolemy.domains.ct.kernel.CTCompositeActor");
     }
 
-    /** Construct a CTCompositeActor in the specified workspace with no
-     *  container
-     *  and an empty string as a name. You can then change the name with
-     *  setName(). If the workspace argument is null, then use the default
-     *  workspace.
-     *  The director should be set before attempting to execute it.
-     *  The container should be set before sending data to it.
-     *  Increment the version number of the workspace.
-     *  @param workspace The workspace that will list the actor.
-     */
-    public CTCompositeActor(Workspace workspace) {
-        super(workspace);
-        // When exporting MoML, set the class name to CTCompositeActor
-        // instead of the default TypedCompositeActor.
-        setClassName("ptolemy.domains.ct.kernel.CTCompositeActor");
-    }
-
     /** Create an CTCompositeActor with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -127,6 +110,45 @@ public class CTCompositeActor extends TypedCompositeActor
         setClassName("ptolemy.domains.ct.kernel.CTCompositeActor");
     }
 
+    /** Construct a CTCompositeActor in the specified workspace with no
+     *  container
+     *  and an empty string as a name. You can then change the name with
+     *  setName(). If the workspace argument is null, then use the default
+     *  workspace.
+     *  The director should be set before attempting to execute it.
+     *  The container should be set before sending data to it.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the actor.
+     */
+    public CTCompositeActor(Workspace workspace) {
+        super(workspace);
+        // When exporting MoML, set the class name to CTCompositeActor
+        // instead of the default TypedCompositeActor.
+        setClassName("ptolemy.domains.ct.kernel.CTCompositeActor");
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTDynamicActor#emitTentativeOutputs()
+     */
+    public void emitTentativeOutputs() throws IllegalActionException {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            ((CTTransparentDirector)dir).emitTentativeOutputs();
+        }
+    }
+
+    /** Implementations of this method should go to the marked state.
+     *  If there's no marked state, throws
+     *  an exception.
+     *  @exception IllegalActionException If there were no marked state.
+     */
+    public void goToMarkedState() throws IllegalActionException {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            ((CTTransparentDirector)dir).goToMarkedState();
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -144,6 +166,28 @@ public class CTCompositeActor extends TypedCompositeActor
         return false;
     }
 
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isOutputAccurate()
+     */
+    public boolean isOutputAccurate() {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).isOutputAccurate();
+        }
+        return true;
+    }
+
+    /* (non-Javadoc)
+     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isStateAccurate()
+     */
+    public boolean isStateAccurate() {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            return ((CTTransparentDirector)dir).isStateAccurate();
+        }
+        return true;
+    }
+
     /** This method is delegated to the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise,
      *  return true, indicating that this composite actor does not
@@ -152,6 +196,16 @@ public class CTCompositeActor extends TypedCompositeActor
      */
     public boolean isThisStepAccurate() {
         return isStateAccurate() && isOutputAccurate();
+    }
+
+    /** Implementations of this method should mark the current state
+     *  of the actor.
+     */
+    public void markState() {
+        Director dir = getDirector();
+        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
+            ((CTTransparentDirector)dir).markState();
+        }
     }
 
     /** This method is delegated to the local director if the local
@@ -178,60 +232,6 @@ public class CTCompositeActor extends TypedCompositeActor
             return ((CTTransparentDirector)dir).refinedStepSize();
         }
         return ((CTDirector)getExecutiveDirector()).getCurrentStepSize();
-    }
-
-    /** Implementations of this method should go to the marked state.
-     *  If there's no marked state, throws
-     *  an exception.
-     *  @exception IllegalActionException If there were no marked state.
-     */
-    public void goToMarkedState() throws IllegalActionException {
-        Director dir = getDirector();
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            ((CTTransparentDirector)dir).goToMarkedState();
-        }
-    }
-
-    /** Implementations of this method should mark the current state
-     *  of the actor.
-     */
-    public void markState() {
-        Director dir = getDirector();
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            ((CTTransparentDirector)dir).markState();
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTDynamicActor#emitTentativeOutputs()
-     */
-    public void emitTentativeOutputs() throws IllegalActionException {
-        Director dir = getDirector();
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            ((CTTransparentDirector)dir).emitTentativeOutputs();
-        }
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isStateAccurate()
-     */
-    public boolean isStateAccurate() {
-        Director dir = getDirector();
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector)dir).isStateAccurate();
-        }
-        return true;
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTStepSizeControlActor#isOutputAccurate()
-     */
-    public boolean isOutputAccurate() {
-        Director dir = getDirector();
-        if ((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector)dir).isOutputAccurate();
-        }
-        return true;
     }
 
 

@@ -29,7 +29,6 @@ COPYRIGHTENDKEY
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
@@ -115,6 +114,9 @@ public abstract class ODESolver extends NamedObj {
         super(workspace, name);
     }
 
+    public abstract void fireDynamicActors() throws IllegalActionException;
+    public abstract void fireStateTransitionActors() throws IllegalActionException;
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -184,10 +186,12 @@ public abstract class ODESolver extends NamedObj {
     public abstract double integratorPredictedStepSize(
             CTBaseIntegrator integrator);
 
-    /** Reset the round counter to 0.
+    /** Return true if all integrators agree that the fixed-point
+     *  iteration has converged. 
+     *  @return True if all the votes are true.
      */
-    public void resetRoundCount() {
-        _roundCount = 0;
+    public boolean isConverged() {
+        return _isConverged;
     }
 
     /** Reset the iteration start time. This is used when the current
@@ -196,6 +200,12 @@ public abstract class ODESolver extends NamedObj {
     public void resetIterationBeginTime() {
         _container.setModelTime(
             _container.getIterationBeginTime());
+    }
+
+    /** Reset the round counter to 0.
+     */
+    public void resetRoundCount() {
+        _roundCount = 0;
     }
     /** Return true if the state of the system is resolved successfully.
      *  Different solvers may implement it differently. Implementations
@@ -247,35 +257,24 @@ public abstract class ODESolver extends NamedObj {
         }
     }
 
+    /** Set a flag to indicate that all the integrators agree that the
+     *  fixed point has been reached.
+     *  Set the convergence flag. Integrators may call this method
+     *  to change the convergence.
+     *  @param converged The flag setting.
+     */
+    protected void _setConverged(boolean converged) {
+        _isConverged = converged;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The CT director that contains this solver.
     private CTDirector _container = null;
+    // The flad indicating whether the states converged.
+    private boolean _isConverged = false;
     // The round counter.
     private int _roundCount = 0;
-    private boolean _isConverged = false;
-    
-    public abstract void fireDynamicActors() throws IllegalActionException;
-    public abstract void fireStateTransitionActors() throws IllegalActionException;
-
-    /** Return true if all integrators agree that the fixed-point
-     *  iteration has converged. 
-     *  @return True if all the votes are true.
-     */
-    public boolean isConverged() {
-        return _isConverged;
-    }
-
-    /** Set a flag to indicate that all the integrators agree that the
-     *  fixed point has been reached.
-     *  // FIXME: change name to converged. 
-     *  make protected. 
-     *  Set the convergence flag. Integrators may call this method
-     *  to change the convergence.
-     *  @param convergence The flag setting.
-     */
-    public void setConvergence(boolean convergence) {
-        _isConverged = convergence;
-    }
+   
 }

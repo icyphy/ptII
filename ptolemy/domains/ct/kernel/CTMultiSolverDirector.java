@@ -31,8 +31,6 @@ package ptolemy.domains.ct.kernel;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.sched.NotSchedulableException;
-import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.ScheduleElement;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -110,16 +108,6 @@ public class CTMultiSolverDirector extends CTDirector {
         super();
     }
 
-    /** Construct a director in the  workspace with an empty name.
-     *  The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
-     *  All the parameters take their default values.
-     *  @param workspace The workspace of this object.
-     */
-    public CTMultiSolverDirector(Workspace workspace) {
-        super(workspace);
-    }
-
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -138,20 +126,30 @@ public class CTMultiSolverDirector extends CTDirector {
         super(container, name);
     }
 
+    /** Construct a director in the  workspace with an empty name.
+     *  The director is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  All the parameters take their default values.
+     *  @param workspace The workspace of this object.
+     */
+    public CTMultiSolverDirector(Workspace workspace) {
+        super(workspace);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-
-    /** The name of the normal ODE solver
-     *  used in nonbreakpoint iterations. The default is a String
-     *  "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver"
-     */
-    public Parameter ODESolver;
 
     /** The name of the ODE solver that
      *  is used in the iterations just after the breakpoint. The default is
      *  "ptolemy.domains.ct.kernel.solver.DerivativeResolver"
      */
     public Parameter breakpointODESolver;
+
+    /** The name of the normal ODE solver
+     *  used in nonbreakpoint iterations. The default is a String
+     *  "ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver"
+     */
+    public Parameter ODESolver;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -283,6 +281,51 @@ public class CTMultiSolverDirector extends CTDirector {
         if (_debugging && _verbose) _debug(getName(), " end of fire. >>>");
     }
 
+    public void fireEventGenerators() throws IllegalActionException {
+            CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+            Iterator actors =
+                schedule.get(CTSchedule.EVENT_GENERATORS).actorIterator();
+            _setExecutionPhase(CTExecutionPhase.FIRINGEVENTGENERATORS_PHASE);
+            while (actors.hasNext() && !_stopRequested) {
+                Actor actor = (Actor)actors.next();
+                // FIXME: can not remember why the following code is here. 
+                // Commented it out.
+    //            if (actor instanceof CTCompositeActor) {
+    //                // CTCompositeActor has been fired during the produceOutput
+    //                // method. It can not be fired twice in continuous phase
+    //                // execution.
+    //                // FIXME: why?
+    //                continue;
+    //            }
+                if (!isPrefireComplete(actor)) {
+                    setPrefireComplete(actor);
+                    if (_debugging && _verbose) {
+                        _debug("Prefire event generator: "
+                                + ((Nameable)actor).getName()
+                                + " at time "
+                                + getModelTime());
+                    }
+                    if (!actor.prefire()) {
+                        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
+                        throw new IllegalActionException((Nameable)actor,
+                                "Actor is not ready to fire. In the CT domain, "
+                                + "all event generators should be ready to fire "
+                                + "at all times.\n"
+                                + "Does the actor only operate on sequence "
+                                + "of tokens?");
+                    }
+                }
+                if (_debugging) {
+                    _debug("Fire event generator : "
+                            + ((Nameable)actor).getName()
+                            + " at time "
+                            + getModelTime());
+                }
+                actor.fire();
+            }
+            _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
+        }
+
     /** Return the breakpoint ODE solver.
      *  @return The breakpoint ODE solver.
      */
@@ -356,19 +399,6 @@ public class CTMultiSolverDirector extends CTDirector {
         }
     }
 
-    public boolean isPureDiscretePhase() {
-        return _inPureDiscretePhase;
-    }
-    public boolean isWaveformGeneratingPhase() {
-        return _inWaveformGeneratingPhase;
-    }
-    public boolean isEventGeneratingPhase() {
-        return _inEventGeneratingPhase;
-    }
-    public boolean isCreatingIterationStartingStatesPhase() {
-        return _inCreatingIterationStartingStatesPhase;
-    }
-    
     /** Construct a valid schedule. Invoke the initialize() method of the 
      *  super class to set current time and initialize all the actors directed
      *  by this director. Set the step size and the suggested next 
@@ -384,11 +414,24 @@ public class CTMultiSolverDirector extends CTDirector {
     public void initialize() throws IllegalActionException {
         if (_debugging) _debug("----- Initializing: " + getFullName());
 
-        // Schedule has to be computed before calling initialize() on
-        // actors since some actors may call fireAt() in their initialize()
-        // such as EventSource.
+        // NOTE: The initialization order of the actors is that the container 
+        // actor initializes first to solve signal type of ports partialy 
+        // (including the signal types of input ports of subsystems); then the
+        // contained actors are initialized, at the end of which the signal 
+        // type of the output ports the contained actors should be all resolved;
+        // lastly, the signal types of the output ports will be used to resolve
+        // the signal types of the rest ports of the container actor.
+        // NOTE: It is possible that the signal type of some input ports of a
+        // subsystem depend on that of its output ports, i.e., feedback loop.
+        // It may take several iterations (by going inside and out of the 
+        // subsystem) to completely solve the signal type of all input and 
+        // output ports. A fixed point can be defined as the signal type of all
+        // ports are resolved. 
+        // NOTE: A lattice is UNKNOWN -> DISCRETE | CONTINUOUS -> GENERAL, 
+        // where if any port has either UNKNOWN or GENERAL signal type, there 
+        // is something wrong with the model.     
         
-        Schedule schedule = getScheduler().getSchedule();
+        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         if (_debugging) {
             // Display schedule
             _debug(getFullName(), " A schedule is computed: ");
@@ -496,39 +539,118 @@ public class CTMultiSolverDirector extends CTDirector {
             _instantiateODESolver(_breakpointSolverClassName);
     }
 
+    /** Fire all the actors in the output schedule.  If they have not
+     *  had prefire() called in the current simulation cycle, then first
+     *  call prefire().  The abstract semantics of Ptolemy II require that
+     *  prefire() be called exactly once in an iteration.  This is important
+     *  because, for example, time can only be tested reliably in prefire().
+     *  It indicates the starting point of an integration step.
+     *  During the multiple iterations of fires, time may progress
+     *  in micro steps, depending on the ODE solver used. Hierarchies
+     *  in CT and hybrid systems cases actually rely on this fact to
+     *  control internal step sizes.
+     *  @exception IllegalActionException If an actor in the output
+     *   schedule throws it.
+     */
+    public void produceOutput() throws IllegalActionException {
+        _setExecutionPhase(CTExecutionPhase.PRODUCINGOUTPUTS_PHASE);
+        // FIXME: the OUTPUT_ACTORS schedule is neither complete
+        // nor accurate (including sink actors...)
+        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+        Iterator actors =
+            schedule.get(CTSchedule.OUTPUT_ACTORS).actorIterator();
+        while (actors.hasNext() && !_stopRequested) {
+            Actor actor = (Actor)actors.next();
+            if (!isPrefireComplete(actor)) {
+                setPrefireComplete(actor);
+                if (_debugging && _verbose) {
+                    _debug("Prefire output actor: "
+                            + ((Nameable)actor).getName()
+                            + " at time "
+                            + getModelTime());
+                }
+                if (!actor.prefire()) {
+                    throw new IllegalActionException((Nameable)actor,
+                            "Actor is not ready to fire. In the CT domain, "
+                            + "all continuous actors should be ready to fire "
+                            + "at all times.\n"
+                            + "Does the actor only operate on sequence "
+                            + "of tokens?");
+                }
+            }
+            if (_debugging) {
+                _debug("Fire output actor: "
+                        + ((Nameable)actor).getName()
+                        + " at time "
+                        + getModelTime());
+            }
+            actor.fire();
+        }
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
+    }
+
+    /** Call postfire() on all actors in the continuous part of the model.
+     *  For a correct CT simulation,
+     *  the state of an actor can only change at this stage of an
+     *  iteration. If the <i>synchronizeToRealTime</i> parameter is
+     *  <i>true</i>,  then this method will block until the real time
+     *  catches up to current modeling time.
+     *  @exception IllegalActionException If any of the actors
+     *   throws it.
+     */
+    public void updateContinuousStates() throws IllegalActionException {
+        // Synchronize to real time if necessary.
+        if (((BooleanToken)synchronizeToRealTime.getToken()).booleanValue()) {
+            long realTime = System.currentTimeMillis()-_timeBase;
+            long simulationTime = 
+                (long)((getModelTime()
+                    .subtract(getModelStartTime()).getTimeValue())*1000);
+            if (_debugging) _debug("real time " + realTime,
+                    "simulation time " + simulationTime);
+            long timeDifference = simulationTime-realTime;
+            if (timeDifference > 20) {
+                try {
+                    if (_debugging) _debug("Sleep for " + timeDifference
+                            + "ms");
+                    Thread.sleep(timeDifference - 20);
+                }  catch (Exception e) {
+                    throw new IllegalActionException(this,
+                            "Sleep Interrupted" + e.getMessage());
+                }
+            } else {
+                if (_debugging) _debug("Warning: " + getFullName(),
+                        " cannot achieve real-time performance",
+                        " at simulation time " + getModelTime());
+            }
+        }
+        
+        _setExecutionPhase(CTExecutionPhase.UPDATINGCONTINUOUSSTATES_PHASE);
+        
+        // Call the postfire method of the continuous actors.
+        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+        Iterator actors = schedule.get(
+                CTSchedule.CONTINUOUS_ACTORS).actorIterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            if (_debugging) _debug("Postfire " + (Nameable)actor);
+            _postfireReturns = _postfireReturns && actor.postfire();
+        }
+    
+        // Mark the current state of the stateful actors.
+        actors = schedule.get(
+                CTSchedule.STATEFUL_ACTORS).actorIterator();
+        while (actors.hasNext()) {
+            CTStatefulActor actor = (CTStatefulActor)actors.next();
+            if (_debugging) _debug("Postfire " + (Nameable)actor);
+            actor.markState();
+        }
+    
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Continuous phase execution. 
-     *  Trying solving the states and generating outputs
-     *  by firing one iteration with the current step size.
-     *  @exception IllegalActionException If ODESolver can not be set or
-     *  one of the continuous actors throws it.
-     */
-    protected void _continuousPhaseExecution() throws IllegalActionException {
-        if (_debugging) _debug(" \n!!! " + getName(), 
-            ": continuous phase execution at " + getModelTime());
-        
-        // Choose a suggested step size        
-        setCurrentStepSize(getSuggestedNextStepSize());
-        
-        // Set the ODE solver
-        _setCurrentODESolver(getODESolver());
-        
-        // Refine the correct step size for the continuous phase execution
-        // with respect to the breakpoints table.
-        setCurrentStepSize(_refinedStepWRTBreakpoints());
-        
-        // Fire one iteration with the given step size.
-        if (_debugging) {
-            _debug("execute the system from "
-                + getModelTime() + " step size " + getCurrentStepSize()
-                + " using solver " + getCurrentODESolver().getName());
-        }
-        
-        _fireOneIteration();
-    }
-    
     /** Use breakpoint ODE solver to create the starting states for the 
      *  following continuous phase execution.
      *  @exception IllegalActionException If one of the actors throws it or
@@ -544,7 +666,7 @@ public class CTMultiSolverDirector extends CTDirector {
         // set a breakpoint solver
         _setCurrentODESolver(_breakpointSolver);
         // indicating the starting of ... phase of execution
-        _inCreatingIterationStartingStatesPhase = true;
+        _setExecutionPhase(CTExecutionPhase.CREATINGSTARTINGSTATES_PHASE);
         // NOTE: The step size in the breakpoint iteration is controlled
         // by the breakpoint ODE solver. There is no need to set the 
         // step size here.
@@ -552,312 +674,11 @@ public class CTMultiSolverDirector extends CTDirector {
         // no step size refinement is needed. Two important points: 
         // states can always be resolved; outputs are always correct.
         _fireExactlyOneIteration();
-        _inCreatingIterationStartingStatesPhase = false;
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
         // indicating the end of ... phase of execution
         _setBreakpointIteration(false);
     }
     
-    
-    /** Process discrete event actors in the system. 
-     *  The execution repeats executing the discrete actors, 
-     *  wavefore generators, and event generators until the execution 
-     *  reachs a fix point, where no more events happen at the current time. 
-     *  @exception IllegalActionException If one of the actors throws it.
-     */
-    protected void _discretePhaseExecution() throws IllegalActionException {
-        if (_debugging) _debug("\n !!! " + getName(), 
-            ": discrete phase execution at " + getModelTime());
-        _setDiscretePhase(true);
-
-        // Choose a suggested step size
-        // FIXME: no need to set this.        
-        setCurrentStepSize(getSuggestedNextStepSize());
-
-        // A flag that indicates that a discrete phase execution reaches 
-        // a fixed point. 
-        boolean discreteFixPointReached = false;
-        
-        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-
-        // If there is no event at the current time, 
-        // a fix point is already reached. 
-        if(!hasCurrentEvent()) {
-            if (_debugging) {
-                _debug(" >>> The fix point of the current discrete " +
-                    "phase execution is reached.");
-            }
-            discreteFixPointReached = true;
-            _setDiscretePhase(false);
-            return;
-        }
-
-        // The while loop will not end until one more iteration is performed
-        // after the current time breakpoint is handled.
-        // FIXME: the || hasCurrentEvent will be removed if the next two 
-        // FIXMES are fixed.
-        while ((!discreteFixPointReached || hasCurrentEvent()) &&
-            _postfireReturns) {
-            // Current time is a break point, remove it from the break points
-            // table.
-            _processBreakpoints();
-            
-            if (_debugging) {
-                _debug("     Iterate the discrete phase execution once ...");
-            }
-            // FIXME: a schedule where all the actors are topologically sorted
-            // may be necessary to accelerate the process to reach a fix point.
-            // As a side effect, actors have state won't be invoked more than 
-            // necessary.
-            if (_debugging) _debug("  ---> " + getName(), 
-                ": iterating pure discrete actors (discrete -> discrete)");
-            _iterateDiscreteActors(schedule);
-            
-            if (_debugging) _debug("  ---> " + getName(), 
-                ": iterating waveform generators (discrete -> continuous)");
-            _iterateWaveformGenerators(schedule);
-            
-            if (_debugging) _debug("  ---> " + getName(), 
-                ": creating starting states for continuous phase execution");
-            // FIXME: output schedule should not contain event generators.
-            _createIterationStartingStates();
-
-            if (_debugging) _debug("  ---> " + getName(), 
-                ": generating more events (if any) (continuous -> discrete)");
-            _iterateEventGenerators(schedule);
-            
-            // FIXME: we need an explicit iteration of all event generators.
-            // We do not implement the event generators in such a way that 
-            // break points are created when events happen. The reason for
-            // this is that multiple event generators can generate more than
-            // one events, while only the first one counts and the rest may
-            // never occur in reality. Instead, we use the existing method 
-            // hasCurrentEvent to check the existence of events.
-            
-            // FIXME: we can not use the general _iterateSchedule method,
-            // instead, we have to explictly tell what actors to iterate.
-            // One possible design is to use _iterateDiscreteActors, etc.
-            // And the CTCompositeActor actor and HSDirector need to 
-            // implement these methods. The implementation is simple. 
-            // CTCompositeActor: getDirector()._iterateDiscreteActors.
-            // HSDirector: iterate _enabledRefinements  to perform 
-            // _iterateDiscreteActors.             
-            
-            // NOTE: if any more events are created by event generators, 
-            // a new breakpoint at the current time should exist. Therefore,
-            // we need another iteration. Otherwise, a fix point is reached.
-            // As a side effect of the _createIterationStartingStates() method,
-            // the starting states for the following continuous phase execution
-            // are also ready.
-            
-            // FIXME: make all event generators call fireAt when events are
-            // to be generated. The events are only generated at discrete phase.
-            // FIXME: the above statement is wrong.
-            discreteFixPointReached = !_processBreakpoints();
-            if (discreteFixPointReached && _debugging) {
-                _debug(
-                    "     >>> The next breakpoint is at " 
-                    + getBreakPoints().first() + ", which is in the future.");
-                _debug("     >>> So, the fix point of the current discrete " +
-                    "phase execution is reached.");
-            }
-        }
-        
-        // We are leaving discrete phase execution...
-        _setDiscretePhase(false);
-    }
-
-    protected void _fireExactlyOneIteration() throws IllegalActionException {
-        if (_debugging && _verbose) _debug(
-                "Fire one iteration from " + getModelTime(),
-                "using step size " + getCurrentStepSize());
-        ODESolver solver = getCurrentODESolver();
-        if (_debugging && _verbose) 
-            _debug( "Using breakpoint solver: " + solver.getName());
-        // NOTE: This used to execute prefire() methods all at once before
-        // anything else happened.  But this was too early.
-        // The input data is not yet present.
-        // Instead, we execute it before the first fire() in the iteration
-        // for all actors except DYNAMIC actors (like integrators).
-        // NOTE: the call to resolveStates() below increments time prior
-        // to calling prefire() for the actors, so current time when
-        // prefire is not (as it was before) the start time of the
-        // iteration.  It is (unfortunately) the first guess as to the
-        // end time of the iteration.  If this needs to be changed,
-        // then probably the easiest place to do this is where prefire()
-        // is called (which includes in ODESolver), by setting time back
-        // to the start of the iteration. EAL 1/13/03
-        // FIXME: what are the comments above about???
-        prefireClear();
-        // prefire dynamic actors (intergrators actually) to produce temporary
-        // inputs for state transition actors.
-        _prefireDynamicActors();
-
-        // FIXME: the following statement is abandoned.
-        // solver.resolveStates();
-        solver.fireStateTransitionActors();
-        // build history information. In particular, the derivative.
-        solver.fireDynamicActors();
-        
-        // Iterate output actors. 
-        produceOutput();
-
-        // postfire all the continuous actors.
-        updateContinuousStates();
-
-        // calculate a possible next step size.
-        setSuggestedNextStepSize(_predictNextStepSize());
-    }
-
-    /** Fire one iteration. Return immediately if any actor returns false
-     *  in their prefire() method. Time is advanced by the step size used
-     *  during the process that states are resolved.
-     *  @exception IllegalActionException If one the actors throws it
-     *    in its execution methods.
-     */
-    protected void _fireOneIteration() throws IllegalActionException {
-        if (_debugging && _verbose) _debug(
-                "Fire one iteration from " + getModelTime(),
-                "using step size " + getCurrentStepSize());
-        ODESolver solver = getCurrentODESolver();
-        if (_debugging && _verbose) 
-            _debug( "Using ODE solver: " + solver.getName());
-        // NOTE: This used to execute prefire() methods all at once before
-        // anything else happened.  But this was too early.
-        // The input data is not yet present.
-        // Instead, we execute it before the first fire() in the iteration
-        // for all actors except DYNAMIC actors (like integrators).
-        // NOTE: the call to resolveStates() below increments time prior
-        // to calling prefire() for the actors, so current time when
-        // prefire is not (as it was before) the start time of the
-        // iteration.  It is (unfortunately) the first guess as to the
-        // end time of the iteration.  If this needs to be changed,
-        // then probably the easiest place to do this is where prefire()
-        // is called (which includes in ODESolver), by setting time back
-        // to the start of the iteration. EAL 1/13/03
-        // FIXME: what are the comments above about???
-        prefireClear();
-        // FIXME: the following statement may not be necessary since the
-        // _creatingIterationStartingStates method already creats the
-        // history information. Also, during the continuous phase execution,
-        // the outputs from state transiton actors are just history information.
-        // prefire dynamic actors (intergrators actually) to produce temporary
-        // inputs for state transition actors.
-        _prefireDynamicActors();
-        // If stop is not requested, keep trying to resolve states, where
-        // the current step size may get refined due to states and outputs
-        // constraints. 
-        while (!_stopRequested) {
-            while (!_stopRequested) {
-                _inSolvingStates = true;
-                
-                // Reset the round counts and the convergence to false.
-                // NOTE: some solvers have their convergency dependent on 
-                // the round counts. For example, RK-23 solver.
-                solver.resetRoundCount();
-                solver.setConvergence(false);
-                // repeating resolving states until states converge.
-                while (!solver.isConverged() && solver.resolveStates()) {
-                    // fire dynamic actors
-                    _inFiringDynamicActors = true;
-                    solver.fireDynamicActors();
-                    _inFiringDynamicActors = false;
-                    // NOTE: at exactly this point, time is advanced.
-                    // The amount of advance depends on the current ODE solver.
-                    // fire state transition actors
-                    _inFiringStateTransitionActors = true;
-                    solver.fireStateTransitionActors();
-                    _inFiringStateTransitionActors = false;
-                }
-                // NOTE: solver.resolveStates() returns true if the states are
-                // resolved and returns false if the maximum iterations have 
-                // been reached but the states have not be resolved.
-                if (solver.resolveStates()) {
-                    if (_debugging && _verbose) 
-                        _debug("State resolved by solver.");
-                    // Check whether this step is acceptable
-                    if (!_isStateAccurate()) {
-                        setModelTime(getIterationBeginTime());
-                        setCurrentStepSize(_refinedStepWRTState());
-                        if (_debugging && _verbose) {
-                            _debug("Execute the system from "
-                                    + getModelTime()
-                                    + " with a smaller step size" +
-                                    getCurrentStepSize());
-                        }
-                    } else {
-                        break;
-                    }
-                } else {
-                    // Resolve state failed, e.g. in implicit methods.
-                    if (getCurrentStepSize() < 0.5*getMinStepSize()) {
-                        throw new IllegalActionException(this,
-                                "Cannot resolve new states even using "+
-                                "the minimum step size, at time "+
-                        getModelTime());
-                    }
-                    setModelTime(getIterationBeginTime());
-                    setCurrentStepSize(0.5*getCurrentStepSize());
-                    if (_debugging && _verbose) {
-                        _debug("Execute the system from "
-                                + getModelTime()
-                                + " with a smaller step size" +
-                                getCurrentStepSize());
-                    }
-                }
-                // Restore the saved state of the stateful actors.
-                CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
-                Iterator actors = schedule.get(
-                        CTSchedule.STATEFUL_ACTORS).actorIterator();
-                while (actors.hasNext()) {
-                    CTStatefulActor actor = (CTStatefulActor)actors.next();
-                    if (_debugging) 
-                        _debug("Restore states " + (Nameable)actor);
-                    actor.goToMarkedState();
-                }
-            }
-
-            // States have be resolved. Note that the current
-            // time has been increased by the amount of the
-            // step size used in this iteration.
-            _inSolvingStates = false;
-
-            // If the while loop was terminated by the stop request,
-            // jump out of the loop in spite of whether the states 
-            // have been resolved or not.
-            if (_stopRequested) {
-                break;
-            }
-            
-            // Iterate output actors. 
-            produceOutput();
-            
-            // NOTE: Event generators are fired byt not iterated.
-            // They will be iterated during discrete phase execution only.
-            // The event generators are fired to check whether there are events
-            // happened during the current iteration.
-            fireEventGenerators();
-            
-            if (!_isOutputAccurate()) {
-                setModelTime(getIterationBeginTime());
-                setCurrentStepSize(_refinedStepWRTOutput());
-                if (_debugging && _verbose) {
-                    _debug("Execute the system from "
-                            + getModelTime()
-                            + " with a smaller step size" +
-                            getCurrentStepSize());
-                }
-            } else {
-                break;
-            }
-        }
-        
-        // postfire all the continuous actors.
-        updateContinuousStates();
-
-        // calculate a possible next step size.
-        setSuggestedNextStepSize(_predictNextStepSize());
-    }
-
     /** Initialize parameters to their default values.
      */
     protected void _initParameters() {
@@ -967,58 +788,23 @@ public class CTMultiSolverDirector extends CTDirector {
 
     protected void _iterateDiscreteActors(CTSchedule schedule) 
         throws IllegalActionException {
-        _inPureDiscretePhase = true;
+        _setExecutionPhase(CTExecutionPhase.FIRINGPURELYDISCRETE_PHASE);
         _iterateSchedule(schedule.get(CTSchedule.DISCRETE_ACTORS));
-        _inPureDiscretePhase = false;
-    }
-
-    protected void _iterateWaveformGenerators(CTSchedule schedule) 
-        throws IllegalActionException {
-        _inWaveformGeneratingPhase = true;
-        _iterateSchedule(schedule.get(CTSchedule.WAVEFORM_GENERATORS));
-        _inWaveformGeneratingPhase = false;
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
     }
 
     protected void _iterateEventGenerators(CTSchedule schedule) 
         throws IllegalActionException {
-        _inEventGeneratingPhase = true;
+        _setExecutionPhase(CTExecutionPhase.GENERATINGEVENTS_PHASE);
         _iterateSchedule(schedule.get(CTSchedule.EVENT_GENERATORS));
-        _inEventGeneratingPhase = false;
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
     }
 
-    /** Iterate all the actors inside the given schedule, by prefiring, 
-     *  firing and postfiring them. 
-     *  @param schedule The given schedule that contains actors.
-     *  @throws IllegalActionException If any actor throws it. 
-     */
-    protected void _iterateSchedule(ScheduleElement schedule) 
+    protected void _iterateWaveformGenerators(CTSchedule schedule) 
         throws IllegalActionException {
-        Iterator actors = schedule.actorIterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
-            if (_debugging && _verbose) {
-                _debug("Prefire actor: "
-                        + ((Nameable)actor).getName()
-                        + " at time "
-                        + getModelTime());
-            }
-            if (actor.prefire()) {
-                if (_debugging && _verbose) {
-                    _debug("Fire actor: "
-                            + ((Nameable)actor).getName()
-                            + " at time "
-                            + getModelTime());
-                }
-                actor.fire();
-                if (_debugging && _verbose) {
-                    _debug("Postfire actor: "
-                            + ((Nameable)actor).getName()
-                            + " at time "
-                            + getModelTime());
-                }
-                _postfireReturns = actor.postfire() && _postfireReturns;
-            }
-        }
+        _setExecutionPhase(CTExecutionPhase.GENERATINGWAVEFORMS_PHASE);
+        _iterateSchedule(schedule.get(CTSchedule.WAVEFORM_GENERATORS));
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
     }
 
 
@@ -1084,14 +870,14 @@ public class CTMultiSolverDirector extends CTDirector {
         Iterator actors = schedule.get(
                 CTSchedule.DYNAMIC_ACTORS).actorIterator();
                 
-        _inPrefiringDynamicActors = true;
+        _setExecutionPhase(CTExecutionPhase.PREFIRINGDYNAMICACTORS_PHASE);
         while (actors.hasNext() && !_stopRequested) {
             Actor actor = (Actor)actors.next();
             if (_debugging) _debug("Prefire dynamic actor: "
                     + ((Nameable)actor).getName());
             boolean ready = actor.prefire();
             if (!ready) {
-                _inPrefiringDynamicActors = false;
+                _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
                 throw new IllegalActionException((Nameable)actor,
                         "Actor is not ready to fire. In the CT domain, all "
                         + "dynamic actors should be ready to fire at "
@@ -1120,88 +906,11 @@ public class CTMultiSolverDirector extends CTDirector {
             dynamic.emitTentativeOutputs();
         }
 
-        _inPrefiringDynamicActors = false;
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
         
         return result && !_stopRequested;
     }
 
-    /** Return true if the breakpoint that has the same time as the 
-     *  current time and remove that breakpoint.
-     *  @return true if the current time is a breakpoint.
-     *  @exception IllegalActionException If the breakpoint solver is
-     *     illegal.
-     */
-    protected boolean _processBreakpoints() throws IllegalActionException  {
-        boolean currentTimeIsABreakpoint = false;
-        TotallyOrderedSet breakPoints = getBreakPoints();
-        Time now = getModelTime();
-        // If now is a break point, remove the break point from table;
-        if (breakPoints != null && !breakPoints.isEmpty()) {
-            // FIXME: the following commented statement is unnecessary 
-            // and it is actually a bug to have breakpoints earlier than
-            // the current time...
-            // breakPoints.removeAllLessThan(now);
-            if (breakPoints.contains(now)) {
-                // It is at a break point now.
-                currentTimeIsABreakpoint = true;
-                Time time = (Time) breakPoints.removeFirst();
-                if (time.compareTo(now) < 0) {
-                    // This should never happen, otherwise, it is a bug.
-                    throw new InternalErrorException("The first break point " +
-                        "is in the past.");
-                }
-                if (_debugging) _debug(
-                    "     >>> Remove " + now + " from the break-point list.");
-            } 
-        }
-        return currentTimeIsABreakpoint;
-    }
-
-    /** Return the refined the step size with respect to the breakpoints.
-     *  If the sum of the current step size plus current time exceeds the
-     *  time of next breakpoint, reduce the step size such that the next
-     *  breakpoint is the end time of the current iteration. 
-     *  @return The refined step size.
-     *  @exception IllegalActionException If the scheduler throws it.
-     */
-    protected double _refinedStepWRTBreakpoints() 
-        throws IllegalActionException {
-        TotallyOrderedSet breakPoints = getBreakPoints();
-
-        double currentStepSize = getCurrentStepSize();
-        Time iterationEndTime =
-            getModelTime().add(currentStepSize);
-        _setIterationEndTime(iterationEndTime);
-            
-        if (breakPoints != null && !breakPoints.isEmpty()) {
-            if (_debugging && _verbose) {
-                _debug(
-                    "The first breakpoint in the break-point list is at "
-                    + breakPoints.first());
-            }
-            // Adjust step size so that the first breakpoint is
-            // not in the middle of this step.
-            Time point = ((Time)breakPoints.first());
-            if (iterationEndTime.compareTo(point) > 0) {
-                if (_debugging && _verbose) {
-                    _debug(
-                    "Refining the current step size w.r.t. " 
-                    + "the next breakpoint:");
-                }
-                currentStepSize 
-                    = point.subtract(getModelTime()).getTimeValue();
-                if (_debugging && _verbose) {
-                    _debug(
-                    "Refining the current step size w.r.t. " 
-                    + "the next breakpoint to " + currentStepSize);
-                }
-                _setIterationEndTime(point);
-            }
-        }
-        return currentStepSize;
-    }
-    
-    
     /** Return the refined the step size with respect to the outputs.
      *  It asks all the step size control actors in the state transition
      *  and dynamic schedule for the refined step size, and take the
@@ -1274,234 +983,464 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Continuous phase execution. 
+     *  Trying solving the states and generating outputs
+     *  by firing one iteration with the current step size.
+     *  @exception IllegalActionException If ODESolver can not be set or
+     *  one of the continuous actors throws it.
+     */
+    private void _continuousPhaseExecution() throws IllegalActionException {
+        if (_debugging) _debug(" \n!!! " + getName(), 
+            ": continuous phase execution at " + getModelTime());
+        
+        // Choose a suggested step size        
+        setCurrentStepSize(getSuggestedNextStepSize());
+        
+        // Set the ODE solver
+        _setCurrentODESolver(getODESolver());
+        
+        // Refine the correct step size for the continuous phase execution
+        // with respect to the breakpoints table.
+        setCurrentStepSize(_refinedStepWRTBreakpoints());
+        
+        // Fire one iteration with the given step size.
+        if (_debugging) {
+            _debug("execute the system from "
+                + getModelTime() + " step size " + getCurrentStepSize()
+                + " using solver " + getCurrentODESolver().getName());
+        }
+        
+        _fireOneIteration();
+    }
+    
+    /** Process discrete event actors in the system. 
+     *  The execution repeats executing the discrete actors, 
+     *  wavefore generators, and event generators until the execution 
+     *  reachs a fix point, where no more events happen at the current time. 
+     *  @exception IllegalActionException If one of the actors throws it.
+     */
+    private void _discretePhaseExecution() throws IllegalActionException {
+        if (_debugging) _debug("\n !!! " + getName(), 
+            ": discrete phase execution at " + getModelTime());
+        _setDiscretePhase(true);
+
+        // Choose a suggested step size
+        // FIXME: no need to set this.        
+        setCurrentStepSize(getSuggestedNextStepSize());
+
+        // A flag that indicates that a discrete phase execution reaches 
+        // a fixed point. 
+        boolean discreteFixPointReached = false;
+        
+        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+
+        // If there is no event at the current time, 
+        // a fix point is already reached. 
+        if(!hasCurrentEvent()) {
+            if (_debugging) {
+                _debug(" >>> The fix point of the current discrete " +
+                    "phase execution is reached.");
+            }
+            discreteFixPointReached = true;
+            _setDiscretePhase(false);
+            return;
+        }
+
+        // The while loop will not end until one more iteration is performed
+        // after the current time breakpoint is handled.
+        // FIXME: the || hasCurrentEvent will be removed if the next two 
+        // FIXMES are fixed.
+        while ((!discreteFixPointReached || hasCurrentEvent()) &&
+            _postfireReturns) {
+            // Current time is a break point, remove it from the break points
+            // table.
+            _processBreakpoints();
+            
+            if (_debugging) {
+                _debug("     Iterate the discrete phase execution once ...");
+            }
+            // FIXME: a schedule where all the actors are topologically sorted
+            // may be necessary to accelerate the process to reach a fix point.
+            // As a side effect, actors have state won't be invoked more than 
+            // necessary.
+            if (_debugging) _debug("  ---> " + getName(), 
+                ": iterating pure discrete actors (discrete -> discrete)");
+            _iterateDiscreteActors(schedule);
+            
+            if (_debugging) _debug("  ---> " + getName(), 
+                ": iterating waveform generators (discrete -> continuous)");
+            _iterateWaveformGenerators(schedule);
+            
+            if (_debugging) _debug("  ---> " + getName(), 
+                ": creating starting states for continuous phase execution");
+            // FIXME: output schedule should not contain event generators.
+            _createIterationStartingStates();
+
+            if (_debugging) _debug("  ---> " + getName(), 
+                ": generating more events (if any) (continuous -> discrete)");
+            _iterateEventGenerators(schedule);
+            
+            // FIXME: we need an explicit iteration of all event generators.
+            // We do not implement the event generators in such a way that 
+            // break points are created when events happen. The reason for
+            // this is that multiple event generators can generate more than
+            // one events, while only the first one counts and the rest may
+            // never occur in reality. Instead, we use the existing method 
+            // hasCurrentEvent to check the existence of events.
+            
+            // FIXME: we can not use the general _iterateSchedule method,
+            // instead, we have to explictly tell what actors to iterate.
+            // One possible design is to use _iterateDiscreteActors, etc.
+            // And the CTCompositeActor actor and HSDirector need to 
+            // implement these methods. The implementation is simple. 
+            // CTCompositeActor: getDirector()._iterateDiscreteActors.
+            // HSDirector: iterate _enabledRefinements  to perform 
+            // _iterateDiscreteActors.             
+            
+            // NOTE: if any more events are created by event generators, 
+            // a new breakpoint at the current time should exist. Therefore,
+            // we need another iteration. Otherwise, a fix point is reached.
+            // As a side effect of the _createIterationStartingStates() method,
+            // the starting states for the following continuous phase execution
+            // are also ready.
+            
+            // FIXME: make all event generators call fireAt when events are
+            // to be generated. The events are only generated at discrete phase.
+            // FIXME: the above statement is wrong.
+            discreteFixPointReached = !_processBreakpoints();
+            if (discreteFixPointReached && _debugging) {
+                _debug(
+                    "     >>> The next breakpoint is at " 
+                    + getBreakPoints().first() + ", which is in the future.");
+                _debug("     >>> So, the fix point of the current discrete " +
+                    "phase execution is reached.");
+            }
+        }
+        
+        // We are leaving discrete phase execution...
+        _setDiscretePhase(false);
+    }
+
+    private void _fireExactlyOneIteration() throws IllegalActionException {
+        if (_debugging && _verbose) _debug(
+                "Fire one iteration from " + getModelTime(),
+                "using step size " + getCurrentStepSize());
+        ODESolver solver = getCurrentODESolver();
+        if (_debugging && _verbose) 
+            _debug( "Using breakpoint solver: " + solver.getName());
+        // NOTE: This used to execute prefire() methods all at once before
+        // anything else happened.  But this was too early.
+        // The input data is not yet present.
+        // Instead, we execute it before the first fire() in the iteration
+        // for all actors except DYNAMIC actors (like integrators).
+        // NOTE: the call to resolveStates() below increments time prior
+        // to calling prefire() for the actors, so current time when
+        // prefire is not (as it was before) the start time of the
+        // iteration.  It is (unfortunately) the first guess as to the
+        // end time of the iteration.  If this needs to be changed,
+        // then probably the easiest place to do this is where prefire()
+        // is called (which includes in ODESolver), by setting time back
+        // to the start of the iteration. EAL 1/13/03
+        // FIXME: what are the comments above about???
+        prefireClear();
+        // prefire dynamic actors (intergrators actually) to produce temporary
+        // inputs for state transition actors.
+        _prefireDynamicActors();
+
+        // FIXME: the following statement is abandoned.
+        // solver.resolveStates();
+        solver.fireStateTransitionActors();
+        // build history information. In particular, the derivative.
+        solver.fireDynamicActors();
+        
+        // Iterate output actors. 
+        produceOutput();
+
+        // postfire all the continuous actors.
+        updateContinuousStates();
+
+        // calculate a possible next step size.
+        setSuggestedNextStepSize(_predictNextStepSize());
+    }
+
+    /** Fire one iteration. Return immediately if any actor returns false
+     *  in their prefire() method. Time is advanced by the step size used
+     *  during the process that states are resolved.
+     *  @exception IllegalActionException If one the actors throws it
+     *    in its execution methods.
+     */
+    private void _fireOneIteration() throws IllegalActionException {
+        if (_debugging && _verbose) _debug(
+                "Fire one iteration from " + getModelTime(),
+                "using step size " + getCurrentStepSize());
+        ODESolver solver = getCurrentODESolver();
+        if (_debugging && _verbose) 
+            _debug( "Using ODE solver: " + solver.getName());
+        // NOTE: This used to execute prefire() methods all at once before
+        // anything else happened.  But this was too early.
+        // The input data is not yet present.
+        // Instead, we execute it before the first fire() in the iteration
+        // for all actors except DYNAMIC actors (like integrators).
+        // NOTE: the call to resolveStates() below increments time prior
+        // to calling prefire() for the actors, so current time when
+        // prefire is not (as it was before) the start time of the
+        // iteration.  It is (unfortunately) the first guess as to the
+        // end time of the iteration.  If this needs to be changed,
+        // then probably the easiest place to do this is where prefire()
+        // is called (which includes in ODESolver), by setting time back
+        // to the start of the iteration. EAL 1/13/03
+        // FIXME: what are the comments above about???
+        prefireClear();
+        // FIXME: the following statement may not be necessary since the
+        // _creatingIterationStartingStates method already creats the
+        // history information. Also, during the continuous phase execution,
+        // the outputs from state transiton actors are just history information.
+        // prefire dynamic actors (intergrators actually) to produce temporary
+        // inputs for state transition actors.
+        _prefireDynamicActors();
+        // If stop is not requested, keep trying to resolve states, where
+        // the current step size may get refined due to states and outputs
+        // constraints. 
+        while (!_stopRequested) {
+            while (!_stopRequested) {
+                // _setExecutionPhase(CTExecutionPhase.SOLVINGSTATES_PHASE);
+                
+                // Reset the round counts and the convergence to false.
+                // NOTE: some solvers have their convergency dependent on 
+                // the round counts. For example, RK-23 solver.
+                solver.resetRoundCount();
+                solver._setConverged(false);
+                // repeating resolving states until states converge.
+                while (!solver.isConverged() && solver.resolveStates()) {
+                    // fire dynamic actors
+                    _setExecutionPhase(
+                        CTExecutionPhase.FIRINGDYNAMICACTORS_PHASE);
+                    solver.fireDynamicActors();
+                    _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
+                    // NOTE: at exactly this point, time is advanced.
+                    // The amount of advance depends on the current ODE solver.
+                    // fire state transition actors
+                    _setExecutionPhase(
+                        CTExecutionPhase.FIRINGSTATETRANSITIONACTORS_PHASE);
+                    solver.fireStateTransitionActors();
+                    _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
+                }
+                // NOTE: solver.resolveStates() returns true if the states are
+                // resolved and returns false if the maximum iterations have 
+                // been reached but the states have not be resolved.
+                if (solver.resolveStates()) {
+                    if (_debugging && _verbose) 
+                        _debug("State resolved by solver.");
+                    // Check whether this step is acceptable
+                    if (!_isStateAccurate()) {
+                        setModelTime(getIterationBeginTime());
+                        setCurrentStepSize(_refinedStepWRTState());
+                        if (_debugging && _verbose) {
+                            _debug("Execute the system from "
+                                    + getModelTime()
+                                    + " with a smaller step size" +
+                                    getCurrentStepSize());
+                        }
+                    } else {
+                        break;
+                    }
+                } else {
+                    // Resolve state failed, e.g. in implicit methods.
+                    if (getCurrentStepSize() < 0.5*getMinStepSize()) {
+                        throw new IllegalActionException(this,
+                                "Cannot resolve new states even using "+
+                                "the minimum step size, at time "+
+                        getModelTime());
+                    }
+                    setModelTime(getIterationBeginTime());
+                    setCurrentStepSize(0.5*getCurrentStepSize());
+                    if (_debugging && _verbose) {
+                        _debug("Execute the system from "
+                                + getModelTime()
+                                + " with a smaller step size" +
+                                getCurrentStepSize());
+                    }
+                }
+                // Restore the saved state of the stateful actors.
+                CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
+                Iterator actors = schedule.get(
+                        CTSchedule.STATEFUL_ACTORS).actorIterator();
+                while (actors.hasNext()) {
+                    CTStatefulActor actor = (CTStatefulActor)actors.next();
+                    if (_debugging) 
+                        _debug("Restore states " + (Nameable)actor);
+                    actor.goToMarkedState();
+                }
+            }
+
+            // States have be resolved. Note that the current
+            // time has been increased by the amount of the
+            // step size used in this iteration.
+            // _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
+
+            // If the while loop was terminated by the stop request,
+            // jump out of the loop in spite of whether the states 
+            // have been resolved or not.
+            if (_stopRequested) {
+                break;
+            }
+            
+            // Iterate output actors. 
+            produceOutput();
+            
+            // NOTE: Event generators are fired byt not iterated.
+            // They will be iterated during discrete phase execution only.
+            // The event generators are fired to check whether there are events
+            // happened during the current iteration.
+            fireEventGenerators();
+            
+            if (!_isOutputAccurate()) {
+                setModelTime(getIterationBeginTime());
+                setCurrentStepSize(_refinedStepWRTOutput());
+                if (_debugging && _verbose) {
+                    _debug("Execute the system from "
+                            + getModelTime()
+                            + " with a smaller step size" +
+                            getCurrentStepSize());
+                }
+            } else {
+                break;
+            }
+        }
+        
+        // postfire all the continuous actors.
+        updateContinuousStates();
+
+        // calculate a possible next step size.
+        setSuggestedNextStepSize(_predictNextStepSize());
+    }
+
+    /** Iterate all the actors inside the given schedule, by prefiring, 
+     *  firing and postfiring them. 
+     *  @param schedule The given schedule that contains actors.
+     *  @throws IllegalActionException If any actor throws it. 
+     */
+    private void _iterateSchedule(ScheduleElement schedule) 
+        throws IllegalActionException {
+        Iterator actors = schedule.actorIterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor)actors.next();
+            if (_debugging && _verbose) {
+                _debug("Prefire actor: "
+                        + ((Nameable)actor).getName()
+                        + " at time "
+                        + getModelTime());
+            }
+            if (actor.prefire()) {
+                if (_debugging && _verbose) {
+                    _debug("Fire actor: "
+                            + ((Nameable)actor).getName()
+                            + " at time "
+                            + getModelTime());
+                }
+                actor.fire();
+                if (_debugging && _verbose) {
+                    _debug("Postfire actor: "
+                            + ((Nameable)actor).getName()
+                            + " at time "
+                            + getModelTime());
+                }
+                _postfireReturns = actor.postfire() && _postfireReturns;
+            }
+        }
+    }
+
+    /** Return true if the breakpoint that has the same time as the 
+     *  current time and remove that breakpoint.
+     *  @return true if the current time is a breakpoint.
+     *  @exception IllegalActionException If the breakpoint solver is
+     *     illegal.
+     */
+    private boolean _processBreakpoints() throws IllegalActionException  {
+        boolean currentTimeIsABreakpoint = false;
+        TotallyOrderedSet breakPoints = getBreakPoints();
+        Time now = getModelTime();
+        // If now is a break point, remove the break point from table;
+        if (breakPoints != null && !breakPoints.isEmpty()) {
+            // FIXME: the following commented statement is unnecessary 
+            // and it is actually a bug to have breakpoints earlier than
+            // the current time...
+            // breakPoints.removeAllLessThan(now);
+            if (breakPoints.contains(now)) {
+                // It is at a break point now.
+                currentTimeIsABreakpoint = true;
+                Time time = (Time) breakPoints.removeFirst();
+                if (time.compareTo(now) < 0) {
+                    // This should never happen, otherwise, it is a bug.
+                    throw new InternalErrorException("The first break point " +
+                        "is in the past.");
+                }
+                if (_debugging) _debug(
+                    "     >>> Remove " + now + " from the break-point list.");
+            } 
+        }
+        return currentTimeIsABreakpoint;
+    }
+
+    /** Return the refined the step size with respect to the breakpoints.
+     *  If the sum of the current step size plus current time exceeds the
+     *  time of next breakpoint, reduce the step size such that the next
+     *  breakpoint is the end time of the current iteration. 
+     *  @return The refined step size.
+     *  @exception IllegalActionException If the scheduler throws it.
+     */
+    private double _refinedStepWRTBreakpoints() 
+        throws IllegalActionException {
+        TotallyOrderedSet breakPoints = getBreakPoints();
+
+        double currentStepSize = getCurrentStepSize();
+        Time iterationEndTime =
+            getModelTime().add(currentStepSize);
+        _setIterationEndTime(iterationEndTime);
+            
+        if (breakPoints != null && !breakPoints.isEmpty()) {
+            if (_debugging && _verbose) {
+                _debug(
+                    "The first breakpoint in the break-point list is at "
+                    + breakPoints.first());
+            }
+            // Adjust step size so that the first breakpoint is
+            // not in the middle of this step.
+            Time point = ((Time)breakPoints.first());
+            if (iterationEndTime.compareTo(point) > 0) {
+                if (_debugging && _verbose) {
+                    _debug(
+                    "Refining the current step size w.r.t. " 
+                    + "the next breakpoint:");
+                }
+                currentStepSize 
+                    = point.subtract(getModelTime()).getTimeValue();
+                if (_debugging && _verbose) {
+                    _debug(
+                    "Refining the current step size w.r.t. " 
+                    + "the next breakpoint to " + currentStepSize);
+                }
+                _setIterationEndTime(point);
+            }
+        }
+        return currentStepSize;
+    }
+    
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The classname of the ODE solver.
-    private String _solverClassName;
-
     // The default solver.
-    private ODESolver _defaultSolver;
+    private ODESolver _breakpointSolver;
 
     // The classname of the default ODE solver
     private String _breakpointSolverClassName;
 
     // The default solver.
-    private ODESolver _breakpointSolver;  
+    private ODESolver _defaultSolver;
 
-    private boolean _inPureDiscretePhase = false;
-
-    private boolean _inWaveformGeneratingPhase = false;
-
-    private boolean _inEventGeneratingPhase = false;
-    
-    private boolean _inCreatingIterationStartingStatesPhase = false;
-    
-    private boolean _inSolvingStates = false;
-    
-    private boolean _inProducingOutputs = false;
-    
-    private boolean _inUpdatingContinuousStates = false;
-
-    private boolean _inPrefiringDynamicActors= false;
-    
-    private boolean _inFiringEventGenerators = false;
-    
-    private boolean _inFiringDynamicActors = false;
-    
-    private boolean _inFiringStateTransitionActors = false;
-    
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTDirector#isSolvingStatesPhase()
-     */
-    public boolean isPrefiringDynamicActorsPhase() {
-        return _inPrefiringDynamicActors;
-    }
-
-    public boolean isFiringEventGeneratorsPhase() {
-        return _inFiringEventGenerators;
-    }
-
-    public boolean isSolvingStatesPhase() {
-        return _inSolvingStates;
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTDirector#isProducingOutputsPhase()
-     */
-    public boolean isProducingOutputsPhase() {
-        return _inProducingOutputs;
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTDirector#isUpdatingContinuousStatesPhase()
-     */
-    public boolean isUpdatingContinuousStatesPhase() {
-        return _inUpdatingContinuousStates;
-    }
-
-    /** Fire all the actors in the output schedule.  If they have not
-     *  had prefire() called in the current simulation cycle, then first
-     *  call prefire().  The abstract semantics of Ptolemy II require that
-     *  prefire() be called exactly once in an iteration.  This is important
-     *  because, for example, time can only be tested reliably in prefire().
-     *  It indicates the starting point of an integration step.
-     *  During the multiple iterations of fires, time may progress
-     *  in micro steps, depending on the ODE solver used. Hierarchies
-     *  in CT and hybrid systems cases actually rely on this fact to
-     *  control internal step sizes.
-     *  @exception IllegalActionException If an actor in the output
-     *   schedule throws it.
-     */
-    public void produceOutput() throws IllegalActionException {
-        _inProducingOutputs = true;
-        // FIXME: the OUTPUT_ACTORS schedule is neither complete
-        // nor accurate (including sink actors...)
-        CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
-        Iterator actors =
-            schedule.get(CTSchedule.OUTPUT_ACTORS).actorIterator();
-        while (actors.hasNext() && !_stopRequested) {
-            Actor actor = (Actor)actors.next();
-            if (!isPrefireComplete(actor)) {
-                setPrefireComplete(actor);
-                if (_debugging && _verbose) {
-                    _debug("Prefire output actor: "
-                            + ((Nameable)actor).getName()
-                            + " at time "
-                            + getModelTime());
-                }
-                if (!actor.prefire()) {
-                    throw new IllegalActionException((Nameable)actor,
-                            "Actor is not ready to fire. In the CT domain, "
-                            + "all continuous actors should be ready to fire "
-                            + "at all times.\n"
-                            + "Does the actor only operate on sequence "
-                            + "of tokens?");
-                }
-            }
-            if (_debugging) {
-                _debug("Fire output actor: "
-                        + ((Nameable)actor).getName()
-                        + " at time "
-                        + getModelTime());
-            }
-            actor.fire();
-        }
-        _inProducingOutputs = false;
-    }
-
-    public void fireEventGenerators() throws IllegalActionException {
-        CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
-        Iterator actors =
-            schedule.get(CTSchedule.EVENT_GENERATORS).actorIterator();
-        _inFiringEventGenerators = true;
-        while (actors.hasNext() && !_stopRequested) {
-            Actor actor = (Actor)actors.next();
-            // FIXME: can not remember why the following code is here. 
-            // Commented it out.
-//            if (actor instanceof CTCompositeActor) {
-//                // CTCompositeActor has been fired during the produceOutput
-//                // method. It can not be fired twice in continuous phase
-//                // execution.
-//                // FIXME: why?
-//                continue;
-//            }
-            if (!isPrefireComplete(actor)) {
-                setPrefireComplete(actor);
-                if (_debugging && _verbose) {
-                    _debug("Prefire event generator: "
-                            + ((Nameable)actor).getName()
-                            + " at time "
-                            + getModelTime());
-                }
-                if (!actor.prefire()) {
-                    _inFiringEventGenerators = false;
-                    throw new IllegalActionException((Nameable)actor,
-                            "Actor is not ready to fire. In the CT domain, "
-                            + "all event generators should be ready to fire "
-                            + "at all times.\n"
-                            + "Does the actor only operate on sequence "
-                            + "of tokens?");
-                }
-            }
-            if (_debugging) {
-                _debug("Fire event generator : "
-                        + ((Nameable)actor).getName()
-                        + " at time "
-                        + getModelTime());
-            }
-            actor.fire();
-        }
-        _inFiringEventGenerators = false;
-    }
-
-    /** Call postfire() on all actors in the continuous part of the model.
-     *  For a correct CT simulation,
-     *  the state of an actor can only change at this stage of an
-     *  iteration. If the <i>synchronizeToRealTime</i> parameter is
-     *  <i>true</i>,  then this method will block until the real time
-     *  catches up to current modeling time.
-     *  @exception IllegalActionException If any of the actors
-     *   throws it.
-     */
-    public void updateContinuousStates() throws IllegalActionException {
-        // Synchronize to real time if necessary.
-        if (((BooleanToken)synchronizeToRealTime.getToken()).booleanValue()) {
-            long realTime = System.currentTimeMillis()-_timeBase;
-            long simulationTime = 
-                (long)((getModelTime()
-                    .subtract(getModelStartTime()).getTimeValue())*1000);
-            if (_debugging) _debug("real time " + realTime,
-                    "simulation time " + simulationTime);
-            long timeDifference = simulationTime-realTime;
-            if (timeDifference > 20) {
-                try {
-                    if (_debugging) _debug("Sleep for " + timeDifference
-                            + "ms");
-                    Thread.sleep(timeDifference - 20);
-                }  catch (Exception e) {
-                    throw new IllegalActionException(this,
-                            "Sleep Interrupted" + e.getMessage());
-                }
-            } else {
-                if (_debugging) _debug("Warning: " + getFullName(),
-                        " cannot achieve real-time performance",
-                        " at simulation time " + getModelTime());
-            }
-        }
-        _inUpdatingContinuousStates = true;
-        // Call the postfire method of the continuous actors.
-        CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-        Iterator actors = schedule.get(
-                CTSchedule.CONTINUOUS_ACTORS).actorIterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor)actors.next();
-            if (_debugging) _debug("Postfire " + (Nameable)actor);
-            _postfireReturns = _postfireReturns && actor.postfire();
-        }
-
-        // Mark the current state of the stateful actors.
-        actors = schedule.get(
-                CTSchedule.STATEFUL_ACTORS).actorIterator();
-        while (actors.hasNext()) {
-            CTStatefulActor actor = (CTStatefulActor)actors.next();
-            if (_debugging) _debug("Postfire " + (Nameable)actor);
-            actor.markState();
-        }
-
-        _inUpdatingContinuousStates = false;
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isFiringDynamicActorsPhase()
-     */
-    public boolean isFiringDynamicActorsPhase() {
-        return _inFiringDynamicActors;
-    }
-
-    /* (non-Javadoc)
-     * @see ptolemy.domains.ct.kernel.CTGeneralDirector#isFiringStateTransitionActorsPhase()
-     */
-    public boolean isFiringStateTransitionActorsPhase() {
-        return _inFiringStateTransitionActors;
-    }
+    // The classname of the ODE solver.
+    private String _solverClassName;
 }

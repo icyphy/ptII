@@ -149,7 +149,7 @@ public class ForwardEulerSolver extends FixedStepSolver {
             next.fire();
         }
         
-        setConvergence(true);
+        _setConverged(true);
     }
 
     /** Return 0 to indicate that this solver needs no history information.
