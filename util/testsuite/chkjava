@@ -52,7 +52,7 @@ do
 	fi
 
 	# Look for lines longer than 80 chars
-	awk 'length($0) > 80 {print FILENAME": Line more than 80 chars:"; print $0}' $file
+	awk 'length($0) > 80 {if ($0 !~ /[Hh][Rr][Ee][Ff]/) {print FILENAME": Line more than 80 chars:"; print $0}}' $file
 
 	# Look for public statements after private etc.
         awk '$1 == "public" {sawpublic=1
@@ -136,14 +136,16 @@ do
 	fi
 
 	# Check for problems with equals signs
-	results=`egrep '[^-*/ ><+&=\!]=' $file`
+	results=`egrep '[^-*/ ><+&=\!]=' $file | \
+	    egrep -iv 'HREF=|NAME=|=WxH|"="' `
 	if [ "x$results" != "x" ]; then
 	    echo "$file: contains an equal sign without a leading space"
 	    echo "$results"
 	fi
 
 	# Check for problems with equals signs
-	results=`egrep '=[^ =]' $file`
+	results=`egrep '=[^ =]' $file | \
+	    egrep -iv 'HREF=|NAME=|=WxH|"="' `
 	if [ "x$results" != "x" ]; then
 	    echo "$file: contains an equal sign without a trailing space"
 	    echo "$results"
