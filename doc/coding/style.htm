@@ -152,7 +152,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 </DIV>
 
 <P CLASS="LBody">
- This style of copyright is often referred to the community as a &quot;BSD&quot; copyright because it was used for the &quot;Berkeley standard distribution&quot; of Unix. It is much more liberal that the commonly used &quot;GPL&quot; or &quot;Gnu Public License,&quot; which encumbers the software and derivative works with the requirement that they carry the source code and the same copyright agreement. The BSD copyright requires that the software and derivative work carry the identity of the copyright owner, as emboddied in the lines:</P>
+ This style of copyright is often referred to the community as a &quot;BSD&quot; copyright because it was used for the &quot;Berkeley standard distribution&quot; of Unix. It is much more liberal that the commonly used &quot;GPL&quot; or &quot;Gnu Public License,&quot; which encumbers the software and derivative works with the requirement that they carry the source code and the same copyright agreement. The BSD copyright requires that the software and derivative work carry the identity of the copyright owner, as embodied in the lines:</P>
 
 <P CLASS="Code">
 <A NAME="pgfId-176858"></A>&nbsp;</P>
@@ -165,7 +165,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 <P CLASS="LBody">
 <A NAME="pgfId-176875"></A>The copyright also requires that copies and derivative works include the disclaimer of liability in BOLD. It specifically does not require that copies of the software or derivative works carry the middle paragraph, so such copies and derivative works need not grant similarly liberal rights to users of the software.</P>
 <P CLASS="Body">
-<A NAME="pgfId-176883"></A>The intent of the BSD copyright is to maximize the potential impact of the software by enabling uses of the software that are inconsistent with disclosing the source code or granting free redistribution rights. For example, a commercial enterprise can extend the software, adding value, and sell the original software emboddied with the extensions. Economic principles indicate that granting free redistribution rights may render the enterprise business model untennable, so many business enterprises avoid software with GPL licenses. Economic principles also indicate that, in theory, fair pricing of derivative works must be based on the value of the extensions, the packaging, or the associated services provided by the enterprise. The pricing cannot reflect the value of the free software, since an informed consumer will, in theory, obtain that free software from another source.</P>
+<A NAME="pgfId-176883"></A>The intent of the BSD copyright is to maximize the potential impact of the software by enabling uses of the software that are inconsistent with disclosing the source code or granting free redistribution rights. For example, a commercial enterprise can extend the software, adding value, and sell the original software embodied with the extensions. Economic principles indicate that granting free redistribution rights may render the enterprise business model untenable, so many business enterprises avoid software with GPL licenses. Economic principles also indicate that, in theory, fair pricing of derivative works must be based on the value of the extensions, the packaging, or the associated services provided by the enterprise. The pricing cannot reflect the value of the free software, since an informed consumer will, in theory, obtain that free software from another source.</P>
 <P CLASS="Body">
 <A NAME="pgfId-176887"></A>Software with a BSD license can also be more easily included in defense or national-security related applications, where free redistribution of source code and licenses may be inconsistent with the mission of the software.</P>
 <P CLASS="Body">
@@ -201,7 +201,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 about:</EM>
  and <EM CLASS="Code">
 about:copyright</EM>
- are handled specially. If, within Ptolemy, the user clicks on a link with a target url of <EM CLASS="Code">
+ are handled specially. If, within Ptolemy, the user clicks on a link with a target URL of <EM CLASS="Code">
 about:copyright</EM>
 , then we eventually invoke code within $PTII/ptolemy/actor/gui/GenerateCopyrights.java. This class searches the runtime environment for particular packages and generates a web page with the links to the appropriate copyrights if certain packages are found.</P>
 </DIV>
@@ -223,7 +223,7 @@ about:copyright</EM>
 <P CLASS="Body">
 <A NAME="pgfId-177373"></A>&#183; Green code is code with a trusted implementation. We have confidence that the implementation is sound, based on test suites and practical application of the code. If possible, we try not to release important code unless it is green.</P>
 <P CLASS="Body">
-<A NAME="pgfId-177377"></A>&#183; Blue marks polished and complete code, and also represents a firm commitment to backwards-compatibility. Blue code is completely reviewed, tested, documented,and stressed in actual usage.</P>
+<A NAME="pgfId-177377"></A>&#183; Blue marks polished and complete code, and also represents a firm commitment to backwards-compatibility. Blue code is completely reviewed, tested, documented, and stressed in actual usage.</P>
 </DIV>
 <DIV>
 <H4 CLASS="FM3Heading">
@@ -261,7 +261,7 @@ about:copyright</EM>
 <P CLASS="LBody">
 <A NAME="pgfId-176960"></A>The reason that we discourage wildcards is that the full class names in import statements makes it easier find classes that are referenced in the code. If you use an IDE such as Eclipse, it is trivially easy to generate the import list in this form, so there is no reason to not do it.</P>
 <P CLASS="Body">
-<A NAME="pgfId-176539"></A>Imports are odered alphabetically by package first, then by class name, as shown above.</P>
+<A NAME="pgfId-176539"></A>Imports are ordered alphabetically by package first, then by class name, as shown above.</P>
 </DIV>
 </DIV>
 <DIV>
@@ -299,7 +299,7 @@ about:copyright</EM>
 <P CLASS="FirstBody">
 <A NAME="pgfId-176976"></A>The class documentation is the Javadoc comment that immediately precedes the class definition line. It is a particularly important part of the documentation. It should describe what the class does and how it is intended to be used. When writing it, put yourself in the mind of the user of your class. What does that person need to know? In particular, that person probably does not need to know how you accomplish what the class does. She only needs to know what you accomplish.</P>
 <P CLASS="Body">
-<A NAME="pgfId-177033"></A>A class may be intended to be a base class that is extended by other programmers. In this case, there may be two distinct sections to the documentation. The first section should describe how a user of the class should use the class. The second section should describe how a programmer can meaningfully extend the class. Only the second section should reference protected members or methods. The first section has no use for them. Of course, if the class is abstract, it cannot be used directly and the first section can be ommitted.</P>
+<A NAME="pgfId-177033"></A>A class may be intended to be a base class that is extended by other programmers. In this case, there may be two distinct sections to the documentation. The first section should describe how a user of the class should use the class. The second section should describe how a programmer can meaningfully extend the class. Only the second section should reference protected members or methods. The first section has no use for them. Of course, if the class is abstract, it cannot be used directly and the first section can be omitted.</P>
 <P CLASS="Body">
 <A NAME="pgfId-176989"></A>Comments should include honest information about the limitations of a class.</P>
 <P CLASS="Body">
@@ -323,7 +323,7 @@ When the file is committed using CVS, the <code>&#36;Id&#36;</code> gets substit
 </LI>
 <LI CLASS="Bulleted">
 <A NAME="pgfId-177440"></A>@since<BR>
-The @since tag refers the the release that the class first appeared in. Usually, this is one decimal place after the current release. For example if the current release is 3.0.2, then the @since tag would read:<BR>
+The @since tag refers the release that the class first appeared in. Usually, this is one decimal place after the current release. For example if the current release is 3.0.2, then the @since tag would read:<BR>
 <EM CLASS="Code">
 @since Ptolemy II 3.1<BR>
 </EM>
@@ -444,7 +444,7 @@ super.methodName()</EM>
 <P CLASS="Body">
 <A NAME="pgfId-177582"></A>Other methods in the same class may be linked to with the {@link ...} Javadoc tag. For example, to link to a method Foo that takes a String:</P>
 <P CLASS="Code">
-<A NAME="pgfId-177584"></A>* Unlike the {@link #Foo(String)} method, this method . . .</P>
+<A NAME="pgfId-177584"></A>* Unlike the {@link #Foo(String)} method, this method ...</P>
 <P CLASS="Body">
 <A NAME="pgfId-177590"></A>Methods and members in the same package should have an octothorpe (# sign) prepended. Methods and members in other classes should use the fully qualified class name: </P>
 <P CLASS="Code">
@@ -454,7 +454,7 @@ super.methodName()</EM>
 <P CLASS="Body">
 <A NAME="pgfId-177605"></A>To run Javadoc on the classes in the current directory, run <EM CLASS="Code">
 make docs</EM>
-, which will create the html javadoc output in the doc/codeDoc subdirectory. To run Javadoc for all the common packages, run</P>
+, which will create the HTML javadoc output in the doc/codeDoc subdirectory. To run Javadoc for all the common packages, run</P>
 <P CLASS="Code">
 <A NAME="pgfId-177609"></A>cd $PTII/doc; make docs</P>
 <P CLASS="Body">
@@ -466,7 +466,7 @@ make docs</EM>
 <P CLASS="FirstBody">
 <A NAME="pgfId-176599"></A>Methods should include Javadoc tags @param (one for each parameter), @return (unless the return type is void), and @exception (unless no exceptions are thrown). Note that we do not use the @throws tag, and that @returns is not a legitimate Javadoc tag, use @return instead.</P>
 <P CLASS="Body">
-<A NAME="pgfId-176595"></A>The annotation for the arguments (the <A NAME="marker-176459"></A>@param statement) need not be a complete sentence, since it is usually presented in tabular format. However, we do capitalize it and end it with a period. For example, FIXME.</P>
+<A NAME="pgfId-176595"></A>The annotation for the arguments (the <A NAME="marker-176459"></A>@param statement) need not be a complete sentence, since it is usually presented in tabular format. However, we do capitalize it and end it with a period.</P>
 <P CLASS="Body">
 <A NAME="pgfId-176461"></A>Exceptions that are thrown by a method need to be identified in the Javadoc comment. An <A NAME="marker-176462"></A>@exception tag should read like this: </P>
 <P CLASS="Code">
@@ -571,8 +571,8 @@ if (container != null) {
 <A NAME="pgfId-167449"></A>When throwing an exception, the detail message should be a complete sentence that includes a string that fully describes what caused the exception. For example</P>
 <pre>
 throw new IllegalActionException(this,
-        &quot;ptolemy/doc/coCannot append an object of type: &quot;
-        + obj.getClass().getName() + &quot;because &quot;
+        &quot;Cannot append an object of type: &quot;
+        + obj.getClass().getName() + &quot; because &quot;
         + &quot;it does not implement Cloneable.&quot;);
 </pre>
 <P CLASS="LBody">
