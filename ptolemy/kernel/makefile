@@ -41,6 +41,11 @@ ME =		java/pt/kernel
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
+JPACKAGE = 	pt/kernel
+JVERSION =	1.0
+JDIST =		$(JPACKAGE)$(JVERSION)
+JZIP =		$(JPACKAGE).zip
+
 CLASSPATH = ../..
 
 JSRCS = \
@@ -69,9 +74,6 @@ JSRCS = \
 	POElement.java \
 	Port.java \
 	Relation.java \
-	Sample.java \
-	SampleTarget.java \
-	SampleSDFExecutive.java \
 	SDFPort.java \
 	SDFPrint.java \
 	SDFRamp.java \
