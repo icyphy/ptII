@@ -59,7 +59,7 @@ public final class CrossRefList implements Serializable  {
     // FIXME: add "final" modifiers noted below when JDK 1.2 is released.
 
     /** Constructor requires a non-null container.
-     *  @param container
+     *  @param container The Container of the object to be constructed.
      *  @exception IllegalActionException Argument is null.
      */
     public CrossRefList(Object container) 
