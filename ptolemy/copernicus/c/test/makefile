@@ -64,27 +64,30 @@ CLEANLIB = _cleanLib.tcl
 # ONLY.
 JSIMPLE_TESTS = \
 	$(CLEANLIB) \
-        Array2DInt.tcl \
-        Array3DInt.tcl \
-        ArrayOfObjects.tcl \
+    Array2DInt.tcl \
+    Array3DInt.tcl \
+    ArrayOfObjects.tcl \
 	BasicException.tcl \
-        Cases.tcl \
-        CommandLine.tcl \
-	FIR.tcl \
-        FIR2.tcl \
-	FIRSingle.tcl \
-        GlobalExceptions.tcl \
-        InheritedException.tcl \
-        InnerField.tcl \
-        InnerLocal.tcl \
-	Object.tcl \
-	ObjectSingle.tcl \
-	printInt.tcl \
-	ramp.tcl \
-        RightShift.tcl \
+    Cases.tcl \
+    CommandLine.tcl \
+    FIR2.tcl \
+    FIRSingle.tcl \
+    GlobalExceptions.tcl \
+    InheritedException.tcl \
+    InnerField.tcl \
+    InnerLocal.tcl \
+    Object.tcl \
+    ObjectSingle.tcl \
+    printInt.tcl \
+    RightShift.tcl \
 	Simple.tcl \
 	SimpleSingle.tcl \
 	Terp.tcl 
+
+# Disabled tests:
+#   FIR.tcl
+#   ramp.tcl
+
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
