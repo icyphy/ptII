@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/hdf
 
-DIRS =		kernel
+DIRS =		kernel lib
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -47,7 +47,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		kernel/kernel.jar
+		kernel/kernel.jar \
+		lib/lib.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
