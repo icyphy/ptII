@@ -48,6 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Configuration
@@ -221,8 +222,7 @@ public class Configuration extends CompositeEntity {
                 if (effigy instanceof PtolemyEffigy) {
                     NamedObj object = ((PtolemyEffigy) effigy).getModel();
                     // Source code is found by name.
-                    String filename =
-                        object.getClass().getName().replace('.', '/') + ".java";
+                    String filename = StringUtilities.objectToSourceFileName(object);
                     try {
                         URL toRead =
                             getClass().getClassLoader().getResource(filename);
