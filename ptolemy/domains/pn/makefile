@@ -33,6 +33,8 @@ ME =		ptolemy/domains/pn
 
 DIRS =		kernel lib demo
 
+# 		guidemo is not in tree because it require JDK1.2
+
 # Root of Ptolemy II directory
 ROOT =		../../..
 
