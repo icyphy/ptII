@@ -124,7 +124,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
-        
+
         // We want this check, but here is not the place.
         //     if (container != null && !(container instanceof Settable)) {
         //    throw new IllegalActionException(this, container,
