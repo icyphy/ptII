@@ -72,6 +72,7 @@ public class Main extends KernelMain {
         // Generate the applet files in outDir
         addTransform(pack, "wjtp.appletWriter",
                 AppletWriter.v(_toplevel),
+                "targetPackage:" + _targetPackage + 
                 " outDir:" + _outputDirectory);
     }
 
