@@ -190,3 +190,4 @@ public class FindExtraImportsVisitor extends ReplacementJavaVisitor
 
     protected HashSet _usedUserTypesSet = new HashSet();
     protected HashSet _usedPackagesSet = new HashSet();
+}

@@ -171,3 +171,4 @@ public class TypeIdentifier implements JavaStaticSemanticConstants {
      { BoolTypeNode.instance, ByteTypeNode.instance, ShortTypeNode.instance,
        CharTypeNode.instance, IntTypeNode.instance, LongTypeNode.instance,
        FloatTypeNode.instance, DoubleTypeNode.instance };
+}

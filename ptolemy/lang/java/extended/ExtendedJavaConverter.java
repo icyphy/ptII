@@ -1412,3 +1412,4 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
 
     protected TypeIdentifier _typeID;
     protected TypeVisitor _typeVisitor;
+}

@@ -171,3 +171,4 @@ public interface JavaStaticSemanticConstants extends NodeClassID {
      *  This number can be used to start numbering extended properties.
      */
     public static final int RESERVED_JAVA_PROPERTIES = TYPE_KEY.intValue() + 1;
+}

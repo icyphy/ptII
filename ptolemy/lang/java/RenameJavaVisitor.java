@@ -85,3 +85,4 @@ public class RenameJavaVisitor extends ResolveVisitorBase {
     public Object visitObjectNode(ObjectNode node, LinkedList args) {
         return _defaultVisit(node, args);
     }
+}
