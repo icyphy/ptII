@@ -43,7 +43,7 @@ import java.util.List;
 /**
 This class is an adapter for {@link caltrop.interpreter.Function
 Function} objects that provides the Ptolemy II
-<tt>FunctionToken.Function</tt> interface. It allows them to be
+<tt>ptolemy.data.Function</tt> interface. It allows them to be
 seamlessly used with Ptolemy II-generated function objects.
 
 @author Jörn W. Janneck <janneck@eecs.berkeley.edu>
@@ -52,7 +52,7 @@ seamlessly used with Ptolemy II-generated function objects.
 @see caltrop.interpreter.Context
 @see caltrop.interpreter.Function
 */
-public class PtCalFunction implements FunctionToken.Function {
+public class PtCalFunction implements ptolemy.data.Function {
 
     public PtCalFunction(Function function) {
         _function = function;
@@ -75,7 +75,7 @@ public class PtCalFunction implements FunctionToken.Function {
     }
 
     /** Always return false, because the Function token is not congruent */
-    public boolean isCongruent(FunctionToken.Function function) {
+    public boolean isCongruent(ptolemy.data.Function function) {
         return false;
     }
 
