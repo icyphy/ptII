@@ -51,7 +51,7 @@ import java.util.List;
 
 public abstract class AbstractSettableAttribute
     extends Attribute implements Settable {
-    
+
     /** Construct an attribute in the default workspace with an empty string
      *  as its name.
      *  The object is added to the directory of the workspace.
@@ -93,7 +93,7 @@ public abstract class AbstractSettableAttribute
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the default value of this Settable,
      *  if there is one.  If this is a derived object, then the default
      *  is the value of the object from which this is derived (the
@@ -133,7 +133,7 @@ public abstract class AbstractSettableAttribute
             _default = expression;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 

@@ -122,9 +122,9 @@ import ptolemy.util.StringUtilities;
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (eal)
    @Pt.AcceptedRating Yellow (neuendor)
-   
+
    FIXME: Need to review move*() methods to get to green again.
-   
+
    @see Attribute
    @see Workspace
 */
@@ -405,7 +405,7 @@ public class NamedObj implements
         try {
             _workspace.getReadAccess();
             NamedObj newObject = (NamedObj)super.clone();
-            
+
             // During the cloning process, change requests might
             // be issued (e.g. in an actor's _addEntity() method).
             // Execution of these change requests need to be deferred
@@ -416,7 +416,7 @@ public class NamedObj implements
             // the value of this private variable will no longer
             // have any effect.
             newObject._deferChangeRequests = true;
-                        
+
             // NOTE: It is not necessary to write-synchronize on the other
             // workspace because this only affects its directory, and methods
             // to access the directory are synchronized.
@@ -459,7 +459,7 @@ public class NamedObj implements
             }
             newObject._elementName = _elementName;
             newObject._source = _source;
-            
+
             // NOTE: It's not clear that this is the right thing to do
             // here, having the same override properties as the original
             // seems reasonable, so we leave this be.
@@ -576,7 +576,7 @@ public class NamedObj implements
     /** Execute previously requested changes. If there is a container, then
      *  delegate the request to the container.  Otherwise, this method will
      *  execute all pending changes (even if
-     *  {@link #isDeferringChangeRequests()} returns true. 
+     *  {@link #isDeferringChangeRequests()} returns true.
      *  Listeners will be notified of success or failure.
      *  @see #addChangeListener(ChangeListener)
      *  @see #requestChange(ChangeRequest)
@@ -906,7 +906,7 @@ public class NamedObj implements
     public Enumeration getAttributes() {
         return Collections.enumeration(attributeList());
     }
-    
+
     /** Return a list of weak references to change listeners,
      *  or null if there is none.
      *  @return A list of weak references to change listeners,
@@ -1222,18 +1222,6 @@ public class NamedObj implements
         return _deferChangeRequests;
     }
 
-    /** Return true if this object is persistent.
-     *  A persistent object has a MoML description that can be stored
-     *  in a file and used to re-create the object. A non-persistent
-     *  object has an empty MoML description.
-     *  @return True if the object is persistent.
-     *  @see #setPersistent(boolean)
-     *  @see MoMLExportable
-     */
-    public boolean isPersistent() {
-        return (_isPersistent == null || _isPersistent.booleanValue());
-    }
-    
     /** Return true if propagateValue() has been called, which
      *  indicates that the value of this object (if any) has been
      *  overridden from the default defined by its class definition.
@@ -1257,6 +1245,18 @@ public class NamedObj implements
         return (override == 0);
     }
 
+    /** Return true if this object is persistent.
+     *  A persistent object has a MoML description that can be stored
+     *  in a file and used to re-create the object. A non-persistent
+     *  object has an empty MoML description.
+     *  @return True if the object is persistent.
+     *  @see #setPersistent(boolean)
+     *  @see MoMLExportable
+     */
+    public boolean isPersistent() {
+        return (_isPersistent == null || _isPersistent.booleanValue());
+    }
+
     /** React to a debug message by relaying it to any registered
      *  debug listeners.
      *  @param message The debug message.
@@ -1267,7 +1267,7 @@ public class NamedObj implements
             _debug(message);
         }
     }
-    
+
     /** Move this object down by one in the list of attributes of
      *  its container. If this object has no container or is already
      *  at last, do nothing.
@@ -1282,7 +1282,7 @@ public class NamedObj implements
             try {
                 _workspace.getWriteAccess();
                 int result = container._attributes.moveDown(this);
-                
+
                 // Propagate.
                 Iterator derivedObjects = getDerivedList().iterator();
                 while (derivedObjects.hasNext()) {
@@ -1290,7 +1290,7 @@ public class NamedObj implements
                     container = derived.getContainer();
                     container._attributes.moveDown(derived);
                 }
-                
+
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
@@ -1302,7 +1302,7 @@ public class NamedObj implements
         }
         return -1;
     }
-    
+
     /** Move this object to the first position in the list
      *  of attributes of the container. If there is no container or
      *  this object is already first, do nothing.
@@ -1317,7 +1317,7 @@ public class NamedObj implements
             try {
                 _workspace.getWriteAccess();
                 int result = container._attributes.moveToFirst(this);
-                
+
                 // Propagate.
                 Iterator derivedObjects = getDerivedList().iterator();
                 while (derivedObjects.hasNext()) {
@@ -1325,7 +1325,7 @@ public class NamedObj implements
                     container = derived.getContainer();
                     container._attributes.moveToFirst(derived);
                 }
-                
+
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
@@ -1354,7 +1354,7 @@ public class NamedObj implements
             try {
                 _workspace.getWriteAccess();
                 int result = container._attributes.moveToIndex(this, index);
-                
+
                 // Propagate.
                 Iterator derivedObjects = getDerivedList().iterator();
                 while (derivedObjects.hasNext()) {
@@ -1362,7 +1362,7 @@ public class NamedObj implements
                     container = derived.getContainer();
                     container._attributes.moveToIndex(derived, index);
                 }
-                
+
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
@@ -1389,7 +1389,7 @@ public class NamedObj implements
             try {
                 _workspace.getWriteAccess();
                 int result = container._attributes.moveToLast(this);
-                
+
                 // Propagate.
                 Iterator derivedObjects = getDerivedList().iterator();
                 while (derivedObjects.hasNext()) {
@@ -1397,7 +1397,7 @@ public class NamedObj implements
                     container = derived.getContainer();
                     container._attributes.moveToLast(derived);
                 }
-                
+
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
@@ -1424,7 +1424,7 @@ public class NamedObj implements
             try {
                 _workspace.getWriteAccess();
                 int result = container._attributes.moveUp(this);
-                
+
                 // Propagate.
                 Iterator derivedObjects = getDerivedList().iterator();
                 while (derivedObjects.hasNext()) {
@@ -1432,7 +1432,7 @@ public class NamedObj implements
                     container = derived.getContainer();
                     container._attributes.moveUp(derived);
                 }
-                
+
                 return result;
             } catch (IllegalActionException e) {
                 // Thrown only if the object is not on the list,
@@ -1478,7 +1478,7 @@ public class NamedObj implements
         // Mark this object as having been modified directly.
         _override = new LinkedList();
         _override.add(new Integer(0));
-        
+
         return _getDerivedList(null, true, false, this, 0, _override, null);
     }
 
@@ -2254,7 +2254,7 @@ public class NamedObj implements
      *  @return Return true to suppress MoML export.
      */
     protected boolean _isMoMLSuppressed(int depth) {
-        
+
         // Check whether suppression of MoML has been explicitly
         // requested.
         if (_isPersistent != null) {
@@ -2266,7 +2266,7 @@ public class NamedObj implements
         // inheritance occurs above the level of the hierarchy
         // where we are doing the export, then we need to
         // give structure and values anyway. Otherwise, for
-        // example, copy and paste won't work properly.        
+        // example, copy and paste won't work properly.
         if (_derivedLevel > depth) {
             // Object is either not derived or the derivation occurs
             // above in the hierarchy where we are exporting.
@@ -2275,7 +2275,7 @@ public class NamedObj implements
         // At this point, we know the object is implied.
         // However, we may need to export anyway because it
         // may have an overridden value.
-        
+
         // Export MoML if the value of the object is
         // propagated in but from outside the scope
         // of the export.
@@ -2292,7 +2292,7 @@ public class NamedObj implements
                 return false;
             }
         }
-        
+
         // If any contained object wishes to have
         // MoML exported, then this object will export MoML.
         Iterator objects = containedObjectsIterator();
@@ -2329,7 +2329,7 @@ public class NamedObj implements
             NamedObj containedObject = (NamedObj)objects.next();
             containedObject.setDerivedLevel(depth);
             containedObject._markContentsDerived(depth);
-            
+
             // If this object has previously had
             // persistence set to true (e.g., it was
             // cloned from an object that had persistence
@@ -2384,7 +2384,7 @@ public class NamedObj implements
     protected void _propagateValue(NamedObj destination)
             throws IllegalActionException {
     }
-    
+
     /** Remove the given attribute.
      *  If there is no such attribute, do nothing.
      *  This method is write-synchronized on the workspace and increments its
@@ -2504,7 +2504,7 @@ public class NamedObj implements
      *  is used to indicate that no persistence has been specified.
      */
     protected Boolean _isPersistent = null;
-    
+
     /** The workspace for this object.
      *  This should be set by the constructor and never changed.
      */
@@ -2578,7 +2578,7 @@ public class NamedObj implements
                 }
             }
             visited.add(context);
-                        
+
             // Need to do deepest propagations
             // (those closest to the root of the tree) first.
             NamedObj container = context.getContainer();
@@ -2620,7 +2620,7 @@ public class NamedObj implements
             if (propagate) {
                 myBreadth = ((Integer)override.get(depth)).intValue();
             }
-            
+
             // Iterate over the children.
             List othersList = ((Instantiable)context).getChildren();
             if (othersList != null) {
@@ -2633,7 +2633,8 @@ public class NamedObj implements
                         // Look for an object with the relative name.
                         NamedObj candidate = other;
                         if (relativeName != null) {
-                            candidate = _getContainedObject(other, relativeName);
+                            candidate =
+                                _getContainedObject(other, relativeName);
                         }
                         if (candidate == null) {
                             if (force) {
@@ -2645,14 +2646,16 @@ public class NamedObj implements
                                 if (lastPeriod > 0) {
                                     String containerName
                                             = relativeName.substring(
-                                            0, lastPeriod); 
+                                            0, lastPeriod);
                                     remoteContainer = getContainer()
                                             ._getContainedObject(
-                                            other, containerName);                                 
+                                            other, containerName);
                                 }
-                                candidate = _propagateExistence(remoteContainer);
-                                // Indicate that the existence of the candidate
-                                // is implied by a parent-child relationship at the
+                                candidate =
+                                    _propagateExistence(remoteContainer);
+                                // Indicate that the existence of the
+                                // candidate is implied by a
+                                // parent-child relationship at the
                                 // current depth.
                                 candidate.setDerivedLevel(depth);
                                 candidate._markContentsDerived(depth);
@@ -2678,12 +2681,15 @@ public class NamedObj implements
 
                         List newOverride = null;
 
-                        // If the propagate argument is true, then determine
-                        // whether the candidate object is shadowed, and if it is not,
-                        // then apply the propagation change to it.
+                        // If the propagate argument is true, then
+                        // determine whether the candidate object is
+                        // shadowed, and if it is not, then apply the
+                        // propagation change to it.
+
                         if (propagate) {
-                            // Is it shadowed?
-                            // Create a new override list to pass to the candidate.
+
+                            // Is it shadowed?  Create a new override
+                            // list to pass to the candidate.
                             newOverride = new LinkedList(override);
                             newOverride.set(depth, new Integer(myBreadth + 1));
                             if (_isShadowed(candidate._override, newOverride)) {
@@ -2691,10 +2697,12 @@ public class NamedObj implements
                                 continue;
                             }
 
-                            // FIXME: If the following throws an exception, we have
-                            // to somehow restore values of previous propagations.
+                            // FIXME: If the following throws an
+                            // exception, we have to somehow restore
+                            // values of previous propagations.
+
                             _propagateValue(candidate);
-                            
+
                             // Set the override.
                             candidate._override = newOverride;
                         }
@@ -2707,12 +2715,12 @@ public class NamedObj implements
                         // will be determined by the depth of propagation from
                         // this candidate.
                         result.addAll(candidate._getDerivedList(
-                                visited, 
-                                propagate, 
-                                force, 
+                                visited,
+                                propagate,
+                                force,
                                 candidate,
                                 0,
-                                newOverride, 
+                                newOverride,
                                 null));
 
                         // Note that the above recursive call will
@@ -2763,14 +2771,15 @@ public class NamedObj implements
                 // The two lists are identical, so there be no shadowing.
                 return false;
             } else {
-                int candidateBreadth = ((Integer)candidate.get(index)).intValue();
+                int candidateBreadth =
+                    ((Integer)candidate.get(index)).intValue();
                 int changerBreadth = ((Integer)changer.get(index)).intValue();
                 if (candidateBreadth < changerBreadth) {
                     return true;
                 }
             }
         }
-        
+
         return false;
     }
 
@@ -2859,7 +2868,7 @@ public class NamedObj implements
 
         private Iterator _attributeListIterator = null;
     }
-    
+
     /** Serializable version of the Java Object class. */
     private class SerializableObject extends Object implements Serializable {
     }

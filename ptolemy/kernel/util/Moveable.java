@@ -54,7 +54,7 @@ public interface Moveable {
      *   or -1 if it is not moved.
      */
     public int moveDown();
-    
+
     /** Move this object to the first position in the list of
      *  similar objects in its container.  If the object has no
      *  container, or if it is already first on the list,
