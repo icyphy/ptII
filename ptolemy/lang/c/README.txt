@@ -9,7 +9,7 @@ supported at present.
 
 Partial list of unsupported features:
 
-multiple source files, inheritance, import statements, interfaces, 
+inheritance, import statements, interfaces, native methods,
 reflection, garbage collection.
 
 .\test contains Java source files for testing the C code generator.
