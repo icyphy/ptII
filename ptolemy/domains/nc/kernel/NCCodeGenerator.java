@@ -191,26 +191,26 @@ public class NCCodeGenerator extends Attribute {
      }
      
     /** Generate code for the connections.
-     *  @return The configuration code.
+     *  @return The connections code.
      */
     private static String _includeConnection(TypedCompositeActor model, Actor actor)
             throws IllegalActionException {
         
-        String codeString = "";
+        StringBuffer codeString = new StringBuffer();
 
         String actorName = StringUtilities.
                 sanitizeName(((NamedObj) actor).getName());
 
         for (Iterator inPorts = actor.inputPortList().iterator();
-             inPorts.hasNext();) {
+                inPorts.hasNext();) {
             IOPort inPort = (IOPort) inPorts.next();
             String sanitizedInPortName =
-                StringUtilities.sanitizeName(
-                        inPort.getName());
+                    StringUtilities.sanitizeName(inPort.getName());
             List sourcePortList = inPort.connectedPortList();
             if (sourcePortList.size() > 1) {
-                throw new IllegalActionException(inPort, "Input port " +
-                        "cannot receive data from multiple sources in TinyGALS.");
+                throw new IllegalActionException(inPort,
+                "Input port (provides) cannot connect to " +
+                "multiple output ports (requires) in NC.");
             }
             if (sourcePortList.size()== 1) {
                 IOPort sourcePort = (IOPort) sourcePortList.get(0);
@@ -219,31 +219,28 @@ public class NCCodeGenerator extends Attribute {
                         sourcePort.getName());
                 String sourceActorName = StringUtilities.sanitizeName(
                         sourcePort.getContainer().getName());
-            //System.out.println("the source actor name: " + sourceActorName);
-            //System.out.println("the composite actor name: " + model.getName());
                 if (sourcePort.getContainer() == model) {
-                    codeString += sanitizedSourcePortName
+                    codeString.append(sanitizedSourcePortName
                                   + " = "
                                   + actorName
                                   + "."
                                   + sanitizedInPortName
-                                  + ";";
+                                  + ";");
                 } else {
-            
-                    codeString += sourceActorName
+                    codeString.append(sourceActorName
                                   + "."
                                   + sanitizedSourcePortName
                                   + " -> "
                                   + actorName
                                   + "."
                                   + sanitizedInPortName
-                                  + ";";
+                                  + ";");
                 }
-                codeString += _endLine;
+                codeString.append(_endLine);
             }
         }
         
-        return codeString;
+        return codeString.toString();
     }
 
     /** Generate code for the connections.
@@ -278,7 +275,7 @@ public class NCCodeGenerator extends Attribute {
             //FIXME: can the list be empty?
             if (sourcePortList.size() > 1) {
                 throw new IllegalActionException(port, "Input port " +
-                        "cannot receive data from multiple sources in TinyGALS.");
+                        "cannot receive data from multiple sources in NC.");
             }
             IOPort sourcePort;
             if (sourcePortList != null ) {
