@@ -55,7 +55,7 @@ public class MEMSPlot extends PlotFrame {
      */
     
     public MEMSPlot(int yRange, int xRange) {
-        super();
+        super("MEMSPlot", new Plot());
     
         // Handle window closing by exiting the application.;
         
@@ -71,21 +71,21 @@ public class MEMSPlot extends PlotFrame {
         buffer = new CoordPair[256];
         bufCount = 0;
 
-        plot.setTitle("MEMS Simulation");
-        plot.setYRange(0, yRange);
-        plot.setXRange(0, xRange);
+        ((Plot)plot).setTitle("MEMS Simulation");
+        ((Plot)plot).setYRange(0, yRange);
+        ((Plot)plot).setXRange(0, xRange);
     
-        plot.setXLabel("x-coordinate");
-        plot.setYLabel("y-corrdinate");
+        ((Plot)plot).setXLabel("x-coordinate");
+        ((Plot)plot).setYLabel("y-corrdinate");
         	    
-        plot.setMarksStyle("dots");
-        plot.setVisible(true);
+        ((Plot)plot).setMarksStyle("dots");
+        ((Plot)plot).setVisible(true);
     }
     /** Add a point on the plot object.
      *  Points on the graph represent nodes
      */
     public void addPoint(double x, double y) {
-        plot.addPoint(0, x, y, false);
+        ((Plot)plot).addPoint(0, x, y, false);
         
     }
 
@@ -128,11 +128,11 @@ public class MEMSPlot extends PlotFrame {
             int counter;
       
             for (counter = 0; counter < bufCount; counter++) {
-                plot.addPoint(buffer[counter].color,
+                ((Plot)plot).addPoint(buffer[counter].color,
                         buffer[counter].one.getX(),
                         buffer[counter].one.getY(), 
                         false);
-                plot.addPoint(buffer[counter].color,
+                ((Plot)plot).addPoint(buffer[counter].color,
                         buffer[counter].two.getX(),
                         buffer[counter].two.getY(),
                         true);
@@ -143,10 +143,10 @@ public class MEMSPlot extends PlotFrame {
             } catch (InterruptedException e) {}
       
             for (counter = 0; counter < bufCount; counter++) {
-                plot.erasePoint(buffer[bufCount-counter-1].color,0);
-                plot.erasePoint(buffer[bufCount-counter-1].color,0);
+                ((Plot)plot).erasePoint(buffer[bufCount-counter-1].color,0);
+                ((Plot)plot).erasePoint(buffer[bufCount-counter-1].color,0);
             }
-            plot.update(plot.getGraphics());
+            ((Plot)plot).update(((Plot)plot).getGraphics());
       
             bufCount = 0;
         }
@@ -158,7 +158,7 @@ public class MEMSPlot extends PlotFrame {
     //    
     //---------------------------------------------------------
     public Plot plotObj() {
-        return plot;
+        return (Plot)plot;
     
     }
 
