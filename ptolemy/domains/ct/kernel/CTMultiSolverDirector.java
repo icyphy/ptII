@@ -115,6 +115,7 @@ public class CTMultiSolverDirector extends CTDirector {
     public CTMultiSolverDirector(CompositeActor container, String name)
             throws IllegalActionException {
         super(container, name);
+        //addDebugListener(new StreamListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -318,6 +319,8 @@ public class CTMultiSolverDirector extends CTDirector {
             throw new InvalidStateException(this,
                     " stop time is less than the current time.");
         }
+        if(_debugging) _debug(getFullName() + " postfire returns true at: " +
+                getCurrentTime());
         return true;
     }
 
@@ -544,6 +547,8 @@ public class CTMultiSolverDirector extends CTDirector {
                     + ((NamedObj)a).getName());
             successful = successful && a.isThisStepSuccessful();
         }
+        if(_debugging) 
+            _debug(getFullName() + " output successful ? " + successful); 
         return successful;
     }
 
@@ -559,10 +564,14 @@ public class CTMultiSolverDirector extends CTDirector {
         while (sscs.hasNext()) {
             CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.next();
+            boolean thisSuccessful = a.isThisStepSuccessful();
             if(_debugging) _debug("Checking State Step Size Control Actor: " +
-                    ((NamedObj)a).getName());
-            successful = successful && a.isThisStepSuccessful();
+                    ((NamedObj)a).getName() + " " + thisSuccessful);
+            successful = successful && thisSuccessful;
+            
         }
+        if(_debugging) 
+            _debug(getFullName() + " state successful ? " + successful); 
         return successful;
     }
 
