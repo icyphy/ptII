@@ -241,6 +241,40 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         node.setToken((ptolemy.data.Token)bitwiseResult);
     }
 
+    /** Define a function, where the children specify the argument types
+     *  and the expression.  The expression is not evaluated. The resulting
+     *  token in the node is an instance of FunctionToken.
+     *  @param node The specified node.
+     *  @exception IllegalActionException If an evaluation error occurs.
+     */
+    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
+            throws IllegalActionException {
+        
+        ASTPtRootNode cloneTree;
+        try {
+            cloneTree = (ASTPtRootNode)node.getExpressionTree().clone();
+        } catch(CloneNotSupportedException ex) {
+            throw new IllegalActionException(null, ex, "Clone failed");
+        }
+        ParseTreeSpecializer specializer = new ParseTreeSpecializer();
+        specializer.specialize(cloneTree,
+                node.getArgumentNameList(), _scope);
+               
+        // Infer the return type.
+        if(_typeInference == null) {
+            _typeInference = new ParseTreeTypeInference();
+        }
+        _typeInference.inferTypes(node, _scope);
+        FunctionType type = (FunctionType)node.getType();
+        ExpressionFunction definedFunction =
+            new ExpressionFunction(
+                    node.getArgumentNameList(), node.getArgumentTypes(),
+                    cloneTree);
+        FunctionToken result = new FunctionToken(definedFunction, type);
+        node.setToken(result);
+        return;
+    }
+
     /** Apply a function to the children of the specified node.
      *  This also handles indexing into matrices and arrays, which look
      *  like function calls.
@@ -445,40 +479,6 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         ptolemy.data.Token result = functionCall(
                 node.getFunctionName(), argTypes, argValues);
         node.setToken(result);
-    }
-
-    /** Define a function, where the children specify the argument types
-     *  and the expression.  The expression is not evaluated. The resulting
-     *  token in the node is an instance of FunctionToken.
-     *  @param node The specified node.
-     *  @exception IllegalActionException If an evaluation error occurs.
-     */
-    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-            throws IllegalActionException {
-        
-        ASTPtRootNode cloneTree;
-        try {
-            cloneTree = (ASTPtRootNode)node.getExpressionTree().clone();
-        } catch(CloneNotSupportedException ex) {
-            throw new IllegalActionException(null, ex, "Clone failed");
-        }
-        ParseTreeSpecializer specializer = new ParseTreeSpecializer();
-        specializer.specialize(cloneTree,
-                node.getArgumentNameList(), _scope);
-               
-        // Infer the return type.
-        if(_typeInference == null) {
-            _typeInference = new ParseTreeTypeInference();
-        }
-        _typeInference.inferTypes(node, _scope);
-        FunctionType type = (FunctionType)node.getType();
-        ExpressionFunction definedFunction =
-            new ExpressionFunction(
-                    node.getArgumentNameList(), node.getArgumentTypes(),
-                    cloneTree);
-        FunctionToken result = new FunctionToken(definedFunction, type);
-        node.setToken(result);
-        return;
     }
 
     /** Evaluate the first child, and depending on its (boolean) result,
@@ -763,7 +763,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                         "Exponent must be ScalarToken and have a valid "
                         + "lossless conversion to integer. Integer or "
                         + "unsigned byte meet these criteria.\n"
-                        + "Use pow(10,3.5) for non-integer exponents");
+                        + "Use pow(10, 3.5) for non-integer exponents");
             }
             try {
                 times = ((ptolemy.data.ScalarToken)token).intValue();
@@ -1046,16 +1046,6 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         return tokens;
     }
    
-    /** Evaluate the child with the given index of the given node.
-     *  This is usually called while visiting the given node.
-     *  @exception IllegalActionException If an evaluation error occurs.
-     */
-    protected void _evaluateChild(ASTPtRootNode node, int i)
-            throws IllegalActionException {
-        ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
-        child.visit(this);
-    }
-
     /** Evaluate the array index operation represented by the given node.
      *  @param node The node that caused this method to be called.
      *  @param value The token that is being indexed into, which must
@@ -1085,6 +1075,16 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     + index + "' is out of bounds on the array '"
                     + value + "'.");
         }
+    }
+
+    /** Evaluate the child with the given index of the given node.
+     *  This is usually called while visiting the given node.
+     *  @exception IllegalActionException If an evaluation error occurs.
+     */
+    protected void _evaluateChild(ASTPtRootNode node, int i)
+            throws IllegalActionException {
+        ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
+        child.visit(this);
     }
 
     /** Evaluate the Matrix index operation represented by the given node.

@@ -53,6 +53,10 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    public Type getType(ASTPtRootNode node) {
+        return node.getType();
+    }
+
     public Type inferTypes(ASTPtRootNode node)
             throws IllegalActionException {
         node.visit(this);
@@ -64,10 +68,6 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         _scope = scope;
         node.visit(this);
         _scope = null;
-        return node.getType();
-    }
-
-    public Type getType(ASTPtRootNode node) {
         return node.getType();
     }
 
@@ -91,6 +91,42 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         _setType(node,
                 (Type)TypeLattice.lattice().leastUpperBound(childTypes));
     }
+
+    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
+            throws IllegalActionException {
+        final Map map = new HashMap();
+        for(int i = 0; i < node._argTypes.length; i++) {
+            map.put(node.getArgumentNameList().get(i),
+                    node.getArgumentTypes()[i]);
+        }
+        // Push the current scope.
+        final ParserScope currentScope = _scope;
+        ParserScope functionScope = new ParserScope() {
+                public ptolemy.data.Token get(String name) {
+                    return null;
+                }
+                public Type getType(String name) 
+                        throws IllegalActionException {
+                    Type type = (Type)map.get(name);
+                    if(type == null && currentScope != null) {
+                        return currentScope.getType(name);
+                    } else {
+                        return type;
+                    }
+                }
+                public NamedList variableList() {
+                    return null;
+                }
+            };
+        _scope = functionScope;
+        node.getExpressionTree().visit(this);
+        Type returnType = node.getExpressionTree().getType();
+        FunctionType type = new FunctionType(node._argTypes, returnType);
+        _setType(node, type);
+        _scope = currentScope;
+        return;
+    }
+
     public void visitFunctionNode(ASTPtFunctionNode node)
             throws IllegalActionException {
         int argCount = node.jjtGetNumChildren() - 1;
@@ -198,40 +234,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                     node.getFunctionName() + "( " + buffer + " ).");
         }
     }
-    public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-            throws IllegalActionException {
-        final Map map = new HashMap();
-        for(int i = 0; i < node._argTypes.length; i++) {
-            map.put(node.getArgumentNameList().get(i),
-                    node.getArgumentTypes()[i]);
-        }
-        // Push the current scope.
-        final ParserScope currentScope = _scope;
-        ParserScope functionScope = new ParserScope() {
-                public ptolemy.data.Token get(String name) {
-                    return null;
-                }
-                public Type getType(String name) 
-                        throws IllegalActionException {
-                    Type type = (Type)map.get(name);
-                    if(type == null && currentScope != null) {
-                        return currentScope.getType(name);
-                    } else {
-                        return type;
-                    }
-                }
-                public NamedList variableList() {
-                    return null;
-                }
-            };
-        _scope = functionScope;
-        node.getExpressionTree().visit(this);
-        Type returnType = node.getExpressionTree().getType();
-        FunctionType type = new FunctionType(node._argTypes, returnType);
-        _setType(node, type);
-        _scope = currentScope;
-        return;
-    }
+
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -267,6 +270,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         _visitAllChildren(node);
         _setType(node, BaseType.BOOLEAN);
     }
+
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -276,7 +280,8 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         Type elementType = (Type)
             TypeLattice.lattice().leastUpperBound(childTypes);
 
-        Type matrixType = UnsizedMatrixType.getMatrixTypeForElementType(elementType);
+        Type matrixType
+            = UnsizedMatrixType.getMatrixTypeForElementType(elementType);
        _setType(node, matrixType);
     }
 
@@ -348,17 +353,20 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                 new RecordType(names, childTypes));
 
     }
+
     public void visitRelationalNode(ASTPtRelationalNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
         _setType(node, BaseType.BOOLEAN);
     }
+
     public void visitShiftNode(ASTPtShiftNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
         Type baseType = ((ASTPtRootNode) node.jjtGetChild(0)).getType();
         _setType(node, baseType);
     }
+
     public void visitSumNode(ASTPtSumNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -368,6 +376,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         _setType(node,
                 (Type)TypeLattice.lattice().leastUpperBound(childTypes));
     }
+
     public void visitUnaryNode(ASTPtUnaryNode node)
             throws IllegalActionException {
         _visitAllChildren(node);
@@ -390,30 +399,19 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
     }
 
-    /** Loop through all of the children of this node,
-     *  visiting each one of them, which will cause their token
-     *  value to be determined.
+    /** Return a new array that contains the types of the children of
+     *  the given node.
      */
-    protected void _visitAllChildren(ASTPtRootNode node)
-            throws IllegalActionException {
-        int numChildren = node.jjtGetNumChildren();
-        for (int i = 0; i < numChildren; i++) {
-            _visitChild(node, i);
-            ASTPtRootNode child =(ASTPtRootNode)node.jjtGetChild(i);
-            Type type = getType(child);
-            if(type == null) {
-                throw new RuntimeException("node " + child + " has no type.");
+    protected Type[] _getChildTypes(ASTPtRootNode node) {
+        Type[] types = new Type[node.jjtGetNumChildren()];
+        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
+            types[i] =  ((ASTPtRootNode) node.jjtGetChild(i)).getType();
+            if(types[i] == null) {
+                throw new RuntimeException("node " + node
+                        + " has null child.");
             }
         }
-    }
-
-    /** Visit the child with the given index of the given node.
-     *  This is usually called while visiting the given node.
-     */
-    protected void _visitChild(ASTPtRootNode node, int i)
-            throws IllegalActionException {
-        ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
-        child.visit(this);
+        return types;
     }
 
     /** Return the type of the identifier with the given name.
@@ -452,23 +450,35 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
         }
     }
 
-    /** Return a new array that contains the types of the children of
-     *  the given node.
-     */
-    protected Type[] _getChildTypes(ASTPtRootNode node) {
-        Type[] types = new Type[node.jjtGetNumChildren()];
-        for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-            types[i] =  ((ASTPtRootNode) node.jjtGetChild(i)).getType();
-            if(types[i] == null) {
-                throw new RuntimeException("node " + node + " has null child.");
-            }
-        }
-        return types;
-    }
-
     protected void _setType(ASTPtRootNode node, Type type) {
         //      System.out.println("type of " + node + " is " + type);
         node.setType(type);
+    }
+
+    /** Loop through all of the children of this node,
+     *  visiting each one of them, which will cause their token
+     *  value to be determined.
+     */
+    protected void _visitAllChildren(ASTPtRootNode node)
+            throws IllegalActionException {
+        int numChildren = node.jjtGetNumChildren();
+        for (int i = 0; i < numChildren; i++) {
+            _visitChild(node, i);
+            ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
+            Type type = getType(child);
+            if(type == null) {
+                throw new RuntimeException("node " + child + " has no type.");
+            }
+        }
+    }
+
+    /** Visit the child with the given index of the given node.
+     *  This is usually called while visiting the given node.
+     */
+    protected void _visitChild(ASTPtRootNode node, int i)
+            throws IllegalActionException {
+        ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
+        child.visit(this);
     }
 
     protected ParserScope _scope;

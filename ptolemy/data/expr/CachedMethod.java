@@ -162,40 +162,6 @@ public class CachedMethod {
         return true;
     }
 
-    /** Return the conversions the are applied to the arguments of this
-     *  function or method.
-     *  @return The conversions applied to the arguments.
-     */
-    public ArgumentConversion[] getConversions() {
-        return _conversions;
-    }
-
-    /** Return the type of the token that results from an invocation
-     *  of this method.
-     *  @exception IllegalActionException If this method or function
-     *   was not found (it is MISSING).
-     */
-    public Type getReturnType() throws IllegalActionException {
-        if(isMissing()) {
-            throw new IllegalActionException("The return type of the method "
-                    + toString() + " cannot be determined because "
-                    + "no matching method was found.");
-        }
-        Class returnType = _method.getReturnType();
-        Type type = ASTPtFunctionNode.convertJavaTypeToTokenType(returnType);
-        return type;
-    }
-
-    /** Return the hash code calculated when this was constructed.
-     *  This ensures that if two instances of this class are equal (as
-     *  determined by the equals() method), then they have the same
-     *  hash code.
-     *  @return A hash code.
-     */
-    public int hashCode() {
-        return _hashcode;
-    }
-
     /** Find method or function with the specified name and argument types.
      *  The last argument is either METHOD or FUNCTION to distinguish the
      *  two cases.  For the METHOD case, the first argument type is class
@@ -396,6 +362,40 @@ public class CachedMethod {
         // Add the method we found, or the placeholder for the missing method.
         add(cachedMethod);
         return cachedMethod;
+    }
+
+    /** Return the conversions the are applied to the arguments of this
+     *  function or method.
+     *  @return The conversions applied to the arguments.
+     */
+    public ArgumentConversion[] getConversions() {
+        return _conversions;
+    }
+
+    /** Return the type of the token that results from an invocation
+     *  of this method.
+     *  @exception IllegalActionException If this method or function
+     *   was not found (it is MISSING).
+     */
+    public Type getReturnType() throws IllegalActionException {
+        if(isMissing()) {
+            throw new IllegalActionException("The return type of the method "
+                    + toString() + " cannot be determined because "
+                    + "no matching method was found.");
+        }
+        Class returnType = _method.getReturnType();
+        Type type = ASTPtFunctionNode.convertJavaTypeToTokenType(returnType);
+        return type;
+    }
+
+    /** Return the hash code calculated when this was constructed.
+     *  This ensures that if two instances of this class are equal (as
+     *  determined by the equals() method), then they have the same
+     *  hash code.
+     *  @return A hash code.
+     */
+    public int hashCode() {
+        return _hashcode;
     }
 
     /** Return the CachedMethod that corresponds to methodName and
@@ -679,6 +679,52 @@ public class CachedMethod {
         return true;
     }
 
+
+    /** Return a conversion to convert the second argument into the class
+     *  given by the first argument. If no such conversion is possible, then
+     *  the returned conversion is IMPOSSIBLE.
+     */
+    protected static ArgumentConversion _getConversion(
+            Class formal, Type actual) {
+        // No conversion necessary.
+        if(formal.isAssignableFrom(actual.getTokenClass()))
+            return IDENTITY;
+
+        // ArrayTokens can be converted to Token[]
+        if(actual instanceof ArrayType &&
+                formal.isArray() &&
+                formal.getComponentType().isAssignableFrom(
+                        ptolemy.data.Token.class))
+            return ARRAYTOKEN;
+        try {
+            // Tokens can be converted to native types.
+            if(formal.isAssignableFrom(
+                       ASTPtFunctionNode.convertTokenTypeToJavaType(actual))) {
+                return NATIVE;
+            }
+        } catch (IllegalActionException ex) {
+            // Ignore..
+            //          ex.printStackTrace();
+        }
+        try {
+            // We have to do this because Java is stupid and doesn't
+            // give us a way to tell if primitive arguments are
+            // acceptable
+            if(formal.isPrimitive()) {
+                Type type = 
+                    ASTPtFunctionNode.convertJavaTypeToTokenType(formal);
+                if(ptolemy.graph.CPO.LOWER ==
+                        TypeLattice.compare(actual, type)) {
+                    return NATIVE;
+                }
+            }
+        } catch (IllegalActionException ex) {
+            // Ignore..
+            //          ex.printStackTrace();
+        }
+        return IMPOSSIBLE;
+    }
+
     /** Return the first method in the specified library that has
      *  the specified name and can be invoked with the specified
      *  argument types. The last argument is an array that is populated
@@ -771,51 +817,6 @@ public class CachedMethod {
         System.arraycopy(matchedConversions, 0,
                 conversions, 0, conversions.length);
         return matchedMethod;
-    }
-
-    /** Return a conversion to convert the second argument into the class
-     *  given by the first argument. If no such conversion is possible, then
-     *  the returned conversion is IMPOSSIBLE.
-     */
-    protected static ArgumentConversion _getConversion(
-            Class formal, Type actual) {
-        // No conversion necessary.
-        if(formal.isAssignableFrom(actual.getTokenClass()))
-            return IDENTITY;
-
-        // ArrayTokens can be converted to Token[]
-        if(actual instanceof ArrayType &&
-                formal.isArray() &&
-                formal.getComponentType().isAssignableFrom(
-                        ptolemy.data.Token.class))
-            return ARRAYTOKEN;
-        try {
-            // Tokens can be converted to native types.
-            if(formal.isAssignableFrom(
-                       ASTPtFunctionNode.convertTokenTypeToJavaType(actual))) {
-                return NATIVE;
-            }
-        } catch (IllegalActionException ex) {
-            // Ignore..
-            //          ex.printStackTrace();
-        }
-        try {
-            // We have to do this because Java is stupid and doesn't
-            // give us a way to tell if primitive arguments are
-            // acceptable
-            if(formal.isPrimitive()) {
-                Type type = 
-                    ASTPtFunctionNode.convertJavaTypeToTokenType(formal);
-                if(ptolemy.graph.CPO.LOWER ==
-                        TypeLattice.compare(actual, type)) {
-                    return NATIVE;
-                }
-            }
-        } catch (IllegalActionException ex) {
-            // Ignore..
-            //          ex.printStackTrace();
-        }
-        return IMPOSSIBLE;
     }
 
     ///////////////////////////////////////////////////////////////////
