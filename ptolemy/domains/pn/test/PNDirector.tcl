@@ -75,8 +75,8 @@ test PNDirector-2.0 {Try a PN inside DE model} {
     # PN Inside DE fails
     # See ptolemy hackers log for 12/15/2004 and 12/16/2004"
     catch {createAndExecute "PNInsideDE.xml"} errMsg
-    regsub {@[a-f0-9]*} $errMsg {@xxxx} r1
-    list $r1
-} {{ptolemy.kernel.util.IllegalActionException:   in .decspbug.MoMLSimpleApplication
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: At the current time, process-oriented domains (PN and CSP) cannot be nested inside firing-based domains (SDF, DE, CT, etc.).
+  in .PNInsideDE.CompositeActor.port
 Because:
-Failed to cast 'ptolemy.domains.de.kernel.DEReceiver@xxxx', which is a 'ptolemy.domains.de.kernel.DEReceiver' to a ProcessReceiver. Note that currently, process domains like PN and CSP do not work inside non process domains.}}
+java.lang.ClassCastException}}
