@@ -36,12 +36,11 @@ import ptolemy.kernel.util.*;
 import ptolemy.graph.*;
 import ptolemy.data.type.Typeable;
 
-import java.util.Iterator;
-
-import java.util.Iterator;
-
+import java.util.Collections;
 import java.util.Enumeration;
-import collections.LinkedList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypedAtomicActor
@@ -56,7 +55,7 @@ appropriate subclass, and the protected method _addPort() to throw an
 exception if its argument is a port that is not of the appropriate
 subclass.
 <p>
-The typeConstraints() method returns the type constraints among
+The typeConstraintList() method returns the type constraints among
 the contained ports.  This base class provides a default implementation
 of this method, which should be suitable for most of the derived classes.
 
@@ -177,7 +176,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     }
 
     /** Return the type constraints of this actor.
-     *  The constraints have the form of an enumeration of inequalities.
+     *  The constraints have the form of a list of inequalities.
      *  In this base class, the implementation of type constraints
      *  is that the type of any input port that does not have its type
      *  declared must be less than or equal to the type of any output port
@@ -185,14 +184,14 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  In addition, this method also collects type constraints from the
      *  contained Typeables (ports, variables, and parameters).
      *  This method is read-synchronized on the workspace.
-     *  @return an Enumeration of Inequality.
+     *  @return a list of Inequality.
      *  @see ptolemy.graph.Inequality
      */
-    public Enumeration typeConstraints()  {
+    public List typeConstraintList()  {
 	try {
 	    _workspace.getReadAccess();
 
-	    LinkedList result = new LinkedList();
+	    List result = new LinkedList();
 	    Enumeration inPorts = inputPorts();
 	    while (inPorts.hasMoreElements()) {
 	        TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
@@ -210,7 +209,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 		            Inequality ineq = new Inequality(
                                     inport.getTypeTerm(),
                                     outport.getTypeTerm());
-			    result.insertLast(ineq);
+			    result.add(ineq);
 			}
 		    }
 		}
@@ -220,22 +219,39 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 	    Iterator ports = portList().iterator();
 	    while (ports.hasNext()) {
 		Typeable port = (Typeable)ports.next();
-		result.appendElements(port.typeConstraints());
+		result.addAll(port.typeConstraintList());
 	    }
 
 	    Iterator attributes = attributeList().iterator();
 	    while (attributes.hasNext()) {
 		Attribute att = (Attribute)attributes.next();
 		if (att instanceof Typeable) {
-		    result.appendElements(((Typeable)att).typeConstraints());
+		    result.addAll(((Typeable)att).typeConstraintList());
 		}
 	    }
 
-	    return result.elements();
+	    return result;
 
 	}finally {
 	    _workspace.doneReading();
 	}
+    }
+
+    /** Return the type constraints of this actor.
+     *  The constraints have the form of an enumeration of inequalities.
+     *  In this base class, the implementation of type constraints
+     *  is that the type of any input port that does not have its type
+     *  declared must be less than or equal to the type of any output port
+     *  that does not have its type declared.
+     *  In addition, this method also collects type constraints from the
+     *  contained Typeables (ports, variables, and parameters).
+     *  This method is read-synchronized on the workspace.
+     *  @return an Enumeration of Inequality.
+     *  @see ptolemy.graph.Inequality
+     *  @deprecated Use typeConstraintList() instead.
+     */
+    public Enumeration typeConstraints()  {
+	return Collections.enumeration(typeConstraintList());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -270,3 +286,4 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     ////                         private variables                 ////
 
 }
+

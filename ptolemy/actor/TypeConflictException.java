@@ -33,8 +33,12 @@ package ptolemy.actor;
 
 import ptolemy.kernel.util.*;
 import ptolemy.data.type.*;
-import collections.LinkedList;
+
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeConflictException
@@ -49,54 +53,56 @@ occurred.
 */
 public class TypeConflictException extends KernelException {
 
-    /** Construct an Exception with an Enumeration of Typeables.
+    /** Construct an Exception with a list of Typeables.
      *  The Typeables are the places where type conflicts
      *  occurred.  The detailed message of this Exception will be
      *  the string "Type conflicts occurred on the following Typeables:",
      *  followed by a list of Typeables and their types. The Typeables
      *  are represented by their names if the Typeable object is a
      *  NamedObj, otherwise, they are represented by the string
-     *  "Unnamed Typeable".  The type is represented by the corresponding
-     *  class name. For example, the type "Int" is represented by
-     *  "ptolemy.data.IntToken" in the message.
+     *  "Unnamed Typeable". 
      *  Each Typeable takes one line, and each line starts
      *  with 2 white spaces to make the message more readable.
-     *  @param typeables an Enumeration of Typeables.
+     *  @param typeables a list of Typeables.
      */
-    public TypeConflictException(Enumeration typeables) {
+    public TypeConflictException(List typeables) {
 	this(typeables, "Type conflicts occurred on the following Typeables:");
     }
 
-    /** Construct an Exception with an Enumeration of Typeables.
+    /** Construct an Exception with a list of Typeables.
      *  The Typeables are the places where type conflicts
      *  occurred.  The detailed message of this Exception will be
      *  the specified message,
      *  followed by a list of Typeables and their types. The Typeables
      *  are represented by their names if the Typeable object is a
      *  NamedObj, otherwise, they are represented by the string
-     *  "Unnamed Typeable".  The type is represented by the corresponding
-     *  class name. For example, the type "Int" is represented by
-     *  "ptolemy.data.IntToken" in the message.
+     *  "Unnamed Typeable".
      *  Each Typeable takes one line, and each line starts
      *  with 2 white spaces to make the message more readable.
-     *  @param typeables an Enumeration of Typeables.
+     *  @param typeables a list of Typeables.
      *  @param detail a message.
      */
-    public TypeConflictException(Enumeration typeables, String detail) {
-	_typeables.appendElements(typeables);
+    public TypeConflictException(List typeables, String detail) {
+	_typeables.addAll(typeables);
 	_setMessage(detail + "\n" + _getTypeablesAndTypes());
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return an Enumeration of Typeables where type conflicts
-     *  occurred. The ports are those specified in the Enumeration
-     *  argument of the constructor.
+    /** Return a list of Typeables where type conflicts occurred.
+     *  @return A List.
+     */
+    public List typeableList() {
+	return _typeables;
+    }
+
+    /** Return an Enumeration of Typeables where type conflicts occurred.
      *  @return An Enumeration.
+     *  @deprecated Use typeableList() instead.
      */
     public Enumeration getTypeables() {
-	return _typeables.elements();
+	return Collections.enumeration(typeableList());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -108,9 +114,9 @@ public class TypeConflictException extends KernelException {
     private String _getTypeablesAndTypes() {
 	try {
 	    String result = "";
-	    Enumeration e = getTypeables();
-	    while(e.hasMoreElements()) {
-	        Typeable typeable = (Typeable)e.nextElement();
+	    Iterator typeables = typeableList().iterator();
+	    while(typeables.hasNext()) {
+	        Typeable typeable = (Typeable)typeables.next();
 	        if (typeable instanceof NamedObj) {
 	            result += "  " + ((NamedObj)typeable).getFullName() + ": ";
 	        } else {
@@ -131,5 +137,6 @@ public class TypeConflictException extends KernelException {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private LinkedList _typeables = new LinkedList();
+    private List _typeables = new LinkedList();
 }
+

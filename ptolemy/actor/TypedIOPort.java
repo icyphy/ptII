@@ -36,9 +36,12 @@ import ptolemy.data.*;
 import ptolemy.data.type.*;
 import ptolemy.graph.*;
 
-import collections.LinkedList;
 import java.lang.reflect.*;
+import java.util.Collections;
 import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypedIOPort
@@ -129,7 +132,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param listener The TypeListener to add.
      */
     public void addTypeListener(TypeListener listener) {
-	_typeListeners.insertLast(listener);
+	_typeListeners.add(listener);
     }
 
     /** Clone this port into the specified workspace. The new port is
@@ -196,7 +199,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param listener The TypeListener to be removed.
      */
     public void removeTypeListener(TypeListener listener) {
-	_typeListeners.removeOneOf(listener);
+	_typeListeners.remove(listener);
     }
 
     /** Send a token to the specified channel, checking the type
@@ -306,7 +309,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     public void setTypeAtLeast(Typeable lesser) {
 	Inequality ineq = new Inequality(lesser.getTypeTerm(),
                 this.getTypeTerm());
-	_constraints.insertLast(ineq);
+	_constraints.add(ineq);
     }
 
     /** Constrain that the type of this port to be equal to or greater
@@ -315,7 +318,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      */
     public void setTypeAtLeast(InequalityTerm typeTerm) {
 	Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
-	_constraints.insertLast(ineq);
+	_constraints.add(ineq);
     }
 
     /** Constrain that the type of this port to be equal to or less
@@ -324,7 +327,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     public void setTypeAtMost(Type type) {
 	Inequality ineq = new Inequality(this.getTypeTerm(),
                 new TypeConstant(type));
-	_constraints.insertLast(ineq);
+	_constraints.add(ineq);
     }
 
     /** Set the type of this port to the type corresponding to the specified
@@ -396,19 +399,29 @@ public class TypedIOPort extends IOPort implements Typeable {
     public void setTypeSameAs(Typeable equal) {
 	Inequality ineq = new Inequality(this.getTypeTerm(),
                 equal.getTypeTerm());
-	_constraints.insertLast(ineq);
+	_constraints.add(ineq);
 	ineq = new Inequality(equal.getTypeTerm(),
                 this.getTypeTerm());
-	_constraints.insertLast(ineq);
+	_constraints.add(ineq);
+    }
+
+    /** Return the type constraints of this port in the form of a
+     *  list of inequalities.
+     *  @return A list of inequalities.
+     *  @see ptolemy.graph.Inequality
+     */
+    public List typeConstraintList() {
+	return _constraints;
     }
 
     /** Return the type constraints of this port in the form of an
      *  enumeration of Inequality.
      *  @return An Enumeration of Inequality.
      *  @see ptolemy.graph.Inequality
+     *  @deprecated Use typeConstraintList() instead.
      */
     public Enumeration typeConstraints() {
-	return _constraints.elements();
+	return Collections.enumeration(typeConstraintList());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -531,9 +544,9 @@ public class TypedIOPort extends IOPort implements Typeable {
 
 	if (_typeListeners.size() > 0) {
 	    TypeEvent event = new TypeEvent(this, oldType, newType);
-	    Enumeration listeners = _typeListeners.elements();
-	    while (listeners.hasMoreElements()) {
-		((TypeListener)listeners.nextElement()).typeChanged(event);
+	    Iterator listeners = _typeListeners.iterator();
+	    while (listeners.hasNext()) {
+		((TypeListener)listeners.next()).typeChanged(event);
 	    }
 	}
     }
@@ -547,10 +560,10 @@ public class TypedIOPort extends IOPort implements Typeable {
     private TypeTerm _typeTerm = null;
 
     // Listeners for type change.
-    private LinkedList _typeListeners = new LinkedList();
+    private List _typeListeners = new LinkedList();
 
     // type constraints
-    private LinkedList _constraints = new LinkedList();
+    private List _constraints = new LinkedList();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

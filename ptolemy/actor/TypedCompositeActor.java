@@ -39,8 +39,8 @@ import ptolemy.graph.*;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Iterator;
-
-import collections.LinkedList;
+import java.util.LinkedList;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
@@ -124,19 +124,18 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  If the type of the ports on one or both ends of a connection is
      *  not declared, the connection is skipped by this method and left
      *  to the type resolution mechanism.
-     *  This method returns an Enumeration of TypedIOPorts that have
+     *  This method returns a List of TypedIOPorts that have
      *  type conflicts. If no type conflict is detected, an empty
-     *  Enumeration is returned.
+     *  list is returned.
      *  If this TypedCompositeActor contains other opaque
      *  TypedCompositeActors, the checkType() methods of the contained
      *  TypedCompositeActors are called to check types further down the
      *  hierarchy.
-     *  @return An Enumeration of TypedIOPort where type conflicts occur.
+     *  @return A list of TypedIOPort where type conflicts occur.
      *  @exception IllegalActionException If this composite actor is not
      *   opaque.
      */
-    public Enumeration checkTypes()
-	    throws IllegalActionException {
+    public List checkTypes() throws IllegalActionException {
 	try {
 	    workspace().getReadAccess();
 
@@ -145,15 +144,14 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                         "Cannot check types on a non-opaque actor.");
             }
 
-	    LinkedList result = new LinkedList();
+	    List result = new LinkedList();
 
 	    Iterator entities = deepEntityList().iterator();
 	    while (entities.hasNext()) {
 	        // check types on contained actors
 	        TypedActor actor = (TypedActor)entities.next();
 		if (actor instanceof TypedCompositeActor) {
-		    result.appendElements(
-                            ((TypedCompositeActor)actor).checkTypes());
+		    result.addAll(((TypedCompositeActor)actor).checkTypes());
 		}
 
 	        // type check from all the ports on the contained actor
@@ -163,9 +161,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 		    TypedIOPort srcport = (TypedIOPort)ports.next();
 		    Receiver[][] receivers = srcport.getRemoteReceivers();
 
-		    Enumeration destPorts = _receiverToPort(receivers);
-		    result.appendElements(
-                            _checkTypesFromTo(srcport, destPorts));
+		    List destPorts = _receiverToPort(receivers);
+		    result.addAll(_checkTypesFromTo(srcport, destPorts));
 		}
 	    }
 
@@ -175,11 +172,11 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	    while (boundaryPorts.hasNext()) {
 		TypedIOPort srcport = (TypedIOPort)boundaryPorts.next();
 		Receiver[][] receivers = srcport.deepGetReceivers();
-		Enumeration destPorts = _receiverToPort(receivers);
-	    	result.appendElements(_checkTypesFromTo(srcport, destPorts));
+		List destPorts = _receiverToPort(receivers);
+	    	result.addAll(_checkTypesFromTo(srcport, destPorts));
 	    }
 
-	    return result.elements();
+	    return result;
 	} finally {
 	    workspace().doneReading();
 	}
@@ -262,7 +259,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
     /** Return the type constraints of this typed composite actor, if it
      *  is opaque.
-     *  The constraints have the form of an enumeration of inequalities.
+     *  The constraints have the form of a list of inequalities.
      *  The constraints come from three sources, the topology, the
      *  contained actors and the contained Typeables. To generate the
      *  constraints based on the topology, this method scans all the
@@ -272,20 +269,19 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  type of the port at the source end of the connection to be less
      *  than or equal to the type at the destination port.
      *  To collect the type constraints from the contained actors,
-     *  This method recursively calls the typeConstraints() method of the
+     *  This method recursively calls the typeConstraintList() method of the
      *  deeply contained actors and combine all the constraints together.
      *  The type constraints from contained Typeables (ports and
-     *  parameters) are collected by calling the typeConstraints() method
+     *  parameters) are collected by calling the typeConstraintList() method
      *  of all the contained Typeables.
      *  <p>
      *  This method is read-synchronized on the workspace.
-     *  @return an Enumerations of Inequality.
+     *  @return a list of Inequality.
      *  @exception IllegalActionException If this composite actor is not
      *   opaque.
      *  @see ptolemy.graph.Inequality
      */
-    public Enumeration typeConstraints()
-	    throws IllegalActionException {
+    public List typeConstraintList() throws IllegalActionException {
 	try {
 	    workspace().getReadAccess();
 
@@ -294,12 +290,12 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                         "Cannot check types on a non-opaque actor.");
             }
 
-	    LinkedList result = new LinkedList();
+	    List result = new LinkedList();
 	    Iterator entities = deepEntityList().iterator();
 	    while (entities.hasNext()) {
 	        // collect type constraints from contained actors
 	        TypedActor actor = (TypedActor)entities.next();
-	        result.appendElements(actor.typeConstraints());
+	        result.addAll(actor.typeConstraintList());
 
 	        // collect constraints on all the ports in the contained
 		// actor to the ports that the actor can send data to.
@@ -308,9 +304,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 		    TypedIOPort srcport = (TypedIOPort)ports.next();
                     Receiver[][] receivers = srcport.getRemoteReceivers();
 
-                    Enumeration destPorts = _receiverToPort(receivers);
-                    result.appendElements(
-                            _typeConstraintsFromTo(srcport, destPorts));
+                    List destPorts = _receiverToPort(receivers);
+                    result.addAll(_typeConstraintsFromTo(srcport, destPorts));
 		}
             }
 
@@ -320,30 +315,43 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
             while (boundaryPorts.hasNext()) {
                 TypedIOPort srcport = (TypedIOPort)boundaryPorts.next();
                 Receiver[][] receivers = srcport.deepGetReceivers();
-                Enumeration destPorts = _receiverToPort(receivers);
-                result.appendElements(
-                        _typeConstraintsFromTo(srcport, destPorts));
+                List destPorts = _receiverToPort(receivers);
+                result.addAll(_typeConstraintsFromTo(srcport, destPorts));
             }
 
 	    // collect constraints from contained Typeables
 	    Iterator ports = portList().iterator();
 	    while (ports.hasNext()) {
 		Typeable port = (Typeable)ports.next();
-		result.appendElements(port.typeConstraints());
+		result.addAll(port.typeConstraintList());
 	    }
 
 	    Iterator attributes = attributeList().iterator();
 	    while (attributes.hasNext()) {
 		Attribute att = (Attribute)attributes.next();
 		if (att instanceof Typeable) {
-		    result.appendElements(((Typeable)att).typeConstraints());
+		    result.addAll(((Typeable)att).typeConstraintList());
 		}
 	    }
 
-	    return result.elements();
+	    return result;
 	} finally {
 	    workspace().doneReading();
 	}
+    }
+
+    /** Return the type constraints of this typed composite actor, if it
+     *  is opaque.
+     *  This method calls typeConstraintList() and convert the result into
+     *  an enumeration.
+     *  @return an Enumerations of Inequality.
+     *  @exception IllegalActionException If this composite actor is not
+     *   opaque.
+     *  @see ptolemy.graph.Inequality
+     *  @deprecated Use typeConstraintList() instead.
+     */
+    public Enumeration typeConstraints() throws IllegalActionException {
+	return Collections.enumeration(typeConstraintList());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -432,18 +440,18 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
     // Check types from a source port to a group of destination ports,
     // assuming the source port is connected to all the ports in the
-    // group of destination ports.  Return an Enumeration of
+    // group of destination ports.  Return an list of
     // TypedIOPorts that have type conflicts.
-    private Enumeration _checkTypesFromTo(TypedIOPort srcport,
-            			          Enumeration destPorts) {
-	LinkedList result = new LinkedList();
+    private List _checkTypesFromTo(TypedIOPort srcport, List destPortList) {
+	List result = new LinkedList();
 
 	boolean isUndeclared = srcport.getTypeTerm().isSettable();
 	if (!isUndeclared) {
 	    // srcport has a declared type.
 	    Type srcDeclared = srcport.getType();
-	    while (destPorts.hasMoreElements()) {
-            	TypedIOPort destport = (TypedIOPort)destPorts.nextElement();
+	    Iterator destPorts = destPortList.iterator();
+	    while (destPorts.hasNext()) {
+            	TypedIOPort destport = (TypedIOPort)destPorts.next();
 		isUndeclared = destport.getTypeTerm().isSettable();
 
 	    	if (!isUndeclared) {
@@ -452,40 +460,41 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 		    int compare = TypeLattice.compare(srcDeclared,
                             			      destDeclared);
 		    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-		    	result.insertLast(srcport);
-		    	result.insertLast(destport);
+		    	result.add(srcport);
+		    	result.add(destport);
 	    	    }
 		}
 	    }
         }
-	return result.elements();
+	return result;
     }
 
     // Return all the ports containing the specified receivers.
-    private Enumeration _receiverToPort(Receiver[][] receivers) {
-	LinkedList result = new LinkedList();
+    private List _receiverToPort(Receiver[][] receivers) {
+	List result = new LinkedList();
 	if (receivers != null) {
 	    for (int i = 0; i < receivers.length; i++) {
 		if (receivers[i] != null) {
 		    for (int j = 0; j < receivers[i].length; j++) {
-			result.insertLast(receivers[i][j].getContainer());
+			result.add(receivers[i][j].getContainer());
 		    }
 		}
 	    }
 	}
-	return result.elements();
+	return result;
     }
 
     // Return the type constraints on all connections starting from the
     // specified source port to all the ports in a group of destination
     // ports.
-    private Enumeration _typeConstraintsFromTo(TypedIOPort srcport,
-            				       Enumeration destPorts) {
-	LinkedList result = new LinkedList();
+    private List _typeConstraintsFromTo(TypedIOPort srcport,
+       				        List destPortList) {
+	List result = new LinkedList();
 
 	boolean srcUndeclared = srcport.getTypeTerm().isSettable();
-	while (destPorts.hasMoreElements()) {
-            TypedIOPort destport = (TypedIOPort)destPorts.nextElement();
+	Iterator destPorts = destPortList.iterator();
+	while (destPorts.hasNext()) {
+            TypedIOPort destport = (TypedIOPort)destPorts.next();
 	    boolean destUndeclared = destport.getTypeTerm().isSettable();
 
 	    if (srcUndeclared || destUndeclared) {
@@ -493,10 +502,11 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 		// declared type, form type constraint.
 		Inequality ineq = new Inequality(srcport.getTypeTerm(),
                         destport.getTypeTerm());
-		result.insertLast(ineq);
+		result.add(ineq);
 	    }
 	}
 
-	return result.elements();
+	return result;
     }
 }
+

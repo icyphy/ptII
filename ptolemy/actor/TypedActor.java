@@ -35,6 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.graph.Inequality;	/* Needed by javadoc */
 
 import java.util.Enumeration;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypedActor
@@ -55,12 +56,22 @@ public interface TypedActor extends Actor {
     ////                         public methods                    ////
 
     /** Return the type constraints of this actor.
+     *  The constraints is a list of inequalities.
+     *  @return a list of Inequality.
+     *  @exception IllegalActionException If type conflict is detected
+     *   during static type checking.
+     *  @see ptolemy.graph.Inequality
+     */
+    public List typeConstraintList() throws IllegalActionException;
+
+    /** Return the type constraints of this actor.
      *  The constraints is an enumeration of inequalities.
      *  @return an enumeration of Inequality.
      *  @exception IllegalActionException If type conflict is detected
      *   during static type checking.
      *  @see ptolemy.graph.Inequality
+     *  @deprecated Use typeConstraintList() instead.
      */
-    public Enumeration typeConstraints()
-	    throws IllegalActionException;
+    public Enumeration typeConstraints() throws IllegalActionException;
 }
+

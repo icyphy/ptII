@@ -58,3 +58,4 @@ public interface TypeListener {
      */
     public void typeChanged(TypeEvent event);
 }
+

@@ -66,24 +66,21 @@ public class TypeEvent {
     ////                         public methods                    ////
 
     /** Return the port whose type is changed.
-     *
-     * @return The port whose type is changed.
+     *  @return The port whose type is changed.
      */
     public TypedIOPort getPort() {
         return _port;
     }
 
     /** Return the old type.
-     *
-     * @return The type of the port before the change.
+     *  @return The type of the port before the change.
      */
     public Type getOldType() {
         return _oldtype;
     }
 
     /** Return the new type.
-     *
-     * @return The type of the port after the change.
+     *  @return The type of the port after the change.
      */
     public Type getNewType() {
         return _newtype;
@@ -96,3 +93,4 @@ public class TypeEvent {
     private Type _oldtype;
     private Type _newtype;
 }
+

@@ -582,19 +582,18 @@ public class Manager extends NamedObj implements Runnable {
             if (_debugging) _debug("Resolving types.");
 
 	    List conflicts = new LinkedList();
-            Enumeration typeConflicts = 
+            List typeConflicts = 
                     ((TypedCompositeActor)_container).checkTypes();
-            while (typeConflicts.hasMoreElements()) {
-                conflicts.add(typeConflicts.nextElement());
-            }
+            conflicts.addAll(typeConflicts);
 
-            Enumeration constraints =
-                ((TypedCompositeActor)_container).typeConstraints();
-	    if (constraints.hasMoreElements()) {
+            List constraintList =
+            		((TypedCompositeActor)_container).typeConstraintList();
+	    if (constraintList.size() > 0) {
                 InequalitySolver solver = new InequalitySolver(
                         TypeLattice.lattice());
-	        while (constraints.hasMoreElements()) {
-                    Inequality ineq = (Inequality)constraints.nextElement();
+            	Iterator constraints = constraintList.iterator();
+	        while (constraints.hasNext()) {
+                    Inequality ineq = (Inequality)constraints.next();
                     solver.addInequality(ineq);
 	        }
 
@@ -620,11 +619,12 @@ public class Manager extends NamedObj implements Runnable {
 		        }
 		    }
                 }
+
 	        // check whether resolved types are acceptable.
                 // They might be, for example, NaT.
-	        Iterator var = solver.variables();
-	        while (var.hasNext()) {
-		    InequalityTerm term = (InequalityTerm)var.next();
+	        Iterator variableTerms = solver.variables();
+	        while (variableTerms.hasNext()) {
+		    InequalityTerm term = (InequalityTerm)variableTerms.next();
 		    if ( !term.isValueAcceptable()) {
 		        conflicts.add(term.getAssociatedObject());
 		    }
@@ -632,10 +632,9 @@ public class Manager extends NamedObj implements Runnable {
 	    }
 
 	    if (conflicts.size() > 0) {
-		throw new TypeConflictException(
-                        Collections.enumeration(conflicts),
-                        "Type conflicts occurred in " + _container.getFullName()
-			+ " on the following Typeables:");
+		throw new TypeConflictException(conflicts,
+                      "Type conflicts occurred in " + _container.getFullName()
+		      + " on the following Typeables:");
 	    }
 	} catch (IllegalActionException iae) {
 	    // this should not happen.
