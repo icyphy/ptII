@@ -65,7 +65,7 @@ public class BackwardCompatibility {
      *  @return the String that describes all the filters and that ends with a
      *  newline.
      */
-    public String toString() {
+    public static String toString() {
         StringBuffer results =
             new StringBuffer("This filter contains the following filters:\n");
         Iterator filters = _filterList.iterator();
