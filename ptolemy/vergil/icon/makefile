@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	AttributeValueIcon.java \
 	BoxedValueIcon.java \
+	BoxedValuesIcon.java \
 	CopyCatIcon.java \
 	EditorIcon.java \
 	IconEditor.java \
