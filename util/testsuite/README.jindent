@@ -12,8 +12,8 @@ this small standalone release available.
 
 The standalone release consists of the following files
 $PTII/util/testsuite/jindent  - The shell script that does the actual work
-$PTII/util/testsuite/jindent.el - Emacs file that does some set up
-$PTII/util/testsuite/ptjavastyle.el - Emacs file that contains the
+$PTII/util/lisp/jindent.el - Emacs file that does some set up
+$PTII/util/lisp/ptjavastyle.el - Emacs file that contains the
 				      Ptolemy II coding style
 
 Installation:
