@@ -105,14 +105,15 @@ public class ODFThread extends ProcessThread {
     public ODFThread(Actor actor, ProcessDirector director) 
             throws IllegalActionException {
         super(actor, director);
-        _director = director;
+        // _director = director;
         _manager = ((CompositeActor)
                 ((NamedObj)actor).getContainer()).getManager();
-        _rcvrTimeList = new LinkedList();
+        // _rcvrTimeList = new LinkedList();
 	_timeKeeper = new TimeKeeper(actor);
-
-        setRcvrPriorities(); 
-	initializeRcvrList();
+	/*
+        _timeKeeper.setRcvrPriorities(); 
+	_timeKeeper.initializeRcvrList();
+	*/
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -122,10 +123,10 @@ public class ODFThread extends ProcessThread {
      *  equal to the time stamp associated with the token most recently
      *  consumed by one of the receivers managed by this ODFThread.
      * @return The current time of this ODFThread.
-     */
     public double getCurrentTime() {
         return _currentTime;
     }
+     */
 
     /** Return the time keeper that keeps time for the actor that this
      *  thread controls.
@@ -142,7 +143,6 @@ public class ODFThread extends ProcessThread {
      * @return The RcvrTimeTriple consisting of the receiver with the
      *  highest priority and lowest nonnegative rcvrTime. If no triples
      *  exist, return null.
-     */
     public synchronized  RcvrTimeTriple getHighestPriorityTriple() {
         double time = -10.0;
 	double firstTime = -10.0;
@@ -176,6 +176,7 @@ public class ODFThread extends ProcessThread {
 	}
 	return highPriorityTriple;
     }
+     */
 
     /** Return the earliest possible time stamp of the next token to be
      *  processed or produced by the actor controlled by this thread.
@@ -184,7 +185,6 @@ public class ODFThread extends ProcessThread {
      * @return The next earliest possible time stamp to be produced by
      *  this actor.
      * @see TimedQueueReceiver
-     */
     public double getNextTime() {
         if( _rcvrTimeList.size() == 0 ) {
             return _currentTime;
@@ -192,12 +192,12 @@ public class ODFThread extends ProcessThread {
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
         return triple.getTime();
     }
+     */
 
     /** Return the active ODFReceiver with the oldest rcvrTime of all 
      *  ODFReceivers contained in the actor that this ODFThread controls.
      * @return ODFReceiver Return the oldest active ODFReceiver managed by
      *  this ODFThread.
-     */
     public synchronized ODFReceiver getFirstRcvr() {
 	if( _rcvrTimeList.size() == 0 ) {
 	    return null;
@@ -205,6 +205,7 @@ public class ODFThread extends ProcessThread {
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
 	return (ODFReceiver)triple.getReceiver();
     }
+     */
 
     /** Return true if the minimum receiver time is unique to a single
      *  receiver. Return true if there are no input receivers. Return
@@ -213,7 +214,6 @@ public class ODFThread extends ProcessThread {
      *  the same actor.
      * @return True if the minimum rcvrTime is unique to a single receiver
      *  or if there are no receivers; otherwise return false.
-     */
     public synchronized boolean hasMinRcvrTime() {
         if( _rcvrTimeList.size() < 2 ) {
             return true;
@@ -227,6 +227,7 @@ public class ODFThread extends ProcessThread {
 	}
 	return true;
     }
+     */
 
     /** Set the current time of this ODFThread. If the new specified
      *  time is less than the previous value for current time, then
@@ -236,7 +237,6 @@ public class ODFThread extends ProcessThread {
      * @param time The new value for current time.
      * @exception IllegalActionException If there is an attempt to
      *  decrease the value of current time.
-     */
     void setCurrentTime(double time) {
 	if( time < _currentTime && time != -1.0 ) {
 	    throw new IllegalArgumentException(
@@ -245,12 +245,13 @@ public class ODFThread extends ProcessThread {
 	}
         _currentTime = time;
     }
+     */
 
     /** FIXME
-     */
     public synchronized void setDelayTime(double delay) { 
 	_delayTime = delay;
     }
+     */
 
     /** Notify actors connected via output ports of the actor that
      *  this thread controls, that this thread's actor will no
@@ -259,8 +260,11 @@ public class ODFThread extends ProcessThread {
      */
     public synchronized void noticeOfTermination() { 
         Actor actor = (Actor)getActor();
-        // ODFActor actor = (ODFActor)getActor();
-	// System.out.println(((NamedObj)actor).getName()+": calling noticeOfTermination()");
+	/*
+        ODFActor actor = (ODFActor)getActor();
+	System.out.println(((NamedObj)actor).getName()+
+                ": calling noticeOfTermination()");
+	*/
 	Enumeration outputPorts = actor.outputPorts();
 	if( outputPorts != null ) {
 	    while( outputPorts.hasMoreElements() ) {
@@ -332,7 +336,6 @@ public class ODFThread extends ProcessThread {
      *  whose priority is set.
      * @exception IllegalActionException If receiver access leads to
      *  an error.
-     */
     public synchronized void setRcvrPriorities() throws IllegalActionException {
         LinkedList listOfPorts = new LinkedList();
         Actor actor = (Actor)getActor();
@@ -364,13 +367,13 @@ public class ODFThread extends ProcessThread {
                     ((ODFReceiver)rcvrs[i][j]).setThread(this);
                     ((ODFReceiver)rcvrs[i][j]).setReceivingTimeKeeper(_timeKeeper);
 
-		    /* Is the following necessary?? */
-		    /*****/
+		    // Is the following necessary?? 
+                    //////
                     RcvrTimeTriple triple = new RcvrTimeTriple(
                             (ODFReceiver)rcvrs[i][j],
 			    _currentTime, currentPriority );
                     updateRcvrList( triple );
-		    /*****/
+                    //////
 
                     currentPriority++;
                 }
@@ -382,13 +385,13 @@ public class ODFThread extends ProcessThread {
 	// Now set the sending time keeper for all connected receivers.
 	//
     }
+     */
 
     /** Initialize the RcvrTimeList of this ODFThread by properly
      *  ordering all triples.
      * @exception IllegalActionException If there is an error
      *  while accessing the receivers contained by the actor
      *  that this ODFThread controls.
-     */
     public void initializeRcvrList() throws IllegalActionException {
         Actor actor = (Actor)getActor();
 	Enumeration enum = actor.inputPorts();
@@ -419,6 +422,7 @@ public class ODFThread extends ProcessThread {
 	    IOPort outport = (IOPort)enum.nextElement();
             Receiver[][] rcvrs = outport.getRemoteReceivers();
 	    if( rcvrs == null ) {
+		// FIXME: Not necessary anymore
 		System.out.println("Null Rcvrs!!!");
 	    } else {
 	    }
@@ -429,9 +433,8 @@ public class ODFThread extends ProcessThread {
 		}
 	    }
 	}
-	/*
-	*/
     }
+     */
 
     /** Update the list of RcvrTimeTriples by positioning the
      *  specified triple. If the specified triple is already
@@ -443,11 +446,11 @@ public class ODFThread extends ProcessThread {
      *  ports of the actor that this thread controls, that this
      *  actor is ceasing execution.
      * @param triple The RcvrTimeTriple to be positioned in the list.
-     */
     public synchronized void updateRcvrList(RcvrTimeTriple triple) {
 	_removeRcvrTriple( triple );
 	_addRcvrTriple( triple );
     }
+     */
 
     /** End the execution of the actor under the control of this
      *  thread. Notify all actors connected to this actor that
@@ -467,7 +470,6 @@ public class ODFThread extends ProcessThread {
     /** Print the contents of the RcvrTimeTriple list contained by
      *  this actor. Use this method for testing purposes only.
      * @deprecated
-     */
     synchronized void printRcvrList() {
 	String name = ((NamedObj)getActor()).getName();
         System.out.println("\n***Print "+name+"'s RcvrList.");
@@ -489,6 +491,7 @@ public class ODFThread extends ProcessThread {
         }
         System.out.println("***End of printRcvrList()\n");
     }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         methods			   ////
@@ -502,7 +505,6 @@ public class ODFThread extends ProcessThread {
      *  _removeRcvrTriple immediately before calling this method if
      *  the RcvrTimeTriple list already contains the triple specified
      *  in the argument.
-     */
     private void _addRcvrTriple(RcvrTimeTriple newTriple) {
         if( _rcvrTimeList.size() == 0 ) {
             _rcvrTimeList.insertAt( 0, newTriple );
@@ -535,9 +537,9 @@ public class ODFThread extends ProcessThread {
             _rcvrTimeList.insertLast( newTriple );
         }
     }
+     */
 
     /** Remove the specified RcvrTimeTriple from the list of triples.
-     */
     private void _removeRcvrTriple(RcvrTimeTriple triple) {
 
         Receiver rcvrToBeRemoved = triple.getReceiver();
@@ -552,24 +554,25 @@ public class ODFThread extends ProcessThread {
 	    }
 	}
     }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
     private Manager _manager;
-    private ProcessDirector _director;
+    // private ProcessDirector _director;
 
     // The _rcvrTimeList stores RcvrTimeTriples and is used to
     // order the receivers according to time and priority.
-    private LinkedList _rcvrTimeList;
+    // private LinkedList _rcvrTimeList;
 
     // The currentTime of the actor that is controlled by this
     // thread is equivalent to the minimum positive rcvrTime of
     // each input receiver.
-    private double _currentTime = 0.0;
+    // private double _currentTime = 0.0;
 
     // The delay time associated with this actor. 
-    private double _delayTime = 0.0;
+    // private double _delayTime = 0.0;
 
     private TimeKeeper _timeKeeper = null;
 
