@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Wireless lib tests
+# Makefile for Ptolemy II WirlessSoundDetection demo
 #
-# @Authors: Christopher Hylands Brooks
+# @Authors: Christopher Hylands
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2003 The Regents of the University of California.
+# @Copyright (c) 1999-2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,9 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/domains/sdf/lib/test
+ME =		ptolemy/domains/sdf/demo/WirelessSoundDetection
 
-# Root of the Ptolemy II directory
+# Root of the Java directory
 ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
@@ -41,52 +40,57 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-# Tcl sources that are part of the testing infrastructure
-TCL_SRCS = \
-	testDefs.tcl
+# Used to build jar files
+PTPACKAGE = 	WirelessSoundDetection
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS =
-# Non-graphical Java tests written in Tcl
-# If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
-JSIMPLE_TESTS = \
-	dummy.tcl
+JSRCS = \
+	SoundSensor.java \
+	SoundTracker.java
 
-# Graphical Java tests that use Tcl.
-# If there are no tests, we use a dummy file so that the script that builds
-# alljtests.tcl works.  If you add a test, be sure to add
-# $(JGRAPHICAL_TESTS) to EXTRA_SRCS
-JGRAPHICAL_TESTS = \
-	dummy.tcl
+OTHER_FILES_TO_BE_JARED = \
+	wirelessSoundDetection.xml \
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) #$(JSIMPLE_TESTS) \
-	#$(JGRAPHICAL_TESTS)
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
+	WirelessSoundDetection.htm \
+	WirelessSoundDetectionVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl \
-	auto
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
+# make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
-JCLASS =	$(JSRCS:%.java=%.class)
+JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
-# to run 'make tests' to run the tests.
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
 
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+install: all
 
-test_java: jclass
+# Run the demo in all its different formats
+# Run demo_application first so that we generate WirelessSoundDetection.xml
+demo: demo_ptolemy demo_vergil
 
-# PtolemyII-wide test definitions.
-KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
+#demo_applet: $(PTCLASSJAR)
+#	CLASSPATH="$(CLASSPATH)" appletviewer WirelessSoundDetection.htm
 
-# These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
-	$(JTCLSH) alljtests.tcl
+#demo_application: $(PTCLASSJAR)
+#	CLASSPATH="$(CLASSPATH)" \
+#	 "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication \
+		-class ptolemy.domains.sdf.demo.WirelessSoundDetection.WirelessSoundDetection
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" WirelessSoundDetection.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" WirelessSoundDetection.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

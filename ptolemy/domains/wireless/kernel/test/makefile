@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Wireless lib tests
+# Makefile for Ptolemy II Wireless kernel tests
 #
 # @Authors: Christopher Hylands Brooks
 #
@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/domains/sdf/lib/test
+ME =		ptolemy/domains/wireless/lib/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..

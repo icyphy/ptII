@@ -1,10 +1,9 @@
-# Load test bed definitions
-#
-# @Author: Christopher Hylands
+# Makefile for PtolemyII Wireless demos 
 #
 # @Version: $Id$
+# @Author: Christopher Hylands Brooks (makefile only)
 #
-# @Copyright (c) 1997-2003 The Regents of the University of California.
+# @Copyright (c) 2003 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,31 +27,45 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-#######################################################################
 
-# Ptolemy II test bed, see $PTII/doc/coding/testing.html for more information.
+ME =		ptolemy/domains/wireless/demo
 
-if [info exist env(PTII)] {
-    set PTII $env(PTII)
-}
+# Keep these alphabetical please.
+DIRS = 		WirelessSoundDetection
 
-if {![info exist PTII]} {
-    # If we are here, then we are probably running jacl and we can't
-    # read environment variables
-    set PTII [file join [pwd] .. .. .. .. ..]
-}
+# Root of Ptolemy II directory
+ROOT =		../../../..
 
-# Load up the test definitions.
-if {[string compare test [info procs test]] == 1} then {
-    source [file join $PTII util testsuite testDefs.tcl]
-} {}
+# Get configuration info
+CONFIG =	$(ROOT)/mk/ptII.mk
+include $(CONFIG)
 
-if {[string compare iterToTokenValues [info procs iterToTokenValues]] != 0} \
-        then {
-    source [file join $PTII util testsuite enums.tcl]
-} {}
+# Used to build jar files
+PTPACKAGE = 	demo
+PTCLASSJAR =
 
-if {[string compare sdfModel [info procs sdfModel]] != 0} \
-        then {
-    source [file join $PTII util testsuite models.tcl]
-} {}
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	WirelessSoundDetection/WirelessSoundDetection.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES = 	$(DIRS) \
+	index.htm
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	doc
+
+all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
+install: jclass jars
+
+demo: subdemo
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk
