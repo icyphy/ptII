@@ -171,6 +171,10 @@ $(PTIIDIST):
 	# Bump up the mod time of $PTII/mk/ptII.mk.in so that if
 	# the user runs make, then configure will run 
 	touch $(PTIIDIST)/mk/ptII.mk.in
+	# Remove apps.xml from the configuration
+	grep -v "apps.xml" \
+		< $(PTIIHOME)/ptolemy/configs/vergilConfiguration.xml \
+		> $(PTIIDIST)/ptolemy/configs/vergilConfiguration.xml
 
 clean_src:
 	rm -f $(PTII_FULL)
