@@ -869,7 +869,7 @@ else
 	AC_MSG_RESULT([$TOOLS_JAR])
 	PTDOCLETS_DIR=doclets
 	# Use curly brackets so PTII gets expanded in the makefile
-	JDOCTAGLET='-tagletpath ${PTII} -taglet doc.doclets.RatingTaglet'
+	JDOCTAGLET='-tagletpath "${PTII}" -taglet doc.doclets.RatingTaglet'
     else	
 	AC_MSG_WARN([Could not find tools.jar.
     PTJAVA_HOME = $PTJAVA_HOME
