@@ -81,9 +81,10 @@ public class PNRamp extends PNStar{
         try {
             for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
                 data = new IntToken(_seed);
-                writeTo(_output, _data);
+                writeTo(_output, data);
                 _seed++;
             }
+            System.out.println("Terminating et al "+this.getName());
         } catch (NoSuchElementException e) {
 	    System.out.println("Terminating "+this.getName());
             return;
