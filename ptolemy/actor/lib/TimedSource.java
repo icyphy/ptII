@@ -75,6 +75,20 @@ public class TimedSource extends Source implements TimedActor {
         super(container, name);
         stopTime = new Parameter(this, "stopTime", new DoubleToken(0.0));
 	stopTime.setTypeEquals(BaseType.DOUBLE);
+
+	_attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"0\" y=\"0\" "
+                + "width=\"40\" height=\"40\" "
+                + "style=\"fill:lightGrey\"/>\n"
+                + "<circle cx=\"20\" cy=\"20\" r=\"17\""
+                + "style=\"fill:white\"/>\n"
+                + "<line x1=\"20\" y1=\"5\" x2=\"20\" y2=\"7\"/>\n"
+                + "<line x1=\"20\" y1=\"34\" x2=\"20\" y2=\"36\"/>\n"
+                + "<line x1=\"5\" y1=\"20\" x2=\"7\" y2=\"20\"/>\n"
+                + "<line x1=\"34\" y1=\"20\" x2=\"36\" y2=\"20\"/>\n"
+                + "<line x1=\"20\" y1=\"12\" x2=\"20\" y2=\"20\"/>\n"
+                + "<line x1=\"20\" y1=\"20\" x2=\"31.26\" y2=\"13.5\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
