@@ -34,17 +34,23 @@ package ptolemy.domains.de.kernel;
 import java.util.HashSet;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TimedDirector;
+import ptolemy.actor.lib.Sink;
+import ptolemy.actor.lib.Source;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
+import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -63,7 +69,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.math.Utilities;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -200,8 +205,7 @@ import ptolemy.math.Utilities;
    @see DEReceiver
    @see ptolemy.actor.util.CalendarQueue
 */
-public class DEDirector extends Director 
-    implements TimedDirector {
+public class DEDirector extends Director implements TimedDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -297,6 +301,7 @@ public class DEDirector extends Director
      *  The default value is 1e-10, of type DoubleToken.
      */
     public Parameter timeResolution;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -325,7 +330,15 @@ public class DEDirector extends Director
             throws IllegalActionException {
         // FIXME: how to handle the changes of the other parameters?
         // Do they need private/protected variables?
-        if (attribute == stopWhenQueueIsEmpty) {
+        if (attribute == startTime) {
+            double startTimeValue = 
+                ((DoubleToken)startTime.getToken()).doubleValue();
+            _startTime = new Time(this, startTimeValue);
+        } else if (attribute == stopTime) {
+            double stopTimeValue = 
+                ((DoubleToken)stopTime.getToken()).doubleValue();
+            _stopTime = new Time(this, stopTimeValue);
+        } else if (attribute == stopWhenQueueIsEmpty) {
             _stopWhenQueueIsEmpty =
                 ((BooleanToken)stopWhenQueueIsEmpty.getToken()).booleanValue();
         } else if (attribute == synchronizeToRealTime) {
@@ -335,9 +348,9 @@ public class DEDirector extends Director
         } else if (attribute == timeResolution) {
             double value = ((DoubleToken)timeResolution.getToken()).
                 doubleValue();
-            if (value < 0.0) {
+            if (value <= 0.0) {
                 throw new IllegalActionException(this,
-                        "Cannot set a negative time resolution.");
+                        "Cannot set a negative or zero time resolution.");
             }
             setTimeResolution(value);
         } else {
@@ -503,12 +516,14 @@ public class DEDirector extends Director
             synchronized(_eventQueue) {
                 if (!_eventQueue.isEmpty()) {
                     DEEvent next = _eventQueue.get();
-                    if (next.timeStamp() > getCurrentTime()) {
+                    if (next.timeStamp().compareTo(getCurrentTime()) > 0) {
                         // If the next event is in the future,
                         // proceed to postfire().
                         break;
-                    } else if (next.timeStamp() != Double.NEGATIVE_INFINITY
-                            && next.timeStamp() < getCurrentTime()) {
+                    } else if (
+                        next.timeStamp().compareTo(
+                            timeConstants.NEGATIVE_INFINITY) != 0
+                        && next.timeStamp().compareTo(getCurrentTime()) < 0) {
                         throw new InternalErrorException(
                                 "fire(): the time stamp of the next event "
                                 + next.timeStamp() + " is smaller than the "
@@ -535,7 +550,7 @@ public class DEDirector extends Director
      *  @param time The scheduled time to fire.
      *  @exception IllegalActionException If the specified time is in the past.
      */
-    public void fireAt(Actor actor, double time)
+    public void fireAt(Actor actor, Time time)
             throws IllegalActionException {
 
         if (_eventQueue == null) {
@@ -592,7 +607,7 @@ public class DEDirector extends Director
             // Double.NEGATIVE_INFINITY.
             // FIXME: I do not think this is a good design. If multi-threaded
             // simulation is necessary, DDE domain is a better choice. 
-            _enqueueEvent(actor, Double.NEGATIVE_INFINITY);
+            _enqueueEvent(actor, timeConstants.NEGATIVE_INFINITY);
             _eventQueue.notifyAll();
         }
     }
@@ -602,9 +617,9 @@ public class DEDirector extends Director
      *  @param time The scheduled time to fire.
      *  @exception IllegalActionException If the specified time is in the past.
      */
-    public void fireAtRelativeTime(Actor actor, double time)
+    public void fireAtRelativeTime(Actor actor, Time time)
             throws IllegalActionException {
-          fireAt(actor, time + getCurrentTime());
+          fireAt(actor, time.add(getCurrentTime()));
     }
 
     /** Return the event queue.
@@ -621,7 +636,7 @@ public class DEDirector extends Director
      *  time composite actor is embedded in the DE domain.
      *  @return The next larger time on the event queue.
      */
-    public double getNextIterationTime() {
+    public Time getNextIterationTime() {
         return _eventQueue.get().timeStamp();
     }
 
@@ -636,32 +651,20 @@ public class DEDirector extends Director
         return _realStartTime;
     }
 
-    /** Return the time of the start time in the model as set by the
-     *  <i>startTime</i> parameter.
-     *  @return The start time of the execution.
+    /** Return the start time parameter value. This method is final
+     *  for performance reason.
+     *  @return the start time.
      */
-    public double getStartTime() {
-        try {
-            return ((DoubleToken)(startTime.getToken())).doubleValue();
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(
-                    "Cannot read startTime parameter:\n" +
-                    e.getMessage());
-        }
+    public final Time getStartTime() {
+        return _startTime;
     }
 
-    /** Return the stop time of the execution as set by the <i>stopTime</i>
-     *  parameter.
-     *  @return The stop time of the execution.
+    /** Return the stop time. This method is final
+     *  for performance reason.
+     *  @return the stop time.
      */
-    public double getStopTime() {
-        try {
-            return ((DoubleToken)(stopTime.getToken())).doubleValue();
-        } catch (IllegalActionException e) {
-            throw new InternalErrorException(
-                    "Cannot read stopTime parameter:\n" +
-                    e.getMessage());
-        }
+    public final Time getStopTime() {
+        return _stopTime;
     }
 
     /** Invoke the initialize() method of the super class. 
@@ -731,7 +734,7 @@ public class DEDirector extends Director
         // If more actors will be fired, but the current time exceeds 
         // the stop time, stop the model.
         if (_noMoreActorsToFire && (stop || 
-            getCurrentTime() == getStopTime())) {
+            getCurrentTime().compareTo(getStopTime()) == 0 )) {
             _exceedStopTime = true;
             return false;
         } else if (_exceedStopTime) {
@@ -780,16 +783,16 @@ public class DEDirector extends Director
         // event detection or other things.            
 
         CompositeActor container = (CompositeActor)getContainer();
-        double outsideCurrentTime = ((Actor)container).
+        Time outsideCurrentTime = ((Actor)container).
             getExecutiveDirector().getCurrentTime();
-        double nextEventTime = Double.MAX_VALUE;
+        Time nextEventTime = timeConstants.MAX_VALUE;
         if (!_eventQueue.isEmpty()) {
             nextEventTime =  _eventQueue.get().timeStamp();
         }
 
         // A nextEventTime of Double.NEGATIVE_INFINITY is used to represent
         // a firing as soon as possible.
-        if (nextEventTime == Double.NEGATIVE_INFINITY) {
+        if (nextEventTime.equalTo(timeConstants.NEGATIVE_INFINITY)) {
             nextEventTime = outsideCurrentTime;
             return true;
         }
@@ -798,12 +801,12 @@ public class DEDirector extends Director
         // in the queue, then there's something wrong with the outside
         // domain.
         
-        if (outsideCurrentTime > nextEventTime) {
+        if (outsideCurrentTime.compareTo(nextEventTime) > 0) {
             throw new IllegalActionException(this,
                     "Prefire method: Missed a firing at "
                     + nextEventTime + "."
                     + " The outside time is already " +
-                    + outsideCurrentTime + ".");
+                    + outsideCurrentTime.getTimeValue() + ".");
         }
 
         // Now we check if there's any external input.
@@ -824,7 +827,7 @@ public class DEDirector extends Director
             return true;
         } else {
             // If there is no external input
-            if (nextEventTime == outsideCurrentTime) {
+            if (nextEventTime.equalTo(outsideCurrentTime)) {
                 // If there is an internal event scheduled to happen 
                 // at the current time, it is the right time to fire.
                 setCurrentTime(nextEventTime);
@@ -858,7 +861,7 @@ public class DEDirector extends Director
      *   container or one of the deeply contained actors throws it.
      */
     public void preinitialize() throws IllegalActionException {
-        _eventQueue = new DECQEventQueue(
+        _eventQueue = new DECQEventQueue(this,
                 ((IntToken)minBinCount.getToken()).intValue(),
                 ((IntToken)binCountFactor.getToken()).intValue(),
                 ((BooleanToken)isCQAdaptive.getToken()).booleanValue());
@@ -1022,8 +1025,10 @@ public class DEDirector extends Director
                     // An embedded director should process events 
                     // that only happen at the current time.
                     // If the event is in the past, that is an error.
-                    if (nextEvent.timeStamp() != Double.NEGATIVE_INFINITY &&
-                        nextEvent.timeStamp() < getCurrentTime()) {
+                    if (!nextEvent.timeStamp().equalTo(
+                        timeConstants.NEGATIVE_INFINITY) 
+                        &&
+                        nextEvent.timeStamp().compareTo(getCurrentTime()) < 0){
                         //missed an event
                         throw new InternalErrorException(
                             "Fire: Missed an event: the next event time "
@@ -1032,7 +1037,7 @@ public class DEDirector extends Director
                     }
                     // If the event is in the future, it is ignored
                     // and will be processed later.
-                    if (nextEvent.timeStamp() > getCurrentTime()) {
+                    if (nextEvent.timeStamp().compareTo(getCurrentTime()) > 0) {
                         //reset the next event
                         nextEvent = null;
                         // jump out of the loop: LOOPLABEL::GetNextEvent
@@ -1115,7 +1120,7 @@ public class DEDirector extends Director
                 // If the actorToFire is not set yet, 
                 // find the actor associated with the next event,
                 // and update the current time with the event time.
-                double currentTime;
+                Time currentTime;
                 // If not synchronized to the real time.
                 if (!_synchronizeToRealTime) {
                     currentEvent = (DEEvent)_eventQueue.get();
@@ -1139,11 +1144,11 @@ public class DEDirector extends Director
                             // minimum double value.
                             double elapsedTimeInSeconds =
                                 ((double)elapsedTime)/1000.0;
-                            if (currentTime <= elapsedTimeInSeconds) {
+                            if (currentTime.getTimeValue() <= elapsedTimeInSeconds) {
                                 break;
                             }
-                            long timeToWait = (long)((currentTime 
-                                - elapsedTimeInSeconds)*1000.0);
+                            long timeToWait = (long)(currentTime.subtract(
+                                elapsedTimeInSeconds).getTimeValue() * 1000.0);
                             if (timeToWait > 0) {
                                 if (_debugging) {
                                     _debug("Waiting for real time to pass: "
@@ -1172,7 +1177,7 @@ public class DEDirector extends Director
                     // FIXME: is the special NEGATIVE_INFINITY time
                     // necessary?
                     // Deal with a fireAtCurrentTime event.
-                    if (currentTime == Double.NEGATIVE_INFINITY) {
+                    if (currentTime.equalTo(timeConstants.NEGATIVE_INFINITY)) {
                         currentTime = getCurrentTime();
                     }
 
@@ -1203,7 +1208,7 @@ public class DEDirector extends Director
 
                 _microstep = currentEvent.microstep();
 
-                if (currentTime > getStopTime()) {
+                if (currentTime.compareTo(getStopTime()) > 0) {
                     if (_debugging) {
                         _debug("Current time has passed the stop time.");
                     }
@@ -1225,14 +1230,25 @@ public class DEDirector extends Director
                     receiver._triggerEvent(currentEvent.token());
                 }
             } else {
+                
+                // NOTE: The depth calculation for pure events makes 
+                // a different depth than the normal token events.
+                // When dequeuing events, this difference has to be considered.
+                  
                 // Already seen an event.
                 // Check whether the next event has the same time tag.
                 // If so, the destination actor should
                 // be the same, but check anyway.
                 // FIXME: this will never be true for non-strict actors...
-                if ((nextEvent.timeStamp() == Double.NEGATIVE_INFINITY ||
-                     nextEvent.hasTheSameTagAndDepthAs(currentEvent)) 
-                     && nextEvent.actor() == currentEvent.actor()) {
+                boolean hasPureEvent = (nextEvent.receiver() == null) 
+                    || (currentEvent.receiver() == null);
+                boolean theSameActor = nextEvent.actor().equals(
+                    currentEvent.actor());
+                if (nextEvent.timeStamp()
+                        .equalTo(timeConstants.NEGATIVE_INFINITY) ||
+                     nextEvent.hasTheSameTagAndDepthAs(currentEvent) ||
+                     (nextEvent.hasTheSameTagAs(currentEvent) && 
+                        hasPureEvent && theSameActor)){
 
                     // Consume the event from the queue.
                     _eventQueue.take();
@@ -1289,24 +1305,19 @@ public class DEDirector extends Director
      *  @param time The time stamp of the "pure event".
      *  @exception IllegalActionException If the time argument is in the past.
      */
-    protected void _enqueueEvent(Actor actor, double time)
+    protected void _enqueueEvent(Actor actor, Time time)
             throws IllegalActionException {
 
         if (_eventQueue == null || 
             (_disabledActors != null && _disabledActors.contains(actor))) 
             return;
         
-        if (time != Double.NEGATIVE_INFINITY) {
-            // Adjust time according time resolution
-            time = Utilities.round(time, getTimeResolution());
-        }
-        
         // Adjust the microdept
         int microstep = 0;
-        if (time == getCurrentTime()) {
+        if (time.compareTo(getCurrentTime()) == 0) {
             microstep = _microstep + 1;
-        } else if (time != Double.NEGATIVE_INFINITY &&
-                time < getCurrentTime()) {
+        } else if (!time.equalTo(timeConstants.NEGATIVE_INFINITY) &&
+                time.compareTo(getCurrentTime()) < 0) {
             throw new IllegalActionException((Nameable)actor,
                     "Attempt to queue an event in the past:"
                     + " Current time is " + getCurrentTime()
@@ -1315,7 +1326,7 @@ public class DEDirector extends Director
         // Calculate the depth of the pure event
         // The depth is calculated in the following way:
         // 1. Find the depth of the actor that requested refirng.
-        // 2. Find the minimun of the depths of the actors that receive
+        // 2. Find the minimum of the depths of the actors that receive
         //    tokens from the above actor. (The smaller depth, the
         //    higher priority.)
         // 3. Choose the smaller one of the above two depths 
@@ -1378,12 +1389,7 @@ public class DEDirector extends Director
      *  @exception IllegalActionException If the delay is negative.
      */
     protected void _enqueueEvent(DEReceiver receiver, Token token,
-            double time) throws IllegalActionException {
-
-        if (time != Double.NEGATIVE_INFINITY) {
-            // Adjust time according time resolution
-            time = Utilities.round(time, getTimeResolution());
-        }
+            Time time) throws IllegalActionException {
 
         Actor actor = (Actor) receiver.getContainer().getContainer();
         if (_eventQueue == null || 
@@ -1393,8 +1399,8 @@ public class DEDirector extends Director
         int microstep = 0;
         if (time == getCurrentTime()) {
             microstep = _microstep;
-        } else if (time != Double.NEGATIVE_INFINITY &&
-                time < getCurrentTime()) {
+        } else if (!time.equalTo(timeConstants.NEGATIVE_INFINITY) &&
+                time.compareTo(getCurrentTime()) < 0) {
             Nameable destination = receiver.getContainer();
             throw new IllegalActionException(destination,
                     "Attempt to queue an event in the past: "
@@ -1528,6 +1534,39 @@ public class DEDirector extends Director
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    /** Categorize the given list of actors into three kinds: sinks, sources,
+     *  and transformers. 
+     *  @param actorList The given list of actors.
+     */
+    private void _categorizeActors(List actorList) {
+        Iterator actors = actorList.listIterator();
+        while (actors.hasNext()) {
+            Actor actor = (Actor) actors.next();
+            if (actor instanceof AtomicActor) {
+                // Atomic actors have type.
+                if (actor instanceof Source) {
+                    _sourceActors.add(actor);
+                } else if (actor instanceof Sink) {
+                    _sinkActors.add(actor);
+                } else {
+                    _otherActors.add(actor);
+                }
+            } else {
+                // Composite actors are categorized based
+                // on their ports
+                int numberOfInputs = actor.inputPortList().size();
+                int numberOfOutputs = actor.outputPortList().size();
+                if (numberOfInputs == 0) {
+                    _sourceActors.add(actor);
+                } else if (numberOfOutputs == 0) {
+                    _sinkActors.add(actor);
+                } else {
+                    _otherActors.add(actor);
+                }
+            }
+        }
+    }
+
     // Construct a directed graph with the nodes representing actors and
     // directed edges representing dependencies.  The directed graph
     // is returned.
@@ -1574,15 +1613,32 @@ public class DEDirector extends Director
                     "Found zero delay loop including: " + names.toString());
         }
 
-        // First, include all actors as nodes in the graph.
-        // get all the contained actors.
-        Iterator actors = castContainer.deepEntityList().iterator();
-        while (actors.hasNext()) {
-            dag.addNodeWeight(actors.next());
+        // First, get all the contained actors
+        List embeddedActors = castContainer.deepEntityList();
+
+        // initialize the list of actors
+        _sinkActors = new LinkedList();
+        _sourceActors = new LinkedList();
+        _otherActors = new LinkedList();
+        
+        _categorizeActors(embeddedActors);
+
+        // and add them into the actors graph
+        Iterator sourceActors = _sourceActors.iterator();
+        while (sourceActors.hasNext()) {
+            dag.addNodeWeight(sourceActors.next());
+        }
+        Iterator otherActors = _otherActors.iterator();
+        while (otherActors.hasNext()) {
+            dag.addNodeWeight(otherActors.next());
+        }
+        Iterator sinkActors = _sinkActors.iterator();
+        while (sinkActors.hasNext()) {
+            dag.addNodeWeight(sinkActors.next());
         }
 
         // Next, create the directed edges by iterating the actors again.
-        actors = castContainer.deepEntityList().iterator();
+        Iterator actors = embeddedActors.iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             // Get the FunctionDependency attribute of current actor.
@@ -1715,7 +1771,7 @@ public class DEDirector extends Director
     // values.
     private void _initParameters() {
         try {
-            startTime = new Parameter(this, "startTime");
+            startTime = new Parameter(this, "startTime"); 
             startTime.setExpression("0.0");
             startTime.setTypeEquals(BaseType.DOUBLE);
 
@@ -1724,7 +1780,7 @@ public class DEDirector extends Director
             stopTime.setTypeEquals(BaseType.DOUBLE);
 
             timeResolution = new Parameter(this, "timeResolution",
-                    new DoubleToken(getTimeResolution()));
+                    new DoubleToken("1e-10"));
             timeResolution.setTypeEquals(BaseType.DOUBLE);
 
             stopWhenQueueIsEmpty = new Parameter(this, "stopWhenQueueIsEmpty",
@@ -1755,5 +1811,14 @@ public class DEDirector extends Director
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    // Local copies of parameters.
+    private Time _startTime;
+    private Time _stopTime;
+    // Sink actors
+    private List _sinkActors;
+    // Source actors
+    private List _sourceActors;
+    // Actors other than sink and source.
+    private List _otherActors;
 
 }
