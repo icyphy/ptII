@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Fri Jan 23 16:46:28 2004 by cxh]-
+# -[Fri Jan 23 16:57:45 2004 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -25,7 +25,7 @@ complexityfile=/tmp/coveragerating.complexity
 
 testing=no
 # Uncomment next line if testing
-# testing=yes
+testing=yes
 
 # Create a file that has three records on each line:
 #  1. The filename    
@@ -215,7 +215,7 @@ awk '{
 	    }
 
 		    # If the file is in the top 95%, we print it in red
-		    if (percentComplexityRank <= 95) {
+		    if (percentComplexityRank >= 95) {
 			printf("<td><font color=#ff0000>%s %2d%%</font></td>", complexityValue, percentComplexityRank) 
 		    } else {
 			printf("<td>%s %2d%% </td>", complexityValue, percentComplexityRank) 
