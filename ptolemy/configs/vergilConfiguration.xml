@@ -94,6 +94,7 @@
       <property name="DE" class="ptolemy.domains.de.kernel.DEDirector"/>
       <property name="CSP" class="ptolemy.domains.csp.kernel.CSPDirector"/>
       <property name="DDE" class="ptolemy.domains.dde.kernel.DDEDirector"/>
+      <property name="FSM" class="ptolemy.domains.fsm.kernel.FSMDirector"/>
       <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
          <property name="ODESolver">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
