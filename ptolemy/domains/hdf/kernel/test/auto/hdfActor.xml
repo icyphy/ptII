@@ -4,6 +4,10 @@
 <entity name="hdfActor" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 123, 815, 511}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
     <property name="HDF Director" class="ptolemy.domains.hdf.kernel.HDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
@@ -17,17 +21,13 @@
         </property>
         <property name="scheduleCacheSize" class="ptolemy.data.expr.Parameter" value="100">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="90.0, 40.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 65.0">
         </property>
-    </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 128, 815, 509}}">
-    </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <entity name="HDFActor" class="ptolemy.domains.hdf.kernel.HDFActor">
         <property name="rate" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 175.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -51,7 +51,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 150.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 165.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -72,7 +72,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 240.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 240.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -85,21 +85,17 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 3, 4, 5, 6}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 175.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -125,5 +121,5 @@
     <link port="HDFActor.rate" relation="relation2"/>
     <link port="Ramp.output" relation="relation"/>
     <link port="Ramp2.output" relation="relation2"/>
-    <link port="Test.input" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
 </entity>
