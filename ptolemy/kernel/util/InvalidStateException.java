@@ -131,7 +131,7 @@ public class InvalidStateException extends RuntimeException {
     /** Get the name of a Nameable object.
      *  If the argument is a null reference, return an empty string.
      */
-    protected String getName(Nameable obj) {
+    protected String _getName(Nameable obj) {
         String name;
         if (obj == null) {
             return "";
@@ -148,7 +148,7 @@ public class InvalidStateException extends RuntimeException {
      *  getFullName(), if it is defined, and resorts to getName() if it is
      *  not.  If the argument is a null reference, return an empty string.
      */
-    protected String getFullName(Nameable obj) {
+    protected String _getFullName(Nameable obj) {
         String name;
         if (obj == null) {
             return "";
@@ -164,7 +164,7 @@ public class InvalidStateException extends RuntimeException {
 
     /** Sets the error message to the specified string.
      */  
-    protected void setMessage(String msg) {
+    protected void _setMessage(String msg) {
         _message = msg;
     }
     
