@@ -66,7 +66,8 @@ import java.util.Map;
 A plugin for the SDF domain. In SDF, a CAL actor is valid if:
 <p>
 <ol>
-<li> The rates of each action are statically computable, and these rates are the same for each action.
+<li> The rates of each action are statically computable, and these
+rates are the same for each action.
 <li> There is at least one unguarded action.
 </ol>
 
@@ -158,21 +159,25 @@ public class SDF extends AbstractDDI implements DDI {
      */
     public void setupActor() {
         // use the 0th element because the rates are all the same.
-        annotatePortsWithRates(_ptActor.inputPortList(), _actionRates[0].getInputRates(),  "tokenConsumptionRate");
-        annotatePortsWithRates(_ptActor.outputPortList(), _actionRates[0].getOutputRates(),  "tokenProductionRate");
+        annotatePortsWithRates(_ptActor.inputPortList(),
+                _actionRates[0].getInputRates(),  "tokenConsumptionRate");
+        annotatePortsWithRates(_ptActor.outputPortList(),
+                _actionRates[0].getOutputRates(),  "tokenProductionRate");
         annotatePortsWithInitProductionRates();
         _ptActor.getDirector().invalidateSchedule();
     }
 
     /*
-      1. figure out which initializer to fire (if we've gotten this far, rates and guards
-      are both statically computable)
+      1. figure out which initializer to fire (if we've gotten this
+      far, rates and guards are both statically computable)
       2. annotate ports with the correct rates.
     */
+
     private void annotatePortsWithInitProductionRates() {
         int i = _selectInitializer();
         if (i != -1)
-            annotatePortsWithRates(_ptActor.outputPortList(), _initializerRates[i].getOutputRates(),
+            annotatePortsWithRates(_ptActor.outputPortList(),
+                    _initializerRates[i].getOutputRates(),
                     "tokenInitProduction");
         return;
     }
@@ -191,25 +196,36 @@ public class SDF extends AbstractDDI implements DDI {
             Object o = ioPort.getAttribute(varName);
 
             if (o != null) {
-                if (o instanceof Variable)
+                if (o instanceof Variable) {
                     try {
                         ((Variable) o).setContainer(null);
                     } catch (Exception e) {
-                        throw new DDIException("In IOPort " + ioPort.getName() + " couldn't clear Variable " +
-                                ((Variable) o).getName());
+                        throw new DDIException("In IOPort " + ioPort.getName()
+                                + " couldn't clear Variable "
+                                + ((Variable) o).getName());
                     }
-                else throw new DDIException("IOPort " + ioPort.getName() +
-                        " contains An attribute named " + varName + " that is not a Variable...this shouldn't happen.");
+                } else {
+                    throw new DDIException("IOPort " + ioPort.getName()
+                            + " contains An attribute named " + varName
+                            + " that is not a Variable... " 
+                            + "this shouldn't happen.");
+                }
             }
 
             try {
-                new Variable(ioPort, varName, new IntToken(((Integer) rateMap.get(ioPort.getName())).intValue()));
-            } catch (IllegalActionException e) {
-                // this shouldn't happen. ioPort can definitely hold a variable, and it's guaranteed to be non-null.
-                throw new DDIException("This shouldn't happen", e);
-            } catch (NameDuplicationException e) {
-                // this shouldn't happen either, as this method is the only thing attaching Variables to ports.
-                throw new DDIException("This shouldn't happen", e);
+                new Variable(ioPort, varName,
+                        new IntToken(((Integer) rateMap
+                                .get(ioPort.getName())).intValue()));
+            } catch (IllegalActionException ex) {
+                throw new DDIException("This shouldn't happen"
+                        + "ioPort can definitely hold a "
+                        + "variable, and it's guaranteed to be non-null",
+                        ex);
+
+            } catch (NameDuplicationException ex2) {
+                throw new DDIException("This shouldn't happen, "
+                        + "as this method is the only thing attaching "
+                        + "Variables to ports", ex2);
             }
         }
     }
@@ -255,8 +271,8 @@ public class SDF extends AbstractDDI implements DDI {
     }
 
     /**
-     * Verify that the rates of each action are statically computable, and if so, compute them, storing the
-     * results in _actionRates.
+     * Verify that the rates of each action are statically computable,
+     * and if so, compute them, storing the results in _actionRates.
      * @return
      */
     private boolean computeActionRates() {
@@ -273,7 +289,8 @@ public class SDF extends AbstractDDI implements DDI {
                 int repeatVal = computeRepeatExpr(repeatExpr, action);
                 if (repeatVal == -1)
                     return false;
-                ars.addInputRate(inputPattern.getPortname(), inputPattern.getVariables().length * repeatVal);
+                ars.addInputRate(inputPattern.getPortname(),
+                        inputPattern.getVariables().length * repeatVal);
             }
 
             OutputExpression [] outputexps = action.getOutputExpressions();
@@ -283,7 +300,8 @@ public class SDF extends AbstractDDI implements DDI {
                 int repeatVal = computeRepeatExpr(repeatExpr, action);
                 if (repeatVal == -1)
                     return false;
-                ars.addOutputRate(outputexp.getPortname(), outputexp.getExpressions().length * repeatVal);
+                ars.addOutputRate(outputexp.getPortname(),
+                        outputexp.getExpressions().length * repeatVal);
             }
             _actionRates[i] = ars;
         }
@@ -291,8 +309,8 @@ public class SDF extends AbstractDDI implements DDI {
     }
 
     /**
-     * Verify that the rates of each action are statically computable, and if so, compute them, storing the
-     * results in _actionRates.
+     * Verify that the rates of each action are statically computable,
+     * and if so, compute them, storing the results in _actionRates.
      * @return
      */
     private boolean computeInitializerRates() {
@@ -309,7 +327,8 @@ public class SDF extends AbstractDDI implements DDI {
                 int repeatVal = computeRepeatExpr(repeatExpr, action);
                 if (repeatVal == -1)
                     return false;
-                ars.addInputRate(inputPattern.getPortname(), inputPattern.getVariables().length * repeatVal);
+                ars.addInputRate(inputPattern.getPortname(),
+                        inputPattern.getVariables().length * repeatVal);
             }
 
             OutputExpression [] outputexps = action.getOutputExpressions();
@@ -319,7 +338,8 @@ public class SDF extends AbstractDDI implements DDI {
                 int repeatVal = computeRepeatExpr(repeatExpr, action);
                 if (repeatVal == -1)
                     return false;
-                ars.addOutputRate(outputexp.getPortname(), outputexp.getExpressions().length * repeatVal);
+                ars.addOutputRate(outputexp.getPortname(),
+                        outputexp.getExpressions().length * repeatVal);
             }
             _initializerRates[i] = ars;
         }
@@ -327,11 +347,14 @@ public class SDF extends AbstractDDI implements DDI {
     }
 
     /**
-     * Compute the value of a repeat expression. If this is not statically possible, return -1.
+     * Compute the value of a repeat expression. If this is not
+     * statically possible, return -1.
      *
-     * In order for the repeat expression to be statically computable, its value must only depend on global variables
-     * or actor parameters. In other words, any free variables in a repeat expression cannot be bound by action state
-     * variables, port variables, or actor state variables.
+     * <p>In order for the repeat expression to be statically computable,
+     * its value must only depend on global variables or actor
+     * parameters. In other words, any free variables in a repeat
+     * expression cannot be bound by action state variables, port
+     * variables, or actor state variables.
      * @param repeatExpr
      * @param action
      * @return
@@ -440,21 +463,27 @@ public class SDF extends AbstractDDI implements DDI {
                 _clearInputChannels();
             }
         } catch (Exception e) {
-            throw new IllegalActionException(_ptActor, e, "Could not fire CAL actor '" + _actor.getName() + "': " + e.getMessage());
+            throw new IllegalActionException(_ptActor, e,
+                    "Could not fire CAL actor '" + _actor.getName() + "': "
+                    + e.getMessage());
         }
     }
 
     /**
-     * _selectAction picks an action for which the actor interpreter evaluates the guard to true. Note that this does
-     * not necessarily mean that <em>all</em> preconditions for firing are satisfied---the amount of "prechecking"
-     * depends on the model of computation ddi. (FIXMELATER)
+     * _selectAction picks an action for which the actor interpreter
+     * evaluates the guard to true. Note that this does not
+     * necessarily mean that <em>all</em> preconditions for firing are
+     * satisfied---the amount of "prechecking" depends on the model of
+     * computation ddi. (FIXMELATER)
      *
-     * @return The action number that was selected, a value <0 if no action was selected.
+     * @return The action number that was selected, a value <0 if no
+     * action was selected.
      */
     private int  _selectAction() {
         Action [] actions = _actor.getActions();
         for (int i = 0; i < actions.length; i++) {
-            _actorInterpreter.actionSetup(actions[i]);   // Note: could we perhaps reuse environment?
+            // Note: could we perhaps reuse environment?
+            _actorInterpreter.actionSetup(actions[i]);
             if (_actorInterpreter.actionEvaluatePrecondition()) {
                 return i;
             } else {
@@ -465,7 +494,8 @@ public class SDF extends AbstractDDI implements DDI {
     }
 
     /**
-     * In SDF, selecting which initializer to fire is already done in preinitialize().
+     * In SDF, selecting which initializer to fire is already done in
+     * preinitialize().
      * @exception IllegalActionException
      */
     public void initialize() throws IllegalActionException {
@@ -477,16 +507,19 @@ public class SDF extends AbstractDDI implements DDI {
                 _actorInterpreter.actionClear();
             }
         }
-        catch (Exception e) {
-            throw new IllegalActionException("Could not fire initializer in CAL actor '"
-                    + _actor.getName() + "': " + e.getMessage());
+        catch (Exception ex) {
+            throw new IllegalActionException(null, ex,
+                    "Could not fire initializer "
+                    + "in CAL actor '"
+                    + _actor.getName() + "': " + ex.getMessage());
         }
     }
 
     private int  _selectInitializer() {
         Action [] actions = _actor.getInitializers();
         for (int i = 0; i < actions.length; i++) {
-            _actorInterpreter.actionSetup(actions[i]);   // Note: could we perhaps reuse environment?
+            // Note: could we perhaps reuse environment?
+            _actorInterpreter.actionSetup(actions[i]);
             if (_actorInterpreter.actionEvaluatePrecondition()) {
                 return i;
             } else {
@@ -497,7 +530,8 @@ public class SDF extends AbstractDDI implements DDI {
     }
 
     private void  _clearInputChannels() {
-        for (Iterator iterator = _inputPorts.values().iterator(); iterator.hasNext();) {
+        for (Iterator iterator = _inputPorts.values().iterator();
+             iterator.hasNext();) {
             InputPort inputPort = (InputPort) iterator.next();
             for (int i = 0; i < inputPort.width(); i++) {
                 // FIXME (and corresponding in Dataflow)
@@ -515,9 +549,8 @@ public class SDF extends AbstractDDI implements DDI {
      * Select a firable action among the actions of the actor, if possible.
      *
      * @return True, if an action could be selected.
-     * @exception IllegalActionException If an error occurred during the action selection.
-     *
-     * @see SDF#_selectAction
+     * @exception IllegalActionException If an error occurred during
+     * the action selection.
      */
     public boolean prefire() throws IllegalActionException {
         try {
@@ -526,23 +559,31 @@ public class SDF extends AbstractDDI implements DDI {
                 return true;
             else
                 return _ptActor.superPrefire();
-        } catch (Exception e) {
-            throw new IllegalActionException("Error during action selection in actor '" + _actor.getName() + "': " + e.getMessage());
+        } catch (Exception ex) {
+            throw new IllegalActionException(null, ex, 
+                    "Error during action selection in actor '"
+                    + _actor.getName() + "': " + ex.getMessage());
         }
     }
 
     public void preinitialize() throws IllegalActionException {
+        // FIXME: why does this not call super()?
     }
 
     private static class ActionRateSignature {
         public boolean equals(Object o) {
-            if (o == this)
+            if (o == this) {
                 return true;
-            else if (o instanceof ActionRateSignature) {
-                return this.inputRates.equals(((ActionRateSignature)o).inputRates) &&
-                    this.outputRates.equals(((ActionRateSignature)o).outputRates);
-            } else
-                return false;
+            } else {
+                if (o instanceof ActionRateSignature) {
+                    return this.inputRates.equals(((ActionRateSignature)o)
+                            .inputRates) &&
+                        this.outputRates.equals(((ActionRateSignature)o)
+                                .outputRates);
+                } else {
+                    return false;
+                }
+            }
         }
         public int hashCode() {
             return inputRates.hashCode() * outputRates.hashCode();
