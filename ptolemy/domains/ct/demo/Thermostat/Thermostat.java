@@ -84,7 +84,7 @@ public class Thermostat extends CTApplet {
         super.init();
         try {
             // The 1 argument requests only a go button.
-            add(_createRunControls(1));
+            add(_createRunControls(2));
             
             // the top level composite actor
             _toplevel.setName("HybridSystem");

@@ -88,7 +88,7 @@ public void init() {
 
     Panel runcontrols = new Panel();
     controlpanel.add("East",runcontrols);
-    runcontrols.add(_createRunControls(1));
+    runcontrols.add(_createRunControls(2));
         
     Panel plotpanel = new Panel();
     plotpanel.setLayout(new GridLayout(2, 1));
