@@ -389,21 +389,12 @@ public class CSPReceiver implements ProcessReceiver {
      */
     public synchronized void requestFinish() {
         _modelFinished = true;
-        _modelPaused = false; // needed?
         // Need to reset the state of the receiver.
         _setConditionalReceive(false, null);
         _setConditionalSend(false, null);
         _setPutWaiting(false);
         _setGetWaiting(false);
         _setRendezvousComplete(false);
-    }
-
-    /** The execution of the model has been paused, so set a flag so that
-     *  the next time an actor tries to get or put it knows to pause.
-     *  @param value The new value of the paused flag.
-     */
-    public synchronized void requestPause(boolean value) {
-        _modelPaused = value;
     }
 
     /** Reset local flags.
@@ -415,7 +406,6 @@ public class CSPReceiver implements ProcessReceiver {
         _conditionalSendWaiting = false;
 	_rendezvousComplete = false;
 	_modelFinished = false;
-	_modelPaused = false;
     	_insideBoundaryCacheIsOn = false;
     	_isInsideBoundaryValue = false;
     	_outsideBoundaryCacheIsOn = false;
@@ -436,8 +426,8 @@ public class CSPReceiver implements ProcessReceiver {
 
     /** This method wraps the wait() call between checks on the state
      *  of the receiver. The flags checked are whether the receiver
-     *  has been paused or has finished. The actions taken depending
-     *  on the flags apply to whatever process this method was invoked from.
+     *  has been finished. The actions taken depending on the flags 
+     *  apply to whatever process this method was invoked from.
      *  Note: It should only be called from CSPReceiver and conditional
      *  rendezvous branches, and then only from code that already has
      *  the lock on this receiver.
@@ -446,8 +436,7 @@ public class CSPReceiver implements ProcessReceiver {
      *   which this receiver belongs has been terminated while still
      *   running i.e it was not allowed to run to completion.
      *  @exception InterruptedException If the actor is
-     *   interrupted while waiting(for a rendezvous to complete
-     *   or during a pause).
+     *   interrupted while waiting(for a rendezvous to complete).
      */
     protected synchronized void _checkFlagsAndWait() throws
             TerminateProcessException, InterruptedException {
@@ -548,32 +537,15 @@ public class CSPReceiver implements ProcessReceiver {
      * have been set and a TerminateProcessException will be thrown
      * causing the actor process to finish.
      * <p>
-     * If the model execution has been paused, register the the current
-     * thread as being paused with director, and after the pause
-     * reset the _modelPaused flag.
      *  @exception TerminateProcessException If the actor to
      *   which this receiver belongs has been terminated while still
      *   running i.e. it was not allowed to run to completion.
-     *  @exception InterruptedException If the thread is
-     *   interrupted while paused.
      */
     private synchronized void _checkFlags()
-            throws InterruptedException, TerminateProcessException{
+            throws TerminateProcessException {
         if (_modelFinished) {
             throw new TerminateProcessException(getContainer().getName() +
                     ": terminated.");
-        } else if (_modelPaused) {
-            _getDirector().increasePausedCount();
-            while (_modelPaused) {
-                wait();
-            }
-            // The execution of the model may have finished while we were
-            // paused...
-            // Need to do this as wait is used above.
-            if (_modelFinished) {
-                throw new TerminateProcessException(getContainer().getName() +
-                        ": terminated.");
-            }
         }
     }
 
@@ -665,10 +637,6 @@ public class CSPReceiver implements ProcessReceiver {
     // Flag indicating that any subsequent attempts to rendezvous
     // at this receiver should cause the attempting processes to terminate.
     private boolean _modelFinished = false;
-
-    // Flag indicating that the director controlling the model
-    // has been paused.
-    private boolean _modelPaused = false;
 
     // The token being transferred during the rendezvous.
     private Token _token;

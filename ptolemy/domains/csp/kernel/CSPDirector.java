@@ -95,16 +95,6 @@ the current model time is increased as well as being advanced.  By default
 the model of computation used in the CSP domain is timed. To use CSP
 without a notion of time, do not use the delay(double) method in any process.
 <p>
-The execution of the model may be paused by calling pause() which
-will cause each process to pause the next time it tries to communicate
-or delay itself. The pause() method only returns when the execution of
-the model is paused. A paused model may be resumed by calling resume(). These
-methods only effect the progress of executing the model; they do not have any
-effect on the results of executing the model. The execution of the model
-may also be terminated abruptly by calling the terminate() method directly.
-This may lead to inconsistent state so any results generated after
-it should be ignored.
-<p>
 Changes to the topology can occur when deadlock, real or timed, is
 reached. The director carries out any changes that have been queued
 with it. Note that the result of the topology changes may remove the
@@ -332,12 +322,6 @@ public class CSPDirector extends ProcessDirector {
         _writeBlockCount--;
     }
 
-    /** An actor has unblocked, decrease the count of blocked actors.
-    protected synchronized void _actorUnblocked() {
-        _actorsBlocked--;
-    }
-     */
-
     /** Determine if all of the threads containing actors controlled
      *  by this director have stopped due to a call of stopFire() or
      *  because they are blocked or delayed.
@@ -374,19 +358,6 @@ public class CSPDirector extends ProcessDirector {
         if (_getActiveActorsCount() == (_intReadBlockCount +
         	_extReadBlockCount + _writeBlockCount + _actorsDelayed)) {
             return true;
-        }
-        return false;
-    }
-
-    /** Returns true if all active processes are either blocked, delayed or
-     *  paused. If so, then all of the processes cannot make any progress
-     *  and the model has been paused. It returns false otherwise.
-     */
-    protected synchronized boolean _isPaused() {
-        if (_intReadBlockCount + _extReadBlockCount + 
-        	_getPausedActorsCount() + _actorsDelayed == 
-                _getActiveActorsCount()) {
-	    return true;
         }
         return false;
     }
