@@ -103,9 +103,7 @@ CHARS=	alpha.gif \
 	gamma.gif \
 	logic_or.gif \
 	logicand.gif \
-	lt_equal.gif 
-
-
+	lt_equal.gif \
 	$(WPUBLISH_OUTPUT_DIR)/index.html \
 	$(WPUBLISH_OUTPUT_DIR)/support/bottom.gif \
 	$(WPUBLISH_OUTPUT_DIR)/idx.html \
