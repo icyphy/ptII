@@ -38,10 +38,7 @@ DIRS =
 # Root of the Java directory
 ROOT =		../../../../..
 
-JINI_JAR_PATH = $(ROOT)/vendors/sun/jini/jini1_0_1/lib
-JINI_JAR =	$(JINI_JAR_PATH)/jini-jspaces.jar
-
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JINI_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JINI_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
