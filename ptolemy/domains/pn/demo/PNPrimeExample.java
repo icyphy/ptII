@@ -47,6 +47,7 @@ public class PNPrimeExample {
             IllegalStateException, IllegalActionException, 
             NameDuplicationException {
         PNCompositeActor myUniverse = new PNCompositeActor();
+        myUniverse.setName("Prime_example");
         myUniverse.setCycles(Integer.parseInt(args[0]));
         PNRamp ramp = new PNRamp(myUniverse, "ramp");
         ramp.setInitState(2);
@@ -58,14 +59,14 @@ public class PNPrimeExample {
         //portin.getQueue(portout).setCapacity(1);
 
         //System.out.println(myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
+
+        DebugMutationListener d = new DebugMutationListener();
+        myUniverse.getDirector().addMutationListener(d);
+
         myUniverse.start();
         System.out.println("Bye World\n");
         return;
     }
 }
-   
-
-
-
 
 
