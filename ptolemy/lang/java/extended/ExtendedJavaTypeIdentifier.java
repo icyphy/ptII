@@ -59,19 +59,38 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
         if (type.classID() == ARRAYTYPENODE_ID) {
             int arrayDim = TypeUtility.arrayDimension(type);
 
-            if (arrayDim == 2) {
+            if (arrayDim == 1) {
+		System.out.println("ExtendedJavaTypeIdentifier.kind(): array of dimension 1: " + arrayDim);
                 TypeNode baseTypeNode = TypeUtility.arrayBaseType(type);
 
                 switch (kind(baseTypeNode)) {
-                case TYPE_KIND_BOOLEAN:   return TYPE_KIND_BOOLEAN_MATRIX;
-                case TYPE_KIND_INT:       return TYPE_KIND_INT_MATRIX;
-                case TYPE_KIND_LONG:      return TYPE_KIND_LONG_MATRIX;
-                case TYPE_KIND_DOUBLE:    return TYPE_KIND_DOUBLE_MATRIX;
-                case TYPE_KIND_COMPLEX:   return TYPE_KIND_COMPLEX_MATRIX;
-                case TYPE_KIND_FIX_POINT: return TYPE_KIND_FIX_POINT_MATRIX;
+		case TYPE_KIND_INT:       return TYPE_KIND_INT_ARRAY;
+		case TYPE_KIND_DOUBLE:    return TYPE_KIND_DOUBLE_ARRAY;
+		case TYPE_KIND_BOOLEAN:
+		case TYPE_KIND_LONG:
+		case TYPE_KIND_COMPLEX:
+		case TYPE_KIND_FIX_POINT:
+		default:
+			throw new RuntimeException("ExtendedJavaTypeIdentifier.kind(): "
+						   + kind(baseTypeNode) 
+						   + "not supported for arrayDim == 1");
 
-                    // no default here
-                }
+		}
+	    } else {
+		if (arrayDim == 2) {
+		    TypeNode baseTypeNode = TypeUtility.arrayBaseType(type);
+
+		    switch (kind(baseTypeNode)) {
+		    case TYPE_KIND_BOOLEAN:   return TYPE_KIND_BOOLEAN_MATRIX;
+		    case TYPE_KIND_INT:       return TYPE_KIND_INT_MATRIX;
+		    case TYPE_KIND_LONG:      return TYPE_KIND_LONG_MATRIX;
+		    case TYPE_KIND_DOUBLE:    return TYPE_KIND_DOUBLE_MATRIX;
+		    case TYPE_KIND_COMPLEX:   return TYPE_KIND_COMPLEX_MATRIX;
+		    case TYPE_KIND_FIX_POINT: return TYPE_KIND_FIX_POINT_MATRIX;
+
+			// no default here
+		    }
+		}
             }
         }
 
@@ -109,10 +128,15 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
     // Token kind (used for unresolved tokens).
     public static final int TYPE_KIND_TOKEN = TYPE_KIND_STRING + 1;
 
-    // Matrix kinds.
+    // Array kinds
+    public static final int TYPE_KIND_INT_ARRAY =
+	TYPE_KIND_STRING + 1;
+    public static final int TYPE_KIND_DOUBLE_ARRAY =
+	TYPE_KIND_INT_ARRAY + 1;
 
+    // Matrix kinds.
     public static final int TYPE_KIND_BOOLEAN_MATRIX =
-    TYPE_KIND_TOKEN + 1;
+    TYPE_KIND_DOUBLE_ARRAY + 1; 
     public static final int TYPE_KIND_INT_MATRIX =
     TYPE_KIND_BOOLEAN_MATRIX + 1;
     public static final int TYPE_KIND_LONG_MATRIX =
