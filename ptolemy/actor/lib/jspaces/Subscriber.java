@@ -1,4 +1,4 @@
-/* A subscriber actor that read entries from Java Spaces.
+/* A subscriber actor that read entries from JavaSpaces.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (yuhong@eecs.berkeley.edu)
+@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.jspaces;
@@ -53,22 +53,22 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// Subscriber
 /**
-A subscriber that read TokenEnties from a Java Space.
-The Java Space is identified by the <i>jspaceName</i> parameter.
-Upon preinitialization, this actor register a template of TokenEntries
-with the name given by the <i>entryName<i> parameter. The Java Space
+A subscriber that reads TokenEntries from a JavaSpace.
+The JavaSpace is identified by the <i>jspaceName</i> parameter.
+Upon preinitialization, this actor subscribes TokenEntries
+with the name given by the <i>entryName<i> parameter. The JavaSpace
 will notify the actor if there are new TokenEntries with that name.
-When get notified, this actor starts another thread which reads the
-TokenEntry. In the execution thread, when the actor's fire method
-is called, the actor outputs the last token read from the Java Space.
+When notified, this actor starts another thread which reads the
+TokenEntry. In the thread where the actor's fire method
+is called, this actor outputs the last token read from the JavaSpace.
 That is if there are more than one notified entries, the old entry
 will be overridden by the new one. If there are no notifications
-between to successive fires, the behavior of the actor depends on
+between two successive fires, the behavior of the actor depends on
 the <i>blocking</i> parameter. If this parameter is true, then
-the fire() call will block the execution thread, until there is
-a new entry coming. If this parameter is false, then the fire()
+the fire() call will block the calling thread, until a new entry comes.
+If this parameter is false, then the fire()
 method outputs the <i>defaultToken</i>. The type of the output
-port is also determined by the type of this parameter.
+port is also determined by the type of the default token.
 
 @author Jie Liu, Yuhong Xiong
 @version $Id$
@@ -104,13 +104,13 @@ public class Subscriber extends Source implements RemoteEventListener {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The Java Space name. The default name is "JavaSpaces" of
-     *  type StringToken.
+    /** The JavaSpace name. The default vale is "JavaSpaces". This
+     *  parameter is of type String.
      */
     public Parameter jspaceName;
 
     /** The name for the subscribed entry. The default value is
-     *  an empty string of type StringToken.
+     *  an empty string. This parameter is of type String.
      */
     public Parameter entryName;
 
@@ -121,13 +121,12 @@ public class Subscriber extends Source implements RemoteEventListener {
     public Parameter blocking;
 
     /** The default token. If the actor is nonblocking
-     *  and there is no matching entry in the space, then this
+     *  and there is no new token received after the last fire()
+     *  methed call, then this
      *  token will be output when the fire() method is called.
-     *  The default value is 0.0 of type
-     *  DoubleToken. Notice that the type of the output port
-     *  is determined by the first token read from the Java Space.
-     *  The user should make sure that the type of this token
-     *  is compatible with the type of the output port.
+     *  The default value is 0.0. And the default type is
+     *  double. Notice that the type of the output port
+     *  is determined by the type of this parameter.
      */
     public Parameter defaultToken;
 
@@ -150,9 +149,10 @@ public class Subscriber extends Source implements RemoteEventListener {
         }
     }
 
-    /** Find the JavaSpaces and register for notification. Set the type of
+    /** Find the JavaSpace and register for notification. Set the type of
      *  the output to be the type of the defaultToken.
-     *  @exception IllegalActionException If the space cannot be found.
+     *  @exception IllegalActionException If there is error during the 
+     *  registration.
      */
     public void preinitialize() throws IllegalActionException {
         _entryName = ((StringToken)entryName.getToken()).stringValue();
@@ -188,8 +188,9 @@ public class Subscriber extends Source implements RemoteEventListener {
         }
     }
 
-    /** Star a new thread to read the TokenEntry from the Java Space.
-     *  @param event The notification event sent from the Java Space.
+    /** Start a new thread to read a TokenEntry from the JavaSpace.
+     *  This method implements a reactor design pattern.
+     *  @param event The notification event sent from the JavaSpace.
      */
     public void notify(RemoteEvent event) {
         if (_debugging) {
@@ -199,12 +200,13 @@ public class Subscriber extends Source implements RemoteEventListener {
         new Thread(nh).start();
     }
 
-    /** Output the latest received token from last time the fire()
-     *  method is called.
+    /** Output the latest token read from the JavaSpace after the 
+     *  last fire() method call.
      *  If there's no token available, then the behavior depends
-     *  on the "blocking" parameter. If blocking is true, the
+     *  on the <i>blocking</i> parameter. If blocking is true, the
      *  execution blocks until there's a token coming in.
      *  Otherwise, the defaultToken is produced.
+     *  @exception IllegalActionException If the blocking is interrupted.
      */
     public void fire() throws IllegalActionException {
         synchronized(_lock) {
@@ -240,7 +242,7 @@ public class Subscriber extends Source implements RemoteEventListener {
         }
     }
 
-    /** Kill the lookup thread if it is not returned.
+    /** Interrupt the lookup thread if it is still alive.
      */
     public void stopFire() {
         if (_lookupThread != null) {
@@ -261,7 +263,7 @@ public class Subscriber extends Source implements RemoteEventListener {
     // cached value of whether blocks when no data
     private boolean _blocking;
 
-    // The list of tokens that received.
+    // The lock that monitors the reading thread and the fire() thread.
     private Object _lock = new Object();
 
     // The indicator the last read serial number
@@ -273,7 +275,7 @@ public class Subscriber extends Source implements RemoteEventListener {
     // Notification sequence number
     private long _notificationSeq;
 
-    // The thread that finds jini.
+    // The thread that finds Jini lookup service.
     private Thread _lookupThread;
 
     ///////////////////////////////////////////////////////////////////
@@ -285,7 +287,7 @@ public class Subscriber extends Source implements RemoteEventListener {
      *  with this class. The run() method will then read the TokenEntry
      *  from the Java Space.
      */
-    public class NotifyHandler implements Runnable {
+    private class NotifyHandler implements Runnable {
 
         /** construct the notify handler.
          *  @param container The subscriber that contains this handler.

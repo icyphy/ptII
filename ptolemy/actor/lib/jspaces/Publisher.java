@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (yuhong@eecs.berkeley.edu)
+@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.jspaces;
@@ -51,18 +51,21 @@ import net.jini.core.lease.Lease;
 //////////////////////////////////////////////////////////////////////////
 //// Publisher
 /**
-An actor that publish TokenEntries to Java Spaces. The Java Space that the
-entries are published to is identified by the <i>jspaceName</i>
-parameter. TokenEntries in Java Spaces has a name, a serial number,
-and a Ptolemy token. This actor has a single input port.
-When the actor is fired, it consumes at most one token from the input
-port and publish the token to the Java Space with the name specified by
-the <i>entryName</i> parameter. The serial number of the TokenEntry is
-always set to 0. If there is already an entry in the
-Java Spaces with the entry name, The new token will override the existing
-one. The entry exists in the Java Space as long as the lease time is
-not expired. The lease time of an entry is specified by the
-<i>leaseTime</i> parameter in terms of milliseconds.
+An actor that publishes instances of TokenEntry to a JavaSpace.  The
+JavaSpace that the entries are published to is identified by the
+<i>jspaceName</i> parameter. TokenEntries in the JavaSpace has a name,
+a serial number, and a Ptolemy II token. This actor has a single input
+port.  When the actor is fired, it consumes at most one token from the
+input port and publishes an instance of token entry, which contains
+the token, to the JavaSpace with the name specified by the
+<i>entryName</i> parameter. In this class, the serial number of the
+token entry is not used, and is always set to 0. Derived class may use
+the serial number to keep track of the order of the published
+tokens. If there is already an entry in the JavaSpace with the entry
+name, the new token will override the existing one. The entry exists
+in the JavaSpace as long as the lease time has not expired. The lease
+time of an entry is specified by the <i>leaseTime</i> parameter in
+milliseconds.
 
 @see TokenEntry
 @author Jie Liu, Yuhong Xiong
@@ -101,26 +104,29 @@ public class Publisher extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The Java Space name. The default name is "JavaSpaces" of
-     *  type StringToken.
+    /** The JavaSpace name. The type of the parameter is string.
+     *  The default name is "JavaSpaces".
+     *  
      */
     public Parameter jspaceName;
 
-    /** The name for the entries to be published. The default value is
-     *  an empty string of type StringToken.
+    /** The name for the entries to be published. The type of the 
+     *  parameter is string. The default value is
+     *  an empty string.
      */
     public Parameter entryName;
 
-    /** The lease time for entries written into the space. The default
-     *  is Least.FOREVER. This parameter must contain a LongToken.
+    /** The lease time for entries written into the space. 
+     *  This parameter must contain a LongToken. The default
+     *  is Lease.FOREVER. 
      */
     public Parameter leaseTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Find the JavaSpaces according to the <i>jspaceName</i> parameter.
-     *  If there are already enties in the Java Space with the
+    /** Find the JavaSpace according to the <i>jspaceName</i> parameter.
+     *  If there are already entries in the Java Space with the
      *  specified entry name, then remove all the old entries.
      *  @exception IllegalActionException If the removal
      *  action fails due to network problems, transaction errors,
@@ -198,22 +204,9 @@ public class Publisher extends Sink {
                     ue.getMessage());
         }
     }
-
-    /** Read one input token, if there is one, from the input port,
-     *  publish an entry into the space for the token read, and
-     *  return true.
-     *  Simply return true if there's no token in the input port.
-     *  @exception IllegalActionException If the publication
-     *  action fails due to network problems, transaction errors,
-     *  or any remote exceptions.
-     */
-    public boolean postfire() throws IllegalActionException {
-        fire();
-        return true;
-    }
-
-    /** Kill the lookup thread if it is not returned. The lookup
-     *  thread is the thread of the execution of the model.
+    
+    /** Interrupt the lookup thread if it is still alive. The lookup
+     *  thread is a thread created to find the JavaSpace.
      */
     public void stopFire() {
         if (_lookupThread != null) {
@@ -225,7 +218,7 @@ public class Publisher extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // The Java Space.
+    // The JavaSpace.
     private JavaSpace _space;
 
     // The thread that finds jini.

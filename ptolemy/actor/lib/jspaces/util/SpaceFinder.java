@@ -1,4 +1,4 @@
-/* A utility class that finds a Java Space.
+/* A utility class that finds a JavaSpace.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
+@AcceptedRating Yelloe (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.jspaces.util;
@@ -38,9 +38,9 @@ import com.sun.jini.mahout.Locator;
 import com.sun.jini.outrigger.Finder;
 
 //////////////////////////////////////////////////////////////////////////
-//// SpaceFiner
+//// SpaceFinder
 /**
-An utility that finds a Java Space with a given name.
+An utility that finds a JavaSpace with a given name.
 
 This class is based on Sun's SpaceAccessor class in the book "JavaSpaces
 Principles, Patterns, and Practice", by Freeman, Hupfer, and Arnold.
@@ -54,13 +54,13 @@ public class SpaceFinder {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a JavaSpace with the specified name.
-     *  @param name A String.
+    /** Return a proxy of the JavaSpace with the specified name.
+     *  @param name The name of the JavaSpace.
      *  @return A JavaSpace.
      *  @exception IllegalActionException If a JavaSpace cannot be
      *   found.
      */
-    public static JavaSpace getSpace(String name)
+    public static final JavaSpace getSpace(String name)
 	    throws IllegalActionException {
         try {
             if (System.getSecurityManager() == null) {
@@ -100,7 +100,7 @@ public class SpaceFinder {
      *  @exception IllegalActionException If a JavaSpace cannot be
      *   found.
      */
-    public static JavaSpace getSpace() throws IllegalActionException {
+    public static final JavaSpace getSpace() throws IllegalActionException {
         return getSpace("JavaSpaces");
     }
 }

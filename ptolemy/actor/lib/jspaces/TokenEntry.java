@@ -24,21 +24,20 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (yuhong@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 
 */
 package ptolemy.actor.lib.jspaces;
 
 import ptolemy.data.Token;
-
 import net.jini.core.entry.Entry;
 
 //////////////////////////////////////////////////////////////////////////
 //// TokenEntry
 /**
 TokenEntry is a JavaSpaces Entry that contains a Token. In addition,
-aach TokenEntry has a name and a serial number.
+each TokenEntry has a name and a serial number.
 
 @author Yuhong Xiong, Jie Liu
 @version $Id$
@@ -72,7 +71,7 @@ public class TokenEntry implements Entry {
      */
     public String name = null;
 
-    /** The Integer object that contains the serial number of this
+    /** The Long object that contains the serial number of this
      *  TokenEntry. JavaSpaces requires entry fields to be objects.
      */
     public Long serialNumber = null;
@@ -84,9 +83,9 @@ public class TokenEntry implements Entry {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the serial number of this entry. If the serialNumberObj
-     *  is null, return 0.
-     *  @return An int.
+    /** Return the serial number of this entry. If the serialNumber
+     *  object is null, return 0.
+     *  @return the serial number.
      */
     public long getSerialNumber() {
 	if (serialNumber == null) {
