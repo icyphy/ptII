@@ -52,7 +52,7 @@ import java.awt.Image;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
-import java.awt.event.ActionEvent;
+import java.awt.event.*;
 import java.io.File;
 import java.io.PrintWriter;
 import java.io.StringWriter;
@@ -139,8 +139,7 @@ public class VergilApplication extends MDIApplication {
         frame.setIconImage(iconImage);
 
         setCurrentDocument(null);
-        addDocumentListener(new Focuser());
-
+       
         // Swing is stupid and adds components with the cross-platform UI and
         // not the system UI.
         SwingUtilities.updateComponentTreeUI(treepane);
@@ -229,7 +228,9 @@ public class VergilApplication extends MDIApplication {
 	    throw new RuntimeException("Can only create views " +
 				       "on Vergil documents.");
 	}
-	return ((VergilDocument)d).createView();
+	JComponent view = ((VergilDocument)d).createView();
+        view.addMouseListener(new MouseFocusMover());
+        return view;
     }
 
     /** Return the list of factories that create new documents.
@@ -427,22 +428,16 @@ public class VergilApplication extends MDIApplication {
      * Grab the keyboard focus when the component that this listener is
      * attached to is clicked on.
      */
-    public class Focuser implements ListDataListener {
-	public void contentsChanged(ListDataEvent e) {
-	    VergilDocument document = (VergilDocument)getCurrentDocument();
-	    if(document == null) return;
-	    JComponent component = getView(document);
-	    if(component == null) return;
-	    if (!component.hasFocus()) {
+    public class MouseFocusMover extends MouseAdapter {        
+        public void mouseClicked(
+                MouseEvent mouseEvent) {
+            Component component =
+                mouseEvent.getComponent();
+ 
+            if (!component.hasFocus()) {
                 component.requestFocus();
             }
-	}        
-
-	public void intervalAdded(ListDataEvent e) {
-	}
-
-	public void intervalRemoved(ListDataEvent e) {
-	}
+        }
     }
 
     /** Initialize the application palette.  This is done in a separate
