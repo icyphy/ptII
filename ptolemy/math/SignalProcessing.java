@@ -83,10 +83,81 @@ public final class SignalProcessing {
         return result;
     }
 
+    /** Return the discrete Fourier transform of the specified complex array.
+     *  This is computed by the radix-two FFT algorithm with the size being
+     *  the next power of two larger than or equal to the length of the
+     *  array argument. The data are zero filled if necessary.
+     *  If any element
+     *  of the data array is null, it is assumed to have value zero.
+     *
+     *  @param x The data to transform
+     *  @exception IllegalArgumentException If the array argument is empty
+     *   or null. This is a runtime exception, so it need
+     *   not be declared by the caller explicitly.
+     */
+    public static Complex[] fft(Complex[] x) {
+        if (x == null || x.length == 0) {
+            throw new IllegalArgumentException(
+                "SignalProcessing.fft: empty array argument.");
+        }
+        // Calculate the order of the FFT.
+        double m = Math.log(x.length)*_LOG2SCALE;
+        double exp = Math.ceil(m);
+        return fft(x,(int)exp);
+    }
+
+    /** Return the discrete Fourier transform of the specified complex array.
+     *  This is computed by the radix-two FFT algorithm.
+     *  The size of the FFT is
+     *  <i>size</i> = 2<sup><i>order</i></sup>.
+     *  If <i>size</i> is less than the length of <i>x</i>,
+     *  then only the first <i>size</i> elements of <i>x</i> are used.
+     *  If <i>size</i> is greater than the length of <i>x</i>,
+     *  then the data is implicitly zero-filled (i.e. it is assumed that
+     *  missing data have value zero).
+     *  If any element
+     *  of the data array is null, it is assumed to have value zero.
+     *
+     *  @param x The data to transform
+     *  @param order The order of the FFT
+     *  @exception IllegalArgumentException If the data array is empty
+     *   (or null), or the order is not positive.
+     *   This is a runtime exception, so it need
+     *   not be declared by the caller explicitly.
+     */
+    public static Complex[] fft(Complex[] x, int order) {
+        if (x == null || x.length == 0) {
+            throw new IllegalArgumentException(
+                "SignalProcessing.fft: empty array argument.");
+        }
+        if (order <= 0) {
+            throw new IllegalArgumentException(
+                "SignalProcessing.fft: order argument must be positive.");
+        }
+        // size = 2**order
+        int size = 1 << order;
+        double[] reals = new double[size];
+        double[] imags = new double[size];
+        // Copy the array.  Zero filling is implicit because Java
+        // always initializes arrays.
+        for (int i = 0; i < x.length; i++) {
+            if (x[i] != null) {
+                reals[i] = x[i].real;
+                imags[i] = x[i].imag;
+            }
+        }
+        _fft(reals, imags, order, false);
+        Complex[] result = new Complex[size];
+        for (int i = 0; i < size; i++) {
+            result[i] = new Complex(reals[i], imags[i]);
+        }
+        return result;
+    }
+
     /** Return the discrete Fourier transform of an array of doubles.
      *  This is computed by the radix-two FFT algorithm with the size being
      *  the next power of two larger than or equal to the length of the
-     *  array argument.
+     *  array argument.  The data are zero filled if necessary.
      *
      *  @param x The data to transform
      *  @return The DFT of the data
@@ -95,119 +166,231 @@ public final class SignalProcessing {
      *   not be declared by the caller explicitly.
      */
     public static Complex[] fft(double[] x) {
-        // NOTE: This could instead use the slightly more efficient
-        // FFT that is possible when the data is real.
-
         if (x == null || x.length == 0) {
-            throw new IllegalArgumentException("SignalProcessing.fft: "
-                    + "empty array argument.");
+            throw new IllegalArgumentException(
+                "SignalProcessing.fft: empty array argument.");
         }
         // Calculate the order of the FFT.
         double m = Math.log(x.length)*_LOG2SCALE;
         double exp = Math.ceil(m);
-        int order = (int) exp;
-        // size = 2**order
-        int size = 1 << order;
-        Complex[] result = new Complex[size];
-        // Copy the array, zero filling if necessary.
-        for (int i = 0; i < size; i++) {
-            if (i < x.length) {
-                result[i] = new Complex(x[i]);
-            } else {
-                result[i] = new Complex();
-            }
-        }
-        _fft(result, order, false);
-        return result;
+        return fft(x, (int)exp);
     }
 
-    /** Replace the specified array with the discrete Fourier transform
-     *  or the inverse DFT of its value.  This is computed by the in-place
-     *  radix-two FFT algorithm with size equal to the length of the array
-     *  argument (which is required to be a power of two).
-     *
-     *  @param x The data to transform
-     *  @param inverse If true, compute the inverse DFT.
-     *  @exception IllegalArgumentException If the array argument has length
-     *   that is not a power of two. This is a runtime exception, so it need
-     *   not be declared by the caller explicitly.
-     */
-    public static void fft(Complex[] x, boolean inverse) {
-        if (x == null || x.length == 0) {
-            throw new IllegalArgumentException("SignalProcessing.fft: "
-                    + "empty array argument.");
-        }
-        // Calculate the order of the FFT.
-        double m = Math.log(x.length)*_LOG2SCALE;
-        double exp = Math.ceil(m);
-        int order = (int) exp;
-        // size = 2**order
-        int size = 1 << order;
-        if (size != x.length) {
-            throw new IllegalArgumentException("SignalProcessing.fft: "
-                    + "In-place fft requires an array argument with length that is "
-                    + "a power of two. Got length: " + x.length);
-        }
-
-        _fft(x, order, inverse);
-    }
-
-    /** Return the discrete Fourier transform or the inverse DFT
-     *  of the first argument <i>x</i>.  This is
-     *  computed by the radix-two FFT algorithm with order given by the
-     *  second argument.  The size of the FFT is
+    /** Return the discrete Fourier transform of an array of doubles.
+     *  This is computed by the radix-two FFT algorithm.
+     *  The size of the FFT is
      *  <i>size</i> = 2<sup><i>order</i></sup>.
      *  If <i>size</i> is less than the length of <i>x</i>,
      *  then only the first <i>size</i> elements of <i>x</i> are used.
      *  If <i>size</i> is greater than the length of <i>x</i>,
      *  then the data is implicitly zero-filled (i.e. it is assumed that
-     *  missing data has value zero).  If an inverse DFT is being computed,
-     *  then zero filling is done in the middle of the argument array
-     *  (which corresponds to high frequencies).  If there are an odd number
-     *  of elements in the argument array, then the middle element is
-     *  replicated on either side of the zero fill.
+     *  missing data have value zero).
+     *
+     *  @param x The data to transform
+     *  @param order The order of the FFT
+     *  @return The DFT of the data
+     *  @exception IllegalArgumentException If the data array is empty
+     *   (or null), or the order is not positive.
+     *   This is a runtime exception, so it need
+     *   not be declared by the caller explicitly.
+     */
+    public static Complex[] fft(double[] x, int order) {
+        // NOTE: This could instead use the slightly more efficient
+        // FFT that is possible when the data is real.
+        if (x == null || x.length == 0) {
+            throw new IllegalArgumentException(
+                "SignalProcessing.fft: empty array argument.");
+        }
+        if (order <= 0) {
+            throw new IllegalArgumentException(
+                "SignalProcessing.fft: order argument must be positive.");
+        }
+        // size = 2**order
+        int size = 1 << order;
+        double[] reals = new double[size];
+        double[] imags = new double[size];
+        // Copy the array.  Zero filling is implicit because Java
+        // always initializes arrays.
+        int length = x.length;
+        if (reals.length < length) length = reals.length;
+        System.arraycopy(x,0,reals,0,length);
+        _fft(reals, imags, order, false);
+        Complex[] result = new Complex[size];
+        for (int i = 0; i < size; i++) {
+            result[i] = new Complex(reals[i], imags[i]);
+        }
+        return result;
+    }
+
+    /** Return the discrete Fourier transform of the specified
+     *  data array, given as an array containing the real parts and an array
+     *  containing the imaginary parts.
+     *  This is computed by the radix-two FFT algorithm.
+     *  The size of the array arguments must be a power of two or an
+     *  exception is thrown.
+     *
+     *  @param reals The real part of the data to transform
+     *  @param imags The imaginary part of the data to transform
+     *  @exception IllegalArgumentException If the array argument has length
+     *   that is not a power of two. This is a runtime exception, so it need
+     *   not be declared by the caller explicitly.
+     */
+    public static void fftInPlace(double[] reals, double[] imags) {
+        if (reals == null || reals.length == 0 ||
+                imags == null || imags.length == 0) {
+            throw new IllegalArgumentException(
+                "SignalProcessing.fftInPlace: empty array argument.");
+        }
+        if (reals.length != imags.length) {
+            throw new IllegalArgumentException(
+                "SignalProcessing.fftInPlace: arrays have different length.");
+        }
+
+        // Calculate the order of the FFT.
+        double m = Math.log(reals.length)*_LOG2SCALE;
+        double exp = Math.ceil(m);
+        int order = (int) exp;
+        // size = 2**order
+        int size = 1 << order;
+        if (size != reals.length) {
+            throw new IllegalArgumentException("SignalProcessing.fftInPlace: "
+                    + "In-place fft requires an array argument with length "
+                    + "that is a power of two. Got length: " + reals.length);
+        }
+
+        _fft(reals, imags, order, false);
+    }
+
+    /** Return the inverse discrete Fourier transform of the specified
+     *  data array, given as an array containing the real parts and an array
+     *  containing the imaginary parts.
+     *  This is computed by the radix-two FFT algorithm.
+     *  The size of the array arguments must be a power of two or an
+     *  exception is thrown.
+     *
+     *  @param reals The real part of the data to transform
+     *  @param imags The imaginary part of the data to transform
+     *  @exception IllegalArgumentException If the array argument has length
+     *   that is not a power of two. This is a runtime exception, so it need
+     *   not be declared by the caller explicitly.
+     */
+    public static void fftInPlaceInverse(double[] reals, double[] imags) {
+        if (reals == null || reals.length == 0 ||
+                imags == null || imags.length == 0) {
+            throw new IllegalArgumentException(
+                "SignalProcessing.fftInPlaceInverse: empty array argument.");
+        }
+        if (reals.length != imags.length) {
+            throw new IllegalArgumentException(
+                "SignalProcessing.fftInPlaceInverse: arrays have different "
+                + "length.");
+        }
+
+        // Calculate the order of the FFT.
+        double m = Math.log(reals.length)*_LOG2SCALE;
+        double exp = Math.ceil(m);
+        int order = (int) exp;
+        // size = 2**order
+        int size = 1 << order;
+        if (size != reals.length) {
+            throw new IllegalArgumentException(
+                    "SignalProcessing.fftInPlaceInverse: "
+                    + "In-place fft requires an array argument with length "
+                    + "that is a power of two. Got length: " + reals.length);
+        }
+
+        _fft(reals, imags, order, true);
+    }
+
+    /** Return the inverse discrete Fourier transform
+     *  of the argument <i>x</i>.  This is
+     *  computed by the radix-two FFT algorithm with order being the next
+     *  power of two larger than the length of the argument.
+     *  The data are zero filled if necessary.
+     *  Zero filling is done in the middle of the argument array
+     *  (which corresponds to high frequencies).  If there is an odd number
+     *  of elements in the argument array, then half the middle element is
+     *  replicated on either side of the zero fill.  Also, if any element
+     *  of the data array is null, it is assumed to have value zero.
      *
      *  @param x The data to transform
      *  @param order The log (base 2) of the size of the FFT
-     *  @param inverse If true, compute the inverse DFT
-     *  @return The DFT or inverse DFT of the data
+     *  @return The inverse DFT of the data
      *  @exception IllegalArgumentException If the argument is an empty
      *   array (or null), or if the order is not a positive
      *   integer.  This is a runtime exception, so it need
      *   not be declared by the caller explicitly.
      */
-    public static Complex[] fft(Complex[] x, int order, boolean inverse) {
+    public static Complex[] fftInverse(Complex[] x) {
+
         if (x == null || x.length == 0) {
-            throw new IllegalArgumentException("SignalProcessing.fft: "
-                    + "empty array argument.");
+            throw new IllegalArgumentException(
+                "SignalProcessing.fftInverse: empty array argument.");
+        }
+        // Calculate the order of the FFT.
+        double m = Math.log(x.length)*_LOG2SCALE;
+        double exp = Math.ceil(m);
+        return fftInverse(x, (int)exp);
+    }
+
+    /** Return the inverse discrete Fourier transform
+     *  of the first argument <i>x</i>.  This is
+     *  computed by the radix-two FFT algorithm with order given by the
+     *  second argument.  The size of the FFT is
+     *  <i>size</i> = 2<sup><i>order</i></sup>.
+     *  The data are zero filled if necessary.
+     *  Zero filling is done in the middle of the argument array
+     *  (which corresponds to high frequencies).  If there is an odd number
+     *  of elements in the argument array, then half the middle element is
+     *  replicated on either side of the zero fill.  Also, if any element
+     *  of the data array is null, it is assumed to have value zero.
+     *
+     *  @param x The data to transform
+     *  @param order The log (base 2) of the size of the FFT
+     *  @return The inverse DFT of the data
+     *  @exception IllegalArgumentException If the argument is an empty
+     *   array (or null), or if the order is not a positive
+     *   integer.  This is a runtime exception, so it need
+     *   not be declared by the caller explicitly.
+     */
+    public static Complex[] fftInverse(Complex[] x, int order) {
+
+        if (x == null || x.length == 0) {
+            throw new IllegalArgumentException(
+                "SignalProcessing.fftInverse: empty array argument.");
+        }
+        if (order <= 0) {
+            throw new IllegalArgumentException(
+                "SignalProcessing.fftInverse: order must be positive.");
         }
         // size = 2**order
         int size = 1 << order;
-        Complex[] result = new Complex[size];
         // Copy the array, zero filling if necessary.
-        if (inverse) {
-            // For the inverse FFT, need to zero-fill in the middle
-            // (high frequencies).
-            for (int i = 0; i < size/2; i++) {
-                if (i < x.length/2) {
-                    result[i] = new Complex(x[i].real, x[i].imag);
-                    int k = x.length-i-1;
-                    result[size-i-1] = new Complex(x[k].real, x[k].imag);
-                } else {
-                    result[i] = new Complex();
-                    result[size-i-1] = new Complex();
-                }
-            }
-        } else {
-            for (int i = 0; i < size; i++) {
-                if (i < x.length) {
-                    result[i] = new Complex(x[i].real, x[i].imag);
-                } else {
-                    result[i] = new Complex();
-                }
+        double[] reals = new double[size];
+        double[] imags = new double[size];
+        // Copy the array.  Zero filling is implicit because Java
+        // always initializes arrays.
+        // For the inverse FFT, need to zero-fill in the middle
+        // (high frequencies).
+        for (int i = 0; i < x.length/2; i++) {
+            int k = x.length-i-1;
+            if (k != i) {
+                reals[i] = x[i].real;
+                imags[i] = x[i].imag;
+                reals[size-i-1] = x[k].real;
+                imags[size-i-1] = x[k].imag;
+            } else {
+                reals[i] = x[i].real/2.0;
+                imags[i] = x[i].imag/2.0;
+                reals[size-i-1] = x[k].real/2.0;
+                imags[size-i-1] = x[k].imag/2.0;
             }
         }
-        _fft(result, order, inverse);
+        _fft(reals, imags, order, true);
+        Complex[] result = new Complex[size];
+        for (int i = 0; i < size; i++) {
+            result[i] = new Complex(reals[i], imags[i]);
+        }
         return result;
     }
 
@@ -254,7 +437,7 @@ public final class SignalProcessing {
                 Complex[] diffzeros = ArrayMath.subtract(zeros, ejw);
                 zeroscontrib = ArrayMath.product(diffzeros);
             }
-            freq[index] = Complex.divide(zeroscontrib, polescontrib);
+            freq[index] = zeroscontrib.divide(polescontrib);
             freq[index].multiply(gain);
             angle += step;
         }
@@ -535,7 +718,7 @@ public final class SignalProcessing {
     /////////////////////////////////////////////////////////////////////////
     ////                         private methods                         ////
 
-    // Replace the specified array with the discrete Fourier transform
+    // Replace the specified arrays with the discrete Fourier transform
     // or the inverse DFT of its value.  This is computed by the in-place
     // radix-two FFT algorithm with order given by the second argument.
     // The size of the FFT is <i>size</i> = 2<sup><i>order</i></sup>,
@@ -544,46 +727,65 @@ public final class SignalProcessing {
     // This is adapted from "C Language Algorithms for Digital
     // Signal Processing," Paul M. Embree and Bruce Kimble, Prentice-Hall,
     // 1991, P.258.
-    // @param x The data to transform
+    // @param reals The real values of the data to transform
+    // @param imags The imaginary values of the data to transform
     // @param order The log (base 2) of the size of the FFT
     // @param inverse If true, compute the inverse DFT
     // @exception IllegalArgumentException If the order is not a positive
     //  integer, or if the length of the array argument is not a power of two.
     //  This is a runtime exception, so it need
     //  not be declared by the caller explicitly.
-    private static void _fft(Complex[] x, int order, boolean inverse) {
+    private static void _fft(double[] reals, double[] imags,
+            int order, boolean inverse) {
         if (order <= 0) {
-            throw new IllegalArgumentException("SignalProcessing.fft: "
-                    + "Invalid order argument: " + order);
+            throw new IllegalArgumentException(
+                "SignalProcessing.fft: Invalid order argument: " + order);
         }
         // size = 2**order
         int size = 1 << order;
 
         // Begin by computing the twiddle factors if they have not been already.
-
-        if (_twiddleFactors == null) _twiddleFactors = new Vector();
-        if (order > _twiddleFactors.size()) _twiddleFactors.setSize(order);
-        Complex[] twiddle = (Complex[])_twiddleFactors.elementAt(order-1);
-        if (twiddle == null) {
+        if (_twiddleReals == null) {
+            _twiddleReals = new Vector();
+            _twiddleImags = new Vector();
+        }
+        if (order > _twiddleReals.size()) {
+            _twiddleReals.setSize(order);
+            _twiddleImags.setSize(order);
+        }
+        double[] twReals = (double[])_twiddleReals.elementAt(order-1);
+        double[] twImags;
+        if (twReals == null) {
             // Need to compute the twiddle factors.
             // First, allocate the memory.
             int le = size/2;
-            twiddle = new Complex[le];
-            _twiddleFactors.setElementAt(twiddle, order-1);
+            twReals = new double[le];
+            twImags = new double[le];
+            _twiddleReals.setElementAt(twReals, order-1);
+            _twiddleImags.setElementAt(twImags, order-1);
 
             // Next, the angle increment.
             double arg = 2.0*Math.PI/size;
             // Then the corresponding vector
-            Complex rotationvec = new Complex(Math.cos(arg), Math.sin(arg));
+            double rotationReal = Math.cos(arg);
+            double rotationImag = Math.sin(arg);
             // Then the starting twiddle factor
-            Complex wrecur = new Complex(rotationvec.real, rotationvec.imag);
+            double wrecurReal = rotationReal;
+            double wrecurImag = rotationImag;
             int index;
             for (index = 0; index < le - 1; index++) {
-                twiddle[index] = new Complex(wrecur.real, wrecur.imag);
-                wrecur.multiply(rotationvec);
+                twReals[index] = wrecurReal;
+                twImags[index] = wrecurImag;
+                double temp = wrecurReal*rotationReal - wrecurImag*rotationImag;
+                wrecurImag = wrecurReal*rotationImag + wrecurImag*rotationReal;
+                wrecurReal = temp;
             }
-            twiddle[index] = wrecur;
+            twReals[index] = wrecurReal;
+            twImags[index] = wrecurImag;
+        } else {
+            twImags = (double[])_twiddleImags.elementAt(order-1);
         }
+
         int le = size;
         int windex = 1;
         for (int index = 0; index<order; index++){
@@ -592,31 +794,32 @@ public final class SignalProcessing {
             // first iteration has no multiplies
             for (int i = 0; i < size; i += 2*le) {
                 int k = i+le;
-                Complex temp = Complex.add(x[i], x[k]);
-                x[k].subtract(x[i]);
-                x[k].negate();
-                x[i] = temp;
+                double tempR = reals[i];
+                double tempI = imags[i];
+                reals[i] = tempR+reals[k];
+                imags[i] = tempI+imags[k];
+                reals[k] = tempR-reals[k];
+                imags[k] = tempI-imags[k];
             }
 
             // remaining iterations use twiddle factors
             int ii = windex-1;
-
             for (int j = 1; j < le; j++){
-                Complex wptr;
-                // NOTE: Perhaps we should cache for forward and backward
-                // twiddle factors?
+                double wReal = twReals[ii];
+                double wImag = twImags[ii];
                 if (inverse) {
-                    wptr = Complex.conjugate(twiddle[ii]);
-                } else {
-                    wptr = twiddle[ii];
+                    wImag = -wImag;
                 }
                 for (int i = j; i < size; i = i+2*le) {
                     int k = i+le;
-                    Complex temp = Complex.add(x[i], x[k]);
-                    x[k].subtract(x[i]);
-                    x[k].negate();
-                    x[k].multiply(wptr);
-                    x[i] = temp;
+                    double tempR = reals[i];
+                    double tempI = imags[i];
+                    reals[i] = tempR + reals[k];
+                    imags[i] = tempI + imags[k];
+                    double diffR = tempR - reals[k];
+                    double diffI = tempI - imags[k];
+                    reals[k] = diffR*wReal - diffI*wImag;
+                    imags[k] = diffR*wImag + diffI*wReal;
                 }
                 ii = ii + windex;
             }
@@ -633,17 +836,21 @@ public final class SignalProcessing {
             }
             j = j+k;
             if (i<j){
-                Complex temp = x[j];
-                x[j] = x[i];
-                x[i] = temp;
+                double tempR = reals[j];
+                double tempI = imags[j];
+                reals[j] = reals[i];
+                imags[j] = imags[i];
+                reals[i] = tempR;
+                imags[i] = tempI;
             }
         }
 
         // scale all result by 1/size if we are performing the inverse fft
         if (inverse) {
-            Complex scale = new Complex((1.0/size), 0.0);
+            double scale = 1.0/size;
             for (int i = 0; i < size; i++){
-                x[i].multiply(scale);
+                reals[i] *= scale;
+                imags[i] *= scale;
             }
         }
     }
@@ -681,6 +888,7 @@ public final class SignalProcessing {
 
     // A vector of twiddle factors for FFTs of various orders, so they
     // don't have to be recomputed each time.
-    private static Vector _twiddleFactors;
+    private static Vector _twiddleReals;
+    private static Vector _twiddleImags;
 }
 
