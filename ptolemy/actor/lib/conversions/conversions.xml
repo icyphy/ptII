@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model SYSTEM "../../../moml/moml.dtd">
+<class name="conversions" extends="ptolemy.actor.TypedCompositeActor">
+  <doc>
+	Conversion actors
+  </doc>
+  <!-- Define the actors -->  
+  <entity name="ComplexToReal" class="ptolemy.actor.lib.conversions.ComplexToReal">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+ 
+  <entity name="RealToComplex" class="ptolemy.actor.lib.conversions.RealToComplex">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="DoubleToFix" class="ptolemy.actor.lib.conversions.DoubleToFix">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="FixToDouble" class="ptolemy.actor.lib.conversions.FixToDouble">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="PolarToRectangular" class="ptolemy.actor.lib.conversions.PolarToRectangular">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="RectangularToPolar" class="ptolemy.actor.lib.conversions.RectangularToPolar">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+      <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+</class>
