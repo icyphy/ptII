@@ -70,6 +70,7 @@ OTHER_FILES_TO_BE_JARED = \
 	vergilFsmEditorHelp.htm \
 	vergilGraphEditorHelp.htm \
 	whatsNew.htm \
+	whatsNew4.0.htm \
 	whatsNew3.0.2.htm \
 	whatsNew3.1-devel.htm
 
