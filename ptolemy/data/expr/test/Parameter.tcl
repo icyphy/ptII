@@ -308,3 +308,20 @@ test Parameter11.0 {Check that variables are in the scope of variables.} {
     set ra [$a getToken]
     $ra toString
 } {ptolemy.data.IntToken(1)}
+
+#################################
+####
+# NOTE: This test verifies a "misfeature" that it would be nice to find
+# a way to fix.  The returned value would ideally be 3.5, but this seems
+# impossible to do without having the side effect of almost always
+# triggering the evaluation of expressions as soon as they are set.
+test Parameter12.0 {Check that notification does not occur when dependents change} {
+    set e [java::new ptolemy.data.expr.test.AttributeChanged entity]
+    set a [java::new ptolemy.data.expr.Variable $e a]
+    set param [java::field $e param]
+    $param setExpression {a}
+    $a setExpression {4.5}
+    $param getToken
+    $a setExpression {3.5}
+    $e getParamValue
+} {4.5}
