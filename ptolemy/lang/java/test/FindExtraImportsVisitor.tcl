@@ -69,64 +69,16 @@ test FindExtraImportsVisitor-1.1 {} {
 #    $ast accept $iVisitor [java::null]
     list [$ast toString]
 } {{ {CompileUnitNode { 
-  {Pkg {NameNode { 
-        {Qualifier {NameNode { 
-                    {Qualifier {NameNode { 
-                                {Qualifier {NameNode { 
-                                            {Qualifier {AbsentTreeNode {leaf}}} 
-                                            {Ident ptolemy} 
-                                          }}} 
-                                {Ident lang} 
-                              }}} 
-                    {Ident java} 
-                  }}} 
-        {Ident test} 
-      }}} 
-  {Imports { 
-   {ImportNode { 
-    {Name {NameNode { 
-           {Qualifier {NameNode { 
-                       {Qualifier {NameNode { 
-                                   {Qualifier {NameNode { 
-                                               {Qualifier {AbsentTreeNode {leaf}}} 
-                                               {Ident ptolemy} 
-                                             }}} 
-                                   {Ident kernel} 
-                                 }}} 
-                       {Ident util} 
-                     }}} 
-           {Ident NamedObj} 
-         }}} 
-  }}   {ImportNode { 
-    {Name {NameNode { 
-           {Qualifier {NameNode { 
-                       {Qualifier {NameNode { 
-                                   {Qualifier {NameNode { 
-                                               {Qualifier {AbsentTreeNode {leaf}}} 
-                                               {Ident ptolemy} 
-                                             }}} 
-                                   {Ident kernel} 
-                                 }}} 
-                       {Ident util} 
-                     }}} 
-           {Ident Debuggable} 
-         }}} 
-  }}}} 
   {DefTypes { 
    {ClassDeclNode { 
-    {Name {NameNode { 
-           {Qualifier {AbsentTreeNode {leaf}}} 
-           {Ident FindExtraImportsVisitorTest} 
-         }}} 
     {Interfaces  {}} 
-    {Modifiers 1} 
     {Members { 
      {ConstructorDeclNode { 
-      {Name {NameNode { 
-             {Qualifier {AbsentTreeNode {leaf}}} 
-             {Ident FindExtraImportsVisitorTest} 
-           }}} 
       {Modifiers 0} 
+      {Name {NameNode { 
+             {Ident FindExtraImportsVisitorTest} 
+             {Qualifier {AbsentTreeNode {leaf}}} 
+           }}} 
       {Params  {}} 
       {ThrowsList  {}} 
       {Body {BlockNode { 
@@ -136,11 +88,59 @@ test FindExtraImportsVisitor-1.1 {} {
                         {Args  {}} 
                       }}} 
     }}}} 
+    {Modifiers 1} 
+    {Name {NameNode { 
+           {Ident FindExtraImportsVisitorTest} 
+           {Qualifier {AbsentTreeNode {leaf}}} 
+         }}} 
     {SuperClass {TypeNameNode { 
                  {Name {NameNode { 
-                        {Qualifier {AbsentTreeNode {leaf}}} 
                         {Ident NamedObj} 
+                        {Qualifier {AbsentTreeNode {leaf}}} 
                       }}} 
                }}} 
   }}}} 
+  {Imports { 
+   {ImportNode { 
+    {Name {NameNode { 
+           {Ident NamedObj} 
+           {Qualifier {NameNode { 
+                       {Ident util} 
+                       {Qualifier {NameNode { 
+                                   {Ident kernel} 
+                                   {Qualifier {NameNode { 
+                                               {Ident ptolemy} 
+                                               {Qualifier {AbsentTreeNode {leaf}}} 
+                                             }}} 
+                                 }}} 
+                     }}} 
+         }}} 
+  }}   {ImportNode { 
+    {Name {NameNode { 
+           {Ident Debuggable} 
+           {Qualifier {NameNode { 
+                       {Ident util} 
+                       {Qualifier {NameNode { 
+                                   {Ident kernel} 
+                                   {Qualifier {NameNode { 
+                                               {Ident ptolemy} 
+                                               {Qualifier {AbsentTreeNode {leaf}}} 
+                                             }}} 
+                                 }}} 
+                     }}} 
+         }}} 
+  }}}} 
+  {Pkg {NameNode { 
+        {Ident test} 
+        {Qualifier {NameNode { 
+                    {Ident java} 
+                    {Qualifier {NameNode { 
+                                {Ident lang} 
+                                {Qualifier {NameNode { 
+                                            {Ident ptolemy} 
+                                            {Qualifier {AbsentTreeNode {leaf}}} 
+                                          }}} 
+                              }}} 
+                  }}} 
+      }}} 
 }}}}
