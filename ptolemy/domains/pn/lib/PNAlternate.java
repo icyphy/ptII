@@ -43,10 +43,14 @@ public class PNAlternate extends PNStar {
 	super();
     }
 
+    /** Constructor
+     */
     public PNAlternate(Workspace workspace) {
         super(workspace);
     }
  
+    /** Constructor
+     */
     public PNAlternate(CompositeEntity container, String name)
              throws NameDuplicationException {
         super(container, name);
@@ -60,7 +64,8 @@ public class PNAlternate extends PNStar {
      * @param myExecutive is the executive responsible for execution
      * @exception NameDuplicationException is thrown if more than one port 
      *  with the same name is added to the star
-     * @exception GraphException is thrown if a port with a null name is passed
+     * @exception IllegalActionException is thrown if a port with a null
+     *  name is passed
      */	
     public void initialize()
             throws NameDuplicationException, IllegalActionException {
@@ -70,30 +75,15 @@ public class PNAlternate extends PNStar {
         super.initialize(this);
     }
     
-    /** Reads one input from it's input port and writes this token to each 
-     *  of it's output ports. Needs to read one token each for every output
-     *  port. Goes through the list of ports in a circular order. 
+    /** Reads one Token from it's input port and writes this token to 
+     *  it's output ports. Needs to read one token for every output
+     *  port. 
      */
     public void run() {
         IntToken data;
         try {
 	    int i;
 	    for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-                /* while (true) {
-                   Enumeration ports = getPorts();
-                   while (ports.hasMoreElements()) {
-                   PNPort port = (PNPort)ports.nextElement();
-                   if (port.isOutput()) {
-                   data = (IntToken)readFrom(_input);
-                   writeTo(port, data);
-                   try {
-                   System.out.println(this.getName()+" writes "+((IntToken)data).intValue()+" to "+ port.getFullName());
-                   } catch (InvalidStateException e) {
-                   System.out.println("InvalidStateException in alternate");
-                   }
-                   }
-                   }
-                */
                 data = (IntToken)readFrom(_input);
                 writeTo(_output1, data);
                 try {
