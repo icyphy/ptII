@@ -1200,7 +1200,7 @@ public class Variable extends Attribute implements Typeable, Settable {
             throw new IllegalActionException(this, ex,
                     "Error evaluating expression: \""
                     + _currentExpression
-                    + "\nIn variable: "
+                    + "\"\nIn variable: "
                     + getFullName());
         } finally {
 	    _dependencyLoop = false;

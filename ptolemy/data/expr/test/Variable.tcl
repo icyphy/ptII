@@ -151,19 +151,19 @@ test Variable-2.5 {Check that dependency cycles are flagged as an error} {
     catch {$p3 getToken} errormsg2
     list $value1 $value2 $value3 $errormsg1 $errormsg2
 } {1.1 9.9 11.0 {ptolemy.kernel.util.IllegalActionException: Object name: .E.P1:
-Error evaluating expression: "P3
+Error evaluating expression: "P3"
 In variable: .E.P1
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Object name: .E.P3:
-Error evaluating expression: "P1 + P2
+Error evaluating expression: "P1 + P2"
 In variable: .E.P3
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Found dependency loop when evaluating .E.P1: P3} {ptolemy.kernel.util.IllegalActionException: Object name: .E.P3:
-Error evaluating expression: "P1 + P2
+Error evaluating expression: "P1 + P2"
 In variable: .E.P3
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Object name: .E.P1:
-Error evaluating expression: "P3
+Error evaluating expression: "P3"
 In variable: .E.P1
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Found dependency loop when evaluating .E.P3: P1 + P2}}
@@ -180,7 +180,7 @@ test Variable-3.1 {Next check for reasonable error message} {
     catch {$p1 getToken} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Object name: .E.P1:
-Error evaluating expression: "P2
+Error evaluating expression: "P2"
 In variable: .E.P1
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Error parsing expression "P2":
@@ -334,7 +334,7 @@ test Variable-6.4 {Check removeFromScope} {
     catch {[[$v2 getToken] toString]} r2
     list $r1 $r2
 } {{"cb"} {ptolemy.kernel.util.IllegalActionException: Object name: .V2:
-Error evaluating expression: "P1+P2
+Error evaluating expression: "P1+P2"
 In variable: .V2
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Error parsing expression "P1+P2":
@@ -428,7 +428,7 @@ test Variable-10.0 {Check setContainer} {
     set r3 [[$p2 getToken] toString]
     list $r1 $r2 $r3
 } {{"a"} {ptolemy.kernel.util.IllegalActionException: Object name: .E1.P2:
-Error evaluating expression: "P1
+Error evaluating expression: "P1"
 In variable: .E1.P2
 Caused by:
  ptolemy.kernel.util.IllegalActionException: Error parsing expression "P1":

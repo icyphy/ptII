@@ -483,7 +483,7 @@ test PtParser-10.2 {Test for reasonable error messages on type problems} {
     catch {$v1 getToken} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Object name: .E.v1:
-Error evaluating expression: "cos(1)
+Error evaluating expression: "cos(1)"
 In variable: .E.v1
 Caused by:
  ptolemy.kernel.util.IllegalActionException: No matching function cos( 1 ).}}
