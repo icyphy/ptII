@@ -33,12 +33,12 @@ import java.io.*;
 import ptolemy.actor.Director;
 import ptolemy.actor.Actor;
 import java.util.Enumeration;
-import collections.LinkedList;
+import collections.HashedMap;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyDomain
 /** 
-A domain is an aggregation of actor and directors. This class manage the 
+A domain is an aggregation of actor and directors. This class manages the 
 actor package list and the director list. This base class provide methods
 that support creating actors, create directors, get available directors
 etc. The derived class should provide a list of the director's full class
@@ -49,43 +49,90 @@ is generally called by PtolemySystem.
 @author  Jie Liu, Lukito Muliadi
 @version $Id$
 */
-public class Domain {
+public class Domain extends XMLElement {
+
     /** Construct a Ptolemy Domain with an empty string
-     *  name.  At the time of construction it has no actors packages.
+     *  name.  At the time of construction it has no actor packages and
+     *  no directors.
      */	
     public Domain() {
-        this(null);
+        super("domain");
+        _actorpackages = (HashedMap) new HashedMap();
+        _directors = (HashedMap) new HashedMap();
+        _description = new XMLElement("description");
+        setName("");
     }
 
-    /** Construct a Ptolemy Domain with a name. If the argument is null
-     *  then the name of the director is an empty string.
-     *  At the time of construction it has no actor packages.
-     *  @param name The name of the domain.
+    /** Construct a Ptolemy Domain with the given attributes. 
+     *  At the time of construction it has no actor packages and no directors
+     *
+     *  @param attributes a HashedMap from attribute name to attribute value.
      */	
-    public Domain(String name) {
-        if(name == null) {
-            _name = "";
-        }else {
-            _name = name;
-        }
+    public Domain(HashedMap attributes) {
+        super("domain",attributes);
+        _actorpackages = (HashedMap) new HashedMap();
+        _directors = (HashedMap) new HashedMap();
+        _description = new XMLElement("description");
+        if(!hasAttribute("name")) setName("");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add an actor package for the this domain.
-     * @param actorpackage The full package name.
+    /** Return an enumeration of the names of the actor packages.
+     *  @return an Enumartion of String
+     */
+    public Enumeration actorPackageNames(){
+        return _actorpackages.keys();
+    }
+    
+   /** 
+     * Add an actor package for the this domain.   All the classes in this
+     * java package are assumed to implement the Actor interface.
+     * @param name A unique Identifier for this package.
+     * @param package The full package name.
      */	
-    public void addActorPackage(String actorpackage) {
-        // actorpackagelist.add(actirpackage)
+    public void addActorPackage(String name, String packagename) {
+        XMLElement e = new XMLElement("actorpackage");
+        e.setAttribute("name", name);
+        e.setAttribute("packagename", packagename);
+        addChildElement(e);    
+        _actorpackages.putAt(name, e);
     }
 
-    /** Create a new actor in this domain that matches the given
-     *  actor class name. The actor class is searched through the 
-     *  known actor packages. If no actor is found, then throw
-     *  a ClassNotFoundException.
-     *  @param actorname The name of the actor.
-     *  @return The new actor.
+    /** 
+     * Add a director to this domain.
+     */
+    public void addDirector(String name, String classname) {
+        XMLElement e = new XMLElement("director");
+        e.setAttribute("name", name);
+        e.setAttribute("classname", classname);
+        addChildElement(e);    
+        _directors.putAt(name, e);
+    }
+
+    /**
+     * Test if this domain contains the given actorpackage.
+     */
+    public boolean containsActorPackage (String name) {
+        return _actorpackages.includesKey(name);
+    }
+
+     /**
+     * Test if this domain contains the given director.
+     */
+    public boolean containsDirector (String name) {
+        return _directors.includesKey(name);
+    }
+
+   /** 
+     * Create a new actor in this domain that matches the given
+     * actor class name. The actor class is searched through the 
+     * known actor packages. If no actor is found, then throw
+     * a ClassNotFoundException.
+     *
+     * @param actorname The name of the actor.
+     * @return The new actor.
      */
     public Actor createActor(String actorname) {
         return null;
@@ -101,33 +148,26 @@ public class Domain {
         return null;
     }
 
-    /** Return the actor packages in an array of String.
-     *  @return the actor packages of this domain.
-     */
-    public String[] getActorPackages(){
-        return null;
-    }
-    
     /** Return the available Director names in an Enumeration of String.
      *  The name of a director is its full class name.
      *  @return The enumeration of director class names.
      */
-    public Enumeration getDirectorNames() {
-        return null;
+    public Enumeration directorNames() {
+        return _directors.keys();
     }
 
     /** Return the description of this domain.
      *  @return The description of this domain.
      */
     public String getDescription() {
-        return null;
+        return _description.getPCData();
     }
 
     /** Return the name of the domain.
      *  @return The name of the domain.
      */
     public String getName() {
-        return _name;
+        return getAttribute("name");
     }
 
     /** Remove the specified actor package.
@@ -136,15 +176,32 @@ public class Domain {
      *       is not in this domain.
      */
     public void removeActorPackage(String actorpackage) {
+        XMLElement e = (XMLElement) _actorpackages.at(actorpackage);
+        removeChildElement(e);
+        _actorpackages.removeAt(actorpackage);
+    }
+
+    /**
+     * set the Description of this domain
+     */
+    public void setDescription(String description) {
+        _description.setPCData(description);
+    }
+
+    /**
+     * set the name of this domain.
+     */
+    public void setName(String name) {
+        setAttribute("name",name);
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////    
 
-    // The name of the Domain.
-    private String _name;
     // The list of the director's full names
-    private LinkedList _directornames;
+    private HashedMap _directors;
     // The list of actor packages
-    private LinkedList _actorpackages;
+    private HashedMap _actorpackages;
+    // The description of this domain
+    private XMLElement _description;
 }
