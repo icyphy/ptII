@@ -70,7 +70,7 @@ from or write to the receiver and resumes it only after a request to resume the
 process has been received.
 <p>
 
-@author Mudit Goel
+@author Mudit Goel, John S. Davis II
 @version $Id$
 @see QueueReceiver
 @see ptolemy.actor.QueueReceiver
@@ -188,6 +188,12 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	_writepending = false;
 	_pause = false;
 	_terminate = false;
+    	_insideBoundaryCacheIsOn = false;
+    	_isInsideBoundaryValue = false;
+    	_outsideBoundaryCacheIsOn = false;
+    	_isOutsideBoundaryValue = false;
+    	_connectedBoundaryCacheIsOn = false;
+    	_isConnectedBoundaryValue = false;
     }
 
     /** Return true if this receiver is connected to the inside of a 
@@ -199,39 +205,50 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  boundary port; return false otherwise.
      */
      public boolean isConnectedToBoundary() {
-         IOPort innerPort = (IOPort)getContainer();
-         if( innerPort == null ) {
-             return false;
-         }
-         ComponentEntity innerEntity = 
-                 (ComponentEntity)innerPort.getContainer(); 
-
-         Port outerPort = null; 
-         ComponentEntity outerEntity = null; 
-         Enumeration enum = innerPort.connectedPorts(); 
-         while( enum.hasMoreElements() ) {
-             outerPort = (Port)enum.nextElement();
-             outerEntity = (ComponentEntity)outerPort.getContainer();
-             if( outerEntity == innerEntity.getContainer() ) {
-		 // The port container of this receiver is connected 
-                 // to a boundary port. Now determine if this receiver's
-                 // channel is connected to a boundary port.
-                 try {
-		 	Receiver[][] rcvrs = 
-                        	((IOPort)outerPort).deepGetReceivers();
-		     	for( int i = 0; i < rcvrs.length; i++ ) {
-                            for( int j = 0; j < rcvrs[i].length; j++ ) {
+         if( _connectedBoundaryCacheIsOn ) {
+             return _isConnectedBoundaryValue;
+         } else {
+             IOPort innerPort = (IOPort)getContainer();
+             if( innerPort == null ) {
+                 _connectedBoundaryCacheIsOn = false;
+                 _isConnectedBoundaryValue = false;
+                 return _isConnectedBoundaryValue;
+             }
+             ComponentEntity innerEntity = 
+                     (ComponentEntity)innerPort.getContainer(); 
+             Port outerPort = null; 
+             ComponentEntity outerEntity = null; 
+             Enumeration enum = innerPort.connectedPorts(); 
+             
+             while( enum.hasMoreElements() ) {
+                 outerPort = (Port)enum.nextElement();
+                 outerEntity = (ComponentEntity)outerPort.getContainer();
+                 if( outerEntity == innerEntity.getContainer() ) {
+		     // The port container of this receiver is 
+                     // connected to a boundary port. Now determine 
+                     // if this receiver's channel is connected to 
+                     // a boundary port.
+                     try {
+		 	 Receiver[][] rcvrs = 
+                        	 ((IOPort)outerPort).deepGetReceivers();
+		     	 for( int i = 0; i < rcvrs.length; i++ ) {
+                             for( int j = 0; j < rcvrs[i].length; j++ ) {
 		                 if( this == rcvrs[i][j] ) {
+                 		     _connectedBoundaryCacheIsOn = true;
+                 	             _isConnectedBoundaryValue = true;
 			             return true;
                                  }
                              }
 			 }
-                 } catch( IllegalActionException e) {
-                     // FIXME: Do Something!
+                     } catch( IllegalActionException e) {
+                         // FIXME: Do Something!
+                     }
                  }
-             }
+             } 
+             _connectedBoundaryCacheIsOn = true; 
+             _isConnectedBoundaryValue = false;
+             return _isConnectedBoundaryValue;
          }
-         return false;
      }
      
     /** Return true if this receiver is contained on the inside of a 
@@ -244,31 +261,41 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  a boundary port; return false otherwise.
      */
      public boolean isInsideBoundary() {
-         IOPort innerPort = (IOPort)getContainer();
-         if( innerPort == null ) {
-             return false;
-         }
-         ComponentEntity innerEntity = 
-                 (ComponentEntity)innerPort.getContainer(); 
-         if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
-             // This receiver is contained by the port 
-             // of a composite actor.
-             if( innerPort.isOutput() && !innerPort.isInput() ) {
-                 return true;
-             } else if( !innerPort.isOutput() && innerPort.isInput() ) {
-                 return false;
-             } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
-                 return false;
-             } else {
-                 // CONCERN: The following only works if the port 
-                 // is not both an input and output.
-                 throw new IllegalArgumentException("A port that is "
-                         + "both an input and output can not be " 
-                         + "properly dealt with by "
-                         + "DDEReceiver.isInsideBoundary");
+         if( _insideBoundaryCacheIsOn ) {
+             return _isInsideBoundaryValue;
+         } else {
+             IOPort innerPort = (IOPort)getContainer();
+             if( innerPort == null ) {
+                 _insideBoundaryCacheIsOn = false;
+                 _isInsideBoundaryValue = false;
+                 return _isInsideBoundaryValue;
              }
-         } 
-         return false;
+             ComponentEntity innerEntity = 
+             	     (ComponentEntity)innerPort.getContainer(); 
+             if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
+                 // This receiver is contained by the port 
+                 // of a composite actor.
+                 if( innerPort.isOutput() && !innerPort.isInput() ) {
+                     _isInsideBoundaryValue = true;
+                 } else if( !innerPort.isOutput() && innerPort.isInput() ) {
+                     _isInsideBoundaryValue = false;
+                 } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
+                     _isInsideBoundaryValue = false;
+                 } else {
+                     // CONCERN: The following only works if the port 
+                     // is not both an input and output.
+                     throw new IllegalArgumentException("A port that "
+                             + "is both an input and output can not be " 
+                             + "properly dealt with by "
+                             + "DDEReceiver.isInsideBoundary");
+                 }
+                 _insideBoundaryCacheIsOn = true;
+                 return _isInsideBoundaryValue;
+             } 
+             _insideBoundaryCacheIsOn = true;
+             _isInsideBoundaryValue = false;
+             return _isInsideBoundaryValue;
+         }
      }
 
     /** Return true if this receiver is contained on the outside of a 
@@ -281,31 +308,41 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *  a boundary port; return false otherwise.
      */
      public boolean isOutsideBoundary() {
-         IOPort innerPort = (IOPort)getContainer();
-         if( innerPort == null ) {
-             return false;
-         }
-         ComponentEntity innerEntity = 
-                 (ComponentEntity)innerPort.getContainer(); 
-         if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
-             // This receiver is contained by the port 
-             // of a composite actor.
-             if( innerPort.isOutput() && !innerPort.isInput() ) {
-                 return false;
-             } else if( !innerPort.isOutput() && innerPort.isInput() ) {
-                 return true;
-             } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
-                 return false;
-             } else {
-                 // CONCERN: The following only works if the port 
-                 // is not both an input and output.
-                 throw new IllegalArgumentException("A port that is "
-                         + "both an input and output can not be " 
-                         + "properly dealt with by "
-                         + "DDEReceiver.isInsideBoundary");
+         if( _outsideBoundaryCacheIsOn ) {
+             return _isInsideBoundaryValue;
+         } else {
+             IOPort innerPort = (IOPort)getContainer();
+             if( innerPort == null ) {
+                 _outsideBoundaryCacheIsOn = false;
+                 _isOutsideBoundaryValue = false;
+                 return _isOutsideBoundaryValue;
              }
+             ComponentEntity innerEntity = 
+                     (ComponentEntity)innerPort.getContainer(); 
+             if( !innerEntity.isAtomic() && innerPort.isOpaque() ) {
+                 // This receiver is contained by the port 
+                 // of a composite actor.
+                 if( innerPort.isOutput() && !innerPort.isInput() ) {
+                     _isOutsideBoundaryValue = false;
+                 } else if( !innerPort.isOutput() && innerPort.isInput() ) {
+                     _isOutsideBoundaryValue = true;
+                 } else if( !innerPort.isOutput() && !innerPort.isInput() ) {
+                     _isOutsideBoundaryValue = false;
+                 } else {
+                     // CONCERN: The following only works if the port 
+                     // is not both an input and output.
+                     throw new IllegalArgumentException("A port that "
+                             + "is both an input and output can not be " 
+                             + "properly dealt with by "
+                             + "DDEReceiver.isInsideBoundary");
+                 }
+                 _outsideBoundaryCacheIsOn = true;
+                 return _isOutsideBoundaryValue;
+             }
+             _outsideBoundaryCacheIsOn = true;
+             _isOutsideBoundaryValue = false;
+             return _isOutsideBoundaryValue;
          } 
-         return false;
      }
 
     /** Return a true or false to indicate whether there is a read pending
@@ -389,6 +426,12 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 	_writepending = false;
 	_pause = false;
 	_terminate = false;
+    	_insideBoundaryCacheIsOn = false;
+    	_isInsideBoundaryValue = false;
+    	_outsideBoundaryCacheIsOn = false;
+    	_isOutsideBoundaryValue = false;
+    	_connectedBoundaryCacheIsOn = false;
+    	_isConnectedBoundaryValue = false;
     }
 
     /** Pause any process that tries to read from or write to this receiver
@@ -443,4 +486,13 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
     private boolean _writepending = false;
     private boolean _pause = false;
     private boolean _terminate = false;
+    
+    private boolean _insideBoundaryCacheIsOn = false;
+    private boolean _isInsideBoundaryValue = false;
+    
+    private boolean _outsideBoundaryCacheIsOn = false;
+    private boolean _isOutsideBoundaryValue = false;
+    
+    private boolean _connectedBoundaryCacheIsOn = false;
+    private boolean _isConnectedBoundaryValue = false;
 }
