@@ -69,12 +69,18 @@ public class TokenInstanceofEliminator extends BodyTransformer
 
         boolean debug = Options.getBoolean(options, "debug");
 
+        eliminateCastsAndInstanceOf(body, phaseName, new HashSet(), debug);
+    }
+ 
+    public static void eliminateCastsAndInstanceOf(Body body,
+            String phaseName, Set unsafeLocalSet, boolean debug) {
+        
         // Analyze the types of variables which refer to tokens.
         TokenTypeAnalysis tokenTypes = 
             new TokenTypeAnalysis(body.getMethod(),
                     new CompleteUnitGraph(body));
-
-        for(Iterator units = body.getUnits().iterator();
+        
+         for(Iterator units = body.getUnits().iterator();
             units.hasNext();) {
             Unit unit = (Unit)units.next();
             for(Iterator boxes = unit.getUseBoxes().iterator();

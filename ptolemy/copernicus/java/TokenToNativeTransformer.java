@@ -147,7 +147,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
                     // Run some cleanup...  this will speedup the rest of the analysis.
                     // And prevent typing errors.
                     TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
-                            body, phaseName + ".tie", unsafeLocalSet);
+                            body, phaseName + ".tie", unsafeLocalSet,
+                            false);
                     CopyPropagator.v().transform(
                             body, phaseName + ".cp", "");
                     ConstantPropagatorAndFolder.v().transform(
