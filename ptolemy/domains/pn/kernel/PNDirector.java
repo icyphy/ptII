@@ -26,7 +26,7 @@ network semantics supporting non-deterministic mutations.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (mudit@eecs.berkeley.edu)
-@AcceptedRating yellow (mudit@eecs.berkeley.edu)
+@AcceptedRating Green (davisj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.pn.kernel;

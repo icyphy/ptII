@@ -26,7 +26,7 @@ network semantics.
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (mudit@eecs.berkeley.edu)
-@AcceptedRating yellow (mudiT@eecs.berkeley.edu)
+@AcceptedRating Green (davisj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.pn.kernel;
