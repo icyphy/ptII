@@ -269,12 +269,12 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             throw new RuntimeException("fix point * other type not supported");
             // break;
 
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
         case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
         case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
             {
                 int returnKind = _typeID.kind(_typeVisitor.type(node));
 
@@ -285,7 +285,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                 return new MethodCallNode(
                         new TypeFieldAccessNode(
                                 new NameNode(AbsentTreeNode.instance, "multiply"),
-                                _arrayMathClassForKind(returnKind)),
+                                _arrayMathClassNodeForKind(returnKind)),
                         methodArgs);
             }
 
@@ -501,13 +501,13 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             throw new RuntimeException("fix point / other type not supported");
             // break;
 
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
         case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
         case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
-            // what is the meaning of divide in these cases?
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
+	    // what is the meaning of divide in these cases?
             // break;
 
         case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
@@ -611,12 +611,12 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             throw new RuntimeException("fix point % x not supported");
             // break;
 
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
         case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
         case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
             throw new RuntimeException("array % x not supported");
 
         case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
@@ -828,12 +828,12 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             throw new RuntimeException("fix point + other type not supported");
             // break;
 
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
         case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
         case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
             {
                 int returnKind = _typeID.kind(_typeVisitor.type(node));
 
@@ -844,7 +844,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                 MethodCallNode retval = new MethodCallNode(
                         new TypeFieldAccessNode(
                                 new NameNode(AbsentTreeNode.instance, "add"),
-                                _arrayMathClassForKind(returnKind)),
+                                _arrayMathClassNodeForKind(returnKind)),
                         methodArgs);
 
 		if (_debug) {
@@ -1063,12 +1063,12 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             throw new RuntimeException("fix point - other type not supported");
             // break;
 
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
         case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
         case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
-            //case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
             {
                 int returnKind = _typeID.kind(_typeVisitor.type(node));
 
@@ -1082,7 +1082,7 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
                         new TypeFieldAccessNode(
                                 new NameNode(AbsentTreeNode.instance,
                                         "subtract"),
-                                _arrayMathClassForKind(returnKind)),
+                                _arrayMathClassNodeForKind(returnKind)),
                         methodArgs);
             }
         case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
@@ -1396,12 +1396,12 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             switch (targetKind) {
                 // actually this should make sure that the target type is an array
             case TypeIdentifier.TYPE_KIND_CLASS:
-                //case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
             case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY:
-                //case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
             case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY:
-                //case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
-                //case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
             case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
             case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_MATRIX:
             case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_MATRIX:
@@ -1432,62 +1432,60 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
             }
             break;
 
-        case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY:
-            switch (targetKind) {
-            case ExtendedJavaTypeIdentifier.TYPE_KIND_INT:
-		System.out.println("ExtendedJavaConverter."
-				   + "convertExprToToken(): "
-				   + "exprKind == TYPE_KIND_INT_ARRAY "
-				   + "targetKind == TYPE_KIND_INT "
-				   + " exprKind: " + exprKind
-				   + " targetKind: " + targetKind
-				   + " expr: " + expr);
-		System.out.println("Warning: "
-				   + "ExtendedJavaConverter."
-				   + "convertExprToToken(): "
-				   + "Returning expr!"
-				   );
-		return expr;
 
-		/*
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
+        case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
+            switch (targetKind) {
+	    case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
+                return new MethodCallNode(new TypeFieldAccessNode(
+                        new NameNode(AbsentTreeNode.instance, "toBooleanArray"),
+			_arrayMathClassNodeForKind(exprKind)),
+                        TNLManip.addFirst(expr));
+
+	    case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY:
+                return new MethodCallNode(new TypeFieldAccessNode(
+                        new NameNode(AbsentTreeNode.instance, "toIntArray"),
+			_arrayMathClassNodeForKind(exprKind)),
+                        TNLManip.addFirst(expr));
+
             case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
                 return new MethodCallNode(new TypeFieldAccessNode(
                         new NameNode(AbsentTreeNode.instance, "toLongArray"),
-                        new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-                                "IntegerArrayMath"))),
+			_arrayMathClassNodeForKind(exprKind)),
                         TNLManip.addFirst(expr));
-		*/
+
             case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY:
                 return new MethodCallNode(new TypeFieldAccessNode(
                         new NameNode(AbsentTreeNode.instance, "toDoubleArray"),
-                        new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-                                "IntegerArrayMath"))),
+			_arrayMathClassNodeForKind(exprKind)),
                         TNLManip.addFirst(expr));
 
             case ExtendedJavaTypeIdentifier.TYPE_KIND_STRING:
                 return new MethodCallNode(new TypeFieldAccessNode(
                         new NameNode(AbsentTreeNode.instance, "toString"),
-                        new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-                                "IntegerArrayMath"))),
+			_arrayMathClassNodeForKind(exprKind)),
                         TNLManip.addFirst(expr));
-		/*
+
             case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
-                // need to add the toComplexArray() method to IntegerArrayMath
                 return new MethodCallNode(new TypeFieldAccessNode(
                         new NameNode(AbsentTreeNode.instance, "toComplexArray"),
-                        new TypeNameNode(new NameNode(AbsentTreeNode.instance,
-                                "IntegerArrayMath"))),
+			_arrayMathClassNodeForKind(exprKind)),
                         TNLManip.addFirst(expr));
-		*/
+
+            case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
+                return new MethodCallNode(new TypeFieldAccessNode(
+                        new NameNode(AbsentTreeNode.instance, "toFixPointArray"),
+			_arrayMathClassNodeForKind(exprKind)),
+                        TNLManip.addFirst(expr));
 	    default:
-		throw new RuntimeException("cannot convert from INT_ARRAY:" + expr + " (kind: "
+		throw new RuntimeException("cannot convert from array " + expr + " (kind: "
 					   + exprKind + ") to kind " + targetKind);
             }
-        case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY:
-        throw new RuntimeException("cannot convert DOUBLE_ARRAY:" + expr + " (kind: "
-				   + exprKind + ") to kind " + targetKind
-				   + " ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY" 
-				   + ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY);
+	    //break;
 
         case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_MATRIX:
             switch (targetKind) {
@@ -1645,45 +1643,48 @@ public class ExtendedJavaConverter extends ReplacementJavaVisitor
     protected TypeIdentifier _typeID;
     protected TypeVisitor _typeVisitor;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+
+
     /** Return the TypeNameNode corresponding to the class containing
      *  array math methods for the argument kind.
      */
-    private TypeNameNode _arrayMathClassForKind(int kind) {
+    private TypeNameNode _arrayMathClassNodeForKind(int kind) {
         String className = null;
 
         switch (kind) {
-            /*
         case ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY:
-            className = "BooleanArrayMath"; // this class does not exist yet
-            break;
-            */
+	    throw new RuntimeException("ptolemy.math.BooleanArrayMath does not yet exist.");
+            // className = "BooleanArrayMath"; // this class does not exist yet
+            // break;
         case ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY:
             className = "IntegerArrayMath";
             break;
-            /*
         case ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY:
             className = "LongArrayMath";
             break;
-            */
         case ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY:
             className = "DoubleArrayMath";
             break;
-            /*
         case ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY:
             className = "ComplexArrayMath";
             break;
-
         case ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY:
-            className = "FixPointArrayMath"; // this class does not exist yet
-            break;
-            */
+	    throw new RuntimeException("ptolemy.math.FixPointArrayMath does not yet exist.");
+            // className = "FixPointArrayMath"; // this class does not exist yet
+            // break;
+
         default:
             throw new RuntimeException("kind '" + kind
                     + "'is not a array kind.");
-        }
-
+	    
+	}
+	
         return new TypeNameNode(
-                new NameNode(AbsentTreeNode.instance, className));
+                new NameNode(AbsentTreeNode.instance,
+			     className));
     }
 
     ///////////////////////////////////////////////////////////////////

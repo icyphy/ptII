@@ -66,13 +66,12 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
             if (arrayDim == 1) {
                 TypeNode baseTypeNode = TypeUtility.arrayBaseType(type);
                 switch (kind(baseTypeNode)) {
+		case TYPE_KIND_BOOLEAN:   return TYPE_KIND_BOOLEAN_ARRAY;
 		case TYPE_KIND_INT:       return TYPE_KIND_INT_ARRAY;
+		case TYPE_KIND_LONG:      return TYPE_KIND_LONG_ARRAY;
 		case TYPE_KIND_DOUBLE:    return TYPE_KIND_DOUBLE_ARRAY;
-		case TYPE_KIND_CHAR:	  
-		case TYPE_KIND_BOOLEAN:
-		case TYPE_KIND_LONG:
-		case TYPE_KIND_COMPLEX:
-		case TYPE_KIND_FIX_POINT:
+		case TYPE_KIND_COMPLEX:   return TYPE_KIND_COMPLEX_ARRAY;
+		case TYPE_KIND_FIX_POINT: return TYPE_KIND_FIX_POINT_ARRAY;
 		default:
 			System.err.println("Warning: "
                                 + "ExtendedJavaTypeIdentifier.kind(): '"
@@ -132,14 +131,22 @@ public class ExtendedJavaTypeIdentifier extends TypeIdentifier {
     public static final int TYPE_KIND_TOKEN = TYPE_KIND_STRING + 1;
 
     // Array kinds
-    public static final int TYPE_KIND_INT_ARRAY =
+    public static final int TYPE_KIND_BOOLEAN_ARRAY =
 	TYPE_KIND_TOKEN + 1;
-    public static final int TYPE_KIND_DOUBLE_ARRAY =
+    public static final int TYPE_KIND_INT_ARRAY =
+	TYPE_KIND_BOOLEAN_ARRAY + 1;
+    public static final int TYPE_KIND_LONG_ARRAY =
 	TYPE_KIND_INT_ARRAY + 1;
+    public static final int TYPE_KIND_DOUBLE_ARRAY =
+	TYPE_KIND_LONG_ARRAY + 1;
+    public static final int TYPE_KIND_COMPLEX_ARRAY =
+	TYPE_KIND_DOUBLE_ARRAY + 1;
+    public static final int TYPE_KIND_FIX_POINT_ARRAY =
+	TYPE_KIND_COMPLEX_ARRAY + 1;
 
     // Matrix kinds.
     public static final int TYPE_KIND_BOOLEAN_MATRIX =
-    TYPE_KIND_DOUBLE_ARRAY + 1; 
+    TYPE_KIND_FIX_POINT_ARRAY + 1; 
     public static final int TYPE_KIND_INT_MATRIX =
     TYPE_KIND_BOOLEAN_MATRIX + 1;
     public static final int TYPE_KIND_LONG_MATRIX =

@@ -66,6 +66,7 @@ public class ExtendedJavaTypePolicy extends TypePolicy {
 	// TYPE_KIND_FIX_POINT_MATRIX etc. are declared in
 	// ExtendedJavaTypeIdentifier.java
 
+	// Matrices
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX) ||
                 (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_MATRIX)) {
             return TypeUtility.makeArrayType((TypeNode)
@@ -98,9 +99,20 @@ public class ExtendedJavaTypePolicy extends TypePolicy {
             return TypeUtility.makeArrayType(BoolTypeNode.instance, 2);
         }
 
+	// Arrays
+        if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY) ||
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_BOOLEAN_ARRAY)) {
+            return TypeUtility.makeArrayType(BoolTypeNode.instance, 1);
+        }
+
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY) ||
                 (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_INT_ARRAY)) {
             return TypeUtility.makeArrayType(IntTypeNode.instance, 1);
+        }
+
+        if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY) ||
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_LONG_ARRAY)) {
+            return TypeUtility.makeArrayType(LongTypeNode.instance, 1);
         }
 
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_DOUBLE_ARRAY) ||
@@ -108,6 +120,19 @@ public class ExtendedJavaTypePolicy extends TypePolicy {
             return TypeUtility.makeArrayType(DoubleTypeNode.instance, 1);
         }
 
+        if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY) ||
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_COMPLEX_ARRAY)) {
+            return TypeUtility.makeArrayType((TypeNode)
+                    ExtendedJavaTypeIdentifier.COMPLEX_TYPE.clone(), 1);
+        }
+
+        if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY) ||
+                (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT_ARRAY)) {
+            return TypeUtility.makeArrayType((TypeNode)
+                    ExtendedJavaTypeIdentifier.FIX_POINT_TYPE.clone(), 1);
+        }
+
+	// Others
         if ((kind1 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT) ||
                 (kind2 == ExtendedJavaTypeIdentifier.TYPE_KIND_FIX_POINT)) {
             return (TypeNode) ExtendedJavaTypeIdentifier.FIX_POINT_TYPE.clone();
