@@ -152,6 +152,13 @@ public class Location extends Attribute implements Locatable, Settable {
         return sw.toString();
     }
 
+    /** Get the location in some cartesian coordinate system.
+     *  @return The location.
+     */
+    public double[] getLocation() {
+        return _location;
+    }
+
     /** Remove a listener from the list of listeners that is
      *  notified when the value of this variable changes.  If no such listener
      *  exists, do nothing.
@@ -194,13 +201,6 @@ public class Location extends Attribute implements Locatable, Settable {
         }
     }
 
-    /** Get the location in some cartesian coordinate system.
-     *  @return The location.
-     */
-    public double[] getLocation() {
-        return _location;
-    }
-
     /** Set the location in some cartesian coordinate system.
      *  @param location The location.
      */
@@ -232,9 +232,6 @@ public class Location extends Attribute implements Locatable, Settable {
         }
         return "(" + className + ", Location = (" + getExpression() + "))";
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

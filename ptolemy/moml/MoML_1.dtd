@@ -5,7 +5,11 @@
 <!--    ptII/doc/design/src/MoML.fm, -->
 <!--    the static field MoML_DTD_1 in MoMLParser.java. -->
 <!-- The top-level element can be either model or class. -->
+<!-- NOTE: To ensure backward compatibility with other version 1.x DTDs, -->
+<!-- there are quite a few deprecated entries here. The documentation    -->
+<!-- does not mention these deprecated entries. -->
 
+<!-- The model element is deprecated.  Use entity instead. -->
 <!ELEMENT model (class | configure | deleteEntity | deletePort |
 		deleteRelation | director | doc | entity | group | import |
                 input | link | property | relation | rendition | unlink)*>
@@ -14,10 +18,11 @@
 
 <!ELEMENT class (class | configure | deleteEntity | deletePort |
 		 deleteRelation | director | doc |
-                 entity | group | import | input | link |
+                 entity | group | import | input | link | port |
                  property | relation | rendition | unlink)*>
 <!ATTLIST class name CDATA #REQUIRED
-                extends CDATA #IMPLIED>
+                extends CDATA #IMPLIED
+		source CDATA #IMPLIED>
 
 <!ELEMENT configure (#PCDATA)>
 <!ATTLIST configure source CDATA #IMPLIED>
@@ -35,7 +40,7 @@
 <!ATTLIST deleteRelation name CDATA #REQUIRED>
 
 <!-- NOTE: deprecated.  Use property instead. -->
-<!ELEMENT director (configure | property)*>
+<!ELEMENT director (configure | doc | property)*>
 <!ATTLIST director name CDATA "director"
                    class CDATA #REQUIRED>
 
@@ -47,15 +52,18 @@
                   entity | group | import | input | link | port |
                   property | relation | rendition | unlink)*>
 <!ATTLIST entity name CDATA #REQUIRED
-                 class CDATA #IMPLIED>
+                 class CDATA #IMPLIED
+		 source CDATA #IMPLIED>
 
 <!ELEMENT group ANY>
 <!ATTLIST group name CDATA #IMPLIED>
 
+<!-- The import element is deprecated.  Use the source attribute instead. -->
 <!ELEMENT import EMPTY>
 <!ATTLIST import source CDATA #REQUIRED
                  base CDATA #IMPLIED>
 
+<!-- The base attribute is deprecated. -->
 <!ELEMENT input EMPTY>
 <!ATTLIST input source CDATA #REQUIRED
                 base CDATA #IMPLIED>
@@ -79,7 +87,7 @@
                     name CDATA #REQUIRED
                     value CDATA #IMPLIED>
 
-<!ELEMENT relation (property | vertex)*>
+<!ELEMENT relation (configure | doc | property | vertex)*>
 <!ATTLIST relation name CDATA #REQUIRED
                    class CDATA #IMPLIED>
 
@@ -94,7 +102,7 @@
                  port CDATA #REQUIRED
                  relation CDATA #REQUIRED>
 
-<!ELEMENT vertex (location | property)*>
+<!ELEMENT vertex (configure | doc | location | property)*>
 <!ATTLIST vertex name CDATA #REQUIRED
                  pathTo CDATA #IMPLIED
                  value CDATA #IMPLIED>
