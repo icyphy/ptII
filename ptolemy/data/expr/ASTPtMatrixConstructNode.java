@@ -1,6 +1,7 @@
 /* ASTPtMatrixConstructNode represents matrix construction in the parse tree.
 
- Copyright (c) 1998-2001 The Regents of the University of California.
+ Copyright (c) 1998-2001 The Regents of the University of California and
+ Research in Motion Limited.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -8,21 +9,20 @@
  copyright notice and the following two paragraphs appear in all copies
  of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
+ LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
+ INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
+ SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
+ OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
+ SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
+ THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+ PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
+ BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
+ LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
-
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
 
 @ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
@@ -36,6 +36,7 @@ package ptolemy.data.expr;
 import ptolemy.data.*;
 import ptolemy.data.type.*;
 import ptolemy.math.Complex;
+import ptolemy.math.FixPoint;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -118,6 +119,65 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                         ((ComplexToken)tok).complexValue();
                 }
                 _ptToken = new ComplexMatrixToken(val);
+	    } else if (mtype == BaseType.FIX) {
+		FixPoint[][] val = new FixPoint[_nRows][_nColumns];
+		for (i = 0; i < nChildren; ++i) {
+		    tok = _childTokens[i];
+		    val[i/_nColumns][i%_nColumns] =
+			((FixToken)tok).fixValue();
+		}
+		_ptToken = new FixMatrixToken(val);
+            } else if (_childTokens[0] instanceof ArrayToken) {
+                // Convert an ArrayToken to a MatrixToken
+                if (((ArrayToken)_childTokens[0]).getElement(0)
+                    instanceof IntToken) {
+
+                    int[][] array = new int[nChildren]
+                        [((ArrayToken)_childTokens[0]).length()];
+                    for (int k = 0; k < array.length; k++) {
+                        for (int j = 0; j < array[k].length; j++) {
+                            array[k][j] = ((IntToken)((ArrayToken)_childTokens[k])
+                                           .getElement(j)).intValue();
+                        }
+                    }
+                    _ptToken = new IntMatrixToken(array);
+                } else if (((ArrayToken)_childTokens[0]).getElement(0)
+                    instanceof DoubleToken) {
+                    double[][] array = new double[nChildren]
+                        [((ArrayToken)_childTokens[0]).length()];
+                    for (int k = 0; k < array.length; k++) {
+                        for (int j = 0; j < array[k].length; j++) {
+                            array[k][j] = ((DoubleToken)((ArrayToken)_childTokens[k])
+                                           .getElement(j)).doubleValue();
+                        }
+                    }
+                    _ptToken = new DoubleMatrixToken(array);
+                } else if (((ArrayToken)_childTokens[0]).getElement(0)
+                    instanceof ComplexToken) {
+                    Complex[][] array = new Complex[nChildren]
+                        [((ArrayToken)_childTokens[0]).length()];
+                    for (int k = 0; k < array.length; k++) {
+                        for (int j = 0; j < array[k].length; j++) {
+                            array[k][j] = ((ComplexToken)((ArrayToken)_childTokens[k])
+                                        .getElement(j)).complexValue();
+                        }
+                    }
+                    _ptToken = new ComplexMatrixToken(array);
+		} else if (((ArrayToken)_childTokens[0]).getElement(0)
+			   instanceof FixToken) {
+		    FixPoint[][] array = new FixPoint[nChildren]
+                        [((ArrayToken)_childTokens[0]).length()];
+                    for (int k = 0; k < array.length; k++) {
+                        for (int j = 0; j < array[k].length; j++) {
+                            array[k][j] = ((FixToken)((ArrayToken)_childTokens[k])
+                                           .getElement(j)).fixValue();
+                        }
+                    }
+		    _ptToken = new FixMatrixToken(array);
+                } else {
+                    throw new IllegalActionException("Creating a matrix from "
+                        +_childTokens[0].toString()+" not implemented!");
+                }
             } else if (_nRows == 1) {
 		// Create an ArrayToken from the parsed elements.
 		_ptToken = new ArrayToken(_childTokens);
