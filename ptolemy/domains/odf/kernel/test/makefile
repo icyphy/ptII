@@ -46,7 +46,10 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	
+	ODFGet.java \
+	ODFGetToken.java \
+	ODFPut.java \
+	ODFPutToken.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
