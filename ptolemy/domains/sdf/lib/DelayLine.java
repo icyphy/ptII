@@ -51,14 +51,16 @@ import java.util.List;
 //// DelayLine
 /**
 This actor reads tokens from its input port, and for each token read
-outputs and ArrayToken that contains the current token, plus some number of
-previously read tokens.
-The length of the delay line (and subsequently the size of the ArrayToken
-created) is the same as the <i>initialValues</i> parameter.
-This actor is polymorphic. It can accept input of any type and will
-send ArrayTokens of corresponding type.
+outputs an array that contains the current token as the first token,
+followed by some number of previously read tokens.  The length of the
+output array is the same as that of the array in the <i>initialValues</i>
+parameter.  That parameter also provides the initial values when there
+are no previously read tokens.
 <p>
+Note that this actor is not a simple sample delay.
+Use the SampleDelay actor to achieve a simple sample delay.
 
+@see SampleDelay
 @author Steve Neuendorffer
 @version $Id$
 */
