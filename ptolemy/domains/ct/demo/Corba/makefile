@@ -31,6 +31,8 @@
 
 ME =		ptolemy/domains/ct/demo/Corba
 
+DIRS = 		util
+
 # Root of the Java directory
 ROOT =		../../../../../
 
@@ -51,9 +53,11 @@ JSRCS = \
 	NonlinearServant.java	
 
 EXTRA_SRCS =	$(JSRCS) \
+	CorbaActor.idl \
 	NonlinearClient \
 	NonlinearClient.htm \
-	NonlinearClientApplication
+	NonlinearClientApplication \
+	README
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -63,6 +67,7 @@ MISC_FILES =
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
+	util \
 	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
