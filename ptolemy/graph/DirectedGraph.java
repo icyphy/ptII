@@ -215,9 +215,9 @@ public class DirectedGraph extends Graph {
     public Object[] backwardReachableNodes(Object weight) {
         Collection sameWeightNodes = nodes(weight);
         if (sameWeightNodes.size() == 0) {
-            throw new GraphWeightException("The specified weight is not a "
-                    + "node weight in this graph."
-                    + GraphException.weightDump(weight, this));
+            throw new GraphWeightException(weight, null, this,
+                    "The specified weight is not a "
+                    + "node weight in this graph.");
         }
         return weightArray(backwardReachableNodes(sameWeightNodes));
     }
@@ -471,9 +471,8 @@ public class DirectedGraph extends Graph {
     public Object[] reachableNodes(Object weight) {
         Collection sameWeightNodes = nodes(weight);
         if (sameWeightNodes.size() == 0) {
-            throw new GraphWeightException("The specified weight is not a "
-                    + "node weight in this graph."
-                    + GraphException.weightDump(weight, this));
+            throw new GraphWeightException(weight, null, this,
+                    "The specified weight is not a node weight in this graph.");
         }
         return weightArray(reachableNodes(sameWeightNodes));
     }

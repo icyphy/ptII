@@ -64,10 +64,9 @@ test DirectedGraph-2.2 {test reachableNodes on empty graph above} {
      catch {$p {reachableNodes Object} null} msg
      list $msg
 } {{ptolemy.graph.exception.GraphWeightException: The specified weight is not a node weight in this graph.
-Dumps of the offending weight and graph follow.
-The offending weight:
+The weight is of class java.lang.String and its description follows:
 null
-The offending graph:
+A Dump of the offending graph follows.
 {ptolemy.graph.DirectedGraph
 Node Set:
 

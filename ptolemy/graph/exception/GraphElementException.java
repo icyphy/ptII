@@ -28,6 +28,7 @@
 package ptolemy.graph.exception;
 
 import ptolemy.graph.Edge;
+import ptolemy.graph.Element;
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
 
@@ -43,15 +44,21 @@ association values.
 */
 public class GraphElementException extends GraphException {
 
-    /** The default constructor without arguments.
-     */
-    public GraphElementException() {}
-
-    /** Constructor with an argument of text description.
+    /** Constructor with an argument of string message.
      *  @param message The exception message.
      */
     public GraphElementException(String message) {
         super(message);
+    }
+
+    /** Constructor with arguments of element, graph, and a message.
+     *  @param element The invalid element.
+     *  @param graph The graph accessed.
+     *  @param message The exception message.
+     */
+    public GraphElementException(
+            Element element, Graph graph, String message) {
+        super(_argumentsToString(element, graph, message));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -66,7 +73,7 @@ public class GraphElementException extends GraphException {
     static public void checkNode(Node node, Graph graph) {
         if (!graph.containsNode(node)) {
             throw new GraphElementException("Reference to a node that is "
-                    + "not in the graph.\n" + nodeDump(node, graph));
+                    + "not in the graph.\n" + elementDump(node, graph));
         }
     }
 
@@ -79,8 +86,22 @@ public class GraphElementException extends GraphException {
     static public void checkEdge(Edge edge, Graph graph) {
         if (!graph.containsEdge(edge)) {
             throw new GraphElementException("Reference to an edge that is "
-                    + "not in the graph.\n" + edgeDump(edge, graph));
+                    + "not in the graph.\n" + elementDump(edge, graph));
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /*  A method for generating proper string dumps.
+     *  @param element The element the invalid weight tries to associate.
+     *  @param graph The graph to access.
+     *  @param message The exception message given by users.
+     *  @return The desired exception message.
+     */
+    static private String _argumentsToString(
+            Element element, Graph graph, String message) {
+        return message + elementDump(element, graph);
     }
 }
 

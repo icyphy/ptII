@@ -27,6 +27,9 @@
 
 package ptolemy.graph.exception;
 
+import ptolemy.graph.Element;
+import ptolemy.graph.Graph;
+
 //////////////////////////////////////////////////////////////////////////
 //// GraphWeightException
 /** Exception for unweighted graphs or graphs with improper weights.
@@ -38,15 +41,42 @@ incorrect weights.
 */
 public class GraphWeightException extends GraphException {
 
-    /** The default constructor without arguments.
-     */
-    public GraphWeightException() {}
-
-    /** Constructor with an argument of text description.
+    /** Constructor with arguments of weight, element, graph,
+     *  and a message.
+     *  This exception is generally thrown because of invalid weight
+     *  association to a specific element. It can also be thrown for
+     *  unspecific elements by setting the <code>element</code> argument
+     *  to <code>null</code>.
+     *
+     *  @param weight The invalid weight.
+     *  @param element The element to associate the invalid weight. Set
+     *         <code>null</code> for unspecific elements.
+     *  @param graph The graph accessed.
      *  @param message The exception message.
      */
-    public GraphWeightException(String message) {
-        super(message);
+    public GraphWeightException(
+            Object weight, Element element, Graph graph, String message) {
+        super(_argumentsToString(weight, element, graph, message));
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /*  A method for generating proper string dumps.
+     *  @param weight The invalid weight.
+     *  @param element The element the invalid weight tries to associate.
+     *  @param graph The graph to access.
+     *  @param message The exception message given by users.
+     *  @return The desired exception message.
+     */
+    static private String _argumentsToString(
+            Object weight, Element element, Graph graph, String message) {
+        String outputMessage = new String() + message + weightDump(weight);
+        if (element != null)
+            outputMessage += elementDump(element, graph);
+        else
+            outputMessage += graphDump(graph);
+        return outputMessage;
     }
 }
 

@@ -26,8 +26,8 @@
 # CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 # ENHANCEMENTS, OR MODIFICATIONS.
 # 
-# 						PT_COPYRIGHT_VERSION_2
-# 						COPYRIGHTENDKEY
+#                       PT_COPYRIGHT_VERSION_2
+#                       COPYRIGHTENDKEY
 #######################################################################
 
 # Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
@@ -64,19 +64,19 @@ proc iterToInfo {iter} {
     if {$iter != [java::null]} {
         while {[$iter hasNext] == 1} {
             set elem [$iter next]
-	    if [ java::instanceof $elem ptolemy.graph.InequalityTerm] {
-		lappend result [termToInfo $elem]
-	    } else {
-		if [ java::instanceof $elem ptolemy.graph.Inequality] {
-		    set ineqelem [java::cast ptolemy.graph.Inequality $elem]
-		    set lesser [$ineqelem getLesserTerm]
-		    set greater [$ineqelem getGreaterTerm]
-		    set ineq {}
-		    lappend ineq [termToInfo $lesser]
-		    lappend ineq [termToInfo $greater]
-		    lappend result $ineq
-		}
-	    }
+        if [ java::instanceof $elem ptolemy.graph.InequalityTerm] {
+        lappend result [termToInfo $elem]
+        } else {
+        if [ java::instanceof $elem ptolemy.graph.Inequality] {
+            set ineqelem [java::cast ptolemy.graph.Inequality $elem]
+            set lesser [$ineqelem getLesserTerm]
+            set greater [$ineqelem getGreaterTerm]
+            set ineq {}
+            lappend ineq [termToInfo $lesser]
+            lappend ineq [termToInfo $greater]
+            lappend result $ineq
+        }
+        }
 
         }
     }
@@ -85,9 +85,9 @@ proc iterToInfo {iter} {
 
 proc termToInfo {term} {
     if [ java::instanceof $term ptolemy.graph.test.TestConstant] {
-	set cterm [java::cast ptolemy.graph.test.TestConstant $term]
+    set cterm [java::cast ptolemy.graph.test.TestConstant $term]
     } else { 
-	set cterm [java::cast ptolemy.graph.test.TestVariable $term]
+    set cterm [java::cast ptolemy.graph.test.TestVariable $term]
     }
     return [$cterm getInfo]
 }
@@ -95,7 +95,7 @@ proc termToInfo {term} {
 
 ######################################################################
 ####
-# 
+#
 test InequalitySolver-2.1 {construct the 4-point CPO in the design doc.} {
     set cpo [java::new ptolemy.graph.DirectedAcyclicGraph]
     set w [java::new {java.lang.String String} w]
@@ -110,17 +110,24 @@ test InequalitySolver-2.1 {construct the 4-point CPO in the design doc.} {
     $cpo addEdge $y $w
     $cpo addEdge $z $x
     $cpo addEdge $z $y
-    $cpo description
+    $cpo toString
 } {{ptolemy.graph.DirectedAcyclicGraph
-  {w}
-  {x w}
-  {y w}
-  {z x y}
-}}
+Node Set:
+0: w
+1: x
+2: y
+3: z
+Edge Set:
+0: (x, w)
+1: (y, w)
+2: (z, x)
+3: (z, y)
+}
+}
 
 ######################################################################
 ####
-# 
+#
 test InequalitySolver-2.2 {construct inequality constraints} {
     set tw [java::new ptolemy.graph.test.TestConstant $w]
     $tw setName W
@@ -137,9 +144,9 @@ test InequalitySolver-2.2 {construct inequality constraints} {
     set iab [java::new ptolemy.graph.Inequality $ta $tb]
 
     list [$tw isSettable] [$ta isSettable] [$tx getAssociatedObject] \
-	[$tb getAssociatedObject] \
-	[$tw isValueAcceptable] [$ta isValueAcceptable] \
-	[list [$iaw toString] [$ibx toString] [$iba toString] [$iab toString]]
+    [$tb getAssociatedObject] \
+    [$tw isValueAcceptable] [$ta isValueAcceptable] \
+    [list [$iaw toString] [$ibx toString] [$iba toString] [$iab toString]]
 } {0 1 x java0x0 1 1 {{ptolemy.graph.test.TestVariableA(variable)_null <= ptolemy.graph.test.TestConstantW(constant)_w} {ptolemy.graph.test.TestVariableB(variable)_null <= ptolemy.graph.test.TestConstantX(constant)_x} {ptolemy.graph.test.TestVariableB(variable)_null <= ptolemy.graph.test.TestVariableA(variable)_null} {ptolemy.graph.test.TestVariableA(variable)_null <= ptolemy.graph.test.TestVariableB(variable)_null}}}
 
 ######################################################################
@@ -167,10 +174,10 @@ test InequalitySolver-2.3 {solver for the least solution} {
 
     # using lsort to order some enumerations
     list $sat [$ta getValue] [$tb getValue] \
-	 [lsort [iterToInfo [$s bottomVariables]]] \
-	 [iterToInfo [$s topVariables]] \
-	 [lsort [iterToInfo [$s variables]]] \
-	 [iterToInfo [$s unsatisfiedInequalities]]
+     [lsort [iterToInfo [$s bottomVariables]]] \
+     [iterToInfo [$s topVariables]] \
+     [lsort [iterToInfo [$s variables]]] \
+     [iterToInfo [$s unsatisfiedInequalities]]
 } {1 z z {A(variable)_z B(variable)_z} {} {A(variable)_z B(variable)_z} {}}
 
 ######################################################################
@@ -179,9 +186,9 @@ test InequalitySolver-2.3 {solver for the least solution} {
 test InequalitySolver-2.4 {solver for the greatest solution} {
     set sat [$s solveGreatest]
     list $sat [$ta getValue] [$tb getValue] \
-	 [iterToInfo [$s bottomVariables]] [iterToInfo [$s topVariables]] \
+     [iterToInfo [$s bottomVariables]] [iterToInfo [$s topVariables]] \
          [lsort [iterToInfo [$s variables]]] \
-	 [iterToInfo [$s unsatisfiedInequalities]]
+     [iterToInfo [$s unsatisfiedInequalities]]
 } {1 x x {} {} {A(variable)_x B(variable)_x} {}}
 
 ######################################################################
@@ -206,8 +213,8 @@ test InequalitySolver-2.5 {constraints with no solution} {
 
     set sat [$s1 solveLeast]
     list $sat [$ta getValue] [$tb getValue] \
-	 [iterToInfo [$s1 bottomVariables]] [iterToInfo [$s1 topVariables]] \
-	 [iterToInfo [$s1 unsatisfiedInequalities]]
+     [iterToInfo [$s1 bottomVariables]] [iterToInfo [$s1 topVariables]] \
+     [iterToInfo [$s1 unsatisfiedInequalities]]
 } {0 w y {} A(variable)_w {{B(variable)_y Z(constant)_z}}}
 
 ######################################################################
@@ -227,7 +234,7 @@ test InequalitySolver-2.7 {description method} {
     # Sort the Ilist and Clist output to handle platform dependent ordering
     set description [$s1 description]
     list [lsort [lindex $description 0]] \
-	    [lsort [lindex $description 1]]
+        [lsort [lindex $description 1]]
 } {{_Ilist: {_ineq: ptolemy.graph.test.TestConstantW(constant)_w <= ptolemy.graph.test.TestVariableA(variable)_w _inCvar: false _inserted: false} {_ineq: ptolemy.graph.test.TestConstantY(constant)_y <= ptolemy.graph.test.TestVariableB(variable)_z _inCvar: false _inserted: false} {_ineq: ptolemy.graph.test.TestVariableA(variable)_w <= ptolemy.graph.test.TestConstantW(constant)_w _inCvar: true _inserted: false} {_ineq: ptolemy.graph.test.TestVariableB(variable)_z <= ptolemy.graph.test.TestConstantZ(constant)_z _inCvar: true _inserted: false}} {Clist: ptolemy.graph.test.TestVariableA(variable)_w ptolemy.graph.test.TestVariableB(variable)_z}}
 
 
@@ -288,10 +295,10 @@ test InequalitySolver-3.1 {solve constraints on TypeLattice} {
 
     set sat [$s solveLeast]
     list $sat \
-	 [[$ps1c getType] toString] \
-	 [[$ps1d getType] toString] \
-	 [[$ps1o getType] toString] \
-	 [[$ps2c getType] toString] \
-	 [[$ps2d getType] toString] \
-	 [[$ps2o getType] toString]
+     [[$ps1c getType] toString] \
+     [[$ps1d getType] toString] \
+     [[$ps1o getType] toString] \
+     [[$ps2c getType] toString] \
+     [[$ps2d getType] toString] \
+     [[$ps2o getType] toString]
 } {1 double double double double double double} 

@@ -68,17 +68,6 @@ public class GraphException extends RuntimeException {
                 + graph.toString() + "\n";
     }
 
-    /** Return a dump of an edge and the container graph suitable to
-     *  be appended to an error message.
-     *
-     *  @param edge The edge to dump.
-     *  @param graph The graph where the edge resides.
-     *  @return A text string dump of the edge and graph.
-     */
-    static public String edgeDump(Edge edge, Graph graph) {
-        return _elementDump(edge, graph, "edge");
-    }
-
     /** Return a dump of a graph element and the container graph suitable to
      *  be appended to an error message.
      *
@@ -96,26 +85,19 @@ public class GraphException extends RuntimeException {
         return _elementDump(element, graph, descriptor);
     }
 
-    /** Return a dump of an node and the container graph suitable to
-     *  be appended to an error message.
-     *
-     *  @param node The node to dump.
-     *  @param graph The graph where the node resides.
-     *  @return A text string dump of the node and graph.
-     */
-    static public String nodeDump(Node node, Graph graph) {
-        return _elementDump(node, graph, "node");
-    }
-
     /** Return a dump of a weight and the container graph suitable to
-     *  be appended to an error message.
+     *  be appended to an error message. Generally, an
+     *  {@link #elementDump(Element, Graph)} follows.
      *
      *  @param weight The weight to dump.
-     *  @param graph The graph where the weight resides.
      *  @return A text string dump of the weight and graph.
      */
-    static public String weightDump(Object weight, Graph graph) {
-        return _elementDump(weight, graph, "weight");
+    static public String weightDump(Object weight) {
+        String dump = "\nThe weight is of class "
+                + weight.getClass().getName()
+                + " and its description follows:\n"
+                + weight.toString();
+        return dump;
     }
 
     ///////////////////////////////////////////////////////////////////

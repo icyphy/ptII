@@ -151,20 +151,27 @@ test Graph-2.4 {Create a graph with 4 nodes forming a diamond} {
 
 ######################################################################
 ####
-# 
-test Graph-3.1 {Test description} {
+#
+test Graph-3.1 {Test toString()} {
     # use the graph built in 2.3
-    list [$p description]
+    list [$p toString]
 } {{{ptolemy.graph.Graph
-  {node1 node2 node3}
-  {node2 node4}
-  {node3 node4}
-  {node4}
-}}}
+Node Set:
+0: node1
+1: node2
+2: node3
+3: node4
+Edge Set:
+0: (node1, node2, edge1)
+1: (node1, node3, edge2)
+2: (node2, node4, edge3)
+3: (node3, node4, edge4)
+}
+}}
 
 ######################################################################
 ####
-# 
+#
 test Graph-4.1 {Test construction of an inudced subgraph and toString()} {
     # use the graph built in 2.3
     set nodes [java::new {java.util.ArrayList}]
@@ -350,7 +357,7 @@ Edge Set:
 
 ######################################################################
 ####
-# 
+#
 test Graph-5.3 {Test addition of nodes and edges after removal of others.} {
     $p4 addEdge [java::new ptolemy.graph.Edge $v5 $v5]
     $p4 addEdge [java::new ptolemy.graph.Edge $v5 $v5 $ew5]
@@ -455,7 +462,7 @@ test Graph-5.7 { neighbors with duplicate node weights} {
 
 ######################################################################
 ####
-# 
+#
 test Graph-6.1 {Test neighbor edges} {
     set collection [$p3 neighborEdges $v1 $v8]
     set obj [java::cast java.lang.Object $collection]
@@ -752,11 +759,10 @@ Edge Set:
 
 }
 
-} {ptolemy.graph.exception.GraphElementException: Incorrect previous weight specified.
-Dumps of the offending weight and graph follow.
-The offending weight:
+} {ptolemy.graph.exception.GraphWeightException: Incorrect previous weight specified.
+The weight is of class java.lang.String and its description follows:
 weight2
-The offending graph:
+A Dump of the offending graph follows.
 {ptolemy.graph.Graph
 Node Set:
 0: weight1
@@ -766,11 +772,10 @@ Edge Set:
 
 }
 
-} {ptolemy.graph.exception.GraphElementException: Incorrect previous weight specified.
-Dumps of the offending weight and graph follow.
-The offending weight:
+} {ptolemy.graph.exception.GraphWeightException: Incorrect previous weight specified.
+The weight is of class java.lang.String and its description follows:
 null
-The offending graph:
+A Dump of the offending graph follows.
 {ptolemy.graph.Graph
 Node Set:
 0: weight1
@@ -780,11 +785,10 @@ Edge Set:
 
 }
 
-} {ptolemy.graph.exception.GraphElementException: Incorrect previous weight specified.
-Dumps of the offending weight and graph follow.
-The offending weight:
+} {ptolemy.graph.exception.GraphWeightException: Incorrect previous weight specified.
+The weight is of class java.lang.String and its description follows:
 null
-The offending graph:
+A Dump of the offending graph follows.
 {ptolemy.graph.Graph
 Node Set:
 0: null
@@ -857,7 +861,6 @@ test Graph-10.3 {checking restoration of an edge whose one node is deleted} {
     catch {$oneg {restoreEdge ptolemy.graph.Edge} $edge} msg
     list $msg
 } {{ptolemy.graph.exception.GraphElementException: Source node is not in the graph.
-
 Dumps of the offending edge and graph follow.
 The offending edge:
 (node1, node2)

@@ -155,7 +155,7 @@ public class ElementList extends LabeledList {
                 // FIXME: use an internal error exception here.
                 throw new RuntimeException("Internal error: the specified "
                         + _descriptor + " is neither unweighted nor associated "
-                        + "with a weight."  
+                        + "with a weight."
                         + GraphException.elementDump(element, _graph));
 
             }
@@ -198,7 +198,8 @@ public class ElementList extends LabeledList {
     public Element element(Object weight) {
         Collection elements = elements(weight);
         if (elements.size() == 0) {
-            throw new GraphWeightException("Invalid weight argument.");
+            throw new GraphWeightException(weight, null, _graph,
+                    "Invalid weight argument.");
         }
         return (Element)(elements.iterator().next());
     }
@@ -216,7 +217,7 @@ public class ElementList extends LabeledList {
      *  If the specified weight is null, return all the unweighted elements.
      *  If no elements have the specified weight (or if the argument is null and
      *  there are no unweighted elements), return an empty collection.
-     *  Each element in the returned collection is an instance of 
+     *  Each element in the returned collection is an instance of
      *  {@link Element}.
      *  @param weight The specified weight.
      *  @return The elements in this graph that have the specified weight.
@@ -239,7 +240,7 @@ public class ElementList extends LabeledList {
      *  type (nodes or edges). If the element is unweighted, add it to the set
      *  of unweighted elements.
      *  @param element The element.
-     */ 
+     */
     public void registerWeight(Element element) {
         if (element.hasWeight()) {
             Object weight = element.getWeight();
@@ -254,8 +255,8 @@ public class ElementList extends LabeledList {
         }
     }
 
-    /** Remove an element from this list if it exists in the list. 
-     *  This is an <em>O(1)</em> operation. 
+    /** Remove an element from this list if it exists in the list.
+     *  This is an <em>O(1)</em> operation.
      * @param element The element to be removed.
      * @return True if the element was removed.
      */
@@ -268,7 +269,7 @@ public class ElementList extends LabeledList {
     }
 
     /** Validate the weight of a given graph element, given the previous
-     *  weight of that element. 
+     *  weight of that element.
      *  @param element The element.
      *  @param oldWeight The previous weight (null if the element was previously
      *  unweighted).
@@ -279,9 +280,8 @@ public class ElementList extends LabeledList {
         if (oldWeight == null) {
             if (!_unweightedSet.contains(element)) {
                 // This 'dump' of a null weight will also dump the graph.
-                throw new GraphElementException(
-                        "Incorrect previous weight specified."
-                        + GraphException.weightDump(oldWeight, _graph));
+                throw new GraphWeightException(oldWeight, null, _graph,
+                        "Incorrect previous weight specified.");
             }
             if (newWeight == null) {
                 return false;
@@ -294,9 +294,8 @@ public class ElementList extends LabeledList {
             // with the removal unconditionally.
             List elementList = (List)_weightMap.get(oldWeight);
             if ((elementList == null) || !elementList.remove(element)) {
-                throw new GraphElementException(
-                        "Incorrect previous weight specified."
-                        + GraphException.weightDump(oldWeight, _graph));
+                throw new GraphWeightException(oldWeight, null, _graph,
+                        "Incorrect previous weight specified.");
             }
             changed = !oldWeight.equals(newWeight);
         }
