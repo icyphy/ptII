@@ -38,6 +38,8 @@ import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
 
 import java.util.Iterator;
+import java.util.Timer;
+import java.util.TimerTask;
 
 //////////////////////////////////////////////////////////////////////////
 //// RTOSDirector
@@ -45,6 +47,7 @@ import java.util.Iterator;
 @author Edward A. Lee
 @version $Id$
 */
+
 public class RTOSDirector extends DEDirector {
 
     public RTOSDirector() {
@@ -60,8 +63,19 @@ public class RTOSDirector extends DEDirector {
         super(container, name);
     }
 
+
+    public double getCurrentTime() {
+        double elaps = (double)(System.currentTimeMillis() - _startingTime);
+        return elaps/1000.0;
+    }
+
     public void setCurrentTime(double newTime) throws IllegalActionException {
         //_currentTime = newTime;
+    }
+
+    public void initialize() throws IllegalActionException {
+        _startingTime = System.currentTimeMillis();
+        super.initialize();
     }
 
     public void fire() throws IllegalActionException {
@@ -102,7 +116,34 @@ public class RTOSDirector extends DEDirector {
                 }
             }
         }
+        Thread.currentThread().yield();
     }
+
+    public void fireAt(Actor actor, double time)
+            throws IllegalActionException {
+        long requestTime = (long)(time*1000.0) + _startingTime;
+        long currentTime = System.currentTimeMillis();
+        if (requestTime < currentTime) {
+            throw new IllegalActionException((Nameable)actor,
+                    "Requested fire time: " + time + " is earlier than" +
+                    " the current time." + ((double)currentTime)/1000.0);
+        }
+        ActorTask actorTask = new ActorTask(actor);
+        //FIXME: Should maintain a colletions of Timers and kill them
+        //when stopFire() or wrapup is called.
+        Timer timer = new Timer();
+        timer.schedule(actorTask, requestTime - System.currentTimeMillis());
+    }
+        
+
+    public Receiver newReceiver() {
+        if(_debugging) _debug("Creating new DE receiver.");
+	return new RTOSReceiver();
+    }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                    protected methods                           ////
+
 
     protected void _enqueueEvent(Actor actor, double time)
             throws IllegalActionException {
@@ -117,15 +158,12 @@ public class RTOSDirector extends DEDirector {
                 + depth);
         _eventQueue.put(new DEEvent(actor, time, microstep, depth));
     }
-
+    
     protected void _enqueueEvent(DEReceiver receiver, Token token,
             double time) throws IllegalActionException {
 
         if (_eventQueue == null) return;
         int microstep = 0;
-
-        
-
         Actor destination = (Actor)(receiver.getContainer()).getContainer();
         int depth = _getDepth(destination);
         if(_debugging) _debug("enqueue event: to",
@@ -135,8 +173,33 @@ public class RTOSDirector extends DEDirector {
         _eventQueue.put(new DEEvent(receiver, token, time, microstep, depth));
     }
 
-    public Receiver newReceiver() {
-        if(_debugging) _debug("Creating new DE receiver.");
-	return new RTOSReceiver();
+    ////////////////////////////////////////////////////////////////////////
+    ////                         inner class                            ////
+     
+    private class ActorTask extends TimerTask {
+        public ActorTask(Actor actor) {
+            _actor = actor;
+        }
+
+        // iterate the actor for one iteration when the time is scheduled.
+        public void run() {
+            if (_actor != null) {
+                try {
+                _actor.iterate(1);
+                } catch (IllegalActionException ex) {
+                    throw new InvalidStateException((NamedObj)_actor,
+                            ex.getMessage());
+                }
+            }
+        }
+        
+        private Actor _actor;
     }
+
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                    private variables                           ////
+    
+    // starting time as the system clock time
+    long _startingTime;
 }
