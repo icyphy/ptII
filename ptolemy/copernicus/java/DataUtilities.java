@@ -31,11 +31,13 @@ package ptolemy.copernicus.java;
 
 
 import java.util.*;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.data.expr.ASTPtRootNode;
 import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.TypeConstant;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -295,6 +297,30 @@ public class DataUtilities {
                     null, _entity, name);
             if (result != null) {
                 return result.getType();
+            } else {
+                return null;
+                //  throw new IllegalActionException(
+                //         "The ID " + name + " is undefined.");
+            }
+        }
+
+        public InequalityTerm getTypeTerm(String name)
+                throws IllegalActionException {
+            if (name.equals("time")) {
+                return new TypeConstant(BaseType.DOUBLE);
+            } else if (name.equals("iteration")) {
+                return new TypeConstant(BaseType.INT);
+            }
+
+            if (_nameToType.containsKey(name)) {
+                return new TypeConstant(
+                        (ptolemy.data.type.Type)_nameToType.get(name));
+            }
+
+            Variable result = getScopedVariable(
+                    null, _entity, name);
+            if (result != null) {
+                return result.getTypeTerm();
             } else {
                 return null;
                 //  throw new IllegalActionException(
