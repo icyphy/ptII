@@ -2503,6 +2503,44 @@ test MoMLParser-10.1 {test vertex} {
 </entity>
 }
 
+test MoMLParser-10.2 {exportMoML and then parse it - a good test for SaveAs } {
+    # Depends on MoMLParser-10.1 above
+    $parser reset
+    set toplevel2 [$parser parse [$toplevel exportMoML]]
+    $toplevel2 exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="top" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    </property>
+    <entity name="A" class="ptolemy.actor.TypedAtomicActor">
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="B" class="ptolemy.actor.TypedAtomicActor">
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="C" class="ptolemy.actor.TypedAtomicActor">
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <relation name="r" class="ptolemy.actor.TypedIORelation">
+        <vertex name="v1" class="ptolemy.moml.Vertex">
+        </vertex>
+        <vertex name="v2" class="ptolemy.moml.Vertex">
+        </vertex>
+    </relation>
+    <link port="A.out" relation="r"/>
+    <link port="B.in" relation="r"/>
+    <link port="C.in" relation="r"/>
+</entity>
+}
+
 ######################################################################
 ####
 #
