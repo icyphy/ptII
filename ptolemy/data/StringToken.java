@@ -202,6 +202,14 @@ public class StringToken extends Token {
         return str;
     }
 
+    /** Return a StringToken containing an empty string, which is considered
+     *  as the additive identity of string.
+     *  @return A new StringToken.
+     */
+    public Token zero() {
+	return new StringToken("");
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     private String _value;

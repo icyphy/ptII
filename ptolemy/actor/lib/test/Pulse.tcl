@@ -109,6 +109,19 @@ test Pulse-2.4 {test with two-dimensional output values} {
     enumToTokenValues [$rec getRecord 0]
 } {{[ptolemy.data.IntToken(1), ptolemy.data.IntToken(2)]} {[ptolemy.data.IntToken(0), ptolemy.data.IntToken(0)]} {[ptolemy.data.IntToken(3), ptolemy.data.IntToken(4)]} {[ptolemy.data.IntToken(5), ptolemy.data.IntToken(6)]} {[ptolemy.data.IntToken(0), ptolemy.data.IntToken(0)]}}
 
+test Pulse-2.5 {test string output} {
+    set val0 [java::new ptolemy.data.StringToken AB]
+    set val1 [java::new ptolemy.data.StringToken CD]
+    set val2 [java::new ptolemy.data.StringToken EF]
+    set valArray [java::new {ptolemy.data.Token[]} 3 [list $val0 $val1 $val2]]
+    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    set valuesParam [getParameter $pulse values]
+    $valuesParam setToken $valToken
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {AB {} CD EF {}} 
+
 ######################################################################
 #### Test error conditions
 #
