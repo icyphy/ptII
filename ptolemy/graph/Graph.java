@@ -54,7 +54,7 @@ public class Graph {
     public Graph() {
         _graph = new ArrayList();
         _nodeObjects = new ArrayList();
-        _nodeIdTable = new Hashtable();
+        _nodeIdTable = new HashMap();
     }
 
     /** Construct an empty graph with enough storage allocated for the
@@ -66,7 +66,7 @@ public class Graph {
     public Graph(int nodeCount) {
         _graph = new ArrayList(nodeCount);
         _nodeObjects = new ArrayList(nodeCount);
-        _nodeIdTable = new Hashtable(nodeCount);
+        _nodeIdTable = new HashMap(nodeCount);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -223,7 +223,7 @@ public class Graph {
      *  @exception IllegalArgumentException If the specified Object is
      *   not a node in this graph.
      */
-    protected int _getNodeId(Object o) {
+    protected final int _getNodeId(Object o) {
         Integer v = (Integer)(_nodeIdTable.get(o));
         if (v == null) {
             throw new IllegalArgumentException("Graph._getNodeId: " +
@@ -241,7 +241,7 @@ public class Graph {
      *   negative or is not less than the total number of nodes in
      *   this graph.
      */
-    protected Object _getNodeObject(int nodeId) {
+    protected final Object _getNodeObject(int nodeId) {
 	try {
 	    return _nodeObjects.get(nodeId);
 	} catch (ArrayIndexOutOfBoundsException ex) {
@@ -272,11 +272,11 @@ public class Graph {
     // number of edges in this graph
     private int _edgeCount = 0;
 
-    // Translation from node to node ID. The keys of this Hashtable
+    // Translation from node to node ID. The keys of this HashMap
     // are the Objects representing graph nodes, and the values are
     // the corresponding node IDs.  This translation can also be
-    // done with _nodeObjects.indexOf(), but Hashtable is faster.
-    private Hashtable _nodeIdTable;
+    // done with _nodeObjects.indexOf(), but HashMap is faster.
+    private HashMap _nodeIdTable;
 
     // Translation from node Id to node.
     // This ArrayList is indexed by node ID. The entries are the Objects
