@@ -151,7 +151,7 @@ RegenerateCode:
 		ptolemy.lang.java.RegenerateCode ./nodetypes/IntLitNode.java
 
 # FIXME: we can't ship these
-JAVASRC_STUBS=/users/ptII/vendors/sun/src
+JAVASRC_STUBS=$(PTII)/vendors/sun/src
 
 analysis:
 	@echo "Perform static semantic analysis"
