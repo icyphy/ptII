@@ -93,7 +93,7 @@ public class DirectedGraph extends Graph {
      */
     public void add(Object object) {
         super.add(object);
-	    _transitiveClosure = null;
+        _transitiveClosure = null;
     }
 
     /** Add a directed edge to connect two nodes. The first argument
@@ -110,7 +110,7 @@ public class DirectedGraph extends Graph {
      */
     public void addEdge(Object object1, Object object2) {
         super.addEdge(object1, object2);
-	    _transitiveClosure = null;
+        _transitiveClosure = null;
     }
 
     /** Sort the given graph objects in their topological order as long as
@@ -259,9 +259,9 @@ public class DirectedGraph extends Graph {
 
         Iterator outputEdges = getNode(node1).outputEdges();
         while (outputEdges.hasNext()) {
-             if (((Edge)(outputEdges.next())).sink().weight() == node2) {
-                 return true;
-             }
+            if (((Edge)(outputEdges.next())).sink().weight() == node2) {
+                return true;
+            }
         }
         return false;
     }
@@ -431,13 +431,13 @@ public class DirectedGraph extends Graph {
     public DirectedGraph subgraph(Object[] weights) {
 
         // Create the nodes.
-	    int N = weights.length;
+        int N = weights.length;
         DirectedGraph subgraph = new DirectedGraph(N);
         for (int i = 0; i < N; i++) {
             subgraph.add(weights[i]);
         }
 
-       // Create the edges.
+        // Create the edges.
         for (int i = 0; i < N; i++) {
             Iterator outputEdges = getNode(weights[i]).outputEdges();
             while (outputEdges.hasNext()) {
@@ -501,7 +501,7 @@ public class DirectedGraph extends Graph {
 
         int size = getNodeCount();
 
-	    // Initialize _transitiveClosure to the adjacency matrix
+        // Initialize _transitiveClosure to the adjacency matrix
         _transitiveClosure = new boolean[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {

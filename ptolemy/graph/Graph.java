@@ -238,8 +238,8 @@ public class Graph {
      *  @return a String description of this graph.
      */
     public String description() {
-	    StringBuffer result = new StringBuffer("{"
-                    + this.getClass().getName() + "\n");
+        StringBuffer result = new StringBuffer("{"
+                + this.getClass().getName() + "\n");
         Iterator nodes = _nodes.iterator();
         while (nodes.hasNext()) {
             Node node = (Node)(nodes.next());
@@ -252,8 +252,8 @@ public class Graph {
             }
             result.append("}\n");
         }
-	    result.append("}");
-	    return result.toString();
+        result.append("}");
+        return result.toString();
     }
 
     /** Return the total number of edges in this graph.  Multiple
@@ -261,7 +261,7 @@ public class Graph {
      *  @return the total number of edges in this graph.
      */
     public int getEdgeCount() {
-	    return _edges.size();
+        return _edges.size();
     }
 
     /** Return all the edges in this graph in the form of an Iterator.
@@ -287,21 +287,21 @@ public class Graph {
      *  @return the edges in the graph.
      */
     public Object[][] getEdges() {
-	    Object[][] result = new Object[_edges.size()][2];
+        Object[][] result = new Object[_edges.size()][2];
         int count = 0;
         Iterator nodes = _nodes.iterator();
         while (nodes.hasNext()) {
             Node node = (Node)(nodes.next());
-	        Object sourceWeight = node.weight();
+            Object sourceWeight = node.weight();
             Iterator outputEdges = node.outputEdges();
             while (outputEdges.hasNext()) {
                 Edge edge = (Edge)(outputEdges.next());
-		        Object sinkWeight = edge.sink().weight();
-		        result[count][0] = sourceWeight;
-		        result[count++][1] = sinkWeight;
-	        }
-	    }
-	    return result;
+                Object sinkWeight = edge.sink().weight();
+                result[count][0] = sourceWeight;
+                result[count++][1] = sinkWeight;
+            }
+        }
+        return result;
     }
 
     /** Return the node that has a specified weight.
@@ -368,15 +368,15 @@ public class Graph {
      *  @return the sink nodes of the graph.
      */
     public Node[] getSinkNodes() {
-       // FIXME: move this to DirectedGraph
-       LinkedList sinkList = new LinkedList();
-       Iterator nodes = getNodeIterator();
-       while (nodes.hasNext()) {
-           Node node = (Node)(nodes.next());
-           if (node.outputEdgeCount() == 0) sinkList.add(node);
-       }
-       Node[] sinks = new Node[sinkList.size()];
-       return (Node[]) (sinkList.toArray(sinks));
+        // FIXME: move this to DirectedGraph
+        LinkedList sinkList = new LinkedList();
+        Iterator nodes = getNodeIterator();
+        while (nodes.hasNext()) {
+            Node node = (Node)(nodes.next());
+            if (node.outputEdgeCount() == 0) sinkList.add(node);
+        }
+        Node[] sinks = new Node[sinkList.size()];
+        return (Node[]) (sinkList.toArray(sinks));
     }
 
     /** Return the source nodes of this graph. A node is a source node
@@ -390,15 +390,15 @@ public class Graph {
      *  @return the source nodes of the graph.
      */
     public Node[] getSourceNodes() {
-       // FIXME: move this to DirectedGraph
-       LinkedList sourceList = new LinkedList();
-       Iterator nodes = getNodeIterator();
-       while (nodes.hasNext()) {
-           Node node = (Node)(nodes.next());
-           if (node.inputEdgeCount() == 0) sourceList.add(node);
-       }
-       Node[] sources = new Node[sourceList.size()];
-       return (Node[]) (sourceList.toArray(sources));
+        // FIXME: move this to DirectedGraph
+        LinkedList sourceList = new LinkedList();
+        Iterator nodes = getNodeIterator();
+        while (nodes.hasNext()) {
+            Node node = (Node)(nodes.next());
+            if (node.inputEdgeCount() == 0) sourceList.add(node);
+        }
+        Node[] sources = new Node[sourceList.size()];
+        return (Node[]) (sourceList.toArray(sources));
     }
 
     /** Remove an edge from the graph.
@@ -423,12 +423,12 @@ public class Graph {
      */
     public void removeNode(Node removeMe) {
         if (_remove(_nodes, removeMe) == null) {
-                throw new RuntimeException("Attempt to remove a node that is "
-                        + "not contained in the graph.\n"
-                        + "A dump of the node and graph follow.\n"
-                        + "The node:\n" + removeMe + "\nThe graph:\n"
-                        + this.description()
-                        + "\n");
+            throw new RuntimeException("Attempt to remove a node that is "
+                    + "not contained in the graph.\n"
+                    + "A dump of the node and graph follow.\n"
+                    + "The node:\n" + removeMe + "\nThe graph:\n"
+                    + this.description()
+                    + "\n");
         }
         _nodeTable.remove(removeMe.weight());
         Iterator incidentEdges = removeMe.incidentEdges();
@@ -470,7 +470,7 @@ public class Graph {
             for (i = 0; i < _nodes.size(); i++) {
                 _nodeIdTable.put(_nodes.get(i), new Integer(i));
             }
-           _recomputeIdentifiers = false;
+            _recomputeIdentifiers = false;
         }
     }
 
@@ -484,7 +484,7 @@ public class Graph {
      *  in this graph.
      */
     protected final Node _getNode(int identifier) {
-       _enumerateNodes();
+        _enumerateNodes();
         return (Node)(_nodes.get(identifier));
     }
 
@@ -496,16 +496,16 @@ public class Graph {
      *   not a node weight in this graph.
      */
     protected final int _getNodeId(Object object) {
-       _enumerateNodes();
-       Integer v = (Integer)(_nodeIdTable.get(getNode(object)));
-       if (v == null) {
-           throw new IllegalArgumentException("Graph._getNodeId: " +
-                   "the object \"" + object.toString() +
-                   "\" is not a node weight in this graph, or a node " +
-                   "identifier has not yet been determined for it.\n");
-       }
+        _enumerateNodes();
+        Integer v = (Integer)(_nodeIdTable.get(getNode(object)));
+        if (v == null) {
+            throw new IllegalArgumentException("Graph._getNodeId: " +
+                    "the object \"" + object.toString() +
+                    "\" is not a node weight in this graph, or a node " +
+                    "identifier has not yet been determined for it.\n");
+        }
 
-       return v.intValue();
+        return v.intValue();
     }
 
     /** Return the weight of a given node in the graph.
@@ -516,7 +516,7 @@ public class Graph {
      */
     protected final Object _getNodeObject(Node node) {
         if (!_nodes.contains(node))
-	        throw new IllegalArgumentException("Graph._getNodeObject: \"" +
+            throw new IllegalArgumentException("Graph._getNodeObject: \"" +
                     node + "\" is not a node in this graph");
         else return node.weight();
     }

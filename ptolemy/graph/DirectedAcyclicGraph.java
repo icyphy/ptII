@@ -40,29 +40,29 @@ import java.util.ListIterator;
 //////////////////////////////////////////////////////////////////////////
 //// DirectedAcyclicGraph.java
 /**
-A directed acyclic graph (DAG).
+   A directed acyclic graph (DAG).
 
-The graphs constructed by this class cannot have cycles. For performance
-reasons, this requirement is not checked (except for self-loops) during
-the construction of the graph (calls to <code>add</code> and
-<code>addEdge</code>), but is checked when any of the other methods is
-called for the first time after the addition of nodes or edges. If the
-graph is cyclic, an InvalidStateException is thrown. The check for cycles
-is done by computing the transitive closure, so the first operation after
-graph changes is slower.
+   The graphs constructed by this class cannot have cycles. For performance
+   reasons, this requirement is not checked (except for self-loops) during
+   the construction of the graph (calls to <code>add</code> and
+   <code>addEdge</code>), but is checked when any of the other methods is
+   called for the first time after the addition of nodes or edges. If the
+   graph is cyclic, an InvalidStateException is thrown. The check for cycles
+   is done by computing the transitive closure, so the first operation after
+   graph changes is slower.
 
-This class implements the CPO interface since the Hasse diagram of a CPO
-can be viewed as a DAG.  Therefore, this class can be viewed as both a DAG
-and a finite CPO. In the case of CPO, the Objects representing
-nodes of the graph are CPO elements. The CPO does not require the bottom
-element to exist. The call to <code>bottom</code> returns
-<code>null</code> if the bottom element does not exist.
-<p>
-NOTE: This class is a starting point for implementing graph algorithms,
-more methods will be added.
+   This class implements the CPO interface since the Hasse diagram of a CPO
+   can be viewed as a DAG.  Therefore, this class can be viewed as both a DAG
+   and a finite CPO. In the case of CPO, the Objects representing
+   nodes of the graph are CPO elements. The CPO does not require the bottom
+   element to exist. The call to <code>bottom</code> returns
+   <code>null</code> if the bottom element does not exist.
+   <p>
+   NOTE: This class is a starting point for implementing graph algorithms,
+   more methods will be added.
 
-@author Yuhong Xiong
-@version $Id$
+   @author Yuhong Xiong
+   @version $Id$
 */
 
 // The methods greatestLowerBound, downSet, greatestElement share the
@@ -446,13 +446,13 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
 	// find top
 	_top = null;
 	for (int i = 0; i < getNodeCount(); i++) {
-        if (_getNode(i).outputEdgeCount() == 0) {
-		    if (_top == null) {
-		        _top = _getNodeObject(i);
-		    } else {
-		        _top = null;
-		        break;
-		    }
+            if (_getNode(i).outputEdgeCount() == 0) {
+                if (_top == null) {
+                    _top = _getNodeObject(i);
+                } else {
+                    _top = null;
+                    break;
+                }
 	    }
 	}
 
