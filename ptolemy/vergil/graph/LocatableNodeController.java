@@ -119,7 +119,7 @@ public class LocatableNodeController extends NodeController {
      */
     public double[] getLocation(Node n) {
         Object object = n.getSemanticObject();
-        if(object instanceof Locatable) {
+        if(hasLocation(n)) {
             return ((Locatable) object).getLocation();         
         } else throw new GraphException("The node " + n + 
                 "does not have a desired location");

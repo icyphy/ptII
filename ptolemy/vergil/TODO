@@ -3,8 +3,7 @@ Fix layering of nodes and edges
 The TreePane should have the first level expanded by default.
 Layout breaks when toolbar gets dragged to the bottom.
 Node deletion is broken when an edge is connected.
-Do something reasonable when a model is loaded that has no graphical
-information.
+plot: fill doesn't work when graph shrinks
 
 TODO:
 Snap to Grid.

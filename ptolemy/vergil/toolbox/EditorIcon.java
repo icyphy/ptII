@@ -65,7 +65,7 @@ public class EditorIcon extends Icon {
     }
 
     /**
-     * Create a new icon with the name "_icon" in the given container. 
+     * Create a new icon with the given name in the given container. 
      * By default, the icon contains no graphic
      * representations.
      */

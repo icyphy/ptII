@@ -81,11 +81,13 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             Figure figure = (Figure) targets.next();
             Object object = figure.getUserObject();
             if(object instanceof Node) {
-                Node node = (Node) figure.getUserObject();            
-                double[] location = _controller.getLocation(node);
-                location[0] += x;
-                location[1] += y;
-                _controller.setLocation(node, location);
+                Node node = (Node) object;  
+		if(_controller.hasLocation(node)) {
+		    double[] location = _controller.getLocation(node);
+		    location[0] += x;
+		    location[1] += y;
+		    _controller.setLocation(node, location);
+		}
             }
         }
     }

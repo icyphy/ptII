@@ -30,6 +30,7 @@
 
 package ptolemy.vergil.graph;
 
+import ptolemy.vergil.toolbox.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.*;
@@ -170,6 +171,17 @@ public class VergilGraphImpl extends BasicGraphImpl {
 	    while(entities.hasMoreElements()) {
 		Entity entity = (Entity)entities.nextElement();
 		Icon icon = (Icon)entity.getAttribute("_icon");
+		if(icon == null) {
+		    // FIXME this is pretty minimal
+		    try {
+			icon = new EditorIcon(entity);
+		    }
+		    catch (Exception e) {
+			throw new InternalErrorException("Failed to create " + 
+			    "icon, even though one does not exist:" +
+							 e.getMessage());
+		    }
+		}
 		addNode(createCompositeNode(icon), g);
 	    }
 	    
@@ -189,10 +201,20 @@ public class VergilGraphImpl extends BasicGraphImpl {
 			addNode(n, g);
 		    }
 		}
-		// If there are no vertecies, then do something
-		if(rootVertex == null) 
-		    throw new RuntimeException("no root vertex found" + 
-                            " in relation.");
+		// If there are no vertecies, then give the relation a vertex
+		if(rootVertex == null) {
+		    try {
+			Vertex v = new Vertex(relation, 
+					      relation.uniqueName("Vertex"));
+			rootVertex = createNode(v);
+		    }
+		    catch (Exception e) {
+			throw new InternalErrorException("Failed to create " +
+			    "new vertex, even though one does not " +
+			    "already exist:" + e.getMessage());
+		    }
+		    addNode(rootVertex, g);
+		}
 		
 		// FIXME connect everything to the root for now.
 		Enumeration links = relation.linkedPorts();	

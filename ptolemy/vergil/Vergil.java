@@ -91,8 +91,13 @@ public class Vergil extends MDIApplication {
         setStoragePolicy(storage);
 	FileFilter ff = new FileFilter() {
 	    public boolean accept (File file) {
-		return GUIUtilities.getFileExtension(file).
+		if(file.isDirectory()) { 
+		    return true;
+		}
+		else {
+		    return GUIUtilities.getFileExtension(file).
                     toLowerCase().equals("xml");
+		}
 	    }
 	    public String getDescription () {
 		return "XML files";
@@ -183,7 +188,7 @@ public class Vergil extends MDIApplication {
 		    model.removeSelection(selection[i]);
 		    Object userObject = 
                         ((Figure)selection[i]).getUserObject();
-		    if(userObject instanceof Node) {
+		    if(userObject instanceof Node) {			
                         Node node = (Node) userObject;
 			controller.clearNode(node);
                         impl.removeNode(node);

@@ -219,9 +219,7 @@ public class EditorGraphController extends ViewerGraphController {
             Figure source = e.getFigureSource();
 	    Node sourcenode = (Node) source.getUserObject();
 	    NamedObj sourceObject = (NamedObj) sourcenode.getSemanticObject();
-            System.out.println(sourceObject.description());
-            
-
+   
 	    FigureLayer layer = (FigureLayer) e.getLayerSource();
 	    
 	    // Create a new edge
@@ -259,8 +257,6 @@ public class EditorGraphController extends ViewerGraphController {
 	    NamedObj sourceObject = (NamedObj) sourcenode.getSemanticObject();
 	    
             if((sourceObject instanceof Vertex)) {
-		System.out.println(sourceObject.description());
-		
 		Relation relation = (Relation)sourceObject.getContainer();
 		Vertex vertex = null;
 		try {
