@@ -49,8 +49,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS =	\
-	TestReader.java \
-	SpaceCleaner.java
+	TestReader.java 
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
