@@ -836,10 +836,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
             } else if (
                     elementName.equals("property")
-                    || elementName.equals("deleteEntity")
-                    || elementName.equals("deletePort")
-                    || elementName.equals("deleteProperty")
-                    || elementName.equals("deleteRelation")
                     || elementName.equals("director")
                     || elementName.equals("port")
                     || elementName.equals("relation")
@@ -1812,27 +1808,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         "No name for element \"deleteEntity\"");
 
                 // NOTE: this also takes care of creating the undo
-                // MoML is needed. This is because the deletion has side
-                // effects so its not enough to generate the MoML after
+                // MoML that is needed. This is because the deletion has side
+                // effects so it's not enough to generate the MoML after
                 // the entity is deleted.
-                NamedObj deletedEntity = _deleteEntity(entityName);
-
-                // NOTE: This could occur at a top level, although it's
-                // not clear what it means to delete a top-level entity.
-                if (_current != null) {
-                    // Although there is not supposed to be anything inside
-                    // this element, we nontheless change the environment so
-                    // that if by using a nonvalidating parser elements are
-                    // included, then they will be evaluated in the correct
-                    // context.
-                    _pushContext();
-                }
-                _current = deletedEntity;
-                _namespace = _DEFAULT_NAMESPACE;
-                if (undoEnabled && _undoContext.isUndoable()) {
-                    // Note that nothing below a deleteEntity is undoable
-                    _undoContext.setChildrenUndoable(false);
-                }
+                _deleteEntity(entityName);
+                
+                // NOTE: deleteEntity is not supposed to have anything
+                // inside it, so we do not push the context.
 
                 //////////////////////////////////////////////////////////////
                 //// deletePort
@@ -1845,24 +1827,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 String entityName = (String)_attributes.get("entity");
 
                 // NOTE: this also takes care of creating the undo
-                // MoML is needed. This is because the deletion has side
-                // effects so its not enough to generate the MoML after
+                // MoML that is needed. This is because the deletion has side
+                // effects so it's not enough to generate the MoML after
                 // the port is deleted.
-                NamedObj deletedPort = _deletePort(portName, entityName);
-                if (_current != null) {
-                    // Although there is not supposed to be anything inside
-                    // this element, we nontheless change the environment so
-                    // that if by using a nonvalidating parser elements are
-                    // included, then they will be evaluated in the correct
-                    // context.
-                    _pushContext();
-                }
-                _current = deletedPort;
-                _namespace = _DEFAULT_NAMESPACE;
-                if (undoEnabled && _undoContext.isUndoable()) {
-                    // Note that nothing below a deletePort is undoable
-                    _undoContext.setChildrenUndoable(false);
-                }
+                _deletePort(portName, entityName);
+                
+                // NOTE: deletePort is not supposed to have anything
+                // inside it, so we do not push the context.
 
                 //////////////////////////////////////////////////////////////
                 //// deleteProperty
@@ -1871,21 +1842,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 String propName = (String)_attributes.get("name");
                 _checkForNull(propName,
                         "No name for element \"deleteProperty\"");
-                NamedObj deletedProp = _deleteProperty(propName);
-                if (_current != null) {
-                    // Although there is not supposed to be anything inside
-                    // this element, we nontheless change the environment so
-                    // that if by using a nonvalidating parser elements are
-                    // included, then they will be evaluated in the correct
-                    // context.
-                    _pushContext();
-                }
-                _current = deletedProp;
-                _namespace = _DEFAULT_NAMESPACE;
-                if (undoEnabled && _undoContext.isUndoable()) {
-                    // Note that nothing below a deleteProperty is undoable
-                    _undoContext.setChildrenUndoable(false);
-                }
+                _deleteProperty(propName);
+                
+                // NOTE: deleteProperty is not supposed to have anything
+                // inside it, so we do not push the context.
 
                 //////////////////////////////////////////////////////////////
                 //// deleteRelation
@@ -1896,25 +1856,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         "No name for element \"deleteRelation\"");
 
                 // NOTE: this also takes care of creating the undo
-                // MoML is needed. This is because the deletion has side
-                // effects so its not enough to generate the MoML after
+                // MoML that is needed. This is because the deletion has side
+                // effects so it's not enough to generate the MoML after
                 // the relation is deleted.
-                NamedObj deletedRelation = _deleteRelation(relationName);
-                if (_current != null) {
-                    // Although there is not supposed to be anything inside
-                    // this element, we nontheless change the environment so
-                    // that if by using a nonvalidating parser elements are
-                    // included, then they will be evaluated in the correct
-                    // context.
-                    _pushContext();
-                }
-                _current = deletedRelation;
-                _namespace = _DEFAULT_NAMESPACE;
-
-                if (undoEnabled && _undoContext.isUndoable()) {
-                    // Note that nothing below a deleteEntity is undoable
-                    _undoContext.setChildrenUndoable(false);
-                }
+                _deleteRelation(relationName);
+                
+                // NOTE: deleteRelation is not supposed to have anything
+                // inside it, so we do not push the context.
 
                 //////////////////////////////////////////////////////////////
                 //// director
@@ -3316,20 +3264,20 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     }
 
     /** Delete the entity after verifying that it is contained (deeply)
-     *  by the current environment.
+     *  by the current environment.  If no object is found, then do
+     *  nothing and return null.  This is because deletion of a class
+     *  may result in deletion of other objects that make this particular
+     *  delete call redundant.
      *  @param entityName The relative or absolute name of the
      *   entity to delete.
-     *  @return The deleted object.
+     *  @return The deleted object, or null if none was found.
      *  @exception Exception If there is no such entity or if the entity
      *   is defined in the class definition.
      */
     private NamedObj _deleteEntity(String entityName) throws Exception {
         ComponentEntity toDelete = _searchForEntity(entityName, _current);
         if (toDelete == null) {
-            throw new XmlException("No such entity to delete: " + entityName,
-                    _currentExternalEntity(),
-                    _parser.getLineNumber(),
-                    _parser.getColumnNumber());
+            return null;
         }
 
         // Ensure that inherited objects aren't changed.
@@ -3390,12 +3338,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     }
 
     /** Delete the port after verifying that it is contained (deeply)
-     *  by the current environment.
+     *  by the current environment. If no object is found, then do
+     *  nothing and return null.  This is because deletion of a class
+     *  may result in deletion of other objects that make this particular
+     *  delete call redundant.
      *  @param portName The relative or absolute name of the
      *   port to delete.
      *  @param entityName Optional name of the entity that contains
      *   the port (or null to use the current context).
-     *  @return The deleted object.
+     *  @return The deleted object, or null if none is found.
      *  @exception Exception If there is no such port or if the port
      *   is defined in the class definition.
      */
@@ -3415,11 +3366,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
         }
         if (toDelete == null) {
-            throw new XmlException("No such port to delete: "
-                    + portName,
-                    _currentExternalEntity(),
-                    _parser.getLineNumber(),
-                    _parser.getColumnNumber());
+            return null;
         }
         if (portContainer == null) {
             throw new XmlException("No container for the port: "
@@ -3495,21 +3442,20 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     }
 
     /** Delete an attribute after verifying that it is contained (deeply)
-     *  by the current environment.
+     *  by the current environment. If no object is found, then do
+     *  nothing and return null.  This is because deletion of a class
+     *  may result in deletion of other objects that make this particular
+     *  delete call redundant.
      *  @param attributeName The relative or absolute name of the
      *   attribute to delete.
-     *  @return The deleted object.
+     *  @return The deleted object, or null if none is found.
      *  @exception Exception If there is no such attribute or if the attribute
      *   is defined in the class definition.
      */
     private Attribute _deleteProperty(String attributeName) throws Exception {
         Attribute toDelete = _searchForAttribute(attributeName);
         if (toDelete == null) {
-            throw new XmlException("No such property to delete: "
-                    + attributeName,
-                    _currentExternalEntity(),
-                    _parser.getLineNumber(),
-                    _parser.getColumnNumber());
+            return null;
         }
         // Ensure that inherited objects aren't changed.
         if (toDelete.isDerived()) {
@@ -3558,21 +3504,20 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     }
 
     /** Delete the relation after verifying that it is contained (deeply)
-     *  by the current environment.
+     *  by the current environment. If no object is found, then do
+     *  nothing and return null.  This is because deletion of a class
+     *  may result in deletion of other objects that make this particular
+     *  delete call redundant.
      *  @param relationName The relative or absolute name of the
      *   relation to delete.
-     *  @return The deleted object.
+     *  @return The deleted object, or null if none is found.
      *  @exception Exception If there is no such relation or if the relation
      *   is defined in the class definition.
      */
     private Relation _deleteRelation(String relationName) throws Exception {
         ComponentRelation toDelete = _searchForRelation(relationName);
         if (toDelete == null) {
-            throw new XmlException("No such relation to delete: "
-                    + relationName,
-                    _currentExternalEntity(),
-                    _parser.getLineNumber(),
-                    _parser.getColumnNumber());
+            return null;
         }
 
         if (toDelete.isDerived()) {

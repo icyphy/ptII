@@ -1525,9 +1525,10 @@ test MoMLParser-2.6 {Test incremental parsing: remove nonexistent entity} {
     <deleteEntity name=\"a\"/>
 </entity>
 "
-    catch {$parser parse $incMoml_2_6} msg
-    string range $msg 0 52
-} {com.microstar.xml.XmlException: No such entity to del}
+	# Should succeed silently.
+    set toplevel [$parser parse $incMoml_2_6]
+    $toplevel getName
+} {top}
 
 ######################################################################
 ####
@@ -1615,7 +1616,7 @@ test MoMLParser-2.8.1 {Test incremental parsing: remove a port using entity attr
 ####
 #
 test MoMLParser-2.8.2 {Test incremental parsing: remove a port using 
-		entity attribute, check exception is thrown if port name 
+		entity attribute, check silently succeeds if port name 
 		not valid} {
     # First add the port back in
     set incMoml_2_8_2_a {<entity name=".top">
@@ -1633,9 +1634,9 @@ test MoMLParser-2.8.2 {Test incremental parsing: remove a port using
     set incMoml_2_8_2_b {<entity name=".top">
     <deletePort name="inside.input" entity="inside"/>
 </entity>}
-    catch {$parser parse $incMoml_2_8_2_b} msg
-    string range $msg 0 51
-} {com.microstar.xml.XmlException: No such port to dele}
+    $parser parse $incMoml_2_8_2_b
+    $toplevel getName
+} {top}
 
 
 ######################################################################
