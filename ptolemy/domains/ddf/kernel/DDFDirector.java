@@ -338,7 +338,8 @@ public class DDFDirector extends Director {
             Iterator enabledActors = toBeFiredActors.iterator();
             while (enabledActors.hasNext()) {
                 Actor actor = (Actor) enabledActors.next();
-                _firedOne = _firedOne || _fireActor(actor);
+                boolean amIFired = _fireActor(actor);
+                _firedOne =  amIFired || _firedOne;
             }
 
             // If no actor has been fired, fire the set of minimax actors.
@@ -346,7 +347,8 @@ public class DDFDirector extends Director {
                 Iterator minimaxActorsIterator = minimaxActors.iterator();
                 while (minimaxActorsIterator.hasNext()) {
                     Actor minimaxActor = (Actor) minimaxActorsIterator.next();
-                    _firedOne = _firedOne || _fireActor(minimaxActor);
+                    boolean amIFired = _fireActor(minimaxActor);
+                    _firedOne =  amIFired || _firedOne;
                 }
             }            
             
@@ -923,12 +925,26 @@ public class DDFDirector extends Director {
      */
     protected int _getActorStatus(Actor actor) throws IllegalActionException {
         if (!_isEnabled(actor)) {
+            
+            if (_debugging)
+                _debug(((NamedObj)actor).getName() 
+                        + " is not enabled.");
+            
             return _NOT_ENABLED;
         }
 
         if (_isDeferrable(actor)) {
+            
+            if (_debugging)
+                _debug(((NamedObj)actor).getName() 
+                        + " is enabled and deferrable");
+            
             return _ENABLED_DEFERRABLE;
         }
+        
+        if (_debugging)
+            _debug(((NamedObj)actor).getName() 
+                    + " is enabled and not deferrable");
 
         return _ENABLED_NOT_DEFERRABLE;
     }
