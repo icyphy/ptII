@@ -17,6 +17,9 @@
 <entity name="Locator" class="ptolemy.domains.wireless.lib.Locator">
 </entity>
 
+<entity name="NodeRandomizer" class="ptolemy.domains.wireless.lib.NodeRandomizer">
+</entity>
+
 <entity name="Triangulator" class="ptolemy.domains.wireless.lib.Triangulator">
 </entity>
 
