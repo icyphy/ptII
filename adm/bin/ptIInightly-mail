@@ -48,6 +48,11 @@ ptbuildlog=/home/bldmastr/ptII/adm/logs/ptIInightly.txt
 
 #echo "" >> $mailmsg
 echo "------------------------------------------------" >> $mailmsg
+echo "The build started at:" >> $mailmsg
+grep "#ptIInightly-mail#: Starting make clean at" $ptbuildlog >> $mailmsg
+echo "" >> $mailmsg
+
+echo "------------------------------------------------" >> $mailmsg
 echo "Errors during the build and test process in ptII:" >> $mailmsg
 echo "" >> $mailmsg
 echo "To see the complete build and test log, see:" >> $mailmsg
