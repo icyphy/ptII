@@ -58,6 +58,9 @@ set testCase {<?xml version="1.0" standalone="no"?>
 #
 test PtolemyApplication-1.0 {test constructor} {
     set empty [java::new {java.lang.String[]} 0]
+    # If we are running without a display then creating a PtolemyApplication
+    # will fail.  We set app here to null so that we can detect the problem
+    set app [java::null]
     set app [java::new ptolemy.actor.gui.PtolemyApplication $empty]
     list {}
     # success is just not throwing an exception.
@@ -66,6 +69,8 @@ test PtolemyApplication-1.0 {test constructor} {
 test PtolemyApplication-1.1 {test add} {
     set parser [java::new ptolemy.moml.MoMLParser]
     set top [java::cast ptolemy.actor.CompositeActor [$parser parse $testCase]]
+    # If we are running without a display, then we might hang forever 
+    # on the next line
     $app add $top
     list {}
     # success is just not throwing an exception.
