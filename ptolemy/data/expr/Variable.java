@@ -1059,7 +1059,14 @@ public class Variable extends Attribute
      */
     public void valueChanged(Settable settable) {
         if (!_needsEvaluation) {
-            _needsEvaluation = true;
+            // If the value was set via an expression, then mark this
+            // variable as needing evaluation.
+            // NOTE: For some reason, until 12/24/02, there was no "if"
+            // here, which means _needsEvaluation was set to true even
+            // if this variable's value had been set by setToken().  Why? EAL
+            if (_currentExpression != null) {
+                _needsEvaluation = true;
+            }
             _notifyValueListeners();
         }
     }
@@ -1230,6 +1237,7 @@ public class Variable extends Attribute
         } catch (IllegalActionException ex) {
             // reverse the changes
             _token = oldToken;
+
             if (_varType instanceof StructuredType) {
                 ((StructuredType)_varType).updateType(
                         (StructuredType)oldVarType);
@@ -1458,6 +1466,7 @@ public class Variable extends Attribute
                 _noTokenYet = false;
             }
             _token = newToken;
+
             _needsEvaluation = false;
         }
     }
