@@ -368,7 +368,6 @@ public class LocalZenoApplet extends DDEApplet {
             Actor actor = event.getActor();
             
             String name = ((Nameable)actor).getName();
-            System.out.println(name+":  Event generated");
 
             // Get the corresponding graph node and its figure
             Node node = (Node) _nodeMap.get(actor);
