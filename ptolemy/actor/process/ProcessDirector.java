@@ -140,17 +140,20 @@ public class ProcessDirector extends Director {
     }
 
     /** Wait until a deadlock is detected. Then handle the deadlock
-     *  (by calling the protected method _handleDeadlock()) and return.
+     *  (by calling the protected method _handleDeadlock()) and return. This 
+     *  method is synchronized on the director.
      *  @exception IllegalActionException If a derived class throws it.
      */
-    public synchronized void fire() throws IllegalActionException {
+    public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
-        while (!_isDeadlocked() && !_areAllThreadsStopped()) {
-            workspace.wait(this);
+        synchronized (this) {
+            while (!_isDeadlocked() && !_areAllThreadsStopped()) {
+                workspace.wait(this);
+            }
+            if( !_areAllThreadsStopped() ) {
+                _notdone = !_handleDeadlock();
+            }
         }
-	if( !_areAllThreadsStopped() ) {
-            _notdone = !_handleDeadlock();
-	}
     }
 
     /** Increases the count of paused threads and checks whether the
@@ -246,7 +249,7 @@ public class ProcessDirector extends Director {
 		thread = (ProcessThread)threads.nextElement();
 		thread.restartThread();
 		synchronized(thread) {
-		    notifyAll();
+		    thread.notifyAll();
 		}
 		if( _threadsStopped > 0 ) {
 		    _threadsStopped--;
@@ -486,10 +489,7 @@ public class ProcessDirector extends Director {
      *  by this thread have stopped; otherwise return false.
      */ 
     protected synchronized boolean _areAllThreadsStopped() {
- 	if( _threadsStopped == _actorsActive ) {
- 	    return true;
- 	}
- 	return false;
+        return ( _threadsStopped == _actorsActive );
     }
  
     /** Return true if the count of active processes in the container is 0.
@@ -499,11 +499,7 @@ public class ProcessDirector extends Director {
      * @deprecated use isDeadlocked() instead.
      */
     protected synchronized boolean _checkForDeadlock() {
-        if (_actorsActive == 0) {
-	    return true;
-	} else {
-	    return false;
-	}
+        return (_actorsActive == 0);
     }
 
     /** Return true if all active processes in the container are paused. 
@@ -513,11 +509,7 @@ public class ProcessDirector extends Director {
      * @deprecated Use isPaused() instead.
      */
     protected synchronized boolean _checkForPause() {
-        if (_actorsPaused >= _actorsActive) {
-	     return true;
-	} else {
-	    return false;
-	}
+        return (_actorsPaused == _actorsActive);
     }
 
     /** Decrease by one the count of active processes under the control of
@@ -547,7 +539,7 @@ public class ProcessDirector extends Director {
 
     /** Return the number of paused processes under the control of this
      *  director.
-     * @return The number of active actors.
+     * @return The number of paused actors.
      */
     protected synchronized long _getPausedActorsCount() {
 	return _actorsPaused;
@@ -567,6 +559,14 @@ public class ProcessDirector extends Director {
     protected ProcessThread _getProcessThread(Actor actor, 
 	    ProcessDirector director) throws IllegalActionException {
 	return new ProcessThread(actor, director);
+    }
+
+    /** Return the number of processes stopped because of a call to the 
+     *  stopfire method of the process. 
+     * @return The number of stopped processes.
+     */
+    protected synchronized long _getStoppedProcessesCount() {
+	return _threadsStopped;
     }
 
     /** Return true.
@@ -600,11 +600,7 @@ public class ProcessDirector extends Director {
      * @return true if there are no active processes in the container.
      */
     protected synchronized boolean _isDeadlocked() {
-        if (_actorsActive == 0) {
-	    return true;
-	} else {
-	    return false;
-	}
+        return (_actorsActive == 0);
     }
 
     /** Return true if all active processes in the container are paused. 
@@ -614,11 +610,7 @@ public class ProcessDirector extends Director {
      * @return true only if all active processes are paused.
      */
     protected synchronized boolean _isPaused() {
-        if (_actorsPaused >= _actorsActive) {
-	     return true;
-	} else {
-	    return false;
-	}
+        return (_actorsPaused == _actorsActive);
     }
 
     ///////////////////////////////////////////////////////////////////
