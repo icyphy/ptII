@@ -70,7 +70,6 @@ public class MirrorTransformation extends Analysis {
 
     /** Construct a transformation for a given graph and a given analyzer.
      *
-     *  @param graph The given graph.
      *  @param analyzer The default Analyzer.
      */
     public MirrorTransformation(MirrorTransformer analyzer) {

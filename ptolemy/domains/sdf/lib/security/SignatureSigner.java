@@ -157,7 +157,6 @@ public class SignatureSigner extends SignatureActor {
 
     /** Takes the data and calculates a message digest for it.
      *
-     * @param initialData the data to be decrypted.
      * @return byte[] the decrypted data.
      * @exception IllegalActionException If the key or padding is invalid.
      */

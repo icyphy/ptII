@@ -62,7 +62,7 @@ public class SelfLoopAnalysis extends Analysis {
 
     /** Construct an instance of this class with a given analyzer.
      *
-     *  @param graph The given graph.
+     *  @param analyzer The analyzer to use.
      */
     public SelfLoopAnalysis(SelfLoopAnalyzer analyzer) {
         super(analyzer);;

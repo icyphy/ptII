@@ -58,7 +58,7 @@ public class CycleExistenceAnalysis extends Analysis {
 
     /** Construct an instance of this class with a given analyzer.
      *
-     *  @param graph The given directed graph.
+     *  @param analyzer The analyzer to use
      */
     public CycleExistenceAnalysis(CycleExistenceAnalyzer analyzer) {
         super(analyzer);
