@@ -169,4 +169,5 @@ test PNProcessEvent-2.2 {get Methods} {
 	[$p3 getBlockingCause] [$p3 getCurrentState] \
 	[[$p3 getException] toString] \
 	[$p3 getFinishingCause] \
-} {.E0.A1 736 368 {ptolemy.kernel.util.IllegalActionException: This is a test exception
+    } {.E0.A1 736 368 {ptolemy.kernel.util.IllegalActionException: This is a test exception}}
+
