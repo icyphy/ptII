@@ -514,7 +514,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
             // unset the maximize mode, instead of just hiding the frame.
             setMaximizeMode(flag);
         }
-    };
+    }
 
     /**
      * FrameManager is a class that responds to UI events on the

@@ -535,7 +535,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 context.requestChange(request);
             }
         }
-    };
+    }
 
     ///////////////////////////////////////////////////////////////////
     //// InstantiateEntityAction
@@ -609,7 +609,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 context.requestChange(request);
             }
         }
-    };
+    }
 
     ///////////////////////////////////////////////////////////////////
     //// LayoutAction
