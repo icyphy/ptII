@@ -540,7 +540,7 @@ public abstract class TableauFrame extends Top {
                             return false;
                         }
                         // Mark unmodified so that we don't get another
-                        // query when it is close.
+                        // query when it is closed.
                         previousOpen.setModified(false);
                     }
                     previousOpen.closeTableaux();
