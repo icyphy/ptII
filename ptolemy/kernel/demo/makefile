@@ -41,16 +41,15 @@ ME =		java/pt/kernel/demo
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
-CLASSPATH = ../../..:../../../../../tcltk/tcl8.0/lib/jacl.zip
+CLASSPATH = ../../..
 
-TCL_SRCS = \
-	HelloTcl.tcl
+TCL_SRCS =
+
 
 JSRCS = \
-	HelloTcl.java \
-	ExampleSystem.java \
 	ExampleApplet.java \
-	ExampleFrame.java \
+	ExampleSystemApplet.java \
+	ExampleFrame.java \
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
 	ExampleSystem.html
