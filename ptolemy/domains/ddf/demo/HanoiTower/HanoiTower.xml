@@ -198,7 +198,7 @@
     <entity name="MoveDisks" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, 45.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={14, 150, 921, 485}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={14, 150, 921, 486}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[706, 350]">
         </property>
@@ -368,7 +368,7 @@
             </property>
         </entity>
         <entity name="ActorRecursion" class="ptolemy.domains.ddf.lib.ActorRecursion">
-            <property name="resursionActor" class="ptolemy.data.expr.StringParameter" value="MoveDisks">
+            <property name="recursionActor" class="ptolemy.data.expr.StringParameter" value="MoveDisks">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 220.0]">
             </property>
@@ -1673,11 +1673,23 @@
             <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
                 <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="interpolationFactor">
                 </property>
+                <property name="RepeatIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
+                </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 80.0]">
                 </property>
             </entity>
             <entity name="Repeat2" class="ptolemy.domains.sdf.lib.Repeat">
                 <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="interpolationFactor">
+                </property>
+                <property name="RepeatIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 265.0]">
                 </property>
@@ -1793,6 +1805,12 @@
         </entity>
         <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
             <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="interpolationFactor">
+            </property>
+            <property name="RepeatIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 129, 815, 509}, maximized = false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 140.0]">
             </property>
@@ -1944,6 +1962,12 @@
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="towerHeight">
             </property>
+            <property name="Cylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 220.0]">
             </property>
         </entity>
@@ -1959,7 +1983,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 305.0]">
             </property>
         </entity>
-        <entity name="ViewScreen3D" class="ptolemy.domains.gr.lib.ViewScreen">
+        <entity name="ViewScreen3D" class="ptolemy.domains.gr.lib.ViewScreen3D">
             <property name="backgroundColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 1.0, 1.0}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 140.0]">
@@ -1969,6 +1993,12 @@
             <property name="radius" class="ptolemy.data.expr.Parameter" value="towerRadius">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="towerHeight">
+            </property>
+            <property name="Cylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 350.0]">
             </property>
@@ -1983,6 +2013,12 @@
             <property name="radius" class="ptolemy.data.expr.Parameter" value="towerRadius">
             </property>
             <property name="height" class="ptolemy.data.expr.Parameter" value="towerHeight">
+            </property>
+            <property name="Cylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 285.0]">
             </property>
@@ -2064,6 +2100,12 @@
                 <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
                 </property>
                 <property name="polyline" class="ptolemy.data.expr.Parameter" value="[xCoordinate, yCoordinate, xCoordinate, -yCoordinate, 0.015, -yCoordinate, 0.015, yCoordinate, xCoordinate, yCoordinate]">
+                </property>
+                <property name="CircularSweep3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                    </property>
+                    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                    </property>
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-190.0, -145.0]">
                 </property>
@@ -2163,6 +2205,12 @@
             </property>
             <property name="circleDivisions" class="ptolemy.data.expr.Parameter" value="max(6,roundToInt(radius *100))">
             </property>
+            <property name="Cylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 420.0]">
             </property>
         </entity>
@@ -2175,6 +2223,12 @@
             </property>
             <property name="circleDivisions" class="ptolemy.data.expr.Parameter" value="max(6,roundToInt(radius *100))">
             </property>
+            <property name="Cylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
+            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 485.0]">
             </property>
         </entity>
@@ -2186,6 +2240,12 @@
             <property name="diffuseColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
             </property>
             <property name="circleDivisions" class="ptolemy.data.expr.Parameter" value="max(6,roundToInt(radius*100))">
+            </property>
+            <property name="Cylinder3DIcon" class="ptolemy.vergil.icon.EditorIcon">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 11, 815, 516}, maximized=false}">
+                </property>
+                <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+                </property>
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 555.0]">
             </property>
