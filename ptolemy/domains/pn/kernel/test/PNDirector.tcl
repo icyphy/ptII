@@ -165,9 +165,11 @@ test PNDirector-7.1 {Test finishing methods} {
 broadcast new token 1
 received new token 0
 received new token 1
+broadcast new token 2
 } {broadcast new token 0
 broadcast new token 1
 received new token 0
 received new token 1
+broadcast new token 2
 }}
 

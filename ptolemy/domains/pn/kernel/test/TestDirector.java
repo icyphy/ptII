@@ -90,7 +90,8 @@ public class TestDirector extends AtomicActor {
 	}
 	try {
 	    ((CompositeActor)getContainer()).workspace().getReadAccess();
-	    ((PNDirector)getDirector()).wrapup();
+            // an actor should not call director.wrapup()
+	    //((PNDirector)getDirector()).wrapup();
 	} finally {
 	    ((CompositeActor)getContainer()).workspace().doneReading();
 	}
@@ -103,6 +104,10 @@ public class TestDirector extends AtomicActor {
      */
     public synchronized String getProfile() {
         return profile;
+    }
+
+    public boolean postfire() {
+        return false;
     }
 
     public IOPort input;
