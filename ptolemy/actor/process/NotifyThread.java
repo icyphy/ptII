@@ -46,9 +46,9 @@ of locks. Since this is a new thread without any locks, calling notifyAll
 <p>
 To use this to wake up any threads waiting on a lock, create a new instance
 of this class with a LinkedList of lock objects (or single lock) to call
-notifyAll on, then optionally wait for this object.
+notifyAll on. 
 <p>
-@author Neil Smyth
+@author Neil Smyth, Mudit Goel
 @version $Id$
 
 */
@@ -76,29 +76,23 @@ public class NotifyThread extends Thread {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** The run returns the actor being executed by this thread
-     *  @return The actor being executed by this thread.
+    /** Call NotifyAll() on the lock object (or objects) passed to this
+     *  class in its constructor.
      */
     public void run() {
-        synchronized(this) {
-            if (_locks != null) {
-                Enumeration objs = _locks.elements();
-                while (objs.hasMoreElements()) {
-                    Object nextObj = objs.nextElement();
-                    if (nextObj instanceof ProcessReceiver) {
-                        ProcessReceiver rec = (ProcessReceiver)nextObj;
-                    }
-                    synchronized(nextObj) {
-                        nextObj.notifyAll();
-                    }
-                }
-            } else {
-                synchronized(_lock) {
-                    _lock.notifyAll();
-                }
-            }
-            this.notifyAll();
-        }
+	if (_locks != null) {
+	    Enumeration objs = _locks.elements();
+	    while (objs.hasMoreElements()) {
+		Object nextObj = objs.nextElement();
+		synchronized(nextObj) {
+		    nextObj.notifyAll();
+		}
+	    }
+	} else {
+	    synchronized(_lock) {
+		_lock.notifyAll();
+	    }
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
