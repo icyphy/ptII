@@ -121,7 +121,7 @@ is allowed for applets, unlike writing to a file. Thus, these
 key bindings provide a simple mechanism to obtain a high-resolution
 image of the plot from an applet, suitable for incorporation in
 a document. However, in some browsers, exporting to standard out
-triggers a security violation.  You can use Sun's appletviewer instead.
+triggers a security violation.  You can use the JDK appletviewer instead.
 <p>
 To read commands from a file or URL, the preferred technique is
 to use one of the classes in the plotml package.  That package

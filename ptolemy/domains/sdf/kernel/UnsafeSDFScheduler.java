@@ -78,7 +78,7 @@ relatively small number of relations that have large numbers of
 channels, by connecting to multiports and setting the width of the
 relation.  In fact, when using certain SDF-oriented actors
 (multiplexor and Demulatiplexor) this is common and necessary thing to
-do.  However, the scheduling implementation didn't scale very nicely.
+do.  However, the scheduling implementation did not scale very nicely.
 The solution is to recognize that the scheduling constraint for every
 channel in such a relation is the same...  Hence, we would really like
 to traverse the hierarchy on a relation by relation basis.

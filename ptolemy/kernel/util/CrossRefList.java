@@ -44,7 +44,7 @@ and relations in Ptolemy II.  It is a highly specialized form of a list.
 An instance has a container (an Object), which is immutable, meaning
 that the container cannot be changed after the instance is constructed.
 CrossRefList enumerators and query methods do not return references to
-other CrossRefLists; instead, references to those CrossRefLists' containers
+other CrossRefLists; instead, references to the containers of the CrossRefLists
 (which can be any Object) are returned.
 <p>
 For efficiency, CrossRefList maintains a list of pairwise links

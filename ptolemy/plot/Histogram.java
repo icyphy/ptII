@@ -94,7 +94,7 @@ If this method is used with argument <i>o</i>, then each bin is
 centered at <i>x = nw + o</i>, and represents values in the range
 (<i>x - w/2 + o, x + w/2 + o</i>).  So for example, if <i>o = w/2</i>,
 then each bin represents values from <i>nw</i> to
-(<i>n</i> + 1)<i>w</i>) for some integer <i>n</i>.
+(<i>n</i> + 1)<i>w</i> for some integer <i>n</i>.
 The default offset is 0.5, half the default bin width.
 <p>
 To specify data to be plotted, start a data set with the following command:

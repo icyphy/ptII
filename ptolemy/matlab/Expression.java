@@ -105,7 +105,7 @@ data conversion (see {@link Engine} and
 {@link Engine.ConversionParameters}).<p>
 
 A Parameter named <i>packageDirectories</i> may be added to this actor
-to augment the matlab engine's search path during the firing of this
+to augment the search path of the matlab engine during the firing of this
 actor. The value of this parameter should evaluate to a StringToken,
 e.g.:
 
