@@ -39,7 +39,7 @@ Perform pitch scaling of an input signal.
 public class PitchShift {
 
     private static final int RING_BUFFER_SIZE = 6000;
-    private static final int OUTPUT_BUFFER_DELAY = 1100;
+    private static final int OUTPUT_BUFFER_DELAY = 1000;
     private static final double MINIMUM_PITCH = 50.0;
     private static final double DEFAULT_PITCH = MINIMUM_PITCH;
     

@@ -277,8 +277,8 @@ public class HarmonizerSlider extends JFrame {
         HarmonizerSlider pitchSlider = new HarmonizerSlider("HarmonizerSlider");
         pitchSlider.pack();
         pitchSlider.setVisible(true);
-	//System.out.println("");
-	//System.out.println("HarmonizerSlider v1.0 by Brian K. Vogel, vogel@eecs.berkeley.edu");
+	System.out.println("");
+	System.out.println("HarmonizerSlider v1.0 by Brian K. Vogel, vogel@eecs.berkeley.edu");
 	System.out.println("");
 	System.out.println("Usage: java HarmonizerSlider <sample rate>");
 	System.out.println("<sample rate> is optional.");
