@@ -163,7 +163,7 @@ public class Expression extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if(attribute == expression) {
+        if (attribute == expression) {
             _parseTree = null;
         }
     }
@@ -211,15 +211,15 @@ public class Expression extends TypedAtomicActor {
         }
         Token result;
         try {
-            if(_parseTree == null) {
+            if (_parseTree == null) {
                 PtParser parser = new PtParser();
                 _parseTree = parser.generateParseTree(
                         expression.getExpression());
             }
-            if(_parseTreeEvaluator == null) {
+            if (_parseTreeEvaluator == null) {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
             }
-            if(_scope == null) {
+            if (_scope == null) {
                 _scope = new VariableScope();
             }
             result = _parseTreeEvaluator.evaluateParseTree(
@@ -305,14 +305,14 @@ public class Expression extends TypedAtomicActor {
          *  @return The attribute with the specified name in the scope.
          */
         public Token get(String name) throws IllegalActionException {
-            if(name.equals("time")) {
+            if (name.equals("time")) {
                 return new DoubleToken(getDirector().getCurrentTime());
-            } else if(name.equals("iteration")) {
+            } else if (name.equals("iteration")) {
                 return new IntToken(_iterationCount);
             }
 
             Token token = (Token)_tokenMap.get(name);
-            if(token != null) {
+            if (token != null) {
                 return token;
             }
 
@@ -329,20 +329,20 @@ public class Expression extends TypedAtomicActor {
          *  @return The attribute with the specified name in the scope.
          */
         public Type getType(String name) throws IllegalActionException {
-            if(name.equals("time")) {
+            if (name.equals("time")) {
                 return BaseType.DOUBLE;
-            } else if(name.equals("iteration")) {
+            } else if (name.equals("iteration")) {
                 return BaseType.INT;
             }
 
             // Check the port names.
             TypedIOPort port = (TypedIOPort)getPort(name);
-            if(port != null) {
+            if (port != null) {
                 return port.getType();
             }
 
             Variable result = _findVariable(name);
-            if(result != null) {
+            if (result != null) {
                 return result.getType();
             }
             return null;
@@ -377,13 +377,13 @@ public class Expression extends TypedAtomicActor {
          */
         public Object getValue() {
             try {
-                if(_parseTree == null) {
+                if (_parseTree == null) {
                     PtParser parser = new PtParser();
                     _parseTree = parser.generateParseTree(
                             expression.getExpression());
                 }
 
-                if(_scope == null) {
+                if (_scope == null) {
                     _scope = new VariableScope();
                 }
                 Type type = _typeInference.inferTypes(_parseTree, _scope);
@@ -406,13 +406,13 @@ public class Expression extends TypedAtomicActor {
             // inputs and all of the parameters that are free variables for
             // the expression.
             try {
-                if(_parseTree == null) {
+                if (_parseTree == null) {
                     PtParser parser = new PtParser();
                     _parseTree = parser.generateParseTree(
                             expression.getExpression());
                 }
 
-                if(_scope == null) {
+                if (_scope == null) {
                     _scope = new VariableScope();
                 }
                 Set set =
@@ -421,12 +421,12 @@ public class Expression extends TypedAtomicActor {
                 for(Iterator elements = set.iterator();
                     elements.hasNext();) {
                     String name = (String)elements.next();
-                    if(name.equals("time") ||
+                    if (name.equals("time") ||
                             name.equals("iteration")) {
                         continue;
                     }
                     TypedIOPort port = (TypedIOPort)getPort(name);
-                    if(port != null && port.getTypeTerm().isSettable()) {
+                    if (port != null && port.getTypeTerm().isSettable()) {
                         termList.add(port.getTypeTerm());
                         continue;
                     }
