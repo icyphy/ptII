@@ -218,8 +218,7 @@ public abstract class AbstractActionsAttribute extends Action {
                 if (closeParen < openParen) {
                     throw new IllegalActionException(this,
                             "Malformed action: expected destination == "
-                            "expression. Got: "
-                            + command);
+                            "expression. Got: " + command);
                 }
                 _destinationNames.add(
                         completeDestinationSpec.substring(
@@ -230,9 +229,8 @@ public abstract class AbstractActionsAttribute extends Action {
                     _numbers.add(new Integer(channelSpec));
                 } catch (NumberFormatException ex) {
                     throw new IllegalActionException(this,
-                            "Malformed action: expected destination == expression. "
-                            + "Got: "
-                            + command);
+                            "Malformed action: expected destination == "
+                            + "expression. Got: " + command);
                 }
             } else {
                 // No channel is specified.

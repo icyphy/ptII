@@ -400,8 +400,8 @@ public class FSMDirector extends Director implements ModelErrorHandler {
      *
      *  @param context The context where the model error happens.
      *  @param exception An exception that represents the model error.
-     *  @return True if the error has been handled, or nothing if the model error
-     *  is thrown to higher level.
+     *  @return True if the error has been handled, or nothing if the
+     *  model error is thrown to higher level.
      *  @exception IllegalActionException The model error exception.
      */
     public boolean handleModelError(
