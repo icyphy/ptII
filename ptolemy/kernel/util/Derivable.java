@@ -74,6 +74,17 @@ public interface Derivable extends Nameable {
      */
     public List getDerivedList();
 
+    /** Return -1 if this is not an inherited object, 0 if this
+     *  is an inherited object that has been modified locally, and
+     *  a depth greater than zero if this inherited object has
+     *  been modified by propagation at the returned depth above
+     *  this object in the containment hierarchy.
+     *  @return An integer indicating whether this object has been
+     *   modified and how.
+     *  @see #setOverrideDepth(int)
+     */
+    public int getOverrideDepth();
+
     /** Return a list of objects derived from this one that are
      *  not overridden. An object is overridden if either its
      *  getOverrideDepth() method returns 0, or if it is shadowed
@@ -153,17 +164,6 @@ public interface Derivable extends Nameable {
      *  @return True if the object is an inherited object.
      */
     public boolean isDerived();
-
-    /** Return -1 if this is not an inherited object, 0 if this
-     *  is an inherited object that has been modified locally, and
-     *  a depth greater than zero if this inherited object has
-     *  been modified by propagation at the returned depth above
-     *  this object in the containment hierarchy.
-     *  @return An integer indicating whether this object has been
-     *   modified and how.
-     *  @see #setOverrideDepth(int)
-     */
-    public int getOverrideDepth();
 
     /** Set whether this object is an inherited object.  If an object
      *  is an inherited object, then normally has no persistent representation
