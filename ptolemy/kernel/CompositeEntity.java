@@ -1054,9 +1054,6 @@ public class CompositeEntity extends ComponentEntity {
     private NamedList _containedRelations = new NamedList(this);
 
     /** @serial Count of automatic names generated for entities */
-    private int _entitynamecount = 0;
-
-    /** @serial Count of automatic names generated for entities */
     private int _relationnamecount = 0;
 
     /** @serial Flag indicating whether level-crossing connect is permitted. */
