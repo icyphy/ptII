@@ -150,7 +150,7 @@ public void init() {
 
         CTCompositeActor ctInc = new CTCompositeActor(hs, "Increasing");
         CTZeroOrderHold ctIncH = new CTZeroOrderHold(ctInc, "Hold");
-        CTIntegrator ctIncI = new CTIntegrator(ctInc, "Integrator");
+        Integrator ctIncI = new Integrator(ctInc, "Integrator");
         //ctIncI.addDebugListener(new StreamListener());
         CTZeroCrossingDetector ctIncD =
             new CTZeroCrossingDetector(ctInc, "ZD");
@@ -197,7 +197,7 @@ public void init() {
 
         CTCompositeActor ctDec = new CTCompositeActor(hs, "Decreasing");
         CTZeroOrderHold ctDecH = new CTZeroOrderHold(ctDec, "Hold");
-        CTIntegrator ctDecI = new CTIntegrator(ctDec, "Integrator");
+        Integrator ctDecI = new Integrator(ctDec, "Integrator");
         Scale ctGain = new Scale(ctDec, "Gain");
         CTZeroCrossingDetector ctDecD =
             new CTZeroCrossingDetector(ctDec, "ZD");
