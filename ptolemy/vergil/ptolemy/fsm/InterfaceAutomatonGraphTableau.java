@@ -56,28 +56,29 @@ public class InterfaceAutomatonGraphTableau extends FSMGraphTableau {
             String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-
-        NamedObj model = container.getModel();
-        if (!(model instanceof CompositeEntity)) {
-            throw new IllegalActionException(this,
-                    "Cannot graphically edit a model that is not a "
-		    + "CompositeEntity.");
-        }
-	CompositeEntity entity = (CompositeEntity)model;
-
-	InterfaceAutomatonGraphFrame frame =
-	        new InterfaceAutomatonGraphFrame(entity, this);
-	setFrame(frame);
-	frame.setBackground(BACKGROUND_COLOR);
-	frame.pack();
-	frame.centerOnScreen();
-	frame.setVisible(true);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public parameters                 ////
 
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          public methods                   ////
+
+    /** Override the super class to create an instance of
+     *  InterfaceAutomatonGraphFrame.
+     *  @param model The Ptolemy II model to display in the graph frame.
+     */
+    public void createGraphFrame(CompositeEntity model) {
+	InterfaceAutomatonGraphFrame frame =
+	        new InterfaceAutomatonGraphFrame(model, this);
+	setFrame(frame);
+	frame.setBackground(BACKGROUND_COLOR);
+	frame.pack();
+	frame.centerOnScreen();
+	frame.setVisible(true);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////

@@ -119,16 +119,12 @@ public class FSMGraphTableau extends Tableau {
         NamedObj model = container.getModel();
         if (!(model instanceof CompositeEntity)) {
             throw new IllegalActionException(this,
-                    "Cannot graphically edit a model that is not a CompositeEntity.");
+                    "Cannot graphically edit a model that is not a "
+		    + "CompositeEntity.");
         }
 	CompositeEntity entity = (CompositeEntity)model;
 
-	FSMGraphFrame frame = new FSMGraphFrame(entity, this);
-	setFrame(frame);
-	frame.setBackground(BACKGROUND_COLOR);
-	frame.pack();
-	frame.centerOnScreen();
-	frame.setVisible(true);
+	createGraphFrame(entity);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -137,6 +133,24 @@ public class FSMGraphTableau extends Tableau {
     /** The class to display. */
     public StringAttribute library;
     private static Color BACKGROUND_COLOR = new Color(0xe5e5e5);
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          public methods                   ////
+
+    /** Create the graph frame that displays the model associated with
+     *  this tableau. This method creates a FSMGraphFrame. If subclass
+     *  uses another frame, this method should be overriden to create
+     *  that frame.
+     *  @param model The Ptolemy II model to display in the graph frame.
+     */
+    public void createGraphFrame(CompositeEntity model) {
+	FSMGraphFrame frame = new FSMGraphFrame(model, this);
+	setFrame(frame);
+	frame.setBackground(BACKGROUND_COLOR);
+	frame.pack();
+	frame.centerOnScreen();
+	frame.setVisible(true);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
