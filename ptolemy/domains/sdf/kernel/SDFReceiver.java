@@ -35,7 +35,6 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.util.*;
-import ptolemy.actor.util.FIFOQueue; // for javadoc
 import ptolemy.actor.*;
 
 import java.util.NoSuchElementException;
@@ -57,7 +56,7 @@ than simply removed. By default, the history capacity is zero.
 
 @author Steve Neuendorffer
 @version $Id$
-@see ptolemy.actor.util.ArrayFIFOQueue
+@see ArrayFIFOQueue
 */
 public class SDFReceiver extends AbstractReceiver {
 
