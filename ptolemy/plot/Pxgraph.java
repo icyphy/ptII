@@ -362,6 +362,7 @@ when viewing graphs with tick marks only.
 <h2><a name="pxgraph script compatibility issues">Compatibility Issues</a></h2>
 Various compatibility issues are documented above in <b>bold</b>.
 Below are some other issues:
+<ol>
 <li>The original <code>xgraph</code> program allowed many formatting
 directives inside the file.  This version only supports
 <code>draw</code> and <code>move</code>.
@@ -373,61 +374,7 @@ to separate datasets.  This version does not.  Instead, use the
 than the X11 version.  This is an inherent problem with standalone
 Java applications.  One guess is that most of the startup time comes
 from paging in the shared libraries.
-<h2><a name="Installation Instructions">Installation Instructions</a></h2>
-The instructions below are for using the Java <CODE>pxgraph</CODE>
-script instead of the X11 <CODE>pxgraph</CODE> binary within Ptolemy.
 
-<ol>
-
-<LI> Obtain and install a Java Development Kit (JDK) for your
-platform from
-<A HREF="http://www.javasoft.com"><CODE>www.javasoft.com</CODE></A>.
-Pxgraph works best under JDK1.1.6.
-
-<li> Obtain the Ptplot tar file from
-<A HREF="http://ptolemy.eecs.berkeley.edu/java/ptplot"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot</CODE></A>.
-
-<li> <CODE>cd</CODE> to <CODE>$PTOLEMY/tycho/java</CODE> and ungzip and
-untar the tar file:
-<PRE>
-cd $PTOLEMY/tycho/java
-gzcat /tmp/ptolemy.plot2.2.tar.gz | tar -xf
-</PRE>
-
-<LI> The <CODE>pxgraph</CODE>shell script reads
-a few environment variables and attempts to run.  For the script to
-run, it needs to find the location of the Java JDK installation and
-the location of the Ptplot <CODE>.class</CODE> files.
-<MENU>
-<LI> If the <CODE>JAVAHOME</CODE> environment variable is set, then
-it is read and <CODE>$JAVAHOME/lib/classes.zip</CODE> is used in the
-classpath.  For example, if your JDK was at <CODE>/opt/jdk1.1.6</CODE>,
-then you would add the following to your <CODE>.cshrc</CODE>:
-<PRE>
-setenv JAVAHOME /opt/jdk1.1.6
-</PRE>
- <BR>If <CODE>JAVAHOME</CODE> is not set, then the script searches
-the path and looks for the <CODE>java</CODE> binary.  If the
-<CODE>java</CODE> binary is found, then the script looks for the
-appropriate <CODE>classes.zip</CODE> to use.
- <BR>If none of the above works, you can edit the <CODE>pxgraph</CODE>
-script and change the <CODE>JAVADEFAULT</CODE> setting at the top of
-the file to point to your JDK.
-</MENU>
-To find the Ptplot <CODE>.class</CODE> files, the script reads the
-<CODE>TYCHO</CODE> and <CODE>PTOLEMY</CODE> variables and looks in
-<CODE>PTOLEMY/tycho/java/ptolemy.plot</CODE>.  If you do not have Ptolemy
-or Tycho installed, you can edit the <CODE>pxgraph</CODE> script
-and change <CODE>TYDEFAULT</CODE> so that the <CODE>Pxgraph.class</CODE>
-file will be found at <CODE>$TYDEFAULT/java/ptolemy.plot/Pxgraph.class</CODE>
-
-<LI> Move the old <CODE>pxgraph</CODE> binary to a safe place and
-create a link to the Java Ptplot <CODE>pxgraph</CODE> scriptolemy.
-<PRE>
-cd $PTOLEMY/bin.$PTARCH
-mv pxgraph pxgraph.x11
-ln -s ../tycho/java/plot/pxgraph .
-</PRE>
 </ol>
 
 <p>
