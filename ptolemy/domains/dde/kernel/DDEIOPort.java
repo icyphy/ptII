@@ -106,8 +106,8 @@ public class DDEIOPort extends TypedIOPort {
      *  thrown.
      * @param container The container actor.
      * @param name The name of the port.
-     * @param isinput True if this is to be an input port.
-     * @param isoutput True if this is to be an output port.
+     * @param isInput True if this is to be an input port.
+     * @param isOutput True if this is to be an output port.
      * @exception IllegalActionException If the port is not of an
      * acceptable class for the container, or if the container does
      * not implement the Actor interface.  , or if the container is
@@ -116,9 +116,9 @@ public class DDEIOPort extends TypedIOPort {
      *  a port already in the container.
      */
     public DDEIOPort(ComponentEntity container, String name,
-            boolean isinput, boolean isoutput)
+            boolean isInput, boolean isOutput)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name, isinput, isoutput);
+        super(container, name, isInput, isOutput);
         if ( !container.isAtomic() ) {
             throw new IllegalActionException(container, this,
                     "A DDEIOPort can not be contained by a " +
