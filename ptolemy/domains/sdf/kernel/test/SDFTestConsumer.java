@@ -89,7 +89,7 @@ public class SDFTestConsumer extends SDFAtomicActor {
      * @exception IllegalActionException If a contained method throws it.
      */
     public void fire() throws IllegalActionException {
-        int tokens = getTokenConsumptionRate(input);
+        int tokens = input.getTokenConsumptionRate();
         int i;
         for(i = 0; i < tokens; i++) {
             Token t = input.get(0);
