@@ -62,7 +62,7 @@ public class BackwardCompatibility {
     }
 
     /** Return a string that describes all the filters
-     *  @return the String that describes all the filters and that ends with a	
+     *  @return the String that describes all the filters and that ends with a
      *  newline.
      */
     public String toString() {
@@ -76,7 +76,7 @@ public class BackwardCompatibility {
     }
 
     // List of MoMLFilters to be applied.
-    private static List _filterList; 
+    private static List _filterList;
 
     static {
         _filterList = new LinkedList();

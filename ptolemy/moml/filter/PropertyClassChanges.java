@@ -159,11 +159,11 @@ public class PropertyClassChanges implements MoMLFilter {
     }
 
     /** Return a string that describes what the filter does.
-     *  @return the description of the filter that ends with a newline. 
+     *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
 	StringBuffer results =
-	    new StringBuffer(getClass().getName() 
+	    new StringBuffer(getClass().getName()
 			     + ": Update any actor port class names that have\n"
 			     + "been renamed.\n"
 			     + "Below are the actors that are affected, along\n"
@@ -179,7 +179,7 @@ public class PropertyClassChanges implements MoMLFilter {
 	    while (properties.hasNext()) {
 		String oldProperty = (String) properties.next();
 		String newProperty = (String) propertyMap.get(oldProperty);
-		results.append("\t\t" + oldProperty + "\t -> " + newProperty + "\n"); 
+		results.append("\t\t" + oldProperty + "\t -> " + newProperty + "\n");
 	    }
 	}
 	return results.toString();

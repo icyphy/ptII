@@ -116,13 +116,13 @@ public class RemoveGraphicalClasses implements MoMLFilter {
     }
 
     /** Return a string that describes what the filter does.
-     *  @return the description of the filter that ends with a newline. 
+     *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
 	StringBuffer results =
-	    new StringBuffer(getClass().getName() 
+	    new StringBuffer(getClass().getName()
 			     + ": Remove or replace classes that are graphical.\n"
-			     + "This filter is used by the nightly build, and\n" 
+			     + "This filter is used by the nightly build, and\n"
 			     + "can be used to run applets so that files like\n"
 			     + "diva.jar do not need to be downloaded.\n"
 			     + "The following actors are affected:\n"

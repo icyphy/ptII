@@ -158,11 +158,11 @@ public class AddIcon implements MoMLFilter {
     }
 
     /** Return a string that describes what the filter does.
-     *  @return the description of the filter that ends with a newline. 
+     *  @return the description of the filter that ends with a newline.
      */
     public String toString() {
 	StringBuffer results =
-	    new StringBuffer(getClass().getName() 
+	    new StringBuffer(getClass().getName()
 			     + ": Add specialized icons that display the value\n"
 			     + "of one of the parameters.\n"
 			     + "The affected actors are:\n"
