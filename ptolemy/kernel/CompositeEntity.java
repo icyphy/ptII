@@ -400,6 +400,30 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
+    /** Return a list of the component entities contained by this object that
+     *  are instances of the specified class.  If there are no such
+     *  instances, then return an empty list.
+     *  This method is read-synchronized on the workspace.
+     *  @param filter The class of ComponentEntity of interest.
+     *  @return A list of instances of specified class.
+     */
+    public List entityList(Class filter) {
+        try {
+            _workspace.getReadAccess();
+	    List result = new LinkedList();
+            Iterator entities = _containedEntities.elementList().iterator();
+            while (entities.hasNext()) {
+                Object entity = entities.next();
+                if (filter.isInstance(entity)) {
+                    result.add(entity);
+                }
+            }
+            return result;
+         } finally {
+            _workspace.doneReading();
+        }
+    }
+ 
     /** Return a sequence of MoML link attributes that describe
      *  any link between objects (ports, entities, and relations) that are
      *  present in the <i>filter</i> argument.  Both ends of the link

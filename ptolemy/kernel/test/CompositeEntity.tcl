@@ -157,6 +157,18 @@ test CompositeEntity-3.3 {Test getEntity by name} {
 ######################################################################
 ####
 #
+test CompositeEntity-3.4 {Test entityList and entityList with a filter} {
+    set a [java::new ptolemy.kernel.CompositeEntity]
+    $a setName A
+    set b [java::new ptolemy.kernel.CompositeEntity $a B]
+    set c [java::new ptolemy.kernel.CompositeEntity $a C]
+    set d [java::new ptolemy.kernel.ComponentEntity $a D]
+    list [listToNames [$a entityList]] [listToNames [$a entityList [$a getClass]]]
+} {{B C D} {B C}}
+
+######################################################################
+####
+#
 test CompositeEntity-4.1 {Test deepContains} {
     set a [java::new ptolemy.kernel.CompositeEntity]
     $a setName A
