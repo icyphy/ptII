@@ -37,6 +37,11 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
 An interface for a term in an inequality over a CPO.
 A term is either a constant, a variable, or a function.
+In some applications, a term may be associated with an Object. For
+example, the value of the term may represent a certain characteristic
+of an Object, and it is necessary to get a reference of that Object
+from a term. This can be done through the getAssociatedObject() method
+of this interface.
 
 @author Yuhong Xiong
 @version $Id$
@@ -44,6 +49,16 @@ A term is either a constant, a variable, or a function.
 */
 
 public interface InequalityTerm {
+
+    /** Return the Object associated with this term. If this term is
+     *  not associated with a particular Object, or it is not necessary
+     *  to obtain the reference of the associated Object, this method
+     *  can return <code>null</code>.
+     *  @return an Object.
+     */
+    public Object getAssociatedObject();
+    
+
     /** Return the value of this term.  If this term is a constant,
      *  return that constant; if this term is a variable, return the
      *  current value of that variable; if this term is a function,

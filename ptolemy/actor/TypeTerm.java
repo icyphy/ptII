@@ -86,6 +86,16 @@ public class TypeTerm implements InequalityTerm {
      *  term is not associated with a TypedIOPort, return null.
      *  @return A TypedIOPort.
      */
+    public Object getAssociatedObject() {
+	return _port;
+    }
+
+    /** Return the TypedIOPort associated with this term. If this
+     *  term is not associated with a TypedIOPort, return null.
+     *  @return A TypedIOPort.
+     */
+    // FIXME: this method will be removed after this class is moved
+    // to an inner class of TypedIOPort.
     public TypedIOPort getPort() {
 	return _port;
     }
