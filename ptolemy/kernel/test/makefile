@@ -61,6 +61,7 @@ JSIMPLE_TESTS = \
 	NamedObjList.tcl \
 	Port.tcl \
 	PortList.tcl \
+	PtolemyException.tcl \
 	Relation.tcl
 
 # Graphical Java tests that use Tcl.
