@@ -544,7 +544,7 @@ public class SDFScheduler extends Scheduler{
 
         // an association between All the input ports in a simulation and the
         // number of tokens waiting on that port
-        // Fixme: What if there are delays and we start with some tokens?
+        // FIXME: What if there are delays and we start with some tokens?
         HashedMap waitingTokens = new HashedMap();
 
         Enumeration SchedulableEntities = UnscheduledActors.elements();
