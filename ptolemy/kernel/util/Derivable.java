@@ -35,27 +35,16 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// Derivable
 /**
-This interface is for objects that can be inherited.  An inherited object
-is one that is inherited by its container from some other object.
-That is, it is a created in its container as a side effect of the
+This interface is for objects that can be derived.  A derived object
+is "inherited" via the class mechanism in Ptolemy II.
+It is a created in its container as a side effect of the
 creation of another instance of Derivable in some other container.
 <p>
-Note that unlike the real-world notion of inheritance that inspires
-the name of this interface, an inherited object is a <i>new</i> instance
-that is similar to the original object, but with a new container.
-It is as if instead of dividing an estate, the estate could be cloned
-for each inheritor. Moreover, the original owner of the estate does
-not need to die, and can continue to own the original objects.
-Consequently, there may simultaneously be several heritage objects
-which are created as side effects of creating the one. The
-heritageList() method returns a list of such objects currently in
-existence.
-<p>
-After being created, an inherited object, which is called "heritage,"
+After being created, a derived object, which is called "heritage,"
 might be modified in some (visible) way. For example, it might have parameter
 values that are changed and hence need to be explicitly recorded if
 the object is exported, say, to a persistent file format.
-Such a changed object is referred to as "modified heritage."
+Such a changed object is said to "override" its inherited value.
 
 @author Edward A. Lee
 @version $Id$
@@ -120,14 +109,11 @@ public interface Derivable extends Nameable {
      *  derivation chains between them. That is, the derivation
      *  chain is not unique.  We define preferred derivation chain
      *  to be the one found by a depth-first search.
-     *  FIXME: Explain this.
      *  <p>
      *  Intuitively, this means that shadowing will occur if
      *  a change has been previously propagated higher in the
      *  hierarchy than the change being considered now.
-     * 
-     *  FIXME: Move the above to the class comment.
-     * 
+     *  <p>
      *  Implementors may return an empty list, but should not return null.
      *  All objects in the returned list are required to be of the same
      *  class as the object on which this method is called (they should
@@ -149,8 +135,8 @@ public interface Derivable extends Nameable {
      */
     public List getShadowedDerivedList(List depthList);
 
-    /** Return true if this object is an inherited object.  An object
-     *  is inherited it is created in its container as a side effect
+    /** Return true if this object is a derived object.  An object
+     *  is derived if it is created in its container as a side effect
      *  of the creation of a similar object in some other container.
      *  For example, some container of this object may be an instance
      *  of Instantiable that was created by another instance of Instantiable,
@@ -185,7 +171,7 @@ public interface Derivable extends Nameable {
      *  or container changed.
      *  By default, instances of NamedObj are not inherited objects.
      *  If this method is called with a <i>false</i> argument, then
-     *  it will call setInherited(false) on the container as
+     *  it will call setDerived(false) on the container as
      *  well, making all containers above in the hierarchy not
      *  inherited objects.
      *  @param isDerived True to mark this object as an inherited object.
@@ -193,19 +179,21 @@ public interface Derivable extends Nameable {
      */
     public void setDerived(boolean isDerived);
 
-    /** Specify whether this object has been modified.  This has an
-     *  effect only if setInherited() has been called with a true
+    /** Specify whether this object overrides its inherited value,
+     *  and if so, at what depth above in the hiearchy the parent
+     *  relationship that triggered this override occurred.  This has an
+     *  effect only if setDerived() has been called with a true
      *  argument.  In that case, if this method is called with
-     *  argument true, then this object will export MoML despite the
-     *  fact that it is an inherited object.  I.e., call this with
-     *  true to specify that this inherited object has been
-     *  modified. To reverse the effect of this call, call it again
-     *  with false argument.
-     *  
-     *  FIXME: revise docs.
-     * 
-     *  @param modified True to mark modified.
-     *  @see #setInherited(boolean)
+     *  argument 0, then this object will export MoML despite the
+     *  fact that it is a derived object.  I.e., call this with
+     *  0 to specify that this inherited object has been
+     *  modified directly. To reverse the effect of this call, call it again
+     *  with -1 argument.
+     *  @param depth The depth above this object in the hierarchy at
+     *   which the propogation occurred, or 0 to indicate that the
+     *   override is direct (not propagated), or -1 to indicate that
+     *   the object is not overridden.
+     *  @see #setDerived(boolean)
      *  @see #getOverrideDepth()
      */
     public void setOverrideDepth(int depth);
