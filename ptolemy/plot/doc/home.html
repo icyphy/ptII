@@ -1,0 +1,114 @@
+<!-- $Id$ -->
+<html>
+<head>
+<Title>Ptplot 2.1 - Java Plotter</Title>
+</head>
+<body bgcolor="#faf0e6">
+<h1><a name="plot classes">Ptplot 2.1 - Java Plotter</a></h1>
+<table>
+<tr>
+
+<td><img alt="Screenshot of PtPlot applet plotting a FourierSeries" width=507 height=315 src="doc/img/ptplot.gif">
+
+<td align=center>
+<b>Authors</b><br>
+<i>Edward A. Lee</i>
+<br>
+<i>Christopher Hylands</i> <p>
+<b>Contributors</b>
+<br>
+<i>Lukito Muliadi</i>
+<br>
+<i>William Wu</i>
+</table>
+ <hr>
+
+<MENU>
+<LI> <A HREF="demo/index.html">Applet Demonstrations</A>
+<LI> <A HREF="doc/codeDoc/tree.html">The Java documentation for these classes</A>
+<LI> <A HREF="doc/download/index.html">Download sources and class files</a>
+<LI> Miscellaneous
+<A HREF="doc/index.html">Ptplot documentation</A>, including
+the <A HREF="doc/internals/ptplotfaq.html">Ptplot faq</A>, instructions
+on joining the
+<A HREF="doc/internals/ptplotfaq.html#mailing list"><CODE>ptplot-announce</CODE></A>
+mailing list and the list of
+<A HREF="doc/internals/changes.html">Ptplot Changes</A>.
+
+</MENU>
+ <hr>
+<h2>Description</h2>
+This is a set of two dimensional signal plotters components
+written in Java with the following properties:
+<ul>
+<li> Embeddable in applets or applications.
+<li> Binary or ASCII data.
+<li> Auto-ranging.
+<li> Automatic or manual labeling of axes.
+<li> Automatic or manual tick marks.
+<li> Logarithmic axes.
+<li> Live, animated plots.
+<li> Infinite zooming.
+<li> Various plot styles: connected lines, scatter plot, bars, etc.
+<li> Various point styles: none, dots, points, and unique marks.
+<li> Multiple data sets and a legend.
+<li> Color or black and white plotting.
+<li> Error bars.
+</ul>
+
+The applet implementation can read data to plot from a URL or
+construct the data in custom Java code.  One of the supplied
+application classes can read data from a URL and use command-line
+arguments to format the plot.  The command-line arguments are
+compatible with the popular Unix signal plotter <CODE>xgraph</CODE>.
+
+<p>There is a set of <a href="demo/index.html">demonstrations</a>
+of these classes.
+The main class implementing the plotter component is <a
+href="Plot.java">Plot</a>.  It is derived from <a
+href="PlotBox.java">PlotBox</a>, which provides only the axes and
+decorations of the plot.  This is implemented in a base class so that
+it can be reused for different kinds of plots.  Live (animated) data
+plots are supported by the <a href="PlotLive.java">PlotLive</a> class.
+This class is abstract; a derived class must be created to generate
+the data to plot (or collect it from some other application).  <p>
+
+ <p><a href="demo/TwoPlotExample.java">TwoPlotExample</CODE></a>
+is a very simple sample Ptplot application.
+
+ <p>A more complex application is implemented by the
+<a href="PlotApplication.java">PlotApplication</a> class.
+The PlotApplication class
+includes support for printing and generating HTML for use with the
+Plot applet.  The <a href="ptplot"><CODE>ptplot</CODE></a>
+shell script starts up PlotApplication from a Unix
+shell prompt.
+
+ <p>Backward compatibility with the C <CODE>pxgraph</CODE> program
+is provided by the 
+<a href="Pxgraph.java">Pxgraph</a> class.
+
+ <P><A NAME="xgraph">This</A> code owes a heavy debt to David
+Harrison, the original author of <CODE>xgraph</CODE>, which runs under
+the X window system on Unix platforms.  An extension to
+<CODE>xgraph</CODE> called <CODE>pxgraph</CODE>, written by Joe Buck,
+reads binary files as well as ASCII.  For compatibility with these
+programs, we have provided a Bourne Shell script called
+<CODE>pxgraph</CODE> that is a drop-in replacement for either
+<CODE>xgraph</CODE> or <CODE>pxgraph</CODE>.  Unlike the original
+program, however, the Java implementation does not depend on the X
+window system.  We have provided a DOS batch file called
+<CODE>pxgraph.bat</CODE> that brings <CODE>pxgraph</CODE> capability
+to Windows platforms.
+
+<hr>
+<A HREF="http://ptolemy.eecs.berkeley.edu/java">Up</A> to the Ptolemy Java Website -
+<A HREF="demo">Forward</A> to the Demonstrations
+
+<HR>
+Last updated: $Date$,
+ <br>Comments to: <A HREF="mailto:ptplot@ptolemy.eecs.berkeley.edu"><author>ptplot@eecs.berkeley.edu</author></A>
+<br>Ptolemy Java Ptplot Website:
+<A HREF="http://ptolemy.eecs.berkeley.edu/java/ptplot"><CODE>http://ptolemy.eecs.berkeley.edu/java/ptplot</CODE></A>
+</body>
+</html>
