@@ -126,6 +126,32 @@ public class DEPlot extends AtomicActor {
 
         int width = input.getWidth();
         for (int i = 0; i<width; i++) {
+            // check channel i.
+            if (input.hasToken(i)) {
+                double curTime =((DECQDirector)getDirector()).getCurrentTime(); 
+                // channel i is not empty, get all the tokens in it.
+                while (input.hasToken(i)) {
+                    DoubleToken curToken = null;
+                    try {
+                        curToken = (DoubleToken)input.get(i);
+                    } catch (NoSuchItemException e) {}
+                    double curValue = curToken.doubleValue();
+                    _plot.addPoint(i, curTime, curValue, false);
+                }
+            } else {
+                // Empty channel. Ignore
+                // But keep track of the number of empty channel,
+                // because this actor shouldn't be fired if all channels
+                // are empty..
+                numEmptyChannel++;
+            }
+            /*
+
+
+
+
+
+
 
             try {
                 // the following statement might throw an exception.
@@ -139,6 +165,13 @@ public class DEPlot extends AtomicActor {
                 // Empty channel.  Ignore.
                 numEmptyChannel++;
             }
+
+            */
+
+
+
+
+
         }
         // If all channels are empty, then the scheduler is wrong.
         if (numEmptyChannel == width) {

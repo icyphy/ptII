@@ -62,6 +62,10 @@ public class DEWaitingTime extends AtomicActor {
         output = new DEIOPort(this, "output", false, true);
         waiter = new DEIOPort(this, "waiter", true, false);
         waitee = new DEIOPort(this, "waitee", true, false);
+        // if a waiter and a waitee arrive at the same time, we don't want
+        // the waiter to have to wait.
+        waiter.before(waitee);
+        waitee.triggers(output);
     }
 
     ///////////////////////////////////////////////////////////////////
