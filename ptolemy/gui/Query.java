@@ -148,10 +148,7 @@ public class Query extends JPanel {
         //_messageScrollPane.setBorder(
         //                    BorderFactory.createLineBorder(Color.pink));
 
-        add(_messageScrollPane);
-
-        // Add a spacer.
-        add(Box.createRigidArea(new Dimension(0, 10)));
+        // We add the _messageScrollPane when we first use it.
 
         _entryScrollPane = new JScrollPane(_entryPanel);
         // Get rid of the border.
@@ -986,6 +983,14 @@ public class Query extends JPanel {
      *  @param message The message to display.
      */
     public void setMessage(String message) {
+        if (!_messageScrollPaneAdded) {
+            _messageScrollPaneAdded = true;
+            add(_messageScrollPane, 1);
+
+            // Add a spacer.
+            add(Box.createRigidArea(new Dimension(0, 10)), 2);
+        }
+
         _messageArea.setText(message);
         // I'm not sure why we need to add 1 here?
         int lineCount = _messageArea.getLineCount() + 1;
@@ -1223,6 +1228,9 @@ public class Query extends JPanel {
 
     // A scroll pane that contains the _messageArea.
     private JScrollPane _messageScrollPane;
+
+    // True if we have added the _messageScrollPane
+    private boolean _messageScrollPaneAdded = false;
 
     // No padding insets.
     private Insets _noPadding = new Insets(0, 0, 0, 0);
