@@ -28,6 +28,8 @@
 package ptolemy.audio;
 
 import ptolemy.plot.*;
+import ptolemy.plot.apps.*;
+
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
@@ -98,8 +100,7 @@ public class Sound extends PtolemyPlot {
         _filename = null;
         try {
             _sound = new ptolemy.math.SignalProcessing.AudioData(
-                new DataInputStream(
-                    new FileInputStream(file)));
+                    new DataInputStream( new FileInputStream(file)));
         } catch (FileNotFoundException ex) {
             Message msg = new Message("File not found: " + ex);
         } catch (IOException ex) {
