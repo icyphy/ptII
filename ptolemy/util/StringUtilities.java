@@ -369,10 +369,14 @@ public class StringUtilities {
                 nameArray[i] = '_';
             }
         }
-        if (!Character.isJavaIdentifierStart(nameArray[0])) {
-            return "_" + new String(nameArray);
+        if (nameArray.length == 0) {
+            return "";
         } else {
-            return new String(nameArray);
+            if (!Character.isJavaIdentifierStart(nameArray[0])) {
+                return "_" + new String(nameArray);
+            } else {
+                return new String(nameArray);
+            }
         }
     }
 
