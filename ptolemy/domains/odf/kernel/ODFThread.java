@@ -284,7 +284,7 @@ public class ODFThread extends ProcessThread {
      *  NullToken that is equal to the current time of this thread.
      */
     public void sendOutNullTokens() {
-	/*
+        /*
         ODFActor actor = (ODFActor)getActor();
 	Enumeration ports = actor.outputPorts();
         while( ports.hasMoreElements() ) {
@@ -304,7 +304,7 @@ public class ODFThread extends ProcessThread {
 		}
             }
         }
-	*/
+        */
     }
 
     /** Set the priorities of the receivers contained in the input
