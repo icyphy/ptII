@@ -316,7 +316,7 @@ vergil.jnlp: vergil.jnlp.in $(KEYSTORE)
 		$(FULL_MAIN_JAR) $(KEYALIAS)
 
 
-jnlp_sign: $(JNLPS) $(KEYSTORE)
+jnlp_sign: $(JNLPS) $(KEYSTORE) $(SIGNED_LIB_JARS)
 	set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
 		echo "# Signing '$$x'."; \
