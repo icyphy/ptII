@@ -37,6 +37,7 @@ import ptolemy.kernel.util.*;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.StringUtilities;
 
 import java.awt.Component;
 import java.util.HashSet;
