@@ -787,8 +787,10 @@ public class PtolemyPlatform implements Platform {
             // TODO: perhaps need to optimize array creation
             try {
                 if (function instanceof FunctionToken) {
+                    Token[] tokenArgs = new Token[args.length];
+                    System.arraycopy(args, 0, tokenArgs, 0, args.length);
                     return ((FunctionToken) function)
-                            .apply(Arrays.asList(args));
+                            .apply(tokenArgs);
                 } else {
                     return ((Function)((ObjectToken)function).getValue()).apply(args);
                 }

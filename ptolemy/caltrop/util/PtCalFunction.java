@@ -64,9 +64,9 @@ public class PtCalFunction implements FunctionToken.Function {
     /** FIXME: what does this do?  What are the types of the elements of
      *  the list
      */
-    public Token apply(List list) throws IllegalActionException {
+    public Token apply(Token[] args) throws IllegalActionException {
         // TODO: should we allow non-token returns and tokenize them?
-        return (Token) _function.apply(list.toArray());
+        return (Token) _function.apply(args);
     }
 
     /** Return the number of arguments */
@@ -85,7 +85,7 @@ public class PtCalFunction implements FunctionToken.Function {
      * @return The Funtion object.
      * @see Function
      */
-    public Function  getFunction() {
+    public Function getFunction() {
         return _function;
     }
 
