@@ -413,13 +413,14 @@ public class SerialComm extends TypedAtomicActor
 
     /** React to an event from the serial port.  This is the one and
      *  only method required to implement SerialPortEventListener
-     *  (which this class implements).  <p>
-
-     *  Call the director's fireAtCurrentTime() method when new data
-     *  is available.  By the reqirement of serialEvent() implementing
+     *  (which this class implements).
+     *
+     *  <p>Call the director's fireAtCurrentTime() method when new data
+     *  is available.  By the requirement of serialEvent() implementing
      *  SerialPortEventListener, no exceptions can be thrown.
      *  However, runtime exceptions are always permitted anyway.  Thus
-     *  KernelRuntimeException is permitted.  */
+     *  KernelRuntimeException is permitted.
+     */
     public synchronized void serialEvent(SerialPortEvent e) {
 	if (false) {
 	    if (e.getEventType() == SerialPortEvent.CD) {
