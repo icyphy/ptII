@@ -118,9 +118,8 @@ public class InequalitySolver {
     public Iterator bottomVariables() {
 	Object bottom = _cpo.bottom();
 	if (bottom == null) {
-	    throw new InvalidStateException("InequalitySolver.bottomVariables:"
-                    + " The underlying CPO does not have a bottom"
-                    + " element.");
+	    throw new InvalidStateException(
+                    "The underlying CPO does not have a bottom element.");
 	}
 
 	return _filterVariables(bottom);
@@ -219,8 +218,8 @@ public class InequalitySolver {
     public Iterator topVariables() {
 	Object top = _cpo.top();
 	if (top == null) {
-	    throw new InvalidStateException("InequalitySolver.topVariables:"
-                    + " The underlying CPO does not have a top element.");
+	    throw new InvalidStateException(
+                    "The underlying CPO does not have a top element.");
 	}
 
 	return _filterVariables(top);
@@ -325,7 +324,7 @@ public class InequalitySolver {
         // initialize all variables
 	Object init = least ? _cpo.bottom() : _cpo.top();
 	if (init == null) {
-	    throw new InvalidStateException("InequalitySolver.solve: " +
+	    throw new InvalidStateException(
                     "The underlying CPO is not a lattice.");
 	}
 
@@ -334,9 +333,8 @@ public class InequalitySolver {
 	    try {
 	        variable.initialize(init);
 	    } catch (IllegalActionException ex) {
-		throw new InvalidStateException("InequalitySolver.solve: " +
-			"Cannot initialize variable. "
-			+ ex.getMessage());
+		throw new InvalidStateException(null, null, ex, 
+                        "Cannot initialize variable.");
 	    }
 	}
 
@@ -402,9 +400,8 @@ public class InequalitySolver {
 	        try {
 		    updateTerm.setValue(value);
 	        } catch (IllegalActionException ex) {
-		    throw new InvalidStateException("InequalitySolver.solve: " +
-                            "Can't update variable.\n" +
-                            ex.getMessage());
+		    throw new InvalidStateException(null, null, ex,
+                            "Can't update variable.\n");
 	        }
 
                 // insert or drop the inequalities affected
