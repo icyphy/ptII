@@ -33,8 +33,9 @@ package ptolemy.kernel.util;
 import java.io.StringWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.util.Collections;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
@@ -115,6 +116,38 @@ public class KernelRuntimeException extends RuntimeException {
             Throwable cause, String detail) {
         _setMessage(KernelException.generateMessage(object1, object2,
                 cause, detail));
+        _setCause(cause);
+    }
+
+    /** Constructs an exception with a detail message that includes the
+     *  names of a collection of nameable objects plus the argument string.
+     *  @param objects The Collection of Nameable objects
+     *  @param cause The cause of this exception.
+     *  @param detail The message.
+     */
+    public KernelRuntimeException(Collection objects,
+            Throwable cause, String detail) {
+        StringBuffer prefixBuffer = new StringBuffer();
+        String name;
+        Iterator objectIterator = objects.iterator();
+        while(objectIterator.hasNext()) {
+            Object object = objectIterator.next();
+            if (object instanceof Nameable) {
+                name = KernelException.getFullName((Nameable)object);
+            } else {
+                name = "<Object of class " +
+                    object.getClass().getName() + ">";
+            }
+            prefixBuffer.append(name + ", ");
+        }
+
+        String prefix = prefixBuffer.toString();
+        if (prefix.length() >= 2 ) {
+            // Remove the trailing ", " which was added processing the
+            // last element of the collection.
+            prefix = prefix.substring(0, prefix.length()-2);
+        }
+        _setMessage(KernelException.generateMessage(prefix, cause, detail));
         _setCause(cause);
     }
 

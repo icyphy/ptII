@@ -389,7 +389,7 @@ public class KernelException extends Exception {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private   variables               ////
+    ////                         private variables                 ////
 
     // The detail message
     private String _message;

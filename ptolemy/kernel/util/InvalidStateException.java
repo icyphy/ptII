@@ -30,7 +30,8 @@
 
 package ptolemy.kernel.util;
 
-import java.util.Collections;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -102,52 +103,50 @@ public class InvalidStateException extends KernelRuntimeException {
 
     /** Construct an exception with a detail message that includes the
      *  names of an enumeration of nameable object plus the argument string.
+     * 
+     *  @deprecated Use InvalidStateException(Collection, String) instead.
      *  @param objects The enumeration of Nameable objects
      *  @param detail The message.
      */
     public InvalidStateException(Enumeration objects, String detail) {
-        this(objects, null, detail);
-    }
-
-    /** Construct an exception with a detail message that includes the
-     *  names of an enumeration of nameable object, the detail message
-     *  of the cause plus the argument string.  If one or more of the
-     *  parameters are null, then the detail message is adjusted
-     *  accordingly.
-     *
-     *  @param objects The enumeration of Nameable objects
-     *  @param cause The cause of this exception.
-     *  @param detail The message.
-     */
-    public InvalidStateException(Enumeration objects,
-				  Throwable cause, String detail) {
-        String prefix = "";
-        String name;
-        while(objects.hasMoreElements()) {
-            Object object = objects.nextElement();
-            if (object instanceof Nameable) {
-                name = KernelException.getFullName((Nameable)object);
-            } else {
-                name = "<Object of class " +
-                    object.getClass().getName() + ">";
-            }
-            prefix += name + ", ";
-        }
-        if (prefix.length() >= 2 ) {
-            // Remove the trailing ", " which was added processing the
-            // last element of the list.
-            prefix = prefix.substring(0, prefix.length()-2);
-        }
-        _setMessage(KernelException.generateMessage(prefix, cause, detail));
-        _setCause(cause);
+        this(_list(objects), null, detail);
     }
 
     /** Constructs an exception with a detail message that includes the
-     *  names of a list of nameable objects plus the argument string.
-     *  @param objects The List of Nameable objects
+     *  names of a collection of nameable objects plus the argument string.
+     *  @param objects The Collection of Nameable objects
      *  @param detail The message.
      */
-    public InvalidStateException(List objects, String detail) {
-        this(Collections.enumeration(objects), null, detail);
+    public InvalidStateException(Collection objects, String detail) {
+        this(objects, null, detail);
+    }
+
+    /** Constructs an exception with a detail message that includes the
+     *  names of a collection of nameable objects plus the argument string.
+     *  @param objects The Collection of Nameable objects
+     *  @param cause The cause of this exception.
+     *  @param detail The message.
+     */
+    public InvalidStateException(Collection objects,
+            Throwable cause, String detail) {
+        super(objects, cause, detail);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Convert from an Enumeration to a List.
+    //
+    // JDK1.4 has a Collections.list(Enumeration) method
+    // that would be good to use.
+    // For suggestions about converting from Enumerations to Lists,
+    // see 
+    // http://java.sun.com/docs/books/tutorial/collections/interoperability/compatibility.html
+    private static List _list(Enumeration objects) {
+        List list = new ArrayList();
+        while (objects.hasMoreElements()) {
+            list.add(objects.nextElement());
+        }
+        return list;
     }
 }
