@@ -235,7 +235,7 @@ compareTreeShakeJars:
 # http://jode.sourceforge.net/download.php
 
 obfuscate: treeshake_codegen.jar
-	"$(ROOT)/bin/obfuscate" "\"$(ROOT)/ptolemy/copernicus/java/Orthocom.jos\""
+	"$(ROOT)/bin/obfuscate" "\"$(TARGETPATH)/obfuscateScript.jos\""
 	@ls -l obfuscated.jar
 	@echo "run 'make runObfuscate' to run the obfuscated code"
 

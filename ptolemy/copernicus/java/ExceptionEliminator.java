@@ -96,7 +96,7 @@ public class ExceptionEliminator extends SceneTransformer {
     }
 
     public String getDeclaredOptions() {
-        return super.getDeclaredOptions() + " targetPackage";
+        return super.getDeclaredOptions() + " targetPackage obfuscate";
     }
 
     protected void internalTransform(String phaseName, Map options) {
@@ -104,6 +104,7 @@ public class ExceptionEliminator extends SceneTransformer {
         System.out.println("ExceptionEliminator.internalTransform("
                 + phaseName + ", " + options + ")");
 
+        _obfuscate = Options.getBoolean(options, "obfuscate");
         // Loop over all the classes
 
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
@@ -186,7 +187,7 @@ public class ExceptionEliminator extends SceneTransformer {
                         break;
                     }
                 }
-                if(foundArg == null) {
+                if(foundArg == null || _obfuscate) {
                     box.setValue(Jimple.v().newSpecialInvokeExpr(
                                          (Local)expr.getBase(),
                                          PtolemyUtilities.runtimeExceptionConstructor,
@@ -202,6 +203,7 @@ public class ExceptionEliminator extends SceneTransformer {
     }
 
     private CompositeActor _model;
+    private boolean _obfuscate;
 }
 
 
