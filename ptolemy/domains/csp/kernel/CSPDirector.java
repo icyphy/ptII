@@ -108,7 +108,7 @@ reached. The director carries out any changes that have been queued
 with it. Note that the result of the topology changes may remove the
 deadlock that caused the changes to be carried out.
 <p>
-@author Neil Smyth
+@author Neil Smyth, Mudit Goel
 @version $Id$
 @see ptolemy.actor.Director
 */
@@ -173,20 +173,20 @@ public class CSPDirector extends ProcessDirector {
      *  topology. It returns when a real deadlock (all processes blocked
      *  trying to communicate) occurs.
      */
-    public synchronized void fire() {
-        // Check if still deadlocked after transferring tokens
-        // from ports of composite actor to internal actors.
-	boolean continueExec = true;
-	while (continueExec) {
-	    while (!_checkForDeadlock()) {
-	        // System.out.println("fire() waiting for deadlock.");
-	        workspace().wait(this);
-	    }
-	    // System.out.println("fire() handling deadlock.");
-	    continueExec = !_handleDeadlock();
-	}
-	// something may go here e.g. notify GUI
-    }
+    // public synchronized void fire() {
+//         // Check if still deadlocked after transferring tokens
+//         // from ports of composite actor to internal actors.
+// 	boolean continueExec = true;
+// 	while (continueExec) {
+// 	    while (!_checkForDeadlock()) {
+// 	        // System.out.println("fire() waiting for deadlock.");
+// 	        workspace().wait(this);
+// 	    }
+// 	    // System.out.println("fire() handling deadlock.");
+// 	    continueExec = !_handleDeadlock();
+// 	}
+// 	// something may go here e.g. notify GUI
+//     }
 
     /** Returns the current model time.
      *  Note: this method may disappear if time is implemented in
@@ -223,7 +223,11 @@ public class CSPDirector extends ProcessDirector {
      *  @return false indicating the iteration is over.
      */
     public boolean postfire() {
-        return false;
+        if ((((CompositeActor)getContainer()).inputPorts()).hasMoreElements()) {
+            return true;
+        } else {
+            return _notdone;
+        }
     }
 
     /** Queue a topology change request. This sets a flag so that
