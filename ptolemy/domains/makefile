@@ -53,13 +53,13 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include these jars in PTAUXALLJAR
+# Don't include rtp/rtp.jar, it is not being shipped
 PTAUXALLJARS = \
 		dde/dde.jar \
                 dt/dt.jar \
 		giotto/giotto.jar \
 		gr/gr.jar \
 		pn/pn.jar \
-		rtp/rtp.jar \
 		tm/tm.jar \
 		sr/sr.jar
 
