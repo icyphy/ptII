@@ -222,6 +222,36 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
+    /** Get the attribute with the given name. The name may be compound,
+     *  with fields separated by periods, in which case the attribute
+     *  returned is contained by a (deeply) contained attribute, port,
+     *  relation, entity, or director.
+     *  This method is read-synchronized on the workspace.
+     *  @param name The name of the desired attribute.
+     *  @return The requested attribute if it is found, null otherwise.
+     */
+    public Attribute getAttribute(String name) {
+        try {
+            _workspace.getReadAccess();
+            // Check attributes and ports first.
+            Attribute result = super.getAttribute(name);
+            if (result == null) {
+                // Check director.
+                String[] subnames = _splitName(name);
+                if (_director != null && 
+                        _director.getName().equals(subnames[0])) {
+                    // Director name matches.
+                    if (subnames[1] != null) {
+                        result = _director.getAttribute(subnames[1]);
+                    }
+                }
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     /** Return the director responsible for execution of the contained
      *  actors.  This will be either the local director (if it exists) or the
      *  executive director (obtained using getExecutiveDirector()).
@@ -662,7 +692,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _workspace.getReadAccess();
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
-                        "Cannot wrapup a non-opaque actor.");
+                        "Missing director.");
             }
             // Note that this is assured of firing the local director,
             // not the executive director, because this is opaque.
