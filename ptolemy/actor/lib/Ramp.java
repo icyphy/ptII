@@ -46,7 +46,8 @@ first output is given by the <i>init</i> parameter, and the
 increment may be given either by the <i>step</i> parameter or by
 the associated <i>step</i> port. Note that the increment will show
 up in the output only on the next iteration. If you need it to show
-up on the current iteration, use the Acculator actor.
+up on the current iteration, use the 
+{@link ptolemy.actor.lib.Accumulator Accumulator} actor.
 The type of the output is determined by the constraint that it must
 be greater than or equal to the types of the parameter (and/or the
 <i>step</i> port, if it is connected).
