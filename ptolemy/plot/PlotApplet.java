@@ -29,34 +29,37 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 PT_COPYRIGHT_VERSION_2
                                                 COPYRIGHTENDKEY
 */
-package ptolemy.plot;
+package pt.plot;
 
 import java.applet.Applet;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.awt.*;
 import java.net.*;              // Need URL
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotApplet
-/** Create an Applet that can plot data from a URL.
- * The URL can be specified using either the
- * <code>dataurl</code> or <code>pxgraphargs</code> applet parameter.
- * <p> The <code>dataurl</code> parameter contains a single URL
- * that refers to the data to be plotted.
- * <p> The <code>pxgraphargs</code> parameter contains a list
- * of command line style arguments, ending in one or more URLs.
- * See the <code>Pxgraph</code> documentation for the format of
- * these arguments.
+
+/** An Applet that can plot data from a URL.
+ *  The URL should be specified using the dataurl applet parameter.
+ *  Normally, the formatting commands are included in the file with the
+ *  the data, but it is also possible to include them in the
+ *  pxgraphargs applet parameter.  That parameter contains
+ *  command-line style arguments compatible with the older pxgraph program.
+ *  See the documentation for the Pxgraph class for the format of
+ *  these arguments.  See the documentation for the PlotBox and Plot
+ *  classes for the file format for the URL.
  *
- * @author Edward A. Lee, Christopher Hylands
- * @version $Id$
- * @see Pxgraph
+ *  @author Edward A. Lee, Christopher Hylands
+ *  @version $Id$
+ *  @see PlotBox, Plot, Pxgraph
  */
-public class PlotApplet extends Applet implements Runnable {
+public class PlotApplet extends Applet {
 
     /** Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "PlotApplet 1.1: A flexible data plotter.\n" +
+        return "PlotApplet 1.2: A data plotter.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
             "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
             "($Id$)";
@@ -75,98 +78,90 @@ public class PlotApplet extends Applet implements Runnable {
         return pinfo;
     }
 
-    /**
-     * Initialize the applet.  Read the applet parameters.
+    /** Initialize the applet.  Read the applet parameters.
      */
     public void init() {
-        if (_debug > 8) System.out.println("PlotApplet: init");
-        int width, height;
+        super.init();
         setLayout(new BorderLayout());
 
-        if ( plot() == null) {
-            newPlot();
+        if (_myPlot == null) {
+            _myPlot = newPlot();
         }
-        add("Center",plot());
-        //show();
-
-        // Process the documentBase applet parameter.
-        // Need the catch here because applets used as components have
-        // no parameters.
-        try {
-            plot().setDocumentBase(getDocumentBase());
-        } catch (NullPointerException e) {
-            System.err.println("PlotApplet: init: NullPointerException while"+
-                    "handling getDocumentBase" + e);
-        }
+        add("Center", plot());
 
         // Process the width and height applet parameters
-        try {
-            width = Integer.valueOf(getParameter("width")).intValue();
-        } catch (NullPointerException e) {
-            width = 400;
-        }
-        try {
-            height = Integer.valueOf(getParameter("height")).intValue();
-        } catch (NullPointerException e) {
-            height = 400;
-        }
-        if (_debug > 8)
-            System.out.println("PlotApplet: init: about to resize"+width);
-        plot().resize(width, height);
+        int width, height;
+        String widthspec = getParameter("width");
+        if (widthspec != null) width = Integer.parseInt(widthspec);
+        else width = 400;
+
+        String heightspec = getParameter("height");
+        if (heightspec != null) height = Integer.parseInt(heightspec);
+        else height = 400;
+
+        plot().setSize(width, height);
+        plot().setButtons(true);
 
         // Process the background parameter.
-        try {
-            Color background = Color.white;
-            background = PlotBox.getColorByName(getParameter("background"));
-            setBackground(background);
-            plot().setBackground(background);
-        } catch (NullPointerException e) {}
+        Color background = Color.white;
+        String colorspec = getParameter("background");
+        if (colorspec != null) background = PlotBox.getColorByName(colorspec);
+        setBackground(background);
+        plot().setBackground(background);
 
         // Process the foreground parameter.
-        try {
-            Color foreground = Color.white;
-            foreground = PlotBox.getColorByName(getParameter("foreground"));
-            setForeground(foreground);
-            plot().setForeground(foreground);
-        } catch (NullPointerException e) {}
-
-        // Process the dataurl parameter.
-        String dataurl = null;
-        try {
-            dataurl = getParameter("dataurl");
-            plot().setDataurl(dataurl);
-        } catch (NullPointerException e) {}
-
+        Color foreground = Color.black;
+        colorspec = getParameter("foreground");
+        if (colorspec != null) foreground = PlotBox.getColorByName(colorspec);
+        setForeground(foreground);
+        plot().setForeground(foreground);
+        plot().setVisible(true);
 
         // Process the pxgraphargs parameter.
         String pxgraphargs = null;
-        try {
-            pxgraphargs = getParameter("pxgraphargs");
-            plot().parsePxgraphargs(pxgraphargs);
-        } catch (NullPointerException e) {
-        } catch (CmdLineArgException e) {
-            System.err.println("Plot: failed to parse `"+pxgraphargs+
-                    "': " +e);
+        pxgraphargs = getParameter("pxgraphargs");
+        if (pxgraphargs != null) {
+            try {
+                // Since there may be filenames specified here, we use the
+                // set the document base.  Note that we prefer that files and
+                // URLs be specified using the dataurl parameter.
+                showStatus("Reading arguments");
+                plot()._documentBase = getDocumentBase();
+                plot().parsePxgraphargs(pxgraphargs);
+                showStatus("Done");
+            } catch (CmdLineArgException e) {
+                System.err.println("PlotApplet: failed to parse `"+pxgraphargs+
+                "': " +e);
+            } catch (FileNotFoundException e) {
+                System.err.println("PlotApplet: file not found: " +e);
+            } catch (IOException e) {
+                System.err.println("PlotApplet: error reading input file: " +e);
+            }
         }
 
-        super.init();
-        plot().init();
-
+        // Process the dataurl parameter.
+        String dataurlspec = getParameter("dataurl");
+        if (dataurlspec != null) {
+            try {
+                showStatus("Reading data");
+                URL dataurl = new URL(getDocumentBase(), dataurlspec);
+                plot().read(dataurl.openStream());
+                showStatus("Done");
+            } catch (MalformedURLException e) {
+                System.err.println(e.toString());
+            } catch (FileNotFoundException e) {
+                System.err.println("PlotApplet: file not found: " +e);
+            } catch (IOException e) {
+                System.err.println("PlotApplet: error reading input file: " +e);
+            }
+        }
     }
 
-    /** Create a new Plot object to operate on.  Derived classes can
-     * redefine this method to create multiple Plot objects.
+    /** Create a new Plot object for the applet.  Derived classes can
+     *  redefine this method to return a different type of plot object.
      */
-    public void newPlot() {
-        _myPlot = new Plot();
-    }
-
-
-    /** Paint the screen with our plot.
-     */
-    public void paint(Graphics graphics) {
-        if (_debug > 8) System.out.println("PlotApplet: paint");
-        plot().paint(graphics);
+    public Plot newPlot() {
+        return new Plot();
     }
 
     /** Return the Plot object to operate on.
@@ -175,42 +170,9 @@ public class PlotApplet extends Applet implements Runnable {
         return _myPlot;
     }
 
-    public void run () {
-        if (_debug > 8) System.out.println("PlotApplet: run");
-	repaint();
-    }
-
-    /** Start the plot.
-     */
-    public void start () {
-        if (_debug > 8) System.out.println("PlotApplet: start");
-	_plotThread = new Thread(this);
-        _plotThread.start();
-        super.start();
-    }
-
-    /** Stop the plot.
-     */
-    public void stop () {
-        if (_debug > 8) System.out.println("PlotApplet: stop");
-        _plotThread.stop();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    // If non-zero, print out debugging messages.
-    // See also the _debug declared in PlotBox.
-    protected int _debug = 0;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // Thread for this applet.
-    private Thread _plotThread;
+    //////////////////////////////////////////////////////////////////////////
+    ////                         protected variables                      ////
 
     // The Plot component we are running.
     private Plot _myPlot;
-
-
 }
