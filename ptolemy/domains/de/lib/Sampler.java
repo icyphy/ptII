@@ -1,4 +1,5 @@
-/* An actor that outputs the average of the inputs so far.
+/* An actor that produces a copy of the most recent input each time
+   the trigger input receives an event.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -24,17 +25,17 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (xxx@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
 
 import ptolemy.domains.de.kernel.*;
-import ptolemy.domains.de.lib.DETransformer;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.TimedActor;
 import ptolemy.actor.*;
@@ -42,23 +43,30 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// Sampler
 /**
-Output the most recent input token if the trigger port has an input token. 
-There may not be an output if there is no input token.
-The inputs and outputs can be any token type.
-The output type is constrained to be the same as the input type.
+Output the most recent input token when the <i>trigger</i> port receives a
+token.  If no token has been received on the <i>input</i> port when a
+token is received on the <i>trigger</i> port, then no output is
+produced.  The inputs and can be of any token type, and the output
+is constrained to be of a type at least that of the input.
 <p>
-Both the input port and the output port are multiport. Generally, their
-width should match. Otherwise, if the width of the input is greater than
-the width of the output, the extra input tokens will be missing. If the 
-width of the output is greater then that of the input, the last few 
-channels will never emit tokens.
+Both the <i>input</i> port and the <i>output</i> port are multiports.
+Generally, their widths should match. Otherwise, if the width of the
+<i>input</i> is greater than
+the width of the <i>output</i>, the extra input tokens will
+not be produced. If the width of the <i>output</i> is greater
+than that of the <i>input</i>, then the last few 
+channels of the <i>output</i> will never emit tokens.
+<p>
+Note: If the width of the input changes during execution, then
+the most recent inputs are forgotten, as if the execution of the model
+were starting over.
 
-@author Jie Liu
+@author Jie Liu, Edward A. Lee
 @version $Id$
 */
 
-public class Sampler extends DETransformer 
-    implements TimedActor, SequenceActor {
+public class Sampler extends Transformer
+         implements TimedActor, SequenceActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -73,17 +81,17 @@ public class Sampler extends DETransformer
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
-        output.setTypeSameAs(input);
+        output.setTypeAtLeast(input);
         trigger = new TypedIOPort(this, "trigger", true, false);
-        //trigger.setTypeEquals(BooleanToken.class);
+        trigger.setTypeEquals(Token.class);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The trigger port of type BooleanToken. If this port
+    /** The trigger port, which has type Token. If this port
      *  receives a token, then the most recent token from the
-     *  input will be emitted.
+     *  <i>input</i> port will be emitted on the <i>output</i> port.
      */
     public TypedIOPort trigger;
 
@@ -99,61 +107,65 @@ public class Sampler extends DETransformer
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Sampler newobj = (Sampler)super.clone(ws);
-        newobj.input.setMultiport(true);
-        newobj.output.setMultiport(true);
-        newobj.output.setTypeSameAs(newobj.input);
-        //System.out.println(newobj.output.getName());
+        newobj.output.setTypeAtLeast(newobj.input);
         newobj.trigger = (TypedIOPort)newobj.getPort("trigger");
-        //System.out.println(newobj.trigger.getName());
-        newobj.trigger.setInput(true);
-        //newobj.trigger.setTypeEquals(BooleanToken.class);
+        newobj.trigger.setTypeEquals(Token.class);
         return newobj;
     }
 
-    /** Examine the trigger port, if there is a token in the port, 
-     *  emit the most recent token from the input port. If there's
-     *  no input token either from the trigger port or the input
-     *  port, then there will be no output token.
-     *  
-     *  @exception IllegalActionException If the right arithmetic operations
-     *   are not supported by the supplied tokens.
+    /** If there is a token in the <i>trigger</i> port, 
+     *  emit the most recent token from the <i>input</i> port. If there
+     *  has been no input token, or there is no token on the <i>trigger</i>
+     *  port, emit nothing.
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        try {
-            // First test if it is dangling... then if it has token.
-            if (trigger.getWidth() > 0) {
-                if (trigger.hasToken(0)) {
-                    // Consume the trigger token.
-                    trigger.get(0);
-                    int win = input.getWidth();
-                    int wout = output.getWidth();
-                    int n = Math.min(win, wout);
-                    Token in;
-                    for (int i = 0; i < n; i++) {
-                        in = null;
-                        while (input.hasToken(i)) {
-                            in = input.get(i);
-                        }
-                        // in is the most recent token, assuming 
-                        // the receiver has a FIFO behavior.
-                        if (in != null) {
-                            output.send(i, in);
-                        }
-                    }
-                    // Consume tokens in extra input channels so they 
-                    // don't get accumulated.
-                    if (n < win) {
-                        for (int i = n; i < win; i++) {
-                            while (input.hasToken(i)) {
-                                input.get(i);
-                            }
-                        }
-                    }
+        if (trigger.hasToken(0)) {
+            // Consume the trigger token.
+            trigger.get(0);
+            int win = input.getWidth();
+            int wout = output.getWidth();
+            int n = Math.min(win, wout);
+            if (_lastInputs == null || _lastInputs.length != win) {
+                _lastInputs = new Token[win];
+            }
+            for (int i = 0; i < n; i++) {
+                while (input.hasToken(i)) {
+                    _lastInputs[i] = input.get(i);
+                }
+                // in is the most recent token, assuming 
+                // the receiver has a FIFO behavior.
+                if (_lastInputs[i] != null) {
+                    output.send(i, _lastInputs[i]);
                 }
             }
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because this is an output port.
-            throw new InternalErrorException(ex.getMessage());
+            // Consume tokens in extra input channels so they 
+            // don't get accumulated.
+            for (int i = n; i < win; i++) {
+                while (input.hasToken(i)) {
+                    input.get(i);
+                }
+            }
         }
     }
+
+    /** If there is no input on the <i>trigger</i> port, return
+     *  false, indicating that this actor does not want to fire.
+     *  This has the effect of leaving input values in the input
+     *  ports, if there are any.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        // If the trigger input is not connected, never fire.
+        if (trigger.getWidth() > 0) {
+            return (trigger.hasToken(0));
+        } else {
+            return false;
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private Token[] _lastInputs;
 }

@@ -1,6 +1,6 @@
 # Tests for the Sampler class
 #
-# @Author: Jie Liu
+# @Author: Jie Liu, Edward A. Lee
 #
 # @Version: $Id$
 #
@@ -46,9 +46,9 @@ if {[string compare test [info procs test]] == 1} then {
 test Sampler-1.1 {test constructor and clone} {
     set e0 [deModel 3.0]
     set samplerbase [java::new ptolemy.domains.de.lib.Sampler $e0 sampler]
-    set samp [java::cast ptolemy.domains.de.lib.Sampler [$samplerbase clone]]
+    set sampler [java::cast ptolemy.domains.de.lib.Sampler [$samplerbase clone]]
     $samplerbase setContainer [java::null]
-    $samp setContainer $e0
+    $sampler setContainer $e0
     # Success here is just not throwing an exception.
     list {}
 } {{}}
@@ -57,20 +57,25 @@ test Sampler-1.1 {test constructor and clone} {
 #### Test Sampler in a DE model
 #
 test Sampler-2.1 {test with the default output values} {
-    set clock [java::new ptolemy.actor.lib.Clock $e0 clock]
+    set clock1 [java::new ptolemy.actor.lib.Clock $e0 clock1]
+    set clock2 [java::new ptolemy.actor.lib.Clock $e0 clock2]
+    set period [java::field $clock2 period]
+    $period setExpression {1.0}
+    set offsets [java::field $clock2 offsets]
+    $offsets setExpression {[0.0, 0.5]}
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
     set r0 [$e0 connect \
-       [java::field [java::cast ptolemy.actor.lib.Source $clock] output] \
-       [java::field [java::cast ptolemy.domains.de.lib.DETransformer $samp] \
+       [java::field [java::cast ptolemy.actor.lib.Source $clock1] output] \
+       [java::field [java::cast ptolemy.actor.lib.Transformer $sampler] \
        input]]
     $e0 connect \
        [java::field \
-       [java::cast ptolemy.domains.de.lib.DETransformer $samp] output] \
+       [java::cast ptolemy.actor.lib.Transformer $sampler] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-    [java::cast ptolemy.actor.IOPort \
-	    [java::field \
-	    [java::cast ptolemy.domains.de.lib.Sampler $samp] trigger]] \
-	    link $r0
+    $e0 connect \
+       [java::field [java::cast ptolemy.actor.lib.Source $clock2] output] \
+       [java::field $sampler trigger]
     [$e0 getManager] execute
-    enumToStrings [$rec getTimeRecord]
-} {0.0 1.0 2.0 3.0}
+    list [enumToTokenValues [$rec getRecord 0]] \
+            [enumToStrings [$rec getTimeRecord]]
+} {{1 1 0 0 1 1 0} {0.0 0.5 1.0 1.5 2.0 2.5 3.0}}
