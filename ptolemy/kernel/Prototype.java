@@ -341,7 +341,7 @@ public class Prototype extends NamedObj implements Instantiable {
     /** Specify whether this object is a class definition.
      *  This method is write synchronized on the workspace.
      *  @param isClass True to make this object a class definition.
-     *  @throws IllegalActionException If setting the class definition
+     *  @exception IllegalActionException If setting the class definition
      *   is not allowed.
      */
     public void setClassDefinition(boolean isClass)
