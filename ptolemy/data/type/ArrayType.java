@@ -114,6 +114,19 @@ public class ArrayType extends StructuredType {
         return new ArrayToken(resultArray);
     }
 
+    /** Determine if the argument represents the same ArrayType as this
+     *  object.
+     *  @param t A Type.
+     *  @return True if the argument represents the same ArrayType as
+     *   this object; false otherwise.
+     */
+    public boolean equals(Type type) {
+        if ( !(type instanceof ArrayType)) {
+            return false;
+        }
+        return _elementType.equals(((ArrayType)type).getElementType());
+    }
+
     /** Return the type of the array elements.
      *  @return a Type.
      */
@@ -179,19 +192,6 @@ public class ArrayType extends StructuredType {
         return _declaredElementType.isConstant();
     }
 
-    /** Determine if the argument represents the same ArrayType as this
-     *  object.
-     *  @param t A Type.
-     *  @return True if the argument represents the same ArrayType as
-     *   this object; false otherwise.
-     */
-    public boolean isEqualTo(Type type) {
-        if ( !(type instanceof ArrayType)) {
-            return false;
-        }
-        return _elementType.isEqualTo(((ArrayType)type).getElementType());
-    }
-
     /** Determine if this type corresponds to an instantiable token
      *  class. An ArrayType is instantiable if its element type is
      *  instantiable.
@@ -236,7 +236,7 @@ public class ArrayType extends StructuredType {
     public void updateType(StructuredType newType)
             throws IllegalActionException {
 	if (this.isConstant()) {
-	    if (this.isEqualTo(newType)) {
+	    if (this.equals(newType)) {
 	        return;
 	    } else {
 	        throw new IllegalActionException("ArrayType.updateType: "

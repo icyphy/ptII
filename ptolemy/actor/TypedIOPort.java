@@ -240,7 +240,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                         getContainer();
                     Type farType = port.getType();
                     
-                    if (farType.isEqualTo(token.getType())) {
+                    if (farType.equals(token.getType())) {
                         farReceivers[i][j].put(token);
                     } else {
                         Token newToken = farType.convert(token);
@@ -318,7 +318,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                     TypedIOPort port =
                         (TypedIOPort)farReceivers[i][j].getContainer();
                     Type farType = port.getType();
-                    if (farType.isEqualTo(token.getType())) {
+                    if (farType.equals(token.getType())) {
                         // Good, no conversion necessary.
                         farReceivers[i][j].putArray(tokenArray, vectorLength);
                     } else {
@@ -518,7 +518,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                     (TypedIOPort)farReceivers[channelIndex][j].getContainer();
                 Type farType = port.getType();
 
-                if (farType.isEqualTo(token.getType())) {
+                if (farType.equals(token.getType())) {
                     farReceivers[channelIndex][j].put(token);
                 } else {
                     Token newToken = farType.convert(token);
@@ -614,7 +614,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 TypedIOPort port =
                     (TypedIOPort)farReceivers[channelIndex][j].getContainer();
                 Type farType = port.getType();
-                if (farType.isEqualTo(token.getType())) {
+                if (farType.equals(token.getType())) {
                     // Good, no conversion necessary.
                     farReceivers[channelIndex][j].putArray(tokenArray,
                             vectorLength);
@@ -684,7 +684,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             // type listeners.
             Type oldType = _resolvedType;
             _resolvedType = _declaredType;
-            if (!oldType.isEqualTo(_declaredType)) {
+            if (!oldType.equals(_declaredType)) {
                 _notifyTypeListener(oldType, _declaredType);
             }
         } finally {
@@ -745,7 +745,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                                     getContainer();
                                 Type insideType = port.getType();
                                 
-                                if (insideType.isEqualTo(token.getType())) {
+                                if (insideType.equals(token.getType())) {
                                     insideReceivers[i][j].put(token);
                                 } else {
                                     Token newToken = insideType.convert(token);
@@ -1001,7 +1001,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 ((StructuredType)_resolvedType).initialize((Type)e);
             }
 
-            if (!oldType.isEqualTo(_resolvedType)) {
+            if (!oldType.equals(_resolvedType)) {
                 _notifyTypeListener(oldType, _resolvedType);
             }
         }
@@ -1062,7 +1062,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                 ((StructuredType)_resolvedType).updateType((StructuredType)e);
             }
 
-            if (!oldType.isEqualTo((Type)e)) {
+            if (!oldType.equals((Type)e)) {
                 _notifyTypeListener(oldType, _resolvedType);
             }
         }

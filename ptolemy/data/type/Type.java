@@ -59,6 +59,13 @@ public interface Type {
      */
     public Token convert(Token token) throws IllegalActionException;
 
+    /** Determine if the argument represents the same type as this object.
+     *  @param type A Type.
+     *  @return True if the argument represents the same type as this
+     *   object; false otherwise.
+     */
+    public boolean equals(Type type);
+
     /** Test if the argument token is compatible with this type.
      *  Compatible is defined as follows: If this type is a constant, the
      *  argument is compatible if it can be converted losslessly to a token
@@ -75,13 +82,6 @@ public interface Type {
      *  @return True if this type is a constant.
      */
     public boolean isConstant();
-
-    /** Determine if the argument represents the same type as this object.
-     *  @param type A Type.
-     *  @return True if the argument represents the same type as this
-     *   object; false otherwise.
-     */
-    public boolean isEqualTo(Type type);
 
     /** Determine if this Type corresponds to an instantiable token
      *  class.

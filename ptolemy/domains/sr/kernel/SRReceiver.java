@@ -159,7 +159,7 @@ public class SRReceiver extends Mailbox {
                         "to a present state.");
             } else {
                 try {
-                    if ( (token.getType().isEqualTo( _token.getType())) &&
+                    if ( (token.getType().equals( _token.getType())) &&
                             (token.isEqualTo(_token).booleanValue()) ) {
                         // Do nothing, because this token was already present.
                     } else {

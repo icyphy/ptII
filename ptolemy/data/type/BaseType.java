@@ -74,6 +74,18 @@ public class BaseType implements Type, Serializable {
 	return _convertOp.convert(t);
     }
 
+    /** Determine if the argument represents the same BaseType as this
+     *  object.
+     *  @param t A Type.
+     *  @return True if the argument represents the same BaseType as
+     *   this object; false otherwise.
+     */
+    public boolean equals(Type t) {
+	// since BaseType is a type safe enumeration, can use == to
+	// test equality.
+	return this == t;
+    }
+
     /** Return an instance of this class with the specified name,
      *  or null if none exists.
      *  @return An instance of BaseType.
@@ -104,18 +116,6 @@ public class BaseType implements Type, Serializable {
      */
     public boolean isConstant() {
 	return this != UNKNOWN;
-    }
-
-    /** Determine if the argument represents the same BaseType as this
-     *  object.
-     *  @param t A Type.
-     *  @return True if the argument represents the same BaseType as
-     *   this object; false otherwise.
-     */
-    public boolean isEqualTo(Type t) {
-	// since BaseType is a type safe enumeration, can use == to
-	// test equality.
-	return this == t;
     }
 
     /** Determine if this type corresponds to an instantiable token

@@ -1356,7 +1356,7 @@ public class Variable extends Attribute implements Typeable, Settable {
             _notifyValueDependents();
             NamedObj container = (NamedObj)getContainer();
             if (container != null) {
-                if( !oldVarType.isEqualTo(_varType) &&
+                if( !oldVarType.equals(_varType) &&
                         oldVarType != BaseType.UNKNOWN) {
                     container.attributeTypeChanged(this);
                 }

@@ -133,10 +133,10 @@ test ArrayType-4.0 {Test isConstant} {
 ######################################################################
 ####
 # 
-test ArrayType-5.0 {Test isEqualTo} {
-    list [$natArrayType isEqualTo $natArrayTypeMaster] \
-         [$strArrayType isEqualTo $strArrayTypeMaster] \
-         [$natArrayType isEqualTo $strArrayType]
+test ArrayType-5.0 {Test equals} {
+    list [$natArrayType equals $natArrayTypeMaster] \
+         [$strArrayType equals $strArrayTypeMaster] \
+         [$natArrayType equals $strArrayType]
 } {1 1 0}
 
 ######################################################################

@@ -212,7 +212,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         if (_debug) {
             System.err.println("PtolemyTypeIdentifier.kindOfTokenType(): "
                     + "type = '" + type + "' == failed, trying " 
-                    + "isEqualTo()");
+                    + "equals()");
         }
 
         //try {
@@ -221,9 +221,9 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
         //    e.printStackTrace();
         //}
         for (int i = 0; i < _KNOWN_TOKEN_TYPES.length; i++) {
-            if (type.isEqualTo(_KNOWN_TOKEN_TYPES[i])) {
+            if (type.equals(_KNOWN_TOKEN_TYPES[i])) {
                 if (_debug) {
-                    System.err.println("kindOfTokenType(): isEqualTo() found"
+                    System.err.println("kindOfTokenType(): equals() found"
                             + "one\n type: " + type
                             + " " + type.hashCode()
                             + "\n   _KNOWN_TOKEN_TYPES: "

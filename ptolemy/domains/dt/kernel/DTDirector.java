@@ -483,11 +483,11 @@ public class DTDirector extends SDFDirector {
                         // however some specific SDF actors may have their
                         // own buffers parameters that actually keep this
                         // initial tokens (similar to SampleDelay)
-                        if (fromType.isEqualTo(BaseType.BOOLEAN)) {
+                        if (fromType.equals(BaseType.BOOLEAN)) {
                             currentReceiver.put(new BooleanToken(false));
-                        } else if (fromType.isEqualTo(BaseType.DOUBLE)) {
+                        } else if (fromType.equals(BaseType.DOUBLE)) {
                             currentReceiver.put(new DoubleToken(0.0));
-                        } else if (fromType.isEqualTo(BaseType.INT)) {
+                        } else if (fromType.equals(BaseType.INT)) {
                             currentReceiver.put(new IntToken(0));
                         }
                     }

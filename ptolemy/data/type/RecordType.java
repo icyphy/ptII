@@ -148,6 +148,39 @@ public class RecordType extends StructuredType {
         return new RecordToken(labels, values);
     }
 
+    /** Determine if the argument represents the same RecordType as this
+     *  object.
+     *  @param type A Type.
+     *  @return True if the argument represents the same RecordType as
+     *   this object; false otherwise.
+     */
+    public boolean equals(Type type) {
+        if ( !(type instanceof RecordType)) {
+            return false;
+        }
+
+        RecordType argRecType = (RecordType)type;
+
+        // check my label set is the same as that of the argument
+        Set myLabelSet = _fields.keySet();
+        Set argLabelSet = argRecType._fields.keySet();
+        if ( !myLabelSet.equals(argLabelSet)) {
+            return false;
+        }
+
+        Iterator iter = myLabelSet.iterator();
+        while (iter.hasNext()) {
+            String label = (String)iter.next();
+            Type myType = this.get(label);
+            Type argType = argRecType.get(label);
+            if ( !myType.equals(argType)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     /** Return the type of the specified label. If this type does not
      *  contain the specified label, return null.
      *  @return a Type.
@@ -214,39 +247,6 @@ public class RecordType extends StructuredType {
                 return false;
             }
         }
-        return true;
-    }
-
-    /** Determine if the argument represents the same RecordType as this
-     *  object.
-     *  @param type A Type.
-     *  @return True if the argument represents the same RecordType as
-     *   this object; false otherwise.
-     */
-    public boolean isEqualTo(Type type) {
-        if ( !(type instanceof RecordType)) {
-            return false;
-        }
-
-        RecordType argRecType = (RecordType)type;
-
-        // check my label set is the same as that of the argument
-        Set myLabelSet = _fields.keySet();
-        Set argLabelSet = argRecType._fields.keySet();
-        if ( !myLabelSet.equals(argLabelSet)) {
-            return false;
-        }
-
-        Iterator iter = myLabelSet.iterator();
-        while (iter.hasNext()) {
-            String label = (String)iter.next();
-            Type myType = this.get(label);
-            Type argType = argRecType.get(label);
-            if ( !myType.isEqualTo(argType)) {
-                return false;
-            }
-        }
-
         return true;
     }
 
@@ -376,7 +376,7 @@ public class RecordType extends StructuredType {
     public void updateType(StructuredType newType)
             throws IllegalActionException {
 	if (this.isConstant()) {
-	    if (this.isEqualTo(newType)) {
+	    if (this.equals(newType)) {
 	        return;
 	    } else {
 	        throw new IllegalActionException("RecordType.updateType: " +
@@ -425,7 +425,7 @@ public class RecordType extends StructuredType {
                     "The argument is not a RecordType.");
         }
 
-        if (this.isEqualTo(type)) {
+        if (this.equals(type)) {
             return CPO.SAME;
         }
 

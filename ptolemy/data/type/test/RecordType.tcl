@@ -174,26 +174,26 @@ test RecordType-5.0 {Test isConstant} {
 ######################################################################
 ####
 # 
-test RecordType-5.1 {Test isEqualTo} {
-    list [$empRT isEqualTo $sdRT] [$sdRT isEqualTo $varRT] \
-         [$varRT isEqualTo $empRT]
+test RecordType-5.1 {Test equals} {
+    list [$empRT equals $sdRT] [$sdRT equals $varRT] \
+         [$varRT equals $empRT]
 } {0 0 0}
 
 ######################################################################
 ####
 # 
-test RecordType-5.1 {Test isEqualTo} {
+test RecordType-5.1 {Test equals} {
     set l [java::new {String[]} {0} {}]
     set t [java::new {ptolemy.data.type.Type[]} {0} {}]
 
     set r [java::new {ptolemy.data.type.RecordType} $l $t]
-    $empRT isEqualTo $r
+    $empRT equals $r
 } {1}
 
 ######################################################################
 ####
 # 
-test RecordType-5.2 {Test isEqualTo} {
+test RecordType-5.2 {Test equals} {
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::field ptolemy.data.type.BaseType STRING]
@@ -201,13 +201,13 @@ test RecordType-5.2 {Test isEqualTo} {
     set v [java::new {ptolemy.data.type.Type[]} 2 [list $nt $vt]]
 
     set r [java::new {ptolemy.data.type.RecordType} $l $v]
-    $r isEqualTo $sdRT
+    $r equals $sdRT
 } {1}
 
 ######################################################################
 ####
 # 
-test RecordType-5.3 {Test isEqualTo} {
+test RecordType-5.3 {Test equals} {
     set l [java::new {String[]} {2} {{name} {value}}]
 
     set nt [java::field ptolemy.data.type.BaseType STRING]
@@ -215,7 +215,7 @@ test RecordType-5.3 {Test isEqualTo} {
     set v [java::new {ptolemy.data.type.Type[]} 2 [list $nt $vt]]
 
     set r [java::new {ptolemy.data.type.RecordType} $l $v]
-    $varRT isEqualTo $r
+    $varRT equals $r
 } {1}
 
 ######################################################################

@@ -166,7 +166,7 @@ public class TestToken extends Token {
          *  @return True if the argument represents the same BaseType as
          *   this object; false otherwise.
          */
-        public boolean isEqualTo(Type t) {
+        public boolean equals(Type t) {
             return this == t;
         }
         

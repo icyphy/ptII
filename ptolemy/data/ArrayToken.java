@@ -62,7 +62,7 @@ public class ArrayToken extends Token {
 	int length = value.length;
 	_value = new Token[length];
 	for (int i = 0; i < length; i++) {
-	    if (_elementType.isEqualTo(value[i].getType())) {
+	    if (_elementType.equals(value[i].getType())) {
 	    	_value[i] = value[i];
 	    } else {
 		throw new IllegalArgumentException("ArrayToken: " +
