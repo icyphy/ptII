@@ -772,14 +772,49 @@ public class SRDirector extends StaticSchedulingDirector {
         // become available (the inputs might be, for example, cached and
         // used in a subsequent iteration).
         if (_isNonStrict(actor)) {
-            return false;
+            // if all the inputs and outputs are known, and
+            // the inputs have not just changed from unknown to known,
+            // it is unnecessary to fire the actor again, 
+            // because according to the SR semantics, the
+            // the inputs, which are the outputs from other
+            // actors, can not change.
+            
+            // FIXME: 
+            // Two issues here: 1. if the nonStrict actor receives multiple
+            // tokens at the same time instant, e.g., its input connects
+            // to a Repeat actor. 2. if the inputs connects to outside
+            // domain which does not have SR semantics, they may change. 
+            // Does this composition make sense?
+
+            // Check whether the inputs have changed.
+            // Note, the isChanged method forces the receivers to update 
+            // the cached information.
+            Iterator inputPorts = actor.inputPortList().iterator();
+            boolean changed = false;
+    
+            while (inputPorts.hasNext()) {
+                IOPort inputPort = (IOPort)inputPorts.next();
+                Receiver[][] receivers = inputPort.getReceivers();
+                for (int i = 0; i < receivers.length; i++) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        changed |= ((SRReceiver)receivers[i][j]).isChanged(); 
+                    }
+                }
+            }            
+            
+            if (_areAllInputsKnown(actor) && _areAllOutputsKnown(actor)) {
+                return !changed; 
+            } else {
+                return false;
+            }
         }
 
         // Actors that have not fired in this iteration are not finished.
         if ((_actorsFired == null) || (!_actorsFired.contains(actor))) {
             return false;
         }
-
+        
+        // otherwise,
         return _areAllOutputsKnown(actor);
     }
 

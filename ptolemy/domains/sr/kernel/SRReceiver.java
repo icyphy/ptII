@@ -211,6 +211,37 @@ public class SRReceiver extends AbstractReceiver {
         }
     }
 
+    /** Return true if this receiver changes from unknown to known.
+     *  @return True if this receiver changes from unknown to known state.
+     */
+    public boolean isChanged() {
+        if (_cachedToken == null) {
+            if (_token != null) {
+                // the token changes from unknown
+                // to known with some concrete value.
+                _cachedToken = _token;
+                _lastKnownStatus = _known;
+                return true;
+            } else {
+                if (_known) {
+                    // the token changes from unknown to
+                    // absent status.
+                    if (!_lastKnownStatus) {
+                        _lastKnownStatus = _known;
+                        return true;
+                    }
+                } 
+            }
+            return false;
+        } else {
+            // since tokens can not change according to
+            // the SR semantics, we simply return false.
+            // We do not check the possible violations
+            // of the SR semantics here.
+            return false;
+        }
+    }
+
     /** Return true if this receiver has known state, that is, the token in
      *  this receiver is known or if this receiver is known not to contain a
      *  token.
@@ -267,6 +298,8 @@ public class SRReceiver extends AbstractReceiver {
     public void reset() {
         _token = null;
         _known = false;
+        _cachedToken = null;
+        _lastKnownStatus = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -290,6 +323,9 @@ public class SRReceiver extends AbstractReceiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    private boolean _lastKnownStatus;
+    private Token _cachedToken;
 
     // A flag indicating whether this receiver has known state.  A receiver
     // has known state if the token in the receiver is known or if the

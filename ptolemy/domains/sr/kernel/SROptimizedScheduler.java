@@ -41,19 +41,11 @@ import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.graph.DirectedAcyclicGraph;
-import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Node;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
-
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// SROptimizedScheduler
@@ -163,7 +155,7 @@ public class SROptimizedScheduler extends Scheduler {
             }
             MessageHandler.error("There are strict cycle loops in the model:"
                  + names.toString() + "\n"
-                 +  " The results may contain unknowns.  This optimized" +
+                 +  " The results may contain unknowns.  This optimized " +
                     "scheduler does not handle this model. Try the " +
                     "randomized scheduler instead.");
         }
@@ -181,10 +173,17 @@ public class SROptimizedScheduler extends Scheduler {
         
         Schedule schedule = new Schedule();
         Actor lastActor = null;
+        Actor actor = null;
         
         for (int i = 0; i < sort.length; i++) {
             IOPort ioPort = (IOPort)sort[i];
-            Actor actor = (Actor) ioPort.getContainer();
+            // If this ioPort is input but has no connections,
+            // we ignore it.
+            if (ioPort.isInput() && ioPort.numLinks() == 0) {
+                continue;
+            }
+            
+            actor = (Actor) ioPort.getContainer();
             // We record the information of last actor.
             // If some consecutive ports belong to the
             // same actor, we only schedule that actor once.
