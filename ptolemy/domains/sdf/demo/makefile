@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Hylands, Neil Smyth
 #
-# @Version: @(#)makefile	1.1 08/28/98
+# @Version: $Id$
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
