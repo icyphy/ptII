@@ -153,7 +153,7 @@ public abstract class SizedMatrixType extends StructuredType
      *  @return False.
      */
     public boolean isConstant() {
-        return false;
+        return true;
     }
 
     /** Test if this type corresponds to an instantiable token
