@@ -540,18 +540,14 @@ public class PtolemyModule implements Module {
 	    super("Automatic Layout");
 	}
 	public void actionPerformed(ActionEvent e) {
-	    View v = _application.getCurrentView();
-	    PtolemyDocument doc = (PtolemyDocument)v.getDocument();
-             if (doc == null) {
-                try {
-                    MessageHandler.warning("No current document");
-                } catch (CancelException ex) {
-                    // Ignore, since there is nothing happening anyway.
-                }
-            } else {
-                JGraph jg = (JGraph)v.getComponent();
-                _redoLayout(jg);
-            }
+	    View view = _application.getCurrentView();
+	    if(view instanceof PtolemyGraphView) {
+		try {
+		    ((PtolemyGraphView)view).layout();
+		} catch (Exception ex) {
+		    MessageHandler.error("Layout failed", ex);
+		}      
+	    }
 	}
     }
     
@@ -586,45 +582,45 @@ public class PtolemyModule implements Module {
 	public void actionPerformed(ActionEvent e) {
 	    super.actionPerformed(e);
 	    View view = _application.getCurrentView();
-            Document doc = view.getDocument();
-	    // Only create ports for ptolemy documents.
-	    if(!(doc instanceof PtolemyDocument)) return;
-	    PtolemyDocument ptolemyDocument = (PtolemyDocument)doc;
-	    
-	    // Get the location
-	    JGraph jgraph = (JGraph)view.getComponent();
-	    GraphPane pane = jgraph.getGraphPane();
-	    double x;
-	    double y;
-	    if(getSourceType() == TOOLBAR_TYPE ||
-	       getSourceType() == MENUBAR_TYPE) {	
-		// no location in the action, so make something up.
-		Point2D point = pane.getSize();    
-		x = point.getX()/2;
-		y = point.getY()/2;
-	    } else {
-		x = getX();
-		y = getY();
-	    }
-	    
-	    final double finalX = x;
-	    final double finalY = y;
-	    final CompositeEntity toplevel =
-		(CompositeEntity)ptolemyDocument.getModel();
-	    toplevel.requestChange(new ChangeRequest(this,
-		    "Creating new Port in " + toplevel.getFullName()) {
-		protected void _execute() throws Exception {
-                    Port port = toplevel.newPort(toplevel.uniqueName("port"));
-		    Location location =
-			new Location(port, 
-				     port.uniqueName("_location"));
-		
-		    double coords[] = new double[2];
-		    coords[0] = ((int)finalX);
-		    coords[1] = ((int)finalY);
-		    location.setLocation(coords);
+	    // Only create ports for ptolemy graph views?
+	    if(view instanceof PtolemyGraphView) {
+		PtolemyGraphView graphView = (PtolemyGraphView)view;
+		// Get the location
+		JGraph jgraph = graphView.getJGraph();
+		GraphPane pane = jgraph.getGraphPane();
+		double x;
+		double y;
+		if(getSourceType() == TOOLBAR_TYPE ||
+		   getSourceType() == MENUBAR_TYPE) {	
+		    // no location in the action, so make something up.
+		    Point2D point = pane.getSize();    
+		    x = point.getX()/2;
+		    y = point.getY()/2;
+		} else {		    x = getX();
+		    y = getY();
 		}
-	    });
+		
+		PtolemyDocument doc = graphView.getPtolemyDocument();
+		final double finalX = x;
+		final double finalY = y;
+		final CompositeEntity toplevel =
+		    (CompositeEntity)doc.getModel();
+		toplevel.requestChange(new ChangeRequest(this,
+		    "Creating new Port in " + toplevel.getFullName()) {
+		    protected void _execute() throws Exception {
+			Port port = 
+			    toplevel.newPort(toplevel.uniqueName("port"));
+			Location location =
+			    new Location(port, 
+					 port.uniqueName("_location"));
+			
+			double coords[] = new double[2];
+			coords[0] = ((int)finalX);
+			coords[1] = ((int)finalY);
+			location.setLocation(coords);
+		    }
+		});
+	    }
 	}
     }
     
@@ -637,49 +633,49 @@ public class PtolemyModule implements Module {
 	public void actionPerformed(ActionEvent e) {
 	    super.actionPerformed(e);
 	    View view = _application.getCurrentView();
-            Document doc = view.getDocument();
-	    // Only create ports for ptolemy documents.
-	    if(!(doc instanceof PtolemyDocument)) return;
-	    PtolemyDocument ptolemyDocument = (PtolemyDocument)doc;
-	    
-	    // Get the location
-	    JGraph jgraph = (JGraph)view.getComponent();
-	    GraphPane pane = jgraph.getGraphPane();
-	    double x;
-	    double y;
-	    if(getSourceType() == TOOLBAR_TYPE ||
-	       getSourceType() == MENUBAR_TYPE) {	
-		// no location in the action, so make something up.
-		// FIXME this is a lousy way to do this.
-		Point2D point = pane.getSize();    
-		x = point.getX()/2;
-		y = point.getY()/2;
-	    } else {
-		x = getX();
-		y = getY();
-	    }
-	    
-	    final double finalX = x;
-	    final double finalY = y;
-	    final CompositeEntity toplevel =
-		(CompositeEntity)ptolemyDocument.getModel();
-
-	    // FIXME use MoML.  If no class is specifed in MoML, it should
-	    // use the newRelation method.
-	    toplevel.requestChange(new ChangeRequest(this,
-		"Creating new Relation in " + toplevel.getFullName()) {
-		protected void _execute() throws Exception {
-                    Relation relation = 
-                         toplevel.newRelation(toplevel.uniqueName("relation"));
-		    Vertex vertex =
-                         new Vertex(relation, relation.uniqueName("vertex"));
-		
-		    double coords[] = new double[2];
-		    coords[0] = ((int)finalX);
-		    coords[1] = ((int)finalY);
-		    vertex.setLocation(coords);
+	    // Only create relations for ptolemy graph views?
+	    if(view instanceof PtolemyGraphView) {
+		PtolemyGraphView graphView = (PtolemyGraphView)view;
+		// Get the location
+		JGraph jgraph = graphView.getJGraph();
+		GraphPane pane = jgraph.getGraphPane();
+		double x;
+		double y;
+		if(getSourceType() == TOOLBAR_TYPE ||
+		   getSourceType() == MENUBAR_TYPE) {	
+		    // no location in the action, so make something up.
+		    // FIXME this is a lousy way to do this.
+		    Point2D point = pane.getSize();    
+		    x = point.getX()/2;
+		    y = point.getY()/2;
+		} else {
+		    x = getX();
+		    y = getY();
 		}
-            });
+		
+		PtolemyDocument doc = graphView.getPtolemyDocument();
+		final double finalX = x;
+		final double finalY = y;
+		final CompositeEntity toplevel =
+		    (CompositeEntity)doc.getModel();
+		
+		// FIXME use MoML.  If no class is specifed in MoML, it should
+		// use the newRelation method.
+		toplevel.requestChange(new ChangeRequest(this,
+		    "Creating new Relation in " + toplevel.getFullName()) {
+		    protected void _execute() throws Exception {
+			Relation relation = 
+			    toplevel.newRelation(toplevel.uniqueName("relation"));
+			Vertex vertex =
+			    new Vertex(relation, relation.uniqueName("vertex"));
+			
+			double coords[] = new double[2];
+			coords[0] = ((int)finalX);
+			coords[1] = ((int)finalY);
+			vertex.setLocation(coords);
+		    }
+		});
+	    }
 	}
     }
 
@@ -706,174 +702,9 @@ public class PtolemyModule implements Module {
 	}
         private Application _application;
     }
-    
-    // A class for properly doing the layout of the graphs we have
-    private class PtolemyLayout extends LevelLayout {
-	
-	/**
-	 * Construct a new levelizing layout with a vertical orientation.
-	 */
-	public PtolemyLayout(LayoutTarget target) {
-	    super(target);
-	}
 
-	/**
-	 * Copy the given graph and make the nodes/edges in the copied
-	 * graph point to the nodes/edges in the original.
-	 */ 
-	protected Object copyComposite(Object origComposite) {
-	    LayoutTarget target = getLayoutTarget();
-	    GraphModel model = target.getGraphModel();
-	    diva.graph.basic.BasicGraphModel local = getLocalGraphModel();
-	    Object copyComposite = local.createComposite(null);
-	    HashMap map = new HashMap();
-	    
-	    // Copy all the nodes for the graph.
-	    for(Iterator i = model.nodes(origComposite); i.hasNext(); ) {
-		Object origNode = i.next();
-		if(target.isNodeVisible(origNode)) {
-		    Rectangle2D r = target.getBounds(origNode);
-		    LevelInfo inf = new LevelInfo();
-		    inf.origNode = origNode;
-		    inf.x = r.getX();
-		    inf.y = r.getY();
-		    inf.width = r.getWidth();
-		    inf.height = r.getHeight();
-		    Object copyNode = local.createNode(inf);
-		    local.addNode(this, copyNode, copyComposite);
-		    map.put(origNode, copyNode);
-		}
-	    }
-	    
-	    // Add all the edges.
-	    Iterator i = GraphUtilities.localEdges(origComposite, model); 
-	    while(i.hasNext()) {
-		Object origEdge = i.next();
-		Object origTail = model.getTail(origEdge);
-		Object origHead = model.getHead(origEdge);
-		if(origHead != null && origTail != null) {
-		    Figure tailFigure = 
-			(Figure)target.getVisualObject(origTail);
-		    Figure headFigure = 
-			(Figure)target.getVisualObject(origHead);
-		    // Swap the head and the tail if it will improve the 
-		    // layout, since LevelLayout only uses directed edges.
-		    if(tailFigure instanceof Terminal) {
-			Terminal terminal = (Terminal)tailFigure;
-			Site site = terminal.getConnectSite();
-			if(site instanceof FixedNormalSite) {
-			    double normal = site.getNormal();
-			    int direction = 
-				CanvasUtilities.getDirection(normal);
-			    if(direction == SwingUtilities.WEST) {
-				Object temp = origTail;
-				origTail = origHead;
-				origHead = temp;
-			    }
-			}
-		    } else if(headFigure instanceof Terminal) {
-			Terminal terminal = (Terminal)headFigure;
-			Site site = terminal.getConnectSite();
-			if(site instanceof FixedNormalSite) {
-			    double normal = site.getNormal();
-			    int direction = 
-				CanvasUtilities.getDirection(normal);
-			    if(direction == SwingUtilities.EAST) {
-				Object temp = origTail;
-				origTail = origHead;
-				origHead = temp;
-			    }
-			}
-		    }
-
-		    origTail =
-			_getParentInGraph(model, origComposite, origTail);
-		    origHead = 
-			_getParentInGraph(model, origComposite, origHead);
-		    Object copyTail = map.get(origTail);
-		    Object copyHead = map.get(origHead);
-
-		    if(copyHead != null && copyTail != null) {
-                        Object copyEdge = local.createEdge(origEdge);
-                        local.setEdgeTail(this, copyEdge, copyTail);
-                        local.setEdgeHead(this, copyEdge, copyHead);
- 		    }
-		}
-	    }
-	    
-	    return copyComposite;
-	}
-
-	// Unfortunately, the head and/or tail of the edge may not 
-	// be directly contained in the graph.  In this case, we need to
-	// figure out which of their parents IS in the graph 
-	// and calculate the cost of that instead.
-	private Object _getParentInGraph(GraphModel model, 
-					 Object graph, Object node) {
-	    while(node != null && !model.containsNode(graph, node)) {
-		Object parent = model.getParent(node);
-		if(model.isNode(parent)) {
-		    node = parent;
-		} else {
-		    node = null;
-		}
-	    }
-	    return node;
-	}
-    }
-
-    // A layout target that translates locatable nodes.
-    private class PtolemyLayoutTarget extends BasicLayoutTarget {
-	/**
-	 * Construce a new layout target that operates
-	 * in the given pane.
-	 */
-	public PtolemyLayoutTarget(GraphController controller) {
-	    super(controller);
-	}
-    
-	/**
-	 * Translate the figure associated with the given node in the
-	 * target's view by the given delta.
-	 */
-	public void translate(Object node, double dx, double dy) {
-	    super.translate(node, dx, dy);
-	    if(node instanceof Locatable) {
-		double location[] = ((Locatable)node).getLocation();
-		if(location == null) {
-		    location = new double[2];
-		    Figure figure = getController().getFigure(node);
-		    location[0] = figure.getBounds().getCenterX();
-		    location[1] = figure.getBounds().getCenterY();
-		} else {
-		    location[0] += dx;
-		    location[1] += dy;
-		}
-		((Locatable)node).setLocation(location);
- 	    }
-	}
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
-    // Redo the layout of the given JGraph.
-    private void _redoLayout(JGraph jgraph) {
-	GraphController controller = 
-	    jgraph.getGraphPane().getGraphController();
-        LayoutTarget target = new PtolemyLayoutTarget(controller);
-        GraphModel model = controller.getGraphModel();
-        PtolemyLayout layout = new PtolemyLayout(target);
-	layout.setOrientation(LevelLayout.HORIZONTAL);
-	layout.setRandomizedPlacement(false);
-        // Perform the layout and repaint
-        try {
-            layout.layout(model.getRoot());
-        } catch (Exception e) {
-            MessageHandler.error("Layout failed", e);
-        }
-        jgraph.repaint();
-    }
     
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

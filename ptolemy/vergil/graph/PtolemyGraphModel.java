@@ -57,8 +57,6 @@ import diva.util.*;
 import java.util.*;
 import javax.swing.SwingUtilities;
 
-// FIXME External ports need a location attribute.
-
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyGraphModel
 /**

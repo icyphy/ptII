@@ -3,12 +3,17 @@ package ptolemy.vergil.ptolemy;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.moml.Locatable;
 import ptolemy.moml.MoMLParser;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.VisualNotation;
 import ptolemy.vergil.graph.EditorDropTarget;
 
+import diva.canvas.CanvasUtilities;
+import diva.canvas.Site;
 import diva.canvas.Figure;
+import diva.canvas.connector.FixedNormalSite;
+import diva.canvas.connector.Terminal;
 import diva.canvas.interactor.SelectionModel;
 
 import diva.gui.View;
@@ -18,10 +23,14 @@ import diva.gui.toolbox.FocusMouseListener;
 
 import diva.graph.JGraph;
 
+import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
-import diva.graph.GraphController;
+import diva.graph.GraphUtilities;
 import diva.graph.MutableGraphModel;
+import diva.graph.basic.BasicLayoutTarget;
+import diva.graph.layout.LevelLayout;
+import diva.graph.layout.LayoutTarget;
 import diva.graph.toolbox.DeletionListener;
 
 import java.awt.Dimension;
@@ -35,6 +44,7 @@ import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.geom.Rectangle2D;
 import java.awt.print.Printable;
 import java.awt.print.PrinterJob;
 import java.awt.print.PrinterException;
@@ -44,12 +54,14 @@ import java.io.IOException;
 import java.io.StringWriter;
 
 import java.util.HashSet;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 
 import javax.swing.KeyStroke;
 import javax.swing.JComponent;
 import javax.swing.JScrollPane;
+import javax.swing.SwingUtilities;
 
 public class PtolemyGraphView extends AbstractView 
     implements Printable, ClipboardOwner {
@@ -160,12 +172,39 @@ public class PtolemyGraphView extends AbstractView
         return _scrollPane;
     }
 
+    /** Return the jgraph instance that makes up part of this view.
+     */
+    public JGraph getJGraph() {
+	return _jgraph;
+    }
+
+    /** Return the document of this view, cast to a PtolemyDocument.
+     */
+    public PtolemyDocument getPtolemyDocument() {
+	return (PtolemyDocument)getDocument();
+    }
+
     public String getTitle() {
         return "Ptolemy Graph";
     }
 
     public String getShortTitle() {
         return "Ptolemy Graph";
+    }
+
+    /** Layout the graph view.
+     */
+    public void layout() {
+	GraphController controller = 
+	    _jgraph.getGraphPane().getGraphController();
+        LayoutTarget target = new PtolemyLayoutTarget(controller);
+        GraphModel model = controller.getGraphModel();
+        PtolemyLayout layout = new PtolemyLayout(target);
+	layout.setOrientation(LevelLayout.HORIZONTAL);
+	layout.setRandomizedPlacement(false);
+        // Perform the layout and repaint
+	layout.layout(model.getRoot());
+        _jgraph.repaint();
     }
 
     /** Do nothing.
@@ -226,6 +265,166 @@ public class PtolemyGraphView extends AbstractView
         } else return NO_SUCH_PAGE;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     private inner classes                 ////
+    
+    // A layout algorithm for laying out ptolemy graphs.  Since our edges
+    // are undirected, this layout algorithm turns them into directed edges
+    // aimed consistently. i.e. An edge should always be "out" of an
+    // internal output port and always be "in" of an internal input port.
+    // Conversely, an edge is "out" of an external input port, and "in" of
+    // an external output port.  The copying operation also flattens
+    // the graph, because the level layout algorithm doesn't understand
+    // how to layout hierarchical nodes.
+    private class PtolemyLayout extends LevelLayout {
+	
+	/**
+	 * Construct a new levelizing layout with a vertical orientation.
+	 */
+	public PtolemyLayout(LayoutTarget target) {
+	    super(target);
+	}
+
+	/**
+	 * Copy the given graph and make the nodes/edges in the copied
+	 * graph point to the nodes/edges in the original.
+	 */ 
+	protected Object copyComposite(Object origComposite) {
+	    LayoutTarget target = getLayoutTarget();
+	    GraphModel model = target.getGraphModel();
+	    diva.graph.basic.BasicGraphModel local = getLocalGraphModel();
+	    Object copyComposite = local.createComposite(null);
+	    HashMap map = new HashMap();
+	    
+	    // Copy all the nodes for the graph.
+	    for(Iterator i = model.nodes(origComposite); i.hasNext(); ) {
+		Object origNode = i.next();
+		if(target.isNodeVisible(origNode)) {
+		    Rectangle2D r = target.getBounds(origNode);
+		    LevelInfo inf = new LevelInfo();
+		    inf.origNode = origNode;
+		    inf.x = r.getX();
+		    inf.y = r.getY();
+		    inf.width = r.getWidth();
+		    inf.height = r.getHeight();
+		    Object copyNode = local.createNode(inf);
+		    local.addNode(this, copyNode, copyComposite);
+		    map.put(origNode, copyNode);
+		}
+	    }
+	    
+	    // Add all the edges.
+	    Iterator i = GraphUtilities.localEdges(origComposite, model); 
+	    while(i.hasNext()) {
+		Object origEdge = i.next();
+		Object origTail = model.getTail(origEdge);
+		Object origHead = model.getHead(origEdge);
+		if(origHead != null && origTail != null) {
+		    Figure tailFigure = 
+			(Figure)target.getVisualObject(origTail);
+		    Figure headFigure = 
+			(Figure)target.getVisualObject(origHead);
+		    // Swap the head and the tail if it will improve the 
+		    // layout, since LevelLayout only uses directed edges.
+		    if(tailFigure instanceof Terminal) {
+			Terminal terminal = (Terminal)tailFigure;
+			Site site = terminal.getConnectSite();
+			if(site instanceof FixedNormalSite) {
+			    double normal = site.getNormal();
+			    int direction = 
+				CanvasUtilities.getDirection(normal);
+			    if(direction == SwingUtilities.WEST) {
+				Object temp = origTail;
+				origTail = origHead;
+				origHead = temp;
+			    }
+			}
+		    } else if(headFigure instanceof Terminal) {
+			Terminal terminal = (Terminal)headFigure;
+			Site site = terminal.getConnectSite();
+			if(site instanceof FixedNormalSite) {
+			    double normal = site.getNormal();
+			    int direction = 
+				CanvasUtilities.getDirection(normal);
+			    if(direction == SwingUtilities.EAST) {
+				Object temp = origTail;
+				origTail = origHead;
+				origHead = temp;
+			    }
+			}
+		    }
+
+		    origTail =
+			_getParentInGraph(model, origComposite, origTail);
+		    origHead = 
+			_getParentInGraph(model, origComposite, origHead);
+		    Object copyTail = map.get(origTail);
+		    Object copyHead = map.get(origHead);
+
+		    if(copyHead != null && copyTail != null) {
+                        Object copyEdge = local.createEdge(origEdge);
+                        local.setEdgeTail(this, copyEdge, copyTail);
+                        local.setEdgeHead(this, copyEdge, copyHead);
+ 		    }
+		}
+	    }
+	    
+	    return copyComposite;
+	}
+
+	// Unfortunately, the head and/or tail of the edge may not 
+	// be directly contained in the graph.  In this case, we need to
+	// figure out which of their parents IS in the graph 
+	// and calculate the cost of that instead.
+	private Object _getParentInGraph(GraphModel model, 
+					 Object graph, Object node) {
+	    while(node != null && !model.containsNode(graph, node)) {
+		Object parent = model.getParent(node);
+		if(model.isNode(parent)) {
+		    node = parent;
+		} else {
+		    node = null;
+		}
+	    }
+	    return node;
+	}
+    }
+
+    // A layout target that translates locatable nodes.
+    private class PtolemyLayoutTarget extends BasicLayoutTarget {
+	/**
+	 * Construce a new layout target that operates
+	 * in the given pane.
+	 */
+	public PtolemyLayoutTarget(GraphController controller) {
+	    super(controller);
+	}
+    
+	/**
+	 * Translate the figure associated with the given node in the
+	 * target's view by the given delta.
+	 */
+	public void translate(Object node, double dx, double dy) {
+	    super.translate(node, dx, dy);
+	    if(node instanceof Locatable) {
+		double location[] = ((Locatable)node).getLocation();
+		if(location == null) {
+		    location = new double[2];
+		    Figure figure = getController().getFigure(node);
+		    location[0] = figure.getBounds().getCenterX();
+		    location[1] = figure.getBounds().getCenterY();
+		} else {
+		    location[0] += dx;
+		    location[1] += dy;
+		}
+		((Locatable)node).setLocation(location);
+ 	    }
+	}
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     // Return a visual notation that can create a view on this document.
     // In this class, we search the toplevel entity in the model for a
     // Ptolemy notation attribute and return the first one found.
@@ -241,6 +440,9 @@ public class PtolemyGraphView extends AbstractView
 	}
 	return notation;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private JGraph _jgraph = null;
     private JScrollPane _scrollPane = null;
