@@ -220,14 +220,7 @@ public class ComputeHistogram extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
         int count = ((IntToken)inputCount.getToken()).intValue();
-        if (input.hasToken(0, count)) {
-            return super.prefire();
-        } else {
-            if (_debugging) {
-                _debug("Called prefire(), which returns false.");
-            }
-            return false;
-        }
+        return (input.hasToken(0, count) && super.prefire());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -235,7 +228,9 @@ public class ComputeHistogram extends TypedAtomicActor {
 
     private void _addPoint(double value) {
         // Calculate the bin number.
-        int bin = (int)(Math.round((value - (_minimumValue + _binWidth * 0.5)) / _binWidth));
+        int bin = 
+            (int)(Math.round(
+                (value - (_minimumValue + _binWidth * 0.5)) / _binWidth));
         if (bin >= 0 && bin < _numberOfBins) {
             _bins[bin]++;
         }
