@@ -1,9 +1,10 @@
-# Makefile for PtolemyII Giotto Domain
+# Makefile for Ptolemy II SDF domain documentation
+#
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
 #
 # @Version: $Id$
-# @Author: Christopher Hylands (makefile only)
 #
-# @Copyright (c) 2000-2002 The Regents of the University of California.
+# @Copyright (c) 2002 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -28,48 +29,49 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/giotto
+ME =		ptolemy/domains/sdf/doc
 
-DIRS =		kernel demo doc
+# Root of the Java directory
+ROOT =		../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+DIRS =
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-
 # Used to build jar files
-PTPACKAGE = 	giotto
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		kernel/kernel.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	doc
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
-	giotto.xml
+	acks.htm \
+	body.htm \
+	buttons.htm \
+	docs.htm \
+	index.htm \
+	main.htm \
+	toc.htm
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+# Files that are not compiled, such as .tcl and .itcl files.
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED) \
 
-# Files or directories that are present, but that 'make checkjunk'
-# should not complain about
-# Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	kernel doc
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
 
-all: jclass
-install: jclass jars
+all:
+	@echo "Nothing to be done in this directory"
 
+install: jars
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
