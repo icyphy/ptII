@@ -53,7 +53,8 @@ JSIMPLE_TESTS = \
 	Link.tcl \
 	RemoveActor.tcl \
 	RemovePort.tcl \
-	RemoveRelation.tcl
+	RemoveRelation.tcl \
+	SetParameter.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
