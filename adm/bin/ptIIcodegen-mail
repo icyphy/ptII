@@ -106,24 +106,20 @@ awk '
 			    }
                        }
       sawTestGeneratedError == 1 {
-			    if (length(errorLine2) > 0) {
-				sawTestGeneratedError--
-				sawTestGeneratedErrorAndWatchDogTimer = 0
-				completedSawTestGeneratedError = 1
-
-				# Add non-empty lines
-				tmp = errorLine2 "\n" $0
-				errorLine2 = tmp
-				# Skip any lines that contain
-				# "Return value was: 2"
-				# we will have proccessed better error messages
-				# above
-				if (errorLine2 !~ /Problem executing command. Return value was: 2. Command was:/) {
-				    if ( length(modelName2) < 1) {
-					print "modelName2 is empty at line " NR
-				    }
-				    errors[errorLine2] = errors[errorLine2] " " modelName2
-				}
+			    sawTestGeneratedError--
+			    sawTestGeneratedErrorAndWatchDogTimer = 0
+			    completedSawTestGeneratedError = 1
+			    tmp = errorLine2 "\n" $0
+			    errorLine2 = tmp
+			    # Skip any lines that contain
+			    # "Return value was: 2"
+			    # we will have proccessed better error messages
+			    # above
+			    if (errorLine2 !~ /Problem executing command. Return value was: 2. Command was:/) {
+			        if ( length(modelName2) < 1) {
+				    print "modelName2 is empty at line " NR
+                                }
+				errors[errorLine2] = errors[errorLine2] " " modelName2
 			    }
 	             } 		    
 
