@@ -562,7 +562,7 @@ Berkeley, CA 94706</property>
                             <property name="usingGNUPattern">False</property>
                             <property name="type">4</property>
                             <property name="pattern"/>
-                            <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\doc</property>
+                            <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\codeDoc</property>
                         </arrayItem>
                     </property>
                     <property name="totalBytes">-1</property>
