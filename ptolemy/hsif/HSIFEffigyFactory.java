@@ -277,6 +277,4 @@ public class HSIFEffigyFactory extends EffigyFactory {
     ////                         private variables                 ////
 
     private boolean _inCreateEffigy;
-    private boolean _isHSIF;
-    private URL _temporaryMoMLFileURL;
 }
