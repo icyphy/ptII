@@ -116,20 +116,6 @@ public class Ramp extends SequenceSource {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Override the base class to reinitialize the state if
-     *  the <i>init</i> parameter is changed.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == init) {
-            _stateToken = output.getType().convert(init.getToken());
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
-
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then sets the <code>init</code> and <code>step</code>
      *  public members to the parameters of the new actor.
