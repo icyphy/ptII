@@ -37,7 +37,6 @@ import diva.canvas.interactor.SelectionRenderer;
 import diva.canvas.toolbox.BasicHighlighter;
 
 import java.awt.Color;
-import java.awt.Stroke;
 import java.util.Hashtable;
 
 import javax.swing.SwingUtilities;
@@ -76,15 +75,6 @@ public class AnimationRenderer implements SelectionRenderer {
      */
     public AnimationRenderer (Color color) {
         _prototypeDecorator = new BasicHighlighter(color, 4.0f);
-    }
-
-    /** Create a new selection renderer with the default prototype
-     *  decorator using the specified color and stroke. This draws
-     *  an outline rather than a filled shape.
-     *  @param color The color for the highlight.
-     */
-    public AnimationRenderer (Color color, Stroke stroke) {
-        _prototypeDecorator = new BasicHighlighter(color, 4.0f, null, stroke);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -30,20 +30,14 @@
 
 package ptolemy.vergil.basic;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
-import java.awt.Stroke;
-
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.vergil.kernel.AnimationRenderer;
 import diva.canvas.CanvasUtilities;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.graph.BasicNodeController;
 import diva.graph.GraphController;
-import diva.graph.GraphModel;
 import diva.graph.NodeInteractor;
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,28 +72,11 @@ public class LocatableNodeController extends BasicNodeController {
         throw new UnsupportedOperationException("Cannot add node.");
     }
 
-    /** Draw the node at its location. This overrides the base class
-     *  to assign a location and to highlight the node if it is an
-     *  inherited object, and hence cannot be deleted.
+    /** Draw the node at its location.
      */
     public Figure drawNode(Object node) {
         Figure nf = super.drawNode(node);
         locateFigure(node);
-        GraphModel model = getController().getGraphModel();
-        Object object = model.getSemanticObject(node);
-        if (object instanceof NamedObj && ((NamedObj)object).isInherited()) {
-            float[] dash = {2.0f, 5.0f};
-            Stroke stroke = new BasicStroke(
-                    2f,                     /* width */
-                    BasicStroke.CAP_SQUARE, /* cap   */ 
-                    BasicStroke.JOIN_MITER, /* join  */
-                    10.0f,                  /* mitre limit */
-                    dash,                   /* dash  */
-                    0.0f);                  /* dash_phase  */
-            AnimationRenderer decorator = new AnimationRenderer(
-                    CLASS_ELEMENT_HIGHLIGHT_COLOR, stroke);
-            decorator.renderSelected(nf);
-        }
         return nf;
     }
 
@@ -172,14 +149,6 @@ public class LocatableNodeController extends BasicNodeController {
         } else throw new RuntimeException("The node " + node +
                 "cannot have a desired location");
     }
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                 ////
-
-    // Fourth argument makes this highlight transluscent, which enables
-    // combination with other highlights.
-    public static Color CLASS_ELEMENT_HIGHLIGHT_COLOR
-            = new Color(255, 64, 64, 200);
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
