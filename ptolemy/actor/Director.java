@@ -337,7 +337,6 @@ public class Director extends NamedObj implements Executable {
             boolean mutationOccured = false;
             while (_performMutations()) {
                 mutationOccured = true;
-                // NOTE: Should type resolution be done here?
                 // Initialize any new actors
                 _actorListener.initializeNewActors();
             }
@@ -386,61 +385,6 @@ public class Director extends NamedObj implements Executable {
      */
     public void removeMutationListener(MutationListener listener) {
         _mutationListeners.removeOneOf(listener);
-    }
-
-    /** Check types on all the connections and resolve undeclared types.
-     *  If the container is not an instance of TypedCompositeActor,
-     *  do nothing.
-     *  This method is write-synchronized on the workspace.
-     *  @exception TypeConflictException If type conflict is detected in
-     *   the containing TypedCompositeActor.
-     *  FIXME: pending review.
-     */
-    public void resolveTypes()
-	    throws TypeConflictException {
-	try {
-	    workspace().getWriteAccess();
-            CompositeActor container = ((CompositeActor)getContainer());
-            if ( !(container instanceof TypedCompositeActor)) {
-                return;
-            }
-            Enumeration constraints =
-                ((TypedCompositeActor)container).typeConstraints();
-
-            InequalitySolver solver = new InequalitySolver(TypeCPO.cpo());
-	    while (constraints.hasMoreElements()) {
-                Object ineq = constraints.nextElement();
-                solver.addInequality((Inequality)ineq);
-	    }
-
-            // find the greatest solution (most general types)
-            boolean resolved = solver.solveGreatest();
-            if ( !resolved) {
-		Enumeration unsatisfied = solver.unsatisfiedInequalities();
-		// exception only contains info. on first unsatisfied ineq.
-		if (unsatisfied.hasMoreElements()) {
-		    Inequality ineq = (Inequality)unsatisfied.nextElement();
-		    TypedIOPort arg1 = null, arg2 = null;
-		    if (ineq.getLesserTerm() instanceof TypedIOPort) {
-			arg1 = (TypedIOPort)ineq.getLesserTerm();
-		    }
-		    if (ineq.getGreaterTerm() instanceof TypedIOPort) {
-			arg2 = (TypedIOPort)ineq.getGreaterTerm();
-		    }
-                    throw new TypeConflictException(arg1, arg2,
-					"cannot satisfy constraint.");
-		}
-            }
-
-	    // see if any resolved type is NaT
-	    Enumeration nats = solver.bottomVariables();
-	    if (nats.hasMoreElements()) {
-		TypedIOPort port = (TypedIOPort)nats.nextElement();
-		throw new TypeConflictException(port, "port resolved to NaT.");
-	    }
-	} finally {
-	    workspace().doneWriting();
-	}
     }
 
     /** Recursively terminate all of our actors.   Domains may need to 
