@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
  <group>
-    <!-- Factories for tableaux that offer views of Ptolemy II fsms. -->
+    <!-- Factories for tableaux that offer views of Ptolemy II interface automata. -->
     <property name="factoryIA" class="ptolemy.actor.gui.PtolemyTableauFactory">
       <!-- These will appear in the View menu of an interface automata tableau. -->
       <property name="Interface Automaton Editor" class="ptolemy.vergil.ptolemy.fsm.InterfaceAutomatonGraphTableau$Factory"/>
