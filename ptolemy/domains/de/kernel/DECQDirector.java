@@ -97,7 +97,7 @@ public class DECQDirector extends Director {
         The firing actor would be the one obtained from the global queue.
         Global queue keeps track of the deeply contained actors.
        
-     */
+    */
 
 
     public void fire() throws CloneNotSupportedException, IllegalActionException {

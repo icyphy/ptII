@@ -226,7 +226,7 @@ public class PNDirector extends Director {
                             "Detected deadlock and stp = "+noOfStoppedProcess);
                 workspace().notifyAll();
             }
-	return;
+            return;
         }
     }
 
@@ -242,21 +242,21 @@ public class PNDirector extends Director {
 	//System.out.println("Enumeration receos done");
 	while (receps.hasMoreElements()) {
 	    FlowFifoQ flowqueue = (FlowFifoQ)receps.nextElement();
-//  	    try {
-//  	        System.out.println("The queue : "+flowqueue.getContainer().getFullName());
-//  	    } catch (Exception e) {
-//  	        System.err.println("Exception e: "+e.toString());
-//  	    }
+            //  	    try {
+            //  	        System.out.println("The queue : "+flowqueue.getContainer().getFullName());
+            //  	    } catch (Exception e) {
+            //  	        System.err.println("Exception e: "+e.toString());
+            //  	    }
 	    FIFOQueue queue = flowqueue.getQueue();
 	    if (smallestCapacity == -1) {
 	        smallestCapacityQueue = queue;
 		smallestCapacity = queue.capacity();
 		smallestCapacityRecep = flowqueue;
-//  		try {
-//  		  System.out.println("The queue and  : "+flowqueue.getContainer().getFullName());
-//  		} catch (Exception e) {
-//  		  System.err.println("Exception e: "+e.toString());
-//  		}
+                //  		try {
+                //  		  System.out.println("The queue and  : "+flowqueue.getContainer().getFullName());
+                //  		} catch (Exception e) {
+                //  		  System.err.println("Exception e: "+e.toString());
+                //  		}
 	    } else if (smallestCapacity > queue.capacity()) {
 	        smallestCapacityQueue = queue;
 	        smallestCapacity = queue.capacity();
@@ -301,21 +301,21 @@ public class PNDirector extends Director {
             while (!_terminate) {
                 if (_debug > 5 ) {
                     System.out.println("PNExecutive: _handleDeadlock()" +
-                           " !_terminate");
+                            " !_terminate");
                 }
                 // Wait for a deadlock to occur.
                 while (!hasNewActors() &&!_mutate && !_terminate && !_deadlock) {
-                //while (!_mutate && !_terminate && !_deadlock) {
-                   try {
-                       if (_debug > 7 ) {
-                           System.out.println("PNExecutive: " +
-                                   "_handleDeadlock(): about to wait()");
-                       }
-                       workspace().wait();
-                   } 
-                   catch (InterruptedException e) {
-                       System.err.println("Exception: " + e.toString());
-                   }
+                    //while (!_mutate && !_terminate && !_deadlock) {
+                    try {
+                        if (_debug > 7 ) {
+                            System.out.println("PNExecutive: " +
+                                    "_handleDeadlock(): about to wait()");
+                        }
+                        workspace().wait();
+                    } 
+                    catch (InterruptedException e) {
+                        System.err.println("Exception: " + e.toString());
+                    }
                 }
                 if (_debug > 5) 
                     System.out.println("Term is " + _terminate +
@@ -351,7 +351,7 @@ public class PNDirector extends Director {
             }
 	    if (_debug > 5 ) 
 	        System.out.println("PNExecutive: "+
-				   "_handleDeadlock(): return at bottom");
+                        "_handleDeadlock(): return at bottom");
 	    return true;
         }
     }

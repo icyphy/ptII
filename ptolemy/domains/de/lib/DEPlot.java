@@ -70,11 +70,11 @@ public class DEPlot extends AtomicActor{
             System.out.println("Throw something");
             throw new IllegalActionException(this, "No director available");
         }
-   }
+    }
 
-   /** fire: consume the input tokens. In the first fire() round, 
-    *  print out the data.
-    */
+    /** fire: consume the input tokens. In the first fire() round, 
+     *  print out the data.
+     */
     public void fire() throws CloneNotSupportedException, IllegalActionException{
         System.out.println("Firing DEPlot");
         if (_frame == null) {
@@ -107,19 +107,19 @@ public class DEPlot extends AtomicActor{
             
         } catch (NoSuchItemException e) {
             throw new InvalidStateException(_input, e.getMessage() +
-                "No incoming token when needed. Schedule is wrong?");
+                    "No incoming token when needed. Schedule is wrong?");
         } 
     }
     /*    
-    public void setParam(String name, String valueString) {
-        double value = (new Double(valueString)).doubleValue();
-        if(name.equals("YMin")) {
-            _yMin = value;
-        }else if(name.equals("YMax")) {
-            _yMax = value;
-        }
-        setParamChanged(true);
-    }
+          public void setParam(String name, String valueString) {
+          double value = (new Double(valueString)).doubleValue();
+          if(name.equals("YMin")) {
+          _yMin = value;
+          }else if(name.equals("YMax")) {
+          _yMax = value;
+          }
+          setParamChanged(true);
+          }
     */
 
     public void setYRange(double ymin, double ymax) {
@@ -161,7 +161,7 @@ public class DEPlot extends AtomicActor{
         }
 
         public void addPoint(int numSet, double xValue, double yValue,
-                        boolean isConnected) {
+                boolean isConnected) {
             _plotter.addPoint(numSet, xValue, yValue, isConnected);
         }
 
@@ -180,7 +180,7 @@ public class DEPlot extends AtomicActor{
         public boolean handleEvent(java.awt.Event event) {
             Object pEvtSource = event.target;
             if( pEvtSource == this && 
-                     event.id == java.awt.Event.WINDOW_DESTROY ) {
+                    event.id == java.awt.Event.WINDOW_DESTROY ) {
                 hide();
                 dispose();
                 return false;
