@@ -55,9 +55,12 @@ public class MuxNode implements GraphNode {
 	//    System.out.println("AH HA!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 	//}
 	SynthesisToDotty.writeDotFile("junk", graph);
-	graph.addEdge(trueResult, newMuxNode);
-	graph.addEdge(falseResult, newMuxNode);
-	graph.addEdge(condResult, newMuxNode);
+	if (!graph.edgeExists(trueResult, newMuxNode))
+	    graph.addEdge(trueResult, newMuxNode);
+	if (!graph.edgeExists(falseResult, newMuxNode))
+	    graph.addEdge(falseResult, newMuxNode);
+	if (!graph.edgeExists(condResult, newMuxNode))
+	    graph.addEdge(condResult, newMuxNode);
 	
 	return newMuxNode;
     }

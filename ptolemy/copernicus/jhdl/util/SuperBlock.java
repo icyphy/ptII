@@ -242,18 +242,20 @@ public class SuperBlock implements GraphNode {
 		}
 		if (!graph.containsNode(predNode))
 		    graph.addNode(predNode);
-		graph.addEdge(predNode, currNode);
+		if (!graph.edgeExists(predNode, currNode))
+		    graph.addEdge(predNode, currNode);
 	    }
 	}
 
 	if (predecessor != null){
-	for (Iterator i=predecessorDefs.iterator(); i.hasNext();){
-	    Node n = (Node)i.next();
-	    System.out.println("going to "+predecessor+" to look for "+n);
-	    Node result = predecessor.createDataFlow(graph, n.weight());
-	    if (result != null)
-		graph.addEdge(result, n);
-	}
+	    for (Iterator i=predecessorDefs.iterator(); i.hasNext();){
+		Node n = (Node)i.next();
+		if (n.weight() instanceof Constant) continue;
+		System.out.println("going to "+predecessor+" to look for "+n);
+		Node result = predecessor.createDataFlow(graph, n.weight());
+		if (result != null && !graph.edgeExists(result,n))
+		    graph.addEdge(result, n);
+	    }
 	}
 	
 	return lastDefinition;
