@@ -51,16 +51,16 @@ test Ramp-1.1 {test clone} {
     set newobj [java::cast ptolemy.actor.lib.Ramp [$ramp clone]]
     set newInit [getParameter $newobj init]
     set newStep [getParameter $newobj step]
-    set initVal [[$newInit getToken] stringValue]
-    set stepVal [[$newStep getToken] stringValue]
+    set initVal [[$newInit getToken] toString]
+    set stepVal [[$newStep getToken] toString]
 
     list $initVal $stepVal
 } {2.5 2.5}
 
 test Ramp-1.2 {test clone} {
     $init setExpression 5.5
-    set stepValue [[$step getToken] stringValue]
-    set newStepValue [[$newStep getToken] stringValue]
+    set stepValue [[$step getToken] toString]
+    set newStepValue [[$newStep getToken] toString]
 
     list $stepValue $newStepValue
 } {5.5 2.5}
@@ -86,4 +86,4 @@ test Ramp-2.1 {test with strings} {
     $step setExpression {"b"}
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {a ab abb abbb abbbb}
+} {{"a"} {"ab"} {"abb"} {"abbb"} {"abbbb"}}

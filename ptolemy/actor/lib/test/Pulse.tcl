@@ -121,7 +121,7 @@ test Pulse-2.5 {test string output} {
     $valuesParam setToken $valToken
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {AB {} CD EF {}} 
+} {{"AB"} {""} {"CD"} {"EF"} {""}} 
 
 ######################################################################
 #### Test error conditions
@@ -213,4 +213,4 @@ test Pulse-4.3 {test string output} {
     $valuesParam setToken $valToken
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {AB {} CD EF AB {} CD EF AB {} CD EF AB {} CD} 
+} {{"AB"} {""} {"CD"} {"EF"} {"AB"} {""} {"CD"} {"EF"} {"AB"} {""} {"CD"} {"EF"} {"AB"} {""} {"CD"}} 

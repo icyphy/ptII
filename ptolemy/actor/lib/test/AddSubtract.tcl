@@ -102,7 +102,7 @@ test AddSubtract-3.1 {test with string type} {
     $plus link $r2
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {atrue abtrue abbtrue}
+} {{"atrue"} {"abtrue"} {"abbtrue"}}
 
 test AddSubtract-3.2 {test with run-time type error} {
     $plus unlink $r2

@@ -93,4 +93,4 @@ test Clock-2.4 {test string output} {
     $valuesParam setToken $valToken
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {AB CD AB CD AB} 
+} {{"AB"} {"CD"} {"AB"} {"CD"} {"AB"}} 

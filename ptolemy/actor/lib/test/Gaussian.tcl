@@ -47,9 +47,9 @@ test Gaussian-1.1 {test constructor} {
     set mean [getParameter $g mean]
     set standardDeviation [getParameter $g standardDeviation]
 
-    set seedVal [[$seed getToken] stringValue]
-    set meanVal [[$mean getToken] stringValue]
-    set standardDeviation [[$standardDeviation getToken] stringValue]
+    set seedVal [[$seed getToken] toString]
+    set meanVal [[$mean getToken] toString]
+    set standardDeviation [[$standardDeviation getToken] toString]
 
     list $seedVal $meanVal $standardDeviation
 } {0 0.0 1.0}
@@ -58,7 +58,7 @@ test Gaussian-1.2 {test clone} {
     set g2 [java::cast ptolemy.actor.lib.Gaussian [$g clone]]
     $seed setExpression {2l}
     set seed [getParameter $g2 seed]
-    [$seed getToken] stringValue
+    [$seed getToken] toString
 } {0}
 
 ######################################################################

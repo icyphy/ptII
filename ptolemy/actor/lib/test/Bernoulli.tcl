@@ -46,8 +46,8 @@ test Bernoulli-1.1 {test constructor} {
     set seed [getParameter $g seed]
     set trueProbability [getParameter $g trueProbability]
 
-    set seedVal [[$seed getToken] stringValue]
-    set trueProbabilityVal [[$trueProbability getToken] stringValue]
+    set seedVal [[$seed getToken] toString]
+    set trueProbabilityVal [[$trueProbability getToken] toString]
 
     list $seedVal $trueProbabilityVal
 } {0 0.5}
@@ -56,7 +56,7 @@ test Bernoulli-1.2 {test clone} {
     set g2 [java::cast ptolemy.actor.lib.Bernoulli [$g clone]]
     $seed setExpression {2l}
     set seed [getParameter $g2 seed]
-    [$seed getToken] stringValue
+    [$seed getToken] toString
 } {0}
 
 ######################################################################

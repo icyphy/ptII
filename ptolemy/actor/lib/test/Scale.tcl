@@ -73,14 +73,14 @@ test Scale-2.1 {test with the default parameter values} {
 
 test Scale-2.2 {test with the alternative parameter values} {
     $factor setExpression {0.1}
-    [$factor getToken] stringValue
+    [$factor getToken] toString
     [$e0 getManager] execute
     ptclose [enumToTokenValues [$rec getRecord 0]] {0.0 0.1 0.2 0.3 0.4}
 } {1}
 
 test Scale-2.3 {test with the alternative parameter values} {
     $step setExpression {0.1}
-    [$factor getToken] stringValue
+    [$factor getToken] toString
     [$e0 getManager] execute
     ptclose [enumToTokenValues [$rec getRecord 0]] {0.0 0.01 0.02 0.03 0.04}
 } {1}
