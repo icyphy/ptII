@@ -85,6 +85,7 @@ import org.eclipse.jdt.core.dom.SimpleName;
 import org.eclipse.jdt.core.dom.SimpleType;
 import org.eclipse.jdt.core.dom.SingleVariableDeclaration;
 import org.eclipse.jdt.core.dom.StringLiteral;
+import org.eclipse.jdt.core.dom.SuperConstructorInvocation;
 import org.eclipse.jdt.core.dom.SuperFieldAccess;
 import org.eclipse.jdt.core.dom.SuperMethodInvocation;
 import org.eclipse.jdt.core.dom.ThisExpression;
@@ -99,6 +100,7 @@ import ptolemy.backtrack.ast.transform.AssignmentHandler;
 import ptolemy.backtrack.ast.transform.ClassHandler;
 import ptolemy.backtrack.ast.transform.ConstructorHandler;
 import ptolemy.backtrack.ast.transform.CrossAnalysisHandler;
+import ptolemy.backtrack.ast.transform.MethodDeclarationHandler;
 import ptolemy.backtrack.ast.transform.HandlerList;
 import ptolemy.backtrack.util.PathFinder;
 
@@ -203,7 +205,7 @@ public class TypeAnalyzer extends ASTVisitor {
             Iterator handlersIter = handlerList.iterator();
             while (handlersIter.hasNext()) {
                 ClassHandler handler = (ClassHandler)handlersIter.next();
-                handler.handle(node, _state);
+                handler.exit(node, _state);
             }
         }
         _recordFields();
@@ -517,6 +519,15 @@ public class TypeAnalyzer extends ASTVisitor {
                 handler.handle(node, _state);
             }
         }
+        if (_handlers.hasMethodDeclarationHandler()) {
+            List handlerList = _handlers.getMethodDeclarationHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                MethodDeclarationHandler handler = 
+                    (MethodDeclarationHandler)handlersIter.next();
+                handler.exit(node, _state);
+            }
+        }
         _closeScope();
         Type.propagateType(node, node.getReturnType());
     }
@@ -718,6 +729,18 @@ public class TypeAnalyzer extends ASTVisitor {
     public void endVisit(StringLiteral node) {
         Type.setType(node, Type.createType("java.lang.String"));
     }
+    
+    public void endVisit(SuperConstructorInvocation node) {
+        if (_handlers.hasConstructorHandler()) {
+            List handlerList = _handlers.getConstructorHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                ConstructorHandler handler = 
+                    (ConstructorHandler)handlersIter.next();
+                handler.handle(node, _state);
+            }
+        }
+    }
 
     /** Visit a super field access node (<tt>super.FieldName</tt>), and
      *  resolve the field from the superclass of the given class name
@@ -824,7 +847,7 @@ public class TypeAnalyzer extends ASTVisitor {
             Iterator handlersIter = handlerList.iterator();
             while (handlersIter.hasNext()) {
                 ClassHandler handler = (ClassHandler)handlersIter.next();
-                handler.handle(node, _state);
+                handler.exit(node, _state);
             }
         }
         _recordFields();
@@ -951,6 +974,15 @@ public class TypeAnalyzer extends ASTVisitor {
 
         // Sort body declarations.
         _sortBodyDeclarations(node);
+        
+        if (_handlers.hasClassHandler()) {
+            List handlerList = _handlers.getClassHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                ClassHandler handler = (ClassHandler)handlersIter.next();
+                handler.enter(node, _state);
+            }
+        }
 
         return super.visit(node);
     }
@@ -1006,6 +1038,15 @@ public class TypeAnalyzer extends ASTVisitor {
      */
     public boolean visit(MethodDeclaration node) {
         _openScope();
+        if (_handlers.hasMethodDeclarationHandler()) {
+            List handlerList = _handlers.getMethodDeclarationHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                MethodDeclarationHandler handler = 
+                    (MethodDeclarationHandler)handlersIter.next();
+                handler.enter(node, _state);
+            }
+        }
         return super.visit(node);
     }
 
@@ -1066,6 +1107,15 @@ public class TypeAnalyzer extends ASTVisitor {
 
         // Sort body declarations.
         _sortBodyDeclarations(node);
+        
+        if (_handlers.hasClassHandler()) {
+            List handlerList = _handlers.getClassHandlers();
+            Iterator handlersIter = handlerList.iterator();
+            while (handlersIter.hasNext()) {
+                ClassHandler handler = (ClassHandler)handlersIter.next();
+                handler.enter(node, _state);
+            }
+        }
 
         // Tell calling function not to visit the children again.
         return super.visit(node);
