@@ -425,12 +425,16 @@ public class SDFScheduler extends Scheduler {
             _debug(firings.toString());
         }
 
+        // Set parameters on each actor that contain the number
+        // of firings in an iteration.
+        _saveFiringCounts(firings);
+        
         // Set parameters on each relation that contain the maximum
         // buffer sizes necessary during execution.
-        _setBufferSizes(minimumBufferSize);
+        _saveBufferSizes(minimumBufferSize);
 
         // Set the rate parameters of any external ports.
-        _setContainerRates(externalRates);
+        _saveContainerRates(externalRates);
 
         // Set the schedule to be valid.
         setValid(true);
@@ -1403,7 +1407,7 @@ public class SDFScheduler extends Scheduler {
      *  @param minimumBufferSizes A map from relation
      *  to the minimum possible buffer size of that relation.
      */
-    private void _setBufferSizes(Map minimumBufferSizes) {
+    private void _saveBufferSizes(Map minimumBufferSizes) {
         Director director = (Director) getContainer();
         final CompositeActor container =
             (CompositeActor)director.getContainer();
@@ -1451,7 +1455,7 @@ public class SDFScheduler extends Scheduler {
      *   connected on the inside to ports that have different
      *   tokenInitProduction.
      */
-    private void _setContainerRates(Map externalRates)
+    private void _saveContainerRates(Map externalRates)
             throws NotSchedulableException, IllegalActionException {
         Director director = (Director) getContainer();
         CompositeActor container = (CompositeActor) director.getContainer();
@@ -1517,6 +1521,47 @@ public class SDFScheduler extends Scheduler {
                         + "which is not allowed in SDF.");
             }
         }
+    }
+
+    /** Create and set a parameter in each actor according
+     *  to the number of times it will fire in one execution of the schedule.
+     *  @param minimumBufferSizes A map from actor
+     *  to firing count.
+     */
+    private void _saveFiringCounts(Map firings) {
+        Director director = (Director) getContainer();
+        final CompositeActor container =
+            (CompositeActor)director.getContainer();
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("<group>\n");
+
+        Iterator entities = container.entityList().iterator();
+        while (entities.hasNext()) {
+            Entity entity = (Entity) entities.next();
+            int firingCount =
+                ((Integer)firings.get(entity)).intValue();
+            buffer.append("<entity name=\"");
+            buffer.append(entity.getName(container));
+            buffer.append("\">\n");
+            // Use NotEditableParameter rather than Parameter so that
+            // the change is not persistent.
+            buffer.append("<property name=\"firingCount\" "
+                    + "class=\"ptolemy.data.expr.NotEditableParameter\" "
+                    +  "value=\"" + firingCount + "\"/>\n");
+            buffer.append("</entity>\n");
+
+            if (_debugging) {
+                _debug("Entity " + entity.getName() +
+                        " has firingCount = " + firingCount);
+            }
+        }
+        buffer.append("</group>");
+        MoMLChangeRequest request = new MoMLChangeRequest(
+                this, container, buffer.toString());
+        // Indicate that the change is non-persistent, so that
+        // the UI doesn't prompt to save.
+        request.setPersistent(false);
+        container.requestChange(request);
     }
 
     /** If the specified Variable does not exist, then create a variable
