@@ -1,8 +1,8 @@
 # Tests for the FSMDirector class
 #
-# @Author: Christopher Hylands
+# @Author: Xiaojun Liu
 #
-# @Version: : NamedObj.tcl,v 1.33 1998/12/05 05:37:32 cxh Exp $
+# @Version: $Id$
 #
 # @Copyright (c) 1999-2000 The Regents of the University of California.
 # All rights reserved.

@@ -53,8 +53,11 @@ JSIMPLE_TESTS = \
 	BroadcastOutput.tcl \
 	FSMActor.tcl \
 	FSMDirector.tcl \
+	HSDirector.tcl \
 	ProduceOutput.tcl \
+	ResetRefinement.tcl \
 	SetVariable.tcl \
+	SetRefinementVariable.tcl \
 	State.tcl \
 	Transition.tcl
 
