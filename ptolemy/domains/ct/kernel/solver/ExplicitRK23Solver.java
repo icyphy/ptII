@@ -335,8 +335,6 @@ public class ExplicitRK23Solver extends ODESolver {
         CTSchedule schedule = (CTSchedule)scheduler.getSchedule();
         Iterator actors;
         actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-        Time iterationBeginTime = dir.getIterationBeginTime();
-        double currentStepSize = dir.getCurrentStepSize();
 
         while (actors.hasNext()) {
             Actor next = (Actor)actors.next();
@@ -347,14 +345,18 @@ public class ExplicitRK23Solver extends ODESolver {
         // FIXME: why is the current time changed here?
         // Some state transition actors may be some functions 
         // defined on the current time, such as the CurrentTime actor.            
-        dir.setCurrentTimeObject(iterationBeginTime.add(currentStepSize*_timeInc[getRoundCount()]));
+        Time iterationBeginTime = dir.getIterationBeginTime();
+        double currentStepSize = dir.getCurrentStepSize();
+        dir.setCurrentTimeObject(
+            iterationBeginTime.add(currentStepSize*_timeInc[getRoundCount()]));
     }
 
     /* (non-Javadoc)
      * @see ptolemy.domains.ct.kernel.ODESolver#fireStateTransitionActors()
      */
     public void fireStateTransitionActors() throws IllegalActionException {
-        _debug(getFullName() + ": firing state transition actors to resolve states.");
+        _debug(getFullName() 
+            + ": firing state transition actors to resolve states.");
         CTDirector dir = (CTDirector)getContainer();
         if (dir == null) {
             throw new IllegalActionException( this,
@@ -386,7 +388,7 @@ public class ExplicitRK23Solver extends ODESolver {
             // [0.5, 0.75, 1.0] as the time increment array. We may not
             // need the following statement. However, it is still here 
             // just to make sure that time goes where we expected.
-            dir.setCurrentTimeObject(dir.getIterationEndTime());
+            //dir.setCurrentTimeObject(dir.getIterationEndTime());
         }
     }
 }

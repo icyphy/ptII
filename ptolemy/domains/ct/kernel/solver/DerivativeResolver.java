@@ -268,6 +268,8 @@ public class DerivativeResolver extends ODESolver
                     ((Nameable)next).getName());
             next.fire();
         }
+        // FIXME: The following may not be necessary.
+        // Since the current step size is 0.0.
         actors = schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
         while (actors.hasNext()) {
             Actor next = (Actor)actors.next();
@@ -283,4 +285,5 @@ public class DerivativeResolver extends ODESolver
 
     /** Name of this Solver. */
     private static final String _DEFAULT_NAME="CT_Derivative_Resolver" ;
+    
 }

@@ -132,7 +132,11 @@ public class BackwardEulerSolver extends FixedStepSolver {
             _debug(getFullName(), " firing ", ((Nameable)next).getName());
             next.fire();
         }
-        dir.setCurrentTimeObject(dir.getCurrentTimeObject().add(dir.getCurrentStepSize()));
+         
+        if (getRoundCount() == 0) {
+            dir.setCurrentTimeObject(
+                dir.getCurrentTimeObject().add(dir.getCurrentStepSize()));
+        }
     }
 
     /* (non-Javadoc)
