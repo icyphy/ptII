@@ -603,14 +603,14 @@ public class Pxgraph extends Frame {
         if (vis) {
             _exitButton.show(); // FIXME: show() is
             // deprecated in JDK1.1, but we need to compile under
-            // 1.0.2 for netscape3.x compatibilty.
+            // 1.0.2 for netscape3.x compatibility.
             _printButton.show(); // FIXME: show() deprecated, but . . .
             _htmlButton.show(); // FIXME: show() deprecated, but . . .
             _aboutButton.show(); // FIXME: show() deprecated, but . . .
         } else {
             _exitButton.hide(); // FIXME: hide() is
             // deprecated in JDK1.1, but we need to compile under
-            // 1.0.2 for netscape3.x compatibilty.
+            // 1.0.2 for netscape3.x compatibility.
             _printButton.hide(); // FIXME: hide() deprecated, but . . .
             _htmlButton.hide(); // FIXME: hide() deprecated, but . . .
             _aboutButton.hide(); // FIXME: hide() deprecated, but . . .
@@ -662,10 +662,16 @@ public class Pxgraph extends Frame {
             if (_debug > 2) System.out.print("Pxgraph: arg = " + arg + "\n");
 
             if (arg.startsWith("-")) {
-                if (arg.equals("-db")) {
+                if (arg.equals("-bg")) {
+                    setBackground(PlotBox.getColorByName(args[i++]));
+                    continue;
+                } else if (arg.equals("-db")) {
                     _debug = 10;
                 } else if (arg.equals("-debug")) {
                     _debug = (int)Integer.valueOf(args[i++]).intValue();
+                    continue;
+                } else if (arg.equals("-fg")) {
+                    setForeground(PlotBox.getColorByName(args[i++]));
                     continue;
                 } else if (arg.equals("-help")) {
                     // -help is not in the original X11 pxgraph.

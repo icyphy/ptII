@@ -206,7 +206,7 @@ public class PlotBox extends Applet {
         // Find the width and height of the total drawing area, and clear it.
         Rectangle drawRect = bounds(); // FIXME: bounds() is deprecated
         // in JDK1.1, but we need to compile under 1.0.2 for
-        // netscape3.x compatibilty.
+        // netscape3.x compatibility.
 
         graphics.setPaintMode();
         if (clearfirst) {
@@ -635,7 +635,7 @@ public class PlotBox extends Applet {
     /** 
      * Convert a color name into a Color.
      */
-    public Color getColorByName(String name) {
+    public static Color getColorByName(String name) {
         try {
             // Check to see if it is a hexadecimal
             // Can't use Color decode here, it is not in 1.0.2
@@ -1006,7 +1006,7 @@ public class PlotBox extends Applet {
 
                 String line = in.readLine(); // FIXME: readLine() is
                 // deprecated in JDK1.1, but we need to compile under
-                //1.0.2 for netscape3.x compatibilty.
+                //1.0.2 for netscape3.x compatibility.
                 while (line != null) {
                     _parseLine(line);
                     line = in.readLine(); // readLine() is deprecated.
@@ -1275,11 +1275,11 @@ public class PlotBox extends Applet {
         if (vis) {
             _fillButton.show(); // FIXME: show() is
             // deprecated in JDK1.1, but we need to compile under
-            // 1.0.2 for netscape3.x compatibilty.
+            // 1.0.2 for netscape3.x compatibility.
         } else {
             _fillButton.hide(); // FIXME: hide() is
             // deprecated in JDK1.1, but we need to compile under
-            // 1.0.2 for netscape3.x compatibilty.
+            // 1.0.2 for netscape3.x compatibility.
         }
     }
 
