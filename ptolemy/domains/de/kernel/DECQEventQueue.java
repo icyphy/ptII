@@ -227,7 +227,7 @@ public class DECQEventQueue implements DEEventQueue {
 
 	    double average =
                 (((DEEvent)entryArray[entryArray.length - 1]).timeStamp() -
-                ((DEEvent)entryArray[0]).timeStamp()) / (entryArray.length-1);
+                        ((DEEvent)entryArray[0]).timeStamp()) / (entryArray.length-1);
             double effectiveAverage = 0.0;
 	    int effectiveSamples = 0;
 	    for (int i = 0; i < entryArray.length - 1; ++i) {
