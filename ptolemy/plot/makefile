@@ -57,10 +57,6 @@ JBEANCLASSES =	ptolemy/plot/Plot.class ptolemy/plot/PlotLive.class
 SRCDIRS = 	demo
 DIRS = 		$(SRCDIRS) doc test
 
-#############################################################################
-########### Pxgraph.java will be removed eventually, after the pxgraph
-########### script is fixed.
-#############################################################################
 
 # Java Sources
 JSRCS = \
@@ -80,7 +76,7 @@ JSRCS = \
 	LogicAnalyzerFrame.java
 
 # Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS = $(JSRCS) pxgraph pxgraph.bat ptplot2mif.tcl index.html
+EXTRA_SRCS = $(JSRCS) ptplot pxgraph.bat index.html copyright.txt
 
 # Non-source files such as README files and subdirectories
 MISC_FILES = test #bean
@@ -121,9 +117,11 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: sources jclass $(TYZIP) $(JARFILE) ptolemy.plotapplet.jar
-	-chmod a+x pxgraph
+	-chmod a+x ptplot
+	ln -s ptplot pxgraph
 install: sources jclass javadocs subinstall $(JARFILE) $(TYZIP) ptolemy.plotapplet.jar
-	-chmod a+x pxgraph
+	-chmod a+x ptplot
+	ln -s ptplot pxgraph
 
 # Jar file consisting of classes used by an applet.  Basically,
 # everything but Message and Pxgraph.
@@ -136,7 +134,16 @@ ptolemy.plotapplet.jar: $(JSRCS) $(JCLASS)
 		$(TYPACKAGE_DIR)/PlotBox.class \
 		$(TYPACKAGE_DIR)/PlotDataException.class \
 		$(TYPACKAGE_DIR)/PlotLive.class \
-		$(TYPACKAGE_DIR)/PlotPoint.class)
+		$(TYPACKAGE_DIR)/PlotLiveApplet.class \
+		$(TYPACKAGE_DIR)/PlotPoint.class \
+		$(TYPACKAGE_DIR)/Plot$$Format.class \
+		$(TYPACKAGE_DIR)/Plot$$Format.class \
+		$(TYPACKAGE_DIR)/PlotBox$$DragListener.class \
+		$(TYPACKAGE_DIR)/PlotBox$$FillButtonListener.class \
+		$(TYPACKAGE_DIR)/PlotBox$$ZoomListener.class \
+		$(TYPACKAGE_DIR)/PlotLive$$StartButtonListener.class \
+		$(TYPACKAGE_DIR)/PlotLive$$StopButtonListener.class \
+		)
 
 docs: javadocs
 
