@@ -221,6 +221,10 @@ public class PtolemyQuery extends Query
                             preferredForegroundColor(attribute));
                     attachParameter(attribute, name);
                     foundStyle = true;
+                } else if (attribute instanceof PasswordAttribute) {
+                    addPassword(name, name, "");
+                    attachParameter(attribute, name);
+                    foundStyle = true;
                 } else if (attribute instanceof Parameter
                         && ((Parameter)attribute).getChoices() != null) {
                     Parameter castAttribute = (Parameter)attribute;
@@ -507,11 +511,27 @@ public class PtolemyQuery extends Query
 
             ChangeRequest request;
 
-            // NOTE: We must use a MoMLChangeRequest so that changes
-            // propagate to any objects that have been instantiating
-            // using this one as a class.  This is only an issue if
-            // attribute is a NamedObj, so we first check.
-            if (attribute instanceof NamedObj) {
+           if (attribute instanceof PasswordAttribute) {
+           	    // Passwords have to be handled specially because the password
+           	    // is not represented in a string.
+                request = new ChangeRequest(this, name) {
+                        protected void _execute()
+                                throws IllegalActionException {
+                            char[] password = getCharArrayValue(name);
+                            ((PasswordAttribute)attribute).setPassword(password);
+                            attribute.validate();
+                            Iterator derived = ((PasswordAttribute)attribute).getDerivedList().iterator();
+                            while (derived.hasNext()) {
+                            	PasswordAttribute derivedPassword = (PasswordAttribute)derived.next();
+                                derivedPassword.setPassword(password);
+                            }
+                       }
+                    };                
+            } else if (attribute instanceof NamedObj) {
+                // NOTE: We must use a MoMLChangeRequest so that changes
+                // propagate to any objects that have been instantiating
+                // using this one as a class.  This is only an issue if
+                // attribute is a NamedObj.
                 NamedObj castAttribute = (NamedObj)attribute;
 
                 // The context for the MoML should be the first container

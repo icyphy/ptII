@@ -72,7 +72,7 @@ public class PasswordAttribute extends StringParameter {
      *  set the password.
      *  @return The password.
      */
-    public byte[] getPassword() {
+    public char[] getPassword() {
         if(_password == null) {
             //FIXME: this need to be done in the swing thread...
             new EditParametersDialog(null, this);
@@ -83,12 +83,12 @@ public class PasswordAttribute extends StringParameter {
     /** Set the password contained by this attribute. 
      *  @param password The password.  
      */
-    public void setPassword(byte[] password) {
+    public void setPassword(char[] password) {
         _password = password;
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                        private members                    ////
     
-    private byte[] _password = null;
+    private char[] _password = null;
 }
