@@ -96,7 +96,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass $(PTCLASSALLJAR)
+install: jclass jars
 
 
 # Get the rest of the rules
