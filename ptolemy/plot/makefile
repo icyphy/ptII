@@ -36,12 +36,14 @@ ROOT =		../..
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
+CLASSPATH =	..
+
 # Note that this package has the the name 'ptplot', not
 # tycho.java.ptplot.  The Itcl and java package have different root
 # directories.
 
 TYPACKAGE = 	ptplot
-TYPACKAGE_ROOTDIR = ..
+TYPACKAGE_ROOTDIR = $(CLASSPATH)
 TYPACKAGE_DIR = $(TYPACKAGE)
 # If you change JVERSION, modify the version numbers in:
 #    Pxgraph.java, index.html, doc/internals/changes.html
@@ -54,9 +56,6 @@ JBEANCLASSES =	ptplot/Plot.class ptplot/PlotLive.class
 
 SRCDIRS = 	demo
 DIRS = 		$(SRCDIRS) doc #test
-
-CLASSPATH =	..
-# Order matters here.
 
 # Sources that compile under JDK1.0.2 and later
 JSRCS1_0 = \
