@@ -33,25 +33,24 @@ package ptolemy.domains.csp.kernel;
 
 import ptolemy.actor.*;
 import ptolemy.data.Token;
-//import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPReceiver
 /**
-Receiver for CSP style communication. For rendezvous, the receiver is the key
-synchronization point. It is assumed each receiver has at most one
+Receiver for CSP style communication. In CSP all communication is via 
+synchronous message passing, so bothe the sending and receiving 
+process need to rendezvous at the receiver. For rendezvous, the 
+receiver is the key synchronization point. It is assumed each receiver 
+has at most one
 thread trying to send to it and at most one thread trying to receive
 from it at any one time. The receiver performs the synchronization
 necessary for simple rendezvous (get() and put() operations). It
 also stores the flags that allow conditionalSends and conditionalReceives
 to know when they can proceed.
 <p>
-FIXME: If more than receiver or sender were allowed, what would this mean?
-Is the synchronization below provable? 
-
 @author Neil Smyth
 @version $Id$
-
 */
 
 public class CSPReceiver implements ProcessReceiver {
@@ -71,15 +70,20 @@ public class CSPReceiver implements ProcessReceiver {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Retrieve a Token from the receiver. If a put has already been reached,
-     *  it notifies the waiting put and returns the Token. If a put has not
-     *  yet been reached, the method delays until a put is reached.
-     *  Currently, each receiver assumes it has at most one channels trying
-     *  to receive from it and at most one channel send to it.
+    /** Retrieve a Token from the receiver by rendezvous. This method 
+     *  does not return until the rendezvous has been completed.
+     *  If a put has already been reached, it notifies the waiting put 
+     *  and waits for the rendezvous to complete. When the rendezvous is 
+     *  complete it returns with the token.
+     *  If a put has not yet been reached, the method delays until a 
+     *  put is reached.
+     *  It is assumed that at most one process is trying to receive 
+     *  from and send to the channel associated with this receiver.
      *  @return The Token transferred by the rendezvous.
      */
     public synchronized Token get() {
-        Token tmp = _token;
+        Token tmp = null;
+        boolean blocked = false;
         try {
             if (_isPutWaiting()) {
                 _setPutWaiting(false);  //needs to be done here
@@ -104,29 +108,43 @@ public class CSPReceiver implements ProcessReceiver {
                 }
 
                 _registerBlocked();
+                blocked = true;
                 while (_isGetWaiting()) {
                     _checkAndWait();
                 }
                 _registerUnblocked();
+                blocked = false;
                 tmp = _token;
                 _setRendezvousComplete(true);
                 notifyAll();
             }
         } catch (InterruptedException ex) {
-            System.out.println("get interrupted: " + ex.getMessage());
-            /* FIXME */
+            throw new InvalidStateException("CSPReceiver.get() interrupted: " +
+                    ex.getMessage());
+        } finally {
+            if (blocked) {
+                // process was blocked, woken up and terminated. 
+                // register process as being unblocked
+                _getDirector()._actorUnblocked();
+            }
         }
         return tmp;
     }
 
-    /** Place a Token in the receiver. If a get has already been reached,
-     *  the Token is transferred and the method returns. If a get has not
-     *  yet been reached, the method delays until a get is reached.
-     *  Currently, each receiver assumes it has at most one channels trying
+    /** Place a Token from the receiver by rendezvous. This method 
+     *  does not return until the rendezvous has been completed.
+     *  If get has already been reached, it notifies the waiting get 
+     *  and waits for the rendezvous to complete. When the rendezvous is 
+     *  complete it returns.
+     *  If a get has not yet been reached, the method delays until a 
+     *  get is reached.
+     *  It is assumed that at most one process is trying to receive 
+     *  from and send to the channel associated with this receiver.
      *  to receive from it and at most one channel send to it.
      *  @param t The token being transferred in the rendezvous.
      */
     public synchronized void put(Token t) {
+        boolean blocked = false;
         try {
             _token = t; // perform transfer
             if (_isGetWaiting()) {
@@ -152,17 +170,25 @@ public class CSPReceiver implements ProcessReceiver {
                 }
 
                 _registerBlocked();
+                blocked = true;
                 while(_isPutWaiting()) {
                     _checkAndWait();
                 }
                 _registerUnblocked();
+                blocked = false;
                 _setRendezvousComplete(true);
                 notifyAll();
                 return;
             }
         } catch (InterruptedException ex) {
-            System.out.println("put interrupted :" + ex.getMessage());
-            // FIXME: what should be done here?
+            throw new InvalidStateException("CSPReceiver.put() interrupted: " +
+                    ex.getMessage());
+        } finally {
+            if (blocked) {
+                // process was blocked, woken up and terminated. 
+                // register process as being unblocked
+                _getDirector()._actorUnblocked();
+            }
         }
     }
 
@@ -187,8 +213,6 @@ public class CSPReceiver implements ProcessReceiver {
         return _isPutWaiting();
     }
     /** Set the container of this CSPReceiver to the specified IOPort.
-     *  FIXME: a null argument should remove it from the IOPort it
-     *  currently belongs to.
      *  @param parent The IOPort this receiver is to be contained by.
      */
     public void setContainer(IOPort parent) {
@@ -332,7 +356,8 @@ public class CSPReceiver implements ProcessReceiver {
      *  @exception InterruptedException If the thread is
      *   interrupted while paused.
      */
-    private synchronized void _checkFlags() throws InterruptedException {
+    private synchronized void _checkFlags() 
+            throws InterruptedException, TerminateProcessException{
         if (_simulationFinished) {
             throw new TerminateProcessException(getContainer().getName() + 
                     ": terminated.");
