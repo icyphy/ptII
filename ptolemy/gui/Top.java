@@ -107,21 +107,19 @@ derived classes should insert new menus into the menu bar only
 in the _addMenus() protected method.  This ensures that the File
 menu is always the rightmost menu, and the Help menu is always
 the leftmost menu.  The _addMenus() method is called when the window
-is first made visible.
+is first packed.
 
 @author Edward A. Lee and Steve Neuendorffer
 @version $Id$
 */
 public abstract class Top extends JFrame {
-
-    /** Construct an empty top-level frame.
-     *  After constructing this, it is necessary
-     *  to call setVisible(true) to make the frame appear.
-     *  It may also be desirable to call centerOnScreen().
+    /** Construct an empty top-level frame.  After constructing this,
+     *  it is necessary to call pack() to have the menus added, and
+     *  then setVisible(true) to make the frame appear.  It may also
+     *  be desirable to call centerOnScreen().
      */
     public Top() {
         super();
-
         // Ensure that user is prompted before closing if the data
         // has been modified.
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
@@ -203,17 +201,15 @@ public abstract class Top extends JFrame {
         _modified = modified;
     }
 
-    /** If the argument is true, then make the window visible; otherwise,
-     *  make it invisible.  This
-     *  overrides the base class to populate the menu bar if the argument
-     *  is true and they have not already been populated.  This
-     *  is done here rather than in the constructor so that derived
-     *  classes are assured that their constructors have been fully
-     *  executed when _addMenus() is called.
-     *  @param flag True to make the window visible.
+    /** Size this window to its preferred size and make it
+     *  displayable.  overrides the base class to populate the menu
+     *  bar if the argument is true and they have not already been
+     *  populated.  This is done here rather than in the constructor
+     *  so that derived classes are assured that their constructors
+     *  have been fully executed when _addMenus() is called.
      */
-    public void setVisible(boolean flag) {
-        if (flag && !_menuPopulated) {
+    public void pack() {
+        if (!_menuPopulated) {
             _menuPopulated = true;
 
             // Set up the menus.
@@ -284,7 +280,7 @@ public abstract class Top extends JFrame {
             // Add a status bar.
             getContentPane().add(_statusBar, BorderLayout.SOUTH);
         }
-        super.setVisible(flag);
+	super.pack();
     }
 
     ///////////////////////////////////////////////////////////////////
