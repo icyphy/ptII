@@ -285,7 +285,7 @@ public class UnsignedByteToken extends ScalarToken {
         if ( !_isUnitless()) {
             unitString = " * " + unitsString();
         }
-        return Integer.toString(unsignedConvert(_value)) + unitString;
+        return Integer.toString(unsignedConvert(_value)) + "ub" + unitString;
     }
 
     /** Convert a byte to an integer, treating the byte as an unsigned
