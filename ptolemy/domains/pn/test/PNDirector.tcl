@@ -38,7 +38,7 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
-set VERBOSE 1
+# set VERBOSE 1
 
 # If a file contains non-graphical tests, then it should be named .tcl
 # If a file contains graphical tests, then it should be called .itcl
