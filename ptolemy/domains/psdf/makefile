@@ -30,7 +30,7 @@
 
 ME =		ptolemy/domains/psdf
 
-DIRS =		kernel
+DIRS =		kernel demo
 
 # Root of Ptolemy II directory
 ROOT =		../../..
