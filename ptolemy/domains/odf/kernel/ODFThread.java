@@ -1,4 +1,4 @@
-/* A thread that controls an actors according to ODF semantics.
+/* An ODFThread controls an actors according to ODF semantics.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -42,56 +42,19 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// ODFThread
 /**
-A thread that controls an actors according to ODF semantics. The
-primary purpose of an ODFThread is to control the execution of an
-actor and to maintain the actor's local notion of time. To facilitate
-this purpose, an ODFThread has a list of ODFReceivers that are
-contained by the actor that the ODFThread controls.
-<P>
-ODFReceivers each have three important variables: rcvrTime, lastTime
-and priority. The rcvrTime of an ODFReceiver is equal to the time of
-the oldest event that resides on the receiver. The lastTime is equal
-to the time of the newest event residing on the receiver.
-<P>
-An ODFThread manages the ODFReceivers of its actor by keeping track of
-the receiver with the minimum rcvrTime. The actor is allowed to consume
-a token from a receiver if that receiver has the unique, minimum
-rcvrTime of all receivers managed by the ODFThread. The ODFThread
-keeps track of its receiver's priorities as well. The receiver with the
-highest priority is enabled for having its token consumed if the receiver
-shares a common minimum rcvrTime with one or more additional receivers.
-<P>
-The receiver priorities are set using the method setRcvrPriorities() in the
-following manner. All of the input receivers for a given ODFThread are
-grouped by their respective container input ports. The port groups are
-ordered according to the inverse order in which their corresponding ports
-were connected in the model topology. I.e., if two input ports (pA and pB)
-of an actor are connected such that port pA is connected before port pB,
-then all of the receivers of port pB will have a higher priority than the
-receivers of port pA.
-<P>
-Within a group the receiver priorities are further refined so that receivers
-of the same group can be ordered relative to one another. Receiver priorities
-within a group are ordered according to the inverse order in which they were
-connected in the model topology. I.e., if two input receivers (rA and rB)
-of an actor are connected such that receiver rA is connected before receiver
-rB, then rB will have a higher priority than rA.
-<P>
-The above approach provides each receiver contained by a given ODFThread with
-a unique priority, such that the set of receiver priorities for the
-containing ODFThread is totally ordered.
-<P>
-RcvrTimeTriple objects are used to facilitate the ordering of receivers
-contained by an ODFThread according to rcvrTime/lastTime and priority. A
-RcvrTimeTriple is an object containing an ODFReceiver, the _rcvrTime of
-the receiver and the priority of the receiver. Each ODFThread contains a
-list consisting of one RcvrTimeTriple per receiver contained by the actor.
-As tokens are placed in and taken out of the receivers of an actor, the
-list of RcvrTimeTriples is updated.
+An ODFThread controls an actors according to ODF semantics. The primary 
+purpose of an ODFThread is to control the iteration methods of an 
+executing actor and to maintain the actor's local notion of time 
+according to ODF semantics. An ODFThread has two unique functionalities 
+for accomplishing this goal. First an ODFThread instantiates a TimeKeeper 
+object. A TimeKeeper object manages a given actor's local notion of time 
+according to ODF semantics. The second task of an ODFThread is to notify 
+directly connected actors when the actor controlled by the thread is 
+ending execution. 
 
 @author John S. Davis II
 @version $Id$
-@see ptolemy.domains.odf.kernel.RcvrTimeTriple
+@see ptolemy.domains.odf.kernel.TimeKeeper
 */
 public class ODFThread extends ProcessThread {
 
@@ -99,15 +62,14 @@ public class ODFThread extends ProcessThread {
      *  methods of an ODFActor. This increases the count of 
      *  active actors in the director.
      * @param actor The ODFActor that needs to be executed.
-     * @param director The director responsible for the execution 
-     *  of this actor.
+     * @param director The director of this actor.
      */
     public ODFThread(Actor actor, ProcessDirector director) 
             throws IllegalActionException {
         super(actor, director);
         // _director = director;
-        _manager = ((CompositeActor)
-                ((NamedObj)actor).getContainer()).getManager();
+        // _manager = ((CompositeActor)
+        //         ((NamedObj)actor).getContainer()).getManager();
         // _rcvrTimeList = new LinkedList();
 	_timeKeeper = new TimeKeeper(actor);
 	/*
@@ -253,10 +215,11 @@ public class ODFThread extends ProcessThread {
     }
      */
 
-    /** Notify actors connected via output ports of the actor that
-     *  this thread controls, that this thread's actor will no
-     *  longer be producing tokens. Send events with time stamps of
-     *  -1.0 to these "downstream" actors.
+    /** Notify directly connected actors that the actor controlled by 
+     *  this thread is ending execution. "Directly connected actors"
+     *  are those that are connected to the actor controlled by this
+     *  thread via output ports of this thread's actor. Send events 
+     *  with time stamps of -1.0 to these "downstream" actors.
      */
     public synchronized void noticeOfTermination() { 
         Actor actor = (Actor)getActor();
@@ -290,9 +253,7 @@ public class ODFThread extends ProcessThread {
      *  to all output channels that have a rcvrTime less than the
      *  current time of this thread. Associate a time stamp with each
      *  NullToken that is equal to the current time of this thread.
-     */
     public void sendOutNullTokens() {
-        /*
         ODFActor actor = (ODFActor)getActor();
 	Enumeration ports = actor.outputPorts();
         while( ports.hasMoreElements() ) {
@@ -312,8 +273,8 @@ public class ODFThread extends ProcessThread {
 		}
             }
         }
-        */
     }
+     */
 
     /** Set the priorities of the receivers contained in the input
      *  ports of the actor controlled by this thread. Group the input
@@ -559,7 +520,7 @@ public class ODFThread extends ProcessThread {
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
-    private Manager _manager;
+    // private Manager _manager;
     // private ProcessDirector _director;
 
     // The _rcvrTimeList stores RcvrTimeTriples and is used to
