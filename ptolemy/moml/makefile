@@ -52,7 +52,6 @@ JSRCS = Documentation.java \
 	Import.java \
 	Locatable.java \
 	Vertex.java \
-	MoMLApplet.java \
 	MoMLParser.java \
 	MoMLUtilities.java
 
