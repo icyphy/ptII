@@ -30,7 +30,7 @@
 
 ME = 		ptolemy/domains/fsm/demo
 
-DIRS =		ABP
+DIRS =		ABP Blending MultipleRuns
 
 # Root of ptII directory
 ROOT =		../../../..
@@ -48,7 +48,9 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	ABP/ABP.jar
+	ABP/ABP.jar \
+	Blending/Blending.jar \
+	MultipleRuns/MultipleRuns.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
