@@ -205,7 +205,7 @@ public class LevelLayout extends AbstractGlobalLayout {
     }
 
     /**
-     * Return the orientation in which the graph is to be layed out,
+     * Return the orientation in which the graph is to be laid out,
      * either VERTICAL or HORIZONTAL.
      */
     public int getOrientation() {
@@ -385,7 +385,7 @@ public class LevelLayout extends AbstractGlobalLayout {
     }
 
     /**
-     * Set the orientation in which the graph is to be layed out,
+     * Set the orientation in which the graph is to be laid out,
      * either VERTICAL or HORIZONTAL.
      */
     public void setOrientation(int o) {
@@ -1042,7 +1042,7 @@ public class LevelLayout extends AbstractGlobalLayout {
 
     /**
      * The semantic object of each node in the graph copy that is
-     * being layed out.
+     * being laid out.
      */
     public static class LevelInfo {
         public Object origNode = null;
