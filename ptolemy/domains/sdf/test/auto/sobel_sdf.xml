@@ -376,7 +376,8 @@
         <link port="horiz.output" relation="relation9"/>
     </entity>
     <entity name="1:DoubleReader" class="ptolemy.actor.lib.DoubleReader">
-        <property name="sourceURL" class="ptolemy.data.expr.Parameter" value="&quot;file:./sobel.txt&quot;">
+        <property name="sourceURL" class="ptolemy.data.expr.Parameter"
+        value="&quot;file:///&quot; + property(&quot;ptolemy.ptII.dir&quot;) + &quot;/ptolemy/domains/sdf/test/auto/sobel.txt&quot;">
         </property>
         <property name="refresh" class="ptolemy.data.expr.Parameter" value="true">
         </property>
