@@ -856,7 +856,7 @@ public abstract class GraphFrame extends PtolemyFrame
     public class ImportLibraryAction extends AbstractAction {
 	public ImportLibraryAction() {
 	    super("Import Library");
-	    putValue("tooltip", "Import a libarary into the Palette");
+	    putValue("tooltip", "Import a library into the Palette");
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_I));
 	}
