@@ -175,7 +175,7 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.ta3",
                new TransformerAdapter(TypeAssigner.v()));
        addTransform(pack, "wjtp.ib2",
-               InvocationBinder.v());
+              InvocationBinder.v());
        
        // Set about removing reference to attributes and parameters.
        // Anywhere where a method is called on an attribute or
@@ -364,9 +364,9 @@ public class Main extends KernelMain {
        
        addTransform(pack, "wjtp.ttn",
                TokenToNativeTransformer.v(toplevel));//, "debug:true level:1");
-       
+
        addStandardOptimizations(pack, 4);
-              
+          
        addTransform(pack, "wjtp.ufr",
                UnusedFieldRemover.v());
        

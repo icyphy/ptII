@@ -40,7 +40,10 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import ptolemy.actor.CompositeActor;
+import ptolemy.kernel.util.*;
+import ptolemy.kernel.*;
+import ptolemy.actor.*;
+import ptolemy.data.type.Typeable;
 
 import ptolemy.copernicus.kernel.*;
 
@@ -161,6 +164,17 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
         _phaseName = phaseName;
         System.out.println("TokenToNativeTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
+
+        // Only try unboxing tokens if the types are amenable.
+        // Currently, arrays of arrays and records don't work.
+        try {
+            if(_hasBadTypes(_model)) {
+                throw new RuntimeException("Token unboxing not possible because" +
+                        " the model contains bad types.");
+            }
+        } catch (IllegalActionException ex) {
+            throw new RuntimeException(ex.getMessage());
+        }
 
         // We need all classes as library:
         //      for (Iterator classes = Scene.v().getClasses().iterator();
@@ -2115,6 +2129,55 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 //  continue;
             }
             return true;
+        }
+        return false;
+    }
+
+    // Return true if the given object contains a typeable object with
+    // a type that is not supported by token unboxing.
+    private boolean _hasBadTypes(NamedObj object) 
+            throws IllegalActionException {
+        if(object instanceof Typeable) {
+            Typeable typeable = (Typeable)object;
+            ptolemy.data.type.Type type = typeable.getType();
+            if(type instanceof ptolemy.data.type.RecordType) {
+                return true;
+            }
+            if(type instanceof ptolemy.data.type.ArrayType) {
+                type = ((ptolemy.data.type.ArrayType)type).getElementType();
+                if(type instanceof ptolemy.data.type.ArrayType) {
+                    return true;
+                }
+            }
+        }
+        if(object instanceof CompositeEntity) {
+            for(Iterator i = ((CompositeEntity)object).entityList().iterator();
+                i.hasNext();) {
+                if(_hasBadTypes((NamedObj)i.next())) {
+                    return true;
+                }
+            }
+            for(Iterator i = ((CompositeEntity)object).relationList().iterator();
+                i.hasNext();) {
+                if(_hasBadTypes((NamedObj)i.next())) {
+                    return true;
+                }
+            }
+        }
+        if(object instanceof Entity) {
+            for(Iterator i = ((Entity)object).portList().iterator();
+                i.hasNext();) {
+                if(_hasBadTypes((NamedObj)i.next())) {
+                    return true;
+                }
+            }
+           
+        }
+        for(Iterator i = object.attributeList().iterator();
+            i.hasNext();) {
+            if(_hasBadTypes((NamedObj)i.next())) {
+                return true;
+            }
         }
         return false;
     }
