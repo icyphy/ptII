@@ -145,7 +145,7 @@ TINI_DIR='@TINI_DIR@'
 # Jar file containing tini design tools
 TINI_JAR='@TINI_CLASSES@${COMMAPI_JAR}'
 # Jar file containing embedded tini libraries.
-TINICLASSES_JAR='@TINI_DIR@/tiniclasses.jar'
+TINICLASSES_JAR='@TINI_DIR@/bin/tiniclasses.jar'
    
 TINI_JFLAG=
 
