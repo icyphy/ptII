@@ -137,6 +137,9 @@ public class SRReceiver extends Mailbox {
      *  If the receiver has unknown status, this method will throw
      *  an UnknownTokenException, which is a RuntimeException so it
      *  need not be declared explicitly.
+     *  If the argument is 0 or a negative number, then this method will
+     *  throw an IllegalArgumentException, which is a RuntimeException.
+     *
      *  @param numberOfTokens The number of tokens to get from the receiver.
      *  @return True if the argument is 1 and this mailbox is not empty.
      *  Return false if the argument is 2 or more.
