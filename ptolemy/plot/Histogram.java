@@ -184,8 +184,8 @@ public class Histogram extends PlotBox {
     public synchronized void clear(boolean format) {
         super.clear(format);
         _currentdataset = -1;
-        int size = _points.size();
         _points = new Vector();
+        _histogram = new Vector();
         _painted = false;
         _filename = null;
         _showing = false;
