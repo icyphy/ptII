@@ -45,15 +45,19 @@ include $(CONFIG)
 # make clean will remove these derived files
 KRUFT = \
 	data/mobies1_mid_g.xml \
+	data/mobies2_mid_g.xml \
 	data/shsif_mid_g.xml \
 	data/thsif_mid_g.xml \
 	data/mobies1_mid_sg.xml \
+	data/mobies2_mid_sg.xml \
 	data/shsif_mid_sg.xml \
 	data/thsif_mid_sg.xml \
 	data/mobies1_mid_l.xml \
+	data/mobies2_mid_l.xml \
 	data/shsif_mid_l.xml \
 	data/thsif_mid_l.xml \
 	data/mobies1_mid_sl.xml \
+	data/mobies2_mid_sl.xml \
 	data/shsif_mid_sl.xml \
 	data/thsif_mid_sl.xml
 
@@ -62,7 +66,7 @@ KRUFT = \
 SAXON_TRANSFORM = CLASSPATH="$(CLASSPATH)" "$(JAVA)" \
 			net.sf.saxon.Transform 
 # make all
-all:	mobies1.xml shsif.xml thsif.xml
+all:	mobies1.xml mobies2.xml shsif.xml thsif.xml
 install: all
 
 # In the rules below, note that the .xsl style sheet is at the end
@@ -71,6 +75,10 @@ install: all
 # Generating MoML files
 #mobies1 : sl_pre_mobies1 mobies1.xml
 mobies1.xml: data/mobies1_mid_sl.xml data/hsif.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
+#mobies2 : sl_pre_mobies2 mobies2.xml
+mobies2.xml: data/mobies2_mid_sl.xml data/hsif.xsl
 	$(SAXON_TRANSFORM) $^ > $@
 
 #shsif : sl_pre_shsif shsif.xml
@@ -87,6 +95,10 @@ thsif.xml: data/thsif_mid_sl.xml data/hsif.xsl
 data/mobies1_mid_sl.xml: data/mobies1_mid_l.xml data/hsif_slim_preprocessor.xsl
 	$(SAXON_TRANSFORM) $^ > $@
 
+#sl_pre_mobies2 : l_pre_mobies1 data/mobies2_mid_sl.xml
+data/mobies2_mid_sl.xml: data/mobies2_mid_l.xml data/hsif_slim_preprocessor.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
 #sl_pre_shsif : l_pre_shsif data/shsif_mid_sl.xml
 data/shsif_mid_sl.xml: data/shsif_mid_l.xml data/hsif_slim_preprocessor.xsl
 	$(SAXON_TRANSFORM) $^ > $@
@@ -99,6 +111,10 @@ data/thsif_mid_sl.xml: data/thsif_mid_l.xml data/hsif_slim_preprocessor.xsl
 # Dealing with Local Variables
 #l_pre_mobies1 : sg_pre_mobies1 data/mobies1_mid_l.xml
 data/mobies1_mid_l.xml: data/mobies1_mid_sg.xml data/hsif_localVariable_preprocessor.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
+#l_pre_mobies2 : sg_pre_mobies2 data/mobies2_mid_l.xml
+data/mobies2_mid_l.xml: data/mobies2_mid_sg.xml data/hsif_localVariable_preprocessor.xsl
 	$(SAXON_TRANSFORM) $^ > $@
 
 #l_pre_shsif : sg_pre_shsif data/shsif_mid_l.xml
@@ -114,6 +130,10 @@ data/thsif_mid_l.xml: data/thsif_mid_sg.xml data/hsif_localVariable_preprocessor
 data/mobies1_mid_sg.xml: data/mobies1_mid_g.xml data/hsif_slim_preprocessor.xsl
 	$(SAXON_TRANSFORM) $^ > $@
 
+#sg_pre_mobies2 : g_pre_mobies2 data/mobies2_mid_sg.xml
+data/mobies2_mid_sg.xml: data/mobies2_mid_g.xml data/hsif_slim_preprocessor.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
 #sg_pre_shsif : g_pre_shsif data/shsif_mid_sg.xml
 data/shsif_mid_sg.xml: data/shsif_mid_g.xml data/hsif_slim_preprocessor.xsl
 	$(SAXON_TRANSFORM) $^ > $@
@@ -126,6 +146,10 @@ data/thsif_mid_sg.xml: data/thsif_mid_g.xml data/hsif_slim_preprocessor.xsl
 # Dealing with Global Variables
 #g_pre_mobies1: data/mobies1_mid_g.xml
 data/mobies1_mid_g.xml: data/mobies1.xml data/hsif_globalVariable_preprocessor.xsl
+	$(SAXON_TRANSFORM) $^ > $@
+
+#g_pre_mobies2: data/mobies2_mid_g.xml
+data/mobies2_mid_g.xml: data/mobies2.xml data/hsif_globalVariable_preprocessor.xsl
 	$(SAXON_TRANSFORM) $^ > $@
 
 #g_pre_shsif: data/shsif_mid_g.xml
