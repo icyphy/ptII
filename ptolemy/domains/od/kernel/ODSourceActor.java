@@ -68,7 +68,6 @@ public class ODSourceActor extends ODActor {
         
         _refireInPort.link( _refireRelation );
         _refireOutPort.link( _refireRelation );
-        // JFIXME 
         // System.out.println("Finished linking source actor");
     }
  
@@ -77,7 +76,8 @@ public class ODSourceActor extends ODActor {
     ////                         public methods                    ////
 
     /** FIXME: Should we check for negative delays?
-     */
+     */        // JFIXME 
+
     public void refireAfterDelay(double delay) 
             throws IllegalActionException {
         Token token = new Token();
