@@ -33,37 +33,76 @@ composite actor boundaries.
 package ptolemy.actor.process;
 
 import ptolemy.data.*;
+import ptolemy.kernel.util.*;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// BoundaryReceiver
+//// BranchThread
 /**
-A BoundaryReceiver is an interface used by receivers that receive 
+A BranchThread is an interface used by receivers that receive 
 data across composite actor boundaries. 
 
 @author John S. Davis II
 @version $Id$
 
 */
-public interface BoundaryReceiver extends ProcessReceiver {
+public class BranchThread extends PtolemyThread {
 
+    /**
+     */
+    public BranchThread( Branch branch ) {
+        super();
+    	_branch = branch;
+    } 
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** 
      */
-    public Token get(Branch controllingBranch) throws TerminateBranchException; 
+    public void continueThread() {
+    	_stopRequest = false;
+    }
+    
+    /** 
+     */
+    public void endThread() {
+    	_continue = false;
+    }
+    
+    /** 
+     */
+    public Branch getBranch() {
+    	return _branch;
+    }
+    
+    /**
+     */
+    public void run() {
+        try {
+            while( _continue ) {
+                _branch.transferTokens();
+                while( _stopRequest && _continue ) {
+                    synchronized(this) {
+                        wait();
+                    }
+                }
+            }
+        } catch( InterruptedException e ) {
+        }
+    } 
 
     /** 
      */
-    public boolean isConsumerReceiver(); 
-
-    /** 
-     */
-    public boolean isProducerReceiver(); 
-
-    /** 
-     */
-    public void put(Token token, Branch controllingBranch) throws TerminateBranchException; 
+    public void stopThread() {
+    	_stopRequest = true;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    private Branch _branch;
+    private boolean _continue = true;
+    private boolean _stopRequest = false;
 
 }

@@ -111,10 +111,12 @@ public abstract class Branch {
      *   upon creation by the CSPActor.
      *  @exception IllegalActionException If the actor that contains
      *   the port is not of type CSPActor.
-     */
     public Branch(boolean guard, int branchID, BranchController cntlr)
             throws IllegalActionException {
-        super();
+     */
+    public Branch(boolean guard, int prodChannel, int consChannel, 
+    	    int branchID, IOPort prodPort, IOPort consPort, 
+            BranchController cntlr) throws IllegalActionException {
         /*
         Nameable tmp = port.getContainer();
         if (!(tmp instanceof MultiBranchActor)) {
@@ -123,13 +125,41 @@ public abstract class Branch {
 		    "with a port contained by MultiBranchActor");
         }
         */
-        _branchID = branchID;
         _guard = guard;
+        _branchID = branchID;
         _controller = cntlr;
+        
+        Receiver[][] receivers;
+        BoundaryReceiver receiver;
+        
+        receivers = prodPort.getReceivers();
+        receiver = (BoundaryReceiver)receivers[prodChannel][0];
+        if( !receiver.isProducerReceiver() ) {
+            throw new IllegalActionException(prodPort, "Not producer "
+            	    + "receiver");
+        }
+        _prodRcvr = (BoundaryReceiver)receivers[prodChannel][0];
+        
+        receivers = consPort.getRemoteReceivers();
+        receiver = (BoundaryReceiver)receivers[consChannel][0];
+        if( !receiver.isConsumerReceiver() ) {
+            throw new IllegalActionException(consPort, "Not consumer "
+            	    + "receiver");
+        }
+        _consRcvr = (BoundaryReceiver)receivers[consChannel][0];
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Return the controller that manges conditional rendezvous for this
+     *  branch when performing a CIF or CDO.
+     *  @return The controller that manages conditional rendezvous for
+     *  this branch.
+     */
+    public BranchController getController() {
+        return _controller;
+    }
 
     /** Returns the guard for this guarded communication statement.
      *  If it is true the branch is said to be enabled.
@@ -147,15 +177,6 @@ public abstract class Branch {
         return _branchID;
     }
 
-    /** Return the controller that manges conditional rendezvous for this
-     *  branch when performing a CIF or CDO.
-     *  @return The controller that manages conditional rendezvous for
-     *  this branch.
-    public BranchController getController() {
-        return _controller;
-    }
-     */
-
     /** Return the BoundaryReceiver this branch is trying to rendezvous with.
      *  @return The BoundaryReceiver this branch is trying to rendezvous with.
      */
@@ -170,13 +191,9 @@ public abstract class Branch {
      *  continue trying to rendezvous.
      *  @return True if this branch is still alive.
      */
-    public boolean isStillAlive() {
-        return _alive;
+    public boolean isActive() {
+        return _active;
     }
-
-    /** 
-     */
-    public abstract void run(); 
 
     /** 
      */
@@ -189,18 +206,39 @@ public abstract class Branch {
     public void registerRcvrBlock() {
     }
 
+    /** 
+    public abstract void run(); 
+     */
+
+    /** 
+     */
+    public void transferTokens() {
+        try {
+            Token token = null;
+            token = _prodRcvr.get(this);
+            _consRcvr.put(token, this);
+        } catch( TerminateBranchException e ) {
+            // Do nothing
+        }
+    }
+    
+    /** 
+    public void branchWasSuccessful() {
+    }
+     */
+
     ///////////////////////////////////////////////////////////////////
     ////                    package friendly methods               ////
 
     /** Set a flag indicating this branch should fail.
      *  @param value Boolean indicating whether this branch is still alive.
      */
-    void setAlive(boolean value) {
-        _alive = value;
+    void setActive(boolean value) {
+        _active = value;
     }
 
     //////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                       protected methods                  ////
 
     /** Set the BoundaryReceiver this branch is trying to rendezvous with.
      *  This method should only be called from derived classes.
@@ -225,11 +263,11 @@ public abstract class Branch {
     // The identification number of this branch (according to its controller)
     private int _branchID;
 
-    // Has another branch successfully rendezvoused? If so, then _alive
+    // Has another branch successfully rendezvoused? If so, then _active
     // is set to false. Otherwise, this branch still can potentially
-    // rendezvous. _alive remains true until it is no longer possible
+    // rendezvous. _active remains true until it is no longer possible
     // for this branch to successfully rendezvous.
-    private boolean _alive = true;
+    private boolean _active = true;
 
     // The controller of this thread is trying to perform a conditional
     // rendezvous for.
@@ -237,5 +275,8 @@ public abstract class Branch {
 
     // The receiver this thread is trying to rendezvous with. It is immutable.
     private BoundaryReceiver _receiver;
+
+    private BoundaryReceiver _prodRcvr;
+    private BoundaryReceiver _consRcvr;
 
 }

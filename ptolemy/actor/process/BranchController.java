@@ -91,149 +91,6 @@ public class BranchController {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Determine which branch succeeds with a rendezvous. This method is
-     *  central to nondeterministic rendezvous. It is passed in an array
-     *  of branches, each element of which represents one of the
-     *  conditional rendezvous branches. If the guard for the branch is
-     *  false then the branch is not enabled.  It returns the id of
-     *  the successful branch, or -1 if none of the branches were enabled.
-     *  <p>
-     *  If exactly one branch is enabled, then the communication is
-     *  performed directly and the id of the enabled branch  is returned.
-     *  If more than one branch is enabled, a thread  is created and
-     *  started for each enabled branch. These threads try to
-     *  rendezvous until one succeeds. After a thread succeeds the
-     *  other threads are killed, and the id of the successful
-     *  branch is returned.
-     *  <p>
-     *  @param branches The set of conditional branches involved.
-     *  @return The ID of the successful branch, or -1 if none of the
-     *   branches were enabled.
-    public int chooseBranch(Branch[] branches) {
-        try {
-            synchronized(_internalLock) {
-                // reset the state that controls the conditional branches
-                _resetConditionalState();
-
-                // Create the threads for the branches.
-                _threadList = new LinkedList();
-                Branch onlyBranch = null;
-                for (int i = 0; i< branches.length; i++) {
-                    // If the guard is false, then the branch is not enabled.
-                    if (branches[i].getGuard()) {
-                        // Create a thread for this enabled branch
-                        Nameable act =
-			    (Nameable)branches[i].getController().getParent();
-                        String name = act.getName() + branches[i].getID();
-                        Thread t = new Thread((Runnable)branches[i], name);
-                        _threadList.add(0, t);
-                        onlyBranch = branches[i];
-                    }
-                }
-
-                // Three cases: 1) No guards were true so return -1
-                // 2) Only one guard was true so perform the rendezvous
-                // directly, 3) More than one guard was true, so start
-                // the thread for each branch and wait for one of them
-                // to rendezvous.
-                int num = _threadList.size();
-
-                if (num == 0) {
-                    // The guards preceding all the conditional
-                    // communications were false, so no branches to create.
-                    return _successfulBranch; // will be -1
-                } else if (num == 1) {
-                    // FIXME!!!
-                    // Call optimize method here; should I
-                    // Only one guard was true, so perform simple rendezvous.
-                    if (onlyBranch.isWriteBranch()) {
-                        Token t = onlyBranch.getToken();
-                        onlyBranch.getReceiver().put(t);
-                        return onlyBranch.getID();
-                    } else {
-                        // branch is a ConditionalReceive
-                        Token tmp = onlyBranch.getReceiver().get();
-                        onlyBranch.setToken(tmp);
-                        return onlyBranch.getID();
-                    }
-                } else {
-                    // Have a proper conditional communication.
-                    // Start the threads for each branch.
-                    Iterator threads = _threadList.iterator();
-                    while (threads.hasNext()) {
-                        Thread thread = (Thread)threads.next();
-                        thread.start();
-                        _branchesActive++;
-                    }
-                    _branchesStarted = _branchesActive;
-		    // wait for a branch to succeed
-                    while ((_successfulBranch == -1) &&
-                            (_branchesActive > 0)) {
-                        _internalLock.wait();
-                    }
-                }
-            }
-            // If we get to here, we have more than one conditional branch.
-            LinkedList tmp = new LinkedList();
-
-            // Now terminate non-successful branches
-            for (int i = 0; i < branches.length; i++) {
-                // If the guard for a branch is false, it means a
-                // thread was not created for that branch.
-                if ( (i!= _successfulBranch) && (branches[i].getGuard()) ) {
-                    // to terminate a branch, need to set a flag
-                    // on the receiver it is rendezvousing with & wake it up
-                    Receiver rec = branches[i].getReceiver();
-                    tmp.add(0, rec);
-                    branches[i].setAlive(false);
-                }
-            }
-            // Now wake up all the receivers.
-            (new NotifyThread(tmp)).start();
-
-            // when there are no more active branches, branchFailed()
-            // should issue a notifyAll() on the internal lock.
-            synchronized(_internalLock) {
-                while (_branchesActive != 0) {
-                    _internalLock.wait();
-                }
-                // counter indicating # active branches, should be zero
-                if (_branchesActive != 0) {
-                    throw new InvalidStateException(
-			    ((Nameable)getParent()).getName() +
-                            ": chooseBranch() is exiting with branches" +
-                            " still active.");
-                }
-            }
-        } catch (InterruptedException ex) {
-            throw new TerminateProcessException(
-		    ((Nameable)getParent()).getName() +
-		    ".chooseBranch interrupted.");
-        }
-        if (_successfulBranch == -1) {
-            // Conditional construct was ended prematurely
-            if (_blocked) {
-                // Actor was registered as blocked when the
-                // construct was terminated.
-                if( _extReadBranchesBlocked > 0 ) {
-                    _getDirector()._actorReadUnBlocked(false);
-		} else if( _writeBranchesBlocked == _branchesStarted ) {
-                    _getDirector()._actorWriteUnBlocked();
-		} else {
-                    _getDirector()._actorReadUnBlocked(true);
-                }
-		// _getDirector()._actorUnblocked();
-            }
-            throw new TerminateProcessException(
-                    ((Nameable)getParent()).getName() +
-                    ": exiting conditional" +
-                    " branching due to TerminateProcessException.");
-        }
-        _threadList = null;
-        return _successfulBranch;
-    }
-     */
-
     /** Return the Actor that creates the branch and owns this
      *  controller when performing a CIF or CDO.
      *  @return The CSPActor that created this branch.
@@ -248,6 +105,40 @@ public class BranchController {
     	_branches = branches;
     }
     
+    /**
+     */
+    public void runBranches() {
+        while( true ) {
+    	    startBranches();
+            waitOnBranches();
+        }
+    }
+    
+    /**
+     */
+    public void startBranches() {
+        synchronized(_internalLock) {
+            if( _threadList == null ) {
+                _threadList = new LinkedList();
+                BranchThread bThread = null;
+                for( int i=0; i < _branches.length; i++ ) {
+                    if( _branches[i].getGuard() ) {
+                        bThread = new BranchThread(_branches[i]);
+                        _threadList.add(bThread);
+                    }
+                    // FIXME: should we optimize for single branch?
+		}
+            }
+                
+            Iterator threads = _threadList.iterator();
+            BranchThread thread = null;
+            while( threads.hasNext() ) {
+                thread = (BranchThread)threads.next();
+                thread.start();
+            }
+        }
+    }
+    
     /** Terminate abruptly any threads created by this actor. Note that
      *  this method does not allow the threads to terminate gracefully.
      */
@@ -256,56 +147,41 @@ public class BranchController {
             // Now stop any threads created by this director.
             if (_threadList != null) {
                 Iterator threads = _threadList.iterator();
+                BranchThread bThread = null;
                 while (threads.hasNext()) {
-                    Thread next = (Thread)threads.next();
-                    if (next.isAlive()) {
-                        next.stop();
+                    bThread = (BranchThread)threads.next();
+                    if (bThread.isAlive()) {
+                        bThread.stop();
                     }
                 }
             }
         }
     }
 
+    /**
+     */
+    public void waitOnBranches() {
+        try {
+            synchronized(_internalLock) {
+    		while( _branchesActive != 0 ) {
+                    _internalLock.wait();
+        	}
+            }
+        } catch( InterruptedException e ) {
+        }
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /**
-     */
-    protected boolean _isDeadlocked() {
-        if( _branchesBlocked == _branchesStarted ) {
-            return true;
-        } 
-        return false;
-    }
-    
-    /** Called by ConditionalSend and ConditionalReceive to check if
-     *  the calling branch is the first branch to be ready to rendezvous.
-     *  If it is, it sets a private variable to its branch ID so that
-     *  subsequent calls to this method by other branches know that they
-     *  are not first.
-     *  @param branchNumber The ID assigned to the calling branch
-     *   upon creation.
-     *  @return True if the calling branch is the first branch to try
-     *   to rendezvous, otherwise false.
-     */
-    protected boolean _canBranchContinue(int branchNumber) {
-        synchronized(_internalLock) {
-            if ((_branchTrying == -1) || (_branchTrying == branchNumber)) {
-                // store branchNumber
-                _branchTrying = branchNumber;
-                return true;
-            }
-            return false;
-        }
-    }
-
-    /** Increase the count of branches that are blocked trying to do
+   /** Increase the count of branches that are blocked trying to do
      *  a rendezvous read. If all the enabled branches (for the CIF 
      *  or CDO currently being executed) are blocked, register this 
      *  actor as being blocked.
      */
     protected void _branchBlocked() {
         synchronized(_internalLock) {
+            _branchesBlocked++;
             if ( _isDeadlocked() ) {
                 // Note: acquiring a second lock, need to be careful.
                 if( !_hasReadBlock() ) {
@@ -390,6 +266,27 @@ public class BranchController {
             _branchesBlocked--;
         }
     }
+     /** Called by ConditionalSend and ConditionalReceive to check if
+     *  the calling branch is the first branch to be ready to rendezvous.
+     *  If it is, it sets a private variable to its branch ID so that
+     *  subsequent calls to this method by other branches know that they
+     *  are not first.
+     *  @param branchNumber The ID assigned to the calling branch
+     *   upon creation.
+     *  @return True if the calling branch is the first branch to try
+     *   to rendezvous, otherwise false.
+     */
+    protected boolean _canBranchContinue(int branchNumber) {
+        synchronized(_internalLock) {
+            if ((_branchTrying == -1) || (_branchTrying == branchNumber)) {
+                // store branchNumber
+                _branchTrying = branchNumber;
+                return true;
+            }
+            return false;
+        }
+    }
+
  
     /**
      */
@@ -401,6 +298,15 @@ public class BranchController {
      */
     protected boolean _hasReadBlock() {
     	return true;
+    }
+    
+    /**
+     */
+    protected boolean _isDeadlocked() {
+        if( _branchesBlocked == _branchesStarted ) {
+            return true;
+        } 
+        return false;
     }
     
     /** Release the status of the calling branch as the first branch
@@ -480,7 +386,7 @@ public class BranchController {
 
     // Contains the number of conditional write branches that are 
     // blocked trying to rendezvous.
-    private int _writeBranchesBlocked = 0;
+    // private int _writeBranchesBlocked = 0;
 
     // Contains the number of branches that were actually started for
     // the most recent conditional rendezvous.

@@ -59,7 +59,7 @@ JSRCS = \
 	BoundaryReceiver.java \
 	Branch.java \
 	BranchController.java \
-	RunnableBranch.java
+	BranchThread.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
