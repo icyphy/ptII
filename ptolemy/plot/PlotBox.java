@@ -181,7 +181,7 @@ import java.util.*;
 public class PlotBox extends Panel {
 
     ///////////////////////////////////////////////////////////////////
-    ////                         constructor                              ////
+    ////                         constructor                       ////
 
     public PlotBox() {
         setLayout(new FlowLayout(FlowLayout.RIGHT));
@@ -290,7 +290,7 @@ public class PlotBox extends Panel {
      *  a format.  If the argument is null, then the description goes
      *  to the clipboard.  Otherwise, it goes to the specified file.
      *  To send it to standard output, use
-     *  <code>new FileWriter(FileDescriptor.out)</code> as an argument.
+     *  <code>System.out</code> as an argument.
      *  @param file A file writer to which to send the description.
      */
     public void export (OutputStream out) {
