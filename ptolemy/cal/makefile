@@ -35,7 +35,7 @@
 
 ME =		ptolemy/cal
 
-DIRS =		demo
+DIRS =		demo doc
 
 # Root of the Java directory
 ROOT =		../..
