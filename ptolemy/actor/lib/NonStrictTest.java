@@ -31,7 +31,6 @@
 package ptolemy.actor.lib;
 
 import ptolemy.actor.TypedCompositeActor;
-import ptolemy.actor.lib.Sink;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
