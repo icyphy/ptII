@@ -456,6 +456,39 @@ for the nightly test suite.
   Use this method for running models as part of cron jobs etc.
   </dl>
 
+ <p>MoMLApplication supports setting top level parameters using
+command line arguments.
+
+ <p>The MoMLApplication docs say:
+
+<BLOCKQUOTE>
+   If a Ptolemy model is instantiated on the command line, either
+   by giving a MoML file or a -class argument, then parameters of that
+   model can be set on the command line.  The syntax is:
+   <pre>
+   ptolemy <i>modelFile.xml</i> -<i>parameterName</i> "<i>value</i>"
+   </pre>
+   where <i>parameterName</i> is the name of a parameter relative to
+   the top level of a model or the director of a model.  For instance,
+   if foo.xml defines a toplevel entity named "x" and x contains an
+   entity named "y" and a parameter named "a", and y contains a
+   parameter named "b", then:
+   <pre>
+   ptolemy foo.xml -a 5 -y.b 10
+   </pre>
+   would set the values of the two parameters.
+
+</BLOCKQUOTE>
+Toplevel parameters can be set by calling vergil with a similar syntax:
+<pre>
+$PTII/bin/vergil foo.xml -a 5 -y.b 10
+</pre>
+or
+<pre>
+$PTII/bin/ptexecute foo.xml -a 5 -y.b 10
+</pre>
+Note that MoMLSimpleApplication does not do this type of command line parsing.
+
  <p>If you want to start Vergil by hand, the answer depends on which
 version of Ptolemy II you are using.
 
