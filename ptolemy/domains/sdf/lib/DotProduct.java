@@ -42,6 +42,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -81,9 +82,8 @@ public class DotProduct extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
 
         // set input types to array
-        ArrayType unknownArrayType = new ArrayType(BaseType.UNKNOWN);
-        input1.setTypeEquals(unknownArrayType);
-        input2.setTypeEquals(unknownArrayType);
+        input1.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        input2.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         // set the output type to be no less than the element type of the
         // input arrays.
@@ -115,6 +115,29 @@ public class DotProduct extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the value public variable in the new
+     *  object to equal the cloned parameter in that new object.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+	    throws CloneNotSupportedException {
+        DotProduct newObject = (DotProduct)super.clone(workspace);
+
+        // set the type constraints
+        ArrayType input1Type = (ArrayType)newObject.input1.getType();
+        InequalityTerm elementTerm1 = input1Type.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elementTerm1);
+
+        ArrayType input2Type = (ArrayType)newObject.input2.getType();
+        InequalityTerm elementTerm2 = input2Type.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elementTerm2);
+        return newObject;
+    }
 
     /** Read an ArrayToken from each of the input ports, and output the
      *  dot product.

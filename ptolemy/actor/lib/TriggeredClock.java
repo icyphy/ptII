@@ -214,11 +214,24 @@ public class TriggeredClock extends TimedSource {
         }
     }
 
-       
-     
-      public boolean  prefire() throws IllegalActionException {
-             return  super.prefire();
-	                                                                                                  }
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then sets the parameter public members to refer
+     *  to the parameters of the new actor.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+	    throws CloneNotSupportedException {
+        TriggeredClock newObject = (TriggeredClock)super.clone(workspace);
+        ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
+        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+        newObject.output.setTypeAtLeast(elementTerm);
+
+        return newObject;
+    }
+
     /** Output the current value of the clock.
      *  @exception IllegalActionException If the <i>values</i> and
      *   <i>offsets</i> parameters do not have the same length, or if
@@ -304,13 +317,12 @@ public class TriggeredClock extends TimedSource {
     }
 
     /** Initialize trigger
-    
      */
     public void initialize() throws IllegalActionException {
           _trigger = false;
           _cycCount = 0;
-            super.initialize(); 
-                          	     }
+          super.initialize(); 
+    }
    
  
     /** Update the state of the actor and schedule the next firing,
@@ -373,7 +385,7 @@ public class TriggeredClock extends TimedSource {
     private transient int _phase;
 
     // The value of the trigger input
-    private  transient boolean  _trigger;
+    private transient boolean  _trigger;
 
     // Following variables recall data from the fire to the postfire method.
     private transient Token _tentativeCurrentValue;
