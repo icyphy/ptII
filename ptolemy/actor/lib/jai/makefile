@@ -82,7 +82,8 @@ JSRCS = DoubleMatrixToJAI.java \
 	JAITranspose.java
 
 OTHER_FILES_TO_BE_JARED = \
-	jai.xml
+	jai.xml \
+	jai-copyright.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
