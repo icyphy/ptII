@@ -65,6 +65,7 @@ awk '
 			    if ( $1 != "Because:" ) {
 				sawFailed--
 				errorMessage = firstLine "\n" $0
+				print "modelName: " modelName
 				errors[errorMessage] = errors[errorMessage] " " modelName
 			    }
 	             } 		    
@@ -115,6 +116,9 @@ awk '
 			    # we will have proccessed better error messages
 			    # above
 			    if (errorLine2 !~ /Problem executing command. Return value was: 2. Command was:/) {
+			        if ( length(modelName2) < 1) {
+				    print "modelName2 is empty at line " NR
+                                }
 				errors[errorLine2] = errors[errorLine2] " " modelName2
 			    }
 	             } 		    
@@ -123,15 +127,29 @@ awk '
 			    if ($0 ~ /Entering directory /) {
 				skip = 4
 			    } 
+
 			    if (skip > 0) {
 				skip--
 			    } else {
+				inputLine = $0
+				# Some errors include info that changes
+ 				# for each model, so we only print the reason,
+				# not the details
+				if (inputLine ~ /Failed to parse/) {
+				    inputLine = "Failed to parse"
+				    sawTestGeneratedError +=2
+				    skip = 1
+			        } 
+
+				if (inputLine ~ /Could not determine the static value of tmp/) {
+				    inputLine = "Could not determine the static value of tmp"
+			        } 
 				sawTestGeneratedError--
 				if ( length(errorLine2) > 0) {
-				    tmp = errorLine2 "\n" $0
+				    tmp = errorLine2 "\n" inputLine
 				    errorLine2 = tmp
 				} else {
-				    errorLine2 = $0
+				    errorLine2 = inputLine
 				}
 			    }
 		      }	
@@ -155,6 +173,17 @@ awk '
 			    sawTestGeneratedErrorAndWatchDogTimer = 0
 			    completedSawTestGeneratedError = 0
 	              }		    
+    $0 ~ /^====/ {
+		    if ($0 !~ /Auto Automatic test in file/ \
+			&& $0 !~ /Contents of test case:/ \
+			&& $0 !~ /Test generated error/ ) {
+			# Non-automatic test, like from QuickSmoke.tcl
+			modelName2 = $2
+		        sawCommandFailed=0 
+			sawTestGeneratedErrorAndWatchDogTimer = 0
+			completedSawTestGeneratedError = 0
+		    }
+		}		      
     $0  ~/Command failed/ {
 			   # vq test1.xml will come up twice unless
 			   # we avoid Command Failed after Test Generated Err.
