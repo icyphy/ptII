@@ -1,4 +1,4 @@
-# Makefile for the tests of the Giotto kernel.
+# Makefile for the tests of the RTP kernel.
 #
 # @Authors: Christopher Hylands
 #
