@@ -54,9 +54,7 @@ iconlibrary CDATA #REQUIRED>
 <!-- The following don't have separate classes. -->
 <!ELEMENT description (#PCDATA)>
 <!ELEMENT header (description, sublibrary*)>
-<!ELEMENT sublibrary EMPTY>
-<!ATTLIST sublibrary 
-file CDATA #REQUIRED>
+<!ELEMENT sublibrary (#PCDATA)>
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
@@ -112,7 +110,7 @@ public class IconLibrary extends XMLElement{
      */
     public void addSubLibrary(String name) {
         XMLElement e = new XMLElement("sublibrary");
-        e.setAttribute(name);
+        e.setPCData(name);
         header.addChildElement(e);
         sublibraries.putAt(name, e);
     }
@@ -183,7 +181,7 @@ public class IconLibrary extends XMLElement{
      */
     public void removeSubLibrary(String name) {
         XMLElement e = (XMLElement) sublibraries.at(name);
-        removeChildElement(e);
+        header.removeChildElement(e);
         sublibraries.removeAt(name);
     }
 
