@@ -1,4 +1,4 @@
-/* An actor that sends car position to a Java Space.
+/* An actor that sends car position to a JavaSpace.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -149,7 +149,7 @@ public class CarInformationPublisher extends TypedAtomicActor
      *  always acceptable.
      *  @return True 
      */
-    public boolean isThisStepSuccessful() {
+    public boolean isThisStepAccurate() {
         return true;
     }
 
