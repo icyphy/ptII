@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Hysteresis" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[511, 528]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[27, 18]">
     </property>
@@ -20,20 +20,20 @@
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 111, 819, 572}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={92, 2, 726, 646}, maximized=false}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows the Hysteresis effect. The noisy sinewave is turned into square wave.&#10;This model is regenerated based on Brian Vogel's model, which uses old HDF structure.&#10;&#10;Author: Rachel Zhou">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model shows the Hysteresis effect. Hysteresis is a retardation &#10;of an effect when the forces acting upon a body are changed. It is&#10;often used to decribe the phenomenon in which the magnetic induction &#10;of a ferromagnetic material lags behind the changing magnetic field.&#10;&#10;In this example, the noisy sinewave is turned into square wave. However,&#10;the polarity of the square wave does not change immediately as the&#10;sinewave change changes polarity.&#10;&#10;Author: Rachel Zhou, Brian Vogel">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 300.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{255.5, 264.0}">
     </property>
     <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.FSMDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
                 </property>
@@ -43,15 +43,11 @@
                 </property>
             </property>
         </property>
-        <property name="_Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector">
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-            </property>
-        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="385.0, 215.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 215.0]">
         </property>
         <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -69,34 +65,27 @@
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
-            <property name="annotation" class="ptolemy.kernel.util.Attribute">
-                <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Send -1 to output">
                 </property>
-                <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                    <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Create a state machine here (and ports, if needed) and
-create refinements for the states.  Create transitions
-by holding the control key and dragging from one state
-to another. Then delete this annotation.</text>
-</svg></configure>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 215.0]">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 5.0">
+            </property>
+            <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+                <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Send 1 to output.">
                 </property>
-                <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
-                </property>
-                <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 215.0]">
                 </property>
             </property>
             <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 55.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 90.0]">
                 </property>
             </port>
             <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 65.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 95.0]">
                 </property>
             </port>
             <entity name="state" class="ptolemy.domains.fsm.kernel.State">
@@ -116,7 +105,7 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 180.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 185.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
@@ -156,30 +145,30 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="327.0, 61.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 90.0]">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 128, 815, 511}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 128, 815, 518}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
             <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="155.0, 170.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 170.0]">
                 </property>
             </port>
             <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="320.0, 170.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 170.0}">
                 </property>
             </port>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <property name="value" class="ptolemy.data.expr.Parameter" value="-1.0">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="249.0, 172.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 170.0}">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -205,26 +194,34 @@ to another. Then delete this annotation.</text>
                 </property>
                 <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 66.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 80.0]">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
             </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 660, 414}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[445, 296]">
+            </property>
+            <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+            </property>
+            <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{222.5, 148.0}">
+            </property>
             <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 170.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 170.0]">
                 </property>
             </port>
             <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 170.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 170.0]">
                 </property>
             </port>
             <entity name="Const" class="ptolemy.actor.lib.Const">
                 <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <doc>Create a constant sequence</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="254.0, 171.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 170.0]">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
@@ -336,7 +333,7 @@ to another. Then delete this annotation.</text>
         </property>
     </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="232.0, 147.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 145.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -357,9 +354,9 @@ to another. Then delete this annotation.</text>
     <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 209, 508, 357}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={531, 374, 479, 351}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[471, 294]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -367,7 +364,7 @@ to another. Then delete this annotation.</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 145.0]">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
         </property>
@@ -377,12 +374,12 @@ to another. Then delete this annotation.</text>
 <plot>
 <title></title>
 <xRange min="0.0" max="39.0"/>
-<yRange min="-1.1454792597622536" max="1.103304868329816"/>
+<yRange min="-1.1680396665637336" max="1.1645949124674162"/>
 </plot>?>
         </configure>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="290.0, 145.0">
+        <vertex name="vertex1" value="[255.0, 145.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
