@@ -78,7 +78,7 @@ The simplest scenario has the thread constantly stalled awaiting a
 packet.  When it receives one, it quickly queues it here in the actor,
 calls fireAtCurrentTime(), and then stalls again awaiting the next
 packet.  By stalling again and again, the thread keeps the actor aware
-at all times of incomming packets.  This is perticularly important if
+at all times of incoming packets.  This is particularly important if
 packets come in more quickly than the model can process them.  More on
 this below.  Depending of the domain (e.g. DE) in which this actor is
 used, the director may respond to the thread's fireAtCurrentTime()
@@ -87,8 +87,8 @@ broadcasts the data received, plus the return address and return
 socket number from which the datagram originated.  This information
 goes to connected actors in the Ptolemy model in the usual manner. <p>
 
-The data portion of the packet is brodcast at the <i>output</i> port.
-A variety of data types ar possible, depending on the setting of the
+The data portion of the packet is broadcast at the <i>output</i> port.
+A variety of data types are possible, depending on the setting of the
 <i>encoding</i> parameter.  If <i>encoding</i> is one of the raw data
 formats, then an array of integers is produced.  Otherwise, any legal
 Ptolemy data type is possible, and may vary from packet to packet.
@@ -98,10 +98,10 @@ number are broadcast as String and int respectively.  These tell where
 the received datagram originated from.  <p>
 
 NOTE: Ideally, there would be more encoding options than
-provided here.  However, I believe the best way to fill out this
-repetoir is to make a separate encode/decode or pack/repack/unpack
-actor.  Such an actor would better refactor this functionality than
-to duplicate it in each I/O actor (as has been done here with the
+provided here.  However, I believe the best way to fill out this 
+repertoir is to make a separate encode/decode or pack/repack/unpack 
+actor.  Such an actor would better refactor this functionality than 
+to duplicate it in each I/O actor (as has been done here with the 
 datagram actors).  <p><p>
 
 
@@ -111,7 +111,7 @@ getting around to calling fire().  Conversely, the director may make
 extra calls to fire(), even before any datagrams have come in.  <p>
 
 Background: There are two packet buffers.  The thread and the fire()
-method share these buffers and maintain consistancy via synchronized
+method share these buffers and maintain consistency via synchronized
 on the object <i>_syncFireAndThread</i>.  This synchronization prevent
 conflicts when accessing the shared buffers and when accessing the
 count of queued packets.  <p>
@@ -122,7 +122,7 @@ received in favor of the new one.  If false, the new packet is queued
 behind the existing one.  In the latter case, both buffers are now
 full.  The thread then waits for fire() to consume a queued packet
 before it stalls again awaiting the next.  In all other cases
-(<i>overwrite</i> true or no queued packets) the thread immidiately
+(<i>overwrite</i> true or no queued packets) the thread immediately
 stalls to await the next packet.<p>
 
 The <i>blockAwaitingDatagram</i> parameter applies to the eager director
@@ -135,8 +135,8 @@ have default outputs as well, but they are not parameter-programmable. <p><p>
 
 NOTE: This actor has a parameter <i>localSocketNumber</i> for the port
 number assigned to its local datagram socket.  Initially, the local
-socket number is set to 4004.  There is no particular reason for choosing
-this number, except that is noticable in the code and in vergil, thus
+socket number is set to 4004.  There is no particular reason for choosing 
+this number, except that is noticeable in the code and in vergil, thus 
 encouraging you to change it to any desired value in the range 0..65535.
 
 Some commonly used port numbers (a.k.a. socket numbers) are shown below:
@@ -163,7 +163,7 @@ and also in the UNIX-like Bash shell.  In either shell, enter 'netstat -an'.
 This shows current port allocations!  Both due to the Ptolemy model and
 otherwise. <p>
 
-@author Winthrop Williams, Jorn, Xiojun, Edward Lee
+@author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward Lee
 (Based on TiltSensor actor written
    by Chamberlain Fong, Xiaojun Liu, Edward Lee)
 @version $Id$ */
@@ -238,8 +238,8 @@ public class DatagramReceiver extends TypedAtomicActor {
         encoding.setExpression("for_Ptolemy_parser");
 	// The above setExpression() call causes a call to the
 	// attributeChanged() method here in this same actor!
-	// The actor uses this to set the related cashed values
-	// <i>_decodeWithPtolemyParser</i> etc. to be congruent
+	// The actor uses this to set the related cached values 
+	// <i>_decodeWithPtolemyParser</i> etc. to be congruent 
 	// with the setting of <i>encoding</i>.
 
    }
@@ -269,17 +269,17 @@ public class DatagramReceiver extends TypedAtomicActor {
     /** Encoding to expect of received datagrams.  This is a
      *  string-valued attribute that defaults to "forPtolemyParser".
      *  This is a 'ChoiceStyle' i.e. drop-menu-select parameter.
-     *  The three options currnetly implemented are: "for_Ptolemy_parser",
-     *  "raw_low_bytes_of_integers", and "raw_integers_little_endian".
+     *  The three options curretly implemented are: "for_Ptolemy_parser", 
+     *  "raw_low_bytes_of_integers", and "raw_integers_little_endian".  
      *  The first option allows reconstruction of any data type upon
-     *  reception.  This is designed to be used with the DatagramSender
-     *  similarly configured.  The other two options are for receiving
-     *  general data in raw form.  These formats are also convienent for
-     *  receiving arrays of bytes and integers respectively.  The former
-     *  are not received explicitly as bytes since the Byte type is
-     *  still under development in Ptolemy.  Conversion in this actor
-     *  between bytes and integers simply ignores the 24 high order bits
-     *  of the integer.  For example, 511, 255, and -1 are treated as
+     *  reception.  This is designed to be used with the DatagramSender 
+     *  similarly configured.  The other two options are for receiving 
+     *  general data in raw form.  These formats are also convenient for 
+     *  receiving arrays of bytes and integers respectively.  The former 
+     *  are not received explicitly as bytes since the Byte type is 
+     *  still under development in Ptolemy.  Conversion in this actor 
+     *  between bytes and integers simply ignores the 24 high order bits 
+     *  of the integer.  For example, 511, 255, and -1 are treated as 
      *  the same value under the "raw_low_bytes_of_integers" setting.
      */
     public StringAttribute encoding;
@@ -299,7 +299,7 @@ public class DatagramReceiver extends TypedAtomicActor {
      *  datagram packet.  The type of this output is String.  This is
      *  the IP address of the remote datagram socket which sent the
      *  packet to this actor's socket.  Under IPv4, this string has
-     *  the familar form "128.32.1.1".  This output defaults (when no
+     *  the familiar form "128.32.1.1".  This output defaults (when no
      *  datagram has been received and blocking is false) to the IP
      *  address of this actor's socket.
      */
@@ -334,7 +334,7 @@ public class DatagramReceiver extends TypedAtomicActor {
 
     /** Boolean directive in case datagrams pile up.  Default is true.
      *  If false, datagrams will queue up (mostly in the platform,
-     *  some in the actor).  The datagram used at each invoaction of
+     *  some in the actor).  The datagram used at each invoction of
      *  fire will be the oldest in the queue.  On the other hand, if
      *  <i>overwrite</i> is true, then minimal queuing will occur and
      *  the most recent data will be used when fire() is called.
@@ -345,12 +345,12 @@ public class DatagramReceiver extends TypedAtomicActor {
     /** Length (in bytes) of each of the two packet buffers for
      * receiving a datagram.  This length does not include the bytes
      * needed for storing the datagram's return address and other
-     * houskeeping information.  This buffer need only be big enough
+     * housekeeping information.  This buffer need only be big enough
      * to hold the payload or net contents of the datagram.  There is
      * also a buffer somewhere in the Java Virtual Machine or in the
      * underlying firmware or platform.  The size of this buffer is
      * not controlled by this actor, but it could be.  Its length is
-     * accessable via the getReceiveBufferSize and
+     * accessible via the getReceiveBufferSize and
      * setReceiveBufferSize methods of java.net.DatagramSocket.
      * Caution - The set is only a suggestion.  Must call get to see
      * what you actually got.  */
@@ -359,7 +359,7 @@ public class DatagramReceiver extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    /** React to a change of the given acttribute.  Generally, this is
+    /** React to a change of the given attribute.  Generally, this is
      *  called between firings of an actor.  However, this actor
      *  contains a separate thread of which the director is not aware.
      *  Any time the model is running, calls to this method typically
@@ -410,22 +410,22 @@ public class DatagramReceiver extends TypedAtomicActor {
 		// it really work, that is set the type of the <i>output</i>
 		// port if and only if the <i>encoding</i> parameter is
 		// actually changed, some things would need to be fixed.
-		// The "confugure" dialog currently implements "cancel"
-		// via a reapplication of stored values, thus reverting
-		// the change.  However, my actor would have already
-		// overwritten and lost user settings in such a process.
-		// Having fixed this, the next step would be to use
-		// MoMLChangeRequest(originator,context,"<....>") in
-		// place of setTypeEquals() whose changes do not stick.
-		// Finally, to make this safe during the constructor
-		// call, maybe an _inConstructor variable would serve
-		// to avoid overwriting user setings.
+		// The "configure" dialog currently implements "cancel" 
+		// via a reapplication of stored values, thus reverting 
+		// the change.  However, my actor would have already 
+		// overwritten and lost user settings in such a process.  
+		// Having fixed this, the next step would be to use 
+		// MoMLChangeRequest(originator, context, "<....>") in 
+		// place of setTypeEquals() whose changes do not stick. 
+		// Finally, to make this safe during the constructor 
+		// call, maybe an _inConstructor variable would serve 
+		// to avoid overwriting user settings.
 		if (false) {
 
 
 		    // I have acted on this parameter only if the requested
 		    // new value of the parameter differs from what is already
-		    // in use.  This caveat improves usibility by avoiding
+		    // in use.  This caveat improves usability by avoiding
 		    // unnecessary undoing of the user's "configure ports"
 		    // setting of the <i>output</i> by the code below.
 		    //
@@ -495,7 +495,7 @@ public class DatagramReceiver extends TypedAtomicActor {
 
         // In the case of <i>localSocketNumber</i> it is necessary to
         // disturb the thread if it is in the call to
-        // socket.recieve().  This is rather disruptive, so I choose
+        // socket.receive().  This is rather disruptive, so I choose
         // to act on these attribute change requests only if the value
         // of this parameter has actually changed.  Furthermore, when
 	// receive() is busy, wait 444mS (an arbitrary choice) to
@@ -558,10 +558,10 @@ public class DatagramReceiver extends TypedAtomicActor {
                }
            } // Sync(this)
 
-        // In the case of <i>bufferLength</i>, simply cashe the parameter.
-        // The thread used this value to set the size of a buffer prior
-        // to the socket.receive() call.  The thread only resizes a buffer
-        // when it is about to call receive on it and this parameter has
+        // In the case of <i>bufferLength</i>, simply cache the parameter.
+        // The thread used this value to set the size of a buffer prior 
+        // to the socket.receive() call.  The thread only resizes a buffer 
+        // when it is about to call receive on it and this parameter has 
         // changed from the value last used for that specific buffer.
         // Synchronization ensures that the thread's test for a change in
         // this value and its use of the value access the same thing.
@@ -627,7 +627,7 @@ public class DatagramReceiver extends TypedAtomicActor {
             // attribute is changed while waiting.  Has no effect in
             // DE, unless the DE model uses this actor's
             // <i>trigger</i> input, since fire() is only called by
-            // the director in responce to this actor's thread calling
+            // the director in response to this actor's thread calling
             // the director's fireAtCurrentTime() method.  In the
             // latter case, there is always a packet waiting because
             // otherwise fireAtCurrentTime() would not have been
@@ -680,7 +680,7 @@ public class DatagramReceiver extends TypedAtomicActor {
                                 "Broadcast blank 'new Token()'");
                         _outputToken = new Token();
                         // This simplest of tokens is of type 'general'.
-                        // It prits on the display actor as 'present'.
+                        // It prints on the display actor as 'present'.
                     } else {
                         if (_debugging) _debug(
                                 "Broadcast non-null parsed token");
@@ -716,7 +716,7 @@ public class DatagramReceiver extends TypedAtomicActor {
                         _outputToken = new ArrayToken(dataIntTokens);
                     } else {
                         // Special case of zero length array:
-                        // FIXME - test yuhong's work
+                        // FIXME - test Yuhong's work
                         if (_debugging) _debug(
                                 "Broadcast zero length {int}");
                         _outputToken = new ArrayToken(BaseType.INT);
@@ -872,7 +872,7 @@ public class DatagramReceiver extends TypedAtomicActor {
 
      *  FIXME: There exists a circumstance where stopFire() could fail
      *  to stop the fire() method, and the fire() method could block
-     *  indefinently.  This occurs if stopFire() is called after
+     *  indefinintly.  This occurs if stopFire() is called after
      *  fire() is called (or after the director commits itself to
      *  calling fire()) but before fire() enters the synchronized
      *  section in which it blocks with a wait() call.  In theory,
@@ -889,20 +889,20 @@ public class DatagramReceiver extends TypedAtomicActor {
      *  Perhaps prefire() could serve to clear the flag!  This assumes
      *  that, upon resuming execution, prefire() is repeated before
      *  fire() is reentered.-[Tested; assumption holds.]  It also
-     *  assumes that supurfluous calls to stopFire() do not occur
+     *  assumes that superfluous calls to stopFire() do not occur
      *  during prefire() or between prefire() and fire().-{Tested;
      *  assumption holds with only known superfluous call, the one
      *  when the user presses 'Go'] Additionally, this assumes that
      *  intentional calls to stopFire(), if they occur before or
      *  during the preinitialize call, are backed up by a test which
-     *  prvents the director from calling fire() if it has already
-     *  called stopFire() with the intension of stopping that same
+     *  prevents the director from calling fire() if it has already
+     *  called stopFire() with the intention of stopping that same
      *  fire().-[Tested; assumption does not hold.  I caused
      *  stopFire() to be called during prefire().  The director
      *  went ahead and called fire() anyway!]
 
      *  If the director/manager need to be fixed anyway, perhaps the
-     *  stopFire paradigm ought to be rearchetected to incorporate a
+     *  stopFire paradigm ought to be rearchitected to incorporate a
      *  flag.  (Does it already and I just don't know about it?)
 
      */
@@ -910,9 +910,9 @@ public class DatagramReceiver extends TypedAtomicActor {
         System.out.println("stopFire() is called");
         synchronized(_syncFireAndThread) {
             if (_fireIsWaiting) {
-                // stopFire() gets called alot.  Including each time
-                // the program is started.  This caveat has proven
-                // necessary to avoid disrupting one of the first
+                // stopFire() gets called a lot.  Including each time 
+                // the program is started.  This caveat has proven 
+                // necessary to avoid disrupting one of the first 
                 // few firings.
 		_stopFire = true;
                 _syncFireAndThread.notifyAll();
@@ -970,13 +970,13 @@ public class DatagramReceiver extends TypedAtomicActor {
     private Object _syncBufferLength = new Object();
     private Object _syncSocket = new Object();
 
-    // Cashed copies of parameters:
+    // Cached copies of parameters:
     private int _bufferLength;
     private boolean _overwrite;
     private boolean _blockAwaitingDatagram;
     private Token _defaultOutputToken;
 
-    // Cashed copy of <i>encoding</i> parameter and its droogies
+    // Cached copy of <i>encoding</i> parameter and its drogues:
     private String _encoding = new String("");
     private boolean _decodeWithPtolemyParser;
     private boolean _decodeToIntegerArray;
@@ -986,7 +986,7 @@ public class DatagramReceiver extends TypedAtomicActor {
     // separately because the .getLength() method returns the length
     // of the contained data, not the (typically longer) length
     // allocated to the data buffer.  FIXME - could I do
-    // .getData().Length() to get the byte array's lentgth?
+    // .getData().Length() to get the byte array's length?
     private DatagramPacket _receivePacket = null;
     private DatagramPacket _broadcastPacket = null;
     private int _receiveAllocated = 0;

@@ -75,7 +75,8 @@ set to 4003, just to pick a number.  The socket is not allocated
 until the model is run.<p>
 
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
-(Based on TiltSensor actor writen by Chamberlain Fong, Xiaojun Liu, Edward Lee)
+(Based on TiltSensor actor written by 
+ Chamberlain Fong, Xiaojun Liu, Edward Lee)
 @version $Id$ */
 
 
@@ -147,7 +148,7 @@ public class DatagramSender extends TypedAtomicActor {
   	triggerOutput = new TypedIOPort(this, "triggerOutput");
 	 // Had had ', true, false' before ');' above.
         triggerOutput.setTypeEquals(BaseType.GENERAL);
-	 // 'INT' workes too in place of 'GENERAL'.
+	 // 'INT' works too in place of 'GENERAL'.
         triggerOutput.setOutput(true);
     }
 
@@ -202,7 +203,7 @@ public class DatagramSender extends TypedAtomicActor {
     ////                     public methods                        ////
 
     /** If the parameter changed is <i>localSocketNumber</i>, then if
-     *  the model is running (as evedenced by socket != null) then
+     *  the model is running (as evidenced by socket != null) then
      *  close socket and reopen with new socket number (even if same
      *  as old socket number).  Do not close the socket until a new
      *  one has been successfully opened.
