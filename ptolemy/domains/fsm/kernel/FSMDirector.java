@@ -248,8 +248,8 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                 if (actors[i].prefire()) {
                     if (_debugging) {
                         _debug(getFullName(), " fire refinement",
-                               ((ptolemy.kernel.util.NamedObj)
-                                actors[i]).getName());
+                                ((ptolemy.kernel.util.NamedObj)
+                                        actors[i]).getName());
                     }
                     actors[i].fire();
                     actors[i].postfire();
@@ -269,9 +269,9 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                     if (actors[i].prefire()) {
                         if (_debugging) {
                             _debug(getFullName(),
-                                   " fire transition refinement",
-                                   ((ptolemy.kernel.util.NamedObj)
-                                    actors[i]).getName());
+                                    " fire transition refinement",
+                                    ((ptolemy.kernel.util.NamedObj)
+                                            actors[i]).getName());
                         }
                         actors[i].fire();
                         actors[i].postfire();
@@ -450,8 +450,8 @@ public class FSMDirector extends Director implements ModelErrorHandler {
      *   one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
-       super.initialize();
-       _buildLocalReceiverMaps();
+        super.initialize();
+        _buildLocalReceiverMaps();
     }
 
     /** Return a receiver that is a one-place buffer. A token put into the
@@ -503,7 +503,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
         FSMActor controller = getController();
         boolean result = controller.postfire();
         _currentLocalReceiverMap =
-                (Map)_localReceiverMaps.get(controller.currentState());
+            (Map)_localReceiverMaps.get(controller.currentState());
         return result && !_stopRequested;
     }
 
@@ -698,7 +698,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                     state = (State)states.next();
                     TypedActor[] actors = state.getRefinement();
                     Receiver[][] allReceiversArray
-                            = new Receiver[allReceivers.length][0];
+                        = new Receiver[allReceivers.length][0];
                     for (int i = 0; i < allReceivers.length; ++i) {
                         resultsList.clear();
                         for (int j = 0; j < allReceivers[i].length; ++j) {
@@ -717,7 +717,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                                         (Transition) transitions.next();
                                     _checkActorsForReceiver
                                         (transition.getRefinement(), cont,
-                                         receiver, resultsList);
+                                                receiver, resultsList);
                                 }
                                 // check refinements
                                 List stateList = new LinkedList();
@@ -732,7 +732,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                                             .destinationState());
                                     _checkActorsForReceiver
                                         (transition.getRefinement(), cont,
-                                         receiver, resultsList);
+                                                receiver, resultsList);
                                 }
                                 Iterator nextStates = stateList.iterator();
                                 while (nextStates.hasNext()) {
@@ -783,8 +783,8 @@ public class FSMDirector extends Director implements ModelErrorHandler {
     ////                         private methods                   ////
 
     private void _checkActorsForReceiver(TypedActor[] actors,
-                                         Nameable cont, Receiver receiver,
-                                         List resultsList) {
+            Nameable cont, Receiver receiver,
+            List resultsList) {
         if (actors != null) {
             for (int k = 0; k < actors.length; ++k) {
                 if (cont == actors[k]) {

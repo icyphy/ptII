@@ -172,7 +172,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             Actor actor = (Actor)actors.next();
             if (_debugging) _debug(getName(), " fire refinement",
                     ((ptolemy.kernel.util.NamedObj)actor).getName());
-                    actor.fire();
+            actor.fire();
         }
 
         _ctrl._setInputsFromRefinement();
@@ -188,8 +188,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                     if (transitionActors[i].prefire()) {
                         if (_debugging) {
                             _debug(getFullName(),
-                                   " fire transition refinement",
-                                  ((ptolemy.kernel.util.NamedObj)transitionActors[i]).getName());
+                                    " fire transition refinement",
+                                    ((ptolemy.kernel.util.NamedObj)transitionActors[i]).getName());
                         }
                         transitionActors[i].fire();
                         transitionActors[i].postfire();
@@ -249,7 +249,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 Actor refinement = (Actor) refinements.next();
                 if (refinement instanceof CTStepSizeControlActor) {
                     result = result && ((CTStepSizeControlActor)
-                                        refinement).isThisStepAccurate();
+                            refinement).isThisStepAccurate();
                 }
             }
         }
@@ -263,7 +263,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             if (tr != null) {
                 if (_debugging) {
                     _debug("Find enabled transition:  " +
-                           tr.getGuardExpression());
+                            tr.getGuardExpression());
                 }
             }
             // Check if there is any events dected.
@@ -271,7 +271,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             if (trWithEvent != null) {
                 if (_debugging) {
                     _debug("Dected event for transition:  " +
-                           trWithEvent.getGuardExpression());
+                            trWithEvent.getGuardExpression());
                 }
             }
 
@@ -302,7 +302,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
                 if (_debugging) {
                     _debug("==> the guard " + tr.getGuardExpression() +
-                           " has difference " + _distanceToBoundary);
+                            " has difference " + _distanceToBoundary);
                 }
 
                 if (_transitionAccurate) {
@@ -318,7 +318,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         } catch (Exception e) {
             //FIXME: handle the exception
             System.out.println(
-                "FIXME:: HSDirector.isThisStepAccurate() throws exception ");
+                    "FIXME:: HSDirector.isThisStepAccurate() throws exception ");
             e.printStackTrace();
             return result;
         }
@@ -377,7 +377,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         if (tr != null) {
             if (_debugging) {
                 _debug("Postfire deals with enabled transition " +
-                       tr.getGuardExpression());
+                        tr.getGuardExpression());
             }
             Iterator iterator = _st.nonpreemptiveTransitionList().listIterator();
             // It is important to clear the history information of the relation list
@@ -478,79 +478,79 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
         // FIXME: Linear interpolation is great but may be optimized with some
         // tricks from following commented code. That is why I haven't deleted it.
-/*
-        if (_transitionAccurate) {
-            return result;
-        } else {
-            // FIXME: needs better algorithm
-            // FIXME: only handles one integrator
+        /*
+          if (_transitionAccurate) {
+          return result;
+          } else {
+          // FIXME: needs better algorithm
+          // FIXME: only handles one integrator
 
-            // If last step size is not accurate, we use a linear interpolation
-            // approach to get the refined step size; otherwise, we use the
-            // maximum value of current derivatives of state variables to refine the step size.
+          // If last step size is not accurate, we use a linear interpolation
+          // approach to get the refined step size; otherwise, we use the
+          // maximum value of current derivatives of state variables to refine the step size.
 
-            // Notice, we try to refine the step size such that the distance
-            // to boundary is errorTolerance/2.
-            double possibleStepSize = result;
-            double errorTolerance = dir.getErrorTolerance();
+          // Notice, we try to refine the step size such that the distance
+          // to boundary is errorTolerance/2.
+          double possibleStepSize = result;
+          double errorTolerance = dir.getErrorTolerance();
 
-            if (!_lastTransitionAccurate) {
+          if (!_lastTransitionAccurate) {
 
-                //System.out.println();
-                //System.out.println("====> using linear interopolation.");
-                //System.out.println("====> current step size " + result + " former step size " + _lastStepSize);
-                //System.out.println("====> current distance to boundary " + _distanceToBoundary + " former " + _lastDistanceToBoundary);
+          //System.out.println();
+          //System.out.println("====> using linear interopolation.");
+          //System.out.println("====> current step size " + result + " former step size " + _lastStepSize);
+          //System.out.println("====> current distance to boundary " + _distanceToBoundary + " former " + _lastDistanceToBoundary);
 
-                possibleStepSize = _lastStepSize - (_lastStepSize - result)
-                    *( _lastDistanceToBoundary - errorTolerance/2) / (_lastDistanceToBoundary - _distanceToBoundary);
-            } else {
+          possibleStepSize = _lastStepSize - (_lastStepSize - result)
+          *( _lastDistanceToBoundary - errorTolerance/2) / (_lastDistanceToBoundary - _distanceToBoundary);
+          } else {
 
-                //System.out.println();
-                //System.out.println("***** using derivative.");
-                double maximumDerivative = 0.0;
+          //System.out.println();
+          //System.out.println("***** using derivative.");
+          double maximumDerivative = 0.0;
 
-                Iterator actors = _enabledRefinements.iterator();
-                while (actors.hasNext()) {
-                    CompositeActor actor = (CompositeActor) actors.next();
-                    Iterator integrators = actor.entityList(Integrator.class).
-                        iterator();
-                    while (integrators.hasNext()) {
-                        Integrator integrator = (Integrator) integrators.next();
-                        try {
-                            double input = ( (DoubleToken) integrator.input.get(
-                                0)).
-                                absolute().doubleValue();
-                            if (input > maximumDerivative) {
-                                maximumDerivative = input;
-                            }
-                        }
-                        catch (IllegalActionException e) {
-                            //FIXME: how to handle the exception.
-                            System.out.println("FIXME" + e.getMessage());
-                            maximumDerivative = 1.0;
-                        }
-                    }
-                }
+          Iterator actors = _enabledRefinements.iterator();
+          while (actors.hasNext()) {
+          CompositeActor actor = (CompositeActor) actors.next();
+          Iterator integrators = actor.entityList(Integrator.class).
+          iterator();
+          while (integrators.hasNext()) {
+          Integrator integrator = (Integrator) integrators.next();
+          try {
+          double input = ( (DoubleToken) integrator.input.get(
+          0)).
+          absolute().doubleValue();
+          if (input > maximumDerivative) {
+          maximumDerivative = input;
+          }
+          }
+          catch (IllegalActionException e) {
+          //FIXME: how to handle the exception.
+          System.out.println("FIXME" + e.getMessage());
+          maximumDerivative = 1.0;
+          }
+          }
+          }
 
-                possibleStepSize = result - (_distanceToBoundary - errorTolerance/2) /maximumDerivative;
-            }
+          possibleStepSize = result - (_distanceToBoundary - errorTolerance/2) /maximumDerivative;
+          }
 
-            // save for next step size checking.
-            _lastDistanceToBoundary = _distanceToBoundary;
-            _lastTransitionAccurate = false;
-            _lastStepSize = result;
+          // save for next step size checking.
+          _lastDistanceToBoundary = _distanceToBoundary;
+          _lastTransitionAccurate = false;
+          _lastStepSize = result;
 
-            //System.out.println("           refined current Step size " + possibleStepSize);
+          //System.out.println("           refined current Step size " + possibleStepSize);
 
-            if (possibleStepSize < 0.0) {
-                // This refined step size does not make sense.
-                return result/2.0;
-            } else {
-                // step size is always reduced.
-                return possibleStepSize;
-            }
-        }
-*/
+          if (possibleStepSize < 0.0) {
+          // This refined step size does not make sense.
+          return result/2.0;
+          } else {
+          // step size is always reduced.
+          return possibleStepSize;
+          }
+          }
+        */
     }
 
     ///////////////////////////////////////////////////////////////////

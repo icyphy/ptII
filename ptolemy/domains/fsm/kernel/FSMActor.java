@@ -277,7 +277,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             String name = initialStateName.getExpression();
             if (name == null || name.trim().equals("")) {
                 throw new IllegalActionException(this,
-                "No initial state has been specified.");
+                        "No initial state has been specified.");
             }
             State st = (State)getEntity(name);
             if (st == null) {
@@ -682,7 +682,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *   transition enabled.
      */
     protected Transition _checkTransition(List transitionList)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Transition result = null;
         Iterator transitionRelations = transitionList.iterator();
         while (transitionRelations.hasNext() && !_stopRequested) {
@@ -692,9 +692,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             }
             if (result != null) {
                 throw new IllegalActionException(currentState(),
-                                                 "Multiple enabled transitions: "
-                                                 + result.getName() + " and "
-                                                 + transition.getName() + ".");
+                        "Multiple enabled transitions: "
+                        + result.getName() + " and "
+                        + transition.getName() + ".");
             }
             else {
                 result = transition;
@@ -712,7 +712,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *   transition enabled.
      */
     protected Transition _chooseTransition(List transitionList)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Transition result = _checkTransition(transitionList);
 
         if (result != null) {
@@ -761,14 +761,14 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             _debug(new StateEvent(this, _currentState));
         }
         BooleanToken resetToken =
-                (BooleanToken)_lastChosenTransition.reset.getToken();
+            (BooleanToken)_lastChosenTransition.reset.getToken();
         if (resetToken.booleanValue()) {
             Actor[] actors = _currentState.getRefinement();
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {
                     if (_debugging)
                         _debug(getFullName()+" initialize refinement: "+
-                               ((NamedObj)actors[i]).getName());
+                                ((NamedObj)actors[i]).getName());
                     actors[i].initialize();
                 }
             }
@@ -849,7 +849,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     previousAttribute.setContainer(null);
                 }
                 shadowVariables[channelIndex][0]
-                        = new Variable(this, predicateName);
+                    = new Variable(this, predicateName);
                 // Make the variable lazy since it will often have
                 // an expression that cannot be evaluated.
                 shadowVariables[channelIndex][0].setLazy(true);
@@ -865,7 +865,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     previousAttribute.setContainer(null);
                 }
                 shadowVariables[channelIndex][1]
-                        = new Variable(this, shadowName);
+                    = new Variable(this, shadowName);
 
                 // Make the variable lazy since it will often have
                 // an expression that cannot be evaluated.
@@ -989,7 +989,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
         int width = port.getWidth();
         Variable[][] shadowVariables
-                = (Variable[][])_inputVariableMap.get(port);
+            = (Variable[][])_inputVariableMap.get(port);
         if (shadowVariables == null) {
             throw new InternalErrorException(getName() + ": "
                     + "Cannot find input variables for port "
@@ -1009,7 +1009,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                 shadowVariables[channel][0].setToken(BooleanToken.FALSE);
                 if (_debugging) {
                     _debug("---", port.getName(), "("+channel+
-                           ") has no token.");
+                            ") has no token.");
                 }
             }
         } else {
@@ -1096,7 +1096,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                         boolean linked = false;
                         for (int i = 0; i < actors.length; ++i) {
                             Iterator outports =
-                                    actors[i].outputPortList().iterator();
+                                actors[i].outputPortList().iterator();
                             while (outports.hasNext()) {
                                 IOPort outport = (IOPort)outports.next();
                                 linked = linked | outport.isLinked(relation);
