@@ -68,7 +68,8 @@ public final class CrossRefList {
     public synchronized void associate(CrossRefList farList) {
         synchronized(farList) {
             CrossRef localCrossRef = new CrossRef();
-            // FIXME: put below line in initializer and make _far a "blank final"
+            // FIXME: put below line in initializer and
+            // make _far a "blank final"
             localCrossRef._far = farList.new CrossRef(localCrossRef);
         }
     }
@@ -255,10 +256,13 @@ public final class CrossRefList {
                 }
             } else { // If not at beginning of list.
                 if (_ref != _lastNode) { // If not at end of list.
-                    if (_ref != null) { // If pointer to element not NULL, return next.
+                    if (_ref != null) { 
+                        // If pointer to element not NULL, return next.
                         _ref = _ref._next;
                         return _ref._farOwner();
-                    } else { // If pointer is NULL, then end of list was already passed.
+                    } else {
+                        // If pointer is NULL, then end of list was
+                        // already passed.
                         _ref = null;
                         return _ref;
                     }
