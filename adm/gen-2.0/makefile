@@ -918,6 +918,27 @@ remote4build:
 	(cd $(REMOTE4PTIIDIST);	PTII=$(REMOTE4PTIIDIST) $(MAKE) install)
 
 
+# Run tests outside of Javascope
+remote4distnonjsall:
+	@echo "#"
+	@echo "# Now running make non Javascope tests in $(REMOTE1PTIIDIST)"
+	@echo "# on  `hostname`"
+	@echo "# To add to the list of directories, edit "
+	@echo "# ~ptII/adm/gen-latest/makefile"
+	@echo "#"
+	@echo "$@ `date`"
+	@-if [ "x$(NONJSALLDIRS)" != "x" ]; then \
+		set $(NONJSALLDIRS); \
+		for x do \
+		    if [ -w $$x ] ; then \
+			( cd $$x ; \
+			echo making tests  in $$x ; \
+			$(MAKE) $(MFLAGS) $(MAKEVARS) \
+				tests \
+			);  \
+		    fi ; \
+		done ; \
+	fi
 
 ###########################################################################
 # Rules for cleaning up the distribution
