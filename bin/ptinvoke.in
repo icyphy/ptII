@@ -145,7 +145,14 @@ if [ "$1" = "-sandbox" ]; then
     ALL_JFLAG="-Djava.security.manager \"-Djava.security.policy=${PTII}/bin/sandbox.policy\""
     ALL_JAR="${DIVA_JAR}"
     echo "Running in sandbox mode with minimal set of jars."
+    if [ $# -eq 0 ]; then
+	echo "Note that the file browser does not work well in the sandbox"
+	echo "  To run a model, specify the model on the command line:"
+	echo "  vergil -sandbox \"$PTII/ptolemy/moml/demo/modulation.xml\""
+	echo "  -----"
+    fi	
 fi
+
 
 
 # Optional jar file
