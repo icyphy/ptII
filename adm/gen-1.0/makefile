@@ -350,6 +350,10 @@ $(REMOTE1PTIIDIST): $(PTII_SRC)
 	(cd $(REMOTE1HOME); $(TAR) -xf $(GENDIR)/`basename $(PTII_SRC) .gz`)
 
 remote1configure:
+	@echo "#"
+	@echo "# Now configuring on `hostname`"
+	@echo "#"
+	@echo `date`
 	(cd $(REMOTE1PTIIDIST);	rm -f config.cache; PTII=$(REMOTE1PTIIDIST) configure)
 
 # Clean the remote1 tree
