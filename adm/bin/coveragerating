@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Fri Nov 21 07:26:54 2003 by cxh]-
+# -[Sat Nov 22 08:08:48 2003 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -60,7 +60,7 @@ rm -f $ratingfile
 	awk ' NF == 2 {print "complexity", $0}' < $complexityfile_tmp |
 	    sed "s@$tree/@\.@" |
 	    sed 's@/@.@g' |
-	    sort +2nr -3nr > $complexityfile
+	    sort +2n -3n > $complexityfile
 
 	#rm -f $complexityfile_tmp
 #fi
