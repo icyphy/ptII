@@ -51,11 +51,15 @@ if {[info procs jdkClassPathSeparator] == "" } then {
 
 test InnerField-1.1 {Generate all required files for InnerField.java} {
 
-    generateC InnerField
 
-            #InnerField_Inner.c \
-            #InnerField_Inner.h  InnerField_Inner.o  InnerField_Inner_i.h \
-            #"InnerField\$Inner.class" \
-    
+    set className InnerField
+    set currentDirectory [pwd]
+    generateC $className
+    cd $currentDirectory
+    file rename -force \
+            InnerField_Inner.c \
+            InnerField_Inner.h  InnerField_Inner.o  InnerField_Inner_i.h \
+            "InnerField\$Inner.class" \
+	testOutput/$className
 } {0 1 2}
 
