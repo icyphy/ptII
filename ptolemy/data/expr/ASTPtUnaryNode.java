@@ -26,9 +26,6 @@
 
 @ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
 @AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
-
-Created : May 1998
-
 */
 
 package ptolemy.data.expr;
@@ -49,51 +46,8 @@ nodes in the parse tree.
 @see ptolemy.data.Token
 */
 public class ASTPtUnaryNode extends ASTPtRootNode {
-    protected boolean isMinus = false;
-    protected boolean isNot = false;
-    protected boolean isBitwiseNot = false;
-
-    protected ptolemy.data.Token  _resolveNode() throws IllegalArgumentException {
-        if (jjtGetNumChildren() != 1) {
-            String str = "More than one child of a Unary node";
-            throw new IllegalArgumentException(str);
-        }
-        ptolemy.data.Token result = childTokens[0];
-        try {
-            if (isMinus == true) {
-                // Need to chose the type at the bottom of the hierarch
-                // so as to not do any upcasting. For now IntToken will do.
-                result = result.multiply(new ptolemy.data.IntToken(-1));
-            } else if (isNot == true) {
-                if (!(result instanceof BooleanToken)) {
-                    String str = "Cannot negate a nonBoolean type: ";
-                    throw new IllegalArgumentException(str + result.toString());
-                }
-                result = ((BooleanToken)result).negate();
-            } else if (isBitwiseNot == true) {
-                if (result instanceof IntToken) {
-                    int tmp = ~(((IntToken)result).intValue());
-                    return new IntToken(tmp);
-                    /*                 } else if (result instanceof LongToken) {
-                                       long tmp = ~(((LongToken)result).longValue());
-                                       return new LongToken(tmp);*/
-                } else {
-                    String str = "Cannot apply bitwise NOT \"~\" to  ";
-                    str = str + "non-Integer type: " + result.toString();
-                    throw new IllegalArgumentException(str);
-                }
-            }
-        } catch (Exception ex) {
-            String str = "Invalid negation operation(!, ~, -) on ";
-            str = str + childTokens[0].getClass().getName();
-            throw new IllegalArgumentException(str);
-        }
-        return result;
-    }
-
-
-
-
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     public ASTPtUnaryNode(int id) {
         super(id);
@@ -110,4 +64,55 @@ public class ASTPtUnaryNode extends ASTPtRootNode {
     public static Node jjtCreate(PtParser p, int id) {
         return new ASTPtUnaryNode(p, id);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    protected ptolemy.data.Token _resolveNode()
+            throws IllegalArgumentException {
+        if (jjtGetNumChildren() != 1) {
+            throw new IllegalArgumentException(
+                    "More than one child of a Unary node");
+        }
+        ptolemy.data.Token result = childTokens[0];
+        try {
+            if (_isMinus == true) {
+                // Need to chose the type at the bottom of the hierarch
+                // so as to not do any upcasting. For now IntToken will do.
+                result = result.multiply(new ptolemy.data.IntToken(-1));
+            } else if (_isNot == true) {
+                if (!(result instanceof BooleanToken)) {
+                    throw new IllegalArgumentException(
+                            "Cannot negate a nonBoolean type: " +
+                            result.toString());
+                }
+                result = ((BooleanToken)result).negate();
+            } else if (_isBitwiseNot == true) {
+                if (result instanceof IntToken) {
+                    int tmp = ~(((IntToken)result).intValue());
+                    return new IntToken(tmp);
+                    // } else if (result instanceof LongToken) {
+                    //        long tmp = ~(((LongToken)result).longValue());
+                    // return new LongToken(tmp);
+                } else {
+                    throw new IllegalArgumentException(
+                            "Cannot apply bitwise NOT \"~\" to  "
+                            "non-Integer type: " + result.toString());
+                }
+            }
+        } catch (Exception ex) {
+            throw new IllegalArgumentException(
+                    "Invalid negation operation(!, ~, -) on "
+                    childTokens[0].getClass().getName());
+
+        }
+        return result;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    protected boolean _isMinus = false;
+    protected boolean _isNot = false;
+    protected boolean _isBitwiseNot = false;
 }
