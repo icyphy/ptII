@@ -119,11 +119,21 @@ public class VergilApplication extends MoMLApplication {
      *  @param args The command-line arguments.
      */
     public static void main(String args[]) {
+	// FIXME: Java superstition dictates that if you want something
+	// to work, you should invoke it in event thread.  Otherwise,
+	// weird things happens at the user interface level.  This
+        // seems to prevent occasional errors rending HTML under Web Start.
 	try {
-	    new VergilApplication(args);
-        } catch (Exception ex) {
-            MessageHandler.error("Command failed", ex);
-            System.exit(0);
+	    SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+			try {
+			    new VergilApplication(args);
+			} catch (Exception ex) {
+			    MessageHandler.error("Command failed", ex);
+			    System.exit(0);
+			}
+		    }
+ 		});
         } catch (Error ex2) {
             MessageHandler.error("Command failed" + ex2.toString());
             System.exit(0);
