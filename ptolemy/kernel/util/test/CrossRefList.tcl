@@ -271,8 +271,12 @@ test CrossRefList-5.2 {link CrossRefLists, then check ordering} {
 
     $c1 link $c2
     $c1 link $c3
-    enumToNames [$c1 getContainers]
-} {A2 A3}
+    list [enumToNames [$c1 getContainers]] \
+	   [[$c1 first] getName] \
+	   [[$c2 first] getName] \
+	   [[$c3 first] getName]
+    
+} {{A2 A3} A2 A1 A1}
 
 ######################################################################
 ####
