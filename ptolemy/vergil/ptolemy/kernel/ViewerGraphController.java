@@ -30,43 +30,21 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
-// FIXME: Replace with per-class imports.
-import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.vergil.*;
-import ptolemy.vergil.toolbox.*;
-import ptolemy.vergil.ptolemy.*;
-import ptolemy.gui.*;
-import ptolemy.moml.*;
+import java.util.List;
 
-import diva.gui.*;
-import diva.gui.toolbox.*;
+import diva.canvas.interactor.SelectionDragger;
+import diva.canvas.interactor.SelectionInteractor;
 import diva.graph.EdgeController;
-import diva.graph.AbstractGraphController;
-import diva.graph.GraphController;
 import diva.graph.GraphPane;
 import diva.graph.NodeController;
-import diva.graph.NodeInteractor;
-import diva.canvas.*;
-import diva.canvas.connector.*;
-import diva.canvas.event.*;
-import diva.canvas.interactor.*;
-import diva.canvas.toolbox.*;
-import diva.util.Filter;
-import diva.util.java2d.Polygon2D;
 
-import java.awt.geom.Rectangle2D;
-import java.awt.event.InputEvent;
-import java.awt.event.ActionEvent;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.net.URL;
-import javax.swing.*;
-import javax.swing.event.*;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.Location;
+import ptolemy.moml.Vertex;
 
 //////////////////////////////////////////////////////////////////////////
 //// ViewerGraphController
@@ -88,7 +66,7 @@ create a context-sensitive menu for the graph.
 @contributor Edward A. Lee
 @version $Id$
 */
-public class ViewerGraphController extends AbstractGraphController {
+public class ViewerGraphController extends PtolemyGraphController {
 
     /** Create a new basic controller with default
      *  terminal and edge interactors and default context menus.
@@ -105,51 +83,12 @@ public class ViewerGraphController extends AbstractGraphController {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-// FIXME: Consider removing all these get methods, except getNodeController()
-// and getEdgeController().  UPdate UML.  EAL.
-
-    /** Return the default controller for visible attributes.
-     *  @return The controller for visible attributes.
-     */
-    public AttributeController getAttributeController() {
-	return _attributeController;
-    }
-
-    /** Return the configuration that has been specified by setConfiguration(),
-     *  or null if none.
-     *  @return The configuration.
-     */
-    public Configuration getConfiguration() {
-	return _configuration;
-    }
-
     /** Return the edge controller appropriate for the given node,
      *  which in this case is the same link controller returned by
      *  getLinkController().
      *  @param edge The edge object.
      */
     public EdgeController getEdgeController(Object edge) {
-        return _linkController;
-    }
-
-    /** Return the default controller for entities.
-     *  @return The controller for entities.
-     */
-    public EntityController getEntityController() {
-	return _entityController;
-    }
-
-    /** Return the default controller for ports of an entity.
-     *  @return The controller for ports of an entity.
-     */
-    public EntityPortController getEntityPortController() {
-	return _entityPortController;
-    }
-
-    /** Return the default controller for links.
-     *  @return The controller for links.
-     */
-    public LinkController getLinkController() {
         return _linkController;
     }
 
@@ -181,7 +120,7 @@ public class ViewerGraphController extends AbstractGraphController {
                     NodeControllerFactory factory = (NodeControllerFactory)
                            factoryList.get(0);
                     PtolemyNodeController controller = factory.create(this);
-                    controller.setConfiguration(_configuration);
+                    controller.setConfiguration(getConfiguration());
 
                     // Add to the selection dragger.
                     // NOTE: This should not be null, but in case it is,
@@ -204,33 +143,19 @@ public class ViewerGraphController extends AbstractGraphController {
                     } else {
                         throw new RuntimeException(
                        "Unrecognized object: " + semanticObject);
-                   }
-               }
-           }
-       } else if(object instanceof Port) {
-           return _entityPortController;
-       } else {
-           throw new RuntimeException(
+                    }
+                }
+            }
+        } else if(object instanceof Port) {
+            return _entityPortController;
+        } else {
+            throw new RuntimeException(
                     "Node with unknown semantic object: " + object);
-       }
-       // The compiler seems to lose track of the fact that all branches
-       // above either return or throw an exception, so to silence an
-       // error, we need this:
-       return null;
-   }
-
-    /** Return the default controller for ports of this composite.
-     *  @return The controller for ports of this composite.
-     */
-    public PortController getPortController() {
-	return _portController;
-    }
-
-    /** Return the default controller for relations.
-     *  @return The controller for relations.
-     */
-    public RelationController getRelationController() {
-        return _relationController;
+        }
+        // The compiler seems to lose track of the fact that all branches
+        // above either return or throw an exception, so to silence an
+        // error, we need this:
+        return null;
     }
 
     /** Set the configuration.  This is used by some of the controllers
@@ -238,7 +163,7 @@ public class ViewerGraphController extends AbstractGraphController {
      *  @param configuration The configuration.
      */
     public void setConfiguration(Configuration configuration) {
-        _configuration = configuration;
+        super.setConfiguration(configuration);
         _attributeController.setConfiguration(configuration);
         _entityController.setConfiguration(configuration);
         _portController.setConfiguration(configuration);
@@ -272,50 +197,33 @@ public class ViewerGraphController extends AbstractGraphController {
 	_selectionDragger.addSelectionInteractor(
                 (SelectionInteractor)_attributeController.getNodeInteractor());
 
-        // MenuCreator
-	_menuCreator = new MenuCreator(new SchematicContextMenuFactory(this));
-	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
-
-	pane.getBackgroundEventLayer().setConsuming(false);
+        super.initializeInteraction();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected variables                ////
+
+    /** The attribute controller. */
+    protected AttributeController _attributeController;
+
+    /** The entity controller. */
+    protected EntityController _entityController;
+
+    /** The entity port controller. */
+    protected EntityPortController _entityPortController;
+
+    /** The link controller. */
+    protected LinkController _linkController;
+
+    /** The port controller. */
+    protected PortController _portController;
+
+    /** The relation controller. */
+    protected RelationController _relationController;
 
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
     // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;
-
-
-    // The interactor for creating context sensitive menus on the
-    // graph itself.
-    private MenuCreator _menuCreator;
-
-    // The controllers
-    private EntityController _entityController;
-    private AttributeController _attributeController;
-    private EntityPortController _entityPortController;
-    private PortController _portController;
-    private RelationController _relationController;
-    private LinkController _linkController;
-
-    // The configuration.
-    private Configuration _configuration;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                          inner classes                    ////
-
-    public static class SchematicContextMenuFactory
-	    extends PtolemyMenuFactory {
-	public SchematicContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new EditParametersFactory());
-            // NOTE: Removed by EAL. I don't like this interface.
-	    // addMenuItemFactory(new FormFrameFactory());
-	    addMenuItemFactory(new PortDialogFactory());
-	}
-
-	public NamedObj _getObjectFromFigure(Figure source) {
-	    return (NamedObj)getController().getGraphModel().getRoot();
-	}
-    }
 }

@@ -1,4 +1,4 @@
-/* The graph controller for vergil
+/* The graph controller for vergil.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -30,40 +30,42 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
-// FIXME: Replace with per-class imports.
-import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
-import ptolemy.gui.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.moml.*;
-import ptolemy.vergil.toolbox.FigureAction;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.geom.Point2D;
 
-import diva.gui.*;
-import diva.gui.toolbox.*;
+import javax.swing.Action;
+import javax.swing.KeyStroke;
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
+
+import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.canvas.Site;
+import diva.canvas.connector.AutonomousSite;
+import diva.canvas.connector.Connector;
+import diva.canvas.connector.ConnectorManipulator;
+import diva.canvas.event.LayerEvent;
+import diva.canvas.event.MouseFilter;
+import diva.canvas.interactor.AbstractInteractor;
+import diva.canvas.interactor.ActionInteractor;
+import diva.canvas.interactor.CompositeInteractor;
+import diva.canvas.interactor.GrabHandle;
 import diva.graph.GraphException;
 import diva.graph.GraphPane;
 import diva.graph.NodeRenderer;
-import diva.canvas.*;
-import diva.canvas.connector.*;
-import diva.canvas.event.*;
-import diva.canvas.interactor.*;
-import diva.canvas.toolbox.*;
-import diva.util.Filter;
-import diva.util.java2d.Polygon2D;
+import diva.gui.toolbox.FigureIcon;
+import diva.gui.toolbox.MenuCreator;
 
-import java.awt.*;
-import java.awt.event.InputEvent;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
-import java.util.HashMap;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.net.URL;
-import javax.swing.*;
-import javax.swing.event.*;
+import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.moml.Location;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.moml.Vertex;
+import ptolemy.vergil.toolbox.FigureAction;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorGraphController
@@ -78,6 +80,7 @@ Anything can be deleted by selecting it and pressing
 the delete key on the keyboard.
 
 @author Steve Neuendorffer
+@contributor Edward A. Lee
 @version $Id$
  */
 public class EditorGraphController extends ViewerGraphController {
@@ -90,13 +93,24 @@ public class EditorGraphController extends ViewerGraphController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         package friendly                  ////
+    ////                         public methods                    ////
 
-    /** Action for creating a new port. */
-    Action _newPortAction = new NewPortAction();
+    /** Add commands to the specified menu and toolbar, as appropriate
+     *  for this controller.  In this class, commands are added to create
+     *  ports and relations.
+     *  @param menu The menu to add to, or null if none.
+     *  @param toolbar The toolbar to add to, or null if none.
+     */
+    public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
+        super.addToMenuAndToolbar(menu, toolbar);
+        // Add an item that adds new ports.
+	diva.gui.GUIUtilities.addMenuItem(menu, _newPortAction);
+       	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newPortAction);
 
-    /** Action for creating a new relation. */
-    Action _newRelationAction = new NewRelationAction();
+        // Add an item that adds new relations.
+	diva.gui.GUIUtilities.addMenuItem(menu, _newRelationAction);
+	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newRelationAction);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -119,43 +133,41 @@ public class EditorGraphController extends ViewerGraphController {
         // Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
 	_linkCreator.setMouseFilter(_controlFilter);
-	((CompositeInteractor)getPortController().getNodeInteractor())
+	((CompositeInteractor)_portController.getNodeInteractor())
                 .addInteractor(_linkCreator);
-        ((CompositeInteractor)getEntityPortController().getNodeInteractor())
+        ((CompositeInteractor)_entityPortController.getNodeInteractor())
                 .addInteractor(_linkCreator);
-	((CompositeInteractor)getRelationController().getNodeInteractor())
+	((CompositeInteractor)_relationController.getNodeInteractor())
                 .addInteractor(_linkCreator);
 
 	LinkCreator linkCreator2 = new LinkCreator();
 	linkCreator2.setMouseFilter(
                 new MouseFilter(InputEvent.BUTTON1_MASK,0));
-	((CompositeInteractor)getEntityPortController().getNodeInteractor())
+	((CompositeInteractor)_entityPortController.getNodeInteractor())
                 .addInteractor(linkCreator2);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The interactor for creating new relations
-     */
-    private RelationCreator _relationCreator;
-
-    /** The interactor for creating context sensitive menus.
-     */
-    private MenuCreator _menuCreator;
-
-    /** The interactor that interactively creates edges
-     */
-    private LinkCreator _linkCreator;
-
-    /** The filter for control operations
-     */
+    /** The filter for control operations. */
     private MouseFilter _controlFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK,
             InputEvent.CTRL_MASK);
 
-    /** The filter for shift operations
-     */
+    /** The interactor that interactively creates edges. */
+    private LinkCreator _linkCreator;
+
+    /** Action for creating a new port. */
+    private Action _newPortAction = new NewPortAction();
+
+    /** Action for creating a new relation. */
+    private Action _newRelationAction = new NewRelationAction();
+
+    /** The interactor for creating new relations. */
+    private RelationCreator _relationCreator;
+
+    /** The filter for shift operations. */
     private MouseFilter _shiftFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK,
             InputEvent.SHIFT_MASK);
@@ -236,7 +248,7 @@ public class EditorGraphController extends ViewerGraphController {
 	    String dflt = "";
 	    // Creating the renderers this way is rather nasty..
 	    // Standard toolbar icons are 25x25 pixels.
-	    NodeRenderer renderer = getPortController().getNodeRenderer();
+	    NodeRenderer renderer = _portController.getNodeRenderer();
 	    Figure figure = renderer.render(null);
 
 	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
@@ -323,7 +335,7 @@ public class EditorGraphController extends ViewerGraphController {
 	    String dflt = "";
 	    // Creating the renderers this way is rather nasty..
 	    // Standard toolbar icons are 25x25 pixels.
-	    NodeRenderer renderer = getRelationController().getNodeRenderer();
+	    NodeRenderer renderer = _relationController.getNodeRenderer();
 	    Figure figure = renderer.render(null);
 
 	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
@@ -340,8 +352,7 @@ public class EditorGraphController extends ViewerGraphController {
 	    double y;
 	    if(getSourceType() == TOOLBAR_TYPE ||
                     getSourceType() == MENUBAR_TYPE) {
-		// no location in the action, so make something up.
-		// FIXME this is a lousy way to do this.
+		// No location in the action, so put it in the middle.
 		Point2D point = pane.getSize();
 		x = point.getX()/2;
 		y = point.getY()/2;

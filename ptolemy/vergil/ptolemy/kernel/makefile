@@ -63,6 +63,7 @@ JSRCS = \
 	PortDialogFactory.java \
 	PtolemyGraphModel.java \
 	PtolemyNodeController.java \
+	PtolemyGraphController.java \
 	RelationController.java \
 	RenameDialogFactory.java \
 	ViewerGraphController.java

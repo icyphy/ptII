@@ -1,4 +1,4 @@
-/* The graph controller for the vergil viewer
+/* The graph controller for the vergil viewer for finite state machines.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -30,57 +30,35 @@
 
 package ptolemy.vergil.ptolemy.fsm;
 
-import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.vergil.*;
-import ptolemy.vergil.ptolemy.*;
+import diva.canvas.interactor.SelectionDragger;
+import diva.canvas.interactor.SelectionInteractor;
+import diva.graph.EdgeController;
+import diva.graph.GraphPane;
+import diva.graph.NodeController;
+
+import ptolemy.actor.gui.Configuration;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.Port;
+import ptolemy.moml.Location;
 import ptolemy.vergil.ptolemy.kernel.PortController;
-import ptolemy.vergil.ptolemy.kernel.PortDialogFactory;
-import ptolemy.vergil.toolbox.*;
-import ptolemy.gui.*;
-import ptolemy.moml.*;
-
-import diva.canvas.*;
-import diva.canvas.connector.*;
-import diva.canvas.event.*;
-import diva.canvas.interactor.*;
-import diva.canvas.toolbox.*;
-import diva.gui.*;
-import diva.gui.toolbox.*;
-import diva.graph.*;
-import diva.util.Filter;
-import diva.util.java2d.Polygon2D;
-
-import java.awt.*;
-import java.awt.geom.Rectangle2D;
-import java.awt.event.InputEvent;
-import java.awt.event.ActionEvent;
-import java.util.HashMap;
-import java.util.Enumeration;
-import java.util.Iterator;
-import java.net.URL;
-import javax.swing.JPopupMenu;
-import javax.swing.JLabel;
-import javax.swing.event.*;
+import ptolemy.vergil.ptolemy.kernel.PtolemyGraphController;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMViewerController
 /**
-A graph controller for the Ptolemy II schematic viewer.
-This controller allows nodes to be moved and context menus to be created,
-but does not provide interaction for adding or removing nodes.
-Right-clicking on the background will
-create a context-sensitive menu for the graph.
+A graph controller for the Ptolemy II finite-state machine viewer.
+This controller allows states to be moved and context menus to be accessed,
+but does not provide interaction for adding or removing states or
+transitions.
 
 @author Steve Neuendorffer
+@contributor Edward A. Lee
 @version $Id$
 */
-public class FSMViewerController extends AbstractGraphController {
-    /**
-     * Create a new basic controller with default
-     * terminal and edge interactors.
+public class FSMViewerController extends PtolemyGraphController {
+
+    /** Create a new controller with default port, state, and transition
+     *  controllers.
      */
     public FSMViewerController() {
         _portController = new PortController(this);
@@ -90,46 +68,6 @@ public class FSMViewerController extends AbstractGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /**
-     * Return the controller for entities
-     */
-    public FSMStateController getStateController() {
-	return _stateController;
-    }
-
-    /**
-     * Return the controller for links
-     */
-    public FSMTransitionController getTransitionController() {
-        return _transitionController;
-    }
-
-    /**
-     * Initialize all interaction on the graph pane. This method
-     * is called by the setGraphPane() method of the superclass.
-     * This initialization cannot be done in the constructor because
-     * the controller does not yet have a reference to its pane
-     * at that time.
-     */
-    protected void initializeInteraction() {
-        GraphPane pane = getGraphPane();
-
-        // Create and set up the selection dragger
-	SelectionDragger _selectionDragger = new SelectionDragger(pane);
-        _selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_portController.getNodeInteractor());
-	_selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_stateController.getNodeInteractor());
-	_selectionDragger.addSelectionInteractor(
-                (SelectionInteractor)_transitionController.getEdgeInteractor());
-
-        MenuCreator _menuCreator = new MenuCreator(
-                new SchematicContextMenuFactory(this));
-	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
-
-	pane.getBackgroundEventLayer().setConsuming(false);
-    }
 
     /**
      * Return the node controller appropriate for the given node.
@@ -160,38 +98,51 @@ public class FSMViewerController extends AbstractGraphController {
      *  @param configuration The configuration.
      */
     public void setConfiguration(Configuration configuration) {
+        super.setConfiguration(configuration);
         _portController.setConfiguration(configuration);
         _stateController.setConfiguration(configuration);
+        _transitionController.setConfiguration(configuration);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                          inner classes                    ////
+    ////                         protected methods                 ////
 
-    public static class SchematicContextMenuFactory
-	extends PtolemyMenuFactory {
-	public SchematicContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new PortDialogFactory());
-	}
+    /** Initialize all interaction on the graph pane. This method
+     *  is called by the setGraphPane() method of the superclass.
+     *  This initialization cannot be done in the constructor because
+     *  the controller does not yet have a reference to its pane
+     *  at that time.
+     */
+    protected void initializeInteraction() {
+        GraphPane pane = getGraphPane();
 
-	public NamedObj _getObjectFromFigure(Figure source) {
-	    return (NamedObj)getController().getGraphModel().getRoot();
-	}
+        // Create and set up the selection dragger
+	SelectionDragger _selectionDragger = new SelectionDragger(pane);
+        _selectionDragger.addSelectionInteractor(
+                (SelectionInteractor)_portController.getNodeInteractor());
+	_selectionDragger.addSelectionInteractor(
+                (SelectionInteractor)_stateController.getNodeInteractor());
+	_selectionDragger.addSelectionInteractor(
+                (SelectionInteractor)_transitionController.getEdgeInteractor());
+
+        super.initializeInteraction();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The port controller. */
+    protected PortController _portController;
+
+    /** The state controller. */
+    protected FSMStateController _stateController;
+
+    /** The transition controller. */
+    protected FSMTransitionController _transitionController;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The selection interactor for drag-selecting nodes
     private SelectionDragger _selectionDragger;
-
-    // The interactor for creating context sensitive menus on the
-    // graph itself.
-    private MenuCreator _menuCreator;
-
-    // The controllers
-    private PortController _portController;
-    private FSMStateController _stateController;
-    private FSMTransitionController _transitionController;
 }

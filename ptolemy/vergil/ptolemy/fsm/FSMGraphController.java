@@ -36,6 +36,8 @@ import java.awt.event.InputEvent;
 import java.awt.geom.Point2D;
 
 import javax.swing.Action;
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
 
 import diva.canvas.Figure;
 import diva.canvas.FigureLayer;
@@ -83,12 +85,18 @@ public class FSMGraphController extends FSMViewerController {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the action that creates a new state, for insertion in a
-     *  menu or toolbar.
-     *  @return The action that creates a new state.
+    /** Add commands to the specified menu and toolbar, as appropriate
+     *  for this controller.  In this class, commands are added to create
+     *  ports and relations.
+     *  @param menu The menu to add to, or null if none.
+     *  @param toolbar The toolbar to add to, or null if none.
      */
-    public Action getNewStateAction() {
-	return _newStateAction;
+    public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
+        super.addToMenuAndToolbar(menu, toolbar);
+        // Add an item that adds new states.
+	diva.gui.GUIUtilities.addMenuItem(menu, _newStateAction);
+        // To get a new-state item on the toolbar, uncomment this:
+        // diva.gui.GUIUtilities.addToolBarButton(toolbar, _newStateAction);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,7 +115,7 @@ public class FSMGraphController extends FSMViewerController {
 	// Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
 	_linkCreator.setMouseFilter(_controlFilter);
-	((CompositeInteractor)getStateController()
+	((CompositeInteractor)_stateController
                 .getNodeInteractor()).addInteractor(_linkCreator);
 
         // Create a listener that creates new states.

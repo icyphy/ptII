@@ -158,11 +158,11 @@ public class MoMLViewerApplet extends MoMLApplet {
         if (_toplevel instanceof FSMActor) {
             FSMGraphController controller = new FSMGraphController();
             FSMGraphModel graphModel = new FSMGraphModel((FSMActor)_toplevel);
+            // FIXME: To get things like open documentation to work, have
+            // to specify a configuration.  But currently, there isn't one.
+            // controller.setConfiguration(getConfiguration());
 
             pane = new GraphPane(controller, graphModel);
-
-            controller.getTransitionController().setMenuFactory(
-                    new TransitionContextMenuFactory(controller));
         } else {
             // top level is not an FSM actor.
 
@@ -174,21 +174,6 @@ public class MoMLViewerApplet extends MoMLApplet {
                     (CompositeEntity)_toplevel);
 
             _getDocumentationAction = new GetDocumentationAction();
-        /* FIXME: Replaced with code in AttributeController.
-           Do the same for others.  EAL
-            controller.getAttributeController().setMenuFactory(
-                    new ObjectContextMenuFactory(controller));
-            controller.getEntityController().setMenuFactory(
-                    new ObjectContextMenuFactory(controller));
-            controller.getEntityPortController().setMenuFactory(
-                    new PortContextMenuFactory(controller));
-            controller.getPortController().setMenuFactory(
-                    new PortContextMenuFactory(controller));
-  	    controller.getRelationController().setMenuFactory(
-                    new ObjectContextMenuFactory(controller));
-  	    controller.getLinkController().setMenuFactory(
-                    new ObjectContextMenuFactory(controller));
-        */
 
             pane = new GraphPane(controller, model);
         }

@@ -159,17 +159,8 @@ public class KernelGraphFrame extends GraphFrame {
     protected void _addMenus() {
 	super._addMenus();
 
-        // Add an item to the Graph menu that adds new ports.
-	diva.gui.GUIUtilities.addMenuItem(_graphMenu,
-                _controller._newPortAction);
-       	diva.gui.GUIUtilities.addToolBarButton(_toolbar,
-                _controller._newPortAction);
-
-        // Add an item to the Graph menu that adds new relations.
-	diva.gui.GUIUtilities.addMenuItem(_graphMenu, 
-                _controller._newRelationAction);
-	diva.gui.GUIUtilities.addToolBarButton(_toolbar,
-                _controller._newRelationAction);
+        // Add commands to graph menu and toolbar, per the controller.
+        _controller.addToMenuAndToolbar(_graphMenu, _toolbar);
     }
 
     /** Create a new graph pane.
@@ -181,72 +172,7 @@ public class KernelGraphFrame extends GraphFrame {
         _controller.setConfiguration(getConfiguration());
 	final PtolemyGraphModel graphModel = new PtolemyGraphModel(getModel());
 
-	GraphPane pane = new GraphPane(_controller, graphModel);
-
-        // 'Edit Icon' pop up menu not shipped with PtII1.0.
-        // See also ptolemy/vergil/ptolemy/GraphFrame.java
-	//_editIconAction = new EditIconAction();
-	_getDocumentationAction = new GetDocumentationAction();
-     
-        // FIXME: This is redundant with code in the controllers.
-        // Double click to edit parameters
-        Action action = new AbstractAction("Edit Parameters") {
-	    public void actionPerformed(ActionEvent e) {
-                LayerEvent event = (LayerEvent)e.getSource();
-                Figure figure = event.getFigureSource();
-                Object object = figure.getUserObject();
-                NamedObj target =
-                         (NamedObj)graphModel.getSemanticObject(object);
-                // Create a dialog for configuring the object.
-                // The first argument below is the parent window
-                // (a Frame), which ensures that if this is iconified
-                // or sent to the background, it can be found again.
-                new EditParametersDialog(KernelGraphFrame.this, target);
-	    }
-	};
-        ActionInteractor doubleClickInteractor = new ActionInteractor(action);
-        doubleClickInteractor.setConsuming(false);
-        doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
-
-        /* FIXME: Replaced with code in AttributeController.
-           Do the same for others.  EAL
-      	_controller.getAttributeController().setMenuFactory(
-                new AttributeContextMenuFactory(_controller));
-        _addDoubleClickInteractor((NodeInteractor)
-                _controller.getAttributeController().getNodeInteractor(),
-                doubleClickInteractor);
-        *****/
-
-        /* FIXME: Replaced with code in EntityController.
-	_controller.getEntityController().setMenuFactory(
-                new EntityContextMenuFactory(_controller));        
-        _addDoubleClickInteractor((NodeInteractor)
-                _controller.getEntityController().getNodeInteractor(),
-                doubleClickInteractor);
-        *****/
-	
-        /* FIXME: Replaced with code in EntityPortController.
- 	_controller.getEntityPortController().setMenuFactory(
-                new PortContextMenuFactory(_controller));
-        *****/
-        // FIXME: entity ports don't use a NodeInteractor.
-        /** CompositeInteractor interactor = (CompositeInteractor)
-            _controller.getAttributeController().getNodeInteractor();
-        interactor.addInteractor(doubleClickInteractor);
-        */
-
-        /* FIXME: Replaced with code in EntityController.
-  	_controller.getPortController().setMenuFactory(
-                new PortContextMenuFactory(_controller));
-        _addDoubleClickInteractor((NodeInteractor)
-               _controller.getPortController().getNodeInteractor(),
-                doubleClickInteractor);
-
-// FIXME: Haven't done linkcontroller yet.
-  	_controller.getLinkController().setMenuFactory(
-                new RelationContextMenuFactory(_controller));
-        ******/
-	return pane;
+	return new GraphPane(_controller, graphModel);
     }
 
     /** Display more detailed information than given by _about().

@@ -68,6 +68,7 @@ between ports and relations.  Standard interaction techniques for an
 undirected edge are allowed.
 
 @author Steve Neuendorffer
+@contributor Edward A. Lee
 @version $Id$
 */
 public class LinkController extends BasicEdgeController {

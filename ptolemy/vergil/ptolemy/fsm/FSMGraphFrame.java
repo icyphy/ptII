@@ -165,19 +165,6 @@ public class FSMGraphFrame extends GraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the menus and menu items that are used by this frame.
-     */
-    protected void _addMenus() {
-	super._addMenus();
-	// NOTE: Does executing an FSM make sense?
-	// _executeMenu = new JMenu("Execute");
-        // _executeMenu.setMnemonic(KeyEvent.VK_X);
-	// _menubar.add(_executeMenu);
-	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _newStateAction);
-        // To get a new-state item on the toolbar, uncomment this:
-        // diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newStateAction);
-    }
-
     /** Create a new graph pane.
      */
     protected GraphPane _createGraphPane() {
@@ -188,36 +175,6 @@ public class FSMGraphFrame extends GraphFrame {
 	final FSMGraphModel graphModel = new FSMGraphModel(getModel());
 
 	GraphPane pane = new GraphPane(_controller, graphModel);
-	_newStateAction = _controller.getNewStateAction();
-
-        /** FIXME: removed temporarily until edit icon works.
-	_editIconAction = new EditIconAction();
-        */
-	_getDocumentationAction = new GetDocumentationAction();
-        // Double click to edit parameters
-        Action action = new AbstractAction("Edit Parameters") {
-	    public void actionPerformed(ActionEvent e) {
-                LayerEvent event = (LayerEvent)e.getSource();
-                Figure figure = event.getFigureSource();
-                Object object = figure.getUserObject();
-                NamedObj target = 
-                (NamedObj)graphModel.getSemanticObject(object);
-                // Create a dialog for configuring the object.
-                // The first argument below is the parent window
-                // (a Frame), which ensures that if this is iconified
-                // or sent to the background, it can be found again.
-                new EditParametersDialog(FSMGraphFrame.this, target);
-	    }
-	};
-        ActionInteractor doubleClickInteractor = new ActionInteractor(action);
-        doubleClickInteractor.setConsuming(false);
-        doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
-        
-	_controller.getTransitionController().setMenuFactory(
-                new TransitionContextMenuFactory(_controller));
-        CompositeInteractor interactor = (CompositeInteractor)
-                _controller.getTransitionController().getEdgeInteractor();
-        interactor.addInteractor(doubleClickInteractor);
 
         return pane;
     }
@@ -274,17 +231,6 @@ public class FSMGraphFrame extends GraphFrame {
 	}
     }
 
-    /**
-     * The factory for creating context menus on transitions between states.
-     */
-    private class TransitionContextMenuFactory extends PtolemyMenuFactory {
-	public TransitionContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
-	}
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -292,7 +238,6 @@ public class FSMGraphFrame extends GraphFrame {
     private Action _getDocumentationAction;
     private Action _editIconAction;
     private Action _lookInsideAction;
-    private Action _newStateAction;
     private JMenu _executeMenu;
     private Action _executeSystemAction;
 
