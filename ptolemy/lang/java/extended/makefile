@@ -64,13 +64,21 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) 
 
-JCLASS = $(JSRCS:%.java=%.class)
+# This is a bit of a problem, since these classes depend on a class
+# in the parent directory
+JCLASS = ../JavaVisitor.class ../Yylex.class $(JSRCS:%.java=%.class)
 
-all: jclass
+all: ../JavaVisitor.java ../Yylex.java jclass
 install: jclass $(PTCLASSJAR)
 
 depend:
 	@echo "no dependencies in this directory"
+
+../JavaVisitor.java: 
+	(cd ..; $(MAKE) JavaVisitor.java)
+
+../Yylex.java: 
+	(cd ..; $(MAKE) Yylex.java)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
