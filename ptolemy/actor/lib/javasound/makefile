@@ -60,6 +60,8 @@ JSRCS = \
 # We include voice.wav so that we can include the voice.wav file in
 # the jar file for use under Web Start.
 OTHER_FILES_TO_BE_JARED = \
+	AudioCaptureIcon.xml \
+	AudioPlayerIcon.xml \
 	javasound.xml \
 	voice.wav
 

@@ -65,6 +65,8 @@ JSRCS = \
 	RunCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED = \
+	MobileFunctionIcon.xml \
+	MobileModelIcon.xml \
 	hoc.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
