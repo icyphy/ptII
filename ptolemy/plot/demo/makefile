@@ -49,6 +49,7 @@ EXTRA_SRCS = $(JSRCS) \
 	FourierSeries.html \
 	Live.html \
 	Marks.html \
+	PlayingWave.html \
 	Sinusoids.html \
 	bargraph.plt \
 	data.plt \
