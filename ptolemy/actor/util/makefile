@@ -48,7 +48,7 @@ ME =		java/pt/actor/util
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 #JAVAHOME =   $(LATEST_JAVAHOME)
-DIRS = 		#test doc
+DIRS = 		test #doc
 
 CLASSPATH = ../../..
 
