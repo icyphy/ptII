@@ -126,4 +126,4 @@ test FIR-3.1 {Test FIR for FIX datatype} {
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 
-} {-0.062 0.0 0.188 0.375 0.375 0.188 0.0 -0.062 0.0 0.0}
+} {-0.0625 0.0 0.1875 0.375 0.375 0.1875 0.0 -0.0625 0.0 0.0}
