@@ -71,17 +71,6 @@ public class SoftClip {
                     channels, inBufferSize,
                     getSamplesSize);
 	*/
-	// Set up LiveSound parameters for capture/playback
-	LiveSound.setSampleRate(sampleRate);
-	LiveSound.setBitsPerSample(sampleSizeInBits);
-	LiveSound.setChannels(channels);
-	LiveSound.setBufferSize(inBufferSize);
-	LiveSound.setTransferSize(getSamplesSize);
-	
-
-
-	int putSamplesSize = getSamplesSize;
-
 	// Construct a sound playback object that plays audio
 	//through the computer's speaker.
 	/*
@@ -96,7 +85,15 @@ public class SoftClip {
 	// Initialize and begin real-time capture and playback.
 	try{
 	    //soundCapture.startCapture();
-	    
+	    // Set up LiveSound parameters for capture/playback
+	    LiveSound.setSampleRate(sampleRate);
+	    LiveSound.setBitsPerSample(sampleSizeInBits);
+	    LiveSound.setChannels(channels);
+	    LiveSound.setBufferSize(inBufferSize);
+	    LiveSound.setTransferSize(getSamplesSize);
+
+	    int putSamplesSize = getSamplesSize;
+   
 	    LiveSound.startCapture(consumer);
 
 	    LiveSound.startPlayback(producer);

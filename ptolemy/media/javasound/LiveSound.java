@@ -32,163 +32,151 @@ package ptolemy.media.javasound;
 
 import java.io.*;
 import java.net.*;
-import java.util.Enumeration;
-
+import java.util.*;
 import javax.sound.sampled.*;
 
 //////////////////////////////////////////////////////////
 //// LiveSound
 /**
-  This class supports live capture and playback of audio
-  samples. For audio capture, audio samples are captured
-  from the audio input port of the computer. The audio input
-  port is typically associated with the line-in port,
-  microphone-in port, or cdrom audio-in port. It is not
-  possible to select the desired input port from Java. The
-  desired input port may be selected from the operating
-  system. For audio playback, audio samples are written to
-  the audio output port. The audio output port is typically
-  associated with the headphones jack or the internal
-  speaker of the computer. The desired output port may be
+  This class supports live capture and playback of audio 
+  samples. For audio capture, audio samples are captured 
+  from the audio input port of the computer. The audio input 
+  port is typically associated with the line-in port, 
+  microphone-in port, or cdrom audio-in port. It is not 
+  possible to select the desired input port from Java. The 
+  desired input port may be selected from the operating 
+  system. For audio playback, audio samples are written to 
+  the audio output port. The audio output port is typically 
+  associated with the headphones jack or the internal 
+  speaker of the computer. The desired output port may be 
   selected from the operating system.
   <p>
   <b>Format of audio samples</be>
   <p>
-  In this class, audio samples are double-valued and have a
-  valid range of [-1.0, 1.0]. Thus when this class is used
-  for audio capture, the returned samples will all range in
-  value from -1.0 to 1.0. When this class is used for audio
-  playback, the valid range of input samples is from -1.0 to
-  1.0. Any samples that are outside of this range will be
+  In this class, audio samples are double-valued and have a 
+  valid range of [-1.0, 1.0]. Thus when this class is used 
+  for audio capture, the returned samples will all range in 
+  value from -1.0 to 1.0. When this class is used for audio 
+  playback, the valid range of input samples is from -1.0 to 
+  1.0. Any samples that are outside of this range will be 
   hard-clipped to fall within this range.
   <p>
   <b>Supported audio formats</b>
   <p>
-  This class supports the subset of the hardware supported
-  audio formats that are also supported under Java. Provided
-  that the computer has a sound card that was manufactured
+  This class supports the subset of the hardware supported 
+  audio formats that are also supported under Java. Provided 
+  that the computer has a sound card that was manufactured 
   after 1998, the following formats are likely to be supported.
   <ul>
-  <li><i>channels</i>: Mono (channels = 1) and stereo
-  (channels = 1) audio is supported. Note that some newer sound
-  cards support more than two channels, such as 4 input, 4 output
-  channels or better. Java does not support more than two
+  <li><i>channels</i>: Mono (channels = 1) and stereo 
+  (channels = 1) audio is supported. Note that some newer sound 
+  cards support more than two channels, such as 4 input, 4 output 
+  channels or better. Java does not support more than two 
   channels, however. The default value assumed by this class is
-  mono (1 channel). The number of channels may be set by the
+  mono (1 channel). The number of channels may be set by the 
   setChannels() method and read by the getChannels method().
-  <li><i>sample rates</i>: 8000, 11025, 22050, 44100, and
-  48000 Hz are supported. Note that some newer sound cards
-  support 96000 Hz sample rates, but this is not supported under
-  Java. The default sample rate used by this class is 8000 Hz.
-  The sample rate may be set by the setSampleRate() method and
+  <li><i>sample rates</i>: 8000, 11025, 22050, 44100, and 
+  48000 Hz are supported. Note that some newer sound cards 
+  support 96000 Hz sample rates, but this is not supported under 
+  Java. The default sample rate used by this class is 8000 Hz. 
+  The sample rate may be set by the setSampleRate() method and 
   read by the getSampleRate() method.
-  <li><i>bit resolution</i>: 8 bit and 16 bit audio is supported.
-  Note that some newer sound cards support 20 bit, 24 bit, and 32
-  bit audio, but this is not supported under Java. The default
-  bit resolution used by this class is 16 bit audio. The bit
-  resolution may be set by the setBitsPerSample() method and
+  <li><i>bit resolution</i>: 8 bit and 16 bit audio is supported. 
+  Note that some newer sound cards support 20 bit, 24 bit, and 32 
+  bit audio, but this is not supported under Java. The default 
+  bit resolution used by this class is 16 bit audio. The bit 
+  resolution may be set by the setBitsPerSample() method and 
   read by the getBitsPerSample() method.
   </ul>
   <p>
   <b>Input/output latency</b>
   <p>
-  When capturing audio samples, there will be some delay (latency)
-  from the time the sound arrives at the input port to the time
-  that the corresponding audio samples are available from this
-  class. Likewise, there will be some delay from the time sample
-  are written until the corresponding audio signal reaches the
-  output port (e.g., the speaker). This is because an internal
-  buffer is used to temporarily store audio samples when they are
-  captured or played. The size of this internal buffer affects
-  the latency in that a lower bound on the capture (playback)
-  latency is given by (<i>bufferSize</i> / <i>sampleRate</i>)
-  seconds. Here, <i>bufferSize</i> parameter is the size of the
-  buffer in samples per channel. This class provides a method,
-  setBufferSize(), to simultaneously set the size of internal
-  capture buffer and the internal playback buffer. The method
-  getBufferSize() may be used to read the buffer size. The default
+  When capturing audio samples, there will be some delay (latency) 
+  from the time the sound arrives at the input port to the time 
+  that the corresponding audio samples are available from this 
+  class. Likewise, there will be some delay from the time sample 
+  are written until the corresponding audio signal reaches the 
+  output port (e.g., the speaker). This is because an internal 
+  buffer is used to temporarily store audio samples when they are 
+  captured or played. The size of this internal buffer affects 
+  the latency in that a lower bound on the capture (playback) 
+  latency is given by (<i>bufferSize</i> / <i>sampleRate</i>) 
+  seconds. Here, <i>bufferSize</i> parameter is the size of the 
+  buffer in samples per channel. This class provides a method, 
+  setBufferSize(), to simultaneously set the size of internal 
+  capture buffer and the internal playback buffer. The method 
+  getBufferSize() may be used to read the buffer size. The default 
   size of the internal buffer is 4096.
   <p>
   <b>Constraints</b>
   <p>
-  This class requires that the sample rate, number of channels,
-  bit resolution, and internal buffer size be the same for both
-  capture and playback. The motivation for this constraint is to
+  This class requires that the sample rate, number of channels, 
+  bit resolution, and internal buffer size be the same for both 
+  capture and playback. The motivation for this constraint is to 
   simplify usage. Most audio hardware requires this anyway.
   <p>
   <b>Usage: audio capture</b>
   <p>
-  First, call the appropriate methods to set the desired audio
-  format parameters such as sample rate, channels, bit resolution
-  if values other than the defaults are desired. The
-  setTransferSize() method should also be invoked to set the size
-  of the array (in samples per channel) that is returned when
-  audio samples are captured. The default value is 128 samples
-  per channel. Then invoke the startCapture(consumer) method to
-  start the audio capture process. This class will be ready to
-  capture audio immediately after startCapture() returns. Note
-  that startCapture() takes an Object parameter, <i>consumer</i>.
-  In addition to starting the audio capture process, startCapture()
+  First, call the appropriate methods to set the desired audio 
+  format parameters such as sample rate, channels, bit resolution 
+  if values other than the defaults are desired. The 
+  setTransferSize() method should also be invoked to set the size 
+  of the array (in samples per channel) that is returned when 
+  audio samples are captured. The default value is 128 samples 
+  per channel. Then invoke the startCapture(consumer) method to 
+  start the audio capture process. This class will be ready to 
+  capture audio immediately after startCapture() returns. Note 
+  that startCapture() takes an Object parameter, <i>consumer</i>. 
+  In addition to starting the audio capture process, startCapture() 
   also grants an object permission to capture audio.
   <p>
-  After calling startCapture(consumer), the consumer object can
-  capture audio from the input port by calling getSamples(consumer).
-  The getSamples() method returns an array of samples from the input
-  port. The getSamples() blocks until the requested number of
-  samples (which is set by the setTransferSize method) are available.
-  Thus, it is not possible to call this method too frequently.
-  Note that if getSamples() is not called frequently enough,
-  the internal buffer will overflow and some audio data will
-  be lost, which is generally undersirable. After the conumser
-  object no longer wishes to capture audio, it should free up the
-  audio system resources by calling the stopCapture(consumer)
-  method. It should be noted that only one object may capture
-  audio simultaneously from the audio input port. A future
-  version of this class may support multiple objects capturing
+  After calling startCapture(consumer), the consumer object can 
+  capture audio from the input port by calling getSamples(consumer). 
+  The getSamples() method returns an array of samples from the input 
+  port. The getSamples() blocks until the requested number of 
+  samples (which is set by the setTransferSize method) are available. 
+  Thus, it is not possible to call this method too frequently. 
+  Note that if getSamples() is not called frequently enough, 
+  the internal buffer will overflow and some audio data will 
+  be lost, which is generally undersirable. After the conumser 
+  object no longer wishes to capture audio, it should free up the 
+  audio system resources by calling the stopCapture(consumer) 
+  method. It should be noted that only one object may capture 
+  audio simultaneously from the audio input port. A future 
+  version of this class may support multiple objects capturing 
   from the input port simultaneously.
   <p>
   <b>Usage: audio Playback</b>
-  <p>
-  First, call the appropriate methods to set the desired audio
-  format parameters such as sample rate, channels, bit
-  resolution if values other than the defaults are desired.
-  The setTransferSize() method should also be invoked to set the
-  size of the array (in samples per channel) that is supplied
-  when audio samples are played. The default value is 128 samples
-  per channel. Then invoke the startPlayback(producer) method
-  to start the audio playback process. This class will be ready
-  to playback audio immediately after startPlayback() returns.
-  Note that startPlayback() takes an Object parameter,
-  <i>producer</i>. In addition to starting the audio playback
-  process, startCapture() also grants an object permission to
+  <p>  
+  First, call the appropriate methods to set the desired audio 
+  format parameters such as sample rate, channels, bit 
+  resolution if values other than the defaults are desired. 
+  The setTransferSize() method should also be invoked to set the 
+  size of the array (in samples per channel) that is supplied 
+  when audio samples are played. The default value is 128 samples 
+  per channel. Then invoke the startPlayback(producer) method 
+  to start the audio playback process. This class will be ready 
+  to playback audio immediately after startPlayback() returns. 
+  Note that startPlayback() takes an Object parameter, 
+  <i>producer</i>. In addition to starting the audio playback 
+  process, startCapture() also grants an object permission to 
   playback audio.
   <p>
-  After calling startPlayback(producer), the producer object can
-  playback audio to the output port by calling putSamples(producer).
-  The putSamples() method takes an array of samples and sends the
-  audio data to the output port. The putSamples() method blocks
-  until the requested number of samples (which is set by the
-  setTransferSize method) have been written to the output port.
-  Thus, it is not possible to call this method too frequently.
-  Note that if putSamples() is not called frequently enough,
-  the internal buffer will underflow, causing audible artifacts
-  in the output signal. After the producer object no longer wishes
-  to playback audio, it should free up the audio system resources
-  by calling the stopPlayback(producer) method. It should be noted
-  that only one object may playback audio simultaneously to the
-  audio output port. A future version of this class may support
+  After calling startPlayback(producer), the producer object can 
+  playback audio to the output port by calling putSamples(producer). 
+  The putSamples() method takes an array of samples and sends the 
+  audio data to the output port. The putSamples() method blocks 
+  until the requested number of samples (which is set by the 
+  setTransferSize method) have been written to the output port. 
+  Thus, it is not possible to call this method too frequently. 
+  Note that if putSamples() is not called frequently enough, 
+  the internal buffer will underflow, causing audible artifacts 
+  in the output signal. After the producer object no longer wishes 
+  to playback audio, it should free up the audio system resources 
+  by calling the stopPlayback(producer) method. It should be noted 
+  that only one object may playback audio simultaneously to the 
+  audio output port. A future version of this class may support 
   multiple objects playing to the output port simultaneously.
-  <p>
-  <b>Parameter changes</b>
-  <p>
-  Note that it is not possible to change the sample rate, channel
-  number, bit resolution, and transfer size parameters while audio
-  capture or playback is active. An exception will occur if a
-  parameter change is attempted while capture or playback is
-  active. The motivation for not allowing parameter changes is to
-  protect the application that is currently using the audio
-  resource from other applications. That is, an application that
-  is using the audio hardware has a lock on the parameter values.
 
    @author Brian K. Vogel
    @version $Id$
@@ -197,8 +185,31 @@ import javax.sound.sampled.*;
 */
 public class LiveSound {
 
+    /** Add a live sound listener. The listener will be notified
+     *  of all changes in live audio parameters. If the listener
+     *  is already listening, then do nothing.
+     *
+     *  @param listener The LiveSoundListener to add.
+     */
+    public static void addLiveSoundListener (LiveSoundListener listener) {
+	if (!_liveSoundListeners.contains(listener)) {
+	    _liveSoundListeners.add(listener);
+	}
+    }
+
+    /** Remove a live sound listener. If the listener is
+     *  is not listening, then do nothing.
+     *
+     *  @param listener The LiveSoundListener to remove.
+     */
+    public static void removeLibeSoundListener (LiveSoundListener listener) {
+	if (_liveSoundListeners.contains(listener)) {
+	    _liveSoundListeners.remove(listener);
+	}
+    }
+
     /** Return the current sampling rate in Hz, which is set
-     *  by the setSampleRate() method. The default value of
+     *  by the setSampleRate() method. The default value of 
      *  this parameter is 8000 Hz.
      *
      *  @return The sample rate in Hz.
@@ -211,7 +222,7 @@ public class LiveSound {
      *  set by the setBitsPerSample() method. The default
      *  value of this parameter is 16 bits.
      *
-     * @return The sample size in bits.
+     * @return The sample size in bits. 
      *
      */
     public static int getBitsPerSample() {
@@ -222,13 +233,13 @@ public class LiveSound {
      *  the setChannels() method. The default value of this
      *  parameter is 1 (for mono audio).
      *
-     *  @return The number of audio channels.
+     *  @return The number of audio channels. 
      *
      */
     public static int getChannels() {
 	return _channels;
     }
-
+    
     /** Return the size of the internal capture and playback
      *  audio buffers, in samples per channel. This parameter
      *  is set by the setBufferSize() method. The default
@@ -261,100 +272,201 @@ public class LiveSound {
 	return _playbackIsActive;
     }
 
-    /** Set the sample rate to use for audio capture and playback.
+    /** Set the sample rate to use for audio capture and playback
+     *  and notify an registered listeners of the change.
      *  Allowable values for this parameter are 8000, 11025,
      *  22050, 44100, and 48000 Hz. If this method is not invoked,
      *  then the default value of 8000 Hz is used.
-     *  <p>
-     *  This method should only be called while audio capture and
-     *  playback are inactive. Otherwise an exception will occur.
      *
      *  @param sampleRate Sample rate in Hz.
      *
-     *  @exception IllegalStateException If this method is called
-     *   while audio capture or playback are active.
+     *  @exception IOException If the specified sample rate is
+     *   not supported by the audio hardware or by Java.
      */
-    public static void setSampleRate(int sampleRate)
-	throws IllegalStateException {
-	if ((_captureIsActive) || (_playbackIsActive)) {
-	    throw new IllegalStateException("LiveSound: " +
-              "setSampleRate() was called while audio capture " +
-					"or playback was active.");
-
-	} else {
-	    _sampleRate = (float)sampleRate;
+    public static void setSampleRate(int sampleRate) 
+	throws IOException {
+	_sampleRate = (float)sampleRate;
+	if (_debug) {
+	    System.out.println("LiveSound: setSampleRate() invoked " +
+			       "with sample rate = " + sampleRate);
+	}
+	if ((_captureIsActive) && (_playbackIsActive)) {
+	    // Restart capture/playback with new sample rate.
+	    if (_debug) {
+	    System.out.println("LiveSound: setSampleRate(): capture and playback are active..");
+	    }
+	    stopCapture(_consumer);
+	    stopPlayback(_producer);
+	    startCapture(_consumer);
+	    startPlayback(_producer);
+	} else if (_captureIsActive) {
+	    // Restart capture with new sample rate.
+	    if (_debug) {
+	    System.out.println("LiveSound: setSampleRate(): capture is active..");
+	    }
+	    stopCapture(_consumer);
+	    startCapture(_consumer);
+	} else if (_playbackIsActive) {
+	    // Restart playback with new sample rate.
+	     if (_debug) {
+	    System.out.println("LiveSound: setSampleRate(): playback is active..");
+	    }
+	    stopPlayback(_producer);
+	    startPlayback(_producer);
+	} 
+	// Notify listeners of the change.
+	_notifyLiveSoundListeners(LiveSoundEvent.SAMPLE_RATE);
+	if (_debug) {
+	    System.out.println("LiveSound: setSampleRate() returning now.");
 	}
     }
 
     /** Set the number of bits per sample to use for audio capture
-     *  and playback. Allowable values include 8 and 16 bits. If
+     *  and playback and notify an registered listeners of the change. 
+     *  Allowable values include 8 and 16 bits. If
      *  this method is not invoked, then the default value of 16
      *  bits is used.
-     *  <p>
-     *  This method should only be called while audio capture and
-     *  playback are inactive. Otherwise an exception will occur.
      *
      *  @param bitsPerSample The number of bits per sample.
      *
-     *  @exception IllegalStateException If this method is called
-     *   while audio capture or playback are active.
+     *  @exception IOException If the specified bits per sample is
+     *   not supported by the audio hardware or by Java.
      */
-    public static void setBitsPerSample(int bitsPerSample)
-	throws IllegalStateException {
-	if ((_captureIsActive) || (_playbackIsActive)) {
-	    throw new IllegalStateException("LiveSound: " +
-              "setBitsPerSample() was called while audio capture " +
-					"or playback was active.");
-
-	} else {
-	    _bitsPerSample = bitsPerSample;
+    public static void setBitsPerSample(int bitsPerSample) 
+	throws IOException {
+	_bitsPerSample = bitsPerSample;
+	if (_debug) {
+	    System.out.println("LiveSound: setBitsPerSample() invoked " +
+			       "with bitsPerSample = " + bitsPerSample);
+	}
+	if ((_captureIsActive) && (_playbackIsActive)) {
+	    // Restart capture/playback with new bitsPerSample.
+	    if (_debug) {
+	    System.out.println("LiveSound: setBitsPerSample(): capture and playback are active..");
+	    }
+	    stopCapture(_consumer);
+	    stopPlayback(_producer);
+	    startCapture(_consumer);
+	    startPlayback(_producer);
+	} else if (_captureIsActive) {
+	    // Restart capture with new bitsPerSample.
+	    if (_debug) {
+	    System.out.println("LiveSound: setBitsPerSample(): capture is active..");
+	    }
+	    stopCapture(_consumer);
+	    startCapture(_consumer);
+	} else if (_playbackIsActive) {
+	    // Restart playback with new bitsPerSample.
+	     if (_debug) {
+	    System.out.println("LiveSound: setBitsPerSample(): playback is active..");
+	    }
+	    stopPlayback(_producer);
+	    startPlayback(_producer);
+	} 
+	// Notify listeners of the change.
+	_notifyLiveSoundListeners(LiveSoundEvent.BITS_PER_SAMPLE);
+	if (_debug) {
+	    System.out.println("LiveSound: setBitsPerSample() returning now.");
 	}
     }
 
     /** Set the number of audio channels to use for capture and
-     *  playback. Allowable values are 1 (for mono) and 2 (for
+     *  playback and notify an registered listeners of the change.
+     *  Allowable values are 1 (for mono) and 2 (for
      *  stereo). If this method is not invoked, the default
      *  value of 1 audio channel is used. Note that this method
      *  sets the size of the first dimension of the
      *  2-dimensional array used by the putSamples() and
      *  getSamples() methods.
-     *  <p>
-     *  This method should only be called while audio capture and
-     *  playback are inactive. Otherwise an exception will occur.
      *
      *  @param channels The number audio channels.
      *
-     *  @exception IllegalStateException If this method is called
-     *   while audio capture or playback are active.
+     *  @exception IOException If the specified number of channels is
+     *   not supported by the audio hardware or by Java.
      */
-    public static void setChannels(int channels)
-	throws IllegalStateException {
-	if ((_captureIsActive) || (_playbackIsActive)) {
-	    throw new IllegalStateException("LiveSound: " +
-              "setChannels() was called while audio capture " +
-					"or playback was active.");
-
-	} else {
-	    _channels = channels;
+    public static void setChannels(int channels) 
+	throws IOException {
+	_channels = channels;
+	if (_debug) {
+	    System.out.println("LiveSound: setChannels() invoked " +
+			       "with channels = " + channels);
+	}
+	if ((_captureIsActive) && (_playbackIsActive)) {
+	    // Restart capture/playback with new number of channels.
+	    if (_debug) {
+	    System.out.println("LiveSound: setChannels(): capture and playback are active..");
+	    }
+	    stopCapture(_consumer);
+	    stopPlayback(_producer);
+	    startCapture(_consumer);
+	    startPlayback(_producer);
+	} else if (_captureIsActive) {
+	    // Restart capture with new number of channels.
+	    if (_debug) {
+	    System.out.println("LiveSound: setChannels(): capture is active..");
+	    }
+	    stopCapture(_consumer);
+	    startCapture(_consumer);
+	} else if (_playbackIsActive) {
+	    // Restart playback with new number of channels.
+	     if (_debug) {
+	    System.out.println("LiveSound: setChannels(): playback is active..");
+	    }
+	    stopPlayback(_producer);
+	    startPlayback(_producer);
+	} 
+	// Notify listeners of the change.
+	_notifyLiveSoundListeners(LiveSoundEvent.CHANNELS);
+	if (_debug) {
+	    System.out.println("LiveSound: setSampleRate() returning now.");
 	}
     }
 
     /** Set the size of the internal capture and playback
-     *  audio buffers, in samples per channel. If this method
+     *  audio buffers, in samples per channel and notify an 
+     *  registered listeners of the change. If this method
      *  is not invoked, the default value of 4096 is used.
      *
-     *  @param bufferSize The size of the internal capture and
+     *  @param bufferSize The size of the internal capture and 
      *   playback audio buffers, in samples per channel.
+     *  @exception IOException If the specified number of channels is
+     *   not supported by the audio hardware or by Java.
      */
-    public static void setBufferSize(int bufferSize)
-	throws IllegalStateException {
-	if ((_captureIsActive) || (_playbackIsActive)) {
-	    throw new IllegalStateException("LiveSound: " +
-              "setBufferSize() was called while audio capture " +
-					"or playback was active.");
-
-	} else {
-	    _bufferSize = bufferSize;
+    public static void setBufferSize(int bufferSize) 
+	throws IOException {
+	_bufferSize = bufferSize;
+	if (_debug) {
+	    System.out.println("LiveSound: setBufferSize() invoked " +
+			       "with bufferSize = " + bufferSize);
+	}
+	if ((_captureIsActive) && (_playbackIsActive)) {
+	    // Restart capture/playback with new bufferSize.
+	    if (_debug) {
+	    System.out.println("LiveSound: setBufferSize(): capture and playback are active..");
+	    }
+	    stopCapture(_consumer);
+	    stopPlayback(_producer);
+	    startCapture(_consumer);
+	    startPlayback(_producer);
+	} else if (_captureIsActive) {
+	    // Restart capture with new bufferSize.
+	    if (_debug) {
+	    System.out.println("LiveSound: setBufferSize(): capture is active..");
+	    }
+	    stopCapture(_consumer);
+	    startCapture(_consumer);
+	} else if (_playbackIsActive) {
+	    // Restart playback with new bufferSize.
+	     if (_debug) {
+	    System.out.println("LiveSound: setBufferSize(): playback is active..");
+	    }
+	    stopPlayback(_producer);
+	    startPlayback(_producer);
+	} 
+	// Notify listeners of the change.
+	_notifyLiveSoundListeners(LiveSoundEvent.BUFFER_SIZE);
+	if (_debug) {
+	    System.out.println("LiveSound: setBufferSize() returning now.");
 	}
     }
 
@@ -369,14 +481,14 @@ public class LiveSound {
      *  This method should only be called while audio capture and
      *  playback are inactive. Otherwise an exception will occur.
      *
-     *  @param transferSize The  size of the 2nd dimension of
-     *   the 2-dimensional array used by the putSamples() and
+     *  @param transferSize The  size of the 2nd dimension of 
+     *   the 2-dimensional array used by the putSamples() and 
      *   getSamples() methods
      *
      *  @exception IllegalStateException If this method is called
      *   while audio capture or playback are active.
      */
-    public static void setTransferSize(int transferSize)
+    public static void setTransferSize(int transferSize) 
 	throws IllegalStateException {
 	if (_debug) {
 	    System.out.println("LiveSound: setTransferSize(transferSize) " +
@@ -387,8 +499,8 @@ public class LiveSound {
 	    throw new IllegalStateException("LiveSound: " +
               "setTransferSize() was called while audio capture " +
 					"or playback was active.");
-
-	} else {
+	    
+	} else {	       
 	    _transferSize = transferSize;
 	}
     }
@@ -398,14 +510,14 @@ public class LiveSound {
      *  and getSamples() methods. This method gets the size
      *  of the 2nd dimension of the 2-dimensional array
      *  used by the putSamples() and getSamples() methods. This
-     *  method returns the value that was set by the
+     *  method returns the value that was set by the 
      *  setTransferSize(). If setTransferSize() was not invoked,
      *  the default value of 128 is returns.
      *  <p>
      *  This method should only be called while audio capture and
      *  playback are inactive. Otherwise an exception will occur.
      *
-     *  @return The size of the 2nd dimension of the 2-dimensional
+     *  @return The size of the 2nd dimension of the 2-dimensional 
      *   array used by the putSamples() and getSamples() methods.
      */
     public static int getTransferSize() {
@@ -415,14 +527,14 @@ public class LiveSound {
     /** Stop audio capture. If audio capture is already innactive,
      *  then do nothing. This method should generally not be used,
      *  but it may be needed to turn of audio capture for the
-     *  case where an ill-behaved application exits without calling
+     *  case where an ill-behaved application exits without calling 
      *  stopCapture(). The preferred way of stopping audio capture
      *  is by calling the stopCapture() method.
      *
      */
     public static void resetCapture() {
 	if (_targetLine != null) {
-
+	    
 	    if (_targetLine.isOpen() == true) {
 		_targetLine.stop();
 		_targetLine.close();
@@ -435,7 +547,7 @@ public class LiveSound {
     /** Stop audio playback. If audio playback is already innactive,
      *  then do nothing. This method should generally not be used,
      *  but it may be needed to turn of audio playback for the
-     *  case where an ill-behaved application exits without calling
+     *  case where an ill-behaved application exits without calling 
      *  stopPlayback(). The preferred way of stopping audio playback
      *  is by calling the stopPlayback() method.
      *
@@ -472,6 +584,7 @@ public class LiveSound {
 	// FIXME: the value of consumer is ignored.
 	// FXIME: consider allowing several object to
 	// share the captured audio resources.
+	_consumer = consumer;
 	if (_debug) {
 	    System.out.println("LiveSound: startCapture(): invoked");
 	}
@@ -509,11 +622,11 @@ public class LiveSound {
 	if (_debug) {
 	    System.out.println("LiveSound: stopCapture(): invoked");
 	}
-
+	
 	// Free up audio system resources.
-
+	
 	if (_targetLine != null) {
-
+	    
 	    if (_targetLine.isOpen() == true) {
 		_targetLine.stop();
 		_targetLine.close();
@@ -540,7 +653,7 @@ public class LiveSound {
      *  @exception IllegalStateException If this method is called
      *   while audio playback is already active.
      */
-    public static void startPlayback(Object producer)
+    public static void startPlayback(Object producer) 
 	throws IOException, IllegalStateException {
 	// FIXME: the value of producer is ignored.
 	_producer = producer;
@@ -618,13 +731,13 @@ public class LiveSound {
      *  inactive, or if the specified object does not hold the
      *  lock on the captured audio resources.
      */
-    public static double[][] getSamples(Object consumer)
+    public static double[][] getSamples(Object consumer) 
 	throws IOException,  IllegalStateException {
 	// FIXME: the value of consumer is ignored.
 	if (_debug) {
 	    System.out.println("LiveSound: getSamples(): invoked");
-	    System.out.println("LiveSound: getSamples(): " +
-			       "_transferSize = " + _transferSize);
+	    //System.out.println("LiveSound: getSamples(): " +
+	    //	       "_transferSize = " + _transferSize);
 	}
 	    int numBytesRead;
 
@@ -712,39 +825,39 @@ public class LiveSound {
 	// FIXME: the value of producer is ignored.
 	if (_debug) {
 	    System.out.println("LiveSound: putSamples(): invoked");
-	    System.out.println("LiveSound: putSamples(): " +
-			       "_transferSize = " +
-			       _transferSize);
-	     System.out.println("LiveSound: putSamples(): " +
-				"_bytesPerSample = " +
-				_bytesPerSample);
-		 System.out.println("LiveSound: putSamples(): " +
-				    "_channels = " + _channels);
+	    //System.out.println("LiveSound: putSamples(): " +
+	    //	       "_transferSize = " + 
+	    //	       _transferSize);
+	    //System.out.println("LiveSound: putSamples(): " +
+	    //		"_bytesPerSample = " +
+	    //		_bytesPerSample);
+	    // System.out.println("LiveSound: putSamples(): " +
+	    //		    "_channels = " + _channels);
 	}
 	// Convert array of double valued samples into
 	// the proper byte array format.
 	_data = _doubleArrayToByteArray(samplesArray,
 					_bytesPerSample,
 					_channels);
-
+	
 	// Note: _data is a byte array containing data to
 	// be written to the output device.
 	// Note: consumptionRate is amount of data to write, in bytes.
 	if (_debug) {
-	    System.out.println("LiveSound: putSamples(): " +
-			       "writing samples...");
-	    System.out.println("LiveSound: putSamples(): " +
-			       "_data.length = " + _data.length);
-	    System.out.println("LiveSound: putSamples(): " +
-			       "_transferSize = " + _transferSize);
-	    System.out.println("LiveSound: putSamples(): " +
-			       "_frameSizeInBytes = " +
-			       _frameSizeInBytes);
+	    //System.out.println("LiveSound: putSamples(): " +
+	    //	       "writing samples...");
+	    //System.out.println("LiveSound: putSamples(): " +
+	    //	       "_data.length = " + _data.length);
+	    //System.out.println("LiveSound: putSamples(): " +
+	    //	       "_transferSize = " + _transferSize);
+	    //System.out.println("LiveSound: putSamples(): " +
+	    //	       "_frameSizeInBytes = " +
+	    //	       _frameSizeInBytes);
 	}
 	// Now write the array to output device.
 	_sourceLine.write(_data, 0, _transferSize*_frameSizeInBytes);
 	if (_debug) {
-	    System.out.println("LiveSound: putSamples(): returning now.");
+	    //System.out.println("LiveSound: putSamples(): returning now.");
 	}
     }
 
@@ -755,7 +868,7 @@ public class LiveSound {
     /** FIXME: this method should take an Object consumer as a parameter.
      */
     private static void _startCapture() throws IOException {
-
+	
         int frameSizeInBits = _bitsPerSample;
         double frameRate = _sampleRate;
         boolean signed = true;
@@ -1006,6 +1119,28 @@ public class LiveSound {
 	return byteArray;
     }
 
+    /** Notify the live sound listeners about a change in an audio
+     *  parameter.
+     *
+     *  @param parameter The audio parameter of LiveSound that
+     *   has changed. The value of parameter should be one of
+     *   LiveSoundEvent.SAMPLE_RATE, LiveSoundEvent.CHANNELS, 
+     *   LiveSoundEvent.BUFFER_SIZE, or 
+     *   LiveSoundEvent.BITS_PER_SAMPLE.
+     *
+     *  @exception Exception If a listener has a problem responding
+     *   to the change.
+     */
+    private static void _notifyLiveSoundListeners(int parameter) {
+	if (_liveSoundListeners.size() > 0) {
+	    LiveSoundEvent event = new LiveSoundEvent(parameter);
+	    Iterator listeners = _liveSoundListeners.iterator();
+	    while (listeners.hasNext()) {
+		((LiveSoundListener)listeners.next()).liveSoundChanged(event);
+	    }
+	}
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -1031,6 +1166,8 @@ public class LiveSound {
     // when putSamples() or getSamples() is invoked.
     private static int _transferSize = 128;
     private static Object _producer;
+    private static Object _consumer;
+    private static List _liveSoundListeners = new LinkedList();
     // for debuging;
     //private static boolean _debug = true;
     private static boolean _debug = false;

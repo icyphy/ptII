@@ -46,7 +46,9 @@ JSRCS = \
 	SoundPlayback.java \
 	SoundReader.java \
 	SoundWriter.java \
-	LiveSound.java
+	LiveSound.java \
+	LiveSoundListener.java \
+	LiveSoundEvent.java
 
 EXTRA_SRCS =	$(JSRCS) \
 
