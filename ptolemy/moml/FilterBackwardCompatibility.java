@@ -206,8 +206,9 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    _doneProcessingActorWithPortNameChanges  = true;
 		    _currentActorFullName = null;
 		    _portMap = null;
-		}
-	    } else if (_currentlyProcessingActorWithPortNameChanges
+                }
+            }
+        } else if (_currentlyProcessingActorWithPortNameChanges
 		       && attributeName.equals("name")
 		       && _portMap != null
 		       && _portMap.containsKey(attributeValue)) {
@@ -232,7 +233,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		//       +  containerName + "." + newPort + ") "
 		//       + newPort);
 		return newPort;
-	    } else if (_currentlyProcessingActorWithPropertyClassChanges) {
+        } else if (_currentlyProcessingActorWithPropertyClassChanges) {
 		if (attributeName.equals("name")) {
 		    if (_propertyMap.containsKey(attributeValue)) {
 			// We will do the above checks only if we found a
@@ -251,10 +252,10 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 			_newClass = null;
 		    }
 		}
-	    } else if (_doneProcessingActorWithPortNameChanges
+        } else if (_doneProcessingActorWithPortNameChanges
 		       && attributeName.equals("port")
 		       && _containerPortMap.containsKey(container.getFullName()
-							+ "." + attributeValue)) {
+                               + "." + attributeValue)) {
 		// We are processing actors that have port names.
 		// Now map the old port to the new port.
 		String newPort = (String)_containerPortMap
@@ -273,7 +274,6 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		//_debug("filterAttributeValue: return2 "
 		//       + newPort);
 		return newPort;
-	    }
 	}
 	return attributeValue;
     }
