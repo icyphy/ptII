@@ -126,7 +126,7 @@ jarfile=
 javaflag=""
 
 # Keep these alphabetical
-case "`basename $0`" in
+case `basename "$0"` in
     histogram)
 	# Histogram Plotter
 	javastartupclass=ptolemy.plot.plotml.HistogramMLApplication
