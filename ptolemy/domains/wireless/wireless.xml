@@ -5,26 +5,13 @@
   <configure>
     <?moml
       <group>
-  <doc>Wireless/Sensor network actors</doc>
-
-  <property name="AcousticChannel" class="ptolemy.domains.wireless.lib.AcousticChannel">
-  </property>
-
-  <property name="CircularRangeChannel" class="ptolemy.domains.wireless.lib.CircularRangeChannel">
-  </property>
-
-  <property name="DelayChannel" class="ptolemy.domains.wireless.lib.DelayChannel">
-  </property>
-
-  <property name="RadioChannel" class="ptolemy.domains.wireless.lib.RadioChannel">
-  </property>
+  <doc>Wireless/Sensor network library</doc>
+  
+  <input source="lib/channels.xml"/>
 
   <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
   </property>
 
-  <property name="WirelessChannel" class="ptolemy.domains.wireless.kernel.WirelessChannel">
-  </property>
-  
   <entity name="SoundSensor" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor">
   </entity>
   

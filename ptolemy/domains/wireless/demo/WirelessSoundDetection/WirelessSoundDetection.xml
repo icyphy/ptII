@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="wirelessSoundDetection" class="ptolemy.actor.TypedCompositeActor">
+<entity name="WirelessSoundDetection" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 746}}">
@@ -123,14 +123,14 @@ Yellow Circle - Wireless message Received
                 <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
                 </property>
             </property>
-            <property name="antenna2" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor$1">
+            <property name="antenna2" class="ptolemy.vergil.kernel.attributes.PolygonAttribute">
                 <property name="_hideName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
                 </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="100.0">
                 </property>
                 <property name="height" class="ptolemy.data.expr.Parameter" value="100.0">
                 </property>
@@ -139,6 +139,8 @@ Yellow Circle - Wireless message Received
                 <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+                <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}">
                 </property>
             </property>
             <property name="circle" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -167,9 +169,13 @@ Yellow Circle - Wireless message Received
         </property>
         <port name="wirelessOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="signalRadius">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=[double], time=double}">
             </property>
@@ -178,27 +184,41 @@ Yellow Circle - Wireless message Received
         </port>
         <port name="wirelessIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_hide" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="soundIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_hide" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="soundOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="soundRange">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_hide" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
     </entity>
@@ -226,14 +246,14 @@ Yellow Circle - Wireless message Received
                 <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
                 </property>
             </property>
-            <property name="antenna2" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor$1">
+            <property name="antenna2" class="ptolemy.vergil.kernel.attributes.PolygonAttribute">
                 <property name="_hideName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
                 </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="100.0">
                 </property>
                 <property name="height" class="ptolemy.data.expr.Parameter" value="100.0">
                 </property>
@@ -242,6 +262,8 @@ Yellow Circle - Wireless message Received
                 <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+                <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}">
                 </property>
             </property>
             <property name="circle" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -270,9 +292,13 @@ Yellow Circle - Wireless message Received
         </property>
         <port name="wirelessOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="signalRadius">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=[double], time=double}">
             </property>
@@ -281,27 +307,39 @@ Yellow Circle - Wireless message Received
         </port>
         <port name="wirelessIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_hide" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="soundIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_hide" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="soundOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="soundRange">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_hide" class="ptolemy.data.expr.Parameter">
             </property>
@@ -400,7 +438,7 @@ Yellow Circle - Wireless message Received
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="35.0, 100.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 35.0">
             </property>
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -418,18 +456,66 @@ Yellow Circle - Wireless message Received
             </property>
             <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 115.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 40.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
+        </property>
+        <property name="annotation" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Every two seconds, send a sound.</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 65.0">
+            </property>
+        </property>
+        <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Every second, move the sound source.</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 175.0">
+            </property>
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
         </property>
         <port name="soundOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
             </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="soundRange">
+            </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 190.0">
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 130.0">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
@@ -448,7 +534,7 @@ Yellow Circle - Wireless message Received
             <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
             <doc>Create a set of pulses</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 190.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 130.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -463,7 +549,7 @@ Yellow Circle - Wireless message Received
         <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="_location">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="630.0, 390.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="515.0, 265.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -480,7 +566,7 @@ Yellow Circle - Wireless message Received
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="445.0, 390.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="340.0, 265.0">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -504,7 +590,7 @@ Yellow Circle - Wireless message Received
             <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
             <doc>Create a set of pulses</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 370.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 245.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -524,7 +610,7 @@ Yellow Circle - Wireless message Received
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="2*PI/36">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 380.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 255.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -547,7 +633,7 @@ Yellow Circle - Wireless message Received
             <property name="step" class="ptolemy.actor.parameters.PortParameter" value="2*PI/36">
             </property>
             <doc>Create a sequence of tokens with increasing value</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 455.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 330.0">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
             </property>
@@ -567,15 +653,15 @@ Yellow Circle - Wireless message Received
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="305.0, 380.0">
+            <vertex name="vertex1" value="200.0, 255.0">
             </vertex>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="320.0, 455.0">
+            <vertex name="vertex1" value="215.0, 330.0">
             </vertex>
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="145.0, 370.0">
+            <vertex name="vertex1" value="90.0, 245.0">
             </vertex>
         </relation>
         <link port="soundOPort" relation="relation"/>
@@ -614,14 +700,14 @@ Yellow Circle - Wireless message Received
                 <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
                 </property>
             </property>
-            <property name="antenna2" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor$1">
+            <property name="antenna2" class="ptolemy.vergil.kernel.attributes.PolygonAttribute">
                 <property name="_hideName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
                 </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="100.0">
                 </property>
                 <property name="height" class="ptolemy.data.expr.Parameter" value="100.0">
                 </property>
@@ -630,6 +716,8 @@ Yellow Circle - Wireless message Received
                 <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+                <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}">
                 </property>
             </property>
             <property name="circle" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -657,9 +745,13 @@ Yellow Circle - Wireless message Received
         </property>
         <port name="wirelessOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="signalRadius">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=[double], time=double}">
             </property>
@@ -668,27 +760,39 @@ Yellow Circle - Wireless message Received
         </port>
         <port name="wirelessIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_hide" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="soundIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_hide" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="soundOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="soundRange">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_hide" class="ptolemy.data.expr.Parameter">
             </property>
@@ -718,14 +822,14 @@ Yellow Circle - Wireless message Received
                 <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
                 </property>
             </property>
-            <property name="antenna2" class="ptolemy.domains.wireless.demo.WirelessSoundDetection.SoundSensor$1">
+            <property name="antenna2" class="ptolemy.vergil.kernel.attributes.PolygonAttribute">
                 <property name="_hideName" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="1.0">
                 </property>
                 <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
                 </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="10">
+                <property name="width" class="ptolemy.data.expr.Parameter" value="100.0">
                 </property>
                 <property name="height" class="ptolemy.data.expr.Parameter" value="100.0">
                 </property>
@@ -734,6 +838,8 @@ Yellow Circle - Wireless message Received
                 <property name="fillColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 1.0, 0.0, 1.0}">
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.icon.ResizableAttributeControllerFactory">
+                </property>
+                <property name="vertices" class="ptolemy.data.expr.Parameter" value="{0, -5, -5, -15, 5, -15, 0, -5, 0, 15}">
                 </property>
             </property>
             <property name="circle" class="ptolemy.vergil.kernel.attributes.EllipseAttribute">
@@ -762,9 +868,13 @@ Yellow Circle - Wireless message Received
         </property>
         <port name="wirelessOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="signalRadius">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="type" class="ptolemy.actor.TypeAttribute" value="{location=[double], time=double}">
             </property>
@@ -773,27 +883,39 @@ Yellow Circle - Wireless message Received
         </port>
         <port name="wirelessIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_hide" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="soundIPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_hide" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="soundOPort" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="SoundChannel">
+            </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="soundRange">
             </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_hide" class="ptolemy.data.expr.Parameter">
             </property>
@@ -909,7 +1031,11 @@ has Y increasing upwards.</text></svg></configure>
             <property name="input"/>
             <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="RadioChannel">
             </property>
+            <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
+            </property>
             <property name="insideChannel" class="ptolemy.data.expr.StringParameter">
+            </property>
+            <property name="insideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 190.0">
             </property>
@@ -1015,12 +1141,26 @@ has Y increasing upwards.</text></svg></configure>
         <link port="Scale.input" relation="relation4"/>
         <link port="Scale.output" relation="relation3"/>
     </entity>
-    <entity name="RadioChannel" class="ptolemy.domains.wireless.lib.CircularRangeChannel">
+    <entity name="RadioChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
+        <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
+        </property>
+        <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="Infinity">
+        </property>
+        <property name="defaultRange" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 45.0">
         </property>
     </entity>
-    <entity name="SoundChannel" class="ptolemy.domains.wireless.lib.CircularRangeChannel">
+    <entity name="SoundChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
+        <property name="lossProbability" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
+        </property>
         <property name="propagationSpeed" class="ptolemy.data.expr.Parameter" value="340.0">
+        </property>
+        <property name="defaultRange" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 45.0">
         </property>

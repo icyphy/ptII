@@ -62,6 +62,9 @@ broadcasting sensor node.
 @see ptolemy.actor.Director
 */
 public class WirelessDirector extends DEDirector {
+    
+    // FIXME: This director is not needed!
+    // Move the randomization code to an attribute.
 
     /** Construct a director in the given container with the given name.
      *  The container argument must not be null, or a

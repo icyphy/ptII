@@ -279,17 +279,7 @@ public class WirelessChannel extends TypedAtomicActor {
             }
             while (receivers.hasNext()) {
                 Receiver receiver = (Receiver)receivers.next();
-                if (_debugging) {
-                    _debug(" * " + receiver.getContainer().getFullName());
-                }
-                // FIXME: Check types?
-                if (token != null) {
-                    if (receiver.hasRoom()) {
-                        receiver.put(token);
-                    }
-                } else {
-                    receiver.clear();
-                }
+                _transmitTo(token, port, receiver, properties);
             }
         } finally {
             workspace().doneReading();
@@ -422,6 +412,40 @@ public class WirelessChannel extends TypedAtomicActor {
         }
         _receiversInRangeListVersion = workspace().getVersion();
         return _receiversInRangeList;
+    }
+    
+    /** Transmit the specified token to the specified receiver.
+     *  If necessary, the token will be converted to the resolved
+     *  type of the port containing the specified receiver. 
+     *  @param token The token to transmit, or null to clear
+     *   the specified receiver.
+     *  @param sender The sending port.
+     *  @param receiver The receiver to which to transmit.
+     *  @param properties The transmit properties (ignored in this base class).
+     *  @throws IllegalActionException If the token cannot be converted
+     *   or if the token argument is null and the destination receiver
+     *   does not support clear.
+     */
+    protected void _transmitTo(
+            Token token,
+            WirelessIOPort sender, 
+            Receiver receiver, 
+            Token properties)
+            throws IllegalActionException {
+        if (_debugging) {
+            _debug(" * transmitting to: "
+                    + receiver.getContainer().getFullName());
+        }
+        if (token != null) {
+            if (receiver.hasRoom()) {
+                WirelessIOPort destination = (WirelessIOPort)
+                        receiver.getContainer();
+                Token newToken = destination.convert(token);
+                receiver.put(newToken);
+            }
+        } else {
+            receiver.clear();
+        }
     }
         
     ///////////////////////////////////////////////////////////////////

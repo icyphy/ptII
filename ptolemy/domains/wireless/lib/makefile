@@ -48,12 +48,13 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	AcousticChannel.java \
-	CircularRangeChannel.java \
 	DelayChannel.java \
+	ErasureChannel.java \
+	LimitedRangeChannel.java \
 	RadioChannel.java
 
 OTHER_FILES_TO_BE_JARED = \
-	wireless.xml
+	channels.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

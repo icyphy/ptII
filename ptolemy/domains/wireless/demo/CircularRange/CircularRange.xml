@@ -34,7 +34,7 @@
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model shows a transmitter (at the left) and a receiver (at the right),
 where the receiver moves in and out of range as the model executes.
-The channel is a CircularRangeChannel, which is a simple wireless channel
+The channel is a LimitedRangeChannel, which is a simple wireless channel
 model where the transmitter specifies via a parameter in its output port
 the distance over which it can transmit.  In this model, that distance is
 shown graphically as the radius of the circular icon for the transmitter.
@@ -187,7 +187,7 @@ require physical connectivity.</text></svg></configure>
         </property>
         <port name="in" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="input"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="CircularRangeChannel">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter">
             </property>
@@ -521,7 +521,7 @@ require physical connectivity.</text></svg></configure>
         <port name="out" class="ptolemy.domains.wireless.kernel.WirelessIOPort">
             <property name="output"/>
             <property name="_hide" class="ptolemy.kernel.util.Attribute"/>
-            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="CircularRangeChannel">
+            <property name="outsideChannel" class="ptolemy.data.expr.StringParameter" value="LimitedRangeChannel">
             </property>
             <property name="outsideTransmitProperties" class="ptolemy.data.expr.Parameter" value="range">
             </property>
@@ -651,7 +651,7 @@ require physical connectivity.</text></svg></configure>
         <link port="SetVariable.input" relation="relation"/>
         <link port="PoissonClock.output" relation="relation4"/>
     </entity>
-    <entity name="CircularRangeChannel" class="ptolemy.domains.wireless.lib.CircularRangeChannel">
+    <entity name="LimitedRangeChannel" class="ptolemy.domains.wireless.lib.LimitedRangeChannel">
         <property name="defaultRange" class="ptolemy.data.expr.Parameter" value="100.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="425.0, 95.0">

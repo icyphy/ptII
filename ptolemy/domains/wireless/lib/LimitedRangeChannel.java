@@ -1,4 +1,4 @@
-/* A channel with a circular transmission range.
+/* A channel with a limited transmission range, delay, and packet loss.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -35,14 +35,13 @@ import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.wireless.kernel.WirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
-//// CircularRangeChannel
+//// LimitedRangeChannel
 
 /**
 Model of a wireless channel with a specified transmission range.
@@ -66,7 +65,7 @@ to provide some other notion of distance.
 @author Edward A. Lee
 @version $Id$
 */
-public class CircularRangeChannel extends WirelessChannel {
+public class LimitedRangeChannel extends DelayChannel {
 
     /** Construct a channel with the given name and container.
      *  The container argument must not be null, or a
@@ -78,7 +77,7 @@ public class CircularRangeChannel extends WirelessChannel {
      *  @exception NameDuplicationException If the name coincides with
      *   a relation already in the container.
      */
-    public CircularRangeChannel(CompositeEntity container, String name)
+    public LimitedRangeChannel(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
