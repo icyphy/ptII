@@ -2133,6 +2133,8 @@ public class NamedObj implements
      *  Derived classes with a setContainer() method are
      *  responsible for ensuring that this returned object
      *  has its container set to the specified container.
+     *  This base class ensures that the returned object
+     *  is in the same workspace as the container.
      *  @param container Object to contain the new object.
      *  @exception IllegalActionException If the object
      *   cannot be cloned.
@@ -2142,7 +2144,7 @@ public class NamedObj implements
     protected NamedObj _propagateExistence(NamedObj container)
             throws IllegalActionException {
         try {
-            return (NamedObj)clone(workspace());
+            return (NamedObj)clone(container.workspace());
         } catch (CloneNotSupportedException e) {
             throw new IllegalActionException(this, e,
             "Failed to propogate instance.");
@@ -2440,7 +2442,7 @@ public class NamedObj implements
                                 // No candidate and no error.  In theory, we
                                 // should never reach this line.
                                 throw new InternalErrorException("Expected "
-                                        + container.getFullName()
+                                        + other.getFullName()
                                         + " to contain an object named "
                                         + relativeName
                                         + " of type "
