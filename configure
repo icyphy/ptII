@@ -310,7 +310,7 @@ ac_includes_default="\
 # include <unistd.h>
 #endif"
 
-ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB PTMATLAB_CC CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR COLT_DIR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT ECLIPSE_DIR GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAI_JARS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JDOCTAGLET JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBACKTRACK_DIR PTBACKTRACK_JARS PTBACKTRACK_PACKAGES PTBOOST_INCLUDE PTCALTROP_DIR PTCHIC_DIR PTCM_DIR PTCOLT_DIR PTCOLT_JARS PTCOLT_PACKAGES PTCOMM_DIR PTCOMM_PACKAGES PTCOPERNICUS_DIR PTDOCLETS_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTGRDOMAIN_JAR PTGR_PACKAGES PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAI_PACKAGES PTJAVA_DIR PTJAVA_DIR_NO_CYGDRIVE PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJMF_PACKAGES PTJNI_DIR PTJNI_ARCHITECTURE PTJNI_NO_CYGWIN PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJOYSTICK_PACKAGES PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMATLAB_LD_ARGS PTMESCAL_DIR PTPSDF_DIR PTQUICKTIME_DIR PTQUICKTIME_PACKAGES PTTINI_DIR PTGIOTTO_DIR PTWABA_DIR PTX10_DIR PTX10_PACKAGES PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR TOOLS_JAR TOSROOT_NO_CYGDRIVE GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
+ac_subst_vars='SHELL PATH_SEPARATOR PACKAGE_NAME PACKAGE_TARNAME PACKAGE_VERSION PACKAGE_STRING PACKAGE_BUGREPORT exec_prefix prefix program_transform_name bindir sbindir libexecdir datadir sysconfdir sharedstatedir localstatedir libdir includedir oldincludedir infodir mandir build_alias host_alias target_alias DEFS ECHO_C ECHO_N ECHO_T LIBS CMD_PATH JAVAC JAVA CC CFLAGS LDFLAGS CPPFLAGS ac_ct_CC EXEEXT OBJEXT CPP EGREP PTCC CXX CXXFLAGS ac_ct_CXX JJTREE MATLAB PTMATLAB_CC CALTROP_DIR CHIC_DIR CLASSPATHSEPARATOR COLT_DIR CMKIT_DIR COMMAPI_DIR COMMAPI_PRESENT ECLIPSE_DIR GC_INCLUDE_DIR GC_LD_DIRECTIVE ECLIPSE_EXCLUDING_SRC ECLIPSE_CLASSPATHENTRY_LIBS JAI_JARS JAR_INDEX JAVA_SYSTEM_JAR JAVACC JAVACC_DIR JDOCBREAKITERATOR JDOCTAGLET JHDL_JAR JINI_DIR JINI_PRESENT JOYSTICK_JAR JTCLSH JTREE JVERSION JMF_JARS JODE_CLASSES JYTHON_DIR JXTA_DIR KVM_CLASSES KVM_DIR LEJOS_DIR MAJOR_OS_NAME MATLAB_DIR MATLAB_LIBDIR PSDF_DIR PTBACKTRACK_DIR PTBACKTRACK_JARS PTBACKTRACK_PACKAGES PTBOOST_INCLUDE PTCALTROP_DIR PTCHIC_DIR PTCM_DIR PTCOLT_DIR PTCOLT_JARS PTCOLT_PACKAGES PTCOMM_DIR PTCOMM_PACKAGES PTCOPERNICUS_DIR PTDOCLETS_DIR PTGMP_INCLUDE PTGMP_LD_FLAGS PTGMP_LIB PTGRDOMAIN_JAR PTGR_PACKAGES PTII PTJACL_DIR PTJACL_JAR PTJAI_DIR PTJAI_PACKAGES PTJAVA_DIR PTJAVA_DIR_NO_CYGDRIVE PTJAVA_HOME PTJAVA3D_DIR PTJHDL_DIR PTJMF_DIR PTJMF_PACKAGES PTJNI_DIR PTJNI_ARCHITECTURE PTJNI_NO_CYGWIN PTJNI_SHAREDLIBRARY_CFLAG PTJNI_SHAREDLIBRARY_LDFLAG PTJNI_SHAREDLIBRARY_PREFIX PTJNI_SHAREDLIBRARY_SUFFIX PTJOYSTICK_DIR PTJOYSTICK_PACKAGES PTJSPACES_DIR PTJYTHON_DIR PTJXTA_DIR PTKVM_DIR PTLEGO_DIR PTLEJOS_DIR PTMATLAB_DIR PTMATLAB_LD_ARGS PTMESCAL_DIR PTPSDF_DIR PTQUICKTIME_DIR PTQUICKTIME_PACKAGES PTTINI_DIR PTGIOTTO_DIR PTVR_DIR PTVR_JAR PTVR_PACKAGES PTWABA_DIR PTX10_DIR PTX10_PACKAGES PTII_LOCALURL QTJAVA_ZIP SOOT_CLASSES SOOT_DIR TINI_CLASSES TINI_DIR TOOLS_JAR TOSROOT_NO_CYGDRIVE GIOTTO_CLASSES GIOTTO_DIR WABA_CLASSES WABA_DIR X10_CLASSES X10_DIR LIBOBJS LTLIBOBJS'
 ac_subst_files=''
 
 # Initialize some variables set by options.
@@ -898,6 +898,8 @@ Optional Packages:
                           defaults to \$PTII/vendors/dalsemi/tini
   --with-giotto=DIR       use GiottoSDF from DIR,
                           defaults to \$PTII/vendors/giotto
+  --with-ptvr=DIR       use Volume Rendering from DIR
+                          defaults to \$PTII/lib/ptvr.jar
   --with-waba=DIR       use PalmOS WABA from DIR,
                           defaults to \$PTII/vendors/misc/waba/wabasdk
   --with-X10=DIR       use X10 from DIR,
@@ -7477,14 +7479,15 @@ else
     echo "$as_me:$LINENO: checking for giotto directory" >&5
 echo $ECHO_N "checking for giotto directory... $ECHO_C" >&6
 
-# Check whether --with-tini or --without-tini was given.
-if test "${with_tini+set}" = set; then
-  withval="$with_tini"
+# Check whether --with-giotto or --without-giotto was given.
+if test "${with_giotto+set}" = set; then
+  withval="$with_giotto"
   GIOTTO_DIR=$withval
 else
   GIOTTO_DIR=$PTII/vendors/giotto
 fi;
 
+    GIOTTO_CLASSES=no
     if test -d "$GIOTTO_DIR"; then
     	echo "$as_me:$LINENO: result: $GIOTTO_DIR" >&5
 echo "${ECHO_T}$GIOTTO_DIR" >&6
@@ -7529,6 +7532,58 @@ echo "$as_me: WARNING: Failed to find giotto/gdk.jar
 	# $PTII/ptolemy/copernicus/java/ if giotto was found
 	PTGIOTTO_DIR=giotto
     fi
+fi
+
+#--------------------------------------------------------------------
+#	Test for vendors.vr Volume Rendering code used by gr/lib/vr
+#--------------------------------------------------------------------
+# PTVR_DIR is set to vr and used in
+# $PTII/ptolemy/domains/gr/lib/makefile if Volume Rendering was found
+PTVR_DIR=
+
+# We only need to look for Java3D if the vr actors are present
+VR_USER_DIR="$PTII/ptolemy/domains/gr/lib/vr"
+
+if test ! -d "$VR_USER_DIR" -o -z "$PTJAVA3D_DIR"; then
+    echo "$as_me:$LINENO: result: $VR_USER_DIR is not present
+    or Java 3D was not found, so we need not find Java 3D Volume Rendering." >&5
+echo "${ECHO_T}$VR_USER_DIR is not present
+    or Java 3D was not found, so we need not find Java 3D Volume Rendering." >&6
+else
+    echo "$as_me:$LINENO: checking for Java 3D Volume Rendering" >&5
+echo $ECHO_N "checking for Java 3D Volume Rendering... $ECHO_C" >&6
+
+# Check whether --with-ptvr or --without-ptvr was given.
+if test "${with_ptvr+set}" = set; then
+  withval="$with_ptvr"
+  PTVR_JAR=$withval
+else
+  PTVR_JAR=$PTII/lib/ptvr.jar
+fi;
+
+    if test -f "$PTVR_JAR"; then
+       echo "$as_me:$LINENO: result: ok" >&5
+echo "${ECHO_T}ok" >&6
+       PTVR_DIR=vr
+       # PTVR_PACKAGES is used in ptII/doc/makefile
+       PTVR_PACKAGES="ptolemy.domains.gr.lib.vr"
+    else
+       { echo "$as_me:$LINENO: WARNING: 'Could not find $PTVR_JAR.
+    http://www.j3d.org/tutorials/quick_fix/volume.html
+    Java 3D Volume Rendering is only needed if you want to build in
+    $VR_USER_DIR,
+    otherwise the build will proceed fine without Java 3D Volume Rendering." >&5
+echo "$as_me: WARNING: 'Could not find $PTVR_JAR.
+    http://www.j3d.org/tutorials/quick_fix/volume.html
+    Java 3D Volume Rendering is only needed if you want to build in
+    $VR_USER_DIR,
+    otherwise the build will proceed fine without Java 3D Volume Rendering." >&2;}
+    fi
+    cd "$startdir"
+fi
+
+if test -z "$PTVR_DIR"; then
+    ECLIPSE_EXCLUDING_SRC="$ECLIPSE_EXCLUDING_SRC|ptolemy/domains/gr/lib/vr"
 fi
 
 #--------------------------------------------------------------------
@@ -8065,6 +8120,17 @@ fi
 
 # Set to quicktime and used in
 # $PTII/ptolemy/domains/gr/lib/makefile if Quicktime for Java was found
+
+
+# Set to vr and used in
+# $PTII/ptolemy/domains/gr/lib if Volume Rendering code was found
+
+
+# $PTII/lib/ptvr.jar file, used to for Volume Rendering
+
+
+# Ptolemy II packages that use the Java 3D Volume Rendering
+# PTVR_PACKAGES is used in ptII/doc/makefile
 
 
 # Set to waba and used in
@@ -8878,6 +8944,9 @@ s,@PTQUICKTIME_DIR@,$PTQUICKTIME_DIR,;t t
 s,@PTQUICKTIME_PACKAGES@,$PTQUICKTIME_PACKAGES,;t t
 s,@PTTINI_DIR@,$PTTINI_DIR,;t t
 s,@PTGIOTTO_DIR@,$PTGIOTTO_DIR,;t t
+s,@PTVR_DIR@,$PTVR_DIR,;t t
+s,@PTVR_JAR@,$PTVR_JAR,;t t
+s,@PTVR_PACKAGES@,$PTVR_PACKAGES,;t t
 s,@PTWABA_DIR@,$PTWABA_DIR,;t t
 s,@PTX10_DIR@,$PTX10_DIR,;t t
 s,@PTX10_PACKAGES@,$PTX10_PACKAGES,;t t
