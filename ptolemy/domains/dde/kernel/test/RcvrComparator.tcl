@@ -50,7 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # Global Variables 
-set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
 set globalInactiveTime [java::field $globalEndTimeRcvr INACTIVE]
 set globalIgnoreTime -1
 
@@ -69,22 +69,22 @@ test RcvrComparator-2.1 {compareTo() on times, same priorities} {
 
     set cmp [java::new ptolemy.domains.dde.kernel.RcvrComparator $keeper]
 
-    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
     $rcvr1 put $tok 0.0
 
-    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
     $rcvr2 put $tok 0.5
 
-    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
+    set rcvr3 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
     $rcvr3 put $tok 2.5
 
-    set rcvr4 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
+    set rcvr4 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
     $rcvr4 put $tok $globalIgnoreTime
 
-    set rcvr5 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
+    set rcvr5 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
     $rcvr5 put $tok $globalInactiveTime
 
-    set rcvr6 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
+    set rcvr6 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
     $rcvr6 put $tok 0.5
 
     set testA [$cmp compare $rcvr1 $rcvr2]
@@ -106,31 +106,31 @@ test RcvrComparator-2.2 {compareTo() on times and priorities} {
 
     set cmp [java::new ptolemy.domains.dde.kernel.RcvrComparator $keeper]
 
-    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
     $rcvr1 put $tok 0.0
 
-    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 2]
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 2]
     $rcvr2 put $tok 0.0
 
-    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 3]
+    set rcvr3 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 3]
     $rcvr3 put $tok $globalIgnoreTime
 
-    set rcvr4 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 4]
+    set rcvr4 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 4]
     $rcvr4 put $tok $globalIgnoreTime
 
-    set rcvr5 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 5]
+    set rcvr5 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 5]
     $rcvr5 put $tok $globalInactiveTime
 
-    set rcvr6 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 6]
+    set rcvr6 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 6]
     $rcvr6 put $tok $globalInactiveTime
 
-    set rcvr7 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 1]
+    set rcvr7 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
     $rcvr7 put $tok 0.0
 
-    set rcvr8 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 3]
+    set rcvr8 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 3]
     $rcvr8 put $tok $globalIgnoreTime
 
-    set rcvr9 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop 5]
+    set rcvr9 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 5]
     $rcvr9 put $tok $globalInactiveTime
 
     set testA [$cmp compare $rcvr1 $rcvr2]

@@ -109,15 +109,15 @@ The model consists of the following domain-polymorphic actors:
 	referred to as <I>Rcvr</I> in the topology above.
 	<LI> <A HREF="../../lib/DoubleFork.java">DoubleFork</A> 
 	referred to as <I>Join</I> in the topology above.
-	<LI> <A HREF="../../kernel/FBDelay.java">FBDelay</A> 
+	<LI> <A HREF="../../kernel/FeedBackDelay.java">FeedBackDelay</A> 
 	referred to as <I>FeedBack</I> in the topology above.
 	<LI> <A HREF="../../lib/TimeAdvance.java">TimeAdvance</A> 
 	not shown in the topology above.
 </UL>
 In the lower branch, the feedback actor is implemented with 
 <A HREF="ZenoDelay.java">ZenoDelay</A> 
-instead of FBDelay to provide a delay value that <I>approximates</I> a 
-Zeno condition. ZenoDelay extends FBDelay.
+instead of FeedBackDelay to provide a delay value that <I>approximates</I> a 
+Zeno condition. ZenoDelay extends FeedBackDelay.
 
 <BR>
 <BR>

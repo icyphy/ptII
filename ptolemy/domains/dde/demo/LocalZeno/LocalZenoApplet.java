@@ -235,7 +235,7 @@ public class LocalZenoApplet extends DDEApplet {
 
 	    _join1 = new ListenWire( _toplevel, "UpperJoin" );
 	    _fork1 = new ListenFork( _toplevel, "UpperFork" );
-	    _fBack1 = new ListenFBDelay( _toplevel, "UpperFeedBack" );
+	    _fBack1 = new ListenFeedBackDelay( _toplevel, "UpperFeedBack" );
 	    _join2 = new ListenWire( _toplevel, "LowerJoin" );
 	    _fork2 = new ListenFork( _toplevel, "LowerFork" );
 	    _fBack2 = new ZenoDelay( _toplevel, "LowerFeedBack" );
@@ -369,7 +369,7 @@ public class LocalZenoApplet extends DDEApplet {
     private ListenClock _clock;
     private ListenWire _join1;
     private ListenFork _fork1;
-    private ListenFBDelay _fBack1;
+    private ListenFeedBackDelay _fBack1;
     private ListenSink _rcvr1;
     private ListenWire _join2;
     private ListenFork _fork2;
@@ -556,7 +556,7 @@ public class LocalZenoApplet extends DDEApplet {
                 || actor instanceof ListenFork
 		|| actor instanceof ListenClock
 		|| actor instanceof ListenSink
-                || actor instanceof ListenFBDelay;
+                || actor instanceof ListenFeedBackDelay;
 
 
             BasicFigure f;

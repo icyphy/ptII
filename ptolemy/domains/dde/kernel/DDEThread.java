@@ -88,13 +88,13 @@ public class DDEThread extends ProcessThread {
      *  actors</I> are those that are connected to the actor
      *  controlled by this thread via output ports of this thread's
      *  actor. Send events with time stamps of
-     *  TimedQueueReceiver.INACTIVE to these "downstream" actors.
-     * @see ptolemy.domains.dde.kernel.TimedQueueReceiver
+     *  PrioritizedTimedQueue.INACTIVE to these "downstream" actors.
+     * @see ptolemy.domains.dde.kernel.PrioritizedTimedQueue
      */
     public synchronized void noticeOfTermination() {
         Actor actor = (Actor)getActor();
 	Iterator outputPorts = actor.outputPortList().iterator();
-	double endTime = TimedQueueReceiver.INACTIVE;
+	double endTime = PrioritizedTimedQueue.INACTIVE;
 	if( outputPorts != null ) {
 	    while( outputPorts.hasNext() ) {
 	        IOPort port = (IOPort)outputPorts.next();

@@ -1,4 +1,4 @@
-/* An FBDelay actor that can notify an ExecEventListener of ExecEvents.
+/* An FeedBackDelay actor that can notify an ExecEventListener of ExecEvents.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -41,9 +41,9 @@ import java.util.Iterator;
 import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// ListenFBDelay
+//// ListenFeedBackDelay
 /**
-An FBDelay actor that can notify an ExecEventListener of ExecEvents.
+An FeedBackDelay actor that can notify an ExecEventListener of ExecEvents.
 In particular, the listener will be notified each time the prefire(), 
 postfire() and wrapup() methods of this actor are invoked. Such 
 notification is enabled by adding an ExecEventListener to this actor's 
@@ -58,26 +58,26 @@ graphical user interface.
 @see ptolemy.actor.gui.ExecEventListener
 @see ptolemy.domains.dde.kernel.NullToken
 */
-public class ListenFBDelay extends FBDelay {
+public class ListenFeedBackDelay extends FeedBackDelay {
 
-    /** Construct a ListenFBDelay actor with no container and a 
+    /** Construct a ListenFeedBackDelay actor with no container and a 
      *  name that is an empty string.
      */
-    public ListenFBDelay()
+    public ListenFeedBackDelay()
             throws IllegalActionException, NameDuplicationException {
         super();
     }
 
-    /** Construct a ListenFBDelay actor with the specified workspace 
+    /** Construct a ListenFeedBackDelay actor with the specified workspace 
      *  and no name.
-     * @param workspace The workspace for this ListenFBDelay actor.
+     * @param workspace The workspace for this ListenFeedBackDelay actor.
      */
-    public ListenFBDelay(Workspace workspace)
+    public ListenFeedBackDelay(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
 	super(workspace);
     }
 
-    /** Construct a ListenFBDelay actor with the specified container 
+    /** Construct a ListenFeedBackDelay actor with the specified container 
      *  and name.
      * @param container The container of this actor.
      * @param name The name of this actor.
@@ -86,7 +86,7 @@ public class ListenFBDelay extends FBDelay {
      * @exception NameDuplicationException If the constructor of the
      *  superclass throws a NameDuplicationException .
      */
-    public ListenFBDelay(TypedCompositeActor container, String name)
+    public ListenFeedBackDelay(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }

@@ -1,4 +1,4 @@
-/* ZenoDelay is an extension of ListenFBDelay with an overridden
+/* ZenoDelay is an extension of ListenFeedBackDelay with an overridden
 getDelay() method that approximates a Zeno condition.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
@@ -41,14 +41,14 @@ import ptolemy.domains.dde.kernel.NullToken; // For Javadoc
 //////////////////////////////////////////////////////////////////////////
 //// ZenoDelay
 /**
-ZenoDelay is an extension of ListenFBDelay with an overridden
+ZenoDelay is an extension of ListenFeedBackDelay with an overridden
 getDelay() method that approximates a Zeno condition.
 
 @author John S. Davis II
 @version $Id$
 @see ptolemy.domains.dde.kernel.NullToken
 */
-public class ZenoDelay extends ListenFBDelay {
+public class ZenoDelay extends ListenFeedBackDelay {
 
     /** Construct a ZenoDelay actor with no container and a name 
      *  that is an empty string.

@@ -74,7 +74,7 @@ test DDEIOPort-2.1 {Check send()} {
     $inPort createReceivers
 
     set rcvrs [$inPort getReceivers]
-    set rcvr [java::cast ptolemy.domains.dde.kernel.TimedQueueReceiver [$rcvrs get {0 0}]]
+    set rcvr [java::cast ptolemy.domains.dde.kernel.PrioritizedTimedQueue [$rcvrs get {0 0}]]
 
     $rcvr setCapacity 1
 
@@ -116,9 +116,9 @@ test DDEIOPort-3.1 {Broadcast tokens to two different actors.} {
     $dir preinitialize
 
     set rcvrs2 [$inPort2 getReceivers]
-    set rcvr2 [java::cast ptolemy.domains.dde.kernel.TimedQueueReceiver [$rcvrs2 get {0 0}]]
+    set rcvr2 [java::cast ptolemy.domains.dde.kernel.PrioritizedTimedQueue [$rcvrs2 get {0 0}]]
     set rcvrs3 [$inPort3 getReceivers]
-    set rcvr3 [java::cast ptolemy.domains.dde.kernel.TimedQueueReceiver [$rcvrs3 get {0 0}]]
+    set rcvr3 [java::cast ptolemy.domains.dde.kernel.PrioritizedTimedQueue [$rcvrs3 get {0 0}]]
 
     $rcvr2 setCapacity 1
     $rcvr3 setCapacity 1

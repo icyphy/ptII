@@ -46,7 +46,7 @@ A RcvrComparator is used to sort receivers controlled by a time keeper.
 Receivers are sorted according to rcvrTime and priority using the 
 compare() method. First receivers are sorted according to rcvrTime. 
 RcvrTimes are partitioned into three categories: nonnegative times, 
-TimedQueueReceiver.IGNORE times and TimedQueueReceiver.INACTIVE times. 
+PrioritizedTimedQueue.IGNORE times and PrioritizedTimedQueue.INACTIVE times. 
 Nonnegative times precede IGNORE times precede INACTIVE times. Within 
 the nonnegative time category, smaller times precede larger times. The 
 IGNORE and INACTIVE categories each consist of a single value so within 
@@ -80,16 +80,16 @@ public class RcvrComparator implements Comparator {
      *  If the rcvrTimes are equal, then base the ordering on the receiver
      *  priority. 
      *  @exception ClassCastException If obj1 and obj2 are
-     *   not instances of TimedQueueReceiver.
+     *   not instances of PrioritizedTimedQueue.
      */
     public int compare(Object obj1, Object obj2) {
-	TimedQueueReceiver rcvr1 = null;
-	TimedQueueReceiver rcvr2 = null;
-        if( obj1 instanceof TimedQueueReceiver ) {
-	    rcvr1 = (TimedQueueReceiver)obj1;
+	PrioritizedTimedQueue rcvr1 = null;
+	PrioritizedTimedQueue rcvr2 = null;
+        if( obj1 instanceof PrioritizedTimedQueue ) {
+	    rcvr1 = (PrioritizedTimedQueue)obj1;
         }
-        if( obj2 instanceof TimedQueueReceiver ) {
-	    rcvr2 = (TimedQueueReceiver)obj2;
+        if( obj2 instanceof PrioritizedTimedQueue ) {
+	    rcvr2 = (PrioritizedTimedQueue)obj2;
         }
 
 	//
@@ -97,8 +97,8 @@ public class RcvrComparator implements Comparator {
 	//
 	double time1 = rcvr1.getRcvrTime();
 	double time2 = rcvr2.getRcvrTime();
-	if( time1 == TimedQueueReceiver.IGNORE || 
-		time2 == TimedQueueReceiver.IGNORE ) {
+	if( time1 == PrioritizedTimedQueue.IGNORE || 
+		time2 == PrioritizedTimedQueue.IGNORE ) {
 	    _timeKeeper._ignoredRcvrs = true;
 	} else {
 	    _timeKeeper._ignoredRcvrs = false;
@@ -123,11 +123,11 @@ public class RcvrComparator implements Comparator {
 	}
 
 	// Compare Negative Time with Negative Time
-	if( time1 == TimedQueueReceiver.IGNORE &&
-		time2 == TimedQueueReceiver.INACTIVE ) {
+	if( time1 == PrioritizedTimedQueue.IGNORE &&
+		time2 == PrioritizedTimedQueue.INACTIVE ) {
 	    return -1;
-	} else if( time1 == TimedQueueReceiver.INACTIVE &&
-		time2 == TimedQueueReceiver.IGNORE ) {
+	} else if( time1 == PrioritizedTimedQueue.INACTIVE &&
+		time2 == PrioritizedTimedQueue.IGNORE ) {
 	    return 1;
 	}
 

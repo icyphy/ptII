@@ -53,11 +53,11 @@ JSRCS = \
 	DDEIOPort.java \
 	DDEReceiver.java \
 	DDEThread.java \
-	FBDelay.java \
+	FeedBackDelay.java \
 	NullToken.java \
 	RcvrComparator.java \
         TimeKeeper.java \
-	TimedQueueReceiver.java 
+	PrioritizedTimedQueue.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
@@ -72,8 +72,7 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'DDEDirector$$CapacityComparator.class' \
 	'DDEDirector$$RcvrCapacityComparator.class' \
-	'TimeKeeper$$RcvrTimeTriple.class' \
-	'TimedQueueReceiver$$Event.class'
+	'PrioritizedTimedQueue$$Event.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

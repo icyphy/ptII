@@ -49,7 +49,7 @@ TCL_SRCS =
 
 JSRCS = \
 	ListenClock.java \
-	ListenFBDelay.java \
+	ListenFeedBackDelay.java \
 	ListenFork.java \
 	ListenSink.java \
 	ListenWire.java \

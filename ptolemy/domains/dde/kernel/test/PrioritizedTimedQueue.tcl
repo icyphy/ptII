@@ -1,4 +1,4 @@
-# Tests for the TimedQueueReceiver class
+# Tests for the PrioritizedTimedQueue class
 #
 # @Author: John S. Davis II
 #
@@ -50,18 +50,18 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test TimedQueueReceiver-2.1 {Check IOPort container in new receiver} {
+test PrioritizedTimedQueue-2.1 {Check IOPort container in new receiver} {
     set iop [java::new ptolemy.actor.IOPort]
-    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop]
+    set tqr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop]
     list [expr { $iop == [$tqr getContainer] } ]
 } {1}
 
 ######################################################################
 ####
 #
-test TimedQueueReceiver-3.1 {Check hasToken(), hasRoom(), rcvrTime
+test PrioritizedTimedQueue-3.1 {Check hasToken(), hasRoom(), rcvrTime
 and lastTime for empty queue} {
-    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set tqr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
     set hasToken [$tqr hasToken]
     set hasRoom [$tqr hasRoom]
     set rcvrTime [$tqr getRcvrTime]
@@ -72,8 +72,8 @@ and lastTime for empty queue} {
 ######################################################################
 ####
 #
-test TimedQueueReceiver-3.2 {Check hasToken() after putting token} {
-    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+test PrioritizedTimedQueue-3.2 {Check hasToken() after putting token} {
+    set tqr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
     set t1 [java::new ptolemy.data.Token]
     set t2 [java::new ptolemy.data.Token]
     $tqr put $t1 5.0
@@ -89,8 +89,8 @@ test TimedQueueReceiver-3.2 {Check hasToken() after putting token} {
 ######################################################################
 ####
 #
-test TimedQueueReceiver-4.1 {Check hasRoom() for full queue} {
-    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+test PrioritizedTimedQueue-4.1 {Check hasRoom() for full queue} {
+    set tqr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
     set t1 [java::new ptolemy.data.Token]
     set t2 [java::new ptolemy.data.Token]
     $tqr setCapacity 2
@@ -102,7 +102,7 @@ test TimedQueueReceiver-4.1 {Check hasRoom() for full queue} {
 ######################################################################
 ####
 # Continued from above
-test TimedQueueReceiver-4.2 {Check exception message for full queue} {
+test PrioritizedTimedQueue-4.2 {Check exception message for full queue} {
     set t3 [java::new ptolemy.data.Token]
     set cap [$tqr getCapacity]
     catch {$tqr put $t3 10.0} msg
@@ -112,7 +112,7 @@ test TimedQueueReceiver-4.2 {Check exception message for full queue} {
 ######################################################################
 ####
 # Continued from above
-test TimedQueueReceiver-4.3 {Check hasRoom() for infinite capacity queue} {
+test PrioritizedTimedQueue-4.3 {Check hasRoom() for infinite capacity queue} {
     set actor [java::new ptolemy.actor.TypedAtomicActor]
     set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
     $tqr setContainer $iop
@@ -124,8 +124,8 @@ test TimedQueueReceiver-4.3 {Check hasRoom() for infinite capacity queue} {
 ######################################################################
 ####
 #
-test TimedQueueReceiver-5.1 {Check get(), put(), _rcvrTime and _lastTime} {
-    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop]
+test PrioritizedTimedQueue-5.1 {Check get(), put(), _rcvrTime and _lastTime} {
+    set tqr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop]
 
     set t0 [java::new ptolemy.data.Token]
     set t1 [java::new ptolemy.data.Token]
@@ -163,7 +163,7 @@ test TimedQueueReceiver-5.1 {Check get(), put(), _rcvrTime and _lastTime} {
 ######################################################################
 ####
 # Continued from above
-test TimedQueueReceiver-6.2 {Check for exception with get() given empty \
+test PrioritizedTimedQueue-6.2 {Check for exception with get() given empty \
 	queue} {
     catch {$tqr get} msg 
     list $msg
@@ -172,10 +172,10 @@ test TimedQueueReceiver-6.2 {Check for exception with get() given empty \
 ######################################################################
 ####
 #
-test TimedQueueReceiver-7.2 {Attempt to put negative time stamps} {
+test PrioritizedTimedQueue-7.2 {Attempt to put negative time stamps} {
     set actor [java::new ptolemy.actor.TypedAtomicActor]
     set iop [java::new ptolemy.actor.TypedIOPort $actor "port"]
-    set tqr [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $iop]
+    set tqr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop]
     set t1 [java::new ptolemy.data.Token]
 
     catch {$tqr put $t1 -1.5} msg

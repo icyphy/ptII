@@ -117,19 +117,19 @@ public class TimeKeeper {
         return _currentTime;
     }
 
-    /** Return the active TimedQueueReceiver with the oldest receiver time
+    /** Return the active PrioritizedTimedQueue with the oldest receiver time
      *  of all receivers contained in the actor that this TimeKeeper
-     *  controls. A TimedQueueReceiver is considered active if its receiver
+     *  controls. A PrioritizedTimedQueue is considered active if its receiver
      *  time is nonnegative. If all receivers of the managed actor are no
      *  longer active, then return the first receiver to become inactive.
-     * @return TimedQueueReceiver The oldest active TimedQueueReceiver
+     * @return PrioritizedTimedQueue The oldest active PrioritizedTimedQueue
      *  managed by this TimeKeeper.
      */
-    public synchronized TimedQueueReceiver getFirstRcvr() {
+    public synchronized PrioritizedTimedQueue getFirstRcvr() {
 	if( _rcvrList.size() == 0 ) {
 	    return null;
 	}
-        return (TimedQueueReceiver)_rcvrList.getFirst();
+        return (PrioritizedTimedQueue)_rcvrList.getFirst();
     }
 
     /** Return the earliest possible time stamp of the next token to be
@@ -144,7 +144,7 @@ public class TimeKeeper {
         if( _rcvrList.size() == 0 ) {
             return _currentTime;
         }
-        return ((TimedQueueReceiver)_rcvrList.getFirst()).getRcvrTime();
+        return ((PrioritizedTimedQueue)_rcvrList.getFirst()).getRcvrTime();
     }
 
     /** Return the current value of the output time associated with
@@ -167,7 +167,7 @@ public class TimeKeeper {
     }
 
     /** Update receivers controlled by this time keeper that have
-     *  a receiver time equal to TimedQueueReceiver.IGNORE. For
+     *  a receiver time equal to PrioritizedTimedQueue.IGNORE. For
      *  each such receiver, call DDEReceiver.removeIgnoredToken().
      */
     public synchronized void removeAllIgnoreTokens() {
@@ -182,11 +182,11 @@ public class TimeKeeper {
 	    return;
 	}
 	if( _ignoredRcvrs ) {
-	    TimedQueueReceiver rcvr;
+	    PrioritizedTimedQueue rcvr;
 	    for( int i = 0; i < _rcvrList.size(); i++ ) {
-	        rcvr = (TimedQueueReceiver)_rcvrList.get(i);
+	        rcvr = (PrioritizedTimedQueue)_rcvrList.get(i);
 		if( rcvr.getRcvrTime() ==
-			TimedQueueReceiver.IGNORE ) {
+			PrioritizedTimedQueue.IGNORE ) {
 		    rcvr.removeIgnoredToken();
 		}
 	    }
@@ -235,15 +235,15 @@ public class TimeKeeper {
      *  time is less than the previous value for current time, then
      *  throw an IllegalArgumentException. Do not throw an
      *  IllegalActionException if the current time is set to
-     *  TimedQueueReceiver.INACTIVE to indicate termination.
+     *  PrioritizedTimedQueue.INACTIVE to indicate termination.
      * @param time The new value for current time.
      * @exception IllegalArgumentException If there is an attempt to
      *  decrease the value of current time to a nonnegative number.
      */
     public synchronized void setCurrentTime(double time) {
 	if( time < _currentTime
-		&& time != TimedQueueReceiver.INACTIVE
-		&& time != TimedQueueReceiver.IGNORE ) {
+		&& time != PrioritizedTimedQueue.INACTIVE
+		&& time != PrioritizedTimedQueue.IGNORE ) {
 	    throw new IllegalArgumentException(
 		    ((NamedObj)_actor).getName() + " - Attempt to "
 		    + "set current time in the past." 
@@ -251,7 +251,7 @@ public class TimeKeeper {
 		    + "; current time = " + _currentTime );
 	}
             
-	if( time != TimedQueueReceiver.IGNORE ) {
+	if( time != PrioritizedTimedQueue.IGNORE ) {
             _currentTime = time;
 	} 
     }
@@ -259,17 +259,17 @@ public class TimeKeeper {
     /** Update the list of receivers by adding a receiver to the
      *  receiver list if not already present and then sorting the
      *  list. The receiver list is sorted according to a RcvrComparator.
-     * @param tqr The TimedQueueReceiver whose position is being
+     * @param tqr The PrioritizedTimedQueue whose position is being
      *  updated.
      * @see ptolemy.domains.dde.kernel.RcvrComparator
      */
-    public synchronized void updateRcvrList(TimedQueueReceiver tqr) {
+    public synchronized void updateRcvrList(PrioritizedTimedQueue tqr) {
 	if( _rcvrList == null ) {
 	    _rcvrList = new LinkedList();
 	}
 
 	double time = tqr.getRcvrTime();
-	if( time == TimedQueueReceiver.IGNORE ) {
+	if( time == PrioritizedTimedQueue.IGNORE ) {
 	    /*
 	    System.out.println("#### SET IGNORE #####");
 	    */
@@ -308,11 +308,11 @@ public class TimeKeeper {
 	    return;
         }
         for( int i = 0; i < _rcvrList.size(); i++ ) {
-	    TimedQueueReceiver testRcvr = (TimedQueueReceiver)_rcvrList.get(i);
+	    PrioritizedTimedQueue testRcvr = (PrioritizedTimedQueue)_rcvrList.get(i);
             double time = testRcvr.getRcvrTime();
 	    Token token = null;
 	    if( testRcvr._queue.size() > 0 ) {
-		token = ((TimedQueueReceiver.Event)testRcvr._queue.get(0)).getToken();
+		token = ((PrioritizedTimedQueue.Event)testRcvr._queue.get(0)).getToken();
 	    }
 	    String msg = "\t"+name+"'s Receiver "+i+
                 " has a time of " +time+" and ";
@@ -351,7 +351,7 @@ public class TimeKeeper {
             }
         }
         */
-	if( outputTime != TimedQueueReceiver.IGNORE ) {
+	if( outputTime != PrioritizedTimedQueue.IGNORE ) {
             _outputTime = outputTime;
 	}
     }
@@ -432,7 +432,7 @@ public class TimeKeeper {
     private double _outputTime = 0.0;
 
     // This flag is set to true if any of the receivers have 
-    // a time stamp of TimedQueueReceiver.IGNORE
+    // a time stamp of PrioritizedTimedQueue.IGNORE
     boolean _ignoredRcvrs = false;
 
     // The comparator that sorts the receivers 

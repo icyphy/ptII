@@ -47,7 +47,7 @@ A DDEReceiver stores time stamped tokens according to distributed
 discrete event semantics. A <I>time stamped token</I> is a token 
 that has a time stamp associated with it. A DDEReceiver stores time
 stamped tokens by enforcing a blocking read and blocking write style. 
-Time stamped tokens are appended to the queue with either of the put() 
+Time stamped tokens are appended to the queue with one of the two put() 
 methods, both of which block on a write if the queue is full. Time 
 stamped tokens are removed from the queue via the get() method. The
 get() method will throw a NoTokenException if it is invoked when the 
@@ -74,13 +74,13 @@ blocks while get() does not block.
 <P>
 DDEReceivers process certain events that are hidden from view by
 ports and actors. In particular, NullTokens and time stamps of 
-value TimedQueueReceiver.IGNORE. NullTokens allow actors to 
+value PrioritizedTimedQueue.IGNORE. NullTokens allow actors to 
 communicate information on their local time advancement to 
 neighboring actors without the need for an actual data exchange.
 NullTokens are passed at the receiver level and circumvent the
 Ptolemy II data typing mechanism. 
 <P>
-Time stamps of value TimedQueueReceiver.IGNORE are used to initiate
+Time stamps of value PrioritizedTimedQueue.IGNORE are used to initiate
 execution in feedback cycles. If a receiver has a time stamp with
 value IGNORE, then it will not be considered when determining which
 receiver's get() method will result in the minimum local time 
@@ -91,15 +91,15 @@ such events will be removed.
 <P>
 IMPORTANT: This class assumes that valid time stamps have non-negative
 values. Reserved negative values exist for special purposes: INACTIVE, 
-IGNORE and RECEIVER. These values are attributes of TimedQueueReceiver.
+IGNORE and RECEIVER. These values are attributes of PrioritizedTimedQueue.
 
 
 @author John S. Davis II
 @version $Id$
-@see ptolemy.domains.dde.kernel.TimedQueueReceiver
+@see ptolemy.domains.dde.kernel.PrioritizedTimedQueue
 @see ptolemy.domains.dde.kernel.DDEThread
 */
-public class DDEReceiver extends TimedQueueReceiver
+public class DDEReceiver extends PrioritizedTimedQueue
     implements ProcessReceiver {
 
     /** Construct an empty receiver with no container.

@@ -58,9 +58,9 @@ JSRCS = \
 JSIMPLE_TESTS = \
 	DDEReceiver.tcl \
 	DDEIOPort.tcl \
-	FBDelay.tcl \
+	FeedBackDelay.tcl \
 	RcvrComparator.tcl \
-	TimedQueueReceiver.tcl \
+	PrioritizedTimedQueue.tcl \
 	TimeKeeper.tcl 
 
 	# test.tcl 

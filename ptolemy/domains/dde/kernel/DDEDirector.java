@@ -72,26 +72,26 @@ After initialize() has been called, the value of stopTime can not be
 changed.
 <P>
 The default value of the stopTime parameter is
-TimedQueueReceiver.ETERNITY. Given this value, a DDE model will
+PrioritizedTimedQueue.ETERNITY. Given this value, a DDE model will
 continue executing without regard for a completion time.
 <P>
 Deadlock due to feedback loops is dealt with via NullTokens. When an
 actor in a DDE model receives a NullToken, it may advance its local
 time value even though no computation results directly from
 consumption of the NullToken. For models with feedback topologies,
-the actor FBDelay should be used.
+the actor FeedBackDelay should be used.
 <P>
 The DDE model of computation assumes that valid time stamps have
 non-negative values. Three special purpose negative time values
 are reserved with the following meanings. The value of
-TimedQueueReceiver.INACTIVE is reserved to indicate the termination
-of a receiver. The value of TimedQueueReceiver.ETERNITY is reserved
+PrioritizedTimedQueue.INACTIVE is reserved to indicate the termination
+of a receiver. The value of PrioritizedTimedQueue.ETERNITY is reserved
 to indicate that a receiver has not begun to participate in a model's
-execution. The value of TimedQueueReceiver.IGNORE is reserved to
+execution. The value of PrioritizedTimedQueue.IGNORE is reserved to
 indicate that the current token at the head of a DDEReceiver should
 be ignored in favor of the tokens contained in the other receivers
 of the actor in question. More details of IGNORE can be found in
-FBDelay.
+FeedBackDelay.
 <P>
 NOTE: The current implementation of this director does not
 include an infrastructure for mutations. Hence, ChangeRequest
@@ -102,7 +102,7 @@ not included in this director.
 @author John S. Davis II, Mudit Goel
 @version $Id$
 @see ptolemy.domains.pn.kernel.BasePNDirector
-@see ptolemy.domains.dde.kernel.FBDelay
+@see ptolemy.domains.dde.kernel.FeedBackDelay
 @see ptolemy.domains.dde.kernel.NullToken
 */
 public class DDEDirector extends ProcessDirector {
@@ -116,7 +116,7 @@ public class DDEDirector extends ProcessDirector {
         super();
 
 	try {
-            double val = TimedQueueReceiver.ETERNITY;
+            double val = PrioritizedTimedQueue.ETERNITY;
 	    stopTime = new
                 Parameter(this, "stopTime", new DoubleToken(val) );
 	} catch( IllegalActionException e ) {
@@ -136,7 +136,7 @@ public class DDEDirector extends ProcessDirector {
         super(workspace);
 
 	try {
-            double val = TimedQueueReceiver.ETERNITY;
+            double val = PrioritizedTimedQueue.ETERNITY;
 	    stopTime = new
                 Parameter(this, "stopTime", new DoubleToken(val) );
 	} catch( IllegalActionException e ) {
@@ -163,7 +163,7 @@ public class DDEDirector extends ProcessDirector {
         super(container, name);
 
 	try {
-            double val = TimedQueueReceiver.ETERNITY;
+            double val = PrioritizedTimedQueue.ETERNITY;
 	    stopTime = new
                 Parameter(this, "stopTime", new DoubleToken(val) );
 	} catch( IllegalActionException e ) {
@@ -328,7 +328,7 @@ public class DDEDirector extends ProcessDirector {
      *  been explicitly set to a particular value then set the
      *  completion time of the receiver to this same value;
      *  otherwise set the completion time to
-     *  TimedQueueReceiver.ETERNITY which indicates that the
+     *  PrioritizedTimedQueue.ETERNITY which indicates that the
      *  receivers should ignore the completion time.
      *  @return A new DDEReceiver.
      */
@@ -791,7 +791,7 @@ public class DDEDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private double _completionTime = TimedQueueReceiver.ETERNITY;
+    private double _completionTime = PrioritizedTimedQueue.ETERNITY;
     private int _internalReadBlocks = 0;
     private int _externalReadBlocks = 0;
     private int _writeBlocks = 0;

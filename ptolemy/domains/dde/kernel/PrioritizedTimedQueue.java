@@ -1,4 +1,5 @@
-/* A FIFO queue-based receiver for storing tokens with time stamps.
+/* A FIFO queue with time and priority attributes that is used for 
+storing tokens with time stamps.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -41,32 +42,35 @@ import java.util.List;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
-//// TimedQueueReceiver
+//// PrioritizedTimedQueue
 /**
-A FIFO queue-based receiver for storing tokens with time stamps. A "time
-stamp" is a time value that is associated with a token and is used to order
-the consumption of a token with respect to other time stamped tokens. To
-help organize the tokens contained by this queue, two flags are maintained:
-<I>last time</I> and <I>receiver time</I>. The last time flag is defined to
-be equivalent to the time stamp of the token that was most recently placed
-in the queue. The receiver time flag is defined as the time stamp of the
-oldest token in the queue or the last token to be removed from the queue if
-the queue is empty. Both of these flags must have monotonically,
-non-decreasing values (with the exception of the IGNORE, INACTIVE and
-ETERNITY values). At the conclusion of a simulation run the receiver
-time is set to INACTIVE.
+/* A FIFO queue with time and priority attributes that is used for 
+storing tokens with time stamps. A "time stamp" is a time value that 
+is associated with a token and is used to order the consumption of a 
+token with respect to other time stamped tokens. To help organize the 
+tokens contained by this queue, two flags are maintained: <I>last time</I> 
+and <I>receiver time</I>. The last time flag is defined to be equivalent 
+to the time stamp of the token that was most recently placed in the queue. 
+The receiver time flag is defined as the time stamp of the oldest token in 
+the queue or the last token to be removed from the queue if the queue is 
+empty. Both of these flags must have monotonically, non-decreasing values 
+(with the exception of the IGNORE, INACTIVE and ETERNITY values). At the 
+conclusion of a simulation run the receiver time is set to INACTIVE.
 <P>
+A PrioritizedTimedQueue is subclassed by DDEReceiver. Hence, 
+PrioritizedTimedQueues serve as the foundation for receivers
+contained in the IO ports of actors operating within DDE models.
 A TimeKeeper object is assigned to each actor that operates according to
-a DDE model of computation. The TimeKeeper manages each of the receivers
+the DDE model of computation. The TimeKeeper manages each of the receivers
 that are contained by an actor by keeping track of the receiver times of
-each receiver. As information flows through a TimedQueueReceiver, the
+each receiver. As information flows through a PrioritizedTimedQueue, the
 TimeKeeper must be kept up to date with respect to the receiver times.
-The TimeKeeper orders the TimedQueueReceivers according to their receiver
-times and priorities. TimedQueueReceivers with smaller receiver times are
+The TimeKeeper orders the PrioritizedTimedQueues according to their receiver
+times and priorities. PrioritizedTimedQueues with smaller receiver times are
 ordered first. 
 <P>
-TimedQueueReceivers with identical receivers times are sorted according 
-to their respective priorities. TimedQueueReceivers are assigned 
+PrioritizedTimedQueues with identical receiver times are sorted according 
+to their respective priorities. PrioritizedTimedQueues are assigned 
 priorities (a nonnegative integer) by a TimeKeeper when the TimeKeeper 
 is instantiated. Receivers with higher receiver priorities are ordered 
 before receivers with lower priorities. A receiver's priority can be
@@ -82,7 +86,7 @@ next oldest token from the other receivers contained by the actor in
 question will be consumed and the token time stamped IGNORE will be
 dropped. The IGNORE time stamp is useful in feedback topologies in which
 an actor should ignore inputs from a feedback cycle when the model's
-execution is just beginning. FBDelay actors output a single IGNORE token
+execution is just beginning. FeedBackDelay actors output a single IGNORE token
 during their initialize() methods for just this reason. In general,
 IGNORE tokens should not be handled unless fundamental changes to the
 DDE kernel are intended.
@@ -92,10 +96,10 @@ as long as they have unique, negative values. ETERNITY is used in
 conjunction with the completionTime to indicate that an actor should
 continue executing indefinitely.
 <P>
-Note that a TimedQueueReceiver is intended for use within a 
-multi-threaded environment. TimedQueueReceiver does not 
+Note that a PrioritizedTimedQueue is intended for use within a 
+multi-threaded environment. PrioritizedTimedQueue does not 
 require the synchronization facilities provided by 
-ptolemy.kernel.util.Workspace. TimedQueueReceiver is subclassed 
+ptolemy.kernel.util.Workspace. PrioritizedTimedQueue is subclassed 
 by DDEReceiver which add significant synchronization facilities
 and where appropriate employs workspace.
 
@@ -105,17 +109,17 @@ and where appropriate employs workspace.
 @see ptolemy.domains.dde.kernel.TimeKeeper
 */
 
-public class TimedQueueReceiver {
+public class PrioritizedTimedQueue {
 
     /** Construct an empty queue with no container.
      */
-    public TimedQueueReceiver() {
+    public PrioritizedTimedQueue() {
     }
 
     /** Construct an empty queue with the specified IOPort container.
      * @param container The IOPort that contains this receiver.
      */
-    public TimedQueueReceiver(IOPort container) {
+    public PrioritizedTimedQueue(IOPort container) {
 	_container = container;
     }
 
@@ -124,7 +128,7 @@ public class TimedQueueReceiver {
      * @param container The IOPort that contains this receiver.
      * @param priority The priority of this receiver.
      */
-    public TimedQueueReceiver(IOPort container, int priority) {
+    public PrioritizedTimedQueue(IOPort container, int priority) {
 	_container = container;
 	_priority = priority;
     }
@@ -147,8 +151,8 @@ public class TimedQueueReceiver {
      *  other tokens left on the queue after this removal, then set
      *  the receiver time of this receiver to equal that of the next
      *  oldest token. Update the TimeKeeper that manages this
-     *  TimedQueueReceiver. If there are any receivers in the
-     *  TimeKeeper with receiver times of TimedQueueReceiver.IGNORE,
+     *  PrioritizedTimedQueue. If there are any receivers in the
+     *  TimeKeeper with receiver times of PrioritizedTimedQueue.IGNORE,
      *  remove the first token from these receivers.
      * @return The oldest token off of the queue.
      * @exception NoTokenException If the queue is empty.
@@ -159,9 +163,9 @@ public class TimedQueueReceiver {
 	Token token = null;
         Event event = (Event)_queue.take();
         if (event == null) {
-            throw new NoTokenException(getContainer(),
+            throw new NoTokenException(_container,
                     "Attempt to get token from an empty "
-                    + "TimedQueueReceiver.");
+                    + "PrioritizedTimedQueue.");
         }
         token = event.getToken();
         if( _queue.size() > 0 ) {
@@ -222,7 +226,7 @@ public class TimedQueueReceiver {
      *  time is the time stamp associated with the oldest token that
      *  is currently on the queue. If the queue is empty, then the
      *  receiver time value is equal to the "last time."
-     * @return The receiver time of this TimedQueueReceiver.
+     * @return The receiver time of this PrioritizedTimedQueue.
      */
     public synchronized double getRcvrTime() {
         return _rcvrTime;
@@ -260,11 +264,13 @@ public class TimedQueueReceiver {
      */
     public void put(Token token, double time) throws NoRoomException {
 	if( time < _lastTime && time != INACTIVE && time != IGNORE ) {
-	    NamedObj actor = (NamedObj)getContainer().getContainer();
+	    NamedObj actor = (NamedObj)_container.getContainer();
+	    // NamedObj actor = (NamedObj)getContainer().getContainer();
 	    throw new IllegalArgumentException(actor.getName() +
 		    " - Attempt to set current time in the past.");
 	} else if( time < 0.0 && time != INACTIVE && time != IGNORE ) {
-	    NamedObj actor = (NamedObj)getContainer().getContainer();
+	    NamedObj actor = (NamedObj)_container.getContainer();
+	    // NamedObj actor = (NamedObj)getContainer().getContainer();
 	    throw new IllegalArgumentException(actor.getName() +
 		    " - Attempt to set current time to a" +
 		    " a negative value.");
@@ -280,7 +286,7 @@ public class TimedQueueReceiver {
 
 	try {
 	    if (!_queue.put(event)) {
-		throw new NoRoomException (getContainer(),
+		throw new NoRoomException (_container,
                     "Queue is at capacity. Cannot insert token.");
 	    }
 	} catch( NoRoomException e ) {
@@ -297,21 +303,21 @@ public class TimedQueueReceiver {
      */
     public synchronized void removeIgnoredToken() {
 	/*
-	String name = ((Nameable)getContainer().getContainer()).getName();
+	String name = ((Nameable)_container.getContainer()).getName();
 	System.out.println("*****removeIgnoredToken() called on "+name);
 	*/
 
 
-        if( getRcvrTime() != TimedQueueReceiver.IGNORE ) {
+        if( getRcvrTime() != PrioritizedTimedQueue.IGNORE ) {
             return;
         }
         // Get the token and set all relevant 
         // local time parameters
         Event event = (Event)_queue.take();
         if (event == null) {
-            throw new NoTokenException(getContainer(),
+            throw new NoTokenException(_container,
                     "Attempt to get token from an empty "
-                    + "TimedQueueReceiver.");
+                    + "PrioritizedTimedQueue.");
         }
         event.getToken();
         if( _queue.size() > 0 ) {
@@ -333,7 +339,7 @@ public class TimedQueueReceiver {
         }
         
 	// Set the receiver time if value is still IGNORE
-	if( getRcvrTime() == TimedQueueReceiver.IGNORE ) {
+	if( getRcvrTime() == PrioritizedTimedQueue.IGNORE ) {
 	    /* FIXME
 	    if( name.equals("join") ) {
 		System.out.println("##### STILL IGNORE #####");
@@ -425,7 +431,7 @@ public class TimedQueueReceiver {
      */
     void reset() {
         DDEDirector director = (DDEDirector)
-            ((Actor)getContainer().getContainer()).getDirector();
+            ((Actor)_container.getContainer()).getDirector();
 	double time = director.getCurrentTime();
 	_rcvrTime = time;
 	_lastTime = time;
@@ -434,13 +440,13 @@ public class TimedQueueReceiver {
 
     /** Set the completion time of this receiver. If the
      *  completion time argument is negative but is not
-     *  equal to TimedQueueReceiver.ETERNITY, then throw
+     *  equal to PrioritizedTimedQueue.ETERNITY, then throw
      *  an IllegalArgumentException.
      *  This method is not synchronized so the caller should be.
      * @param time The completion time of this receiver.
      */
     void setCompletionTime(double time) {
-	if( time < 0.0 && time != TimedQueueReceiver.ETERNITY ) {
+	if( time < 0.0 && time != PrioritizedTimedQueue.ETERNITY ) {
 	    throw new IllegalArgumentException("Attempt to set "
             	    + "completion time to a negative value.");
 	}
