@@ -28,7 +28,7 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.sdf.demo;
+package ptolemy.domains.sdf.demo.ComSystem;
 
 import java.applet.Applet;
 import java.awt.*;
@@ -42,6 +42,7 @@ import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.util.PtolemyApplet;
+import ptolemy.domains.sdf.demo.*;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.sdf.lib.*;
 import ptolemy.plot.*;

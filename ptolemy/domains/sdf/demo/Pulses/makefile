@@ -1,7 +1,8 @@
-# Makefile for PtolemyII SDF Domain
+# Makefile for Ptolemy II Communicating Sequential Processes demos
+#
+# @Authors: Christopher Hylands, Neil Smyth
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
 #
 # @Copyright (c) 1998-1999 The Regents of the University of California.
 # All rights reserved.
@@ -28,31 +29,51 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/sdf/demo
+ME =		ptolemy/domains/sdf/demo/Pulses
 
-DIRS = 		ComSystem Expression HTVQ Pulses
+# Root of the Java directory
+ROOT =		../../../../..
 
-# Root of Ptolemy II directory
-ROOT =		../../../..
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+TCL_SRCS = \
 
-# Used to build jar files
-PTPACKAGE = 	sdf
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = 
+JSRCS = \
+	Pulses.java
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
 
-all: jclass
-install: jclass jars
+
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS)
+
+# Sources that may or may not be present, but if they are present, we don't
+# want make checkjunk to barf on them.
+MISC_FILES =	# doc
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
+
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: $(JCLASS)
+	@echo "To run all the Pulses demo, point an applet viewer at Pulses.html"
+
+install: all
+
 docs: javadocs
+
+depend:
+	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+
+

@@ -1,4 +1,3 @@
-
 /* An applet that uses Ptolemy II SDF domain.
 
  Copyright (c) 1999 The Regents of the University of California.
@@ -28,13 +27,14 @@
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
-package ptolemy.domains.sdf.demo;
+package ptolemy.domains.sdf.demo.HTVQ;
 
 import java.applet.Applet;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.Enumeration;
 import java.lang.Math;
+import java.net.URL;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
@@ -44,6 +44,7 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.util.*;
 import ptolemy.actor.util.PtolemyApplet;
+import ptolemy.domains.sdf.demo.*;
 import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.sdf.lib.*;
 import ptolemy.domains.sdf.lib.vq.*;
@@ -97,8 +98,9 @@ public class HTVQApplet extends SDFApplet {
             labelPanel.add(new Label("SNR (dB)"));
             prnPanel.add("North", labelPanel);
             
+            URL baseURL = new URL(getDocumentBase(), "../../../../../");
 	    ImageSequence source = new ImageSequence(_toplevel, "Source");
-            source.setBaseURL(getDocumentBase());
+            source.setBaseURL(baseURL);
 
             //added SNR actor
             SNR ratio = new SNR(_toplevel, "SNR");
@@ -106,10 +108,10 @@ public class HTVQApplet extends SDFApplet {
             ImagePartition part = new ImagePartition(_toplevel, "Part");
 
 	    HTVQEncode encode = new HTVQEncode(_toplevel, "Encoder");
-            encode.setBaseURL(getDocumentBase());
+            encode.setBaseURL(baseURL);
 
 	    VQDecode decode = new VQDecode(_toplevel, "Decoder");
-            decode.setBaseURL(getDocumentBase());
+            decode.setBaseURL(baseURL);
 
 	    ImageUnpartition unPartition =
 		new ImageUnpartition(_toplevel, "Unpart");
