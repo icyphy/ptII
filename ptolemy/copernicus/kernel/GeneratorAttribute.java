@@ -291,6 +291,34 @@ public class GeneratorAttribute extends SingletonAttribute
                             > 0)
                         && ptIIUserDirectory == ptII)) {
 
+            if (!ptIIUserDirectoryFile.isDirectory()) {
+                System.out.println(
+                        "AppletWriter: WARNING: ptIIUserDirectory = '"
+                        + ptIIUserDirectory 
+                        + "', but there is no directory there?");
+            } else {
+                if (!ptIIUserDirectoryFile.canWrite()) {
+                    System.out.println(
+                            "AppletWriter: WARNING: ptIIUserDirectory = '"
+                            + ptIIUserDirectory 
+                            + "', but it is not writable");
+                } else {
+                    System.out.println("AppletWriter: ptIIUserDirectory = "
+                            + ptIIUserDirectory
+                            + " isDirectory: "
+                            + ptIIUserDirectoryFile.isDirectory()  
+                            + " canWrite: "
+                            + ptIIUserDirectoryFile.canWrite()
+                            + " WebStart: "
+                            + ((JNLPUtilities.isRunningUnderWebStart()
+                                       || StringUtilities
+                                       .getProperty("lax.user.dir").length()
+                                       > 0))
+                            +  " ptII: " + ptII);
+                }
+            }
+
+
             // It would be nice to tell the user we are changing the
             // ptIIUserDirectory directory of the build.  Usually
             // ptIIUserDirectory is $PTII or ptolemy.ptII.dir
@@ -319,8 +347,9 @@ public class GeneratorAttribute extends SingletonAttribute
                 } else {
                     ptIIUserDirectory = ptIIUserDirectoryFile.getPath();
                     ((StringParameter)getAttribute("ptIIUserDirectory"))
-                        .setExpression("property(\"user.dir\") + "
-                                + "\"/ptII/cg\"");
+                        .setExpression(ptIIUserDirectory);
+                        //.setExpression("property(\"user.dir\") + "
+                        //        + "\"/ptII/cg\"");
                 }
             }
         }
