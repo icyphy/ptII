@@ -274,7 +274,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                             Token t = port.getInside(i);
                             if (_debugging) _debug(getName(),
                                     "transferring output from "
-                                    + getName());
+                                    + port.getName());
                             port.send(i, t);
                             wasTransferred = true;
                         } else {
@@ -373,7 +373,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         }
 
         // Declare the dependencies of rate parameters of external
-        // ports.  Note that this must occurs after scheduling, since
+        // ports.  Note that this must occur after scheduling, since
         // rate parameters are assumed to exist.
         scheduler.declareRateDependency();
     }
@@ -421,6 +421,9 @@ public class SDFDirector extends StaticSchedulingDirector {
                     "Attempted to transferInputs on a port is not an opaque" +
                     "input port.");
         }
+        // The number of tokens depends on the schedule, so make sure
+        // the schedule is valid.
+        getScheduler().getSchedule();
         int rate = SDFUtilities.getTokenConsumptionRate(port);
         boolean wasTransferred = false;
         for (int i = 0; i < port.getWidth(); i++) {
@@ -431,7 +434,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                             Token t = port.get(i);
                             if (_debugging) _debug(getName(),
                                     "transferring input from "
-                                    + getName());
+                                    + port.getName());
                             port.sendInside(i, t);
                             wasTransferred = true;
                         } else {
@@ -446,6 +449,9 @@ public class SDFDirector extends StaticSchedulingDirector {
                 } else {
                     // No inside connection to transfer tokens to.
                     // In this case, consume one input token if there is one.
+                    if (_debugging) _debug(getName(),
+                            "Dropping single input from "
+                            + port.getName());
                     if (port.hasToken(i)) {
                         port.get(i);
                     }
@@ -486,7 +492,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                         Token t = port.getInside(i);
                         if (_debugging) _debug(getName(),
                                 "transferring output from "
-                                + getName());
+                                + port.getName());
                         port.send(i, t);
                         wasTransferred = true;
                     } else {

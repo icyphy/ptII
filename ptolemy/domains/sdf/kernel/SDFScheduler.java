@@ -602,6 +602,9 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         if(allowRateChanges) {
             // The schedule depends on the rate parameter.
             if(!rateVariables.contains(variable)) {
+                if(_debugging) {
+                    _debug("Listening to rate variable " + variable);
+                }
                 variable.addValueListener(this);
                 rateVariables.add(variable);
             }
