@@ -49,7 +49,7 @@ public class PlotLiveDemoApplet extends PlotLiveApplet {
      */
     public String getAppletInfo() {
         return "PlotLiveDemoApplet " + PlotBox.PTPLOT_RELEASE +
-            "Demo of PlotLive.\n" +
+            " : Demo of PlotLive.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
             "    Christopher Hylands, cxh@eecs.berkeley.edu\n" +
             "($Id$)";
