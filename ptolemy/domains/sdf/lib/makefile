@@ -68,7 +68,8 @@ JSRCS = \
 	SDFSine.java \
 	SDFSource.java \
 	SDFRamp.java \
-	SDFConst.java
+	SDFConst.java \
+	SineFM.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	sdfentities.xml
