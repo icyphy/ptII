@@ -56,18 +56,14 @@ and then discards the token.
 <p>
 Some derived classes may attach additional significance to an input
 on the trigger port. For example, they might fix the type and attach
-some significance to the value.  Typically, the derived class will call
-numberOfSources() on the trigger port to determine whether it is
-connected, and if it is, then use the data at the trigger port to
-trigger some action.  Note that it is not sufficient to use getWidth()
-on the port, since the width may be greater than zero even if there
-is no source of data.  This can occur, for example, if a trigger port
+some significance to the value.  Note that it is not recommendd to
+use getWidth() on the port to determine whether the port is connected,
+since the width may be greater than zero even if there
+is no actual source of data.  This can occur, for example, if a trigger port
 is connected to the inside of a port of an opaque composite actor, and
-there is nothing connected to the outside of that port.  On the other
-hand, if numberOfSources() returns a number greater than zero, then
-there is ultimately an output port somewhere that can supply data to
-the trigger port.  Thus, this is the correct method to use to determine
-whether the port is connected.
+there is nothing connected to the outside of that port. It is not
+recommended to make the behavior of an actor dependent on a global
+property such as whether there is ultimately a source of data.
 
 @author Edward A. Lee
 @version $Id$
