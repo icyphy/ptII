@@ -36,7 +36,7 @@ ME =		ptolemy/actor/lib/xslt/test
 ROOT =		../../../../..
 
 # XSLTransformer requires saxon
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)/lib/saxon7.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SAXON_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
