@@ -48,8 +48,9 @@ There are two ways to write tests:
 </ol>
 
 <h4>Using Vergil to write tests</h4>
-The testing infrastructure will automatically run an MoML models
-located in <CODE>test/auto</CODE> directories.
+The testing infrastructure will automatically run any MoML models
+located in <CODE>test/auto</CODE> directories.  (Nowhere do the names
+of these MoML files need to be listed in order for them to be run.)
  <p>However, said infrastructure has to be re-built in each new
 directory containing tests.
  <p>* Find another test/auto directory in the tree to use as an example.
@@ -64,12 +65,12 @@ file by this name.
  <p>* Okay!  Now go up one directory.  There needs to be a makefile here
 too.  It needs to name the test/ directory you created.  If there is a
 makefile, edit it.  Look for a line like <CODE>DIRS =</CODE> between the
-root and <CODE>ME =</CODE> and <CODE>ROOT =</CODE> lines.  Edit this
+<CODE>ME =</CODE> and <CODE>ROOT =</CODE> lines.  Edit this
 line to include the new test directory.  The result might look like:
 <CODE>DIRS = 		test</CODE>.
 <p>* If no makefile exists in the directory above test/, you will need
-to create one and repeat this proceedure one more directory up until
-you find na existing makefile.
+to create one and repeat this procedure one more directory up until
+you find an existing makefile.
  <p>When you have done all this, the test ought to be run by the nightly build.
  <p>The test passes if it does not throw an exception
  <p>The <a href="codeDoc/ptolemy/actor/lib/Test.html">Test actor</a>
