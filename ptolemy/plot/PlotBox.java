@@ -922,7 +922,7 @@ public class PlotBox extends Panel {
      *  standalone, in that it refers to an external DTD (document type
      *  definition). The URL (relative or absolute) for the DTD is
      *  given as the second argument.  If that argument is null,
-     *  then standalone file is written, which includes the DTD. 
+     *  then standalone file is written, which includes the DTD.
      *  The output is buffered, and is flushed and
      *  closed before exiting.  Derived classes should override _write()
      *  rather than this method.
@@ -1472,7 +1472,7 @@ public class PlotBox extends Panel {
                 // Find  the start position of x label.
                 int labxpos = xCoord1 - _labelFontMetrics.stringWidth(label)/2;
 
-                // If the labels are not overlapped, proceed.     
+                // If the labels are not overlapped, proceed.
                 if (labxpos > preLength) {
                     // calculate the length of the label
                     preLength = xCoord1
@@ -1979,7 +1979,7 @@ public class PlotBox extends Panel {
     /*
      * Return a string for displaying the specified number
      * using the specified number of digits after the decimal point.
-     * NOTE: java.text.NumberFormat in Netscape 4.61 has a bug 
+     * NOTE: java.text.NumberFormat in Netscape 4.61 has a bug
      * where it fails to round numbers instead it truncates them.
      * As a result, we don't use java.text.NumberFormat, instead
      * We use the method from Ptplot3.1
@@ -1987,7 +1987,7 @@ public class PlotBox extends Panel {
     private String _formatNum (double num, int numfracdigits) {
         // When java.text.NumberFormat works under Netscape,
         // uncomment the next block of code and remove
-        // the code after it.  
+        // the code after it.
         // Ptplot developers at UCB can access a test case at:
         // http://ptolemy.eecs.berkeley.edu/~ptII/ptIItree/ptolemy/plot/adm/trunc/trunc-jdk11.html
         // The plot will show two 0.7 values on the x axis if the bug
@@ -2004,7 +2004,7 @@ public class PlotBox extends Panel {
 
         // The section below is from Ptplot3.1
 
-        // First, round the number. 
+        // First, round the number.
         double fudge = 0.5;
         if (num < 0.0) fudge = -0.5;
         String numString = Double.toString(num +
@@ -2041,7 +2041,7 @@ public class PlotBox extends Panel {
                 for (int i = 0; i < shortby; i++) {
                     result.append("0");
                 }
-                return result.toString();                
+                return result.toString();
             }
         }
     }
@@ -2750,13 +2750,13 @@ public class PlotBox extends Panel {
             //   buttons.
             // This problem affects Netscape 4.61 under Digital Unix and
             // 4.51 under Solaris
-            if ((event.getModifiers() & event.BUTTON1_MASK) != 0 || 
+            if ((event.getModifiers() & event.BUTTON1_MASK) != 0 ||
                     event.getModifiers() == 0) {
                 PlotBox.this._zoomStart(event.getX(), event.getY());
             }
         }
         public void mouseReleased(MouseEvent event) {
-            if ((event.getModifiers() & event.BUTTON1_MASK) != 0 || 
+            if ((event.getModifiers() & event.BUTTON1_MASK) != 0 ||
                     event.getModifiers() == 0) {
                 PlotBox.this._zoom(event.getX(), event.getY());
             }

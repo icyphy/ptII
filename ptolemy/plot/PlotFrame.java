@@ -314,13 +314,13 @@ public class PlotFrame extends Frame {
         //boolean originalXLog = plot.getXLog();
         //narrowQuery.addCheckBox("xlog", "X Log", originalXLog);
         //if (originalXTicks != null) {
-        //    narrowQuery.setBoolean("xlog", false);            
+        //    narrowQuery.setBoolean("xlog", false);
         //    narrowQuery.setEnabled("xlog", false);
         //}
         //boolean originalYLog = plot.getYLog();
         //narrowQuery.addCheckBox("ylog", "Y Log", originalYLog);
         //if (originalYTicks != null) {
-        //    narrowQuery.setBoolean("ylog", false);            
+        //    narrowQuery.setBoolean("ylog", false);
         //    narrowQuery.setEnabled("ylog", false);
         //}
 

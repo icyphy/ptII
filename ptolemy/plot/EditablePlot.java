@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Green (yourname@eecs.berkeley.edu)
@@ -38,7 +38,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditablePlot
-/** 
+/**
 This extension of Plot permits interactive modification of plotted
 data, one dataset at a time.  By default, you can modify dataset
 number zero (the first one given).  To change this default, call
@@ -77,12 +77,12 @@ listener using addEditListener().
 public class EditablePlot extends Plot {
 
     /** Constructor.
-     */	
+     */
     public EditablePlot() {
         super();
         addMouseListener(new EditMouseListener());
         addMouseMotionListener(new ModifyListener());
-        addKeyListener(new UndoListener());   
+        addKeyListener(new UndoListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -220,10 +220,10 @@ public class EditablePlot extends Plot {
                         if (pt.y > _yTop) _yTop = pt.y;
                     }
                 }
-            }            
+            }
         }
         repaint();
-        
+
         // Erase the guide
         graphics.setXORMode(_editColor);
         for (int i=0; i < _editSpecX.length; i++) {
@@ -263,7 +263,7 @@ public class EditablePlot extends Plot {
                 _editSpecX[index] = step;
                 _editSpecY[index] = newY;
                 _editSpecSet[index] = true;
-                
+
                 // Draw point, linearly interpolated from previous point
                 graphics.setXORMode(_editColor);
                 graphics.drawLine(step, newY-1, step, newY+1);
