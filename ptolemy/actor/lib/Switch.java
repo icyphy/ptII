@@ -61,6 +61,8 @@ class "switch", but recall that "switch" is a Java keyword, and
 thus it cannot be the name of an object.
 
 @author Edward A. Lee
+@version $Id$
+@since Ptolemy II 2.0
 */
 
 public class Switch extends Transformer {
