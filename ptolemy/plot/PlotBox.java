@@ -305,6 +305,9 @@ public class PlotBox extends Panel {
     public static Color getColorByName(String name) {
         try {
             // Check to see if it is a hexadecimal
+            if(name.startsWith("#")) {
+                name = name.substring(1);
+            }
             Color col = new Color(Integer.parseInt(name, 16));
             return col;
         } catch (NumberFormatException e) {}

@@ -74,7 +74,7 @@ public class PlotApplet extends Applet {
     public String[][] getParameterInfo () {
         String pinfo[][] = {
             {"background", "hexcolor value", "background color"},
-            {"foreground", "hexcolor value", "foreground color"},
+b            {"foreground", "hexcolor value", "foreground color"},
             {"dataurl",   "url",     "the URL of the data to plot"},
             {"pxgraphargs",   "args",
              "pxgraph style command line arguments"}
