@@ -31,9 +31,13 @@ package ptolemy.apps.softwalls;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.StringTokenizer;
@@ -102,27 +106,6 @@ public class ThreeDFunction implements Serializable {
         double xSpan, ySpan, thetaSpan;
         double dimension;
 
-        File humanReadableFile = new File(fileName);
-        File cacheFile = new File(fileName + ".cache");
-        boolean useCache = false;
-        if (cacheFile.exists()) {
-            if (!humanReadableFile.exists()) {
-                useCache = true;
-            } else {
-                long humanReadableLastModified =
-                    humanReadableFile.lastModified();
-                if (humanReadableLastModified == 0L) {
-                    // Problem getting the last modified date from the
-                    // human readable file
-                    useCache = true;
-                }
-                if (cacheFile.lastModified() > humanReadableLastModified) {
-                    // Cache file was modified after human readable file
-                    useCache = true;
-                }
-            }
-        } 
-
         BufferedReader in = null;
             
         try {
@@ -188,6 +171,87 @@ public class ThreeDFunction implements Serializable {
 
     ///////////////////////////////////////////////////////////////////
     ////                      public mehtods                       ////
+
+    public static ThreeDFunction read(String fileName)
+            throws IllegalActionException {
+        File humanReadableFile = new File(fileName);
+        File cacheFile = new File(fileName + ".cache");
+        boolean useCache = false;
+        if (cacheFile.exists()) {
+            if (!humanReadableFile.exists()) {
+                useCache = true;
+            } else {
+                long humanReadableLastModified =
+                    humanReadableFile.lastModified();
+                if (humanReadableLastModified == 0L) {
+                    // Problem getting the last modified date from the
+                    // human readable file
+                    useCache = true;
+                }
+                if (cacheFile.lastModified() > humanReadableLastModified) {
+                    // Cache file was modified after human readable file
+                    useCache = true;
+                }
+            }
+        } 
+        ThreeDFunction threeDFunction = null;
+        
+        if (useCache) {
+            FileInputStream fileInputStream = null;
+            ObjectInputStream objectInputStream = null;
+            try {
+                fileInputStream = new FileInputStream(cacheFile);
+                objectInputStream = new ObjectInputStream(fileInputStream);
+                threeDFunction =
+                    (ThreeDFunction)objectInputStream.readObject();
+            } catch (Exception ex) {
+                // FIXME: if we can't read the cache file, and
+                // the human readable data file exists, we should remove
+                // the cache file?
+                // For example recompiling this will bump up the version
+                // number of the file, which invalidates the cache.
+                throw new IllegalActionException(null, ex,
+                        "Problem reading ThreeDFunction from '"
+                        + cacheFile + "'");
+            } finally {
+                if (objectInputStream != null) {
+                    try {
+                        objectInputStream.close();
+                    } catch (IOException ex) {
+                        throw new IllegalActionException(null, ex,
+                                "Failed to close '" + objectInputStream + "'");
+                    } 
+                }
+            }
+        } else {
+            threeDFunction = new ThreeDFunction(fileName);
+            // Write out a copy of the file
+            // FIXME: Check for writability.
+            FileOutputStream fileOutputStream = null;
+            ObjectOutputStream objectOutputStream = null;
+            try {
+                fileOutputStream = new FileOutputStream(cacheFile);
+                objectOutputStream = new ObjectOutputStream(fileOutputStream);
+                objectOutputStream.writeObject(threeDFunction);
+            } catch (Exception ex) {
+                throw new IllegalActionException(null, ex,
+                        "Problem writing ThreeDFunction to '"
+                        + cacheFile + "'");
+            } finally {
+                if (objectOutputStream != null) {
+                    try {
+                        objectOutputStream.close();
+                    } catch (IOException ex) {
+                        throw new IllegalActionException(null, ex,
+                                "Failed to close '" + objectOutputStream + "'");
+                    } 
+                }
+            }
+            
+        }
+        return threeDFunction;
+        
+    }
 
     /**
      *  Return the approximate value of f(x, y, theta) using trilinear
@@ -293,23 +357,26 @@ public class ThreeDFunction implements Serializable {
         }
     }
 
+    /** Write out the data in the human readable format */
+    //FIXME: public String toString();
+
     ///////////////////////////////////////////////////////////////////
     ////                      private variables                    ////
 
-    /* Lower bound for each dimension */
+    // Lower bound for each dimension.
     private double _xLowerBound,  _yLowerBound, _thetaLowerBound;
 
-    /* Step size for each dimension */
+    // Step size for each dimension.
     private double _xStepSize, _yStepSize, _thetaStepSize;
 
-    /* Upper bound for each dimension */
+    // Upper bound for each dimension.
     private double _xUpperBound, _yUpperBound, _thetaUpperBound;
 
-    /* The matrix of values on the gridpoint */
-    double[][][] _values;
+    // The matrix of values on the gridpoint.
+    private double[][][] _values;
 
-    /* The StringTokenizer being used to read the next double */
-    private StringTokenizer _tokenizer = new StringTokenizer("");
+    // The StringTokenizer being used to read the next double.
+    private transient StringTokenizer _tokenizer = new StringTokenizer("");
 
     ///////////////////////////////////////////////////////////////////
     ////                       private methods                     ////

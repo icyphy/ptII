@@ -202,10 +202,15 @@ public class ImplicitSurface extends TypedAtomicActor {
         dthetaName = dthetaFile.asFile().getAbsolutePath();
 
         // FIXME: The above code doesn't work... Hardwire in the names.
-        _surfaceFunction = new ThreeDFunction(functionName);
-        _xGradientFunction = new ThreeDFunction(dxName);
-        _yGradientFunction = new ThreeDFunction(dyName);
-        _thetaGradientFunction = new ThreeDFunction(dthetaName);
+        //_surfaceFunction = new ThreeDFunction(functionName);
+        //_xGradientFunction = new ThreeDFunction(dxName);
+        //_yGradientFunction = new ThreeDFunction(dyName);
+        //_thetaGradientFunction = new ThreeDFunction(dthetaName);
+
+        _surfaceFunction = ThreeDFunction.read(functionName);
+        _xGradientFunction = ThreeDFunction.read(dxName);
+        _yGradientFunction = ThreeDFunction.read(dyName);
+        _thetaGradientFunction = ThreeDFunction.read(dthetaName);
     }
 
 //     /** Clears the the implicit surface function and gradient function.
