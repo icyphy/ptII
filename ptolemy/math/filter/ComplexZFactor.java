@@ -35,7 +35,7 @@ import ptolemy.math.Complex;
  This is the complex number factor class.  It is the component that will be used
  to build complex number LTI transfer function for a digital system.  It store 
  two polynomial of negative power of z with complex coefficients, and a complex
- number gain.  Internal function is usded to factor pole/zero of this factor.  
+ number gain.  Internal function is used to factor pole/zero of this factor.  
  Methods are provided to extract and modify these poles and zeroes.  
  When pole/zero are modified the two polynomials are also updated to reflect 
  the changes.  The factor also stores the internal states of the factor.
