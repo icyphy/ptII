@@ -111,14 +111,16 @@ public class WirelessDirector extends DEDirector {
      */
     public Parameter randomizeLocations;
 
-    /** The range of values for locations. This is an array of
+    /** The range of values for locations to be set when
+     *  <i>randomizeLocations</i> is true. This is an array of
      *  arrays that defaults to {{0.0, 500.0}, {0.0, 500.0}},
      *  indicating that the X and Y values are uniformly distributed
      *  between 0.0 and 500.0.
      */
     public Parameter range;
     
-    /** The seed that controls the random number generation.
+    /** The seed that controls the random number generation to use when
+     *  <i>randomizeLocations</i> is true.
      *  A seed of zero is interpreted to mean that no seed is specified,
      *  which means that each execution of the model could result in
      *  distinct data. For the value 0, the seed is set to
