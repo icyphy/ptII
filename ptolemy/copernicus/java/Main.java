@@ -380,6 +380,10 @@ public class Main extends KernelMain {
             // Print out memory usage info
             System.out.println(args[0] + " "
                     + ptolemy.actor.Manager.timeAndMemory(startTime));
+            // We need to call exit here if we are running codegen on
+            // a model that uses Swing.  Useful models that use the
+            // plotter fall in this category.
+	    System.exit(0);
         } catch (Exception ex) {
 	    System.err.println("Code generation of '" + args[0]
                     + "' failed:");
