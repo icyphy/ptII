@@ -97,6 +97,23 @@ public class ArrayToken extends AbstractNotConvertibleToken {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Convert an ArrayToken to an array of unsigned bytes.
+     *
+     * @param dataArrayToken to be converted to a unsigned byte array.
+     * @return dataBytes the resulting unsigned byte array.
+     */
+    public static byte[] arrayTokenToUnsignedByteArray(
+            ArrayToken dataArrayToken) {
+        byte[] dataBytes = new byte[dataArrayToken.length()];
+        for (int j = 0; j < dataArrayToken.length(); j++) {
+            UnsignedByteToken dataToken =
+                (UnsignedByteToken)dataArrayToken.getElement(j);
+            dataBytes[j] = (byte)dataToken.byteValue();
+        }
+        return dataBytes;
+    }
+
+
     /** Return an array of tokens populated with the contents of this
      *  array token.  The returned array is a copy so the caller is
      *  free to modify it.
@@ -333,6 +350,22 @@ public class ArrayToken extends AbstractNotConvertibleToken {
         }
         buffer.append("}");
         return buffer.toString();
+    }
+
+    /** Take an array of unsigned bytes and convert it to an ArrayToken.
+     *
+     * @param dataBytes data to be converted to an ArrayToken.
+     * @return dataArrayToken the resulting ArrayToken.
+     * @exception IllegalActionException If ArrayToken can not be created.
+     */
+    public static ArrayToken unsignedByteArrayToArrayToken(byte[] dataBytes)
+            throws IllegalActionException{
+        int bytesAvailable = dataBytes.length;
+        Token[] dataArrayToken = new Token[bytesAvailable];
+        for (int j = 0; j < bytesAvailable; j++) {
+            dataArrayToken[j] = new UnsignedByteToken(dataBytes[j]);
+        }
+        return new ArrayToken(dataArrayToken);
     }
 
     /** Returns a new ArrayToken representing the additive identity.
