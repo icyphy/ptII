@@ -217,7 +217,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
         PSDFGraphReader graphReader = new PSDFGraphReader();
         PSDFGraph graph = (PSDFGraph)graphReader.convert(model);
         _debug("PSDF graph = \n" + graph.toString());
-        graph.printEdgeRateExpressions();
+        if (_debugFlag) {
+            graph.printEdgeRateExpressions();
+        }
     
         PSDFAPGANStrategy strategy = new PSDFAPGANStrategy(graph);
         ptolemy.graph.sched.Schedule graphSchedule = strategy.schedule();
