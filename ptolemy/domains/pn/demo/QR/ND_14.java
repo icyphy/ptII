@@ -71,16 +71,16 @@ public class ND_14 extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException
         {
             super(aContainer, aName);
-            out0 = new TypedIOPort(this,"out0",false,true);
-            out1 = new TypedIOPort(this,"out1",false,true);
+            out0 = new TypedIOPort(this, "out0", false, true);
+            out1 = new TypedIOPort(this, "out1", false, true);
 
             out0.setTypeEquals(BaseType.DOUBLE);
             out1.setTypeEquals(BaseType.DOUBLE);
 
             // Set the parameters.
-            parameter_N = new Parameter(this,"N", new IntToken(6));
-            parameter_K = new Parameter(this,"K", new IntToken(10));
-            parameter_d = new Parameter(this,"d", new IntToken(0));
+            parameter_N = new Parameter(this, "N", new IntToken(6));
+            parameter_K = new Parameter(this, "K", new IntToken(10));
+            parameter_d = new Parameter(this, "d", new IntToken(0));
 
             x_1.ReadMatrix( "U_1000x16" );
         }
@@ -225,9 +225,13 @@ public class ND_14 extends TypedAtomicActor {
     /** Output Port Domain ED_8. */
     public TypedIOPort out1;
 
-    /** Parameters of the SBF Object. */
+    /** Number of antennas parameter of the SBF Object. */
     public Parameter parameter_N;
+
+    /** Number of Iterations parameter of the SBF Object. */
     public Parameter parameter_K;
+
+    /** Debug parameter of the SBF Object. */
     public Parameter parameter_d;
 
     ///////////////////////////////////////////////////////////////////

@@ -72,19 +72,19 @@ public class ND_6 extends TypedAtomicActor {
         {
             super(aContainer, aName);
             // ED_2
-            out0 = new TypedIOPort(this,"out0",false,true);
+            out0 = new TypedIOPort(this, "out0", false, true);
 
             // ED_6
-            out1 = new TypedIOPort(this,"out1",false,true);
+            out1 = new TypedIOPort(this, "out1", false, true);
 
             out0.setTypeEquals(BaseType.DOUBLE);
             out1.setTypeEquals(BaseType.DOUBLE);
 
             // The Type of these Parameter is set by the First
             // Token placed in the parameters when created
-            parameter_N = new Parameter(this,"N", new IntToken(6));
-            parameter_K = new Parameter(this,"K", new IntToken(10));
-            parameter_d = new Parameter(this,"d", new IntToken(0));
+            parameter_N = new Parameter(this, "N", new IntToken(6));
+            parameter_K = new Parameter(this, "K", new IntToken(10));
+            parameter_d = new Parameter(this, "d", new IntToken(0));
 
             // Fill up R_1 with data.
             r_1.ReadMatrix( "Zeros_64x64" );
@@ -229,9 +229,13 @@ public class ND_6 extends TypedAtomicActor {
     /** Output Port Domain ED_11. */
     public TypedIOPort out1;
 
-    /** Parameters of the SBF Object. */
+    /** Number of antennas parameter of the SBF Object. */
     public Parameter parameter_N;
+
+    /** Number of Iterations parameter of the SBF Object. */
     public Parameter parameter_K;
+
+    /** Debug parameter of the SBF Object. */
     public Parameter parameter_d;
 
     ///////////////////////////////////////////////////////////////////

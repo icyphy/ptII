@@ -71,10 +71,10 @@ public class ND_86 extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException
         {
             super(aContainer, aName);
-            in0 = new TypedIOPort(this,"in0",true,false);
-            in1 = new TypedIOPort(this,"in1",true,false);
+            in0 = new TypedIOPort(this, "in0", true, false);
+            in1 = new TypedIOPort(this, "in1", true, false);
 
-            out0 = new TypedIOPort(this,"out0",false,true);
+            out0 = new TypedIOPort(this, "out0", false, true);
 
 
             in0.setTypeEquals(BaseType.DOUBLE);
@@ -83,9 +83,9 @@ public class ND_86 extends TypedAtomicActor {
             out0.setTypeEquals(BaseType.DOUBLE);
 
             // Declare the Parameters
-            parameter_N = new Parameter(this,"N", new IntToken(6));
-            parameter_K = new Parameter(this,"K", new IntToken(10));
-            parameter_d = new Parameter(this,"d", new IntToken(0));
+            parameter_N = new Parameter(this, "N", new IntToken(6));
+            parameter_K = new Parameter(this, "K", new IntToken(10));
+            parameter_d = new Parameter(this, "d", new IntToken(0));
         }
 
     /** Initialize controller and state of the SBF object.
@@ -153,14 +153,14 @@ public class ND_86 extends TypedAtomicActor {
 
 	if  ( -i + j == 0 ) { // ED_11_in
 	    _argIn0 = ((DoubleToken) in0.get(0)).doubleValue();
-	    r_2.store( _argIn0, r_2.atKey(_K,j) );
+	    r_2.store( _argIn0, r_2.atKey(_K, j) );
 	    _argIn0 = r_2.retrieve( r_2.atKey(_K, j) );
 	}
 
  	if  ( i - j - 1 >= 0 ) { // ED_12_in
 	    _argIn0 = ((DoubleToken) in1.get(0)).doubleValue();
-	    r_3.store( _argIn0, r_3.atKey(_K,j,i) );
-	    _argIn0 = r_3.retrieve( r_3.atKey(_K,j,i) );
+	    r_3.store( _argIn0, r_3.atKey(_K, j, i) );
+	    _argIn0 = r_3.retrieve( r_3.atKey(_K, j, i) );
 	}
 
 	Sink_1.store(_argIn0, Sink_1.atKey(j, i));
@@ -235,14 +235,17 @@ public class ND_86 extends TypedAtomicActor {
     /** Output Port Domain ED_2. */
     public TypedIOPort out0;
 
-    /** Parameters of the SBF Object. */
+    /** Number of antennas parameter of the SBF Object. */
     public Parameter parameter_N;
+
+    /** Number of Iterations parameter of the SBF Object. */
     public Parameter parameter_K;
+
+    /** Debug parameter of the SBF Object. */
     public Parameter parameter_d;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
 
     private void Vectorize(double arg0, double arg1) {
     }

@@ -1,9 +1,58 @@
+/* Class defining a large matrix containing real antenna data.
+
+ Copyright (c) 1999-2000 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (kienhuis@eecs.berkeley.edu)
+@AcceptedRating Red (kienhuis@eecs.berkeley.edu)
+*/
+
 package ptolemy.domains.pn.demo.QR;
 
 import java.lang.*;
 
+//////////////////////////////////////////////////////////////////////////
+//// Source Matrix
+
+/**
+
+This class defines a large matrix containing 500 real measured data
+from an array of 16 antenna's. This matrix is used by the QR demo. 
+Defining the Matrix in this way makes loading the matrix fast and
+allows for flexible interaction, as required by the QR demo that is
+parameterized.
+
+@author Bart Kienhuis
+@version $Id$
+*/
+
 public class SourceMatrix {
-    static double sourcematrix_0[][] = {
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variable                   ////
+
+    public static double sourcematrix_0[][] = {
 	{  -100.0, -62.0, 2.0, 45.0, 35.0, 14.0, -8.0, -20.0, 8.0, 59.0, 105.0, 120.0, 90.0, 50.0, -19.0, -40.0 },
 	{  86.0, 19.0, -22.0, -63.0, -62.0, -15.0, 13.0, -2.0, -29.0, -83.0, -111.0, -104.0, -53.0, -4.0, 36.0, 53.0 },
 	{  -56.0, 23.0, 55.0, 80.0, 62.0, 7.0, 8.0, 15.0, 59.0, 96.0, 102.0, 67.0, 29.0, -46.0, -83.0, -80.0 },
@@ -507,7 +556,4 @@ public class SourceMatrix {
 	{  69.0, 113.0, 104.0, 78.0, 17.0, 4.0, 5.0, 13.0, 59.0, 67.0, 17.0, -21.0, -77.0, -103.0, -94.0, -45.0 }
     };
 
-    public static void main(String args[]) {
-	// System.out.println(" -- item: " + sourcematrix_0[574][15] );
-    }
 }

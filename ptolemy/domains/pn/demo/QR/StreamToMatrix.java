@@ -52,6 +52,9 @@ Exp $
 
 public class StreamToMatrix extends Transformer {
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -73,17 +76,6 @@ public class StreamToMatrix extends Transformer {
             attributeChanged( dimension );
 
         }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The dimension of the matrix.
-     */
-    public Parameter dimension;
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     /** If the argument is the meanTime parameter, check that it is
      *  positive.
@@ -146,6 +138,14 @@ public class StreamToMatrix extends Transformer {
         _columns = ((IntToken)dimension.getToken()).intValue();
 
     }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The dimension of the matrix.
+     */
+    public Parameter dimension;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

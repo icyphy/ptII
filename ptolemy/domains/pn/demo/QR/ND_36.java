@@ -71,14 +71,14 @@ public class ND_36 extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(aContainer, aName);
 
-        in0 = new TypedIOPort(this,"in0",true,false);
-        in1 = new TypedIOPort(this,"in1",true,false);
-        in2 = new TypedIOPort(this,"in2",true,false);
-        in3 = new TypedIOPort(this,"in3",true,false);
+        in0 = new TypedIOPort(this, "in0", true, false);
+        in1 = new TypedIOPort(this, "in1", true, false);
+        in2 = new TypedIOPort(this, "in2", true, false);
+        in3 = new TypedIOPort(this, "in3", true, false);
 
-        out0 = new TypedIOPort(this,"out0",false,true);
-        out1 = new TypedIOPort(this,"out1",false,true);
-        out2 = new TypedIOPort(this,"out2",false,true);
+        out0 = new TypedIOPort(this, "out0", false, true);
+        out1 = new TypedIOPort(this, "out1", false, true);
+        out2 = new TypedIOPort(this," out2", false, true);
 
 
         in0.setTypeEquals(BaseType.DOUBLE);
@@ -92,9 +92,9 @@ public class ND_36 extends TypedAtomicActor {
 
         // The Type of these Parameter is set by the First
         // Token placed in the parameters when created
-        parameter_N = new Parameter(this,"N", new IntToken(6));
-        parameter_K = new Parameter(this,"K", new IntToken(10));
-        parameter_d = new Parameter(this,"d", new IntToken(0));
+        parameter_N = new Parameter(this, "N", new IntToken(6));
+        parameter_K = new Parameter(this, "K", new IntToken(10));
+        parameter_d = new Parameter(this, "d", new IntToken(0));
     }
 
     /** Initialize controller and state of the SBF object.
@@ -279,16 +279,21 @@ public class ND_36 extends TypedAtomicActor {
     /** Output Port Domain ED_10. */
     public TypedIOPort out2;
 
-    /** Parameters of the SBF Object. */
+
+    /** Number of antennas parameter of the SBF Object. */
     public Parameter parameter_N;
+
+    /** Number of Iterations parameter of the SBF Object. */
     public Parameter parameter_K;
+
+    /** Debug parameter of the SBF Object. */
     public Parameter parameter_d;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     private void Vectorize(double arg0, double arg1) {
-	_argOut2 = -1*Math.atan2( arg1,arg0 );
+	_argOut2 = -1*Math.atan2(arg1, arg0);
 	_argOut0 = Math.cos(_argOut2) * arg0   -   Math.sin(_argOut2) * arg1;
 	_argOut1 = 0.0;
     }
