@@ -71,15 +71,15 @@ public final class ImageToken extends MatrixToken {
 	_columnCount = value[0].length;
 	_value = new int[_rowCount * _columnCount];
 	for (int i = 0; i < _rowCount; i++) {
-            System.arraycopy(value[i], 0, _value, i * _columnCount, 
+            System.arraycopy(value[i], 0, _value, i * _columnCount,
                     _columnCount);
 	}
     }
 
-    /** Construct an ImageToken with the specified 1-D array, 
-     *  with the stated dimensions.   The element at (x, y) is in 
-     *  location x * columns + y.  
-     *  
+    /** Construct an ImageToken with the specified 1-D array,
+     *  with the stated dimensions.   The element at (x, y) is in
+     *  location x * columns + y.
+     *
      *  This method makes a copy of the array and stores the
      *  copy, so changes on the specified array after this token
      *  is constructed will not affect the content of this token.
@@ -89,10 +89,10 @@ public final class ImageToken extends MatrixToken {
      *  of length rows * columns
      */
     public ImageToken(int[] value, int rows, int columns) {
-        if(value.length != rows * columns) 
+        if(value.length != rows * columns)
             throw new RuntimeException("Attempted to create invalid " +
-                    "ImageToken with " + rows + " rows and " + 
-                    columns + " columns, but the array was length " + 
+                    "ImageToken with " + rows + " rows and " +
+                    columns + " columns, but the array was length " +
                     value.length + ".");
 	_rowCount = rows;
 	_columnCount = columns;
@@ -101,7 +101,7 @@ public final class ImageToken extends MatrixToken {
                     _rowCount * _columnCount);
 
     }
-    
+
     // FIXME: finish this method after array is added to the
     // 	      expression language.
     // Construct an ImageToken from the specified string.
@@ -150,7 +150,7 @@ public final class ImageToken extends MatrixToken {
 		result = new int[_rowCount][_columnCount];
 		for (int i = 0; i < _rowCount; i++) {
 		    for (int j = 0; j < _columnCount; j++) {
-			result[i][j] = 
+			result[i][j] =
                             scalar + _value[i * _columnCount + j];
 		    }
 		}
@@ -166,7 +166,7 @@ public final class ImageToken extends MatrixToken {
 		result = tem.intMatrix();
 		for (int i = 0; i < _rowCount; i++) {
 		    for (int j = 0; j < _columnCount; j++) {
-			result[i][j] += 
+			result[i][j] +=
                             _value[i * _columnCount + j];
 		    }
 		}
@@ -202,7 +202,7 @@ public final class ImageToken extends MatrixToken {
         Complex[][] array = new Complex[_rowCount][_columnCount];
         for (int i = 0; i < _rowCount; i++) {
             for (int j = 0; j < _columnCount; j++) {
-                array[i][j] = 
+                array[i][j] =
                     new Complex((double)_value[i * _columnCount + j]);
             }
         }
@@ -335,8 +335,8 @@ public final class ImageToken extends MatrixToken {
     public int[][] intMatrix() {
         int[][] array = new int[_rowCount][_columnCount];
         for (int i = 0; i < _rowCount; i++) {
-            System.arraycopy(_value, i * _columnCount, array[i], 0, 
-                    _columnCount); 
+            System.arraycopy(_value, i * _columnCount, array[i], 0,
+                    _columnCount);
 
             //            for (int j = 0; j < _columnCount; j++) {
             //  array[i][j] = _value[i][j];
@@ -356,7 +356,7 @@ public final class ImageToken extends MatrixToken {
         return array;
     }
 
-    /** Return a reference to the internal representation of the 
+    /** Return a reference to the internal representation of the
      *  Matrix, which is similar in format to that returned by intArray()
      *  This method is provided for speed ONLY and the returned reference
      *  should not be modified!

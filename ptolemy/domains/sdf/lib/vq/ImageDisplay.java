@@ -50,7 +50,7 @@ import ptolemy.media.Picture;
 */
 
 public final class ImageDisplay extends SDFAtomicActor {
-    public ImageDisplay(TypedCompositeActor container, String name) 
+    public ImageDisplay(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
@@ -58,7 +58,7 @@ public final class ImageDisplay extends SDFAtomicActor {
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 1);
         inputport.setDeclaredType(IntMatrixToken.class);
- 
+
         _oldxsize = 0;
         _oldysize = 0;
         _frame = null;
@@ -66,16 +66,16 @@ public final class ImageDisplay extends SDFAtomicActor {
     }
 
     public void initialize() throws IllegalActionException {
-        
+
         _port_image = (IOPort) getPort("image");
         _oldxsize = 0;
         _oldysize = 0;
         if(_panel == null) {
-            _frame = new _PictureFrame("ImageDisplay");   
-            _panel = _frame.getPanel();            
+            _frame = new _PictureFrame("ImageDisplay");
+            _panel = _frame.getPanel();
         } else {
             _frame = null;
-        }                              
+        }
         System.out.println("initialize");
     }
 
@@ -92,26 +92,26 @@ public final class ImageDisplay extends SDFAtomicActor {
             _RGBbuffer = new int[xsize*ysize];
             if(_panel == null) {
                 System.out.println("panel disappeared!");
-                _frame = new _PictureFrame("ImageDisplay");   
+                _frame = new _PictureFrame("ImageDisplay");
                 _panel = _frame.getPanel();
             } else {
                 _frame = null;
             }
-            if(_picture != null) 
+            if(_picture != null)
                 _panel.remove(_picture);
             _panel.setSize(xsize, ysize);
             _picture = new Picture(xsize, ysize);
             _picture.setImage(_RGBbuffer);
             _panel.add("Center", _picture);
             _panel.validate();
-            
+
             Container c = _panel.getParent();
             while(c.getParent() != null) {
                 c = c.getParent();
             }
             if(c instanceof Window) {
                 ((Window) c).pack();
-            } else {                
+            } else {
                 c.validate();
             }
 
@@ -123,20 +123,20 @@ public final class ImageDisplay extends SDFAtomicActor {
             }
 
             System.out.println("new buffer");
-        }     
+        }
 
         //              System.out.println("xsize = "+xsize);
         //System.out.println("ysize = "+ysize);
-       
+
         // convert the B/W image to a packed RGB image
         int i, j, index = 0;
         for(j = ysize - 1; j >= 0; j--) {
-            for(i = 0; i < xsize; i++, index++) 
+            for(i = 0; i < xsize; i++, index++)
                 _RGBbuffer[index] = (255 << 24) |
-                    ((frame[j][i] & 255) << 16) | 
-                    ((frame[j][i] & 255) << 8) | 
+                    ((frame[j][i] & 255) << 16) |
+                    ((frame[j][i] & 255) << 8) |
                     (frame[j][i] & 255);
-             }  
+             }
         _picture.displayImage();
         _picture.repaint();
     }
@@ -149,7 +149,7 @@ public final class ImageDisplay extends SDFAtomicActor {
         public _PictureFrame(String title) {
             super(title);
             this.setLayout(new BorderLayout(15, 15));
-            this.show();            
+            this.show();
             _panel = new Panel();
             this.add("Center", _panel);
             this.pack();
@@ -160,8 +160,8 @@ public final class ImageDisplay extends SDFAtomicActor {
         }
         private Panel _panel;
     }
-    
-    private Picture _picture;        
+
+    private Picture _picture;
     private _PictureFrame _frame;
     private Panel _panel;
     private IOPort _port_image;

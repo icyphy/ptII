@@ -7,7 +7,7 @@ license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the
 above copyright notice and the following two paragraphs appear in all
 copies of this software.
- 
+
 IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -40,28 +40,28 @@ import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageScale
-/** 
+/**
 This actor re-scales an image. i.e.
 it change the degree of black/white according to the user specified
-outmax & outmin. Outmax is the upperlimit that user wants to scale the 
+outmax & outmin. Outmax is the upperlimit that user wants to scale the
 image to and outmin is the lowerlimit that user wants to scale the image
 to. Default values are 255 for outmax and 0 for outmin.
- 
+
 @author Michael Leung
 @version $Id$
 */
 
 public final class ImageScale extends SDFAtomicActor {
-    public ImageScale(TypedCompositeActor container, String name) 
+    public ImageScale(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-    
+
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
         new Parameter(this, "outmax", new IntToken("255"));
         new Parameter(this, "outmin", new IntToken("0"));
- 
+
         SDFIOPort outputport = (SDFIOPort) newPort("contrast");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 1);
@@ -75,7 +75,7 @@ public final class ImageScale extends SDFAtomicActor {
 
     /** Initialize the actor.
      *  Get the values of all parameters.
-     *  @exception IllegalActionException if outmax is less than outmin, 
+     *  @exception IllegalActionException if outmax is less than outmin,
      *  or xframesize is less than one, or yframesize is less than one.
      */
     public void initialize() throws IllegalActionException {
@@ -83,26 +83,26 @@ public final class ImageScale extends SDFAtomicActor {
 	Parameter p;
 	p = (Parameter) getAttribute("XFramesize");
         xframesize = ((IntToken)p.getToken()).intValue();
-        if(xframesize < 0) 
+        if(xframesize < 0)
             throw new IllegalActionException(
                     "The value of the xframesize parameter(" + xframesize +
                     ") must be greater than zero.");
         p = (Parameter) getAttribute("YFramesize");
         yframesize = ((IntToken)p.getToken()).intValue();
-        if(yframesize < 0) 
+        if(yframesize < 0)
             throw new IllegalActionException(
-                    "The value of the yframesize parameter(" + yframesize + 
+                    "The value of the yframesize parameter(" + yframesize +
                     ") must be greater than zero.");
         p = (Parameter) getAttribute("outmax");
         outmax = ((IntToken)p.getToken()).intValue();
         p = (Parameter) getAttribute("outmin");
         outmin = ((IntToken)p.getToken()).intValue();
-        if(outmax < outmin) 
+        if(outmax < outmin)
             throw new IllegalActionException(
-                    "The value of the outmax parameter(" + outmax + 
-                    ") must be greater than " + 
+                    "The value of the outmax parameter(" + outmax +
+                    ") must be greater than " +
                     "the value of the outmin parameter(" + outmin +").");
-        
+
 
     }
 
@@ -121,42 +121,42 @@ public final class ImageScale extends SDFAtomicActor {
         int frameElement;
         SDFIOPort outputport = (SDFIOPort) getPort("contrast");
         SDFIOPort inputport = (SDFIOPort) getPort("figure");
-       
+
         ImageToken message = (ImageToken) inputport.get(0);
         int frame[] = message.intArray();
-        
+
         //look into the image to find and set the most dark spot (inMin) and
         // the most light spot (inMax)
         inMax = 0;
         inMin = 255;
-        for(j = 0; j < yframesize; j ++) 
-            for(i = 0; i < xframesize; i ++) {    
+        for(j = 0; j < yframesize; j ++)
+            for(i = 0; i < xframesize; i ++) {
                 frameElement = frame[xframesize*j+i];
                 if (frameElement >= inMax)
                     inMax = frameElement;
                 if (frameElement <= inMin)
                     inMin = frameElement;
             }
-              
+
         //There are two cases which we should not do the for loop
         //to change the contrast.
-        // case I : if inMax == inMin, in which case there will be a 
+        // case I : if inMax == inMin, in which case there will be a
         //          division by zero.
         // case II: if inMax and inMin are already the same as the user
         //          specified outmax and outmin
 
-        if ((inMax != inMin) && !((inMax == outmax) && (inMin == outmin))) 
+        if ((inMax != inMin) && !((inMax == outmax) && (inMin == outmin)))
             for (j = 0; j < yframesize; j ++)
                 for(i = 0; i < xframesize; i ++) {
-                    frame[xframesize*j+i] = 
-                        (frame[xframesize*j+i] - inMin)* (outmax - outmin) / 
+                    frame[xframesize*j+i] =
+                        (frame[xframesize*j+i] - inMin)* (outmax - outmin) /
                         (inMax-inMin) + outmin;
                 }
         message = new ImageToken(frame, yframesize, xframesize);
         outputport.send(0, message);
-	
-    } 
- 
+
+    }
+
     private int xframesize;
     private int yframesize;
     private int outmax;

@@ -45,7 +45,7 @@ import java.io.*;
 */
 
 public class VQEncode extends SDFAtomicActor {
-    public VQEncode(TypedCompositeActor container, String name) 
+    public VQEncode(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container,name);
@@ -59,7 +59,7 @@ public class VQEncode extends SDFAtomicActor {
         setTokenConsumptionRate(inputport, 1);
         inputport.setDeclaredType(IntMatrixToken.class);
 
-        Parameter p = new Parameter(this, "Codebook", 
+        Parameter p = new Parameter(this, "Codebook",
                 new StringToken("/users/neuendor/htvq/usc_hvq_s5.dat"));
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
@@ -69,11 +69,11 @@ public class VQEncode extends SDFAtomicActor {
 
 
     public void fire() throws IllegalActionException {
-        ObjectToken t = (ObjectToken) 
+        ObjectToken t = (ObjectToken)
             ((TypedIOPort) getPort("imagepart")).get(0);
 
         _partitions = (int[][]) t.getValue();
-        int numpartitions = 
+        int numpartitions =
             _xframesize * _yframesize / _xpartsize / _ypartsize;
 
         int j;
@@ -83,7 +83,7 @@ public class VQEncode extends SDFAtomicActor {
             int i,nn=0;
             long nnd = 1000000,td;
             for(i = 0; i < 256; i++) {
-                td = _distortion(_part, _codebook[2][i], 
+                td = _distortion(_part, _codebook[2][i],
                         _xpartsize * _ypartsize);
                 if(td < nnd)
                     {nnd = td; nn = i;}
@@ -99,8 +99,8 @@ public class VQEncode extends SDFAtomicActor {
     public void initialize() throws IllegalActionException {
         File sourcefile = null;
         FileInputStream source = null;
-        
-        Parameter p; 
+
+        Parameter p;
 	p = (Parameter) getAttribute("XFramesize");
         _xframesize = ((IntToken)p.getToken()).intValue();
         p = (Parameter) getAttribute("YFramesize");
@@ -110,7 +110,7 @@ public class VQEncode extends SDFAtomicActor {
         p = (Parameter) getAttribute("YPartitionSize");
         _ypartsize = ((IntToken)p.getToken()).intValue();
 
-        _codewords = 
+        _codewords =
             new int[_yframesize * _xframesize / _ypartsize / _xpartsize];
 
         p = (Parameter) getAttribute("Codebook");
@@ -118,9 +118,9 @@ public class VQEncode extends SDFAtomicActor {
         try {
             sourcefile = new File(filename);
             if(!sourcefile.exists() || !sourcefile.isFile())
-                throw new IllegalActionException("Codebook file " + 
+                throw new IllegalActionException("Codebook file " +
                         filename + " does not exist!");
-            if(!sourcefile.canRead()) 
+            if(!sourcefile.canRead())
                 throw new IllegalActionException("Codebook file " +
                         filename + " is unreadable!");
             source = new FileInputStream(sourcefile);
@@ -148,14 +148,14 @@ public class VQEncode extends SDFAtomicActor {
         finally {
             if(source != null) {
                 try {
-                    source.close(); 
+                    source.close();
                 }
                 catch (IOException e) {
                 }
             }
         }
     }
-    
+
     long _distortion(int a[], int b[], int len) {
         long c,d = 0;
         int i;

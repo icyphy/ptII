@@ -46,16 +46,16 @@ import ptolemy.domains.sdf.kernel.*;
 */
 
 public final class ImageUnpartition extends SDFAtomicActor {
-    public ImageUnpartition(TypedCompositeActor container, String name) 
+    public ImageUnpartition(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-    
+
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
         new Parameter(this, "XPartitionSize", new IntToken("4"));
         new Parameter(this, "YPartitionSize", new IntToken("2"));
- 
+
         SDFIOPort inputport = (SDFIOPort) newPort("partition");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 3168);
@@ -95,13 +95,13 @@ public final class ImageUnpartition extends SDFAtomicActor {
             for(i = 0; i < xframesize; i += xpartsize, a++) {
                 part = message[a].intArray();
                 for(y = 0; y < ypartsize; y++)
-                    System.arraycopy(part, y * xpartsize, 
+                    System.arraycopy(part, y * xpartsize,
                             frame, (j + y) * xframesize + i, xpartsize);
 	    }
-	
+
         IntMatrixToken omessage = new IntMatrixToken(frame, 144, 176);
 	image.send(0, omessage);
-	
+
     }
 
     IntMatrixToken message[];

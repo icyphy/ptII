@@ -46,7 +46,7 @@ import java.net.*;
 */
 
 public final class HTVQEncode extends SDFAtomicActor {
-    public HTVQEncode(TypedCompositeActor container, String name) 
+    public HTVQEncode(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
@@ -55,13 +55,13 @@ public final class HTVQEncode extends SDFAtomicActor {
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 3168);
         outputport.setDeclaredType(IntToken.class);
-        
+
         SDFIOPort inputport = (SDFIOPort) newPort("imagepart");
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 3168);
         inputport.setDeclaredType(IntMatrixToken.class);
 
-        Parameter p = new Parameter(this, "Codebook", 
+        Parameter p = new Parameter(this, "Codebook",
                 new StringToken("../lib/vq/data/usc_hvq_s5.dat"));
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
@@ -71,11 +71,11 @@ public final class HTVQEncode extends SDFAtomicActor {
 
 
     public void fire() throws IllegalActionException {
-        int numpartitions = 
+        int numpartitions =
             _xframesize * _yframesize / _xpartsize / _ypartsize;
 
         int j;
-        ((SDFIOPort) getPort("imagepart")).getArray(0, _tokens); 
+        ((SDFIOPort) getPort("imagepart")).getArray(0, _tokens);
 
         for(j = 0; j < numpartitions; j++) {
            _codewords[j] = new IntToken(
@@ -87,10 +87,10 @@ public final class HTVQEncode extends SDFAtomicActor {
     }
 
     public void initialize() throws IllegalActionException {
-  
+
         InputStream source = null;
-        
-        Parameter p; 
+
+        Parameter p;
 	p = (Parameter) getAttribute("XFramesize");
         _xframesize = ((IntToken)p.getToken()).intValue();
         p = (Parameter) getAttribute("YFramesize");
@@ -100,7 +100,7 @@ public final class HTVQEncode extends SDFAtomicActor {
         p = (Parameter) getAttribute("YPartitionSize");
         _ypartsize = ((IntToken)p.getToken()).intValue();
 
-        _codewords = 
+        _codewords =
             new IntToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
         _tokens =
             new IntMatrixToken[_yframesize * _xframesize / _ypartsize / _xpartsize];
@@ -129,15 +129,15 @@ public final class HTVQEncode extends SDFAtomicActor {
                 } else {
                     File sourcefile = new File(filename);
                     if(!sourcefile.exists() || !sourcefile.isFile())
-                        throw new IllegalActionException("Image file " + 
+                        throw new IllegalActionException("Image file " +
                                 filename + " does not exist!");
-                    if(!sourcefile.canRead()) 
+                    if(!sourcefile.canRead())
                         throw new IllegalActionException("Image file " +
                                 filename + " is unreadable!");
                     source = new FileInputStream(sourcefile);
-                }                      
+                }
             }
-            
+
             int i, j, y, x, size = 1;
             byte temp[];
             for(i = 0; i<5; i++) {
@@ -151,7 +151,7 @@ public final class HTVQEncode extends SDFAtomicActor {
                     for(x = 0; x < size; x++)
                         _codebook[i][j][x] = temp[x];
                 }
-                
+
                 temp = new byte[65536];
                 // read in the lookup table.
                 if(_fullread(source, temp) != 65536)
@@ -167,7 +167,7 @@ public final class HTVQEncode extends SDFAtomicActor {
         finally {
             if(source != null) {
                 try {
-                    source.close(); 
+                    source.close();
                 }
                 catch (IOException e) {
                 }
@@ -181,11 +181,11 @@ public final class HTVQEncode extends SDFAtomicActor {
 
     int ipbuf_encodep1[][] = new int[8][8];
     int ipbuf_encodep2[][] = new int[8][8];
-    
+
     int _stages(int len) {
         int x = 0;
         if(len < 2) throw new RuntimeException(
-                "HTVQEncode: vector length of " + len + 
+                "HTVQEncode: vector length of " + len +
                 "must be greater than 1");
         while(len > 2) { len = len >> 1; x++;}
         return x;
@@ -199,8 +199,8 @@ public final class HTVQEncode extends SDFAtomicActor {
         int dest_index;
 
         numstages = _stages(len);
-        
-	if(numstages>4) 
+
+	if(numstages>4)
             throw new RuntimeException(
                     "HTVQEncode: _encode: imagepart too large... exiting");
         p5 = ipbuf_encodep1;
@@ -221,9 +221,9 @@ public final class HTVQEncode extends SDFAtomicActor {
             System.arraycopy(p, 0, p4[0], 0, 4);
             System.arraycopy(p, 4, p4[1], 0, 4);
             System.arraycopy(p, 8, p4[2], 0, 4);
-            System.arraycopy(p, 12, p4[3], 0, 4);            
+            System.arraycopy(p, 12, p4[3], 0, 4);
             break;
-        case 2:            
+        case 2:
             p3[0][0] = p[0];
             p3[0][1] = p[1];
             p3[0][2] = p[2];
@@ -243,7 +243,7 @@ public final class HTVQEncode extends SDFAtomicActor {
             p1[0][0] = p[0];
             p1[0][1] = p[1];
             break;
-	}	
+	}
 	switch(numstages) {
         case 4:
             //XSIZE = 8, YSIZE = 4
@@ -311,7 +311,7 @@ public final class HTVQEncode extends SDFAtomicActor {
             p2[0][0] = _lookup_table[stage][ip];
             ip = ((p3[0][3] & 255) << 8) + (p3[0][2] & 255);
             p2[1][0] = _lookup_table[stage][ip];
-           
+
             ip = ((p3[1][1] & 255) << 8) + (p3[1][0] & 255);
             p2[0][1] = _lookup_table[stage][ip];
             ip = ((p3[1][3] & 255) << 8) + (p3[1][2] & 255);
@@ -324,14 +324,14 @@ public final class HTVQEncode extends SDFAtomicActor {
             ip = ((p2[1][1] & 255) << 8) + (p2[1][0] & 255);
             p1[0][1] = _lookup_table[stage][ip];
             stage++;
-            
+
         case 0:
             //XSIZE = 2, YSIZE = 1
             ip = ((p1[0][1] & 255) << 8) + (p1[0][0] & 255);
             p0[0][0] = _lookup_table[stage][ip];
             stage++;
   	}
-        
+
         return p0[0][0];
     }
 
@@ -345,7 +345,7 @@ public final class HTVQEncode extends SDFAtomicActor {
         }
         return d;
     }
-    
+
     int _fullread(InputStream s, byte b[]) throws IOException {
         int len = 0;
         int remaining = b.length;

@@ -47,7 +47,7 @@ import ptolemy.domains.sdf.kernel.*;
 */
 
 public final class ImageSequence extends SDFAtomicActor {
-    public ImageSequence(TypedCompositeActor container, String name) 
+    public ImageSequence(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
@@ -57,13 +57,13 @@ public final class ImageSequence extends SDFAtomicActor {
         setTokenProductionRate(outputport, 1);
         outputport.setDeclaredType(IntMatrixToken.class);
 
-        /*        Parameter p = new Parameter(this, "imageUrlTemplate", 
+        /*        Parameter p = new Parameter(this, "imageUrlTemplate",
                 new StringToken("http://ptolemy.eecs.berkeley.edu/"+
                         "~ptdesign/java/ptdesign-java/"+
                         "ptolemy/domains/sdf/lib/vq" +
                         "/data/seq/missa/missa***.qcf"));
         */
-        Parameter p = new Parameter(this, "imageUrlTemplate", 
+        Parameter p = new Parameter(this, "imageUrlTemplate",
                 new StringToken("../lib/vq" +
                         "/data/seq/missa/missa***.qcf"));
         new Parameter(this, "XImageSize", new IntToken("176"));
@@ -84,7 +84,7 @@ public final class ImageSequence extends SDFAtomicActor {
         xsize = ((IntToken)p.getToken()).intValue();
         p = (Parameter) getAttribute("YImageSize");
         ysize = ((IntToken)p.getToken()).intValue();
- 
+
         // If we've already loaded all these fricking images, then don't load
         // them again.
         if((_baseurl != null)&&(frames != null)) {
@@ -94,10 +94,10 @@ public final class ImageSequence extends SDFAtomicActor {
         frames = new byte[numframes][ysize * xsize];
         frame = new int[ysize * xsize];
         try {
-            for(framenumber = 0; 
-                framenumber < numframes; 
+            for(framenumber = 0;
+                framenumber < numframes;
                 framenumber++) {
- 
+
                 byte arr[] = fileroot.getBytes();
                 int i = framenumber + startframe;
                 String tfilename = new String(fileroot);
@@ -130,15 +130,15 @@ public final class ImageSequence extends SDFAtomicActor {
                     } else {
                         File sourcefile = new File(filename);
                         if(!sourcefile.exists() || !sourcefile.isFile())
-                            throw new IllegalActionException("Image file " + 
+                            throw new IllegalActionException("Image file " +
                                     filename + " does not exist!");
-                        if(!sourcefile.canRead()) 
+                        if(!sourcefile.canRead())
                             throw new IllegalActionException("Image file " +
                                     filename + " is unreadable!");
                         source = new FileInputStream(sourcefile);
-                    }                      
+                    }
                 }
-               
+
                 if(source.read(frames[framenumber], 0, ysize * xsize)
                         != ysize*xsize)
                     throw new IllegalActionException("Error reading " +
@@ -151,14 +151,14 @@ public final class ImageSequence extends SDFAtomicActor {
         finally {
             if(source != null) {
                 try {
-                    source.close(); 
+                    source.close();
                 }
                 catch (IOException e) {
                     throw new IllegalActionException(e.getMessage());
                 }
             }
         }
-        framenumber = 0;    
+        framenumber = 0;
         port_image = (IOPort) getPort("image");
     }
 
@@ -169,7 +169,7 @@ public final class ImageSequence extends SDFAtomicActor {
     public void fire() throws IllegalActionException {
         int i, j, n;
         workspace().setReadOnly(true);
-       
+
         System.out.println("frame " + framenumber);
         // This is necessary to convert from bytes to ints
         for(i = 0, n = 0; i < ysize; i++) {
@@ -180,7 +180,7 @@ public final class ImageSequence extends SDFAtomicActor {
         IntMatrixToken message = new IntMatrixToken(frame, ysize, xsize);
         port_image.send(0, message);
 
-        framenumber++; 
+        framenumber++;
         if(framenumber >= numframes) framenumber = 0;
     }
 

@@ -7,7 +7,7 @@ license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the
 above copyright notice and the following two paragraphs appear in all
 copies of this software.
- 
+
 IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
@@ -46,16 +46,16 @@ import ptolemy.domains.sdf.kernel.*;
 */
 
 public final class ImagePartition extends SDFAtomicActor {
-    public ImagePartition(TypedCompositeActor container, String name) 
+    public ImagePartition(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-    
+
 	new Parameter(this, "XFramesize", new IntToken("176"));
         new Parameter(this, "YFramesize", new IntToken("144"));
         new Parameter(this, "XPartitionSize", new IntToken("4"));
         new Parameter(this, "YPartitionSize", new IntToken("2"));
- 
+
         SDFIOPort outputport = (SDFIOPort) newPort("partition");
         outputport.setOutput(true);
         setTokenProductionRate(outputport, 3168);
@@ -65,7 +65,7 @@ public final class ImagePartition extends SDFAtomicActor {
         inputport.setInput(true);
         setTokenConsumptionRate(inputport, 1);
         inputport.setDeclaredType(IntMatrixToken.class);
-        
+
     }
 
     public void initialize() throws IllegalActionException {
@@ -103,9 +103,9 @@ public final class ImagePartition extends SDFAtomicActor {
                             part, y * xpartsize, xpartsize);
                 partitions[a] = new IntMatrixToken(part, ypartsize, xpartsize);
             }
-	
+
         partition.sendArray(0, partitions);
-	
+
     }
 
     IntMatrixToken message;
