@@ -86,6 +86,16 @@ public class JavaParserManip implements JavaStaticSemanticConstants {
             return loadedAST;
         }
 
+	// If the .java file is zero length, then try using reflection
+	File javaFile = new File(filename);
+	if (javaFile.length() == 0) {
+	    Class myClass = ASTReflect.pathnameToClass(filename);
+	    if (myClass != null) {
+		System.out.println("JavaParserManip: Calling ASTCompileUnitNode on " + myClass.getName());
+		return ASTReflect.ASTCompileUnitNode(myClass);
+	    }
+	}
+
         JavaParser p = new JavaParser();
 
         try {
