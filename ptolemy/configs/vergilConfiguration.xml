@@ -86,6 +86,7 @@
             <input source="ptolemy/actor/lib/comm/comm.xml"/>
             <input source="ptolemy/actor/lib/esoteric.xml"/>
             <input source="ptolemy/copernicus/copernicus.xml"/>
+            <input source="ptolemy/actor/hoc/hoc.xml"/>
             <input source="ptolemy/actor/lib/image/image.xml"/>
             <input source="ptolemy/actor/lib/jmf/jmf.xml"/>
 	    <!-- matlab depends on Matlab being present -->
