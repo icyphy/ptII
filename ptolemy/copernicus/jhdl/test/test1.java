@@ -189,6 +189,16 @@ public class test1 extends TypedAtomicActor {
 	    d++;
     }
 
+    /** Used to test serial combining **/
+    public int method24(int a) {
+	int d=0;
+	if (a > 5) {
+	    d = a * 2 + 3;
+	}
+	d += a + 5;
+	return d;
+    }
+
     public void fire() throws IllegalActionException {
 	int a,b,c,d;
 	test1 t1=null;
