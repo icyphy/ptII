@@ -76,7 +76,9 @@ OPTIONAL_FILES = \
 	compat \
 	compatDemo \
 	compat2 \
-	compatDemo2
+	compatDemo2 \
+	compat3 \
+	compatDemo3
 
 JCLASS =	$(JSRCS:%.java=%.class)
 
@@ -193,11 +195,65 @@ compatDemo2:
 		cp `cat /tmp/oldxmls` $@; \
 	fi
 
+
+# Location of the old tree that we harvest auto/*.xml
+# files from old release trees and copy them into compat and run them
+OLDTREE3 = $(ROOT)/adm/dists/ptII3.0.2
+
+# Directory that contains models to check for compatibility
+# We could check these into the tree, but it is about 1mb of files
+compat3:
+	@if [ ! -d $(OLDTREE3) ]; then \
+		echo "$(OLDTREE3) does not exist"; \
+		echo "skipping compatibility tests"; \
+	else \
+		echo "Generating $@/ from $(OLDTREE3)"; \
+		(cd $(OLDTREE3); \
+			find . -name "*.xml" -print | \
+			grep auto | \
+			awk '{print "$(OLDTREE3)/" $$1}' > /tmp/oldxmls); \
+		mkdir $@; \
+		echo "Copying old xmls over"; \
+		cp `cat /tmp/oldxmls` $@; \
+		rm -f /tmp/oldxmls; \
+		echo "Copying xmls that have the same name"; \
+		rm $@/test1.xml; \
+		cp $(OLDTREE3)/ptolemy/domains/sdf/kernel/test/auto/test1.xml \
+			$@/sdftest1.xml; \
+		cp $(OLDTREE3)/ptolemy/domains/sdf/lib/vq/test/auto/test1.xml \
+			$@/vqtest1.xml; \
+		rm $@/test3.xml; \
+		cp $(OLDTREE3)/ptolemy/domains/sdf/kernel/test/auto/test1.xml \
+			$@/sdftest1.xml; \
+		cp $(OLDTREE3)/ptolemy/domains/sdf/lib/vq/test/auto/test1.xml \
+			$@/vqtest1.xml; \
+		echo "Removing tests that failed in earlier releases"; \
+		rm -f $@/MaximumEntropy.xml \
+			$@/OutputActionsAttribute.xml; \
+	fi
+
+# Directory that contains models from the demo directory 
+# to check for compatibility
+compatDemo3:
+	@if [ ! -d $(OLDTREE3) ]; then \
+		echo "$(OLDTREE3) does not exist"; \
+		echo "skipping compatibility tests"; \
+	else \
+		echo "Generating $@/ from $(OLDTREE3)"; \
+		(cd $(OLDTREE3); \
+			find . -name "*.xml" -print | \
+			grep demo | \
+			awk '{print "$(OLDTREE3)/" $$1}' > /tmp/oldxmls); \
+		mkdir $@; \
+		echo "Copying old xmls over"; \
+		cp `cat /tmp/oldxmls` $@; \
+	fi
+
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass compat compatDemo compat2 compatDemo2 $(KERNEL_TESTDEFS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass compat compatDemo compat2 compatDemo2 compat3 compatDemo3 $(KERNEL_TESTDEFS) alljtests.tcl
 	$(JTCLSH) alljtests.tcl 
 
 # Run vergil on each of the demos in compatDemo
