@@ -11,11 +11,11 @@
 
 \title{Technical Specification for Soft Walls -
 Flight Control Systems to Limit the Flight Space of Commercial Aircraft}
-\author{Edward A. Lee and Xiaojun Liu\\
-eal@eecs.berkeley.edu, liuxj@eecs.berkeley.edu\\
+\author{Edward A. Lee, Xiaojun Liu, and J. Adam Cataldo\\
+eal@eecs.berkeley.edu, liuxj@eecs.berkeley.edu, acataldo@eecs.berkeley.edu\\
 Electrical Engineering \& Computer Science\\
 University of California, Berkeley}
-\date{October 3, 2001}
+\date{6 February 2002}
 
 \maketitle
 
@@ -116,7 +116,7 @@ We take the rate of change of heading of the aircraft to
 be
 \[
 \dot{\theta} = \set{limit}_{[-s/r_{min}, s/r_{min}]}
-(\dot{\theta}_p + \dot{\theta}_s ),
+(\dot{\theta}_p - \dot{\theta}_s ),
 \]
 where $\set{limit}_{[a,b]}$ is a function
 \[
@@ -186,4 +186,39 @@ when added to the pilot's control we are assured of having
 the maximum turning control, even if the pilot is maximally
 uncooperative in attempting to counteract the control.
 
+\section{Control Model Failure}
+
+We were able to develop a malicious pilot strategy that, even with the control scheme of Section 2, can fly the plane into the no-fly zone.  This section explains this strategy.
+
+\subsection{Resistant Pilot}
+
+The resistant pilot is initially heading towards the no fly zone, so the iinitial $\dot{\theta_{p}}$ is $0$.  That is, the pilot intends to maintain forward motion and crash into the wall.  
+
+Since, before saturation, the input control is $\dot{\theta} = \dot{\theta_{p}} - \dot{\theta_{s}}$, the pilot will try to counteract the control signal by chosing $\dot{\theta_{p}} = \dot{\theta_{s}}$.  In a cockpit, the pilot would be physically limited by a maximum $\dot{\theta_{p}}$,  so the pilot uses
+\[
+\dot{theta_{p}} = \set{limit}_{[-s/r_{min},s/r_{min}]}(\dot{\theta_{s}})
+\]
+Here the limit values are chosen for a pilot that would never move the plane in an unsafe position.  In practice the limit points could be larger.
+
+\subsection{Boundary Penetration}
+
+The resistant pilot succeeds in penetrating the no-fly zone boundray.  Even though the plane's trajectory is changed, the $\sin{\phi}$ factor in the corrective control signal dampens the strength of the softwalls control signal, such that the pilot can fly into the softwall at a  $pi/6$ angle from the wall.
+
+If the $\sin{\phi}$ factor is removed from the control signal, this problem disapears.  That is,
+\[
+\dot{\theta}_s = \left \{
+\begin{array}{ll}
+2 c s/r_{min}& \mbox{ if } 0 < \phi < \pi\\
+0 & \mbox{ otherwise}
+\end{array}
+\right .
+\]
+This control scheme is more restrictive however, because a plane cannot stay in the softwall.  Any pilot between the inner and outer boundary will eventually be forced outside the outer boundary.
+
 \end{document}
+
+
+
+
+
+
