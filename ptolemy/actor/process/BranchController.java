@@ -439,19 +439,19 @@ public class BranchController implements Runnable {
 			if( isDeadlocked() && !isIterationOver() ) {
 			    while( isDeadlocked() && 
 				    !isIterationOver() ) {
-				_getDirector()._branchBlocked(this);
+				_getDirector()._branchCntlrBlocked();
 				wait();
 			    }
-			    _getDirector()._branchUnBlocked(this);
+			    _getDirector()._branchCntlrUnBlocked();
 			}
 		    }
 
 		    if( isIterationOver() && isActive() ) {
 			while( isIterationOver() && isActive() ) {
-			    _getDirector()._branchBlocked(this);
+			    _getDirector()._branchCntlrBlocked();
 			    wait();
 			}
-			_getDirector()._branchUnBlocked(this);
+			_getDirector()._branchCntlrUnBlocked();
 		    }
 		}
 	    } catch( InterruptedException e ) {
