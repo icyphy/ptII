@@ -543,9 +543,7 @@ if test ! -d "$PTII/ptolemy/copernicus/c"; then
         so we need not find the Boehm GC])
 else
     AC_PATH_PROG(PTCC, gcc)
-    if test "${PTCC:-none}" != "none"; then
-        AC_MSG_RESULT([$PTCC])
-    else    
+    if test "${PTCC:-none}" == "none"; then
         AC_MSG_WARN([Failed to find gcc])
         AC_PATH_PROG(PTCC, cc)
         if test "${PTCC:-none}" != "none"; then
@@ -1394,7 +1392,6 @@ else
 	    startdir=`pwd`
 	    cd "$srcdir/config"
 	    if "$JAVAC" MatlabRootDirectory.java ; then
-		AC_MSG_RESULT(ok)
 		AC_MSG_CHECKING([the value of the Matlab root directory ])
 		if env CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"> /dev/null; then
 		    MATLAB_DIR=`CLASSPATH="$PTII/config" "$JAVA" MatlabRootDirectory "$MATLAB"`
