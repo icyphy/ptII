@@ -216,6 +216,8 @@ public class FSMDirector extends Director
         Transition tr =
             ctrl._chooseTransition(st.preemptiveTransitionList());
 
+        _enabledTransition = tr;
+        
         if (tr != null) {
             Actor[] actors = tr.destinationState().getRefinement();
             if (actors != null) {
@@ -582,6 +584,14 @@ public class FSMDirector extends Director
         boolean result = controller.postfire();
         _currentLocalReceiverMap =
             (Map)_localReceiverMaps.get(controller.currentState());
+            
+        // FIXME:    
+        // if there is an enabled transition, invalidate ioDependency.
+        // we may cache the IODependeny and invalidate the schedule
+        // only if the ioDependency (abstract one) changes.
+        if (_enabledTransition != null) {
+            ((CompositeActor) getContainer()).getIODependencies().invalidate();
+        }
         return result && !_stopRequested;
     }
 
@@ -985,4 +995,6 @@ public class FSMDirector extends Director
     // Version of the local receiver maps.
     private long _localReceiverMapsVersion = -1;
 
+    // cached enabled transition.
+    private Transition _enabledTransition = null;
 }
