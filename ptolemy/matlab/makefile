@@ -55,8 +55,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	DummyMatlabEngine.java \
 	Engine.java \
-	Expression.java
+	Expression.java \
+	MatlabEngineFactory.java \
+	MatlabEngineInterface.java
 
 OTHER_FILES_TO_BE_JARED = \
 	matlab.xml \

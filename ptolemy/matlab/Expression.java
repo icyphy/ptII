@@ -59,8 +59,9 @@ import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.math.Complex;
-import ptolemy.matlab.Engine;
-import ptolemy.matlab.Engine.ConversionParameters;
+import ptolemy.matlab.MatlabEngineFactory;
+import ptolemy.matlab.MatlabEngineInterface;
+import ptolemy.matlab.MatlabEngineInterface.ConversionParameters;
 
 import java.util.StringTokenizer;
 import java.util.Iterator;
@@ -71,7 +72,7 @@ import java.util.LinkedList;
 //// Expression
 /**
 On each firing send an expression for evaluation to a matlab {@link
-Engine}. The expression is any valid matlab expression, e.g.:
+MatlabEngineInterface}. The expression is any valid matlab expression, e.g.:
 
 <pre>
 [out1, out2, ... ] = SomeMatlabFunctionOrExpression( in1, in2, ... );...
@@ -96,13 +97,13 @@ method iterates through names of output ports and converts matlab
 variables with corresponding names to Tokens that are sent to the
 corresponding output ports. Incorrect expressions are usually first
 detected at this point by not finding the expected variables. If an
-output port variable is not found in the matlab {@link Engine}, an
+output port variable is not found in the matlab {@link MatlabEngineInterface}, an
 exception is thrown. The exception description string contains the last
 stdout of the matlab engine that usually describes the error.<p>
 
 The {@link #get1x1asScalars} and {@link #getIntegerMatrices} control
-data conversion (see {@link Engine} and
-{@link Engine.ConversionParameters}).<p>
+data conversion (see {@link MatlabEngineInterface} and
+{@link MatlabEngineInterface.ConversionParameters}).<p>
 
 A Parameter named <i>packageDirectories</i> may be added to this actor
 to augment the matlab engine's search path during the firing of this
@@ -121,8 +122,8 @@ match wins). See {@link ptolemy.data.expr.UtilityFunctions#findFile(String)}.
 After evaluation, the previous search path is restored.<p>
 
 A Parameter named <i>_debugging</i> may be used to turn on debug print
-statements to stdout from {@link Engine} and the ptmatlab JNI. An IntToken
-with a value of 1 turns on Engine debug statements, a value of 2 adds
+statements to stdout from {@link MatlabEngineInterface} and the ptmatlab JNI. An IntToken
+with a value of 1 turns on MatlabEngineInterface debug statements, a value of 2 adds
 ptmatlab debug statements as well.  A value of 0 or the absence of the
 <i>_debugging</i> parameter yields normal operation.<p>
 
@@ -148,7 +149,7 @@ public class Expression extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         expression = new StringAttribute(this, "expression");
 
-        _dataParameters = new Engine.ConversionParameters();
+        _dataParameters = new MatlabEngineInterface.ConversionParameters();
 
         get1x1asScalars = new Parameter
             (this, "get1x1asScalars",
@@ -205,7 +206,7 @@ public class Expression extends TypedAtomicActor {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         try {
-            matlabEngine = new Engine();
+            matlabEngine = MatlabEngineFactory.createEngine();
         } catch (LinkageError err) {
             throw new IllegalActionException(this, err,
                  "There was a problem invoking the Ptolemy II Matlab interface"
@@ -265,7 +266,7 @@ public class Expression extends TypedAtomicActor {
             if (cellFormat.length() > 2) {
                 _addPathCommand = "addedPath_ = " + cellFormat.toString()
                     + ";addpath(addedPath_{:});";
-                synchronized (Engine.semaphore) {
+                synchronized (matlabEngine.getSemaphore()) {
                     int status = matlabEngine.evalString
                         (engine, "previousPath_=path");
                     _previousPath = matlabEngine.get(engine, "previousPath_");
@@ -304,7 +305,7 @@ public class Expression extends TypedAtomicActor {
             throw new IllegalActionException(this, "No director!");
         }
         try {
-            synchronized (Engine.semaphore) {
+            synchronized (matlabEngine.getSemaphore()) {
                 // The following clears variables, but preserves any
                 // persistent storage created by a function (this usually
                 // for speed-up purposes to avoid recalculation on every
@@ -366,7 +367,7 @@ public class Expression extends TypedAtomicActor {
         engine = null;
     }
 
-    private Engine matlabEngine = null;
+    private MatlabEngineInterface matlabEngine = null;
     long[] engine = null;
     private Variable _iteration;
     private int _iterationCount = 1;
