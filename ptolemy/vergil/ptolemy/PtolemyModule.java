@@ -278,6 +278,7 @@ public class PtolemyModule implements Module {
         application.addDocumentFactory(new PtolemyDocument.Factory());
 	application.addDocumentFactory(new PtolemyDocument.FSMFactory());
 
+	/*
 	try {
 	    String ptII = System.getProperty("ptolemy.PTII");
 	    System.setProperty("java.security.policy",
@@ -298,7 +299,7 @@ public class PtolemyModule implements Module {
 	} catch (Exception ex2) {
 	    ex2.printStackTrace();
 	}
-	
+	*/
 	SwingUtilities.invokeLater(new PaletteInitializer());
 
     }
@@ -770,16 +771,18 @@ public class PtolemyModule implements Module {
 		getModuleResources().getResource("rootEntityLibrary");
 
 	    MoMLParser parser;
-	    parser = new MoMLParser(null, null, 
-		((VergilApplication)getApplication()).classLoadingService.getClassLoader());
+	    parser = new MoMLParser();
+		//new MoMLParser(null, null, 
+		//((VergilApplication)getApplication()).classLoadingService.getClassLoader());
 	    _iconLibrary =
                 (CompositeEntity) parser.parse(iconlibURL,
                         iconlibURL.openStream());
             LibraryIcon.setIconLibrary(_iconLibrary);
 
             //FIXME: this is bogus  The parser should be reusable.
-            parser = new MoMLParser(null, null, 
-		((VergilApplication)getApplication()).classLoadingService.getClassLoader());
+            parser = new MoMLParser();
+	    // new MoMLParser(null, null, 
+		//((VergilApplication)getApplication()).classLoadingService.getClassLoader());
             _entityLibrary =
                 (CompositeEntity) parser.parse(entitylibURL,
                         entitylibURL.openStream());

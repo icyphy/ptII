@@ -304,23 +304,30 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
      * event.
      */
-    public void disconnectEdge(Link edge) {
-	/*  Edge edgePeer = (Edge)edge;
-        Node headPeer = edgePeer.getHead();
-        Node tailPeer = edgePeer.getTail();
-        if(headPeer != null) {
-            headPeer.removeInEdge(edgePeer);
-            GraphEvent e = new GraphEvent(GraphEvent.EDGE_HEAD_CHANGED,
-                    this, edgePeer, headPeer);
-            dispatchGraphEvent(e);
-        }
-        if(tailPeer != null) {
-            tailPeer.removeOutEdge(edgePeer);
-            GraphEvent e = new GraphEvent(GraphEvent.EDGE_TAIL_CHANGED,
-                    this, edgePeer, tailPeer);
-            dispatchGraphEvent(e);
-        }
-	*/
+    public void disconnectEdge(final Link link) {
+	Object head = link.getHead();
+	Object tail = link.getTail();
+	_doChangeRequest(new ChangeRequest(link, 
+		"disconnect link" + link.getFullName()) {
+	    public void execute() throws ChangeFailedException {
+		try {
+		    link.unlink();
+		    link.setHead(null);
+		    link.setTail(null);
+		} catch (IllegalActionException ex) {
+		    throw new ChangeFailedException(this, ex.getMessage());
+		} catch (NameDuplicationException ex) {
+		    throw new ChangeFailedException(this, ex.getMessage());
+		}
+	    }
+	});
+	GraphEvent e;
+	e = new GraphEvent(GraphEvent.EDGE_HEAD_CHANGED,
+			   this, link, head);
+	dispatchGraphEvent(e);
+	e = new GraphEvent(GraphEvent.EDGE_TAIL_CHANGED,
+			   this, link, tail);
+	dispatchGraphEvent(e);
     }
 
     /**
@@ -861,15 +868,19 @@ public class PtolemyGraphModel extends AbstractGraphModel
      * Set the visual object correspoding
      * to the given node, edge, or composite.
      */
-    public void setVisualObject(NamedObj o, Object visual) {
-	try {
-	    FigureAttribute a = 
-		new FigureAttribute(o, o.uniqueName("figure"));
-	    a.setFigure(visual);
-	} catch (Exception ex) {
-	    ex.printStackTrace();
-	    throw new GraphException(ex.getMessage());
-	}
+    public void setVisualObject(final NamedObj o, final Object visual) {
+	_doChangeRequest(new ChangeRequest(o, 
+	       "setting visual object of " + o.getFullName()) {
+	    public void execute() throws ChangeFailedException {
+		try {
+		    FigureAttribute a = 
+			new FigureAttribute(o, o.uniqueName("figure"));
+		    a.setFigure(visual);
+		} catch (Exception ex) {
+		    throw new ChangeFailedException(this, ex.getMessage());
+		}
+	    }
+	});
     }
 
     /**

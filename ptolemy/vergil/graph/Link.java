@@ -194,7 +194,9 @@ public class Link extends Attribute {
 	    // blow the relation away.
             relation.setContainer(null);
 	    setRelation(null);
-            return;
+	    _checkSchedule(container);
+	    
+	    return;
         }
 	if(_tail instanceof ComponentPort && _head instanceof Vertex) {
 	    vertex = (Vertex)_head;
@@ -226,9 +228,12 @@ public class Link extends Attribute {
     // If the container has a director, then invalidate its schedule and
     // rerun type resolution
     private void _checkSchedule(CompositeEntity container) {
+	System.out.println("container = " + container);
 	if (container instanceof Actor) {
+	    System.out.println("actor = " + container);
 	    Director director = ((Actor)container).getDirector();
 	    if (director != null) {
+		System.out.println("director = " + director);
 		director.invalidateSchedule();
 		director.invalidateResolvedTypes();
 	    }

@@ -149,8 +149,8 @@ public class VergilApplication extends MDIApplication {
 
         setCurrentDocument(null);
 
-	classLoadingService = new ClassLoadingService();
-	addService(classLoadingService);
+	//	classLoadingService = new ClassLoadingService();
+	//addService(classLoadingService);
 	// FIXME read this out of resources somehow.
 	new ptolemy.vergil.ptolemy.PtolemyModule(this);
         new ptolemy.vergil.debugger.DebuggerModule(this);
@@ -165,7 +165,7 @@ public class VergilApplication extends MDIApplication {
 	timer.start();
     }
 
-    public ClassLoadingService classLoadingService;
+    //  public ClassLoadingService classLoadingService;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
