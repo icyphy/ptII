@@ -136,24 +136,10 @@ COPERNICUSPACKAGES = \
 
 # Java packages for codegen
 CODEGENPACKAGES = \
-			ptolemy.lang \
-			ptolemy.lang.java \
-			ptolemy.lang.java.extended \
-			ptolemy.lang.java.nodetypes \
-			ptolemy.lang.java.tree \
-			ptolemy.codegen \
-			ptolemy.codegen.saveasjava \
-			ptolemy.domains.sdf.codegen
+			ptolemy.codegen.saveasjava
 
 CODEGENJSRCS = \
-			../ptolemy/lang/*.java \
-			../ptolemy/lang/java/*.java \
-			../ptolemy/lang/java/extended/*.java \
-			../ptolemy/lang/java/nodetypes/*.java \
-			../ptolemy/lang/java/tree/*.java \
-			../ptolemy/codegen/*.java \
-			../ptolemy/codegen/saveasjava/*.java \
-			../ptolemy/domains/sdf/codegen
+			../ptolemy/codegen/saveasjava/*.java
 
 
 PTINYPACKAGES = \
