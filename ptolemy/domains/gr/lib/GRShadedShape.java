@@ -120,7 +120,16 @@ public class GRShadedShape extends GRActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
+    
+    /*  Create the Java3D geometry and appearance for this GR actors
+     *
+     *  @exception IllegalActionException if the current director
+     *    is not a GRDirector
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _createModel();
+    }
     
 
     ///////////////////////////////////////////////////////////////////
@@ -143,11 +152,11 @@ public class GRShadedShape extends GRActor {
         _appearance.setMaterial(_material);
     }
 
-    /** Create the color of the shaded 3D actor
+    /** Create the color of this shaded GR actor
+     *
+     *  @exception IllegalActionException if unable to setup the color
      */
     protected void _createModel() throws IllegalActionException {
-
-        super._createModel();
 
         DoubleMatrixToken color = (DoubleMatrixToken) rgbColor.getToken();
 

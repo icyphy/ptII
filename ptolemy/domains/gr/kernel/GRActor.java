@@ -1,4 +1,4 @@
-/* GR Actor
+/* A base class for all GR actors
  Copyright (c) 2000-2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -38,7 +38,11 @@ import javax.media.j3d.*;
 //// GRActor
 /**
 A base class for all GR actors. This is an abstract class that is never
-used as a standalone actor in a Ptolemy model.
+used as a standalone actor in a Ptolemy model. Subclasses of this actor
+include Geometry actors, Transform actors, Interaction actors, and the 
+ViewScreen display actor.
+
+@see ptolemy.domains.gr.kernel.lib
 
 @author C. Fong
 @version $Id$
@@ -67,23 +71,10 @@ public class GRActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /*
-     *  
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        super.attributeChanged(attribute);
-        if (_allowAttributeChanges == false ) {
-            // FIXME: handle this
-            // throw new IllegalActionException(
-            //  "attribute change currently not allowed for this actor");
-        }   
-    }
-
-    /*  Initialize the scene graph if it is not yet initialized.
+    /** Initialize the scene graph if it is not yet initialized.
      *  
      *  @exception IllegalActionException if an error occurs 
-     *    in the scene graph initialization.
+     *    during the scene graph initialization.
      */
     public void fire() throws IllegalActionException {
         if (!_isSceneGraphInitialized) {
@@ -92,9 +83,8 @@ public class GRActor extends TypedAtomicActor {
         }
     }
 
-    /*  Check whether the current director is a GRDirector. If not,
-     *  throw an illegal action exception. Create the Java3D geometry
-     *  and appearance for this actor.
+    /** Check whether the current director is a GRDirector. If not,
+     *  throw an illegal action exception. 
      *
      *  @exception IllegalActionException if the current director
      *    is not a GRDirector
@@ -105,9 +95,7 @@ public class GRActor extends TypedAtomicActor {
             throw new IllegalActionException(
                       "GR Actors can only be used under a GR Director");
         }
-        _createModel();
     }
-
     
     /** Reset this actor back to uninitialized state to prepare for
      *  the next execution.
@@ -122,52 +110,45 @@ public class GRActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
-    /* Add the node argument as a child to the encapsulated Java3D node
-     * in this actor. Derived GR Actors should override this method
+    /** Add the node argument as a child to the encapsulated Java3D node
+     *  in this actor. Derived GR Actors should override this method
      *
-     * @exception IllegalActionException always thrown for this base class
+     *  @exception IllegalActionException always thrown for this base class
      */
     protected void _addChild(Node node) throws IllegalActionException {
         throw new IllegalActionException("GR domain actor" + this +
                 " cannot have children");
     }
-
-    /*  Base method for creating the geometry and appearance of
-     *  of a GR actor.  Derived GR actors should override this method
-     *
-     *  @exception IllegalActionException not thrown for this base class
-     */
-    protected void _createModel() throws IllegalActionException {
-    }
     
-    /* Return the Java3D node associated with this actor. Derived
-     * GR Actors should override this method.
+    
+    /** Return the Java3D node associated with this actor. Derived
+     *  GR Actors should override this method.
      * 
-     * @return The Java3D node associated with this actor
+     *  @return The Java3D node associated with this actor
      */
     protected Node _getNodeObject() {
         return null;
     }
     
-    /* Base method for creating the scene graph. Derived GR Actor should
-     * override this method
+    /** Setup the scene graph connections of this actor. Derived GR Actors 
+     *  should override this method.
      *
-     * @exception IllegalActionException always thrown for thsi base class
+     *  @exception IllegalActionException always thrown for thsi base class
      */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         throw new IllegalActionException("GR domain actor" + this +
                 " failed to make scene graph connection ");
     }
 
-    /* Start the Java3D renderer. This method will be overridden by some
-     * derived GR Actors.
+    /** Start the Java3D renderer. This method will be overridden by some
+     *  derived GR Actors.
      */
     protected void _startRenderer() {
     }
 
 
-    /* Stop the Java3D renderer. This method will be overridden by some
-     * derived GR Actors.
+    /** Stop the Java3D renderer. This method will be overridden by some
+     *  derived GR Actors.
      */
     protected void _stopRenderer() {
     }
@@ -179,7 +160,7 @@ public class GRActor extends TypedAtomicActor {
     // The root of the scene graph DAG, if there is one
     protected static GRActor _root;
     
-    // Boolean variable to determine whether scene graph is initialized
+    // Boolean variable to determine whether the scene graph is initialized
     protected boolean _isSceneGraphInitialized;
 
     // Boolean variable to determine whether attribute changes are allowed   

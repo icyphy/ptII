@@ -131,6 +131,7 @@ public class GRDirector extends StaticSchedulingDirector {
     /** Clone the director into the specified workspace. This calls the
      *  base class and then copies the parameter of this director. The new
      *  actor will have the same parameter values as the old.
+     *
      *  @param workspace The workspace for the new object.
      *  @return A new object.
      *  @exception CloneNotSupportedException If one of the attributes
@@ -255,7 +256,8 @@ public class GRDirector extends StaticSchedulingDirector {
 
 
 
-    /** Initialize all the actors associated with this director
+    /** Initialize all the actors associated with this director. Perform
+     *  some internal initialization for this director.
      * 
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
@@ -270,10 +272,8 @@ public class GRDirector extends StaticSchedulingDirector {
 
 
     /** Process the mutation that occurred.  Reset this director
-     *  to an uninitialized state.  Notify parent class about
-     *  invalidated schedule.  This method is called when an entity
-     *  is instantiated under this director. This method is also
-     *  called when a link is made between ports and/or relations.
+     *  to an uninitialized state to prepare for rescheduling.  
+     *  Notify parent class about invalidated schedule.  
      *  see also other mutation methods:
      *
      *  @see ptolemy.kernel.util.NamedObj.#attributeChanged
@@ -281,6 +281,9 @@ public class GRDirector extends StaticSchedulingDirector {
      */
     public void invalidateSchedule() {
         //  -invalidateSchedule-
+        // This method is called when an entity is instantiated under 
+        // this director. This method is also called when a link is 
+        // made between ports and/or relations.
         _reset();
         super.invalidateSchedule();
     }
@@ -380,22 +383,17 @@ public class GRDirector extends StaticSchedulingDirector {
 
 
 
-    /** This is called by the outside director to get tokens
-     *  from the inside director.
-     *  Return true if transfers data from an output port of the
-     *  container to the ports it is connected to on the outside.
-     *  This method differs from the base class method in that this
-     *  method will transfer all available tokens in the receivers,
-     *  while the base class method will transfer at most one token.
-     *  This behavior is required to handle the case of non-homogeneous
-     *  opaque composite actors. The port argument must be an opaque
-     *  output port.  If any channel of the output port has no data,
-     *  then that channel is ignored.
+    /** This is called by the outside director to get tokens from the
+     *  inside director. Return true if transfers data from an output 
+     *  port of the container to the ports it is connected to on the 
+     *  outside. The port argument must be an opaque output port. If any 
+     *  channel of the output port has no data, then that channel is 
+     *  ignored.
      *
-     *  @exception IllegalActionException If the port is not an opaque
-     *   output port.
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
+     *  @exception IllegalActionException If the port is not an opaque
+     *   output port.
      */
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
@@ -445,8 +443,6 @@ public class GRDirector extends StaticSchedulingDirector {
         super.wrapup();
         _reset();
     }
-
-
 
 
     ///////////////////////////////////////////////////////////////////

@@ -75,8 +75,6 @@ public class GRScheduler extends Scheduler {
         super(workspace);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
