@@ -60,8 +60,6 @@ public class PNApplet extends PtolemyApplet {
     public void init() {
         super.init();
         try {
-            // Initialization
-            _goButton = new Button("Go");
 
             _manager = new Manager();
             _toplevel = new CompositeActor();
@@ -71,9 +69,11 @@ public class PNApplet extends PtolemyApplet {
             _toplevel.setManager(_manager);
 
             // Add a control panel in the main panel.
-            Panel controlPanel = new Panel();
-            add(controlPanel);
-            controlPanel.add(_goButton);
+            // Initialization
+            _goButton = new Button("Go");
+            //Panel controlPanel = new Panel();
+            add("North",_goButton);
+            //controlPanel.add(_goButton);
             _goButton.addActionListener(new GoButtonListener());
         } catch (Exception ex) {
             report("Setup failed:", ex);
