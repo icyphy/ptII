@@ -967,8 +967,7 @@ public class Director extends Attribute implements Executable {
         if (container instanceof CompositeActor) {
             Manager manager = ((CompositeActor)container).getManager();
             if (manager != null && manager.getState() == Manager.ITERATING) {
-                throw new IllegalActionException("Can not change the " +
-                    "timeScale parameter when the model is running.");
+                throw new IllegalActionException("Can not change the " +                    "timeScale parameter when the model is running.");
             }
             _timeScale = timeScale;
             if (_debugging) {
