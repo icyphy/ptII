@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	java
+PTPACKAGE = 	shallow
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 DIRS =		test
@@ -68,10 +68,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 	@echo "To run the demo, run 'make demo'"
 
-install: all
-
-depend:
-	@echo "no dependencies in this directory"
+install: all $(PTPACKAGE).jar
 
 demo: shallowDemo
 shallowDemo: compileShallowDemo runShallowDemo
@@ -79,15 +76,8 @@ shallowDemo: compileShallowDemo runShallowDemo
 TARGETPACKAGE = 	ptolemy.copernicus.shallow.cg
 TARGETPATH =		ptolemy/copernicus/shallow/cg
 
-JADTARGETPACKAGE =	ptolemy.copernicus.java.cg.jad
+JADTARGETPACKAGE =	ptolemy.copernicus.shallow.cg.jad
 JADTARGETPATH =		$(ROOT)/ptolemy/copernicus/shallow/cg/jad
-
-# Orthocom
-DEEPSOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
-DEEPMODEL = OrthogonalCom 
-DEEPSOURCECLASS = $(DEEPSOURCEPACKAGE).$(DEEPMODEL)
-DEEPTARGETCLASS = $(TARGETPACKAGE).CGToplevelModel
-#make DEEPSOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDeepDemo
 
 # IIR
 MODEL = IIR
