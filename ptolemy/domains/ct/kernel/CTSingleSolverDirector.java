@@ -506,11 +506,9 @@ public class CTSingleSolverDirector extends CTDirector {
         double predictedstep = 2.0*getCurrentStepSize();
         CTScheduler sched = (CTScheduler)getScheduler();
         Enumeration sscs = sched.stateTransitionSSCActors();
-        System.out.println("Predicting step sizes.");
         while (sscs.hasMoreElements()) {
             CTStepSizeControlActor a = 
                 (CTStepSizeControlActor) sscs.nextElement();
-            System.out.println("a predicted step" +  a.predictedStepSize());
             predictedstep = Math.min(predictedstep, a.predictedStepSize());
         }
         sscs = sched.outputSSCActors();
