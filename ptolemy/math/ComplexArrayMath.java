@@ -365,8 +365,8 @@ public class ComplexArrayMath {
      *   <i>top</i>.
      *  </p>
      */
-    public static final Complex[] limit(final Complex[] array,
-            final Complex bottom, final Complex top) 
+    public static final Complex[] limit(Complex[] array,
+            Complex bottom, Complex top) 
             throws IllegalArgumentException {
         Complex[] returnValue = new Complex[array.length];
 	
