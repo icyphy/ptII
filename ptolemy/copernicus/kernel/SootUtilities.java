@@ -1478,7 +1478,7 @@ public class SootUtilities {
     /** Reflect the given constructor method with the given arguments
      *  on the class of the given object.  Invoke the method and return
      *  the returned value.
-     *  @param method The soot initializer method that corresponds to the
+     *  @param sootMethod The soot initializer method that corresponds to the
      *  correct Java constructor.
      *  @param argValues The arguments, which must be constant valued.
      */
