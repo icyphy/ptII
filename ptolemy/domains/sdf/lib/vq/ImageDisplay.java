@@ -97,7 +97,11 @@ public class ImageDisplay extends Sink implements Placeable {
         _oldXSize = 0;
         _oldYSize = 0;
         if (_container == null) {
-            _frame = new _PictureFrame("ImageDisplay");
+            _frame = new JFrame("ImageDisplay");
+            _frame.getContentPane().setLayout(new BorderLayout(15, 15));
+            _frame.show();
+            _frame.pack();
+            _frame.validate();
             _container = _frame.getContentPane();
         }
         if (_frame != null) {
@@ -169,13 +173,6 @@ public class ImageDisplay extends Sink implements Placeable {
         _picture.displayImage();
         _picture.repaint();
 
-        Runnable painter = new Runnable() {
-                public void run() {
-                    _container.paint(_container.getGraphics());
-                }
-            };
-        // Make sure the image gets updated.
-        SwingUtilities.invokeLater(painter);
         Thread.yield();
     }
 
@@ -201,22 +198,6 @@ public class ImageDisplay extends Sink implements Placeable {
         }
         if (c instanceof JFrame) {
             _frame = (JFrame)c;
-        }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** This inner class provides a convenient way to create a JFrame for the
-     *  picture when it becomes necessary.
-     */
-    private class _PictureFrame extends JFrame {
-        public _PictureFrame(String title) {
-            super(title);
-            this.getContentPane().setLayout(new BorderLayout(15, 15));
-            this.show();
-            this.pack();
-            this.validate();
         }
     }
 
