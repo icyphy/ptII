@@ -619,6 +619,32 @@ $(JAR_DIST_DIR):
 		fi; \
 	done;
 
+UNJAR_DIST_DIR = unjar_dist
+
+$(UNJAR_DIST_DIR):
+	if [ ! -d $(UNJAR_DIST_DIR) ]; then \
+		mkdir -p $(UNJAR_DIST_DIR); \
+		mkdir -p $(UNJAR_DIST_DIR)/lib; \
+		mkdir -p $(UNJAR_DIST_DIR)/doc; \
+	fi
+	set $(ALL_NON_APPLICATION_JNLP_JARS); \
+	for x do \
+		echo $$x; \
+		case "$$x" in \
+			lib/*) \
+			   echo "Copying to lib"; \
+			   cp $$x $(UNJAR_DIST_DIR)/lib;; \
+			doc/codeDoc*) \
+			   echo "Copying to doc"; \
+			   cp $$x $(UNJAR_DIST_DIR)/doc;; \
+			ptolemy/domains/*/*.jar) \
+			   echo "Copying to domains specific jars for cg "; \
+			   mkdir -p $(UNJAR_DIST_DIR)/`dirname $$x`; \
+			   cp $$x `dirname $(UNJAR_DIST_DIR)/$$x`; \
+			*)(cd $(UNJAR_DIST_DIR); $(JAR) -xf ../$$x);; \
+	        esac; \
+	done;
+
 
 # Verify the jar files.  This is useful for debugging if you are
 # getting errors about unsigned applications
