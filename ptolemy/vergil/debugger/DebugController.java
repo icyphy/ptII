@@ -45,15 +45,17 @@ import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.kernel.DebugRenderer;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Hashtable;
 
 ////////////////////////////////////////////////////////////////////////
 //// DebugController
 /**
 An execution listener that suspends execution based on breakpoints.
+This class should be associated with a director.  This class keeps a
+DebugProfile for each actor that belongs to that director and are
+being debugged.
+
+@see DebugProfile
 
 @author Elaine Cheong
 @version $Id$
@@ -61,8 +63,16 @@ An execution listener that suspends execution based on breakpoints.
 public class DebugController extends TransientSingletonConfigurableAttribute
     implements DebugListener {
 
+    /** Construct a debug listener with the given container and name.
+     *  @param container The container.
+     *  @param name The name.
+     *  @exception IllegalActionException If the container does not accept
+     *   this entity (this should not occur).
+     *  @exception NameDuplicationException If the name coincides with an
+     *   attribute already in the container.
+     */
     public DebugController(NamedObj container, String name)
-             throws NameDuplicationException, IllegalActionException {
+             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _toDebug = new Hashtable();
     }
@@ -75,7 +85,7 @@ public class DebugController extends TransientSingletonConfigurableAttribute
     public void clear() {
         _toDebug.clear();
     }
-    
+
     /** Respond to debug events of type FiringEvent by highlighting
      *  the actor that we are breaking on.
      *  @param debugEvent The debug event.
@@ -84,11 +94,11 @@ public class DebugController extends TransientSingletonConfigurableAttribute
     public void event(DebugEvent debugEvent) {
         // FIXME: this method is called every time the director gets a
         // firing event for any actor...is this ok?
-        
+
         // Ignore debug events that aren't firing events.
         if (debugEvent instanceof FiringEvent) {
             FiringEvent event = (FiringEvent) debugEvent;
-            
+
             NamedObj objToHighlight = (NamedObj)event.getActor();
 
             if (_toDebug.containsKey(objToHighlight)) {
@@ -98,8 +108,10 @@ public class DebugController extends TransientSingletonConfigurableAttribute
                 // If the object is not contained by the associated
                 // composite, then find an object above it in the hierarchy
                 // that is.
-                DebugProfile debugProfile = getDebug((Executable)objToHighlight);
-                BasicGraphController graphController = debugProfile.getGraphController();
+                DebugProfile debugProfile =
+                    getDebug((Executable)objToHighlight);
+                BasicGraphController graphController =
+                    debugProfile.getGraphController();
                 AbstractBasicGraphModel graphModel =
                     (AbstractBasicGraphModel)graphController.getGraphModel();
                 NamedObj toplevel = graphModel.getPtolemyModel();
@@ -153,7 +165,7 @@ public class DebugController extends TransientSingletonConfigurableAttribute
      */
     public void message(String string) {
     }
-    
+
     /** Add an actor to the set of actors that are being debugged.
      *  @param actor The actor to debug.
      *  @param profile The breakpoint configuration for this actor.
@@ -177,13 +189,6 @@ public class DebugController extends TransientSingletonConfigurableAttribute
         _toDebug.remove(actor);
     }
 
-    // FIXME: temp function to print thread info
-    public static void printThread(String str) {
-        System.out.println(Thread.currentThread().getName()
-                + ": "
-                + str);
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -193,7 +198,6 @@ public class DebugController extends TransientSingletonConfigurableAttribute
      *  @see ptolemy.vergil.kernel.DebugRenderer
      */
     private void render(Figure figure, Manager manager, String message) {
-        // FIXME: is this still correct? do we need to save _debugRenderer
         if (_debugRenderer == null) {
             _debugRenderer = new DebugRenderer();
         }
@@ -207,9 +211,6 @@ public class DebugController extends TransientSingletonConfigurableAttribute
             // Unhighlight the actor after resuming execution.
             _debugRenderer.renderDeselected(debugRendered);
         }
-
-        // FIXME: for some reason the small view in Vergil still shows
-        // the rendering when done.  Disappears when you move peephole.
     }
 
     ///////////////////////////////////////////////////////////////////
