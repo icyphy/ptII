@@ -185,6 +185,7 @@ public abstract class URLReader extends Source {
      *  @exception IllegalActionException Not thrown in this base class
      */
     public void initialize() throws IllegalActionException {
+        super.initialize();
         attributeChanged(sourceURL);
     }
 
