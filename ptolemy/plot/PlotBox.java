@@ -1815,7 +1815,11 @@ public class PlotBox extends Panel {
             }
         } else {
             // Set up the number of grid lines that will not be labeled
-            if (ratio > 3.0)
+            if (ratio > 10.0)
+                ngrid = 1;
+            else if (ratio > 3.0)
+                ngrid = 2;
+            else if (ratio > 2.0)
                 ngrid = 5;
             else if (ratio > 1.125)
                 ngrid = 10;
@@ -1825,7 +1829,7 @@ public class PlotBox extends Panel {
             // size of the grid array and slows everything down.
         }        
 
-        if (_debug == 5) 
+        if (_debug == 0) 
             System.out.println("PlotBox: gridInit2: low="+low+" step="+step+
                     " labeled="+labeled+" ratio="+ratio+" ngrid="+ngrid);
 
