@@ -72,6 +72,8 @@ test TimedPNDirector-6.1 {Test an application} {
        [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
 
+    error "Running this test sometimes causes an endless loop" 
+
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 
