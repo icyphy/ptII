@@ -52,35 +52,32 @@ set manager [java::new ptolemy.actor.Manager]
 ######################################################################
 ####
 #
-test PNImageSource-2.1 {Constructor tests} {
+test MatrixUnpacker-2.1 {Constructor tests} {
     set c1 [java::new ptolemy.actor.CompositeActor]
     set a1 [java::new ptolemy.domains.pn.lib.PNImageSource $c1 "A1"]
-    list [$a1 getFullName] 
-} {..A1}
-
-######################################################################
-####
-#
-test PNImageSource-3.1 {Test fire} {
-    # NOTE: Uses the setup above
     set p1 [$a1 getAttribute "Image_file"]
     $p1 setToken [java::new ptolemy.data.StringToken ptII.pbm]
-    $a1 initialize
-    $a1 fire
-} {}
-
-######################################################################
-####
-#
-test PNImageSource-4.1 {Test application} {
-    set a2 [java::new ptolemy.domains.pn.lib.PNImageSink $c1 "A2"]
+    set a2 [java::new ptolemy.domains.pn.lib.MatrixUnpacker $c1 "A2"]
+    set a3 [java::new ptolemy.domains.pn.lib.MatrixPacker $c1 "A3"]
+    set a4 [java::new ptolemy.domains.pn.lib.PNImageSink $c1 "A4"]
     set r1 [$a1 getPort "output"]
     set r2 [$a2 getPort "input"]
     $c1 connect $r1 $r2
+    set r1 [$a2 getPort "output"]
+    set r2 [$a3 getPort "input"]
+    $c1 connect $r1 $r2
+    set r1 [$a3 getPort "output"]
+    set r2 [$a4 getPort "input"]
+    $c1 connect $r1 $r2
+    set r1 [$a2 getPort "dimensions"]
+    set r2 [$a3 getPort "dimensions"]
+    $c1 connect $r1 $r2
     $c1 setManager $manager
     set d1 [java::new ptolemy.domains.pn.kernel.BasePNDirector D1]
+    set p1 [$d1 getAttribute "Initial_queue_capacity"]
+    $p1 setToken [java::new {ptolemy.data.IntToken int} 2]
     $c1 setDirector $d1
     $manager run
+    list [$a1 getFullName] 
 } {}
-
 
