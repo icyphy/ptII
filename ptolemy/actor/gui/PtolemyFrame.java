@@ -72,7 +72,7 @@ public abstract class PtolemyFrame extends TableauFrame {
     public PtolemyFrame(CompositeEntity model, Tableau tableau) {
         super(tableau);
         setModel(model);
-        setIconImage(_getDefaultIconImage);
+        setIconImage(_getDefaultIconImage());
     }
 
     ///////////////////////////////////////////////////////////////////
