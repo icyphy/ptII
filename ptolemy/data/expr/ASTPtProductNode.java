@@ -80,6 +80,36 @@ public class ASTPtProductNode extends ASTPtRootNode {
         return _lexicalTokens;
     }
 
+    /** Return true if this node is (hierarchically) congruent to the
+     *  given node, under the given renaming of bound identifiers.
+     *  Derived classes should extend this method to add additional
+     *  necessary congruency checks.
+     *  @param node The node to compare to.
+     *  @param renaming A map from String to String that gives a
+     *  renaming from identifiers in this node to identifiers in the
+     *  given node.
+     */
+    public boolean isCongruent(ASTPtRootNode node, Map renaming) {
+        if(!super.isCongruent(node, renaming)) {
+            return false;
+        }
+        // The operators must be the same.
+        Iterator nodeTokens =
+            ((ASTPtProductNode)node)._lexicalTokens.iterator();
+        for(Iterator tokens = _lexicalTokens.iterator();
+            tokens.hasNext();) {
+            Token token = (Token)tokens.next();
+            Token nodeToken = (Token)nodeTokens.next();
+            if(token.kind != nodeToken.kind) {
+                return false;
+            }
+            if(!token.image.equals(nodeToken.image)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
     /** Close this node.
      */
     public void jjtClose() {

@@ -36,6 +36,8 @@ package ptolemy.data.expr;
 
 import ptolemy.data.*;
 import ptolemy.kernel.util.*;
+import java.util.Iterator;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtRelationalNode
@@ -68,6 +70,25 @@ public class ASTPtRelationalNode extends ASTPtRootNode {
      */
     public Token getOperator() {
         return _lexicalToken;
+    }
+
+    /** Return true if this node is (hierarchically) congruent to the
+     *  given node, under the given renaming of bound identifiers.
+     *  Derived classes should extend this method to add additional
+     *  necessary congruency checks.
+     *  @param node The node to compare to.
+     *  @param renaming A map from String to String that gives a
+     *  renaming from identifiers in this node to identifiers in the
+     *  given node.
+     */
+    public boolean isCongruent(ASTPtRootNode node, Map renaming) {
+        if(!super.isCongruent(node, renaming)) {
+            return false;
+        }
+        if(_lexicalToken.kind != ((ASTPtRelationalNode)node)._lexicalToken.kind) {
+            return false;
+        }
+        return true;
     }
 
     /** Traverse this node with the given visitor.

@@ -703,23 +703,26 @@ void term() #void :
 
 
 void unary() #void :
-{}
+{Token x;}
 {
-   (
-           <MINUS> element()
-           { jjtThis._isMinus = true;}
-   ) #PtUnaryNode
-
+    ( x = <MINUS> element() { 
+        jjtThis._isMinus = true;
+        jjtThis._lexicalToken = x;
+    }
+      ) #PtUnaryNode
+        
  |  
-   (
-           <BOOL_NOT> element()
-           { jjtThis._isNot = true;} 
-   ) #PtUnaryNode
+    ( x = <BOOL_NOT> element()
+        { jjtThis._isNot = true;
+          jjtThis._lexicalToken = x;
+        }
+      ) #PtUnaryNode
  |  
-   (
-           <BITWISE_NOT> element()
-           { jjtThis._isBitwiseNot = true;} 
-   ) #PtUnaryNode
+   ( x = <BITWISE_NOT> element()
+       { jjtThis._isBitwiseNot = true;
+         jjtThis._lexicalToken = x;
+       }
+     ) #PtUnaryNode
 
  |  element()
 }

@@ -33,6 +33,7 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
+import java.util.Map;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -65,6 +66,40 @@ public class ASTPtLeafNode extends ASTPtRootNode {
      */
     public String getName() {
         return _name;
+    }
+
+    /** Return true if this node is (hierarchically) congruent to the
+     *  given node, under the given renaming of bound identifiers.
+     *  Derived classes should extend this method to add additional
+     *  necessary congruency checks.
+     *  @param node The node to compare to.
+     *  @param renaming A map from String to String that gives a
+     *  renaming from identifiers in this node to identifiers in the
+     *  given node.
+     */
+    public boolean isCongruent(ASTPtRootNode node, Map renaming) {
+        if(!super.isCongruent(node, renaming)) {
+            return false;
+        }
+        // Both must be constant or not.
+        if(isConstant() != node.isConstant()) {
+            return false;
+        }
+        if(isConstant()) {
+            // If constant, then check the value
+            return getToken().equals(node.getToken());
+        } else {
+            // Else, check the name.
+            String checkName = (String)renaming.get(getName());
+            if(checkName == null) {
+                checkName = getName();
+            }
+            if(!checkName.equals(((ASTPtLeafNode)node).getName())) {
+                return false;
+            } else {
+                return true;
+            }
+        }
     }
 
     /** Traverse this node with the given visitor.

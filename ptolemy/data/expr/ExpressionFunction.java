@@ -113,7 +113,26 @@ public class ExpressionFunction implements FunctionToken.Function {
      */
     public boolean isCongruent(FunctionToken.Function function) {
         // FIXME: wrong.  check for congruency of parse trees.
-        return toString().compareTo(function.toString()) == 0;
+        // return toString().compareTo(function.toString()) == 0;
+        if(!(function instanceof ExpressionFunction)) {
+            return false;
+        }
+        ExpressionFunction expressionFunction = (ExpressionFunction)function;
+        // The functions must have the same number of arguments.
+        if(getNumberOfArguments() != function.getNumberOfArguments()) {
+            return false;
+        }
+        // Construct the renaming map.
+        Map renaming = new HashMap();
+        Iterator argNames = expressionFunction._argumentNames.iterator();
+        for(Iterator names = _argumentNames.iterator();
+            names.hasNext();) {
+            String name = (String)names.next();
+            String argName = (String)argNames.next();
+            renaming.put(name, argName);
+        }
+        return _exprRoot.isCongruent(expressionFunction._exprRoot,
+                renaming); 
     }
    
     /** Return a string representation of this function.

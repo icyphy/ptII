@@ -36,6 +36,7 @@ package ptolemy.data.expr;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.data.BooleanToken;
+import java.util.Map;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtLogicalNode
@@ -44,7 +45,7 @@ The parse tree created from the expression string consists of a
 hierarchy of node objects. This class represents logical operator(&&, ||)
 nodes in the parse tree.
 
-@author Neil Smyth
+@author Neil Smyth, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 0.2
 @see ptolemy.data.expr.ASTPtRootNode
@@ -67,6 +68,25 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
         return _lexicalToken;
     }
 
+    /** Return true if this node is (hierarchically) congruent to the
+     *  given node, under the given renaming of bound identifiers.
+     *  Derived classes should extend this method to add additional
+     *  necessary congruency checks.
+     *  @param node The node to compare to.
+     *  @param renaming A map from String to String that gives a
+     *  renaming from identifiers in this node to identifiers in the
+     *  given node.
+     */
+    public boolean isCongruent(ASTPtRootNode node, Map renaming) {
+        if(!super.isCongruent(node, renaming)) {
+            return false;
+        }
+        if(_lexicalToken.kind != ((ASTPtLogicalNode)node)._lexicalToken.kind) {
+            return false;
+        }
+        return true;
+    }
+ 
     /** Return true if the node represents the logical AND of its
      *  children.
      */

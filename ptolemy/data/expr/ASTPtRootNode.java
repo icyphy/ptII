@@ -125,9 +125,7 @@ public class ASTPtRootNode implements Node, Cloneable {
                 }
             }
         }
-    }
-
-    
+    } 
 
     /** Evaluate the parse tree.
      *  @exception IllegalActionException If an error occurs
@@ -175,6 +173,14 @@ public class ASTPtRootNode implements Node, Cloneable {
     public boolean isCongruent(ASTPtRootNode node, Map renaming) {
         // Check to see that they are the same kind of node.
         if(node._id != _id) {
+            return false;
+        }
+        // Empty children are allowed
+        if(node._children == null && _children == null) {
+            return true;
+        }
+        // But both must be empty
+        if(node._children == null || _children == null) {
             return false;
         }
         // Check that they have the same number of children.

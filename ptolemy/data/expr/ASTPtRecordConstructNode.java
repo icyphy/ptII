@@ -33,16 +33,14 @@ Created : December 2000
 
 package ptolemy.data.expr;
 
-import ptolemy.data.*;
-import ptolemy.data.type.*;
-import ptolemy.math.Complex;
-import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Iterator;
+import java.util.Set;
+import java.util.HashSet;
 
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtRecordConstructNode
@@ -54,7 +52,7 @@ parsing and evaluating this expression is a record token with two fields:
 a field <i>foo</i> containing a StringToken of value "abc", and a field
 <i>bar</i> containing a IntToken of value 1.
 
-@author Xiaojun Liu
+@author Xiaojun Liu, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 @see ptolemy.data.expr.ASTPtRootNode
@@ -71,8 +69,69 @@ public class ASTPtRecordConstructNode extends ASTPtRootNode {
         super(p, id);
     }
 
+    /** Return the list of field names for this record construct.  
+     *  The order of the list is not meaningful.
+     */
     public List getFieldNames() {
         return _fieldNames;
+    }
+
+    /** Return true if this node is (hierarchically) congruent to the
+     *  given node, under the given renaming of bound identifiers.
+     *  Derived classes should extend this method to add additional
+     *  necessary congruency checks.
+     *  @param node The node to compare to.
+     *  @param renaming A map from String to String that gives a
+     *  renaming from identifiers in this node to identifiers in the
+     *  given node.
+     */
+    public boolean isCongruent(ASTPtRootNode node, Map renaming) {
+        // Note: we don't call super.isCongruent(), which checks for ordered
+        // congruence of the children.
+
+        // Check to see that they are the same kind of node.
+        if(node._id != _id) {
+            return false;
+        }
+        ASTPtRecordConstructNode recordNode = (ASTPtRecordConstructNode)node;
+        // Empty records are allowed (Are they?)
+        if(recordNode._fieldNames == null && _fieldNames == null) {
+            return true;
+        }
+        // But both must be empty
+        if(recordNode._fieldNames == null || _fieldNames == null) {
+            return false;
+        }
+        // Check that they have the same number of fields.
+        if(recordNode._fieldNames.size() != _fieldNames.size()) {
+            return false;
+        }
+        // The field names must be the same.
+        // Not use set for unordered comparison.
+        // Note that field names are not renamed!
+        Set nameSet = new HashSet(_fieldNames);
+        Set nodeNameSet = 
+            new HashSet(((ASTPtRecordConstructNode)node)._fieldNames);
+        if(!nameSet.equals(nodeNameSet)) {
+            return false;
+        }
+        // Check that their children are congruent, under renaming.
+        Iterator fieldNames = _fieldNames.iterator();
+        Iterator children = _children.iterator();
+        while(fieldNames.hasNext()) {
+            String fieldName = (String)fieldNames.next();
+            ASTPtRootNode child = (ASTPtRootNode)children.next();
+            int nodeIndex = recordNode._fieldNames.indexOf(fieldName);
+            ASTPtRootNode nodeChild = 
+                (ASTPtRootNode)recordNode._children.get(nodeIndex);
+            
+            if(!child.isCongruent(nodeChild, renaming)) {
+                return false;
+            }
+        }
+    
+       
+        return true;
     }
 
     /** Traverse this node with the given visitor.
