@@ -141,38 +141,12 @@ public class CTActor extends TypedAtomicActor implements ParameterListener{
         _paramChanged = false;
     }
 
-
     /** Update the parameter values.
      *  @exception IllegalActionException If the parameter is not
      *      in the actor, or the new value is an illegal value of
      *      the parameter.
      */
     public void updateParameters() throws IllegalActionException{}
-
-    /** Default implementation of the wrapup() method in a execution.
-     *  This is called at the end of every execution of the actor.
-     *  If the actor has input ports, consume all the tokens left.
-     *  Set <code>paramChanged</code> to true. This method will return
-     *  regardless the occurrence of any ptolemy exceptions.
-     *
-     * @exception IllegalActionException Not throw in this class.
-     *   May be needed by derived classes.
-     */
-    public void wrapup() throws IllegalActionException {
-        try{
-            Enumeration inputs = inputPorts();
-            while(inputs.hasMoreElements()) {
-                IOPort in = (IOPort) inputs.nextElement();
-                //cleanup the receivers.
-                in.get(0);
-                // set the paramChanged flag, so that next time the
-                // all the parameter will be updated.
-                parameterChanged(null);
-            }
-        } catch(NoTokenException e) {
-            //ignore.
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

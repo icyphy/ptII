@@ -106,13 +106,14 @@ director dependent.
 public abstract class CTDirector extends StaticSchedulingDirector
         implements ParameterListener{
 
-    public static final boolean VERBOSE = false;
-    public static final boolean DEBUG = false;
-    public static final boolean STAT = true;
+    public static  boolean VERBOSE = false;
+    public static  boolean DEBUG = false;
+    public static  boolean STAT = true;
     public static int NSTEP = 0;
     public static int NFUNC = 0;
     public static int NFAIL = 0;
     public static int NROLL = 0;
+
 
 
     /** Construct a CTDirector with no name and no Container.
@@ -177,7 +178,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    ////tentative methods
+    public void setVERBOSE(boolean v) {
+        VERBOSE = v;
+    }
 
+    public void setDEBUG(boolean d) {
+        DEBUG = d;
+    }
     /** Return the break point table.
      *  @return The break point table.
      */
