@@ -63,6 +63,11 @@ JARFILE = 	$(JPACKAGE).jar
 CLASSPATH = ../..
 
 JSRCS = \
+	Actor.java \
+	AutonomousActor.java \
+	CompositeActor.java \
+	ControlledActor.java \
+	DataComputingInit.java \
 	FIFOQueue.java \
 	IntParam.java \
 	ObservableParameter.java \
