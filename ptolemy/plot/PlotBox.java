@@ -41,7 +41,7 @@ import java.lang.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotBox
-/** 
+/**
  * Construct a labeled box within which to place a data plot.  A title,
  * X and Y axis labels, tick marks, and a legend are all supported.
  * Zooming in and out is supported.  To zoom in, drag the mouse
@@ -134,11 +134,11 @@ public class PlotBox extends Panel {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-    
-    /** 
+
+    /**
      * Handle button presses to fill the plot.  This rescales so that
      * the data that is currently plotted just fits.
-     * @deprecated As of JDK1.1 in java.awt.component 
+     * @deprecated As of JDK1.1 in java.awt.component
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean action (Event evt, Object arg) {
@@ -147,7 +147,7 @@ public class PlotBox extends Panel {
             return true;
         } else {
             return super.action (evt, arg); // action() is deprecated in 1.1
-            // but we need to compile under 
+            // but we need to compile under
             // jdk1.0.2 for netscape3.x
         }
     }
@@ -162,7 +162,7 @@ public class PlotBox extends Panel {
         _measureFonts();
     }
 
-    /** 
+    /**
      * Add a legend (displayed at the upper right) for the specified
      * data set with the specified string.  Short strings generally
      * fit better than long strings.  You must call <code>init()</code>
@@ -174,8 +174,8 @@ public class PlotBox extends Panel {
         _legendStrings.addElement(legend);
         _legendDatasets.addElement(new Integer(dataset));
     }
-    
-    /** 
+
+    /**
      * Specify a tick mark for the X axis.  The label given is placed
      * on the axis at the position given by <i>position</i>. If this
      * is called once or more, automatic generation of tick marks is
@@ -190,8 +190,8 @@ public class PlotBox extends Panel {
         _xticks.addElement(new Double(position));
         _xticklabels.addElement(label);
     }
-    
-    /** 
+
+    /**
      * Specify a tick mark for the Y axis.  The label given is placed
      * on the axis at the position given by <i>position</i>. If this
      * is called once or more, automatic generation of tick marks is
@@ -206,7 +206,7 @@ public class PlotBox extends Panel {
         _yticks.addElement(new Double(position));
         _yticklabels.addElement(label);
     }
-    
+
     /**
      * Draw the axes using the current range, label, and title information.
      * If the argument is true, clear the display before redrawing.
@@ -223,7 +223,7 @@ public class PlotBox extends Panel {
         // Give other threads a chance, so that hopefully things are
         // up to date.
         //        Thread.yield();
-            
+
         // Find the width and height of the total drawing area, and clear it.
         Rectangle drawRect = bounds(); // FIXME: bounds() is deprecated
         // in JDK1.1, but we need to compile under 1.0.2 for
@@ -240,7 +240,7 @@ public class PlotBox extends Panel {
         if (_debug > 8) {
             System.out.println("PlotBox: drawPlot drawRect ="+
                     drawRect.width+" "+drawRect.height+" "+
-                    drawRect.x+" "+drawRect.y); 
+                    drawRect.x+" "+drawRect.y);
             graphics.drawRect(0,0,drawRect.width, drawRect.height);
         }
 
@@ -274,7 +274,7 @@ public class PlotBox extends Panel {
                 _setYRange(_yBottom, _yTop);
             }
         }
-         
+
         // Vertical space for title, if appropriate.
         // NOTE: We assume a one-line title.
         int titley = 0;
@@ -282,7 +282,7 @@ public class PlotBox extends Panel {
         if (_title != null || _yExp != 0) {
             titley = titlefontheight + _topPadding;
         }
-        
+
         // Number of vertical tick marks depends on the height of the font
         // for labeling ticks and the height of the window.
         graphics.setFont(_labelfont);
@@ -293,7 +293,7 @@ public class PlotBox extends Panel {
         // NOTE: 5 pixel padding on bottom.
         int ySPos = drawRect.height - 5;
         int xSPos = drawRect.width - _rightPadding;
-        if (_xlog) 
+        if (_xlog)
             _xExp = (int)Math.floor(_xtickMin);
         if (_xExp != 0 && _xticks == null) {
             String superscript = Integer.toString(_xExp);
@@ -308,17 +308,17 @@ public class PlotBox extends Panel {
             // NOTE: 5 pixel padding on bottom
             _bottomPadding = (3 * labelheight)/2 + 5;
         }
-        
+
         // NOTE: 5 pixel padding on the bottom.
         if (_xlabel != null && _bottomPadding < labelheight + 5) {
             _bottomPadding = titlefontheight + 5;
         }
-        
+
         // Compute the space needed around the plot, starting with vertical.
         // NOTE: padding of 5 pixels below title.
         _uly = titley + 5;
         // NOTE: 3 pixels above bottom labels.
-        _lry = drawRect.height-labelheight-_bottomPadding-3; 
+        _lry = drawRect.height-labelheight-_bottomPadding-3;
         int height = _lry-_uly;
         _yscale = height/(_yMax - _yMin);
         _ytickscale = height/(_ytickMax - _ytickMin);
@@ -330,13 +330,13 @@ public class PlotBox extends Panel {
         int ny = 2 + height/(labelheight+10);
         // Compute y increment.
         double yStep=_roundUp((_ytickMax-_ytickMin)/(double)ny);
-        
+
         // Compute y starting point so it is a multiple of yStep.
         double yStart=yStep*Math.ceil(_ytickMin/yStep);
-        
+
         // NOTE: Following disables first tick.  Not a good idea?
         // if (yStart == _ytickMin) yStart+=yStep;
-        
+
         // Define the strings that will label the y axis.
         // Meanwhile, find the width of the widest label.
         // The labels are quantized so that they don't have excess resolution.
@@ -383,7 +383,7 @@ public class PlotBox extends Panel {
             // System.out.println("-999.0001 integer digits: " +
             //                    _numIntDigits(999.0001));
 
-            
+
             double yTmpStart = yStart;
             if (_ylog)
                 yTmpStart = _gridStep(ygrid,yStart, yStep, _ylog);
@@ -410,13 +410,13 @@ public class PlotBox extends Panel {
                 String label = (String) nl.nextElement();
                 int lw = _labelFontMetrics.stringWidth(label);
                 if (lw > widesty) {widesty = lw;}
-            }            
+            }
         }
 
         // Next we do the horizontal spacing.
         if (_ylabel != null) {
             _ulx = widesty + _labelFontMetrics.stringWidth("W") + _leftPadding;
-        } else {     
+        } else {
             _ulx = widesty + _leftPadding;
         }
         int legendwidth = _drawLegend(graphics,
@@ -425,7 +425,7 @@ public class PlotBox extends Panel {
         int width = _lrx-_ulx;
         _xscale = width/(_xMax - _xMin);
         _xtickscale = width/(_xtickMax - _xtickMin);
-        
+
         if (_debug > 8) {
             System.out.println("PlotBox: drawPlot _ulx "+_ulx+" "+_uly+" "+
                     _lrx+" "+_lry+" "+width+" "+height);
@@ -442,12 +442,12 @@ public class PlotBox extends Panel {
 
         graphics.setColor(_foreground);
         graphics.drawRect(_ulx,_uly,width,height);
-        
+
         // NOTE: subjective tick length.
         int tickLength = 5;
         int xCoord1 = _ulx+tickLength;
         int xCoord2 = _lrx-tickLength;
-        
+
         if (_yticks == null) {
             // auto-ticks
             Vector ygrid = null;
@@ -455,7 +455,7 @@ public class PlotBox extends Panel {
             if (_ylog) {
                 ygrid = _gridInit(yStart, yStep, true, null);
                 yTmpStart = _gridStep(ygrid, yStart, yStep, _ylog);
-                if (_debug == 5) 
+                if (_debug == 5)
                     System.out.println("PlotBox: drawPlot: YAXIS ind="+ind+
                             " ny="+ny+" yStart="+yStart+" yStep="+yStep+
                             " yTmpStart="+yTmpStart);
@@ -463,7 +463,7 @@ public class PlotBox extends Panel {
             }
             // FIXME: What does ind do here?  It is never set in the loop?
             ind = 0;
-            // Set to false if we don't need the exponent  
+            // Set to false if we don't need the exponent
             boolean needExponent = _ylog;
             for (double ypos=yTmpStart; ypos <= _ytickMax;
                  ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
@@ -486,7 +486,7 @@ public class PlotBox extends Panel {
                 if (_ylog && ylabels[ind].indexOf('e') != -1 )
                     needExponent = false;
 
-                if (_debug == 5) 
+                if (_debug == 5)
                     System.out.println("PlotBox: drawPlot: ypos = "+ypos+
                             " _ytickMax="+_ytickMax+" ny="+ny+
                             " ylabels["+ind+"] ="+ylabels[ind] );
@@ -509,13 +509,13 @@ public class PlotBox extends Panel {
                          ypos <= _ytickMax;
                          ypos = _gridStep(unlabeledgrid, ypos,
                                  tmpStep, _ylog)) {
-                        int yCoord1 = _lry - 
+                        int yCoord1 = _lry -
                             (int)((ypos-_ytickMin)*_ytickscale);
                         if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
                             graphics.setColor(Color.lightGray);
                             graphics.drawLine(_ulx+1,yCoord1,_lrx-1,yCoord1);
                             graphics.setColor(_foreground);
-                        }                    
+                        }
                     }
                 }
 
@@ -532,7 +532,7 @@ public class PlotBox extends Panel {
                 graphics.drawString("x10", 2, titley);
                 graphics.setFont(_superscriptfont);
                 graphics.drawString(Integer.toString(_yExp),
-                        _labelFontMetrics.stringWidth("x10") + 2, 
+                        _labelFontMetrics.stringWidth("x10") + 2,
                         titley-halflabelheight);
                 graphics.setFont(_labelfont);
             }
@@ -560,7 +560,7 @@ public class PlotBox extends Panel {
                         yCoord1+offset);
             }
         }
-        
+
         ///////////////////// horizontal axis
 
         int yCoord1 = _uly+tickLength;
@@ -568,7 +568,7 @@ public class PlotBox extends Panel {
         if (_xticks == null) {
             // auto-ticks
 
-            // Number of x tick marks. 
+            // Number of x tick marks.
             // Need to start with a guess and converge on a solution here.
             int nx = 10;
             double xStep = 0.0;
@@ -603,27 +603,27 @@ public class PlotBox extends Panel {
             }
             xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
             numfracdigits = _numFracDigits(xStep);
-            
+
             // Compute x starting point so it is a multiple of xStep.
             double xStart=xStep*Math.ceil(_xtickMin/xStep);
-        
+
             // NOTE: Following disables first tick.  Not a good idea?
             // if (xStart == _xMin) xStart+=xStep;
-        
+
             Vector xgrid = null;
             double xTmpStart = xStart;
             if (_xlog) {
                 xgrid = _gridInit(xStart, xStep, true, null);
                 //xgrid = _gridInit(xStart, xStep);
                 xTmpStart = _gridRoundUp(xgrid, xStart);
-                if (_debug == 5) 
+                if (_debug == 5)
                     System.out.println("PlotBox: drawPlot: XAXIS "+
                             " xStart="+xStart+" nx="+nx+" xStep="+xStep+
                             " xTmpStart="+xTmpStart+
                             " xgrid.size()="+xgrid.size());
             }
 
-            // Set to false if we don't need the exponent  
+            // Set to false if we don't need the exponent
             boolean needExponent = _xlog;
 
             // Label the x axis.  The labels are quantized so that
@@ -649,7 +649,7 @@ public class PlotBox extends Panel {
                 }
                 int labxpos = xCoord1 -
                     _labelFontMetrics.stringWidth(xticklabel)/2;
-                if (_debug == 5) 
+                if (_debug == 5)
                     System.out.println("PlotBox: drawPlot: xpos = "+xpos+
                             " _xtickMax="+_xtickMax+
                             " xticklabel="+xticklabel);
@@ -672,10 +672,10 @@ public class PlotBox extends Panel {
                 Vector unlabeledgrid  = _gridInit(xTmpStart, tmpStep,
                         false, xgrid);
                 if (unlabeledgrid.size() > 0 ) {
-                    if (_debug == 5) 
+                    if (_debug == 5)
                         System.out.println("PlotBox: drawPlot: tmpStep = "+
                                 tmpStep+" xTmpStart="+xTmpStart);
-                    for (double xpos = _gridStep(unlabeledgrid, xTmpStart, 
+                    for (double xpos = _gridStep(unlabeledgrid, xTmpStart,
                             tmpStep, _xlog);
                          xpos <= _xtickMax;
                          xpos = _gridStep(unlabeledgrid, xpos,
@@ -685,7 +685,7 @@ public class PlotBox extends Panel {
                             graphics.setColor(Color.lightGray);
                             graphics.drawLine(xCoord1,_uly+1,xCoord1,_lry-1);
                             graphics.setColor(_foreground);
-                        }                    
+                        }
                     }
                 }
 
@@ -724,27 +724,27 @@ public class PlotBox extends Panel {
                 graphics.drawString(label, labxpos, _lry + 3 + labelheight);
             }
         }
-        
+
         ///////////////////// Draw title and axis labels now.
-        
+
         // Center the title and X label over the plotting region, not
         // the window.
         graphics.setColor(_foreground);
-        
+
         if (_title != null) {
             graphics.setFont(_titlefont);
             int titlex = _ulx +
                 (width - _titleFontMetrics.stringWidth(_title))/2;
             graphics.drawString(_title,titlex,titley);
         }
-        
+
         graphics.setFont(_labelfont);
         if (_xlabel != null) {
             int labelx = _ulx +
                 (width - _labelFontMetrics.stringWidth(_xlabel))/2;
             graphics.drawString(_xlabel,labelx,ySPos);
         }
-        
+
         int charcenter = 2 + _labelFontMetrics.stringWidth("W")/2;
         int charheight = labelheight;
         if (_ylabel != null) {
@@ -759,7 +759,7 @@ public class PlotBox extends Panel {
             }
         }
     }
-    
+
      /**
       * Rescales so that the data that is currently plotted just fits.
       */
@@ -770,7 +770,7 @@ public class PlotBox extends Panel {
      }
 
     /**
-     * Get the Font by name.  
+     * Get the Font by name.
      * @deprecated: As of JDK1.1, use Font.decode() instead.
      * We need to compile under JDK1.0.2, so we use this method.
      */
@@ -782,7 +782,7 @@ public class PlotBox extends Panel {
         int style = Font.PLAIN;
         int size = 12;
         StringTokenizer stoken = new StringTokenizer(fullfontname,"-");
-        
+
         if (stoken.hasMoreTokens()) {
             fontname = stoken.nextToken();
         }
@@ -812,7 +812,7 @@ public class PlotBox extends Panel {
         return new Font(fontname, style, size);
     }
 
-    /** 
+    /**
      * Convert a color name into a Color.
      */
     public static Color getColorByName(String name) {
@@ -854,7 +854,7 @@ public class PlotBox extends Panel {
         return _documentBase;
     }
 
-    /** 
+    /**
      * Get the legend for a dataset.
      */
     public String getLegend(int dataset) {
@@ -865,7 +865,7 @@ public class PlotBox extends Panel {
             return null;
         }
     }
-      
+
     /** Get the minimum size of this component.
      */
     public Dimension getMinimumSize() {
@@ -888,7 +888,7 @@ public class PlotBox extends Panel {
     public void init() {
         //super.init();
         if (_debug > 8) System.out.println("PlotBox: init");
-                
+
         _xticks = null;
         _xticklabels = null;
         _yticks = null;
@@ -931,9 +931,9 @@ public class PlotBox extends Panel {
             parseFile(_dataurl,_documentBase);
         }
     }
-        
+
     /** The minimum size.
-     * @deprecated As of JDK1.1 in java.awt.component, but we need 
+     * @deprecated As of JDK1.1 in java.awt.component, but we need
      * to compile under 1.0.2 for netscape3.x compatibility.
      */
     public Dimension minimumSize() {
@@ -944,7 +944,7 @@ public class PlotBox extends Panel {
 
     /**
      * Set the starting point for an interactive zoom box.
-     * @deprecated As of JDK1.1 in java.awt.component 
+     * @deprecated As of JDK1.1 in java.awt.component
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean mouseDown(Event evt, int x, int y) { // deprecated
@@ -958,12 +958,12 @@ public class PlotBox extends Panel {
         _zoomy = y;
         return true;
     }
-    
+
     /**
      * Draw a box for an interactive zoom box.
      * Return a boolean indicating whether or not we have dealt with
      * the event.
-     * @deprecated As of JDK1.1 in java.awt.component 
+     * @deprecated As of JDK1.1 in java.awt.component
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public synchronized boolean mouseDrag(Event evt, int x, int y) {
@@ -996,11 +996,11 @@ public class PlotBox extends Panel {
                     _graphics.drawRect(_zoomx-15, _zoomy-15, 30, 30);
 
                 } else if (y > _zoomy) {
-                    _zoomin = true; 
+                    _zoomin = true;
                 }
             }
 
-            if (_zoomin == true){   
+            if (_zoomin == true){
                 _graphics.setXORMode(_background);
                 // Erase the previous box if necessary.
                 if ((_zoomxn != -1 || _zoomyn != -1) && (_drawn == true)) {
@@ -1034,7 +1034,7 @@ public class PlotBox extends Panel {
                 }
                 if (y < _zoomy){
                     _zoomxn = x;
-                    _zoomyn = y;     
+                    _zoomyn = y;
                     int x_diff = Math.abs(_zoomx-_zoomxn);
                     int y_diff = Math.abs(_zoomy-_zoomyn);
                     _graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
@@ -1051,7 +1051,7 @@ public class PlotBox extends Panel {
 
     /**
      * Zoom in or out based on the box that has been drawn.
-     * @deprecated As of JDK1.1 in java.awt.component 
+     * @deprecated As of JDK1.1 in java.awt.component
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public synchronized boolean mouseUp(Event evt, int x, int y) { //deprecated
@@ -1062,7 +1062,7 @@ public class PlotBox extends Panel {
 
         if (_debug > 9) System.out.println("PlotBox: mouseUp");
         boolean handled = false;
-        if ((_zoomin == true) && (_drawn == true)){  
+        if ((_zoomin == true) && (_drawn == true)){
             if (_zoomxn != -1 || _zoomyn != -1) {
                 // erase previous rectangle.
                 int minx = Math.min(_zoomx, _zoomxn);
@@ -1105,12 +1105,12 @@ public class PlotBox extends Panel {
             double b = (double)(Math.abs(_zoomy - y)) / 30.0;
             double newx1 = _xMax + (_xMax - _xMin) * a;
             double newx2 = _xMin - (_xMax - _xMin) * a;
-            if (newx1 > _xTop) newx1 = _xTop; 
-            if (newx2 < _xBottom) newx2 = _xBottom; 
+            if (newx1 > _xTop) newx1 = _xTop;
+            if (newx2 < _xBottom) newx2 = _xBottom;
             double newy1 = _yMax + (_yMax - _yMin) * b;
             double newy2 = _yMin - (_yMax - _yMin) * b;
-            if (newy1 > _yTop) newy1 = _yTop; 
-            if (newy2 < _yBottom) newy2 = _yBottom; 
+            if (newy1 > _yTop) newy1 = _yTop;
+            if (newy2 < _yBottom) newy2 = _yBottom;
             setXRange(newx2, newx1);
             setYRange(newy2, newy1);
             drawPlot(_graphics, true);
@@ -1125,7 +1125,7 @@ public class PlotBox extends Panel {
         return handled;
     }
 
-    /** 
+    /**
      * Paint the component contents, which in this base class is
      * only the axes.
      */
@@ -1137,7 +1137,7 @@ public class PlotBox extends Panel {
 
     /**
      * Syntactic sugar for parseFile(dataurl, documentBase);
-     */ 
+     */
     public void parseFile(String dataurl) {
        parseFile(dataurl, (URL)null);
     }
@@ -1237,11 +1237,11 @@ public class PlotBox extends Panel {
                 in.close();
             } catch (IOException me) {}
         }
-        
-    } 
-  
+
+    }
+
     /** The preferred size.
-     * @deprecated As of JDK1.1 in java.awt.component, but we need 
+     * @deprecated As of JDK1.1 in java.awt.component, but we need
      * to compile under 1.0.2 for netscape3.x compatibility.
      */
     public Dimension preferredSize() {
@@ -1261,9 +1261,9 @@ public class PlotBox extends Panel {
         super.reshape(x,y,_width,_height);
     }
 
-    /** 
+    /**
      * Resize the plot.
-     * @deprecated As of JDK1.1 in java.awt.component, but we need 
+     * @deprecated As of JDK1.1 in java.awt.component, but we need
      * to compile under 1.0.2 for netscape3.x compatibility.
      */
     public void resize(int width, int height) {
@@ -1321,7 +1321,7 @@ public class PlotBox extends Panel {
     public void setGrid (boolean grid) {
         _grid = grid;
     }
-    
+
     /** Set the label font, which is used for axis labels and legend labels.
      */
     public void setLabelFont (String fullfontname) {
@@ -1337,7 +1337,7 @@ public class PlotBox extends Panel {
     public void setTitle (String title) {
         _title = title;
     }
-    
+
     /** Set the title font.
      */
     public void setTitleFont (String fullfontname) {
@@ -1348,7 +1348,7 @@ public class PlotBox extends Panel {
         _titleFontMetrics = getFontMetrics(_titlefont);
     }
 
-    /** 
+    /**
      * Set the label for the X (horizontal) axis.  The label will
      * appear on the subsequent call to <code>paint()</code> or
      * <code>drawPlot()</code>.
@@ -1357,14 +1357,14 @@ public class PlotBox extends Panel {
         _xlabel = label;
     }
 
-    /** 
+    /**
      * Control whether the X axis is drawn with a logarithmic scale.
      */
     public void setXLog (boolean xlog) {
         _xlog = xlog;
     }
 
-    /** 
+    /**
      * Set the X (horizontal) range of the plot.  If this is not done
      * explicitly, then the range is computed automatically from data
      * available when <code>paint()</code> or <code>drawPlot()</code>
@@ -1377,7 +1377,7 @@ public class PlotBox extends Panel {
         _setXRange(min,max);
     }
 
-    /** 
+    /**
      * Set the label for the Y (vertical) axis.  The label will
      * appear on the subsequent call to <code>paint()</code> or
      * <code>drawPlot()</code>.
@@ -1386,7 +1386,7 @@ public class PlotBox extends Panel {
         _ylabel = label;
     }
 
-    /** 
+    /**
      * Control whether the Y axis is drawn with a logarithmic scale.
      */
     public void setYLog (boolean ylog) {
@@ -1421,14 +1421,14 @@ public class PlotBox extends Panel {
      */
     protected void _drawPoint(Graphics graphics,
             int dataset, long xpos, long ypos, boolean clip) {
-        boolean pointinside = ypos <= _lry && ypos >= _uly && 
+        boolean pointinside = ypos <= _lry && ypos >= _uly &&
             xpos <= _lrx && xpos >= _ulx;
         if (!pointinside && clip) {return;}
         graphics.fillRect((int)xpos-6, (int)ypos-6, 6, 6);
     }
 
     /** Hook for child classes to do any file preprocessing
-     */ 
+     */
     protected void _newFile(){
     }
 
@@ -1515,7 +1515,7 @@ public class PlotBox extends Panel {
             }
             return true;
         }
-        
+
         if (lcLine.startsWith("ylog:")) {
             if (lcLine.indexOf("off",5) >= 0) {
                 _ylog = false;
@@ -1524,7 +1524,7 @@ public class PlotBox extends Panel {
             }
             return true;
         }
-        
+
         if (lcLine.startsWith("grid:")) {
             if (lcLine.indexOf("off",5) >= 0) {
                 _grid = false;
@@ -1561,10 +1561,10 @@ public class PlotBox extends Panel {
 
     //////////////////////////////////////////////////////////////////////////
     ////                           protected variables                    ////
-    
+
     // If non-zero, print out debugging messages.  Use setDebug() to set this.
     protected int _debug = 0;
-    
+
     // The graphics context to operate in.  Note that printing will call
     // paint with a different graphics object, so we have to pass this
     // around properly.
@@ -1585,16 +1585,16 @@ public class PlotBox extends Panel {
     protected double _xTop = - Double.MAX_VALUE;
     protected double _yBottom = Double.MAX_VALUE;
     protected double _yTop = - Double.MAX_VALUE;
-    
+
     // Whether to draw the axes using a logarithmic scale.
     protected boolean _xlog = false, _ylog = false;
 
     // For use in calculating log base 10.  A log times this is a log base 10.
     protected static final double _LOG10SCALE = 1/Math.log(10);
-    
+
     // Whether to draw a background grid.
     protected boolean _grid = true;
-    
+
     // Color of the background, settable from HTML.
     protected Color _background = null;
     // Color of the foreground, settable from HTML.
@@ -1613,7 +1613,7 @@ public class PlotBox extends Panel {
 
     // Scaling used in plotting points.
     protected double _yscale = 1.0, _xscale = 1.0;
-    
+
     // Indicator whether to use _colors
     protected boolean _usecolor = true;
 
@@ -1634,7 +1634,7 @@ public class PlotBox extends Panel {
         new Color(0xa0a0a0),   // grey-ish
         new Color(0x00aaaa),   // cyan-ish
     };
-        
+
     // Width and height of component in pixels.
     protected int _width = 400, _height = 400;
 
@@ -1725,7 +1725,7 @@ public class PlotBox extends Panel {
                         numfracdigits);
             }
         }
-        if (_debug == 5) 
+        if (_debug == 5)
             System.out.println("PlotBox: _formatLogNum: "+num+" "+
                     Math.pow(10.0,num)+" "+results+" "+(num -(int)num));
         return results;
@@ -1739,7 +1739,7 @@ public class PlotBox extends Panel {
      * it will run on today's browsers, which use jdk 1.0.2.
      */
     private String _formatNum (double num, int numfracdigits) {
-        // First, round the number. 
+        // First, round the number.
         double fudge = 0.5;
         if (num < 0.0) fudge = -0.5;
         String numString = Double.toString(num +
@@ -1776,11 +1776,11 @@ public class PlotBox extends Panel {
                 for (int i = 0; i < shortby; i++) {
                     result.append("0");
                 }
-                return result.toString();                
+                return result.toString();
             }
         }
     }
- 
+
     /*
      * Determine what values to use for log axes.
      * Based on initGrid() from xgraph.c by David Harrison.
@@ -1837,9 +1837,9 @@ public class PlotBox extends Panel {
                 ngrid = 100;
             // Note: we should keep going here, but this increases the
             // size of the grid array and slows everything down.
-        }        
+        }
 
-        if (_debug == 5) 
+        if (_debug == 5)
             System.out.println("PlotBox: gridInit2: low="+low+" step="+step+
                     " labeled="+labeled+" ratio="+ratio+" ngrid="+ngrid);
 
@@ -1852,16 +1852,16 @@ public class PlotBox extends Panel {
 
             // If oldgrid is not null, then do not draw lines that
             // were already drawn in oldgrid.  This is necessary
-            // so we avoid obliterating the tick marks on the plot borders. 
+            // so we avoid obliterating the tick marks on the plot borders.
             if (oldgrid != null && oldgridi < oldgrid.size() ) {
-                if (_debug == 5) 
+                if (_debug == 5)
                     System.out.println("PlotBox: gridInit2: oldgrid="+
                            ((Double)oldgrid.elementAt(oldgridi)).doubleValue()+
                             " oldgridi="+oldgridi+
                             " oldgrid.size()="+oldgrid.size()+
                             " oldgrid="+oldgrid+
-                            " gridval ="+gridval+" logval="+logval); 
-                
+                            " gridval ="+gridval+" logval="+logval);
+
                 // Cycle through the oldgrid until we find an element
                 // that is equal to or greater than the element we are
                 // trying to add.
@@ -1883,13 +1883,13 @@ public class PlotBox extends Panel {
                     grid.addElement(new Double(logval));
                 }
             } else {
-                if (_debug == 5) 
+                if (_debug == 5)
                     System.out.println("PlotBox: gridInit2: no oldgrid "+
-                            " gridval ="+gridval+" logval="+logval); 
+                            " gridval ="+gridval+" logval="+logval);
                 grid.addElement(new Double(logval));
             }
         }
-        
+
         // _gridCurJuke and _gridBase are used in _gridStep();
         _gridCurJuke = 0;
         if (low == -0.0)
@@ -1900,11 +1900,11 @@ public class PlotBox extends Panel {
         // Set gridCurJuke so that the value in grid is greater than
         // or equal to x.  This sets us up to process the first point.
         for (_gridCurJuke = -1;
-             (_gridCurJuke+1) < grid.size() && x >= 
+             (_gridCurJuke+1) < grid.size() && x >=
                  ((Double)grid.elementAt(_gridCurJuke+1)).doubleValue();
              _gridCurJuke++){
         }
-        if (_debug == 5) 
+        if (_debug == 5)
             System.out.println("PlotBox: gridInit2: grid="+grid+
                     " _gridBase="+_gridBase+" _gridCurJuke="+_gridCurJuke);
 
@@ -1917,12 +1917,12 @@ public class PlotBox extends Panel {
     private double _gridRoundUp(Vector grid, double pos) {
         double x = pos - Math.floor(pos);
         int i;
-        for(i = 0; i < grid.size() &&  
+        for(i = 0; i < grid.size() &&
                 x >= ((Double)grid.elementAt(i)).doubleValue();
             i++){}
         if (i >= grid.size())
             return pos;
-        else 
+        else
             return Math.floor(pos) + ((Double)grid.elementAt(i)).doubleValue();
     }
 
@@ -1962,15 +1962,15 @@ public class PlotBox extends Panel {
 
 
     /*
-     * Measure the various fonts.  
+     * Measure the various fonts.
      */
     private void _measureFonts() {
         // We only measure the fonts once, and we do it from addNotify().
-        if (_labelfont == null)  
+        if (_labelfont == null)
             _labelfont = new Font("Helvetica", Font.PLAIN, 12);
-        if (_superscriptfont == null)  
+        if (_superscriptfont == null)
             _superscriptfont = new Font("Helvetica", Font.PLAIN, 9);
-        if (_titlefont == null)  
+        if (_titlefont == null)
             _titlefont = new Font("Helvetica", Font.BOLD, 14);
 
         _labelFontMetrics = getFontMetrics(_labelfont);
@@ -1991,7 +1991,7 @@ public class PlotBox extends Panel {
         }
         return numdigits;
     }
- 
+
     /*
      * Return the number of integer digits required to display the
      * given number.  No number larger than 15 is returned (if
@@ -2014,7 +2014,7 @@ public class PlotBox extends Panel {
      * interpret the parsed string to specify the tick labels on the x axis.
      * Otherwise, do the y axis.
      */
-    private void _parsePairs (String line, boolean xtick) {    
+    private void _parsePairs (String line, boolean xtick) {
         int start = 0;
         boolean cont = true;
         while (cont) {
@@ -2032,7 +2032,7 @@ public class PlotBox extends Panel {
                 close = pair.indexOf("\"",1);
                 open = 1;
             } else {
-                close = pair.indexOf(" ");              
+                close = pair.indexOf(" ");
             }
             if (close > 0) {
                 String label = pair.substring(open,close);
@@ -2068,7 +2068,7 @@ public class PlotBox extends Panel {
 
     /*
      * Internal implementation of setXRange, so that it can be called when
-     * autoranging. 
+     * autoranging.
      */
     private void _setXRange (double min, double max) {
         // If values are invalid, try for something reasonable.
@@ -2166,7 +2166,7 @@ public class PlotBox extends Panel {
     // Font information.
     private Font _labelfont = null, _superscriptfont = null,
         _titlefont = null;
-    private FontMetrics _labelFontMetrics = null, 
+    private FontMetrics _labelFontMetrics = null,
         _superscriptFontMetrics = null,
         _titleFontMetrics = null;
 
@@ -2178,21 +2178,21 @@ public class PlotBox extends Panel {
 
     // An array of strings for reporting errors.
     private String _errorMsg[];
-    
+
     // The title and label strings.
     private String _xlabel, _ylabel, _title;
-    
+
     // Legend information.
     private Vector _legendStrings = new Vector();
     private Vector _legendDatasets = new Vector();
-    
+
     // If XTicks or YTicks are given
     private Vector _xticks = null, _xticklabels = null,
         _yticks = null, _yticklabels = null;
 
     // A button for filling the plot
     private Button _fillButton = null;
-    
+
     // Variables keeping track of the interactive zoom box.
     // Initialize to impossible values.
     private int _zoomx = -1;

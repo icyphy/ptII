@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -34,19 +34,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 
 import java.lang.Thread;
-import java.lang.InterruptedException; 
+import java.lang.InterruptedException;
 
 import java.util.Properties;
 import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// Pxgraph
-/** 
+/**
 This class is a Java application that uses the Plot Java applet to
-simulate the <code>pxgraph</code> X Windows system program.  
+simulate the <code>pxgraph</code> X Windows system program.
 <p>
 The <code>pxgraph</code> script is a Bourne shell script that
-attempts to call Java with the proper environment.  The 
+attempts to call Java with the proper environment.  The
 <code>pxgraph</code> script has the following usage:
 <br>
 <code>pxgraph <i>[ options ]  [ =WxH+X+Y ] [file . . .]</i></code>
@@ -83,7 +83,7 @@ xgraph not to draw a line between the points. If the directive
 is omitted, <code>draw</code> is assumed for all points in a data
 set except the first point where <code>move</code> is assumed. The
 <code>move</code> directive is used most often to allow discontinuous
-data in a data set. 
+data in a data set.
 
 After <code>pxgraph</code> has read the data, it will create a new window
 to graphically display the data.
@@ -95,13 +95,13 @@ screen. To zoom in on a portion of the graph, depress a
 mouse button in the window and sweep out a region. <code>pxgraph</code>
 will then the window will be redrawn with just that portion of
 the graph. <code>pxgraph</code> also presents four control buttons in
-the lower left corner of each window: <code>Exit</code>, 
+the lower left corner of each window: <code>Exit</code>,
 <code>Print</code>, <code>HTML</code> and <code>About</code>.
 <p>The <code>Exit</code> button will exit the process.  You can also
 type <code>Control-D</code>, <code>Control-C</code> or <code>q</code>
 to exit.
 <p>The <code>Print</code> button brings up a print dialog window.
-<p>The <code>About</code> button brings up a message about 
+<p>The <code>About</code> button brings up a message about
 <code>pxgraph</code>.
 <p>The <code>HTML</code> button prints an HTML file to stdout that
 can be used to display the file with applet <code>Plot</code> classes
@@ -141,7 +141,7 @@ grid lines (see <code>-tk</code>).
 
 <dt><code>-bg</code> <code><i>&lt;color&gt;</i></code>
 <dd>Background color of the <code>pxgraph</code> window.
-<b>In the Java version, this argument takes hexadecimal color values 
+<b>In the Java version, this argument takes hexadecimal color values
 (<code>fffff</code>), not color names.</b>
 
 <dt><a name="-bigendian flag"><code>-bigendian</code></a>
@@ -156,10 +156,10 @@ use the <code>-bigendian</code> flag.
 <dt><a name="-binary flag"><code>-binary</code></a>
 <dd>Data files are in a binary format.
 The endian-ism of the data depends on which of the two
-subformats below are chosen. 
+subformats below are chosen.
 The <code>-binary</code>
 argument is the primary difference between <code>xgraph</code>
-and <code>pxgraph</code>.  The 
+and <code>pxgraph</code>.  The
 <A HREF="http://ptolemy.eecs.berkeley.edu">Ptolemy Project</A> software
 makes extensive use of <code>-binary</code>.
 <br>There are two binary formats, both of which use 4 byte floats.
@@ -167,7 +167,7 @@ makes extensive use of <code>-binary</code>.
 <li>If the first byte of the data file is not a <code>d</code>, then
 we assume that the file contains 4 byte floats in big-endian ordering
 with no plot commands.
-<li>If the first byte of the data file is a <code>d</code>, then 
+<li>If the first byte of the data file is a <code>d</code>, then
 we assume that the plot commands are encoded as single characters,
 and the numeric data is a 4 byte float encoded in the
 native endian format of the machine that the java interpreter is
@@ -184,7 +184,7 @@ running on.
   <dd> Move to a X,Y point.
   </dl>
 </ol>
- <br>To view a binary plot file under unix, we can use the 
+ <br>To view a binary plot file under unix, we can use the
 <code>od</code> command.  Note that the first character is a <code>d</code>
 followed by eight bytes of data consisting of two floats of four bytes.
 <pre>
@@ -217,7 +217,7 @@ the values of all known defaults.
 <dt><code>-fg</code> <code><i>&lt;color&gt;</i></code>
 <dd>Foreground color. This color is used to draw all text
 and the normal grid lines in the window.
-<b>In the Java version, this argument takes hexadecimal color values 
+<b>In the Java version, this argument takes hexadecimal color values
 (<code>fffff</code>), not color names.</b>
 
 <dt><code>-gw</code> <dd>
@@ -234,11 +234,11 @@ but it is similar to <code>-nl -bar</code>).
 
 <dt><code>-lf</code> <code><i>&lt;fontname&gt;</i></code>
 <dd>Label font. All axis labels and grid labels are drawn
-using this font. 
+using this font.
 <b>Note that the Java version does not use X11 style font specification.</b>
 In the Java version, fonts may be specified as
 <menu>
-<li><code><i>fontname</i></code>, where 
+<li><code><i>fontname</i></code>, where
 <code><i>fontname</i></code> is one of <code>helvetica</code>,
  <code>TimesRoman</code>, <code>Courier</code>,  <code>Dialog</code>,
 <code>DialogInput</code>, <code>ZapfDingbats</code>.
@@ -264,12 +264,12 @@ machine, then use the <code>-littleendian</code> flag.
 
 <dt><code>-lnx</code> <dd>
 Specifies a logarithmic X axis. Grid labels represent
-powers of ten.  If <code>-lnx</code> is present, then 
+powers of ten.  If <code>-lnx</code> is present, then
 x values must be greater than zero.
 
 <dt><code>-lny</code> <dd>
 Specifies a logarithmic Y axis. Grid labels represent
-powers of ten.   If <code>-lny</code> is present, then 
+powers of ten.   If <code>-lny</code> is present, then
 y values must be greater than zero.
 
 <dt><code>-lw</code> <code><i>width</i></code> <dd>
@@ -305,7 +305,7 @@ different line style on color machines).
 to produce scatter plots. When used with -bar, it can be used to
 produce standard bar graphs.
 
-<dt><code>-o</code> <code><i>output filename<i></code> 
+<dt><code>-o</code> <code><i>output filename<i></code>
 <dd>The name of the file to place the print output in.  Currently
 defaults to <code>/tmp/t.ps<code>.  See also the
 <code>-print</code> option.
@@ -363,7 +363,7 @@ Various compatibility issues are documented above in <b>bold</b>.
 Below are some other issues:
 <li>The original <code>xgraph</code> program allowed many formatting
 directives inside the file.  This version only supports
-<code>draw</code> and <code>move</code>.  
+<code>draw</code> and <code>move</code>.
 <li>This original <code>xgraph</code> program allowed blank lines
 to separate datasets.  This version does not.  Instead, use the
 <code>move <i>X</i> <i>Y</i></code> directive.
@@ -371,7 +371,7 @@ to separate datasets.  This version does not.  Instead, use the
 <li>The Java version of <code>pxgraph</code> takes longer to start up
 than the X11 version.  This is an inherent problem with standalone
 Java applications.  One guess is that most of the startup time comes
-from paging in the shared libraries. 
+from paging in the shared libraries.
 <h2><a name="Installation Instructions">Installation Instructions</a></h2>
 The instructions below are for using the Java <CODE>pxgraph</CODE>
 script instead of the X11 <CODE>pxgraph</CODE> binary within Ptolemy.
@@ -399,7 +399,7 @@ a few environment variables and attempts to run.  For the script to
 run, it needs to find the location of the Java JDK installation and
 the location of the Ptplot <CODE>.class</CODE> files.
 <MENU>
-<LI> If the <CODE>JAVAHOME</CODE> environment variable is set, then 
+<LI> If the <CODE>JAVAHOME</CODE> environment variable is set, then
 it is read and <CODE>$JAVAHOME/lib/classes.zip</CODE> is used in the
 classpath.  For example, if your JDK was at <CODE>/opt/jdk1.1.4</CODE>,
 then you would add the following to your <CODE>.cshrc</CODE>:
@@ -436,9 +436,9 @@ For further information about this tool, see the
 
  * @author Christopher Hylands (cxh@eecs.berkeley.edu)
  * @version $Id$
- * @see Plot 
+ * @see Plot
  */
-public class Pxgraph extends Frame { 
+public class Pxgraph extends Frame {
 
     /** Process the arguments and plot the data.
      */
@@ -469,7 +469,7 @@ public class Pxgraph extends Frame {
 
     /**
      * Handle an Action.
-     * @deprecated As of JDK1.1 in java.awt.component, but we need 
+     * @deprecated As of JDK1.1 in java.awt.component, but we need
      * to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean action(Event e, Object arg) {
@@ -492,7 +492,7 @@ public class Pxgraph extends Frame {
     }
 
     /** Handle an event.
-     * @deprecated As of JDK1.1 in java.awt.component 
+     * @deprecated As of JDK1.1 in java.awt.component
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean handleEvent(Event e) {
@@ -506,7 +506,7 @@ public class Pxgraph extends Frame {
         case Event.WINDOW_DESTROY:
             System.exit(0);
             break;
-        }  
+        }
 
         return super.handleEvent(e); // FIXME: handleEvent is
         // deprecated in 1.1, we should use processEvent(),
@@ -535,7 +535,7 @@ public class Pxgraph extends Frame {
     }
 
     /** Parse the command line arguments, do any preprocessing, then plot.
-     * If you have the <code>pxgraph</code> shell script, then 
+     * If you have the <code>pxgraph</code> shell script, then
      * type <code>pxgraph -help</code> for the complete set of arguments.
      */
     public static void main(String args[]) {
@@ -558,7 +558,7 @@ public class Pxgraph extends Frame {
 
 
     /* Bring up a dialog box with version information.
-     */ 
+     */
     private void _about() {
         Message message = new Message(
                 "               Pxgraph\n" +
@@ -577,7 +577,7 @@ public class Pxgraph extends Frame {
     }
 
     /* help - print out help
-     */ 
+     */
     private void _help() {
         // FIXME: we should bring up a dialog box or something.
 
@@ -661,11 +661,11 @@ public class Pxgraph extends Frame {
     }
 
     /* Dump out html that can be used to redisplay the plot as an applet.
-     */  
+     */
     private void _html() {
         Dimension dim = size(); // FIXME: size() is deprecated in 1.1, we
                                 // should use getSize(), but getSize
-                                // is not in 1.0.2.        
+                                // is not in 1.0.2.
 
         // Read in the user's CLASSPATH and get the first directory,
         // which should be the location of the Plot classes
@@ -674,7 +674,7 @@ public class Pxgraph extends Frame {
         String plotclassdir = new String("");
         if (stoken.hasMoreTokens()) {
             plotclassdir = stoken.nextToken();
-        } 
+        }
 
         StringBuffer applettag =
             new StringBuffer("<!-- Automatically generated by pxgraph. -->\n"+
@@ -684,7 +684,7 @@ public class Pxgraph extends Frame {
                     "<title>"+getTitle()+"</title>\n<body>\n"+
                     "<!-- You will need to edit the codebase tag\n"+
                     "     below.  To use the most recent version\n"+
-                    "     from over the network set it to:\n"+ 
+                    "     from over the network set it to:\n"+
                     "     http://ptolemy.eecs.berkeley.edu/java\n"+
                     "-->\n"+
                     "<applet name =\""+getTitle()+"\""+
@@ -696,9 +696,9 @@ public class Pxgraph extends Frame {
                     "browser, you would see an applet here.\"\n>\n"+
                     "<param name=\"pxgraphargs\" value=\"");
 
-        if (_cmdLineArgs.length > 0) { 
+        if (_cmdLineArgs.length > 0) {
             for(int i=0;i<(_cmdLineArgs.length - 1);i++) {
-                // FIXME: we are not checking for args that contain 
+                // FIXME: we are not checking for args that contain
                 // single or double quotes.
                 if (_cmdLineArgs[i].indexOf(" ") != -1) {
                     // If the arg contains a space, wrap it in single quotes.
@@ -766,7 +766,7 @@ public class Pxgraph extends Frame {
 
 
     /* Parse the arguments and make calls to the plotApplet accordingly.
-     */ 
+     */
     private int _parseArgs(String args[]) throws CmdLineArgException {
         int i = 0, j, argsread;
         String arg;
@@ -832,22 +832,22 @@ public class Pxgraph extends Frame {
                 if (stoken.hasMoreTokens()) {
                     width = (int)Integer.valueOf(stoken.nextToken()).
                         intValue();
-                } 
+                }
                 if (stoken.hasMoreTokens()) {
                     height = (int)Integer.valueOf(stoken.nextToken()).
                         intValue();
-                } 
+                }
                 if (stoken.hasMoreTokens()) {
                     xscreen = (int)Integer.valueOf(stoken.nextToken()).
                         intValue();
                     screenlocationgiven = true;
-                } 
+                }
                 if (stoken.hasMoreTokens()) {
                     yscreen = (int)Integer.valueOf(stoken.nextToken()).
                         intValue();
                     screenlocationgiven = true;
-                } 
-                if (screenlocationgiven) { 
+                }
+                if (screenlocationgiven) {
                     // Note: we add one so that =800x200+0+0 will show up
                     // in the proper location.
                     setLocation(new Point(xscreen+1, yscreen+1));
@@ -867,7 +867,7 @@ public class Pxgraph extends Frame {
 
         if (_debug > 2) {
             System.err.println("Pxgraph: title = " + title);
-            System.err.println("Pxgraph: width = " + width + 
+            System.err.println("Pxgraph: width = " + width +
                     " height = " + height + " _debug = " + _debug);
         }
         _plotApplet.parseArgs(args);
@@ -878,7 +878,7 @@ public class Pxgraph extends Frame {
      * user can print.  Note that we use the JDK1.1 PrintJob
      * class here.  If you are compiling under 1.0.2, you can
      * just comment out the body of this method.
-     */ 
+     */
     private void _print () {
         // awt.print.destination   - can be "printer" or "file"
         // awt.print.printer       - print command
@@ -894,13 +894,13 @@ public class Pxgraph extends Frame {
         newprops.put("awt.print.fileName", _outputFile);
         PrintJob printjob = getToolkit().getPrintJob(this,
                 getTitle(),newprops);
-        if (printjob != null) {          
+        if (printjob != null) {
             Graphics printgraphics = printjob.getGraphics();
             if (printgraphics != null) {
                 Dimension dim = size(); // size is deprecated in 1.1, we
                 // should use getSize(), but getSize
-                // is not in 1.0.2.        
-                
+                // is not in 1.0.2.
+
                 // Make the buttons invisible
                 _setButtonsVisibility(false);
                 _plotApplet._setButtonsVisibility(false);
@@ -931,7 +931,7 @@ public class Pxgraph extends Frame {
 
     /* Run the X11 pxgraph binary.  This function is only used for
      * checking backward compatibility with the X11 pxgraph binary.
-     */ 
+     */
     private void _pxgraphX11() {
  	try {
             boolean sawdebug = false; // True if we saw a -debug flag
@@ -974,9 +974,9 @@ public class Pxgraph extends Frame {
     private String _outputFile = "/tmp/t.ps";
 
     // The Plot applet.
-    private Plot _plotApplet; 
+    private Plot _plotApplet;
 
-    // If true, then bring up the print dialog upon startup.  
+    // If true, then bring up the print dialog upon startup.
     private boolean _printDialog = false;
 
     // If true, then auto exit after a few seconds.

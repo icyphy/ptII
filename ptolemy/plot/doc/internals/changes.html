@@ -53,7 +53,7 @@ If you are on a big-endian machine, such as a Sun Sparc,
 and you would like to read a binary
 format file created on a little-endian machine, such as Intel x86
 machine, then use the <code>-littleendian</code> flag.
-<dd> 
+<dd>
 
 </dl>
 <CODE>-binary</CODE> now reads pxgraph style binary data in the format
@@ -66,7 +66,7 @@ illustrates use of the three options.
 <li> The Pxgraph class and the <code>pxgraph</code>script now take
 two new command line arguments:
 <DL>
-<dt><code>-o</code> <code><i>output filename</i></code> 
+<dt><code>-o</code> <code><i>output filename</i></code>
 <dd>The name of the file to place the print output in.  Currently
 defaults to <code>/tmp/t.ps</code>.
 <dt><code>-print</code>
@@ -97,15 +97,15 @@ applet only usage.
 
 <li> The <CODE>_graphics</CODE> field in PlotBox is now
 <CODE>transient</CODE> so that PlotBox can be serialized.
- <br> This bug was reported by 
+ <br> This bug was reported by
 Patrick Barrett &lt;barrettp@clipper.mdcorp.ksc.nasa.gov&gt;.
 </menu>
 
 <H2>The changes between ptplot1.2 and ptplot1.2p1</H2>
-Ptplot1.2p1 is a bug fix release. 
+Ptplot1.2p1 is a bug fix release.
 <menu>
 <li> Ptplot1.1 was able able to parse scientific notation numbers such
-as <code>1.0E-12</code>, but Ptplot1.2 could not.  
+as <code>1.0E-12</code>, but Ptplot1.2 could not.
 The change that caused the bug was that in Ptplot1.2, we used
 <code>java.io.StreamTokenizer</code> to parse the
 numbers.  Unfortunately, StreamTokenizer is buggy, it fails to parse
@@ -139,11 +139,11 @@ code that created the plot.
 <li> Raw binary files that consist only of 4 byte floats are now supported.
 Formerly, ptplot only supported Joe Buck's binary format, which used
 single characters as plot directives (see the
-<A href="../codeDoc/ptplot.Pxgraph.html#-binary flag">javadoc Pxgraph documentation</A> 
+<A href="../codeDoc/ptplot.Pxgraph.html#-binary flag">javadoc Pxgraph documentation</A>
 for details about this format).  The new raw binary format
 now reads the first byte, and if it is not a <code>d</code>, then
 the raw 4 byte float format is assumed.
- <P>This format was prompted by a request from 
+ <P>This format was prompted by a request from
 John O'Sullivan&lt;John.OSullivan@analog.com&gt;.
 The <code>demo/data/bin.plt</code> was converted to the new raw 4 byte float
 format.
@@ -161,7 +161,7 @@ Michael Altmann &lt;michael@email.labmed.umn.edu&gt;.
 controlled by the file directives: <code>XLog: on</code> and
 <code>YLog: on</code>.  The <code>pxgraph</code> script
 now takes <code>-lnx</code> and <code>-lny</code> arguments as well.
-See the <A href="../../demo/LogAxes.html">Log Axes</A> demo for more information. 
+See the <A href="../../demo/LogAxes.html">Log Axes</A> demo for more information.
 
 <li> Fixed problem with recycling colors and marks.
 The bug was reported by Lutz Harnisch, &lt;Lutz.Harnisch@hmrag.com&gt;
@@ -173,11 +173,11 @@ The bug was reported by Lutz Harnisch, &lt;Lutz.Harnisch@hmrag.com&gt;
 <li> In 1.1, PlotBox extends Panel.  In 1.0 PlotBox extended Applet.
 This makes it much easier to use Plot as an component in either an
 application or an applet that contains other components.
-<li> The PlotApplet class is new in 1.1.  PlotApplet can be used 
+<li> The PlotApplet class is new in 1.1.  PlotApplet can be used
 for applets that use the Plot class, or the PlotLive class.
 As a result, the html applet tags for the demos now use
 <code>code="ptplot.PlotApplet"</code>.
-Formerly, they used 
+Formerly, they used
 <code>code="ptplot.Plot"</code>
 <li> The directory structure has been reorganized so that
 the plot classes are in ptplot, and the demo classes are in
@@ -188,7 +188,7 @@ instead of just running the demos.
 <li> There is a <A href="../../demo/audio/PlayingWave.html">Playing Wave
 Applet</A> that uses real time audio.
 <li> Edward Lee fixed a bar graph label bug reported by Marc Ellis.
-<li> A few other minor bugs were fixed.  
+<li> A few other minor bugs were fixed.
 </menu>
 
 <p>

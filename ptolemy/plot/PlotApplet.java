@@ -39,7 +39,7 @@ import java.net.*;              // Need URL
 //// PlotApplet
 /** Create an Applet that can plot data from a URL.
  * The URL can be specified using either the
- * <code>dataurl</code> or <code>pxgraphargs</code> applet parameter.  
+ * <code>dataurl</code> or <code>pxgraphargs</code> applet parameter.
  * <p> The <code>dataurl</code> parameter contains a single URL
  * that refers to the data to be plotted.
  * <p> The <code>pxgraphargs</code> parameter contains a list
@@ -69,7 +69,7 @@ public class PlotApplet extends Applet implements Runnable {
             {"background", "hexcolor value", "background color"},
             {"foreground", "hexcolor value", "foreground color"},
             {"dataurl",   "url",     "the URL of the data to plot"},
-            {"pxgraphargs",   "args",    
+            {"pxgraphargs",   "args",
              "pxgraph style command line arguments"}
         };
         return pinfo;
@@ -91,7 +91,7 @@ public class PlotApplet extends Applet implements Runnable {
 
         // Process the documentBase applet parameter.
         // Need the catch here because applets used as components have
-        // no parameters. 
+        // no parameters.
         try {
             plot().setDocumentBase(getDocumentBase());
         } catch (NullPointerException e) {
@@ -160,7 +160,7 @@ public class PlotApplet extends Applet implements Runnable {
     public void newPlot() {
         _myPlot = new Plot();
     }
-        
+
 
     /** Paint the screen with our plot.
      */
@@ -170,7 +170,7 @@ public class PlotApplet extends Applet implements Runnable {
     }
 
     /** Return the Plot object to operate on.
-     */  
+     */
     public Plot plot() {
         return _myPlot;
     }

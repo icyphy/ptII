@@ -19,10 +19,10 @@ perhaps your browser does not have JavaScript turned on.
 
 This is a sample
 <A HREF="http://developer.netscape.com/library/documentation/javascript.html">JavaScript</A>
-interface to Ptplot that allows the user to adjust various Ptplot parameters.  
+interface to Ptplot that allows the user to adjust various Ptplot parameters.
 
  <P>To bring up a sample plot, change the various settings and then click
-on the <CODE>Plot</CODE> button.  
+on the <CODE>Plot</CODE> button.
  <P>To get a description of the various fields, click on the name
 of field to get to the
 <A HREF="PtplotHelp.html">Help for the Ptplot</A> page.
@@ -177,7 +177,7 @@ section below.
 <A HREF="javascript:window.location='view-source:'+window.location.href.replace(/Ptplot.html/, 'Ptplot.js')"><CODE>Ptplot.js</CODE></A>
 
 which contains JavaScript code.
-<LI> When the <CODE>Plot</CODE> button is clicked, 
+<LI> When the <CODE>Plot</CODE> button is clicked,
 the JavaScript <CODE>ptplot()</CODE> function is passed the form.
 
 <LI> The <CODE>ptplot()</CODE> function generates HTML that reflects the
@@ -186,13 +186,13 @@ tag.
 
 <LI> Since the PlotApplet class does not inherit from
 the Plot class, we have to update the <CODE>pxgraphargs</CODE>
-applet parameter with the data from the form.  If we had more direct access 
+applet parameter with the data from the form.  If we had more direct access
 to the public methods of the Plot class, then we could have a
 Plot on this page and modify the format on the fly.
 
  <br>Note that the <CODE>About</CODE> button in the generated HTML
 implemented by having JavaScript call the <CODE>getAppletInfo()</CODE>
-public method.  
+public method.
 
 </OL>
 
@@ -204,11 +204,11 @@ server.  It might be possible to use the <CODE>INPUT TYPE="FILE"</CODE>
 HTML FORM element to submit files to be plotted.
 
 <LI> Some of the datasets are binary datasets, so you must
-check the <CODE>binary</CODE> checkbox.  In the 
+check the <CODE>binary</CODE> checkbox.  In the
 <CODE>File to plot</CODE> select box below, all the files in the
 <CODE>data/</CODE> directory are binary files.
 
-<LI> The <CODE>File to plot</CODE> select box uses spaces as file separators. 
+<LI> The <CODE>File to plot</CODE> select box uses spaces as file separators.
 This allows us to plot graphs that consist of more than one dataset.
 
 <LI> The <CODE>Title Font</CODE> and <CODE>Label Font</CODE> selectors

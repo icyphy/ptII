@@ -32,7 +32,7 @@ package pt.plot;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotPoint
-/** 
+/**
  * A simple structure for storing a plot point.
  * @author Edward A. Lee
  * @version $Id$
@@ -41,7 +41,7 @@ public class PlotPoint {
 
     /////////////////////////////////////////////////////////////////////////
     ////                         public variables                        ////
-   
+
     public double x,y;
 
     /** Error bar Y low value. */

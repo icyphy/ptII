@@ -37,9 +37,9 @@ import java.awt.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotLiveDemoApplet
-/** 
- * An Applet that demonstrates the PlotLiveDemo class. 
- * 
+/**
+ * An Applet that demonstrates the PlotLiveDemo class.
+ *
  * @author Edward A. Lee, Christopher Hylands
  * @version $Id$
  */
@@ -55,7 +55,7 @@ public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
             "($Id$)";
     }
 
-    /** 
+    /**
      * Initialize the applet.
      */
     public void init() {
@@ -75,7 +75,7 @@ public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
         _myPlotLiveDemo = new PlotLiveDemo();
     }
 
-    /** 
+    /**
      * Paint the graphics.
      */
     public void paint(Graphics graphics) {
@@ -84,14 +84,14 @@ public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
     }
 
     /** Return the Plot object to operate on.
-     */  
+     */
     public Plot plot() {
         return _myPlotLiveDemo;
     }
 
-    /** 
+    /**
      * Resize the plot.
-     * @deprecated As of JDK1.1 in java.awt.component, but we need 
+     * @deprecated As of JDK1.1 in java.awt.component, but we need
      * to compile under 1.0.2 for netscape3.x compatibility.
      */
     public void resize(int width, int height) {
@@ -100,7 +100,7 @@ public class PlotLiveDemoApplet extends PlotApplet implements Runnable {
         super.resize(width,height); // FIXME: resize() is deprecated.
     }
 
-    /** 
+    /**
      * Paint the graphics.
      */
     public void run () {

@@ -33,7 +33,7 @@ import java.applet.Applet;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotFourierSeries
-/** 
+/**
  * Plot a Fourier series approximation to a square wave.
  * This is a demonstration of the use of the Plot class.
  *
@@ -44,7 +44,7 @@ public class PlotFourierSeries extends PlotApplet {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-        
+
     /**
      * Return a string describing this applet.
      */
@@ -70,7 +70,7 @@ public class PlotFourierSeries extends PlotApplet {
         for (int j=2; j <= 10; j++) {
             plot().addLegend(j, j + " sinusoids");
         }
-        
+
         boolean first = true;
         plot().addPoint(0, 0.0, 0.0, false);
         for (int i=0; i <= 400; i++) {
@@ -89,6 +89,6 @@ public class PlotFourierSeries extends PlotApplet {
                 plot().addPoint(0,(double)i, -1.0, true);
             }
         }
-        plot().addPoint(0, 400.0, 0.0, true); 
+        plot().addPoint(0, 400.0, 0.0, true);
    }
 }

@@ -7,7 +7,7 @@
 <h1><a name="ptplot FAQ">Ptplot FAQ</a></h1>
 Below are some answers to frequently asked questions about ptplot.
 This page contains links to documents about Ptplot internals and
-infrastructure. 
+infrastructure.
 <H2>Contents</H2>
 <MENU>
 <LI> <A HREF="#ptplot faq: general questions"><B>1. General</B></A>
@@ -84,11 +84,11 @@ with the word <CODE>subscribe</CODE> in the body, not the header.
  <br> Note that you can download sources and binaries for <CODE>pxgraph</CODE>, an extension to <CODE>xgraph</CODE> from
 <A HREF="ftp://ptolemy.eecs.berkeley.edu/pub/misc/pxgraph/index.html"><CODE>ftp://ptolemy.eecs.berkeley.edu/pub/misc/pxgraph/index.html</CODE></A>
  <br> Note that if you type a <CODE>x</CODE> while the mouse is
-over the Java <CODE>pxgraph</CODE> application window, and 
+over the Java <CODE>pxgraph</CODE> application window, and
 the X11 version of <CODE>pxgraph</CODE> is installed
 as <CODE>pxgraph.x11</CODE>, then <CODE>pxgraph.x11</CODE> will
 be started up with the same command line arguments that you called
-the Java <CODE>pxgraph</CODE> with.  This is one way of using 
+the Java <CODE>pxgraph</CODE> with.  This is one way of using
 the Java version most of the time, but still having access to the
 MIF output facilities in the X11 version.
 
@@ -111,10 +111,10 @@ comments that indicate the various 1.0.2/1.1 compatibility issues.
  <br> Everything else compiles under JDK1.0.2.  The ptplot.zip file we
 supply was built with JDK1.0.2.  We chose to do this so that we could
 support Netscape3.x.  The next release might only support JDK1.1 and
-later. 
+later.
 
 <DT> <A NAME="ptplot installation, what do I need"><B>2.3 What do I need to Install Ptplot?</B></A>
-<DD> 
+<DD>
 To use Ptplot, you will need the Java Development kit (JDK), which
 can be downloaded from
 <A HREF="http://www.javasoft.com"><CODE>http://www.javasoft.com</CODE></A>.
@@ -138,7 +138,7 @@ Your mail should include:
 <LI> Exactly how to reproduce the bug.
 </OL>
 <DT> <A NAME="ptplot bug list"><B>2.5 Is there a bug list?</B></A>
-<DD> 
+<DD>
 <MENU>
  <LI>Most of the known bugs and limitations are listed in the
 <A HREF="../codeDoc/ptplot.Plot.java#ptplot limitations">javadoc Plot documentation</A>
@@ -174,7 +174,7 @@ The PlotFourierSeries class at
  <P> You can also plot data dynamically by creating a class that has a
 <CODE>addPoints()</CODE> method which gets called by the PlotLive class.
 
-The 
+The
 <A HREF="../../demo/Live.html"><CODE>demo/Live.html</CODE></A> demo
 illustrates live plotting.
 The PlotLiveDemo class at
@@ -182,15 +182,15 @@ The PlotLiveDemo class at
 is what actually does the plotting.
 
 <DT> <A NAME="binarydata"><B>3.2 How do I plot binary data?</B></A>
-<DD>Ptplot can plot binary datafiles.  
+<DD>Ptplot can plot binary datafiles.
 Ptplot 1.1 and earlier can plot data in the format that
 was originally created by Joe Buck for the X11 <CODE>pxgraph</CODE> program.
 For details on the format.  Ptplot 1.2 and later can also
 plot data that consists of raw 4 byte floats.
-For more information, see the description of the 
+For more information, see the description of the
 <CODE>-binary</CODE> option in
 <A HREF="../../Pxgraph.java"><CODE>Pxgraph.java</CODE></A>.  You might
-find the 
+find the
 <A HREF="../codeDoc/ptplot.Pxgraph.html#-binary flag">javadoc Pxgraph documentation</A>
 easier to read.
 
@@ -198,7 +198,7 @@ easier to read.
 <DD> Binary data is encoded in different ways on different platforms
 <menu>
 <li> Big-endian - SPARCs and the network in general use this format.
-<li> Little-endian - Intel x86 chips use this format. 
+<li> Little-endian - Intel x86 chips use this format.
 </menu>
 Problems can occur when you try to read a binary format file on a
 machine other than the machine it was created on.  <CODE>pxgraph</CODE>
@@ -219,7 +219,7 @@ convert it if the Java virtual machine is running on a big-endian machine.
 See the <a href="../../demo/Endian.html">Endian Examples</a> for
 example that use the above flags.
 
-The 
+The
 <a href="http://www.afu.com/javafaq.html">Java Programmer's FAQ</a>
 has more information about endian issues.
 <DT>  <A NAME="appletprinting"><B>3.3 How do I print a plot from a Plot applet?</B></A>
@@ -230,7 +230,7 @@ violations.
 <A HREF="http://www.best.com/~pvdl/javafaq.html"><CODE>http://www.best.com/~pvdl/javafaq.html</CODE></A> says:
 
 <BLOCKQUOTE>
-4.1.11 How do I print a page with an applet?  
+4.1.11 How do I print a page with an applet?
 
  <P>A. Browsers are starting to introduce support for this. Until they all
 have it, your best bet is to print a screendump.  Using the browser to
@@ -252,10 +252,10 @@ Connection (it is free) and search for printing.
 the Pxgraph class.  Note that printing in the Pxgraph class requires
 JDK1.1 and later.
 
- <P>The 
+ <P>The
 <A HREF="../../ptplot2mif.tcl"><CODE>ptplot2mif.tcl</CODE></A> Tcl
 script can be used to convert the PostScript output of the Pxgraph
-application to Framemaker MIF format.  This script requires Tcl and 
+application to Framemaker MIF format.  This script requires Tcl and
 probably works only with the Sun Solaris JDK.  To create a MIF file,
 use the <CODE>pxgraph</CODE> script to display your data, print to file,
 then run <CODE>ptplot2mif.tcl</CODE> on your file
@@ -269,11 +269,11 @@ ptplot2mif.tcl /tmp/data.ps &gt; /tmp/data.mif
 </PRE>
 Note that you can also bring up the X11 pxgraph version from
 after starting the Java version by typing an <CODE>x</CODE>.
-For more information, see 
+For more information, see
 <A HREF="#xgraph"><B>1.6 What is the relationship between xgraph and ptplot?</B></A>.
  <p>To generate a GIF image, you might try first generating PostScript
 and then using <CODE>pstogif</CODE>, which is part of Ghostview, available
-at 
+at
 <a href="http://www.cs.wisc.edu/~ghost"><CODE>http://www.cs.wisc.edu/~ghost/</CODE></a>.  Below is an example:
 <pre>
 pxgraph -print -o /tmp/data.ps demo/data.plt
@@ -325,11 +325,11 @@ above the ptplot directory:
 <pre>
 setenv CLASSPATH ../..
 </pre>
-Note that you might want to use an absolute path for your 
+Note that you might want to use an absolute path for your
 <CODE>CLASSPATH</CODE> if you plan on using <CODE>PlotApplication</CODE>
 from any directory.  Note further that setting your <CODE>CLASSPATH</CODE>
 in your environment is bound to cause problems with other applications, such
-as Netscape.  In general it is best to have a shell script that 
+as Netscape.  In general it is best to have a shell script that
 sets the <CODE>CLASSPATH</CODE> appropriately for each Java application.
  <p>
 <li> Compile the Java class:

@@ -33,7 +33,7 @@ import java.applet.Applet;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotDemo
-/** 
+/**
  * Plot a variety of test signals.
  *
  * @author Edward A. Lee
@@ -43,7 +43,7 @@ public class PlotDemo extends PlotApplet {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-        
+
     /**
      * Return a string describing this applet.
      */
@@ -60,7 +60,7 @@ public class PlotDemo extends PlotApplet {
     public void init () {
         super.newPlot();        // Create a new Plot object to operate on.
         super.init();
-        
+
         plot().setTitle("Line Plot Demo");
         plot().setYRange(-4,4);
         plot().setXRange(0,100);
@@ -74,7 +74,7 @@ public class PlotDemo extends PlotApplet {
         plot().setNumSets(10);
         plot().setMarksStyle("none");
         plot().setImpulses(true);
-        
+
         boolean first = true;
         for (int i=0; i <= 100; i++) {
             plot().addPoint(0,(double)i,

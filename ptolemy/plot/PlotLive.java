@@ -67,10 +67,10 @@ public abstract class PlotLive extends Plot implements Runnable {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-   
+
     /**
      * Handle button presses to enable or disable plotting.
-     * @deprecated As of JDK1.1 in java.awt.component 
+     * @deprecated As of JDK1.1 in java.awt.component
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean action (Event evt, Object arg) {
@@ -82,7 +82,7 @@ public abstract class PlotLive extends Plot implements Runnable {
             return true;
         } else {
             return super.action (evt, arg); // action() is deprecated in 1.1
-            // but we need to compile under 
+            // but we need to compile under
             // jdk1.0.2 for netscape3.x
         }
     }
@@ -116,7 +116,7 @@ public abstract class PlotLive extends Plot implements Runnable {
         _stopButton = new Button("stop");
         add(_stopButton);
     }
-    
+
     /**
      * This is the body of a thread that monitors which of the start
      * or stop buttons have been pushed most recently, or which of the
@@ -139,7 +139,7 @@ public abstract class PlotLive extends Plot implements Runnable {
                 Thread.yield();
             } else {
                 try {
-                    // NOTE: Using wait here with notifyAll in the action 
+                    // NOTE: Using wait here with notifyAll in the action
                     // method leads to inexplicable deadlocks.
                     // So we just sleep.
                     Thread.sleep(100);
@@ -150,12 +150,12 @@ public abstract class PlotLive extends Plot implements Runnable {
 
     /**
      * If plotting is set to true, then we plot.
-     */  
+     */
     public void setPlotting( boolean plotting) {
         _plotting = plotting;
     }
 
-    /** 
+    /**
      * Start the widget. It creates a thread to plot live data, if
      * this has not been already done.  However, we don't actually
      * start plotting until either the start button is called, or
@@ -175,7 +175,7 @@ public abstract class PlotLive extends Plot implements Runnable {
     public void stop() {
         if (_debug >8 ) System.out.println("PlotLive: stop");
         if (_plotLiveThread != null) {
-            // Don't stop the thread, just set it to null. 
+            // Don't stop the thread, just set it to null.
             //_plotLiveThread.stop();
             _plotLiveThread = null;
         }
@@ -184,12 +184,12 @@ public abstract class PlotLive extends Plot implements Runnable {
 
     //////////////////////////////////////////////////////////////////////////
     ////                       private variables                          ////
-    
+
     private Thread _plotLiveThread;
-   
+
     // True if we are actually plotting
     private boolean _plotting = false;
 
     private Button _startButton, _stopButton;
-    
+
 }

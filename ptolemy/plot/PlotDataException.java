@@ -27,7 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package pt.plot;
 
-/** 
+/**
  * Exception thrown by plot classes if there are format
  * problems with the data to be plotted.
  *
@@ -37,5 +37,5 @@ package pt.plot;
 class PlotDataException extends Throwable {
     public PlotDataException() { super(); }
     public PlotDataException(String s) { super(s); }
- 
+
 }

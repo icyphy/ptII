@@ -1,4 +1,4 @@
-/* Thrown when an incorrect argument is passed to the plotter. 
+/* Thrown when an incorrect argument is passed to the plotter.
 
 @Copyright (c) 1997- The Regents of the University of California.
 All rights reserved.
@@ -27,7 +27,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package pt.plot;
 
-/** 
+/**
  * Exception thrown by plot classes if there are format
  * problems with the data to be plotted.
  *

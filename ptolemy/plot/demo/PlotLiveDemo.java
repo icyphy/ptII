@@ -44,7 +44,7 @@ public class PlotLiveDemo extends PlotLive {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
-   
+
     /** Add points to the plot.  This is called by the base class
      * <code>run()</code> method while live plotting is enabled.
      */
@@ -71,7 +71,7 @@ public class PlotLiveDemo extends PlotLive {
         } catch (InterruptedException e) {}
     }
 
-    /** 
+    /**
      * Define static properties of the plot, such as the title and
      * axis labels.  This also calls the base class
      * <code>init()</code>, which performs various initialization
@@ -90,7 +90,7 @@ public class PlotLiveDemo extends PlotLive {
         setNumSets(4);
         setPointsPersistence(60);
         setMarksStyle("dots");
-        
+
         // Give the user direct control over starting and stopping.
         makeButtons();
 

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -60,9 +60,9 @@ public class Message extends Frame {
     //      message.show();
     //     }
 
-    /** 
+    /**
      * Handle an event.
-     * @deprecated As of JDK1.1 in java.awt.component, but we need 
+     * @deprecated As of JDK1.1 in java.awt.component, but we need
      * to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean handleEvent(Event event) {
@@ -72,12 +72,12 @@ public class Message extends Frame {
             } else {
                 //System.exit(0);
             }
-        }   
+        }
         return super.handleEvent(event); // FIXME: handleEvent() is deprecated.
     }
 
-    /** 
-     * @deprecated As of JDK1.1 in java.awt.component, but we need 
+    /**
+     * @deprecated As of JDK1.1 in java.awt.component, but we need
      * to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean action(Event event, Object arg) {
