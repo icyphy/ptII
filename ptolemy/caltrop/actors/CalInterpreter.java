@@ -137,9 +137,9 @@ public class CalInterpreter extends TypedAtomicActor {
         if (attribute == calCode) {
             String s = calCode.getExpression();
             try {
-                _actor = _stringToActor(s);
-                if (_actor != null) {
-                    _setupActor();
+                Actor actor = _stringToActor(s);
+                if (actor != null) {
+                    _setupActor(actor);
                 }
             } catch (Throwable ex) {
                 throw  new IllegalActionException(this, ex,
@@ -283,12 +283,14 @@ public class CalInterpreter extends TypedAtomicActor {
     private void _refreshParameters()
             throws IllegalActionException, NameDuplicationException {
         Set parNames = new HashSet();
-        for (int i = 0; i < _actor.getParameters().length; i++) {
-            String name = _actor.getParameters()[i].getName();
-            if (this.getAttribute(name, ptolemy.data.expr.Parameter.class)
-                    == null)
-                new Parameter(this, name);
-            parNames.add(name);
+        if (_actor.getParameters() != null) {
+            for (int i = 0; i < _actor.getParameters().length; i++) {
+                String name = _actor.getParameters()[i].getName();
+                if (this.getAttribute(name, ptolemy.data.expr.Parameter.class)
+                        == null)
+                    new Parameter(this, name);
+                parNames.add(name);
+            }
         }
         List parameters =
             this.attributeList(ptolemy.data.expr.Parameter.class);
@@ -339,20 +341,25 @@ public class CalInterpreter extends TypedAtomicActor {
         }
     }
 
-    private void _setupActor() throws Exception {
-        assert _actor != null;
-        _env = _extendEnvWithImports(_actor.getImports());
-        _refreshTypedIOPorts(_actor.getInputPorts(), true, false);
-        _refreshTypedIOPorts(_actor.getOutputPorts(), false, true);
+    private void _setupActor(Actor actor) throws Exception {
+        assert actor != null;
+
+        _actor = actor;
+        _env = _extendEnvWithImports(actor.getImports());
+        _refreshTypedIOPorts(actor.getInputPorts(), true, false);
+        _refreshTypedIOPorts(actor.getOutputPorts(), false, true);
         _refreshParameters();
 
         CompositeEntity container = (CompositeEntity)getContainer();
-        if (container != null
-                && container.getEntity(_actor.getName()) != this) {
-            this.setName(((CompositeEntity) this.getContainer())
-                         .uniqueName(_actor.getName()));
+        if (_lastGeneratedActorName != null && _lastGeneratedActorName.equals(this.getName())) {
+            if(container != null
+                    && container.getEntity(actor.getName()) != this) {
+                _lastGeneratedActorName = ((CompositeEntity) this.getContainer())
+                                  .uniqueName(actor.getName());
+                this.setName(_lastGeneratedActorName);
+            }
         }
-        _attachActorIcon(_actor.getName());
+        _attachActorIcon(actor.getName());
     }
 
     private void _attachActorIcon(String name) {
@@ -415,6 +422,8 @@ public class CalInterpreter extends TypedAtomicActor {
     private final static Context _theContext = PtolemyPlatform._theContext;
     private final static Environment _globalEnv = PtolemyPlatform._createGlobalEnvironment();
     private final static Map _directorDDIMap = new HashMap();
+
+    private String _lastGeneratedActorName = null;
 
     static {
         _directorDDIMap.put("ptolemy.domains.sdf.kernel.SDFDirector",
