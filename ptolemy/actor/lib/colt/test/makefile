@@ -35,7 +35,7 @@ ME =		ptolemy/actor/lib/colt/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(COLT_DIR)/colt.jar
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
