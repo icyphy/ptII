@@ -369,16 +369,19 @@ public class NamedObj implements Nameable, Debuggable,
             newObject._workspace = workspace;
             newObject._fullNameVersion = -1;
 
-            Iterator parameters = attributeList().iterator();
-            while (parameters.hasNext()) {
-                Attribute parameter = (Attribute)parameters.next();
-                Attribute newParameter = (Attribute)parameter.clone(workspace);
-                try {
-                    newParameter.setContainer(newObject);
-                } catch (KernelException exception) {
-                    throw new CloneNotSupportedException(
-                            "Failed to clone an Attribute of " +
-                            getFullName() + ": " + exception.getMessage());
+            if (_attributes != null) {
+                Iterator parameters = _attributes.elementList().iterator();
+                while (parameters.hasNext()) {
+                    Attribute parameter = (Attribute)parameters.next();
+                    Attribute newParameter
+                            = (Attribute)parameter.clone(workspace);
+                    try {
+                        newParameter.setContainer(newObject);
+                    } catch (KernelException exception) {
+                        throw new CloneNotSupportedException(
+                                "Failed to clone an Attribute of " +
+                                getFullName() + ": " + exception.getMessage());
+                    }
                 }
             }
             if (_debugging) {
@@ -428,6 +431,9 @@ public class NamedObj implements Nameable, Debuggable,
                 }
                 */
             }
+            // If the new object has any public fields whose name
+            // matches that of an attribute, then set the public field
+            // equal to the attribute.
             Class myClass = getClass();
             Field fields[] = myClass.getFields();
             for(int i = 0; i < fields.length; i++) {
@@ -675,10 +681,12 @@ public class NamedObj implements Nameable, Debuggable,
             _exportMoMLContents(output, depth + 1);
         } else {
             // Describe only the attributes.
-            Iterator attributes = attributeList().iterator();
-            while (attributes.hasNext()) {
-                Attribute attribute = (Attribute)attributes.next();
-                attribute.exportMoML(output, depth + 1);
+            if (_attributes != null) {
+                Iterator attributes = _attributes.elementList().iterator();
+                while (attributes.hasNext()) {
+                    Attribute attribute = (Attribute)attributes.next();
+                    attribute.exportMoML(output, depth + 1);
+                }
             }
         }
         output.write(_getIndentPrefix(depth) + "</"
@@ -1294,11 +1302,13 @@ public class NamedObj implements Nameable, Debuggable,
                 if ((detail & DEEP) == 0) {
                     detail &= ~ATTRIBUTES;
                 }
-                Iterator parameters = attributeList().iterator();
-                while (parameters.hasNext()) {
-                    Attribute parameter = (Attribute)parameters.next();
-                    result += parameter._description(detail, indent+1, 2) +
-                        "\n";
+                if (_attributes != null) {
+                    Iterator parameters = _attributes.elementList().iterator();
+                    while (parameters.hasNext()) {
+                        Attribute parameter = (Attribute)parameters.next();
+                        result += parameter._description(detail, indent+1, 2) +
+                                "\n";
+                    }
                 }
                 result += _getIndentPrefix(indent) + "}";
             }
@@ -1321,10 +1331,12 @@ public class NamedObj implements Nameable, Debuggable,
      */
     protected void _exportMoMLContents(Writer output, int depth)
             throws IOException {
-        Iterator attributes = attributeList().iterator();
-        while (attributes.hasNext()) {
-            Attribute attribute = (Attribute)attributes.next();
-            attribute.exportMoML(output, depth);
+        if (_attributes != null) {
+            Iterator attributes = _attributes.elementList().iterator();
+            while (attributes.hasNext()) {
+                Attribute attribute = (Attribute)attributes.next();
+                attribute.exportMoML(output, depth);
+            }
         }
     }
 
