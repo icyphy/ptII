@@ -24,11 +24,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
-
-FIXME: Accepted rating was green, but
-FIXME: Need review of methods from Derivable and Changeable interfaces,
-FIXME: and also containedObjectsIterator()
-FIXME: and also the private method _getHeritageObject() and protected method _getHeritageList().
 */
 
 package ptolemy.kernel.util;
@@ -131,10 +126,14 @@ import ptolemy.util.StringUtilities;
    @see Attribute
    @see Workspace
 */
-
 public class NamedObj implements
                           Changeable, Cloneable, Debuggable,
                           DebugListener, Derivable, Serializable {
+
+    // FIXME: Accepted rating was green, but
+    // FIXME: Need review of methods from Derivable and Changeable interfaces,
+    // FIXME: and also containedObjectsIterator()
+    // FIXME: and also the private method _getHeritageObject() and protected method _getHeritageList().
 
     // Note that Nameable extends ModelErrorHandler, so this class
     // need not declare that it directly implements ModelErrorHandler.
