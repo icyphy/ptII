@@ -50,7 +50,7 @@ startRun(), pause(), resume(), terminate(), and finish().
 Most often, methods in this object will be called by a
 graphical user interface.  However, it is possible to manually call
 these methods from a java object, a java applet, or an interactive
-prompt, such as TclBlend.
+prompt, such as Tcl Blend.
 Because user interaction will likely be occurring asynchronously to the
 execution of the model, it is important that all the processing for the
 model occur in a separate thread.   The Manager is responsible for creating

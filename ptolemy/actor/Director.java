@@ -223,7 +223,7 @@ public class Director extends NamedObj implements Executable {
         // do nothing in this base class.
         // Note that, alternatively, this method could have been abstract.
         // But we didn't do that, because otherwise we wouldn't be able
-        // to run TclBlend testscript on this class.
+        // to run Tcl Blend testscript on this class.
 
     }
 
