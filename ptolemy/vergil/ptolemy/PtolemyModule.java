@@ -168,66 +168,6 @@ public class PtolemyModule implements Module {
 	_application.addAction(action);
 	GUIUtilities.addMenuItem(menuExecute, action, 'X', "Execute the model");
 	
-        action = new AbstractAction ("Listen to Manager") {
-            public void actionPerformed(ActionEvent e) {
-		View v = _application.getCurrentView();
-                PtolemyDocument doc = (PtolemyDocument)v.getDocument();
-                if (doc == null) {
-                    try {
-                        MessageHandler.warning("No current document");
-                    } catch (CancelException ex) {
-                        // Ignore, since there is nothing happening anyway.
-                    }
-                } else {
-                    CompositeActor toplevel = (CompositeActor)doc.getModel();
-                    // NOTE: Is a null toplevel ever possible here?
-                    Manager manager = toplevel.getManager();
-                    if (manager == null) {
-                        try {
-                            MessageHandler.warning("No manager");
-                        } catch (CancelException ex) {
-                            // Ignore, since there is nothing happening anyway.
-                        }
-                    } else {
-                        manager.addDebugListener(new TopDebugListener());
-                    }
-                }
-            }
-        };
-	_application.addAction(action);
-	GUIUtilities.addMenuItem(menuExecute, action, 'M',
-                "Open a window that displays messages from the manager.");
-
-        action = new AbstractAction ("Listen to Director") {
-            public void actionPerformed(ActionEvent e) {
-		View v = _application.getCurrentView();
-                PtolemyDocument doc = (PtolemyDocument)v.getDocument();
-		if (doc == null) {
-                    try {
-                        MessageHandler.warning("No current document");
-                    } catch (CancelException ex) {
-                        // Ignore, since there is nothing happening anyway.
-                    }
-                } else {
-                    CompositeActor toplevel = (CompositeActor)doc.getModel();
-                    // NOTE: Is a null toplevel ever possible here?
-                    Director director = toplevel.getDirector();
-                    if (director == null) {
-                        try {
-                            MessageHandler.warning("No director");
-                        } catch (CancelException ex) {
-                            // Ignore, since there is nothing happening anyway.
-                        }
-                    } else {
-                        director.addDebugListener(new TopDebugListener());
-                    }
-                }
-            }
-        };
-	_application.addAction(action);
-	GUIUtilities.addMenuItem(menuExecute, action, 'D',
-                "Open a window that displays messages from the director.");
-
         // Create the toolbar.
 	JToolBar tb = new JToolBar();
 	Container pane = _application.getDesktopContext().getToolBarPane();
