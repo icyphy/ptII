@@ -173,8 +173,6 @@
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -196,8 +194,6 @@
     <link port="VectorAssembler.input" relation="relation8"/>
     <link port="VectorAssembler.output" relation="relation2"/>
     <link port="VectorDisassembler.input" relation="relation2"/>
-    <link port="VectorDisassembler.output" relation="relation"/>
-    <link port="VectorDisassembler.output" relation="relation"/>
     <link port="VectorDisassembler.output" relation="relation3"/>
     <link port="VectorDisassembler.output" relation="relation4"/>
     <link port="VectorDisassembler.output" relation="relation5"/>
