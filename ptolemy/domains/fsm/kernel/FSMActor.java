@@ -323,13 +323,6 @@ public class FSMActor extends CompositeEntity
         }
     }
 
-    /** Return the IODependence if there is one. 
-     *  return The IODependence attribute.
-     */
-    public IODependence getIODependence() {
-        return _ioDependence;
-    }
-
     /** Return the Manager responsible for execution of this actor,
      *  if there is one. Otherwise, return null.
      *  @return The manager.
@@ -541,21 +534,27 @@ public class FSMActor extends CompositeEntity
         _createReceivers();
         _hdfArrays = new Hashtable();
         
-        try {
-            if (_ioDependence != null) {
-                _ioDependence.setContainer(null);
-            }
-            _ioDependence = new IODependence(this, "_IODependence");
-            //TODO:
-            // Analyze io depencence (conservative):
-            // For an output port O, and input port I, if there is an output
-            // action that writes to O, and either the corresponding guard or
-            // the output value expression depends on input from I, then O
-            // depends on I.
-        } catch (NameDuplicationException ex) {
-            throw new InternalErrorException(this, ex,
-                    "Unable to create IODepedence attribute.");
-        }
+// FIXME: Modification according to the following changes:
+// Refactoring the IODependence class to two classes, one for atomic actor,
+// the other for composite actor. 
+// Change of the way to access IODependence attribute, which removes the
+// local private variable _ioDependence.
+    
+//        try {
+//            if (_ioDependence != null) {
+//                _ioDependence.setContainer(null);
+//            }
+//            _ioDependence = new IODependence(this, "_IODependence");
+//            //TODO:
+//            // Analyze io depencence (conservative):
+//            // For an output port O, and input port I, if there is an output
+//            // action that writes to O, and either the corresponding guard or
+//            // the output value expression depends on input from I, then O
+//            // depends on I.
+//        } catch (NameDuplicationException ex) {
+//            throw new InternalErrorException(this, ex,
+//                    "Unable to create IODepedence attribute.");
+//        }
 
         // NOTE: We used to have a strategy of removing the input
         // variables and then recreating them here.  But this is a
