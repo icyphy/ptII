@@ -45,6 +45,7 @@
 # 13) Check for @exception tags that are not worded properly
 # 14) Check for @throws
 # 15) Make sure that Parameters names do not start with capital letters
+# 16) Warn about catching CloneNotSupported
 
 for file in $@
 do
@@ -265,5 +266,13 @@ do
 	    echo "$file: contains a Parameter name that starts with a capital letter."
 	    echo "$results"
 	fi
+
+        # 16) Warn about catching CloneNotSupported
+	results=`egrep 'catch .*CloneNotSupported' $file`
+	if [ "x$results" != "x" ]; then
+	    echo "$file: catches CloneNotSupported, which is likely a mistake"
+	    echo "$results"
+	fi
+
 done
 

@@ -45,6 +45,7 @@ JSRCS = \
 	PrintThreads.java
 
 TCL_SRCS = \
+	auto.tcl \
 	description.tcl \
 	enums.tcl \
 	init.tcl \
