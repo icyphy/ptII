@@ -2016,6 +2016,14 @@ public class MoMLParser extends HandlerBase {
             input = xmlFile.openStream();
         } catch (IOException ioException) {
             errorMessage.append("-- " + ioException.getMessage() + "\n");
+            // The error messages used to be more verbose, uncomment
+            // the next line if you would like to know what failed and why
+            // errorMessage.append(
+            //        "\n    base: " + base
+            //        + "\n    source: " + source
+            //        + "\n    xmlFile: " + xmlFile
+            //        + "\n" +KernelException.stackTraceToString(ioException));
+
             // That failed.  Try opening it relative to the classpath.
             xmlFile = _classLoader.getResource(source);
             if (xmlFile != null) {
