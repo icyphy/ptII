@@ -42,12 +42,11 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.gui.MessageHandler;
+import ptolemy.util.MessageHandler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
 
 import com.sun.media.jai.codec.BMPEncodeParam;
 import com.sun.media.jai.codec.ImageCodec;
@@ -135,7 +134,9 @@ public class JAIBMPWriter extends Sink {
             throws IllegalActionException {
         if (attribute == fileName) {
             _file = fileName.asFile();
-            _fileRoot = _file.toString();
+            if (_file != null) {
+                _fileRoot = _file.toString();
+            }
         } else if (attribute == confirmOverwrite) {
             _confirmOverwriteValue = 
                 ((BooleanToken)confirmOverwrite.getToken()).booleanValue();
