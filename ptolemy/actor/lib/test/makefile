@@ -84,6 +84,7 @@ JGRAPHICAL_TESTS = \
 	dummy.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
+	Exit.xml \
 	FileWriter.xml \
 	#$(JGRAPHICAL_TESTS)
 
