@@ -691,12 +691,6 @@ remote1distjsall_2:
 			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
 			AUXCLASSPATH=":$(JSCLASSPATH)" \
 			jsall JSINSTRFLAGS=;)
-	(cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/interpreted; \
-		$(MAKE) $(MFLAGS) $(MAKEVARS) \
-			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
-			AUXCLASSPATH=":$(JSCLASSPATH)" \
-			jsall JSINSTRFLAGS=;)
-
 
 remote1distjsall_3:
 	jssummary -HTML -PROGRESS \
@@ -734,9 +728,6 @@ remote1distjsrestore:
 	fi
 	( cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/applet; \
 		echo making jsrestore in ptolemy/copernicus/applet ; \
-		$(MAKE) $(MFLAGS) $(MAKEVARS) jsrestore)
-	( cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/interpreted; \
-		echo making jsrestore in ptolemy/copernicus/interpreted ; \
 		$(MAKE) $(MFLAGS) $(MAKEVARS) jsrestore)
 
 # Remove the JavaScope instrumentation
@@ -1687,3 +1678,21 @@ build_unixPtII: unixPtII.xml
 		-build
 
 
+SOFTWALLS = softwalls/ptolemy/apps/softwalls
+softwalls:
+	mkdir softwalls
+	(cd $(PTII); tar -cf - ptolemy/apps/softwalls) | (cd softwalls; tar -xf -)
+	rm -rf softwalls/ptolemy/apps/softwalls/surfaces \
+		$(SOFTWALLS)/CVS
+	mkdir -p $(SOFTWALLS)/demo/fixedTime
+	cp $(HOME)/src/softwalls/ptolemy/softwallsSimulator/fixedTime.xml \
+		$(SOFTWALLS)/demo/fixedTime
+	# Copy uncompressed data files
+	cp -r $(HOME)/src/softwalls/ptolemy/softwallsSimulator/surfaces/softwall.final.*.data \
+		$(SOFTWALLS)/demo/fixedTime
+	cp README_Soft_Walls.txt softwalls
+
+softwalls.tar.gz: softwalls
+	rm -f softwalls.tar.gz softwalls.tar
+	(cd softwalls; tar -cf ../softwalls.tar .)
+	gzip -9 softwalls.tar
