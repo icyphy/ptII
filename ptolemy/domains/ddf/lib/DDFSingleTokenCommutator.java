@@ -70,7 +70,7 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
         super(container, name);
         
         inputTokenConsumptionRate = 
-        	    new Parameter(input, "tokenConsumptionRate");
+                    new Parameter(input, "tokenConsumptionRate");
         inputTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         inputTokenConsumptionRate.setTypeEquals(new ArrayType(BaseType.INT));
     }

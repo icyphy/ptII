@@ -197,7 +197,7 @@ public class DDFDirector extends Director {
 
             Iterator actors = _activeActors.iterator();
             while (actors.hasNext()) {
-            	
+                    
                 // Scan all actors to find all enabled and not 
                 // deferrable actors.
                 Actor actor = (Actor)actors.next();
@@ -377,7 +377,7 @@ public class DDFDirector extends Director {
      *   IllegalActionException.
      */
     public boolean prefire() throws IllegalActionException {
-    	if (_debugging) {
+            if (_debugging) {
             _debug("\niterationCount " + _iterationCount); 
         }       
         super.prefire();
@@ -710,7 +710,7 @@ public class DDFDirector extends Director {
      *   IllegalActionException.
      */
     protected boolean _isEnabled(Actor actor)
-            throws IllegalActionException {   	
+            throws IllegalActionException {           
         Iterator inputPorts = actor.inputPortList().iterator();
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort)inputPorts.next();
@@ -734,10 +734,10 @@ public class DDFDirector extends Director {
                     for (int i = 0; i < inputPort.getWidth(); i++) {
                         int channelRate = ((IntToken)tokens[i]).intValue();
                         if (!inputPort.hasToken(i, channelRate)) {
-                            return false;   				
+                            return false;                                   
                         }
                     }
-    				return true;
+                                    return true;
 
                 } else { // All the channels in the port has same
                          // tokenConsumptionRate.
@@ -827,7 +827,7 @@ public class DDFDirector extends Director {
      *  an iterations parameter.
      */
     private void _init()
-	        throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
         iterations = new Parameter(this, "iterations", new IntToken(0));
         iterations.setTypeEquals(BaseType.INT);
     }
