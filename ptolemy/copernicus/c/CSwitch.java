@@ -596,14 +596,14 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             if (dummyLookupValue > maxLong) {
                 dummyLookupValue = maxLong;
                 code.append(Utilities.comment(
-                                    "Warning: index out of range of long: "
-                                    + "truncated by CSWitch.caseLookupSwitchStmt()"));
+                            "Warning: index out of range of long: "
+                            + "truncated by CSWitch.caseLookupSwitchStmt()"));
             }
             else if (dummyLookupValue < -maxLong) {
                 dummyLookupValue = -maxLong;
                 code.append(Utilities.comment(
-                                    "Warning: index out of range of long: "
-                                    + "truncated by CSWitch.caseLookupSwitchStmt()"));
+                            "Warning: index out of range of long: "
+                            + "truncated by CSWitch.caseLookupSwitchStmt()"));
             }
 
             code.append(_indent() + "case " + dummyLookupValue + ": goto "

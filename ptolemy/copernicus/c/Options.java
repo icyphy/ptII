@@ -34,44 +34,65 @@ import java.util.Hashtable;
    A class that keeps track of compiler options. All options are stored as
    key-value string pairs. Possible options are:
 
-   <p>
-   <b> verbose </b><br>
-   <i>true/false</i> Turns verbose mode on or off.
+    <p>
+    <b> verbose </b><br>
+    <i>true/false</i> Turns verbose mode on or off.
 
-   <p>
-   <b> compileMode </b> <br>
-   <i>singleClass</i> compiles only the given class, <br>
-   <i>full</i> generates all required files.
+    <p>
+    <b> compileMode </b> <br>
+    <i>singleClass</i> compiles only the given class, <br>
+    <i>full</i> generates all required files.
 
-   <p>
-   <b> pruneLevel </b> <br>
-   <i> 0 </i> no code pruning done. <br>
-   <i> 1 </i> Code Pruning done by CallGraphPruner.
+    <p>
+    <b> pruneLevel </b> <br>
+    <i> 0 </i> no code pruning done. <br>
+    <i> 1 </i> Code Pruning done by CallGraphPruner.
 
-   <p>
-   <b> vta </b> <br>
-   <i> true/false </i> Whether or not to perform Variable Type Analysis.
+    <p>
+    <b> vta </b> <br>
+    <i> true/false </i> Whether or not to perform Variable Type Analysis.
 
-   <p>
-   <b> lib </b> <br>
-   stores the path to the directory where library of generated files is
-   stored.
-   </DL>
+    <p>
+    <b> lib </b> <br>
+    stores the path to the directory where library of generated files is
+    stored.
 
-   <p>
-   <b> gcDir </b> <br>
-   stores the path to the directory containing the garbage collector. Not
-   using this option turns the collector off.
+    <p>
+    <b> gcDir </b> <br>
+    stores the path to the directory containing the garbage colloector. Not
+    using this option turns the collector off.
 
-   <p>
-   <b> target </b> <br>
-   <i> C6000 </i> The TMS320C6xxx series of processors. <br>
-   The target platform. A blank refers to a generic unix-like system. This
-   includes Cygwin installations on windows.
+    <p>
+    <b> target </b> <br>
+    <i> C6000 </i> The TMS320C6xxx series of processors. <br>
+    The target platform. A blank refers to a generic unix-like system. This
+    includes Cygwin installations on windows.
 
-   <p>
-   <b> runtimeDir </b> <br>
-   The path to the runtime directory.
+    <p>
+    <b> runtimeDir </b> <br>
+    The path to the runtime directory.
+
+    <p>
+    <b> ptII </b> <br>
+    The path to the ptII directory.
+
+    <p>
+    <b> compulsoryMethods </b> <br>
+    A semicolon-separated list of methods for which code must always be generated.
+    If more than one such entity is to be specified, the entire list may be
+    enclosed within double quotes. The complete method subsignature of the form
+    <pre> returnType class.method(arg1, arg2 ... ) </pre>
+    must be specified.
+
+    <p>
+    <b> cFlags </b> <br>
+    The GCC flags to be used in the makefile.
+
+    <p>
+    <b>reportEntities</b> <br>
+    <i> true/false </i> whether to output a summary of the number of classes,
+    methods and fields (entities) generated.
+
 
    @author Ankush Varma
    @version $Id$
@@ -92,6 +113,10 @@ public class Options {
         _optionTable.put("target", "");
         _optionTable.put("runtimeDir", "../runtime");
         _optionTable.put("vta", "true");
+        _optionTable.put("ptII", "../../../..");
+        _optionTable.put("compulsoryMethods", "");
+        _optionTable.put("cFlags", "-g -static -Wall -pedantic -I .");
+        _optionTable.put("reportEntities", "false");
     }
 
 
@@ -142,27 +167,32 @@ public class Options {
      * @param string The string to be checked.
      * @return True if it is a valid Option flag.
      */
-    public static boolean isValidOption(String string) {
-        if (string.equals("lib")
-                || string.equals("verbose")
-                || string.equals("compileMode")
-                || string.equals("pruneLevel")
-                || string.equals("gcDir")
-                || string.equals("target")
-                || string.equals("runtimeDir")
-                || string.equals("vta")) {
-            return true;
-        }
-        else {
-            return false;
-        }
-    }
+     public static boolean isValidOption(String string) {
+         if (string.equals("lib")
+               || string.equals("verbose")
+               || string.equals("compileMode")
+               || string.equals("pruneLevel")
+               || string.equals("gcDir")
+               || string.equals("target")
+               || string.equals("runtimeDir")
+               || string.equals("vta")
+               || string.equals("ptII")
+               || string.equals("compulsoryMethods")
+               || string.equals("cFlags")
+               || string.equals("reportEntities")
+               ){
+             return true;
+         }
+         else {
+             return false;
+         }
+     }
 
-    /** Checks if a given string is a valid option flag. A valid option
-     * flag is a "-" followed by a valid Option String.
-     * @param string The string to be checked.
-     * @return True if it is a valid option flag.
-     */
+     /** Checks if a given string is a valid option flag. A valid option
+      * flag is a "-" followed by a valid Option String.
+      * @param string The string to be checked.
+      * @return True if it is a valid option flag.
+      */
     public static boolean isValidFlag(String string) {
         if (string.startsWith("-")
                 && isValidOption(string.substring(1))) {

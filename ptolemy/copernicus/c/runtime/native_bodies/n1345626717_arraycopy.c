@@ -37,6 +37,12 @@ srcpos = n1;
 destpos = n3;
 length = n4;
 
+/* NULL arrays cannot be copied. If such a copy is requested, do nothing */
+if (src == NULL) {
+    /*printf("Warning: ArrayCopy asked to copy NULL array");*/
+    return;
+}
+
 /* check for out of bounds arrays.*/
 if (destpos*(dest->element_size) + length*(src->element_size) 
         > (dest->array_length)*(dest->element_size)) {
