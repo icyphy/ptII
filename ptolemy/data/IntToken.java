@@ -67,12 +67,12 @@ public class IntToken extends ScalarToken {
     public Token add(ptolemy.data.Token tok) throws IllegalActionException {
         int typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == CPO.STRICT_LESS) {
+            if (typeInfo == CPO.LOWER) {
                 return tok.addR(this);
             } else if (tok instanceof IntToken) {
                 int result = _value + ((IntToken)tok).getValue();
                 return new IntToken(result);
-            } else if (typeInfo == CPO.STRICT_GREATER) {
+            } else if (typeInfo == CPO.HIGHER) {
                 IntToken tmp = (IntToken)this.convert(tok);
                 int result = _value + tmp.getValue();
                 return new IntToken(result);
@@ -133,7 +133,7 @@ public class IntToken extends ScalarToken {
     public Token divide(Token tok) throws IllegalActionException {
         int typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == CPO.STRICT_LESS) {
+            if (typeInfo == CPO.LOWER) {
                 return tok.divideR(this);
             } else if (tok instanceof IntToken) {
                 double result = _value / ((IntToken)tok).doubleValue();
@@ -142,7 +142,7 @@ public class IntToken extends ScalarToken {
                 } else {
                     return new DoubleToken(result);
                 }
-            } else if (typeInfo == CPO.STRICT_GREATER) {
+            } else if (typeInfo == CPO.HIGHER) {
                 IntToken tmp = (IntToken)this.convert(tok);
                 double result = _value / tmp.doubleValue();
                 if ((result - (int)result) == 0) {
@@ -195,14 +195,14 @@ public class IntToken extends ScalarToken {
     public BooleanToken equality(Token tok) throws IllegalActionException {
         int typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == CPO.STRICT_LESS) {
+            if (typeInfo == CPO.LOWER) {
                 return tok.equality(this);
             } else if (tok instanceof IntToken) {
                 if ( _value == ((IntToken)tok).getValue()) {
                     return new BooleanToken(true);
                 }
                 return new BooleanToken(false);
-            } else if (typeInfo == CPO.STRICT_GREATER) {
+            } else if (typeInfo == CPO.HIGHER) {
                 IntToken tmp = (IntToken)this.convert(tok);
                 if ( _value == tmp.getValue()) {
                     return new BooleanToken(true);
@@ -261,12 +261,12 @@ public class IntToken extends ScalarToken {
     public Token modulo(Token tok) throws IllegalActionException {
         int typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == CPO.STRICT_LESS) {
+            if (typeInfo == CPO.LOWER) {
                 return tok.moduloR(this);
             } else if (tok instanceof IntToken) {
                 int result = _value % ((IntToken)tok).getValue();
                 return new IntToken(result);
-            } else if (typeInfo == CPO.STRICT_GREATER) {
+            } else if (typeInfo == CPO.HIGHER) {
                 IntToken tmp = (IntToken)this.convert(tok);
                 int result = _value % tmp.getValue();
                 return new IntToken(result);
@@ -306,12 +306,12 @@ public class IntToken extends ScalarToken {
     public Token multiply(Token tok) throws IllegalActionException {
         int typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == CPO.STRICT_LESS) {
+            if (typeInfo == CPO.LOWER) {
                 return tok.multiplyR(this);
             } else if (tok instanceof IntToken) {
                 int result = _value * ((IntToken)tok).getValue();
                 return new IntToken(result);
-            } else if (typeInfo == CPO.STRICT_GREATER){
+            } else if (typeInfo == CPO.HIGHER){
                 IntToken tmp = (IntToken)this.convert(tok);
                 int result = _value * tmp.getValue();
                 return new IntToken(result);
@@ -370,12 +370,12 @@ public class IntToken extends ScalarToken {
     public Token subtract(ptolemy.data.Token tok) throws IllegalActionException {
         int typeInfo = TypeCPO.compare(this, tok);
         try {
-            if (typeInfo == CPO.STRICT_LESS) {
+            if (typeInfo == CPO.LOWER) {
                 return tok.addR(this);
             } else if (tok instanceof IntToken) {
                 int result = _value -  ((IntToken)tok).getValue();
                 return new IntToken(result);
-            } else if (typeInfo == CPO.STRICT_GREATER){
+            } else if (typeInfo == CPO.HIGHER){
                 IntToken tmp = (IntToken)this.convert(tok);
                 int result = _value - tmp.getValue();
                 return new IntToken(result);
