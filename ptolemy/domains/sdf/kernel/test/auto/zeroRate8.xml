@@ -16,11 +16,17 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="267.0, 36.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 563}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 572}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.0, 227.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This test checks to see that actors that receive zero tokens are never fired.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 300.0]">
+        </property>
     </property>
     <entity name="SDFTestZeroRate1" class="ptolemy.domains.sdf.kernel.test.SDFTestZeroRate1">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
@@ -61,30 +67,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 175.0]">
         </property>
     </entity>
-    <entity name="Scale" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 175.0]">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-            </property>
-        </property>
-    </entity>
-    <entity name="Scale3" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 175.0]">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
-            </property>
-        </property>
-    </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1}">
         </property>
@@ -93,74 +75,60 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 240.0]">
         </property>
     </entity>
-    <entity name="Test9" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&quot;}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 175.0]">
+    <entity name="ThrowException" class="ptolemy.actor.lib.ThrowException">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 175.0]">
         </property>
     </entity>
-    <entity name="Scale2" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
+    <entity name="ThrowException2" class="ptolemy.actor.lib.ThrowException">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 245.0]">
         </property>
-        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[307.0, 265.0]">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 175.0]">
+        </property>
     </entity>
-    <entity name="Scale4" class="ptolemy.actor.lib.Scale">
-        <property name="factor" class="ptolemy.data.expr.Parameter" value="1">
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="scaleOnLeft" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 265.0]">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.AttributeValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="factor">
+        <doc>Create a constant sequence</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-    </entity>
-    <entity name="Copy1:Test9" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&quot;}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{510.0, 265.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 245.0]">
         </property>
     </entity>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="98.0, 175.0">
         </vertex>
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="{235.0, 175.0}">
         </vertex>
     </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="SDFTestZeroRate1.input" relation="relation"/>
     <link port="SDFTestZeroRate1.output" relation="relation3"/>
     <link port="Ramp.output" relation="relation"/>
-    <link port="Scale.input" relation="relation3"/>
-    <link port="Scale.output" relation="relation5"/>
-    <link port="Scale3.input" relation="relation5"/>
-    <link port="Scale3.output" relation="relation10"/>
     <link port="Test.input" relation="relation"/>
-    <link port="Test9.input" relation="relation10"/>
-    <link port="Scale2.input" relation="relation3"/>
-    <link port="Scale2.output" relation="relation6"/>
-    <link port="Scale4.input" relation="relation6"/>
-    <link port="Scale4.output" relation="relation8"/>
-    <link port="Copy1:Test9.input" relation="relation8"/>
+    <link port="ThrowException.input" relation="relation4"/>
+    <link port="ThrowException2.input" relation="relation2"/>
+    <link port="Const.output" relation="relation4"/>
+    <link port="Const.trigger" relation="relation3"/>
+    <link port="Const2.output" relation="relation2"/>
+    <link port="Const2.trigger" relation="relation3"/>
 </entity>
