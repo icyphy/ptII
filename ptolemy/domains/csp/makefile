@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/csp
 
-DIRS =		kernel lib demo
+DIRS =		kernel lib gui demo
 
 # Root of Ptolemy II directory
 ROOT =		../../..
@@ -50,7 +50,8 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		kernel/kernel.jar \
-		lib/lib.jar
+		lib/lib.jar \
+		gui/gui.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
