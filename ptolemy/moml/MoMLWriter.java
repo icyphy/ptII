@@ -237,10 +237,31 @@ public class MoMLWriter extends Writer {
                         // This sucks.  We should integrate with 
                         // the classloader mechanism.
                         MoMLParser parser = new MoMLParser();
-                        String source = "<entity name=\""
-                            + object.getName() + "\" class=\""
-                            + deferredClass + "\"/>";
-                        deferredObject = parser.parse(source);
+                        try {
+                            String source = "<entity name=\""
+                                + object.getName() + "\" class=\""
+                                + deferredClass + "\"/>";
+                            deferredObject = parser.parse(source);
+                        } catch (Exception ex) {
+                            // Damn, no workspace constructor.  Let's
+                            // try a container, name constructor.
+                            // It really would be nice if all of 
+                            // our actors had workspace constructors,
+                            // but version 1.0 only specified the
+                            // (container,name) constructor, and 
+                            // now we're stuck with it. 
+                            parser.reset();
+                            String source = "<entity name=\"test\""
+                                + "class=\"ptolemy.kernel.CompositeEntity\">\n"
+                                + "<entity name=\""
+                                + object.getName() + "\" class=\""
+                                + deferredClass + "\"/>\n" 
+                                + "</entity>";
+                            CompositeEntity toplevel = (CompositeEntity)
+                                parser.parse(source);
+                            deferredObject = 
+                                toplevel.getEntity(object.getName());
+                        }
                     }
                     if(deferredObject != null) {
                         deferredObject = (NamedObj)deferredObject.clone();
