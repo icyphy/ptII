@@ -120,7 +120,7 @@ public class UnitAttribute extends Attribute implements Settable {
                 + " name=\""
                 + name
                 + "\" class=\""
-                + getMoMLInfo().className
+                + getClassName()
                 + "\""
                 + valueTerm
                 + ">\n");
