@@ -1153,7 +1153,7 @@ echo "configure:1150: checking that $PTJAVA_DIR/bin/jar can handle -i" >&5
     "$PTJAVA_DIR/bin/jar" -cf jarTest.jar confTest.class
     if "$PTJAVA_DIR/bin/jar" -i jarTest.jar; then
         echo "$ac_t""$PTJAVA_DIR/bin/jar -i worked" 1>&6
-	JAR_INDEX='"$(JAR)" -i tmp.jar'
+	JAR_INDEX='"$(JAR)" -i $@'
     else
         { echo "configure: error: $PTJAVA_DIR/bin/jar -i jarTest.jar failed,
     so we will not index the jar files" 1>&2; exit 1; }
@@ -4135,7 +4135,7 @@ fi
 
 
 # Command to run that indexes a jar file named tmp.jar
-# Usually it looks like '"$(JAR)" -i tmp.jar'
+# Usually it looks like '"$(JAR)" -i $@'
 
 
 # Location of rt.jar, usually $(PTJAVA_DIR)/jre/lib/rt.jar
