@@ -240,7 +240,7 @@ test Ramp-3.1 {Run a CT model which will detect errors in scheduling} {
 #
 
 # Create a model with lots of Scale actors and run it
-proc manyScales {numberOfScaleActors} {
+proc manyScales {numberOfScaleActors {factor 1.1} } {
     set e0 [sdfModel 5]
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set scale [java::new ptolemy.actor.lib.Scale $e0 "scale-0"]
@@ -250,8 +250,8 @@ proc manyScales {numberOfScaleActors} {
 
     for {set i 1} { $i < $numberOfScaleActors} {incr i} {
 	set newScale [java::new ptolemy.actor.lib.Scale $e0 "scale-$i"]
-	set factor [getParameter $newScale factor]
-	$factor setExpression "1.1"
+	set factorParameter [getParameter $newScale factor]
+	$factorParameter setExpression $factor
 
         $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Transformer $scale] output] \
@@ -263,6 +263,11 @@ proc manyScales {numberOfScaleActors} {
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Transformer $scale] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    puts "$numberOfScaleActors actors"
+    [$e0 getManager] execute
+    [$e0 getManager] execute
+    [$e0 getManager] execute
+    [$e0 getManager] execute
     [$e0 getManager] execute
     return [enumToTokenValues [$rec getRecord 0]]
 }
@@ -277,4 +282,9 @@ test Ramp-4.2 {Test with 50 actors} {
 
 #test Ramp-4.3 {Test with 500 actors} {
 #    manyScales 500
-#} {}
+#} {0.0 4.5180381521022E20 9.0360763042045E20 1.3554114456307E21 1.8072152608409E21}
+
+
+#test Ramp-4.4 {Test with 5000 actors} {
+#    manyScales 5000 1.000001
+#} {0.0 4.5180381521022E20 9.0360763042045E20 1.3554114456307E21 1.8072152608409E21}
