@@ -115,11 +115,18 @@ test FSMDirector-4.1 {test action methods} {
     [java::field $src step] setExpression "3"
     set e1 [java::new ptolemy.domains.fsm.modal.ModalModel $e0 e1]
     set dir [java::cast ptolemy.domains.fsm.kernel.FSMDirector [$e1 getDirector]]
+#    The following commented statements were the way to construct
+#    a modal model before the ModalModel class was implemented.
+#    We use ModalModel class instead to avoid GraphConstructionException
+#    when constructing an IODependency of a modal model.
+#    set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
+#    set dir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 dir]
     set e2 [java::new ptolemy.actor.lib.Const $e1 e2]
     set tok [java::new {ptolemy.data.IntToken int} 6]
     [java::field $e2 value] setToken $tok
     set fsm [$e1 getController]
-    set p0 [java::new ptolemy.domains.fsm.modal.ModalPort $e1 p0]
+#    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e1 fsm]
+    set p0 [java::new ptolemy.actor.TypedIOPort $e1 p0]
     $p0 setInput true
     set r1 [java::new ptolemy.actor.TypedIORelation $e0 r1]
     [java::field [java::cast ptolemy.actor.lib.Source $src] output] link $r1
@@ -133,7 +140,7 @@ test FSMDirector-4.1 {test action methods} {
     $p0 link $r2
     $p1 link $r2
     [java::field [java::cast ptolemy.actor.lib.Source $e2] output] link $r2
-    set p3 [java::new ptolemy.domains.fsm.modal.ModalPort $e1 p3]
+    set p3 [java::new ptolemy.actor.TypedIOPort $e1 p3]
     $p3 setOutput true
     $p3 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
     set r3 [java::new ptolemy.actor.TypedIORelation $e1 r3]
