@@ -583,8 +583,11 @@ public class DoubleToken extends ScalarToken {
     ////                         private variables                 ////
     private double _value;
 
+    // The number of fractional digits here is determined by the place
+    // at which common numbers, such as one half, will get rounded to
+    // display nicely.
     private static DecimalFormat _regularFormat =
-    new DecimalFormat("#####0.0######");
+    new DecimalFormat("####0.0############");
     private static DecimalFormat _exponentialFormat =
-    new DecimalFormat("0.0######E0##");
+    new DecimalFormat("0.0############E0##");
 }

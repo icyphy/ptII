@@ -90,6 +90,46 @@ test DoubleToken-1.4 {Create a non-empty instance from an String} {
 ######################################################################
 ####
 # 
+test DoubleToken-1.5 {Create a non-empty instance from an String} {
+    set p [java::new {ptolemy.data.DoubleToken String} "0.000000000000000013"]
+    $p toString
+} {1.3E-17}
+
+######################################################################
+####
+# 
+test DoubleToken-1.6 {Create a non-empty instance from an String} {
+    set p [java::new {ptolemy.data.DoubleToken String} "130000000000000000"]
+    $p toString
+} {1.3E17}
+
+######################################################################
+####
+# 
+test DoubleToken-1.7 {Create a non-empty instance from an String} {
+    set p [java::new {ptolemy.data.DoubleToken String} "130000000000400000"]
+    $p toString
+} {1.300000000004E17}
+
+######################################################################
+####
+# 
+test DoubleToken-1.8 {Create a non-empty instance from an String} {
+    set p [java::new {ptolemy.data.DoubleToken String} "0.13000000000040000"]
+    $p toString
+} {0.1300000000004}
+
+######################################################################
+####
+# 
+test DoubleToken-1.9 {Create a non-empty instance from an String} {
+    set p [java::new {ptolemy.data.DoubleToken String} "0.000000000000000013000000000040000"]
+    $p toString
+} {1.300000000004E-17}
+
+######################################################################
+####
+# 
 test DoubleToken-2.0 {Create a non-empty instance and query its value as a Complex} {
     set p [java::new {ptolemy.data.DoubleToken double} 3.3]
     set res [$p complexValue]
@@ -200,7 +240,7 @@ test DoubleToken-4.1 {Test dividing doubles and ints.} {
     set res3 [$tok2 divide $tok1]
  
     list [$res1 toString] [$res2 toString] [$res3 toString]
-} {6.1 0.1639344 0.1639344}
+} {6.1 0.1639344262295 0.1639344262295}
 
 ######################################################################
 ####
