@@ -172,6 +172,15 @@ public class UnitSystem extends ScopeExtendingAttribute {
         _categories = 0;
         _categoryVector = new Vector();
     }
+    
+	/** Rturn the number of categories
+	 * @return The number of categories
+	 *  @since Ptolemy II 3.1
+	 */
+	public int getNumCategories() {
+		return _categories;
+	}
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -184,4 +193,6 @@ public class UnitSystem extends ScopeExtendingAttribute {
 
     // The vector that contains all registered categories ordered by index.
     private static Vector _categoryVector = new Vector();
+	
+
 }
