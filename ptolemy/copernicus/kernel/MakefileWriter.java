@@ -134,6 +134,35 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                     //        + "we copy the jar files and set the "
                     //        + "codebase to '.'");
                     codeBase = ".";
+                } else {
+                    if (codeBase.equals("..")) {
+                        if (outputDirectory.startsWith(ptIIDirectory)) {
+                            // If targetPackage is short, i.e. "Butterfly",
+                            // but we are writing to a subdirectory of
+                            // $PTII, then we should adjust the classpath
+                            // accordingly.
+
+                            // FIXME: separator could be \ instead /
+                            int start2 = outputDirectory.indexOf('/',
+                                    ptIIDirectory.length() + 2);
+                            StringBuffer buffer2 = new StringBuffer("..");
+                            while (start2 != -1) {
+                                buffer2.append("/..");
+                                start2 = outputDirectory.indexOf('/',
+                                        start2 + 1);
+                            }
+                            codeBase = buffer2.toString();
+                            System.out.println("MakefileWriter: codeBase was "
+                                    + ".., recalculated to " + codeBase); 
+
+                        }
+                    } else {
+                        System.out.println("WARNING: codeBase == .., which "
+                                + "usually means that there will be a problem "
+                                + "finding the jar files.  Resetting codeBase "
+                                + "to ., which will copy the jars");
+                        codeBase = ".";
+                    }
                 }
             } catch (IOException ex) {
                 System.out.println("_isSubdirectory threw an exception: "
