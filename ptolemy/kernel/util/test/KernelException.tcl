@@ -58,37 +58,37 @@ test KernelException-2.1 {Create a KernelException} {
 ######################################################################
 ####
 #
-test KernelException-7.1 {Create a KernelException with an unamed NamedObj \
-	and an unamed NamedObj and a detail message} {
+test KernelException-7.1 {Create a KernelException with an unnamed NamedObj \
+	and an unnamed NamedObj and a detail message} {
     set n1 [java::new ptolemy.kernel.util.NamedObj]
     set n2 [java::new ptolemy.kernel.util.NamedObj]
     set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{. and .:
+} {{Object names: <Unnamed Object> and <Unnamed Object>:
 Detail Message}}
 
 ######################################################################
 ####
 #
 test KernelException-7.2 {Create a KernelException with a named NamedObj \
-	and an unamed NamedObj and a detail Message} {
+	and an unnamed NamedObj and a detail Message} {
     set n1 [java::new ptolemy.kernel.util.NamedObj "NamedObj 1"]
     set n2 [java::new ptolemy.kernel.util.NamedObj]
     set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{.NamedObj 1 and .:
+} {{Object names: NamedObj 1 and <Unnamed Object>:
 Detail Message}}
 
 ######################################################################
 ####
 #
-test KernelException-7.3 {Create a KernelException with an unamed NamedObj \
+test KernelException-7.3 {Create a KernelException with an unnamed NamedObj \
 	and a named NamedObj and a detail message} {
     set n1 [java::new ptolemy.kernel.util.NamedObj]
     set n2 [java::new ptolemy.kernel.util.NamedObj "NamedObj 2"]
     set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 "Detail Message"]
     list [$pe getLocalizedMessage]
-} {{. and .NamedObj 2:
+} {{Object names: <Unnamed Object> and NamedObj 2:
 Detail Message}}
 
 ######################################################################
@@ -100,16 +100,50 @@ test KernelException-7.4 {Create a KernelException with a named NamedObj \
     set n2 [java::new ptolemy.kernel.util.NamedObj "NamedObj 2"]
     set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
-} {{.NamedObj 1 and .NamedObj 2:
+} {{Object names: NamedObj 1 and NamedObj 2:
 Detail Message}}
 
 ######################################################################
 ####
 #
 test KernelException-7.5 {Create a KernelException with a unnamed NamedObj \
-	and an unamed NamedObj and a null message} {
+	and an unnamed NamedObj and a null message} {
     set n1 [java::new ptolemy.kernel.util.NamedObj]
     set n2 [java::new ptolemy.kernel.util.NamedObj]
     set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 [java::null]]
     list [$pe getMessage]
-} {{. and .}}
+} {{Object names: <Unnamed Object> and <Unnamed Object>}}
+
+######################################################################
+####
+#
+test KernelException-7.6 {Create a KernelException with a null NamedObj \
+	and an unnamed NamedObj and a null message} {
+    set n1 [java::null]
+    set n2 [java::new ptolemy.kernel.util.NamedObj]
+    set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 [java::null]]
+    list [$pe getMessage]
+} {{Object name: <Unnamed Object>}}
+
+
+######################################################################
+####
+#
+test KernelException-7.7 {Create a KernelException with an unnamed NamedObj \
+	and a null NamedObj and a null message} {
+    set n1 [java::new ptolemy.kernel.util.NamedObj]
+    set n2 [java::null]
+    set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 [java::null]]
+    list [$pe getMessage]
+} {{Object name: <Unnamed Object>}}
+
+######################################################################
+####
+#
+test KernelException-7.8 {Create a KernelException with null NamedObj \
+	and a null NamedObj and a null message} {
+    set n1 [java::null]
+    set n2 [java::null]
+    set pe [java::new ptolemy.kernel.util.KernelException $n1 $n2 [java::null]]
+    list [$pe getMessage]
+} {{}}
