@@ -82,6 +82,7 @@
             <input source="ptolemy/configs/automataActorLibrary.xml"/>
 	    <!-- Chic actors are not being shipped in 4.0 -->
             <!-- input source="ptolemy/chic/chic.xml"/ -->
+            <input source="ptolemy/codegen/codegen.xml"/>
 	    <!-- Colt actors generate random numbers -->
             <input source="ptolemy/actor/lib/colt/colt.xml"/>
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
@@ -105,7 +106,6 @@
             <input source="ptolemy/matlab/matlab.xml"/>
             <input source="ptolemy/actor/lib/python/python.xml"/>
             <input source="ptolemy/actor/lib/test.xml"/>
-            <input source="ptolemy/codegen/codegen.xml"/>
             <input source="ptolemy/actor/lib/security/security.xml"/>
             <input source="ptolemy/domains/wireless/wireless.xml"/>
         <!-- x10 actors depend on the x10 library in vendor/misc/x10 -->
