@@ -64,11 +64,10 @@ JARFILE = 	$(TYPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	FIFOQueue.java \
-	Sortable.java \
-	SortedQueue.java \
-	SortBinWidth.java \
-	TimeStamp.java
+	CalendarQueue.java \
+	CQComparator.java \
+	DoubleCQComparator.java \
+	FIFOQueue.java 
 
 EXTRA_SRCS =	$(JSRCS)
 
