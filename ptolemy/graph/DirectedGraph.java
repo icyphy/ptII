@@ -203,22 +203,6 @@ public class DirectedGraph extends Graph {
                                    nodes(Arrays.asList(weights))));
     }
 
-    /** Given a collection of nodes, get the connected subgraph.
-     *  @return A 
-     * 
-     * @param nodes
-     * @param graph
-     */
-    public DirectedGraph connectedSubGraph (Collection nodes) {
-        DirectedGraph graph = new DirectedGraph();
-        Collection dummyCollection = new LinkedList();
-        Iterator nodesIterator = nodes.iterator();
-        while (nodesIterator.hasNext()) {
-            Node node = (Node) nodesIterator.next();
-            _connectedSubGraph(node, graph, dummyCollection);
-        }
-        return graph;
-    }
 
     /** Return the nodes that are in cycles. If there are multiple cycles,
      *  the nodes in all the cycles will be returned.
@@ -611,7 +595,7 @@ public class DirectedGraph extends Graph {
         return (Collection)_sourceNodeAnalysis.nodes();
     }
 
-    /** Return a list of disconnected subgraphs of this subgraph. 
+    /** Return a list of disconnected subgraphs of this graph. 
      */
     public LinkedList subgraphs() {
         LinkedList subgraphList = new LinkedList();
