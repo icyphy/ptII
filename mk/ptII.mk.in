@@ -90,10 +90,10 @@ JAVA =		$(PTJAVA_DIR)/bin/java
 
 # JavaCC is the Java Compiler Compiler which is used by ptolemy.data.expr
 # The default location is $(PTII)/vendors/sun/JavaCC
-JAVACCDIR =	@JAVACC_DIR@
+JAVACC_DIR =	@JAVACC_DIR@
 # Under Unix:
-# JJTREE =	$(JAVACCDIR)/bin/jjtree
-# JAVACC =	$(JAVACCDIR)/bin/javacc
+# JJTREE =	$(JAVACC_DIR)/bin/jjtree
+# JAVACC =	$(JAVACC_DIR)/bin/javacc
 # Under Cygwin32 NT the following should be used and JavaCC.zip must be in 
 # the CLASSPATH
 # JJTREE = 	$(JAVA) COM.sun.labs.jjtree.Main
