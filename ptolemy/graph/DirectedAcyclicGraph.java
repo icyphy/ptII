@@ -52,6 +52,9 @@ and a finite CPO. In the case of CPO, the <code>Object</code>s representing
 nodes of the graph are CPO elements. The CPO does not require the bottom
 element to exist. The call to <code>bottom()</code> returns
 <code>null</code> if the bottom element does not exist.
+<p>
+NOTE: This class is a starting point for building graph related
+functionality. More methods will be added.
 
 @author Yuhong Xiong
 $Id$

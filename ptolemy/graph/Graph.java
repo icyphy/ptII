@@ -1,4 +1,4 @@
-/* An undirected graph.
+/* A basic graph.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -32,11 +32,14 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Graph
 /** 
-An undirected graph.
+A basic graph.
 This class is evolved from the staticGraph class written by Jie Liu.
 Each node in the graph is represented by an Object. To construct a graph,
 use <code>add()</code> to add nodes and <code>addEdge()</code> to add
 edges between nodes.
+<p>
+NOTE: This class is a starting point for building graph related
+functionality. More methods will be added.
 
 @author Yuhong Xiong, Jie Liu 
 $Id$

@@ -38,6 +38,9 @@ import java.util.*;
 /** 
 A directed graph and some graph algorithms.
 This class is evolved from the StaticGraph class written by Jie Liu.
+<p>
+NOTE: This class is a starting point for building graph related
+functionality. More methods will be added.
 
 @author Yuhong Xiong, Jie Liu
 $Id$
