@@ -42,7 +42,7 @@ import java.lang.Math.*;
 ///////////////////////////////////////////////////////////////
 /// RectangularToPolar
 /** This actor takes in two double tokens xValue and yValue (rectangular)
- *  from two different ports and gives back two double tokens radius and 
+ *  from two different ports and gives back two double tokens radius and
     angle (polar) to two different ports.
 
 @author Michael Leung
@@ -69,24 +69,26 @@ public class RectangularToPolar extends Transformer {
         yInput = new TypedIOPort(this, "yInput", true, false);
         yInput.setTypeEquals(DoubleToken.class);
 
-        magOutput = new TypedIOPort(this, "magOutput", false, true);
-        magOutput.setTypeEquals(DoubleToken.class);
+        magnitudeOutput = new TypedIOPort(this, "magnitudeOutput", false, true);
+        magnitudeOutput.setTypeEquals(DoubleToken.class);
 
-        angOutput = new TypedIOPort(this, "angOutput", false, true);
-        angOutput.setTypeEquals(DoubleToken.class);
+        angleOutput = new TypedIOPort(this, "angleOutput", false, true);
+        angleOutput.setTypeEquals(DoubleToken.class);
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The input port. */
+    /** The xValue part. This has type DoubleToken. */
     public TypedIOPort xInput;
+    /** The xValue part. This has type DoubleToken. */
     public TypedIOPort yInput;
 
-    /** The output ports. */
-    public TypedIOPort magOutput;
-    public TypedIOPort angOutput;
+    /** The magnitude part. This has type DoubleToken. */
+    public TypedIOPort magnitudeOutput;
+    /** The angle part. This has type DoubleToken. */
+    public TypedIOPort angleOutput;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -102,8 +104,8 @@ public class RectangularToPolar extends Transformer {
             RectangularToPolar newobj = (RectangularToPolar)(super.clone(ws));
             newobj.xInput = (TypedIOPort)newobj.getPort("xInput");
             newobj.yInput = (TypedIOPort)newobj.getPort("yInput");
-            newobj.magOutput = (TypedIOPort)newobj.getPort("magOutput");
-            newobj.angOutput = (TypedIOPort)newobj.getPort("angOutput");
+            newobj.magnitudeOutput = (TypedIOPort)newobj.getPort("magnitudeOutput");
+            newobj.angleOutput = (TypedIOPort)newobj.getPort("angleOutput");
                 return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -112,39 +114,30 @@ public class RectangularToPolar extends Transformer {
         }
     }
 
-    /** initialization
+    /** Consume two double token representing the rectangular coordinate
+     *  from two separate input ports and output two new double tokens
+     *  of polar representation of the input tokens to two separate output
+     *  ports.
+     *
+     *  @exception IllegalActionException will be thrown if attempt to
+     *  fire this actor when there is no director.
      */
 
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-    
-    }  
-
-    /** Consume the inputs and produce the outputs of the RectangularToPolar
-     *  actor.
-     *
-     *  magnitude = square root of x*x and y*y.
-     *  angle = arctan(y/x).
-     *  (where x and y are the rectangular inputs and calculations of
-     *   angle are in radian domain)  
-     *
-     *  @exception IllegalActionException Not Thrown.
-     */
     public void fire() throws IllegalActionException {
 
-        DoubleToken xValue = (DoubleToken) (xInput.get(0));    
+        DoubleToken xValue = (DoubleToken) (xInput.get(0));
         double x = xValue.doubleValue();
-        DoubleToken yValue = (DoubleToken) (yInput.get(0));    
+        DoubleToken yValue = (DoubleToken) (yInput.get(0));
         double y = yValue.doubleValue();
 
-        double mag = Math.sqrt(x*x + y*y);
-        double ang = Math.atan(y/x);
+        double magnitudeValue = Math.sqrt(x*x + y*y);
+        double angleValue = Math.atan(y/x);
 
-        DoubleToken magnitude = new DoubleToken (mag);
-        DoubleToken angle = new DoubleToken (ang);
-       
-        magOutput.broadcast(magnitude);
-        angOutput.broadcast(angle);
+        DoubleToken magnitude = new DoubleToken (magnitudeValue);
+        DoubleToken angle = new DoubleToken (angleValue);
+
+        magnitudeOutput.broadcast(magnitude);
+        angleOutput.broadcast(angle);
     }
 }
 
