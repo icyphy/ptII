@@ -206,7 +206,7 @@ public class MoMLApplet extends PtolemyApplet {
         MoMLParser parser = new MoMLParser();
 	if (filterGraphicalClasses) {
 	    // Filter out graphical classes so that we do not require diva.jar
-	    parser.setMoMLFilter(new FilterOutGraphicalClasses()); 
+	    parser.addMoMLFilter(new FilterOutGraphicalClasses()); 
 	}
         URL docBase = getDocumentBase();
         URL xmlFile = new URL(docBase, modelURL);
