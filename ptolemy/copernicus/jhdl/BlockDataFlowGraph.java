@@ -53,6 +53,7 @@ import soot.jimple.IfStmt;
 import soot.jimple.GotoStmt;
 import soot.jimple.IdentityStmt;
 import soot.jimple.InstanceFieldRef;
+import soot.jimple.StaticFieldRef;
 
 import soot.jimple.toolkits.invoke.MethodCallGraph;
 import soot.jimple.toolkits.invoke.SiteInliner;
@@ -74,6 +75,7 @@ import soot.toolkits.graph.Block;
 import soot.toolkits.graph.CompleteUnitGraph;
 
 import java.util.Iterator;
+import java.util.Collection;
 import java.util.List;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -110,7 +112,7 @@ public class BlockDataFlowGraph extends DirectedGraph {
      * Constructor iterates through the statements found within the
      * Block to create a dataflow graph of the block behavior.
      **/
-    BlockDataFlowGraph(Block block) throws IllegalActionException {
+    public BlockDataFlowGraph(Block block) throws IllegalActionException {
 
 	super();
 	_block = block;	
@@ -160,20 +162,71 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	return _requiredNodeSet;
     }
 
+    /** This method will remove internal variable nodes. **/
+    public void trimStackVariableNodes() throws IllegalActionException {
+	ArrayList al = new ArrayList();
+	for (Iterator i = nodes().iterator(); i.hasNext();) {
+	    Node node = (Node) i.next();
+	    Value nvalue = (Value) node.weight();
+	    if (inputEdgeCount(node) == 1 &&
+		outputEdgeCount(node) == 1 &&
+		(nvalue instanceof Local) &&
+		((Local)nvalue).getName().startsWith("$")) {
+		// Found a stack variable.
+		//System.out.println("trim "+((Local)nvalue).getName());
 
-    public Node[] getInputNodes() {
+		// 1. Identify source node to stack variable node. Remove
+		//    edge from source node to stack variable node.
+		Node sourceNode=null;
+		for (Iterator j=inputEdges(node).iterator();j.hasNext();) {
+ 		    Edge e = (Edge) j.next();
+		    Node s = e.source();
+		    if (sourceNode == null) {
+			sourceNode = s;
+		    } else
+			throw new IllegalActionException("More than one source to a stack variable");
+		}
+		if (sourceNode == null)
+		    throw new IllegalActionException("No source to a stack variable");
+
+		// 2. Identify all outgoing edges of stack variable node. 
+		//    Remove these edges and add a new edge with same weight,
+		//    and originating from sourceNode.
+		for (Iterator j=outputEdges(node).iterator();j.hasNext();) {
+		    Edge e = (Edge) j.next();
+		    Object weight = e.weight();
+		    if (weight == null)
+			addEdge(sourceNode,e.sink());
+		    else
+			addEdge(sourceNode,e.sink(),weight);
+		}
+		// 3. Remove stack variable node
+		al.add(node);
+ 	    } 
+	}
+	// Now, remove all nodes that have been saved.
+	for (Iterator i=al.iterator();i.hasNext();) {
+	    Node n = (Node) i.next();
+	    removeNode(n);
+	}
+    }
+
+    public Collection getInputNodes() {
 	ArrayList nodes = new ArrayList();
 	// iterate over all nodes in the graph
 	for (Iterator i = nodes().iterator(); i.hasNext();) {
 	    Node node = (Node) i.next();
-	    // if node has no input edges, it is considered an input Node
-	    if (inputEdgeCount(node) == 0)
+	    // if node has no input edges and it isn't a constant, 
+	    // it is considered an input Node
+	    if (inputEdgeCount(node) == 0 && 
+		!(node.weight() instanceof Constant) ) {
 		nodes.add(node);
+	    }
 	}
-	return (Node[]) nodes.toArray();
+	return nodes;
     }
 
-    public Node[] getOutputNodes() {
+    public Collection getOutputNodes() {
 	ArrayList nodes = new ArrayList();
 	// iterate over all nodes in the graph
 	for (Iterator i = nodes().iterator(); i.hasNext();) {
@@ -182,13 +235,44 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	    if (outputEdgeCount(node) == 0)
 		nodes.add(node);
 	}
-	return (Node[]) nodes.toArray();
+	return nodes;
     }
 
     /** Combine input dataflow graph *after* current dataflow
      * graph. Connect appropriate edges (i.e. variables)
      **/
-    public void combineSerial(BlockDataFlowGraph block) {
+    public void combineSerial(BlockDataFlowGraph block) {	
+	HashMap newNodes = new HashMap(); // a hashmap between old nodes & new
+
+	// Iterate through all nodes and add to graph
+	for (Iterator i = block.nodes().iterator(); i.hasNext();) {
+	    Node node = (Node) i.next();	    
+	    Object weight = node.weight();
+
+	    // is there a source for this weight?
+	    Node source = null;
+	    if (containsNodeWeight(weight))
+		source = node(weight);
+	    Node new_node = null;
+	    if (source == null) {
+		new_node = addNode(new Node(weight));
+		newNodes.put(node,new_node);
+	    } else {
+		newNodes.put(node,source);
+	    }
+	}
+	// Iterate through all edges and add to graph
+	for (Iterator i = block.edges().iterator(); i.hasNext();) {
+	    Edge e = (Edge) i.next();
+	    Node src = e.source();
+	    Node snk = e.sink();
+	    Node new_src = (Node)newNodes.get(src);
+	    Node new_snk = (Node)newNodes.get(snk);
+	    if (e.hasWeight())
+		addEdge(new_src,new_snk,e.weight());
+	    else
+		addEdge(new_src,new_snk);
+	}
     }
 
     /**
@@ -227,6 +311,8 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	    rightOpNode = _processInstanceInvokeExpr((InstanceInvokeExpr) rightOp);
 	} else if(rightOp instanceof Constant){
 	    rightOpNode = _processConstant((Constant) rightOp);
+	} else if(rightOp instanceof StaticFieldRef){
+	    rightOpNode = _processStaticFieldRef((StaticFieldRef) rightOp);
 	} else {
 	    throw new IllegalActionException("Unsupported Assign Statement right op="+
 					     rightOp.getClass().getName());
@@ -295,6 +381,10 @@ public class BlockDataFlowGraph extends DirectedGraph {
 
     protected Node _processLocal(Local l) {
 	return _getNodeFromValue(l);
+    }
+
+    protected Node _processStaticFieldRef(StaticFieldRef sfr) {
+	return _getNodeFromValue(sfr);
     }
 
     protected Node _processInstanceFieldRef(InstanceFieldRef ifr) {

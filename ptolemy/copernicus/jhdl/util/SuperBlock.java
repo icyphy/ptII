@@ -250,18 +250,21 @@ public class SuperBlock implements GraphNode {
 
 	OUTER: while (!done) {
 
-	    //Iterate over all labels...
+	    //Iterate over all labels
+	    //  get all keys in hashMap
 	    for (Iterator blocks = _labels.keySet().iterator(); blocks.hasNext();){
 		GraphNode key = (GraphNode)blocks.next();
 		Vector labelVector = (Vector)_labels.get(key);
+		// get all Labels in vector associated within given key
 		for (Iterator labels = labelVector.iterator(); labels.hasNext();){
 		    Label label = (Label)labels.next();
 		    
-		    //Now we need to iterate over the labels again...
+		    //Now we need to iterate over the labels again (compare all labels against each other)
 		    for (Iterator blocks2 = _labels.keySet().iterator(); blocks2.hasNext();){
 			GraphNode key2 = (GraphNode)blocks2.next();
 			Vector labelVector2 = (Vector)_labels.get(key2);
 			for (Iterator labels2 = labelVector2.iterator(); labels2.hasNext();){
+
 			    Label label2 = (Label)labels2.next();
 			    //Do a pairwise comparison
 			    if ((label != label2) && label.canCombine(label2)){

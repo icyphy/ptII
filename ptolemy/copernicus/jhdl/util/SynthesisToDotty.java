@@ -45,7 +45,7 @@ Convert a Soot DirectedGraph to dotty notation.
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class SynthesisToDotty {
+public class SynthesisToDotty extends GraphToDotty {
 
     /**
      * Return a string which contains the DirectedGraph in dotty form
@@ -200,51 +200,8 @@ public class SynthesisToDotty {
 	return sb.toString();
     }
 
-    
-    /**
-     * Converts all the special characters in <code>str</code> (like newlines
-     * and quotes) to escape sequences (like \n)
-     *
-     * Courtesy of Nathan Kitchen
-     */
-    public static String convertSpecialsToEscapes(String str) {
-	StringBuffer strBuf = new StringBuffer();
-	for (int i = 0; i < str.length(); i++) {
-	    char c = str.charAt(i);
-	    switch (c) {
-	    case '\n':
-		strBuf.append("\\n");
-		break;
-	    case '\t':
-		strBuf.append("\\t");
-		break;
-	    case '\r':
-		strBuf.append("\\r");
-		break;
-	    case '\"':
-		strBuf.append("\\\"");
-		break;
-	    case '\'':
-		strBuf.append("\\\'");
-		break;
-	    case '\b':
-		strBuf.append("\\b");
-		break;
-	    case '\f':
-		strBuf.append("\\f");
-		break;
-	    case '\\':
-		strBuf.append("\\\\");
-		break;
-	    default:
-		strBuf.append(c);
-	    }
-	}
-	return strBuf.toString();
-    }
-
     public static void writeDotFile(String basename, DirectedGraph g) {
-	String filename = basename + ".dot";
+	String filename = validFileName(basename) + ".dot";
 	System.out.println("Writing "+filename);
 	try {
 	    FileWriter dotFile=new FileWriter(filename);

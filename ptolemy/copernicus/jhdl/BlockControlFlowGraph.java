@@ -109,6 +109,21 @@ public class BlockControlFlowGraph extends DirectedGraph {
 	}
     }
 
+    /*
+    public static ArrayList conditionLeafs(Block source, ArrayList list) {
+	// 1. If list==null, Make sure source ends with an IF
+	//    Initialize list to null
+	//    Visit successors
+	// 2. If list!=null
+	//       If visited, exit
+	//       If is only an if statement
+	//          mark node as visited
+	//          Visit successors
+	//       If is not only an if statement
+	//          add self to list and return
+    }
+    */
+
     public void controlFlowAnalysis() throws IllegalActionException {
 	// perform a topological sort on the graph
 	Object sortedNodes[] = attemptTopologicalSort(nodes()).toArray();

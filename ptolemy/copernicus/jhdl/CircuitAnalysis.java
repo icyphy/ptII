@@ -70,11 +70,13 @@ import ptolemy.graph.Node;
 import ptolemy.graph.Edge;
 import ptolemy.copernicus.kernel.*;
 import ptolemy.copernicus.java.*;
+import ptolemy.copernicus.jhdl.util.GraphToDotty;
 import ptolemy.copernicus.jhdl.util.SuperBlock;
 import ptolemy.copernicus.jhdl.util.GraphNode;
 import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
 import ptolemy.copernicus.jhdl.util.SynthesisToDotty;
 import ptolemy.copernicus.jhdl.util.BlockGraphToDotty;
+import ptolemy.copernicus.jhdl.util.MergedControlFlowGraph;
 
 //////////////////////////////////////////////////////////////////////////
 //// CircuitAnalysis
@@ -87,7 +89,8 @@ import ptolemy.copernicus.jhdl.util.BlockGraphToDotty;
 public class CircuitAnalysis {
     /** Construct a new analysis
      */
-    public CircuitAnalysis(Entity entity, SootClass theClass) {
+    public CircuitAnalysis(Entity entity, SootClass theClass) 
+    throws IllegalActionException {
 	DirectedGraph graph = new DirectedGraph();
         _graph = graph;
        
@@ -107,39 +110,29 @@ public class CircuitAnalysis {
         // are not sample delays.
         _requiredNodeMap = new HashMap();
 
-	//  	try {
-	//  	  byucc.util.flowgraph.JavaControlFlowGraph jcfg =
-	//  	    new byucc.util.flowgraph.JavaControlFlowGraph(theClass.toString(),"fire");
-
-	//  	  Iterator it = jcfg.getAllNodes().iterator();
-	//  	  while (it.hasNext()) {
-	//  	    ((byucc.util.newgraph.Node) it.next()).setDotLabelFromToString();
-	//  	  }
-
-	//  	  jcfg.writeDotFile(theClass.toString()+".dot");
-	//  	  jcfg.writeDataFlowDotFile(theClass.toString()+"_df.dot");
-	//  	}
-	//  	catch (IOException e){
-	//  	  System.out.println(e);
-	//  	}
-
-	DirectedGraph prefire_graph = new DirectedGraph();
-	DirectedGraph fire_graph = new DirectedGraph();
-	DirectedGraph postfire_graph = new DirectedGraph();
+	DirectedGraph prefire_graph=null;
+	DirectedGraph fire_graph=null;
+	DirectedGraph postfire_graph=null;
 	
         if(theClass.declaresMethodByName("prefire")) {
-            _analyze(prefire_graph, theClass.getMethodByName("prefire"));
+            prefire_graph = 
+		_analyzeMethod(theClass.getMethodByName("prefire"));
+//              _analyze(prefire_graph, theClass.getMethodByName("prefire"));
         }
         if(theClass.declaresMethodByName("fire")) {
-            _analyze(fire_graph, theClass.getMethodByName("fire"));
+	    fire_graph = 
+		_analyzeMethod(theClass.getMethodByName("fire"));
+//              _analyze(fire_graph, theClass.getMethodByName("fire"));
         }
         if(theClass.declaresMethodByName("postfire")) {
-            _analyze(postfire_graph, theClass.getMethodByName("postfire"));
+	    postfire_graph = 
+		_analyzeMethod(theClass.getMethodByName("postfire"));
+//              _analyze(postfire_graph, theClass.getMethodByName("postfire"));
         }
 
-	_appendGraph(graph, prefire_graph);
-	_appendGraph(graph, fire_graph);
-	_appendGraph(graph, postfire_graph);
+//  	_appendGraph(graph, prefire_graph);
+//  	_appendGraph(graph, fire_graph);
+//  	_appendGraph(graph, postfire_graph);
 
         // get rid of non-essential nodes of 
 //          boolean changed = true;
@@ -161,7 +154,8 @@ public class CircuitAnalysis {
 //              }
 //          }
 
-	SynthesisToDotty.writeDotFile(entity.getName(),graph);
+	SynthesisToDotty.writeDotFile(GraphToDotty.validFileName(entity.getName()),
+				      fire_graph);
 
 	/* This isn't ready yet.. this should act on graphs at each node,
 	   not the top-level control flow graph
@@ -280,6 +274,15 @@ public class CircuitAnalysis {
     }
 
     /**
+     **/
+    protected DirectedGraph _analyzeMethod(SootMethod method) 
+	throws IllegalActionException {
+        Body body = method.retrieveActiveBody();
+  	MergedControlFlowGraph mcfg = new MergedControlFlowGraph(body);
+	return mcfg;
+    }
+
+    /**
      * This is the main method of the class. This method will
      * take a SootMethod and created a new directed graph for
      * the method of interest.
@@ -289,15 +292,16 @@ public class CircuitAnalysis {
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
         // this will help us figure out where locals are defined.
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
-        SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
+        SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, 
+							localDefs);
 
-	//Inline methods
+	// Inline methods? (Use Nathan's inliner?)
 	Inliner inliner = getInliner();
 	inliner.inline(body);
 	
 	BriefBlockGraph bbgraph=new BriefBlockGraph(body);
-	System.out.println("//BlockGraph for Method:"+ method.getName()+"\n"+
-			   BlockGraphToDotty.convert(bbgraph, "bbgraph"));
+//  	System.out.println("//BlockGraph for Method:"+ method.getName()+"\n"+
+//  			   BlockGraphToDotty.convert(bbgraph, "bbgraph"));
 	List blockList=bbgraph.getBlocks();
 	BlockDataFlowGraph dataFlowGraph=null;
 	Map blockToSuperBlockMap = new HashMap();

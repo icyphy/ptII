@@ -113,114 +113,7 @@ public class CircuitTransformer extends SceneTransformer {
 	// Step 1. Create a DirectedGraph that matches
 	//         the topology of the model
 	//////////////////////////////////////////////
-
-        DirectedGraph combinedGraph = new DirectedGraph();	
-        // Loop over all the actor instance classes.
-        for(Iterator i = _model.entityList().iterator(); i.hasNext();) {
-            Entity entity = (Entity)i.next();
-
-	    // add Node to graph corresponding to entity
-	    combinedGraph.addNodeWeight(entity);
-
-	    // iterate over all outPorts and add Node corresponding
-	    // to port. Also add edge between entity and port
-	    for (Iterator outPorts = 
-		   ((TypedAtomicActor)entity).outputPortList().iterator();
-		 outPorts.hasNext();){
-		Object port=outPorts.next();
-		combinedGraph.addNodeWeight(port);
-		combinedGraph.addEdge(entity, port);
-	    }
-
-	    // iterate over all inPorts and add Node corresponding
-	    // to port. Also add edge between entity and port
-	    for (Iterator inPorts = 
-		   ((TypedAtomicActor)entity).inputPortList().iterator();
-		 inPorts.hasNext();){
-		Object port=inPorts.next();
-		combinedGraph.addNodeWeight(port);
-		combinedGraph.addEdge(port, entity);
-	    }
-
-	    //              CircuitAnalysis analysis =
-	    //                  new CircuitAnalysis(entity, entityClass);
-	    //              HashMutableDirectedGraph operatorGraph =
-	    //                  analysis.getOperatorGraph();
-            
-	    //              for(Iterator nodes = operatorGraph.getNodes().iterator();
-	    //                  nodes.hasNext();) {
-	    //                  Object node = nodes.next();
-	    //                  combinedGraph.addNode(node);
-	    //              }
-	    //              for(Iterator nodes = operatorGraph.getNodes().iterator();
-	    //                  nodes.hasNext();) {
-	    //                  Object node = nodes.next();
-	    //                  List succList = new LinkedList(operatorGraph.getSuccsOf(node));
-	    //                  for(Iterator succs = succList.iterator();
-	    //                      succs.hasNext();) {
-	    //                      Object succ = succs.next();
-	    //                      combinedGraph.addEdge(node, succ);
-	    //                  }
-	    //              }
-        }
-        
-	//          Set removeSet = new HashSet();
-
-	// Connect top-level inputPorts to the ports of the connected
-	// actors
-	for (Iterator inputPorts=_model.inputPortList().iterator();
-	     inputPorts.hasNext();){
-	    IOPort port = (IOPort)inputPorts.next();
-	  
-	    for(Iterator remoteports = port.connectedPortList().iterator();
-		remoteports.hasNext();) {
-		IOPort remotePort = (IOPort)remoteports.next();
-		// TODO: this looks like a bug - port has
-		// not been added to the graph?
-		combinedGraph.addEdge(port, remotePort);
-		//  	    removeSet.add(port);
-		//  	    removeSet.add(remotePort);
-	    }	  
-	}
-
-	// Add edges to the DAG to match the topology of the
-	// connections between individual actors
-        for(Iterator entities = _model.entityList().iterator();
-            entities.hasNext();) {
-            TypedAtomicActor actor = (TypedAtomicActor)entities.next();
-         
-            for(Iterator ports = actor.outputPortList().iterator();
-                ports.hasNext();) {
-                IOPort port = (IOPort)ports.next();
-                
-                for(Iterator remoteports = port.connectedPortList().iterator();
-                    remoteports.hasNext();) {
-                    IOPort remotePort = (IOPort)remoteports.next();
-                    combinedGraph.addEdge(port, remotePort);
-		    //                      removeSet.add(port);
-		    //                      removeSet.add(remotePort);
-                }
-            }
-        }
-
-	// Write out model
-	PtDirectedGraphToDotty.writeDotFile("model",combinedGraph); 
-
-	//          // remove the extra nodes for ports.
-	//          for(Iterator nodes = removeSet.iterator();
-	//              nodes.hasNext();) {
-	//              Object node = nodes.next();
-	//              // Then remove the node.
-	//              for(Iterator preds = combinedGraph.getPredsOf(node).iterator();
-	//                  preds.hasNext();) {
-	//                  Object pred = preds.next();
-	//                  for(Iterator succs = combinedGraph.getSuccsOf(node).iterator();
-	//                      succs.hasNext();) {
-	//                      Object succ = succs.next();
-	//                      combinedGraph.addEdge(pred, succ);
-	//                  }
-	//              }
-	//          }
+        DirectedGraph combinedGraph = _createModelGraph(_model);
             
 	//////////////////////////////////////////////
 	// Step 2. Call 'CircuitAnalysis' on each actor
@@ -246,8 +139,14 @@ public class CircuitTransformer extends SceneTransformer {
 	    SootClass entityClass = 
 		Scene.v().loadClassAndSupport(className);
 
-	    CircuitAnalysis analysis =
-		new CircuitAnalysis((Entity)cnode.weight(), entityClass);
+	    CircuitAnalysis analysis=null;
+	    try {
+		analysis =
+		    new CircuitAnalysis((Entity)cnode.weight(), entityClass);
+	    } catch(IllegalActionException e) {
+		System.err.println(e);
+		System.exit(1);
+	    }
 	    DirectedGraph operatorGraph = analysis.getOperatorGraph();
 
 	    replaceMap.put(cnode, operatorGraph);
@@ -351,6 +250,105 @@ public class CircuitTransformer extends SceneTransformer {
 	//          } catch (Exception ex) {
 	//              ex.printStackTrace();
 	//          }
+    }
+
+    /**
+     * Create a DirectedGraph that matches
+     * the topology of the model
+     **/
+    protected DirectedGraph _createModelGraph(CompositeActor model) {
+        DirectedGraph combinedGraph = new DirectedGraph();	
+        // Loop over all the actors in the model
+        for(Iterator i = model.entityList().iterator(); i.hasNext();) {
+            Entity entity = (Entity)i.next();
+
+	    // add Node to graph corresponding to entity
+	    combinedGraph.addNodeWeight(entity);
+
+	    // iterate over all outPorts and add Node corresponding
+	    // to port. Also add edge between entity and port
+	    for (Iterator outPorts = 
+		   ((TypedAtomicActor)entity).outputPortList().iterator();
+		 outPorts.hasNext();){
+		Object port=outPorts.next();
+		combinedGraph.addNodeWeight(port);
+		combinedGraph.addEdge(entity, port);
+	    }
+
+	    // iterate over all inPorts and add Node corresponding
+	    // to port. Also add edge between entity and port
+	    for (Iterator inPorts = 
+		   ((TypedAtomicActor)entity).inputPortList().iterator();
+		 inPorts.hasNext();){
+		Object port=inPorts.next();
+		combinedGraph.addNodeWeight(port);
+		combinedGraph.addEdge(port, entity);
+	    }
+        }
+        
+
+	// Connect top-level inputPorts to the ports of the connected
+	// actors
+	for (Iterator inputPorts=model.inputPortList().iterator();
+	     inputPorts.hasNext();){
+	    IOPort port = (IOPort)inputPorts.next();
+	  
+	    for(Iterator remoteports = port.connectedPortList().iterator();
+		remoteports.hasNext();) {
+		IOPort remotePort = (IOPort)remoteports.next();
+		// TODO: this looks like a bug - port has
+		// not been added to the graph?
+		combinedGraph.addEdge(port, remotePort);
+		//  	    removeSet.add(port);
+		//  	    removeSet.add(remotePort);
+	    }	  
+	}
+
+	// Add edges to the DAG to match the topology of the
+	// connections between individual actors
+        for(Iterator entities = model.entityList().iterator();
+            entities.hasNext();) {
+            TypedAtomicActor actor = (TypedAtomicActor)entities.next();
+         
+            for(Iterator ports = actor.outputPortList().iterator();
+                ports.hasNext();) {
+                IOPort port = (IOPort)ports.next();
+                
+                for(Iterator remoteports = port.connectedPortList().iterator();
+                    remoteports.hasNext();) {
+                    IOPort remotePort = (IOPort)remoteports.next();
+                    combinedGraph.addEdge(port, remotePort);
+		    //                      removeSet.add(port);
+		    //                      removeSet.add(remotePort);
+                }
+            }
+        }
+
+	// Write out model
+	PtDirectedGraphToDotty.writeDotFile("model",combinedGraph); 
+	return combinedGraph;
+    }
+
+    protected void _insertActorDAG(DirectedGraph graph) {
+    }
+
+    public static void main(String args[]) {
+	TypedCompositeActor system = new TypedCompositeActor();
+	try {
+	    ptolemy.domains.sdf.kernel.SDFDirector sdfd = new
+		ptolemy.domains.sdf.kernel.SDFDirector(system,"director");	
+	    ptolemy.copernicus.jhdl.demo.FIR2.FIR f = 
+		new ptolemy.copernicus.jhdl.demo.FIR2.FIR(system,"fir");
+	    SootClass entityClass = 
+		Scene.v().loadClassAndSupport("ptolemy.copernicus.jhdl.demo.FIR2.FIR");
+	    entityClass.setApplicationClass();
+	    if (entityClass == null) {
+		System.err.println("Err - cannot find class");
+		System.exit(1);
+	    }
+	} catch (ptolemy.kernel.util.KernelException e) {
+	    System.err.println(e);
+	}
     }
 
     private CompositeActor _model;

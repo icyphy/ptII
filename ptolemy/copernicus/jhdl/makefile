@@ -42,7 +42,7 @@ CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(J
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-DIRS =		util test util
+DIRS =		util test
 
 # Keep this list alphabetized.
 JSRCS = \
