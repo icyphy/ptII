@@ -42,6 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ShapeIcon;
 
@@ -79,7 +80,7 @@ public abstract class ShapeAttribute extends Attribute {
         super(container, name);
 
         // Hide the name.
-        new Attribute(this, "_hideName");
+        new SingletonAttribute(this, "_hideName");
 
         _icon = new ShapeIcon(this, "_icon", _getDefaultShape());
         _icon.setPersistent(false);

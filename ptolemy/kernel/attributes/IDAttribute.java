@@ -130,7 +130,7 @@ public class IDAttribute extends SingletonAttribute {
         }
 
         // Hide the name.
-        new Attribute(this, "_hideName");
+        new SingletonAttribute(this, "_hideName");
     }
 
     ///////////////////////////////////////////////////////////////////

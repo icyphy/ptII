@@ -36,7 +36,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.SingletonConfigurableAttribute;
+import ptolemy.kernel.util.SingletonAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// Stop
@@ -113,8 +113,8 @@ public class Stop extends Sink {
                 + "STOP</text>\n"
                 + "</svg>\n");
         // Hide the name because the name is in the icon.
-        SingletonConfigurableAttribute hideAttribute =
-            new SingletonConfigurableAttribute(this, "_hideName");
+        SingletonAttribute hideAttribute =
+            new SingletonAttribute(this, "_hideName");
         hideAttribute.setPersistent(false);
     }
 

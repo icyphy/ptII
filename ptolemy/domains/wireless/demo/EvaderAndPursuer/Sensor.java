@@ -45,6 +45,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 
@@ -143,7 +144,7 @@ public class Sensor extends TypedAtomicActor {
         node_icon.setPersistent(false);
 
         // Hide the name of this sensor node.
-        new Attribute(this, "_hideName");
+        new SingletonAttribute(this, "_hideName");
         // Hide the ports.
         new Attribute(output, "_hide");
         new Attribute(input, "_hide");

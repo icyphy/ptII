@@ -42,6 +42,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.icon.ImageIcon;
 import ptolemy.vergil.icon.ResizableAttributeControllerFactory;
@@ -79,7 +80,7 @@ public class ImageAttribute extends Attribute {
         super(container, name);
 
         // Hide the name.
-        new Attribute(this, "_hideName");
+        new SingletonAttribute(this, "_hideName");
 
         _icon = new ImageIcon(this, "_icon");
         _icon.setPersistent(false);
