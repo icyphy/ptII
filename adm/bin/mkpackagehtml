@@ -17,6 +17,7 @@ do
       if [ -f $packagefile ]; then
 	  echo "$0: $packagefile exists, skipping"
       else 
+	  since=`grep -h @since *.java | sort | uniq | head -1`
 cat > $packagefile << EoF
 <!-- \$Id\$ -->
 <html>
@@ -26,6 +27,7 @@ cat > $packagefile << EoF
 <body>
 The $package package.
 <p>
+$since
 </body>
 </html>
 EoF
