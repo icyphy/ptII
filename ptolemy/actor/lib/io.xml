@@ -7,10 +7,6 @@
       <group>
       <doc>Actors that read and write to the file system or network.</doc>
 
-      <entity name="ArrowKeySensor" class="ptolemy.actor.lib.gui.ArrowKeySensor">
-        <doc>Create a JFrame for sensing up, left, right, and down arrow key presses and releases</doc>
-      </entity>
-
       <entity name="DatagramReceiver"
               class="ptolemy.actor.lib.net.DatagramReceiver">
           <property name="encoding">
@@ -51,24 +47,6 @@
 
       <entity name="FileWriter" class="ptolemy.actor.lib.FileWriter">
         <doc>Write out tokens to a file or stdout</doc>
-      </entity>
-
-      <entity name="KeystrokeSensor" class="ptolemy.actor.lib.gui.KeystrokeSensor">
-        <doc>Create a JFrame for sensing Copy and Paste keystrokes</doc>
-      </entity>
-
-      <entity name="SystemClipboard" class="ptolemy.actor.lib.gui.SystemClipboard">
-        <doc>Gives access to the system clipboard</doc>
-      </entity>
-
-      <entity name="URLDirectoryReader"
-              class="ptolemy.actor.lib.URLDirectoryReader">
-         <doc>Read a directory and output each file or subdirectory</doc>
-      </entity>
-
-      <entity name="Wormhole"
-              class="ptolemy.actor.lib.net.Wormhole">
-         <doc>Reads (and eventually writes) the copy past buffer</doc>
       </entity>
 
       </group>

@@ -52,11 +52,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	ArrowKeySensor.java \
 	BarGraph.java \
 	Display.java \
 	HistogramPlotter.java \
-	KeystrokeSensor.java \
 	MatrixViewer.java \
 	MatrixVisualizer.java \
 	Plotter.java \
@@ -65,7 +63,6 @@ JSRCS = \
 	SequenceScope.java \
 	SketchedSource.java \
 	SliderSource.java \
-	SystemClipboard.java \
 	TimedPlotter.java \
 	TimedScope.java \
 	XYPlotter.java \
