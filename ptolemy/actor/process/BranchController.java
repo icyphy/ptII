@@ -366,14 +366,12 @@ public class BranchController implements Runnable {
     public boolean isEngagementEnabled(Branch branch) {
         synchronized(this) {
 	    if( _iterationIsOverCache || !isActive() ) {
-                System.out.println("Iteration is over or controller inactive");
 		return false;
 	    }
             if( _maxEngagements < 0 && _maxEngagers < 0 ) {
                 branch.beginEngagement();
                 return true;
             }
-            System.out.println("Engagements/Engagers not negative");
             
             if( _engagements.contains(branch) ) {
                 if( branch.numberOfCompletedEngagements() < _maxEngagements ) {

@@ -196,7 +196,6 @@ public class Branch {
     public boolean isBranchPermitted() {
         try {
             if( !_consRcvr.hasRoom() ) {
-                System.out.println("Consumer Receiver has no room");
                 // FIXME: Throw TerminateBranchException???
                 return false;
             }
@@ -208,7 +207,6 @@ public class Branch {
         if( _controller.isEngagementEnabled(this) ) {
             return true;
         }
-        System.out.println("Engagement is not enabled");
     	return false;
     }
 
@@ -279,15 +277,11 @@ public class Branch {
      */
     public void transferToken() {
         try {
-            System.out.println("BEGINNING TRANSFER TOKENS");
             // _iterationIsOverCache = false;
             newIteration();
             Token token = _prodRcvr.get(this);
-            System.out.println("JUST COMPLETED GET");
             _consRcvr.put(token, this);
-            System.out.println("JUST COMPLETED PUT");
             _controller.engagementSucceeded(this);
-            System.out.println("ENGAGEMENT SUCCEEDED");
         } catch( TerminateBranchException e ) {
 	    // Iteration is over
             _controller.disengageBranch(this);

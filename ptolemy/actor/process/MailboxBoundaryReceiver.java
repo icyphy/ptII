@@ -113,18 +113,14 @@ public class MailboxBoundaryReceiver extends Mailbox
             if( _terminate ) {
             	throw new TerminateProcessException("");
             } else {
-                System.out.println("About to call checkIfBranchIterationIsOver()");
                 checkIfBranchIterationIsOver(branch);
-                System.out.println("About to call waitForBranchPermission()");
                 waitForBranchPermission(branch);
-                System.out.println("About to call super.get()");
             	result = super.get();
                 if( _writeBlock ) {
                     wakeUpBlockedPartner();
                     _writeBlock = false;
                     notifyAll();
                 }
-                System.out.println("About to end get()");
             	return result;
             }
         }
@@ -153,9 +149,6 @@ public class MailboxBoundaryReceiver extends Mailbox
         }
         
         Workspace workspace = getContainer().workspace();
-        if( !branch.isBranchPermitted() ) {
-            System.out.println("Branch is not permitted");
-        }
         while( !branch.isBranchPermitted() && !branch.isIterationOver() ) {
             branch.registerRcvrBlocked(this);
             workspace.wait(this);
