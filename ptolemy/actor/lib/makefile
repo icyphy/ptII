@@ -97,7 +97,8 @@ JSRCS = \
 	TimedSource.java \
 	Transformer.java \
 	VariableClock.java \
-	Writer.java
+	Writer.java \
+	VectorizableTransformer.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	genericentities.xml \
