@@ -43,7 +43,8 @@ an entity so that it can be a) instantiated in a Ptolemy II
 simulation and b) looked up in an icon library for display
 and editing of a schematic. In the external data format of Ptolemy
 II schmatics, the entity type is represented by the <type/>
-element embedded in the <entity> element.
+element embedded in the <entity> element.   An EntityType always 
+has a valid name, and should not contain other XMLElements.
 
 @author Steve Neuendorffer, John Reekie
 @version $Id$
@@ -55,6 +56,7 @@ public class EntityType extends XMLElement {
      */
     public EntityType () {
         super("entitytype");
+        setAttribute("name","");
     }
 
     /**
@@ -62,6 +64,7 @@ public class EntityType extends XMLElement {
      */
     public EntityType (HashedMap attributes) {
         super("entitytype", attributes);
+        if(!hasAttribute("name")) setName("");
     }
 
     public String getName() {
