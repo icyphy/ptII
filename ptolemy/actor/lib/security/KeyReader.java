@@ -230,7 +230,7 @@ public class KeyReader extends Source {
                     storePassword.getExpression().toCharArray());
             // Add all the aliases as possible choices.
             for (Enumeration aliases = _keyStore.aliases();
-                aliases.hasMoreElements() ;) {
+                 aliases.hasMoreElements() ;) {
                 String aliasName = (String)aliases.nextElement();
                 alias.addChoice(aliasName);
             }
