@@ -156,10 +156,13 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
 					     + "FIXME: Undo request on a "
 					     + "model with no "
 					     + "associated parser.\n"
-					     + "This might be caused by "
-					     + "clicking undo many times "
-					     + "until there is nothing left "
-					     + "to undo."
+					     + "This might be caused if "
+					     + "an entity was created using "
+					     + "File -> New, and the entity "
+					     + "does not have a _parser "
+					     + "attribute because it has not "
+					     + "yet been saved. "
+					     + "See PtolemyEffigy.createEffigy"
 					     + "\n UndoChange was:\n"
 					     + getDescription()
 					     + "\n Source was:\n"
@@ -171,13 +174,13 @@ public class MoMLUndoChangeRequest extends ChangeRequest {
         _parser.reset();
 
          // NOTE: To see what is being parsed, uncomment the following:
-        /*
+	/*
         System.out.println("****** Executing Undo MoML change:");
         System.out.println(getDescription());
         if (_context != null) {
             System.out.println("------ in context " + _context.getFullName());
         }
-        */
+	*/
 
         try {
             // NOTE: the parser needs an entry point into the model to get the
