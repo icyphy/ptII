@@ -133,17 +133,7 @@ any substantial way. We do expect the API to shift around a little
 during the coding process. You can code to this API with the
 understanding that updates will be needed as the API settles.
 
- <p> Before submitting a package for design review to Yellow, please check
-the following items:
-	<menu>
-	<li> For a design review, it may be easiest to review
-	the javadoc output, so you may want to check the
-	<CODE>make javadocs</CODE> output for warnings
-	</menu>
-
-
  <P> <dt><b>Green</b>
-
 <dd> The package has passed code review.
 
  <P> This means that we have high confidence in the correctness and
@@ -151,20 +141,6 @@ stability of the API to this package, and that we have reasonable
 confidence that there are no major bugs in the implementation.  The
 implementation may not yet by complete and there may be performance
 work needed but it's usable by "early-access" developers.
-
- <p> Before submitting a package for code review to Green, please check
-the following items:
-	<menu>
-	<li> <CODE>make javadocs</CODE> does not produce
-	any warnings.
-
-	<li> <a href="../../util/testsuite/chkjava"><CODE>util/testsuite/chkjava *.java</CODE></a> does not produce any warnings.  
-
-	<li> Review the output of <CODE>spell *.java</CODE>.
-
-	<li> Run <CODE>jindent delget *.java</CODE> to
-	reformat to Ptolemy group <a href="style.html">style standards</a>
-	</menu>
 
  <P> <dt><b>Blue</b>
 
@@ -178,14 +154,6 @@ we have what we consider to be a complete test suite, we have
 stress-tested the package by using the API in other code, and we have
 conducted a final review of all relevant materials (source,
 documentation, demos, etc).
-
- <p> Before submitting a package for final review to Blue, please check
-the following items:
-	<menu>
-	<li> Recheck the items necessary for code review to Green.
-	<li> Check the test suite code coverage.  In general,
-	every method should be called by the test suite.
-	</menu>
 
 </dl>
 
@@ -230,6 +198,16 @@ explanatory text. If one or a few classes with well-defined or obvious
 roles are being reviewed, then an API specification or javadoc output
 is fine.
 
+ <p> Before submitting a package for design review to Yellow, please check
+the following items:
+	<menu>
+	<li> For a design review, it may be easiest to review
+	the javadoc output, so you may want to check the
+	<CODE>make javadocs</CODE> output for warnings
+	</menu>
+
+
+
 <dt><b>Green</b>
 
 <dd>
@@ -247,6 +225,21 @@ same priniciple applies to inheritance hierarchies: a class that
 inherits from a Red class cannot be reasonably made Green, since you
 can't have any confidence in its stability.
 
+ <p> Before submitting a package for code review to Green, please check
+the following items:
+	<menu>
+	<li> <CODE>make javadocs</CODE> does not produce
+	any warnings.
+
+	<li> <a href="../../util/testsuite/chkjava"><CODE>util/testsuite/chkjava *.java</CODE></a> does not produce any warnings.  
+
+	<li> Review the output of <CODE>spell *.java</CODE>.
+
+	<li> Run <CODE>jindent delget *.java</CODE> to
+	reformat to Ptolemy group <a href="style.html">style standards</a>
+	</menu>
+
+
 <dt><b>Blue</b>
 
 <dd>
@@ -256,6 +249,15 @@ does fulfil its requirements, at least as far as its clients are
 concerned. One way to encourage this (suggested by John Davis) is to
 require that at least one client package be Green before making a
 package Blue.
+
+ <p> Before submitting a package for final review to Blue, please check
+the following items:
+	<menu>
+	<li> Recheck the items necessary for code review to Green.
+	<li> Check the test suite code coverage.  In general,
+	every method should be called by the test suite.
+	</menu>
+
 
 </dl>
 
