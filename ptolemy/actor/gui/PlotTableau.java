@@ -37,7 +37,6 @@ import ptolemy.plot.PlotBox;
 import ptolemy.plot.plotml.PlotMLParser;
 
 import java.io.InputStream;
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
