@@ -61,7 +61,9 @@ JSRCS = \
 	SetVariable.java \
 	SetRefinementVariable.java \
 	State.java \
-	Transition.java
+	Transition.java \
+	HDFFSMDirector.java \
+	HDFFSMActor.java
 
 EXTRA_SRCS =	$(JSRCS)
 
