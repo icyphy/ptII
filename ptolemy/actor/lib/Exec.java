@@ -199,7 +199,18 @@ public class Exec extends TypedAtomicActor {
                     }
                     if (_inputBufferedWriter != null) { 
                         _inputBufferedWriter.write(line);
-                        _inputBufferedWriter.flush();
+                        try {
+                            _inputBufferedWriter.flush();
+                        } catch (IOException ex) {
+                            // If we are running a 'echo "foo"' process,
+                            // then flushing might throw an IOException
+                            // if the pipe to the subprocess is closing
+                            if (_debugging) {
+                                _debug("Exec.fire(), "
+                                        + "_inputBufferWriter.flush() failed"
+                                        + " but we are ignoring it.");
+                            }
+                        }
                     }
                 }
             }
@@ -238,26 +249,24 @@ public class Exec extends TypedAtomicActor {
     /** Override the base class to stop waiting for input data.
      */
     public /*synchronized*/ void stop() {
+        // This method is not synchronized because when the user
+        // hits the stop button, the fire() method is at 
+        // blockingGetAndReset() and waiting for input.
+        // What we do is call notifyAll on the outputGobbler process. 
         super.stop();
-        //notifyAll();
         if (_outputGobbler != null) {
-                System.out.println("stop(): About to call _outputGobbler.myNotifyAll()");
             _outputGobbler.myNotifyAll();
-                System.out.println("stop():  Done calling _outputGobbler.myNotifyAll()");
 
         }
     }
 
     /** Override the base class to stop waiting for input data.
      */
-    public synchronized void stopFire() {
+    public /*synchronized*/ void stopFire() {
         super.stopFire();
         _stopFireRequested = true;
-        notifyAll();
         if (_outputGobbler != null) {
-                System.out.println("stopFire(): About to call _outputGobbler.myNotifyAll()");
             _outputGobbler.myNotifyAll();
-                System.out.println("stopFire():  Done calling _outputGobbler.myNotifyAll()");
 
         }
     }
@@ -385,7 +394,7 @@ public class Exec extends TypedAtomicActor {
     ////                         inner classes                     ////
 
     // Private class that reads a stream in a thread and updates the
-    // stringBuffer
+    // stringBuffer.
     private class _StreamReaderThread extends Thread {
 
         _StreamReaderThread(InputStream inputStream, String name) {
@@ -397,22 +406,6 @@ public class Exec extends TypedAtomicActor {
         public String blockingGetAndReset() throws IllegalActionException {
             return _lockingStringBuffer.blockingGetAndReset();
         }
-
-//         public synchronized String waitGetAndReset() 
-//                 throws IllegalActionException {
-//             while (_stringBuffer.length() == 0) {
-//                 try {
-//                     wait();
-//                 } catch (InterruptedException ex) {                
-//                     throw new IllegalActionException(null, ex, 
-//                             "Thread interrupted waiting for exec() data.");
-//                 }
-//             }
-//             String returnValue = _stringBuffer.toString();
-//             _stringBuffer = new StringBuffer();
-//             notifyAll();
-//             return returnValue;
-//         }
 
         public void myNotifyAll() {
             _lockingStringBuffer.myNotifyAll();
@@ -434,26 +427,11 @@ public class Exec extends TypedAtomicActor {
                 BufferedReader bufferedReader =
                     new BufferedReader(inputStreamReader);
                 String line = null;
-                // FIXME: Sometimes readLine() throws a NullPointerException
-                // because inputStreamReader is null? 
-//                 java.lang.NullPointerException
-// 	at java.io.BufferedInputStream.read(BufferedInputStream.java:279)
-// 	at sun.nio.cs.StreamDecoder$CharsetSD.readBytes(StreamDecoder.java:408)
-// 	at sun.nio.cs.StreamDecoder$CharsetSD.implRead(StreamDecoder.java:450)
-// 	at sun.nio.cs.StreamDecoder.read(StreamDecoder.java:182)
-// 	at java.io.InputStreamReader.read(InputStreamReader.java:167)
-// 	at java.io.BufferedReader.fill(BufferedReader.java:136)
-// 	at java.io.BufferedReader.readLine(BufferedReader.java:299)
-// 	at java.io.BufferedReader.readLine(BufferedReader.java:362)
-// 	at ptolemy.actor.lib.Exec$_StreamReaderThread.run(Exec.java:416)
                 while ( (line = bufferedReader.readLine()) != null) {
                     if (_debugging) {
                         _debug("Gobbler: " + line);
                     }
                     _lockingStringBuffer.append(line);
-                    // Perhaps the fire() is waiting to see if data
-                    // is available by calling available().
-                    //notifyAll();
                 }
             } catch (IOException ioe) {
                 _lockingStringBuffer.append("IOException: " + ioe);
@@ -471,7 +449,12 @@ public class Exec extends TypedAtomicActor {
     }
 
 
+    // Private class that provides a synchronized interface to
+    // StringBuffer.  The documentation for StringBuffer says that
+    // the underlying mechanism is synchronized, but we need slightly
+    // finer control here.
     private class LockingStringBuffer {
+
         public LockingStringBuffer() {
             _stringBuffer = new StringBuffer();
         }
@@ -521,11 +504,12 @@ public class Exec extends TypedAtomicActor {
     // Whether this actor is blocking.
     private boolean _blocking;
 
-    //private BufferedReader _errorBufferedReader;
+    // Buffer that we write input to the subprocess with.
     private BufferedWriter _inputBufferedWriter;
-    //private BufferedReader _outputBufferedReader;
 
+    // StreamReader that we read stderr from the subprocess with.
     private _StreamReaderThread _errorGobbler;
+    // StreamReader that we read stdout from the subprocess with.
     private _StreamReaderThread _outputGobbler;
 
     // The Process that we are running.
@@ -533,5 +517,4 @@ public class Exec extends TypedAtomicActor {
 
     // Indicator that stopFire() has been called.
     private boolean _stopFireRequested = false;
-
 }
