@@ -56,6 +56,11 @@ public class PNPrimeExample {
         PNInPort portin = (PNInPort)sieve.getPort("input");
         PNOutPort portout = (PNOutPort)ramp.getPort("output");
         myUniverse.connect(portin, portout, "2_queue");
+
+        PNPlot plot = new PNPlot(myUniverse, "plotter");
+        portout = (PNOutPort)sieve.getPort("output");
+        portin = (PNInPort)plot.getPort("input");
+        myUniverse.connect(portin, portout, "plot_queue");
         //portin.getQueue(portout).setCapacity(1);
 
         //System.out.println(myUniverse.description(pt.kernel.Nameable.LIST_PRETTYPRINT));
