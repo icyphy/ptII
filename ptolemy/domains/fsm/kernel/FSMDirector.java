@@ -404,33 +404,30 @@ public class FSMDirector extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         protected variables               ////
 
-    /** Return the receivers contained by ports connected to the inside
-     *  of the given input port and on the mode controller or the
-     *  refinement of its current state.
-     *  @param port An input port of the container of this director.
-     *  @return The receivers that currently get inputs from the given
-     *   port.
-     *  @exception IllegalActionException If there is no controller.
-     */
-    protected Receiver[][] _currentLocalReceivers(IOPort port)
-            throws IllegalActionException {
-        if (_localReceiverMapsVersion != workspace().getVersion()) {
-            _buildLocalReceiverMaps();
-        }
-        return (Receiver[][])_currentLocalReceiverMap.get(port);
-    }
+    // Map from input ports of the modal model to the local receivers
+    // for the current state.
+    protected Map _currentLocalReceiverMap = null;
+
+    // True if the refinement of the current state of the mode controller
+    // is ready to fire in an iteration.
+    protected boolean _fireRefinement = false;
+
+    // Stores for each state of the mode controller the map from input
+    // ports of the modal model to the local receivers when the mode
+    // controller is in that state.
+    protected Map _localReceiverMaps = new HashMap();
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         protected methods                 ////
 
     // Build for each state of the mode controller the map from input
     // ports of the modal model to the local receivers when the mode
     // controller is in that state.
     // This method is read-synchronized on the workspace.
     // @exception IllegalActionException If there is no mode controller.
-    private void _buildLocalReceiverMaps()
+    protected void _buildLocalReceiverMaps()
             throws IllegalActionException {
         try {
             workspace().getReadAccess();
@@ -482,6 +479,25 @@ public class FSMDirector extends Director {
         }
     }
 
+    /** Return the receivers contained by ports connected to the inside
+     *  of the given input port and on the mode controller or the
+     *  refinement of its current state.
+     *  @param port An input port of the container of this director.
+     *  @return The receivers that currently get inputs from the given
+     *   port.
+     *  @exception IllegalActionException If there is no controller.
+     */
+    protected Receiver[][] _currentLocalReceivers(IOPort port)
+            throws IllegalActionException {
+        if (_localReceiverMapsVersion != workspace().getVersion()) {
+            _buildLocalReceiverMaps();
+        }
+        return (Receiver[][])_currentLocalReceiverMap.get(port);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     // Create the controllerName parameter.
     private void _createParameter() {
         try {
@@ -508,19 +524,6 @@ public class FSMDirector extends Director {
 
     // Version of cached reference to mode controller.
     private long _controllerVersion = -1;
-
-    // Map from input ports of the modal model to the local receivers
-    // for the current state.
-    private Map _currentLocalReceiverMap = null;
-
-    // True if the refinement of the current state of the mode controller
-    // is ready to fire in an iteration.
-    private boolean _fireRefinement = false;
-
-    // Stores for each state of the mode controller the map from input
-    // ports of the modal model to the local receivers when the mode
-    // controller is in that state.
-    private Map _localReceiverMaps = new HashMap();
 
     // Version of the local receiver maps.
     private long _localReceiverMapsVersion = -1;
