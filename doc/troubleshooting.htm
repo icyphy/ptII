@@ -30,6 +30,15 @@ Contents
 	<li> <a href="#Applet Troubleshooting Checklist">Applet Troubleshooting Checklist</a>
 	</menu>
 </menu>
+<!--vergilDocs-->
+<h2><a name="#installer">Troubleshooting the Installer</a></h2>
+<dl>
+<dt> The installer is not starting up
+<dd> Try starting up by cd'ing to where the release is installed and doing:
+<pre>
+java -classpath "./ptolemy/ptolemy.jar;./ptolemy/vergil/vergil.jar;./lib/diva.jar;./doc/codeDoc/codeDocRuntime.jar" ptolemy.vergil.VergilApplication
+</pre>
+</dl>
 
 <h2><a name="#vergil">Troubleshooting Vergil</a></h2>
 <dl>
@@ -55,6 +64,7 @@ with jdk1.2.2 on Windows NT4.  Apparently upgrading to jdk1.3, or Windows2K
 solves the problem.
 
 </dl>
+<!--/vergilDocs-->
 
 <H2><a name="build">Troubleshooting Build problems</a></H2>
 The <a href="install.htm">Ptolemy II Installation page</a> describes
