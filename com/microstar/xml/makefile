@@ -61,14 +61,16 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include $(DIRS) here, we don't want make sources to run make demo
-MISC_FILES =	driver #$(DIRS)
+MISC_FILES =	#$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
+# driver is in OPTIONAL_FILES because we don't ship it.
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	driver
 
 JCLASS = $(JSRCS:%.java=%.class)
 
