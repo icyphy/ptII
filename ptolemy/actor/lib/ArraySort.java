@@ -54,7 +54,7 @@ descending order. Duplicate entries can be optionally removed.
 
 @author Mark Oliver, Edward A. Lee
 @version $ID: ArraySort.java,v1.0 2003/07/09
-@since Ptolemy II 3.0.2
+@since Ptolemy II 3.1
 */
 
 public class ArraySort extends Transformer {
