@@ -217,7 +217,8 @@ proc createAndExecute {file} {
 
 # Find all the files in the compat directory
 
-#foreach file [list compat/FIR1.xml compat/ComplexToCartesianAndBack.xml compat/testAudioReaderAudioPlayer.xml compat/test1.xml ] {
+#foreach file [list compat/test1.xml compat/FIR1.xml] {
+#foreach file [list compat/ComplexToCartesianAndBack.xml compat/testAudioReaderAudioPlayer.xml compat/test1.xml compat/FIR1.xml] {
 foreach file [glob compat/*.xml] {
     puts "------------------ testing $file"
     test "Auto" "Automatic test in file $file" {

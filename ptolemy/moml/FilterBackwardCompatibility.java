@@ -95,7 +95,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		_currentActorFullName = container.getFullName()
 		    + "." + _lastNameSeen;
 		_portMap = (HashMap) _actorsWithPortNameChanges.get(attributeValue);
-		_debug("filterAttributeValue: saw1 "
+		_debug("filterAttributeValue: not return saw1 "
 		       + _currentActorFullName);
 	    } else if (_actorsWithPropertyClassChanges
 		       .containsKey(attributeValue)) {
@@ -107,7 +107,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		_propertyMap =
 		    (HashMap) _actorsWithPropertyClassChanges
 		    .get(attributeValue);
-		_debug("filterAttributeValue: saw2 "
+		_debug("filterAttributeValue: not return saw2 "
 		       + _currentActorFullName);
 
 	    } else if (_currentlyProcessingActorWithPropertyClassChanges
@@ -116,18 +116,31 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		// class itself that needs changing.
 		_debug("filterAttributeValue: return0 "
 		       + _newClass);
-		// Only return the new class once.
-		_newClass = null;
-		return _newClass;
-	    } else if (_currentlyProcessingActorWithPortNameChanges
+		// Only return the new class once, but we might
+		// have other properties that need changing
+		//_currentlyProcessingActorWithPropertyClassChanges = false;
+		
+		String temporaryNewClass = _newClass;
+		_newClass = null;    
+		return temporaryNewClass;
+	    } else if ( (_currentlyProcessingActorWithPortNameChanges
+			 || _currentlyProcessingActorWithPropertyClassChanges)
 		       && container != null
 		       && !container.getFullName()
-		       .equals(_currentActorFullName)) {
+		       .equals(_currentActorFullName)
+			&& !container.getFullName()
+			.startsWith(_currentActorFullName)) {
+
 		// We found another class in a different container
-		// while handling a class with port name changes,
-		// so set _doneProcessingActorWithPortNameChanges  so we can handle
-		// any port changes later.
+		// while handling a class with port name changes, so
+		// set _doneProcessingActorWithPortNameChanges so we
+		// can handle any port changes later.
+
+		_debug("filterAttributeValue: return3 saw class, resetting: "
+		       + container.getFullName() + " "
+		       + _currentActorFullName);
 		_currentlyProcessingActorWithPortNameChanges = false;
+		_currentlyProcessingActorWithPropertyClassChanges = false;
 		_doneProcessingActorWithPortNameChanges  = true;
 		_currentActorFullName = null;
 		_portMap = null;
@@ -163,9 +176,15 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    // We will do the above checks only if we found a
 		    // class that had property class changes.
 		    _newClass = (String)_propertyMap.get(attributeValue);
-		    _debug("filterAttributeValue: _newClass = " + _newClass);
+		    _debug("filterAttributeValue: not return _newClass = "
+			   + _newClass);
 		} else {
-		    // Saw a name that did not match
+		    _debug("filterAttributeValue: not return '"
+			   + attributeValue + "' did not match");
+		    // Saw a name that did not match.
+		    // However, we might have other names that
+		    // did match, so keep looking
+		    //_currentlyProcessingActorWithPropertyClassChanges = false;
 		    _newClass = null;
 		}
 	    }
