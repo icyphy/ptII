@@ -166,23 +166,11 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         // The toplevel is the container being edited.
         NamedObj toplevel = (NamedObj)graphModel.getRoot();
         
-        // The context for the change.
-        NamedObj context = MoMLChangeRequest.getDeferredToParent(toplevel);
-        if (context == null) {
-            context = toplevel;
-        }
-
         StringBuffer moml = new StringBuffer();
         StringBuffer undoMoml = new StringBuffer();
         moml.append("<group>\n");
         undoMoml.append("<group>\n");
         
-        if (context != toplevel) {
-            String bracket = "<" + toplevel.getMoMLElementName()
-                    + " name=\"" + toplevel.getName(context) + "\">";
-            moml.append(bracket);
-            undoMoml.append(bracket);
-        }
         Iterator elements = namedObjSet.iterator();
         while (elements.hasNext()) {
             NamedObj element = (NamedObj)elements.next();
@@ -225,18 +213,13 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
             moml.append("</" + containingElementName + ">\n");
             undoMoml.append("</" + containingElementName + ">\n");
         }
-        if (context != toplevel) {
-            String bracket = "</" + toplevel.getMoMLElementName() + ">";
-            moml.append(bracket);
-            undoMoml.append(bracket);
-        }
         moml.append("</group>\n");
         undoMoml.append("</group>\n");
 
         // Request the change.
         MoMLChangeRequest request = new MoMLChangeRequest(
-                this, context, moml.toString());
-        context.requestChange(request);
+                this, toplevel, moml.toString());
+        toplevel.requestChange(request);
 
         // Next create and register the undo entry;
         MoMLUndoEntry newEntry = new MoMLUndoEntry(

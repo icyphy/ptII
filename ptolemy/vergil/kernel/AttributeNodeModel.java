@@ -57,14 +57,11 @@ public class AttributeNodeModel extends NamedObjNodeModel {
      */
     public String getDeleteNodeMoML(Object node) {
         NamedObj attribute = (NamedObj)((Locatable)node).getContainer();
+        NamedObj container = (NamedObj)attribute.getContainer();
 
-        NamedObj container = _getChangeRequestParent((NamedObj)getParent(node));
-
-        StringBuffer moml = new StringBuffer();
-        moml.append("<deleteProperty name=\"" +
-                attribute.getName(container) +
-                "\"/>\n");
-        return moml.toString();
+        return "<deleteProperty name=\""
+                + attribute.getName()
+                + "\"/>\n";
     }
 
     /** Return the graph parent of the given node.
@@ -101,15 +98,13 @@ public class AttributeNodeModel extends NamedObjNodeModel {
      */
     public void removeNode(final Object eventSource, final Object node) {
         NamedObj attribute = (NamedObj)((Locatable)node).getContainer();
+        NamedObj container = (NamedObj)attribute.getContainer();;
 
-        NamedObj container = _getChangeRequestParent(attribute);
-
-        String moml = "<deleteProperty name=\""
-            + attribute.getName(container) + "\"/>\n";
+        String moml = getDeleteNodeMoML(node);
 
         // Note: The source is NOT the graph model.
-        ChangeRequest request =
-            new MoMLChangeRequest(this, container, moml);
+        ChangeRequest request
+                = new MoMLChangeRequest(this, container, moml);
         container.requestChange(request);
     }
 }

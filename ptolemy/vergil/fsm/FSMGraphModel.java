@@ -995,56 +995,54 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
     /** The model for external ports.
      */
     public class PortModel extends NamedObjNodeModel {
+        
         /** Return a MoML String that will delete the given node from the
-         *  Ptolemy model.
+         *  Ptolemy model. This assumes that the context is the container
+         *  of the port to be deleted.
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
-
-            NamedObj container = _getChangeRequestParent(getPtolemyModel());
+            NamedObj container = (NamedObj)deleteObj.getContainer();
 
             String moml = "<deletePort name=\""
-                + deleteObj.getName(container) + "\"/>\n";
+                    + deleteObj.getName()
+                    + "\"/>\n";
             return moml;
         }
 
-        /**
-         * Return the graph parent of the given node.
-         * @param node The node, which is assumed to be an icon contained in
-         * this graph model.
-         * @return The container of the icon's container, which should
-         * be the root of this graph model.
+        /** Return the graph parent of the given node.
+         *  @param node The node, which is assumed to be an icon contained in
+         *   this graph model.
+         *  @return The container of the icon's container, which should
+         *   be the root of this graph model.
          */
         public Object getParent(Object node) {
             return ((Locatable)node).getContainer().getContainer();
         }
 
-        /**
-         * Return an iterator over the edges coming into the given node.
-         * This method first ensures that there is an arc
-         * object for every link.
-         * The iterator is constructed by
-         * removing any arcs that do not have the given node as head.
-         * @param node The node, which is assumed to be an icon contained in
-         * this graph model.
-         * @return An iterator of Arc objects, all of which have
-         * the given node as their head.
+        /** Return an iterator over the edges coming into the given node.
+         *  This method first ensures that there is an arc
+         *  object for every link.
+         *  The iterator is constructed by
+         *  removing any arcs that do not have the given node as head.
+         *  @param node The node, which is assumed to be an icon contained in
+         *   this graph model.
+         *  @return An iterator of Arc objects, all of which have
+         *   the given node as their head.
          */
         public Iterator inEdges(Object node) {
             return new NullIterator();
         }
 
-        /**
-         * Return an iterator over the edges coming into the given node.
-         * This method first ensures that there is an arc
-         * object for every link.
-         * The iterator is constructed by
-         * removing any arcs that do not have the given node as tail.
-         * @param node The node, which is assumed to be an icon contained in
-         * this graph model.
-         * @return An iterator of Arc objects, all of which have
-         * the given node as their tail.
+        /** Return an iterator over the edges coming into the given node.
+         *  This method first ensures that there is an arc
+         *  object for every link. The iterator is constructed by
+         *  removing any arcs that do not have the given node as tail.
+         *  @param node The node, which is assumed to be an icon contained in
+         *   this graph model.
+         *  @return An iterator of Arc objects, all of which have
+         *   the given node as their tail.
          */
         public Iterator outEdges(Object node) {
             return new NullIterator();
@@ -1069,10 +1067,9 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 + ((NamedObj)deleteObj).getName() + "\"/>\n";
 
             // Make the request in the context of the container.
-            NamedObj container = (NamedObj)_getChangeRequestParent(deleteObj);
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(
-                        FSMGraphModel.this, container, moml);
+            NamedObj container = (NamedObj)deleteObj.getContainer();
+            MoMLChangeRequest request
+                    = new MoMLChangeRequest(FSMGraphModel.this, container, moml);
             request.setUndoable(true);
             request.addChangeListener(new ChangeListener() {
                     public void changeFailed(ChangeRequest change,
@@ -1100,14 +1097,15 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
     /** The model for an icon that represent states.
      */
     public class StateModel extends NamedObjNodeModel {
+        
         /** Return a MoML String that will delete the given node from the
-         *  Ptolemy model.
+         *  Ptolemy model. This assumes that the context is the container
+         *  of the state.
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
-
-            NamedObj container = _getChangeRequestParent(getPtolemyModel());
+            NamedObj container = (NamedObj)deleteObj.getContainer();
 
             StringBuffer moml = new StringBuffer("<group>\n");
 
@@ -1282,10 +1280,9 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                 + ((NamedObj)deleteObj).getName() + "\"/>\n";
 
             // Make the request in the context of the container.
-            NamedObj container = (NamedObj)_getChangeRequestParent(deleteObj);
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(
-                        FSMGraphModel.this, container, moml);
+            NamedObj container = (NamedObj)deleteObj.getContainer();
+            MoMLChangeRequest request
+                    = new MoMLChangeRequest(FSMGraphModel.this, container, moml);
             request.addChangeListener(new ChangeListener() {
                     public void changeFailed(ChangeRequest change,
                             Exception exception) {

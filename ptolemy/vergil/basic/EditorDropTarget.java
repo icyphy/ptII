@@ -235,12 +235,6 @@ public class EditorDropTarget extends DropTarget {
                 container = (NamedObj)model.getRoot();
             }
             
-            // Find the context for the MoML change request.
-            NamedObj context = MoMLChangeRequest.getDeferredToParent(container);
-            if (context == null) {
-                context = container;
-            }
-            
             // Find the location for the dropped objects.
             // Account for the scaling in the pane.
             final Point2D transformedPoint = new Point2D.Double();
@@ -288,41 +282,7 @@ public class EditorDropTarget extends DropTarget {
                 StringBuffer moml = new StringBuffer();
                 String elementName = container.getMoMLElementName();
                 moml.append("<group>");
-                if (container != context) {
-                    moml.append("<"
-                            + elementName
-                            + " name=\""
-                            + container.getName(context)
-                            + "\">\n");
-                }
-                /* Removed by EAL (9/28/03), which means the MoML import
-                 * element is no longer supported.
-                // If the dropObj defers to something else, then we
-                // have to check the parent of the object
-                // for import attributes, and then we have to
-                // generate import statements.  Note that everything
-                // imported by the parent will be imported now by
-                // the object into which this is dropped.
-                if (dropObj.getMoMLInfo().deferTo != null) {
-                    CompositeEntity sourceContainer =
-                        (CompositeEntity)dropObj.getContainer();
-                    if (sourceContainer != null) {
-                        Iterator imports = sourceContainer.attributeList(
-                                ImportAttribute.class).iterator();
-                        while (imports.hasNext()) {
-                            // Does this code ever get called?
-                            // There is no code in the tree that instantiates
-                            // an ImportAttribute (8/02).
-                            moml.append(((ImportAttribute)imports.next())
-                                    .exportMoML());
-                        }
-                    }
-                }
-                */
                 moml.append(dropObj.exportMoML(name));
-                if (container != context) {
-                    moml.append("</" + elementName + ">");
-                }
                 moml.append("</group>");
 
                 // NOTE: Have to know whether this is an entity,
@@ -336,7 +296,7 @@ public class EditorDropTarget extends DropTarget {
 
                     // Dropped object is an entity.
                     request = new MoMLChangeRequest(
-                        this, context, moml.toString()) {
+                        this, container, moml.toString()) {
                         protected void _execute() throws Exception {
                             // Errors will be reported to listeners as a consequence of
                             // throwing an exception here, so don't also report them
@@ -365,7 +325,7 @@ public class EditorDropTarget extends DropTarget {
 
                     // Dropped object is a port.
                     request = new MoMLChangeRequest(
-                        this, context, moml.toString()) {
+                        this, container, moml.toString()) {
                         protected void _execute() throws Exception {
                             // Errors will be reported to listeners as a consequence of
                             // throwing an exception here, so don't also report them
@@ -394,7 +354,7 @@ public class EditorDropTarget extends DropTarget {
 
                     // Dropped object is a relation.
                     request = new MoMLChangeRequest(
-                        this, context, moml.toString()) {
+                        this, container, moml.toString()) {
                         protected void _execute() throws Exception {
                             // Errors will be reported to listeners as a consequence of
                             // throwing an exception here, so don't also report them
@@ -423,7 +383,7 @@ public class EditorDropTarget extends DropTarget {
 
                     // Dropped object is an attribute.
                     request = new MoMLChangeRequest(
-                        this, context, moml.toString()) {
+                        this, container, moml.toString()) {
                         protected void _execute() throws Exception {
                             // Errors will be reported to listeners as a consequence of
                             // throwing an exception here, so don't also report them

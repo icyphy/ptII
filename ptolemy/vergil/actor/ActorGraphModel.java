@@ -531,43 +531,42 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  These ports are always contained by the root of this graph model.
      */
     public class ExternalPortModel extends NamedObjNodeModel {
+        
         /** Return a MoML String that will delete the given node from the
-         *  Ptolemy model.
+         *  Ptolemy model. The MoML assumes a context that is the container
+         *  of the port.
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
             Locatable location = (Locatable)node;
             ComponentPort port = (ComponentPort)location.getContainer();
-
-            NamedObj container = _getChangeRequestParent(getPtolemyModel());
+            NamedObj container = (NamedObj)port.getContainer();
 
             StringBuffer moml = new StringBuffer();
             moml.append("<deletePort name=\"" +
-                    port.getName(container) +
+                    port.getName() +
                     "\"/>\n");
             return moml.toString();
         }
 
-        /**
-         * Return the graph parent of the given node.
-         * @param node The node, which is assumed to be a port contained in
-         * the root of this graph model.
-         * @return The root of this graph model.
+        /** Return the graph parent of the given node.
+         *  @param node The node, which is assumed to be a port contained in
+         *   the root of this graph model.
+         *  @return The root of this graph model.
          */
         public Object getParent(Object node) {
             return ((Locatable)node).getContainer().getContainer();
         }
 
-        /**
-         * Return an iterator over the edges coming into the given node.
-         * This method first ensures that there is a link
-         * object for every link.
-         * Then the iterator is constructed by
-         * removing any links that do not have the given node as head.
-         * @param node The node, which is assumed to be a port contained in
-         * the root of this graph model.
-         * @return An iterator of Link objects, all of which have
-         * the given node as their head.
+        /** Return an iterator over the edges coming into the given node.
+         *  This method first ensures that there is a link
+         *  object for every link.
+         *  Then the iterator is constructed by
+         *  removing any links that do not have the given node as head.
+         *  @param node The node, which is assumed to be a port contained in
+         *   the root of this graph model.
+         *  @return An iterator of Link objects, all of which have
+         *   the given node as their head.
          */
         public Iterator inEdges(Object node) {
             Locatable location = (Locatable)node;
@@ -590,16 +589,15 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             return portLinkList.iterator();
         }
 
-        /**
-         * Return an iterator over the edges coming out of the given node.
-         * This iterator is constructed by looping over all the relations
-         * that the port is connected to, and ensuring that there is a link
-         * object for every link.  Then the iterator is constructed by
-         * removing any links that do not have the given node as tail.
-         * @param node The node, which is assumed to be a port contained in
-         * the root of this graph model.
-         * @return An iterator of Link objects, all of which have their
-         * tail as the given node.
+        /** Return an iterator over the edges coming out of the given node.
+         *  This iterator is constructed by looping over all the relations
+         *  that the port is connected to, and ensuring that there is a link
+         *  object for every link.  Then the iterator is constructed by
+         *  removing any links that do not have the given node as tail.
+         *  @param node The node, which is assumed to be a port contained in
+         *   the root of this graph model.
+         *  @return An iterator of Link objects, all of which have their
+         *   tail as the given node.
          */
         public Iterator outEdges(Object node) {
             Locatable location = (Locatable)node;
@@ -627,8 +625,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         public void removeNode(final Object eventSource, Object node) {
             Locatable location = (Locatable)node;
             ComponentPort port = (ComponentPort)location.getContainer();
-
-            NamedObj container = _getChangeRequestParent(port);
+            NamedObj container = (NamedObj)port.getContainer();;
 
             StringBuffer moml = new StringBuffer();
             moml.append("<deletePort name=\"" +
@@ -648,60 +645,57 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     /** The model for an icon that contains ports.
      */
     public class IconModel extends NamedObjNodeModel
-        implements CompositeNodeModel {
+            implements CompositeNodeModel {
+                
         /** Return a MoML String that will delete the given node from the
-         *  Ptolemy model.
+         *  Ptolemy model. The returned string assumes that the context is
+         *  the container of the object with an icon.
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
-
-            NamedObj container = _getChangeRequestParent(getPtolemyModel());
+            NamedObj container = (NamedObj)deleteObj.getContainer();;
 
             String moml = "<deleteEntity name=\""
-                + deleteObj.getName(container) + "\"/>\n";
+                    + deleteObj.getName() + "\"/>\n";
             return moml;
         }
 
-        /**
-         * Return the number of nodes contained in
-         * this graph or composite node.
-         * @param composite The composite, which is assumed to be an icon.
-         * @return The number of ports contained in the container of the icon.
+        /** Return the number of nodes contained in
+         *  this graph or composite node.
+         *  @param composite The composite, which is assumed to be an icon.
+         *  @return The number of ports contained in the container of the icon.
          */
         public int getNodeCount(Object composite) {
             Locatable location = (Locatable) composite;
             return ((ComponentEntity)location.getContainer()).portList().size();
         }
 
-        /**
-         * Return the graph parent of the given node.
-         * @param node The node, which is assumed to be an icon.
-         * @return The container of the Icon's container, which should be
-         * the root of the graph.
+        /** Return the graph parent of the given node.
+         *  @param node The node, which is assumed to be an icon.
+         *  @return The container of the Icon's container, which should be
+         *   the root of the graph.
          */
         public Object getParent(Object node) {
             return ((Locatable)node).getContainer().getContainer();
         }
 
-        /**
-         * Return an iterator over the edges coming into the given node.
-         * @param node The node, which is assumed to be an icon.
-         * @return A NullIterator, since no edges are attached to icons.
+        /** Return an iterator over the edges coming into the given node.
+         *  @param node The node, which is assumed to be an icon.
+         *  @return A NullIterator, since no edges are attached to icons.
          */
         public Iterator inEdges(Object node) {
             return new NullIterator();
         }
 
-        /**
-         * Provide an iterator over the nodes in the
-         * given graph or composite node. The nodes are ports, so if the
-         * container of the node is not an entity, then an empty iterator
-         * is returned.  This iterator
-         * does not necessarily support removal operations.
-         * @param composite The composite, which is assumed to be an icon.
-         * @return An iterator over the ports contained in the container
-         * of the icon.
+        /** Provide an iterator over the nodes in the
+         *  given graph or composite node. The nodes are ports, so if the
+         *  container of the node is not an entity, then an empty iterator
+         *  is returned.  This iterator
+         *  does not necessarily support removal operations.
+         *  @param composite The composite, which is assumed to be an icon.
+         *  @return An iterator over the ports contained in the container
+         *   of the icon.
          */
         public Iterator nodes(Object composite) {
             Locatable location = (Locatable) composite;
@@ -714,10 +708,9 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             }
         }
 
-        /**
-         * Return an iterator over the edges coming out of the given node.
-         * @param node The node, which is assumed to be an icon.
-         * @return A NullIterator, since no edges are attached to icons.
+        /** Return an iterator over the edges coming out of the given node.
+         *  @param node The node, which is assumed to be an icon.
+         *  @return A NullIterator, since no edges are attached to icons.
          */
         public Iterator outEdges(Object node) {
             return new NullIterator();
@@ -739,17 +732,15 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             }
 
             // Make the request in the context of the container.
-            NamedObj container = _getChangeRequestParent(deleteObj);
-            // System.out.println("Queueing Change request with: " + container);
+            NamedObj container = (NamedObj)deleteObj.getContainer();;
 
             String moml = "<" + elementName + " name=\""
-                + deleteObj.getName(container) + "\"/>\n";
+                    + deleteObj.getName() + "\"/>\n";
 
 
             // Note: The source is NOT the graph model.
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(
-                        this, container, moml);
+            MoMLChangeRequest request
+                    = new MoMLChangeRequest(this, container, moml);
             request.setUndoable(true);
             container.requestChange(request);
         }
@@ -1260,25 +1251,25 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     /** The model for ports that are contained in icons in this graph.
      */
     public class PortModel extends NamedObjNodeModel {
+        
         /** Return a MoML String that will delete the given node from the
-         *  Ptolemy model.
+         *  Ptolemy model. This assumes that the context is the container
+         *  of the port.
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
             NamedObj deleteObj = (NamedObj)((Locatable)node).getContainer();
-
-            NamedObj container = _getChangeRequestParent(getPtolemyModel());
+            NamedObj container = (NamedObj)deleteObj.getContainer();;
 
             String moml = "<deletePort name=\""
-                + deleteObj.getName(container) + "\"/>\n";
+                    + deleteObj.getName(container) + "\"/>\n";
             return moml;
         }
 
-        /**
-         * Return the graph parent of the given node.
-         * @param node The node, which is assumed to be a port.
-         * @return The (presumably unique) icon contained in the port's
-         * container.
+        /** Return the graph parent of the given node.
+         *  @param node The node, which is assumed to be a port.
+         *  @return The (presumably unique) icon contained in the port's
+         *   container.
          */
         public Object getParent(Object node) {
             ComponentPort port = (ComponentPort)node;
@@ -1293,15 +1284,14 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             }
         }
 
-        /**
-         * Return an iterator over the edges coming into the given node.
-         * This method first ensures that there is a link
-         * object for every link.  Then the iterator is constructed by
-         * removing any links that do not have the given node as head.
-         * @param node The node, which is assumed to be a port contained in
-         * the root of this graph model.
-         * @return An iterator of Link objects, all of which have their
-         * head as the given node.
+        /** Return an iterator over the edges coming into the given node.
+         *  This method first ensures that there is a link
+         *  object for every link.  Then the iterator is constructed by
+         *  removing any links that do not have the given node as head.
+         *  @param node The node, which is assumed to be a port contained in
+         *   the root of this graph model.
+         *  @return An iterator of Link objects, all of which have their
+         *   head as the given node.
          */
         public Iterator inEdges(Object node) {
             ComponentPort port = (ComponentPort)node;
@@ -1320,16 +1310,15 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             return portLinkList.iterator();
         }
 
-        /**
-         * Return an iterator over the edges coming out of the given node.
-         * This iterator is constructed by looping over all the relations
-         * that the port is connected to, and ensuring that there is a link
-         * object for every link.  Then the iterator is constructed by
-         * removing any links that do not have the given node as tail.
-         * @param node The node, which is assumed to be a port contained in
-         * the root of this graph model.
-         * @return An iterator of Link objects, all of which have their
-         * tail as the given node.
+        /** Return an iterator over the edges coming out of the given node.
+         *  This iterator is constructed by looping over all the relations
+         *  that the port is connected to, and ensuring that there is a link
+         *  object for every link.  Then the iterator is constructed by
+         *  removing any links that do not have the given node as tail.
+         *  @param node The node, which is assumed to be a port contained in
+         *   the root of this graph model.
+         *  @return An iterator of Link objects, all of which have their
+         *   tail as the given node.
          */
         public Iterator outEdges(Object node) {
             ComponentPort port = (ComponentPort)node;
@@ -1355,20 +1344,16 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
          */
         public void removeNode(final Object eventSource, Object node) {
             ComponentPort port = (ComponentPort)node;
-
-            NamedObj container = _getChangeRequestParent(port);
+            NamedObj container = (NamedObj)port.getContainer();;
 
             // Delete the port.
-            StringBuffer moml = new StringBuffer();
-            moml.append("<deletePort name=\"" +
-                    port.getName(container) +
-                    "\"/>\n");
+            String moml = "<deletePort name=\""
+                    + port.getName()
+                    + "\"/>\n";
 
             // Note: The source is NOT the graph model.
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(this,
-                        container,
-                        moml.toString());
+            MoMLChangeRequest request
+                    = new MoMLChangeRequest(this, container, moml);
             request.setUndoable(true);
             container.requestChange(request);
         }
@@ -1378,26 +1363,27 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  ptolemy model.
      */
     public class VertexModel extends NamedObjNodeModel {
+        
         /** Return a MoML String that will delete the given node from the
-         *  Ptolemy model.
+         *  Ptolemy model. This assumes that the context is the container
+         *  of the vertex.
          *  @return A valid MoML string.
          */
         public String getDeleteNodeMoML(Object node) {
-            ComponentRelation deleteObj =
-                (ComponentRelation)((Vertex)node).getContainer();
-
-            NamedObj container = _getChangeRequestParent(getPtolemyModel());
-            //  System.out.println("container = " + container.getFullName());
+            ComponentRelation deleteObj
+                    = (ComponentRelation)((Vertex)node).getContainer();
+            NamedObj container = (NamedObj)deleteObj.getContainer();;
+            
             String moml = "<deleteRelation name=\""
-                + deleteObj.getName(container) + "\"/>\n";
+                    + deleteObj.getName()
+                    + "\"/>\n";
             return moml;
         }
 
-        /**
-         * Return the graph parent of the given node.
-         * @param node The node, which is assumed to be a Vertex.
-         * @return The container of the vertex's container, which is
-         * presumably the root of the graph model.
+        /** Return the graph parent of the given node.
+         *  @param node The node, which is assumed to be a Vertex.
+         *  @return The container of the vertex's container, which is
+         *   presumably the root of the graph model.
          */
         public Object getParent(Object node) {
             // Undo: If we use automatic layout, then we need to check to
@@ -1408,16 +1394,15 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             return ((Vertex)node).getContainer().getContainer();
         }
 
-        /**
-         * Return an iterator over the edges coming into the given node.
-         * This method ensures that there is a link object for
-         * every link to the relation contained by the vertex.
-         * Then the iterator is constructed by
-         * removing any links that do not have the given node as head.
-         * @param node The node, which is assumed to be a vertex contained in
-         * a relation.
-         * @return An iterator of Link objects, all of which have their
-         * head as the given node.
+        /** Return an iterator over the edges coming into the given node.
+         *  This method ensures that there is a link object for
+         *  every link to the relation contained by the vertex.
+         *  Then the iterator is constructed by
+         *  removing any links that do not have the given node as head.
+         *  @param node The node, which is assumed to be a vertex contained in
+         *   a relation.
+         *  @return An iterator of Link objects, all of which have their
+         *   head as the given node.
          */
         public Iterator inEdges(Object node) {
             Vertex vertex = (Vertex) node;
@@ -1436,16 +1421,15 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             return vertexLinkList.iterator();
         }
 
-        /**
-         * Return an iterator over the edges coming into the given node.
-         * This method ensures that there is a link object for
-         * every link to the relation contained by the vertex.
-         * Then the iterator is constructed by
-         * removing any links that do not have the given node as head.
-         * @param node The node, which is assumed to be a vertex contained in
-         * a relation.
-         * @return An iterator of Link objects, all of which have their
-         * tail as the given node.
+        /** Return an iterator over the edges coming into the given node.
+         *  This method ensures that there is a link object for
+         *  every link to the relation contained by the vertex.
+         *  Then the iterator is constructed by
+         *  removing any links that do not have the given node as head.
+         *  @param node The node, which is assumed to be a vertex contained in
+         *   a relation.
+         *  @return An iterator of Link objects, all of which have their
+         *   tail as the given node.
          */
         public Iterator outEdges(Object node) {
             Vertex vertex = (Vertex) node;
@@ -1472,19 +1456,16 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         public void removeNode(final Object eventSource, Object node) {
             ComponentRelation relation =
                 (ComponentRelation)((Vertex)node).getContainer();
-
-            NamedObj container = _getChangeRequestParent(relation);
+            NamedObj container = (NamedObj)relation.getContainer();;
 
             // Delete the relation.
-            StringBuffer moml = new StringBuffer();
-            moml.append("<deleteRelation name=\"" +
-                    relation.getName(container) +
-                    "\"/>\n");
+            String moml = "<deleteRelation name=\""
+                    + relation.getName()
+                    + "\"/>\n";
 
             // Note: The source is NOT the graph mode.
-            MoMLChangeRequest request =
-                new MoMLChangeRequest(this,
-                        container, moml.toString());
+            MoMLChangeRequest request
+                    = new MoMLChangeRequest(this, container, moml.toString());
             request.setUndoable(true);
             container.requestChange(request);
         }

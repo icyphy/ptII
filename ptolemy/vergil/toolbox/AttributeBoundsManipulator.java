@@ -92,11 +92,6 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
 
             // Use a MoMLChangeRequest here so that the resize can be
             // undone and so that a repaint occurs.
-            NamedObj context =
-                MoMLChangeRequest.getDeferredToParent(_container);
-            if (context == null) {
-                context = _container;
-            }
 
             Attribute widthParameter = _container.getAttribute("width");
             Attribute heightParameter = _container.getAttribute("height");
@@ -105,14 +100,10 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
             // Proceed only if the container has these parameters.
             if (widthParameter != null && heightParameter != null) {
                 StringBuffer command =
-                    new StringBuffer("<group><property name =\"");
-                command.append(widthParameter.getName(context));
-                command.append("\" value=\"");
+                    new StringBuffer("<group><property name =\"width\" value=\"");
                 // FIXME: Force to integer values only. Is this a good idea?
                 command.append(Math.rint(bounds.getWidth()));
-                command.append("\"/><property name =\"");
-                command.append(heightParameter.getName(context));
-                command.append("\" value=\"");
+                command.append("\"/><property name =\"height\" value=\"");
                 command.append(Math.rint(bounds.getHeight()));
                 command.append("\"/>");
 
@@ -142,9 +133,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                     } catch (IllegalActionException ex) {
                         // Something went wrong. Use default.
                     }
-                    command.append("<property name = \"");
-                    command.append(locationParameter.getName(context));
-                    command.append("\" value=\"");
+                    command.append("<property name = \"_location\" value=\"");
                     // FIXME: Make locations only integral?
                     command.append(Math.rint(newX));
                     command.append(", ");
@@ -154,8 +143,8 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
                 command.append("</group>");
 
                 MoMLChangeRequest request =
-                    new MoMLChangeRequest(this, context, command.toString());
-                context.requestChange(request);
+                    new MoMLChangeRequest(this, _container, command.toString());
+                _container.requestChange(request);
             }
         } else {
             throw new InternalErrorException("No child figure for the manipulator!");

@@ -31,9 +31,6 @@ package ptolemy.vergil.basic;
 
 import diva.graph.modular.NodeModel;
 
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLChangeRequest;
-
 //////////////////////////////////////////////////////////////////////////
 //// NamedObjNodeModel
 
@@ -58,25 +55,4 @@ public abstract class NamedObjNodeModel implements NodeModel {
 
     /** Remove the specified node from the model. */
     public abstract void removeNode(Object eventSource, Object node);
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Return the context for which a change request concerning the given
-     *  object should be made.  This is the first container
-     *  above the object in the hierarchy that defers its
-     *  MoML definition, or the immediate parent if there is none.
-     *  @param object The object to change.
-     *  @return The context for a change request.
-     */
-    protected static NamedObj _getChangeRequestParent(NamedObj object) {
-        NamedObj container = MoMLChangeRequest.getDeferredToParent(object);
-        if (container == null) {
-            container = (NamedObj)object.getContainer();
-        }
-        if (container == null) {
-            return object;
-        }
-        return container;
-    }
 }

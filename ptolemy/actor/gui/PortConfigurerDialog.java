@@ -634,12 +634,7 @@ public class PortConfigurerDialog
             // that defers its MoML definition, or the
             // immediate parent if there is none.
 
-            NamedObj container =
-                MoMLChangeRequest.getDeferredToParent(actualPort);
-            if (container == null) {
-                container = (NamedObj) actualPort.getContainer();
-            }
-
+            NamedObj container = (NamedObj) actualPort.getContainer();
             NamedObj composite = (NamedObj) container.getContainer();
             if (composite != null) {
                 moml.append(
@@ -791,11 +786,7 @@ public class PortConfigurerDialog
                     // above this port in the hierarchy that defers its
                     // MoML definition, or the immediate parent
                     // if there is none.
-                    NamedObj parent =
-                        MoMLChangeRequest.getDeferredToParent(actualPort);
-                    if (parent == null) {
-                        parent = (NamedObj) actualPort.getContainer();
-                    }
+                    NamedObj parent = (NamedObj) actualPort.getContainer();
                     moml.append(
                         _createMoMLUpdate(
                             updates,
