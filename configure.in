@@ -1052,6 +1052,8 @@ else
     if "$JAVAC" JAITest.java ; then
        AC_MSG_RESULT(ok)
        PTJAI_DIR=jai
+       # PTJAI_PACKAGES is used in ptII/doc/makefile
+       PTJAI_PACKAGES=ptolemy.actor.lib/jai
     else
        AC_MSG_WARN(['"$JAVAC" JAITest.java' failed.
     perhaps the Java Advanced Imaging API is not installed?
@@ -1154,6 +1156,8 @@ else
     if "$JAVAC" JMFTest.java ; then
         AC_MSG_RESULT(ok)
         PTJMF_DIR=jmf
+	# PTJMF_PACKAGES is used in ptII/doc/makefile
+	PTJMF_PACKAGES=ptolemy.actor.lib.jmf
 	# Usually, JMF gets installed in C:/Program Files/JMF2.1.1
 	# and CLASSPATH gets that C:/Program Files/JMF2.1.1/lib/jmf.jar
 	# and C:/Program Files/JMF2.1.1/lib/sound.jar appended to it
@@ -2677,6 +2681,10 @@ AC_SUBST(PTJACL_JAR)
 # $PTII/ptolemy/actor/lib/makefile if Java Advanced Imaging was found
 AC_SUBST(PTJAI_DIR)
 
+# Ptolemy II packages that use Java Advanced Imaging
+# PTJAI_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTJAI_PACKAGES)
+
 # Location of the JDK
 AC_SUBST(PTJAVA_DIR)
 
@@ -2692,6 +2700,10 @@ AC_SUBST(PTJHDL_DIR)
 
 # Set to jmf if jmf.jar was found
 AC_SUBST(PTJMF_DIR)
+
+# Ptolemy II packages that use Java Media Framwork
+# PTJMF_PACKAGES is used in ptII/doc/makefile
+AC_SUBST(PTJMF_PACKAGES)
 
 # JNI architecture, used to compile C files
 AC_SUBST(PTJNI_ARCHITECTURE)

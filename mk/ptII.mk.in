@@ -352,11 +352,19 @@ JTCLSH =	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR
 # $PTII/ptolemy/actor/lib/makefile if Java Advanced Imaging was found
 PTJAI_DIR =	@PTJAI_DIR@
 
+# Ptolemy II packages that use Java Advanced Imaging
+# PTJAI_PACKAGES is used in ptII/doc/makefile
+PTJAI_PACKAGES =	@PTJAI_PACKAGES@
+
 # PTJHDL_DIR is set to jhdl if the JHDL directory is found
 PTJHDL_DIR =    @PTJHDL_DIR@
 
 # PTJMF_DIR is set to jmf if the JMF directory is found
 PTJMF_DIR =     @PTJMF_DIR@
+
+# Ptolemy II packages that use Java Media Framwork
+# PTJMF_PACKAGES is used in ptII/doc/makefile
+PTJMF_PACKAGES =	@PTJMF_PACKAGES@
 
 # JNI architecture, used to compile C files
 PTJNI_ARCHITECTURE =	@PTJNI_ARCHITECTURE@
