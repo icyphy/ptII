@@ -291,7 +291,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 link.setHead(null);
                 link.setTail(null);
                 links.remove();
-                if (headObj instanceof Port && tailObj instanceof Port) {
+                if (headObj instanceof Port && tailObj instanceof Port &&
+                        relation.getContainer() != null) {
                     NamedObj container = _getChangeRequestParent(relation);
                     // remove the relation  This should trigger removing the
                     // other link.  This avoids turning a direct connection
