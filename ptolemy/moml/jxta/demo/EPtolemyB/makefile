@@ -47,11 +47,11 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
+	EPtolemy.properties \
 	Gaussian.class \
 	PtolemyActorExchangeGroup.adv \
 	actors.xml \
 	discoveredActors.xml \
-	EPtolemy.properties \
 	ptpipe.adv
 
 EXTRA_SRCS = \

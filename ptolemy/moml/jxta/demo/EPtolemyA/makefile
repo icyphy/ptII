@@ -49,14 +49,15 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 	Average.class \
 	EPtolemy.properties \
+	EPtolemyA.htm \
 	PtolemyActorExchangeGroup.adv \
+	actors.xml \
+	discoveredActors.xml \
 	ptpipe.adv
 
-
 EXTRA_SRCS = \
-	EPtolemyA \
+	$(OTHER_FILES_TO_BE_JARED) \
 	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
