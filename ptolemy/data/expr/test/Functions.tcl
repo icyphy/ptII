@@ -49,13 +49,20 @@ if {[string compare test [info procs test]] == 1} then {
 
 proc evaluateTree {root} {
     set evaluator [java::new ptolemy.data.expr.ParseTreeEvaluator]
-    $evaluator evaluateParseTree $root
+    set value [$evaluator evaluateParseTree $root]
+    set typeInference [java::new ptolemy.data.expr.ParseTreeTypeInference]
+    set type [$typeInference inferTypes $root]
+    if [$type equals [$value getType]] then {
+	return [$value toString]
+    } else {
+	return "[$value toString] Warning: inferredType [$type toString] not consistent"
+    }
 }
 
 proc evaluate {expression} {
     set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} $expression]
-    [evaluateTree $root] toString
+    evaluateTree $root
 }
 
 # Call ptclose on the results.
@@ -64,7 +71,7 @@ proc evaluate {expression} {
 proc evaluatePtClose {expression results} {
     set p1 [java::new ptolemy.data.expr.PtParser]
     set root [ $p1 {generateParseTree String} $expression]
-    ptclose [[evaluateTree $root] toString] $results
+    ptclose [evaluateTree $root] $results
 }
 
 ####################################################################
