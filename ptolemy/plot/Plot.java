@@ -328,7 +328,11 @@ public class Plot extends PlotBox {
     public synchronized void clear(int dataset) {
         _checkDatasetIndex(dataset);
         Vector points = (Vector)_points.elementAt(dataset);
-        points.clear();
+        // Vector.clear() is new in JDK1.2, so we use just
+        // create a new Vector here so that we can compile
+        // this with JDK1.1 for use in JDK1.1 browsers
+        //points.clear();
+        points = new Vector();
         repaint();
     }
 
