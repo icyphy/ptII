@@ -46,6 +46,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Workspace;
 
 import cern.jet.random.AbstractDistribution;
 import cern.jet.random.engine.DRand;
@@ -178,6 +179,20 @@ public abstract class ColtRandomSource extends RandomSource
             _randomNumberGenerator = new Ranmar(_seed);
             _index = 4;
         }
+    }
+
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then set the filename public member.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        ColtRandomSource newObject = (ColtRandomSource)super.clone(workspace);
+        newObject._randomNumberGenerator = new DRand((int)_seed);
+        return newObject;
     }
 
     /** Send a random number to the output.
