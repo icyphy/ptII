@@ -57,7 +57,8 @@ classes.
 Sechduler implements the MutationListener interface, and register itself
 as a MutationListener to the host director.  When a mutation occors,
 the director will inform all the mutatin listeners (including the 
-scheduler), and the scheduler will devalidate the current schedule.
+scheduler), and the scheduler will in
+validate the current schedule.
 @author Jie Liu
 @version $Id$
 */
@@ -99,7 +100,7 @@ public class Scheduler extends NamedObj implements MutationListener{
     ////                         public methods                         ////
 
     /** Notify the scheduler that an entity has been added to a composite.
-     *  This will devalidate the current schedule.
+     *  This will invalidate the current schedule.
      *
      *  @param composite The container of the entity.
      *  @param entity The actor being added to the composite.
@@ -109,7 +110,7 @@ public class Scheduler extends NamedObj implements MutationListener{
     }
 
     /** Notify the scheduler that a port has been added to an entity.
-     *  This will devalidate the current schedule.
+     *  This will invalidate the current schedule.
      *
      *  @param entity The entity getting a new port.
      *  @param port The new port.
@@ -119,7 +120,7 @@ public class Scheduler extends NamedObj implements MutationListener{
     }
 
     /** Notify the scheduler that a relation has been added to a composite.
-     *  This will devalidate the current schedule.
+     *  This will invalidate the current schedule.
      *
      *  @param composite The container getting a new relation.
      *  @param relation The new relation.
@@ -161,7 +162,7 @@ public class Scheduler extends NamedObj implements MutationListener{
     }
 
     /** Notify the scheduler that a port has been linked to a relation.
-     *  This will devalidate the current schedule.
+     *  This will invalidate the current schedule.
      *
      *  @param relation The relation being linked.
      *  @param port The port being linked.
@@ -172,7 +173,7 @@ public class Scheduler extends NamedObj implements MutationListener{
 
     /** Notify the scheduler that an entity has been removed from 
      *  a composite.
-     *  This will devalidate the current schedule.
+     *  This will invalidate the current schedule.
      *
      *  @param composite The container of the entity.
      *  @param entity The entity being removed.
@@ -182,7 +183,7 @@ public class Scheduler extends NamedObj implements MutationListener{
     }
 
     /** Notify the scheduler that a port has been removed from a entity.
-     *  This will devalidate the current schedule.
+     *  This will invalidate the current schedule.
      *
      *  @param entity The container of the port.
      *  @param port The port being removed.
@@ -192,7 +193,7 @@ public class Scheduler extends NamedObj implements MutationListener{
     }
 
     /** Notify the scheduler that a relation has been removed from a composite.
-     *  This will devalidate the current schedule.
+     *  This will invalidate the current schedule.
      *
      *  @param entity The container of the relation.
      *  @param port The relation being removed.
@@ -218,12 +219,12 @@ public class Scheduler extends NamedObj implements MutationListener{
        return _cachedschedule;
     }
 
-    /** Validate/devalidate the current schedule by set the _valid member.
+    /** Validate/invalidate the current schedule by set the _valid member.
      *  A <code>true</code> argument will indicate that the current 
      *  schedule is valid
      *  and can be retured immediately when schedule() is called without 
      *  running the scheduling algorithm. A <code>false</code> argument
-     *  will devalidate it.
+     *  will invalidate it.
      *  @param true to set _valid flag to true.
      */
     public void setValid(boolean valid) {
@@ -231,7 +232,7 @@ public class Scheduler extends NamedObj implements MutationListener{
     }
 
     /** Notify the scheduler that a port has been unlinked from a relation.
-     *  This will devalidate the current schedule.
+     *  This will invalidate the current schedule.
      *
      *  @param relation The relation being unlinked.
      *  @param port The port being unlinked.
