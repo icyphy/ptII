@@ -100,6 +100,13 @@ public class ProcessThread extends PtolemyThread {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** End the iterations of the actor controlled by this thread
+     *  and prepare to wrapup.
+     */
+    public synchronized void finish() {
+        _preparingToWrapup = true;
+    }
+
     /** Return the actor being executed by this thread
      *  @return The actor being executed by this thread.
      */
@@ -115,7 +122,7 @@ public class ProcessThread extends PtolemyThread {
 	Workspace workspace = _director.workspace();
 	boolean iterate = true;
 	try {
-	    while (iterate) {
+	    while (iterate && !_preparingToWrapup ) {
 	        iterate = false;
                 // container is checked for null to detect the
                 // deletion of the actor from the topology.
@@ -126,8 +133,8 @@ public class ProcessThread extends PtolemyThread {
 		    }
 		    if ( _threadStopRequested && iterate) {
  		        _director.registerStoppedThread();
-			while( _threadStopRequested ) {
-			    synchronized(this) {
+			synchronized(this) {
+			    while( _threadStopRequested ) {
                                 wait();
 			    }
 			}
@@ -149,7 +156,7 @@ public class ProcessThread extends PtolemyThread {
             _director._decreaseActiveCount();
         }
     }
-
+    
     /** Restart this thread if it has stopped in response to a
      *  call to stopFire().
      */
@@ -185,4 +192,5 @@ public class ProcessThread extends PtolemyThread {
     private ProcessDirector _director;
     private Manager _manager;
     private boolean _threadStopRequested = false;
+    private boolean _preparingToWrapup = false;
 }
