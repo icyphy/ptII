@@ -57,6 +57,7 @@ JSRCS = \
 JSIMPLE_TESTS = \
 	BoundaryDetector.tcl \
  	CompositeProcessDirector.tcl \
+	MailboxBoundaryReceiver.tcl \
  	ProcessDirector.tcl \
 	ProcessThread.tcl 
 	
@@ -64,7 +65,6 @@ JSIMPLE_TESTS = \
 #	BoundaryDetector.tcl \
 #	Branch.tcl \
 #	BranchController.tcl \
-#	MailboxBoundaryReceiver.tcl \
 	
 	
 

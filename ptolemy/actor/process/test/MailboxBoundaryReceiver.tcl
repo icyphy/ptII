@@ -52,8 +52,8 @@ test MailboxBoundaryReceiver.Tcl-2.2 {Unlimited get(Branch) and put(Token,Branch
     set tL [java::new ptolemy.actor.CompositeActor]
     $tL setName "tL"
     set compAct [java::new ptolemy.actor.CompositeActor $tL "compAct"]
-    set outDir [java::new ptolemy.actor.process.ProcessDirector $tL "outDir"]
-    set inDir [java::new ptolemy.actor.process.ProcessDirector $compAct "inDir"]
+    set outDir [java::new ptolemy.actor.process.CompositeProcessDirector $tL "outDir"]
+    set inDir [java::new ptolemy.actor.process.CompositeProcessDirector $compAct "inDir"]
     
     # Instantiate Atomic Actors
     set act1 [java::new ptolemy.actor.AtomicActor $tL "act1"] 
@@ -105,7 +105,6 @@ test MailboxBoundaryReceiver.Tcl-2.2 {Unlimited get(Branch) and put(Token,Branch
     set cRcvr3 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch3 getConsReceiver]]
     
     $cntlr setActive true
-    $cntlr restart
     
     set val 1
     
