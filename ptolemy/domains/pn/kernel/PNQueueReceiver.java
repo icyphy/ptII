@@ -92,11 +92,10 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
     /** Clear the tokens in the queue contained in this receiver. This is used
      *  to reinitialize the receiver.
+     *  @deprecated
      */
     public void clear() {
-        while (super.hasToken()){
-            Token t = get();
-        }
+        super.initialize();
     }
 
     //FIXME: Add Clone()
