@@ -133,10 +133,10 @@ public class MoMLApplication {
         _parser = new MoMLParser();
 
 	// Handle Backward Compatibility.
-	//_parser.addMoMLFilter(new FilterBackwardCompatibility());
+	_parser.addMoMLFilter(new FilterBackwardCompatibility());
 
 	// Add any _icons.
-	//_parser.addMoMLFilter(new FilterAddIcons());
+	_parser.addMoMLFilter(new FilterAddIcons());
 
         _parseArgs(args);
 
