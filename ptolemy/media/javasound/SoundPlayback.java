@@ -102,12 +102,12 @@ public class SoundPlayback {
      *   actually heard). A lower bound on the latency is given by
      *   (<i>bufferSize</i> / <i>sampleRate</i>) seconds.
      *   Ideally, the
-     *   smallest value that gives acceptable performance (no unerflow)
+     *   smallest value that gives acceptable performance (no underflow)
      *   should be used.
      *  @param putSamplesSize Size of the array parameter of
      *   <i>putSamples()</i>. For performance reasons, the size should
      *   be chosen smaller than <i>bufferSize</i>. Typical values
-     *   are 1/2 to 1/16th of <i>bufferSize</i>.
+     *   are 1/2 to 1/16 th of <i>bufferSize</i>.
      */
     public SoundPlayback(float sampleRate, int sampleSizeInBits,
             int channels, int bufferSize,
@@ -152,7 +152,7 @@ public class SoundPlayback {
      *  @param putSamplesSize Size of the array parameter of
      *   <i>putSamples()</i>. For performance reasons, the size should
      *   be chosen smaller than <i>bufferSize</i>. Typical values
-     *   are 1/2 to 1/16th of <i>bufferSize</i>.
+     *   are 1/2 to 1/16 th of <i>bufferSize</i>.
      */
     public SoundPlayback(String fileName,
             float sampleRate, int sampleSizeInBits,
@@ -340,7 +340,7 @@ public class SoundPlayback {
 	    // Source DataLine is a stupid name. It is really a target for
 	    // audio data, not a source.
 	    _sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
-            // Open line and suggest a buffersize (in bytes) to use or
+            // Open line and suggest a buffer size (in bytes) to use or
 	    // the internal audio buffer.
 	    _sourceLine.open(format, _bufferSize*_frameSizeInBytes);
 	    System.out.println("SoundPlayback: internal audio buffer size = " +

@@ -72,7 +72,7 @@ channel on each firing is set by parameter <i>tokenProductionRate</i>.
 <p> Java cannot
 select between microphone and line-in sources. Use the OS
 to select whether audio capture is from the mic or line-in.
-The following parameters are relavent to audio capture from
+The following parameters are relevant to audio capture from
 a mic or line-in, and should be set accordingly:
 <ul>
 <li><i>source</i> should be set to "mic".
@@ -93,7 +93,7 @@ performance.
 </ul>
 <p>(2) Capture from a sound file (local or URL).
 <p>
-The following parameters are relavent to audio capture from
+The following parameters are relevant to audio capture from
 a sound file, and should be set accordingly:
 <ul>
 <li><i>source</i> should be set to "URL" or "file".

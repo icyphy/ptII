@@ -95,7 +95,7 @@ performance.
 </ul>
 <p>(2) Write to a sound file on the native file system.
 <p>
-The following parameters are relavent to writing to a sound
+The following parameters are relevant to writing to a sound
 file.
 <ul>
 <li><i>sink</i> should be set to "file".

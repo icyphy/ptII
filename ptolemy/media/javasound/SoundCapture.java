@@ -48,7 +48,7 @@ import javax.sound.sampled.*;
    to Java Sound, Java's audio API.
    <p>
    Depending on available audio
-   system resorces, it may be possible to run an instance of this
+   system resources, it may be possible to run an instance of this
    class and an instance of SoundPlayback concurrently. This allows
    for the concurrent capture, processing, and playback of audio data.
    <p>
@@ -366,7 +366,7 @@ public class SoundCapture {
 
     /* Perform necessary initialization to capture from a sound
      * file. The sound file can be specified as a URL or as a
-     * filename on the local filesystem.
+     * filename on the local file system.
      */
     private void _startCaptureFromFile() {
 	try {
