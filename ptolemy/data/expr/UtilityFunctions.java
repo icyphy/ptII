@@ -221,6 +221,35 @@ public class UtilityFunctions {
      */
     public static ArrayToken filter(FunctionToken predicate, ArrayToken array)
             throws IllegalActionException {
+        return filter(predicate, array, new IntToken(-1));
+    }
+
+    /** Extract a sub-array consisting of all of the elements of an
+     *  array for which the given predicate function returns true.
+     *  If the given array has type {X}, then the given function should
+     *  have type function(x:X)(boolean).  Example usage:
+     *  <p><code>even = function(x:int)(x%2==0)<br/>
+     *  filter(even,[1:1:20].toArray)</code></p>
+     *  @param predicate A function that takes exactly one parameter (of the
+     *   same type as the elements of the given array) and returns
+     *   a boolean value.
+     *  @param array An array, on whose elements the given function
+     *   will operate.
+     *  @param sizeLimit The maximum size of the resulting array,
+     *   or a negative number to specify no limit.
+     *  @return The subarray of this array containing exactly those
+     *   elements, in order, for which the given function returns
+     *   a BooleanToken with value true.  Any other return value
+     *   results in the element being ommitted. If the given function
+     *   never returns true, then return an empty array with an
+     *   element type that matches the specified array.
+     *  @exception IllegalActionException If applying the function
+     *   triggers an exception.
+     *  @since Ptolemy II 4.1 
+     */
+    public static ArrayToken filter(
+            FunctionToken predicate, ArrayToken array, IntToken sizeLimit)
+            throws IllegalActionException {
         List result = new LinkedList();
         int arity = predicate.getNumberOfArguments();
         if (arity != 1) {
@@ -228,6 +257,7 @@ public class UtilityFunctions {
                     "The predicate argument of filter() must be a function"
                     + " that takes one argument.");
         }
+        int sizeLimitValue = sizeLimit.intValue();
         for (int i = 0; i < array.length(); i++) {
             Token element = array.getElement(i);
             Token[] elementList = { element } ;
@@ -235,6 +265,9 @@ public class UtilityFunctions {
             if ((include instanceof BooleanToken)
                     && ((BooleanToken)include).booleanValue()) {
                  result.add(element);
+            }
+            if (sizeLimitValue >= 0 && result.size() >= sizeLimitValue) {
+                break;
             }
         }
         if (result.size() > 0) {
@@ -260,6 +293,26 @@ public class UtilityFunctions {
     public static Type filterReturnType(
             Type predicateType,
             Type arrayTokenType)
+            throws IllegalActionException {
+        return filterReturnType(predicateType, arrayTokenType, null);
+    }
+
+    /** Return the return type of the filter method, given the types
+     *  of the argument.
+     *  @param predicateType The type of the predicate function.
+     *  @param arrayTokenType The type of the array to be filtered.
+     *  @param sizeLimitType The type of the sizeLimit argument, or
+     *   null if there is no specified size limit.
+     *  @return The type of the result, which is the same as the array
+     *   type to be filtered.
+     *  @exception IllegalActionException If the specified function does not
+     *   take exactly one argument, or if the type signature of the function
+     *   is not compatible with the other array argument.
+     */
+    public static Type filterReturnType(
+            Type predicateType,
+            Type arrayTokenType,
+            Type sizeLimitType)
             throws IllegalActionException {
         if (predicateType instanceof FunctionType) {
             FunctionType castPredicateType = (FunctionType) predicateType;
