@@ -73,30 +73,6 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** The JGraph where we display stuff
-     */
-    JGraph jgraph = new JGraph();
-
-    /** The pane displaying the trace
-     */
-    private TracePane tracePane;
-
-    /** The canvas displaying the trace
-     */
-    private JCanvas traceCanvas;
-
-    /** The type listener
-     */
-    private MyTypeListener typeListener;
-
-    // The start time for the trace
-    private long _startTime = 0;
-    private long _counter = 0;
-
-        // The current element of each state;
-        private TraceModel.Element _currentElement[];
-
-
     /** After invoking super.init(), create and connect the actors.
      *  Also, create the on-screen Diva displays.
      */
@@ -116,15 +92,9 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
 	    _buildType2String();
 
 	    setLayout(new GridLayout(3, 1));
-//            setLayout(new BorderLayout());
             _ioPanel.setLayout(new GridLayout(1, 2));
             add(_ioPanel);
 	    add(_schemPanel);
-
-//            add(BorderLayout.NORTH,_ioPanel);
-//            _ioPanel.setSize(new Dimension(800,200));
-//	    add(BorderLayout.CENTER,_schemPanel);
-//            _schemPanel.setSize(new Dimension(800,250));
 
             Panel controlPanel = new Panel();
 	    controlPanel.setLayout(new BorderLayout());
@@ -136,217 +106,30 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
             JPanel visPanel = new JPanel();
             visPanel.setLayout(new BorderLayout());
             add(visPanel);
-//            add(BorderLayout.SOUTH,visPanel);
 
-            visPanel.add(jgraph, BorderLayout.WEST);
-            jgraph.setPreferredSize(new Dimension(400, 290));
-            jgraph.setSize(new Dimension(400, 290));
+            visPanel.add(_jgraph, BorderLayout.WEST);
+            _jgraph.setPreferredSize(new Dimension(400, 290));
+            _jgraph.setSize(new Dimension(400, 290));
 
             // Construct the Ptolemy type lattice model
-            final GraphModel graphModel = constructLattice();
+            final GraphModel graphModel = _constructLattice();
 
             // Display the type lattice 
-            displayGraph(jgraph, graphModel);
+            _displayGraph(_jgraph, graphModel);
 
             // Construct a new trace model
             TraceModel traceModel = new TraceModel();
 
             // Display the trace
-            traceCanvas = displayTrace(traceModel);
-            traceCanvas.setPreferredSize(new Dimension(400,290));
-            visPanel.add(traceCanvas, BorderLayout.EAST);
+            _traceCanvas = _displayTrace(traceModel);
+            _traceCanvas.setPreferredSize(new Dimension(400,290));
+            visPanel.add(_traceCanvas, BorderLayout.EAST);
 
-            _addListeners();
+	    _addListeners();
             
-         } catch (Exception ex) {
-             report("Setup failed:", ex);
-         }
-     }
-
-     /**  Construct the graph representing the Ptolemy type lattice
-      */
-     public GraphModel constructLattice () {
-         GraphModel model = new GraphModel();
-
-         // nodes, with user object set to the actor
-         Node n1 = model.createNode(Void.TYPE);
-         Node n2 = model.createNode(IntToken.class);
-         Node n3 = model.createNode(DoubleToken.class);
-         Node n4 = model.createNode(ComplexToken.class);
-         Node n5 = model.createNode(StringToken.class);
-         Node n6 = model.createNode(Token.class);
-         Node n7 = model.createNode(BooleanToken.class);
-         Node n8 = model.createNode(ObjectToken.class);
-         Node n9 = model.createNode(ScalarToken.class);
-         Node n10 = model.createNode(LongToken.class);
-
-         model.addNode(n1);
-         model.addNode(n2);
-         model.addNode(n3);
-         model.addNode(n4);
-         model.addNode(n5);
-         model.addNode(n6);
-         model.addNode(n7);
-         model.addNode(n8);
-         model.addNode(n9);
-         model.addNode(n10);
-
-         /** 
-         nodeMap.put(a1,n1);
-         nodeMap.put(a2,n2);
-         nodeMap.put(a3,n3);
-         nodeMap.put(a4,n4);
-         nodeMap.put(a5,n5);
-         nodeMap.put(a6,n6);
-         nodeMap.put(a7,n7);
-         nodeMap.put(a8,n8);
-         */
-
-         // Edges
-         model.createEdge(n8,n1);
-         model.createEdge(n6,n8);
-
-         model.createEdge(n6,n5);
-         model.createEdge(n5,n7);
-         model.createEdge(n7,n1);
-
-         model.createEdge(n5,n9);
-         model.createEdge(n9,n10);
-         model.createEdge(n10,n2);
-         model.createEdge(n2,n1);
-         model.createEdge(n3,n2);
-         model.createEdge(n4,n3);
-         model.createEdge(n9,n4);
-
-         return model;
-     }
-
-
-     /**
-      * Construct the graph widget with
-      * the default constructor (giving it an empty graph),
-      * and then set the model once the window is showing.
-      */
-     public void displayGraph(JGraph g, GraphModel model) {
-         // add(g);
-         ///g.setPreferredSize(new Dimension(300, 400));
-
-         // Make sure we have the right renderers and then
-         // display the graph
-         final GraphPane gp = (GraphPane) g.getCanvasPane();
-         final GraphView gv = gp.getGraphView();
-         gv.setNodeRenderer(new TypeRenderer());
-         gv.setEdgeRenderer(new LineRenderer());
-         g.setGraphModel(model);
-
-         // Do the layout
-         final GraphModel m = model;
-         try {
-             SwingUtilities.invokeLater(new Runnable() {
-                 public void run () {
-                     // Layout is a bit stupid
-                     gv.setLayoutPercentage(0.7);
-                     LevelLayout staticLayout = new LevelLayout();
-                     staticLayout.setOrientation(LevelLayout.VERTICAL);
-                     staticLayout.layout(gv, m.getGraph());
-                     gp.repaint();
-                 }
-             });
-         } catch (Exception e) {
-             System.out.println(e);
-         }
-     }
-
-     /**
-      * Initialize the trace model.
-      */
-     public void initTraceModel(TraceModel model) {
-         TraceModel.Trace t;
-
-         t = new TraceModel.Trace();
-         t.setUserObject("ramp1.output");
-         model.addTrace(_ramp1.output, t);
-
-         t = new TraceModel.Trace();
-         t.setUserObject("ramp2.output");
-         model.addTrace(_ramp2.output, t);
-
-         t = new TraceModel.Trace();
-         t.setUserObject("expr.input1");
-         model.addTrace(_expr.getPort("input1"), t);
-
-         t = new TraceModel.Trace();
-         t.setUserObject("expr.input2");
-         model.addTrace(_expr.getPort("input2"), t);
-
-         t = new TraceModel.Trace();
-         t.setUserObject("expr.output");
-         model.addTrace(_expr.output, t);
-
-         t = new TraceModel.Trace();
-         t.setUserObject("plotter.input");
-         model.addTrace(_plotter.input, t);
-
-         t = new TraceModel.Trace();
-         t.setUserObject("printer.input");
-         model.addTrace(_printer.input, t);
-     }
-
-      /**
-      * Initialize the trace view.
-      */
-     public void initTraceView() {
-         TraceView view = tracePane.getTraceView();
-         TraceModel model = tracePane.getTraceModel();
-         _currentElement = new TraceModel.Element[model.size()];
-
-         for (int i = 0; i < model.size()-2; i++ ) {
-             TraceModel.Trace trace = model.getTrace(i);
-             TraceModel.Element element = new TraceModel.Element(0, 1, 7);
-             element.closure = TraceModel.Element.OPEN_END;
-             trace.add(element);
-             _currentElement[i] = element;
-             view.drawTrace(trace);
-             view.drawTraceElement(element);
-         }
-
-         // Hack hack hack
-         int i = 5;
-         TraceModel.Trace trace = model.getTrace(i);
-         TraceModel.Element element = new TraceModel.Element(0, 1, 8);
-         element.closure = TraceModel.Element.OPEN_END;
-         trace.add(element);
-         _currentElement[i] = element;
-         view.drawTrace(trace);
-         view.drawTraceElement(element);
-
-         i = 6;
-         trace = model.getTrace(i);
-         element = new TraceModel.Element(0, 1, 5);
-         element.closure = TraceModel.Element.OPEN_END;
-         trace.add(element);
-         _currentElement[i] = element;
-         view.drawTrace(trace);
-         view.drawTraceElement(element);
-    }
-        
-    /**
-     * Construct the trace display in a JCanvas and return the JCanvas
-     */
-    public JCanvas displayTrace(TraceModel traceModel) {
-        tracePane = new TracePane();
-        JCanvas traceWidget = new JCanvas(tracePane);
-        
-        // Configure the view
-        TraceView traceView = tracePane.getTraceView();
-//        traceView.setTimeScale(0.5);
-        traceView.setTimeScale(25);
-//        traceView.setTimeScale(_query.doubleValue("timescale"));
-
-        traceView.setLayout(10,10,400,20,20);
-        traceView.setTraceModel(traceModel);
-
-        return traceWidget;
+        } catch (Exception ex) {
+            report("Setup failed:", ex);
+	}
     }
 
     /** Override the base class to avoid executing the model automatically
@@ -370,39 +153,33 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
 	    _ramp1.init.setContainer(null);
 	    Parameter init1 = new Parameter(_ramp1, "init");
 	    _ramp1.init = init1;
-//	    init1.setExpression(_ramp1InitQuery.stringValue("ramp1init"));
 	    init1.setExpression(_query.stringValue("ramp1init"));
 
 	    _ramp1.step.setContainer(null);
 	    Parameter step1 = new Parameter(_ramp1, "step");
 	    _ramp1.step = step1;
-//	    step1.setExpression(_ramp1StepQuery.stringValue("ramp1step"));
 	    step1.setExpression(_query.stringValue("ramp1step"));
 
 	    _ramp2.init.setContainer(null);
 	    Parameter init2 = new Parameter(_ramp2, "init");
 	    _ramp2.init = init2;
-//	    init2.setExpression(_ramp2InitQuery.stringValue("ramp2init"));
 	    init2.setExpression(_query.stringValue("ramp2init"));
 
 	    _ramp2.step.setContainer(null);
 	    Parameter step2 = new Parameter(_ramp2, "step");
 	    _ramp2.step = step2;
-//	    step2.setExpression(_ramp2StepQuery.stringValue("ramp2step"));
 	    step2.setExpression(_query.stringValue("ramp2step"));
 
 	    _expr.expression.setToken(
-//			new StringToken(_exprQuery.stringValue("expr")));
 			new StringToken(_query.stringValue("expr")));
             
             // Reinitialize the trace display
-            tracePane.getTraceView().clear();
-            tracePane.getTraceModel().clear();
-            initTraceModel(tracePane.getTraceModel());
-            initTraceView();
+            _tracePane.getTraceView().clear();
+            _tracePane.getTraceModel().clear();
+            _initTraceModel(_tracePane.getTraceModel());
+            _initTraceView();
 
             // Now set system "start" time
-//            _startTime = System.currentTimeMillis();
             _startTime = 0;
 	    _counter = 0;
 
@@ -415,34 +192,40 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
     ///////////////////////////////////////////////////////////////////
     ////                          private methods                  ////
 
+    private void _addListeners()
+	    throws NameDuplicationException, IllegalActionException {
+
+	_plotterBox.addItemListener(new DisplayListener());
+	_printerBox.addItemListener(new DisplayListener());
+
+	_typeListener = new MyTypeListener();
+	_ramp1.output.addTypeListener(_typeListener);
+	_ramp2.output.addTypeListener(_typeListener);
+	((TypedIOPort)_expr.getPort("input1")).addTypeListener(_typeListener);
+	((TypedIOPort)_expr.getPort("input2")).addTypeListener(_typeListener);
+	_expr.output.addTypeListener(_typeListener);
+	_plotter.input.addTypeListener(_typeListener);
+	_printer.input.addTypeListener(_typeListener);
+
+        // Add code to extend the trace
+
+
+	// add execution listener for type conflict
+	MyTypeConflictListener conflictListener =
+		new MyTypeConflictListener();
+	_manager.addExecutionListener(conflictListener);
+    }
+
     private void _buildControlPanel(Panel controlPanel) {
 	Panel runControlPanel = _createRunControls(1);
-//	controlPanel.add("North", runControlPanel);
 	controlPanel.add("South", runControlPanel);
-
-//	Panel paramPanel = new Panel();
-//	paramPanel.setLayout(new GridLayout(6, 1));
-//	controlPanel.add("Center", paramPanel);
 	controlPanel.add("Center", _query);
 
-//	_ramp1InitQuery.line("ramp1init", "Ramp1 Initial Value", "0", 20);
-//	_ramp1StepQuery.line("ramp1step", "Ramp1 Step Size", "1", 20);
-//	_ramp2InitQuery.line("ramp2init", "Ramp2 Init Value", "0", 20);
-//	_ramp2StepQuery.line("ramp2step", "Ramp2 Step Size", "1", 20);
-//	_exprQuery.line("expr", "Expression", "input1 + input2", 20);
 	_query.line("ramp1init", "Ramp1 Initial Value", "0");
 	_query.line("ramp1step", "Ramp1 Step Size", "1");
 	_query.line("ramp2init", "Ramp2 Init Value", "0");
 	_query.line("ramp2step", "Ramp2 Step Size", "1");
 	_query.line("expr", "Expression", "input1 + input2");
-
-//	_query.line("timescale", "TimeScale", "0.5");
-
-//	paramPanel.add(_ramp1InitQuery);
-//	paramPanel.add(_ramp1StepQuery);
-//	paramPanel.add(_ramp2InitQuery);
-//	paramPanel.add(_ramp2StepQuery);
-//	paramPanel.add(_exprQuery);
 
 	Panel displayPanel = new Panel();
 	displayPanel.add(new Label("Display using"));
@@ -451,8 +234,6 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
 	_printerBox = new Checkbox("Printer", displayGroup, false);
 	displayPanel.add(_plotterBox);
 	displayPanel.add(_printerBox);
-//	paramPanel.add(displayPanel);
-//	controlPanel.add("South", displayPanel);
 	controlPanel.add("North", displayPanel);
     }
 
@@ -476,7 +257,6 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
         _plotter = new PlotActor(_toplevel, "plot");
 
         _plotter.setPanel(_ioPanel);
-//            _plotter.setPanel(this);
         _plotter.plot.setGrid(true);
         _plotter.plot.setXRange(0.0, 10.0);
         _plotter.plot.setYRange(0.0, 20.0);
@@ -493,30 +273,6 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
         _toplevel.connect(_ramp1.output, input1);
         _toplevel.connect(_ramp2.output, input2);
         _toplevel.connect(_expr.output, _plotter.input);
-    }
-
-    private void _addListeners()
-	    throws NameDuplicationException, IllegalActionException {
-
-	_plotterBox.addItemListener(new DisplayListener());
-	_printerBox.addItemListener(new DisplayListener());
-
-	typeListener = new MyTypeListener();
-	_ramp1.output.addTypeListener(typeListener);
-	_ramp2.output.addTypeListener(typeListener);
-	((TypedIOPort)_expr.getPort("input1")).addTypeListener(typeListener);
-	((TypedIOPort)_expr.getPort("input2")).addTypeListener(typeListener);
-	_expr.output.addTypeListener(typeListener);
-	_plotter.input.addTypeListener(typeListener);
-	_printer.input.addTypeListener(typeListener);
-
-        // Add code to extend the trace
-
-
-	// add execution listener for type conflict
-	MyTypeConflictListener conflictListener =
-		new MyTypeConflictListener();
-	_manager.addExecutionListener(conflictListener);
     }
 
     private void _buildType2String() {
@@ -540,6 +296,181 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
 	_type2String.put(IntToken.class, "Int");
 
 	_type2String.put(Void.TYPE, "NaT");
+    }
+
+    // Construct the graph representing the Ptolemy type lattice
+    private GraphModel _constructLattice () {
+        GraphModel model = new GraphModel();
+
+        // nodes, with user object set to the actor
+        Node n1 = model.createNode(Void.TYPE);
+        Node n2 = model.createNode(IntToken.class);
+        Node n3 = model.createNode(DoubleToken.class);
+        Node n4 = model.createNode(ComplexToken.class);
+        Node n5 = model.createNode(StringToken.class);
+        Node n6 = model.createNode(Token.class);
+        Node n7 = model.createNode(BooleanToken.class);
+        Node n8 = model.createNode(ObjectToken.class);
+        Node n9 = model.createNode(ScalarToken.class);
+        Node n10 = model.createNode(LongToken.class);
+
+        model.addNode(n1);
+        model.addNode(n2);
+        model.addNode(n3);
+        model.addNode(n4);
+        model.addNode(n5);
+        model.addNode(n6);
+        model.addNode(n7);
+        model.addNode(n8);
+        model.addNode(n9);
+        model.addNode(n10);
+
+        /* 
+        nodeMap.put(a1,n1);
+        nodeMap.put(a2,n2);
+        nodeMap.put(a3,n3);
+        nodeMap.put(a4,n4);
+        nodeMap.put(a5,n5);
+        nodeMap.put(a6,n6);
+        nodeMap.put(a7,n7);
+        nodeMap.put(a8,n8);
+        */
+
+        // Edges
+        model.createEdge(n8,n1);
+        model.createEdge(n6,n8);
+
+        model.createEdge(n6,n5);
+        model.createEdge(n5,n7);
+        model.createEdge(n7,n1);
+
+        model.createEdge(n5,n9);
+        model.createEdge(n9,n10);
+        model.createEdge(n10,n2);
+        model.createEdge(n2,n1);
+        model.createEdge(n3,n2);
+        model.createEdge(n4,n3);
+        model.createEdge(n9,n4);
+
+        return model;
+    }
+
+    // Construct the graph widget with
+    // the default constructor (giving it an empty graph),
+    // and then set the model once the window is showing.
+    //
+    private void _displayGraph(JGraph g, GraphModel model) {
+
+        // Make sure we have the right renderers and then
+        // display the graph
+        final GraphPane gp = (GraphPane) g.getCanvasPane();
+        final GraphView gv = gp.getGraphView();
+        gv.setNodeRenderer(new TypeRenderer());
+        gv.setEdgeRenderer(new LineRenderer());
+        g.setGraphModel(model);
+
+        // Do the layout
+        final GraphModel m = model;
+        try {
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run () {
+                     // Layout is a bit stupid
+                    gv.setLayoutPercentage(0.7);
+                    LevelLayout staticLayout = new LevelLayout();
+                    staticLayout.setOrientation(LevelLayout.VERTICAL);
+                    staticLayout.layout(gv, m.getGraph());
+                    gp.repaint();
+                }
+            });
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+    }
+
+    // Initialize the trace model.
+    //
+    private void _initTraceModel(TraceModel model) {
+        TraceModel.Trace t;
+
+        t = new TraceModel.Trace();
+        t.setUserObject("ramp1.output");
+        model.addTrace(_ramp1.output, t);
+
+        t = new TraceModel.Trace();
+        t.setUserObject("ramp2.output");
+        model.addTrace(_ramp2.output, t);
+
+        t = new TraceModel.Trace();
+        t.setUserObject("expr.input1");
+        model.addTrace(_expr.getPort("input1"), t);
+
+        t = new TraceModel.Trace();
+        t.setUserObject("expr.input2");
+        model.addTrace(_expr.getPort("input2"), t);
+
+        t = new TraceModel.Trace();
+        t.setUserObject("expr.output");
+        model.addTrace(_expr.output, t);
+
+        t = new TraceModel.Trace();
+        t.setUserObject("plotter.input");
+        model.addTrace(_plotter.input, t);
+
+        t = new TraceModel.Trace();
+        t.setUserObject("printer.input");
+        model.addTrace(_printer.input, t);
+    }
+
+    // Initialize the trace view.
+    //
+    private void _initTraceView() {
+        TraceView view = _tracePane.getTraceView();
+        TraceModel model = _tracePane.getTraceModel();
+        _currentElement = new TraceModel.Element[model.size()];
+
+        for (int i = 0; i < model.size()-2; i++ ) {
+            TraceModel.Trace trace = model.getTrace(i);
+            TraceModel.Element element = new TraceModel.Element(0, 1, 7);
+            element.closure = TraceModel.Element.OPEN_END;
+            trace.add(element);
+            _currentElement[i] = element;
+            view.drawTrace(trace);
+            view.drawTraceElement(element);
+        }
+
+        // Hack hack hack
+        int i = 5;
+        TraceModel.Trace trace = model.getTrace(i);
+        TraceModel.Element element = new TraceModel.Element(0, 1, 8);
+        element.closure = TraceModel.Element.OPEN_END;
+        trace.add(element);
+        _currentElement[i] = element;
+        view.drawTrace(trace);
+        view.drawTraceElement(element);
+
+        i = 6;
+        trace = model.getTrace(i);
+        element = new TraceModel.Element(0, 1, 5);
+        element.closure = TraceModel.Element.OPEN_END;
+        trace.add(element);
+        _currentElement[i] = element;
+        view.drawTrace(trace);
+        view.drawTraceElement(element);
+    }
+        
+    // Construct the trace display in a JCanvas and return the JCanvas
+    private JCanvas _displayTrace(TraceModel traceModel) {
+        _tracePane = new TracePane();
+        JCanvas traceWidget = new JCanvas(_tracePane);
+        
+        // Configure the view
+        TraceView traceView = _tracePane.getTraceView();
+        traceView.setTimeScale(25);
+
+        traceView.setLayout(10,10,400,20,20);
+        traceView.setTraceModel(traceModel);
+
+        return traceWidget;
     }
 
     // set the plotter or the printer as display. connect the
@@ -588,11 +519,6 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
     private PlotActor _plotter;
     private Print _printer;
 
-//    private Query _ramp1InitQuery = new Query();
-//    private Query _ramp1StepQuery = new Query();
-//    private Query _ramp2InitQuery = new Query();
-//    private Query _ramp2StepQuery = new Query();
-//    private Query _exprQuery = new Query();;
     private Query _query = new Query();
 
     private String _ramp1Type = "NaT";
@@ -609,13 +535,31 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
     private Panel _ioPanel = new Panel();
     private SchematicPanel _schemPanel = new SchematicPanel();
 
+    // The JGraph where we display stuff
+    private JGraph _jgraph = new JGraph();
+
+    // The pane displaying the trace
+    private TracePane _tracePane;
+
+    // The canvas displaying the trace
+    private JCanvas _traceCanvas;
+
+    // The type listener
+    private MyTypeListener _typeListener;
+
+    // The start time for the trace
+    private long _startTime = 0;
+    private long _counter = 0;
+
+    // The current element of each state;
+    private TraceModel.Element _currentElement[];
+
     ///////////////////////////////////////////////////////////////////
     ////                       inner class                         ////
 
     private class SchematicPanel extends Panel {
 
 	public SchematicPanel() {
-//	    setBackground(new Color(0.9F, 1.0F, 0.7F));
 	}
 
     	public void paint(Graphics graph) {
@@ -787,21 +731,13 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
 	}
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //// TypeRenderer
+    // TypeRenderer draws the nodes to represent types in a type lattice
+    private class TypeRenderer implements NodeRenderer {
 
-    /**
-     * TypeRenderer draws the nodes to represent types in a type lattice
-     */
-    public class TypeRenderer implements NodeRenderer {
-
-        /** The size
-         */
+        // The size
         private double _size = 20;
 
-        /**
-         * Return the rendered visual representation of this node.
-         */
+        // Return the rendered visual representation of this node.
         public Figure render (Node n) {
             Object typeObj = n.getSemanticObject();
 
@@ -855,10 +791,8 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
     ///////////////////////////////////////////////////////////////////
     //// LineRenderer
 
-    /**
-     * LineRenderer draws edges as simple lines
-     */
-    public class LineRenderer implements EdgeRenderer {
+    // LineRenderer draws edges as simple lines
+    private class LineRenderer implements EdgeRenderer {
         /**
          * Render a visual representation of the given edge.
          */
@@ -869,12 +803,8 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    //// MyTypeListener
-
-    /** The local listener class
-     */
-    public class MyTypeListener implements TypeListener {
+    // The local listener class
+    private class MyTypeListener implements TypeListener {
 
         public void typeChanged(TypeEvent event) {
             Class newtype = event.getNewType();
@@ -935,18 +865,15 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
               }
 
               // Get the trace and element figure
-              TraceModel model = tracePane.getTraceView().getTraceModel();
+              TraceModel model = _tracePane.getTraceView().getTraceModel();
               TraceModel.Trace trace = model.getTrace(id);
 
               // Create the new element
-//              double currentTime = (double) (System.currentTimeMillis() - _startTime);
               double currentTime = (double) (_counter);
 	      _counter++;
 
               // Make the elements look large in case they're the
               // last one
-//              final TraceModel.Element element = new TraceModel.Element(
-//                      currentTime, currentTime+50, color);
               final TraceModel.Element element = new TraceModel.Element(
                       currentTime, currentTime+1, color);
               element.closure = TraceModel.Element.OPEN_END;
@@ -960,7 +887,6 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
               final int msize = model.size();
               final TraceModel.Element temp[] = new TraceModel.Element[msize];
               for (int i = 0; i < msize; i++) {
-//                  _currentElement[i].stopTime = currentTime+50;
                   _currentElement[i].stopTime = currentTime+1;
                   temp[i] = _currentElement[i];
               }
@@ -968,7 +894,7 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
               try {
                   SwingUtilities.invokeAndWait(new Runnable() {
                       public void run () {
-                          TraceView v = tracePane.getTraceView();
+                          TraceView v = _tracePane.getTraceView();
                           for (int i = 0; i < msize; i++) {
                               v.updateTraceElement(temp[i]);
                           }
