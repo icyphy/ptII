@@ -55,7 +55,6 @@ TCL_SRCS = \
 	RampRK23.tcl \
 	RampSample.tcl \
 	RandomRamp.tcl \
-	SigmaDelta.tcl \
 	WaveBE.tcl \
 	WaveFE.tcl \
 	WaveBERK23.tcl
