@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: $Id$
+# @Version: @(#)makefile	1.1 07/20/98
 #
 # @Copyright (c) 1998 The Regents of the University of California.
 # All rights reserved.
@@ -47,7 +47,8 @@ JSRCS = \
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	MathWizard.tcl
+	Complex.tcl \
+	SignalProcessing.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
