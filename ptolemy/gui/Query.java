@@ -30,8 +30,22 @@
 
 package ptolemy.gui;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
+import java.awt.Panel;
+import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
 import java.io.File;
 import java.net.MalformedURLException;
 import java.util.*;
@@ -78,8 +92,7 @@ public class Query extends JPanel {
 
         setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
-        // Left Justify.
-        _entryPanel.setAlignmentX(0.0f);
+        _entryPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         // Add a message panel into which a message can be placed using
         // setMessage().
@@ -102,8 +115,7 @@ public class Query extends JPanel {
 
         _messageArea.setBackground(null);
 
-        // Left Justify.
-        _messageArea.setAlignmentX(0.0f);
+        _messageArea.setAlignmentX(Component.LEFT_ALIGNMENT);
 
         _messageScrollPane = new JScrollPane(_messageArea);
 	_messageScrollPane.setVerticalScrollBarPolicy(
@@ -112,10 +124,14 @@ public class Query extends JPanel {
         _messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
         _messageScrollPane.getViewport().setBackground(null);
 
+        // Useful for debugging:
+        //_messageScrollPane.setBorder(
+        //                    BorderFactory.createLineBorder(Color.pink));
+
         add(_messageScrollPane);
 
         // Add a spacer.
-        add(Box.createRigidArea(new Dimension(0,10)));
+        add(Box.createRigidArea(new Dimension(0, 10)));
 
         _entryScrollPane = new JScrollPane(_entryPanel);
         // Get rid of the border.
@@ -975,21 +991,23 @@ public class Query extends JPanel {
         _labels.put(name, label);
         _previous.put(name, stringValue(name));
 
+        Dimension preferredSize = _entryPanel.getPreferredSize();
         // Add some slop to the width to take in to account
         // the width of the vertical scrollbar.
-        Dimension preferredSize = _entryPanel.getPreferredSize();
         preferredSize.width += 25;
 
-        if (_entries.size() < 10) { 
-            // If we have less than 10 entries, set the preferred height
-            // to be the number of entries * the text height.
+        // Applets seem to need this, see CT/SigmaDelta
+        _widgetsHeight += widget.getPreferredSize().height + 10;
+        preferredSize.height = _widgetsHeight;
 
-            // Be sure to check an applet such as GR/Pendulum that has
-            // a single parameter after modifying this.
-            preferredSize.height = _entries.size() * getTextHeight() * 4;
-        } else {
-            preferredSize.height = 10 * getTextHeight();
+        Toolkit tk = Toolkit.getDefaultToolkit();
+        if (preferredSize.height > tk.getScreenSize().height) {
+            // Fudge factor to keep this window smaller than the screen
+            // height.  CGSUnitBase and the Code Generator are good tests.
+            preferredSize.height = (int) (tk.getScreenSize().height * 0.75);
+            _entryScrollPane.setPreferredSize(preferredSize);
         }
+
         _entryScrollPane.setPreferredSize(preferredSize);
         // Call revalidate for the scrollbar.
         _entryPanel.revalidate();
@@ -1062,7 +1080,7 @@ public class Query extends JPanel {
     // A scroll pane that contains the _entryPanel.
     private JScrollPane _entryScrollPane;
 
-    // The height of the text boxes.
+    // The number of lines in a text box.
     private int _height = DEFAULT_ENTRY_HEIGHT;
 
     // The hashtable of labels in the query.
@@ -1083,7 +1101,10 @@ public class Query extends JPanel {
     // The hashtable of previous values, indexed by entry name.
     private Map _previous = new HashMap();
 
-    // The width of the text boxes.
+    // The sum of the height of the widgets added using _addPair
+    private int _widgetsHeight;
+
+    // The number of horizontal characters in a text box.
     private int _width = DEFAULT_ENTRY_WIDTH;
 
     ///////////////////////////////////////////////////////////////////
