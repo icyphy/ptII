@@ -152,11 +152,11 @@ AC_MSG_CHECKING([the Java compiler with a simple compile])
 startdir=`pwd`
 cd $srcdir/config
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-if $JAVAC -d $startdir confTest.java ; then
+if $JAVAC confTest.java ; then
     AC_MSG_RESULT(ok)
 
     AC_MSG_CHECKING([the value of the java.version Property ])
-    JVERSION=`CLASSPATH=$PTII $JAVA confTest`	
+    JVERSION=`CLASSPATH=$PTII/config $JAVA confTest`	
     AC_MSG_RESULT($JVERSION)
 
     JFLAGS="$JFLAGSINIT -depend"
@@ -181,7 +181,7 @@ files depend on])
     fi
 else
     JFLAGS="$JFLAGSINIT -depend"
-   AC_MSG_WARN(['$JAVAC -d $startdir confTest.java' failed,
+   AC_MSG_WARN(['$JAVAC confTest.java' failed,
 so we can't figure out whether to use -depend or -Xdepend.
 Defaulting to $JFLAGS]);
 fi
