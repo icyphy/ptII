@@ -62,7 +62,8 @@ JSRCS = \
 	DifferentialSystem.java
 
 OTHER_FILES_TO_BE_JARED = \
-	ctentities.xml
+	ctentities.xml \
+	eventgenerators.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
