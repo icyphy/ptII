@@ -76,12 +76,12 @@ public class HTVQApplet extends SDFApplet {
             Panel runcontrols = new Panel();
             controlpanel.add("Center", runcontrols);
             runcontrols.add(_createRunControls(1));
-        
+
 	    Panel displayPanel = new Panel();
 	    add(displayPanel, "North");
 	    displayPanel.setLayout(new BorderLayout(15, 15));
 	    displayPanel.setSize(420, 200);
-	    
+
 	    Panel originalPanel = new Panel();
 	    originalPanel.setSize(200, 200);
 	    displayPanel.add(originalPanel, "West");
@@ -89,24 +89,24 @@ public class HTVQApplet extends SDFApplet {
 	    Panel compressedPanel = new Panel();
 	    compressedPanel.setSize(200, 200);
 	    displayPanel.add(compressedPanel, "East");
-	    
+
 	    ImageSequence source = new ImageSequence(_toplevel, "Source");
             source.setBaseURL(getDocumentBase());
-            
+
             ImagePartition part = new ImagePartition(_toplevel, "Part");
-            
+
 	    HTVQEncode encode = new HTVQEncode(_toplevel, "Encoder");
             encode.setBaseURL(getDocumentBase());
-            
+
 	    VQDecode decode = new VQDecode(_toplevel, "Decoder");
             decode.setBaseURL(getDocumentBase());
-            
-	    ImageUnpartition unpart = 
+
+	    ImageUnpartition unpart =
 		new ImageUnpartition(_toplevel, "Unpart");
-            
+
 	    ImageDisplay consumer = new ImageDisplay(_toplevel, "Compressed");
 	    consumer.setPanel(compressedPanel);
-           
+
 	    ImageDisplay original = new ImageDisplay(_toplevel, "Original");
 	    original.setPanel(originalPanel);
 
@@ -137,7 +137,7 @@ public class HTVQApplet extends SDFApplet {
         }
     }
 
-            
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

@@ -111,7 +111,7 @@ public class ExpressionApplet extends SDFApplet {
         }
     }
 
-            
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

@@ -133,7 +133,7 @@ public class SDFApplet extends PtolemyApplet {
             // in a new panel.
             Panel iterpanel = new Panel();
             iterpanel.add(new Label("Number of iterations:"));
-            
+
             // Process the defaultiterations parameter.
             String defiterspec = getParameter("defaultiterations");
             if (defiterspec == null) {
@@ -196,7 +196,7 @@ public class SDFApplet extends PtolemyApplet {
      *  parameter.  Note that this is set by the init() method.
      */
     protected boolean _iterationsgiven = false;
-    
+
     /** The entry box containing the number of iterations, or null if
      *  there is none.
      */
