@@ -102,12 +102,12 @@ JSRCS = \
 	Writer.java
 
 EXTRA_SRCS =	$(JSRCS) \
-	genericentities.xml \
+	flowcontrol.xml \
 	genericicons.xml \
-	modulation.xml \
+	math.xml \
+	signalprocessing.xml \
 	sinks.xml \
-	sources.xml \
-	transformers.xml
+	sources.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
