@@ -42,63 +42,84 @@ import collections.LinkedList;
 The base class for OD actors. ODActors are intended to run as threaded
 processes that maintain a distributed notion of time. Each ODActor in
 a system of connected actors, must maintain a local notion of time 
-which is dependent on the time of events that flow through the input
+which is dependent on the time of events that flow through its input
 receivers. An event is simply an object which contains a token, a
 time stamp and a receiver (to which the event is destined).
-
-To facilitate this process, the ODReceivers used by ODActors each have 
+<P>
+To facilitate this process, the ODReceivers contained by ODActors each have 
 three important variables: rcvrTime, lastTime and priority. The rcvrTime 
 of an ODReceiver is equal to the time of the oldest event that resides 
 on the receiver. The lastTime is equal to the time of the newest event 
 residing in the receiver. 
-
+<P>
 An ODActor consumes tokens from the input receiver which has the oldest
 (smallest valued) rcvrTime. Such consumption is accomplished via blocking
 reads from the corresponding input receiver. The priority variable is used
 in cases where multiple input receivers share a common rcvrTime. Each
 receiver has an integer-valued priority. The receiver with the highest 
-priority is utilized if a common rcvrTime is shared. 
-
-The receiver priorities are set using the method setPriorities(). 
-First all of the input receivers are grouped by their container ports.
-If the ODIOPorts which contain the receivers have been explicitly 
-assigned priorities, then these groups are ordered accordingly. If not,
-the groups are ordered in increasing order according to the call to
-inputPorts(). Within each group, the priorities are assigned in increasing 
-order based on the call to port.getReceivers(). 
-
-Note that currently setPriorities() calls the method port.getPriority().
-This requires the port to be of type ODIOPort and hence precludes 
-polymorphic actors. A later version of this class will not have this 
-constraint.
-
-
+priority is utilized if a common rcvrTime is shared by multiple receivers. 
+<P>
+The receiver priorities are set using the method setPriorities() in the
+following manner. All of the input receivers for a given ODActor are 
+grouped by their respective container input ports. If the ODIOPorts which 
+contain the receivers have been explicitly assigned priorities, then the 
+groups are ordered accordingly. If port priorities have not been explicitly
+assigned, then the groups are ordered according to the inverse order in 
+which their corresponding ODIOPorts were added to the containing ODActor. 
+I.e., if two input ports (pA and pB) are added to an ODActor without explicit
+priorities such that port pA is added before port pB, then all of the 
+receivers of port pB will have a higher priority than the receivers of port 
+pA.
+<P>
+Within a group the receiver priorities are further refined so that receivers
+within a group can be ordered relative to one another. Receiver priorities 
+within a group are ordered according to the inverse order in which they were 
+added to the containing ODIOPort. I.e., if two input receivers (rA and rB) 
+are added to an ODActor such that receiver rA is added before receiver rB, 
+then rB will have a higher priority than rA.
+<P>
+The above approach provides each receiver contained by a given ODActor with 
+a unique priority, such that the set of receiver priorities for the  
+containing ODActor is totally ordered. Note that currently setPriorities() 
+calls the method port.getPriority(). This requires the port to be of type 
+ODIOPort and hence precludes polymorphic actors. A later version of this 
+class will not have this constraint.
+<P>
+RcvrTimeTriple objects are used to facilitate the ordering of receivers 
+contained by an ODActor according to rcvrTime/lastTime and priority. A
+RcvrTimeTriple is an object containing an ODReceiver, the _rcvrTime of
+the receiver and the priority of the receiver. Each actor contains a table 
+consisting of one RcvrTimeTriple per receiver contained by the actor. As 
+tokens are placed in and taken out of the receivers of an actor, the table 
+of RcvrTimeTriples is updated.
+<P>
 ***
 Synchronization Notes:
 ***
+<P>
 This domain observes a hierarchy of synchronization locks. When multiple
 synchronization locks are required, they must be obtained in an order that
 is consistent with this hierarchy. Adherence to this hierarchical ordering
 ensures that deadlock can not occur due to circular lock dependencies.
- 
+<P>
 The following synchronization hierarchy is utilized:
- 
-        1. read/write access on the workspace
-        2. synchronization on the receiver
-        3. synchronization on the director
-        4. synchronization on the actor
-        5. (other) synchronization on the workspace
- 
+<P>
+1. read/write access on the workspace <BR>
+2. synchronization on the receiver <BR>
+3. synchronization on the director <BR>
+4. synchronization on the actor <BR>
+5. (other) synchronization on the workspace <BR>
+<P>
 We say that lock #1 is at the highest level in the hierarchy and lock #5
 is at the lowest level.
-
+<P>
 As an example, a method that synchronizes on a receiver can not contain
 read/write access on the workspace; such accesses must occur outside of
 the receiver synchronization. Similarly, a method which synchronizes on a
 director must not synchronize on the receiver or contain read/write
 accesses on the workspace; it can contain synchronizations on actors or
 the workspace.
- 
+<P>
 The justification of the chosen ordering of this hierarchy is based on
 the access a method has to the fields of its object versus the fields of
 other objects. The more (less) a method focuses on the internal state of
@@ -110,29 +131,31 @@ running in the JVM. This external access deems these methods as being at
 the top of the hierarchy. All other synchronizations on the workspace only
 focus on the internal state of the workspace and hence are at the bottom
 of the synchronization hierarchy.
-
-
+<P>
 
 @author John S. Davis II
 @version @(#)ODActor.java	1.18	11/19/98
 */
 public class ODActor extends AtomicActor {
 
-    /** 
+    /** Construct an ODActor with no container and no name.
      */
     public ODActor() {
         super();
         _rcvrTimeTable = new LinkedList();
     }
     
-    /** 
+    /** Construct an ODActor with the specified workspace and no name.
+     * @param workspace The workspace for this ODActor.
      */
     public ODActor(Workspace workspace) {
 	super(workspace);
         _rcvrTimeTable = new LinkedList();
     }
 
-    /** 
+    /** Construct an ODActor with the specified container and name.
+     * @param container The container of this ODActor.
+     * @param name The name of this ODActor.
      */
     public ODActor(CompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -144,74 +167,23 @@ public class ODActor extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the next time of this actor.
-     */
-    public double getNextTime() {
-        if( _rcvrTimeTable.size() == 0 ) {
-            return _currentTime;
-        }
-        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
-        return triple.getTime();
-    }
-    
-    /** Return the current time of this actor.
+    /** Return the current time of this actor. The current time is
+     *  equal the time stamp associated with the token most recently
+     *  taken from one of the receivers contained by this ODActor.
+     * @return The current time of this ODActor.
      */
     public double getCurrentTime() {
-      /*
-        if( _rcvrTimeTable.size() == 0 ) {
-            return _currentTime;
-        }
-        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
-        _currentTime = triple.getTime();
-      */
         return _currentTime;
     }
     
-    /** Return true if the minimum receiver time is unique to a single
-     *  receiver.
-     *  FIXME: This is probably not the best name. Makes sense 
-     *         mathematically but not colloquially.
-     *         How about: hasUniqueMinTime()
-     */
-    public boolean hasMinRcvrTime() {
-        if( _rcvrTimeTable.size() < 2 ) {
-            return true;
-        }
-
-        RcvrTimeTriple firstTriple = (RcvrTimeTriple)_rcvrTimeTable.first(); 
-	RcvrTimeTriple secondTriple = (RcvrTimeTriple)_rcvrTimeTable.at(1);
-
-	if( firstTriple.getTime() == secondTriple.getTime() ) {
-	    return false;
-	}
-
-	return true;
-    }
-    
-    /** Initialize this actor
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        // System.out.println("ODActor.initialize is beginning.");
-	setPriorities();
-        // System.out.println("Priorities have been set");
-    }
-
-    /** Return the receiver with the lowest time associated with it;
-     *  return null if no receivers exist. The returned receiver may
-     *  not necessarily have a unique time stamp associated with it.
-     */
-    public ODReceiver getLowestTimeRcvr() {
-        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
-	return (ODReceiver)triple.getReceiver();
-    }
-    
-    /** Return the receiver with the highest priority given that it has
-     *  the lowest time stamp.
+    /** Return the RcvrTimeTriple consisting of the receiver with the 
+     *  highest priority given that it has the lowest nonnegative rcvrTime. 
+     *  Return null if this actor's table of RcvrTimeTriples is empty.
+     * @return The RcvrTimeTriple consisting of the receiver with the 
+     *  highest priority and lowest nonnegative rcvrTime. If no triples 
+     *  exist, return null.
      */
     public RcvrTimeTriple getHighestPriorityTriple() {
-        // FIXME: What if time = -1.0??
-        // I think this has been fixed. See FIXME below
         double time = -10.0;
 	double firstTime = -10.0;
         int maxPriority = 0;
@@ -223,6 +195,7 @@ public class ODActor extends AtomicActor {
 	    if( cnt == _rcvrTimeTable.size() ) {
 	        return highPriorityTriple;
 	    }
+
 	    RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.at(cnt);
 	    if( time == -10.0 ) {
 	        time = triple.getTime();
@@ -232,8 +205,7 @@ public class ODActor extends AtomicActor {
 	    } else {
 	        time = triple.getTime();
 	    }
-	    // FIXME: Previously
-	    // if( time > firstTime || time == -1.0 ) {
+
 	    if( time > firstTime || time == -1.0 ) {
 	        rcvrNotFound = false;
 	    } else if( maxPriority < triple.getPriority() ) {
@@ -245,11 +217,59 @@ public class ODActor extends AtomicActor {
 	return highPriorityTriple;
     }
    
-    /** Get the next token which has the minimum rcvrTime and highest
-     *  priority. The returned token will have the lowest time stamp of 
-     *  all pending tokens for this actor. If there are multiple tokens 
-     *  with the lowest time stamp, then the returned token will also 
-     *  have the highest priority.
+    /** Return the earliest possible time stamp of the next token to be
+     *  processed or produced by this actor. The next time is equal to the 
+     *  oldest (smallest valued) rcvrTime of all receivers contained by 
+     *  this actor. 
+     * @return The next earliest possible time stamp to be produced by 
+     *  this actor.
+     * @see TimedQueueReceiver
+     */
+    public double getNextTime() {
+        if( _rcvrTimeTable.size() == 0 ) {
+            return _currentTime;
+        }
+        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
+        return triple.getTime();
+    }
+    
+    /** Return a token from the receiver which has the minimum rcvrTime
+     *  of all receivers contained by this actor. The returned token will 
+     *  have the lowest time stamp of all pending tokens for this actor. 
+     *  If there exists a set of multiple receivers that share a common 
+     *  minimum rcvrTime, then return the token contained by the highest 
+     *  priority receiver within this set. 
+     *  <P>
+     *  The following describes the algorithm that this method implements.
+     *  <P>
+     *  Prior to returning the appropriate token, set the current time of 
+     *  this actor. If the current time is equal to -1, then this means
+     *  that all receivers contained by this actor have expired. In this
+     *  case, call noticeOfTermination() so that actors connected downstream
+     *  are made aware that this actor will no longer be producing tokens.
+     *  Then call setFinish() on the most recently expired receiver, followed
+     *  by get() on this receiver. This will lead to the calling of a 
+     *  TerminateProcessException which will cease iteration of this actor.
+     *  <P>
+     *  If the current time is not equal to -1, then call get() on the
+     *  receiver which has the minimum rcvrTime and is listed first in 
+     *  the RcvrTimeTriple table. If get() returns null, then check to
+     *  see if there is a single receiver which has a minimum rcvrTime. 
+     *  If so, call getNextToken() - note that a new receiver may now have 
+     *  the minimum rcvrTime. If multiple receivers share a common minimum 
+     *  rcvrTime, then determine the receiver which has the minimum rcvrTime 
+     *  and highest priority. Call simultaneousIgnore() on this receiver 
+     *  followed by get(). If get() returns a non-null token then return this 
+     *  token. Otherwise this indicates that the receiver which previously 
+     *  had the minimum rcvrTime and highest priority no longer has the 
+     *  minimum rcvrTime. In this case call getNextToken().
+     * @return The token with the smallest time stamp of all tokens
+     *  contained by this actor. If multiple tokens share the smallest time
+     *  stamp this token will come from the highest priority receiver that
+     *  has the minimum rcvrTime. If all receivers have expired then a 
+     *  TerminateProcessException will be thrown. 
+     * @see TimedQueueReceiver
+     * @see ODReceiver
      */
     public Token getNextToken() {
         
@@ -277,7 +297,6 @@ public class ODActor extends AtomicActor {
         RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeTable.first();
         ODReceiver lowestRcvr = (ODReceiver)triple.getReceiver();
         _currentTime = triple.getTime();
-        _lastPort = (ODIOPort)triple.getReceiver().getContainer();
 	END OF ORIGINAL STUFF */
 
 	// BEGINNING OF NEW STUFF
@@ -292,10 +311,7 @@ public class ODActor extends AtomicActor {
 	}
         */
 
-	if( triple.getTime() != -1.0 ) {
-            _lastPort = (ODIOPort)triple.getReceiver().getContainer();
-	}
-	else {
+	if( triple.getTime() == -1.0 ) {
 	    // All receivers have completed. 
 	    // Prepare to terminate.
 	    // System.out.println("All receivers have completed."); 
@@ -374,8 +390,6 @@ public class ODActor extends AtomicActor {
                 lowestRcvr.setSimultaneousIgnore(true);
                 token = lowestRcvr.get();
                 
-                _lastPort = (ODIOPort)lowestRcvr.getContainer();
-                
                 if( token != null ) {
                     // updateRcvrTable( priorityTriple );
                     /*
@@ -407,13 +421,66 @@ public class ODActor extends AtomicActor {
         // System.out.println("Reached end of getNextToken()");
     }
 
-    /** Return the port from which the last token was consumed.
+    /** Return true if the minimum receiver time is unique to a single
+     *  receiver. Return true if there are no input receivers. Return
+     *  false if two or more receivers share the same rcvrTime and this 
+     *  rcvrTime is less than that of any other receivers contained by 
+     *  the same actor.
+     * @return True if the minimum rcvrTime is unique to a single receiver 
+     *  or if there are no receivers; otherwise return false.
      */
-    public synchronized ODIOPort lastTokenFrom() {
-        return _lastPort;
+    public boolean hasMinRcvrTime() {
+        if( _rcvrTimeTable.size() < 2 ) {
+            return true;
+        }
+
+        RcvrTimeTriple firstTriple = (RcvrTimeTriple)_rcvrTimeTable.first(); 
+	RcvrTimeTriple secondTriple = (RcvrTimeTriple)_rcvrTimeTable.at(1);
+
+	if( firstTriple.getTime() == secondTriple.getTime() ) {
+	    return false;
+	}
+	return true;
+    }
+    
+    /** Initialize this actor by setting the receiver priorities.
+     *  This method will also initialize the RcvrTimeTriple table
+     *  via setPriorities().
+     * @exception IllegalActionException If there is an error when
+     *  setting the receiver priorities.
+     */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+	setPriorities();
     }
 
-    /** FIXME
+    /** Notify actors connected to this actor via its output ports, that 
+     *  this actor is being terminated. Send events with time stamps of
+     *  -1.0 to these "downstream" actors. 
+     */
+    public void noticeOfTermination() { 
+	Enumeration outputPorts = outputPorts();
+	if( outputPorts == null ) {
+	    return;
+	}
+	while( outputPorts.hasMoreElements() ) {
+	    IOPort port = (IOPort)outputPorts.nextElement();
+	    Receiver rcvrs[][] = (Receiver[][])port.getRemoteReceivers();
+	    if( rcvrs == null ) {
+	        return;
+	    }
+            for (int j = 0; j < rcvrs.length; j++) {
+                for (int i = 0; i < rcvrs[j].length; i++) {
+	            ((ODReceiver) rcvrs[j][i]).put(null, -1.0);
+		}
+            }
+	}
+    }
+
+    /** Prepare to cease iterations of this actor. Notify actors which
+     *  are connected downstream of this actor's cessation. Return false
+     *  to indicate that future execution can not occur.
+     * @return False to indicate that future execution can not occur.
      */
     public boolean postfire() {
         // System.out.println(getName()+" is calling postfire()");
@@ -421,78 +488,38 @@ public class ODActor extends AtomicActor {
         return false;
     }
     
-    /** FIXME: This is only for testing purposes.
-     *  Remove this eventually
-     */
-    public void printRcvrTable() {
-        System.out.println("\n***Print "+getName()+"'s RcvrTable.");
-        System.out.println("   Number of Receivers in RcvrTable = " 
-                + _rcvrTimeTable.size() );
-        if( _rcvrTimeTable.size() == 0 ) {
-            System.out.println("\tTable is empty");
-        }
-        for( int i = 0; i < _rcvrTimeTable.size(); i++ ) {
-	    RcvrTimeTriple testTriple = (RcvrTimeTriple)_rcvrTimeTable.at(i);
-	    Receiver testRcvr = testTriple.getReceiver(); 
-            double time = testTriple.getTime();
-            String testPort = testRcvr.getContainer().getName();
-            String testString = "null";
-            String testString2 = "null";
-            // try {
-	    //if( testRcvr.hasToken() && getName().equals("printer") ) {
-            if( getName().equals("printer") ) {
-	        // System.out.println("Printer -> hasToken() = "+testRcvr.hasToken() );
-		System.out.println("   Printer -> size() = "+((ODReceiver)testRcvr)._queue.size());
-		if( ((ODReceiver)testRcvr)._queue.size() > 1 ) {
-		    /*
-                    Event testEvent2 
-		      = ((Event)((ODReceiver)testRcvr)._queue.get(1));
-                    StringToken testToken2 
-		      = (StringToken)testEvent2.getToken();
-		    testString2 = testToken2.stringValue();
-                    System.out.println("\t"+getName()+"'s Receiver " 
-                    + i + " has a 2nd time of "+testEvent2.getTime()
-		    +" and string: ");
-		    */
-		}
-		if( ((ODReceiver)testRcvr)._queue.size() > 0 ) {
-                    Event testEvent = 
-                            ((Event)((ODReceiver)testRcvr)._queue.get(0));
-                    StringToken testToken = (StringToken)testEvent.getToken();
-		    if( testToken != null ) {
-                        testString = testToken.stringValue();
-		    }
-		}
-		else {
-                    testString = "null";
-		}
-	    /*
-            }
-            } catch( IllegalActionException e ) {
-                System.out.println("*****ERROR*****");
-	    */
-            }
-            System.out.println("\t"+getName()+"'s Receiver " 
-                    + i + " has a time of " +time+" and string: "+testString);
-            // System.out.println("\tReceiver " + testPort + " is in the rcvrTimeTable.");
-        }
-        System.out.println("***End of printRcvrTable()\n");
-    }
-
     /** Set the priorities of the receivers contained in the input 
-     *  ports of this actor. This method does not require the 
-     *  priorities of the ports to be set. 
-     *  FIXME: If the port priorities have not been set, then this
-     *         method deterministically sets up the receiver
-     *         priorities given that Java's enumeration creation
-     *         mechanism is deterministic.
+     *  ports of this actor. Group the input receivers for this actor
+     *  according to their respective container input ports. If the
+     *  ODIOPorts which contain the receivers have been explicitly
+     *  assigned priorities, then the groups are ordered in a fashion
+     *  consistent with this ordering. If port priorities have not been 
+     *  explicitly assigned, then the groups are ordered according to 
+     *  the inverse order in which their corresponding ODIOPorts were 
+     *  added to the containing ODActor. I.e., if two input ports (pA 
+     *  and pB) are added to an ODActor without explicit priorities such 
+     *  that port pA is added before port pB, then all of the receivers of 
+     *  port pB will have a higher priority than the receivers of port pA.
+     *  <P> 
+     *  Within a group, order the receiver priorities relative to one 
+     *  another according to the inverse order in which they were added to 
+     *  the containing ODIOPort. I.e., if two input receivers (rA and rB) 
+     *  are added to an ODActor such that receiver rA is added before 
+     *  receiver rB, then rB will have a higher priority than rA. 
+     *  <P> 
+     *  This above approach provides each receiver contained by a given 
+     *  ODActor with a unique priority, such that the set of receiver 
+     *  priorities for the containing ODActor is totally ordered. Note 
+     *  that currently setPriorities() calls the method port.getPriority(). 
+     *  This requires the port to be of type ODIOPort and hence precludes 
+     *  polymorphic actors. A later version of this class will not have 
+     *  this constraint.
+     * @exception IllegalActionException If receiver access leads to an error.
      */
     public void setPriorities() throws IllegalActionException {
         LinkedList listOfPorts = new LinkedList();
         Enumeration enum = inputPorts();
 	if( !enum.hasMoreElements() ) {
-            // FIXME: Eventually remove the print statement 
-            // System.out.println("No ports in enumeration");
             return;
 	}
         
@@ -500,7 +527,6 @@ public class ODActor extends AtomicActor {
         // First Order Input Ports According To Priority
         //
         while( enum.hasMoreElements() ) {
-            // FIXME: Are enumerations created deterministically?
             ODIOPort port = (ODIOPort)enum.nextElement();
             int priority = port.getPriority();
             boolean portNotInserted = true;
@@ -525,8 +551,6 @@ public class ODActor extends AtomicActor {
             }
         } 
         
-        // System.out.println("Number of Ports = " + listOfPorts.size());
-        
         //
         // Now Set The Priorities Of Each Port's Receiver
         // And Initialize RcvrTable
@@ -538,8 +562,6 @@ public class ODActor extends AtomicActor {
             Receiver[][] rcvrs = port.getReceivers();
             for( int i = 0; i < rcvrs.length; i++ ) {
                 for( int j = 0; j < rcvrs[i].length; j++ ) {
-                    // System.out.println("Port "+port.getName()+": " + cnt +
-                    //         "  rcvr["+i+"]["+j+"] priority = "+currentPriority);
                     ((ODReceiver)rcvrs[i][j]).setPriority(currentPriority); 
                     RcvrTimeTriple triple = new RcvrTimeTriple( 
                             (ODReceiver)rcvrs[i][j], _currentTime, 
@@ -552,51 +574,72 @@ public class ODActor extends AtomicActor {
         }
     }
 
-    /** 
+    /** Update the table of RcvrTimeTriples by positioning the 
+     *  specified triple. If the specified triple is already
+     *  contained in the table, then the triple is removed and
+     *  then added back to the table. The position of the triple
+     *  is based on the triple's time value.
+     * @param triple The RcvrTimeTriple to be positioned in the table.
      */
     public synchronized void updateRcvrTable(RcvrTimeTriple triple) {
-        // System.out.println("Update ODActor RcvrTimeTable");
 	_removeRcvrTable( triple );
 	_addRcvrTriple( triple );
     }
     
-    /** 
-     FIXME: Write tests for this.
+    ///////////////////////////////////////////////////////////////////
+    ////                   package friendly methods		   ////
+
+    /** Print the contents of the RcvrTimeTriple table contained by 
+     *  this actor. Use this method for testing purposes only.
      */
-    public void noticeOfTermination() { 
-        // Inform all downstream actors that no new tokens 
-        // will be forthcoming.
-	Enumeration outputPorts = outputPorts();
-	if( outputPorts == null ) {
+    void printRcvrTable() {
+        System.out.println("\n***Print "+getName()+"'s RcvrTable.");
+        System.out.println("   Number of Receivers in RcvrTable = " 
+                + _rcvrTimeTable.size() );
+        if( _rcvrTimeTable.size() == 0 ) {
+            System.out.println("\tTable is empty");
+            System.out.println("***End of printRcvrTable()\n");
 	    return;
-	}
-	while( outputPorts.hasMoreElements() ) {
-	    IOPort port = (IOPort)outputPorts.nextElement();
-	    Receiver rcvrs[][] = (Receiver[][])port.getRemoteReceivers();
-	    if( rcvrs == null ) {
-	        return;
-	    }
-            for (int j = 0; j < rcvrs.length; j++) {
-                for (int i = 0; i < rcvrs[j].length; i++) {
-	            ((ODReceiver) rcvrs[j][i]).put(null, -1.0);
+        }
+        for( int i = 0; i < _rcvrTimeTable.size(); i++ ) {
+	    RcvrTimeTriple testTriple = (RcvrTimeTriple)_rcvrTimeTable.at(i);
+	    Receiver testRcvr = testTriple.getReceiver(); 
+            double time = testTriple.getTime();
+            String testPort = testRcvr.getContainer().getName();
+            String testString = "null";
+            String testString2 = "null";
+            if( getName().equals("printer") ) {
+		System.out.println("   Printer -> size() = "
+                        +((ODReceiver)testRcvr)._queue.size());
+		if( ((ODReceiver)testRcvr)._queue.size() > 1 ) {
+		    /*
+                    Event testEvent2 = 
+		            ((Event)((ODReceiver)testRcvr)._queue.get(1));
+                    StringToken testToken2 = 
+		            (StringToken)testEvent2.getToken();
+		    testString2 = testToken2.stringValue();
+                    System.out.println("\t"+getName()+"'s Receiver "+i+ 
+		            " has a 2nd time of "+testEvent2.getTime()+
+			    " and string: ");
+		    */
+		}
+		if( ((ODReceiver)testRcvr)._queue.size() > 0 ) {
+                    Event testEvent = 
+                            ((Event)((ODReceiver)testRcvr)._queue.get(0));
+                    StringToken testToken = (StringToken)testEvent.getToken();
+		    if( testToken != null ) {
+                        testString = testToken.stringValue();
+		    }
+		} else {
+                    testString = "null";
 		}
             }
-	}
-	/*
-	String myName = getName();
-	System.out.println(myName+" has notified downstream actors of "
-                +"termination.");
-	*/
+            System.out.println("\t"+getName()+"'s Receiver "+i+
+	            " has a time of " +time+" and string: "+testString);
+        }
+        System.out.println("***End of printRcvrTable()\n");
     }
 
-    /** 
-     FIXME: Write tests for this.
-     */
-    public void wrapup() throws IllegalActionException {
-        // noticeOfTermination();
-        super.wrapup();
-    }
-    
     ///////////////////////////////////////////////////////////////////
     ////                        private methods			   ////
 
@@ -712,9 +755,6 @@ public class ODActor extends AtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
-    // The last port from which a token was consumed.
-    private ODIOPort _lastPort;
-    
     // The _rcvrTimeTable stores RcvrTimeTriples and is used to
     // order the receivers according to time and priority.
     private LinkedList _rcvrTimeTable;
