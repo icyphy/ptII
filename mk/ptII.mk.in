@@ -159,10 +159,6 @@ JHDL_JAR =	@JHDL_JAR@
 # If Jini is present, the set to yes, otherwise, set to no
 JINI_PRESENT =  @JINI_PRESENT@
 
-# Jar file that contains the Java Media Framework, see
-# http://java.sun.com/products/java-media/jmf/index.html
-JMF_JAR =	@JMF_JAR@
-
 # Directory that contains the Java Serial Comm API, see
 # http://java.sun.com/products/javacomm/
 COMMAPI_DIR =   @COMMAPI_DIR@
@@ -242,6 +238,10 @@ PTJACL_JAR =	@PTJACL_JAR@
 # We could use bin/ptjacl here, but instead we start it from within
 # make and avoid problems
 JTCLSH =	CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)" @JTCLSH@
+
+# Set to jai and used in 
+# $PTII/ptolemy/actor/lib/makefile if Java Advanced Imaging was found
+PTJAI_DIR =	@PTJAI_DIR@
 
 # PTJHDL_DIR is set to jhdl if the JHDL directory is found
 PTJHDL_DIR =    @PTJHDL_DIR@
