@@ -624,13 +624,13 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
             // an array of flags indicating if the ith element is an
             // upper bound.
             int size = nodeCount();
-            boolean[] isUpperBD = new boolean[size];
-            int numUpperBD = 0;
+            boolean[] isUpperBound = new boolean[size];
+            int numUpperBound = 0;
             for (int i = 0; i < size; i++) {
-                isUpperBD[i] = false;
+                isUpperBound[i] = false;
         if (_closure[i1][i] && _closure[i2][i]) {
-                    isUpperBD[i] = true;
-                    numUpperBD++;
+                    isUpperBound[i] = true;
+                    numUpperBound++;
                 }
             }
 
@@ -638,21 +638,21 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
             // else, put all upper bounds in an array.  if there is only
             // one element in array, that is the LUB; if there is more than
             // one element, find the least one, which may not exist.
-            if (numUpperBD == 0) {     // This CPO has no top.
+            if (numUpperBound == 0) {     // This CPO has no top.
                 return null;
             } else {
-                int[] upperBD = new int[numUpperBD];
+                int[] upperBound = new int[numUpperBound];
                 int count = 0;
                 for (int i = 0; i < size; i++) {
-                    if (isUpperBD[i]) {
-                        upperBD[count++] = i;
+                    if (isUpperBound[i]) {
+                        upperBound[count++] = i;
                     }
                 }
 
-                if (numUpperBD == 1) {
-                    return nodeWeight(upperBD[0]);
+                if (numUpperBound == 1) {
+                    return nodeWeight(upperBound[0]);
                 } else {
-                    return _leastElementNodeId(upperBD);
+                    return _leastElementNodeId(upperBound);
                 }
             }
         }
