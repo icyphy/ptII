@@ -2082,6 +2082,10 @@ if test ! -f "$MESCAL_USER_DIR"; then
 echo "${ECHO_T}$MESCAL_USER_DIR is not present,
 	so we need not find Boost." >&6
 else
+    case "`uname -s`" in
+	Linux) ARCH=linux;;
+        *) ARCH=unknown;;
+    esac
     if test "$PTBOOST" = "no"; then
         echo "$as_me:$LINENO: checking for Boost in \$PTII/mescal/include/boost/static_assert.hpp" >&5
 echo $ECHO_N "checking for Boost in \$PTII/mescal/include/boost/static_assert.hpp... $ECHO_C" >&6
@@ -2103,7 +2107,9 @@ echo $ECHO_N "checking for Boost in /usr/local/include/boost/static_assert.hpp..
 	if test -f "/usr/local/include/boost/static_assert.hpp"; then
 	    echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
-	    PTBOOST_INCLUDE="-I/usr/local/include"
+	    if test "$ARCH" != "linux"; then
+		PTBOOST_INCLUDE="-I/usr/local/include"
+	    fi
 	    PTBOOST=yes
         else
 	    echo "$as_me:$LINENO: result: not found, keep looking" >&5
@@ -3553,6 +3559,11 @@ if test ! -d "$MESCAL_RELSAT_USER_DIR"; then
 echo "${ECHO_T}$MESCAL_RELSAT_USER_DIR is not present,
 	so we need not find GMP." >&6
 else
+    case "`uname -s`" in
+	Linux) ARCH=linux;;
+        *) ARCH=unknown;;
+    esac
+
     if test "$PTGMP" = "no"; then
         echo "$as_me:$LINENO: checking for GMP in \$PTII/mescal/include/gmp.h" >&5
 echo $ECHO_N "checking for GMP in \$PTII/mescal/include/gmp.h... $ECHO_C" >&6
@@ -3575,9 +3586,11 @@ echo $ECHO_N "checking for GMP in /usr/local/include/gmp.h... $ECHO_C" >&6
         if test -f "/usr/local/include/gmp.h"; then
             echo "$as_me:$LINENO: result: ok" >&5
 echo "${ECHO_T}ok" >&6
-	    PTGMP_INCLUDE=-I/usr/local/include
-	    PTGMP_LIB=-L/usr/local/lib
-	    PTGMP_LD_FLAGS="-Wl,-R/usr/local/lib"
+	    if test "$ARCH" != "linux"; then
+	        PTGMP_INCLUDE=-I/usr/local/include
+		PTGMP_LIB=-L/usr/local/lib
+	        PTGMP_LD_FLAGS="-Wl,-R/usr/local/lib"
+            fi
 	    PTGMP=yes
         else
 	    echo "$as_me:$LINENO: result: not found, keep looking" >&5
@@ -5524,10 +5537,10 @@ fi
 # $PTII/makefile if gcc or cc is found.
 PTJNI_DIR=
 
-if test ! -d "$PTII/jni" -a ! -d "$PTII/ptolemy/matlab" ; then
-    echo "$as_me:$LINENO: result: $PTII/jni and $PTII/ptolemy/matlab are not present,
+if test ! -d "$PTII/jni" -a ! -d "$PTII/ptolemy/matlab" -a "$PTII/mescal/kirika" ; then
+    echo "$as_me:$LINENO: result: $PTII/jni, $PTII/ptolemy/matlab and $PTII/mescal/kirika are not present,
         so we need not find gcc or cc" >&5
-echo "${ECHO_T}$PTII/jni and $PTII/ptolemy/matlab are not present,
+echo "${ECHO_T}$PTII/jni, $PTII/ptolemy/matlab and $PTII/mescal/kirika are not present,
         so we need not find gcc or cc" >&6
 else
     # Extract the first word of "gcc", so it can be a program name with args.
