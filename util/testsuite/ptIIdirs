@@ -1,5 +1,5 @@
 #! /bin/sh
-# -[Thu Nov 19 11:28:12 1998 by cxh]-
+# -[Fri Nov 20 17:13:32 1998 by cxh]-
 # List the Ptolemy II directories
 # Use this to update
 # find . -type d -print | grep -v SCCS | grep -v shilman | grep -v devel | grep -v adm  | grep -v codeDoc | grep -v filter
@@ -72,8 +72,6 @@ ptolemy/domains/sdf/lib/doc \
 ptolemy/domains/sdf/lib \
 ptolemy/domains/sdf/demo \
 ptolemy/domains/sdf \
-ptolemy/domains/pn/demo/doc \
-ptolemy/domains/pn/demo \
 ptolemy/domains/pn/lib/doc \
 ptolemy/domains/pn/lib \
 ptolemy/domains/pn/kernel/test \
