@@ -94,28 +94,28 @@ compat:
 		echo "$(OLDTREE) does not exist"; \
 		echo "skipping compatibility tests"; \
 	else \
-		echo "Generating compat/ from $(OLDTREE)"; \
+		echo "Generating $@/ from $(OLDTREE)"; \
 		(cd $(OLDTREE); \
 			find . -name "*.xml" -print | \
 			grep auto | \
 			awk '{print "$(OLDTREE)/" $$1}' > /tmp/oldxmls); \
-		mkdir compat; \
+		mkdir $@; \
 		echo "Copying old xmls over"; \
-		cp `cat /tmp/oldxmls` compat; \
+		cp `cat /tmp/oldxmls` $@; \
 		echo "Copying xmls that have the same name"; \
-		rm compat/test1.xml; \
+		rm $@/test1.xml; \
 		cp $(OLDTREE)/ptolemy/domains/sdf/kernel/test/auto/test1.xml \
-			compat/sdftest1.xml; \
+			$@/sdftest1.xml; \
 		cp $(OLDTREE)/ptolemy/domains/sdf/lib/vq/test/auto/test1.xml \
-			compat/vqtest1.xml; \
-		rm compat/test2.xml; \
+			$@/vqtest1.xml; \
+		rm $@/test2.xml; \
 		cp $(OLDTREE)/ptolemy/domains/sdf/kernel/test/auto/test1.xml \
-			compat/sdftest1.xml; \
+			$@/sdftest1.xml; \
 		cp $(OLDTREE)/ptolemy/domains/sdf/lib/vq/test/auto/test1.xml \
-			compat/vqtest1.xml; \
+			$@/vqtest1.xml; \
 		echo "Removing tests that failed in earlier releases"; \
-		rm -f compat/MaximumEntropy.xml \
-			compat/OutputActionsAttribute.xml; \
+		rm -f $@/MaximumEntropy.xml \
+			$@/OutputActionsAttribute.xml; \
 	fi
 
 # Directory that contains models from the demo directory 
@@ -125,14 +125,70 @@ compatDemo:
 		echo "$(OLDTREE) does not exist"; \
 		echo "skipping compatibility tests"; \
 	else \
-		echo "Generating compatDemo/ from $(OLDTREE)"; \
+		echo "Generating $@/ from $(OLDTREE)"; \
 		(cd $(OLDTREE); \
 			find . -name "*.xml" -print | \
 			grep demo | \
 			awk '{print "$(OLDTREE)/" $$1}' > /tmp/oldxmls); \
-		mkdir compatDemo; \
+		mkdir $@; \
 		echo "Copying old xmls over"; \
-		cp `cat /tmp/oldxmls` compatDemo; \
+		cp `cat /tmp/oldxmls` $@; \
+	fi
+
+# Location of the old tree that we harvest auto/*.xml
+# files from old release trees and copy them into compat and run them
+OLDTREE2 = $(ROOT)/adm/dists/ptII2.0.1
+
+# Directory that contains models to check for compatibility
+# We could check these into the tree, but it is about 1mb of files
+compat2:
+	@if [ ! -d $(OLDTREE2) ]; then \
+		echo "$(OLDTREE2) does not exist"; \
+		echo "skipping compatibility tests"; \
+	else \
+		echo "Generating $@/ from $(OLDTREE2)"; \
+		(cd $(OLDTREE2); \
+			find . -name "*.xml" -print | \
+			grep auto | \
+			awk '{print "$(OLDTREE2)/" $$1}' > /tmp/oldxmls); \
+		mkdir $@; \
+		echo "Copying old xmls over"; \
+		cp `cat /tmp/oldxmls` $@; \
+		echo "Copying xmls that have the same name"; \
+		rm $@/test1.xml; \
+		cp $(OLDTREE2)/ptolemy/domains/sdf/kernel/test/auto/test1.xml \
+			$@/sdftest1.xml; \
+		cp $(OLDTREE2)/ptolemy/domains/sdf/lib/vq/test/auto/test1.xml \
+			$@/vqtest1.xml; \
+		rm $@/test2.xml; \
+		cp $(OLDTREE2)/ptolemy/domains/sdf/kernel/test/auto/test1.xml \
+			$@/sdftest1.xml; \
+		cp $(OLDTREE2)/ptolemy/domains/sdf/lib/vq/test/auto/test1.xml \
+			$@/vqtest1.xml; \
+		echo "Removing tests that failed in earlier releases"; \
+		rm -f $@/MaximumEntropy.xml \
+			$@/OutputActionsAttribute.xml \
+			$@/ImageReader*.xml \
+			$@/testAudio*.xml \
+			$@/automataLibrary.xml \
+			$@/VariableFIR2.xml; \
+	fi
+
+# Directory that contains models from the demo directory 
+# to check for compatibility
+compatDemo2:
+	@if [ ! -d $(OLDTREE2) ]; then \
+		echo "$(OLDTREE2) does not exist"; \
+		echo "skipping compatibility tests"; \
+	else \
+		echo "Generating $@/ from $(OLDTREE2)"; \
+		(cd $(OLDTREE2); \
+			find . -name "*.xml" -print | \
+			grep demo | \
+			awk '{print "$(OLDTREE2)/" $$1}' > /tmp/oldxmls); \
+		mkdir $@; \
+		echo "Copying old xmls over"; \
+		cp `cat /tmp/oldxmls` $@; \
 	fi
 
 # PtolemyII-wide test definitions.
