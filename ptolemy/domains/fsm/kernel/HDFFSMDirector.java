@@ -472,14 +472,11 @@ public class HDFFSMDirector extends FSMDirector {
 	TypedCompositeActor curRefinement =
 	    (TypedCompositeActor)initialState.getRefinement();
 	if (curRefinement != null) {
-	    // FIXME: remove temp1?
-	    ////////////////// temp1
-	    //if (_debugging) _debug("HDFFSDirector: preinitialize(): tempcode");
-	    //SDFDirector refinementDir = (SDFDirector)curRefinement.getDirector();
-	    //Scheduler refinmentSched = refinementDir.getScheduler();
-	    //refinmentSched.setValid(false);
-	    //refinmentSched.schedule();
-	    //if (_debugging) _debug("HDFFSDirector: preinitialize(): refinement's dir: " + refinementDir.getFullName());
+	    SDFDirector refinementDir = (SDFDirector)curRefinement.getDirector();
+	    Scheduler refinmentSched = refinementDir.getScheduler();
+	    refinmentSched.setValid(false);
+	    refinmentSched.schedule();
+	    if (_debugging) _debug("HDFFSDirector: preinitialize(): refinement's director : " + refinementDir.getFullName());
 	    ////////////////// end temp1
 
 	    // Get the HDF/SDF schedule.
