@@ -417,18 +417,23 @@ $0 ~ /<entity/ {
                break;
            }
        }
-       # Remap names like In1 to input
-       if (name ~ /^In[0-9]*$/) {
-           oldName = name
-           name = "input"
+
+       # Composite actors and Mux do not get In1 mapped to input
+       # Other classes do get mapped. 
+       # Note that giotto cannot handle multiports
+       if (class != "ptolemy.actor.TypedCompositeActor" && class != "vendors.ecsl_dp.ptolemy.ECSLMux") {
+           # Remap names like In1 to input
+           if (name ~ /^In[0-9]*$/) {
+               oldName = name
+               name = "input"
    
-       }
+           }
 
-       if (name ~ /^Out[0-9]*$/) {
-           oldName = name
-           name = "output"
+           if (name ~ /^Out[0-9]*$/) {
+               oldName = name
+               name = "output"
+           }
        }
-
        # Get the value of the dstLine field
        dstLine=""
        nf = split($0, f, "\"")   
