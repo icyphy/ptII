@@ -433,23 +433,23 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @exception IllegalActionException If parent class throws it or the 
      *  immediately upper director is neither a CTDirector nor a HSDirector. 
      */
-    public void preinitialize() throws IllegalActionException {
-        super.preinitialize();
-        Nameable container = getContainer();
-        if (container instanceof CompositeActor) {
-            CompositeActor compositeActor = (CompositeActor)container; 
-            if (!(compositeActor.getExecutiveDirector() instanceof CTDirector 
-                  || compositeActor.getExecutiveDirector() instanceof 
-                  CTTransparentDirector)) {
-                throw new IllegalActionException("HSDirector is designed for " +
-                    "a modal model embedded inside a CT model or another " +
-                    "modal model with a HSDirector. If the modal " +
-                    "model is embedded inside other domains, like DE or SDF, " +
-                    "use FSMDirector instead. Right click the modal model and " +
-                    "configure the directorClass parameter.");  
-            }
-        }
-    }
+//    public void preinitialize() throws IllegalActionException {
+//        super.preinitialize();
+//        Nameable container = getContainer();
+//        if (container instanceof CompositeActor) {
+//            CompositeActor compositeActor = (CompositeActor)container; 
+//            if (!(compositeActor.getExecutiveDirector() instanceof CTDirector 
+//                  || compositeActor.getExecutiveDirector() instanceof 
+//                  CTTransparentDirector)) {
+//                throw new IllegalActionException("HSDirector is designed for " +
+//                    "a modal model embedded inside a CT model or another " +
+//                    "modal model with a HSDirector. If the modal " +
+//                    "model is embedded inside other domains, like DE or SDF, " +
+//                    "use FSMDirector instead. Right click the modal model and " +
+//                    "configure the directorClass parameter.");  
+//            }
+//        }
+//    }
 
     /** Return the step size refined by all the enabled refinements,
      *  which are refinements that returned true
