@@ -304,10 +304,10 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException will not be thrown..
      */
     public boolean prefire() throws IllegalActionException {
-        // -prefire-
         // Note: Actors return false on prefire if they don't want to be
         // fired and postfired in the current iteration.
         return true;
+        // _prefire_
     }
 
 
@@ -338,7 +338,9 @@ public class GRDirector extends StaticSchedulingDirector {
     public boolean postfire() throws IllegalActionException {
         //  -postfire-
         // Note: actors return false on postfire(), if they wish never to be 
-        // fired again during the execution. In SDF, this will effectively
+        // fired again during the execution. This can be interpreted as the
+        // actor being dead. Also, fireAt() calls by the actor will be ignored.
+        // In SDF, an actor returning false on postfire will effectively
         // stop the SDF composite actor container too.
         super.postfire();
         int totalIterations = ((IntToken) (iterations.getToken())).intValue();

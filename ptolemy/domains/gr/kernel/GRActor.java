@@ -47,7 +47,7 @@ ViewScreen display actor.
 @author C. Fong
 @version $Id$
 */
-public class GRActor extends TypedAtomicActor {
+abstract public class GRActor extends TypedAtomicActor {
 
     /** Create a new GRActor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -126,19 +126,14 @@ public class GRActor extends TypedAtomicActor {
      * 
      *  @return The Java3D node associated with this actor
      */
-    protected Node _getNodeObject() {
-        return null;
-    }
+    abstract protected Node _getNodeObject();
     
     /** Setup the scene graph connections of this actor. Derived GR Actors 
      *  should override this method.
      *
      *  @exception IllegalActionException always thrown for thsi base class
      */
-    protected void _makeSceneGraphConnection() throws IllegalActionException {
-        throw new IllegalActionException(this,
-                "GR domain actor failed to make scene graph connection ");
-    }
+    abstract protected void _makeSceneGraphConnection() throws IllegalActionException ;
 
     /** Start the Java3D renderer. This method will be overridden by some
      *  derived GR Actors.
