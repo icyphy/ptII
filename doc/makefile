@@ -224,7 +224,7 @@ ALLPACKAGES =		$(COMMPACKAGES) \
 			ptolemy.vergil.tree
 
 
-all: suball codeDoc/tree.html
+all: suball whatsnew.htm codeDoc/tree.html
 install: all jars codeDoc.jar
 
 codeDoc.jar:
@@ -250,6 +250,11 @@ ptII$(PTVERSION).releaseVergil.htm: ptII$(PTVERSION).release.htm
 	awk -f javahtml.awk ptII$(PTVERSION).release.htm > $@  
 troubleshootingVergil.htm: troubleshooting.htm
 	awk -f javahtml.awk troubleshooting.htm > $@  
+
+# Generate a file that consists of only the text within
+# <!--whatsnew--> ... <!--/whatsnew--> blocks
+whatsnew.htm: ptII$(PTVERSION).release.htm
+	awk -f whatsnew.awk ptII$(PTVERSION).release.htm > $@  
 
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
