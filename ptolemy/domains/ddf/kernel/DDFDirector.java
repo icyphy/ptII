@@ -40,6 +40,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
+import ptolemy.actor.QueueReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
@@ -51,7 +52,6 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -84,7 +84,7 @@ import ptolemy.kernel.util.Workspace;
    <p>
    The dynamic scheduler implemented in this director fires all enabled 
    and non-deferrable actors once in a basic iteration. A deferrable 
-   actor is one which will not help one of the downstream actors become 
+   actor is one that will not help one of the downstream actors become 
    enabled because that downstream actor either already has enough tokens on 
    the channel connecting those two actors or is waiting for tokens on 
    another channel. If no actor fires so far, which means there is no 
@@ -444,14 +444,7 @@ public class DDFDirector extends Director {
      */
     public void initialize(Actor actor) throws IllegalActionException {
         super.initialize(actor);
-        // The reason to check capacity here is that the actor may 
-        // emit tokens during initialization.
-        int maximumCapacity = ((IntToken) maximumReceiverCapacity.getToken())
-                .intValue();
-        if (maximumCapacity > 0) {           
-            _checkDownstreamReceiversCapacity(actor, maximumCapacity);
-        }
-     
+
         // Since an actor may produce initial tokens during initialization,
         // the enabling status of those directly connected actors as well 
         // as itself must be updated.
@@ -515,11 +508,25 @@ public class DDFDirector extends Director {
         _actorsInfo.putAll(insideDirector._actorsInfo);
     }
 
-    /** Return a new SDFReceiver.
-     *  @return A new SDFReceiver.
+    /** Return a new QueueReceiver. Set the capacity of the FIFO queue 
+     *  in the receiver to the value specified by the director parameter 
+     *  <i>maximumReceiverCapacity</i> if that value is greater than 0. 
+     *  @return A new QueueReceiver.
      */
-    public Receiver newReceiver() {       
-        return new SDFReceiver();
+    public Receiver newReceiver() {   
+        QueueReceiver receiver = new QueueReceiver();
+        
+        try {
+            int capacity = ((IntToken) maximumReceiverCapacity.getToken())
+                    .intValue();
+            if (capacity > 0) {
+                receiver.setCapacity(capacity);
+            }
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
+        
+        return receiver;
     }
 
     /** Increment the number of iterations. Return false if the system
@@ -554,8 +561,8 @@ public class DDFDirector extends Director {
                 foundNotSatisfiedReceiver:   
                 for (int i = 0; i < deepReceivers.length; i++) {
                     for (int j = 0; j < deepReceivers[i].length; j++) {
-                        SDFReceiver deepReceiver 
-                                = (SDFReceiver) deepReceivers[i][j];
+                        QueueReceiver deepReceiver 
+                                = (QueueReceiver) deepReceivers[i][j];
                         IOPort port = deepReceiver.getContainer();
                         // We don't consider the weird case where the input
                         // port is directly connected to an output port
@@ -651,10 +658,11 @@ public class DDFDirector extends Director {
         return defaultSuggestions;
     }
 
-    /** Override the base class method to transfer enough tokens manually
-     *  specified in the <i>tokenConsumptionRate</i> parameter of the port (the
-     *  default is 1) to complete an internal iteration.  If there are not
-     *  enough tokens, then throw an exception. It then updates enabling
+    /** Override the base class method to transfer enough tokens to complete 
+     *  an internal iteration. If the token consumption rate is defined for 
+     *  the port and there are not enough tokens, throw an exception. If the 
+     *  token consumption rate is not defined for the port, transfer all tokens 
+     *  (if there are any) contained by the port. Finally it updates enabling 
      *  status for all inside opaque actors that receive data from this port.
      *  @exception IllegalActionException If the port is not an opaque
      *   input port, or if there are not enough input tokens available.
@@ -678,6 +686,9 @@ public class DDFDirector extends Director {
 
         for (int i = 0; i < port.getWidth(); i++) {
             try {
+                // If the parameter tokenConsumptionRate is defined,
+                // _getTokenConsumptionRate(port) returns an array 
+                // of non-negative int.
                 if (rate[i] >= 0) {
                     for (int k = 0; k < rate[i]; k++) {
                         if (port.hasToken(i)) {
@@ -695,9 +706,13 @@ public class DDFDirector extends Director {
                             throw new IllegalActionException(this, port,
                                     "Channel " + i + "should consume " + rate[i]
                                     + " tokens, but there were only " + k
-                                    + " tokens available.");
+                                    + " tokens available. Maybe the rate"
+                                    + " is set wrong?");
                         }
                     }
+                // If the parameter tokenConsumptionRate is not defined,
+                // _getTokeConsumptionRate(port) returns an array of int
+                // each with vaule -1.
                 } else {
                      while (port.hasToken(i)) {
                         Token token = port.get(i);
@@ -739,10 +754,11 @@ public class DDFDirector extends Director {
     }
 
     /** Override the base class method to transfer enough tokens to
-     *  fulfill the output production rate. If there are not enough
-     *  tokens, then throw an exception. If the token production rate  
-     *  is not defined for the port, transfer all tokens contained
-     *  by the port.
+     *  fulfill the output production rate. If the token production rate 
+     *  is defined for the port and there are not enough tokens, throw an 
+     *  exception. If the token production rate is not defined for the port, 
+     *  transfer all tokens (if there are any) contained on the inside by 
+     *  the port.
      *  @exception IllegalActionException If the port is not an opaque
      *   output port, or if there are not enough output tokens available.
      *  @param port The port to transfer tokens from.
@@ -765,6 +781,9 @@ public class DDFDirector extends Director {
 
         for (int i = 0; i < port.getWidthInside(); i++) {
             try {
+                // If the parameter tokenProductionRate is defined,
+                // _getTokenProductionRate(port) returns an array 
+                // of non-negative int.
                 if (rate[i] >= 0) { 
                     for (int k = 0; k < rate[i]; k++) {
                         if (port.hasTokenInside(i)) {
@@ -782,9 +801,13 @@ public class DDFDirector extends Director {
                             throw new IllegalActionException(this, port,
                                     "Channel " + i + " should produce " 
                                     + rate[i] + " tokens, but there were only "
-                                    + k + " tokens available.");
+                                    + k + " tokens available. Maybe the rate"
+                                    + " is set wrong?");
                         }
-                    }         
+                    }    
+                // If the parameter tokenProductionRate is not defined,
+                // _getTokenProductionRate(port) returns an array of int
+                // each with value -1.
                 } else {
                     while (port.hasTokenInside(i)) {
                         Token token = port.getInside(i);
@@ -810,42 +833,6 @@ public class DDFDirector extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Check the number of tokens queued in each downstream receiver
-     *  connected to the actor in the argument and throw
-     *  IllegalActionException if any exceeds maximum receiver capacity.
-     *  @param actor Each downstream receiver connected to this actor
-     *   is checked against maximum receiver capacity.
-     *  @param capacity The capacity that is checked against.  If
-     *  the value of this parameter is 0, then no checking is done.
-     *  @exception IllegalActionException If any downstream receiver
-     *   connected to this actor exceeds maximum receiver capacity.
-     */
-    protected void _checkDownstreamReceiversCapacity(Actor actor, int capacity)
-            throws IllegalActionException {
- 
-        if (capacity > 0) {
-            Iterator outputPorts = actor.outputPortList().iterator();
-
-            while (outputPorts.hasNext()) {
-                IOPort outputPort = (IOPort) outputPorts.next();
-                Receiver[][] Receivers = outputPort.getRemoteReceivers();
-
-                for (int i = 0; i < Receivers.length; i++) {
-                    for (int j = 0; j < Receivers[i].length; j++) {
-                        SDFReceiver receiver = (SDFReceiver) Receivers[i][j];
-
-                        if (receiver.size() > capacity) {
-                            throw new IllegalActionException(this,
-                                    "Receiver size exceeds the maximum "
-                                    + "capacity in port "
-                                    + receiver.getContainer().getFullName());
-                        }
-                    }
-                }
-            }
-        }
-    }
     
     /** Iterate the actor once. Increment the firing number for it.
      *  Update the enabling status for each connected actor as well
@@ -877,25 +864,13 @@ public class DDFDirector extends Director {
 
             _disabledActors.add(actor);
             _actorsToCheckNumberOfFirings.remove(actor);
-            
-        // If the returnValue is NOT_READY, it silently returns. This runs
-        // the risk of neglecting the promise the actor makes to the director
-        // because the director only fires enabled actors. If an actor is
-        // enabled, then its prefire() method should not return false? Notice
-        // this is different from DE where the director tries to fire an actor
-        // whenever there is an event destined to the actor at the current time,
-        // and calls its prefire() method to check if it is ready.
-        // On the other hand, it should not throw exception when the actor is
-        // not ready due to mutation during execution. For example, a connection
-        // change request could result in creating new receivers and losing all
-        // tokens contained in the old receivers.  
-        //} else if (returnValue == NOT_READY) {
-            // Should not reach here if the scheduler and actors are 
-            // correctly designed. Only enabled actors are fired. 
-        //    throw new IllegalActionException(this, (ComponentEntity) actor,
-        //            "Actor " + "is not ready to fire.");
         }
 
+        // If the returnValue is NOT_READY, this method returns false. 
+        // Because the token consumption rates of input ports provide only 
+        // a guideline for firing instead of a contract, we allow an enabled
+        // (as determined by the director) actor to return false in its
+        // prefire().
         boolean fired = false;
         
         if (returnValue != NOT_READY) {
@@ -903,13 +878,9 @@ public class DDFDirector extends Director {
             fired = true;
 
             // Increment the firing number.
-            ActorInfo actorInfo = (ActorInfo) _actorsInfo.get(actor);
-            actorInfo.numberOfFirings++;
-            
-            int maximumCapacity = ((IntToken) maximumReceiverCapacity
-                    .getToken()).intValue();
-            if (maximumCapacity > 0) {
-                _checkDownstreamReceiversCapacity(actor, maximumCapacity);
+            if (_actorsToCheckNumberOfFirings.contains(actor)) {
+                ActorInfo actorInfo = (ActorInfo) _actorsInfo.get(actor);
+                actorInfo.numberOfFirings++;
             }
         }    
             
@@ -974,7 +945,7 @@ public class DDFDirector extends Director {
 
             for (int i = 0; i < farReceivers.length; i++) {
                 for (int j = 0; j < farReceivers[i].length; j++) {
-                    SDFReceiver farReceiver = (SDFReceiver) farReceivers[i][j];
+                    QueueReceiver farReceiver = (QueueReceiver) farReceivers[i][j];
                     IOPort port = farReceiver.getContainer();
 
                     // Having a self-loop doesn't make it deferrable.
@@ -1018,7 +989,7 @@ public class DDFDirector extends Director {
         return deferrable;
     }
 
-    /** Check to see if the actor is enabled. It is enabled if the
+    /** Check to see whether the actor is enabled. It is enabled if the
      *  tokenConsumptionRate on each input port is satisfied by all
      *  receivers contained by this port.
      *  @param actor The actor to be checked.
@@ -1034,7 +1005,7 @@ public class DDFDirector extends Director {
             int[] rate = _getTokenConsumptionRate(inputPort);
 
             for (int i = 0; i < inputPort.getWidth(); i++) {
-                if (!inputPort.hasToken(i, rate[i])) {
+                if (rate[i] > 0 && !inputPort.hasToken(i, rate[i])) {
                     return false;
                 }
             }
@@ -1103,8 +1074,8 @@ public class DDFDirector extends Director {
      *  rate is 1 unless explicitly specified by a <i>tokenConsumptionRate</i>
      *  parameter. If the port is an input port of the container of this
      *  director, the default value is -1 unless explicitly specified by
-     *  a <i>tokenConsumptionRate</i> parameter. -1 means consuming all 
-     *  tokens (if there are any) contained by the port. 
+     *  a <i>tokenConsumptionRate</i> parameter. The value -1 means consuming 
+     *  all tokens (if there are any) contained by the port. 
      *  @param port The port to get token consumption rate.
      *  @return An int array of token consumption rates.
      *  @exception IllegalActionException If parameter throws it or the
@@ -1147,8 +1118,10 @@ public class DDFDirector extends Director {
     }
     
     /** Get token consumption rate for the given receiver. The port
-     *  containing the receiver can be an opaque output port. In that
-     *  case, it actually returns the production rate for that receiver.
+     *  containing the receiver can be an input port of an actor 
+     *  controlled by this director or an output port of the container
+     *  of this director. In the latter case, it actually returns the 
+     *  production rate.
      *  @param receiver The receiver to get token consumption rate.
      *  @return The token consumption rate of the given receiver.
      *  @exception IllegalActionException If any called method throws
@@ -1229,9 +1202,9 @@ public class DDFDirector extends Director {
      *  should always be an output port of the container of this director.
      *  The convention is that if a parameter named <i>tokenproductionRate</i> 
      *  is defined, return the value in that parameter. Otherwise, return
-     *  an array of -1 which means the director should transfer all tokens 
-     *  contained in the port to the outside. Note the difference from SDF 
-     *  domain.
+     *  an array of int each with value -1 which means the director should 
+     *  transfer all tokens contained on the inside by the port to the outside.
+     *  Note the difference from SDF domain where the default rate is 1.
      *  @param port The port to get token production rate.
      *  @return An int array of token production rate.
      *  @exception IllegalActionException If parameter throws it
@@ -1265,7 +1238,7 @@ public class DDFDirector extends Director {
                         throw new IllegalActionException(this,
                                 "The length of "
                                 + "tokenProductionRate array is less than "
-                                + "port inside width.");
+                                + "the port inside width.");
                     }
 
                     for (int i = 0; i < port.getWidthInside(); i++) {

@@ -36,6 +36,7 @@ import java.util.Iterator;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
+import ptolemy.actor.QueueReceiver;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
@@ -48,7 +49,6 @@ import ptolemy.data.expr.StringParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.Type;
 import ptolemy.domains.ddf.kernel.DDFDirector;
-import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Port;
@@ -338,7 +338,7 @@ public class ActorRecursion extends TypedCompositeActor {
                     Token[][] tokens = new Token[width][0];
 
                     for (int channel = 0; channel < width; channel++) {
-                        int size = ((SDFReceiver) receivers[channel][0]).size();
+                        int size = ((QueueReceiver) receivers[channel][0]).size();
                         tokens[channel] = new Token[size];
 
                         for (int count = 0; count < size; count++) {
@@ -497,8 +497,8 @@ public class ActorRecursion extends TypedCompositeActor {
             for (int i = 0; i < farReceivers.length; i++) {
                 if (i < outputPort.getWidthInside()) {
                     for (int j = 0; j < farReceivers[i].length; j++) {
-                        SDFReceiver farReceiver 
-                                = (SDFReceiver) farReceivers[i][j];
+                        QueueReceiver farReceiver 
+                                = (QueueReceiver) farReceivers[i][j];
                         int rate = _getTokenConsumptionRate(farReceiver);
                         // According to the definition of deferrability,
                         // we need to find the minimum rate associated with
