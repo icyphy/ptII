@@ -139,7 +139,7 @@ public class ColorFinder extends TypedAtomicActor {
                 throw new IllegalActionException(this, ex, "Failed to cast "
                         + videoFormat.getClass() + ":\n" 
                         + videoFormat + "\nto YUVFormat\n"
-                        + "in.getFormat() was: " + in.getFormat().getClass
+                        + "in.getFormat() was: " + in.getFormat().getClass()
                         + "\nPerhaps the video source is not generating YUV?");
             }
             byte[] data = (byte[])in.getData();
