@@ -32,7 +32,6 @@ package ptolemy.domains.sdf.demo.Type;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.GridLayout;
 import java.awt.Graphics;
 import java.awt.Font;
 import java.awt.event.*;
@@ -48,8 +47,8 @@ import diva.util.gui.TutorialWindow;
 import diva.surfaces.trace.*;
 
 import javax.swing.*;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
+import javax.swing.border.*;
+import javax.swing.event.*;
 
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
@@ -75,53 +74,46 @@ It displays a Diva animation of the type resolution process.
 @version $Id$
 */
 
-public class Type extends SDFApplet implements QueryListener {
+public class Type extends SDFApplet implements ChangeListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change in the query box.
-     *  @param name The name of the item that changed.
+    /** React to a change in the selection of plotter or printer.
+     *  @param event The tabbed pane event.
      */
-    public void changed(String name) {
-        if (name.equals("display")) {
-            String display = _query.stringValue("display");
-            try {
-                if (display.equals("Plotter") && _previousDisplayPrinter) {
-System.out.println("******** putting in plotter");
-                    _previousDisplayPrinter = false;
-                    _plotter.plot.setGrid(true);
-                    _plotter.plot.setXRange(0.0, 10.0);
-                    _plotter.plot.setYRange(0.0, 20.0);
-                    _plotter.plot.setConnected(false);
-                    _plotter.plot.setImpulses(true);
-                    _plotter.plot.setMarksStyle("dots");
+    public void stateChanged(ChangeEvent event) {
+        try {
+            int display = _plotPrint.getSelectedIndex();
 
-                    _expr.output.unlinkAll();
-                    _printer.setContainer(null);
-                    _plotter.setContainer(_toplevel);
-                    
-                    _toplevel.connect(_expr.output, _plotter.input);
-                    _director.setScheduleValid(false);
-
-                } else if (display.equals("Printer")
-                        && !_previousDisplayPrinter) {
-                    _previousDisplayPrinter = true;
-                    _expr.output.unlinkAll();
-                    _plotter.setContainer(null);
-                    _printer.place(getContentPane());
-                    _toplevel.connect(_expr.output, _printer.input);
-                    _director.setScheduleValid(false);
-                } else {
-                    return;
-                }
-                // NOTE: In theory, the following is not necessary, but there
-                // appears to be a bug in swing...
-                _ioPanel.revalidate();
-                _schemPanel.repaint();
-            } catch (Exception ex) {
-                report("setDisplay failed:", ex);
+            if (display == 0 && _previousDisplayPrinter) { // plotter selected
+                _previousDisplayPrinter = false;
+                _plotter.plot.setGrid(true);
+                _plotter.plot.setXRange(0.0, 10.0);
+                _plotter.plot.setYRange(0.0, 20.0);
+                _plotter.plot.setConnected(false);
+                _plotter.plot.setImpulses(true);
+                _plotter.plot.setMarksStyle("dots");
+                
+                _expr.output.unlinkAll();
+                _printer.setContainer(null);
+                _plotter.setContainer(_toplevel);
+                
+                _toplevel.connect(_expr.output, _plotter.input);
+                _director.setScheduleValid(false);
+                
+            } else if (display == 1 && !_previousDisplayPrinter) {
+                _previousDisplayPrinter = true;
+                _expr.output.unlinkAll();
+                _plotter.setContainer(null);
+                _printer.setContainer(_toplevel);
+                _toplevel.connect(_expr.output, _printer.input);
+                _director.setScheduleValid(false);
+            } else {
+                return;
             }
+        } catch (Exception ex) {
+            report("setDisplay failed:", ex);
         }
     }
 
@@ -138,18 +130,29 @@ System.out.println("******** putting in plotter");
 	    //		   runControlPanel (go Button)
 	    //		   paramPanel (parameters,
 	    //			       plotter/printer selection)
-	    //	       plot/print Panel
+	    //	       _plotPrint panel (a TabbedPane)
 	    //     _schemPanel (schematics with type annotation)
 
 
             // The control panel has run control and parameter control,
             JPanel controlPanel = new JPanel();
-            controlPanel.setOpaque(false);
-	    _buildControlPanel(controlPanel);
+            controlPanel.setBackground(_getBackground());
+            controlPanel.setAlignmentY(0);
+            controlPanel.setLayout(new BorderLayout());
+            controlPanel.add(_query, BorderLayout.CENTER);
+            controlPanel.add(_createRunControls(1), BorderLayout.SOUTH);
+
+            _query.addLine("ramp1init", "Ramp1 Initial Value", "0");
+            _query.addLine("ramp1step", "Ramp1 Step Size", "1");
+            _query.addLine("ramp2init", "Ramp2 Init Value", "0");
+            _query.addLine("ramp2step", "Ramp2 Step Size", "1");
+            _query.addLine("expr", "Expression", "input1 + input2");
+            _query.setBackground(_getBackground());
 
             // The IO panel has the control panel and the output display.
-            _ioPanel.setLayout(new GridLayout(1, 2));
-            _ioPanel.setOpaque(false);
+            _ioPanel.setLayout(new BoxLayout(_ioPanel, BoxLayout.X_AXIS));
+            _ioPanel.setOpaque(true);
+            _ioPanel.setBackground(_getBackground());
             _ioPanel.add(controlPanel);
 
             // Build the PtII model, placing a plotter in the IO panel.
@@ -158,33 +161,57 @@ System.out.println("******** putting in plotter");
             // Visualization panel contains the type lattice and
             // animation of type resolution progress (trace model).
             JPanel visPanel = new JPanel();
+            visPanel.setLayout(new BorderLayout());
+            visPanel.setBackground(_getBackground());
+            _jgraph.setBackground(_getBackground());
+            // FIXME: title borders don't work in diva...
+            // _jgraph.setBorder(new TitledBorder(new LineBorder(Color.black),
+            //        "Type Lattice"));
+            _jgraph.setBorder(new LineBorder(Color.black));
             visPanel.add(_jgraph, BorderLayout.WEST);
             _jgraph.setPreferredSize(new Dimension(400, 290));
-            _jgraph.setSize(new Dimension(400, 290));
 
             // Place items in the top-level.
-	    getContentPane().setLayout(new GridLayout(3, 1));
-            getContentPane().add(_ioPanel);
-	    getContentPane().add(_schemPanel);
-            getContentPane().add(visPanel);
+            getContentPane().add(_ioPanel, BorderLayout.NORTH);
+	    getContentPane().add(_schemPanel, BorderLayout.CENTER);
+            getContentPane().add(visPanel, BorderLayout.SOUTH);
 
             getContentPane().setBackground(_getBackground());
 
+            // Define the tabbed pane for the plotter and printer.
+            _plotPrint.setAlignmentY(0);
+            _plotPrint.setPreferredSize(new Dimension(400, 250));
+            _plotPrint.addTab("Plotter", null, _plotPanel,
+                   "Display is plotter");
+            _plotPrint.addTab("Printer", null, _printPanel,
+                   "Display is printer");
+            _plotPrint.addChangeListener(this);
+            _plotPanel.setBackground(_getBackground());
+            _plotPanel.setBorder(new LineBorder(Color.black));
+            _printPanel.setBackground(_getBackground());
+            _printPanel.setBorder(new LineBorder(Color.black));
+            _ioPanel.add(_plotPrint);
+
             // Construct the Ptolemy type lattice model
             final GraphModel graphModel = _constructLattice();
-
-            // Display the type lattice
-            _displayGraph(_jgraph, graphModel);
 
             // Construct a new trace model
             TraceModel traceModel = new TraceModel();
 
             // Display the trace
             _traceCanvas = _displayTrace(traceModel);
+            // FIXME: title borders don't work in diva...
+            // _traceCanvas.setBorder(new TitledBorder(
+            //       new LineBorder(Color.black),
+            //       "Type Resolution"));
+            _traceCanvas.setBorder(new LineBorder(Color.black));
             _traceCanvas.setPreferredSize(new Dimension(400, 290));
             visPanel.add(_traceCanvas, BorderLayout.EAST);
 
 	    _addListeners();
+
+            // Display the type lattice
+            _displayGraph(_jgraph, graphModel);
 
         } catch (Exception ex) {
             report("Setup failed:", ex);
@@ -235,30 +262,14 @@ System.out.println("******** putting in plotter");
     private void _addListeners()
 	    throws NameDuplicationException, IllegalActionException {
 
-	_typeListener = new MyTypeListener();
-	_ramp1.output.addTypeListener(_typeListener);
-	_ramp2.output.addTypeListener(_typeListener);
-	((TypedIOPort)_expr.getPort("input1")).addTypeListener(_typeListener);
-	((TypedIOPort)_expr.getPort("input2")).addTypeListener(_typeListener);
-	_expr.output.addTypeListener(_typeListener);
-	_plotter.input.addTypeListener(_typeListener);
-	_printer.input.addTypeListener(_typeListener);
-    }
-
-    private void _buildControlPanel(JPanel controlPanel) {
-	JPanel runControlPanel = _createRunControls(1);
-	controlPanel.add(runControlPanel, BorderLayout.SOUTH);
-	controlPanel.add(_query, BorderLayout.NORTH);
-
-	_query.addLine("ramp1init", "Ramp1 Initial Value", "0");
-	_query.addLine("ramp1step", "Ramp1 Step Size", "1");
-	_query.addLine("ramp2init", "Ramp2 Init Value", "0");
-	_query.addLine("ramp2step", "Ramp2 Step Size", "1");
-	_query.addLine("expr", "Expression", "input1 + input2");
-        String[] options = {"Plotter", "Printer"};
-        _query.addRadioButtons("display", "Display using", options, "Plotter");
-        _query.setBackground(_getBackground());
-        _query.addQueryListener(this);
+	TypeListener typeListener = new MyTypeListener();
+	_ramp1.output.addTypeListener(typeListener);
+	_ramp2.output.addTypeListener(typeListener);
+	_exprInput1.addTypeListener(typeListener);
+	_exprInput2.addTypeListener(typeListener);
+	_expr.output.addTypeListener(typeListener);
+	_plotter.input.addTypeListener(typeListener);
+	_printer.input.addTypeListener(typeListener);
     }
 
     private void _buildModel()
@@ -270,14 +281,15 @@ System.out.println("******** putting in plotter");
 
         // Create and configure expr
         _expr = new Expression(_toplevel, "expr");
-        TypedIOPort input1 = new TypedIOPort(_expr, "input1", true, false);
-        TypedIOPort input2 = new TypedIOPort(_expr, "input2", true, false);
+        _exprInput1 = new TypedIOPort(_expr, "input1", true, false);
+        _exprInput2 = new TypedIOPort(_expr, "input2", true, false);
 
         // Create and configure plotter
         _plotter = new SequencePlotter(_toplevel, "plot");
 
-        _plotter.place(_ioPanel);
-        _plotter.plot.setSize(200, 200);
+        _plotter.place(_plotPanel);
+        _plotter.plot.setSize(390, 200);
+        _plotter.plot.setBackground(_getBackground());
         _plotter.plot.setGrid(true);
         _plotter.plot.setXRange(0.0, 10.0);
         _plotter.plot.setYRange(0.0, 20.0);
@@ -288,18 +300,16 @@ System.out.println("******** putting in plotter");
 	// Create printer. Can't use null in constructor, thus
 	// set the container to null after construction.
         // NOTE: We used to place only the plotter OR the printer,
-        // but the Containter.remove() method does not work in swing,
+        // but the Container.remove() method does not work in swing,
         // so we can't do that anymore.
 	_printer = new Print(_toplevel, "print");
-        _printer.place(_ioPanel);
-        // As usual in swing, setSize does nothing...
-        // _printer.textArea.setSize(100, 100);
+        _printer.place(_printPanel);
         _printer.textArea.setRows(10);
-        _printer.textArea.setColumns(20);
+        _printer.textArea.setColumns(30);
 	_printer.setContainer(null);
 
-        _toplevel.connect(_ramp1.output, input1);
-        _toplevel.connect(_ramp2.output, input2);
+        _toplevel.connect(_ramp1.output, _exprInput1);
+        _toplevel.connect(_ramp2.output, _exprInput2);
         _toplevel.connect(_expr.output, _plotter.input);
     }
 
@@ -360,7 +370,7 @@ System.out.println("******** putting in plotter");
         return model;
     }
 
-    // Construct the graph widget with
+    // Construct the graph widget to display the type lattice with
     // the default constructor (giving it an empty graph),
     // and then set the model once the window is showing.
     //
@@ -376,20 +386,17 @@ System.out.println("******** putting in plotter");
 
         // Do the layout
         final GraphModel m = model;
-        try {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    // Layout is a bit stupid
-                    gv.setLayoutPercentage(0.7);
-                    LevelLayout staticLayout = new LevelLayout();
-                    staticLayout.setOrientation(LevelLayout.VERTICAL);
-                    staticLayout.layout(gv, m.getGraph());
-                    gp.repaint();
-                }
-            });
-        } catch (Exception e) {
-            System.out.println(e);
-        }
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+System.out.println("doing layout");
+                // Layout is a bit stupid
+                gv.setLayoutPercentage(0.7);
+                LevelLayout staticLayout = new LevelLayout();
+                staticLayout.setOrientation(LevelLayout.VERTICAL);
+                staticLayout.layout(gv, m.getGraph());
+                gp.repaint();
+            }
+        });
     }
 
     // Initialize the trace model.
@@ -407,11 +414,11 @@ System.out.println("******** putting in plotter");
 
         t = new TraceModel.Trace();
         t.setUserObject("expr.input1");
-        model.addTrace(_expr.getPort("input1"), t);
+        model.addTrace(_exprInput1, t);
 
         t = new TraceModel.Trace();
         t.setUserObject("expr.input2");
-        model.addTrace(_expr.getPort("input2"), t);
+        model.addTrace(_exprInput2, t);
 
         t = new TraceModel.Trace();
         t.setUserObject("expr.output");
@@ -496,9 +503,11 @@ System.out.println("******** putting in plotter");
     private String _printerType = "String";
 
     private JPanel _ioPanel = new JPanel();
+    private JPanel _plotPanel = new JPanel();
+    private JPanel _printPanel = new JPanel();
     private SchematicPanel _schemPanel = new SchematicPanel();
 
-    // The JGraph where we display stuff
+    // The JGraph where we display the type lattice.
     private JGraph _jgraph = new JGraph();
 
     // The pane displaying the trace
@@ -506,9 +515,6 @@ System.out.println("******** putting in plotter");
 
     // The canvas displaying the trace
     private JCanvas _traceCanvas;
-
-    // The type listener
-    private MyTypeListener _typeListener;
 
     // The start time for the trace
     private long _startTime = 0;
@@ -520,16 +526,30 @@ System.out.println("******** putting in plotter");
     // Indication of the previous display;
     private boolean _previousDisplayPrinter = false;
 
+    // Ports of expression actor.
+    private TypedIOPort _exprInput1, _exprInput2;
+
+    // Plot/Print display
+    private JTabbedPane _plotPrint = new JTabbedPane();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
     private class SchematicPanel extends JPanel {
 
-	public SchematicPanel() {
-	}
+        public SchematicPanel() {
+            setOpaque(false);
+            setBackground(_getBackground());
+            setPreferredSize(new Dimension(700, 200));
+            // As usual, the above is ignored.  Try this...
+            setSize(new Dimension(700, 200));
+            // That is ignored too... Try this...
+            setMaximumSize(new Dimension(700, 200));
+            // Well, that is ignored too... give up controlling the size...
+        }
 
-    	public void paintComponent(Graphics graph) {
+    	public void paintComponent(Graphics graphics) {
+            super.paintComponent(graphics);
 
 	    final int ACTOR_WIDTH = 90;
 	    final int ACTOR_HEIGHT = 65;
@@ -563,27 +583,27 @@ System.out.println("******** putting in plotter");
 	    final int FILL_OFFSET = 1;
 
 	    // draw actors
-	    graph.setColor(Color.black);
-	    graph.drawRoundRect(RAMP1_X, RAMP1_Y, ACTOR_WIDTH, ACTOR_HEIGHT,
+	    graphics.setColor(Color.black);
+	    graphics.drawRoundRect(RAMP1_X, RAMP1_Y, ACTOR_WIDTH, ACTOR_HEIGHT,
                     ARC_WIDTH, ARC_HEIGHT);
-	    graph.drawRoundRect(RAMP2_X, RAMP2_Y, ACTOR_WIDTH, ACTOR_HEIGHT,
+	    graphics.drawRoundRect(RAMP2_X, RAMP2_Y, ACTOR_WIDTH, ACTOR_HEIGHT,
                     ARC_WIDTH, ARC_HEIGHT);
-	    graph.drawRoundRect(EXPR_X, EXPR_Y, ACTOR_WIDTH, ACTOR_HEIGHT,
+	    graphics.drawRoundRect(EXPR_X, EXPR_Y, ACTOR_WIDTH, ACTOR_HEIGHT,
                     ARC_WIDTH, ARC_HEIGHT);
-	    graph.drawRoundRect(PLOT_X, PLOT_Y, ACTOR_WIDTH, ACTOR_HEIGHT,
+	    graphics.drawRoundRect(PLOT_X, PLOT_Y, ACTOR_WIDTH, ACTOR_HEIGHT,
                     ARC_WIDTH, ARC_HEIGHT);
 
-	    graph.setColor(new Color(0.6F, 0.9F, 1.0F));
-	    graph.fillRoundRect(RAMP1_X+FILL_OFFSET, RAMP1_Y+FILL_OFFSET,
+	    graphics.setColor(new Color(0.6F, 0.9F, 1.0F));
+	    graphics.fillRoundRect(RAMP1_X+FILL_OFFSET, RAMP1_Y+FILL_OFFSET,
                     ACTOR_WIDTH-FILL_OFFSET, ACTOR_HEIGHT-FILL_OFFSET,
                     ARC_WIDTH, ARC_HEIGHT);
-	    graph.fillRoundRect(RAMP2_X+FILL_OFFSET, RAMP2_Y+FILL_OFFSET,
+	    graphics.fillRoundRect(RAMP2_X+FILL_OFFSET, RAMP2_Y+FILL_OFFSET,
                     ACTOR_WIDTH-FILL_OFFSET, ACTOR_HEIGHT-FILL_OFFSET,
                     ARC_WIDTH, ARC_HEIGHT);
-	    graph.fillRoundRect(EXPR_X+FILL_OFFSET, EXPR_Y+FILL_OFFSET,
+	    graphics.fillRoundRect(EXPR_X+FILL_OFFSET, EXPR_Y+FILL_OFFSET,
                     ACTOR_WIDTH-FILL_OFFSET, ACTOR_HEIGHT-FILL_OFFSET,
                     ARC_WIDTH, ARC_HEIGHT);
-	    graph.fillRoundRect(PLOT_X+FILL_OFFSET, PLOT_Y+FILL_OFFSET,
+	    graphics.fillRoundRect(PLOT_X+FILL_OFFSET, PLOT_Y+FILL_OFFSET,
                     ACTOR_WIDTH-FILL_OFFSET, ACTOR_HEIGHT-FILL_OFFSET,
                     ARC_WIDTH, ARC_HEIGHT);
 
@@ -597,12 +617,12 @@ System.out.println("******** putting in plotter");
 	    yPoints[1] = RAMP1_Y+15;
 	    yPoints[2] = RAMP1_Y+ACTOR_HEIGHT-15;
 
-	    graph.setColor(Color.black);
-	    graph.drawPolygon(xPoints, yPoints, 3);
-	    graph.setColor(Color.yellow);
+	    graphics.setColor(Color.black);
+	    graphics.drawPolygon(xPoints, yPoints, 3);
+	    graphics.setColor(Color.yellow);
 	    xPoints[0] += 1;
 	    yPoints[1] += 1;
-	    graph.fillPolygon(xPoints, yPoints, 3);
+	    graphics.fillPolygon(xPoints, yPoints, 3);
 
 	    // draw triangle in ramp2
 	    xPoints[0] = RAMP2_X+15;
@@ -612,83 +632,85 @@ System.out.println("******** putting in plotter");
 	    yPoints[1] = RAMP2_Y+15;
 	    yPoints[2] = RAMP2_Y+ACTOR_HEIGHT-15;
 
-	    graph.setColor(Color.black);
-	    graph.drawPolygon(xPoints, yPoints, 3);
-	    graph.setColor(Color.yellow);
+	    graphics.setColor(Color.black);
+	    graphics.drawPolygon(xPoints, yPoints, 3);
+	    graphics.setColor(Color.yellow);
 	    xPoints[0] += 1;
 	    yPoints[1] += 1;
-	    graph.fillPolygon(xPoints, yPoints, 3);
+	    graphics.fillPolygon(xPoints, yPoints, 3);
 
-	    graph.setColor(Color.black);
-	    graph.setFont(new Font("Serif", Font.BOLD, 14));
-	    graph.drawString("Expression", EXPR_X+10, EXPR_Y+ACTOR_HEIGHT-20);
+	    graphics.setColor(Color.black);
+	    graphics.setFont(new Font("Serif", Font.BOLD, 14));
+	    graphics.drawString("Expression", EXPR_X+10, EXPR_Y+ACTOR_HEIGHT-20);
 
-	    graph.setColor(Color.white);
-	    graph.fillRect(PLOT_X+10, PLOT_Y+10,
+	    graphics.setColor(Color.white);
+	    graphics.fillRect(PLOT_X+10, PLOT_Y+10,
                     ACTOR_WIDTH-20, ACTOR_HEIGHT-20);
-	    graph.setColor(Color.black);
-            String display = _query.stringValue("display");
-	    if (display.equals("Plotter")) {
+	    graphics.setColor(Color.black);
+            int display = _plotPrint.getSelectedIndex();
+	    if (display == 0) {  // plotter selected
 		// draw the axis
-		graph.drawLine(PLOT_X+20, PLOT_Y+ACTOR_HEIGHT-20,
+		graphics.drawLine(PLOT_X+20, PLOT_Y+ACTOR_HEIGHT-20,
                         PLOT_X+20, PLOT_Y+20);
-		graph.drawLine(PLOT_X+20, PLOT_Y+ACTOR_HEIGHT-20,
+		graphics.drawLine(PLOT_X+20, PLOT_Y+ACTOR_HEIGHT-20,
                         PLOT_X+ACTOR_WIDTH-20, PLOT_Y+ACTOR_HEIGHT-20);
 		// draw the plot line
 		int x1 = PLOT_X+25; int y1 = PLOT_Y+ACTOR_HEIGHT-25;
 		int x2 = x1+ACTOR_WIDTH/4; int y2 = PLOT_Y+ACTOR_HEIGHT/2;
 		int x3 = x2+10; int y3 = y2+10;
 		int x4 = PLOT_X+ACTOR_WIDTH-20; int y4 = PLOT_Y+20;
-		graph.setColor(new Color(0.1F, 0.2F, 0.9F));
-		graph.drawLine(x1, y1, x2, y2);
-		graph.drawLine(x2, y2, x3, y3);
-		graph.drawLine(x3, y3, x4, y4);
-	    } else {
+		graphics.setColor(new Color(0.1F, 0.2F, 0.9F));
+		graphics.drawLine(x1, y1, x2, y2);
+		graphics.drawLine(x2, y2, x3, y3);
+		graphics.drawLine(x3, y3, x4, y4);
+	    } else {  // printer selected
 		// draw printer text
-	    	graph.setFont(new Font("ScanSerif", Font.BOLD, 12));
-		graph.drawString("x", PLOT_X+20, PLOT_Y+20);
-		graph.drawString("xx", PLOT_X+20, PLOT_Y+30);
-		graph.drawString("xxx", PLOT_X+20, PLOT_Y+40);
+	    	graphics.setFont(new Font("ScanSerif", Font.BOLD, 12));
+		graphics.drawString("x", PLOT_X+20, PLOT_Y+20);
+		graphics.drawString("xx", PLOT_X+20, PLOT_Y+30);
+		graphics.drawString("xxx", PLOT_X+20, PLOT_Y+40);
 	    }
 
 	    // draw ports
-	    graph.setColor(Color.red);
+	    graphics.setColor(Color.red);
 	    int rad = 5;
-	    graph.fillOval(RAMP1_X+ACTOR_WIDTH-rad,
+	    graphics.fillOval(RAMP1_X+ACTOR_WIDTH-rad,
                     RAMP1_Y+ACTOR_HEIGHT/2-rad, rad*2, rad*2);
-	    graph.fillOval(RAMP2_X+ACTOR_WIDTH-rad,
+	    graphics.fillOval(RAMP2_X+ACTOR_WIDTH-rad,
                     RAMP2_Y+ACTOR_HEIGHT/2-rad, rad*2, rad*2);
-	    graph.fillOval(EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT/3-rad-5,
+	    graphics.fillOval(EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT/3-rad-5,
                     rad*2, rad*2);
-	    graph.fillOval(EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT*2/3-rad+5,
+	    graphics.fillOval(EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT*2/3-rad+5,
                     rad*2, rad*2);
-	    graph.fillOval(EXPR_X+ACTOR_WIDTH-rad, EXPR_Y+ACTOR_HEIGHT/2-rad,
+	    graphics.fillOval(EXPR_X+ACTOR_WIDTH-rad, EXPR_Y+ACTOR_HEIGHT/2-rad,
                     rad*2, rad*2);
-	    graph.fillOval(PLOT_X-rad, PLOT_Y+ACTOR_HEIGHT/2-rad,
+	    graphics.fillOval(PLOT_X-rad, PLOT_Y+ACTOR_HEIGHT/2-rad,
                     rad*2, rad*2);
 
 	    // draw connections
-	    graph.setColor(new Color(1.0F, 0.4F, 0.0F));
-	    graph.drawLine(RAMP1_X+ACTOR_WIDTH+rad-1, RAMP1_Y+ACTOR_HEIGHT/2+1,
+	    graphics.setColor(new Color(1.0F, 0.4F, 0.0F));
+	    graphics.drawLine(RAMP1_X+ACTOR_WIDTH+rad-1,
+                    RAMP1_Y+ACTOR_HEIGHT/2+1,
                     EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT/3-rad-2);
-	    graph.drawLine(RAMP2_X+ACTOR_WIDTH+rad-1, RAMP2_Y+ACTOR_HEIGHT/2-1,
+	    graphics.drawLine(RAMP2_X+ACTOR_WIDTH+rad-1,
+                    RAMP2_Y+ACTOR_HEIGHT/2-1,
                     EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT*2/3-rad+8);
-	    graph.drawLine(EXPR_X+ACTOR_WIDTH+rad-1, EXPR_Y+ACTOR_HEIGHT/2,
+	    graphics.drawLine(EXPR_X+ACTOR_WIDTH+rad-1, EXPR_Y+ACTOR_HEIGHT/2,
                     PLOT_X-rad, PLOT_Y+ACTOR_HEIGHT/2);
 
 	    // draw types
-	    graph.setColor(Color.red);
-	    graph.setFont(new Font("Dialog", Font.BOLD, 18));
-	    graph.drawString(_ramp1Type, RAMP1_TYPE_X, RAMP1_TYPE_Y);
-	    graph.drawString(_ramp2Type, RAMP2_TYPE_X, RAMP2_TYPE_Y);
-	    graph.drawString(_exprIn1Type, EXPR_IN_TYPE_X, EXPR_IN_TYPE_Y1);
-	    graph.drawString(_exprIn2Type, EXPR_IN_TYPE_X, EXPR_IN_TYPE_Y2);
-	    graph.drawString(_exprOutType, EXPR_OUT_TYPE_X, EXPR_OUT_TYPE_Y);
+	    graphics.setColor(Color.red);
+	    graphics.setFont(new Font("Dialog", Font.BOLD, 18));
+	    graphics.drawString(_ramp1Type, RAMP1_TYPE_X, RAMP1_TYPE_Y);
+	    graphics.drawString(_ramp2Type, RAMP2_TYPE_X, RAMP2_TYPE_Y);
+	    graphics.drawString(_exprIn1Type, EXPR_IN_TYPE_X, EXPR_IN_TYPE_Y1);
+	    graphics.drawString(_exprIn2Type, EXPR_IN_TYPE_X, EXPR_IN_TYPE_Y2);
+	    graphics.drawString(_exprOutType, EXPR_OUT_TYPE_X, EXPR_OUT_TYPE_Y);
 
-	    if (display.equals("Plotter")) {
-		graph.drawString(_plotterType, PLOT_TYPE_X, PLOT_TYPE_Y);
-	    } else {
-		graph.drawString(_printerType, PLOT_TYPE_X, PLOT_TYPE_Y);
+	    if (display == 0) { // plotter selected
+		graphics.drawString(_plotterType, PLOT_TYPE_X, PLOT_TYPE_Y);
+	    } else {  // printer selected
+		graphics.drawString(_printerType, PLOT_TYPE_X, PLOT_TYPE_Y);
 	    }
     	}
     }
@@ -768,108 +790,107 @@ System.out.println("******** putting in plotter");
     // The local listener class
     private class MyTypeListener implements TypeListener {
 
-        public void typeChanged(TypeEvent event) {
-            ptolemy.data.type.Type newtype = event.getNewType();
-            String typeString = newtype.toString();
-
-            TypedIOPort port = event.getPort();
-            int id = 0;
-            if (port == _ramp1.output) {
-                _ramp1Type = typeString;
-                id = 0;
-            } else if (port == _ramp2.output) {
-                _ramp2Type = typeString;
-                id = 1;
-            } else if (port == _expr.getPort("input1")) {
-                _exprIn1Type = typeString;
-                id = 2;
-            } else if (port == _expr.getPort("input2")) {
-                _exprIn2Type = typeString;
-                id = 3;
-            } else if (port == _expr.output) {
-                _exprOutType = typeString;
-                id = 4;
-            } else if (port == _plotter.input) {
-                _plotterType = typeString;
-                id = 5;
-            } else if (port == _printer.input) {
-                _printerType = typeString;
-                id = 6;
-            }
-
-            _schemPanel.repaint();
-
-            // Figure out which color to draw
-            ptolemy.data.type.Type typeObj = newtype;
-            int color = 7;
-            String label = "UNKNOWN";
-            if (typeObj == BaseType.NAT) {
-                color = 7;
-            } else if (typeObj == BaseType.INT) {
-                color = 4;
-            } else if (typeObj == BaseType.DOUBLE) {
-                color = 8;
-            } else if (typeObj == BaseType.COMPLEX) {
-                color = 3;
-            } else if (typeObj == BaseType.STRING) {
-                color = 5;
-            } else if (typeObj == BaseType.GENERAL) {
-                color = 0;
-            } else if (typeObj == BaseType.BOOLEAN) {
-                color = 9;
-            } else if (typeObj == BaseType.OBJECT) {
-                color = 2;
-            } else if (typeObj == BaseType.SCALAR) {
-                color = 6;
-            } else if (typeObj == BaseType.LONG) {
-                color = 1;
-            }
-
-            // Get the trace and element figure
-            TraceModel model = _tracePane.getTraceView().getTraceModel();
-            TraceModel.Trace trace = model.getTrace(id);
-
-            // Create the new element
-            double currentTime = (double) (_counter);
-            _counter++;
-
-            // Make the elements look large in case they're the
-            // last one
-            final TraceModel.Element element = new TraceModel.Element(
-                    currentTime, currentTime+1, color);
-            element.closure = TraceModel.Element.OPEN_END;
-            trace.add(element);
-
-            // Close the current element
-            final TraceModel.Element current = _currentElement[id];
-            current.closure = 0;
-
-            // Update all elements
-            final int msize = model.size();
-            final TraceModel.Element temp[] = new TraceModel.Element[msize];
-            for (int i = 0; i < msize; i++) {
-                _currentElement[i].stopTime = currentTime+1;
-                temp[i] = _currentElement[i];
-            }
-
+        public void typeChanged(final TypeEvent event) {
             try {
                 SwingUtilities.invokeAndWait(new Runnable() {
                     public void run() {
+                        ptolemy.data.type.Type newtype = event.getNewType();
+                        String typeString = newtype.toString();
+
+                        TypedIOPort port = event.getPort();
+                        int id = 0;
+                        if (port == _ramp1.output) {
+                            _ramp1Type = typeString;
+                            id = 0;
+                        } else if (port == _ramp2.output) {
+                            _ramp2Type = typeString;
+                            id = 1;
+                        } else if (port == _exprInput1) {
+                            _exprIn1Type = typeString;
+                            id = 2;
+                        } else if (port == _exprInput2) {
+                            _exprIn2Type = typeString;
+                            id = 3;
+                        } else if (port == _expr.output) {
+                            _exprOutType = typeString;
+                            id = 4;
+                        } else if (port == _plotter.input) {
+                            _plotterType = typeString;
+                            id = 5;
+                        } else if (port == _printer.input) {
+                            _printerType = typeString;
+                            id = 6;
+                        }
+
+                        // Figure out which color to draw
+                        ptolemy.data.type.Type typeObj = newtype;
+                        int color = 7;
+                        String label = "UNKNOWN";
+                        if (typeObj == BaseType.NAT) {
+                            color = 7;
+                        } else if (typeObj == BaseType.INT) {
+                            color = 4;
+                        } else if (typeObj == BaseType.DOUBLE) {
+                            color = 8;
+                        } else if (typeObj == BaseType.COMPLEX) {
+                            color = 3;
+                        } else if (typeObj == BaseType.STRING) {
+                            color = 5;
+                        } else if (typeObj == BaseType.GENERAL) {
+                            color = 0;
+                        } else if (typeObj == BaseType.BOOLEAN) {
+                            color = 9;
+                        } else if (typeObj == BaseType.OBJECT) {
+                            color = 2;
+                        } else if (typeObj == BaseType.SCALAR) {
+                            color = 6;
+                        } else if (typeObj == BaseType.LONG) {
+                            color = 1;
+                        }
+
+                        // Get the trace and element figure
+                        TraceModel model =
+                                _tracePane.getTraceView().getTraceModel();
+                        TraceModel.Trace trace = model.getTrace(id);
+
+                        // Create the new element
+                        double currentTime = (double) (_counter);
+                        _counter++;
+                        
+                        // Make the elements look large in case they're the
+                        // last one
+                        TraceModel.Element element =
+                                new TraceModel.Element(
+                                currentTime, currentTime+1, color);
+                        element.closure = TraceModel.Element.OPEN_END;
+                        trace.add(element);
+
+                        // Close the current element
+                        TraceModel.Element current = _currentElement[id];
+                        current.closure = 0;
+                        // Update all elements
+                        int msize = model.size();
+                        TraceModel.Element temp[] =
+                                new TraceModel.Element[msize];
+                        for (int i = 0; i < msize; i++) {
+                            _currentElement[i].stopTime = currentTime+1;
+                            temp[i] = _currentElement[i];
+                        }
                         TraceView v = _tracePane.getTraceView();
                         for (int i = 0; i < msize; i++) {
                             v.updateTraceElement(temp[i]);
                         }
                         v.drawTraceElement(element);
+
+                        // Update
+                        _currentElement[id] = element;
+
+                        _schemPanel.repaint();
                     }
                 });
+            } catch (Exception e) {
+                report(e);
             }
-            catch (Exception e) {
-                System.out.println(e);
-            }
-
-            // Update
-            _currentElement[id] = element;
-
         }
     }
 }
