@@ -451,11 +451,20 @@ public class GenericJNIActor extends TypedAtomicActor {
                 + File.separator
                 + dllDirValue
                 + File.pathSeparator
+
                 + StringUtilities
                 .getProperty("ptolemy.ptII.dir")
                 + File.separator
                 + dllDirValue
                 + File.pathSeparator
+
+                + StringUtilities.getProperty("user.dir")
+                + File.separator
+                + "jni"
+                + File.separator
+                + "jnimeaningOfLife"
+                + File.pathSeparator
+
                 + System.getProperty("java.library.path"));
 
         _methods = null;

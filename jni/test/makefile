@@ -83,10 +83,10 @@ test_java: jclass
 # PtolemyII-wide test definitions.
 KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
-#AUXCLASSPATH = $(CLASSPATHSEPARATOR).
+AUXCLASSPATH = $(CLASSPATHSEPARATOR).
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
-	PATH="`pwd`:$(PATH)" $(JTCLSH) alljtests.tcl
+	PATH="`pwd`:`pwd`/jni/jnimeaningOfLife:$(PATH)" $(JTCLSH) alljtests.tcl
 
 shared:
 	gcc -shared -o meaningOfLife.$(PTJNI_SHAREDLIBRARY_SUFFIX) \

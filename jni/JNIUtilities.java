@@ -34,6 +34,7 @@ import ptolemy.actor.Actor;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.StringToken;
 import ptolemy.gui.MessageHandler;
+import ptolemy.gui.StreamExec;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -43,6 +44,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Vector;
 
@@ -284,74 +286,73 @@ public class JNIUtilities {
         // can see the execution.  If we are running without a UI.
         // We should call exec().
         //Compilation java de la classe interface:
-        String cmd[] = new String[4];
-        cmd[0] = "javac";
-        cmd[1] = "-classpath";
-        cmd[2] = "%PTII%";
-        cmd[3] =
-            "jni/jni"
-            + libName
-            + "/Jni"
-            + actor.getName()
-            + ".java";
 
-        Runtime r = Runtime.getRuntime();
-
-	for(int i = 0; i < cmd.length; i++) {
-	    System.out.print(cmd[i] + " ");
-	}
-	System.out.println("");
-
-        Process compil = r.exec(cmd);
-
-        //Generation du fichier entete
-        cmd = new String[4];
-        cmd[0] = "javah";
-        cmd[1] = "-d";
-        cmd[2] = "jni/jni" + libName;
-        cmd[3] =
-            "jni.jni"
-            + libName
-            + ".Jni"
-            + actor.getName();
-        Runtime r2 = Runtime.getRuntime();
-
-        //waiting for the compilation to be done
-        compil.waitFor();
-	for(int i = 0; i < cmd.length; i++) {
-	    System.out.print(cmd[i] + " ");
-	}
-	System.out.println("");
-        Process header = r2.exec(cmd);
 
         //Cr‰ation du fichier C
-        File cFile = _exportCInterfaceFile(actor);
-
-        //compile Cfile
-        header.waitFor();
-
-        /*Process make = r3.exec(cmd);
-        make.waitFor();*/
+        _exportCInterfaceFile(actor);
         _exportDSP(actor);
 	_exportMakefile(actor);
 
-        cmd = new String[5];
-        cmd[0] = "make";
-	cmd[1] = "-C";
-        cmd[2] = "jni/jni" + libName;
-        cmd[3] = "-f";
-        cmd[4] = "Jnijni" + libName + ".mk";
+	List execCommands = new LinkedList();
 
-        Runtime r3 = Runtime.getRuntime();
+        // Create the .class file.
+        execCommands.add("javac -classpath \"" 
+                + StringUtilities.getProperty("ptolemy.ptII.dir")
+                + "\" jni/jni" 
+                + libName
+                + "/Jni"
+                + actor.getName()
+                + ".java");
+        // Create the .h file.
+        execCommands.add("javah -d jni/jni" + libName
+                + " jni.jni"
+                + libName
+                + ".Jni"
+                + actor.getName());
 
-	for(int i = 0; i < cmd.length; i++) {
-	    System.out.print(cmd[i] + " ");
-	}
-	System.out.println("");
+        // Create the shared library.
+        execCommands.add("make -C jni/jni" + libName + " -f " 
+                + "Jnijni" + libName + ".mk");
 
-        Process make = r3.exec(cmd);
-	make.waitFor();
-	System.out.println("Done");
+
+        StreamExec javaExec = new StreamExec();
+        javaExec.setCommands(execCommands);
+        javaExec.start();
+        // FIXME: We should not need to sleep here
+        Thread.sleep(4000);
+
+//          synchronized(javaExec) {
+//              System.out.println("JNIUtilities: getProcess()");
+//              Process process= javaExec.getProcess();
+//              if (process != null) {
+//                  System.out.println("JNIUtilities: about to call waitFor");
+//                  process.waitFor();
+//                  System.out.println("JNIUtilities: done with");
+//              }
+//          }
+
+
+// //              }
+// //          }
+
+// 	execCommands = new LinkedList();
+
+//         // Use a separate StreamExec here because if we don't we
+//         // end up setting _process to null and stopping the execution
+//         // of the previous exec
+//         StreamExec makeExec = new StreamExec();
+// 	makeExec.setCommands(execCommands);
+//         makeExec.start();
+
+//         Thread.sleep(2000);
+
+// //          synchronized(makeExec) {
+// //              Process process= makeExec.getProcess();
+// //              if (process != null) {
+// //                  process.waitFor();
+// //              }
+// //          }
+
     }
 
     /** Create the interface Java File.
@@ -1100,6 +1101,8 @@ public class JNIUtilities {
 	if (libraryPath.equals("\"\"")) {
 	    libraryPath = ".";
 	}
+        //FIXME: this is a HACK, libraryPath should not be set like this
+        libraryPath = "../..";
         results
 	    .append("# Makefile automatically generated for JNI\n"
 		    + "ROOT =\t\t" 
