@@ -12,19 +12,19 @@ import diva.gui.AppContext;
 import diva.gui.GUIUtilities;
 import diva.gui.ExtensionFileFilter;
 import diva.util.java2d.PaintedShape;
-import diva.util.java2d.PaintedPath;
+//import diva.util.java2d.PaintedPath;
 
 import diva.canvas.JCanvas;
 import diva.canvas.GraphicsPane;
 import diva.canvas.FigureLayer;
-import diva.canvas.Figure;
+//import diva.canvas.Figure;
 import diva.canvas.interactor.DragInteractor;
 import diva.canvas.interactor.SelectionInteractor;
 import diva.canvas.interactor.PathManipulator;
 import diva.canvas.interactor.BoundsManipulator;
 import diva.canvas.interactor.CircleManipulator;
 import diva.canvas.interactor.BasicSelectionModel;
-import diva.canvas.toolbox.PaintedFigure;
+//import diva.canvas.toolbox.PaintedFigure;
 import diva.canvas.toolbox.BasicFigure;
 
 // Java imports.
@@ -38,7 +38,7 @@ import javax.swing.JMenuItem;
 import javax.swing.Action;
 import javax.swing.KeyStroke;
 import javax.swing.ImageIcon;
-import javax.swing.JFrame;
+//import javax.swing.JFrame;
 import javax.swing.JColorChooser;
 import javax.swing.JDialog;
 import javax.swing.JFileChooser;
@@ -49,15 +49,21 @@ import java.awt.event.KeyEvent;
 import java.awt.Color;
 import java.awt.Paint;
 import java.awt.Shape;
-import java.awt.geom.*;
+//import java.awt.geom.*;
+import java.awt.geom.Rectangle2D;
+import java.awt.geom.Line2D;
+import java.awt.geom.QuadCurve2D;
+import java.awt.geom.CubicCurve2D;
+import java.awt.geom.Ellipse2D;
+import java.awt.geom.GeneralPath;
 
-import java.io.StringBufferInputStream;
-import java.net.URL;
-import java.util.Enumeration;
+//import java.io.StringBufferInputStream;
+//import java.net.URL;
+//import java.util.Enumeration;
 
 // Ptolemy imports.
 import ptolemy.vergil.toolbox.XMLIcon;
-import ptolemy.vergil.toolbox.GraphicElement;
+//import ptolemy.vergil.toolbox.GraphicElement;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -140,6 +146,7 @@ public class IconEditor {
 					JComponent.WHEN_IN_FOCUSED_WINDOW);
 	_canvas.setRequestFocusEnabled (true);
 
+
 	// Make a toolbar for the color, thicknesses, and shapes windows and 
 	// add them to the _context frame.
 
@@ -151,22 +158,32 @@ public class IconEditor {
 	_colorButton.addActionListener (colorAction);
 	_colorButton.setBackground ( (Color) _strokeColor);
 	_context.getContentPane ().add ("West", _colorButton);
+	
 
-	// Add "New", "Open", and "Save" to the file menu.  "Exit" is already 
-	// created by the default BasicFrame class.
-	JMenu menuFile = _context.getJMenuBar ().getMenu(0);
-	JMenuItem itemNew = menuFile.insert (newIconAction, 0);
-	itemNew.setMnemonic ('N');
-	itemNew.setToolTipText ("Create a new icon and discard this one");
-	JMenuItem itemOpen = menuFile.insert (openIconAction, 1);
-	itemOpen.setMnemonic ('O');
-	itemOpen.setToolTipText ("Open an icon from a file");
-	JMenuItem itemSave = menuFile.insert (saveIconAction, 2);
-	itemSave.setMnemonic ('S');
-	itemSave.setToolTipText ("Save this icon");
-	JMenuItem itemSaveAs = menuFile.insert (saveIconAsAction, 3);
-	itemSaveAs.setMnemonic ('A');
-	itemSaveAs.setToolTipText ("Save as ...");
+	// When you exit the program, here is what happens.
+	_context.setExitAction(exitIconAction);
+
+	// Add "New", "Open", "Save", "Save As", and "Exit" to the "File"
+	// menu.
+	_context.setJMenuBar(new JMenuBar());
+        _menuFile = new JMenu("File");
+        _menuFile.setMnemonic('F');
+	_itemNew = _menuFile.add (newIconAction);
+	_itemNew.setMnemonic ('N');
+	_itemNew.setToolTipText ("Create a new icon and discard this one");
+	_itemOpen = _menuFile.add (openIconAction);
+	_itemOpen.setMnemonic ('O');
+	_itemOpen.setToolTipText ("Open an icon from a file");
+	_itemSave = _menuFile.add (saveIconAction);
+	_itemSave.setMnemonic ('S');
+	_itemSave.setToolTipText ("Save this icon");
+	_itemSaveAs = _menuFile.add (saveIconAsAction);
+	_itemSaveAs.setMnemonic ('A');
+	_itemSaveAs.setToolTipText ("Save as ...");
+        _itemQuit = _menuFile.add(exitIconAction);
+        _itemQuit.setMnemonic('E');
+        _itemQuit.setToolTipText("Exit this application");
+        _context.getJMenuBar().add(_menuFile);
 
 	// Create an edit menu and add "Cut", "Copy", and "Paste" functions 
 	// to that menu.
@@ -199,6 +216,7 @@ public class IconEditor {
 	String thickness3 = "gifs/thickness3.gif";
 	String thickness4 = "gifs/thickness4.gif";
 	String thickness5 = "gifs/thickness5.gif";
+
 
 	// Now that I have the names of all the gif files, I need to make them 
 	// buttons and add them  to the appropriate toolbars in the main window.
@@ -317,6 +335,16 @@ public class IconEditor {
 
     // The context of the icon editor application.
     private AppContext _context;
+
+    // The menu bar (contains "File" and "Edit" submenus).
+    private JMenu _menuFile;
+
+    // The quit item in the "File" menu.
+    private JMenuItem _itemNew;
+    private JMenuItem _itemOpen;
+    private JMenuItem _itemSave;
+    private JMenuItem _itemSaveAs;
+    private JMenuItem _itemQuit;
 
     // Create the file chooser for the "Open" and "Save As" commands.
     private JFileChooser _fileChooser = new JFileChooser ();
@@ -439,15 +467,19 @@ public class IconEditor {
     Action fillAction = new AbstractAction ("Fill") {
         public void actionPerformed (ActionEvent e) {
 	    BasicFigure basicFigure = (BasicFigure) _m.getFirstSelection ();
-	    basicFigure.setFillPaint (_strokeColor);
-	    basicFigure.repaint ();
+	    if (basicFigure != null) {
+	        basicFigure.setFillPaint (_strokeColor);
+		basicFigure.repaint ();
+	    }
 	}
     };
     Action strokeAction = new AbstractAction ("Stroke") {
         public void actionPerformed (ActionEvent e) {
 	    BasicFigure basicFigure = (BasicFigure) _m.getFirstSelection ();
-	    basicFigure.setStrokePaint (_strokeColor);
-	    basicFigure.repaint ();
+	    if (basicFigure != null) {
+	        basicFigure.setStrokePaint (_strokeColor);
+		basicFigure.repaint ();
+	    }
 	}
     };
     Action thickness1Action = new AbstractAction ("Thickness 1") {
@@ -558,6 +590,12 @@ public class IconEditor {
 	        System.out.println ("You chose to save this file: " + 
 				    _fileChooser.getSelectedFile ().getName ());
 	    }
+	}
+    };
+    
+    Action exitIconAction = new AbstractAction ("Exit") {
+        public void actionPerformed(ActionEvent e) {
+	    _context.setVisible(false);
 	}
     };
 
