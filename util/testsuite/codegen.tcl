@@ -206,11 +206,11 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
     set modelName [java::call ptolemy.kernel.util.StringUtilities \
 	    sanitizeName $modelName]
 
-    if {[string range $modelPath 0 2] == "../"} {
-	# Ugh.  Strip off the first ../ because we are cd'ing up one level.
-	set realModelPath $modelPath
-	set modelPath [string range $modelPath 3 end]
-    }
+    #if {[string range $modelPath 0 2] == "../"} {
+    #	# Ugh.  Strip off the first ../ because we are cd'ing up one level.
+    #	set realModelPath $modelPath
+    # 	set modelPath [string range $modelPath 3 end]
+    #}
 
 
     puts "adjusted modelPath: $modelPath"
@@ -324,8 +324,24 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 
 	set results ""
 	# make -C is a GNU make extension that changes to a directory
-	set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath ITERATIONS_PARAMETER=$iterationsParameter $command]
-	puts $results
+	#set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath ITERATIONS_PARAMETER=$iterationsParameter $command]
+
+      if { ${codeGenType} == "Deep" } {
+	  set codeGenerator {"java"}
+      } else {
+	  set codeGenerator {"shallow"}
+      }
+      set args [java::new {String[]} 5 \
+  	    [list \
+  	    $modelPath \
+	    "-iterationsParameter" "\"$iterationsParameter\"" \
+	    "-codeGenerator" $codeGenerator] ]
+	
+	java::new ptolemy.copernicus.kernel.Copernicus $args
+
+	#set results [exec $relativePathToPTII/bin/copernicus $modelPath -iterations $iterationsValue]
+	#puts $results
+
 	#    if [catch {set results [exec make -C .. MODEL=$model SOURCECLASS=$modelPath $command]]} errMsg] {
 	#	puts $results
 	#	puts $errMsg
@@ -353,7 +369,7 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	puts $results
     }
 
-    return [speedComparison $realModelPath $modelName $targetPackage \
+    return [speedComparison $modelPath $modelName $targetPackage \
 	    3 $modelClass $codeGenType]
 } 
 
