@@ -215,7 +215,7 @@ public abstract class PtolemyFrame extends TableauFrame {
         if (_model != null) {
             ChangeRequest request = new ChangeRequest(this, "Print") {
                     protected void _execute() throws Exception {
-                        PtolemyFrame.super._print();
+                        super._print();
                     }
                 };
             _model.requestChange(request);
