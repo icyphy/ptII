@@ -71,8 +71,8 @@ public class MirrorPort extends TypedIOPort {
     ////                         public methods                    ////
 
     /** Return the associated port, or null if there is none.
-     *  @param port The associated port.
-     *  @see #setAssociatedPort(TypedIOPort)
+     *  @return The associated port, or null if there is none.
+     *  @see #setAssociatedPort(MirrorPort)
      */
     public MirrorPort getAssociatedPort() {
         return _associatedPort;
