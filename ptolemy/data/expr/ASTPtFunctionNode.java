@@ -40,7 +40,6 @@ import ptolemy.math.IntegerMatrixMath;
 import ptolemy.math.DoubleMatrixMath;
 import ptolemy.math.ComplexMatrixMath;
 import ptolemy.matlab.Engine;
-import java.lang.reflect.*;
 import java.lang.Math;		/* Needed for javadoc */
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -96,11 +95,17 @@ parser are mapped to java types according to the following table:
      DoubleMatrixToken        double[][]
      ComplexMatrixToken       ptolemy.math.Complex[][]
      LongMatrixToken          long[][]
+     BooleanMatrixToken       boolean[][]
      ArrayToken(FixToken)     ptolemy.math.FixPoint[]
      ArrayToken(IntToken)     int[]
+     ArrayToken(LongToken)    long[]
      ArrayToken(DoubleToken)  double[]
      ArrayToken(ComplexToken) ptolemy.math.Complex[]
+     ArrayToken(StringToken)  String[]
+     ArrayToken(BooleanToken) boolean[]
+     ArrayToken  (*)          Token[]
      ---------------------------------------------------
+     (*) Only when converting from java to Token types
 </pre>
 That is, static functions using java types will be matched if all
 arguments are one of the types (or subclasses of) java types
@@ -121,18 +126,17 @@ iterated over the elements of rows, returning rows of FixPoint
 results, and then the rows are combined into a FixPoint matrix
 FixPoint[][] which is converted to a FixMatrixToken result
 according to the above table.<p>
-Note that functions returning Token values do not lend themselves
-to the argument dimension reduction technique since the result
-would be Token[] or Token[][]... which is not currently
-handled as a valid result value. Functions returning Token
-values should take all arguments in Token form so that they
-are matched without the need for mapping to java types
-as described above.
+If you have matlab installed on your system, you may use an
+expression in the form of <em>matlab("expression",arg1,arg2,...)</em>,
+where <em>arg1,arg2,...</em>is a list of arguments appearing in
+<em>"expression"</em>. Note that this form of invoking matlab
+is limited to returning only the first return value of a matlab
+function. If you need multiple return values, use the matlab
+{@link ptolemy.matlab.Expression} actor.
 <p>
-@author Neil Smyth and Edward A. Lee
+@author Neil Smyth and Edward A. Lee, University of California;
 @author Zoltan Kemenczy, Research in Motion Limited
 @version $Id$
-@since Ptolemy II 0.2
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token
@@ -303,178 +307,47 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         }
 	// Do not have a recursive invocation of the parser.
 
-        // First try to find a signature using argument token values.
 	Class[] argTypes = new Class[args];
 	Object[] argValues = new Object[args];
 
+        // First try to find a signature using argument token values.
 	for (int i = 0; i < args; i++) {
             argValues[i] = (ptolemy.data.Token)_childTokens[i];
             argTypes[i] = argValues[i].getClass();
         }
-        Object result = FindAndRunMethod(_funcName, argTypes, argValues);
+        Object result = CachedMethod.findAndRunMethod
+            (_funcName, argTypes, argValues, CachedMethod.FUNCTION);
 
         if (result == null) {
-
-            // Note: Java makes a distinction between the class objects
-            // for double & Double...
             for (int i = 0; i < args; i++) {
                 ptolemy.data.Token child = _childTokens[i];
-                if (child instanceof DoubleToken) {
-                    argValues[i] = new Double(((DoubleToken)child).doubleValue());
-                    argTypes[i] = Double.TYPE;
-                } else if (child instanceof IntToken) {
-                    argValues[i] = new Integer(((IntToken)child).intValue());
-                    argTypes[i] = Integer.TYPE;
-                } else if (child instanceof LongToken) {
-                    argValues[i] = new Long(((LongToken)child).longValue());
-                    argTypes[i] = Long.TYPE;
-                } else if (child instanceof StringToken) {
-                    argValues[i] = new String(((StringToken)child).stringValue());
-                    argTypes[i] = argValues[i].getClass();
-                } else if (child instanceof BooleanToken) {
-                    argValues[i] =
-                        new Boolean(((BooleanToken)child).booleanValue());
-                    argTypes[i] = Boolean.TYPE;
-                } else if (child instanceof ComplexToken) {
-                    argValues[i] = ((ComplexToken)child).complexValue();
-                    argTypes[i] = argValues[i].getClass();
-                } else if (child instanceof FixToken) {
-                    argValues[i] = ((FixToken)child).fixValue();
-                    argTypes[i] = argValues[i].getClass();
-		} else if (child instanceof FixMatrixToken) {
-		    argValues[i] = ((FixMatrixToken)child).fixMatrix();
-		    argTypes[i] = argValues[i].getClass();
-                } else if (child instanceof IntMatrixToken) {
-                    argValues[i] = ((IntMatrixToken)child).intMatrix();
-                    argTypes[i] = argValues[i].getClass();
-                } else if (child instanceof DoubleMatrixToken) {
-                    argValues[i] = ((DoubleMatrixToken)child).doubleMatrix();
-                    argTypes[i] = argValues[i].getClass();
-                } else if (child instanceof ComplexMatrixToken) {
-                    argValues[i] = ((ComplexMatrixToken)child).complexMatrix();
-                    argTypes[i] = argValues[i].getClass();
-                } else if (child instanceof LongMatrixToken) {
-                    argValues[i] = ((LongMatrixToken)child).longMatrix();
-                    argTypes[i] = argValues[i].getClass();
-                } else if (child instanceof ArrayToken) {
-                    // This is frustrating... It would be nice if there was a
-                    // Token.getValue() that would return the token element value in
-                    // a polymorphic way...
-                    if (((ArrayToken)child).getElement(0) instanceof FixToken) {
-                        // special case of Array of GSMFixTokens
-                        FixPoint[] array = new FixPoint[((ArrayToken)child).length()];
-                        for (int j = 0; j < array.length; j++) {
-                            array[j] = ((FixToken)((ArrayToken)child).getElement(j)).fixValue();
-                        }
-                        argValues[i] = array;
-                    } else if (((ArrayToken)child).getElement(0) instanceof IntToken) {
-                        int[] array = new int[((ArrayToken)child).length()];
-                        for (int j = 0; j < array.length; j++) {
-                            array[j] = ((IntToken)((ArrayToken)child).getElement(j)).intValue();
-                        }
-                        argValues[i] = array;
-                    } else if (((ArrayToken)child).getElement(0) instanceof DoubleToken) {
-                        double[] array = new double[((ArrayToken)child).length()];
-                        for (int j = 0; j < array.length; j++) {
-                            array[j] = ((DoubleToken)((ArrayToken)child).getElement(j)).doubleValue();
-                        }
-                        argValues[i] = array;
-                    } else if (((ArrayToken)child).getElement(0) instanceof ComplexToken) {
-                        Complex[] array = new Complex[((ArrayToken)child).length()];
-                        for (int j = 0; j < array.length; j++) {
-                            array[j] = ((ComplexToken)((ArrayToken)child).getElement(j)).complexValue();
-                        }
-                        argValues[i] = array;
-                    }
-                    argTypes[i] = argValues[i].getClass();
-                } else {
-                    argValues[i] = child;
-                    argTypes[i] = argValues[i].getClass();
-                }
                 if (debug) System.out.println("Arg "+i+": "+child);
-
-                // FIXME: what is the TYPE that needs to be filled
-                // in the argValues[]. Current it is from the
-                // child.
+                Object[] javaArg = convertTokenToJavaType(child);
+                argValues[i] = javaArg[0];
+                argTypes[i] = (Class)javaArg[1];
             }
             // Now have the arguments converted, look through all the
-            // classes registered with the parser for the appropriate function.
-            result = FindAndRunMethod(_funcName, argTypes, argValues);
+            // classes registered with the parser for the appropriate
+            // function. 
+            result = CachedMethod.findAndRunMethod
+                (_funcName, argTypes, argValues, CachedMethod.FUNCTION);
         }
         if (debug) System.out.println("function: "+_funcName);
 
         if (result != null) {
-            ptolemy.data.Token retval = null;
-            if (result instanceof ptolemy.data.Token) {
-                retval = (ptolemy.data.Token)result;
-            } else if (result instanceof Double) {
-                retval = new DoubleToken(((Double)result).doubleValue());
-            } else if (result instanceof Integer) {
-                retval = new IntToken(((Integer)result).intValue());
-            } else if (result instanceof Long) {
-                retval = new LongToken(((Long)result).longValue());
-            } else if (result instanceof String) {
-                retval = new StringToken((String)result);
-            } else if (result instanceof Boolean) {
-                retval = new BooleanToken(((Boolean)result).booleanValue());
-            } else if (result instanceof Complex) {
-                retval = new ComplexToken((Complex)result);
-            } else if (result instanceof FixPoint) {
-                retval = new FixToken((FixPoint)result);
-	    } else if (result instanceof int[][]) {
-		retval = new IntMatrixToken((int[][])result);
-	    } else if (result instanceof double[][]) {
-		retval = new DoubleMatrixToken((double[][])result);
-	    } else if (result instanceof Complex[][]) {
-		retval = new ComplexMatrixToken((Complex[][])result);
-	    } else if (result instanceof long[][]) {
-		retval = new LongMatrixToken((long[][])result);
-	    } else if (result instanceof FixPoint[][]) {
-		retval = new FixMatrixToken((FixPoint[][])result);
-	    } else if (result instanceof double[]) {
-		DoubleToken[] temp = new DoubleToken[((double[])result).length];
-		for (int j = 0; j < temp.length; j++) {
-		    temp[j] = new DoubleToken(((double[])result)[j]);
-		}
-		retval = new ArrayToken(temp);
-	    } else if (result instanceof Complex[]) {
-		ComplexToken[] temp = new ComplexToken[((Complex[])result).length];
-		for (int j = 0; j < temp.length; j++) {
-		    temp[j] = new ComplexToken(((Complex[])result)[j]);
-		}
-		retval = new ArrayToken(temp);
-	    } else if (result instanceof int[]) {
-		IntToken[] temp = new IntToken[((int[])result).length];
-		for (int j = 0; j < temp.length; j++) {
-		    temp[j] = new IntToken(((int[])result)[j]);
-		}
-		retval = new ArrayToken(temp);
-	    } else if (result instanceof long[]) {
-		LongToken[] temp = new LongToken[((long[])result).length];
-		for (int j = 0; j < temp.length; j++) {
-		    temp[j] = new LongToken(((long[])result)[j]);
-		}
-		retval = new ArrayToken(temp);
-
-	    } else if (result instanceof FixPoint[]) {
-		// Create back an ArrayToken containing FixTokens
-		FixToken[] temp = new FixToken[((FixPoint[])result).length];
-		for (int j = 0; j < temp.length; j++) {
-		    temp[j] = new FixToken((FixPoint)((FixPoint[])result)[j]);
-		}
-		retval = new ArrayToken(temp);
-            } else {
+            ptolemy.data.Token retval = convertJavaTypeToToken(result);
+            if (retval == null) {
                 throw new IllegalActionException
                     ("FunctionNode: result of function " + _funcName +
-                            " is "+result.getClass()+" and is not supported by"+
-                            " FunctionNode. See the java class documentation."
+                     " is "+result.getClass()+" and is not supported by"+
+                     " FunctionNode. See the java class documentation."
                      );
             }
             if (debug) System.out.println("result:  "+retval);
             return retval;
         }
-	// If reach here it means the function was not found on the
-	// search path.
+	// If we reach this point it means the function was not found on
+	// the search path.
 	StringBuffer sb = new StringBuffer();
 	for (int i = 0; i < args; i++) {
 	    if (i == 0) {
@@ -483,8 +356,213 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 		sb.append(", " + argValues[i].toString());
 	    }
 	}
-	throw new IllegalActionException("No matching function " + _funcName
-                + "( " + sb + " ).");
+	throw new IllegalActionException
+            ("No matching function " + _funcName + "( " + sb + " ).");
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    // Convert a token to its underlying java type and return its value
+    // (Object) and type (Class).
+    protected static Object[] convertTokenToJavaType
+        (ptolemy.data.Token token) {
+        Object[] retval = new Object[2];
+        if (token instanceof DoubleToken) {
+            // Note: Java makes a distinction between the class objects
+            // for double & Double...
+            retval[0] = new Double(((DoubleToken)token).doubleValue());
+            retval[1] = Double.TYPE;
+        } else if (token instanceof IntToken) {
+            retval[0] = new Integer(((IntToken)token).intValue());
+            retval[1] = Integer.TYPE;
+        } else if (token instanceof LongToken) {
+            retval[0] = new Long(((LongToken)token).longValue());
+            retval[1] = Long.TYPE;
+        } else if (token instanceof StringToken) {
+            retval[0] = new String(((StringToken)token).stringValue());
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof BooleanToken) {
+            retval[0] =
+                new Boolean(((BooleanToken)token).booleanValue());
+            retval[1] = Boolean.TYPE;
+        } else if (token instanceof ComplexToken) {
+            retval[0] = ((ComplexToken)token).complexValue();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof FixToken) {
+            retval[0] = ((FixToken)token).fixValue();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof FixMatrixToken) {
+            retval[0] = ((FixMatrixToken)token).fixMatrix();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof IntMatrixToken) {
+            retval[0] = ((IntMatrixToken)token).intMatrix();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof DoubleMatrixToken) {
+            retval[0] = ((DoubleMatrixToken)token).doubleMatrix();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof ComplexMatrixToken) {
+            retval[0] = ((ComplexMatrixToken)token).complexMatrix();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof LongMatrixToken) {
+            retval[0] = ((LongMatrixToken)token).longMatrix();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof BooleanMatrixToken) {
+            retval[0] = ((BooleanMatrixToken)token).booleanMatrix();
+            retval[1] = retval[0].getClass();
+        } else if (token instanceof ArrayToken) {
+            // This is frustrating... It would be nice if there
+            // was a Token.getValue() that would return the
+            // token element value in a polymorphic way...
+            if (((ArrayToken)token).getElement(0)
+                instanceof FixToken) {
+                FixPoint[] array = new FixPoint
+                    [((ArrayToken)token).length()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = ((FixToken)((ArrayToken)token)
+                                .getElement(j)).fixValue();
+                }
+                retval[0] = array;
+            } else if (((ArrayToken)token).getElement(0)
+                       instanceof IntToken) {
+                int[] array = new int[((ArrayToken)token).length()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = ((IntToken)((ArrayToken)token)
+                                .getElement(j)).intValue();
+                }
+                retval[0] = array;
+            } else if (((ArrayToken)token).getElement(0)
+                       instanceof LongToken) {
+                long[] array = new long[((ArrayToken)token).length()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = ((LongToken)((ArrayToken)token)
+                                .getElement(j)).longValue();
+                }
+                retval[0] = array;
+            } else if (((ArrayToken)token).getElement(0)
+                       instanceof DoubleToken) {
+                double[] array = new double
+                    [((ArrayToken)token).length()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = ((DoubleToken)((ArrayToken)token)
+                                .getElement(j)).doubleValue();
+                }
+                retval[0] = array;
+            } else if (((ArrayToken)token).getElement(0)
+                       instanceof ComplexToken) {
+                Complex[] array = new Complex
+                    [((ArrayToken)token).length()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = ((ComplexToken)((ArrayToken)token)
+                                .getElement(j)).complexValue();
+                }
+                retval[0] = array;
+            } else if (((ArrayToken)token).getElement(0)
+                       instanceof StringToken) {
+                String[] array = new String
+                    [((ArrayToken)token).length()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = ((StringToken)((ArrayToken)token)
+                                .getElement(j)).stringValue();
+                }
+                retval[0] = array;
+            } else if (((ArrayToken)token).getElement(0)
+                       instanceof BooleanToken) {
+                boolean[] array = new boolean
+                    [((ArrayToken)token).length()];
+                for (int j = 0; j < array.length; j++) {
+                    array[j] = ((BooleanToken)((ArrayToken)token)
+                                .getElement(j)).booleanValue();
+                }
+                retval[0] = array;
+            }
+            retval[1] = retval[0].getClass();
+        } else {
+            retval[0] = token;
+            retval[1] = retval[0].getClass();
+        }
+        return retval;
+    }
+
+    // Convert a java object to its corresponding Token.
+    protected static ptolemy.data.Token convertJavaTypeToToken(Object object)
+        throws ptolemy.kernel.util.IllegalActionException {
+        ptolemy.data.Token retval = null;
+        if (object instanceof ptolemy.data.Token) {
+            retval = (ptolemy.data.Token)object;
+        } else if (object instanceof ptolemy.data.Token[]) {
+            retval = new ArrayToken((ptolemy.data.Token[])object);
+        } else if (object instanceof Double) {
+            retval = new DoubleToken(((Double)object).doubleValue());
+        } else if (object instanceof Integer) {
+            retval = new IntToken(((Integer)object).intValue());
+        } else if (object instanceof Long) {
+            retval = new LongToken(((Long)object).longValue());
+        } else if (object instanceof String) {
+            retval = new StringToken((String)object);
+        } else if (object instanceof Boolean) {
+            retval = new BooleanToken(((Boolean)object).booleanValue());
+        } else if (object instanceof Complex) {
+            retval = new ComplexToken((Complex)object);
+        } else if (object instanceof FixPoint) {
+            retval = new FixToken((FixPoint)object);
+        } else if (object instanceof int[][]) {
+            retval = new IntMatrixToken((int[][])object);
+        } else if (object instanceof double[][]) {
+            retval = new DoubleMatrixToken((double[][])object);
+        } else if (object instanceof Complex[][]) {
+            retval = new ComplexMatrixToken((Complex[][])object);
+        } else if (object instanceof long[][]) {
+            retval = new LongMatrixToken((long[][])object);
+        } else if (object instanceof FixPoint[][]) {
+            retval = new FixMatrixToken((FixPoint[][])object);
+        } else if (object instanceof double[]) {
+            DoubleToken[] temp = new DoubleToken
+                [((double[])object).length];
+            for (int j = 0; j < temp.length; j++) {
+                temp[j] = new DoubleToken(((double[])object)[j]);
+            }
+            retval = new ArrayToken(temp);
+        } else if (object instanceof Complex[]) {
+            ComplexToken[] temp = new ComplexToken
+                [((Complex[])object).length];
+            for (int j = 0; j < temp.length; j++) {
+                temp[j] = new ComplexToken(((Complex[])object)[j]);
+            }
+            retval = new ArrayToken(temp);
+        } else if (object instanceof int[]) {
+            IntToken[] temp = new IntToken[((int[])object).length];
+            for (int j = 0; j < temp.length; j++) {
+                temp[j] = new IntToken(((int[])object)[j]);
+            }
+            retval = new ArrayToken(temp);
+        } else if (object instanceof long[]) {
+            LongToken[] temp = new LongToken[((long[])object).length];
+            for (int j = 0; j < temp.length; j++) {
+                temp[j] = new LongToken(((long[])object)[j]);
+            }
+            retval = new ArrayToken(temp);
+        } else if (object instanceof boolean[]) {
+            BooleanToken[] temp = new BooleanToken[((long[])object).length];
+            for (int j = 0; j < temp.length; j++) {
+                temp[j] = new BooleanToken(((boolean[])object)[j]);
+            }
+            retval = new ArrayToken(temp);
+        } else if (object instanceof String[]) {
+            StringToken[] temp = new StringToken[((String[])object).length];
+            for (int j = 0; j < temp.length; j++) {
+                temp[j] = new StringToken(((String[])object)[j]);
+            }
+            retval = new ArrayToken(temp);
+        } else if (object instanceof FixPoint[]) {
+            // Create back an ArrayToken containing FixTokens
+            FixToken[] temp = new FixToken[((FixPoint[])object).length];
+            for (int j = 0; j < temp.length; j++) {
+                temp[j] = new FixToken((FixPoint)((FixPoint[])object)[j]);
+            }
+            retval = new ArrayToken(temp);
+        }
+        return retval;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -496,198 +574,11 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    private Object FindAndRunMethod
-    (String funcName,
-            Class[] argTypes,
-            Object[] argValues
-     ) throws IllegalActionException {
-
-	// First try to find the method in the cache...
-
-        // "Real" methods exist in classes registered with PtParser.
-        // "Constructed" methods are methods "constructed" by FindAndRunMethod
-        // using the argument dimension reduction technique.
-        // "Missing" methods are the ones for which the search has failed.
-        // The existence of either of these in the cache avoids the expensive
-        // search through all the registered function classes.
-
-	Object result = null;
-        Method method = null;
-        CachedMethod cachedMethod = CachedMethod.get(funcName, argTypes);
-        if (cachedMethod != null ) {
-            if (cachedMethod.getType() == CachedMethod.REAL) {
-                try {
-                    method = cachedMethod.getMethod();
-                    result = method.invoke(method.getDeclaringClass(), argValues);
-                } catch (InvocationTargetException ex) {
-                    // get the exception produced by the invoked function
-                    ex.getTargetException().printStackTrace();
-                    throw new IllegalActionException
-                        ("Error invoking function " + funcName + "\n" +
-                                ex.getTargetException().getMessage());
-                } catch (Exception ex)  {
-                    throw new IllegalActionException(ex.getMessage());
-                }
-                return result;
-            } else if (cachedMethod.getType() == CachedMethod.MISSING) {
-                return null;
-            }
-        } else {
-            // Not found in the cache. Search the registered function classes
-            Iterator allClasses = PtParser.getRegisteredClasses().iterator();
-            while (allClasses.hasNext() && result == null) {
-                Class nextClass = (Class)allClasses.next();
-                //System.out.println("ASTPtFunctionNode: " + nextClass);
-                // First we look for the method, and if we get an exception,
-                // we ignore it and keep looking.
-                try {
-                    method = nextClass.getMethod(funcName, argTypes);
-                    result = method.invoke(nextClass, argValues);
-                } catch (NoSuchMethodException ex) {
-                    // We haven't found the correct function.
-                    // Try matching on argument type sub-classes.
-                    try {
-                        method = _polymorphicGetMethod
-                            (nextClass, funcName, argTypes);
-                        if (method != null) {
-                            result = method.invoke(nextClass, argValues);
-                        }
-                    } catch (SecurityException security) {
-                        // If we are running under an Applet, then we
-                        // may end up here if, for example, we try
-                        // to invoke the non-existent quantize function on
-                        // java.lang.Math.
-                    } catch (InvocationTargetException exception) {
-                        // get the exception produced by the invoked function
-                        exception.getTargetException().printStackTrace();
-                        throw new IllegalActionException
-                            ("Error invoking function " + funcName + "\n" +
-                                    exception.getTargetException().getMessage());
-                    } catch (Exception exception)  {
-                        throw new IllegalActionException
-                            (null, exception, "Error invoking function " +
-                                    funcName + " on " + nextClass);
-                    }
-                } catch (InvocationTargetException ex) {
-                    // get the exception produced by the invoked function
-                    ex.getTargetException().printStackTrace();
-                    throw new IllegalActionException
-                        ("Error invoking function " + funcName + "\n" +
-                                ex.getTargetException().getMessage());
-                } catch (Exception ex)  {
-                    throw new IllegalActionException(ex.getMessage());
-                }
-            }
-        }
-
-	// If that failed, then try to reduce argument dimensions if possible
-	// and try again (recursively)
-	if (result == null) {
-	    // Check if any arguments are of array type and, if any are, that they
-	    // all have the same length.
-	    boolean resIsArray = false;
-	    int dim = 0;
-	    Class[] nArgTypes = new Class[argTypes.length];
-	    Object[] nArgValues = new Object[argValues.length];
-	    for (int i = 0; i < argTypes.length; i++) {
-		resIsArray |= argTypes[i].isArray();
-		if (argTypes[i].isArray()) {
-		    if (dim != 0 && Array.getLength(argValues[i]) != dim) {
-                        // This argument does not have the same dimension as the
-                        // first array argument encountered. Cannot recurse
-                        // using this approach...
-			resIsArray = false;
-			break;
-		    }
-		    else {
-                        // First array argument encounter
-			dim = Array.getLength(argValues[i]);
-			nArgTypes[i] = argTypes[i].getComponentType();
-		    }
-		}
-		else {
-		    nArgTypes[i] = argTypes[i];
-		}
-	    }
-	    // If we found consistent array parameters, their dimensions have
-	    // been reduced. Try method matching again
-	    for (int d = 0; resIsArray && d < dim; d++) {
-		for (int i = 0; i < argValues.length; i++) {
-		    if (argTypes[i].isArray()) {
-			nArgValues[i] = Array.get(argValues[i],d);
-		    }
-		    else {
-			nArgValues[i] = argValues[i];
-		    }
-		}
-		Object a = FindAndRunMethod(funcName, nArgTypes, nArgValues);
-		if (a == null)
-		    break;
-		Class c = a.getClass();
-		if (a instanceof Double) c = Double.TYPE;
-		if (a instanceof Integer) c = Integer.TYPE;
-		if (a instanceof Long) c = Long.TYPE;
-                if (result == null) {
-                    result = Array.newInstance(c, dim);
-                    Array.set(result,0,a);
-                }
-                else
-                    Array.set(result,d,a);
-	    }
-            if (cachedMethod == null) {
-                if (result != null) {
-                    // Add newly found "constructed" method to the cache
-                    CachedMethod.add(funcName, argTypes, method,
-                            CachedMethod.CONSTRUCTED);
-                } else {
-                    // Add missing method to cache so we don't search for it
-                    // again
-                    CachedMethod.add(funcName, argTypes, method,
-                            CachedMethod.MISSING);
-                }
-            }
-	} else if (cachedMethod == null) {
-            // Add newly found real method to the cache
-            CachedMethod.add(funcName, argTypes, method, CachedMethod.REAL);
-        }
-	return result;
-    }
-
     // Return the variable being referenced when this node represents array
     // or matrix reference.
     private Variable _referredVar() {
 	return ((ASTPtLeafNode)jjtGetChild(0))._var;
     }
 
-    // Regrettably, the getMethod() method in the java Class does not
-    // support polymorphism.  In particular, it does not recognize a method
-    // if the class you supply for an argument type is actually derived
-    // from the class in the method signature.  So we have to reimplement
-    // this here.  This method returns the first method that it finds that
-    // has the specified name and can be invoked with the specified
-    // argument types.  It is arguable that it should return the most
-    // specific method that it finds, but it turns out that this is difficult
-    // to define.  So it simply returns the first match.
-    // It returns null if there is no match.
-    private Method _polymorphicGetMethod(
-            Class library, String methodName, Class[] argTypes) {
-        // NOTE: The Java docs do not explain the difference between
-        // getMethods() and getDeclaredMethods(), so I'm guessing here...
-        Method[] methods = library.getDeclaredMethods();
-        for (int i = 0; i < methods.length; i++) {
-            if (methods[i].getName().equals(methodName)) {
-                Class[] arguments = methods[i].getParameterTypes();
-                if (arguments.length != argTypes.length) continue;
-                boolean match = true;
-                for (int j = 0; j < arguments.length; j++) {
-                    match = match && arguments[j].isAssignableFrom(argTypes[j]);
-                }
-                if (match) {
-                    return methods[i];
-                }
-            }
-        }
-        return null;
-    }
 }
 

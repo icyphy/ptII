@@ -39,12 +39,15 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.FixToken;
+import ptolemy.data.FixMatrixToken;
 import ptolemy.data.ComplexToken;
 import ptolemy.data.ComplexMatrixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.LongToken;
+import ptolemy.data.LongMatrixToken;
 import ptolemy.data.StringToken;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.math.Complex;
 import ptolemy.math.ComplexMatrixMath;
@@ -65,10 +68,24 @@ in the parse tree.
 To allow extension of the parser capabilities without modifying
 the kernel code, method calls on Tokens are supported with the following
 syntax  (token).methodName(comma separated arguments).
-Note that the arguments to the method, and its returned value, must all
-be of type ptolemy.data.Token
 <p>
-@author Neil Smyth
+Method arguments are processed as described in
+{@link ASTPtFunctionNode}. However, to allow element-by-element method
+calls on ArrayTokens, the following sequence is followed here to find
+a method to execute:
+<ul>
+<li>Look for a method with tokens as supplied by PtParser.</li>
+<li>If that fails, convert all instances of ArrayToken to Token[] and
+look again, element-by-element.</li>
+<li>If that fails, convert all method arguments to their underlying java
+types and try again.</li>
+<li>Finally, if the above fails, convert the method object Token to
+its underlying java type and try again.</li>
+</ul>
+<p>
+
+@author Neil Smyth, University of California;
+@author Zoltan Kemenczy, Research in Motion Limited
 @version $Id$
 @since Ptolemy II 0.2
 @see ptolemy.data.expr.ASTPtRootNode
@@ -118,172 +135,124 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
         int num = jjtGetNumChildren();
 
         // The first child is the token on which to invoke the method.
-        // Note that all the arguments to the method call must be
-        // ptTokens. Also the argument types used in reflection must
-        // correspond EXACTLY to those in the method declaration.
-        // thus cannot just do arg.getClass() as this would
-        // e.g. return ptolemy.data.DoubleToken, not ptolemy.data.Token
-        Class[] argTypes = new Class[num - 1];
-        Object[] argValues = new Object[num - 1];
-        try {
-	    if (num == 1)
-		argValues = argTypes = null;
-            for (int i = 1; i < num; i++) {
-                argValues[i-1] = (ptolemy.data.Token)_childTokens[i];
-                argTypes[i-1] = Class.forName("ptolemy.data.Token");
-            }
-            Class destTokenClass = _childTokens[0].getClass();
-	    Method m = null;
-            Method mBase = null;        // Base class for corresponding Token
-            // (e.g. ptolemy.math.Complex for
-            // ComplexToken)
-            Object mInstance = null;    // Base class instance to invoke method on.
+	Class[] argTypes = new Class[num];
+	Object[] argValues = new Object[num];
 
-	    // first try to find a method whose arguments are all of type
-	    // ptolemy.data.Token
-	    try {
-		m = destTokenClass.getMethod(_methodName, argTypes);
-	    } catch (java.lang.NoSuchMethodException ex) {
-		// ignore
-	    }
-	    if (m == null) {
-		for (int i = 0; i < num - 1; i++) {
-		    ptolemy.data.Token child = _childTokens[i + 1];
-		    if (child instanceof DoubleToken) {
-			argValues[i] =
-                            new Double(((DoubleToken)child).doubleValue());
-			argTypes[i] = Double.TYPE;
-		    } else if (child instanceof IntToken) {
-			argValues[i] =
-                            new Integer(((IntToken)child).intValue());
-			argTypes[i] = Integer.TYPE;
-		    } else if (child instanceof LongToken) {
-			argValues[i] =
-                            new Long(((LongToken)child).longValue());
-			argTypes[i] = Long.TYPE;
-		    } else if (child instanceof StringToken) {
-			argValues[i] =
-                            new String(((StringToken)child).stringValue());
-			argTypes[i] = argValues[i].getClass();
-		    } else if (child instanceof BooleanToken) {
-			argValues[i] =
-			    new Boolean(((BooleanToken)child).booleanValue());
-			argTypes[i] = Boolean.TYPE;
-		    } else if (child instanceof ComplexToken) {
-			argValues[i] = ((ComplexToken)child).complexValue();
-			argTypes[i] = argValues[i].getClass();
-		    } else if (child instanceof FixToken) {
-			argValues[i] = ((FixToken)child).fixValue();
-			argTypes[i] = argValues[i].getClass();
-                    } else if (child instanceof IntMatrixToken) {
-                        argValues[i] = ((IntMatrixToken)child).intMatrix();
-                        argTypes[i] = argValues[i].getClass();
-                    } else if (child instanceof DoubleMatrixToken) {
-                        argValues[i] = ((DoubleMatrixToken)child).doubleMatrix();
-                        argTypes[i] = argValues[i].getClass();
-                    } else if (child instanceof ArrayToken) {
-                        argValues[i] = ((ArrayToken)child).arrayValue();
-                        argTypes[i] = argValues[i].getClass();
-                    } else if (child instanceof ComplexMatrixToken) {
-                        argValues[i] = ((ComplexMatrixToken)child).complexMatrix();
-                        argTypes[i] = argValues[i].getClass();
-		    } else {
-			argValues[i] = child;
-			argTypes[i] = argValues[i].getClass();
-		    }
-		}
-                try {
-                    m = destTokenClass.getMethod(_methodName, argTypes);
-                } catch (java.lang.NoSuchMethodException ex) {
-                    if (_childTokens[0] instanceof ComplexToken) {
-                        mBase = ((new Complex(0.0)).getClass())
-                            .getMethod(_methodName, argTypes);
-                        mInstance = ((ComplexToken)_childTokens[0]).complexValue();
-                    } else if (_childTokens[0] instanceof StringToken) {
-                        mBase = ("String".getClass()).getMethod(_methodName, argTypes);
-                        mInstance = ((StringToken)_childTokens[0]).stringValue();
-                    } else {
-                        throw ex;       // throw it again
-                    }
+	for (int i = 0; i < num; i++) {
+            argValues[i] = (ptolemy.data.Token)_childTokens[i];
+            argTypes[i] = argValues[i].getClass();
+        }
+
+        // First try to find a signature using argument token values.
+        // FIXME: Since most XXXToken methods take Tokens as argument types,
+        // "constructed" methods (where actual Array- or MatrixToken
+        // arguments are reduced to Scalars element-by-element)
+        // will often be first attemted here as "real" methods (due to
+        // polymporphicGetMethod() finding Token as a superclass of Array-
+        // and MatrixTokens) and will throw
+        // InvocationTargetExceptions. For "constructed" methods
+        // to have a chance, we catch and ignore IllegalActionExceptions
+        // here - see example in javadoc above (zk).
+        Object result = null;
+	StringBuffer sb = null;         // cache exception messages
+        try {
+            result = CachedMethod.findAndRunMethod
+                (_methodName, argTypes, argValues, CachedMethod.METHOD);
+        } catch (IllegalActionException ex) {
+            if (sb == null) sb = new StringBuffer();
+            sb.append("Failed: "+ex.toString());
+        };
+
+        if (result == null) {
+            // Convert ArrayTokens to Token[]s but otherwise
+            // keep all other arguments as Tokens
+            boolean anyArray = false;
+            for (int i = 0; i < num; i++) {
+                ptolemy.data.Token child = _childTokens[i];
+                if (child instanceof ArrayToken) {
+                    anyArray = true;
+                    argValues[i] = ((ArrayToken)child).arrayValue();
+                    argTypes[i] = argValues[i].getClass();
                 }
-	    }
-            Object result = null;
-            if (m != null)
-                result = m.invoke(_childTokens[0], argValues);
-            else if (mBase != null)
-                result = mBase.invoke(mInstance, argValues);
-            ptolemy.data.Token retval;
-            // Method call can only return ptolemy.data.Token, we want?
-            if (result instanceof ptolemy.data.Token) {
-                retval = (ptolemy.data.Token)result;
-            } else if (result instanceof Double) {
-		retval = new DoubleToken(((Double)result).doubleValue());
-	    } else if (result instanceof Integer) {
-		retval = new IntToken(((Integer)result).intValue());
-	    } else if (result instanceof Long) {
-		retval = new LongToken(((Long)result).longValue());
-	    } else if (result instanceof String) {
-		retval = new StringToken((String)result);
-	    } else if (result instanceof Boolean) {
-		retval = new BooleanToken(((Boolean)result).booleanValue());
-	    } else if (result instanceof Complex) {
-		retval = new ComplexToken((Complex)result);
-	    } else if (result instanceof FixPoint) {
-		retval = new FixToken((FixPoint)result);
-	    } else if (result instanceof int[][]) {
-		retval = new IntMatrixToken((int[][])result);
-	    } else if (result instanceof double[][]) {
-		retval = new DoubleMatrixToken((double[][])result);
-	    } else if (result instanceof Token[]) {
-		retval = new ArrayToken((Token[])result);
-	    } else if (result instanceof Complex[][]) {
-		retval = new ComplexMatrixToken((Complex[][])result);
-	    } else if (result instanceof double[]) {
-		double[] res = (double[])result;
-		retval = new DoubleMatrixToken(DoubleMatrixMath.toMatrixFromArray(res,1,res.length));
-	    } else if (result instanceof Complex[]) {
-		Complex[] res = (Complex[])result;
-		retval = new ComplexMatrixToken(ComplexMatrixMath.toMatrixFromArray(res,1,res.length));
-	    } else if (result instanceof int[]) {
-		int[] res = (int[])result;
-		retval = new IntMatrixToken(IntegerMatrixMath.toMatrixFromArray(res,1,res.length));
-	    } else {
-                throw new IllegalActionException(
-                        "Result of method call is not of a supported type: "
-			+ result.getClass().toString() + " - supported types "
-			+ "are: boolean, complex, fixpoint, double, int, "
-			+ "long, String, and ptolemy.data.Token.");
+            }
+            if (anyArray) {
+                try {
+                    result = CachedMethod.findAndRunMethod
+                        (_methodName, argTypes, argValues,
+                         CachedMethod.METHOD);
+                } catch (IllegalActionException ex) {
+                    if (sb == null) sb = new StringBuffer();
+                    sb.append("Failed: "+ex.toString());
+                }
+            }
+        }
+        if (result == null) {
+            // Convert token types to corresponding java types
+            // except the destination class (arg 0)
+            argValues[0] = _childTokens[0];
+            argTypes[0] = argValues[0].getClass();
+            for (int i = 1; i < num; i++) {
+                ptolemy.data.Token child = _childTokens[i];
+                Object[] javaArg = 
+                     ASTPtFunctionNode.convertTokenToJavaType(child);
+                argValues[i] = javaArg[0];
+                argTypes[i] = (Class)javaArg[1];                
+            }
+            try {
+                result = CachedMethod.findAndRunMethod
+                    (_methodName, argTypes, argValues, CachedMethod.METHOD);
+            } catch (IllegalActionException ex) {
+                if (sb == null) sb = new StringBuffer();
+                sb.append("Failed: "+ex.toString());
+            }
+        }
+
+        // If result is still null and arg 0 is an ArrayToken, then try
+        // Token[] (give argument dimension reduction a chance with
+        // arguments already converted to java types)
+        if (result == null && argValues[0] instanceof ArrayToken) {
+            argValues[0] = ((ArrayToken)argValues[0]).arrayValue();
+            argTypes[0] = argValues[0].getClass();
+            result = CachedMethod.findAndRunMethod
+                (_methodName, argTypes, argValues, CachedMethod.METHOD);
+        }
+
+        // If result is still null, then try converting
+        // arg 0 to its java type... 
+        if (result == null ) {
+            ptolemy.data.Token child = _childTokens[0];
+            Object[] javaArg = 
+                ASTPtFunctionNode.convertTokenToJavaType(child);
+            argValues[0] = javaArg[0];
+            argTypes[0] = (Class)javaArg[1];                
+            result = CachedMethod.findAndRunMethod
+                (_methodName, argTypes, argValues, CachedMethod.METHOD);
+        }
+
+        if (result != null) {
+            ptolemy.data.Token retval = 
+                ASTPtFunctionNode.convertJavaTypeToToken(result);
+            if (retval == null) {
+                throw new IllegalActionException
+                    ("Result of method call is not of a supported type: "
+                     + result.getClass().toString() + " - supported types "
+                     + "are: boolean, complex, fixpoint, double, int, "
+                     + "long, String, and ptolemy.data.Token.");
             }
             return retval;
-        } catch (java.lang.NoSuchMethodException ex) {
-            // The detailed message of the caught exception is included in
-            // the generated exception message.
-            throw new IllegalActionException(_generateExceptionMessage(ex));
-        } catch (java.lang.IllegalAccessException ex) {
-            throw new IllegalActionException(_generateExceptionMessage(ex));
-        } catch (java.lang.reflect.InvocationTargetException ex) {
-            throw new IllegalActionException(_generateExceptionMessage(ex));
-        } catch (java.lang.ClassNotFoundException ex) {
-            throw new IllegalActionException(_generateExceptionMessage(ex));
         }
+        // If we reach this point it means the function was not found on
+	// the search path.
+        if (sb == null) sb = new StringBuffer();
+	for (int i = 1; i < num; i++) {
+	    if (i == 1) {
+		sb.append(argValues[i].toString());
+	    } else {
+		sb.append(", " + argValues[i].toString());
+	    }
+	}
+	throw new IllegalActionException
+            ("No matching method " + _methodName
+             + "( " + sb + " ).");
     }
-
-    /* Create a new exception message based on the caught argument exception.
-     */
-    private String _generateExceptionMessage(Exception ex) {
-        StringBuffer sb = new StringBuffer();
-        int num = jjtGetNumChildren();
-        for (int i = 0; i < (num-1); i++) {
-            if (i == 0) {
-                sb.append(_childTokens[i].toString());
-            } else {
-                sb.append(", " + _childTokens[i].toString());
-            }
-        }
-        return "Method " + _methodName + "() cannot" +
-            " be executed with given arguments, on ptTokens of " +
-            "type " + _childTokens[0].getClass().getName() + ": " +
-            ex.getMessage();
-    }
-
 }
