@@ -51,7 +51,7 @@ set c1 [java::new ptolemy.math.Complex 1.0 2.0]
 set c2 [java::new ptolemy.math.Complex 3.0 -4.0]
 set c3 [java::new ptolemy.math.Complex -4.9 -6.0]
 set c4 [java::new ptolemy.math.Complex -7.0 8.0]
-set c5 [java::new ptolemy.math.Complex -0.25 +0.4]
+set c5 [java::new ptolemy.math.Complex -0.25 0.4]
 
 # Complex array of length 0
 set ca0 [java::new {ptolemy.math.Complex[]} 0]
@@ -59,6 +59,7 @@ set ca0 [java::new {ptolemy.math.Complex[]} 0]
 # Complex array
 set ca1 [java::new {ptolemy.math.Complex[]} 4 [list $c1 $c2 $c3 $c4]]
 set ca3 [java::new {ptolemy.math.Complex[]} 4 [list $c3 $c2 $c4 $c1]]
+set ca5 [java::new {ptolemy.math.Complex[]} 5 [list $c1 $c2 $c3 $c4 $c5]]
 # ca2 is a Complex array used to store the results of tests
 
 
@@ -177,6 +178,41 @@ test ComplexArrayMath-5.2 {imagParts} {
 } {} 
 
 ####################################################################
+test ComplexArrayMath-13.1 {padMiddle of empty array} {
+    set ar [java::call ptolemy.math.ComplexArrayMath padMiddle $ca0 5]
+    jdkPrintArray $ar
+} {{0.0 + 0.0i} {0.0 + 0.0i} {0.0 + 0.0i} {0.0 + 0.0i} {0.0 + 0.0i}}
+
+####################################################################
+test ComplexArrayMath-13.2 {padMiddle to smaller size} {
+    catch {set ar [java::call ptolemy.math.ComplexArrayMath padMiddle $ca1 3]}\
+    errMsg
+    list $errMsg
+} {{java.lang.IllegalArgumentException: ptolemy.math.ComplexArrayMath.padMiddle() : newLength must be >= length of array.}}
+
+####################################################################
+test ComplexArrayMath-13.3 {padMiddle to same size} {
+    set ar [java::call ptolemy.math.ComplexArrayMath padMiddle $ca1 4]
+    epsilonDiff [$ar getrange 0] [$ca1 getrange 0]
+} {}
+
+
+####################################################################
+test ComplexArrayMath-13.4 {padMiddle odd -> even} {
+    set ar [java::call ptolemy.math.ComplexArrayMath padMiddle $ca5 8]
+    epsilonDiff [jdkPrintArray $ar] {{1.0 + 2.0i} {3.0 - 4.0i} {-4.9 - 6.0i} \
+    {0.0 + 0.0i} {0.0 + 0.0i} {-4.9 - 6.0i} {-7.0 + 8.0i} {-0.25 + 0.4i}}
+} {}
+
+####################################################################
+test ComplexArrayMath-13.5 {padMiddle even -> even} {
+    set ar [java::call ptolemy.math.ComplexArrayMath padMiddle $ca1 8]
+    epsilonDiff [jdkPrintArray $ar] {{1.0 + 2.0i} {3.0 - 4.0i} {0.0 + 0.0i} \
+    {0.0 + 0.0i} {0.0 + 0.0i} {0.0 + 0.0i} {-4.9 - 6.0i} {-7.0 + 8.0i}}    
+} {}
+
+
+####################################################################
 test ComplexArrayMath-9.0 {polynomial: null array} {
     set ca2 [java::call ptolemy.math.ComplexArrayMath polynomial $ca0]
     jdkPrintArray $ca2
@@ -200,7 +236,6 @@ test ComplexArrayMath-9.1 {polynomial: array of length 1 } {
 
 ####################################################################
 test ComplexArrayMath-10.1 {product: empty array} {
-    set ca0 [java::new {ptolemy.math.Complex[]} 0]
     set result [java::call ptolemy.math.ComplexArrayMath product $ca0]
     $result toString
 } {0.0 + 0.0i}
@@ -243,7 +278,6 @@ test ComplexArrayMath-12.2 {subtract} {
 
 ####################################################################
 test ComplexArrayMath-13.1 {magnitude: empty array} {
-    set ca0 [java::new {ptolemy.math.Complex[]} 0]
     set da2 [java::call ptolemy.math.ComplexArrayMath magnitude $ca0]
     $da2 getrange 0 
 } {}
@@ -257,7 +291,6 @@ test ComplexArrayMath-13.2 {magnitude} {
 
 ####################################################################
 test ComplexArrayMath-14.1 {phase: empty array} {
-    set ca0 [java::new {ptolemy.math.Complex[]} 0]
     set da2 [java::call ptolemy.math.ComplexArrayMath phase $ca0]
     $da2 getrange 0 
 } {}
