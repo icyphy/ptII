@@ -506,8 +506,17 @@ public class MoMLApplication {
             throws Exception {
         URL inURL = specToURL(urlSpec);
         _parser.reset();
-        Configuration toplevel = (Configuration)
-            _parser.parse(inURL, inURL.openStream());
+        Configuration toplevel = null;
+        try {
+            toplevel =
+                (Configuration) _parser.parse(inURL, inURL.openStream());
+        } catch (IOException ex) {
+            // Unfortunately, java.util.zip.ZipException does not
+            // include the file name in JDK1.3.1.
+            // This exception may be thrown under WebStart if
+            // the URL had a %20 in it.
+            throw new IOException("'" + inURL + "' not found: " + ex);
+        }
         // If the toplevel model is a configuration containing a directory,
         // then create an effigy for the configuration itself, and put it
         // in the directory.
