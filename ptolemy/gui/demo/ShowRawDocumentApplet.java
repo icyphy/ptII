@@ -94,7 +94,7 @@ public class ShowRawDocumentApplet extends BasicJApplet {
             }
         }
 
-        JFrame _frame = new JFrame();
+        /*JFrame _frame = */ new JFrame();
         _jTextArea = new JTextArea(rows,columns);
         _jTextArea.setEditable(false);
         _scrollPane = new JScrollPane(_jTextArea);
