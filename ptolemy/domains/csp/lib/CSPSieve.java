@@ -72,17 +72,27 @@ public class CSPSieve extends CSPActor {
 	    //System.out.println("Sieve getting data");
 	    data = _input.get(0);
             lastSeen = ((IntToken)data).intValue();
-	    //System.out.println("Sieve gotten data");
+	    System.out.println("Sieve got data:" + data.toString());
 	    if (lastSeen % _prime != 0) {
 		// is it the next prime? 
 		if (islargestprime) {
-		    System.out.println(getName() + "Queuing Topology Change.");
+		    System.out.println(getName() + ": Queuing Topology " +
+                            "Change.");
 		    // yes - make the topologyChange for it 
 		    TopologyChangeRequest t = _makeChangeRequest(lastSeen);
+                    /*try {
+                        System.out.println(getName() + ":1");
+                        //t.constructEventQueue();
+                        System.out.println(getName() + ":2");
+                    } catch (Exception ex) {
+                        System.out.println("It seems we may have a " +
+                                "small PROBLEM");
+                                }*/
 		    // Queue the new TopologyChangeRequest
 		    getDirector().queueTopologyChangeRequest(t);
-                    delay();
-		    System.out.println(getName() +":Queued TopologyChange");
+                    System.out.println(getName() +":Queued TopologyChange");
+		    delay();
+                    System.out.println(getName() +": change succeeded?");
 		    islargestprime = false;	    
 		} 
 		else {
@@ -98,6 +108,12 @@ public class CSPSieve extends CSPActor {
         return _input;
     }
 
+    /** Get the output port for this actor.
+     */
+    public IOPort getOutputPort() {
+        return _output;
+    }
+
     /** Create and return a new TopologyChangeRequest object that 
      *  adds a new sieve.
      *  @param value The prime the new filter should sieve.
@@ -106,6 +122,7 @@ public class CSPSieve extends CSPActor {
         TopologyChangeRequest request = new TopologyChangeRequest(this) {
 
             public void constructEventQueue() {
+                System.out.println("TopologyRequest event q being constructed!");
                 CompositeActor container =  (CompositeActor)getContainer();
                 CSPSieve newSieve = null;
                 ComponentRelation newRel = null;
@@ -113,12 +130,13 @@ public class CSPSieve extends CSPActor {
                     newSieve = new CSPSieve(container,value + "_sieve", value);
 
                     // If we use a 1-1 relation this needs to change.
-                    newRel = new ComponentRelation(container, "R" + value);
+                    newRel = new IORelation(container, "R" + value);
 
                 } catch (NameDuplicationException ex) {
-                    throw new InvalidStateException("Cannot create " +
+                    throw new InvalidStateException("11Cannot create " +
                             "new sieve.");
                 } catch (IllegalActionException ex) {
+                    System.out.println("XXX" + ex.getClass().getName() + ex.getMessage());
                     throw new InvalidStateException("Cannot create " +
                             "new sieve.");
                 }
