@@ -655,6 +655,10 @@ public class DDEDirector extends ProcessDirector {
     	if( _isDeadlocked() ) {
             if( _writeBlocks == 0 ) {
                 if( _externalReadBlocks == 0 ) {
+                    /*
+                    System.out.println("#####Deadlock: _internalReadBlocks = " 
+                    + _internalReadBlocks);
+                    */
             	    return true;
                 }
                 
