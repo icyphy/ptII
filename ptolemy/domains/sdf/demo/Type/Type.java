@@ -57,7 +57,6 @@ import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
-import ptolemy.actor.gui.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.lib.gui.*;
 import ptolemy.gui.Query;
