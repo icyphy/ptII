@@ -52,27 +52,34 @@ import java.util.Arrays;
 //////////////////////////////////////////////////////////////////////////
 //// NonStrictTest
 /**
-This actor compares the inputs against the value specified by
-the <i>correctValues</i> parameter.  That parameter is an ArrayToken,
-which is an array of tokens.  If, on a given iteration, no token is
-present on a channel, the absence is ignored.  Subsequent iterations
-always succeed, so the actor can be used as a "power-up" test for
-a model, checking the first few iterations against some known results.
-<p>
-Only single port inputs are supported.
-<p>
-The input values are checked in the postfire() method.  If an input value
-is absent, the absence is ignored.  If an input value is
-present and differs from what it should be, then postfire() throws an
-exception.  Thus, the test passes if no exception is thrown.
-<p>
-If the input is a DoubleToken or ComplexToken,
-then the comparison passes if the value is close to what it should
-be, within the specified <i>tolerance</i> (which defaults to
-10<sup>-9</sup>.  The input data type is undeclared, so it can
-resolve to anything.
 
-@author Paul Whitaker, Edward A. Lee
+This actor compares the inputs against the value specified by the
+<i>correctValues</i> parameter.  That parameter is an ArrayToken,
+where each element of the array is of the same type as the input.  If,
+on a given iteration, no token is present on a channel, the absence is
+ignored and no exception is thrown.  Subsequent iterations always
+succeed, so the actor can be used as a "power-up" test for a model,
+checking the first few iterations against some known results.
+
+<p> Unlike the Test actor, NonStrictTest does not support a multiport
+input, only single port inputs are supported.
+
+<p> The input values are checked in the postfire() method.  If an
+input value is absent, the absence is ignored and on the next firing
+the input is compared against the same value in the
+<i>correctValues</i> Parameter.  If an input value is present and
+differs from what it should be, then postfire() throws an exception.
+Thus, the test passes if no exception is thrown.
+
+<p> If the input is a DoubleToken or ComplexToken, then the comparison
+passes if the value is close to what it should be, within the
+specified <i>tolerance</i> (which defaults to 10<sup>-9</sup>.  The
+input data type is undeclared, so it can resolve to anything.
+
+<p>The Test actor could be extended so that Strictness wa
+
+@See Test
+@author Paul Whitaker, Christopher Hylands
 @version $Id$
 */
 
@@ -105,7 +112,8 @@ public class NonStrictTest extends Test {
     /** Read one token from each input channel and compare against
      *  the value specified in <i>correctValues</i>.  If the token count
      *  is larger than the length of <i>correctValues</i>, then return
-     *  immediately, declaring success on the test.
+     *  immediately, indicating that the inputs correctly matched
+     *  the values in <i>correctValues</i> and that the test suceeded
      *  @exception IllegalActionException If an input does not match
      *   the required value or if the width is not 1.
      */
@@ -115,7 +123,8 @@ public class NonStrictTest extends Test {
                     "Width of input is " + input.getWidth()
                     + "but NonStrictTest only supports a width of 1.");
         }
-        if (_count >= ((ArrayToken)(correctValues.getToken())).length()) {
+        if (_numberOfInputTokensSeen
+                >= ((ArrayToken)(correctValues.getToken())).length()) {
             // Consume and discard input values.  We are beyond the end
             // of the correctValues array.
             if (input.hasToken(0)) {
@@ -125,7 +134,8 @@ public class NonStrictTest extends Test {
         }
 
         Token referenceToken
-            = ((ArrayToken)(correctValues.getToken())).getElement(_count);
+            = ((ArrayToken)(correctValues.getToken()))
+            .getElement(_numberOfInputTokensSeen);
         if (referenceToken instanceof ArrayToken) {
             throw new IllegalActionException(this,
                     "Reference is an ArrayToken, "
@@ -134,7 +144,7 @@ public class NonStrictTest extends Test {
 
         if (input.hasToken(0)) {
             Token token = input.get(0);
-            _count++;
+            _numberOfInputTokensSeen++;
             _checkTokenAgainstReference(token, referenceToken,
                     tolerance, _iteration);
         }

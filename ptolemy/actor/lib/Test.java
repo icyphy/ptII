@@ -50,12 +50,14 @@ import ptolemy.math.Complex;
 //////////////////////////////////////////////////////////////////////////
 //// Test
 /**
-This actor compares the inputs against the value specified by
-the <i>correctValues</i> parameter.  That parameter is an ArrayToken,
-which is an array of tokens.  The length of this array is the number
-of iterations of this actor that are tested.  Subsequent iterations
-always succeed, so the actor can be used as a "power-up" test for
-a model, checking the first few iterations against some known results.
+
+This actor compares the inputs against the value specified by the
+<i>correctValues</i> parameter.  That parameter is an ArrayToken,
+where each element of the array should have the same type as the
+input.  The length of this array is the number of iterations of this
+actor that are tested.  Subsequent iterations always succeed, so the
+actor can be used as a "power-up" test for a model, checking the first
+few iterations against some known results.
 <p>
 The input is a multiport.  If there is more than one channel connected
 to it, then each element of <i>correctValues</i> must itself be an
@@ -138,7 +140,7 @@ public class Test extends Sink {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _count = 0;
+        _numberOfInputTokensSeen = 0;
     }
 
     /** Read one token from each input channel and compare against
@@ -150,7 +152,7 @@ public class Test extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
-        if (_count >= ((ArrayToken)(correctValues.getToken())).length()) {
+        if (_numberOfInputTokensSeen >= ((ArrayToken)(correctValues.getToken())).length()) {
             // Consume and discard input values.  We are beyond the end
             // of the correctValues array.
             for (int i = 0; i < width; i++) {
@@ -161,7 +163,7 @@ public class Test extends Sink {
             return true;
         }
         Token referenceToken
-            = ((ArrayToken)(correctValues.getToken())).getElement(_count);
+            = ((ArrayToken)(correctValues.getToken())).getElement(_numberOfInputTokensSeen);
         Token[] reference;
         if (width == 1 && !(referenceToken instanceof ArrayToken)) {
             reference = new Token[1];
@@ -171,16 +173,16 @@ public class Test extends Sink {
                 reference = ((ArrayToken)referenceToken).arrayValue();
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this,
-                        "Test fails in iteration " + _count + ".\n"
+                        "Test fails in iteration " + _numberOfInputTokensSeen + ".\n"
                         + "Width of input is " + width
                         + ", but correctValues parameter is not an array "
                         + "of arrays.");
             }
             if (width != reference.length) {
                 throw new IllegalActionException(this,
-                        "Test fails in iteration " + _count + ".\n"
+                        "Test fails in iteration " + _numberOfInputTokensSeen + ".\n"
                         + "Width of input is " + width
-                        + ", which does not match the width of the " + _count
+                        + ", which does not match the width of the " + _numberOfInputTokensSeen
                         + "-th element of correctValues, "
                         + reference.length);
             }
@@ -188,14 +190,14 @@ public class Test extends Sink {
         for (int i = 0; i < width; i++) {
             if (!input.hasToken(i)) {
                 throw new IllegalActionException(this,
-                        "Test fails in iteration " + _count + ".\n"
+                        "Test fails in iteration " + _numberOfInputTokensSeen + ".\n"
                         + "Empty input on channel " + i);
             }
             Token token = input.get(i);
             _checkTokenAgainstReference(token, reference[i],
-                    tolerance, _count);
+                    tolerance, _numberOfInputTokensSeen);
         }
-        _count++;
+        _numberOfInputTokensSeen++;
         return true;
     }
 
@@ -209,13 +211,13 @@ public class Test extends Sink {
      *  @param correctValue The known good result to check against
      *  @param tolerance A Parameter that contains a tolerance that
      *  is used if the token is a DoubleToken or ComplexToken.
-     *  @param count The iteration that we are checking.
+     *  @param numberOfInputTokensSeen  The iteration that we are checking.
      *  @exception IllegalActionException If the token and the correctValue
      *  are not equal or within the tolerance.
      */
     protected void _checkTokenAgainstReference(
             Token token, Token correctValue, Parameter tolerance,
-            int count)
+            int numberOfInputTokensSeen)
             throws IllegalActionException {
 
         // This method is protected so that we can use it in
@@ -230,13 +232,15 @@ public class Test extends Sink {
                     = ((DoubleToken)(tolerance.getToken())).doubleValue();
                 if (Math.abs(correct - seen) > ok) {
                     throw new IllegalActionException(this,
-                            "Test fails in iteration " + count + ".\n"
+                            "Test fails in iteration "
+                            + numberOfInputTokensSeen  + ".\n"
                             + "Value was: " + seen
                             + ". Should have been: " + correct);
                 }
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this,
-                        "Test fails in iteration " + count + ".\n"
+                        "Test fails in iteration "
+                        + numberOfInputTokensSeen  + ".\n"
                         + "Input is a double but correct value is not: "
                         + correctValue.toString());
             }
@@ -252,13 +256,15 @@ public class Test extends Sink {
                 if (Math.abs(correct.real - seen.real) > ok ||
                         Math.abs(correct.imag - seen.imag) > ok) {
                     throw new IllegalActionException(this,
-                            "Test fails in iteration " + count + ".\n"
+                            "Test fails in iteration "
+                            + numberOfInputTokensSeen  + ".\n"
                             + "Value was: " + seen
                             + ". Should have been: " + correct);
                 }
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(this,
-                        "Test fails in iteration " + count + ".\n"
+                        "Test fails in iteration " + numberOfInputTokensSeen
+                        + ".\n"
                         + "Input is complex but correct value is not: "
                         + correctValue.toString());
             }
@@ -266,7 +272,8 @@ public class Test extends Sink {
             BooleanToken result = token.isEqualTo(correctValue);
             if (!result.booleanValue()) {
                 throw new IllegalActionException(this,
-                        "Test fails in iteration " + count + ".\n"
+                        "Test fails in iteration " + numberOfInputTokensSeen
+                        + ".\n"
                         + "Value was: " + token
                         + ". Should have been: " + correctValue);
             }
@@ -276,6 +283,6 @@ public class Test extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // Count of iterations.
-    protected int _count = 0;
+    // Number of input tokens seen by this actor in the fire method.
+    protected int _numberOfInputTokensSeen = 0;
 }
