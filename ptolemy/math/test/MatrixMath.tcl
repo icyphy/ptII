@@ -403,6 +403,12 @@ proc testMatrix {op types {matrixSize 2_2}} {
     testMatrixMath $op $types $matrixSize {[list $op "$t\[\]\[\]"]} {[subst $$matrix]} {}
 }
 
+# Test an operation that takes a nonzero matrix
+# like allocCopy(long[][])
+proc testNonZeroMatrix {op types {matrixSize 2_2nonzero}} {
+    testMatrixMath $op $types $matrixSize {[list $op "$t\[\]\[\]"]} {[subst $$matrix]} {}
+}
+
 # Test an operation that takes a matrix and an array
 # like multiply(xxx[][], xxx[])
 proc testMatrixArray {op types {matrixSize 2_2}} {
@@ -1557,7 +1563,18 @@ testMatrix toString $types
 
 ######################################################################
 ####
-##  FIXME: toString(xxx[][], ArrayStringFormat)
+##  FIXED (FIXME): toString(xxx[][], ArrayStringFormat)
+##  Call toString(xxx[][]), which in turn calls toString(array, ArrayStringFormat.javaASFormat).
+
+set types [list \
+	[list Complex ptolemy.math.Complex complex \
+	{{{2.0 - 2.0i 1.0 + 1.0i} {-1.0 - 1.0i 3.0 - 3.0i}}}] \
+	[list Double double double {{{2.0 -1.0} {1.0 3.0}}}] \
+	[list Float float float {{{2.0 -1.0} {1.0 3.0}}}] \
+	[list Integer int int {{{2 -1} {1 3}}}] \
+	[list Long long long {{{2 -1} {1 3}}}]]
+
+testNonZeroMatrix toString $types
 
 ######################################################################
 ####
