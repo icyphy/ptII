@@ -29,7 +29,7 @@
 
 */
 
-package ptolemy.data;
+package ptolemy.data.type;
 
 import ptolemy.graph.InequalityTerm;
 import ptolemy.graph.Inequality;	/* Needed for javadoc */ 
