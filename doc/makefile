@@ -154,15 +154,15 @@ PTINYPACKAGES = \
 JAVASOUNDPACKAGES =	ptolemy.actor.lib.javasound \
 			ptolemy.media.javasound
 
-# rtos domain uses java.util.Timer, which is not present in JDK1.2
-RTOSPACKAGES =		ptolemy.domains.rtos.kernel \
-			ptolemy.domains.rtos.lib
+# tm domain uses java.util.Timer, which is not present in JDK1.2
+TMPACKAGES =		ptolemy.domains.tm.kernel \
+			ptolemy.domains.tm.lib
 
 ALLPACKAGES =		$(COPERNICUSPACKAGES) \
 			$(PTINYPACKAGES) \
 			$(GRPACKAGES) \
 			$(JAVASOUNDPACKAGES) \
-			$(RTOSPACKAGES) \
+			$(TMPACKAGES) \
 			ptolemy.plot \
 			ptolemy.plot.plotml \
 			ptolemy.plot.compat \

@@ -9,7 +9,7 @@
       <!-- No PN -->
       <property name="FSM" class="ptolemy.domains.fsm.kernel.FSMDirector"/>
       <!-- No Giotto -->
-      <!-- No RTOS -->
+      <!-- No TM -->
       <property name="CSP" class="ptolemy.domains.csp.kernel.CSPDirector"/>
       <!-- No DDE -->
       <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">

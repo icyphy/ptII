@@ -65,7 +65,7 @@
 	     contains this file. -->
             <input source="ptolemy/configs/ptinyActors.xml"/>
 	    <!-- No sr actors -->
-	    <!-- No rtos actors -->
+	    <!-- No tm actors -->
 	    <!-- No matlab actors -->
           </group>
         ?>

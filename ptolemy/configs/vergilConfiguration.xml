@@ -63,7 +63,7 @@
 	     contains this file. -->
             <input source="ptolemy/configs/ptinyActors.xml"/>
             <input source="ptolemy/domains/sr/lib/srentities.xml"/>
-	    <input source="ptolemy/domains/rtos/lib/rtosentities.xml"/>
+	    <input source="ptolemy/domains/tm/lib/tmentities.xml"/>
 	    <input source="ptolemy/domains/petrinet/kernel/petrinetentities.xml"/>
           </group>
         ?>

@@ -102,6 +102,7 @@ foreach i $configs {
 
 	set entityList [$configuration allAtomicEntityList]
 	set results {}
+	set logfile [open logfile2-1 "w"]
 	for {set iterator [$entityList iterator]} \
 		{[$iterator hasNext] == 1} {} {
 	    set entity [$iterator next]
@@ -115,7 +116,7 @@ foreach i $configs {
 		    # This puts seems to be necessary, or else we get
 		    # field being set to 'tcl.lang.FieldSig@2b6fc7'
 		    # instead of 'factor'
-  		    puts "actor: $className fields: $fields"
+  		    puts $logfile "actor: $className fields: $fields"
 		    foreach field $fields {
 			# If the field is actually defined in the parent class
 			# then java::field will not find the field
@@ -136,6 +137,8 @@ foreach i $configs {
 		}
 	    }
 	}
+	close $logfile
+	file delete logfile2-1
 	list $results
     } {{}}
 
