@@ -202,12 +202,17 @@ MKJNLP =		$(PTII)/bin/mkjnlp
 # JNLP files that do the actual installation
 JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp 
 
-jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) $(JNLPS) jnlp_sign
+jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) jnlp_sign $(JNLPS) 
 jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
 jnlp_clean: 
 	rm -rf $(JNLPS) $(SIGNED_DIR)
 jnlp_distclean: jnlp_clean
 	rm -f  $(ALL_JNLP_JARS) 
+
+$(SIGNED_DIR):
+	if [ ! -d $(SIGNED_DIR) ]; then \
+		mkdir -p $(SIGNED_DIR); \
+	fi
 
 # Makefile variables used to set up keys for jar signing.
 # To use Web Start, we have to sign the jars.
@@ -239,7 +244,7 @@ $(KEYSTORE):
 
 # vergil*.jnlp is for Web Start.  For jar signing to work with Web Start,
 # Web Start: DSP version of Vergil - No sources or build env.
-vergilDSP.jnlp: vergilDSP.jnlp.in $(KEYSTORE)
+vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' \
 		-e 's%@PTVERSION@%$(PTVERSION)%' \
 			$< > $@
@@ -265,7 +270,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(KEYSTORE)
 		$(SIGNED_DIR)/$(DSP_MAIN_JAR) $(KEYALIAS)
 
 # Web Start: Ptiny version of Vergil - No sources or build env.
-vergilPtiny.jnlp: vergilPtiny.jnlp.in $(KEYSTORE)
+vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' \
 		-e 's%@PTVERSION@%$(PTVERSION)%' \
 			$< > $@
@@ -292,7 +297,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(KEYSTORE)
 
 
 # Web Start: Ptiny version of Vergil - No sources or build env., in a sandbox
-vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(KEYSTORE)
+vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' \
 		-e 's%@PTVERSION@%$(PTVERSION)%' \
 			$< > $@
@@ -319,7 +324,7 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(KEYSTORE)
 
 
 # Web Start: Full Runtime version of Vergil - No sources or build env.
-vergil.jnlp: vergil.jnlp.in $(KEYSTORE)
+vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE)
 	sed 	-e 's%@PTII_LOCALURL@%$(PTII_LOCALURL)%' \
 		-e 's%@PTVERSION@%$(PTVERSION)%' \
 			$< > $@
@@ -348,7 +353,7 @@ vergil.jnlp: vergil.jnlp.in $(KEYSTORE)
 # We first copy the jars, then sign them so as to avoid
 # problems with cvs and applets.
 jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
-jnlp_sign1:
+jnlp_sign1: $(SIGNED_DIR)
 	set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
 		if [ ! -f $(SIGNED_DIR)/$$x ]; then \
