@@ -88,7 +88,7 @@ newRelation(), _addRelation(), and _addEntity().
 The container is constrained to be an instance of CompositeActor.
 Derived classes may impose further constraints by overriding setContainer().
 
-@author Mudit Goel, Edward A. Lee, Lukito Muliadi
+@author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
 @version $Id$
 @see ptolemy.actors.IOPort
 @see ptolemy.actors.IORelation
@@ -170,11 +170,11 @@ public class CompositeActor extends CompositeEntity implements Actor {
         } else {
             newobj._director = null;
         }
-        if (_execdirector != null) {
-            newobj._execdirector = (Director)_execdirector.clone();
+        /*        if (_execdirector != null) {
+            newobj._execdirector = (Manager)_execdirector.clone();
         } else {
             newobj._execdirector = null;
-        }
+        }*/
         newobj._inputPortsVersion = -1;
         newobj._outputPortsVersion = -1;
         return newobj;
@@ -245,9 +245,29 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public Director getExecutiveDirector() {
         try {
             workspace().getReadAccess();
-            if (_execdirector != null) return _execdirector;
+//            if (_execdirector != null) return _execdirector;
             CompositeActor container = (CompositeActor)getContainer();
             if (container != null) return container.getDirector();
+            return null;
+        } finally {
+            workspace().doneReading();
+        }
+    }
+    
+    /** Set the Manager for execution of this CompositeActor.
+     *  This can only be done for a composite actor that has no container.
+     *  For others, the Manager is inherited from the container
+     *  (via its getDirector() method). 
+     *  This method is read-synchronized on the workspace.
+     *
+     *  @param execdir The Manager
+     */
+    public Manager getManager() {
+        try {
+            workspace().getReadAccess();
+            if (_manager != null) return _manager;
+            CompositeActor container = (CompositeActor)getContainer();
+            if (container != null) return container.getManager();
             return null;
         } finally {
             workspace().doneReading();
@@ -470,11 +490,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @exception IllegalActionException If there is no director,
      *   or if the director's prefire() method throws it, or if this actor
      *   is not opaque.
-     *  @exception NameDuplicationException If the prefire() method of the
-     *   director throws it (while performing mutations, if any).
      */
     public boolean prefire()
-            throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException {
         try {
             workspace().getReadAccess();
             if (!isOpaque()) {
@@ -555,7 +573,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @exception IllegalActionException If this actor has a container, or,
      *   in derived classes, if the director is not compatible.
      */
-    public void setExecutiveDirector(Director execdir)
+    /*    public void setExecutiveDirector(Manager execdir)
             throws IllegalActionException {
         try {
             workspace().getWriteAccess();
@@ -574,6 +592,47 @@ public class CompositeActor extends CompositeEntity implements Actor {
         } finally {
             workspace().doneWriting();
         }
+    }
+    */
+
+    /** Set the Manager for execution of this CompositeActor.
+     *  This can only be done for a composite actor that has no container.
+     *  For others, the Manager is inherited from the container
+     *  (via its getDirector() method). 
+     *  This method is write-synchronized on the workspace.
+     *
+     *  @param execdir The Manager
+     *  @exception IllegalActionException If this actor has a container, or,
+     *   in derived classes, if the director is not compatible.
+     */
+    public void setManager(Manager manager)
+            throws IllegalActionException {
+        try {
+            workspace().getWriteAccess();
+            if (getContainer() != null && manager != null) {
+                throw new IllegalActionException(this, manager,
+                        "Cannot set the Manager of an actor "
+                        + "with a container.");
+            }
+            // If there was a previous exec director, we need to reset it.
+            if (_manager != null) _manager._makeManagerOf(null);
+            if (manager != null) {
+                manager._makeManagerOf(this);
+            }
+            _manager = manager;
+            return;
+        } finally {
+            workspace().doneWriting();
+        }
+    }
+
+    /** If this is an opaque CompositeActor, then look to our director 
+     *  for help.   If we are transparent, then we really shouldn't have been 
+     *  called, so just ignore.
+     */
+    public void terminate() {
+        if(!isOpaque()) return;
+        getDirector().terminate();
     }
 
     /** If this actor is opaque, then invoke the wrapup() method of the local
@@ -733,7 +792,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Director _director, _execdirector;
+    private Director _director;
+    //    private Director _execdirector;
+    private Manager _manager;
 
     // Cached lists of input and output ports.
     private transient long _inputPortsVersion = -1;
