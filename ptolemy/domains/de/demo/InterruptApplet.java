@@ -96,7 +96,7 @@ public class InterruptApplet extends Applet {
 
         // Adding simulation parameter panel in the control panel.
         Panel simulationParam = new Panel();
-        simulationParam.setLayout(new GridLayout(3,2));
+        simulationParam.setLayout(new GridLayout(3, 2));
         controlPanel.add(simulationParam);
         // Done adding simulation parameter panel.
 
