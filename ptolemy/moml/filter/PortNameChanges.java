@@ -247,10 +247,32 @@ public class PortNameChanges implements MoMLFilter {
         _actorsWithPortNameChanges
             .put("ptolemy.actor.lib.Sleep", sleepPorts);
 
+
         // Scrambler changed between 3.0.2 and 4.0
+        // Port name change from initial to initialState.
         HashMap scramblerPorts = new HashMap();
         scramblerPorts.put("initial", "initialState");
         _actorsWithPortNameChanges
-            .put("ptolemy.actor.lib.comm.Scrambler", scramblerPorts);
+            .put("ptolemy.actor.lib.comm.Scrambler",
+                    scramblerPorts);
+     
+        // ConvolutionalCoder changed between 3.0.2 and 4.0
+        HashMap convolutionalCoderPorts = new HashMap();
+        convolutionalCoderPorts.put("initial", "initialState");
+        convolutionalCoderPorts.put("uncodeBlockSize", "uncodedRate");
+
+        _actorsWithPortNameChanges
+            .put("ptolemy.actor.lib.comm.ConvolutionalCoder",
+                    convolutionalCoderPorts);
+
+        // ViterbiDecoder changed between 3.0.2 and 4.0
+        HashMap viterbiDecoderPorts = new HashMap();
+        //viterbiDecoderPorts.put("initial", "initialState");
+        viterbiDecoderPorts.put("uncodeBlockSize", "uncodedRate");
+        viterbiDecoderPorts.put("amplitude", "constellation");
+
+        _actorsWithPortNameChanges
+            .put("ptolemy.actor.lib.comm.ViterbiDecoder",
+                    viterbiDecoderPorts);
     }
 }
