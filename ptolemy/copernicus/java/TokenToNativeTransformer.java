@@ -168,12 +168,11 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
         // Only try unboxing tokens if the types are amenable.
         // Currently, arrays of arrays and records don't work.
         try {
-            if(_hasBadTypes(_model)) {
-                throw new RuntimeException("Token unboxing not possible because" +
-                        " the model contains bad types.");
-            }
+            _checkBadTypes(_model);
+              
         } catch (IllegalActionException ex) {
-            throw new RuntimeException(ex.getMessage());
+            throw new RuntimeException("Token unboxing not possible.",
+                    ex);
         }
 
         // We need all classes as library:
@@ -2135,58 +2134,56 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
 
     // Return true if the given object contains a typeable object with
     // a type that is not supported by token unboxing.
-    private boolean _hasBadTypes(NamedObj object) 
+    private void _checkBadTypes(NamedObj object) 
             throws IllegalActionException {
         if(object instanceof Attribute &&
                 ModelTransformer._isIgnorableAttribute((Attribute)object)) {
-            return false;
+            return;
         }
         if(object instanceof Typeable) {
             Typeable typeable = (Typeable)object;
            
             ptolemy.data.type.Type type = typeable.getType();
+            boolean badType = false;
+            if(type instanceof ptolemy.data.type.FunctionType) {
+                
+                badType = true;
+            }
             if(type instanceof ptolemy.data.type.RecordType) {
-                System.out.println("badTypeObject = " + object);
-                return true;
+                
+                badType = true;
             }
             if(type instanceof ptolemy.data.type.ArrayType) {
                 type = ((ptolemy.data.type.ArrayType)type).getElementType();
                 if(type instanceof ptolemy.data.type.ArrayType) {
-                    System.out.println("badTypeObject = " + object);
-                    return true;
+                    badType = true;
                 }
+            }
+            if(badType) {
+                throw new IllegalActionException(object.getFullName() + 
+                        " has type " + type + " which cannot be unboxed.");
             }
         }
         if(object instanceof CompositeEntity) {
             for(Iterator i = ((CompositeEntity)object).entityList().iterator();
                 i.hasNext();) {
-                if(_hasBadTypes((NamedObj)i.next())) {
-                    return true;
-                }
+                _checkBadTypes((NamedObj)i.next());
             }
             for(Iterator i = ((CompositeEntity)object).relationList().iterator();
                 i.hasNext();) {
-                if(_hasBadTypes((NamedObj)i.next())) {
-                    return true;
-                }
+                _checkBadTypes((NamedObj)i.next());
             }
         }
         if(object instanceof Entity) {
             for(Iterator i = ((Entity)object).portList().iterator();
                 i.hasNext();) {
-                if(_hasBadTypes((NamedObj)i.next())) {
-                    return true;
-                }
+                _checkBadTypes((NamedObj)i.next());
             }
-           
         }
         for(Iterator i = object.attributeList().iterator();
             i.hasNext();) {
-            if(_hasBadTypes((NamedObj)i.next())) {
-                return true;
-            }
+            _checkBadTypes((NamedObj)i.next());
         }
-        return false;
     }
 
     private CompositeActor _model;
