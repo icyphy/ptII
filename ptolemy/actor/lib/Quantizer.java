@@ -52,9 +52,9 @@ The default value of levels is [-1.0, 1.0].
 <P>
 Suppose u is the input, and levels = [a, b, c], a<b<c,
 then the output of the actor will be:<BR>
-y = a, for u <= (b-a)/2;<BR>
-y = b, for (b-a)/2 < u <= (c-b)/2;<BR>
-y = c, for u > (c-b)/2;<BR>
+y = a, for u <= (b+a)/2;<BR>
+y = b, for (b+a)/2 < u <= (c+b)/2;<BR>
+y = c, for u > (c+b)/2;<BR>
 We do not require the quantization intervals to be equal,
 i.e. we allow that (c-b) != (b-a).
 
@@ -113,7 +113,7 @@ public class Quantizer extends Transformer {
                 throw new IllegalActionException(this,
                         "Value of levels is not a row vector.");
             }
-            double previous = java.lang.Double.MIN_VALUE;
+            double previous = -java.lang.Double.MAX_VALUE;
             int length = lvls[0].length;
             for (int j = 0; j < length; j++) {
                 if (lvls[0][j] <= previous) {
@@ -124,8 +124,8 @@ public class Quantizer extends Transformer {
             }
             // Compute the quantization thresholds.
             _thresholds = new double[length-1];
-            for (int j = 0; j < length; j++) {
-                _thresholds[j] = (lvls[0][j+1]-lvls[0][j])/2.0;
+            for (int j = 0; j < length-1; j++) {
+                _thresholds[j] = (lvls[0][j+1]+lvls[0][j])/2.0;
             }
         } else {
             super.attributeChanged(attribute);
