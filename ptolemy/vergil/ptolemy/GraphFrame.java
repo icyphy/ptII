@@ -89,6 +89,7 @@ import diva.gui.toolbox.JPanner;
 import diva.graph.JGraph;
 
 import diva.graph.GraphController;
+import diva.graph.GraphEvent;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
 import diva.graph.GraphUtilities;
@@ -235,7 +236,7 @@ public abstract class GraphFrame extends PtolemyFrame
             Configuration configuration = getConfiguration();
             if (configuration != null) {
                 _topLibrary = (CompositeEntity)
-                        configuration.getEntity("library");
+                        configuration.getEntity("actor library");
                 if (_topLibrary == null) {
                     // Create an empty library by default.
                     Workspace workspace = entity.workspace();
@@ -1030,29 +1031,41 @@ public abstract class GraphFrame extends PtolemyFrame
 		(GraphController)graphPane.getGraphController();
 	    AbstractPtolemyGraphModel graphModel =
 		(AbstractPtolemyGraphModel)controller.getGraphModel();
-	    SelectionModel model = controller.getSelectionModel();
-	    Object selection[] = model.getSelectionAsArray();
-	    Object userObjects[] = new Object[selection.length];
-	    // First remove the selection.
-	    for(int i = 0; i < selection.length; i++) {
-		userObjects[i] = ((Figure)selection[i]).getUserObject();
-		model.removeSelection(selection[i]);
-	    }
-
-	    // Remove all the edges first, since if we remove the nodes first,
-	    // then removing the nodes might remove some of the edges.
-	    for(int i = 0; i < userObjects.length; i++) {
-		Object userObject = userObjects[i];
-		if(graphModel.isEdge(userObject)) {
-		    graphModel.disconnectEdge(this, userObject);
-		}
-	    }
-	    for(int i = 0; i < selection.length; i++) {
-		Object userObject = userObjects[i];
-		if(graphModel.isNode(userObject)) {
-		    graphModel.removeNode(this, userObject);
-		}
-	    }
+            // Note that we turn off event dispatching so that each individual
+            // removal does not trigger graph redrawing.
+            try {
+                graphModel.setDispatchEnabled(false);
+                SelectionModel model = controller.getSelectionModel();
+                Object selection[] = model.getSelectionAsArray();
+                Object userObjects[] = new Object[selection.length];
+                // First remove the selection.
+                for(int i = 0; i < selection.length; i++) {
+                    userObjects[i] = ((Figure)selection[i]).getUserObject();
+                    model.removeSelection(selection[i]);
+                }
+                
+                // Remove all the edges first, 
+                // since if we remove the nodes first,
+                // then removing the nodes might remove some of the edges.
+                for(int i = 0; i < userObjects.length; i++) {
+                    Object userObject = userObjects[i];
+                    if(graphModel.isEdge(userObject)) {
+                        graphModel.disconnectEdge(this, userObject);
+                    }
+                }
+                for(int i = 0; i < selection.length; i++) {
+                    Object userObject = userObjects[i];
+                    if(graphModel.isNode(userObject)) {
+                        graphModel.removeNode(this, userObject);
+                    }
+                }
+            } finally {
+                graphModel.setDispatchEnabled(true);
+                graphModel.dispatchGraphEvent(new GraphEvent(
+                        this, 
+                        GraphEvent.STRUCTURE_CHANGED, 
+                        graphModel.getRoot()));
+            }
 	}
     }
 }
