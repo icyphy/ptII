@@ -78,6 +78,13 @@ public class ExpressionReader extends LineReader {
      *   if the expression read from the file cannot be parsed.
      */
     public void fire() throws IllegalActionException {
+        // NOTE: Since we don't call super.fire(), we have to do what
+        // is done in the Source base class.
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.hasToken(i)) {
+                trigger.get(i);
+            }
+        }
         if (_currentLine != null) {
             _expressionEvaluator.setExpression(_currentLine);
             output.broadcast(_expressionEvaluator.getToken());
