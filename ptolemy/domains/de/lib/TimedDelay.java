@@ -31,6 +31,7 @@
 package ptolemy.domains.de.lib;
 
 import ptolemy.actor.IODependence;
+import ptolemy.actor.IODependenceOfAtomicActor;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
@@ -38,7 +39,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
@@ -176,13 +176,25 @@ public class TimedDelay extends DETransformer {
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         try {
-            IODependence ioDependence = new IODependence(this, "_IODependence");
-            ioDependence.removeDependence(input, output);
+            IODependenceOfAtomicActor ioDependence = 
+                new IODependenceOfAtomicActor(this, "_IODependence");
+            //removeDependencies();
+            //ioDependence.removeDependence(input, output);
         } catch (NameDuplicationException e) {
             // because the IODependence attribute is not persistent,
             // and it is only created once in the preinitialize method,
             // there should be no NameDuplicationException thrown.
         }
+    }
+    
+    /** Explicitly declare which inputs and outputs are not dependent.
+     *  
+     */
+    public void removeDependencies() throws IllegalActionException {
+        IODependenceOfAtomicActor ioDependence = (IODependenceOfAtomicActor) 
+                        this.getAttribute(
+                        "_IODependence", IODependence.class);
+        ioDependence.removeDependence(input, output);
     }
     
     ///////////////////////////////////////////////////////////////////

@@ -31,6 +31,7 @@
 package ptolemy.domains.ct.kernel;
 
 import ptolemy.actor.IODependence;
+import ptolemy.actor.IODependenceOfAtomicActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimedActor;
@@ -356,8 +357,8 @@ public class CTBaseIntegrator extends TypedAtomicActor
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         try {
-            IODependence ioDependence = new IODependence(this, "_IODependence");
-            ioDependence.removeDependence(input, output);
+            IODependenceOfAtomicActor ioDependence = 
+                new IODependenceOfAtomicActor(this, "_IODependence");
         } catch (NameDuplicationException e) {
             // because the IODependence attribute is not persistent,
             // and it is only created once in the preinitialize method,
@@ -434,6 +435,16 @@ public class CTBaseIntegrator extends TypedAtomicActor
             throw new InvalidStateException(this,
                     "index out of the range of the auxVariables.");
         }
+    }
+
+    /** Explicitly declare which inputs and outputs are not dependent.
+     *  
+     */
+    public void removeDependencies() throws IllegalActionException {
+        IODependenceOfAtomicActor ioDependence = (IODependenceOfAtomicActor) 
+                        this.getAttribute(
+                        "_IODependence", IODependence.class);
+        ioDependence.removeDependence(input, output);
     }
 
     /** Set history capacity. This will typically be set by the ODE solvers
