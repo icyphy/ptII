@@ -668,9 +668,10 @@ void element() #void :
   boolean isMethodCall = false;
 }
 { 
+  // Note that omitting the parens is possible for a record...
   ( primaryElement()
     [ "." <ID> {jjtThis._methodName = token.image; isMethodCall = true;}
-      "(" [ funcIf() ( "," funcIf() )* ] ")" ]
+      ( "(" [ funcIf() ( "," funcIf() )* ] ")" )? ]
   ) #PtMethodCallNode(isMethodCall)
 }
 

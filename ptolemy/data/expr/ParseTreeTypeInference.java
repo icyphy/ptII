@@ -218,6 +218,16 @@ public class ParseTreeTypeInference implements ParseTreeVisitor {
         // Otherwise, try to reflect the method name.
         Type[] childTypes = _getChildTypes(node);
         
+        // Handle indexing into a record.
+        if(childTypes.length == 1 &&
+                childTypes[0] instanceof RecordType) {
+            RecordType type = (RecordType)childTypes[0];
+            if(type.labelSet().contains(node.getMethodName())) {
+                _setType(node, type.get(node.getMethodName()));
+                return;
+            }
+        }
+
         CachedMethod cachedMethod =
             CachedMethod.findMethod(node.getMethodName(),
                     childTypes, CachedMethod.METHOD);

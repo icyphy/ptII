@@ -534,6 +534,16 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         int argCount = node.jjtGetNumChildren();
         _evaluateAllChildren(node);
 
+        // Handle indexing into a record.
+        if(argCount == 1 &&
+                node.jjtGetChild(0).getToken() instanceof RecordToken) {
+            RecordToken record = (RecordToken)node.jjtGetChild(0).getToken();
+            if(record.labelSet().contains(node.getMethodName())) {
+                node.setToken(record.get(node.getMethodName()));
+                return;
+            }
+        }
+
         // The first child is the object to invoke the method on.
 	Type[] argTypes = new Type[argCount];
 	Object[] argValues = new Object[argCount];

@@ -613,7 +613,9 @@ public class CachedMethod {
             }
         };
 
-    // A cached method that converts the base as well.
+    // A cached method that converts the base as well.  This allows us to 
+    // invoke methods on, e.g. The ptolemy.math.Complex class and the
+    // ptolemy.math.FixPoint class that are inside the corresponding tokens.
     public static class BaseConvertCachedMethod extends CachedMethod {
         public BaseConvertCachedMethod(
                 String methodName, Type[] argTypes,
@@ -621,6 +623,9 @@ public class CachedMethod {
                 ArgumentConversion[] conversions, int type) {
             super(methodName, argTypes, method, conversions, type);
             _baseConversion = baseConversion;
+        }
+        public ArgumentConversion getBaseConversion() {
+            return _baseConversion;
         }
         public ptolemy.data.Token invoke(Object[] argValues) 
                 throws IllegalActionException {

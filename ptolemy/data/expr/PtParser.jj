@@ -1126,9 +1126,10 @@ void element()       :
   }
   try {
 /*@egen*/ 
+  // Note that omitting the parens is possible for a record...
   ( primaryElement()
     [ "." <ID> {jjtn001._methodName = token.image; isMethodCall = true;}
-      "(" [ funcIf() ( "," funcIf() )* ] ")" ]
+      ( "(" [ funcIf() ( "," funcIf() )* ] ")" )? ]
   )/*@bgen(jjtree)*/
   } catch (Throwable jjte001) {
     if (jjtc001) {

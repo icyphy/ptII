@@ -183,6 +183,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 
     // Convert a token to its underlying java type and return its value
     // (Object) and type (Class).
+    // @deprecated use separate convert methods for type and arg.
     public static Object[] convertTokenToJavaType(ptolemy.data.Token token)
             throws ptolemy.kernel.util.IllegalActionException {
         Object[] retval = new Object[2];
@@ -191,6 +192,9 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             // for double & Double...
             retval[0] = new Double(((DoubleToken)token).doubleValue());
             retval[1] = Double.TYPE;
+        } else if (token instanceof UnsignedByteToken) {
+            retval[0] = new Byte(((UnsignedByteToken)token).byteValue());
+            retval[1] = Byte.TYPE;
         } else if (token instanceof IntToken) {
             retval[0] = new Integer(((IntToken)token).intValue());
             retval[1] = Integer.TYPE;
@@ -308,6 +312,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 
     // Convert a token to its underlying java type and return its value
     // (Object) and type (Class).
+    // @deprecated Use separate convert methods for type and arg.
     public static Object convertTokenToJava(ptolemy.data.Token token)
             throws ptolemy.kernel.util.IllegalActionException {
         Object[] retval = new Object[2];
@@ -319,6 +324,9 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         } else if (token instanceof IntToken) {
             retval[0] = new Integer(((IntToken)token).intValue());
             retval[1] = Integer.TYPE;
+        } else if (token instanceof UnsignedByteToken) {
+            retval[0] = new Byte(((UnsignedByteToken)token).byteValue());
+            retval[1] = Byte.TYPE;
         } else if (token instanceof LongToken) {
             retval[0] = new Long(((LongToken)token).longValue());
             retval[1] = Long.TYPE;
@@ -436,7 +444,9 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         try {
             if (type.equals(BaseType.DOUBLE)) {
                 return Double.TYPE;
-            } else if (type.equals(BaseType.INT)) {
+            } else if (type.equals(BaseType.UNSIGNED_BYTE)) {
+                return Byte.TYPE;
+            } else  if (type.equals(BaseType.INT)) {
                 return Integer.TYPE;
             } else if (type.equals(BaseType.LONG)) {
                 return Long.TYPE;
@@ -497,6 +507,9 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         } else if (tokenClass.equals(Boolean.class) ||
                    tokenClass.equals(Boolean.TYPE)) {
             return BaseType.BOOLEAN;
+        } else if (tokenClass.equals(Byte.class) ||
+                   tokenClass.equals(Byte.TYPE)) {
+            return BaseType.UNSIGNED_BYTE;
         } else if (tokenClass.equals(Integer.class) ||
                    tokenClass.equals(Integer.TYPE)) {
             return BaseType.INT;
@@ -561,6 +574,9 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             retval = new ArrayToken((ptolemy.data.Token[])object);
         } else if (object instanceof Double) {
             retval = new DoubleToken(((Double)object).doubleValue());
+        } else if (object instanceof Byte) {
+            // FIXME: not quite right?
+            retval = new UnsignedByteToken(((Byte)object).byteValue());
         } else if (object instanceof Integer) {
             retval = new IntToken(((Integer)object).intValue());
         } else if (object instanceof Long) {

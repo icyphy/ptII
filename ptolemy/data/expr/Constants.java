@@ -134,5 +134,6 @@ public class Constants {
         _table.put("scalar", new ConcreteScalarToken());
         _table.put("string", new StringToken(""));
         _table.put("unknown", new UnknownToken());
+        _table.put("unsignedByte", new UnsignedByteToken(0));
     }
 }
