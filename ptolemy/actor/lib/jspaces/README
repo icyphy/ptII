@@ -1,0 +1,4 @@
+After make, we also need to generator the Stub and Skeletons for
+remote classes. So we also need to manually do:
+
+rmic -classpath ${PTII}:${PTII}/vendors/sun/jini/lib/jini-jspaces.jar ptolemy.actor.lib.jspaces.Subscriber
