@@ -46,6 +46,12 @@
 <configure>generic.sink</configure>
 </rendition>
 </entity>
+
+<entity name="XYScope" class="ptolemy.actor.gui.XYScope">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.sink</configure>
+</rendition>
+</entity>
 </class>
 
 
