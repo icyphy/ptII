@@ -185,7 +185,7 @@ public class Render extends PlotBox {
 		    // structure and multiply it by the horizontal increment.
 		    // For the high value of the y-range take the number of
 		    // data elements per stripe and multiply it by the
-		    // verticle increment.
+		    // vertical increment.
                     setXRange(getXOffset(),
                             _imageData.size() * getXIncrement());
                     setYRange(getYOffset(),

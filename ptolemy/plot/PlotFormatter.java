@@ -265,7 +265,7 @@ public class PlotFormatter extends JPanel {
     public void openModal() {
         String[] buttons = {"Apply", "Cancel"};
         // NOTE: If the plot is in a top-level container that is a Frame
-        // (as apposed to an applet), then tell the dialog that the Frame
+        // (as opposed to an applet), then tell the dialog that the Frame
         // owns the dialog.
         Container toplevel = _plot.getTopLevelAncestor();
         Frame frame = null;
@@ -389,7 +389,7 @@ public class PlotFormatter extends JPanel {
     // Query widgets.
     private Query _wideQuery, _narrowQuery;
 
-    // Oringal configuration of the plot.
+    // Original configuration of the plot.
     private String _originalTitle, _originalXLabel, _originalYLabel,
         _originalMarks, _originalXTicksSpec, _originalYTicksSpec;
     private double[] _originalXRange, _originalYRange;
