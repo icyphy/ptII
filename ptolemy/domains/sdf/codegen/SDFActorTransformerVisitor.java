@@ -1,6 +1,6 @@
 /* A Java AST visitor that transforms Actor code into code suitable
    for standalone execution (without dependancies on the ptolemy.actor
-   and ptolemy.data packages)
+   and ptolemy.data packages), for SDF systems.
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -44,7 +44,7 @@ import ptolemy.lang.java.nodetypes.*;
 
 /** A Java AST visitor that transforms Actor code into code suitable
  *  for standalone execution (without dependancies on the ptolemy.actor
- *  and ptolemy.data packages)
+ *  and ptolemy.data packages), for SDF systems.
  *
  *  @author Jeff Tsay
  */
@@ -56,8 +56,36 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
         
         _sdfActorInfo = (SDFActorCodeGeneratorInfo) actorInfo;       
     }
+                
+    protected Object _actorClassDeclNode(ClassDeclNode node, LinkedList args) {
+        ClassDeclNode retval = 
+         (ClassDeclNode) super._actorClassDeclNode(node, args);
+    
+        // add the temporary variables _cg_chan_temp_r and _cg_chan_temp_w
+        // if this is the base class
+
+        if (_isBaseClass) {
+
+           FieldDeclNode readTempField = new FieldDeclNode(PROTECTED_MOD,
+            IntTypeNode.instance, 
+            new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_r"),
+            new IntLitNode("0"));
         
-    protected Object _portFieldDeclNode(FieldDeclNode node) {
+           FieldDeclNode writeTempField = new FieldDeclNode(PROTECTED_MOD,
+            IntTypeNode.instance, 
+            new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_w"),
+            new IntLitNode("0"));
+    
+           List memberList = retval.getMembers();
+            
+           memberList.add(readTempField);
+           memberList.add(writeTempField);        
+        }
+        
+        return retval;
+    }    
+                
+    protected Object _portFieldDeclNode(FieldDeclNode node, LinkedList args) {
         // replace the port with an array of offsets into the buffer
         return new FieldDeclNode(PROTECTED_MOD,
          TypeUtility.makeArrayType(IntTypeNode.instance, 1),
@@ -66,11 +94,21 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
          AbsentTreeNode.instance);                     
     }
        
-    protected Object _portMethodCall(MethodCallNode node, MethodDecl methodDecl,
-     ExprNode accessedObj) {
+    protected Object _portMethodCallNode(MethodCallNode node, LinkedList args) {
+        FieldAccessNode fieldAccessNode = (FieldAccessNode) node.getMethod();
+
+        MethodDecl methodDecl = (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);        
+
+        ExprNode accessedObj = 
+         (ExprNode) ExprUtility.accessedObject(fieldAccessNode);
+        
+        // call the super method which will do transformation of the
+        // arguments and field access node
+        Object superRetval = super._portMethodCallNode(node, args);
+                        
         // we can only handle ports that are fields of the actor
-        if (accessedObj.classID() != THISFIELDACCESSNODE_ID) return null;
-            
+        if (accessedObj.classID() != THISFIELDACCESSNODE_ID) return superRetval;
+                                                
         TypedDecl typedDecl = (TypedDecl) JavaDecl.getDecl((NamedNode) accessedObj);
         
         String methodName = methodDecl.getName();        
@@ -109,7 +147,7 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
                     
               // assign the channel to a dummy variable to avoid side effects
               AssignNode chanAssignNode = new AssignNode(new ObjectNode(
-               new NameNode(AbsentTreeNode.instance, "_cg_chan_temp")),
+               new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_r")),
                firstArg);
                       
               ArrayAccessNode findBufferNode = new ArrayAccessNode(new ObjectNode(
@@ -119,7 +157,8 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
               PostIncrNode offsetIncrNode = new PostIncrNode(
                new ArrayAccessNode(new ObjectNode(
                new NameNode(AbsentTreeNode.instance, "_cg_" + varName + "_offset")),
-               new ObjectNode(new NameNode(AbsentTreeNode.instance, "_cg_chan_temp"))));
+               new ObjectNode(
+                new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_r"))));
  
               return new ArrayAccessNode(findBufferNode, offsetIncrNode);
                   
@@ -160,7 +199,7 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
            if (port.isMultiport()) {
               // assign the channel to a dummy variable to avoid side effects
               AssignNode chanAssignNode = new AssignNode(new ObjectNode(
-               new NameNode(AbsentTreeNode.instance, "_cg_chan_temp")),
+               new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_w")),
                firstArg);
                                     
               ObjectNode bufferObjectNode = new ObjectNode(
@@ -175,7 +214,7 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
                 new ObjectNode(
                  new NameNode(AbsentTreeNode.instance, "_cg_" + varName + "_offset")),
                 new ObjectNode(
-                 new NameNode(AbsentTreeNode.instance, "_cg_chan_temp"))));
+                 new NameNode(AbsentTreeNode.instance, "_cg_chan_temp_w"))));
                       
               return new AssignNode(
                new ArrayAccessNode(bufferArrayAccessNode, offsetIncrNode),
@@ -197,7 +236,7 @@ public class SDFActorTransformerVisitor extends ActorTransformerVisitor {
            }
         } 
                 
-        return super._portMethodCall(node, methodDecl, accessedObj);
+        return superRetval;
     }
     
     protected SDFActorCodeGeneratorInfo _sdfActorInfo = null;    

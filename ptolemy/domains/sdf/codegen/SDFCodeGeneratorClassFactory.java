@@ -54,12 +54,6 @@ public class SDFCodeGeneratorClassFactory extends CodeGeneratorClassFactory {
     public PtolemyTypeIdentifier createPtolemyTypeIdentifier() {
        return new SDFTypeIdentifier();
     }
-
-    public PtolemyTypeVisitor createPtolemyTypeVisitor(
-     ActorCodeGeneratorInfo actorInfo) {
-       return new PtolemyTypeVisitor(actorInfo, 
-        new TypePolicy(createPtolemyTypeIdentifier()));
-    }
     
     public static CodeGeneratorClassFactory getInstance() {
         if (_instance == null) {
