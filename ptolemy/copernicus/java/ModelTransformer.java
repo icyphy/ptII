@@ -348,12 +348,14 @@ public class ModelTransformer extends SceneTransformer {
 	    ports.hasNext();) {
 	    Port port = (Port)ports.next();
 	    String className = port.getClass().getName();
+            String fieldName = SootUtilities.sanitizeName(port.getName());
 	    Local local = 
                 PtolemyUtilities.createNamedObjAndLocal(body, className,
-                        thisLocal, port.getName());
+                        thisLocal, fieldName);
 	    _portLocalMap.put(port, local);
-	    SootUtilities.createAndSetFieldFromLocal(body, local, modelClass, PtolemyUtilities.portType,
-					port.getName());
+	    SootUtilities.createAndSetFieldFromLocal(body, 
+                    local, modelClass, PtolemyUtilities.portType,
+                    fieldName);
 	}
     }
 

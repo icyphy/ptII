@@ -100,6 +100,8 @@ SHALLOWTARGETCLASS = $(SHALLOWTARGETPACKAGE).$(SHALLOWTARGETNAME)
 
 JVM_SIZE = -Xmx132m
 
+SOOT_USER_ARGS =
+
 # Useful rule for quickly testing
 demo: compileShallowDemo runShallowDemo disassembleShallowDemo
 compileShallowDemo: $(JCLASS)
