@@ -38,9 +38,11 @@ import java.util.ListIterator;
 import java.util.LinkedList;
 
 import ptolemy.copernicus.jhdl.util.BlockGraphToDotty;
+import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
 import ptolemy.copernicus.jhdl.util.CompoundBooleanExpression;
 import ptolemy.copernicus.jhdl.util.CompoundOrExpression;
 import ptolemy.copernicus.jhdl.util.CompoundAndExpression;
+import ptolemy.copernicus.jhdl.util.JHDLUnsupportedException;
 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Node;
@@ -62,16 +64,29 @@ import soot.toolkits.graph.Block;
 //////////////////////////////////////////////////////////////////////////
 //// ConditionalControlCompactor
 /**
- * 
+ * This class contains a method that takes a SootMethod object and
+ * compacts the control-flow representation by merging successive
+ * conditional statements. Simple Boolean statements are implemented in
+ * Byte codes as a series of conditional branches and unnecessarily complicate
+ * the Control flow. This class will analyze the byte codes and create
+ * Boolean statements in place of a series of conditional statements.
+ * This significantly simplifies subsequent control-flow anaylsis.
  *
 
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
 */
-
 public class ConditionalControlCompactor {
     
+    /**
+     * This static method takes a SootMethod and compacts successive
+     * Control-flow statements. The result is a modified SootMethod
+     * that includes CompoundBooleanExpression Nodes in place of
+     * multiple ConditionalExpression statements. Note that this
+     * modified SootMethod cannot be used to generate byte codes as
+     * several new Expression nodes unique to this package are used.
+     **/
     public static void compact(SootMethod method) 
 	throws IllegalActionException {
 
@@ -79,19 +94,25 @@ public class ConditionalControlCompactor {
 	PatchingChain chain = mbody.getUnits();
 
 	// Iterate over entire graph until compaction results in no new changes
-	boolean graphModified;
+	boolean unitsModified = false;
+	// This vector contains Units that have been removed in a given 
+	// pass of the loop. This is used to keep track of Units that
+	// may be skipped when analyzing the Unit chain.
 	Vector removedUnits = new Vector(chain.size());
-	int version=1;
 	do {
-	    graphModified = false;
-	    // iterate over graph (update current at end)
+	    unitsModified = false;
+
+	    // iterate over all Units in the method chain
 	    Iterator i = chain.snapshotIterator();
 	    for (Unit current = (Unit) i.next();i.hasNext();) {
 		
-//    		System.out.println("Attemping to merge Unit "+
-//    				   current);
+    		//System.out.println("Attemping to merge Unit "+
+		//current);
+
+		// If current Unit has been removed, skip over it
+		// and get the next one.
 		if (removedUnits.contains(current)) {
-//  		    System.out.println("\tRemoved - ignore");
+		    //System.out.println("\tRemoved - ignore");
 		    if (i.hasNext())
 			current = (Unit) i.next();
 		    else
@@ -99,19 +120,16 @@ public class ConditionalControlCompactor {
 		    continue;
 		}
 
+		// Attempt to merge unit into current chain.
 		Unit mergedUnit = mergeUnit(chain,current);
+		// If merging is possible, add to removedUnits list
+		// and marge units as modfied. If merging is not
+		// possible, get next unit.
 		if (mergedUnit != null) {
 		    removedUnits.add(mergedUnit);		    
-		    // graphModified = true;
-		    // Print
-		    // Keep same node! (continue merging here)
-		    // need to update graph
-
-		    BriefBlockGraph bbgraph = new BriefBlockGraph(mbody); 
-		    BlockGraphToDotty.writeDotFile("mod_"+version++,bbgraph);
-//  		    if (version > 15)
-//  			return;
-		    graphModified = true;
+		    unitsModified = true;
+		    //BriefBlockGraph bbgraph = new BriefBlockGraph(mbody); 
+		    //BlockGraphToDotty.writeDotFile("mod_"+version++,bbgraph);
 		} else {
 		    if (i.hasNext())
 			current = (Unit) i.next();
@@ -121,10 +139,37 @@ public class ConditionalControlCompactor {
 
 	    } while (i.hasNext());
 
-	} while(graphModified);
+	} while(unitsModified);
 
     }
 
+    /**
+     * This method perfroms the merging. This method looks for the following
+     * pattern when deciding to merge:
+     * - Current unit must be an instance of the IfStmt
+     * - Successor of unit must also be an IfStmt
+     * - The target of the root IfStmt is the same as one of 
+     *   the two targets of the successor IfStmt.
+     * 
+     * This method is looking for the following pattern:
+     * Unit n:   rootIfStmt -> target1
+     * Unit n+1: succIfStmt -> target2
+     * Unit n+2: succSuccessor
+     * 
+     * And (target1 == target2) or (target1 == succSuccessor)
+     *
+     * If (target1 == succSuccessor), replace Unit n and Unit n+1
+     * with the following CompoundAndExpression:
+     *    If (NOT(rootIfStmt condition) AND succIfStmt condition)
+     *
+     * If (target1 == succSuccessor), replace Unit n and Unit n+1
+     * with the following CompoundOrExpression:
+     *   If (rootIfStmt condition OR succIfStmt condition)
+     *
+     * This transform avoids the need to insert any additional
+     * Gotos and preserves the byte code ordering of the chain.
+     *
+     **/
     protected static Unit mergeUnit(PatchingChain chain, Unit root) 
 	throws IllegalActionException {
 	
@@ -148,7 +193,7 @@ public class ConditionalControlCompactor {
 	      (rootTarget == successorTarget)))
 	    return null;
 	    
-	// 4. Create new merged expression for rootIfStmt
+	// root and successor units can be merged.
 	Value rootCondition = rootIfStmt.getCondition();
 	Value successorCondition = successorIfStmt.getCondition();
 
@@ -179,6 +224,7 @@ public class ConditionalControlCompactor {
     public static void main(String args[]) {
 	if (args.length < 2) {
 	    System.err.println("<classname> <methodname>");
+	    System.exit(1);
 	}
 	String classname = args[0];
 	String methodname = args[1];
@@ -208,6 +254,21 @@ public class ConditionalControlCompactor {
 	}
 	bbgraph = new BriefBlockGraph(body);
 	BlockGraphToDotty.writeDotFile("aftergraph",bbgraph);
+
+	// create dataflow for each block
+	List blockList=bbgraph.getBlocks();
+	for (int blockNum=0; blockNum < blockList.size(); blockNum++){
+	    Block block=(Block)blockList.get(blockNum);
+	    BlockDataFlowGraph dataFlowGraph=null;
+	    try {
+		dataFlowGraph=new BlockDataFlowGraph(block);
+	    } catch (JHDLUnsupportedException e) {
+		System.err.println(e);
+	    }
+	    PtDirectedGraphToDotty.writeDotFile("bbgraph"+blockNum,
+						dataFlowGraph);
+	}
+
     }
 
 }

@@ -38,6 +38,13 @@ import soot.jimple.InvokeStmt;
 import soot.jimple.TableSwitchStmt;
 import soot.jimple.LookupSwitchStmt;
 
+import soot.jimple.ConditionExpr;
+import soot.jimple.EqExpr;
+import soot.jimple.GeExpr;
+import soot.jimple.GtExpr;
+import soot.jimple.LeExpr;
+import soot.jimple.LtExpr;
+import soot.jimple.NeExpr;
 import soot.jimple.CastExpr;
 import soot.jimple.VirtualInvokeExpr;
 import soot.jimple.UnopExpr;
@@ -55,6 +62,9 @@ import soot.jimple.GotoStmt;
 import soot.jimple.IdentityStmt;
 import soot.jimple.InstanceFieldRef;
 import soot.jimple.StaticFieldRef;
+
+import soot.jimple.internal.JAndExpr;
+import soot.jimple.internal.JOrExpr;
 
 import soot.jimple.toolkits.invoke.MethodCallGraph;
 import soot.jimple.toolkits.invoke.SiteInliner;
@@ -93,6 +103,9 @@ import ptolemy.copernicus.jhdl.util.PtDirectedGraphToDotty;
 import ptolemy.copernicus.jhdl.util.SynthesisToDotty;
 import ptolemy.copernicus.jhdl.util.BlockGraphToDotty;
 import ptolemy.copernicus.jhdl.util.JHDLUnsupportedException;
+import ptolemy.copernicus.jhdl.util.CompoundBooleanExpression;
+import ptolemy.copernicus.jhdl.util.CompoundAndExpression;
+import ptolemy.copernicus.jhdl.util.CompoundOrExpression;
 
 //////////////////////////////////////////////////////////////////////////
 //// BlockDataFlowGraph
@@ -157,8 +170,8 @@ public class BlockDataFlowGraph extends DirectedGraph {
 		// a return void statement does not affect dataflow.
 	    } else if(stmt instanceof IfStmt) {
 		// if statements shoudl be last statement in basic block.
-		// No data flow is added at this point - control flow
-		// analysis may look at this statement at a later time.
+		// This IfStmt generates dataflow constructs 
+		_processIfStmt((IfStmt) stmt);
 	    } else if (stmt instanceof TableSwitchStmt) {
 		// No data flow is added at this point - control flow
 		// analysis may look at this statement at a later time.
@@ -409,6 +422,51 @@ public class BlockDataFlowGraph extends DirectedGraph {
 	Node newNode = addNodeWeight(stmt);
 	addEdge(returnedNode,newNode);
 	return newNode;
+    }
+
+    /**
+     **/
+    protected Node _processIfStmt(IfStmt stmt) 
+	throws JHDLUnsupportedException {
+
+	Value condition = stmt.getCondition();
+	if (!(condition instanceof ConditionExpr))
+	    throw new JHDLUnsupportedException("Unsupported Condition="+
+					       condition.getClass().getName());
+
+	return _processConditionExpr((ConditionExpr) condition);
+
+    }
+
+    protected Node _processConditionExpr(ConditionExpr condition) 
+	throws JHDLUnsupportedException {
+
+	Node n = null;
+	Value op1 = condition.getOp1();
+	Value op2 = condition.getOp2();
+	Node op1n;
+	Node op2n;
+
+	if (condition instanceof EqExpr ||
+	    condition instanceof GeExpr ||
+	    condition instanceof GtExpr ||
+	    condition instanceof LeExpr ||
+	    condition instanceof LtExpr ||
+	    condition instanceof NeExpr) {
+	    op1n = _getNodeFromValue(op1);
+	    op2n = _getNodeFromValue(op2);
+	    n = _createValueWeightedNode(condition);
+	} else if (condition instanceof CompoundBooleanExpression) {
+	    op1n = _processConditionExpr((ConditionExpr) op1);
+	    op2n = _processConditionExpr((ConditionExpr) op2);
+	    n = _createValueWeightedNode(condition);
+	} else
+	    throw new JHDLUnsupportedException("Unknown ConditionExpr "+
+					       condition.getClass());
+	addEdge(op1n,n,"op1");
+	addEdge(op2n,n,"op2");		
+
+	return n;
     }
 
     /**

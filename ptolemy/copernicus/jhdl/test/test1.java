@@ -146,7 +146,7 @@ public class test1 extends TypedAtomicActor {
     /** Boolean expression Control Flow **/
     public void method14(int b, int c) {
 	int d=0;
-	if ((b < 4 || b > 10) && c == 10) {
+	if ((b < 4 || b > c) && c == 10) {
 	    d = 2;
 	} else {
 	    d = 4;	    

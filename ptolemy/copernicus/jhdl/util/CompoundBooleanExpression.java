@@ -50,15 +50,20 @@ import soot.jimple.NeExpr;
 //////////////////////////////////////////////////////////////////////////
 //// CompoundBooleanExpression
 /**
- * 
+ * This class represents a CompoundBooleanExpression that can be created
+ * from a series of successive IfStmt objects. This class provides the
+ * ability to invert a Value (specifically a ConditionExpr) that is
+ * needed to perform the logic construction of the cascading IfStmts.
  *
-
-@author Mike Wirthlin
-@version $Id$
-@since Ptolemy II 2.0
+ * @see ptolemy.copernicus.jhdl.ConditionalControlCompactor
+ *
+ * @author Mike Wirthlin
+ * @version $Id$
+ * @since Ptolemy II 2.0
 */
 
 public abstract class CompoundBooleanExpression implements Value {
+
     public abstract CompoundBooleanExpression invert() throws IllegalActionException;
     public abstract Object clone();
 
