@@ -31,11 +31,8 @@ package ptolemy.domains.fsm.kernel;
 
 import ptolemy.kernel.ComponentEntity;
 
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Nameable;
-import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -136,13 +133,13 @@ public class State extends ComponentEntity {
     }
 
     /** Return the refinement of this state. The name of the refinement
-     *  is contained in the refinementName parameter. The refinement must
-     *  have the same container as the FSMActor containing this state,
-     *  otherwise this method will return null.
+     *  is specified by the <i>refinementName</i> parameter. The refinement
+     *  must be a TypedActor and have the same container as the FSMActor
+     *  containing this state, otherwise an exception is thrown.
      *  This method is read-synchronized on the workspace.
-     *  @return A TypedActor refining this state.
-     *  @exception IllegalActionException If the refinementName parameter
-     *   does not contain a valid token.
+     *  @return The refinement of this state.
+     *  @exception IllegalActionException If the specified refinement
+     *   cannot be found.
      */
     public TypedActor getRefinement() throws IllegalActionException {
         if (_refinementVersion == workspace().getVersion()) {
@@ -157,6 +154,11 @@ public class State extends ComponentEntity {
                 TypedCompositeActor contContainer =
                         (TypedCompositeActor)cont.getContainer();
                 _refinement = (TypedActor)contContainer.getEntity(refName);
+                if (_refinement == null) {
+                    throw new IllegalActionException(this, "Cannot find "
+                            + "refinement with name \"" + refName
+                            + "\" in " + contContainer.getFullName());
+                }
             } else {
                 _refinement = null;
             }
@@ -169,7 +171,8 @@ public class State extends ComponentEntity {
 
     /** Return the list of non-preemptive outgoing transitions from
      *  this state.
-     *  @return A list of non-preemptive transitions.
+     *  @return The list of non-preemptive outgoing transitions from
+     *   this state.
      */
     public List nonpreemptiveTransitionList() {
         if (_transitionListVersion != workspace().getVersion()) {
@@ -180,7 +183,8 @@ public class State extends ComponentEntity {
 
     /** Return the list of preemptive outgoing transitions from
      *  this state.
-     *  @return A list of preemptive transitions.
+     *  @return The list of preemptive outgoing transitions from
+     *   this state.
      */
     public List preemptiveTransitionList() {
         if (_transitionListVersion != workspace().getVersion()) {
@@ -190,17 +194,15 @@ public class State extends ComponentEntity {
     }
 
     /** Override the base class to ensure that the proposed container
-     *  is an instance of FSMActor or null. If it is, call the
-     *  base class setContainer() method. A null argument will remove
-     *  the state from its container.
-     *
+     *  is an instance of FSMActor or null. If it is, call the base
+     *  class setContainer() method. A null argument will remove this
+     *  state from its container.
      *  @param container The proposed container.
-     *  @exception IllegalActionException If the state would result
-     *   in a recursive containment structure, or if
-     *   this state and container are not in the same workspace, or
-     *   if the argument is not an instance of FSMActor or null.
+     *  @exception IllegalActionException If this state and the container
+     *   are not in the same workspace, or if the argument is not an
+     *   instance of FSMActor or null.
      *  @exception NameDuplicationException If the container already has
-     *   an entity with the name of this transition.
+     *   an entity with the name of this state.
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
@@ -213,40 +215,10 @@ public class State extends ComponentEntity {
         super.setContainer(container);
     }
 
-    /** Set the refinement of this state. The refinement must implement
-     *  the Nameable interface, otherwise an IllegalActionException is
-     *  thrown. The refinement must have the same container as the
-     *  FSMActor containing this state.
-     *  @param refinement The refinement of this state.
-     *  @exception IllegalActionException If the refinement does not
-     *   implement the Nameable interface, or if the refinement does
-     *   not have the same container as the FSMActor containing this
-     *   state.
-     */
-    public void setRefinement(TypedActor refinement)
-            throws IllegalActionException {
-        if (refinement == null) {
-            refinementName.setToken(null);
-            return;
-        }
-        if (!(refinement instanceof Nameable)) {
-            throw new IllegalActionException(this,
-                    "The refinement of a state must implement the "
-                    + "Nameable interface.");
-        }
-        if (getContainer() != ((Nameable)refinement).getContainer()) {
-            throw new IllegalActionException(this,
-                    "The refinement of a state must have the same container "
-                    + "as the FSMActor containing the state.");
-        }
-        String refName = ((Nameable)refinement).getName();
-        refinementName.setToken(new StringToken(refName));
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Redo the cached transition lists.
+    // Update the cached transition lists.
     // This method is read-synchronized on the workspace.
     private void _updateTransitionLists() {
         try {
@@ -285,4 +257,5 @@ public class State extends ComponentEntity {
 
     // Version of cached transition lists.
     private long _transitionListVersion = -1;
+
 }

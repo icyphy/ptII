@@ -89,9 +89,9 @@ public class Transition extends ComponentRelation {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         // Create the parameters for evaluating guard and trigger.
-        guard = new Parameter(this, "Guard");
+        guard = new Parameter(this, "guard");
         guard.setTypeEquals(BaseType.BOOLEAN);
-        trigger = new Parameter(this, "Trigger");
+        trigger = new Parameter(this, "trigger");
         trigger.setTypeEquals(BaseType.BOOLEAN);
     }
 
