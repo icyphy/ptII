@@ -202,15 +202,15 @@ public final class HTVQEncode extends SDFAtomicActor {
      */
     public void fire() throws IllegalActionException {
         int j;
-        input.getArray(0, _blocks);
+	_blocks = input.get(0, _blockCount);
 
         for(j = 0; j < _blockCount; j++) {
             _codewords[j] = new IntToken(
-                    _encode(_blocks[j].intArray(),
+                    _encode(((IntMatrixToken)_blocks[j]).intArray(),
                             _blockWidth * _blockHeight));
 	}
 
-        output.sendArray(0, _codewords);
+	output.send(0, _codewords, _blockCount);
     }
 
     /**
@@ -233,7 +233,7 @@ public final class HTVQEncode extends SDFAtomicActor {
         _blockHeight = ((IntToken)blockHeight.getToken()).intValue();
 
         _codewords =  new IntToken[_blockCount];
-        _blocks = new IntMatrixToken[_blockCount];
+	_blocks = new ptolemy.data.Token[_blockCount];
 
         String filename = ((StringToken)codeBook.getToken()).stringValue();
         try {
@@ -491,7 +491,7 @@ public final class HTVQEncode extends SDFAtomicActor {
     private int _codeBook[][][] = new int[6][256][];
     private int _lookupTable[][] = new int[6][65536];
     private IntToken _codewords[];
-    private IntMatrixToken _blocks[];
+    private ptolemy.data.Token _blocks[];
 
     private int _blockCount;
     private int _blockWidth;
