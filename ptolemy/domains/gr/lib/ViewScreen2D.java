@@ -407,11 +407,11 @@ public class ViewScreen2D extends GRActor2D
 
         _container.add("Center", _canvas);
         _canvas.setMinimumSize(new Dimension(horizontalDimension,
-                                verticalDimension));
+                verticalDimension));
         _canvas.setMaximumSize(new Dimension(horizontalDimension,
-                                verticalDimension));
+                verticalDimension));
         _canvas.setPreferredSize(new Dimension(horizontalDimension,
-                                verticalDimension));
+                verticalDimension));
         if(_frame != null) {
             _frame.pack();
         }
