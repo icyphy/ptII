@@ -1313,8 +1313,13 @@ public class IOPort extends ComponentPort {
 
     /** Return the width of the port.  The width is the sum of the
      *  widths of the relations that the port is linked to (on the outside).
+     *  Note that this method cannot be used to determine whether a port
+     *  is connected (deeply) to another port that can either supply it with
+     *  data or consume data it produces.  The correct methods to use to
+     *  determine that are numberOfSinks() and numberOfSources().
      *  This method is read-synchronized on the workspace.
-     *
+     *  @see #numberOfSinks()
+     *  @see #numberOfSources()
      *  @return The width of the port.
      */
     public int getWidth() {
@@ -1904,6 +1909,58 @@ public class IOPort extends ComponentPort {
             throws IllegalActionException {
         super.link(relation);
         _invalidate();
+    }
+
+    /** Return the number of sink ports that can receive data from this one.
+     *  This is the number of ports returned by sinkPortList(), but
+     *  this method is more efficient to call than that one if you only
+     *  need to know how many ports there are (because the result is cached).
+     *  This method is typically used to determine whether an output port
+     *  is connected (deeply) to any input port that can consume its
+     *  data.  Note that it is not sufficient to call getWidth() to determine
+     *  this; it is possible for getWidth() to return a number greater than
+     *  zero when this method returns zero. In particular, if this port
+     *  is connected to the inside of an opaque output port, but that opaque
+     *  output port is not connected on the outside, then this method will
+     *  return zero, but getWidth() will return the width of the relation
+     *  mediating the connection.
+     *  @see #sinkPortList()
+     *  @see #numberOfSources()
+     *  @see #getWidth()
+     *  @return The number of ports that can receive data from this one.
+     */
+    public int numberOfSinks() {
+        if (_numberOfSinksVersion != _workspace.getVersion()) {
+            _numberOfSinks = sinkPortList().size();
+            _numberOfSinksVersion = _workspace.getVersion();
+        }
+        return _numberOfSinks;
+    }
+
+    /** Return the number of source ports that can send data to this one.
+     *  This is the number of ports returned by sourcePortList(), but
+     *  this method is more efficient to call than that one if you only
+     *  need to know how many ports there are (because the result is cached).
+     *  This method is typically used to determine whether an input port
+     *  is connected (deeply) to any output port that can supply it with
+     *  data.  Note that it is not sufficient to call getWidth() to determine
+     *  this; it is possible for getWidth() to return a number greater than
+     *  zero when this method returns zero. In particular, if this port
+     *  is connected to the inside of an opaque input port, but that opaque
+     *  input port is not connected on the outside, then this method will
+     *  return zero, but getWidth() will return the width of the relation
+     *  mediating the connection.
+     *  @see #sourcePortList()
+     *  @see #numberOfSinks()
+     *  @see #getWidth()
+     *  @return The number of ports that can send data to this one.
+     */
+    public int numberOfSources() {
+        if (_numberOfSourcesVersion != _workspace.getVersion()) {
+            _numberOfSources = sourcePortList().size();
+            _numberOfSourcesVersion = _workspace.getVersion();
+        }
+        return _numberOfSources;
     }
 
     /** Send the specified token to all receivers connected to the
@@ -3041,4 +3098,12 @@ public class IOPort extends ComponentPort {
 
     // Lists of local receivers, indexed by relation.
     private HashMap _localReceiversTable;
+
+    // A cache of the number of sinks, since it's expensive to compute.
+    private transient int _numberOfSinks;
+    private transient long _numberOfSinksVersion = -1;
+
+    // A cache of the number of sources, since it's expensive to compute.
+    private transient int _numberOfSources;
+    private transient long _numberOfSourcesVersion = -1;
 }
