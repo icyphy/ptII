@@ -26,8 +26,8 @@ Model {
   ModifiedByFormat	  "%<Auto>"
   LastModifiedBy	  "acataldo"
   ModifiedDateFormat	  "%<Auto>"
-  LastModifiedDate	  "Fri Oct 25 17:59:58 2002"
-  ModelVersionFormat	  "1.%<AutoIncrement:78>"
+  LastModifiedDate	  "Mon Oct 28 16:20:44 2002"
+  ModelVersionFormat	  "1.%<AutoIncrement:79>"
   ConfigurationManager	  "None"
   SimParamPage		  "Optimization"
   StartTime		  "0.0"
@@ -154,7 +154,7 @@ Model {
   }
   System {
     Name		    "circles"
-    Location		    [426, 78, 982, 386]
+    Location		    [422, 87, 978, 395]
     Open		    on
     ModelBrowserVisibility  off
     ModelBrowserWidth	    200
@@ -375,7 +375,7 @@ Model {
 	  AttributesFormatString  "initial_X = %<InitialCondition>"
 	  ExternalReset		  "none"
 	  InitialConditionSource  "internal"
-	  InitialCondition	  "1"
+	  InitialCondition	  "0.0"
 	  LimitOutput		  off
 	  UpperSaturationLimit	  "inf"
 	  LowerSaturationLimit	  "-inf"
@@ -392,7 +392,7 @@ Model {
 	  AttributesFormatString  "initial_Y = %<InitialCondition>"
 	  ExternalReset		  "none"
 	  InitialConditionSource  "internal"
-	  InitialCondition	  "-1"
+	  InitialCondition	  "0.0"
 	  LimitOutput		  off
 	  UpperSaturationLimit	  "inf"
 	  LowerSaturationLimit	  "-inf"
@@ -490,7 +490,7 @@ Model {
 	      BlockType		      Constant
 	      Name		      "Initial_Heading"
 	      Position		      [305, 180, 335, 210]
-	      Value		      "pi/4"
+	      Value		      "0.0"
 	      VectorParams1D	      on
 	    }
 	    Block {
