@@ -47,11 +47,31 @@ import java.awt.print.PrinterException;
 import java.awt.print.PrinterJob;
 import java.awt.print.Paper;
 import java.awt.RenderingHints;
-import java.io.*;
-import java.net.*;
-import java.text.*;
-import java.util.*;
-import javax.swing.*;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.io.Writer;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Enumeration;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Vector;
+import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.SwingUtilities;
 
 // TO DO:
 //   - Augment getColorByName to support a full complement of colors
@@ -209,7 +229,7 @@ it can only be viewed by a browser that supports JDK 1.2, or a plugin.
 
 @version $Id$
 @since Ptolemy II 0.2
- */
+*/
 public class PlotBox extends JPanel implements Printable {
 
     ///////////////////////////////////////////////////////////////////
@@ -988,7 +1008,7 @@ public class PlotBox extends JPanel implements Printable {
             }
 	    // FIXME: If we failed to get an image, then the letter "P"
 	    // Is not likely to fit into a 20x20 button.
-            _printButton.setPreferredSize(new Dimension(20,20));
+            _printButton.setPreferredSize(new Dimension(20, 20));
             _printButton.setToolTipText("Print the plot.");
             _printButton.addActionListener(new ButtonListener());
             add(_printButton);
@@ -1013,7 +1033,7 @@ public class PlotBox extends JPanel implements Printable {
             }
 	    // FIXME: If we failed to get an image, then the letter "R"
 	    // Is not likely to fit into a 20x20 button.
-            _resetButton.setPreferredSize(new Dimension(20,20));
+            _resetButton.setPreferredSize(new Dimension(20, 20));
             _resetButton.setToolTipText(
                     "Reset X and Y ranges to their original values");
             _resetButton.addActionListener(new ButtonListener());
@@ -1039,7 +1059,7 @@ public class PlotBox extends JPanel implements Printable {
             }
 	    // FIXME: If we failed to get an image, then the letter "S"
 	    // Is not likely to fit into a 20x20 button.
-            _formatButton.setPreferredSize(new Dimension(20,20));
+            _formatButton.setPreferredSize(new Dimension(20, 20));
             _formatButton.setToolTipText(
                     "Set the plot format");
             _formatButton.addActionListener(new ButtonListener());
@@ -1065,7 +1085,7 @@ public class PlotBox extends JPanel implements Printable {
             }
 	    // FIXME: If we failed to get an image, then the letter "F"
 	    // Is not likely to fit into a 20x20 button.
-            _fillButton.setPreferredSize(new Dimension(20,20));
+            _fillButton.setPreferredSize(new Dimension(20, 20));
             _fillButton.setToolTipText(
                     "Rescale the plot to fit the data");
             _fillButton.addActionListener(new ButtonListener());
