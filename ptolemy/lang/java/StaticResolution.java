@@ -493,13 +493,12 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  source. Otherwise do partial resolution only.
      */
     public static CompileUnitNode load(String filename, int pass) {
-	ApplicationUtility.trace("StaticResolution.load(" + filename + ", " +
-			   pass + ")");
-
         return load(new File(filename), pass);
     }
 
     public static CompileUnitNode load(File file, int pass) {
+	ApplicationUtility.trace("StaticResolution.load(" + 
+                file.getName() + ", " + pass + ")");
         try {
             return loadCanonical(file.getCanonicalPath(), pass);
         } catch (IOException ioe) {
@@ -715,16 +714,16 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         // dummy environment
         Environ env = new Environ();
 
-        ApplicationUtility.trace("StaticResolution: --- loading java.lang package ---");
+        System.out.println("StaticResolution<static>: --- loading java.lang package ---");
 
         NameNode javaLangName = (NameNode) makeNameNode("java.lang");
         JAVA_LANG_PACKAGE = importPackage(env, javaLangName);
 
-        ApplicationUtility.trace("StaticResolution: --- require class on Object ---");
+        System.out.println("StaticResolution<static>: --- require class on Object ---");
 
         OBJECT_DECL = _requireClass(env, "Object");
 
-        ApplicationUtility.trace("StaticResolution: --- done require class on Object ---");
+        System.out.println("StaticResolution<static>: --- done require class on Object ---");
 
         OBJECT_TYPE = OBJECT_DECL.getDefType();
 
@@ -770,8 +769,8 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         CLASS_DECL  = _requireClass(env, "Class");
         CLASS_TYPE  = CLASS_DECL.getDefType();
 
-        ApplicationUtility.trace("StaticResolution: --- 1st buildEnvironments ---");
-
+        System.out.println("StaticResolution<static>: --- 1st buildEnvironments ---");
         buildEnvironments();
+        System.out.println("StaticResolution<static>: --- after buildEnvironments ---");
     }
 }
