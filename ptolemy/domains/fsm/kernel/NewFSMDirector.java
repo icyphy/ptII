@@ -48,7 +48,7 @@ A NewFSMDirector governs the execution of a modal model. A modal model is
 a TypedCompositeActor with a NewFSMDirector as local director. The mode
 control logic is captured by an FSMActor contained in the TypedCompositeActor.
 Each state of the FSMActor represents a mode of operation and can be refined
-by a TypedActor contained in the smae TypedCompositeActor.
+by a TypedActor contained in the same TypedCompositeActor.
 <p>
 
 @author Xiaojun Liu
