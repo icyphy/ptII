@@ -81,7 +81,7 @@ public class BrowserTableau extends Tableau {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** A factory that creates text editor tableaux for Ptolemy models.
+    /** A factory that creates web browser tableaux for Ptolemy models.
      */
     public static class Factory extends TableauFactory {
 
@@ -106,18 +106,11 @@ public class BrowserTableau extends Tableau {
          *  "browserTableau", then return that tableau; otherwise, create
          *  a new instance of BrowserTableau in the specified
          *  effigy, and name it "browserTableau" and return that tableau.
-         *  If the specified effigy is not an instance of BrowserEffigy,
-         *  but contains an instance of BrowserEffigy, then open a tableau
-         *  for that effigy.  If it is a PtolemyEffigy, then create a
-         *  browser effigy with the MoML representation of the model.
-         *  Finally, if is not a BrowserEffigy or a PtolemyEffigy,
-         *  and it does not contain a BrowserEffigy, then attempt to
-         *  open its URL and display its date by creating a browser effigy,
-         *  which will then be contained by the specified effigy. If all
-         *  of this fails, then do not create a tableau and return null.
-         *  It is the responsibility of callers of this method to check the
+         *  If the specified
+         *  effigy is not an instance of BrowserEffigy, then do not
+         *  create a tableau and return null.  It is the
+         *  responsibility of callers of this method to check the
          *  return value and call show().
-         *
 	 *  @param effigy The effigy.
 	 *  @return A browser editor tableau, or null if one cannot be
 	 *    found or created.
@@ -136,36 +129,9 @@ public class BrowserTableau extends Tableau {
                 }
                 tableau.setEditable(effigy.isModifiable());
                 return tableau;
-	    } else {
-                // The effigy is not an instance of BrowserEffigy.
-                // See whether it contains an instance of BrowserEffigy
-                // named "browserEffigy", and if it does return that instance.
-                Iterator effigies = effigy
-                    .entityList(BrowserEffigy.class).iterator();
-                while (effigies.hasNext()) {
-                    BrowserEffigy browserEffigy =
-                        (BrowserEffigy)effigies.next();
-                    if (browserEffigy.getName().equals("browserEffigy")) {
-                        return createTableau(browserEffigy);
-                    }
-                }
-                // It does not contain an instance of BrowserEffigy with
-                // the name "browserEffigy".
-                // Attempt to use it's url attribute and create a new
-                // instance of BrowserEffigy contained by the specified one.
-                URL url = effigy.url.getURL();
-                BrowserEffigy browserEffigy =
-		    BrowserEffigy.newBrowserEffigy(effigy, url, url);
-		browserEffigy.setName("browserEffigy");
-
-                BrowserTableau browserTableau =
-                    (BrowserTableau)createTableau(browserEffigy);
-                if (url != null) {
-                    browserEffigy.identifier.setExpression(
-                            url.toExternalForm());
-                }
-                return browserTableau;
-            }
+            } else {
+		return null;
+	    }
 	}
     }
 }
