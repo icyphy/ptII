@@ -225,7 +225,7 @@ abstract public class Analysis {
      *  value (or convert it to some other form) before returning it.
      *  Then changes made by the client to the returned value will
      *  not affect the cached value in the analysis (as an example,
-     *  see {@link SelfLoopAnalysis.result}). This consideration is
+     *  see {@link SelfLoopAnalysis#result()}). This consideration is
      *  important for incremental analyses that use the cached value
      *  across successive invocations of the analysis.
      */

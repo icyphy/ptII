@@ -38,7 +38,7 @@ import java.util.Collections;
 /** Computation of source nodes in a graph.
 
 A <em>source node</em> in a graph is a node without input edges. The
-<code>result</code> method (see {@link Analysis.#result()})
+<code>result</code> method (see {@link Analysis#result()})
 of this analysis returns the source nodes in the associated graph.
 The source nodes are returned in the form of a {@link java.util.Collection},
 where each element in the collection is a {@link Node}. The collection
