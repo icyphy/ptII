@@ -28,25 +28,24 @@
 package plot;
 
 import java.awt.Button;
-import java.awt.Event;
-import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.Dialog;
 import java.awt.Dimension;
+import java.awt.Event;
+import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Frame;
 import java.awt.Panel;
+import java.awt.PrintJob;
 import java.awt.TextArea;
 
 import java.io.File;
 import java.io.FileOutputStream;
-
 import java.io.IOException;
 
 import java.lang.Thread;
 import java.lang.InterruptedException; 
 
 import java.util.Properties;
-import java.util.Enumeration;
-import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
 //// Pxgraph
@@ -414,11 +413,6 @@ directives inside the file.  This version only supports
  */
 public class Pxgraph extends Frame { 
 
-    /** Constructor
-     */	
-    //    public Pxgraph() {
-    //    }
-
     public boolean action(Event e, Object arg) {
 	Object target = e.target;
 	if (_debug > 20) System.out.println("Pxgraph: action: "+e+" "+target);
@@ -465,29 +459,8 @@ public class Pxgraph extends Frame {
       */
     public static void main(String args[]) {
         int argsread = 0, i;
-	Plot plotApplet = new Plot();
 	Pxgraph pxgraph = new Pxgraph();
-
-	pxgraph.makeButtons();
-
-	pxgraph.pack();
-	pxgraph.add(plotApplet);
-
-	try {
-	    // First we parse the args for things like -help or -version
-	    // then we have the Plot applet parse them
-	    pxgraph._parseArgs(args);
-	    argsread = plotApplet.parseArgs(args);
-	} catch (CmdLineArgException e) {
-	    System.err.println("Failed to parse command line arguments: "
-			       + e);
-	    System.exit(1);
-	}
-
-        pxgraph.show();
-	plotApplet.init();
-
-	plotApplet.start();
+	pxgraph.pxgraph(args);
 
 	if (_test) {
 	    if (_debug > 4) System.out.println("Sleeping for 2 seconds");
@@ -500,25 +473,26 @@ public class Pxgraph extends Frame {
 	}
     }
 
-
-    /** Create buttons.
+    /** Process the arguments and plot the data.
       */
-    public void makeButtons() {
-        //setLayout(new FlowLayout(FlowLayout.LEFT));
-        Panel panel = new Panel();
-	panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+    public void pxgraph(String args[]) {
+	_plotApplet = new Plot();
+	_makeButtons();
 
-	_exitButton = new Button("Exit");
-        panel.add(_exitButton);
+	pack();
+	try {
+	    // First we parse the args for things like -help or -version
+	    // then we have the Plot applet parse them
+	    _parseArgs(args);
+	    _plotApplet.parseArgs(args);
+	} catch (CmdLineArgException e) {
+	    System.err.println("Failed to parse command line arguments: " + e);
+	    System.exit(1);
+	}
 
-	_printButton = new Button("Print");
-        panel.add(_printButton);
-
-	_aboutButton = new Button("About");
-        panel.add(_aboutButton);
-
-        add("South", panel);
-
+        show();
+	_plotApplet.init();
+	_plotApplet.start();
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -601,6 +575,34 @@ public class Pxgraph extends Frame {
 			   "Pxgraph Java class documentation.");
 	System.exit(1);
     }
+
+    /* Set the visibility of the buttons
+     */
+    private void _setButtonsVisibility(boolean vis) {
+	_exitButton.setVisible(vis);
+	_printButton.setVisible(vis);
+	_aboutButton.setVisible(vis);
+    }
+
+    /* Create buttons.
+     */
+    private void _makeButtons() {
+        //setLayout(new FlowLayout(FlowLayout.LEFT));
+        Panel panel = new Panel();
+	panel.setLayout(new FlowLayout(FlowLayout.LEFT));
+
+	_exitButton = new Button("Exit");
+        panel.add(_exitButton);
+
+	_printButton = new Button("Print");
+        panel.add(_printButton);
+
+	_aboutButton = new Button("About");
+        panel.add(_aboutButton);
+
+        add("South", panel);
+    }
+
 
     /* Parse the arguments and make calls to the plotApplet accordingly.
      */	
@@ -700,13 +702,6 @@ public class Pxgraph extends Frame {
  			   "the Pxgraph class documentation.\n" +
  			   "For more information, see\n" +
  			   "http://ptolemy.eecs.berkeley.edu/java/plot\n");
-
-	Properties props = System.getProperties();
-	for (Enumeration enum = props.propertyNames();
-	     enum.hasMoreElements();) {
-	    String key = (String)enum.nextElement();
-	    System.out.println(key + " = " + (String)(props.get(key)));
-	}
 	message.setTitle("About Pxgraph");
 	message.pack();
 	message.show();
@@ -716,74 +711,45 @@ public class Pxgraph extends Frame {
      * user can print.
      */	
     private void _print () {
-	// FIXME: we need to generate a temporary file name here.
-	System.out.println("Pxgraph: _print: FIXME: hardwired path");
-	String tmpfile = "/tmp/t.html";
-	Message message =
-	    new Message("The Java base classes can't print, so\n"+
-			"we create a temporary file at:\n"+
-			tmpfile+"\n"+
-			"and start up netscape and print from there.");
-	message.setTitle("About Printing Pxgraph");
-	message.pack();
-	message.show();
+	// awt.print.destination   - can be "printer" or "file"
+	// awt.print.printer       - print command
+	// awt.print.fileName      - name of the file to print
+	// awt.print.numCopies     - obvious
+	// awt.print.options       - options to pass to the print command
+	// awt.print.orientation   - can be "portrait" or "landscape"
+	// awt.print.paperSize     - can be "letter", "legal", "executive" or "a4"
 
-	File outputfile = new File("tmpfile");
+	Properties newprops= new Properties();
+	newprops.put("awt.print.destination", "file");
+	newprops.put("awt.print.fileName", "/tmp/t.ps");
+	PrintJob printjob = getToolkit().getPrintJob(this,
+						     getTitle(),newprops);
 
-	FileOutputStream fos = null;
-	try {
-	    fos = new FileOutputStream(tmpfile);
-	} catch(IOException e) {
-	    System.err.println("Could not open "+tmpfile+": "+e);
+	if (printjob != null) {          
+	    Graphics printgraphics = printjob.getGraphics();
+	    if (printgraphics != null) {
+		// Get the graphics context from the applet, save it
+		// substitute in the printgraphics
+		Graphics savegraphics = _plotApplet.getGraphics();
+		_plotApplet.setGraphics(printgraphics);
+
+		// Make the buttons invisible
+		_setButtonsVisibility(false);
+		_plotApplet._setButtonsVisibility(false);
+
+		// Print
+		printComponents(printgraphics);
+		printAll(printgraphics);
+		printgraphics.dispose();
+
+		// Make the buttons visible, reset the graphics.
+		_plotApplet._setButtonsVisibility(true);
+		_setButtonsVisibility(true);
+		_plotApplet.setGraphics(savegraphics);
+	    }
+	    printjob.end();
 	}
-
-	Dimension dim = getSize();
-
-	// Read in the user's CLASSPATH and get the first directory,
-	// which should be the location of the Plot classes
-	StringTokenizer stoken =
-	    new StringTokenizer(System.getProperty("java.class.path"),";:");
-	String plotclassdir = new String("");
-	if (stoken.hasMoreTokens()) {
-	    plotclassdir = stoken.nextToken();
-	} 
-
-	StringBuffer applettag =
-	    new StringBuffer("<!-- Automatically generated by pxgraph -->\n"+
-			     "<html>\n<head>\n"+
-			     "<title>"+getTitle()+"</title>\n<body>\n"+
-			     "<applet name =\""+getTitle()+"\""+
-                             " code=\"plot.Plot\""+
-			     " width="+dim.width+" height="+dim.height+"\n"+
-			     "codebase=\""+plotclassdir+"\"\n"+
-			     "archive=\"plot/plot.zip\"\n"+
-			     "alt=\"If you had a java-enabled "+
-			     "browser, you would see an applet here.\"\n"+
-			     "<param name=\"pxgraphargs\" value=\"");
-
-        for(int i=0;i<_cmdLineArgs.length;i++) {
-	    applettag.append(_cmdLineArgs[i]+" ");
-	}
-
-	applettag.append("\">\n"+
-			 "</applet>\n</body>\n</html>\n");
-	try {
-	    fos.write(applettag.toString().getBytes());
-	    fos.close();
-	} catch(IOException e) {
-	    System.err.println("Problems writing: "+e);
-	}
-
-	// Run netscape on the temporary file.
-	// FIXME: we should offer the user a choice.
-// 	try {
-// 	    Runtime runtime = Runtime.getRuntime();
-// 	    Process browser = runtime.exec("netscape "+tmpfile);
-// 	} catch (SecurityException e) {
-// 	} catch (IOException e) {
-// 	}
     }
-
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
@@ -795,6 +761,9 @@ public class Pxgraph extends Frame {
 
     // For debugging, call with -db or -debug.
     private static int _debug = 0;
+
+    // The Plot applet.
+    private Plot _plotApplet; 
 
     // If true, then auto exit after a few seconds.
     private static boolean _test = false;
