@@ -42,12 +42,12 @@ do
       if [ ! -d "$destination/dsp/lib" ]; then
 	  mkdir -p "$destination/dsp/lib"
       fi	  
-      cp ${basestar}.java $destination/dsp/lib
+      mv ${basestar}.java $destination/dsp/lib
   else
       if [ ! -d "$destination/lib" ] ; then
 	  mkdir -p "$destination/lib"
       fi	  
-      cp ${basestar}.java $destination/lib
+      mv ${basestar}.java $destination/lib
   fi
 done
 
@@ -139,7 +139,7 @@ cat >$destinationDirectory/makefile <<EOF
 #                                               PT_COPYRIGHT_VERSION_2
 #                                               COPYRIGHTENDKEY
 
-ME =            $destinationSubdir
+ME =            $destinationSubdir/$dir
 
 # Rule for index.xml uses this
 TITLE = 	"SDF CGC ${subdir}Actors"
