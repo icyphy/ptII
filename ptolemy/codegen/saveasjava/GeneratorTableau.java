@@ -158,13 +158,13 @@ public class GeneratorTableau extends Tableau {
             moreInfoButton.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent evt) {
                     Configuration configuration = getConfiguration();
-                    URL infoURL = getClass().getResource("../caveats.htm");
+                    URL infoURL = getClass().getResource("../../../doc/codegen.htm");
                     try {
                         configuration.openModel(
                                 null, infoURL, infoURL.toExternalForm());
                     } catch (Exception ex) {
                         throw new InternalErrorException(
-                                "Failed to open ptolemy/codegen/caveats.htm: "
+                                "Failed to open doc/codegen.htm: "
                                 + ex);
                     }
                 }
