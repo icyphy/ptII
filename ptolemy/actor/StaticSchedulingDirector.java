@@ -51,7 +51,7 @@ direct the execution of the CompositeActor.
 However, the schedule may become invalid when the CompositeActor mutates.
 The scheduler is a TopologyListener of the director, and the schedule
 is automatically invalidated when a TopologyChange occurs.
-The setSchdulValid() method can also be used to explicitly validate 
+The setSchdulValid() method can also be used to explicitly validate
 or invalidate the schedule when needed.
 
 @author Jie Liu
@@ -132,7 +132,7 @@ public class StaticSchedulingDirector extends Director{
      *  The container of the specified scheduler is set to this director.
      *  If there was a previous scheduler, the container of that schduler
      *  is set to null. This method is write-synchronized on the workspace.
-     *  If the scheduler is not compatible with the director, an 
+     *  If the scheduler is not compatible with the director, an
      *  IllegalActionException is thrown.
      *  @param director The Director responsible for execution.
      *  @exception IllegalActionException Not thrown in this base class,

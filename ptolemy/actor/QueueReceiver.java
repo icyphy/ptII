@@ -43,13 +43,13 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// QueueReceiver
 /**
-A first-in, first-out (FIFO) queue receiver with variable capacity and 
+A first-in, first-out (FIFO) queue receiver with variable capacity and
 optional history. Tokens are put into the receiver with the put() method,
-and removed from the receiver with the get() method. The token removed is 
-the oldest one in the receiver. By default, the capacity is unbounded, but 
-it can be set to any nonnegative size. If the history capacity is greater 
-than zero (or infinite, indicated by a capacity of INFINITE_CAPACITY), 
-then tokens removed from the receiver are stored in a history queue rather 
+and removed from the receiver with the get() method. The token removed is
+the oldest one in the receiver. By default, the capacity is unbounded, but
+it can be set to any nonnegative size. If the history capacity is greater
+than zero (or infinite, indicated by a capacity of INFINITE_CAPACITY),
+then tokens removed from the receiver are stored in a history queue rather
 than simply removed. By default, the history capacity is zero.
 
 @author Edward A. Lee, Lukito Muliadi, Xiaojun Liu
@@ -82,8 +82,8 @@ public class QueueReceiver implements Receiver {
         return _queue.elements();
     }
 
-    /** Remove the first token (the oldest one) from the receiver and 
-     *  return it. If there is no token in the receiver, throw an 
+    /** Remove the first token (the oldest one) from the receiver and
+     *  return it. If there is no token in the receiver, throw an
      *  exception.
      *  @return The oldest token in the receiver.
      *  @exception NoTokenException If there is no token in the receiver.
@@ -100,19 +100,19 @@ public class QueueReceiver implements Receiver {
         return t;
     }
 
-    /** Return a token in the receiver or its history. If the offset 
-     *  argument is zero, return the oldest token in the receiver. 
-     *  If the offset is 1, return the second oldest token, etc. The 
-     *  token is not removed from the receiver. If there is no such 
-     *  token in the receiver (the offset is greater than or equal 
-     *  to the number of tokens currently in the receiver), throw an 
-     *  exception. If the offset is -1, return the most recent token 
-     *  removed from the receiver. If it is -2, return the second 
-     *  most recent token removed from the receiver, etc. If there is 
-     *  no such token in the receiver's history (the history capacity 
+    /** Return a token in the receiver or its history. If the offset
+     *  argument is zero, return the oldest token in the receiver.
+     *  If the offset is 1, return the second oldest token, etc. The
+     *  token is not removed from the receiver. If there is no such
+     *  token in the receiver (the offset is greater than or equal
+     *  to the number of tokens currently in the receiver), throw an
+     *  exception. If the offset is -1, return the most recent token
+     *  removed from the receiver. If it is -2, return the second
+     *  most recent token removed from the receiver, etc. If there is
+     *  no such token in the receiver's history (the history capacity
      *  is zero or the absolute value of offset is greater than the
      *  number of tokens currently in the receiver's history), an
-     *  exception is thrown. 
+     *  exception is thrown.
      *  @param offset The offset from the oldest token in the receiver.
      *  @return The token at the desired offset in the receiver or its
          history.
@@ -124,7 +124,7 @@ public class QueueReceiver implements Receiver {
         } catch (NoSuchElementException ex) {
             throw new NoTokenException(getContainer(),
                     "Offset " + offset + " out of range with " + _queue.size()
-                    + " tokens in the receiver and " + _queue.historySize() 
+                    + " tokens in the receiver and " + _queue.historySize()
                     + " in history.");
         }
     }
@@ -171,8 +171,8 @@ public class QueueReceiver implements Receiver {
     /** Enumerate the tokens stored in the history queue, which are
      *  the N most recent tokens taken from the receiver, beginning with
      *  the oldest, where N is less than or equal to the history capacity.
-     *  If the history capacity is INFINITE_CAPACITY, then the enumeration 
-     *  includes all tokens previously taken from the receiver. If the 
+     *  If the history capacity is INFINITE_CAPACITY, then the enumeration
+     *  includes all tokens previously taken from the receiver. If the
      *  history capacity is zero, then return an empty enumeration.
      *  @return An enumeration of tokens.
      */
@@ -187,7 +187,7 @@ public class QueueReceiver implements Receiver {
         return _queue.historySize();
     }
 
-    /** Put a token to the receiver. If the receiver is full, throw an 
+    /** Put a token to the receiver. If the receiver is full, throw an
      *  exception.
      *  @param token The token to be put to the receiver.
      *  @exception NoRoomException If the receiver is full.
@@ -199,7 +199,7 @@ public class QueueReceiver implements Receiver {
         }
     }
 
-    /** Set receiver capacity. Use INFINITE_CAPACITY to indicate unbounded 
+    /** Set receiver capacity. Use INFINITE_CAPACITY to indicate unbounded
      *  capacity (which is the default). If the number of tokens currently
      *  in the receiver exceeds the desired capacity, throw an exception.
      *  @param capacity The desired receiver capacity.
@@ -221,17 +221,17 @@ public class QueueReceiver implements Receiver {
         _container = port;
     }
 
-    /** Set the capacity of the history queue. Use 0 to disable the 
-     *  history mechanism and INFINITE_CAPACITY to make the history 
-     *  capacity unbounded. If the size of the history queue exceeds 
-     *  the desired capacity, then remove the oldest tokens from the 
+    /** Set the capacity of the history queue. Use 0 to disable the
+     *  history mechanism and INFINITE_CAPACITY to make the history
+     *  capacity unbounded. If the size of the history queue exceeds
+     *  the desired capacity, then remove the oldest tokens from the
      *  history queue until its size equals the proposed capacity.
      *  Note that this can be used to clear the history queue by
      *  supplying 0 as the argument.
      *  @param capacity The desired history capacity.
      *  @exception IllegalActionException If the desired capacity is illegal.
      */
-    public void setHistoryCapacity(int capacity) 
+    public void setHistoryCapacity(int capacity)
             throws IllegalActionException {
         try {
             _queue.setHistoryCapacity(capacity);
@@ -250,7 +250,7 @@ public class QueueReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    public static final int INFINITE_CAPACITY = 
+    public static final int INFINITE_CAPACITY =
             FIFOQueue.INFINITE_CAPACITY;
 
     ///////////////////////////////////////////////////////////////////

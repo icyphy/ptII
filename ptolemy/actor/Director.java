@@ -217,14 +217,14 @@ public class Director extends NamedObj implements Executable {
      *  @exception IllegalActionException If the operation is not
      *    permissible (e.g. the given time is in the past).
      */
-    public void fireAt(Actor actor, double time) 
+    public void fireAt(Actor actor, double time)
             throws IllegalActionException {
-        
+
         // do nothing in this base class.
         // Note that, alternatively, this method could have been abstract.
         // But we didn't do that, because otherwise we wouldn't be able
         // to run TclBlend testscript on this class.
-                
+
     }
 
     /** Return the container, which is the composite actor for which this
@@ -235,7 +235,7 @@ public class Director extends NamedObj implements Executable {
         return _container;
     }
 
-    /** Return the current time of the simulation under this director. 
+    /** Return the current time of the simulation under this director.
      *  In this base class,
      *  it returns 0. The derived class should override this method
      *  and return the current time.
@@ -401,11 +401,11 @@ public class Director extends NamedObj implements Executable {
         _topologyListeners.removeTopologyListener(listener);
     }
 
-    /** Set the current time of the simulation under this director. 
+    /** Set the current time of the simulation under this director.
      *  Do nothing in this base class. Derived class should override this
      *  method.
      *  Note that this method is not made abstract to facilitate the use
-     *  of test suite.    
+     *  of test suite.
      *  @exception IllegalActionException If time cannot be changed
      *   due to the state of the simulation. Only thrown in derived
      *   classes.
