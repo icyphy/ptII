@@ -460,6 +460,34 @@ public final class ArrayFIFOQueue implements Cloneable {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** Used to indicate that the size of the queue or the history
+     *  queue is infinite.
+     */
+    public static final int INFINITE_CAPACITY = -1;
+
+    /**
+     * The default capacity of the queue.
+     */
+    public static final int DEFAULT_CAPACITY = INFINITE_CAPACITY;
+
+    /**
+     * The starting size of the circular buffer, if the capacity is
+     * infinite.
+     */
+    public static final int STARTING_ARRAYSIZE = 4;
+
+    /**
+     * The default capacity of the history queue.
+     */
+    public static final int DEFAULT_HISTORY_CAPACITY = 0;
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     /**
      * Resize the internal circular array to have the given size.
      * @exception InternalErrorException If the proposed size is greater than
@@ -470,7 +498,8 @@ public final class ArrayFIFOQueue implements Cloneable {
     private void _resizeArray(int newsize) {
 	if (newsize < 0) {
 	    throw new InternalErrorException(
-                    "Buffer size of " + newsize + " is not greater than zero.");
+                    "Buffer size of " + newsize +
+                    " is not greater than zero.");
         }
 
 	if (size() > newsize) {
@@ -500,30 +529,6 @@ public final class ArrayFIFOQueue implements Cloneable {
         _queuearray = newarray;
         _queueback = 0;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** Used to indicate that the size of the queue or the history
-     *  queue is infinite.
-     */
-    public static final int INFINITE_CAPACITY = -1;
-
-    /**
-     * The default capacity of the queue.
-     */
-    public static final int DEFAULT_CAPACITY = INFINITE_CAPACITY;
-
-    /**
-     * The starting size of the circular buffer, if the capacity is
-     * infinite.
-     */
-    public static final int STARTING_ARRAYSIZE = 4;
-
-    /**
-     * The default capacity of the history queue.
-     */
-    public static final int DEFAULT_HISTORY_CAPACITY = 0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
