@@ -162,26 +162,6 @@ public abstract class Top extends JFrame {
         return _centering;
     }
 
-    /** Return the most recently entered URL in the most recently
-     *	invoked Open URL dialog box.
-     *  Note that each Top has its own last url, this method returns
-     *  the value of the last Open URL dialog.
-     *  If the Open URL menu choice has not yet been invoked, then
-     *  return null.
-     *  <p>The value returned by getLastOverallURL() is used
-     *  by MoMLParser to determine whether we should display
-     *  a Security concern dialog and ask the user if they want
-     *  to download a model from outside the value of getLastOverallURL().
-     *  @return the most recently entered URL in the most recently
-     *  invoked Open URL dialog box.
-     *  @see #setLastOverallURL
-     */
-    public static String getLastOverallURL() {
-	// This method is static so that we can get at it from
-	// MoMLParser.
-	return _lastOverallURL;
-    }
-
     /** Return true if the data associated with this window has been
      *  modified since it was first read or last saved.  This returns
      *  the value set by calls to setModified(), or false if that method
@@ -238,21 +218,6 @@ public abstract class Top extends JFrame {
      */
     public void setCentering(boolean centering) {
         _centering = centering;
-    }
-
-    /** Set the value of the last overall URL.  
-     *  @param lastOverallURL The last overall URL
-     *  @see #getLastOverallURL()
-     */
-    public static void setLastOverallURL(String lastOverallURL) {
-	// This method is static so that we can get at it from
-	// MoMLParser.  MoMLApplet calls this method as well
-        // so that signed applets will not invoke the 
-        // 'Security concern' message in MoMLParser.  In
-        // someways, it makes more sense for _lastOverallURL
-        // to be in MoMLParser, but ptolemy.gui does not
-        // otherwise depend on ptolemy.moml.
-	_lastOverallURL = lastOverallURL;
     }
 
     /** Record whether the data associated with this window has been
@@ -529,7 +494,6 @@ public abstract class Top extends JFrame {
         ComponentDialog dialog = new ComponentDialog(this, "Open URL", query);
         if (dialog.buttonPressed().equals("OK")) {
             _lastURL = query.getStringValue("url");
-	    _lastOverallURL = _lastURL;
             try {
                 URL url = new URL(_lastURL);
                 _read(url);
@@ -699,9 +663,6 @@ public abstract class Top extends JFrame {
 
     // The most recently entered URL in Open URL.
     private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
-
-    // The most recently entered URL in any Open URL.
-    private static String _lastOverallURL = null;
 
     // Indicator that the menu has been populated.
     private boolean _menuPopulated = false;
