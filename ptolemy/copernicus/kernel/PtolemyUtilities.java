@@ -940,6 +940,7 @@ public class PtolemyUtilities {
     public static SootMethod booleanValueMethod;
 
     public static SootClass booleanMatrixTokenClass;
+    public static SootMethod booleanMatrixTokenConstructor;
     public static SootMethod booleanMatrixMethod;
 
     public static SootField booleanTypeField;
@@ -949,12 +950,14 @@ public class PtolemyUtilities {
     // Soot class representing java.lang.Class.
     public static SootClass classClass;
 
-    // Soot class representing the ptolemy.data.BooleanToken class.
+    // Soot class representing the ptolemy.data.ComplexToken class.
     public static SootClass complexTokenClass;
     public static SootMethod complexTokenConstructor;
     public static SootMethod complexValueMethod;
     public static SootClass complexMatrixTokenClass;
+    public static SootMethod complexMatrixTokenConstructor;
     public static SootMethod complexMatrixMethod;
+
     public static SootField complexTypeField;
     public static SootField complexMatrixTypeField;
 
@@ -978,7 +981,8 @@ public class PtolemyUtilities {
     public static SootMethod doubleValueMethod;
 
     public static SootClass doubleMatrixTokenClass;
-    public static SootMethod doubleMatrixMethod;
+    public static SootMethod doubleMatrixTokenConstructor;
+     public static SootMethod doubleMatrixMethod;
 
     public static SootField doubleTypeField;
     public static SootField doubleMatrixTypeField;
@@ -995,6 +999,7 @@ public class PtolemyUtilities {
     public static SootMethod fixTokenConstructor;
     public static SootMethod fixValueMethod;
     public static SootClass fixMatrixTokenClass;
+    public static SootMethod fixMatrixTokenConstructor;
     public static SootMethod fixMatrixMethod;
 
     // Soot class representing the ptolemy.data.type.FixType class.
@@ -1052,6 +1057,7 @@ public class PtolemyUtilities {
     public static SootMethod intValueMethod;
 
     public static SootClass intMatrixTokenClass;
+    public static SootMethod intMatrixTokenConstructor;
     public static SootMethod intMatrixMethod;
     
     public static SootField intTypeField;
@@ -1076,6 +1082,7 @@ public class PtolemyUtilities {
     public static SootMethod longValueMethod;
 
     public static SootClass longMatrixTokenClass;
+    public static SootMethod longMatrixTokenConstructor;
     public static SootMethod longMatrixMethod;
  
     public static SootField longTypeField;
@@ -1177,6 +1184,7 @@ public class PtolemyUtilities {
     public static SootMethod tokenLogicalRightShiftMethod;
     public static SootMethod tokenIntValueMethod;
     public static SootMethod tokenZeroMethod;
+    public static SootMethod tokenPowMethod;
 
     // Soot Type representing the ptolemy.data.Token class.
     public static BaseType tokenType;
@@ -1340,6 +1348,7 @@ public class PtolemyUtilities {
         tokenRightShiftMethod = Scene.v().getMethod("<ptolemy.data.ScalarToken: ptolemy.data.ScalarToken rightShift(int)>");
         tokenLogicalRightShiftMethod = Scene.v().getMethod("<ptolemy.data.ScalarToken: ptolemy.data.ScalarToken logicalRightShift(int)>");
         tokenIntValueMethod = Scene.v().getMethod("<ptolemy.data.ScalarToken: int intValue()>");
+        tokenPowMethod = Scene.v().getMethod("<ptolemy.data.Token: ptolemy.data.Token pow(int)>");
         
         arrayTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.ArrayToken");
@@ -1364,6 +1373,13 @@ public class PtolemyUtilities {
             doubleTokenClass.getMethod("void <init>(double)");
         doubleValueMethod =
             scalarTokenClass.getMethod("double doubleValue()");
+        doubleMatrixTokenClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.DoubleMatrixToken");
+        doubleMatrixTokenConstructor =
+            doubleMatrixTokenClass.getMethod("void <init>(double[][])");
+        doubleMatrixMethod =
+            doubleMatrixTokenClass.getMethod("double[][] doubleMatrix()");
+  
 
         booleanTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.BooleanToken");
@@ -1371,6 +1387,13 @@ public class PtolemyUtilities {
             booleanTokenClass.getMethod("void <init>(boolean)");
         booleanValueMethod =
             booleanTokenClass.getMethod("boolean booleanValue()");
+        booleanMatrixTokenClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.BooleanMatrixToken");
+        booleanMatrixTokenConstructor =
+            booleanMatrixTokenClass.getMethod("void <init>(boolean[][])");
+        booleanMatrixMethod =
+            booleanMatrixTokenClass.getMethod("boolean[][] booleanMatrix()");
+  
   
         intTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.IntToken");
@@ -1378,6 +1401,12 @@ public class PtolemyUtilities {
             intTokenClass.getMethod("void <init>(int)");
         intValueMethod =
             scalarTokenClass.getMethod("int intValue()");
+        intMatrixTokenClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.IntMatrixToken");
+        intMatrixTokenConstructor =
+            intMatrixTokenClass.getMethod("void <init>(int[][])");
+        intMatrixMethod =
+            intMatrixTokenClass.getMethod("int[][] intMatrix()");
   
         fixTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.FixToken");
@@ -1387,6 +1416,8 @@ public class PtolemyUtilities {
             scalarTokenClass.getMethod("ptolemy.math.FixPoint fixValue()");
         fixMatrixTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.FixMatrixToken");
+        fixMatrixTokenConstructor =
+            fixMatrixTokenClass.getMethod("void <init>(ptolemy.math.FixPoint[][])");
         fixMatrixMethod =
             fixMatrixTokenClass.getMethod("ptolemy.math.FixPoint[][] fixMatrix()");
         
@@ -1407,6 +1438,13 @@ public class PtolemyUtilities {
             longTokenClass.getMethod("void <init>(long)");
         longValueMethod =
             scalarTokenClass.getMethod("long longValue()");
+        longMatrixTokenClass =
+            Scene.v().loadClassAndSupport("ptolemy.data.LongMatrixToken");
+        longMatrixTokenConstructor =
+            longMatrixTokenClass.getMethod("void <init>(long[][])");
+        longMatrixMethod =
+            longMatrixTokenClass.getMethod("long[][] longMatrix()");
+  
 
         stringTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.StringToken");

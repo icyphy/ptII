@@ -443,8 +443,8 @@ public class TokenToNativeTransformer extends SceneTransformer {
 
                             Type baseType = r.getBase().getType();
 
-                            // If we are invoking a method on a Token or Type, and
-                            // the token is not unsafe.
+                            // If we are invoking a method on a Token
+                            // or Type, and the token is not unsafe.
                             if (baseType instanceof RefType &&
                                     !unsafeLocalSet.contains(r.getBase())) {
                                 RefType type = (RefType)baseType;
@@ -592,8 +592,19 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             if(debug) System.out.println("static invoking = " + r.getMethod());
                             SootMethod inlinee = (SootMethod)r.getMethod();
                             SootClass declaringClass = inlinee.getDeclaringClass();
-                            if (SootUtilities.derivesFrom(declaringClass,
-                                        PtolemyUtilities.tokenClass)) {
+                            // These methods contain a large amount of
+                            // code, which greatly slows down further
+                            // inlining.  The code should also contain
+                            // little information, and is hard to get
+                            // rid of any other way.
+                            if (_mangleExceptionMessages && (inlinee.getName().equals("notSupportedMessage") ||
+                                        inlinee.getName().equals("notSupportedConversionMessage") ||
+                                        inlinee.getName().equals("notSupportedIncomparableMessage") ||
+                                        inlinee.getName().equals("notSupportedIncomparableConversionMessage"))) {
+                                box.setValue(StringConstant.v("Token Exception"));
+                                
+                            } else if (SootUtilities.derivesFrom(declaringClass,
+                                             PtolemyUtilities.tokenClass)) {
                                 declaringClass.setLibraryClass();
                                 if (!inlinee.isAbstract() &&
                                         !inlinee.isNative()) {
@@ -1726,6 +1737,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
     private Map entityFieldToTokenFieldToReplacementField;
     private Map localToFieldToLocal;
     private Map localToIsNullLocal;
+    private boolean _mangleExceptionMessages = true;
 
 }
 

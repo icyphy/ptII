@@ -652,7 +652,8 @@ public class ActorTransformer extends SceneTransformer {
 
     public static class ActorCodeGenerationScope
         implements CodeGenerationScope {
-        public ActorCodeGenerationScope(Map nameToField, Map nameToType, JimpleBody body) {
+        public ActorCodeGenerationScope(Map nameToField, 
+                Map nameToType, JimpleBody body) {
             _nameToField = nameToField;
             _nameToType = nameToType;
             _body = body;
@@ -673,13 +674,25 @@ public class ActorTransformer extends SceneTransformer {
                 Local thisLocal = _body.getThisLocal();
                 
                 Local portLocal = Jimple.v().newLocal("portToken",
-                        PtolemyUtilities.tokenType);
+                        PtolemyUtilities.getSootTypeForTokenType(
+                                getType(name)));
                 _body.getLocals().add(portLocal);
                 
+                Local tokenLocal = Jimple.v().newLocal("portToken",
+                        PtolemyUtilities.tokenType);
+                _body.getLocals().add(tokenLocal);
+                
                 _units.add(
-                        Jimple.v().newAssignStmt(portLocal,
+                        Jimple.v().newAssignStmt(tokenLocal,
                                 Jimple.v().newInstanceFieldRef(
                                         thisLocal, portField)));
+                _units.add(
+                        Jimple.v().newAssignStmt(portLocal,
+                                Jimple.v().newCastExpr(
+                                        tokenLocal,
+                                        PtolemyUtilities.getSootTypeForTokenType(
+                                                getType(name)))));
+             
                 return portLocal;
             } else {
                 throw new IllegalActionException(

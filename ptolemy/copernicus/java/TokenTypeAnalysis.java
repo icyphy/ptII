@@ -203,7 +203,11 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                     if (methodName.equals("one") ||
                             methodName.equals("zero") ||
                             methodName.equals("not") ||
-                            methodName.equals("bitwiseNot")) {
+                            methodName.equals("bitwiseNot") ||
+                            methodName.equals("leftShift") ||
+                            methodName.equals("rightShift") ||
+                            methodName.equals("logicalRightShift") ||
+                            methodName.equals("pow")) {
                         // The returned type must be equal to the type
                         // we are calling the method on.
                         out.put(leftOp, in.get(r.getBase()));

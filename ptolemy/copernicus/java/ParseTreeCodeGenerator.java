@@ -223,282 +223,11 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
             cachedMethod.getConversions();
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
             Local tokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(i));
-            // FIXME: type is wrong.. will be inferred later.
-            Local argLocal = Jimple.v().newLocal("arg" + i, 
-                    PtolemyUtilities.tokenType);
-            _body.getLocals().add(argLocal);
-     
-            if(conversions[i] == CachedMethod.IDENTITY) {
-                
-                // Add the new local to the list of arguments
-                args.add(argLocal);
-                _units.add(
-                        Jimple.v().newAssignStmt(
-                                argLocal,
-                                tokenLocal));
-            } else if(conversions[i] == CachedMethod.ARRAYTOKEN) {
-                Local resultLocal = Jimple.v().newLocal("arg" + i, 
-                        ArrayType.v(RefType.v(PtolemyUtilities.objectClass), 1));
-                _body.getLocals().add(resultLocal);
-                
-                // Add the new local to the list of arguments
-                args.add(resultLocal);
-                _units.add(
-                        Jimple.v().newAssignStmt(
-                                argLocal,
-                                Jimple.v().newCastExpr(
-                                        tokenLocal,
-                                        RefType.v(PtolemyUtilities.arrayTokenClass))));
-                _units.add(
-                        Jimple.v().newAssignStmt(
-                                resultLocal,
-                                Jimple.v().newVirtualInvokeExpr(
-                                        argLocal,
-                                        PtolemyUtilities.arrayValueMethod)));
-            } else if(conversions[i] == CachedMethod.NATIVE) {
-                if(argTypes[i] == ptolemy.data.type.BaseType.DOUBLE) {
-                    Local resultLocal = Jimple.v().newLocal("arg" + i, 
-                            DoubleType.v());
-                    _body.getLocals().add(resultLocal);
-                    // Add the new local to the list of arguments
-                    args.add(resultLocal);
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    argLocal,
-                                    Jimple.v().newCastExpr(
-                                            tokenLocal,
-                                            RefType.v("ptolemy.data.DoubleToken"))));
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    resultLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
-                                            argLocal,
-                                            PtolemyUtilities.doubleValueMethod)));
-                } else if(argTypes[i] == ptolemy.data.type.BaseType.INT) {
-                    Local resultLocal = Jimple.v().newLocal("arg" + i, 
-                            IntType.v());
-                    _body.getLocals().add(resultLocal);
-                    // Add the new local to the list of arguments
-                    args.add(resultLocal);
-                     _units.add(
-                            Jimple.v().newAssignStmt(
-                                    argLocal,
-                                    Jimple.v().newCastExpr(
-                                            tokenLocal,
-                                            RefType.v("ptolemy.data.IntToken"))));
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    resultLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
-                                            argLocal,
-                                            PtolemyUtilities.intValueMethod)));
-                } else if(argTypes[i] == ptolemy.data.type.BaseType.LONG) {
-                   Local resultLocal = Jimple.v().newLocal("arg" + i, 
-                            LongType.v());
-                    _body.getLocals().add(resultLocal);
-                    // Add the new local to the list of arguments
-                    args.add(resultLocal);
-                      _units.add(
-                            Jimple.v().newAssignStmt(
-                                    argLocal,
-                                    Jimple.v().newCastExpr(
-                                            tokenLocal,
-                                            RefType.v("ptolemy.data.LongToken"))));
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    resultLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
-                                            argLocal,
-                                            PtolemyUtilities.longValueMethod)));
-                }  else if(argTypes[i] == ptolemy.data.type.BaseType.STRING) {
-                    Local resultLocal = Jimple.v().newLocal("arg" + i, 
-                            RefType.v("java.lang.String"));
-                    _body.getLocals().add(resultLocal);
-                    // Add the new local to the list of arguments
-                    args.add(resultLocal);
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    argLocal,
-                                    Jimple.v().newCastExpr(
-                                            tokenLocal,
-                                            RefType.v("ptolemy.data.StringToken"))));
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    resultLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
-                                            argLocal,
-                                            PtolemyUtilities.stringValueMethod)));
-                }  else if(argTypes[i] == ptolemy.data.type.BaseType.BOOLEAN) {
-                    Local resultLocal = Jimple.v().newLocal("arg" + i, 
-                            BooleanType.v());
-                    _body.getLocals().add(resultLocal);
-                    // Add the new local to the list of arguments
-                    args.add(resultLocal);
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    argLocal,
-                                    Jimple.v().newCastExpr(
-                                            tokenLocal,
-                                            RefType.v("ptolemy.data.BooleanToken"))));
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    resultLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
-                                            argLocal,
-                                            PtolemyUtilities.booleanValueMethod)));
-                } else if(argTypes[i] == ptolemy.data.type.BaseType.COMPLEX) {
-                    Local resultLocal = Jimple.v().newLocal("arg" + i, 
-                            RefType.v("ptolemy.math.Complex"));
-                    _body.getLocals().add(resultLocal);
-                    // Add the new local to the list of arguments
-                    args.add(resultLocal);
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    argLocal,
-                                    Jimple.v().newCastExpr(
-                                            tokenLocal,
-                                            RefType.v("ptolemy.data.ComplexToken"))));
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    resultLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
-                                            argLocal,
-                                            PtolemyUtilities.complexValueMethod)));
-                } else if(argTypes[i] == ptolemy.data.type.BaseType.FIX) {
-                   Local resultLocal = Jimple.v().newLocal("arg" + i, 
-                            RefType.v("ptolemy.math.FixPoint"));
-                    _body.getLocals().add(resultLocal);
-                    // Add the new local to the list of arguments
-                    args.add(resultLocal);
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    argLocal,
-                                    Jimple.v().newCastExpr(
-                                            tokenLocal,
-                                            RefType.v("ptolemy.data.FixToken"))));
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                   resultLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
-                                            argLocal,
-                                            PtolemyUtilities.fixValueMethod)));
-                } else if(argTypes[i] == ptolemy.data.type.BaseType.DOUBLE_MATRIX) {
-                     Local resultLocal = Jimple.v().newLocal("arg" + i, 
-                            ArrayType.v(DoubleType.v(),2));
-                    _body.getLocals().add(resultLocal);
-                    // Add the new local to the list of arguments
-                    args.add(resultLocal);
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    argLocal,
-                                    Jimple.v().newCastExpr(
-                                            tokenLocal,
-                                            RefType.v("ptolemy.data.DoubleMatrixToken"))));
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    resultLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
-                                            argLocal,
-                                            PtolemyUtilities.doubleMatrixMethod)));
-                } else if(argTypes[i] == ptolemy.data.type.BaseType.INT_MATRIX) {
-                      Local resultLocal = Jimple.v().newLocal("arg" + i, 
-                            ArrayType.v(IntType.v(),2));
-                    _body.getLocals().add(resultLocal);
-                    // Add the new local to the list of arguments
-                    args.add(resultLocal);
-                   _units.add(
-                            Jimple.v().newAssignStmt(
-                                    argLocal,
-                                    Jimple.v().newCastExpr(
-                                            tokenLocal,
-                                            RefType.v("ptolemy.data.IntMatrixToken"))));
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    resultLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
-                                            argLocal,
-                                            PtolemyUtilities.intMatrixMethod)));
-                } else if(argTypes[i] == ptolemy.data.type.BaseType.LONG_MATRIX) {
-                       Local resultLocal = Jimple.v().newLocal("arg" + i, 
-                            ArrayType.v(LongType.v(),2));
-                    _body.getLocals().add(resultLocal);
-                    // Add the new local to the list of arguments
-                    args.add(resultLocal);
-                  _units.add(
-                            Jimple.v().newAssignStmt(
-                                    argLocal,
-                                    Jimple.v().newCastExpr(
-                                            tokenLocal,
-                                            RefType.v("ptolemy.data.LongMatrixToken"))));
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    resultLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
-                                            argLocal,
-                                            PtolemyUtilities.longMatrixMethod)));
-                } else if(argTypes[i] == ptolemy.data.type.BaseType.BOOLEAN_MATRIX) {
-                     Local resultLocal = Jimple.v().newLocal("arg" + i, 
-                            ArrayType.v(BooleanType.v(),2));
-                    _body.getLocals().add(resultLocal);
-                    // Add the new local to the list of arguments
-                    args.add(resultLocal);
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    argLocal,
-                                    Jimple.v().newCastExpr(
-                                            tokenLocal,
-                                            RefType.v("ptolemy.data.BooleanMatrixToken"))));
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    resultLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
-                                            argLocal,
-                                            PtolemyUtilities.booleanMatrixMethod)));
-                } else if(argTypes[i] == ptolemy.data.type.BaseType.COMPLEX_MATRIX) {
-                      Local resultLocal = Jimple.v().newLocal("arg" + i, 
-                            ArrayType.v(RefType.v("ptolemy.math.Complex"),2));
-                    _body.getLocals().add(resultLocal);
-                    // Add the new local to the list of arguments
-                    args.add(resultLocal);
-                   _units.add(
-                            Jimple.v().newAssignStmt(
-                                    argLocal,
-                                    Jimple.v().newCastExpr(
-                                            tokenLocal,
-                                            RefType.v("ptolemy.data.ComplexMatrixToken"))));
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    resultLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
-                                            argLocal,
-                                            PtolemyUtilities.complexMatrixMethod)));
-                } else if(argTypes[i] == ptolemy.data.type.BaseType.FIX_MATRIX) {
-                      Local resultLocal = Jimple.v().newLocal("arg" + i, 
-                            ArrayType.v(RefType.v("ptolemy.math.FixPoint"),2));
-                    _body.getLocals().add(resultLocal);
-                    // Add the new local to the list of arguments
-                    args.add(resultLocal);
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    argLocal,
-                                    Jimple.v().newCastExpr(
-                                            tokenLocal,
-                                            RefType.v("ptolemy.data.FixMatrixToken"))));
-                    _units.add(
-                            Jimple.v().newAssignStmt(
-                                    argLocal,
-                                    Jimple.v().newVirtualInvokeExpr(
-                                            argLocal,
-                                            PtolemyUtilities.fixMatrixMethod)));
-                } else {// if(argTypes[i] instanceof ArrayType) {
-                    throw new IllegalActionException(
-                            "CodeGeneration not supported for arrayType");
-                }
-            } else {
-                throw new IllegalActionException(
-                        "CodeGeneration not supported for argument " +
-                        "conversion " + conversions[i]);
-            }
+
+            // Insert the appropriate conversion.
+            Local argLocal = _convertTokenArgToJavaArg(
+                    tokenLocal, argTypes[i], conversions[i]);
+            args.add(argLocal);
         }
 
         Type returnType = sootMethod.getReturnType();
@@ -506,55 +235,17 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                 returnType);
         _body.getLocals().add(returnLocal);
 
+        // Actually invoke the method.
         _units.add(
                 Jimple.v().newAssignStmt(
                         returnLocal, 
                         Jimple.v().newStaticInvokeExpr(
                                 sootMethod, args)));
       
-        Local tokenLocal;
+        // Convert the result back to a token.
+        Local tokenLocal = _convertJavaResultToToken(returnLocal, returnType);
         
-        // convert return type back to token.
-        if(returnType.equals(PtolemyUtilities.tokenType)) {
-            tokenLocal = returnLocal;
-        } else if(returnType.equals(ArrayType.v(PtolemyUtilities.tokenType, 1))) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
-                    PtolemyUtilities.arrayTokenClass,
-                    PtolemyUtilities.arrayTokenConstructor,
-                    returnLocal);
-        } else if(returnType.equals(DoubleType.v())) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
-                    PtolemyUtilities.doubleTokenClass,
-                    PtolemyUtilities.doubleTokenConstructor,
-                    returnLocal);
-        } else if(returnType.equals(LongType.v())) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
-                    PtolemyUtilities.longTokenClass,
-                    PtolemyUtilities.longTokenConstructor,
-                    returnLocal);
-        } else if(returnType.equals(RefType.v("java.lang.String"))) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
-                    PtolemyUtilities.stringTokenClass,
-                    PtolemyUtilities.stringTokenConstructor,
-                    returnLocal);
-        } else if(returnType.equals(BooleanType.v())) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
-                    PtolemyUtilities.booleanTokenClass,
-                    PtolemyUtilities.booleanTokenConstructor,
-                    returnLocal);
-        } else if(returnType.equals(RefType.v("ptolemy.math.Complex"))) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
-                    PtolemyUtilities.complexTokenClass,
-                    PtolemyUtilities.complexTokenConstructor,
-                    returnLocal);
-        } else if(returnType.equals(RefType.v("ptolemy.math.FixPoint"))) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
-                    PtolemyUtilities.fixTokenClass,
-                    PtolemyUtilities.fixTokenConstructor,
-                    returnLocal);
-        } else {
-            throw new IllegalActionException("unrecognized case");
-        }
+     
         
         //       Jimple.v().newStaticInvokeExpr(
         //                                 methodCallEvaluationMethod,
@@ -680,6 +371,427 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
          */     
         _nodeToLocal.put(node, tokenLocal);
     }
+
+    // Add code to the method being generated to convert the given
+    // returnLocal, with the given returnType to a token type.  Return
+    // the new token local.
+    private Local _convertJavaResultToToken(
+            Local returnLocal, Type returnType) 
+            throws IllegalActionException {
+        Local tokenLocal;
+
+        if(returnType.equals(PtolemyUtilities.tokenType)) {
+            tokenLocal = returnLocal;
+        } else if(returnType.equals(
+                          ArrayType.v(PtolemyUtilities.tokenType, 1))) {
+            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+                    PtolemyUtilities.arrayTokenClass,
+                    PtolemyUtilities.arrayTokenConstructor,
+                    returnLocal);
+        } else if(returnType.equals(DoubleType.v())) {
+            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+                    PtolemyUtilities.doubleTokenClass,
+                    PtolemyUtilities.doubleTokenConstructor,
+                    returnLocal);
+        } else if(returnType.equals(LongType.v())) {
+            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+                    PtolemyUtilities.longTokenClass,
+                    PtolemyUtilities.longTokenConstructor,
+                    returnLocal);
+        } else if(returnType.equals(RefType.v("java.lang.String"))) {
+            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+                    PtolemyUtilities.stringTokenClass,
+                    PtolemyUtilities.stringTokenConstructor,
+                    returnLocal);
+        } else if(returnType.equals(BooleanType.v())) {
+            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+                    PtolemyUtilities.booleanTokenClass,
+                    PtolemyUtilities.booleanTokenConstructor,
+                    returnLocal);
+        } else if(returnType.equals(RefType.v("ptolemy.math.Complex"))) {
+            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+                    PtolemyUtilities.complexTokenClass,
+                    PtolemyUtilities.complexTokenConstructor,
+                    returnLocal);
+        } else if(returnType.equals(RefType.v("ptolemy.math.FixPoint"))) {
+            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+                    PtolemyUtilities.fixTokenClass,
+                    PtolemyUtilities.fixTokenConstructor,
+                    returnLocal);
+        } else if(returnType.equals(ArrayType.v(BooleanType.v(),2))) {
+            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+                    PtolemyUtilities.booleanMatrixTokenClass,
+                    PtolemyUtilities.booleanMatrixTokenConstructor,
+                    returnLocal);
+            
+        } else if(returnType.equals(ArrayType.v(IntType.v(),2))) {
+            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+                    PtolemyUtilities.intMatrixTokenClass,
+                    PtolemyUtilities.intMatrixTokenConstructor,
+                    returnLocal);
+            
+        } else if(returnType.equals(ArrayType.v(LongType.v(),2))) {
+            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+                    PtolemyUtilities.doubleMatrixTokenClass,
+                    PtolemyUtilities.doubleMatrixTokenConstructor,
+                    returnLocal);
+            
+        } else if(returnType.equals(ArrayType.v(DoubleType.v(),2))) {
+            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+                    PtolemyUtilities.doubleMatrixTokenClass,
+                    PtolemyUtilities.doubleMatrixTokenConstructor,
+                    returnLocal);
+            
+        } else if(returnType.equals(ArrayType.v(RefType.v("ptolemy.math.Complex"),2))) {
+            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+                    PtolemyUtilities.complexMatrixTokenClass,
+                    PtolemyUtilities.complexMatrixTokenConstructor,
+                    returnLocal);
+            
+        } else if(returnType.equals(ArrayType.v(RefType.v("ptolemy.math.FixPoint"),2))) {
+            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+                    PtolemyUtilities.fixMatrixTokenClass,
+                    PtolemyUtilities.fixMatrixTokenConstructor,
+                    returnLocal);
+            
+        } else {
+            throw new IllegalActionException("unrecognized case");
+        }
+        return tokenLocal;
+    }
+
+    private Local _convertTokenArgToJavaArg(Local tokenLocal, 
+            ptolemy.data.type.Type tokenType,
+            CachedMethod.ArgumentConversion conversion)
+            throws IllegalActionException {
+        
+        if(conversion == CachedMethod.IDENTITY) {
+            Local tempLocal = Jimple.v().newLocal("arg" , 
+                    PtolemyUtilities.tokenType);
+            _body.getLocals().add(tempLocal);
+            
+            // Add the new local to the list of arguments
+            _units.add(
+                    Jimple.v().newAssignStmt(
+                            tempLocal,
+                            tokenLocal));
+            return tempLocal;
+        } else if(conversion == CachedMethod.ARRAYTOKEN) {
+            Local tempLocal = Jimple.v().newLocal("arg" , 
+                    RefType.v(PtolemyUtilities.arrayTokenClass));
+            _body.getLocals().add(tempLocal);
+            Local resultLocal = Jimple.v().newLocal("arg" , 
+                    ArrayType.v(RefType.v(PtolemyUtilities.objectClass), 1));
+            _body.getLocals().add(resultLocal);
+            
+            // Add the new local to the list of arguments
+            _units.add(
+                    Jimple.v().newAssignStmt(
+                            tempLocal,
+                            Jimple.v().newCastExpr(
+                                    tokenLocal,
+                                    RefType.v(PtolemyUtilities.arrayTokenClass))));
+            _units.add(
+                    Jimple.v().newAssignStmt(
+                            resultLocal,
+                            Jimple.v().newVirtualInvokeExpr(
+                                    tempLocal,
+                                    PtolemyUtilities.arrayValueMethod)));
+            return resultLocal;
+        } else if(conversion == CachedMethod.NATIVE) {
+            if(tokenType == ptolemy.data.type.BaseType.DOUBLE) {
+                Local tempLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v(PtolemyUtilities.doubleTokenClass));
+                _body.getLocals().add(tempLocal);
+                Local resultLocal = Jimple.v().newLocal("arg" , 
+                        DoubleType.v());
+                _body.getLocals().add(resultLocal);
+                // Add the new local to the list of arguments
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tempLocal,
+                                Jimple.v().newCastExpr(
+                                        tokenLocal,
+                                        RefType.v("ptolemy.data.DoubleToken"))));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                resultLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tempLocal,
+                                        PtolemyUtilities.doubleValueMethod)));
+                return resultLocal;
+            } else if(tokenType == ptolemy.data.type.BaseType.INT) {
+                Local tempLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v(PtolemyUtilities.intTokenClass));
+                _body.getLocals().add(tempLocal);
+                Local resultLocal = Jimple.v().newLocal("arg" , 
+                        IntType.v());
+                _body.getLocals().add(resultLocal);
+                // Add the new local to the list of arguments
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tempLocal,
+                                Jimple.v().newCastExpr(
+                                        tokenLocal,
+                                        RefType.v("ptolemy.data.IntToken"))));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                resultLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tempLocal,
+                                        PtolemyUtilities.intValueMethod)));
+                return resultLocal;
+            } else if(tokenType == ptolemy.data.type.BaseType.LONG) {
+                Local tempLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v(PtolemyUtilities.longTokenClass));
+                _body.getLocals().add(tempLocal);
+                Local resultLocal = Jimple.v().newLocal("arg" , 
+                        LongType.v());
+                _body.getLocals().add(resultLocal);
+                // Add the new local to the list of arguments
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tempLocal,
+                                Jimple.v().newCastExpr(
+                                        tokenLocal,
+                                        RefType.v("ptolemy.data.LongToken"))));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                resultLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tempLocal,
+                                        PtolemyUtilities.longValueMethod)));
+                return resultLocal;
+            }  else if(tokenType == ptolemy.data.type.BaseType.STRING) {
+                Local tempLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v(PtolemyUtilities.stringTokenClass));
+                _body.getLocals().add(tempLocal);
+                Local resultLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v("java.lang.String"));
+                _body.getLocals().add(resultLocal);
+                // Add the new local to the list of arguments
+           
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tempLocal,
+                                Jimple.v().newCastExpr(
+                                        tokenLocal,
+                                        RefType.v("ptolemy.data.StringToken"))));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                resultLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tempLocal,
+                                        PtolemyUtilities.stringValueMethod)));
+                return resultLocal;
+            }  else if(tokenType == ptolemy.data.type.BaseType.BOOLEAN) {
+                Local tempLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v(PtolemyUtilities.booleanTokenClass));
+                _body.getLocals().add(tempLocal);
+                Local resultLocal = Jimple.v().newLocal("arg" , 
+                        BooleanType.v());
+                _body.getLocals().add(resultLocal);
+                // Add the new local to the list of arguments
+           
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tempLocal,
+                                Jimple.v().newCastExpr(
+                                        tokenLocal,
+                                        RefType.v("ptolemy.data.BooleanToken"))));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                resultLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tempLocal,
+                                        PtolemyUtilities.booleanValueMethod)));
+                return resultLocal;
+            } else if(tokenType == ptolemy.data.type.BaseType.COMPLEX) {
+                Local tempLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v(PtolemyUtilities.complexTokenClass));
+                _body.getLocals().add(tempLocal);
+                Local resultLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v("ptolemy.math.Complex"));
+                _body.getLocals().add(resultLocal);
+                // Add the new local to the list of arguments
+                    
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tempLocal,
+                                Jimple.v().newCastExpr(
+                                        tokenLocal,
+                                        RefType.v("ptolemy.data.ComplexToken"))));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                resultLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tempLocal,
+                                        PtolemyUtilities.complexValueMethod)));
+                return resultLocal;
+            } else if(tokenType == ptolemy.data.type.BaseType.FIX) {
+                Local tempLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v(PtolemyUtilities.intTokenClass));
+                _body.getLocals().add(tempLocal);
+                Local resultLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v("ptolemy.math.FixPoint"));
+                _body.getLocals().add(resultLocal);
+                // Add the new local to the list of arguments
+           
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tempLocal,
+                                Jimple.v().newCastExpr(
+                                        tokenLocal,
+                                        RefType.v("ptolemy.data.FixToken"))));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                resultLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tempLocal,
+                                        PtolemyUtilities.fixValueMethod)));
+                return resultLocal;
+            } else if(tokenType == ptolemy.data.type.BaseType.DOUBLE_MATRIX) {
+                Local tempLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v(PtolemyUtilities.doubleMatrixTokenClass));
+                _body.getLocals().add(tempLocal);
+                Local resultLocal = Jimple.v().newLocal("arg" , 
+                        ArrayType.v(DoubleType.v(),2));
+                _body.getLocals().add(resultLocal);
+                // Add the new local to the list of arguments
+           
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tempLocal,
+                                Jimple.v().newCastExpr(
+                                        tokenLocal,
+                                        RefType.v("ptolemy.data.DoubleMatrixToken"))));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                resultLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tempLocal,
+                                        PtolemyUtilities.doubleMatrixMethod)));
+                return resultLocal;
+            } else if(tokenType == ptolemy.data.type.BaseType.INT_MATRIX) {
+                Local tempLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v(PtolemyUtilities.intMatrixTokenClass));
+                _body.getLocals().add(tempLocal);
+                Local resultLocal = Jimple.v().newLocal("arg" , 
+                        ArrayType.v(IntType.v(),2));
+                _body.getLocals().add(resultLocal);
+                // Add the new local to the list of arguments
+           
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tempLocal,
+                                Jimple.v().newCastExpr(
+                                        tokenLocal,
+                                        RefType.v("ptolemy.data.IntMatrixToken"))));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                resultLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tempLocal,
+                                        PtolemyUtilities.intMatrixMethod)));
+                return resultLocal;
+            } else if(tokenType == ptolemy.data.type.BaseType.LONG_MATRIX) {
+                Local tempLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v(PtolemyUtilities.longMatrixTokenClass));
+                _body.getLocals().add(tempLocal);
+                Local resultLocal = Jimple.v().newLocal("arg" , 
+                        ArrayType.v(LongType.v(),2));
+                _body.getLocals().add(resultLocal);
+                // Add the new local to the list of arguments
+           
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tempLocal,
+                                Jimple.v().newCastExpr(
+                                        tokenLocal,
+                                        RefType.v("ptolemy.data.LongMatrixToken"))));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                resultLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tempLocal,
+                                        PtolemyUtilities.longMatrixMethod)));
+                return resultLocal;
+            } else if(tokenType == ptolemy.data.type.BaseType.BOOLEAN_MATRIX) {
+                Local tempLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v(PtolemyUtilities.booleanMatrixTokenClass));
+                _body.getLocals().add(tempLocal);
+                Local resultLocal = Jimple.v().newLocal("arg" , 
+                        ArrayType.v(BooleanType.v(),2));
+                _body.getLocals().add(resultLocal);
+                // Add the new local to the list of arguments
+           
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tempLocal,
+                                Jimple.v().newCastExpr(
+                                        tokenLocal,
+                                        RefType.v("ptolemy.data.BooleanMatrixToken"))));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                resultLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tempLocal,
+                                        PtolemyUtilities.booleanMatrixMethod)));
+                return resultLocal;
+            } else if(tokenType == ptolemy.data.type.BaseType.COMPLEX_MATRIX) {
+                Local tempLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v(PtolemyUtilities.complexMatrixTokenClass));
+                _body.getLocals().add(tempLocal);
+                Local resultLocal = Jimple.v().newLocal("arg" , 
+                        ArrayType.v(RefType.v("ptolemy.math.Complex"),2));
+                _body.getLocals().add(resultLocal);
+                // Add the new local to the list of arguments
+           
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tempLocal,
+                                Jimple.v().newCastExpr(
+                                        tokenLocal,
+                                        RefType.v("ptolemy.data.ComplexMatrixToken"))));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                resultLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tempLocal,
+                                        PtolemyUtilities.complexMatrixMethod)));
+                return resultLocal;
+            } else if(tokenType == ptolemy.data.type.BaseType.FIX_MATRIX) {
+                Local tempLocal = Jimple.v().newLocal("arg" , 
+                        RefType.v(PtolemyUtilities.fixMatrixTokenClass));
+                _body.getLocals().add(tempLocal);
+                Local resultLocal = Jimple.v().newLocal("arg" , 
+                        ArrayType.v(RefType.v("ptolemy.math.FixPoint"),2));
+                _body.getLocals().add(resultLocal);
+                // Add the new local to the list of arguments
+           
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tempLocal,
+                                Jimple.v().newCastExpr(
+                                        tokenLocal,
+                                        RefType.v("ptolemy.data.FixMatrixToken"))));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tempLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tempLocal,
+                                        PtolemyUtilities.fixMatrixMethod)));
+                return resultLocal;
+            } else {// if(argTypes[i] instanceof ArrayType) {
+                throw new IllegalActionException(
+                        "CodeGeneration not supported for arrayType");
+            }
+        } else {
+            throw new IllegalActionException(
+                    "CodeGeneration not supported for argument " +
+                    "conversion " + conversion);
+        }
+    }
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
             throws IllegalActionException {
        throw new IllegalActionException(
@@ -718,120 +830,231 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
         int argCount = node.jjtGetNumChildren();
         _generateAllChildren(node);
         // The first child is the token on which to invoke the method.
-        
-        RefType objectType = RefType.v(PtolemyUtilities.objectClass);
-        Local argValuesLocal = Jimple.v().newLocal("tokenArray", 
-                ArrayType.v(objectType, 1));
-        _body.getLocals().add(argValuesLocal);
-        _units.add(
-                Jimple.v().newAssignStmt(
-                        argValuesLocal,
-                        Jimple.v().newNewArrayExpr(
-                                objectType,
-                                IntConstant.v(node.jjtGetNumChildren()))));
 
+       // The array of token types that the method takes.
+        ptolemy.data.type.Type[] argTypes =
+            new ptolemy.data.type.Type[node.jjtGetNumChildren()];
         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
-            _units.add(
-                    Jimple.v().newAssignStmt(
-                            Jimple.v().newArrayRef(
-                                    argValuesLocal,
-                                    IntConstant.v(i)),
-                            (Local)_nodeToLocal.get(node.jjtGetChild(i))));
+            argTypes[i] = ((ASTPtRootNode)node.jjtGetChild(i)).getType();
         }
 
-        RefType typeType = RefType.v("ptolemy.data.type.Type");
-        Local argTypesLocal = Jimple.v().newLocal("tokenTypes", 
-                ArrayType.v(typeType, 1));
-        _body.getLocals().add(argTypesLocal);
-        Local typeLocal = Jimple.v().newLocal("classType", 
-                typeType);
-        _body.getLocals().add(typeLocal);
-        Local tokenLocal = Jimple.v().newLocal("token", 
-                PtolemyUtilities.tokenType);
-        _body.getLocals().add(tokenLocal);
+        // Find the method...
+        CachedMethod cachedMethod = 
+            CachedMethod.findMethod(node.getMethodName(),
+                    argTypes, CachedMethod.METHOD);
+        
+        if(cachedMethod.isMissing()) {
+            throw new IllegalActionException("Function " + cachedMethod +
+                    " not found.");
+        }
 
+        if(cachedMethod instanceof CachedMethod.BaseConvertCachedMethod ||
+                cachedMethod instanceof CachedMethod.ArrayMapCachedMethod ||
+                cachedMethod instanceof CachedMethod.MatrixMapCachedMethod) {
+            throw new IllegalActionException(
+                    "CodeGeneration not supported for " + 
+                    cachedMethod.getClass());
+        }
+
+        Method method = cachedMethod.getMethod();
+      
+        // Find the corresponding soot method.
+        SootMethod sootMethod = SootUtilities.getSootMethodForMethod(method);
+
+        Local baseLocal = (Local)_nodeToLocal.get(node.jjtGetChild(0));
+
+        // The list of locals that are arguments to the function.
+        List args = new LinkedList();
+     
+        CachedMethod.ArgumentConversion[] conversions = 
+            cachedMethod.getConversions();
+        for (int i = 1; i < node.jjtGetNumChildren(); i++) {
+            Local tokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(i));
+
+            // Insert the appropriate conversion.
+            Local argLocal = _convertTokenArgToJavaArg(
+                    tokenLocal, argTypes[i-1], conversions[i-1]);
+            args.add(argLocal);
+        }
+
+        Type returnType = sootMethod.getReturnType();
+        Local returnLocal = Jimple.v().newLocal("returnValue", 
+                returnType);
+        _body.getLocals().add(returnLocal);
+
+        // Actually invoke the method.
         _units.add(
                 Jimple.v().newAssignStmt(
-                        argTypesLocal,
-                        Jimple.v().newNewArrayExpr(
-                                typeType,
-                                IntConstant.v(argCount))));
-        
-        Local indexLocal = Jimple.v().newLocal("index", IntType.v());
-        _body.getLocals().add(indexLocal);
-        
-        // The list of initializer instructions.
-        List initializerList = new LinkedList();
-        initializerList.add(
-                Jimple.v().newAssignStmt(
-                        indexLocal,
-                        IntConstant.v(0)));
-        
-        // The list of body instructions.
-        List bodyList = new LinkedList();
-        bodyList.add(
-                Jimple.v().newAssignStmt(
-                        tokenLocal,
-                        Jimple.v().newArrayRef(
-                                argValuesLocal,
-                                indexLocal)));
-        bodyList.add(
-                Jimple.v().newAssignStmt(
-                        typeLocal,
+                        returnLocal, 
                         Jimple.v().newVirtualInvokeExpr(
-                                tokenLocal,
-                                PtolemyUtilities.tokenGetTypeMethod)));
-        bodyList.add(
-                Jimple.v().newAssignStmt(
-                        Jimple.v().newArrayRef(
-                                argTypesLocal,
-                                indexLocal),
-                        typeLocal));
-                
-                
-        // Increment the index.
-        bodyList.add(
-                Jimple.v().newAssignStmt(
-                        indexLocal,
-                        Jimple.v().newAddExpr(
-                                indexLocal,
-                                IntConstant.v(1))));
+                                baseLocal, sootMethod, args)));
+      
+        // Convert the result back to a token.
+        Local tokenLocal = _convertJavaResultToToken(returnLocal, returnType);
         
-        Expr conditionalExpr =
-            Jimple.v().newLtExpr(
-                    indexLocal,
-                    IntConstant.v(argCount));
+     
         
-        Stmt stmt = Jimple.v().newNopStmt();
-        _units.add(stmt);
+   //      RefType objectType = RefType.v(PtolemyUtilities.objectClass);
+//         Local argValuesLocal = Jimple.v().newLocal("tokenArray", 
+//                 ArrayType.v(objectType, 1));
+//         _body.getLocals().add(argValuesLocal);
+//         _units.add(
+//                 Jimple.v().newAssignStmt(
+//                         argValuesLocal,
+//                         Jimple.v().newNewArrayExpr(
+//                                 objectType,
+//                                 IntConstant.v(node.jjtGetNumChildren()))));
 
-        SootUtilities.createForLoopBefore(_body,
-                stmt,
-                initializerList,
-                bodyList,
-                conditionalExpr);
+//         for (int i = 0; i < node.jjtGetNumChildren(); i++) {
+//             _units.add(
+//                     Jimple.v().newAssignStmt(
+//                             Jimple.v().newArrayRef(
+//                                     argValuesLocal,
+//                                     IntConstant.v(i)),
+//                             (Local)_nodeToLocal.get(node.jjtGetChild(i))));
+//         }
+
+//         RefType typeType = RefType.v("ptolemy.data.type.Type");
+//         Local argTypesLocal = Jimple.v().newLocal("tokenTypes", 
+//                 ArrayType.v(typeType, 1));
+//         _body.getLocals().add(argTypesLocal);
+//         Local typeLocal = Jimple.v().newLocal("classType", 
+//                 typeType);
+//         _body.getLocals().add(typeLocal);
+//         Local tokenLocal = Jimple.v().newLocal("token", 
+//                 PtolemyUtilities.tokenType);
+//         _body.getLocals().add(tokenLocal);
+
+//         _units.add(
+//                 Jimple.v().newAssignStmt(
+//                         argTypesLocal,
+//                         Jimple.v().newNewArrayExpr(
+//                                 typeType,
+//                                 IntConstant.v(argCount))));
+        
+//         Local indexLocal = Jimple.v().newLocal("index", IntType.v());
+//         _body.getLocals().add(indexLocal);
+        
+//         // The list of initializer instructions.
+//         List initializerList = new LinkedList();
+//         initializerList.add(
+//                 Jimple.v().newAssignStmt(
+//                         indexLocal,
+//                         IntConstant.v(0)));
+        
+//         // The list of body instructions.
+//         List bodyList = new LinkedList();
+//         bodyList.add(
+//                 Jimple.v().newAssignStmt(
+//                         tokenLocal,
+//                         Jimple.v().newArrayRef(
+//                                 argValuesLocal,
+//                                 indexLocal)));
+//         bodyList.add(
+//                 Jimple.v().newAssignStmt(
+//                         typeLocal,
+//                         Jimple.v().newVirtualInvokeExpr(
+//                                 tokenLocal,
+//                                 PtolemyUtilities.tokenGetTypeMethod)));
+//         bodyList.add(
+//                 Jimple.v().newAssignStmt(
+//                         Jimple.v().newArrayRef(
+//                                 argTypesLocal,
+//                                 indexLocal),
+//                         typeLocal));
+                
+                
+//         // Increment the index.
+//         bodyList.add(
+//                 Jimple.v().newAssignStmt(
+//                         indexLocal,
+//                         Jimple.v().newAddExpr(
+//                                 indexLocal,
+//                                 IntConstant.v(1))));
+        
+//         Expr conditionalExpr =
+//             Jimple.v().newLtExpr(
+//                     indexLocal,
+//                     IntConstant.v(argCount));
+        
+//         Stmt stmt = Jimple.v().newNopStmt();
+//         _units.add(stmt);
+
+//         SootUtilities.createForLoopBefore(_body,
+//                 stmt,
+//                 initializerList,
+//                 bodyList,
+//                 conditionalExpr);
                
-        SootMethod methodCallEvaluationMethod = 
-            Scene.v().getMethod("<ptolemy.data.expr.ParseTreeEvaluator: ptolemy.data.Token methodCall(java.lang.String,int,ptolemy.data.type.Type[],java.lang.Object[])>");
-        List argList = new ArrayList();
-        argList.add(StringConstant.v(node.getMethodName()));
-        argList.add(IntConstant.v(argCount));
-        argList.add(argTypesLocal);
-        argList.add(argValuesLocal);
+//         SootMethod methodCallEvaluationMethod = 
+//             Scene.v().getMethod("<ptolemy.data.expr.ParseTreeEvaluator: ptolemy.data.Token methodCall(java.lang.String,int,ptolemy.data.type.Type[],java.lang.Object[])>");
+//         List argList = new ArrayList();
+//         argList.add(StringConstant.v(node.getMethodName()));
+//         argList.add(IntConstant.v(argCount));
+//         argList.add(argTypesLocal);
+//         argList.add(argValuesLocal);
 
-        _units.add(
-                Jimple.v().newAssignStmt(
-                        tokenLocal,
-                        Jimple.v().newStaticInvokeExpr(
-                                methodCallEvaluationMethod,
-                                argList)));
+//         _units.add(
+//                 Jimple.v().newAssignStmt(
+//                         tokenLocal,
+//                         Jimple.v().newStaticInvokeExpr(
+//                                 methodCallEvaluationMethod,
+//                                 argList)));
                               
         _nodeToLocal.put(node, tokenLocal);
     }
     public void visitPowerNode(ASTPtPowerNode node)
             throws IllegalActionException {
-       throw new IllegalActionException(
-                "unimplemented case");
+        
+        _generateAllChildren(node);
+        int numChildren = node.jjtGetNumChildren();
+        _assert(numChildren > 0, node,
+                "The number of child nodes must be greater than zero");
+       
+        Local resultLocal = Jimple.v().newLocal("result", 
+                RefType.v(PtolemyUtilities.tokenClass));
+        _body.getLocals().add(resultLocal);
+        
+        Local tokenLocal = Jimple.v().newLocal("token", 
+                RefType.v(PtolemyUtilities.tokenClass));
+        _body.getLocals().add(tokenLocal);
+        
+        Local timesLocal = Jimple.v().newLocal("times", 
+                IntType.v());
+        _body.getLocals().add(timesLocal);
+        
+        _units.add(
+                Jimple.v().newAssignStmt(
+                        resultLocal,
+                        (Local)_nodeToLocal.get(node.jjtGetChild(0))));
+        
+        for(int i = 1; i < numChildren; i++) {
+            _units.add(
+                    Jimple.v().newAssignStmt(
+                            tokenLocal,
+                            (Local)_nodeToLocal.get(node.jjtGetChild(i))));
+            _units.add(
+                    Jimple.v().newAssignStmt(
+                            tokenLocal,
+                            Jimple.v().newCastExpr(
+                                    tokenLocal,
+                                    RefType.v(PtolemyUtilities.scalarTokenClass))));
+            _units.add(
+                    Jimple.v().newAssignStmt(
+                            timesLocal,
+                            Jimple.v().newVirtualInvokeExpr(
+                                    tokenLocal,
+                                    PtolemyUtilities.tokenIntValueMethod)));
+            
+            _units.add(
+                    Jimple.v().newAssignStmt(
+                            resultLocal,
+                            Jimple.v().newVirtualInvokeExpr(
+                                    resultLocal,
+                                    PtolemyUtilities.tokenPowMethod,
+                                    timesLocal)));
+        }
+        _nodeToLocal.put(node, resultLocal);
     }
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
