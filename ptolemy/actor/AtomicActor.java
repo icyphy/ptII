@@ -430,7 +430,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  removeDependency(IOPort IOPort)</i> method. 
      *  
      *  @see ptolemy.domains.de.lib.TimedDelay
-     *  @see #removeDependency(IOPort IOPort)
+     *  @see #removeDependency(IOPort, IOPort)
      */
     public void removeDependencies() {
     }

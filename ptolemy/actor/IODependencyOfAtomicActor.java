@@ -49,7 +49,7 @@ and output ports are not dependent. For the first case, the input and out ports
 in the ports graph are fully connected. For the second case, we use the 
 <i>removeDependence(input, output)</i> method to declare that there is no
 dependency between the input and output port, thus they are not connected.
-See the {@link TimedDelay} for usage pattern.
+See the {@link ptolemy.domains.de.lib.TimedDelay} for usage pattern.
 <p>
 Note, for Multiplexer, Demultiplexer actors, the boolean control input and output
 are dependent.

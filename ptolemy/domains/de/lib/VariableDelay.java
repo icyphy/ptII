@@ -48,7 +48,7 @@ This actor works exactly as the ptolemy.domains.de.lib.TimedDelay actor,
 except that the amount of time delayed is specified by an incoming
 token through the delay port, instead of a parameter.
 
-@see ptolemy.actor.IODependence
+@see ptolemy.actor.IODependency
 @see ptolemy.domains.de.lib.TimedDelay
 @see ptolemy.domains.de.lib.Server
 @see ptolemy.domains.sdf.lib.SampleDelay
