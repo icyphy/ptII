@@ -202,24 +202,29 @@ public class PushSupplier extends Sink {
 				   try {
 						Thread.sleep(1000);
 					} catch (InterruptedException e) {
-						// ignor here and retry.
+                       _debug("thread is interrupted when trying to find" +
+                        "remote consumer");
 					}
 	            }catch (Exception exp) {
-				// ignor here and retry.
-				exp.printStackTrace();
+				    // ignor here and retry.
+                    _debug("failed to resolve the remote consumer. will try again." );
 				try {
 						
 						Thread.sleep(1000);
 					} catch (InterruptedException ex1) {
-						// ignor here and retry.
+                        _debug("thread is interrupted when trying to find" +
+                                "remote consumer");
 					}
 				} 
             }
            
         } catch (UserException ex) {
-            ex.printStackTrace();
+            //ex.printStackTrace();
             throw new IllegalActionException(this,
-                    " initialize ORB failed." + ex.getMessage());
+                    " initialize ORB failed. Please make sure the " +
+                    "naming server has already started and the " +
+                    "ORBInitProperty parameter is configured correctly. " +
+                    "the error message is: " + ex.getMessage());
         }
 
     }

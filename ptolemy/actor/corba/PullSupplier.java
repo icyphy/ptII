@@ -227,7 +227,10 @@ public class PullSupplier extends Sink {
             ncRef.rebind(path, _supplier);
         } catch (UserException ex) {
             throw new IllegalActionException(this,
-                    " initialize ORB failed." + ex.getMessage());
+                    " initialize ORB failed. Please make sure the " +
+                    "naming server has already started and the " +
+                    "ORBInitProperty parameter is configured correctly. " +
+                    "the error message is: " + ex.getMessage());
         }
     }
 
