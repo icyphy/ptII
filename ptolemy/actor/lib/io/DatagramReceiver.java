@@ -78,14 +78,15 @@ Bash command netstat -an is very useful in seeing current port allocations!
 Initially, the local port number is set to -1 to indicate no port at all.
 
 @author Winthrop Williams, Jorn, Xiojun, Edward Lee
-(Based on TiltSensor actor writen by Chamberlain Fong, Xiaojun Liu, Edward Lee)
+(Based on TiltSensor actor written
+   by Chamberlain Fong, Xiaojun Liu, Edward Lee)
 @version $Id$
 */
 public class DatagramReceiver extends TypedAtomicActor {
 
     public DatagramReceiver(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
-        super(container,name);
+        super(container, name);
 
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
@@ -150,9 +151,8 @@ public class DatagramReceiver extends TypedAtomicActor {
                     if(_debugging) _debug("A socket is created!!");
                 }
                 catch (SocketException ex) {
-                    /* ignore */
-                    ex.printStackTrace();
-                    throw new InternalErrorException("socket exception");
+                    throw new InternalErrorException(KernelException
+                            .stackTraceToString(ex));
                 }
 
                 _listenerThread.start();
@@ -194,7 +194,7 @@ public class DatagramReceiver extends TypedAtomicActor {
      *  will stay alive until the socket is closed.
      *  @exception IllegalActionException If the <i>localPort</i> parameter
      *  has a value of -1, or a socket could not be created.
-     *  @exception NameDuplicationException Should not be thrown.
+     *  @exception NameDuplicationException Not throw in this base class.
      */
     public void preinitialize() throws IllegalActionException,
             NameDuplicationException {
@@ -213,16 +213,16 @@ public class DatagramReceiver extends TypedAtomicActor {
         // to open the socket or start a new thread.
         int portNumber = ((IntToken)(localPort.getToken())).intValue();
         if (portNumber == -1) {
-            if(_debugging) _debug("Can't run with port=-1");
-            throw new IllegalActionException(this, "Cannot run w/ port=-1");
+            if(_debugging) _debug("Can't run with port = -1");
+            throw new IllegalActionException(this, "Cannot run w/ port = -1");
         }
 
         // Allocate a new socket.
         try {
             if(_debugging) {
-                _debug("Trying to create a new socket on port " + portNum);
+                _debug("Trying to create a new socket on port " + portNumber);
             }
-            socket = new DatagramSocket(portNum);
+            socket = new DatagramSocket(portNumber);
             if(_debugging) {
                 _debug("Socket created successfully!");
             }
@@ -264,11 +264,11 @@ public class DatagramReceiver extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Variables used
+    // FIXME: these need indivdual comments
     private DatagramPacket _receivePacket =
-    new DatagramPacket(new byte[440],0,440);
+    new DatagramPacket(new byte[440], 0, 440);
     private DatagramPacket _broadcastPacket =
-    new DatagramPacket(new byte[440],0,440);
+    new DatagramPacket(new byte[440], 0 ,440);
     private int packetsAlreadyAwaitingFire = 0;
     private boolean _overwrite;
     private DatagramSocket socket;

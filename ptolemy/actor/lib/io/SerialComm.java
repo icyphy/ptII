@@ -97,7 +97,7 @@ public class SerialComm extends TypedAtomicActor
      */
     public SerialComm(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
-        super(container,name);
+        super(container, name);
 
         dataToSend = new TypedIOPort(this, "dataToSend");
         dataToSend.setInput(true);

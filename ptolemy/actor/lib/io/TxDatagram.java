@@ -117,9 +117,8 @@ public class TxDatagram extends TypedAtomicActor {
                     System.out.println("A socket is created!!");
                 }
                 catch (SocketException ex) {
-                    /* ignore */
-                    ex.printStackTrace();
-                    throw new InternalErrorException("cannot create socket");
+                    throw new InternalErrorException("Cannot create socket: "
+                            + KernelException.stackTraceToString(ex));
                 }
 
             }
@@ -173,9 +172,8 @@ public class TxDatagram extends TypedAtomicActor {
             System.out.println("PI A socket is created!!");
         }
         catch (SocketException ex) {
-            /* ignore */
-            ex.printStackTrace();
-            throw new InternalErrorException("PI cannot create socket");
+            throw new InternalErrorException("PI Cannot create socket: "
+                            + KernelException.stackTraceToString(ex));
         }
     }
 
