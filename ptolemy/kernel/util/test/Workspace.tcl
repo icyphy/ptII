@@ -93,6 +93,15 @@ test Workspace-3.3 {Add objects twice to the workspace directory} {
 } {{ptolemy.kernel.util.IllegalActionException: W and .N1:
 Object is already listed in the workspace directory.}}
 
+test Workspace-3.4 {Test directoryList} {
+    set w [java::new ptolemy.kernel.util.Workspace W]
+    set n1 [java::new ptolemy.kernel.util.NamedObj $w N1]
+    set n2 [java::new ptolemy.kernel.util.NamedObj $w N2]
+    set n3 [java::new ptolemy.kernel.util.NamedObj $w N3]
+    listToFullNames [$w directoryList]
+} {.N1 .N2 .N3}
+
+
 ######################################################################
 ####
 #
