@@ -70,7 +70,7 @@ import java.util.LinkedList;
 On each firing send an expression for evaluation to a matlab {@link Engine}. The
 expression is any valid matlab expression, e.g.:
 <pre>
-    [out1, out2,... ] = SomeMatlabFunctionOrExpression( in1, in2,... ); ...
+    [out1, out2, ... ] = SomeMatlabFunctionOrExpression( in1, in2, ... ); ...
 </pre>
 
 The expression may include references to the input port names, current
@@ -94,7 +94,7 @@ corresponding output ports. Incorrect expressions are usually first
 detected at this point by not finding the expected variables. If an
 output port variable is not found in the matlab engine, an exception
 is thrown. The exception description string contains the last stdout
-of the matlab engine that ususally describes the error.<p>
+of the matlab engine that usually describes the error.<p>
 
 A Parameter named <i>packageDirectories</i> may be added to this actor
 to augment the matlab engine's search path during the firing of this
@@ -142,7 +142,7 @@ public class Expression extends TypedAtomicActor {
         TransientSingletonConfigurableAttribute
             iconDescription = new TransientSingletonConfigurableAttribute(
                                this, "_iconDescription");
-        iconDescription.configure(null,null,
+        iconDescription.configure(null, null,
               "<svg>"
             + "<rect width=\"50\" height=\"40\" style=\"fill:white\"/>"
 
@@ -197,7 +197,7 @@ public class Expression extends TypedAtomicActor {
     }
 
     /** Open a matlab engine
-     *  @exception IllegalActionException Thrown if matlab engine not found.
+     *  @exception IllegalActionException If matlab engine not found.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -221,7 +221,7 @@ public class Expression extends TypedAtomicActor {
         _iteration.setToken(new IntToken(_iterationCount));
 
             // Process any additional directories to be added to matlab's
-            // path. The list may containe paths relative to the directory in
+            // path. The list may contain paths relative to the directory in
             // which ptolemy was started or any directory listed in the current
             // classpath (in this order, first match wins). See
             // UtilityFunctions.findFile()
@@ -249,7 +249,7 @@ public class Expression extends TypedAtomicActor {
                 cellFormat.append("}");
 
                 if (cellFormat.length() > 2) {
-                _addPathCommand = "addedPath_=" + cellFormat.toString()
+                _addPathCommand = "addedPath_ = " + cellFormat.toString()
                                   + ";addpath(addedPath_{:});";
                 matlabEngine.evalString("previousPath_=path");
                 _previousPath = matlabEngine.get("previousPath_");

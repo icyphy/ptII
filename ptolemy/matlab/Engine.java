@@ -85,7 +85,7 @@ import ptolemy.math.ComplexMatrixMath;
  *                              ComplexMatrix otherwise.
  *     'struct'                 RecordToken, if mxArray dimension 1x1,
  *                              ArrayToken of ArrayTokens of RecordTokens
- *                              {{RecordToken,...},{...}}  otherwise.
+ *                              {{RecordToken, ...}, {...}}  otherwise.
  *     'cell'                   ArrayToken of whatever Tokens the cell
  *                              elements resolve to through recursion
  *                              of _convertMxArrayToToken(). Note that
@@ -130,15 +130,15 @@ import ptolemy.math.ComplexMatrixMath;
  * {@link #open} and {@link #close} are used to open / close the
  * connection to the matlab engine.<p>
  *
- * All callers share the same matlab engine and its workspace. Enigne's methods
- * synhronize on the static {@link #semaphore} to prevent
+ * All callers share the same matlab engine and its workspace. Engine's methods
+ * synchronize on the static {@link #semaphore} to prevent
  * overlapping calls to the same method from different threads. Use
- * Engine.{@link #semaphore} to synchronize accross multiple method calls
+ * Engine.{@link #semaphore} to synchronize across multiple method calls
  * if needed.<p>
  *
  * @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited.
- * @version $Id$ */
-
+ * @version $Id$
+ */
 public class Engine {
     /** Load the "ptmatlab" native interface. */
     static {
@@ -211,7 +211,7 @@ public class Engine {
                     engUserCount = 1;
                     if (debug > 0) {
                         System.out.println("matlabEngine.open(" + startCmd
-                                           + ") = " + eng + ", engUserCount="
+                                           + ") = " + eng + ", engUserCount = "
                                            + engUserCount);
                     }
                 }
@@ -219,12 +219,13 @@ public class Engine {
                 engUserCount++;
                 if (debug > 0) {
                     System.out.println("matlabEngine.open(" + startCmd
-                                       + ") : reusing eng=" + eng
-                                       + ", engUserCount="+engUserCount);
+                                       + ") : reusing eng = " + eng
+                                       + ", engUserCount = "+engUserCount);
                 }
             }
             if (eng == 0) {
-                throw new IllegalActionException("matlabEngine.open(" + startCmd
+                throw new IllegalActionException("matlabEngine.open("
+                                                 + startCmd
                                                  + ") : can't find matlab"
                                                  + "engine.");
             }
@@ -243,7 +244,7 @@ public class Engine {
             if (eng != 0 && engUserCount > 0) {
                 engUserCount--;
                 if (debug > 0) {
-                    System.out.println("matlabEngine.close() : engUserCount="
+                    System.out.println("matlabEngine.close() : engUserCount = "
                                        + engUserCount);
                 }
                 if (engUserCount <= 0) {
@@ -270,7 +271,8 @@ public class Engine {
                                                  + errNotOpened);
             }
             if (debug > 0) {
-                System.out.println("matlabEngine.evalString(\"" + evalStr + "\")");
+                System.out.println("matlabEngine.evalString(\""
+                        + evalStr + "\")");
             }
             retval = ptmatlabEngEvalString(eng, evalStr);
         }
@@ -294,9 +296,10 @@ public class Engine {
             }
             long ma = ptmatlabEngGetArray(eng, name);
             if (ma == 0) {
-                throw new IllegalActionException("matlabEngine.get(" + name +
-                                                 "): can't find matlab variable \"" +
-                                                 name + "\"\n" +
+                throw new IllegalActionException("matlabEngine.get(" + name
+                                                 + "): can't find matlab "
+                                                 + "variable \""
+                                                 + name + "\"\n"
                                                  getOutput().stringValue());
             }
             retval = _convertMxArrayToToken(ma);
@@ -439,7 +442,8 @@ public class Engine {
 		}
 		if (scalar) {
                     double tmp = a[0][0];
-                    if (tmp == Math.floor(tmp) && Math.abs(tmp) <= Integer.MAX_VALUE)
+                    if (tmp == Math.floor(tmp)
+                            && Math.abs(tmp) <= Integer.MAX_VALUE)
                         retval = new IntToken((int)tmp);
                     else
                         retval = new DoubleToken(tmp);
@@ -465,11 +469,13 @@ public class Engine {
                         } else {
                             throw new IllegalActionException("can't get field "
                                                              + fieldNames[k] +
-                                                             "from matlab struct "
-                                                             + nRows+"x"+ nCols);
+                                                             + "from matlab "
+                                                             + "struct "
+                                                             + nRows + "x"
+                                                             + nCols);
                         }
                     }
-                    ta[m] = new RecordToken(fieldNames,fieldValues);
+                    ta[m] = new RecordToken(fieldNames, fieldValues);
                 }
                 tr[n] = new ArrayToken(ta);
             }
