@@ -334,10 +334,14 @@ public class ProcessDirector extends Director {
             Iterator threads = _actorThreadList.iterator();
             while (threads.hasNext() ) {
                 ProcessThread thread = (ProcessThread)threads.next();
-                thread.getActor().stop();
-                // I'm not sure why we need the interrupt here...but it
-                // seems to help.
-                thread.interrupt();
+                try {
+                    thread.getActor().stop();
+                    // I'm not sure why we need the interrupt here...but it
+                    // seems to help.
+                    thread.interrupt();
+                } catch(Exception ex) {
+                    // Ignore..  probably InterruptedIOException
+                }
             }
         }
     }
