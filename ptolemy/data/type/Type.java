@@ -94,7 +94,7 @@ public interface Type
      *  @parameter type A Type.
      *  @return True is the argument is a substitution instance of this type.
      */
-    public abstract boolean isSubstitutionInstance(Type type);
+    public boolean isSubstitutionInstance(Type type);
 
     /** Return the string representation of this type.
      *  @return A String.
