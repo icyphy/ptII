@@ -710,7 +710,27 @@ public class MoMLParser extends HandlerBase {
                     Iterator requests = _linkRequests.iterator();
                     while (requests.hasNext()) {
                         LinkRequest request = (LinkRequest)requests.next();
-                        request.execute();
+                        // Be sure to use the handler if these fail so that
+                        // we continue to the next link requests.
+                        try {
+                            request.execute();
+                        } catch (Exception ex) {
+                            int reply = _handler.handleError(
+                                    request.toString(), _current, ex);
+                            if (reply == ErrorHandler.CONTINUE) {
+                                continue;
+                            } else if (reply == ErrorHandler.CANCEL) {
+                                // NOTE: Since we have to throw an XmlException for
+                                // the exception to be properly handled, we communicate
+                                // that it is a user cancellation with the special
+                                // string pattern "*** Canceled." in the message.
+                                throw new XmlException(
+                                        "*** Canceled.",
+                                        _currentExternalEntity(),
+                                        _parser.getLineNumber(),
+                                        _parser.getColumnNumber());
+                            }
+                        }
                     }
                 }
                 try {
@@ -3449,6 +3469,26 @@ public class MoMLParser extends HandlerBase {
             }
         }
     }
+    
+    /** Return true if the link between the specified port and
+     *  relation is part of the class definition. It is part of the
+     *  class definition if either the port and relation are at the
+     *  same level of hierarchy and are both class elements, or if
+     *  the relation and the container of the port are both class
+     *  elements.
+     *  NOTE: This is not perfect, since a link could have been
+     *  created between these elements in a subclass.
+     *  @param port The port.
+     *  @param relation The relation.
+     *  @return True if the link is part of the class definition.
+     */
+    private boolean _isLinkInClass(Port port, Relation relation) {
+        boolean portIsInClass = (port.getContainer()
+                == relation.getContainer())
+                ? (port.isClassElement() )
+                : (((NamedObj)port.getContainer()).isClassElement());
+        return (portIsInClass && relation.isClassElement());
+    }
 
     /**
      *  Return whether or not the given element name is undoable. NOTE: we need
@@ -3855,13 +3895,14 @@ public class MoMLParser extends HandlerBase {
      *  @param indexSpec The index of the channel.
      *  @param insideIndexSpec The index of the inside channel.
      *  @throws XmlException If something goes wrong.
+     *  @throws IllegalActionException If the link is part of a class definition.
      */
     private void _processUnlink(
             String portName,
             String relationName,
             String indexSpec,
             String insideIndexSpec)
-            throws XmlException {
+            throws XmlException, IllegalActionException {
 
         _checkClass(_current, CompositeEntity.class,
                 "Element \"unlink\" found inside an element that "
@@ -3899,6 +3940,14 @@ public class MoMLParser extends HandlerBase {
             _checkForNull(tmpRelation, "No relation named \"" +
                     relationName + "\" in " + context.getFullName());
             ComponentRelation relation = (ComponentRelation)tmpRelation;
+            
+            // NOTE: Added to ensure that class elements aren't changed.
+            // EAL 1/04.
+            if (!_propagating && _isLinkInClass(port, relation)) {
+                throw new IllegalActionException(port,
+                        "Cannot unlink a port from a relation when both" +
+                        " are part of the class definition.");
+            }
         
             // Handle the undoable aspect
             if (_undoEnabled && _undoContext.isUndoable()) {
@@ -3928,6 +3977,17 @@ public class MoMLParser extends HandlerBase {
             // index is given.
             int index = Integer.parseInt(indexSpec);
         
+            // NOTE: Added to ensure that class elements aren't changed.
+            // EAL 1/04.  Unfortunately, getting the relation is fairly
+            // expensive.
+            List relationList = port.linkedRelationList();
+            Relation relation = (Relation)relationList.get(index);
+            if (!_propagating && _isLinkInClass(port, relation)) {
+                throw new IllegalActionException(port,
+                        "Cannot unlink a port from a relation when both" +
+                        " are part of the class definition.");
+            }
+
             // Handle the undoable aspect  before doing the unlinking
             if (_undoEnabled && _undoContext.isUndoable()) {
                 // Get the relation at the given index
@@ -3950,6 +4010,18 @@ public class MoMLParser extends HandlerBase {
         } else {
             // insideIndex is given.
             int index = Integer.parseInt(insideIndexSpec);
+            
+            // NOTE: Added to ensure that class elements aren't changed.
+            // EAL 1/04.  Unfortunately, getting the relation is fairly
+            // expensive.
+            List relationList = port.insideRelationList();
+            Relation relation = (Relation)relationList.get(index);
+            if (!_propagating && _isLinkInClass(port, relation)) {
+                throw new IllegalActionException(port,
+                        "Cannot unlink a port from a relation when both" +
+                        " are part of the class definition.");
+            }
+
             // Handle the undoable aspect  before doing the unlinking
             if (_undoEnabled && _undoContext.isUndoable()) {
                 // Get the relation at the given index
@@ -3969,7 +4041,6 @@ public class MoMLParser extends HandlerBase {
                 _undoContext.appendUndoMoML(" />\n");
             }
             port.unlinkInside(index);
-        
         }
         
         // Do not need to worry about child elements
@@ -4451,6 +4522,9 @@ public class MoMLParser extends HandlerBase {
             _processLink(_portName, _relationName,
                     _indexSpec, _insideIndexSpec);
         }
+        public String toString() {
+            return "link " + _portName + " to " + _relationName;
+        }
         protected String _portName, _relationName,
                 _indexSpec, _insideIndexSpec;
     }
@@ -4467,6 +4541,9 @@ public class MoMLParser extends HandlerBase {
         public void execute() throws IllegalActionException, XmlException {
             _processUnlink(_portName, _relationName,
                     _indexSpec, _insideIndexSpec);
+        }
+        public String toString() {
+            return "unlink " + _portName + " from " + _relationName;
         }
     }
 }
