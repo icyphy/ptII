@@ -31,6 +31,7 @@
 
 package ptolemy.data.expr;
 
+import ptolemy.data.StringToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -38,8 +39,15 @@ import ptolemy.kernel.util.NamedObj;
 //////////////////////////////////////////////////////////////////////////
 //// StringParameter
 /**
-This subclass of Parameter is identical to Parameter except that it
-sets itself to string mode in the constructor.  The subclass is provided
+This subclass of Parameter is almost identical to Parameter except that it
+sets itself to string mode in the constructor.
+In addition, there is a convenience method, stringValue(), that
+is equivalent to the following expression:
+<pre>
+   ((StringToken)this.getToken()).stringValue()
+</pre>
+<p>
+This subclass is provided mainly
 so that string-mode parameters can be specified in MoML.  Consequently,
 the only constructor provided is the one needed by MoML.
 
@@ -68,5 +76,22 @@ public class StringParameter extends Parameter {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setStringMode(true);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return the string value of this parameter.  This is
+     *  equivalent to
+     *  <pre>
+     *     ((StringToken)this.getToken()).stringValue()
+     *  </pre>
+     *  @exception IllegalActionException If the expression cannot
+     *   be parsed or cannot be evaluated, or if the result of evaluation
+     *   violates type constraints, or if the result of evaluation is null
+     *   and there are variables that depend on this one.
+     */
+    public String stringValue() throws IllegalActionException {
+        return ((StringToken)getToken()).stringValue();
     }
 }
