@@ -494,27 +494,12 @@ public class DoubleArrayStat extends DoubleArrayMath {
      */
     public static final double[] randomGaussian(double mean,
             double standardDeviation, int N) {
-        double t;
-        double x, v1, v2, r;
         Random random = new Random();
         double[] retval = new double[N];
 
-        for (int i = 0; i < N; i += 2) {
-            do {
-                v1 = 2.0 * random.nextDouble() - 1.0;
-                v2 = 2.0 * random.nextDouble() - 1.0;
-                r = v1 * v1 + v2 * v2;
-            } while ((r >= 1.0) && (r == 0.0));
-            // prevent division by zero later in very rare cases
-
-            r = Math.sqrt((-2.0 * Math.log(r)) / r);
-            retval[i] = mean + v1 * r * standardDeviation;
-
-            if ((i + 1) < N) {
-                retval[i + 1] = mean + v2 * r * standardDeviation;
-            }
+        for (int i = 0; i < N; i++) {
+            retval[i] = mean + random.nextGaussian()*standardDeviation;
         }
-
         return retval;
     }
 
