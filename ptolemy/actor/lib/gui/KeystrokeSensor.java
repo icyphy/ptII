@@ -1,4 +1,4 @@
-/* An actor which pops up a keystroke-sensing JFrame window.
+/* An actor which pops up a keystroke-sensing JFrame.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -68,31 +68,36 @@ import java.awt.event.KeyEvent;
 //import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
-//// KeystrokeSensor
+//// ArrowKeySensor
 /**
 When this actor is preinitialized, it pops up a new JFrame window on
 the desktop, usually in the upper left hand corner of the screen.
 When this JFrame has the focus (such as when it has been clicked on)
 it is capable of sensing keystrokes.  <p>
 
-Only two keystrokes are sensed, control-C (for copy) and control-V
-(for paste).  This actor is designed to work with SystemClipboard.java<p>
+This actor senses only the four non-numeric-pad arrow-key keystrokes.
+This actor is almost identical to KeystrokeSensor.java.  One
+difference is the different set of keystrokes sensed.  The other
+difference, is that this actor responds to key releases as well as key
+presses.  Upon each key press, the integer 1 is broadcast from the
+corresponding output.  Upon each key release, the integer 0 is
+output.<p>
 
-The actor contains a private inner class which generates the JFrame.
-This frame sets up call-backs which react to the keystrokes.  When
-called back, these in turn call the director's fireAtCurrentTime()
-method.  This causes the director to call fire() on the actor.  The
-actor then broadcasts tokens from one or both outputs depending on
-which keystroke(s) have occurred since the actor was last fired.  <p>
+This actor contains a private inner class which generated the JFrame.
+The frame sets up call-backs which react to the keystrokes.  When called,
+these call the director's fireAtCurrentTime() method.  This causes
+the director to call fire() on the actor.   The actor then broadcasts
+tokens from one or both outputs depending on which keystroke(s) have
+occurred since the actor was last fired.  <p>
 
-NOTE: This actor only works in DE due to its reliance on the
-director's fireAtCurrentTime() method.
+NOTE: This actor only works in the DE domain due to its reliance on
+this director's fireAtCurrentTime() method.
 
 @author Winthrop Williams
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 2.1
 */
-public class KeystrokeSensor extends TypedAtomicActor {
+public class ArrowKeySensor extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -102,61 +107,111 @@ public class KeystrokeSensor extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public KeystrokeSensor(CompositeEntity container, String name)
+    public ArrowKeySensor(CompositeEntity container, String name)
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Outputs
 
-        controlC = new TypedIOPort(this, "controlC");
-        controlC.setTypeEquals(BaseType.GENERAL);
-        controlC.setOutput(true);
+        upArrow = new TypedIOPort(this, "upArrow");
+        upArrow.setTypeEquals(BaseType.INT);
+        upArrow.setOutput(true);
 
-        controlV = new TypedIOPort(this, "controlV");
-        controlV.setTypeEquals(BaseType.GENERAL);
-        controlV.setOutput(true);
+        leftArrow = new TypedIOPort(this, "leftArrow");
+        leftArrow.setTypeEquals(BaseType.INT);
+        leftArrow.setOutput(true);
+
+        rightArrow = new TypedIOPort(this, "rightArrow");
+        rightArrow.setTypeEquals(BaseType.INT);
+        rightArrow.setOutput(true);
+
+        downArrow = new TypedIOPort(this, "downArrow");
+        downArrow.setTypeEquals(BaseType.INT);
+        downArrow.setOutput(true);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Output port, which has type Token. */
-    public TypedIOPort controlV;
+    /** Output port, which has type IntToken. */
+    public TypedIOPort upArrow;
 
-    /** Output port, which has type Token. */
-    public TypedIOPort controlC;
+    /** Output port, which has type IntToken. */
+    public TypedIOPort leftArrow;
+
+    /** Output port, which has type IntToken. */
+    public TypedIOPort rightArrow;
+
+    /** Output port, which has type IntToken. */
+    public TypedIOPort downArrow;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Broadcast the keystrokes detected since the last firing.
+
+    /** Broadcast the integer value 1 for each key pressed and 0 for
+     *  each released.
      */
     public void fire() throws IllegalActionException {
         if (_debugging) _debug("fire has been called");
 
-	if (_copyKeyPressed) {
-	    _copyKeyPressed = false;
-	    controlC.broadcast(new Token());
+
+	// Broadcast key presses
+
+	if (_upKeyPressed) {
+	    _upKeyPressed = false;
+	    upArrow.broadcast(new IntToken(1));
 	}
 
-	if (_pasteKeyPressed) {
-	    _pasteKeyPressed = false;
-	    controlV.broadcast(new Token());
+	if (_leftKeyPressed) {
+	    _leftKeyPressed = false;
+	    leftArrow.broadcast(new IntToken(1));
+	}
+
+	if (_rightKeyPressed) {
+	    _rightKeyPressed = false;
+	    rightArrow.broadcast(new IntToken(1));
+	}
+
+	if (_downKeyPressed) {
+	    _downKeyPressed = false;
+	    downArrow.broadcast(new IntToken(1));
+	}
+
+
+	// Broadcast key releases
+
+	if (_upKeyReleased) {
+	    _upKeyReleased = false;
+	    upArrow.broadcast(new IntToken(0));
+	}
+
+	if (_leftKeyReleased) {
+	    _leftKeyReleased = false;
+	    leftArrow.broadcast(new IntToken(0));
+	}
+
+	if (_rightKeyReleased) {
+	    _rightKeyReleased = false;
+	    rightArrow.broadcast(new IntToken(0));
+	}
+
+	if (_downKeyReleased) {
+	    _downKeyReleased = false;
+	    downArrow.broadcast(new IntToken(0));
 	}
 
 	if (_debugging) _debug("fire has completed");
     }
 
-    /** Create the JFrame window and show() it on the desktop.
-     */
-    public void preinitialize() {
+    /** Create the JFrame window capable of detecting the key-presses. */
+    public void initialize() {
         if (_debugging) _debug("frame will be constructed");
         _myFrame = new MyFrame();
         if (_debugging) _debug("frame was constructed");
     }
 
-    /** Dispose of the JFrame, thus closing that window.
-     */
+    /** Dispose of the JFrame, causing the window to vanish. */
     public void wrapup() {
 	_myFrame.dispose();
     }
@@ -164,60 +219,104 @@ public class KeystrokeSensor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
 
-    /** The JFrame window */
+    /** The JFrame */
     private MyFrame _myFrame;
 
-    /** The flags indicating which keys have been pressed since
-     *  the last firing og the actor.
+    /** The flags indicating which keys have been pressed or released
+     *  since the last firing of the actor.  <i>Pressed</i> and
+     *  <i>Released</i> are are not allowed to both be true for the
+     *  same key (Though both may be false).  The most recent action
+     *  (press or release) takes precedence.
      */
-    private boolean _copyKeyPressed = false;
-    private boolean _pasteKeyPressed = false;
+    private boolean _upKeyPressed = false;
+    private boolean _leftKeyPressed = false;
+    private boolean _rightKeyPressed = false;
+    private boolean _downKeyPressed = false;
+    private boolean _upKeyReleased = false;
+    private boolean _leftKeyReleased = false;
+    private boolean _rightKeyReleased = false;
+    private boolean _downKeyReleased = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
 
     private class MyFrame extends JFrame {
 
-        /** Construct a JFrame.  After constructing this, it is
+        /** Construct a frame.  After constructing this, it is
          *  necessary to call setVisible(true) to make the frame
-         *  appear.  This is done by calling show() at the end
-         *  of this constructor.
-         *  @see Tableau#show() */
+         *  appear.  This is done by calling show() at the end of this
+         *  constructor.
+         *  @see Tableau#show()
+         *  @param entity The model to put in this frame.
+         *  @param tableau The tableau responsible for this frame.  */
         public MyFrame() {
             if (_debugging) _debug("frame constructor called");
 
-	    // Copy call-back
-            ActionListener myCopyListener = new ActionListener() {
+	    // up-arrow call-backs
+            ActionListener myUpPressedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-			if (_debugging) _debug("copy call-back called");
-			_copyKeyPressed = true;
-			try {
-			    getDirector().fireAtCurrentTime(
-                                    KeystrokeSensor.this);
-			} catch (IllegalActionException ex) {
-			    System.out.println(this
-			            + "Ex calling fireAtCurrentTime");
-			    throw new RuntimeException("-fireAt* C catch-");
-			}
-			if (_debugging) _debug("copy call-back completed");
+			_upKeyPressed = true;
+			_upKeyReleased = false;
+			tryCallingFireAtCurrentTime();
 		    }
 	    };
 
-	    // Paste call-back
-            ActionListener myPasteListener = new ActionListener() {
+            ActionListener myUpReleasedListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-			if (_debugging) _debug("pasteFrom.. has been called");
-			_pasteKeyPressed = true;
-			try {
-			    getDirector().fireAtCurrentTime(
-                                    KeystrokeSensor.this);
-			} catch (IllegalActionException ex) {
-			    System.out.println("--" + ex.toString() + "--");
-			    System.out.println(this
-				    + "Exception calling fireAtCurrentTime");
-			    throw new RuntimeException("-fireAt* catch-");
-			}
-			if (_debugging) _debug("pasteFrom.. has completed");
+			_upKeyReleased = true;
+			_upKeyPressed = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+	    // left-arrow call-backs
+            ActionListener myLeftPressedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_leftKeyPressed = true;
+			_leftKeyReleased = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+            ActionListener myLeftReleasedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_leftKeyReleased = true;
+			_leftKeyPressed = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+	    // right-arrow call-backs
+            ActionListener myRightPressedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_rightKeyPressed = true;
+			_rightKeyReleased = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+            ActionListener myRightReleasedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_rightKeyReleased = true;
+			_rightKeyPressed = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+	    // down-arrow call-backs
+            ActionListener myDownPressedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_downKeyPressed = true;
+			_downKeyReleased = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+            ActionListener myDownReleasedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_downKeyReleased = true;
+			_downKeyPressed = false;
+			tryCallingFireAtCurrentTime();
 		    }
 	    };
 
@@ -225,16 +324,63 @@ public class KeystrokeSensor extends TypedAtomicActor {
             JLabel label = new JLabel("Copy and/or Paste here!");
             getContentPane().add(label);
 
-	    // Paste registration of call-back.
-            label.registerKeyboardAction(myPasteListener, "Paste",
+	    // As of jdk1.4, the .registerKeyboardAction() method below is
+            // considered obsolete.  Docs recommend using these two methods:
+	    //  .getInputMap().put(aKeyStroke, aCommand);
+	    //  .getActionMap().put(aCommmand, anAction);
+	    // with the String aCommand inserted to link them together.
+	    // See javax.swing.Jcomponent.registerKeyboardAction().
+
+	    // Registration of up-arrow call-backs.
+            label.registerKeyboardAction(myUpPressedListener,
+                    "UpPressed",
                     KeyStroke.getKeyStroke(
-                    KeyEvent.VK_V, java.awt.Event.CTRL_MASK),
+                    KeyEvent.VK_UP, 0, false),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
-	    // Copy registration of call-back.
-            label.registerKeyboardAction(myCopyListener, "Copy",
+            label.registerKeyboardAction(myUpReleasedListener,
+                    "UpReleased",
                     KeyStroke.getKeyStroke(
-                    KeyEvent.VK_C, java.awt.Event.CTRL_MASK),
+                    KeyEvent.VK_UP, 0, true),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+	    // Registration of left-arrow call-backs.
+            label.registerKeyboardAction(myLeftPressedListener,
+                    "LeftPressed",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_LEFT, 0, false),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+            label.registerKeyboardAction(myLeftReleasedListener,
+                    "LeftReleased",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_LEFT, 0, true),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+	    // Registration of right-arrow call-backs.
+            label.registerKeyboardAction(myRightPressedListener,
+                    "RightPressed",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_RIGHT, 0, false),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+            label.registerKeyboardAction(myRightReleasedListener,
+                    "RightReleased",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_RIGHT, 0, true),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+	    // Registration of down-arrow call-backs.
+            label.registerKeyboardAction(myDownPressedListener,
+                    "DownPressed",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_DOWN, 0, false),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+            label.registerKeyboardAction(myDownReleasedListener,
+                    "DownReleased",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_DOWN, 0, true),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
 
             label.setRequestFocusEnabled(true);
@@ -246,8 +392,24 @@ public class KeystrokeSensor extends TypedAtomicActor {
 	    show();
             if (_debugging) _debug("frame constructor completes");
         }
+
+	/** This is simply the try-catch clause for the call to the
+         *  director.  It has been pulled out to make the code terser
+         *  and more readable.
+         */
+	private void tryCallingFireAtCurrentTime() {
+	    try {
+		getDirector().fireAtCurrentTime(ArrowKeySensor.this);
+	    } catch (IllegalActionException ex) {
+		System.out.println("--" + ex.toString() + "--");
+		System.out.println(this + "Ex calling fireAtCurrentTime");
+		throw new RuntimeException("-fireAt* catch-");
+	    }
+	}
+
     }
 }
+
 
 
 

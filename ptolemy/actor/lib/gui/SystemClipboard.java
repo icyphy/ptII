@@ -1,4 +1,4 @@
-/* An actor which copies to, and pastes from, the system clipboard.
+/* An actor which pops up a keystroke-sensing JFrame.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -30,41 +30,74 @@
 
 package ptolemy.actor.lib.gui;
 
+// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
+import diva.gui.toolbox.FocusMouseListener;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.KeyStroke;
+import java.awt.BorderLayout;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.ClipboardOwner;
 import java.awt.datatransfer.DataFlavor;
 import java.awt.datatransfer.StringSelection;
 import java.awt.datatransfer.Transferable;
-import java.awt.datatransfer.UnsupportedFlavorException;
-import java.awt.Toolkit;
-import java.io.IOException;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Source;
-import ptolemy.data.StringToken;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+//import java.awt.event.MouseListener;
+
+// Imports from ptolemy/actor/lib/net/DatagramReader.java (not pruned)
+//import ptolemy.actor.AtomicActor;
+//import ptolemy.actor.IOPort;
+  import ptolemy.actor.TypedAtomicActor;
+  import ptolemy.actor.TypedIOPort;
+  import ptolemy.data.ArrayToken;
+//import ptolemy.data.BooleanToken;
+  import ptolemy.data.IntToken;
+  import ptolemy.data.StringToken;
+  import ptolemy.data.Token;
+//import ptolemy.data.expr.Parameter;
+  import ptolemy.data.type.ArrayType;
+  import ptolemy.data.type.BaseType;
+//import ptolemy.data.type.Type;
+  import ptolemy.kernel.CompositeEntity;
+//import ptolemy.kernel.util.Attribute;
+  import ptolemy.kernel.util.IllegalActionException;
+  import ptolemy.kernel.util.NameDuplicationException;
+//import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
-//// SystemClipboard
+//// ArrowKeySensor
 /**
-When this actor fires, it copies to the system clipboard the contents
-of any token received at its <i>input</i> port, and if there is a token
-on the <i>trigger</i> input, it also pastes the contents of the system
-clipboard to the <i>output</i> port. The paste is done before the copy.
+When this actor is preinitialized, it pops up a new JFrame window on
+the desktop, usually in the upper left hand corner of the screen.
+When this JFrame has the focus (such as when it has been clicked on)
+it is capable of sensing keystrokes.  <p>
+
+This actor senses only the four non-numeric-pad arrow-key keystrokes.
+This actor is almost identical to KeystrokeSensor.java.  One
+difference is the different set of keystrokes sensed.  The other
+difference, is that this actor responds to key releases as well as key
+presses.  Upon each key press, the integer 1 is broadcast from the
+corresponding output.  Upon each key release, the integer 0 is
+output.<p>
+
+This actor contains a private inner class which generated the JFrame.
+The frame sets up call-backs which react to the keystrokes.  When called,
+these call the director's fireAtCurrentTime() method.  This causes
+the director to call fire() on the actor.   The actor then broadcasts
+tokens from one or both outputs depending on which keystroke(s) have
+occurred since the actor was last fired.  <p>
+
+NOTE: This actor only works in the DE domain due to its reliance on
+this director's fireAtCurrentTime() method.
 
 @author Winthrop Williams
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 2.1
 */
-
-public class SystemClipboard extends Source implements ClipboardOwner {
-
-    // NOTE: This actor has been tested only with an 8-bit character
-    // set as the Java default character set. Results are not known for
-    // systems configured for 16-bit Unicode characters.
+public class ArrowKeySensor extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -74,78 +107,310 @@ public class SystemClipboard extends Source implements ClipboardOwner {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public SystemClipboard(CompositeEntity container, String name)
+    public ArrowKeySensor(CompositeEntity container, String name)
         throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
-        // Input port.
-        input = new TypedIOPort(this, "input");
-        input.setTypeEquals(BaseType.STRING);
-        input.setInput(true);
+        // Outputs
 
-        // Output
-        output.setTypeEquals(BaseType.STRING);
+        upArrow = new TypedIOPort(this, "upArrow");
+        upArrow.setTypeEquals(BaseType.INT);
+        upArrow.setOutput(true);
+
+        leftArrow = new TypedIOPort(this, "leftArrow");
+        leftArrow.setTypeEquals(BaseType.INT);
+        leftArrow.setOutput(true);
+
+        rightArrow = new TypedIOPort(this, "rightArrow");
+        rightArrow.setTypeEquals(BaseType.INT);
+        rightArrow.setOutput(true);
+
+        downArrow = new TypedIOPort(this, "downArrow");
+        downArrow.setTypeEquals(BaseType.INT);
+        downArrow.setOutput(true);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input port, which has type string. */
-    public TypedIOPort input;
+    /** Output port, which has type IntToken. */
+    public TypedIOPort upArrow;
+
+    /** Output port, which has type IntToken. */
+    public TypedIOPort leftArrow;
+
+    /** Output port, which has type IntToken. */
+    public TypedIOPort rightArrow;
+
+    /** Output port, which has type IntToken. */
+    public TypedIOPort downArrow;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Copy any <i>input</i> token to the clipboard and, if
-     *  <i>trigger</i>-ed, paste the clipboard to the
-     *  <i>output</i>.  Paste is done before copy when both
-     *  inputs are present.
+
+    /** Broadcast the integer value 1 for each key pressed and 0 for
+     *  each released.
      */
     public void fire() throws IllegalActionException {
-        // Do not call super.fire(), because we need to know whether
-        // inputs are present.
-        // Paste first.
-        boolean triggerPresent = false;
-        for (int i = 0; i < trigger.getWidth(); i++) {
-            if (trigger.hasToken(i)) {
-                triggerPresent = true;
-                trigger.get(i);
-            }
-        }
-        if (triggerPresent) {
-            Clipboard clipboard
-                    = Toolkit.getDefaultToolkit().getSystemClipboard();
-            Transferable transferable = clipboard.getContents(this);
-            try{
-                output.broadcast(new StringToken( (String)transferable
-                        .getTransferData(DataFlavor.stringFlavor) ));
-                // FIXME: NullPointerException also possible
-                // Ignore this for now, allowing exception to go uncaught.
-            } catch (IOException ex) {
-                throw new IllegalActionException(this, ex,
-                        "Failed to paste.");
-            } catch (UnsupportedFlavorException ex) {
-                throw new IllegalActionException(this, ex,
-                        "Failed to paste.");
-            }
-        }
+        if (_debugging) _debug("fire has been called");
 
-        // Copy next.
-        if (input.getWidth() > 0 && input.hasToken(0)) {
-            Clipboard clipboard
-                    = Toolkit.getDefaultToolkit().getSystemClipboard();
-            String myString = ((StringToken)(input.get(0))).stringValue();
-            clipboard.setContents(new StringSelection(myString), this);
-        }
+
+	// Broadcast key presses
+
+	if (_upKeyPressed) {
+	    _upKeyPressed = false;
+	    upArrow.broadcast(new IntToken(1));
+	}
+
+	if (_leftKeyPressed) {
+	    _leftKeyPressed = false;
+	    leftArrow.broadcast(new IntToken(1));
+	}
+
+	if (_rightKeyPressed) {
+	    _rightKeyPressed = false;
+	    rightArrow.broadcast(new IntToken(1));
+	}
+
+	if (_downKeyPressed) {
+	    _downKeyPressed = false;
+	    downArrow.broadcast(new IntToken(1));
+	}
+
+
+	// Broadcast key releases
+
+	if (_upKeyReleased) {
+	    _upKeyReleased = false;
+	    upArrow.broadcast(new IntToken(0));
+	}
+
+	if (_leftKeyReleased) {
+	    _leftKeyReleased = false;
+	    leftArrow.broadcast(new IntToken(0));
+	}
+
+	if (_rightKeyReleased) {
+	    _rightKeyReleased = false;
+	    rightArrow.broadcast(new IntToken(0));
+	}
+
+	if (_downKeyReleased) {
+	    _downKeyReleased = false;
+	    downArrow.broadcast(new IntToken(0));
+	}
+
+	if (_debugging) _debug("fire has completed");
     }
 
-    /** Comply with the ClipboardOwner interface.  It requires a
-     *  method exist named <i>lostOwnership</i>.  Specifically,
-     *  when setContents() or getContents() is called, the last
-     *  argument, known as the "requestor", must be an object which
-     *  offers this lostOwnership() method.
+    /** Create the JFrame window capable of detecting the key-presses. */
+    public void initialize() {
+        if (_debugging) _debug("frame will be constructed");
+        _myFrame = new MyFrame();
+        if (_debugging) _debug("frame was constructed");
+    }
+
+    /** Dispose of the JFrame, causing the window to vanish. */
+    public void wrapup() {
+	_myFrame.dispose();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables
+
+    /** The JFrame */
+    private MyFrame _myFrame;
+
+    /** The flags indicating which keys have been pressed or released
+     *  since the last firing of the actor.  <i>Pressed</i> and
+     *  <i>Released</i> are are not allowed to both be true for the
+     *  same key (Though both may be false).  The most recent action
+     *  (press or release) takes precedence.
      */
-    public void lostOwnership(Clipboard clipboard, Transferable contents) {
-        // In case of lost ownership, do nothing.
+    private boolean _upKeyPressed = false;
+    private boolean _leftKeyPressed = false;
+    private boolean _rightKeyPressed = false;
+    private boolean _downKeyPressed = false;
+    private boolean _upKeyReleased = false;
+    private boolean _leftKeyReleased = false;
+    private boolean _rightKeyReleased = false;
+    private boolean _downKeyReleased = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private inner classes                 ////
+
+    private class MyFrame extends JFrame {
+
+        /** Construct a frame.  After constructing this, it is
+         *  necessary to call setVisible(true) to make the frame
+         *  appear.  This is done by calling show() at the end of this
+         *  constructor.
+         *  @see Tableau#show()
+         *  @param entity The model to put in this frame.
+         *  @param tableau The tableau responsible for this frame.  */
+        public MyFrame() {
+            if (_debugging) _debug("frame constructor called");
+
+	    // up-arrow call-backs
+            ActionListener myUpPressedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_upKeyPressed = true;
+			_upKeyReleased = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+            ActionListener myUpReleasedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_upKeyReleased = true;
+			_upKeyPressed = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+	    // left-arrow call-backs
+            ActionListener myLeftPressedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_leftKeyPressed = true;
+			_leftKeyReleased = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+            ActionListener myLeftReleasedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_leftKeyReleased = true;
+			_leftKeyPressed = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+	    // right-arrow call-backs
+            ActionListener myRightPressedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_rightKeyPressed = true;
+			_rightKeyReleased = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+            ActionListener myRightReleasedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_rightKeyReleased = true;
+			_rightKeyPressed = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+	    // down-arrow call-backs
+            ActionListener myDownPressedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_downKeyPressed = true;
+			_downKeyReleased = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+            ActionListener myDownReleasedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_downKeyReleased = true;
+			_downKeyPressed = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+            getContentPane().setLayout(new BorderLayout());
+            JLabel label = new JLabel("Copy and/or Paste here!");
+            getContentPane().add(label);
+
+	    // As of jdk1.4, the .registerKeyboardAction() method below is
+            // considered obsolete.  Docs recommend using these two methods:
+	    //  .getInputMap().put(aKeyStroke, aCommand);
+	    //  .getActionMap().put(aCommmand, anAction);
+	    // with the String aCommand inserted to link them together.
+	    // See javax.swing.Jcomponent.registerKeyboardAction().
+
+	    // Registration of up-arrow call-backs.
+            label.registerKeyboardAction(myUpPressedListener,
+                    "UpPressed",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_UP, 0, false),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+            label.registerKeyboardAction(myUpReleasedListener,
+                    "UpReleased",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_UP, 0, true),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+	    // Registration of left-arrow call-backs.
+            label.registerKeyboardAction(myLeftPressedListener,
+                    "LeftPressed",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_LEFT, 0, false),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+            label.registerKeyboardAction(myLeftReleasedListener,
+                    "LeftReleased",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_LEFT, 0, true),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+	    // Registration of right-arrow call-backs.
+            label.registerKeyboardAction(myRightPressedListener,
+                    "RightPressed",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_RIGHT, 0, false),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+            label.registerKeyboardAction(myRightReleasedListener,
+                    "RightReleased",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_RIGHT, 0, true),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+	    // Registration of down-arrow call-backs.
+            label.registerKeyboardAction(myDownPressedListener,
+                    "DownPressed",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_DOWN, 0, false),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+            label.registerKeyboardAction(myDownReleasedListener,
+                    "DownReleased",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_DOWN, 0, true),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+            label.setRequestFocusEnabled(true);
+            label.addMouseListener(new FocusMouseListener());
+            // Set the default size.
+            // Note that the location is of the frame, while the size
+            // is of the scrollpane.
+            pack();
+	    show();
+            if (_debugging) _debug("frame constructor completes");
+        }
+
+	/** This is simply the try-catch clause for the call to the
+         *  director.  It has been pulled out to make the code terser
+         *  and more readable.
+         */
+	private void tryCallingFireAtCurrentTime() {
+	    try {
+		getDirector().fireAtCurrentTime(ArrowKeySensor.this);
+	    } catch (IllegalActionException ex) {
+		System.out.println("--" + ex.toString() + "--");
+		System.out.println(this + "Ex calling fireAtCurrentTime");
+		throw new RuntimeException("-fireAt* catch-");
+	    }
+	}
+
     }
 }
+
+
+
+
+

@@ -1,7 +1,6 @@
-/* The transition controller for modal transitions
+/* An actor which pops up a keystroke-sensing JFrame.
 
- Copyright (c) 1998-2003 The Regents of the University of California and
- Research in Motion Limited.
+ Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -9,360 +8,409 @@
  copyright notice and the following two paragraphs appear in all copies
  of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA OR RESEARCH IN MOTION
- LIMITED BE LIABLE TO ANY PARTY FOR DIRECT, INDIRECT, SPECIAL,
- INCIDENTAL, OR CONSEQUENTIAL DAMAGES ARISING OUT OF THE USE OF THIS
- SOFTWARE AND ITS DOCUMENTATION, EVEN IF THE UNIVERSITY OF CALIFORNIA
- OR RESEARCH IN MOTION LIMITED HAVE BEEN ADVISED OF THE POSSIBILITY OF
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION LIMITED
- SPECIFICALLY DISCLAIM ANY WARRANTIES, INCLUDING, BUT NOT LIMITED TO,
- THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
- PARTICULAR PURPOSE. THE SOFTWARE PROVIDED HEREUNDER IS ON AN "AS IS"
- BASIS, AND THE UNIVERSITY OF CALIFORNIA AND RESEARCH IN MOTION
- LIMITED HAVE NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
+@ProposedRating Red (winthrop@robotics.eecs.berkeley.edu)
+@AcceptedRating Red (winthrop@robotics.eecs.berkeley.edu)
 */
 
-package ptolemy.vergil.fsm.modal;
+package ptolemy.actor.lib.gui;
 
-import diva.graph.GraphController;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedActor;
-import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.MessageHandler;
-import ptolemy.gui.Query;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.*;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.fsm.TransitionController;
-import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.MenuItemFactory;
-
-import javax.swing.Action;
-import java.awt.Component;
+// Imports from ptolemy/vergil/basic/BasicGraphFrame.java (not pruned)
+import diva.gui.toolbox.FocusMouseListener;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.KeyStroke;
+import java.awt.BorderLayout;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.ClipboardOwner;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.StringSelection;
+import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+//import java.awt.event.MouseListener;
+
+// Imports from ptolemy/actor/lib/net/DatagramReader.java (not pruned)
+//import ptolemy.actor.AtomicActor;
+//import ptolemy.actor.IOPort;
+  import ptolemy.actor.TypedAtomicActor;
+  import ptolemy.actor.TypedIOPort;
+  import ptolemy.data.ArrayToken;
+//import ptolemy.data.BooleanToken;
+  import ptolemy.data.IntToken;
+  import ptolemy.data.StringToken;
+  import ptolemy.data.Token;
+//import ptolemy.data.expr.Parameter;
+  import ptolemy.data.type.ArrayType;
+  import ptolemy.data.type.BaseType;
+//import ptolemy.data.type.Type;
+  import ptolemy.kernel.CompositeEntity;
+//import ptolemy.kernel.util.Attribute;
+  import ptolemy.kernel.util.IllegalActionException;
+  import ptolemy.kernel.util.NameDuplicationException;
+//import ptolemy.kernel.util.StringAttribute;
 
 //////////////////////////////////////////////////////////////////////////
-//// ModalTransitionController
+//// ArrowKeySensor
 /**
-This class provides interaction with relations that contain general purpose
-refinements that are fired on state transitions in an FSM graph. It's
-implementation is largely copied from ModalController.
+When this actor is preinitialized, it pops up a new JFrame window on
+the desktop, usually in the upper left hand corner of the screen.
+When this JFrame has the focus (such as when it has been clicked on)
+it is capable of sensing keystrokes.  <p>
 
-@author David Hermann, Research In Motion Limited
+This actor senses only the four non-numeric-pad arrow-key keystrokes.
+This actor is almost identical to KeystrokeSensor.java.  One
+difference is the different set of keystrokes sensed.  The other
+difference, is that this actor responds to key releases as well as key
+presses.  Upon each key press, the integer 1 is broadcast from the
+corresponding output.  Upon each key release, the integer 0 is
+output.<p>
+
+This actor contains a private inner class which generated the JFrame.
+The frame sets up call-backs which react to the keystrokes.  When called,
+these call the director's fireAtCurrentTime() method.  This causes
+the director to call fire() on the actor.   The actor then broadcasts
+tokens from one or both outputs depending on which keystroke(s) have
+occurred since the actor was last fired.  <p>
+
+NOTE: This actor only works in the DE domain due to its reliance on
+this director's fireAtCurrentTime() method.
+
+@author Winthrop Williams
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 2.1
 */
-public class ModalTransitionController extends TransitionController {
+public class ArrowKeySensor extends TypedAtomicActor {
 
-    /** Create a transition controller associated with the specified graph
-     *  controller.
-     *  @param controller The associated graph controller.
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
-    public ModalTransitionController(final GraphController controller) {
-        super(controller);
+    public ArrowKeySensor(CompositeEntity container, String name)
+        throws NameDuplicationException, IllegalActionException {
+        super(container, name);
 
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new AddRefinementAction()));
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new RemoveRefinementAction()));
+        // Outputs
+
+        upArrow = new TypedIOPort(this, "upArrow");
+        upArrow.setTypeEquals(BaseType.INT);
+        upArrow.setOutput(true);
+
+        leftArrow = new TypedIOPort(this, "leftArrow");
+        leftArrow.setTypeEquals(BaseType.INT);
+        leftArrow.setOutput(true);
+
+        rightArrow = new TypedIOPort(this, "rightArrow");
+        rightArrow.setTypeEquals(BaseType.INT);
+        rightArrow.setOutput(true);
+
+        downArrow = new TypedIOPort(this, "downArrow");
+        downArrow.setTypeEquals(BaseType.INT);
+        downArrow.setOutput(true);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                     ////
+    ////                     ports and parameters                  ////
 
-    /** An action to add a new refinement.
+    /** Output port, which has type IntToken. */
+    public TypedIOPort upArrow;
+
+    /** Output port, which has type IntToken. */
+    public TypedIOPort leftArrow;
+
+    /** Output port, which has type IntToken. */
+    public TypedIOPort rightArrow;
+
+    /** Output port, which has type IntToken. */
+    public TypedIOPort downArrow;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+
+    /** Broadcast the integer value 1 for each key pressed and 0 for
+     *  each released.
      */
-    private class AddRefinementAction extends FigureAction {
-	public AddRefinementAction() {
-	    super("Add Refinement");
+    public void fire() throws IllegalActionException {
+        if (_debugging) _debug("fire has been called");
+
+
+	// Broadcast key presses
+
+	if (_upKeyPressed) {
+	    _upKeyPressed = false;
+	    upArrow.broadcast(new IntToken(1));
 	}
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
-	    NamedObj target = getTarget();
-            if (!(target instanceof Transition)) {
-                MessageHandler.error("Can only add refinements to transitions.");
-                return;
-            }
-            Transition transition = (Transition)target;
 
-            // Check that all these containers exist.
-            Nameable immediateContainer = transition.getContainer();
-            if (immediateContainer == null) {
-                MessageHandler.error("Transition has no container!");
-                return;
-            }
-            final CompositeEntity container
-                = (CompositeEntity)immediateContainer.getContainer();
-            if (container == null) {
-                MessageHandler.error("Transition container has no container!");
-                return;
-            }
-
-            // Open a dialog to get the refinement name and class.
-            Query query = new Query();
-            String defaultName = container.uniqueName(transition.getName());
-            query.addLine("Name", "Name", defaultName);
-            String[] choices = {"ptolemy.vergil.fsm.modal.TransitionRefinement" };
-            query.addChoice("Class", "Class", choices,
-                    "ptolemy.vergil.fsm.modal.TransitionRefinement", true);
-            // FIXME: Need a frame owner for first arg.
-            // Perhaps calling getController(), which returns a GraphController
-            // will be a good start.
-            ComponentDialog dialog = new ComponentDialog(null,
-                    "Specify Refinement", query);
-            if (!dialog.buttonPressed().equals("OK")) {
-                return;
-            }
-
-            final String newName = query.getStringValue("Name");
-            if (container.getEntity(newName) != null) {
-                MessageHandler.error("There is already a refinement with name "
-                        + newName + ".");
-                return;
-            }
-
-            String newClass = query.getStringValue("Class");
-
-            String currentRefinements
-                = transition.refinementName.getExpression();
-            if (currentRefinements == null || currentRefinements.equals("")) {
-                currentRefinements = newName;
-            } else {
-                currentRefinements = currentRefinements.trim() + ", " + newName;
-            }
-            String moml = "<group><entity name=\""
-                + newName
-                + "\" class=\""
-                + newClass
-                + "\"/>"
-                + "<relation name=\""
-                + transition.getName(container)
-                + "\"><property name=\"refinementName\" value=\""
-                + currentRefinements
-                + "\"/></relation></group>";
-            MoMLChangeRequest change = new MoMLChangeRequest(
-                    this, container, moml)  {
-                    protected void _execute() throws Exception {
-                        super._execute();
-
-                        // Mirror the ports of the container in the refinement.
-                        // Note that this is done here rather than as part of
-                        // the MoML because we have set protected variables
-                        // in the refinement to prevent it from trying to again
-                        // mirror the changes in the container.
-                        Entity entity = container.getEntity(newName);
-
-                        // Get the initial port configuration from the container.
-                        Iterator ports = container.portList().iterator();
-                        while (ports.hasNext()) {
-                            Port port = (Port)ports.next();
-                            try {
-                                // NOTE: This is awkward.
-                                if (entity instanceof Refinement) {
-                                    ((Refinement)entity)._mirrorDisable = true;
-                                } else if (entity instanceof ModalController) {
-                                    ((ModalController)entity)._mirrorDisable = true;
-                                }
-                                Port newPort = entity.newPort(port.getName());
-                                if (newPort instanceof RefinementPort
-                                        && port instanceof IOPort) {
-                                    try {
-                                        ((RefinementPort)newPort)
-                                            ._mirrorDisable = true;
-                                        if (((IOPort)port).isInput()) {
-                                            ((RefinementPort)newPort)
-                                                .setInput(true);
-                                        }
-                                        if (((IOPort)port).isOutput()) {
-                                            ((RefinementPort)newPort)
-                                                .setOutput(true);
-                                        }
-                                        if (((IOPort)port).isMultiport()) {
-                                            ((RefinementPort)newPort)
-                                                .setMultiport(true);
-                                        }
-                                        /* No longer needed since Yuhong modified
-                                         * the type system to allow UNKNOWN. EAL
-                                         if (port instanceof TypedIOPort
-                                         && newPort instanceof TypedIOPort) {
-                                         ((TypedIOPort)newPort).setTypeSameAs(
-                                         (TypedIOPort)port);
-                                         }
-                                        */
-                                    } finally {
-                                        ((RefinementPort)newPort)
-                                            ._mirrorDisable = false;
-                                    }
-                                }
-                            } finally {
-                                // NOTE: This is awkward.
-                                if (entity instanceof Refinement) {
-                                    ((Refinement)entity)._mirrorDisable = false;
-                                } else if (entity instanceof ModalController) {
-                                    ((ModalController)entity)
-                                        ._mirrorDisable = false;
-                                }
-                            }
-                        }
-                        if (_configuration != null) {
-                            // Look inside.
-                            _configuration.openModel(entity);
-                        }
-                    }
-                };
-            container.requestChange(change);
+	if (_leftKeyPressed) {
+	    _leftKeyPressed = false;
+	    leftArrow.broadcast(new IntToken(1));
 	}
+
+	if (_rightKeyPressed) {
+	    _rightKeyPressed = false;
+	    rightArrow.broadcast(new IntToken(1));
+	}
+
+	if (_downKeyPressed) {
+	    _downKeyPressed = false;
+	    downArrow.broadcast(new IntToken(1));
+	}
+
+
+	// Broadcast key releases
+
+	if (_upKeyReleased) {
+	    _upKeyReleased = false;
+	    upArrow.broadcast(new IntToken(0));
+	}
+
+	if (_leftKeyReleased) {
+	    _leftKeyReleased = false;
+	    leftArrow.broadcast(new IntToken(0));
+	}
+
+	if (_rightKeyReleased) {
+	    _rightKeyReleased = false;
+	    rightArrow.broadcast(new IntToken(0));
+	}
+
+	if (_downKeyReleased) {
+	    _downKeyReleased = false;
+	    downArrow.broadcast(new IntToken(0));
+	}
+
+	if (_debugging) _debug("fire has completed");
     }
 
-    /** Action to remove refinements. */
-    private class RemoveRefinementAction extends FigureAction {
-	public RemoveRefinementAction() {
-	    super("Remove Refinement");
+    /** Create the JFrame window capable of detecting the key-presses. */
+    public void initialize() {
+        if (_debugging) _debug("frame will be constructed");
+        _myFrame = new MyFrame();
+        if (_debugging) _debug("frame was constructed");
+    }
+
+    /** Dispose of the JFrame, causing the window to vanish. */
+    public void wrapup() {
+	_myFrame.dispose();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables
+
+    /** The JFrame */
+    private MyFrame _myFrame;
+
+    /** The flags indicating which keys have been pressed or released
+     *  since the last firing of the actor.  <i>Pressed</i> and
+     *  <i>Released</i> are are not allowed to both be true for the
+     *  same key (Though both may be false).  The most recent action
+     *  (press or release) takes precedence.
+     */
+    private boolean _upKeyPressed = false;
+    private boolean _leftKeyPressed = false;
+    private boolean _rightKeyPressed = false;
+    private boolean _downKeyPressed = false;
+    private boolean _upKeyReleased = false;
+    private boolean _leftKeyReleased = false;
+    private boolean _rightKeyReleased = false;
+    private boolean _downKeyReleased = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private inner classes                 ////
+
+    private class MyFrame extends JFrame {
+
+        /** Construct a frame.  After constructing this, it is
+         *  necessary to call setVisible(true) to make the frame
+         *  appear.  This is done by calling show() at the end of this
+         *  constructor.
+         *  @see Tableau#show()
+         *  @param entity The model to put in this frame.
+         *  @param tableau The tableau responsible for this frame.  */
+        public MyFrame() {
+            if (_debugging) _debug("frame constructor called");
+
+	    // up-arrow call-backs
+            ActionListener myUpPressedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_upKeyPressed = true;
+			_upKeyReleased = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+            ActionListener myUpReleasedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_upKeyReleased = true;
+			_upKeyPressed = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+	    // left-arrow call-backs
+            ActionListener myLeftPressedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_leftKeyPressed = true;
+			_leftKeyReleased = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+            ActionListener myLeftReleasedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_leftKeyReleased = true;
+			_leftKeyPressed = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+	    // right-arrow call-backs
+            ActionListener myRightPressedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_rightKeyPressed = true;
+			_rightKeyReleased = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+            ActionListener myRightReleasedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_rightKeyReleased = true;
+			_rightKeyPressed = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+	    // down-arrow call-backs
+            ActionListener myDownPressedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_downKeyPressed = true;
+			_downKeyReleased = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+            ActionListener myDownReleasedListener = new ActionListener() {
+                    public void actionPerformed(ActionEvent e) {
+			_downKeyReleased = true;
+			_downKeyPressed = false;
+			tryCallingFireAtCurrentTime();
+		    }
+	    };
+
+            getContentPane().setLayout(new BorderLayout());
+            JLabel label = new JLabel("Copy and/or Paste here!");
+            getContentPane().add(label);
+
+	    // As of jdk1.4, the .registerKeyboardAction() method below is
+            // considered obsolete.  Docs recommend using these two methods:
+	    //  .getInputMap().put(aKeyStroke, aCommand);
+	    //  .getActionMap().put(aCommmand, anAction);
+	    // with the String aCommand inserted to link them together.
+	    // See javax.swing.Jcomponent.registerKeyboardAction().
+
+	    // Registration of up-arrow call-backs.
+            label.registerKeyboardAction(myUpPressedListener,
+                    "UpPressed",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_UP, 0, false),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+            label.registerKeyboardAction(myUpReleasedListener,
+                    "UpReleased",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_UP, 0, true),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+	    // Registration of left-arrow call-backs.
+            label.registerKeyboardAction(myLeftPressedListener,
+                    "LeftPressed",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_LEFT, 0, false),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+            label.registerKeyboardAction(myLeftReleasedListener,
+                    "LeftReleased",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_LEFT, 0, true),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+	    // Registration of right-arrow call-backs.
+            label.registerKeyboardAction(myRightPressedListener,
+                    "RightPressed",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_RIGHT, 0, false),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+            label.registerKeyboardAction(myRightReleasedListener,
+                    "RightReleased",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_RIGHT, 0, true),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+	    // Registration of down-arrow call-backs.
+            label.registerKeyboardAction(myDownPressedListener,
+                    "DownPressed",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_DOWN, 0, false),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+            label.registerKeyboardAction(myDownReleasedListener,
+                    "DownReleased",
+                    KeyStroke.getKeyStroke(
+                    KeyEvent.VK_DOWN, 0, true),
+                    JComponent.WHEN_IN_FOCUSED_WINDOW);
+
+            label.setRequestFocusEnabled(true);
+            label.addMouseListener(new FocusMouseListener());
+            // Set the default size.
+            // Note that the location is of the frame, while the size
+            // is of the scrollpane.
+            pack();
+	    show();
+            if (_debugging) _debug("frame constructor completes");
+        }
+
+	/** This is simply the try-catch clause for the call to the
+         *  director.  It has been pulled out to make the code terser
+         *  and more readable.
+         */
+	private void tryCallingFireAtCurrentTime() {
+	    try {
+		getDirector().fireAtCurrentTime(ArrowKeySensor.this);
+	    } catch (IllegalActionException ex) {
+		System.out.println("--" + ex.toString() + "--");
+		System.out.println(this + "Ex calling fireAtCurrentTime");
+		throw new RuntimeException("-fireAt* catch-");
+	    }
 	}
-	public void actionPerformed(ActionEvent e) {
-	    super.actionPerformed(e);
-	    NamedObj target = getTarget();
-            if (!(target instanceof Transition)) {
-                MessageHandler.error(
-                        "Can only remove refinements from transitions.");
-                return;
-            }
-            Transition transition = (Transition)target;
 
-            // Check that all these containers exist.
-            CompositeEntity immediateContainer = (CompositeEntity)
-                transition.getContainer();
-            if (immediateContainer == null) {
-                MessageHandler.error("Transition has no container!");
-                return;
-            }
-            final CompositeEntity container
-                = (CompositeEntity)immediateContainer.getContainer();
-            if (container == null) {
-                MessageHandler.error("Transition container has no container!");
-                return;
-            }
-
-            TypedActor[] refinements;
-            try {
-                refinements = transition.getRefinement();
-            } catch (Exception ex) {
-                MessageHandler.error("Invalid refinements.", ex);
-                return;
-            }
-            if (refinements == null || refinements.length < 1) {
-                MessageHandler.error("No refinements to remove.");
-                return;
-            }
-            String[] choices = new String[refinements.length];
-            for (int i = 0; i<refinements.length; i++) {
-                choices[i] = ((Nameable)refinements[i]).getName();
-            }
-
-            // Open a dialog to get the refinement name and class.
-            Query query = new Query();
-            query.addChoice("Refinement", "Refinement", choices,
-                    choices[0], false);
-            // FIXME: Need a frame owner for first arg.
-            // Perhaps calling getController(), which returns a GraphController
-            // will be a good start.
-            ComponentDialog dialog = new ComponentDialog(null,
-                    "Specify Refinement", query);
-            if (!dialog.buttonPressed().equals("OK")) {
-                return;
-            }
-
-            String refinementName = query.getStringValue("Refinement");
-            StringBuffer newRefinements = new StringBuffer();
-            String currentRefinements
-                = transition.refinementName.getExpression();
-            StringTokenizer tokenizer
-                = new StringTokenizer(currentRefinements, ",");
-            while (tokenizer.hasMoreTokens()) {
-                String token = tokenizer.nextToken();
-                if (!token.trim().equals(refinementName)) {
-                    if (newRefinements.length() > 0) {
-                        newRefinements.append(", ");
-                    }
-                    newRefinements.append(token.trim());
-                }
-            }
-            // Check to see whether any other transition has
-            // this refinment, and if not, remove it from its container.
-            Iterator transitions =
-                    immediateContainer.relationList().iterator();
-            boolean foundOne = false;
-            while (transitions.hasNext()) {
-                NamedObj other = (NamedObj)transitions.next();
-                if (other != transition && other instanceof Transition) {
-                    String refinementList = ((Transition)other)
-                        .refinementName.getExpression();
-                    if (refinementList == null) continue;
-                    tokenizer = new StringTokenizer(refinementList, ",");
-                    while (tokenizer.hasMoreTokens()) {
-                        String token = tokenizer.nextToken();
-                        if (token.equals(refinementName)) {
-                            foundOne = true;
-                            break;
-                        }
-                    }
-                    if (foundOne) break;
-                }
-            }
-            if (!foundOne) {
-                Iterator states =
-                        immediateContainer.entityList().iterator();
-                while (states.hasNext()) {
-                    NamedObj other = (NamedObj)states.next();
-                    if (other instanceof State) {
-                        String refinementList = ((State)other)
-                                .refinementName.getExpression();
-                        if (refinementList == null) continue;
-                        tokenizer = new StringTokenizer(refinementList, ",");
-                        while (tokenizer.hasMoreTokens()) {
-                            String token = tokenizer.nextToken();
-                            if (token.equals(refinementName)) {
-                                foundOne = true;
-                                break;
-                            }
-                        }
-                        if (foundOne) break;
-                    }
-                }
-            }
-            String removal = "";
-            if (!foundOne) {
-                removal = "<deleteEntity name=\"" + refinementName + "\"/>";
-            }
-
-            String moml = "<group><relation name=\""
-                + transition.getName(container)
-                + "\"><property name=\"refinementName\" value=\""
-                + newRefinements.toString()
-                + "\"/></relation>"
-                + removal
-                + "</group>";
-            MoMLChangeRequest change = new MoMLChangeRequest(
-                    this, container, moml);
-            container.requestChange(change);
-	}
     }
 }
+
+
+
+
+
