@@ -36,6 +36,8 @@ import ptolemy.actor.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
+
 
 import java.util.Enumeration;
 import java.util.Hashtable;
@@ -75,6 +77,7 @@ public final class SDFIOPort extends TypedIOPort {
      */
     public SDFIOPort() {
         super();
+	_initialize();
     }
 
     /** Construct an SDFIOPort with a containing actor and a name
@@ -92,6 +95,7 @@ public final class SDFIOPort extends TypedIOPort {
     public SDFIOPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
 	super(container, name);
+	_initialize();
     }
 
     /** Construct an SDFIOPort with a container and a name that is
@@ -115,6 +119,37 @@ public final class SDFIOPort extends TypedIOPort {
         this(container, name);
         setInput(isinput);
         setOutput(isoutput);
+	_initialize();
+    }
+
+    public Parameter tokenConsumptionRate;
+    public Parameter tokenInitProduction;
+    public Parameter tokenProductionRate;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+   /** Clone the port into the specified workspace. This calls the
+     *  base class and then creates new parameters.  The new
+     *  port will have the same parameter values as the old.
+     *  @param ws The workspace for the new object.
+     *  @return A new SDFIOPort.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            SDFIOPort newobj = (SDFIOPort)(super.clone(ws));
+            newobj.tokenConsumptionRate =
+                (Parameter)newobj.getAttribute("tokenConsumptionRate");
+            newobj.tokenInitProduction =
+                (Parameter)newobj.getAttribute("tokenInitProduction");
+            newobj.tokenProductionRate =
+                (Parameter)newobj.getAttribute("tokenProductionRate");
+            return newobj;
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
     }
 
     /** Get an array of tokens from the specified channel.
@@ -133,7 +168,7 @@ public final class SDFIOPort extends TypedIOPort {
      *   no receivers have been created, if the port is not an input port,
      *   if the channel index is out of range, or if the array is null.
      */
-    public void getArray(int channelindex, Token tokens[])
+    public void getArray(int channelindex, ptolemy.data.Token tokens[])
             throws NoTokenException, IllegalActionException {
         Receiver[][] localRec;
         if(tokens == null) throw new IllegalActionException(
@@ -162,9 +197,9 @@ public final class SDFIOPort extends TypedIOPort {
         if((localRec[channelindex].length > 1)||
                 !(localRec[channelindex][0] instanceof SDFReceiver)) {
             for (int i = 0; i < tokens.length; i++) {
-                Token tt = null;
+                ptolemy.data.Token tt = null;
                 for (int j = 0; j < localRec[channelindex].length; j++) {
-                    Token ttt = localRec[channelindex][j].get();
+                    ptolemy.data.Token ttt = localRec[channelindex][j].get();
                     if (tt == null) tt = ttt;
                 }
                 if (tt == null) {
@@ -177,6 +212,36 @@ public final class SDFIOPort extends TypedIOPort {
         else {
             ((SDFReceiver) localRec[channelindex][0]).getArray(tokens);
         }
+    }
+
+    /** Get the number of tokens that are consumed
+     *  on every channel of this port.
+     *
+     *  @return The number of tokens consumed on this port, as specified in
+     *  the tokenConsumptionRate Parameter.
+     */
+    public int getTokenConsumptionRate() throws IllegalActionException {
+	return ((IntToken)tokenConsumptionRate.getToken()).intValue();
+    }
+
+    /** Get the number of tokens that are produced
+     *  on this port during initialization.
+     *
+     *  @return The number of tokens produced on the port, as specified in
+     *  the TokenInitProduction parameter.
+     */
+    public int getTokenInitProduction(IOPort p) throws IllegalActionException {
+	return ((IntToken)tokenInitProduction.getToken()).intValue();
+    }
+
+    /** Get the number of tokens that are produced
+     *  on the designated port of this Actor during each firing.
+     *
+     *  @return The number of tokens produced on the port, as specified in
+     *  the TokenProductionRate parameter.
+     */
+    public int getTokenProductionRate(IOPort p) throws IllegalActionException {
+	return ((IntToken)tokenProductionRate.getToken()).intValue();
     }
 
     /** Send an array of tokens to all receivers connected to the
@@ -197,7 +262,7 @@ public final class SDFIOPort extends TypedIOPort {
      *  @exception IllegalActionException If the port is not an output, if
      *   the index is out of range, or if the array is null.
      */
-    public void sendArray(int channelindex, Token tokens[])
+    public void sendArray(int channelindex, ptolemy.data.Token tokens[])
             throws IllegalActionException, NoRoomException {
         Receiver[][] farRec;
         if(tokens == null) throw new IllegalActionException(
@@ -229,4 +294,126 @@ public final class SDFIOPort extends TypedIOPort {
                 }
         }
     }
+
+    /**
+     * Set whether or not this port is an input.  In addition to the base 
+     * class operation, set the port rate parameters to reasonable values.
+     * If setting the port to be an input, then set the consumption rate to
+     * be 1.  If setting the port to not be an input, then set the consumption
+     * rate to be 0.
+     */   
+    public void setInput(boolean isInput) { 
+	super.setInput(isInput);
+	try {
+	    if(isInput) {
+		tokenConsumptionRate.setToken(new IntToken(1));
+	    } else {
+		tokenConsumptionRate.setToken(new IntToken(0));
+	    }
+	} catch (Exception e) { 
+	    // This should never happen
+	    throw new InternalErrorException(e.getMessage());
+	}
+    }
+
+    /**
+     * Set whether or not this port is an output.  In addition to the base 
+     * class operation, set the port rate parameters to reasonable values.
+     * If setting the port to be an output, then set the consumption rate to
+     * be 1.  If setting the port to not be an output, then set the consumption
+     * rate to be 0.
+     */   
+    public void setOutput(boolean isOutput) {
+	super.setOutput(isOutput);
+	try {
+	    if(isOutput) {
+		tokenProductionRate.setToken(new IntToken(1));
+	    } else {
+		tokenProductionRate.setToken(new IntToken(0));
+		tokenInitProduction.setToken(new IntToken(0));
+	    }
+	} catch (Exception e) {
+	    // This should never happen.
+	    throw new InternalErrorException(e.getMessage());
+	}
+    }
+
+   /** Set the number of tokens that are consumed
+    *  on the appropriate port of this Actor during each firing
+    *  by setting the value of the tokenConsumptionRate parameter.
+    *
+    *  @exception IllegalActionException If the rate is less than zero,
+    *  or the port is not an input port.
+    */
+    public void setTokenConsumptionRate(int rate)
+            throws IllegalActionException {
+        if(rate < 0) throw new IllegalActionException(
+                "Rate must be >= 0");
+        if(!isInput()) throw new IllegalActionException(this, "Port " +
+	     "is not an input port.");
+	tokenConsumptionRate.setToken(new IntToken(rate));
+    }
+
+    /** Set the number of tokens that are produced
+     *  on the appropriate port of this Actor during initialize
+     *  by setting the value of the tokenInitProduction parameter.
+     *
+     *  @exception IllegalActionException If the count is less than zero, 
+     *  or the port is not an output port.
+     */
+    public void setTokenInitProduction(int count)
+            throws IllegalActionException {
+        if(count < 0) throw new IllegalActionException(
+                "Count must be >= 0");
+        if(!isOutput()) throw new IllegalActionException(this, "Port " +
+                "is not an Output Port.");
+	tokenInitProduction.setToken(new IntToken(count));
+    }
+
+    /** Set the number of tokens that are produced
+     *  on the appropriate port of this Actor during each firing
+     *  by setting the value of the tokenProductionRate parameter.
+     *
+     *  @exception IllegalActionException If port is not contained
+     *  in this actor, the rate is less than zero, or the port is
+     *  not an output port.
+     */
+    public void setTokenProductionRate(int rate)
+            throws IllegalActionException {
+        if(rate <= 0) throw new IllegalActionException(
+                "Rate must be > 0");
+        if(!isOutput()) throw new IllegalActionException(this, "Port " +
+                "is not an Output Port.");
+	tokenProductionRate.setToken(new IntToken(rate));
+    }
+
+    /** 
+     * Initialize local data members.
+     */
+    private void _initialize() {
+	try {
+	    tokenConsumptionRate = new Parameter(this, "TokenConsumptionRate",
+						 new IntToken(0));	
+	    tokenInitProduction = new Parameter(this, "TokenInitProduction",
+						new IntToken(0));
+	    tokenProductionRate = new Parameter(this, "TokenProductionRate",
+						new IntToken(0));
+	}
+	catch (Exception e) {
+	    // This should never happen.
+	    throw new InternalErrorException(e.getMessage());
+	}
+    } 
+	
 }
+
+
+
+
+
+
+
+
+
+
+
