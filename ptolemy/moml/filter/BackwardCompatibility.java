@@ -54,12 +54,12 @@ public class BackwardCompatibility {
      *  MoMLFilter to be applied to handle backward compatibility
      */
     public static List allFilters() {
-	List results = new LinkedList();
-	results.add(new AddEditorFactory());
-	results.add(new AddIcon());
-	results.add(new HideAnnotationNames());
-	results.add(new PortNameChanges());
-	results.add(new PropertyClassChanges());
-	return results;
+        List results = new LinkedList();
+        results.add(new AddEditorFactory());
+        results.add(new AddIcon());
+        results.add(new HideAnnotationNames());
+        results.add(new PortNameChanges());
+        results.add(new PropertyClassChanges());
+        return results;
     }
 }

@@ -51,7 +51,7 @@ property for any annotations.
 public class HideAnnotationNames implements MoMLFilter {
 
     /** If the attributeName is "name" and attributeValue ends
-     *	with "annotation", then
+     *        with "annotation", then
      *  <pre>
      *   <property name="_hideName" class="ptolemy.data.expr.Parameter">
      *   </property>
@@ -67,28 +67,28 @@ public class HideAnnotationNames implements MoMLFilter {
     public String filterAttributeValue(NamedObj container,
             String attributeName, String attributeValue) {
         if (attributeValue == null) {
-	    // attributeValue == null is fairly common, so we check for
-	    // that first
+            // attributeValue == null is fairly common, so we check for
+            // that first
             return null;
-	}
+        }
 
-	if (attributeName.equals("name")) {
-	    if (attributeValue.endsWith("annotation1")) {
-		// We found a line like
-		// <property name="13:0:0:annotation1"
-		//          class="ptolemy.kernel.util.Attribute">
+        if (attributeName.equals("name")) {
+            if (attributeValue.endsWith("annotation1")) {
+                // We found a line like
+                // <property name="13:0:0:annotation1"
+                //          class="ptolemy.kernel.util.Attribute">
 
-		_currentlyProcessingAnnotation = true;
-		_currentAnnotationFullName = container.getFullName()
-		    + "." + attributeValue;
-	    } else if (_currentlyProcessingAnnotation &&
+                _currentlyProcessingAnnotation = true;
+                _currentAnnotationFullName = container.getFullName()
+                    + "." + attributeValue;
+            } else if (_currentlyProcessingAnnotation &&
                     attributeValue.equals("_hideName")) {
-		// We are processing an annotation and it already
-		// has _hideName
-		_currentlyProcessingAnnotation = false;
-	    }
-	}
-	if ( _currentlyProcessingAnnotation
+                // We are processing an annotation and it already
+                // has _hideName
+                _currentlyProcessingAnnotation = false;
+            }
+        }
+        if ( _currentlyProcessingAnnotation
                 && container != null
                 && !container.getFullName()
                 .equals(_currentAnnotationFullName)
@@ -97,12 +97,12 @@ public class HideAnnotationNames implements MoMLFilter {
                 && !container.getFullName()
                 .startsWith(_currentAnnotationFullName)) {
 
-	    // We found another class in a different container
-	    // while handling an annotation.
+            // We found another class in a different container
+            // while handling an annotation.
 
-	    _currentlyProcessingAnnotation = false;
-	}
-	return attributeValue;
+            _currentlyProcessingAnnotation = false;
+        }
+        return attributeValue;
     }
 
     /** Given the elementName, perform any filter operations
@@ -115,17 +115,17 @@ public class HideAnnotationNames implements MoMLFilter {
      */
     public String filterEndElement(NamedObj container, String elementName)
             throws Exception {
-	if (!elementName.equals("property")) {
-	    return elementName;
-	}
-	if ( _currentlyProcessingAnnotation
+        if (!elementName.equals("property")) {
+            return elementName;
+        }
+        if ( _currentlyProcessingAnnotation
                 && container.getFullName()
                 .equals(_currentAnnotationFullName)) {
-	    _currentlyProcessingAnnotation = false;
-	    Parameter hideName = new Parameter(container, "_hideName");
-	    MoMLParser.setModified(true);
-	}
-	return elementName;
+            _currentlyProcessingAnnotation = false;
+            Parameter hideName = new Parameter(container, "_hideName");
+            MoMLParser.setModified(true);
+        }
+        return elementName;
     }
 
 

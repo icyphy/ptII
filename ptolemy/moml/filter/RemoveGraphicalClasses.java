@@ -64,7 +64,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
     public void put(String className, String replacement) {
         // ptolemy.copernicus.kernel.KernelMain call this method
         // so as to filter out the GeneratorAttribute
-	_graphicalClasses.put(className, replacement);
+        _graphicalClasses.put(className, replacement);
     }
 
     /** If the attributeValue is "ptolemy.vergil.icon.ValueIcon",
@@ -95,7 +95,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
         if (attributeValue == null) {
             return null;
         } else if (_graphicalClasses.containsKey(attributeValue)) {
-	    MoMLParser.setModified(true);
+            MoMLParser.setModified(true);
             return (String) _graphicalClasses.get(attributeValue);
         }
         return attributeValue;
@@ -111,7 +111,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
      */
     public String filterEndElement(NamedObj container, String elementName)
             throws Exception {
-	return elementName;
+        return elementName;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -124,19 +124,19 @@ public class RemoveGraphicalClasses implements MoMLFilter {
     private static HashMap _graphicalClasses;
 
     static {
-	_graphicalClasses = new HashMap();
-	// Alphabetical by key class
-	_graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
+        _graphicalClasses = new HashMap();
+        // Alphabetical by key class
+        _graphicalClasses.put("ptolemy.vergil.basic.NodeControllerFactory",
                 "ptolemy.kernel.util.Attribute");
-	_graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon",
+        _graphicalClasses.put("ptolemy.vergil.icon.AttributeValueIcon",
                 null);
-	_graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon",
+        _graphicalClasses.put("ptolemy.vergil.icon.BoxedValueIcon",
                 null);
-	_graphicalClasses.put("ptolemy.vergil.icon.ValueIcon",
+        _graphicalClasses.put("ptolemy.vergil.icon.ValueIcon",
                 "ptolemy.kernel.util.Attribute");
-	_graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
+        _graphicalClasses.put("ptolemy.vergil.toolbox.AnnotationEditorFactory",
                 "ptolemy.kernel.util.Attribute");
-	_graphicalClasses.put("ptolemy.vergil.toolbox.VisibleParameterEditorFactory",
+        _graphicalClasses.put("ptolemy.vergil.toolbox.VisibleParameterEditorFactory",
                 "ptolemy.kernel.util.Attribute");
     }
 }

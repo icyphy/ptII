@@ -56,7 +56,7 @@ for classes with property where the class name has changed
 public class PropertyClassChanges implements MoMLFilter {
 
     /**  If the attributeName is "class" and attributeValue names a
-     *	class that has had its port names changed between releases,
+     *        class that has had its port names changed between releases,
      *  then substitute in the new port names.
      *
      *  @param container  The container for this attribute.
@@ -74,15 +74,15 @@ public class PropertyClassChanges implements MoMLFilter {
         // are not making the same comparison more than once.
 
         if (attributeValue == null) {
-	    // attributeValue == null is fairly common, so we check for
-	    // that first
+            // attributeValue == null is fairly common, so we check for
+            // that first
             return null;
-	}
+        }
 
 
-	if (attributeName.equals("name")) {
-	    // Save the name of the for later use if we see a "class"
-	    _lastNameSeen = attributeValue;
+        if (attributeName.equals("name")) {
+            // Save the name of the for later use if we see a "class"
+            _lastNameSeen = attributeValue;
             if (_currentlyProcessingActorWithPropertyClassChanges) {
                 if (_propertyMap.containsKey(attributeValue)) {
                     // We will do the above checks only if we found a
@@ -96,52 +96,52 @@ public class PropertyClassChanges implements MoMLFilter {
                     _newClass = null;
                 }
             }
-	}
-	// If you change this class, you should run before and after
-	// timing tests on large moml files, a good command to run
-	// is:
-	// $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
-	// which will open up a large xml file and then close after 2 seconds.
-	// If you place the above command in a file five times, you
-	// can get averages with:
-	// sh c:/tmp/timeit | awk '{sum += $4; print sum, sum/NR, $0}'
+        }
+        // If you change this class, you should run before and after
+        // timing tests on large moml files, a good command to run
+        // is:
+        // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
+        // which will open up a large xml file and then close after 2 seconds.
+        // If you place the above command in a file five times, you
+        // can get averages with:
+        // sh c:/tmp/timeit | awk '{sum += $4; print sum, sum/NR, $0}'
 
-	if (attributeName.equals("class")) {
-	    if (_actorsWithPropertyClassChanges
-		.containsKey(attributeValue)) {
-		// We found a class with a property class change.
-		_currentlyProcessingActorWithPropertyClassChanges = true;
-		_currentActorFullName = container.getFullName()
-		    + "." + _lastNameSeen;
-		_propertyMap =
-		    (HashMap) _actorsWithPropertyClassChanges
-		    .get(attributeValue);
-	    } else if (_currentlyProcessingActorWithPropertyClassChanges
-		       && _newClass != null) {
+        if (attributeName.equals("class")) {
+            if (_actorsWithPropertyClassChanges
+                .containsKey(attributeValue)) {
+                // We found a class with a property class change.
+                _currentlyProcessingActorWithPropertyClassChanges = true;
+                _currentActorFullName = container.getFullName()
+                    + "." + _lastNameSeen;
+                _propertyMap =
+                    (HashMap) _actorsWithPropertyClassChanges
+                    .get(attributeValue);
+            } else if (_currentlyProcessingActorWithPropertyClassChanges
+                       && _newClass != null) {
 
-		// We found a property class to change, and now we
-		// found the class itself that needs changing.
+                // We found a property class to change, and now we
+                // found the class itself that needs changing.
 
-		// Only return the new class once, but we might
-		// have other properties that need changing
-		//_currentlyProcessingActorWithPropertyClassChanges = false;
+                // Only return the new class once, but we might
+                // have other properties that need changing
+                //_currentlyProcessingActorWithPropertyClassChanges = false;
 
-		String temporaryNewClass = _newClass;
-		_newClass = null;
-		MoMLParser.setModified(true);
-		return temporaryNewClass;
-	    } else if (  _currentlyProcessingActorWithPropertyClassChanges
-			 && container != null
-			 && !container.getFullName()
-			 .equals(_currentActorFullName)
-			 && !container.getFullName()
-			 .startsWith(_currentActorFullName)) {
-		// We found another class in a different container
-		// while handling a class with port name changes
-		_currentlyProcessingActorWithPropertyClassChanges = false;
-	    }
-	}
-	return attributeValue;
+                String temporaryNewClass = _newClass;
+                _newClass = null;
+                MoMLParser.setModified(true);
+                return temporaryNewClass;
+            } else if (  _currentlyProcessingActorWithPropertyClassChanges
+                         && container != null
+                         && !container.getFullName()
+                         .equals(_currentActorFullName)
+                         && !container.getFullName()
+                         .startsWith(_currentActorFullName)) {
+                // We found another class in a different container
+                // while handling a class with port name changes
+                _currentlyProcessingActorWithPropertyClassChanges = false;
+            }
+        }
+        return attributeValue;
     }
 
     /** Given the elementName, perform any filter operations
@@ -154,7 +154,7 @@ public class PropertyClassChanges implements MoMLFilter {
      */
     public String filterEndElement(NamedObj container, String elementName)
             throws Exception {
-	return elementName;
+        return elementName;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -191,17 +191,17 @@ public class PropertyClassChanges implements MoMLFilter {
     // Set to true if we are currently processing an actor with parameter
     // class changes, set to false when we are done.
     private static boolean
-	_currentlyProcessingActorWithPropertyClassChanges = false;
+        _currentlyProcessingActorWithPropertyClassChanges = false;
 
     // Set to true if we are currently processing an actor with port name
     // changes, set to false when we are done.
     private static boolean
-	_currentlyProcessingActorWithPortNameChanges = false;
+        _currentlyProcessingActorWithPortNameChanges = false;
 
     // Set to true if we are currently processing an actor that may
     // need _editorFactory added, set to false when we are done.
     private boolean
-	_currentlyProcessingActorThatMayNeedAnEditorFactory = false;
+        _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
 
     // Set to true if we are currently processing an actor that may
     // need _icon added, set to false when we are done.
@@ -235,117 +235,117 @@ public class PropertyClassChanges implements MoMLFilter {
     // that requires processing. Set to false once we are
     // done processing that actor.  This is done for performance reasons.
     private static boolean _currentlyProcessingActorThatRequiresUpdating =
-	false;
+        false;
 
     static {
-	///////////////////////////////////////////////////////////
-	// Actors with port name changes.
-	_actorsWithPortNameChanges = new HashMap();
-	_containerPortMap = new HashMap();
+        ///////////////////////////////////////////////////////////
+        // Actors with port name changes.
+        _actorsWithPortNameChanges = new HashMap();
+        _containerPortMap = new HashMap();
 
-	// ComplexToCartesian: real is now x, imag is now y.
-	HashMap cartesianPorts = new HashMap();
-	cartesianPorts.put("real", "x");
-	cartesianPorts.put("imag", "y");
-	_actorsWithPortNameChanges
-	    .put("ptolemy.actor.lib.conversions.ComplexToCartesian",
+        // ComplexToCartesian: real is now x, imag is now y.
+        HashMap cartesianPorts = new HashMap();
+        cartesianPorts.put("real", "x");
+        cartesianPorts.put("imag", "y");
+        _actorsWithPortNameChanges
+            .put("ptolemy.actor.lib.conversions.ComplexToCartesian",
                     cartesianPorts);
 
-	// CartesianToComplex has the same ports as ComplexToCartesian.
-	_actorsWithPortNameChanges
-	    .put("ptolemy.actor.lib.conversions.CartesianToComplex",
+        // CartesianToComplex has the same ports as ComplexToCartesian.
+        _actorsWithPortNameChanges
+            .put("ptolemy.actor.lib.conversions.CartesianToComplex",
                     cartesianPorts);
 
         // Sleep
-	HashMap sleepPorts = new HashMap();
+        HashMap sleepPorts = new HashMap();
         sleepPorts.put("delay", "sleepTime");
         _actorsWithPortNameChanges
-	    .put("ptolemy.actor.lib.Sleep", sleepPorts);
+            .put("ptolemy.actor.lib.Sleep", sleepPorts);
 
-	///////////////////////////////////////////////////////////
-	// Actors that have properties that have changed class.
-	_actorsWithPropertyClassChanges = new HashMap();
+        ///////////////////////////////////////////////////////////
+        // Actors that have properties that have changed class.
+        _actorsWithPropertyClassChanges = new HashMap();
 
-	// AudioReader
-	HashMap sourceURLClassChanges = new HashMap();
-	// Key = property name, Value = new class name
-	sourceURLClassChanges.put("sourceURL", "ptolemy.data.expr.Parameter");
+        // AudioReader
+        HashMap sourceURLClassChanges = new HashMap();
+        // Key = property name, Value = new class name
+        sourceURLClassChanges.put("sourceURL", "ptolemy.data.expr.Parameter");
 
-	_actorsWithPropertyClassChanges
-	    .put("ptolemy.actor.lib.javasound.AudioReader",
+        _actorsWithPropertyClassChanges
+            .put("ptolemy.actor.lib.javasound.AudioReader",
                     sourceURLClassChanges);
 
-	// ImagePartition
-	HashMap inputOutputTypedIOPortClassChanges = new HashMap();
-	inputOutputTypedIOPortClassChanges.put("input",
+        // ImagePartition
+        HashMap inputOutputTypedIOPortClassChanges = new HashMap();
+        inputOutputTypedIOPortClassChanges.put("input",
                 "ptolemy.actor.TypedIOPort");
-	inputOutputTypedIOPortClassChanges.put("output",
+        inputOutputTypedIOPortClassChanges.put("output",
                 "ptolemy.actor.TypedIOPort");
 
-	_actorsWithPropertyClassChanges
-   	    .put("ptolemy.domains.sdf.lib.vq.ImagePartition",
+        _actorsWithPropertyClassChanges
+               .put("ptolemy.domains.sdf.lib.vq.ImagePartition",
                     inputOutputTypedIOPortClassChanges);
 
 
-	// ImageUnpartition
-	_actorsWithPropertyClassChanges
-   	    .put("ptolemy.domains.sdf.lib.vq.ImageUnpartition",
+        // ImageUnpartition
+        _actorsWithPropertyClassChanges
+               .put("ptolemy.domains.sdf.lib.vq.ImageUnpartition",
                     inputOutputTypedIOPortClassChanges);
 
-	// HTVQEncode
-	_actorsWithPropertyClassChanges
-   	    .put("ptolemy.domains.sdf.lib.vq.HTVQEncode",
+        // HTVQEncode
+        _actorsWithPropertyClassChanges
+               .put("ptolemy.domains.sdf.lib.vq.HTVQEncode",
                     inputOutputTypedIOPortClassChanges);
 
-	// VQDecode
-	_actorsWithPropertyClassChanges
-   	    .put("ptolemy.domains.sdf.lib.vq.VQDecode",
+        // VQDecode
+        _actorsWithPropertyClassChanges
+               .put("ptolemy.domains.sdf.lib.vq.VQDecode",
                     inputOutputTypedIOPortClassChanges);
 
-	///////////////////////////////////////////////////////////
-	// Actors that should have _icon
-	_actorsThatShouldHaveIcons = new HashMap();
+        ///////////////////////////////////////////////////////////
+        // Actors that should have _icon
+        _actorsThatShouldHaveIcons = new HashMap();
 
-	// In alphabetic order by actor class name.
-	_actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Const",
+        // In alphabetic order by actor class name.
+        _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Const",
                 "<property name=\"_icon\" "
                 + "class=\"ptolemy.vergil.icon.BoxedValueIcon\">\n"
                 + "<property name=\"attributeName\" value=\"value\"/>\n"
                 + "<property name=\"displayWidth\" value=\"40\"/>\n"
                 + "</property>\n");
 
-	String functionIcon =
-	    "<property name=\"_icon\" "
+        String functionIcon =
+            "<property name=\"_icon\" "
             + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
-	    + "<property name=\"attributeName\" value=\"function\"/>\n"
-	    + "</property>\n";
+            + "<property name=\"attributeName\" value=\"function\"/>\n"
+            + "</property>\n";
 
-	_actorsThatShouldHaveIcons.put("ptolemy.actor.lib.MathFunction",
+        _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.MathFunction",
                 functionIcon);
 
-	_actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Scale",
+        _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.Scale",
                 "<property name=\"_icon\" "
                 + "class=\"ptolemy.vergil.icon.AttributeValueIcon\">\n"
                 + "<property name=\"attributeName\" value=\"factor\"/>\n"
                 + "</property>\n");
 
-	_actorsThatShouldHaveIcons.put("ptolemy.actor.lib.TrigFunction",
+        _actorsThatShouldHaveIcons.put("ptolemy.actor.lib.TrigFunction",
                 functionIcon);
 
-	///////////////////////////////////////////////////////////
-	// We put all the actors that require updating so that we can
-	// have only search for actors.
-	_actorsThatRequireUpdating = new HashSet();
+        ///////////////////////////////////////////////////////////
+        // We put all the actors that require updating so that we can
+        // have only search for actors.
+        _actorsThatRequireUpdating = new HashSet();
 
-	// Add the entries from each of the HashMaps to the Set.
-	_actorsThatRequireUpdating
-	    .addAll(_actorsWithPortNameChanges.keySet());
-	_actorsThatRequireUpdating
-	    .addAll(_actorsWithPropertyClassChanges.keySet());
-	_actorsThatRequireUpdating
-	    .addAll(_actorsThatShouldHaveIcons.keySet());
-	// ptolemy.data.expr.Parameters may need _editorFactory added.
-	_actorsThatRequireUpdating.add("ptolemy.data.expr.Parameter");
+        // Add the entries from each of the HashMaps to the Set.
+        _actorsThatRequireUpdating
+            .addAll(_actorsWithPortNameChanges.keySet());
+        _actorsThatRequireUpdating
+            .addAll(_actorsWithPropertyClassChanges.keySet());
+        _actorsThatRequireUpdating
+            .addAll(_actorsThatShouldHaveIcons.keySet());
+        // ptolemy.data.expr.Parameters may need _editorFactory added.
+        _actorsThatRequireUpdating.add("ptolemy.data.expr.Parameter");
 
     }
 }
