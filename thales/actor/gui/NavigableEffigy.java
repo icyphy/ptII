@@ -289,9 +289,7 @@ public class NavigableEffigy extends PtolemyEffigy {
                                             input.toString());
                                 if (anotherURL != null) {
                                     toplevel =
-                                        parser.parse(
-                                                base,
-                                                anotherURL.openStream());
+                                        parser.parse(base, anotherURL);
                                 } else {
                                     throw io;
                                 }

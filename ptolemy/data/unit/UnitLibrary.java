@@ -209,7 +209,7 @@ public class UnitLibrary {
             // file itself.                                             
             URL base = inURL;
 
-            momlParser.parse(base, inURL.openStream());
+            momlParser.parse(base, inURL);
 
             us = (UnitSystem) (container.getAttribute("SI"));
         } catch (Throwable throwable) {

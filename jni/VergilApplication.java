@@ -128,7 +128,7 @@ public class VergilApplication extends MoMLApplication {
         URL inurl = specToURL("ptolemy/configs/vergilWelcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
-        _parser.parse(inurl, inurl.openStream());
+        _parser.parse(inurl, inurl);
         Effigy doc = (Effigy)configuration.getEntity("directory.doc");
         URL idurl = specToURL("ptolemy/configs/intro.htm");
         doc.identifier.setExpression(idurl.toExternalForm());

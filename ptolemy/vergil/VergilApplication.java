@@ -353,7 +353,7 @@ public class VergilApplication extends MoMLApplication {
                 + "/welcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
-        _parser.parse(inURL, inURL.openStream());
+        _parser.parse(inURL, inURL);
 
         Effigy doc = (Effigy)configuration.getEntity("directory.doc");
 

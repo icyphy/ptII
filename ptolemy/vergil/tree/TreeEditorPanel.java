@@ -32,22 +32,16 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.vergil.tree;
 
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLParser;
-
 import java.awt.Dimension;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 import javax.swing.JScrollPane;
 import javax.swing.JTree;
 import javax.swing.tree.TreeCellRenderer;
+
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// TreeEditorPanel
@@ -79,38 +73,8 @@ public class TreeEditorPanel extends JScrollPane {
     public TreeEditorPanel(String filename, TreeCellRenderer cellRenderer)
             throws Exception {
         _parser = new MoMLParser();
-        // The following code is borrowed from
-        // ptolemy.actor.gui.MoMLApplication.
-        InputStream instream;
-        URL base;
-        try {
-            // First argument is null because we are only
-            // processing absolute URLs this way.  Relative
-            // URLs are opened as ordinary files.
-            URL inurl = new URL(null, filename);
-            // Strangely, the XmlParser does not want as base the
-            // directory containing the file, but rather the file itself.
-            base = inurl;
-            instream = inurl.openStream();
-        } catch (MalformedURLException ex) {
-            try {
-                File file = new File(filename);
-                instream = new FileInputStream(file);
-
-                // Strangely, the XmlParser does not want as base the
-                // directory containing the file, but rather the
-                // file itself.
-                /*File directory = */ new File(file.getAbsolutePath());
-                // base = new URL("file", null, directory);
-                base = file.toURL();
-            } catch (FileNotFoundException ex2) {
-                URL inurl = Class.forName("ptolemy.kernel.util.NamedObj").
-                    getClassLoader().getResource(filename);
-                instream = inurl.openStream();
-                base = inurl;
-            }
-        }
-        _toplevel = _parser.parse(base, instream);
+        // FIXME: This should use the Configuration.
+        _toplevel = _parser.parseFile(filename);
         if (_toplevel instanceof CompositeEntity) {
             FullTreeModel model
                 = new FullTreeModel((CompositeEntity)_toplevel);

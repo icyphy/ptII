@@ -102,7 +102,7 @@ public class SingleWindowApplication extends VergilApplication {
         URL inurl = specToURL("thales/configs/singleWindow/singleWindowWelcomeWindow.xml");
         _parser.reset();
         _parser.setContext(configuration);
-        _parser.parse(inurl, inurl.openStream());
+        _parser.parse(inurl, inurl);
         Effigy doc = (Effigy) configuration.getEntity("directory.doc");
         URL idurl = specToURL("ptolemy/configs/full/intro.htm");
         doc.identifier.setExpression(idurl.toExternalForm());
