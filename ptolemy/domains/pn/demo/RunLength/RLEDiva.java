@@ -29,7 +29,7 @@ for visualization
 package ptolemy.domains.pn.demo.RunLength;
 
 
-import diva.graph.*;
+import diva.graph.compat.*;
 import diva.graph.model.*;
 import diva.graph.layout.*;
 import diva.canvas.*;
