@@ -1534,7 +1534,7 @@ public class PtolemyUtilities {
             namedObjClass.getMethod("boolean handleModelError(ptolemy.kernel.util.NamedObj,ptolemy.kernel.util.IllegalActionException)");
 
         getContainerMethod =
-            Scene.v().getMethod("<ptolemy.kernel.util.NamedObj: ptolemy.kernel.util.Nameable getContainer()>");
+            Scene.v().getMethod("<ptolemy.kernel.util.NamedObj: ptolemy.kernel.util.NamedObj getContainer()>");
         getModelURIMethod =
             Scene.v().loadClassAndSupport("ptolemy.kernel.attributes.URIAttribute")
             .getMethod("java.net.URI getModelURI(ptolemy.kernel.util.NamedObj)");        
