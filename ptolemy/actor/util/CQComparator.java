@@ -69,8 +69,8 @@ public interface CQComparator extends Comparator {
      *  appropriate type, the implementation should throw a
      *  ClassCastException.
      *
-     * @param entry An object that can be inserted in a calendar queue.
-     * @return The index of the bin.
+     *  @param entry An object that can be inserted in a calendar queue.
+     *  @return The index of the bin.
      */
     public long getVirtualBinNumber(Object entry);
 

@@ -131,7 +131,7 @@ public class PtolemyThread extends Thread {
     ////                         public methods                    ////
 
     /** Get the read depth field.
-     * @return The read depth field.
+     *  @return The read depth field.
      */
     public int getReadDepth() {
         return readDepth;
