@@ -190,8 +190,10 @@ KEYDNAME = "CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your To
 KEYSTORE = ptKeystore
 KEYALIAS = claudius
 # The password should not be stored in a makefile, for production
-# purposes, run:
-#  make STOREPASSWORD= KEYPASSWORD= jnlp_sign
+# purposes, run something like:
+#
+# make KEYSTORE=/users/ptII/adm/certs/ptkeystore KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD= jnlp_sign
+#
 STOREPASSWORD = -storepass this.is.not.secure,it.is.for.testing.only
 KEYPASSWORD = -keypass this.is.not.secure,it.is.for.testing.only
 KEYTOOL = $(PTJAVA_DIR)/bin/keytool
