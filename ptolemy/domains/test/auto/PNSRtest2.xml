@@ -50,6 +50,12 @@ so we use the Stop actor.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 75.0]">
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This one I did originally for SDF, to test what&#10;happens when an output of the inner SR actor is &#10;absent. Here in PN works ok, since some actors &#10;are read blocked waiting for a token that never &#10;will come.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 10.0]">
+        </property>
+    </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -315,7 +321,7 @@ so we use the Stop actor.</text></svg></configure>
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{630.0, 135.0}">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -332,6 +338,18 @@ so we use the Stop actor.</text></svg></configure>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
+        <property name="sleepTime" class="ptolemy.actor.parameters.PortParameter" value="1L">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="sleepTime">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 300.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -356,6 +374,8 @@ so we use the Stop actor.</text></svg></configure>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Ramp.output" relation="relation8"/>
     <link port="topologia SR.port" relation="relation"/>
     <link port="topologia SR.port3" relation="relation4"/>
@@ -373,8 +393,10 @@ so we use the Stop actor.</text></svg></configure>
     <link port="BooleanSwitch.input" relation="relation8"/>
     <link port="BooleanSwitch.control" relation="relation7"/>
     <link port="BooleanSwitch.falseOutput" relation="relation"/>
-    <link port="Stop.input" relation="relation7"/>
+    <link port="Stop.input" relation="relation9"/>
     <link port="Test.input" relation="relation4"/>
     <link port="Test2.input" relation="relation"/>
     <link port="Test3.input" relation="relation2"/>
+    <link port="Sleep.input" relation="relation7"/>
+    <link port="Sleep.output" relation="relation9"/>
 </entity>

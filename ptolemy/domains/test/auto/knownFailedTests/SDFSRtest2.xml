@@ -17,12 +17,12 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Teste a condição de erro onde não há produção por parte da topologia SR.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Teste a condição de erro onde não há produção por parte da topologia SR.&#10;This is as PNSRTest2. It works as expected. An &quot;Actor is not ready to fire&quot;&#10;exception is thrown. What happens is that the SR composite cannot be seen&#10;as an SDF atomic, since its sample rates are not valid.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 15.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={52, 67, 970, 528}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={36, 142, 970, 528}, maximized=false}">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
@@ -45,36 +45,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="150.0, 225.0">
         </property>
     </entity>
-    <entity name="S1" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Saida do Ramp">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 225.0">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<default marks="dots"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="topologia SR" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="295.0, 135.0">
         </property>
@@ -83,7 +53,7 @@
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[392, 113]">
         </property>
         <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
-            <property name="scheduler" class="ptolemy.data.expr.StringParameter" value="&quot;ptolemy.domains.sr.kernel.SRRandomizedScheduler&quot;">
+            <property name="scheduler" class="ptolemy.data.expr.StringParameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
                 <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                     <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;">
                     </property>
@@ -93,9 +63,9 @@
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 60.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 60.0}">
             </property>
-            <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRRandomizedScheduler">
+            <property name="Scheduler" class="ptolemy.domains.sr.kernel.SROptimizedScheduler">
             </property>
         </property>
         <port name="port" class="ptolemy.actor.TypedIOPort">
@@ -168,69 +138,9 @@
         <link port="Scale.output" relation="relation4"/>
         <link port="Absent.output" relation="relation3"/>
     </entity>
-    <entity name="S2" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Saida do SR">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="505.0, 125.0">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<default marks="dots"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
         <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 325.0">
         </property>
-    </entity>
-    <entity name="S3" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="Saida do ADD">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="590.0, 325.0">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="0.0"/>
-<yRange min="0.0" max="0.0"/>
-<default marks="dots"/>
-</plot>?>
-        </configure>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
         <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="{0}">
@@ -239,28 +149,52 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 180.0">
         </property>
     </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 225.0}">
+        </property>
+    </entity>
+    <entity name="Test3" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0}">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 325.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="255.0, 225.0">
         </vertex>
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Ramp.output" relation="relation"/>
-    <link port="S1.input" relation="relation"/>
     <link port="topologia SR.port" relation="relation"/>
-    <link port="topologia SR.port3" relation="relation4"/>
+    <link port="topologia SR.port3" relation="relation3"/>
     <link port="topologia SR.port2" relation="relation5"/>
-    <link port="S2.input" relation="relation4"/>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.minus" relation="relation6"/>
     <link port="AddSubtract.output" relation="relation2"/>
-    <link port="S3.input" relation="relation2"/>
     <link port="SampleDelay.input" relation="relation5"/>
     <link port="SampleDelay.output" relation="relation6"/>
+    <link port="Test.input" relation="relation3"/>
+    <link port="Test2.input" relation="relation"/>
+    <link port="Test3.input" relation="relation2"/>
 </entity>

@@ -36,6 +36,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 300.0]">
         </property>
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="I get no result and the simulation ends. This is ok,&#10;since the SDF composite cannot fire since one of its &#10;inputs is always absent. I would be nice to get an&#10;exception, since you are trying to fire an SDF with &#10;an input sample rate of 0.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 25.0]">
+        </property>
+    </property>
     <entity name="1:Topologia SDF" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 195.0">
         </property>
@@ -104,34 +110,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 135.0">
         </property>
     </entity>
-    <entity name="1:SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 195.0">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>SequencePlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<default marks="dots"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="Absent" class="ptolemy.domains.sr.lib.Absent">
         <property name="outputType" class="ptolemy.kernel.util.StringAttribute" value="int">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -154,6 +132,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 245.0">
         </property>
     </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 195.0]">
+        </property>
+    </entity>
     <relation name="1:relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -164,6 +146,6 @@
     <link port="1:Topologia SDF.port2" relation="relation"/>
     <link port="1:Topologia SDF.port4" relation="relation2"/>
     <link port="1:Ramp.output" relation="1:relation"/>
-    <link port="1:SequencePlotter.input" relation="relation2"/>
     <link port="Absent.output" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation2"/>
 </entity>

@@ -113,12 +113,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 145.0]">
         </property>
     </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 1, 4, 11, 26, 57, 120, 247, 502, 1013}">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{10, 21, 44, 91, 186, 377, 760, 1527, 3062, 6133}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{485, 130}">
         </property>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -135,5 +135,5 @@
     <link port="AddSubtract.plus" relation="relation2"/>
     <link port="AddSubtract.plus" relation="relation"/>
     <link port="AddSubtract.output" relation="relation3"/>
-    <link port="Test.input" relation="relation3"/>
+    <link port="NonStrictTest.input" relation="relation3"/>
 </entity>
