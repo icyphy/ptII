@@ -328,12 +328,12 @@ public class CTBaseIntegrator extends CTActor
         CTDirector dir = (CTDirector)getDirector();
         if(dir == null) {
             throw new IllegalActionException( this,
-                    " has no director avalable");
+                    " has no director available");
         }
         ODESolver solver = (ODESolver)dir.getCurrentODESolver();
         if(solver == null) {
             throw new IllegalActionException( this,
-                    " has no ODE solver avalable");
+                    " has no ODE solver available");
         }
 
         int n = solver.getIntegratorAuxVariableCount();
