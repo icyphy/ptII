@@ -137,14 +137,18 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      *  called by the manager.
      */
     public void managerStateChanged(Manager manager) {
-        showStatus(manager.getState().getDescription());
+        Manager.State newstate = manager.getState();
+        if (newstate != _previousState) {
+            showStatus(manager.getState().getDescription());
+            _previousState = newstate;
+        }
     }
 
     /** Report an exception.  This prints a message to the standard error
      *  stream, followed by the stack trace.
      */
     public void report(Exception ex) {
-        String msg = "Exception thrown by applet.\n" + ex.getMessage();
+        String msg = "Exception thrown by applet.\n" + ex.toString();
         System.err.println(msg);
         ex.printStackTrace();
         showStatus("Exception occurred.");
@@ -157,7 +161,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      */
     public void report(String message, Exception ex) {
         String msg = "Exception thrown by applet.\n" + message + "\n"
-                + ex.getMessage();
+                + ex.toString();
         System.err.println(msg);
         ex.printStackTrace();
         showStatus("Exception occurred.");
@@ -217,7 +221,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
     }
 
     /** Create run controls in a panel and return that panel.
-     *  The second argument controls exactly how many buttons are
+     *  The argument controls how many buttons are
      *  created.  If its value is greater than zero, then a "Go" button
      *  created.  If its value is greater than one, then a "Stop" button
      *  is also created.  Derived classes may override this method to add
@@ -279,6 +283,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
 
     private Button _goButton;
     private Button _stopButton;
+    private Manager.State _previousState;
 
     ////////////////////////////////////////////////////////////////////////
     ////                       inner classes                            ////
