@@ -35,7 +35,10 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.expr.Parameter;
 
 // Java imports.
+import diva.canvas.*;
 import java.awt.*;
+import java.awt.geom.*;
+import java.awt.print.*;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Enumeration;
@@ -53,14 +56,14 @@ In other words, if the Object is an instance of
 <code>ptolemy.gui.DocumentationViewer</code, then this class will attempt 
 to load the resource 
 <code>doc.codeDoc.ptolemy.gui.DocumentationViewer.html</code>.
-Note that this is consistent with where the <i>make install</i> makefile rule
-places javadocs.
+To automatically create documentation for the ptolemy tree in this directory,
+run make in the doc directory.
 
 @author Steve Neuendorffer
 @version $Id$
 */
 
-public class DocumentationViewer extends JPanel {
+public class DocumentationViewer extends JPanel implements Printable {
 
     /** Construct a viewer for the documentation of the class of 
      *  the specified object.  If the documentation cannot be found, then
@@ -77,9 +80,9 @@ public class DocumentationViewer extends JPanel {
 	
 
 	try {
-	    JEditorPane pane = new JEditorPane(docURL);
-	    pane.setEditable(false);
-	    JScrollPane scroller = new JScrollPane(pane);
+	    _pane = new JEditorPane(docURL);
+	    _pane.setEditable(false);
+	    JScrollPane scroller = new JScrollPane(_pane);
 	    scroller.setPreferredSize(new Dimension(800, 600));
 	    add(scroller);	
 	} catch (Exception ex) {
@@ -91,7 +94,49 @@ public class DocumentationViewer extends JPanel {
 	}
     }
 
+    /** Print the documentation to a printer.  The documentation will be 
+     *  scaled to fit the width of the paper, growing to as many pages as
+     *  is necessary.
+     *  @param graphics The context into which the page is drawn.
+     *  @param format The size and orientation of the page being drawn.
+     *  @param index The zero based index of the page to be drawn.
+     *  @returns PAGE_EXISTS if the page is rendered successfully, or
+     *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
+     *  @exception PrinterException If the print job is terminated.
+     */
+    public int print(Graphics graphics, PageFormat format,
+            int index) throws PrinterException {
+
+	if (_pane == null) {
+            return Printable.NO_SUCH_PAGE;
+        }
+        //        graphics.translate((int)format.getImageableX(),
+        //        (int)format.getImageableY());
+        Dimension dimension = _pane.getSize();   
+	
+	// How much do we have to scale the width?
+	double scale = format.getImageableWidth() / dimension.getWidth();
+	double scaledHeight = dimension.getHeight() * scale;
+	int lastPage = (int) (scaledHeight / format.getImageableHeight());
+
+	// If we're off the end, then we're done.
+	if(index > lastPage) {
+            return Printable.NO_SUCH_PAGE;
+        }
+        AffineTransform at = new AffineTransform();
+	at.translate((int)format.getImageableX(),
+		     (int)format.getImageableY());
+	at.translate(0, -(format.getImageableHeight() * index));
+	at.scale(scale, scale);
+	
+        ((Graphics2D) graphics).transform(at);
+	        
+        _pane.paint(graphics);
+        return Printable.PAGE_EXISTS;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    JEditorPane _pane = null;
 }
