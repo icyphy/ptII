@@ -67,7 +67,8 @@ MISC_FILES =	 doc
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	
+OPTIONAL_FILES = \
+	'CSPDirector$$DelayListLink.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
