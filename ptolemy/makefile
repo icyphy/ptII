@@ -61,7 +61,7 @@ PTAUXALLJARS = \
 		kernel/kernel.jar \
 		math/math.jar \
 		media/media.jar \
-		moml/moml.jar ]
+		moml/moml.jar \
 		plot/plotmlapplet.jar
 
 # All the .class files necessary to run a Ptolemy II domain applet
