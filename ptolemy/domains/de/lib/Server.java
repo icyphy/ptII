@@ -205,8 +205,8 @@ public class Server extends DETransformer {
      *  
      */
     public void removeDependencies() {
-        super.removeDependency(input, output);
-        super.removeDependency(newServiceTime, output);
+        removeDependency(input, output);
+        removeDependency(newServiceTime, output);
     }
 
     ///////////////////////////////////////////////////////////////////

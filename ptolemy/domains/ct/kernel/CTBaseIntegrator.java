@@ -425,7 +425,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
      *  
      */
     public void removeDependencies() {
-        super.removeDependency(input, output);
+        removeDependency(input, output);
     }
 
     /** Set history capacity. This will typically be set by the ODE solvers

@@ -146,8 +146,8 @@ public class DEMessageSource extends TypedAtomicActor {
      *  
      */
     public void removeDependencies() {
-        super.removeDependency(next, output);
-        super.removeDependency(next, request);  
+        removeDependency(next, output);
+        removeDependency(next, request);  
     }
     
     ///////////////////////////////////////////////////////////////////

@@ -172,8 +172,8 @@ public class VariableDelay extends DETransformer {
      *  
      */
     public void removeDependencies() {
-        super.removeDependency(input, output);
-        super.removeDependency(delay, output);  
+        removeDependency(input, output);
+        removeDependency(delay, output);  
 }
 
     ///////////////////////////////////////////////////////////////////

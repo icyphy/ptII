@@ -116,7 +116,7 @@ public class DETimer extends TypedAtomicActor {
      *  
      */
     public void removeDependencies() {
-        super.removeDependency(set, expired);
+        removeDependency(set, expired);
     }
 
     ///////////////////////////////////////////////////////////////////

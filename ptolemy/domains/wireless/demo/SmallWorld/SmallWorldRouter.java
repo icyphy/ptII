@@ -37,8 +37,6 @@ import java.util.List;
 import java.util.Random;
 
 import ptolemy.actor.Director;
-import ptolemy.actor.IODependence;
-import ptolemy.actor.IODependenceOfAtomicActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -440,12 +438,10 @@ public class SmallWorldRouter extends TypedAtomicActor {
     /** Explicitly declare which inputs and outputs are not dependent.
      *  
      */
-    public void removeDependencies() throws IllegalActionException {
-        IODependenceOfAtomicActor ioDependence = (IODependenceOfAtomicActor) 
-                        this.getAttribute(
-                        "_IODependence", IODependence.class);
-        ioDependence.removeDependence(input, output);
-    }        
+    public void removeDependencies() {
+        super.removeDependency(input, output);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 

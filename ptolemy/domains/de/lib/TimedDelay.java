@@ -170,7 +170,7 @@ public class TimedDelay extends DETransformer {
      *  
      */
     public void removeDependencies() {
-        super.removeDependency(input, output);
+        removeDependency(input, output);
     }
     
     ///////////////////////////////////////////////////////////////////

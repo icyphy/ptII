@@ -67,6 +67,6 @@ public class SimpleDelay extends TypedAtomicActor {
     }
 
     public void removeDependencies() {
-        super.removeDependency(input, output);
+        removeDependency(input, output);
     }
 }
