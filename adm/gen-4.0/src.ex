@@ -23,8 +23,10 @@ CVS
 adm
 alljsimpletests.tcl
 ant
+bin/comm.policy
 bin/makebat
 bin/makebat.lnk
+bin/startjini.gui
 brass
 collections
 com/microstar/xml/driver
