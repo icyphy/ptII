@@ -45,8 +45,6 @@ It has a parameter "ErrorTolerance," which controls how accurate the
 zero 
 @author Jie Liu
 @version $Id$
-@see classname
-@see full-classname
 */
 public class CTZeroCrossingDetector extends CTActor
         implements  CTStepSizeControlActor, CTEventGenerator {

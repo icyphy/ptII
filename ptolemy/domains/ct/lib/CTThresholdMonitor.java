@@ -41,16 +41,11 @@ import java.util.Enumeration;
 /** 
 Minitor integration steps so that the threshold is not crossed in one step.
 @author  Jie Liu
-@version %Id%
+@version $Id$
 */
 public class CTThresholdMonitor extends CTActor 
         implements CTStepSizeControlActor {
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public CTThresholdMonitor(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -78,11 +73,6 @@ public class CTThresholdMonitor extends CTActor
     ////                         public methods                    ////
 
     /** prepare for the first step.
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
     public void initialize() throws IllegalActionException {
         super.initialize();
