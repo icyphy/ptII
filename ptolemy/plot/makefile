@@ -58,6 +58,8 @@ PTAUXJAR = plotapplet.jar
 # Java Sources, keep these alphabetical,
 JSRCS = \
 	CmdLineArgException.java \
+	EditablePlot.java \
+	EditablePlotApplication.java \
 	EPSGraphics.java \
 	Histogram.java \
 	HistogramApplet.java \
