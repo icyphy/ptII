@@ -62,7 +62,7 @@ Its default value is 0.0. The input is of type DoubleToken.
 @author  Edward A. Lee
 @version $Id$
  */
-public class SequenceScope extends SequencePlotter implements SequenceActor {
+public class SequenceScope extends SequencePlotter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -84,10 +84,10 @@ public class SequenceScope extends SequencePlotter implements SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The increment of the X axis. */
+    /** The width of the X axis, in number of samples (an integer). */
     public Parameter width;
 
-    /** The start point of the X axis. */
+    /** The number of samples to be displayed at any one time (an integer). */
     public Parameter persistence;
 
     ///////////////////////////////////////////////////////////////////
@@ -134,7 +134,6 @@ public class SequenceScope extends SequencePlotter implements SequenceActor {
         int widthValue = ((IntToken)width.getToken()).intValue();
         plot.setXRange(0.0, xunit*widthValue);
         plot.setWrap(true);
-        plot.setGrid(false);
         // Default marks style is consistent with scope style.
         plot.setMarksStyle("pixels");
         int persValue = ((IntToken)persistence.getToken()).intValue();
