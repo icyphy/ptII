@@ -489,9 +489,10 @@ class SaveAsJava {
             } else {
                 nameToSanitize = ((NamedObj)object).getName(toplevel);
             }
-            // FIXME: Only replacing dots and spaces for now.
+            // FIXME: Only replacing dots, spaces and colons for now.
             name = nameToSanitize.replace('.', '_');
             name = name.replace(' ', '_');
+            name = name.replace(':', '_');
             _nameTable.put(object, name);
         }
         return name;
