@@ -47,7 +47,9 @@ PTCLASSJAR = $(PTPACKAGE).jar
 OTHER_FILES_TO_BE_JARED = \
 	JNIActorHelp.pdf \
 
-EXTRA_SRCS = 
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	JNIActorHelp.doc
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
