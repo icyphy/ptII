@@ -205,7 +205,7 @@ public class ArrowKeySensor extends TypedAtomicActor {
     }
 
     /** Create the JFrame window capable of detecting the key-presses. */
-    public void preinitialize() {
+    public void initialize() {
         if (_debugging) _debug("frame will be constructed");
         _myframe = new MyFrame();
         if (_debugging) _debug("frame was constructed");
