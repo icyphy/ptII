@@ -42,8 +42,8 @@ include $(CONFIG)
 # Flags to pass to javadoc. (Override value in ptII.mk)
 JDOCFLAGS = 	-author -version -public
 
-# Order matters here, go into util first, since mutation depends on it
-DIRS =
+# Directories to build in
+DIRS = test
 
 CLASSPATH =	../..
 
