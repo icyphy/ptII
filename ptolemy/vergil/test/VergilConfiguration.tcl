@@ -61,6 +61,11 @@ proc memoryGCmemory {} {
 # Expand a configuration
 proc expandConfiguration {configuration} {
     set parser [java::new ptolemy.moml.MoMLParser]
+
+    # Filter out graphical classes while inside MoMLParser so that
+    # these test will run at night.
+    $parser setMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
+
     set loader [[$parser getClass] getClassLoader]
     
     set URL [$loader getResource $configuration]
@@ -98,7 +103,7 @@ test VergilConfiguration-1.2 {make sure that everything inside the Ptiny configu
 ######################################################################
 ####
 #
-test VergilConfiguration-1.3 {make sure that everything inside the Full configuration (with the matlab actors removed) can be expanded} {
+test VergilConfiguration-1.3 {make sure that everything inside the Full configuration (with the matlab and serial actors removed) can be expanded} {
     # Remove the matlab lines from vergilConfiguration.xml
 
     set parser [java::new ptolemy.moml.MoMLParser]
@@ -115,16 +120,19 @@ test VergilConfiguration-1.3 {make sure that everything inside the Full configur
     puts "file name vergilConfiguration.xml: $inFile"
 
     set infd [open $inFile]
-    set outfd [open vergilConfigurationNoMatlab.xml "w"]
+    set outfd [open vergilConfigurationNoMatlabNoSerial.xml "w"]
     while {![eof $infd]} {
 	set linein [gets $infd]
 	regsub -all {.*matlab.*} $linein {} lineout
-	puts $outfd $lineout
+	// Filter out the serial actor because it does not work under Unix,
+	// which is where the nightly build is run
+	regsub -all {.*comm/comm.xml.*} $lineout {} lineout2
+	puts $outfd $lineout2
     }
     close $infd
     close $outfd
 
-    expandConfiguration "ptolemy/vergil/test/vergilConfigurationNoMatlab.xml"
+    expandConfiguration "ptolemy/vergil/test/vergilConfigurationNoMatlabNoSerial.xml"
 } {0}
 
 
