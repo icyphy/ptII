@@ -233,7 +233,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
                 _debug("Cloned " + getFullName() + " into default workspace.");
             } else {
                 _debug("Cloned " + getFullName() + " into workspace: "
-                + ws.getFullName());
+                        + ws.getFullName());
             }
             return newobj;
         } finally {
