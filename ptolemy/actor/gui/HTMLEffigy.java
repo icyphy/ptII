@@ -1,0 +1,132 @@
+/* A representative of an HTML file.
+
+ Copyright (c) 1998-2000 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+*/
+
+package ptolemy.actor.gui;
+
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
+
+import java.io.*;
+import java.net.URL;
+import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultStyledDocument;
+import javax.swing.text.Document;
+
+//////////////////////////////////////////////////////////////////////////
+//// HTMLEffigy
+/**
+An effigy for an HTML file.
+
+@author Edward A. Lee
+@version $Id$
+*/
+public class HTMLEffigy extends Effigy {
+
+    /** Create a new effigy in the specified workspace with an empty string
+     *  for its name.
+     *  @param workspace The workspace for this effigy.
+     */
+    public HTMLEffigy(Workspace workspace) {
+	super(workspace);
+        // Indicate that we cannot save to URL.
+        setModifiable(false);
+    }
+
+    /** Create a new effigy in the given directory with the given name.
+     *  @param container The directory that contains this effigy.
+     *  @param name The name of this effigy.
+     */
+    public HTMLEffigy(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+	super(container, name);
+        // Indicate that we cannot save to URL.
+        setModifiable(false);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** A factory for creating new effigies.
+     */
+    public static class Factory extends EffigyFactory {
+
+	/** Create a factory with the given name and container.
+	 *  @param container The container.
+	 *  @param name The name.
+	 *  @exception IllegalActionException If the container is incompatible
+	 *   with this entity.
+	 *  @exception NameDuplicationException If the name coincides with
+	 *   an entity already in the container.
+	 */
+	public Factory(CompositeEntity container, String name)
+                throws IllegalActionException, NameDuplicationException {
+	    super(container, name);
+	}
+
+        ///////////////////////////////////////////////////////////////
+        ////                     public methods                    ////
+
+        /** Return false, indicating that this effigy factory is not
+         *  capable of creating an effigy without a URL being specified.
+         *  There is no point in creating an unmodifiable blank HTML page.
+         *  @return False.
+         */
+        public boolean canCreateBlankEffigy() {
+            return false;
+        }
+
+        /** Create a new effigy in the given container by reading the specified
+         *  URL. The extension of the URL must be ".htm" or ".html" or
+         *  this returns null.
+         *  @param container The container for the effigy.
+         *  @param base The base for relative file references, or null if
+         *   there are no relative file references.  This is ignored in this
+         *   class.
+         *  @param in The input URL.
+         *  @return A new instance of HTMLEffigy.
+         *  @exception Exception If the URL cannot be read, or if the data
+         *   is malformed in some way.
+         */
+         public Effigy createEffigy(
+                 CompositeEntity container, URL base, URL in)
+                 throws Exception {
+            if (in == null) return null;
+            String extension = getExtension(in);
+            if (!extension.equals("htm") && !extension.equals("html")) {
+                return null;
+            }
+            // Create a new effigy.
+            HTMLEffigy effigy = new HTMLEffigy(container, 
+                    container.uniqueName("effigy"));
+            effigy.url.setURL(in);
+            // FIXME: What to do about the base?
+            return effigy;
+	}		
+    }
+}
