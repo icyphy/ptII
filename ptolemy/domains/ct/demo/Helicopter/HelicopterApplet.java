@@ -774,7 +774,7 @@ public class HelicopterApplet extends CTApplet {
                 if (stateName.equals("HoverState")){
                     _currentState = 0;
                 } else if(stateName.equals("AccelState")) {
-                    if(_currentState ==0) {
+                    if(_currentState == 0) {
                         _switched = true;
                     }
                     _currentState = 1;
@@ -788,12 +788,12 @@ public class HelicopterApplet extends CTApplet {
                         _switchTime[2] = _switchTime[1]+1;
                         _switched = true;
                     }
-                    if(_currentState ==2) {
+                    if(_currentState == 2) {
                         _switched = true;
                     }
                     _currentState = 3;
                 } else {
-                    if(_currentState ==3) {
+                    if(_currentState == 3) {
                         _switched = true;
                     }
                     _currentState = 4;
