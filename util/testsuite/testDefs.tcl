@@ -611,6 +611,8 @@ proc diffText {texta textb} {
 # To test out the WatchDog, try:
 # make JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
 
+# To run in nightly build mode, do:
+# make JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true
 set isRunningNightlyBuild \
    [java::call System getProperty ptolemy.ptII.isRunningNightlyBuild]
 
