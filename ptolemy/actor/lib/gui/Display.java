@@ -205,10 +205,9 @@ public class Display extends Sink implements Placeable {
         return newObject;
     }
 
-    /** Create a text area on the screen, if necessary, or clear the
-     *  previously existing text area. If a graphical container has
-     *  not been specified, place the text area into its own frame.
-     *  Otherwise, place it in the specified container.
+    /** Initialize this display.  If place() has not been called
+     *  with a container into which to place the display, then create a
+     *  new frame into which to put it.
      *  @exception IllegalActionException If the parent class throws it,
      *   or if the numRows or numColumns parameters are incorrect, or
      *   if there is no effigy for the top level container, or if a problem
@@ -286,6 +285,7 @@ public class Display extends Sink implements Placeable {
 
         if (_container == null) {
             // Reset everything.
+            // NOTE: _remove() doesn't work here.  Why?
             if (_frame != null) _frame.dispose();
             _frame = null;
             _scrollPane = null;

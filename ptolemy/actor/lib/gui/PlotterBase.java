@@ -309,6 +309,7 @@ public class PlotterBase extends TypedAtomicActor
         // the plot is in a separate frame.  They are very useful.
         if (_container == null) {
             // Dissociate with any container.
+            // NOTE: _remove() doesn't work here.  Why?
             if (_frame != null) _frame.dispose();
             _frame = null;
             plot = null;

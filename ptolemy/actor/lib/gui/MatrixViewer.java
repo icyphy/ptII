@@ -1,4 +1,4 @@
-/* A graphical component displaying matrix contents.
+/* An actor that displays matrix inputs.
 
  Copyright (c) 1997-2002 The Regents of the University of California.
  All rights reserved.
@@ -24,14 +24,23 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (kienhuis@eecs.berkeley.edu)
-@AcceptedRating Green (kienhuis@eecs.berkeley.edu)
+@ProposedRating Red (kienhuis@eecs.berkeley.edu)
+@AcceptedRating Red (kienhuis@eecs.berkeley.edu)
 
 */
 
 package ptolemy.actor.lib.gui;
 
+import ptolemy.actor.gui.Configuration;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.MatrixPane;
+import ptolemy.actor.gui.MatrixTokenTableau;
 import ptolemy.actor.gui.Placeable;
+import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TableauFrame;
+import ptolemy.actor.gui.TokenEffigy;
+import ptolemy.actor.gui.TokenTableau;
+import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Sink;
 import ptolemy.data.IntToken;
 import ptolemy.data.MatrixToken;
@@ -42,26 +51,25 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
-import javax.swing.JFrame;
-import javax.swing.JScrollPane;
-import javax.swing.JTable;
-import javax.swing.SwingUtilities;
-import javax.swing.table.AbstractTableModel;
-import javax.swing.table.TableModel;
 import java.awt.BorderLayout;
 import java.awt.Container;
-import java.awt.Dimension;
+import java.io.IOException;
+import java.io.Writer;
+import java.util.LinkedList;
+import java.util.List;
+
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// MatrixViewer
 /**
-A graphical component that displays the contents of a Matrix. This
+An actor that displays the contents of a matrix input. This
 actor has a single input port, which only accepts MatrixTokens. One
-token is consumed per firing.  The data in the MatrixToken is
+token is consumed per firing (in postfire()).  The data in the MatrixToken is
 displayed in a table format with scrollbars, using the swing JTable
 class.
 
-@author Bart Kienhuis
+@author Bart Kienhuis and Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -82,24 +90,29 @@ public class MatrixViewer extends Sink implements Placeable {
         input.setMultiport(false);
         input.setTypeEquals(BaseType.MATRIX);
 
-        // set the parameters
+        // set the parameters.
+        // FIXME: needed?
         width = new Parameter(this, "width", new IntToken(500));
         width.setTypeEquals(BaseType.INT);
         height = new Parameter(this, "height", new IntToken(300));
         height.setTypeEquals(BaseType.INT);
 
+        _windowProperties = new WindowPropertiesAttribute(
+                this, "_windowProperties");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** The width of the table in pixels. This must contain an
-     *  integer.  The default value is 500.
+     *  integer.  If the table is larger than this specified width,
+     *  then scrollbars will appear. The default value is 500.
      */
     public Parameter width;
 
     /** The height of the table in pixels. This must contain an
-     *  integer.  The default value is 300.
+     *  integer.  If the table is larger than this specified width,
+     *  then scrollbars will appear.  The default value is 300.
      */
     public Parameter height;
 
@@ -113,6 +126,8 @@ public class MatrixViewer extends Sink implements Placeable {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
+        // NOTE: Do not react to changes in _windowProperties.
+        // Those properties are only used when originally opening a window.
         if (attribute == width) {
             _width = ((IntToken)width.getToken()).intValue();
         } else if (attribute == height) {
@@ -122,20 +137,25 @@ public class MatrixViewer extends Sink implements Placeable {
         }
     }
 
-    /** Consume a matrix token from the <i>input</i> port when present and
-     *  display the token in a table.  If a token is not available,
-     *  do nothing.
-     *
-     *  @exception IllegalActionException If there is no director, or
-     *  if the base class throws it.
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then removes association with graphical objects
+     *  belonging to the original class.
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
      */
-    public void fire() throws IllegalActionException {
-        Token in = null;
-        if (input.hasToken(0)) {
-            in = input.get(0);
-            _matrixTable = new MatrixAsTable((MatrixToken) in);
-            _table.setModel(_matrixTable);
-        }
+    public Object clone(Workspace workspace)
+            throws CloneNotSupportedException {
+        MatrixViewer newObject = (MatrixViewer)super.clone(workspace);
+
+        newObject._container = null;
+        newObject._effigy = null;
+        newObject._frame = null;
+        newObject._pane = null;
+        newObject._tableau = null;
+
+        return newObject;
     }
 
     /** Get the preferred size of this component.  This is simply the
@@ -147,28 +167,54 @@ public class MatrixViewer extends Sink implements Placeable {
      *
      *  @return The preferred size.
      */
+/* FIXME: What if we leave this off?
     public Dimension getPreferredSize() {
         return new Dimension( _width, _height );
     }
+*/
 
-    /** Initialize this matrix viewer. If a table hasn't been created
-     *  yet, create one by calling the method <i>place</i> on the
-     *  container. If no container yet exists (i.e., the container is
-     *  null), the place method will create a table in its own window,
-     *  otherwise the table is place in the given
-     *  container. Furthermore, if a frame has been created in the
-     *  place method, it is explicitly made visible.
-     *
+    /** Initialize this matrix viewer. If place() has not been called
+     *  with a container into which to place the display, then create a
+     *  new frame into which to put it.
      *  @exception IllegalActionException If the parent class
-     *  throws it.
+     *   throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        if (_table == null) {
-            place(_container);
-        }
-        if (_frame != null) {
-            _frame.setVisible(true);
+        if (_container == null) {
+            // No current container for the pane.
+            // Need an effigy and a tableau so that menu ops work properly.
+            if (_tableau == null) {
+                Effigy containerEffigy = Configuration.findEffigy(toplevel());
+                if (containerEffigy == null) {
+                    throw new IllegalActionException(this,
+                            "Cannot find effigy for top level: "
+                            + toplevel().getFullName());
+                }
+                try {
+                    _effigy = new TokenEffigy(
+                            containerEffigy,
+                            containerEffigy.uniqueName("tokenEffigy"));
+                    // The default identifier is "Unnamed", which is
+                    // no good for two reasons: Wrong title bar label,
+                    // and it causes a save-as to destroy the original window.
+                    _effigy.identifier.setExpression(getFullName());
+
+                    _frame = new DisplayWindow();
+                    _tableau = new MatrixTokenTableau(
+                            _effigy, "tokenTableau", _frame);
+                    _frame.setTableau(_tableau);
+                    _windowProperties.setProperties(_frame);
+                    _tableau.show();
+                } catch (Exception ex) {
+                    throw new IllegalActionException(this, null, ex,
+                             "Error creating effigy and tableau");
+                }
+            } else {
+                // Erase previous text.
+                _effigy.clear();
+                _tableau.show();
+            }
         }
     }
 
@@ -186,34 +232,63 @@ public class MatrixViewer extends Sink implements Placeable {
      *  @param container The container into which to place the table.
      */
     public void place(Container container) {
+        // If there was a previous container that doesn't match this one,
+        // remove the pane from it.
+        if (_container != null && _pane != null) {
+            _container.remove(_pane);
+            _container = null;
+        }
+        if (_frame != null) {
+            _frame.dispose();
+            _frame = null;
+        }
         _container = container;
+        if (container == null) {
+            // Reset everything.
+            if (_tableau != null) {
+                // This will have the side effect of removing the effigy
+                // from the directory if there are no more tableaux in it.
+                try {
+                    _tableau.setContainer(null);
+                } catch (KernelException ex) {
+                    throw new InternalErrorException(ex);
+                }
+            }
+            _tableau = null;
+            _effigy = null;
+            _pane = null;
 
-        try {
-            _width = ((IntToken)width.getToken()).intValue();
-            _height = ((IntToken)height.getToken()).intValue();
-        } catch ( Exception e ){
+            return;
         }
+        if (_pane == null) {
+            // Create the pane.
+            _pane = new MatrixPane();
 
-        // create a table
-        _table = new JTable();
-        // Avoid reordering of the tables by the user
-        _table.getTableHeader().setReorderingAllowed(false);
-        // Do not adjust column widths automatically, use a scrollbar
-        _table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
-
-        // add scroll pane to the table
-        _scrollPane = new JScrollPane(_table);
-        _scrollPane.setPreferredSize(getPreferredSize());
-
-        if (_container == null) {
-            // place the table in its own frame.
-            _frame = new JFrame(getFullName());
-            _frame.getContentPane().add(_scrollPane, BorderLayout.CENTER);
-        } else {
-            // place the table in supplied container.
-            _table.setBackground(_container.getBackground());
-            _container.add(_scrollPane, BorderLayout.CENTER);
+            // FIXME: What size will we get?
+            // _pane.setPreferredSize(getPreferredSize());
         }
+        // Place the pane in supplied container.
+        _container.add(_pane, BorderLayout.CENTER);
+    }
+
+    /** Consume a matrix token from the <i>input</i> port
+     *  and display the token in a table.  If a token is not available,
+     *  do nothing.
+     *  @exception IllegalActionException If there is no director, or
+     *   if the base class throws it.
+     */
+    public boolean postfire() throws IllegalActionException {
+        if (input.hasToken(0)) {
+            Token in = input.get(0);
+            if (_frame != null) {
+                List tokens = new LinkedList();
+                tokens.add(in);
+                _effigy.setTokens(tokens);
+            } else if (_pane != null) {
+                _pane.display((MatrixToken)in);
+            }
+        }
+        return super.postfire();
     }
 
     /** Override the base class to remove the display from its graphical
@@ -231,6 +306,26 @@ public class MatrixViewer extends Sink implements Placeable {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Write a MoML description of the contents of this object. This
+     *  overrides the base class to make sure that the current frame
+     *  properties, if there is a frame, are recorded.
+     *  @param output The output stream to write to.
+     *  @param depth The depth in the hierarchy, to determine indenting.
+     *  @exception IOException If an I/O error occurs.
+     */
+    protected void _exportMoMLContents(Writer output, int depth)
+            throws IOException {
+        // Make sure that the current position of the frame, if any,
+        // is up to date.
+        if (_frame != null) {
+            _windowProperties.recordProperties(_frame);
+        }
+        super._exportMoMLContents(output, depth);
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /** Remove the display from the current container, if there is one.
@@ -238,14 +333,13 @@ public class MatrixViewer extends Sink implements Placeable {
     private void _remove() {
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
-                    if (_scrollPane != null) {
-                        if (_container != null) {
-                            _container.remove(_scrollPane);
-                            _container.invalidate();
-                            _container.repaint();
-                        } else if (_frame != null) {
-                            _frame.dispose();
-                        }
+                    if (_container != null && _pane != null) {
+                        _container.remove(_pane);
+                        _container = null;
+                    }
+                    if (_frame != null) {
+                        _frame.dispose();
+                        _frame = null;
                     }
                 }
             });
@@ -254,76 +348,61 @@ public class MatrixViewer extends Sink implements Placeable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** Container into which this display should be placed */
+    /** Container with the display, if any. */
     private Container _container = null;
 
-    /** Frame into which display is placed, if any. */
-    private JFrame _frame = null;
+    /** The effigy for the token data. */
+    private TokenEffigy _effigy;
 
-    /** The table model. */
-    private MatrixAsTable _matrixTable = null;
+    /** The frame, if one is used. */
+    private DisplayWindow _frame = null;
 
-    /** The scroll pane of the panel. */
-    private JScrollPane _scrollPane;
+    /** Pane with the matrix display. */
+    private MatrixPane _pane = null;
 
-    /** The table representing the matrix. */
-    private JTable _table;
+    /** The tableau with the display, if any. */
+    private TokenTableau _tableau;
+
+// FIXME: Are the following needed?
 
     /** Width of the matrix viewer in pixels. */
     private int _width;
+
+    // A specification for the window properties of the frame.
+    private WindowPropertiesAttribute _windowProperties;
 
     /** Height of the matrix viewer in pixels. */
     private int _height;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         Inner Class                       ////
+    ////                         inner classes                     ////
 
-    /** This class provides an implementations of the
-     *  TableModel interface for viewing matrix tokens.
+    /** Version of TableauFrame that removes its association with the
+     *  MatrixViewer upon closing, and also records the size of the display.
      */
-    // FIXME this should be factored so we can use it to edit
-    // matrix parameters more nicely in PtolemyQuery.
-    private class MatrixAsTable extends AbstractTableModel {
+    private class DisplayWindow extends TableauFrame {
 
-        /** Construct for a specific matrix.
-            @param matrix The matrix.
-        */
-        MatrixAsTable(MatrixToken matrix) {
-            _matrix = matrix;
+        /** Construct an empty window.
+         *  After constructing this, it is necessary
+         *  to call setVisible(true) to make the frame appear
+         *  and setTableau() to associate it with a tableau.
+         */
+        public DisplayWindow() {
+            // The null second argument prevents a status bar.
+            super(null, null);
         }
 
-        /** Get the row count of the Matrix.
-            @return the row count.
-        */
-        public int getRowCount() {
-            return _matrix.getRowCount();
+        /** Close the window.  This overrides the base class to remove
+         *  the association with the MatrixViewer and to record window
+         *  properties.
+         *  @return True.
+         */
+        protected boolean _close() {
+            // Record the window properties before closing.
+            _windowProperties.setProperties(this);
+            super._close();
+            place(null);
+            return true;
         }
-
-        /** Get the column count of the Matrix.
-            @return the column count.
-        */
-        public int getColumnCount() {
-            return _matrix.getColumnCount();
-        }
-
-        /** Get a specific entry from the matrix given by the row and
-            column number.
-            @param row The row number.
-            @param column The column number.
-            @return The object stored in the matrix at the specified location.
-        */
-        public Object getValueAt(int row, int column) {
-            return (Object) (_matrix.getElementAsToken(row, column)).toString();
-        }
-
-        /** Get column names of the Matrix.
-            @return the column names.
-        */
-        public String getColumnName(int columnIndex ) {
-            return Integer.toString(columnIndex + 1);
-        }
-
-        /** The Matrix for which a Table Model is created. */
-        private MatrixToken _matrix = null;
     }
 }
