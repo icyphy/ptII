@@ -161,6 +161,9 @@ JINI_LIB =	$(JINI_DIR)/lib
 # because we end up with a classpath with an empty element ::
 JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-jspaces.jar
 
+# Set to copernicus and used in $PTII/ptolemy/makefile if Soot was found
+PTCOPERNICUS_DIR = @PTCOPERNICUS_DIR@
+
 # Set to gr and used in
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 PTJAVA3D_DIR = @PTJAVA3D_DIR@
@@ -219,9 +222,6 @@ PTLEJOS_DIR =	@PTLEJOS_DIR@
 # Set to rtos and used in
 # $PTII/ptolemy/domains/makefile if java.util.Timer was found
 PTRTOS_DIR = @PTRTOS_DIR@
-
-# Set to soot and used in $PTII/ptolemy/apps/makefile if Soot was found
-PTSOOT_DIR = @PTSOOT_DIR@
 
 # Set to tini and used in $PTII/ptolemy/apps/makefile if the Dallas Semi
 # TINI was found
