@@ -7,12 +7,12 @@
       <group>
       <doc>experimental director library</doc>
       <property name="DT Director" class="ptolemy.domains.dt.kernel.DTDirector"/>
-      <property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector"/>   
+      <property name="HDE Director" class="ptolemy.domains.hde.kernel.HDEDirector"/>
       <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
       <property name="TM Director" class="ptolemy.domains.tm.kernel.TMDirector"/>
       <property name="PetriNet Director" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
       <!-- Don't include RTP -->
-      <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
+      <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">      
          <property name="scheduler">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;"/>
