@@ -30,73 +30,90 @@
 
 package ptolemy.actor.lib.io;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.kernel.CompositeEntity;
+import ptolemy.actor.*;
+import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
+import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.actor.lib.*;
 
-import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketException;
-import java.net.UnknownHostException;
+import java.io.*;
+import java.net.*;
+import java.util.*;
+
+//       1         2         3         4         5         6         7         8
+//3456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_
 
 
 //////////////////////////////////////////////////////////////////////////
 //// DatagramSender
 /**
 This actor sends its input as a Datagram over the Ethernet using the UDP
-protocol. The Datagram is sent to an address given by the actor's
-input. Said address is a string, such as "128.32.239.10".  The data
-contained in the Datagram is the single byte 'A'.  Although this
-actor's port number is selectable (parameter port), The actor always
-launches its datagram towards port 4096 of the remote address.
+protocol.  Before sending it, the data is encoded as a text string 
+representing the value being sent.  The address and port number to which the 
+datagram is sent is given by optional inputs.  Each optional input comes 
+with a parameter which gives its default value.  (This is cumbersome.  
+Is there a way to merge the concepts of Parameter and TypedIoPort?)
+The data and the optional inputs may arrive at any time.  Optional 
+inputa arriving along with or before data control the data's destination.
 
 Initially, the local port number is set to -1 to indicate no port at
 all.  This prevents the actor still "in the barn" from having a port
-number conflict with the actor that is being places into the graph
+number conflict with the actor that is being placed into the graph
 editor's work area.
 
 @author Winthrop Williams, Joern Janneck,  Xiaojun Liu, Edward A. Lee
 (Based on TiltSensor actor writen by Chamberlain Fong, Xiaojun Liu, Edward Lee)
 @version $Id$
 */
+
+
+/** Construct a DatagramSender actor with given name in the given container.
+ *  Set up ports and parameters and default values.  Two of the parameters 
+ *  are used to give default values for the remoteAddress and remotePort 
+ *  ports.
+ *  @param container The container.
+ *  @param name The name for this actor.
+ *  @exception NameDuplicationException If the container already has an 
+ *   actor with this name.  
+ *  @exception IllegalActionException If the actor cannot be contained by 
+ *   this container
+ */
 public class DatagramSender extends TypedAtomicActor {
 
     public DatagramSender(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
+        // Ports
         remoteAddress = new TypedIOPort(this, "remoteAddress");
         remoteAddress.setInput(true);
-	remoteAddress.setMultiport(true);
-	remoteAddress.setTypeEquals(BaseType.STRING);
+        remoteAddress.setMultiport(true);
+        remoteAddress.setTypeEquals(BaseType.STRING);
 
         remotePort = new TypedIOPort(this, "remotePort");
-	remotePort.setInput(true);
-	remotePort.setMultiport(true);
-	remotePort.setTypeEquals(BaseType.INT);
+        remotePort.setInput(true);
+        remotePort.setMultiport(true);
+        remotePort.setTypeEquals(BaseType.INT);
 
-	data = new TypedIOPort(this, "data");
-	data.setInput(true);
-	data.setTypeEquals(BaseType.GENERAL);
+        data = new TypedIOPort(this, "data");
+        data.setInput(true);
+        data.setTypeEquals(BaseType.GENERAL);
 
-	defaultRemoteAddress =
-	        new StringAttribute(this, "defaultRemoteAddress");
-	defaultRemoteAddress.setExpression("localhost");
+        // Parameters that are default values for ports
+        defaultRemoteAddress =
+                new StringAttribute(this, "defaultRemoteAddress");
+        defaultRemoteAddress.setExpression("localhost");
 
-	defaultRemotePort =
-	        new Parameter(this, "defaultRemotePort");
+        defaultRemotePort =
+                new Parameter(this, "defaultRemotePort");
         defaultRemotePort.setTypeEquals(BaseType.INT);
         defaultRemotePort.setExpression("-1");
 
-	localPort = new Parameter(this, "localPort");
+        // Pure parameter
+        localPort = new Parameter(this, "localPort");
         localPort.setTypeEquals(BaseType.INT);
         localPort.setExpression("-1");
     }
@@ -104,34 +121,35 @@ public class DatagramSender extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** This port inputs the data to be sent.
-     *  FIXME: what is the type?
-     */
-    public TypedIOPort data;
-
-    /** The default remote address to send datagrams.
-     *  FIXME: what is the type and initial default value?
-     */
-    public StringAttribute defaultRemoteAddress;
-
-    /** The default remote (UDP) port to send datagrams.
-     *  FIXME: what is the type and initial default value?
-     */
-    public Parameter defaultRemotePort;
-
-    /** The local port number for this actor's socket.
-     *  FIXME: what is the type and initial default value?
+    /** The local port-number for this actor's socket.
+     *  Integer in the range 0..65535.
      */
     public Parameter localPort;
 
-    /** This port inputs the remote address towards which to launch
-     *  the packet.
-     *  FIXME: what is the type?
+    /** Data to be sent.  Data will be encoded as a text string, much as
+     *  if it were printed.  This text string is what is sent.  Thus any 
+     *  datatype, including arrays etc. is handled.  Ptolemy parser must 
+     *  be used to deconstruct on the other side.
+     */
+    public TypedIOPort data;
+
+    /** The default remote address to which to send datagrams.
+     *  This is a string.  It will get looked up to find the IP address.
+     *  (Legal forms of this string include "128.32.239.10" and "localhost".)
+     */
+    // FIXME Why is this not simply a 'Parameter' like localPort?
+    public StringAttribute defaultRemoteAddress;
+
+    /** The remote address towards which to launch the packet.
      */
     public TypedIOPort remoteAddress;
 
-    /** This port inputs the remote (UDP) port number.
-     *  FIXME: what is the type?
+    /** The default remote (UDP (are there other kinds?) ) port to 
+     *  which to send datagrams.  This is an integer in 0..65535.
+     */
+    public Parameter defaultRemotePort;
+
+    /** The remote (UDP (Can TCP reuse a UDP number?) ) port number.
      */
     public TypedIOPort remotePort;
 
@@ -139,92 +157,101 @@ public class DatagramSender extends TypedAtomicActor {
     ////                     public methods                        ////
 
     /** If the parameter changed is <i>localPort</i>, then if the model
-     * is running (as evedenced by socket != null) then close socket
-     * and reopen with new port number (even if same as old port
-     * number).
-     * FIXME: @exception tag
+     *  is running (as evedenced by socket != null) then close socket
+     *  and reopen with new port number (even if same as old port
+     *  number).
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If cannot create socket.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == localPort) {
-	    synchronized(this) {
-		if ( _socket != null ) {
+            synchronized(this) {
+                if ( _socket != null ) {
 
-		    System.out.println("Current socket port is "
-				       + _socket.getLocalPort());
+                    if (_debugging) _debug("Current socket port is "
+                                       + _socket.getLocalPort());
 
-		    int portNum =
-			    ((IntToken)(localPort.getToken())).intValue();
-		    System.out.println("Port number is " + portNum);
-		    try {
-			System.out.println("Try create socket for port "
-					   + portNum);
-			DatagramSocket newSocket = new DatagramSocket(portNum);
-			System.out.println("A socket is created!!");
-			_socket.close();
-			_socket = newSocket;
-		    }
-		    catch (SocketException ex) {
-			throw new IllegalActionException(this,
+                    int portNum = ((IntToken)(localPort.getToken())).intValue();
+                    if (_debugging) _debug("Port number is " + portNum);
+                    try {
+                        if (_debugging) _debug("Try create socket for port "
+                                           + portNum);
+                        DatagramSocket newSocket = new DatagramSocket(portNum);
+                        if (_debugging) _debug("A socket is created!!");
+                        _socket.close();
+                        _socket = newSocket;
+                    }
+                    catch (SocketException ex) {
+                        throw new IllegalActionException(this,
                                 "Cannot create socket on the given "
                                 + "local port: " + ex.getMessage());
-		    }
-		}
-	    }
+                    }
+                }
+            }
         } else {
             super.attributeChanged(attribute);
         }
     }
 
-    /** Transmits the packed over the ethernet.
-     * FIXME: @exception tag
+    /** Does up to three things, in this order: Set new remote address value, 
+     *  Set new remote port value, transmit data as a UDP packet over the 
+     *  ethernet.  The first two can, of course, affect where the datagram 
+     *  goes.
      */
     public void fire() throws IllegalActionException {
 
-	if (remoteAddress.getWidth() > 0 && remoteAddress.hasToken(0)) {
-	    String address =
-		    ((StringToken)(remoteAddress.get(0))).stringValue();
-	    try {
-		_address = InetAddress.getByName(address);
-	    }
-	    catch (UnknownHostException ex) {
-		throw new IllegalActionException(this, "The input remote "
+        if (remoteAddress.getWidth() > 0 && remoteAddress.hasToken(0)) {
+            String address =
+                    ((StringToken)(remoteAddress.get(0))).stringValue();
+            try {
+                _address = InetAddress.getByName(address);
+            }
+            catch (UnknownHostException ex) {
+                throw new IllegalActionException(this, "The input remote "
                         + "address specifies an unknown host: "
                         + ex.getMessage());
-	    }
-	}
-
-	if (remotePort.getWidth() > 0 && remotePort.hasToken(0)) {
-	    int portNum =
-		    ((IntToken)remotePort.get(0)).intValue();
-	    if (portNum < 0 || portNum > 65535) {
-		// FIXME: port number is invalid, ignore for now
-	    } else {
-		_remotePortNum = portNum;
-	    }
-	}
-
-	if (!data.hasToken(0)) {
-	    return;
-	}
-
-        byte[] dataBytes = data.get(0).toString().getBytes();
-        DatagramPacket packet =
-                new DatagramPacket(dataBytes, dataBytes.length,
-                _address, _remotePortNum);
-
-        try {
-            _socket.send(packet);
+            }
         }
-        catch (IOException ex) {
-            // ignore, UDP does not guarantee success
-            //throw new InternalErrorException("socket.send failed");
+
+        if (remotePort.getWidth() > 0 && remotePort.hasToken(0)) {
+            // Valid port numbers are 0..65535 so keep only lower 16 bits.
+            _remotePortNum = 65535 & ((IntToken)remotePort.get(0)).intValue();
         }
+
+        if (data.hasToken(0)) {
+            byte[] dataBytes = data.get(0).toString().getBytes();
+            DatagramPacket packet =
+                    new DatagramPacket(dataBytes, dataBytes.length,
+                    _address, _remotePortNum);
+
+            try {
+                _socket.send(packet);
+            }
+            catch (IOException ex) {
+                // ignore, UDP does not guarantee success
+                //throw new InternalErrorException("socket.send failed");
+                //FIXME  I don't believe that!  I think send guarantees that 
+                // it will send!!  Just not that anyone is listening.
+                //    (yet when I ran it with 'throw...' uncommented
+                //     then it threw it right away!? )
+                // Would TCP stall here awaiting reply??  I doubt it!
+            }
+        }
+
     }
 
-    /** Preinitialize
-     * FIXME: what does this do?
-     * FIXME: @exception tag
+    /** Preinitialize allocates the socket and makes use of default 
+     *  parameters for the remote address and socket to which datagrams 
+     *  will be sent.  InetAddress.getByName does the address lookup, 
+     *  and can fail (see below).  The remote port number need only 
+     *  be in the 0 .. 65535 range.  However, the local port number 
+     *  must be in range and must allow new DatagramSocket(portNum) to 
+     *  successfully create a socket with that port number.
+     *  @exception IllegalActionException If port number is beyond 16 bits,
+     *   the socket cannot be created with the given port number, 
+     *   translation of remote address fails to make IP address from 
+     *   address string, or the romote port number is beyond 16 bits.
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
@@ -234,60 +261,58 @@ public class DatagramSender extends TypedAtomicActor {
                     + "invalid, must be between 0 and 65535.");
         }
         try {
-            System.out.println("PI Try create socket for port " + portNum);
+            if (_debugging) _debug("PI Try create socket for port " + portNum);
             _socket = new DatagramSocket(portNum);
-            System.out.println("PI A socket is created!!");
+            if (_debugging) _debug("PI A socket is created!!");
         }
         catch (SocketException ex) {
             throw new IllegalActionException(this, "Cannot create socket on "
                     + "the specified local port: " + ex.getMessage());
         }
 
-	String address =
-	        defaultRemoteAddress.getExpression();
-	try {
-	    _address = InetAddress.getByName(address);
-	}
-	catch (UnknownHostException ex) {
-	    throw new IllegalActionException(this, "The default remote "
+        String address =
+                defaultRemoteAddress.getExpression();
+        try {
+            _address = InetAddress.getByName(address);
+        }
+        catch (UnknownHostException ex) {
+            throw new IllegalActionException(this, "The default remote "
                     + "address specifies an unknown host: "
                     + ex.getMessage());
-	}
+        }
 
-	portNum =
-		((IntToken)defaultRemotePort.getToken()).intValue();
-	if (portNum < 0 || portNum > 65535) {
-	    // FIXME: port number is invalid, ignore for now
-	} else {
-	    _remotePortNum = portNum;
-	}
+        int remotePortNum =
+                ((IntToken)defaultRemotePort.getToken()).intValue();
+        if (remotePortNum < 0 || remotePortNum > 65535) {
+            throw new IllegalActionException(this, "Default remote port number"
+                    + " is invalid, must be between 0 and 65535.");
+        } else {
+            _remotePortNum = remotePortNum;
+        }
     }
 
-    /** Wrap up
-     * FIXME: what does this do?
-     * FIXME: @exception tag
-
+    /** Wrap up.  Free the socket, allowing the port number to be reused.  
+     *  @exception IllegalActionException If the socket was already null.
      */
     public void wrapup() throws IllegalActionException {
-	synchronized(this) {
-	    if (_socket != null) {
-		_socket.close();
-		_socket = null;
-	    } else {
-		throw new IllegalActionException("Socket was already null "
+        synchronized(this) {
+            if (_socket != null) {
+                _socket.close();
+                _socket = null;
+            } else {
+                throw new IllegalActionException("Socket was already null "
                         +  "at wrapup!?");
-	    }
-	}
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Intermediate variables used to [re]construct the packet for
-    // transmission.
-
-    // FIXME: need description
+    // Remote Address and port number for construction of packet.
     private InetAddress _address;
     private int _remotePortNum;
+
+    // The socked from which to transmit datagram packets.
     private DatagramSocket _socket;
 }
