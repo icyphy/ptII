@@ -32,14 +32,12 @@ package ptolemy.actor.gui;
 import java.awt.Frame;
 import java.util.Iterator;
 
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// DialogTableau
@@ -76,7 +74,7 @@ public class DialogTableau extends Tableau {
      *  @exception NameDuplicationException If the name coincides with an
      *   attribute already in the container.
      */
-    public DialogTableau(Effigy container, String name)
+    public DialogTableau(Effigy container, String name, String title)
         throws IllegalActionException, NameDuplicationException {
         super(container.workspace());
         if (!(container instanceof PtolemyEffigy)) {
@@ -85,7 +83,7 @@ public class DialogTableau extends Tableau {
                 "Effigy for Dialog must be an instance of " + "PtolemyEffigy.");
         }
         setName(name);
-        setTitle(name);
+        setTitle(title);
         setContainer(container);
     }
 
@@ -102,7 +100,7 @@ public class DialogTableau extends Tableau {
      * @param effigy The Effigy containg the model that needs a dialog
      * @param dialogClass The Dialog class to create.
      * @param target The entity that needs the Dialog
-     * @return
+     * @return DialogTableau
      */
     public static DialogTableau createDialog(
         Frame parent,
@@ -119,14 +117,13 @@ public class DialogTableau extends Tableau {
             while (dialogs.hasNext()) {
                 DialogTableau existingDialog = (DialogTableau) dialogs.next();
                 JFrame dialogJFrame = existingDialog.getFrame();
-//FIXME: commented out so that nightly build will work
-//                  if (dialogJFrame instanceof PortConfigurerDialog) {
-//                      PortConfigurerDialog pcd =
-//                          (PortConfigurerDialog) dialogJFrame;
-//                      if (pcd.getTarget() == target) {
-//                          return existingDialog;
-//                      }
-//                  }
+//                if (dialogJFrame instanceof PortConfigurerDialog) {
+//                    PortConfigurerDialog pcd =
+//                        (PortConfigurerDialog) dialogJFrame;
+//                    if (pcd.getTarget() == target) {
+//                        return existingDialog;
+//                    }
+//                }
             }
             // A DialogTableau doesn't exist, so create one.
             DialogTableau newDialog;
@@ -134,15 +131,16 @@ public class DialogTableau extends Tableau {
                 newDialog =
                     new DialogTableau(
                         effigy,
+                        effigy.uniqueName("dialog"),
                         "Configure ports for " + target.getFullName());
-//FIXME: commented out so that nightly build will work
-//                  PortConfigurerDialog pcd =
-//                      new PortConfigurerDialog(
-//                          newDialog,
-//                          parent,
-//                          target,
-//                          configuration);
-//                  newDialog.setFrame(pcd);
+
+//                PortConfigurerDialog pcd =
+//                    new PortConfigurerDialog(
+//                        newDialog,
+//                        parent,
+//                        target,
+//                        configuration);
+//                newDialog.setFrame(pcd);
                 return newDialog;
             } catch (Exception ex) {
                 MessageHandler.error(
@@ -159,63 +157,6 @@ public class DialogTableau extends Tableau {
     ///////////////////////////////////////////////////////////////////
     ////                     public inner classes                  ////
 
-    /** A factory that creates dialog tableaux for Ptolemy models.
-     */
-    public static class Factory extends TableauFactory {
-
-        /** Create an factory with the given name and container.
-         *  @param container The container.
-         *  @param name The name.
-         *  @exception IllegalActionException If the container is incompatible
-         *   with this attribute.
-         *  @exception NameDuplicationException If the name coincides with
-         *   an attribute already in the container.
-         */
-        public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
-            super(container, name);
-        }
-
-        /** Create a tableau in the default workspace with no name for the
-         *  given Effigy.  The tableau will created with a new unique name
-         *  in the given model effigy.  If this factory cannot create a tableau
-         *  for the given effigy (perhaps because the effigy is not of the
-         *  appropriate subclass) then return null.
-         *  It is the responsibility of callers of this method to check the
-         *  return value and call show().
-         *
-         *  @param effigy The model effigy.
-         *  @return A new ActorGraphTableau, if the effigy is a
-         *  PtolemyEffigy, or null otherwise.
-         *  @exception Exception If an exception occurs when creating the
-         *  tableau.
-         */
-        public DialogTableau createDialog(
-            Effigy effigy,
-            Class dialogClass,
-            Entity target)
-            throws Exception {
-            if ((effigy instanceof PtolemyEffigy)
-                && dialogClass == PortConfigurerDialog.class) {
-                // First see whether the effigy already contains a
-                // PortConfigurerDialog on this target.
-                Iterator dialogs =
-                    effigy.entityList(PortConfigurerDialog.class).iterator();
-                while (dialogs.hasNext()) {
-                    PortConfigurerDialog pcd =
-                        (PortConfigurerDialog) dialogs.next();
-//FIXME: commented out so that nightly build will work
-//                      if (pcd.getTarget() == target) {
-//                          return pcd.getDialogTableau();
-//                      }
-                }
-                DialogTableau dialog = new DialogTableau(effigy, "XXX");
-                return dialog;
-            } else {
-                return null;
-            }
-        }
-    }
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
