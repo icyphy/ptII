@@ -188,14 +188,14 @@ public interface Executable {
     ////                         public members                    ////
 
     /** An indicator that the iterate() method completed successfully. */
-    public static int COMPLETED = 0;
+    public static final int COMPLETED = 0;
 
     /** An indicator that the iterate() method did not complete because
      *  the actor was not ready (prefire() returned false).
      */
-    public static int NOT_READY = 1;
+    public static final int NOT_READY = 1;
 
     /** An indicator that the actor does not wish to be fired again.
      */
-    public static int STOP_ITERATING = 2;
+    public static final int STOP_ITERATING = 2;
 }
