@@ -62,15 +62,17 @@ test CTReceiver-1.1 {Construct a CTReceiver, put and get Token} {
     set re1 [java::new ptolemy.domains.ct.kernel.CTReceiver]
     set one [java::new {ptolemy.data.DoubleToken double} 1.0]
     $re1 put $one
-    list [[$re1 get] doubleValue]
+    #list [[$re1 get] doubleValue]
+    [java::cast ptolemy.data.DoubleToken [$re1 get]] doubleValue
 } {1.0}
 
-test CTReceiver-1.1 {Construct a CTReceiver with container} {
+test CTReceiver-1.2 {Construct a CTReceiver with container} {
     set p1 [java::new ptolemy.actor.TypedIOPort]
     set re1 [java::new ptolemy.domains.ct.kernel.CTReceiver $p1]
     set one [java::new {ptolemy.data.DoubleToken double} 1.0]
     $re1 put $one
-    list [[$re1 get] doubleValue]
+    #list [[$re1 get] doubleValue]
+    [java::cast ptolemy.data.DoubleToken [$re1 get]] doubleValue
 } {1.0}
 
 ######################################################################
@@ -80,5 +82,6 @@ test CTReceiver-2.1 {put two tokens} {
     set zero [java::new {ptolemy.data.DoubleToken double} 0.0]
     $re1 put $one
     $re1 put $zero
-    list [[$re1 get] doubleValue]
+    #list [[$re1 get] doubleValue]
+    [java::cast ptolemy.data.DoubleToken [$re1 get]] doubleValue
 } {0.0}
