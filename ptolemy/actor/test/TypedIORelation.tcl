@@ -57,10 +57,19 @@ test TypedIORelation-1.2 {Construct Relations} {
     set p2 [java::new ptolemy.actor.TypedIOPort $e1 P2]
 
     #link up p1, p2
-    set r3 [java::new ptolemy.actor.TypedIORelation $e0 R1]
-    $p1 link $r3
-    $p2 link $r3
-    list [$r1 getFullName]
+    set r0 [java::new ptolemy.actor.TypedIORelation ]
+    $p1 link $r0
+    $p2 link $r0
+
+    set r1 [java::new ptolemy.actor.TypedIORelation [$e0 workspace]]
+    $p1 link $r1
+    $p2 link $r1
+
+    set r2 [java::new ptolemy.actor.TypedIORelation $e0 R1]
+    $p1 link $r2
+    $p2 link $r2
+
+    list [$r0 getFullName] [$r1 getFullName] [$r2 getFullName]
 } {. ..E1.P2}
 
 test TypedIOPort-1.3 {Attempt to set erroneous container} {
