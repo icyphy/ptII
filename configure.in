@@ -457,7 +457,7 @@ if test -f "$PTJAVA_DIR/bin/jar"; then
     "$PTJAVA_DIR/bin/jar" -cf jarTest.jar confTest.class
     if "$PTJAVA_DIR/bin/jar" -i jarTest.jar; then
         AC_MSG_RESULT([$PTJAVA_DIR/bin/jar -i worked])
-	JAR_INDEX='"$(JAR)" -i tmp.jar'
+	JAR_INDEX='"$(JAR)" -i $@'
     else
         AC_MSG_ERROR([$PTJAVA_DIR/bin/jar -i jarTest.jar failed,
     so we will not index the jar files])
@@ -2599,7 +2599,7 @@ AC_SUBST(ECLIPSE_EXCLUDING_SRC)
 AC_SUBST(ECLIPSE_CLASSPATHENTRY_LIBS)
 
 # Command to run that indexes a jar file named tmp.jar
-# Usually it looks like '"$(JAR)" -i tmp.jar'
+# Usually it looks like '"$(JAR)" -i $@'
 AC_SUBST(JAR_INDEX)
 
 # Location of rt.jar, usually $(PTJAVA_DIR)/jre/lib/rt.jar
