@@ -79,8 +79,13 @@ PLOTAPPLICATIONJAR =	plotapplication.jar
 # actor.lib.gui.MatrixVisualizer but not to used by the Ptplot applets. 
 RENDERJAR =		render.jar
 
+# Jar file containing the Render class used by
+# actor.lib.gui.MatrixVisualizer but not to used by the Ptplot applets. 
+RENDERJAVA =		Render.java
+
 # Java Sources, keep these alphabetical,
 JSRCS = \
+	$(RENDERJAVA) \
 	CmdLineArgException.java \
 	EditablePlot.java \
 	EditListener.java \
