@@ -48,7 +48,7 @@ import ptolemy.kernel.util.*;
 /**
 An applet that performs run-length encoding on an image and provides
 a visualization of the processes in various states. This requires a jdk1.2
-copatible browser or requires a jdk1.2 plugin.
+compatible browser or requires a jdk1.2 plugin.
 @author Mudit Goel
 @version $Id$
 */
