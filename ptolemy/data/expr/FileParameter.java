@@ -189,7 +189,15 @@ public class FileParameter extends StringParameter {
             URI modelURI = getBaseDirectory();
             if (modelURI != null) {
                 URI newURI = modelURI.resolve(name);
-                file = new File(newURI);
+                try {
+                    file = new File(newURI);
+                } catch (IllegalArgumentException ex) {
+                    // Java 1.4.2 some times reports:
+                    //  java.lang.IllegalArgumentException: URI is not absolute
+                    throw new IllegalActionException(this, ex,
+                            "Failed to create a file with URI '" + newURI
+                            + "'.");
+                }
             }
         }
         return file;
