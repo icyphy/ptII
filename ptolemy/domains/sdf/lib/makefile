@@ -78,7 +78,6 @@ JSRCS = \
 	SDFTransformer.java \
 	SampleDelay.java \
 	SequenceToArray.java \
-        SequenceToDoubleMatrix.java \
 	UpSample.java \
 	VariableFIR.java \
 	VariableLattice.java \
