@@ -71,6 +71,17 @@ getVisibility() method.
 public class Location extends SingletonAttribute
         implements Settable {
 
+    /** Construct an attribute in the specified workspace with an empty
+     *  string as a name.
+     *  If the workspace argument is null, then use the default workspace.
+     *  The object is added to the directory of the workspace.
+     *  Increment the version number of the workspace.
+     *  @param workspace The workspace that will list the attribute.
+     */
+    public Location(Workspace workspace) {
+        super(workspace);
+    }
+
     /** Construct an attribute with the given name and position.
      *  @param container The container.
      *  @param name The name of the vertex.
@@ -82,7 +93,6 @@ public class Location extends SingletonAttribute
     public Location(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	setLocation(null);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -111,9 +121,13 @@ public class Location extends SingletonAttribute
         Location newObject = (Location)super.clone(workspace);
         // Copy the location so that the reference in the new object
         // does not refer to the same array.
-        int length = _location.length;
-        newObject._location = new double[length];
-        System.arraycopy(_location, 0, newObject._location, 0, length);
+        if(_location == null) {
+            newObject._location = null;
+        } else {
+            int length = _location.length;
+            newObject._location = new double[length];
+            System.arraycopy(_location, 0, newObject._location, 0, length);
+        }
         newObject._valueListeners = null;
         return newObject;
     }
@@ -307,7 +321,7 @@ public class Location extends SingletonAttribute
     private boolean _expressionSet = false;
 
     // The location.
-    private double[] _location;
+    private double[] _location = null;
 
     // Listeners for changes in value.
     private List _valueListeners;
