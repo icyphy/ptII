@@ -153,6 +153,7 @@ COPERNICUSPACKAGES = \
 
 # Packages used by HyVisual
 HYVISUALPACKAGES = \
+			$(JOYSTICKPACKAGES) \
 			ptolemy.actor.lib.javasound \
 			ptolemy.actor.lib \
 			ptolemy.actor.lib.comm \
@@ -161,7 +162,6 @@ HYVISUALPACKAGES = \
 			ptolemy.actor.lib.io \
 			ptolemy.actor.lib.jai \
 			ptolemy.actor.lib.jmf \
-			ptolemy.actor.lib.joystick \
 			ptolemy.actor.lib.logic \
 			ptolemy.actor.lib.python \
 			ptolemy.actor.parameters \
@@ -323,6 +323,8 @@ update: $(DERIVED_FILES)
 update_clean: 
 	rm -f $(DERIVED_FILES)
 
+JMF_JARS = $(CLASSPATHSEPARATOR)c:/Program Files/JMF2.1.1/lib/jmf.jar$(CLASSPATHSEPARATOR)c:/Program Files/JMF2.1.1/lib/sound.jar
+
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
 codeDoc/tree.html:	../ptolemy/plot/*.java \
@@ -395,7 +397,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m $(JDOCBREAKITERATOR)"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(JOYSTICK_JAR)$(CLASSPATHSEPARATOR)$(COMMAPI_DIR)/comm.jar$(JMF_JARS)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
 	@echo "Removing the asd lines so that they are not displayed by"
 	@echo " view documentation"
 	./removeasd codeDoc
@@ -425,7 +427,7 @@ codeDocHyVisual/doc/codeDoc/tree.html:
 	if [ ! -d codeDocHyVisual ]; then mkdir -p codeDocHyVisual; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) )
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar$(CLASSPATHSEPARATOR)$(JOYSTICK_JAR)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(JMF_JARS)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) )
 	@echo "Removing the asd lines so that they are not displayed by"
 	@echo " view documentation"
 	./removeasd codeDocHyVisual

@@ -74,7 +74,7 @@
       <configure>
         <?moml
           <group>
-  	    <!-- Do not include ptolemy/apps in the 3.0-beta release -->
+  	    <!-- Do not include ptolemy/apps in the 3.0.1 release -->
 	    <!-- input source="ptolemy/apps/apps.xml"/ -->
             <input source="ptolemy/configs/automataActorLibrary.xml"/>
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
@@ -92,7 +92,7 @@
 	    <!-- Joystick actors depend on the Joystick API being present  -->
             <!-- input source="ptolemy/actor/lib/joystick/jstick.xml"/ -->
 
-  	    <!-- Do not include jxta in the 3.0-beta release -->
+  	    <!-- Do not include jxta in the 3.0.1 release -->
             <!-- input source="ptolemy/actor/lib/jxta/jxta.xml"/ -->
 
 	    <!-- matlab depends on Matlab being present -->
