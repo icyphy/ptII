@@ -46,6 +46,7 @@ if {[info procs sootCodeGeneration] == "" } then {
 
 # Generate code for all the xml files in a directory.
 proc autoShallowCG {autoDirectory} {
+    global PTII
     # We attempt to gather speed stats
     set builtinPercentageSum 0
     set execPercentageSum 0
