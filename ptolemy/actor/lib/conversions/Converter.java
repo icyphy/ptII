@@ -1,4 +1,4 @@
-/* An actor that converts a LongToken into a DoubleToken.
+/* A base class for converters.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,36 +24,27 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (cxh@eecs.berkeley.edu)
-@AcceptedRating Green (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
 
-import ptolemy.data.DoubleToken;
-import ptolemy.data.LongToken;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
+import ptolemy.actor.lib.Transformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// LongToDouble
+//// Converter
 /**
-This actor converts a LongToken into a DoubleToken.
+This actor is a base class for converters. All it does is provide a
+default icon.
 <p>
-Note that a double cannot be losslessly converted to a long, and vice
-versa, as both have 64 bit representations in Java.
-<p>
-@author Christopher Hylands
+@author Edward A. Lee
 @version $Id$
-
-@see ptolemy.data.DoubleToken
-@see ptolemy.data.LongToken
 */
 
-public class LongToDouble extends Converter {
+public class Converter extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -63,37 +54,12 @@ public class LongToDouble extends Converter {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public LongToDouble(CompositeEntity container, String name)
+    public Converter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        input.setTypeEquals(BaseType.LONG);
-	output.setTypeEquals(BaseType.DOUBLE);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Read exactly one token from the input and output the converted
-     *  value.
-     *  @exception IllegalActionException If there is no director.
-     */
-    public void fire() throws IllegalActionException {
-        LongToken inputToken = (LongToken)input.get(0);
-	Long inputValue = new Long(inputToken.longValue());
-	DoubleToken result = new DoubleToken(inputValue.doubleValue());
-
-        output.send(0, result);
-    }
-
-    /** Return false if the input port has no token, otherwise return
-     *  what the superclass returns (presumably true).
-     *  @exception IllegalActionException If there is no director.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (!input.hasToken(0)) {
-            return false;
-        }
-        return super.prefire();
+	_attachText("_iconDescription", "<svg>\n" +
+                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                + "style=\"fill:white\"/>\n" +
+                "</svg>\n");
     }
 }
-

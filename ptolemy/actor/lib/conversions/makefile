@@ -56,6 +56,7 @@ JSRCS = \
 	CartesianToPolar.java \
 	ComplexToCartesian.java \
 	ComplexToPolar.java \
+	Converter.java \
 	DoubleToFix.java \
 	FixToDouble.java \
 	FixToFix.java \

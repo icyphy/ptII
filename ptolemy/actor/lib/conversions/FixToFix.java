@@ -31,7 +31,6 @@
 
 package ptolemy.actor.lib.conversions;
 
-import ptolemy.actor.lib.Transformer;
 import ptolemy.data.FixToken;
 import ptolemy.data.IntMatrixToken;
 import ptolemy.data.Token;
@@ -79,7 +78,7 @@ occurs.
 @see ptolemy.math.Precision
 */
 
-public class FixToFix extends Transformer {
+public class FixToFix extends Converter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.

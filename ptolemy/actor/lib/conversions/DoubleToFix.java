@@ -30,7 +30,6 @@
 
 package ptolemy.actor.lib.conversions;
 
-import ptolemy.actor.lib.Transformer;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.FixToken;
 import ptolemy.data.IntMatrixToken;
@@ -73,7 +72,7 @@ integer part.
 @see ptolemy.math.Precision
 */
 
-public class DoubleToFix extends Transformer {
+public class DoubleToFix extends Converter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.

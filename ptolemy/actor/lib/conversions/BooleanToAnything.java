@@ -30,7 +30,6 @@
 
 package ptolemy.actor.lib.conversions;
 
-import ptolemy.actor.lib.Transformer;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
@@ -53,7 +52,7 @@ by the <i>falseValue</i> parameter.
 @see ptolemy.data.BooleanToken
 */
 
-public class BooleanToAnything extends Transformer {
+public class BooleanToAnything extends Converter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
