@@ -75,7 +75,7 @@ public class Ellipse2D extends RectangularFigure2D {
 
     /** Update the figure's position and size when the user changes
      *  the appropriate parameters.
-     * @throws IllegalActionException If a parameter value is not valid.
+     * @exception IllegalActionException If a parameter value is not valid.
      */
     protected void _updateFigure() throws IllegalActionException{
         java.awt.geom.Ellipse2D.Double ellipse =
