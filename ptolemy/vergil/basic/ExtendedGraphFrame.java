@@ -105,10 +105,80 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    public void cancelFullScreen() {
+        if (_screen == null) {
+            // Already canceled.
+            return;
+        }
+        _screen.dispose();
+        _screen = null;
+        // Put the component back into the original window.
+        _splitPane.setRightComponent(_jgraph);
+        // Restore association with the graph panner.
+        _graphPanner.setCanvas(_jgraph);
+        show();
+        GraphicalMessageHandler.setContext(_previousDefaultContext);
+        toFront();
+        _jgraph.requestFocus();
+    }
+    
     /** Go to full screen.
      */
     public void fullScreen() {
-        // FIXME
+        if (_screen != null) {
+            // Already in full screen mode.
+            _screen.toFront();
+            return;
+        }
+        // NOTE: Do not make the original graph frame the owner,
+        // because we are going to hide it, and if it is the owner,
+        // then the new frame will be hidden also.
+        _screen = new JDialog();
+        _screen.getContentPane().setLayout(new BorderLayout());
+
+        // Set to full-screen size.
+        Toolkit toolkit = _screen.getToolkit();
+        int width = toolkit.getScreenSize().width;
+        int height = toolkit.getScreenSize().height;
+        _screen.setSize(width, height);
+
+        _screen.setUndecorated(true);
+        _screen.getContentPane().add(_jgraph, BorderLayout.CENTER);
+
+        // NOTE: Have to avoid the following, which forces the
+        // dialog to resize the preferred size of _jgraph, which
+        // nullifies the call to setSize() above.
+        // _screen.pack();
+
+        _screen.setVisible(true);
+
+        // Make the new screen the default context for modal messages.
+        _previousDefaultContext = GraphicalMessageHandler.getContext();
+        GraphicalMessageHandler.setContext(_screen);
+
+        // NOTE: As usual with swing, what the UI does is pretty
+        // random, and doesn't correlate much with the documentation.
+        // The following two lines do not work if _screen is a
+        // JWindow instead of a JDialog.  There is no apparent
+        // reason for this, but this is why we use JDialog.
+        // Unfortunately, apparently the JDialog does not appear
+        // in the Windows task bar.
+        _screen.toFront();
+        _jgraph.requestFocus();
+
+        _screen.setResizable(false);
+
+        // Bind escape key to remove full-screen mode.
+        ActionMap actionMap = _jgraph.getActionMap();
+        // Use the action as both a key and the action.
+        actionMap.put(_fullScreenAction, _fullScreenAction);
+        InputMap inputMap = _jgraph.getInputMap();
+        inputMap.put(KeyStroke.getKeyStroke("ESCAPE"), _fullScreenAction);
+
+        // Remove association with the graph panner.
+        _graphPanner.setCanvas(null);
+
+        hide();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -169,92 +239,31 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
             // If we are in full-screen mode, then revert.
             // Otherwise, go to full-screen mode.
             if (_screen == null) {
-                // NOTE: Do not make the original graph frame the owner,
-                // because we are going to hide it, and if it is the owner,
-                // then the new frame will be hidden also.
-                _screen = new JDialog();
-                _screen.getContentPane().setLayout(new BorderLayout());
-
-                // Set to full-screen size.
-                Toolkit toolkit = _screen.getToolkit();
-                int width = toolkit.getScreenSize().width;
-                int height = toolkit.getScreenSize().height;
-                _screen.setSize(width, height);
-
-                _screen.setUndecorated(true);
-                _screen.getContentPane().add(_jgraph, BorderLayout.CENTER);
-
-                // NOTE: Have to avoid the following, which forces the
-                // dialog to resize the preferred size of _jgraph, which
-                // nullifies the call to setSize() above.
-                // _screen.pack();
-
-                _screen.setVisible(true);
-
-                // Make this the default context for modal messages.
-                _previousDefaultContext = GraphicalMessageHandler.getContext();
-                GraphicalMessageHandler.setContext(_screen);
-
-                // NOTE: As usual with swing, what the UI does is pretty
-                // random, and doesn't correlate much with the documentation.
-                // The following two lines do not work if _screen is a
-                // JWindow instead of a JDialog.  There is no apparent
-                // reason for this, but this is why we use JDialog.
-                // Unfortunately, apparently the JDialog does not appear
-                // in the Windows task bar.
-                _screen.toFront();
-                _jgraph.requestFocus();
-
-                _screen.setResizable(false);
-
-                // Bind escape key to remove full-screen mode.
-                ActionMap actionMap = _jgraph.getActionMap();
-                // Use this as both a key and the action.
-                actionMap.put(this, this);
-                InputMap inputMap = _jgraph.getInputMap();
-                inputMap.put(KeyStroke.getKeyStroke("ESCAPE"), this);
-
-                // Remove association with the graph panner.
-                _graphPanner.setCanvas(null);
-
-                ExtendedGraphFrame.this.hide();
+                fullScreen();
             } else {
-                _cancelFullScreenMode();
+                cancelFullScreen();
             }
         }
 
         /** React to a key press by removing full-screen mode. */
         public void keyPressed(KeyEvent e) {
             if (_screen != null) {
-                _cancelFullScreenMode();
+                cancelFullScreen();
             }
         }
 
         /** React to a key press by removing full-screen mode. */
         public void keyReleased(KeyEvent e) {
             if (_screen != null) {
-                _cancelFullScreenMode();
+                cancelFullScreen();
             }
         }
 
         /** React to a key press by removing full-screen mode. */
         public void keyTyped(KeyEvent e) {
             if (_screen != null) {
-                _cancelFullScreenMode();
+                cancelFullScreen();
             }
-        }
-
-        private void _cancelFullScreenMode() {
-            _screen.dispose();
-            _screen = null;
-            // Put the component back into the original window.
-            _splitPane.setRightComponent(_jgraph);
-            // Restore association with the graph panner.
-            _graphPanner.setCanvas(_jgraph);
-            ExtendedGraphFrame.this.show();
-            GraphicalMessageHandler.setContext(_previousDefaultContext);
-            ExtendedGraphFrame.this.toFront();
-            _jgraph.requestFocus();
         }
     }
 }
