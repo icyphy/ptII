@@ -120,6 +120,16 @@ import ptolemy.kernel.util.Workspace;
    <i>FunctionDependency</i>, which is constructed during the initialization 
    phase of the execution.
    <p>
+   The priorities (depths) of actors are calculated in the initalize method.
+   To be able to calculate the priorities, a function dependency analysis is 
+   performed. If any delay-free loops are detected, an exception will be thrown. 
+   The priorities are not calculated in the preinitialize method because 
+   hierarchical models may change their structures during the preinitialize 
+   method. For example, a modal model does not specify its initial state 
+   until the end of its preinitialize method. See 
+   {@link ptolemy.domains.fsm.kernel.FSMActor}. This director supports mutation.
+   When a topology changes, the priorities of actors are recalculated.   
+   <p>
    An input port in a DE model contains an instance of DEReceiver.
    When a token is put into a DEReceiver, that receiver enqueues the
    event to the director by calling the _enqueueEvent() method of
@@ -185,8 +195,7 @@ import ptolemy.kernel.util.Workspace;
    <p>
    FIXME: Review transferOutputs().
    FIXME: Review changes in fire() and _dequeueEvents().
-   FIXME: Review fireAtCurrentTime()'s use of the time Double.NEGATIVE_INFINITY
-
+   
    @author Lukito Muliadi, Edward A. Lee, Jie Liu, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 0.2
@@ -692,21 +701,12 @@ public class DEDirector extends Director implements TimedDirector {
         return _stopTime;
     }
 
-    /** Invoke the initialize() method of the super class. 
-     *  The real start time of the model is recorded when this method
-     *  is called. If any events are generated during the initialization,
-     *  and the container is an embedded model, request a refiring.
-     *  <p>
-     *  The priorities (depths) of actors are calculated in this method.
-     *  To be able to calculate the priorities, a function dependency 
-     *  analysis is performed. If any delay-free loops are detected, 
-     *  an exception will be thrown. 
-     *  <p>
-     *  NOTE: The priorities are not calculated in the preinitialize method 
-     *  because hierarchical models may change their structures during the
-     *  preinitialize method. For example, a modal model does not specify its
-     *  initial state till the end of its preinitialize method. 
-     *  See {@link ptolemy.domains.fsm.kernel.FSMActor}.
+    /** Initialize all the contained actors by invoke the initialize() method 
+     *  of the super class, and if any events are generated during the 
+     *  initialization, and the container is not at top level, request a 
+     *  refiring.
+     *  <p> The real start time of the model is recorded when this method
+     *  is called. 
      *  <p>
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
@@ -719,8 +719,8 @@ public class DEDirector extends Director implements TimedDirector {
         _exceedStopTime = false;
         _realStartTime = System.currentTimeMillis();
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
-            // if the event queue is not empty and the container is an
-            // embedded model, ask the upper level director in the 
+            // if the event queue is not empty and the container is not at
+            // the top level, ask the upper level director in the 
             // hierarchy to refire the container at the time stamp of
             // the first event of the local event queue.
             // This design allows the upper level director to keep a
@@ -732,11 +732,9 @@ public class DEDirector extends Director implements TimedDirector {
     /** Indicate that the topological depth of the ports in the model may
      *  no longer be valid. This method should be called when topology
      *  changes are made.  It sets a flag which will cause the topological
-     *  sort to be redone next time prefire() is called.
+     *  sort to be redone next time when an event is enqueued.
      */
     public void invalidateSchedule() {
-        // FIXME: is this method necessary?
-        // How about synchronizing to workspace version?
         _sortValid = -1;
     }
 
@@ -757,15 +755,13 @@ public class DEDirector extends Director implements TimedDirector {
      *  @exception IllegalActionException Not thrown in this class.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("DE director postfiring!");
-        }
+        boolean result = super.postfire();
         // stop when event queue is empty
         boolean stop = ((BooleanToken)stopWhenQueueIsEmpty.getToken())
             .booleanValue();
         
         // If no more actors will be fired (i.e. event queue is empty) 
-        // and either of the following conditions satisfies:
+        // and either of the following conditions is satisfied:
         // 1. the stopWhenWueueIsEmpty parameter is set to true.
         // 2. the current model time equals the model stop time.
         // stop the model.
@@ -775,11 +771,11 @@ public class DEDirector extends Director implements TimedDirector {
         if (_noMoreActorsToFire && (stop || 
                 getModelTime().compareTo(getModelStopTime()) == 0 )) {
             _exceedStopTime = true;
-            return false;
+            result = result && false;
         } else if (_exceedStopTime) {
             // If the current time is bigger than the stop time, 
             // stop the model execution.
-            return false;
+            result = result && false;
         } else if (_isEmbedded() && !_eventQueue.isEmpty()) {
             // if the event queue is not empty and the container is an
             // embedded model, ask the upper level director in the 
@@ -789,96 +785,121 @@ public class DEDirector extends Director implements TimedDirector {
             // relatively short event queue. 
             _requestFiring();
         }
-        return super.postfire();
+
+        // FIXME: the following commented block guarantees that
+        // no events with different tags appear in the same firing.
+//        // Clear all of the contained actor's input ports.
+//        for (Iterator actors = ((CompositeActor)getContainer())
+//                .entityList(Actor.class).iterator();
+//                actors.hasNext();) {
+//            Entity actor = (Entity)actors.next();
+//            Iterator ports = actor.portList().iterator();
+//            while (ports.hasNext()) {
+//                IOPort port = (IOPort)ports.next();
+//                if (port.isInput()) {
+//                    // Clear all receivers.
+//                    Receiver[][] receivers = port.getReceivers();
+//                    if (receivers == null) {
+//                        throw new InternalErrorException(this, null,
+//                                "port.getReceivers() returned null! "
+//                                + "This should never happen. "
+//                                + "port was '" + port + "'");
+//                    }
+//                    for (int i = 0; i < receivers.length; i++) {
+//                        Receiver[] receivers2 = receivers[i];
+//                        for (int j = 0; j < receivers2.length; j++) {
+//                            receivers2[j].clear();
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//
+        return result;
     }
 
-    /** Return true if there are inputs to this composite actor,
-     *  and the current time of the outside domain is greater than
-     *  or equal to the current time. Return false if there are no
-     *  inputs, or the outside time is less than the current time.
-     *  Throw an exception if there are inputs and the outside time
-     *  is less than the current time.
+    /** Set the model time to the outside time if this director is not
+     *  at the top level. Check the next event time to decide whether to
+     *  fire. Return true if there are inputs to this composite actor, or
+     *  the next event time is equal to the current model time. Otherwise,
+     *  return false. Throw an exception if the current model time is greater 
+     *  than the next event time.
      *  @return True if the composite actor is ready to run for one
      *          iteration.
-     *  @exception IllegalActionException If there are input events
-     *          in the past, or the outside time is larger than the
-     *          time stamp of the first event in the event queue.
+     *  @exception IllegalActionException If the current model time is larger
+     *  than the time of the first event in the event queue.
      */
     public boolean prefire() throws IllegalActionException {
-        if (_debugging) {
-            _debug("DE director prefiring!");
-        }
+        // Set the modal time to the outside time, if this director
+        // is not at the top level.
+        boolean result = super.prefire();
         
         // A top-level DE director is always ready to fire.
         if (_isTopLevel()) {
-            return true;
+            return result;
         }
 
-        // If embedded, compare the outside time with the scheduled firing
-        // time to check whether this director is ready to fire.           
-
-        CompositeActor container = (CompositeActor)getContainer();
-        Time outsideCurrentTime = ((Actor)container).
-            getExecutiveDirector().getModelTime();
-        
+        // If embedded, check the next event time to decide
+        // whether this director is ready to fire.           
+        Time modelTime = getModelTime();
         Time nextEventTime = Time.POSITIVE_INFINITY;
         if (!_eventQueue.isEmpty()) {
             nextEventTime =  _eventQueue.get().timeStamp();
         }
 
-        // If the outside time is larger (later) than the first event
-        // in the queue, then there's something wrong with the outside
-        // domain.
-        if (outsideCurrentTime.compareTo(nextEventTime) > 0) {
+        // If the model time is larger (later) than the first event
+        // in the queue, then there's a missing firing.
+        if (modelTime.compareTo(nextEventTime) > 0) {
             throw new IllegalActionException(this,
                     "Missed a firing. This director is scheduled to fire at "
                     + nextEventTime + ", while"
                     + " the outside time is already "
-                    + outsideCurrentTime + ".");
+                    + modelTime + ".");
         }
 
-        // Now, the outside time is either less than or equal to the 
-        // current model time. We check if there's any external input.
+        // Now, the model time is either less than or equal to the 
+        // next event time. We check if there's any external input.
+        CompositeActor container = (CompositeActor)getContainer();
         Iterator inputPorts = container.inputPortList().iterator();
         boolean hasInput = false;
-        while (inputPorts.hasNext()) {
+        while (inputPorts.hasNext() && !hasInput) {
             IOPort port = (IOPort)inputPorts.next();
             for (int i = 0; i < port.getWidth(); i++) {
                 if (port.hasToken(i)) {
                     hasInput = true;
-                    break; // jump out of the for loop.
+                    break;
                 }
-            } //close the for loop. 
-        } // close the while loop.
+            } 
+        }
 
         if (hasInput) {
             // If there is at least one external input.
-            setModelTime(outsideCurrentTime);
-            return true;
+            result = result && true;
         } else {
-            // If there is no external input
-            if (nextEventTime.equals(outsideCurrentTime)) {
+            // If there is no external input.
+            if (nextEventTime.equals(modelTime)) {
                 // If there is an internal event scheduled to happen 
                 // at the current time, it is the right time to fire.
-                setModelTime(nextEventTime);
-                return true;
+                result = result && true;
             } else {
                 // If there is no internal event, it is not the correct 
                 // time to fire. 
-                // FIXME: how can this happen? Should this be reported
-                // as a bug by throwing an internal error exception?
-                return false;
+                // NOTE: This may happen because the container is statically
+                // scheduled by its director to fire at this time.
+                // For example, a DE model in a Giotto model.
+                result = result &&  false;
             }
         }
+        return result;
     }
 
-    /** Set current time to zero, invoke the preinitialize() methods of
-     *  all actors deeply contained by the container.
+    /** Set current time to the model start time, invoke the preinitialize() 
+     *  methods of all actors deeply contained by the container.
      *  <p>
      *  This method should be invoked once per execution, before any
      *  iteration. Actors cannot produce output data in their preinitialize()
      *  methods. If initial events are needed, e.g. pure events for source
-     *  actor, the actors should do so in their initialize() methods.
+     *  actor, the actors should do so in their initialize() method.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
@@ -981,9 +1002,6 @@ public class DEDirector extends Director implements TimedDirector {
         }
         return anyWereTransferred;
     }
-    // The above method will be unnecessary for DEEDirector since no two events
-    // are allowd to have the same tag. Consequently, an output can produce
-    // at most one output for each iteration.
 
     /** Invoke the wrapup method of the super class. Reset the private
      *  state variables.
@@ -1018,7 +1036,7 @@ public class DEDirector extends Director implements TimedDirector {
 
     /** Put a pure event into the event queue with the specified time stamp.
      *  A "pure event" is one with no token, used to request
-     *  a firing of the specified actor at some abstract time.
+     *  a firing of the specified actor at some model time.
      *  Note that the actor may have no new data at its input ports
      *  when it is fired.
      *  The depth for the queued event is the minimum of the depth of 
@@ -1055,25 +1073,25 @@ public class DEDirector extends Director implements TimedDirector {
         // The depth is calculated in the following way:
         // 1. Find the depth of the actor that requested refirng.
         // 2. Find the minimum of the depths of the actors that receive
-        //    tokens from the above actor. (The smaller depth, the
-        //    higher priority.)
+        //    tokens from the above actor. (The smaller the depth, the
+        //    higher the priority.)
         // 3. Choose the smaller one of the above two depths 
         //    as the depth of the pure event.
         // Why?
         // Here is the example: a feedback loop contains a non-zero TimedDelay. 
         // When the TimedDelay actor requests a refiring, the
         // pure event should have a depth no greater than the depths of the
-        // receiver actors such that the receiver actors can fire with 
+        // consumer actors such that the consumer actors can fire with 
         // the proper and enough tokens.  
         
-        // NOTE: This procedure also applies to DEEDirector except that
+        // NOTE: This procedure also applies to FIXME (DEE? SDE?) except that
         // the depths are associated with ports and the result depth is
         // more accurate.
         
-        // NOTE: An alternative design is to give the depth of the pure events
-        // the highest priority, depth as -1. If multiple pure events exist,
-        // their order in the event queue reflects the order they are called
-        // before. 
+        // NOTE: An alternative semantics is to give the depth of the pure 
+        // events the highest priority, depth as -1. If multiple pure events 
+        // exist, their order in the event queue reflects the order they are 
+        // executed before. 
 
         // step 1.
         int depth = _getDepth(actor);
@@ -1154,43 +1172,6 @@ public class DEDirector extends Director implements TimedDirector {
         _eventQueue.put(new DEEvent(receiver, token, time, microstep, depth));
     }
 
-    // FIXME: this method should be abandoned. It is only used in the DEReceiver
-    // and designed specially for DEIOPOrt. 
-    // NOTE: this method causes a different behavior from the above method, 
-    // which is bad. 
-    // FIXME: DEReceiver needs cleaning....
-    /** Put an event into the event queue with the specified destination
-     *  receiver, and token.
-     *  The time stamp of the event is the
-     *  current time, but the microstep is one larger than the current
-     *  microstep. The depth is the depth of the actor.
-     *  This method is used by actors that declare that they
-     *  introduce delay, but where the value of the delay is zero.
-     *  If there is no event queue, then this method does nothing.
-     *
-     *  @param receiver The destination receiver.
-     *  @param token The token destined for that receiver.
-     *  @exception IllegalActionException If the delay is negative.
-     */
-    protected void _enqueueEvent(DEReceiver receiver, Token token)
-            throws IllegalActionException {
-
-        Actor actor = (Actor) receiver.getContainer().getContainer();
-        if (_eventQueue == null || 
-            (_disabledActors != null && _disabledActors.contains(actor))) 
-            return;
-
-        Actor destination = (Actor)(receiver.getContainer()).getContainer();
-        int depth = _getDepth(destination);
-
-        if (_debugging) _debug("enqueue event: to",
-                receiver.getContainer().getFullName() + " ("+token.toString()+") ",
-                "time = "+ getModelTime() + " microstep = "+ (_microstep + 1) + " depth = "
-                + depth);
-        _eventQueue.put(new DEEvent(receiver, token,
-        getModelTime(), _microstep + 1, depth));
-    }
-
     /** Return the depth of the actor.
      *  @exception IllegalActionException If the actor is not sorted and
      *  without a depth.
@@ -1198,13 +1179,15 @@ public class DEDirector extends Director implements TimedDirector {
     protected int _getDepth(Actor actor) throws IllegalActionException {
         if (_sortValid != workspace().getVersion()) {
             _computeDepth();
+            // the sort is now valid.
+            _sortValid = workspace().getVersion();
         }
         Integer depth = (Integer)_actorToDepth.get(actor);
         if (depth != null) {
             return depth.intValue();
         }
-        throw new IllegalActionException("Attempt to get depth actor " +
-                ((NamedObj)actor).getName() + " that was not sorted.");
+        throw new IllegalActionException("Attempt to get the depth of a actor " 
+                + ((NamedObj)actor).getName() + " that was not sorted.");
     }
 
     /** Dequeue the events from the event queue that have the smallest
@@ -1244,7 +1227,7 @@ public class DEDirector extends Director implements TimedDirector {
             }
             
             if (!_isTopLevel()) {
-                // If the directory is in an embedded model
+                // If the directory is not at the top level.
                 if (_eventQueue.isEmpty()) {
                     // NOTE: when could this happen?
                     // The containsr of this director, an embedded model,  
@@ -1304,31 +1287,23 @@ public class DEDirector extends Director implements TimedDirector {
                     synchronized(_eventQueue) {
                         if (_eventQueue.isEmpty()) {
                             try {
-                                // FIXME: If the manager gets a change request
-                                // during this wait, the change request will
-                                // not be executed until we emerge from this
-                                // wait.  This can lead to deadlock if the UI
-                                // waits for the change request to complete
-                                // (which it typically does).
-                                //_eventQueue.wait();
+                                // NOTE: Release the read access held
+                                // by this thread to prevent deadlocks. 
                                 workspace().wait(_eventQueue);
                             } catch (InterruptedException e) {
                                 // If the wait is interrupted,
                                 // then stop waiting.
                                 break;
-                            } catch (Exception e) {
-                                if (_debugging) {
-                                    _debug(e.toString());
-                                }
                             }
                         }
                     } // Close synchronized block
                 }// Close the blocking read while loop
                 
                 // To reach this point, either the event queue is not empty,
-                // or the _stopRequested is true. 
+                // , the _stopRequested is true, or an inturrupted exception
+                // happened.
                 if (_eventQueue.isEmpty()) {
-                    // Stop is requested!
+                    // Stop is requested or be inturrupted.
                     // jump out of the loop: LOOPLABEL::GetNextEvent
                     break;
                 } else {
@@ -1376,23 +1351,26 @@ public class DEDirector extends Director implements TimedDirector {
                             // minimum double value.
                             double elapsedTimeInSeconds =
                                 ((double)elapsedTime)/1000.0;
-                            if (currentTime.getDoubleValue() <= elapsedTimeInSeconds) {
+                            if (currentTime.getDoubleValue() 
+                                    <= elapsedTimeInSeconds) {
                                 break;
                             }
                             long timeToWait = (long)(currentTime.subtract(
-                                elapsedTimeInSeconds).getDoubleValue() * 1000.0);
+                                elapsedTimeInSeconds).getDoubleValue()*1000.0);
                             if (timeToWait > 0) {
                                 if (_debugging) {
                                     _debug("Waiting for real time to pass: "
                                             + timeToWait);
                                 }
-                                //synchronized(_eventQueue) {
                                 try {
+                                    // FIXME: Wait() does not realease the
+                                    // locks on the workspace, this blocks
+                                    // UI interactions and may cause deadlocks.
+                                    // SOLUTION: workspace.wait(object, long).
                                     _eventQueue.wait(timeToWait);
                                 } catch (InterruptedException ex) {
                                     // Continue executing.
                                 }
-                                //}
                             }
                         } // while
                     } // sync
@@ -1400,10 +1378,10 @@ public class DEDirector extends Director implements TimedDirector {
 
                 // Consume the event from the queue.  The event must be
                 // obtained here, since a new event could have been enqueued
-                // into the queue while the queue was waiting.
-                // FIXME: If the above situation happens, will it be a bug?
-                // I suspect it will be extremely difficult to fully understand
-                // the consequences. 
+                // into the queue while the queue was waiting. For example,
+                // an IO interrupt event. 
+                // NOTE: The newly inserted event may happen earlier than the
+                // previously first event in the queue. 
                 synchronized(_eventQueue) {
                     currentEvent = (DEEvent) _eventQueue.take();
                     currentTime = currentEvent.timeStamp();
@@ -1423,6 +1401,7 @@ public class DEDirector extends Director implements TimedDirector {
                     }
 
                     // Advance current time to event time.
+                    // NOTE: This is the only place the model time changes.
                     try {
                         setModelTime(currentTime);
                     } catch (IllegalActionException ex) {
@@ -1458,29 +1437,31 @@ public class DEDirector extends Director implements TimedDirector {
                 }
             } else {
                 
-                // Already found an event and the actor to reacts to it.
-                // Check whether the newly found event has the same tag.
+                // Already found an event and the actor to react to it.
+                // Check whether the newly found event has the same time 
+                // stamp and depth.  
                 // If so, the destination actor should be the same, but check 
                 // anyway.
 
                 // NOTE: Simultaneous events are handled at the same
-                // iteration, which is one the key differences from the
-                // DEEDirector.
+                // iteration, which is one of the key differences from the
+                // SDEDirector.
                 
-                // NOTE: A queue event to an actor may not have the 
+                // NOTE: A pure event to an actor may not have the 
                 // same depth of that actor because the dedicated depth 
-                // calculation process. When dequeuing events, 
-                // this difference has to be considered.
+                // calculation process. See _enqueueEvent(Actor, Time) method.
+                // When dequeuing events, this difference has to be considered.
                   
                 // NOTE: The above assumption will not always hold for 
                 // non-strict actors. In which case, we need to use the 
-                // DEEDirector.
+                // SDEDirector.
                 boolean isPureEvent = (nextEvent.receiver() == null) 
                     || (currentEvent.receiver() == null);
                 boolean theSameActor = nextEvent.actor().equals(
                     currentEvent.actor());
                 
-                // The two conditions of the following predicate are:
+                // The following predicate is true if either of the two
+                // conditions is satisfied:
                 // 1. Two token events that go to same port of the same actor.
                 // 2. A pure event and a token event that go to the actor.
                 if (nextEvent.hasTheSameTagAndDepthAs(currentEvent) ||
@@ -1519,11 +1500,11 @@ public class DEDirector extends Director implements TimedDirector {
         return false;
     }
 
-    /** Request that the container of this director to be refired in some
+    /** Request that the container of this director be refired in some
      *  future time specified by the first event of the local event queue.
      *  This method is used when the director is embedded inside an opaque
-     *  composite actor (i.e. a wormhole in Ptolemy Classic terminology).
-     *  If the queue is empty, then throw an IllegalActionException.
+     *  composite actor. If the queue is empty, then throw an 
+     *  IllegalActionException.
      */
     protected void _requestFiring() throws IllegalActionException {
         DEEvent nextEvent = null;
@@ -1619,10 +1600,59 @@ public class DEDirector extends Director implements TimedDirector {
         }
     }
 
+    // Perform topological sort on the directed graph and use the result
+    // to set the depth for each actor. A new Hashtable is created each
+    // time this method is called.
+    private void _computeDepth() throws IllegalActionException {
+        DirectedGraph dag = _constructDirectedGraph();
+        // The returned directed graph may contain cycle loops.
+        // Do the check in the following code.
+        // NOTE: there is a possibility that the function dependency
+        // analysis says no cycle loops but the actors graph have 
+        // cycle loops. This is one of the limitations of the current
+        // DEDirector.
+        Object[] cycleNodes = dag.cycleNodes();
+        if (cycleNodes.length != 0) {
+            StringBuffer names = new StringBuffer();
+            for (int i = 0; i < cycleNodes.length; i++) {
+                if (cycleNodes[i] instanceof Nameable) {
+                    if (i > 0) names.append(", ");
+                    names.append(((Nameable)cycleNodes[i]).getFullName());
+                }
+            }
+            throw new IllegalActionException(this.getContainer(),
+                    "Found zero delay loop including: " + names.toString()
+                    + "\n Model requires a TimedDelay in this " +                        "directed cycle.");
+        }
+        
+        // now we can safely cast the dag into an acyclic graph.
+        Object[] sort = 
+            (Object[]) ((DirectedAcyclicGraph)dag).topologicalSort();
+        if (_debugging) {
+            _debug("## Result of topological sort (highest depth to lowest):");
+        }
+        // Allocate a new hash table with the equal to the
+        // number of actors sorted + 1. The extra entry is
+        // for the composite actor that contains this director.
+        // This composite actor is set to the highest depth.
+        _actorToDepth = new Hashtable(sort.length+1);
+        if (_debugging) _debug(getContainer().getFullName(),
+                "depth: " + sort.length);
+        _actorToDepth.put(getContainer(), new Integer(sort.length));
+        for (int i = sort.length-1; i >= 0; i--) {
+            Actor actor = (Actor)sort[i];
+            if (_debugging) _debug(((Nameable)actor).getFullName(),
+                    "depth: " + i);
+            // Insert the hashtable entry.
+            _actorToDepth.put(actor, new Integer(i));
+        }
+        if (_debugging) _debug("## End of topological sort.");
+    }
+
     // Construct a directed graph with the nodes representing actors and
-    // directed edges representing their dependencies.  The directed graph
+    // directed edges representing their dependencies. The directed graph
     // is returned.
-    // NOTE: DEEDirector does not need this because ports are directly used
+    // NOTE: SDEDirector does not need this because ports are directly used
     // for depth calculation and scheduling.
     private DirectedAcyclicGraph _constructDirectedGraph()
             throws IllegalActionException {
@@ -1632,7 +1662,9 @@ public class DEDirector extends Director implements TimedDirector {
         Nameable container = getContainer();
         // If the container is not a composite actor,
         // there are no actors.
-        if (!(container instanceof CompositeActor)) return dag;
+        if (!(container instanceof CompositeActor)) {
+            return dag;
+        }
         
         CompositeActor castContainer = (CompositeActor)container;
 
@@ -1672,19 +1704,14 @@ public class DEDirector extends Director implements TimedDirector {
         _categorizeActors(embeddedActors);
 
         // and add them into the actors graph
-        Iterator sourceActors = _sourceActors.iterator();
-        while (sourceActors.hasNext()) {
-            dag.addNodeWeight(sourceActors.next());
-        }
-        Iterator otherActors = _otherActors.iterator();
-        while (otherActors.hasNext()) {
-            dag.addNodeWeight(otherActors.next());
-        }
-        Iterator sinkActors = _sinkActors.iterator();
-        while (sinkActors.hasNext()) {
-            dag.addNodeWeight(sinkActors.next());
-        }
-
+        // NOTE: Source acotrs are added first and the sink actors 
+        // are added last. The purpose is to let the dag give the source 
+        // actors higher prioprities, meaning smaller depths, during
+        // the topologial sorting process.
+        dag.addNodeWeights(_sourceActors);
+        dag.addNodeWeights(_otherActors);
+        dag.addNodeWeights(_sinkActors);
+        
         // clean the list of actors to avoid potential memory leakage.
         _sinkActors = null;
         _sourceActors = null;
@@ -1744,15 +1771,18 @@ public class DEDirector extends Director implements TimedDirector {
                         Actor successor = (Actor)(port.getContainer());
                         // If the destination is the same as the current
                         // actor, skip the destination.
+                        // NOTE: This situation happens when a loop of actors
+                        // exists in a model. As long as the loop contains at
+                        // least one actor whose output does not depend its
+                        // input, such as the TimedDelay actor, the loop is
+                        // valid. The following statements prevents infinite
+                        // iterations of the actors in a loop.
                         if (successor.equals(actor)) {
                             continue;
                         }
 
                         // create an arc from the current actor to the successor.
                         if (dag.containsNodeWeight(successor)) {
-                            // 'contains' replaced with 'containsNodeWeight'
-                            // Should not affect function since former has
-                            // already been defined in Graph.java as latter.
                             dag.addEdge(actor, successor);
                         } else {
                             // This happens if there is a
@@ -1768,57 +1798,6 @@ public class DEDirector extends Director implements TimedDirector {
         }
 
         return dag;
-    }
-
-    // Perform topological sort on the directed graph and use the result
-    // to set the depth for each actor. A new Hashtable is created each
-    // time this method is called.
-    private void _computeDepth() throws IllegalActionException {
-        DirectedGraph dag = _constructDirectedGraph();
-        // The returned directed graph may contain cycle loops.
-        // Do the check in the following code.
-        // NOTE: there is a possibility that the function dependency
-        // analysis says no cycle loops but the actors graph have 
-        // cycle loops. This is one of the limitations of the current
-        // DEDirector.
-        Object[] cycleNodes = dag.cycleNodes();
-        if (cycleNodes.length != 0) {
-            StringBuffer names = new StringBuffer();
-            for (int i = 0; i < cycleNodes.length; i++) {
-                if (cycleNodes[i] instanceof Nameable) {
-                    if (i > 0) names.append(", ");
-                    names.append(((Nameable)cycleNodes[i]).getFullName());
-                }
-            }
-            throw new IllegalActionException(this.getContainer(),
-                    "Found zero delay loop including: " + names.toString()
-                    + "\n Model requires a TimedDelay in this " +                        "directed cycle.");
-        }
-        
-        // now we can safely cast the dag into an acyclic graph.
-        Object[] sort = 
-            (Object[]) ((DirectedAcyclicGraph)dag).topologicalSort();
-        if (_debugging) {
-            _debug("## Result of topological sort (highest depth to lowest):");
-        }
-        // Allocate a new hash table with the equal to the
-        // number of actors sorted + 1. The extra entry is
-        // for the composite actor that contains this director.
-        // This composite actor is set to the highest depth.
-        _actorToDepth = new Hashtable(sort.length+1);
-        if (_debugging) _debug(getContainer().getFullName(),
-                "depth: " + sort.length);
-        _actorToDepth.put(getContainer(), new Integer(sort.length));
-        for (int i = sort.length-1; i >= 0; i--) {
-            Actor actor = (Actor)sort[i];
-            if (_debugging) _debug(((Nameable)actor).getFullName(),
-                    "depth: " + i);
-            // Insert the hashtable entry.
-            _actorToDepth.put(actor, new Integer(i));
-        }
-        if (_debugging) _debug("## End of topological sort.");
-        // the sort is now valid.
-        _sortValid = workspace().getVersion();
     }
 
     // initialize parameters. Set all parameters to their default values.
