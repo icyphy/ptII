@@ -79,10 +79,11 @@ import ptolemy.kernel.util.Workspace;
    told before the simulation, and unpredictable breakpoints, whose appearance
    is not known beforehand.
    <P>
-   This director can only be a top-level director. For a CT model as an opaque
-   composite actor inside another model, use CTMixedSignalDirector (if the outer
-   model is a discrete-event model) or CTEmbeddedDirector (if the outer model is
-   a CT or FSM one.)
+   This director can only be a top-level director. For a CT model as
+   an opaque composite actor inside another model, use
+   CTMixedSignalDirector (if the outer model is a discrete-event
+   model) or CTEmbeddedDirector (if the outer model is a CT or FSM
+   one.)
    <P>
    This director recognizes actors that implement the CTStepSizeControlActor
    interface and adjusts the step size by polling such actors. If all actors
@@ -223,17 +224,18 @@ public class CTMultiSolverDirector extends CTDirector {
      *  resolving the initial states at t_1, and producing outputs. This
      *  process includes a discrete phase of execution and a continuous one.
      *  <P>
-     *  To resolve the final states at the time point t_0, a discrete phase
-     *  of execution is performed. A discrete phase of execution at a time point
-     *  is a fixed-point iteration, where the fixed point is reached when no
-     *  more events exist and there will be no more events to be generated at
-     *  that time point. To be concrete, at a discrete phase execution, event
-     *  generators, purely discrete actors, waveform generators, and continuous
-     *  acotrs are repeatly iterated. The whole execution stops only when no
-     *  event generators generate any more events. At this ending of this
-     *  execution, the system states are resolved, which are called the final
-     *  states at t_0. The solver for this phase of execution is a breakpoint
-     *  ODE solver.
+     *  To resolve the final states at the time point t_0, a discrete
+     *  phase of execution is performed. A discrete phase of execution
+     *  at a time point is a fixed-point iteration, where the fixed
+     *  point is reached when no more events exist and there will be
+     *  no more events to be generated at that time point. To be
+     *  concrete, at a discrete phase execution, event generators,
+     *  purely discrete actors, waveform generators, and continuous
+     *  acotrs are repeatly iterated. The whole execution stops only
+     *  when no event generators generate any more events. At this
+     *  ending of this execution, the system states are resolved,
+     *  which are called the final states at t_0. The solver for this
+     *  phase of execution is a breakpoint ODE solver.
      *  <P>
      *  The way we use to find the fixed point is based on the SR
      *  semantics. To be specific, starting from <i>unknown</i>, the directors
@@ -261,23 +263,26 @@ public class CTMultiSolverDirector extends CTDirector {
      *  smallest suggested step size, and the current time plus the step size
      *  should not be later than the first entry in the breakpoint table.
      *  <p>
-     *  Because of the existence of unpredictable events, a step size may need
-     *  to be refined. Another reason to adjust step size is to achieve a
-     *  reasonably accurate approximation of states. The mechanism to control
-     *  step size is described below. After the states are resolved, step size
-     *  control actors in the dynamic actor schedule and the state transition
-     *  schedule are queried for the accuracy of the current step size. If any
-     *  one of them is not satisfied with the current step size, then the states
-     *  will be recalucated with a refined step size, which is the minimum of
-     *  the refined step sizes from all step size control actors in the dynamic
-     *  actor schedule and the state transition schedule. On the other hand,
-     *  if all the above actors are satisfied with the current step, then the
-     *  actors in the output path will be fired according to the output
-     *  schedule. Then, the step size control actors in the output path will be
-     *  checked for accuracy. If any actor is not satisfied with the current
-     *  step size, the current step size is refined. Note that states have to be
-     *  resolved again with this new step size. States are completely resolved
-     *  only when all actors agree that the step is accurate.
+     *  Because of the existence of unpredictable events, a step size
+     *  may need to be refined. Another reason to adjust step size is
+     *  to achieve a reasonably accurate approximation of states. The
+     *  mechanism to control step size is described below. After the
+     *  states are resolved, step size control actors in the dynamic
+     *  actor schedule and the state transition schedule are queried
+     *  for the accuracy of the current step size. If any one of them
+     *  is not satisfied with the current step size, then the states
+     *  will be recalucated with a refined step size, which is the
+     *  minimum of the refined step sizes from all step size control
+     *  actors in the dynamic actor schedule and the state transition
+     *  schedule. On the other hand, if all the above actors are
+     *  satisfied with the current step, then the actors in the output
+     *  path will be fired according to the output schedule. Then, the
+     *  step size control actors in the output path will be checked
+     *  for accuracy. If any actor is not satisfied with the current
+     *  step size, the current step size is refined. Note that states
+     *  have to be resolved again with this new step size. States are
+     *  completely resolved only when all actors agree that the step
+     *  is accurate.
      *  <P>
      *  All the continuous actors are prefired before an iteration begins.
      *  If any one of them returns false, then the iteration is
@@ -518,6 +523,26 @@ public class CTMultiSolverDirector extends CTDirector {
         return super.postfire();
     }
 
+    /** Call the prefire() method of the super class and return its value.
+     *  Record the current model time as the beginning time of the current
+     *  iteration.
+     *  @return True if this director is ready to fire.
+     *  @throws IllegalActionException If thrown by the super class.
+     */
+    public boolean prefire() throws IllegalActionException {
+        boolean prefireReturns =  super.prefire();
+        // Record the start time of the current iteration
+        // The begin time of an iteration can be changed only by directors.
+        // On the other hand, the model time may be changed by ODE solvers.
+        // One example solver is the RK23 solver. It resolves the states in
+        // three steps, and it increment the model time at each step. If
+        // the CurrentTime actor is involved as one of the state transition
+        // actors, it needs to report the model time at each intermediate steps.
+        // (The CurrentTime actor reports the model time.)
+        _setIterationBeginTime(getModelTime());
+        return prefireReturns;
+    }
+
     /** After calling the preinitialize() method of the super class,
      *  instantiate all the solvers.
      *  @exception IllegalActionException If thrown by the super class,
@@ -538,34 +563,17 @@ public class CTMultiSolverDirector extends CTDirector {
                     _breakpointSolverClassName);
         }
         _breakpointSolver = _instantiateODESolver(_breakpointSolverClassName);
-        // Set the current ODE solver to the normal solver.
-        // NOTE: In fact, it does not matter which solver to choose here because
-        // when the fire() method is called, the current solver gets set
-        // corresponding to the phases of execution. We choose the normal solver
-        // just to ensure back compatibility of tests.
-        // In parcicular, we set the solver here because the CTBaseIntegrator
-        // checks the existence of solver during its initialize() method.
-        _setCurrentODESolver(_normalSolver);
-    }
 
-    /** Call the prefire() method of the super class and return its value.
-     *  Record the current model time as the beginning time of the current
-     *  iteration.
-     *  @return True if this director is ready to fire.
-     *  @throws IllegalActionException If thrown by the super class.
-     */
-    public boolean prefire() throws IllegalActionException {
-        boolean prefireReturns =  super.prefire();
-        // Record the start time of the current iteration
-        // The begin time of an iteration can be changed only by directors.
-        // On the other hand, the model time may be changed by ODE solvers.
-        // One example solver is the RK23 solver. It resolves the states in
-        // three steps, and it increment the model time at each step. If
-        // the CurrentTime actor is involved as one of the state transition
-        // actors, it needs to report the model time at each intermediate steps.
-        // (The CurrentTime actor reports the model time.)
-        _setIterationBeginTime(getModelTime());
-        return prefireReturns;
+        // Set the current ODE solver to the normal solver.  NOTE: In
+        // fact, it does not matter which solver to choose here
+        // because when the fire() method is called, the current
+        // solver gets set corresponding to the phases of
+        // execution. We choose the normal solver just to ensure back
+        // compatibility of tests.  In parcicular, we set the solver
+        // here because the CTBaseIntegrator checks the existence of
+        // solver during its initialize() method.
+
+        _setCurrentODESolver(_normalSolver);
     }
 
     /** Fire all the actors in the output schedule.
@@ -774,7 +782,8 @@ public class CTMultiSolverDirector extends CTDirector {
 
         if (_debugging) {
             _debug("execute the system from "
-                    + getModelTime() + " with a step size " + getCurrentStepSize()
+                    + getModelTime() + " with a step size "
+                    + getCurrentStepSize()
                     + " using solver " + getCurrentODESolver().getName());
         }
 
@@ -929,7 +938,8 @@ public class CTMultiSolverDirector extends CTDirector {
         try {
             CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
             actors = schedule.get(
-                    CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS).actorIterator();
+                    CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS)
+                .actorIterator();
         } catch (IllegalActionException e) {
             throw new InternalErrorException("Can not get schedule.");
         }
@@ -1069,7 +1079,8 @@ public class CTMultiSolverDirector extends CTDirector {
                 foundOne = true;
             }
             actors = schedule.get(
-                    CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS).actorIterator();
+                    CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS)
+                .actorIterator();
             while (actors.hasNext()) {
                 CTStepSizeControlActor actor =
                     (CTStepSizeControlActor) actors.next();
@@ -1125,7 +1136,8 @@ public class CTMultiSolverDirector extends CTDirector {
         return refinedStep;
     }
 
-    /** Return the refined step size with respect to state accuracy requirement.
+    /** Return the refined step size with respect to state accuracy
+     *  requirement.
      *  All the step size control actors in the state transition
      *  and dynamic actor schedule are queried for a refined step size. Then
      *  the smallest one is returned.

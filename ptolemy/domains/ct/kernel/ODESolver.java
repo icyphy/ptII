@@ -39,17 +39,19 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ODESolver
 /**
-   Abstract base class for ODE solvers. The key methods for the class are
-   {@link #fireDynamicActors} and {@link #fireStateTransitionActors}.
-   CT directors call these methods to resolve the initial states in a future
-   time in the continuous phase of exeution of a complete iteration. See
-   {@link CTMultiSolverDirector} for explanation of initial states and phases of
-   executions. The process of resolving the initial states in a future time
-   is also known as an integration. A complete integration is composed of one
-   or more rounds of executions. One round of execution consists of calling
-   fireDynamicActors() once followed by calling fireStateTransitionActors()
-   once. How the states are resolved are solver dependent. Derived classes
-   need to implement these methods according to their ODE solving algorithms.
+   Abstract base class for ODE solvers. The key methods for the class
+   are {@link #fireDynamicActors} and {@link
+   #fireStateTransitionActors}.  CT directors call these methods to
+   resolve the initial states in a future time in the continuous phase
+   of exeution of a complete iteration. See {@link
+   CTMultiSolverDirector} for explanation of initial states and phases
+   of executions. The process of resolving the initial states in a
+   future time is also known as an integration. A complete integration
+   is composed of one or more rounds of executions. One round of
+   execution consists of calling fireDynamicActors() once followed by
+   calling fireStateTransitionActors() once. How the states are
+   resolved are solver dependent. Derived classes need to implement
+   these methods according to their ODE solving algorithms.
    <P>
    The behavior of integrators also changes when changing the ODE solver,
    so this class provides some methods for the integrators too, including the
@@ -70,14 +72,15 @@ import ptolemy.kernel.util.Workspace;
    and _resetRoundCount() will always reset the counter to 0. These methods are
    protected because they are only used by solvers and CT directors.
    <p>
-   In this class, two methods {@link #_isConverged} and
-   {@link #_voteForConverged} are defined to let CT directors know the status
-   of resolved states. If multiple integrators exist, only when all of them
-   vote true for converged, will the _isConverged() return true. Another related
-   method is {@link #resolveStates()}, which always returns true in this base
-   class. However, in the solvers that implement the implicit solving methods,
-   this method may return false if the maximum number of iterations is reached
-   but states have not been resolved.
+   In this class, two methods {@link #_isConverged} and {@link
+   #_voteForConverged} are defined to let CT directors know the status
+   of resolved states. If multiple integrators exist, only when all of
+   them vote true for converged, will the _isConverged() return
+   true. Another related method is {@link #resolveStates()}, which
+   always returns true in this base class. However, in the solvers
+   that implement the implicit solving methods, this method may return
+   false if the maximum number of iterations is reached but states
+   have not been resolved.
    <P>
    Conceptually, ODE solvers do not maintain simulation parameters,
    like step sizes and error tolerance.
@@ -172,13 +175,6 @@ public abstract class ODESolver extends NamedObj {
         }
     }
 
-    /** Return the director that contains this solver.
-     *  @return the director that contains this solver.
-     */
-    public final NamedObj getContainer() {
-        return _director;
-    }
-
     /** Return the amount of history information needed by this solver.
      *  Some solvers need history information from each integrator.
      *  The derived class should implement this method to return the
@@ -187,6 +183,13 @@ public abstract class ODESolver extends NamedObj {
      *  @return The number of history information needed.
      */
     public abstract int getAmountOfHistoryInformation();
+
+    /** Return the director that contains this solver.
+     *  @return the director that contains this solver.
+     */
+    public final NamedObj getContainer() {
+        return _director;
+    }
 
     /** Return the number of auxiliary variables that an integrator should
      *  provide when solving the ODE. Auxiliary variables are variables
@@ -197,9 +200,10 @@ public abstract class ODESolver extends NamedObj {
     public abstract int getIntegratorAuxVariableCount();
 
     /** Perfrom one integration step. The fire() method of integrators
-     *  delegates to this method. Derived classes need to implement the details.
+     *  delegates to this method. Derived classes need to implement
+     *  the details.
      *  @param integrator The integrator that calls this method.
-     *  @exception IllegalActionException Not thrown in this abstract class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public abstract void integratorFire(CTBaseIntegrator integrator)
             throws  IllegalActionException;
@@ -222,7 +226,8 @@ public abstract class ODESolver extends NamedObj {
     public abstract double integratorPredictedStepSize(
             CTBaseIntegrator integrator);
 
-    /** Return true if the states of the system have been resolved successfully.
+    /** Return true if the states of the system have been resolved
+     *  successfully.
      *  In this base class, always return true. Derived classes may change
      *  the returned value.
      *  @return True If states of the system have been resolved sucessfully.
