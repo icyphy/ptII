@@ -55,8 +55,8 @@ public class Inequality {
      *   equal to the second argument.
      *  @param greaterTerm an <code>InequalityTerm</code> that is greater than
      *   or equal to the first argument.
-     *  @exception IllegalArgumentException <code>lesserTerm</code> or
-     *   <code>greaterTerm</code> is <code>null</code>.
+     *  @exception IllegalArgumentException If the <code>lesserTerm</code> or
+     *   the <code>greaterTerm</code> is <code>null</code>.
      */
     public Inequality(InequalityTerm lesserTerm, InequalityTerm greaterTerm) {
 	if (lesserTerm == null || greaterTerm == null) {

@@ -97,8 +97,8 @@ public class InequalitySolver {
      *  variables have its current value set to the bottom, an empty
      *  <code>Enumeration</code> is returned.
      *  @return an Enumeration of InequalityTerms
-     *  @exception InvalidStateException the underline CPO does not have
-     *   a bottom element.
+     *  @exception InvalidStateException If the underline CPO does not
+     *   have a bottom element.
      */
     public Enumeration bottomVariables() {
 	Object bottom = _cpo.bottom();
@@ -144,7 +144,7 @@ public class InequalitySolver {
      *   <code>false</code> otherwise.
      *  @IllegalArgumentException the value of some of the terms in the
      *   inequalities is not a CPO element.
-     *  @exception InvalidStateException the LUB of some elements does
+     *  @exception InvalidStateException If the LUB of some elements does
      *   not exist in the underline CPO.
      */
     public boolean solveLeast() {
@@ -177,7 +177,7 @@ public class InequalitySolver {
      *   <code>false</code> otherwise.
      *  @IllegalArgumentException the value of some of the terms in the
      *   inequalities is not a CPO element.
-     *  @exception InvalidStateException the GLB of some elements does
+     *  @exception InvalidStateException If the GLB of some elements does
      *   not exist in the underline CPO.
      */
     public boolean solveGreatest() {
@@ -189,8 +189,8 @@ public class InequalitySolver {
      *  variables have the current value set to the top, an empty
      *  <code>Enumeration</code> is returned.
      *  @return an Enumeration of InequalityTerms
-     *  @exception InvalidStateException the underline CPO does not have
-     *   a top element.
+     *  @exception InvalidStateException If the underline CPO does not
+     *   have a top element.
      */
     public Enumeration topVariables() {
 	Object top = _cpo.top();

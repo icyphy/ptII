@@ -95,14 +95,19 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  specified <code>Object</code>. The <code>Object</code> cannot
      *  be <code>null</code>.  In addition, two <code>Object</code>s
      *  equal to each other, as determined by the <code>equals</code>
-     *  method, cannot both be added.
+     *  method, cannot both be added.<p>
+     *
+     *  After nodes are added to a graph, The node Objects should not
+     *  be changed in such a way that the Objects representing
+     *  distinct nodes are equal, as determined by the
+     *  <code>equals</code> method. Doing so may generate unexpected
+     *  results.
      *
      *  @param o the Object representing a graph node.
-     *  @exception IllegalArgumentException an Object equals to the
+     *  @exception IllegalArgumentException If an Object equals to the
      *   specified one is already in this DAG.
-     *  @exception NullPointerException the specified Object is
+     *  @exception NullPointerException If the specified Object is
      *   <code>null</code>.
-     *  @see ptolemy.graph.Graph#add
      */
     public void add(Object o) {
         super.add(o);
@@ -120,9 +125,9 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *
      *  @param o1 the Object representing the lower node.
      *  @param o2 the Object representing the higher node.
-     *  @exception IllegalArgumentException the two nodes are equal,
+     *  @exception IllegalArgumentException If the two nodes are equal,
      *   as determined by the <code>equals</code> method.
-     *  @exception NullPointerException at least one of the specified
+     *  @exception NullPointerException If at least one of the specified
      *   Objects is <code>null</code>.
      */
     public void addEdge(Object o1, Object o2) {
@@ -149,7 +154,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  @param e2 an Object representing a CPO element.
      *  @return one of <code>CPO.LOWER, CPO.SAME,
      *   CPO.HIGHER, CPO.INCOMPARABLE</code>.
-     *  @exception IllegalArgumentException at least one of the
+     *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
      */
     public int compare(Object e1, Object e2) {
@@ -165,7 +170,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  @param e an Object representing an element in this CPO.
      *  @return an array of of Objects representing the elements in the
      *   down-set of the specified element.
-     *  @exception IllegalArgumentException the specified Object is not
+     *  @exception IllegalArgumentException If the specified Object is not
      *   an element in this CPO.
      */
     public Object[] downSet(Object e) {
@@ -178,7 +183,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  @param e2 an Object representing an element in this CPO.
      *  @return an Object representing the GLB of the two specified
      *   elements, or <code>null</code> if the GLB does not exist.
-     *  @exception IllegalArgumentException at least one of the
+     *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
      */
     public Object greatestLowerBound(Object e1, Object e2) {
@@ -194,7 +199,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the GLB of the subset, or
      *   <code>null</code> if the GLB does not exist.
-     *  @exception IllegalArgumentException at least one Object
+     *  @exception IllegalArgumentException If at least one Object
      *   in the specified array is not an element of this CPO.
      */
     public Object greatestLowerBound(Object[] subset) {
@@ -206,7 +211,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the greatest element of the subset,
      *   or <code>null</code> if the greatest element does not exist.
-     *  @exception IllegalArgumentException at least one Object in the
+     *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this CPO.
      */
     public Object greatestElement(Object[] subset) {
@@ -218,7 +223,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the least element of the subset,
      *   or <code>null</code> if the least element does not exist.
-     *  @exception IllegalArgumentException at least one Object in the
+     *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this CPO.
      */
     public Object leastElement(Object[] subset) {
@@ -231,7 +236,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  @param e2 an Object representing element in this CPO.
      *  @return an Object representing the LUB of the two specified
      *   elements, or <code>null</code> if the LUB does not exist.
-     *  @exception IllegalArgumentException at least one of the
+     *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
      */
     public Object leastUpperBound(Object e1, Object e2) {
@@ -247,7 +252,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the LUB of the subset, or
      *   <code>null</code> if the LUB does not exist.
-     *  @exception IllegalArgumentException at least one Object
+     *  @exception IllegalArgumentException If at least one Object
      *   in the specified array is not an element of this CPO.
      */
     public Object leastUpperBound(Object[] subset) {
@@ -272,7 +277,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *
      *  @return an array of Objects representing the nodes sorted
      *   according to the topology.
-     *  @exception InvalidStateException the graph is cyclic.
+     *  @exception InvalidStateException If the graph is cyclic.
      */
     public Object[] topologicalSort() {
         int size = getNodeCount();
@@ -313,7 +318,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  @param e an Object representing an element in this CPO.
      *  @return an array of Objects representing the elements in the
      *   up-set of the specified element.
-     *  @exception IllegalArgumentException the specified Object is not
+     *  @exception IllegalArgumentException If the specified Object is not
      *   an element of this CPO.
      */
     public Object[] upSet(Object e) {

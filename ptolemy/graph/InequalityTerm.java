@@ -75,7 +75,7 @@ public interface InequalityTerm {
      *  values set.
      *  @param e an Object representing an element in the
      *   underline CPO.
-     *  @exception IllegalActionException this term is not a variable.
+     *  @exception IllegalActionException If this term is not a variable.
      */
     public void setValue(Object e)
             throws IllegalActionException;

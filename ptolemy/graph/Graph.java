@@ -85,9 +85,9 @@ public class Graph {
      *  results.
      *
      *  @param o the Object representing a graph node
-     *  @exception IllegalArgumentException an Object equals to the
+     *  @exception IllegalArgumentException If an Object equals to the
      *   specified one is already in this graph.
-     *  @exception NullPointerException the specified Object is
+     *  @exception NullPointerException If the specified Object is
      *   <code>null</code>.
      */
     public void add(Object o) {
@@ -106,10 +106,10 @@ public class Graph {
      *
      *  @param o1 the Object representing a graph node
      *  @param o2 the Object representing a graph node
-     *  @exception IllegalArgumentException at least one of the arguments
-     *   is not a graph node, i.e., the argument is not equal to an
-     *   Object specified in a successful <code>add</code> call. Equality
-     *   is determined by the <code>equals</code> method.
+     *  @exception IllegalArgumentException If at least one of the
+     *   arguments is not a graph node, i.e., the argument is not equal
+     *   to an Object specified in a successful <code>add</code> call.
+     *   Equality is determined by the <code>equals</code> method.
      */ 
     public void addEdge(Object o1, Object o2) {        
         int id1 = _getNodeId(o1);
@@ -229,8 +229,8 @@ public class Graph {
     /** Return the node ID of the specified node.
      *  @param o an Object representing a graph node.
      *  @return the node id.
-     *  @exception IllegalArgumentException the specified Object is not
-     *   a node in this graph.
+     *  @exception IllegalArgumentException If the specified Object is
+     *   not a node in this graph.
      */
     protected int _getNodeId(Object o) {
         Integer v = (Integer)(_nodeIdTable.get(o));
@@ -245,8 +245,8 @@ public class Graph {
     /** Return the node in this graph with the specified node ID.
      *  @param nodeId a node ID
      *  @return an Object representing a node.
-     *  @exception IllegalArgumentException the node ID is negative
-     *   or is not less than the total number of nodes in
+     *  @exception IllegalArgumentException If the node ID is
+     *   negative or is not less than the total number of nodes in
      *   this graph.
      */
     protected Object _getNodeObject(int nodeId) {

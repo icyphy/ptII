@@ -67,7 +67,7 @@ public interface CPO
      *  @param e2 an Object representing a CPO element.
      *  @return one of <code>CPO.LOWER, CPO.SAME,
      *   CPO.HIGHER, CPO.INCOMPARABLE</code>.
-     *  @exception IllegalArgumentException at least one of the 
+     *  @exception IllegalArgumentException If at least one of the 
      *   specified Objects is not an element of this CPO.
      */
     public int compare(Object e1, Object e2);
@@ -78,7 +78,7 @@ public interface CPO
      *  @param e an Object representing an element in this CPO.
      *  @return an array of Objects representing the elements in the
      *   down-set of the specified element.
-     *  @exception IllegalArgumentException the specified Object is not
+     *  @exception IllegalArgumentException If the specified Object is not
      *   an element in this CPO.
      */
     public Object[] downSet(Object e);    
@@ -90,7 +90,7 @@ public interface CPO
      *  @param e2 an Object representing an element in this CPO.
      *  @return an Object representing the GLB of the two specified
      *   elements, or <code>null</code> if the GLB does not exist.
-     *  @exception IllegalArgumentException at least one of the 
+     *  @exception IllegalArgumentException If at least one of the 
      *   specified Objects is not an element of this CPO.
      */
     public Object greatestLowerBound(Object e1, Object e2);
@@ -102,7 +102,7 @@ public interface CPO
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the GLB of the subset, or
      *   <code>null</code> if the GLB does not exist.
-     *  @exception IllegalArgumentException at least one Object
+     *  @exception IllegalArgumentException If at least one Object
      *   in the specified array is not an element of this CPO.
      */
     public Object greatestLowerBound(Object[] subset);
@@ -114,7 +114,7 @@ public interface CPO
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the greatest element of the subset,
      *   or <code>null</code> if the greatest element does not exist.
-     *  @exception IllegalArgumentException at least one Object in the
+     *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this CPO.
      */
     public Object greatestElement(Object[] subset);
@@ -126,7 +126,7 @@ public interface CPO
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the least element of the subset,
      *   or <code>null</code> if the least element does not exist.
-     *  @exception IllegalArgumentException at least one Object in the
+     *  @exception IllegalArgumentException If at least one Object in the
      *   specified array is not an element of this CPO.
      */
     public Object leastElement(Object[] subset);
@@ -138,7 +138,7 @@ public interface CPO
      *  @param e2 an Object representing an element in this CPO.
      *  @return an Object representing the LUB of the two specified
      *   elements, or <code>null</code> if the LUB does not exist.
-     *  @exception IllegalArgumentException at least one of the
+     *  @exception IllegalArgumentException If at least one of the
      *   specified Objects is not an element of this CPO.
      */
     public Object leastUpperBound(Object e1, Object e2);
@@ -150,7 +150,7 @@ public interface CPO
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the LUB of the subset, or
      *   <code>null</code> if the LUB does not exist.
-     *  @exception IllegalArgumentException at least one Object
+     *  @exception IllegalArgumentException If at least one Object
      *   in the specified array is not an element of this CPO.
      */
     public Object leastUpperBound(Object[] subset);
@@ -169,7 +169,7 @@ public interface CPO
      *  @param e an Object representing an element in this CPO.
      *  @return an array of Objects representing the elements in the
      *   up-set of the specified element.
-     *  @exception IllegalArgumentException the specified Object is not
+     *  @exception IllegalArgumentException If the specified Object is not
      *   an element of this CPO.
      */
     public Object[] upSet(Object e);
