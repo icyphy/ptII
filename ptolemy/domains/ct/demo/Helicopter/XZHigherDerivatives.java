@@ -179,10 +179,6 @@ public class XZHigherDerivatives extends TypedAtomicActor
         double DTh = ((DoubleToken)inputDTh.get(0)).doubleValue();
         double A = ((DoubleToken)inputA.get(0)).doubleValue();
 
-        double CosTh2 = Math.pow(Math.cos(Th), 2);
-        double SinTh2 = Math.pow(Math.sin(Th), 2);
-        double mass2 = _mass*_mass;
-
         double D3Px = (DTh*Tm*Math.cos(Th))/_mass + (DTm*Math.sin(Th))/_mass;
 
         double D4Px = (2.0*DTh*DTm*Math.cos(Th))/_mass +

@@ -145,11 +145,11 @@ public class Helicopter extends TypedCompositeActor {
         State climbState = new State(hsctrl, "ClimbState");
         State cruise2State = new State(hsctrl, "Cruise2State");
         hsctrl.initialStateName.setExpression("HoverState");
-        CTCompositeActor linHover = _createLinearizer(sub, 0);
-        CTCompositeActor linAccel = _createLinearizer(sub, 1);
-        CTCompositeActor linCruise1 = _createLinearizer(sub, 2);
-        CTCompositeActor linClimb = _createLinearizer(sub, 3);
-        CTCompositeActor linCruise2 = _createLinearizer(sub, 4);
+        /* CTCompositeActor linHover = */ _createLinearizer(sub, 0);
+        /* CTCompositeActor linAccel = */ _createLinearizer(sub, 1);
+        /* CTCompositeActor linCruise1 = */ _createLinearizer(sub, 2);
+        /* CTCompositeActor linClimb = */ _createLinearizer(sub, 3);
+        /* CTCompositeActor linCruise2 = */ _createLinearizer(sub, 4);
         hoverState.refinementName.setExpression("HoverCTSub");
         accelState.refinementName.setExpression("AccelCTSub");
         cruise1State.refinementName.setExpression("Cruise1CTSub");

@@ -171,7 +171,7 @@ public class CruiseLinearizer extends TypedAtomicActor
      *        when needed.
      */
     public void fire() throws IllegalActionException {
-        double Px = ((DoubleToken)inputPx.get(0)).doubleValue();
+        /* double Px = */ ((DoubleToken)inputPx.get(0)).doubleValue();
         double DPx = ((DoubleToken)inputDPx.get(0)).doubleValue();
         double DDPx = ((DoubleToken)inputDDPx.get(0)).doubleValue();
         double D3Px = ((DoubleToken)inputD3Px.get(0)).doubleValue();

@@ -165,13 +165,13 @@ public class ClimbLinearizer extends TypedAtomicActor
      *        when needed.
      */
     public void fire() throws IllegalActionException {
-        double Px = ((DoubleToken)inputPx.get(0)).doubleValue();
+        /* double Px = */ ((DoubleToken)inputPx.get(0)).doubleValue();
         double DPx = ((DoubleToken)inputDPx.get(0)).doubleValue();
         double DDPx = ((DoubleToken)inputDDPx.get(0)).doubleValue();
         double D3Px = ((DoubleToken)inputD3Px.get(0)).doubleValue();
         double D4Px = ((DoubleToken)inputD4Px.get(0)).doubleValue();
 
-        double Pz = ((DoubleToken)inputPz.get(0)).doubleValue();
+        /* double Pz = */ ((DoubleToken)inputPz.get(0)).doubleValue();
         double DPz = ((DoubleToken)inputDPz.get(0)).doubleValue();
         double DDPz = ((DoubleToken)inputDDPz.get(0)).doubleValue();
         double D3Pz = ((DoubleToken)inputD3Pz.get(0)).doubleValue();

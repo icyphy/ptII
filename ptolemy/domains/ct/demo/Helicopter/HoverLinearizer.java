@@ -204,7 +204,6 @@ public class HoverLinearizer extends TypedAtomicActor
             String taps = ((StringToken)paramAlphaP.getToken()).stringValue();
             StringTokenizer stokens = new StringTokenizer(taps);
             int index = 0;
-            int tokencount = stokens.countTokens();
             while (stokens.hasMoreTokens() && index < 5) {
                 String valueToken = stokens.nextToken();
                 _alphaP[index++] = (new Double(valueToken)).doubleValue();
