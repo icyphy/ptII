@@ -187,6 +187,7 @@ public class SDF extends Dataflow {
             try {
                 DFUtilities.setIfNotDefined(port, varName, 
                         ((Integer) rateMap.get(port.getName())).intValue());
+                DFUtilities.showRate(port, true);
             } catch (Exception e) {
                 throw new DDIException("Failed to set " + varName + 
                         " of port " + port.getFullName());
