@@ -47,6 +47,9 @@ when the expression is evaluated. The constants are stored in a hash table,
 using their names as key. The value of each constant is wrapped in a data
 token.
 
+FIXME: Make this a subclass of Attribute. Any parameter contained will be
+added as a constant that can be used in the expression language.
+
 @author Xiaojun Liu
 @version $Id$
 @see ptolemy.data.expr.PtParser

@@ -36,6 +36,7 @@ import ptolemy.math.Complex;
 import ptolemy.math.FixPoint;
 import ptolemy.data.type.Type;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.unit.UnitSystem;
 
 import java.util.Arrays;
 
@@ -294,7 +295,7 @@ public abstract class ScalarToken extends Token {
             int exponent = _unitCategoryExponents[i];
             if (exponent != 0) {
                 String baseString = null;
-                // baseString = Constants.baseUnitString(i);
+                   baseString = UnitSystem.getBaseUnitName(i);
                    if (exponent > 0) {
                     for (int j=0; j<exponent; j++) {
                         if (positiveUnits.equals("")) {
