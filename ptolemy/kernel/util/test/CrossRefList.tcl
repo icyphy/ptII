@@ -37,6 +37,11 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+# Load up Tcl Procs to print out enums
+if {[info procs _testCrossRefListElements] == "" } then { 
+    source testEnums.tcl
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -47,33 +52,6 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
-######################################################################
-#### _testGetCrossRefList
-# Given a CrossRefList, return a Tcl List containing its contents
-#
-proc _testGetCrossRefList {args} {
-    set results {}
-    foreach crossreflist $args {
-	if {$crossreflist == [java::null]} {
-	    return $results
-	} 
-	set lresults {}
-	for {set crossrefenum [$crossreflist elements]} \
-		{$crossrefenum != [java::null] && \
-		[$crossrefenum hasMoreElements] == 1} \
-		{} {
-	    set enumelement [$crossrefenum nextElement]
-	    if [ java::instanceof $enumelement pt.kernel.NamedObj] {
-		lappend lresults [$enumelement getName]
-	    } else {
-		lappend lresults $enumElement
-	    }
-	}
-	lappend results $lresults
-    }
-    return $results
-
-}
 
 ######################################################################
 ####
@@ -123,7 +101,7 @@ test CrossRefList-3.1 {associate CrossRefLists, check out isMember} {
     set ownertwo [java::new pt.kernel.NamedObj "Owner Two"]
     set crltwo [java::new pt.kernel.CrossRefList $ownertwo]
     $crlone associate $crltwo
-    list [_testGetCrossRefList $crlone $crltwo] \
+    list [_testCrossRefListElements $crlone $crltwo] \
 	    [list \
 	    [$crlone isMember $ownerone] [$crlone isMember $crlone] \
 	    [$crlone isMember $ownertwo] [$crlone isMember $crltwo]] \
@@ -145,19 +123,19 @@ test CrossRefList-4.1 {associate CrossRefLists, check out Dissociate} {
     set crltwo [java::new pt.kernel.CrossRefList $ownertwo]
     set ownerthree [java::new pt.kernel.NamedObj "Owner Three"]
     set crlthree [java::new pt.kernel.CrossRefList $ownerthree]
-    set result0 [_testGetCrossRefList $crlone $crltwo $crlthree]
+    set result0 [_testCrossRefListElements $crlone $crltwo $crlthree]
 
     $crlone associate $crltwo
-    set result1 [_testGetCrossRefList $crlone $crltwo $crlthree]
+    set result1 [_testCrossRefListElements $crlone $crltwo $crlthree]
 
     $crlone associate $crlthree
-    set result2 [_testGetCrossRefList $crlone $crltwo $crlthree]
+    set result2 [_testCrossRefListElements $crlone $crltwo $crlthree]
 
     $crlone dissociate $ownertwo
-    set result3 [_testGetCrossRefList $crlone $crltwo $crlthree]
+    set result3 [_testCrossRefListElements $crlone $crltwo $crlthree]
 
     $crlone dissociate $ownerthree
-    set result4 [_testGetCrossRefList $crlone $crltwo $crlthree]
+    set result4 [_testCrossRefListElements $crlone $crltwo $crlthree]
 
     list "\
 result0 = $result0\n\
@@ -183,23 +161,23 @@ test CrossRefList-4.2 {associate CrossRefLists, check out Dissociate} {
     set crltwo [java::new pt.kernel.CrossRefList $ownertwo]
     set ownerthree [java::new pt.kernel.NamedObj "Owner Three"]
     set crlthree [java::new pt.kernel.CrossRefList $ownerthree]
-    set result0 [_testGetCrossRefList $crlone $crltwo $crlthree]
+    set result0 [_testCrossRefListElements $crlone $crltwo $crlthree]
 
     # 1->2 2->3 3->2
     $crlone associate $crltwo
     $crlone associate $crlthree
     $crltwo associate $crlthree
     $crlthree associate $crltwo
-    set result1 [_testGetCrossRefList $crlone $crltwo $crlthree]
+    set result1 [_testCrossRefListElements $crlone $crltwo $crlthree]
 
     $crltwo dissociate 
-    set result2 [_testGetCrossRefList $crlone $crltwo $crlthree]
+    set result2 [_testCrossRefListElements $crlone $crltwo $crlthree]
 
     $crlone associate $crltwo
-    set result3 [_testGetCrossRefList $crlone $crltwo $crlthree]
+    set result3 [_testCrossRefListElements $crlone $crltwo $crlthree]
 
     $crlone dissociate
-    set result4 [_testGetCrossRefList $crlone $crltwo $crlthree]
+    set result4 [_testCrossRefListElements $crlone $crltwo $crlthree]
 
     list "\
 result0 = $result0\n\
@@ -224,23 +202,23 @@ test CrossRefList-4.3 {associate two CrossLists many times, then dissociate} {
     set ownertwo [java::new pt.kernel.NamedObj "Owner Two"]
     set crltwo [java::new pt.kernel.CrossRefList $ownertwo]
 
-    set result0 [_testGetCrossRefList $crlone $crltwo $crlthree]
+    set result0 [_testCrossRefListElements $crlone $crltwo $crlthree]
 
     $crlone associate $crltwo
     $crlone associate $crltwo
     $crlone associate $crltwo
     $crlone associate $crltwo
-    set result1 [_testGetCrossRefList $crlone $crltwo $crlthree]
+    set result1 [_testCrossRefListElements $crlone $crltwo $crlthree]
  
     $crlone dissociate $ownertwo
     $crlone dissociate $ownertwo
-    set result2 [_testGetCrossRefList $crlone $crltwo $crlthree]
+    set result2 [_testCrossRefListElements $crlone $crltwo $crlthree]
 
     $crlone dissociate $ownertwo
     $crlone dissociate $ownertwo
     $crlone dissociate $ownertwo
     $crlone dissociate $ownertwo
-    set result3 [_testGetCrossRefList $crlone $crltwo $crlthree]
+    set result3 [_testCrossRefListElements $crlone $crltwo $crlthree]
 
    list "\
 result0 = $result0\n\
@@ -267,20 +245,20 @@ test CrossRefList-5.1 {associate CrossRefLists, then call copyList} {
     set ownerfour [java::new pt.kernel.NamedObj "Owner Four"]
     set crlfour [java::new pt.kernel.CrossRefList $ownerfour]
 
-    set result0 [_testGetCrossRefList $crlone $crltwo $crlthree $crlfour]
+    set result0 [_testCrossRefListElements $crlone $crltwo $crlthree $crlfour]
 
     $crlone associate $crltwo
     $crlone associate $crlthree
-    set result1 [_testGetCrossRefList $crlone $crltwo $crlthree $crlfour]
+    set result1 [_testCrossRefListElements $crlone $crltwo $crlthree $crlfour]
  
     $crlfour copyList $crlone
-    set result2 [_testGetCrossRefList $crlone $crltwo $crlthree $crlfour]
+    set result2 [_testCrossRefListElements $crlone $crltwo $crlthree $crlfour]
 
     $crlone dissociate
-    set result3 [_testGetCrossRefList $crlone $crltwo $crlthree $crlfour]
+    set result3 [_testCrossRefListElements $crlone $crltwo $crlthree $crlfour]
 
     $crlfour dissociate $ownerthree
-    set result4 [_testGetCrossRefList $crlone $crltwo $crlthree $crlfour]
+    set result4 [_testCrossRefListElements $crlone $crltwo $crlthree $crlfour]
 
    list "\
 result0 = $result0\n\
