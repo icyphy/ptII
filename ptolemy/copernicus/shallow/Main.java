@@ -32,6 +32,7 @@ package ptolemy.copernicus.shallow;
 import ptolemy.actor.CompositeActor;
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.KernelMain;
+import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
 import ptolemy.copernicus.kernel.InstanceEqualityEliminator;
 import ptolemy.copernicus.kernel.JimpleWriter;
@@ -105,6 +106,10 @@ public class Main extends KernelMain {
 	// -p wjtp.watchDog time:30000
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
                 WatchDogTimer.v()));
+
+	// Generate the makefile files in outDir
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
+                MakefileWriter.v(_toplevel)));
 
         // Create a class for the composite actor of the model
         Scene.v().getPack("wjtp").add(new Transform("wjtp.mt",
