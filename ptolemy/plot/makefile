@@ -273,6 +273,7 @@ $(PLOTMLAPPLETJAR): $(JSRCS) $(JCLASS)
 		$(APPLICATIONCLASSFILES) \
 		$(COMPLEXCLASSFILES) \
 		$(ME)/plotml/*.class \
+		com/microstar/xml/README.txt \
 		com/microstar/xml/*.class \
             )
 
@@ -284,6 +285,7 @@ $(PLOTAPPLICATIONJAR): $(JSRCS) $(JCLASS)
 		$(APPLICATIONCLASSFILES) \
 		$(COMPLEXCLASSFILES) \
 		$(ME)/plotml/*.class \
+		com/microstar/xml/README.txt \
 		com/microstar/xml/*.class \
             )
 
