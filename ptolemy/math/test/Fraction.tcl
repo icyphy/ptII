@@ -150,4 +150,14 @@ test Fraction-2.9 {negate} {
 	    [$c45 toString] [$c56 toString]
 } {0/1 -5/1 5/3 -5/1 1/3 5/1}
 
-
+test Fraction-3.1 {lcm} {
+    set c1 [java::call ptolemy.math.Fraction lcm 2 8]
+    set c2 [java::call ptolemy.math.Fraction lcm -8 2]
+    set c3 [java::call ptolemy.math.Fraction lcm 3 7]
+    set c4 [java::call ptolemy.math.Fraction lcm 28 2]
+    set c5 [java::call ptolemy.math.Fraction lcm 5 -2]
+    set c6 [java::call ptolemy.math.Fraction lcm -8 -7]
+    list $c1 $c2 $c3 $c4 $c5 $c6
+} {8 -8 21 28 -10 56}
+    
+  
