@@ -888,10 +888,10 @@ else
     if test "$PTGMP" = "yes"; then
         AC_MSG_CHECKING([for gcc])
         AC_PATH_PROG(PTCC, gcc)
-        if test "${PTCC:-none}" == "none"; then
+        if test "${PTCC:-none}" = "none"; then
             AC_MSG_WARN([Failed to find gcc])
 	    AC_PATH_PROG(PTCC, cc)
-	    if test "${PTCC:-none}" == "none"; then
+	    if test "${PTCC:-none}" = "none"; then
 	        AC_MSG_WARN([Failed to find gcc or cc, so we will
     not be able to compile the mescal output]);
             fi
