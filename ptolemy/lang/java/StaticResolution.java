@@ -496,7 +496,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    // Outer-level packages have SYSTEM_PACKAGE as their container.
     public static final PackageDecl SYSTEM_PACKAGE;
+    // UNNAMED_PACKAGE is contained by SYSTEM_PACKAGE.
     public static final PackageDecl UNNAMED_PACKAGE;
     public static final PackageDecl JAVA_LANG_PACKAGE;
 
