@@ -133,9 +133,8 @@ public class HTMLViewer extends TableauFrame
                     newURL = HTMLAbout.hyperlinkUpdate(event,
                             getConfiguration());
                 } catch (Throwable throwable) {
-                    throw new RuntimeException("Problem processing 'about:'"
-                            + "event '" + event.getDescription()
-                            + "'", throwable);
+                    MessageHandler.error("Problem processing '"
+                            + event.getDescription() + "'.", throwable);
                 }
             }
 
