@@ -1099,8 +1099,9 @@ public class IOPort extends ComponentPort {
         return false;
     }
 
-    /** Return true if the specified channel has a token to deliver
-     *  via the get() method.  If this port is not an input, or if the
+    /** Return true if the specified channel has the specified number
+     *  of tokens to deliver via the get() method.
+     *  If this port is not an input, or if the
      *  channel index is out of range, then throw an exception.
      *  Note that this does not report any tokens in inside receivers
      *  of an output port. Those are accessible only through
