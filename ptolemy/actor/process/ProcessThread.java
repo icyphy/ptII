@@ -92,13 +92,13 @@ public class ProcessThread extends PtolemyThread {
 	try {
             boolean iterate = true;
 	    while (iterate) {
+                iterate = false;
                 // container is checked for null to detect the 
                 // termination of the actor
                 if (((Entity)_actor).getContainer()!=null && _actor.prefire()){
                     _actor.fire();
                     iterate =  _actor.postfire();
                 }
-                iterate = false;
             }
         } catch (TerminateProcessException t) {
             // Process was terminated.
