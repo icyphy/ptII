@@ -197,7 +197,10 @@ public class BreakpointConfigurer extends Query implements ChangeListener{
                 director.requestChange(request);
             }
         } else {
-            if (_debugController != null) {
+            // If BreakpointConfigurerDialog()._handlClosing() 
+            // calls this in appropriately, then debugController might be
+            // null. 
+            if (debugController != null) {
                 // Remove profile if there are no longer any
                 // breakpoints selected for this _actor.
                 debugController.removeDebugProfile(_actor);
