@@ -57,7 +57,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	intro.htm \
-	introDSP.htm
+	introDSP.htm \
 	introPtiny.htm \
 	runConfiguration.xml \
 	runPanelConfiguration.xml \
