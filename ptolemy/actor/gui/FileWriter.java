@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 @AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib;
+package ptolemy.actor.gui;
 
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
@@ -89,14 +89,18 @@ public class FileWriter extends Writer {
            throws IllegalActionException {
         if (attribute == filename) {
             try {
-                String newFilename =
-                        ((StringToken)filename.getToken()).toString();
-                if (newFilename.equals("")) {
+                StringToken filenameToken = (StringToken)filename.getToken();
+                if (filenameToken == null) {
                     setWriter(null);
                 } else {
-                    java.io.FileWriter writer
-                            = new java.io.FileWriter(newFilename);
-                    setWriter(writer);
+                    String newFilename = filenameToken.toString();
+                    if (newFilename.equals("")) {
+                        setWriter(null);
+                    } else {
+                        java.io.FileWriter writer
+                                = new java.io.FileWriter(newFilename);
+                        setWriter(writer);
+                    }
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex.getMessage());
