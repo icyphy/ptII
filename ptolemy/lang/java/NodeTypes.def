@@ -69,6 +69,7 @@ EqualityNode A BinaryArithNode c 2 ExprNode expr1 ExprNode expr2 c
 BitwiseNode A BinaryArithNode c 2 ExprNode expr1 ExprNode expr2 c
 BitwiseAssignNode A BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 LogCondNode A BinaryArithNode c 2 ExprNode expr1 ExprNode expr2 c
+OuterClassAccessNode A ExprNode k 0 TypeNameNode type k
 
 // literals
 LiteralNode A ExprNode k 0 String literal k
@@ -102,7 +103,6 @@ DeclaratorNode C TreeNode i NamedNode i k 0 int dims NameNode name TreeNode init
 
 PackageNode C TreeNode i NamedNode i k 0 NameNode name k
 NullTypeNode S TypeNode
-OuterClassAccessNode C ExprNode k 0 TypeNameNode name k
 
 // Declarations
 
@@ -167,10 +167,12 @@ ObjectFieldAccessNode C FieldAccessNode i NamedNode i k 0 TreeNode object NameNo
 SuperFieldAccessNode C FieldAccessNode i NamedNode i k 0 NameNode name k
 TypeFieldAccessNode C FieldAccessNode i NamedNode i k 0 TypeNode fType NameNode name k
 ThisFieldAccessNode C FieldAccessNode i NamedNode i k 0 TreeNode theClass NameNode name boolean local k
-TypeClassAccessNode C ExprNode k 0 TypeNode fType k 
+TypeClassAccessNode C ExprNode k 0 TypeNode fType k
+OuterThisAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
+OuterSuperAccessNode C OuterClassAccessNode c 1 TypeNameNode type c
 MethodCallNode C ExprNode k 0 TreeNode method LinkedList args k
 AllocateNode C ExprNode k 0 TypeNode dtype LinkedList args k
-AllocateArrayNode C ExprNode k 0 TypeNode dtype LinkedList dimExprs int dims k
+AllocateArrayNode C ExprNode k 0 TypeNode dtype LinkedList dimExprs int dims TreeNode initExpr k
 AllocateAnonymousClassNode C ExprNode k 0 TypeNode superType LinkedList superArgs LinkedList members k
 PostIncrNode C IncrDecrNode c 1 ExprNode expr c
 PostDecrNode C IncrDecrNode c 1 ExprNode expr c

@@ -13,7 +13,7 @@
 %token NATIVE NEW _NULL
 %token PACKAGE PRIVATE PROTECTED PUBLIC
 %token RETURN
-%token SHORT STATIC SUPER SWITCH SYNCHRONIZED
+%token SHORT STATIC STRICTFP SUPER SWITCH SYNCHRONIZED
 %token THIS THROW THROWS TRANSIENT TRY
 %token VOID VOLATILE
 %token WHILE
@@ -194,8 +194,6 @@ import ptolemy.lang.*;
 %type<obj> VariableDeclarator
 %type<obj> VariableDeclarators
 
-%type<ival> FinalOpt
-
 %start Start
 
 %%
@@ -338,8 +336,8 @@ TypeImportOnDemandStatement :
 ClassDeclaration :
 	  FieldModifiersOpt CLASS SimpleName SuperOpt InterfacesOpt ClassBody
 		{ $$ = new ClassDeclNode($1, (NameNode) $3, (TreeNode) $4, (LinkedList) $5,
-         (LinkedList) $6); }
-	;
+           (LinkedList) $6); }
+ ;
 
 
 /* Section 6.1.1 */
@@ -394,26 +392,25 @@ FieldDeclarations :
 /* Section 6.2 */
 
 FieldDeclaration :
-	  FieldVariableDeclaration
-	| MethodDeclaration
-		{ $$ = cons($1); }
-	| ConstructorDeclaration
-		{ $$ = cons($1); }
-	| StaticInitializer
-		{ $$ = cons($1); }
-     /* NEW : Java 1.1 : D.1.3 : Instance initializers */
-   | InstanceInitializer
-       { $$ = cons($1); }
-     /*  NEW : Java 1.1 : D.1.1 : Inner classes
-      *  It's ambiguous whether or not there is a semicolon following
-      *  the declaration.
-      *  Also, apparently inner interfaces are allowed too.
-      */
-   | TypeDeclaration
-       { $$ = cons($1); }
-   | TypeDeclaration ';'
-       { $$ = cons($1); }
-	;
+	   FieldVariableDeclaration
+  | MethodDeclaration
+    { $$ = cons($1); }
+	 | ConstructorDeclaration
+		 { $$ = cons($1); }
+  | StaticInitializer
+	  	{ $$ = cons($1); }
+    /* NEW : Java 1.1 : D.1.3 : Instance initializers */
+  | InstanceInitializer
+    { $$ = cons($1); }
+    /*  NEW : Java 1.1 : D.1.1 : Inner classes
+     *  It's ambiguous whether or not there is a semicolon following
+     *  the declaration.
+     */
+  | TypeDeclaration
+    { $$ = cons($1); }
+  | TypeDeclaration ';'
+    { $$ = cons($1); }
+	 ;
 
 
 /* Section 6.3 */
@@ -487,15 +484,9 @@ FieldModifier :
 		{ $$ = Modifier.TRANSIENT_MOD;  }
 	| VOLATILE
 		{ $$ = Modifier.VOLATILE_MOD;  }
+ | STRICTFP
+   { $$ = Modifier.STRICTFP_MOD; }
 	;
-
-FinalOpt :
-   /* Applicable to local variables and parameters. Java 1.1 addition : D.1.2 */
-     FINAL
-       { $$ = Modifier.FINAL_MOD;  }
-   | empty
-       { $$ = Modifier.NO_MOD;  }
-   ;
 
 /* Section 6.3.2 */
 
@@ -566,11 +557,12 @@ ParameterList :
 	;
 
 Parameter :
-	  FinalOpt Type SimpleName DimsOpt
-     {
-       $$ = new ParameterNode($1, makeArrayType((TypeNode) $2, $4),
-             (NameNode) $3);
-     }
+	  FieldModifiersOpt Type SimpleName DimsOpt
+   {
+     Modifiers.checkParameterModifiers($1); 
+     $$ = new ParameterNode($1, makeArrayType((TypeNode) $2, $4),
+          (NameNode) $3);
+   }
 	;
 
 
@@ -600,7 +592,7 @@ TypeNameList :
 MethodBody :
 	  Block
 	| ';'
-		       { $$ = AbsentTreeNode.instance; }
+   { $$ = AbsentTreeNode.instance; }
 	;
 
 
@@ -608,20 +600,20 @@ MethodBody :
 
 ConstructorDeclaration :
 	  FieldModifiersOpt IDENTIFIER '(' ParameterListOpt ')'  ThrowsOpt
-	       '{' ExplicitConstructorCallStatement BlockStatementsOpt '}'
-	    {
-       Modifier.checkConstructorModifiers($1);
-	      $$ = new ConstructorDeclNode($1, $2, (LinkedList) $4, (LinkedList) $6,
-             (TreeNode) $8, new BlockNode((LinkedList) $9));
-     }
+   '{' ExplicitConstructorCallStatement BlockStatementsOpt '}'
+	  {
+      Modifier.checkConstructorModifiers($1);
+	     $$ = new ConstructorDeclNode($1, $2, (LinkedList) $4, (LinkedList) $6,
+            (TreeNode) $8, new BlockNode((LinkedList) $9));
+   }
 	| FieldModifiersOpt IDENTIFIER '(' ParameterListOpt ')'  ThrowsOpt
    '{' BlockStatementsOpt '}'
-	    {
-         Modifier.checkConstructorModifiers($1);
-	      $$ = new ConstructorDeclNode($1, $2, (LinkedList) $4, (LinkedList) $6,
+	  {
+     Modifier.checkConstructorModifiers($1);
+	    $$ = new ConstructorDeclNode($1, $2, (LinkedList) $4, (LinkedList) $6,
 					    new SuperConstructorCallNode(new LinkedList()),
 					    new BlockNode((LinkedList) $8));
-	    }
+	  }
 	;
 
 /* Note: We use FieldModifiersOpt to avoid a LALR(1) conflict. */
@@ -653,7 +645,10 @@ InstanceInitializer :
 InterfaceDeclaration :
 	  FieldModifiersOpt INTERFACE SimpleName ExtendsInterfacesOpt
 		InterfaceBody
-	  { $$ = new InterfaceDeclNode($1, (NameNode) $3, (LinkedList) $4, (LinkedList) $5); }
+	  {
+     Modifier.checkInterfaceModifiers($1);
+     $$ = new InterfaceDeclNode($1, (NameNode) $3, (LinkedList) $4, (LinkedList) $5);
+   }
 	;
 
 /* Section 6.8.1 */
@@ -687,8 +682,6 @@ InterfaceMemberDeclarationsOpt :
 		{ $$ = new LinkedList(); }
 	| InterfaceMemberDeclaration InterfaceMemberDeclarationsOpt
 		{ $$ = appendLists((LinkedList) $1, (LinkedList) $2); }
-
-
 	;
 
 InterfaceMemberDeclaration :
@@ -704,7 +697,10 @@ InterfaceMemberDeclaration :
 ConstantFieldDeclaration :
 	  FieldModifiersOpt Type VariableDeclarators ';'
    {
-     Modifier.checkConstantFieldModifiers($1);
+     int modifiers = $1;
+     modifiers |= (Modifier.STATIC_MOD | Modifier.FINAL_MOD);
+
+     Modifier.checkConstantFieldModifiers(modifiers);
      LinkedList varDecls = (LinkedList) $3;
      ListIterator itr = varDecls.listIterator(0);
 
@@ -712,9 +708,9 @@ ConstantFieldDeclaration :
 
 	    while (itr.hasNext()) {
 		    DeclaratorNode decl = (DeclaratorNode) itr.next();
-		    result = cons(new FieldDeclNode($1, makeArrayType((TypeNode) $2, decl.getDims()),
-						           decl.getName(), decl.getInitExpr()),
-				              result);
+		    result = cons(new FieldDeclNode(modifiers,
+                     makeArrayType((TypeNode) $2, decl.getDims()),
+						          decl.getName(), decl.getInitExpr()), result);
 		  }
 
 	    $$ = result;
@@ -727,14 +723,16 @@ MethodSignatureDeclaration :
 	    { Modifier.checkMethodSignatureModifiers($1);
 	      $$ = new MethodDeclNode($1 | Modifier.ABSTRACT_MOD, (LinkedList) $5,
 				       makeArrayType((TypeNode) $2, $7),
-				       (NameNode) $3, (LinkedList) $8, AbsentTreeNode.instance); }
+				       (NameNode) $3, (LinkedList) $8, AbsentTreeNode.instance);
+     }
 	  | FieldModifiersOpt Void SimpleName '(' ParameterListOpt ')' DimsOpt
 		  ThrowsOpt ';'
 	    {
         Modifier.checkMethodSignatureModifiers($1);
 	      $$ = new MethodDeclNode($1 | Modifier.ABSTRACT_MOD, (LinkedList) $5,
 				       makeArrayType((TypeNode) $2, $7), (NameNode) $3, (LinkedList) $8,
-              AbsentTreeNode.instance); }
+              AbsentTreeNode.instance);
+     }
 	;
 
 			     /* ARRAYS */
@@ -791,44 +789,47 @@ BlockStatement :
 		{ $$ = $1; }
 	| Statement
 		{ $$ = cons($1); }
+ | ClassDeclaration
+   { $$ = $1; }
 	;
 
 
 /* Section 8.2 */
 
-// is there some way to get rid of this repetition of code?? use of FinalOpt
-// results in ambiguity.
 LocalVariableDeclarationStatement :
-     FINAL Type VariableDeclarators ';'
-     {
-       LinkedList varDecls = (LinkedList) $3;
-       LinkedList result = new LinkedList();
+   FieldModifiers Type VariableDeclarators ';'
+   {
+     Modifier.checkLocalVariableModifiers($1);
 
-       ListIterator itr = varDecls.listIterator();
+     LinkedList varDecls = (LinkedList) $3;
+     LinkedList result = new LinkedList();
 
-	    while (itr.hasNext()) {
-		  DeclaratorNode decl = (DeclaratorNode) itr.next();
-		  result = cons(new VarDeclNode(Modifier.FINAL_MOD,
-                       makeArrayType((TypeNode) $2, decl.getDims()),
-                       decl.getName(), decl.getInitExpr()), result);
-       }
-       $$ = result;
-     }
-   | Type VariableDeclarators ';'
-     {
-       LinkedList varDecls = (LinkedList) $2;
-       LinkedList result = new LinkedList();
-
-       ListIterator itr = varDecls.listIterator();
+     ListIterator itr = varDecls.listIterator();
 
 	    while (itr.hasNext()) {
-		  DeclaratorNode decl = (DeclaratorNode) itr.next();
-		  result = cons(new VarDeclNode(Modifier.NO_MOD,
-                       makeArrayType((TypeNode) $1, decl.getDims()),
-                       decl.getName(), decl.getInitExpr()), result);
-		}
-       $$ = result;
+		    DeclaratorNode decl = (DeclaratorNode) itr.next();
+		    result = cons(new VarDeclNode($1,
+                     makeArrayType((TypeNode) $2, decl.getDims()),
+                     decl.getName(), decl.getInitExpr()), result);
      }
+     $$ = result;
+   }
+
+ | Type VariableDeclarators ';'
+   {
+     LinkedList varDecls = (LinkedList) $2;
+     LinkedList result = new LinkedList();
+
+     ListIterator itr = varDecls.listIterator();
+
+	    while (itr.hasNext()) {
+		    DeclaratorNode decl = (DeclaratorNode) itr.next();
+  	    result = cons(new VarDeclNode(Modifier.NO_MOD,
+                     makeArrayType((TypeNode) $1, decl.getDims()),
+                     decl.getName(), decl.getInitExpr()), result);
+     }
+     $$ = result;
+   }
 	;
 
 /* Section 8.3 */
@@ -898,10 +899,16 @@ SwitchBlock :
 	;
 
 SwitchBlockStatementsOpt :
-	  empty		{ $$ = new LinkedList(); }
+	  empty
+   { $$ = new LinkedList(); }
 	| SwitchLabels BlockStatements SwitchBlockStatementsOpt
-		{ $$ = cons(new SwitchBranchNode((LinkedList) $1, (LinkedList) $2),
-               (LinkedList) $3); }
+		{
+     $$ = cons(new SwitchBranchNode((LinkedList) $1, (LinkedList) $2),
+               (LinkedList) $3);
+   }
+   /* Handle labels at the end without any statements */
+ | SwitchLabels
+   { $$ = cons(new SwitchBranchNode((LinkedList) $1, new LinkedList()); }
  ;
 
 SwitchLabels :
@@ -1018,13 +1025,15 @@ Finally :
 /* Section 9.4 */
 
 PrimaryExpression :
-	  Name			%prec ')'
-		{ $$ = new ObjectNode((NameNode) $1); }
-	| NotJustName
-   | Name '.' CLASS
-       { $$ = new TypeClassAccessNode(new TypeNameNode((NameNode) $1)); }
-   | Name '.' THIS
-       { $$ = new OuterClassAccessNode(new TypeNameNode((NameNode) $1)); }
+  Name			%prec ')'
+	 { $$ = new ObjectNode((NameNode) $1); }
+ | NotJustName
+ | Name '.' CLASS
+   { $$ = new TypeClassAccessNode(new TypeNameNode((NameNode) $1)); }
+ | Name '.' THIS
+   { $$ = new OuterThisAccessNode(new TypeNameNode((NameNode) $1)); }
+ | Name '.' SUPER
+   { $$ = new OuterSuperAccessNode(new TypeNameNode((NameNode) $1)); }
 	;
 
 NotJustName :
@@ -1046,13 +1055,13 @@ ComplexPrimary :
 	| FieldAccess
 		{ $$ = $1; }
 	| MethodCall
-     /* NEW : Java 1.1 : D.7.3 : type class access */
-   | PrimitiveType '.' CLASS
-       { $$ = new TypeClassAccessNode((TypeNode) $1); }
-   | Void '.' CLASS
-       { $$ = new TypeClassAccessNode((TypeNode) $1); }
-   | ArrayType '.' CLASS
-       { $$ = new TypeClassAccessNode((TypeNode) $1); }
+   /* NEW : Java 1.1 : D.7.3 : type class access */
+ | PrimitiveType '.' CLASS
+   { $$ = new TypeClassAccessNode((TypeNode) $1); }
+ | Void '.' CLASS
+   { $$ = new TypeClassAccessNode((TypeNode) $1); }
+ | ArrayType '.' CLASS
+   { $$ = new TypeClassAccessNode((TypeNode) $1); }
 	;
 /* Note: The fifth production above is redundant, but helps resolve a  */
 /* LALR(1) lookahead conflict arising in cases like "(T) + x" (Do we reduce  */
@@ -1069,23 +1078,6 @@ SimpleName :
 	  IDENTIFIER
 	  	{ $$ = new NameNode(AbsentTreeNode.instance, $1); }
 	;
-
-/*
-QualifiedName :
-	  Name '.' IDENTIFIER
-		{ $$ = new NameNode((NameNode) $1, $3); }
-   | Name '.' CLASS
-       {
-         // We need to convert the ObjectNode into a TypeClassAccessNode later
-         $$ = new NameNode((NameNode) $1, "<class>");
-       }
-   | Name '.' THIS
-       {
-         // We need to convert the ObjectNode into a OuterClassAccessNode later
-         $$ = new NameNode((NameNode) $1, "<this>");
-       }
-	;
-*/
 
 QualifiedName :
 	  Name '.' IDENTIFIER
@@ -1105,7 +1097,7 @@ ArrayAccess :
 /* Section 9.6 */
 
 FieldAccess :
-     /* The following never matches Name '.' IDENTIFIER */
+    /* The following never matches Name '.' IDENTIFIER */
 	  PrimaryExpression '.' SimpleName
 		{ $$ = new ObjectFieldAccessNode((TreeNode) $1, (NameNode) $3); }
 	| SUPER '.' SimpleName
@@ -1120,7 +1112,7 @@ MethodCall :
    { $$ = new MethodCallNode((NameNode) $1, (LinkedList) $3); }
 	| FieldAccess '(' ArgumentListOpt ')'
 		{ $$ = new MethodCallNode((TreeNode) $1, (LinkedList) $3); }
-     /* Redundant production to handle Name '(' ... ')'. */
+   /* Redundant production to handle Name '(' ... ')'. */
 	| Name '.' IDENTIFIER '(' ArgumentListOpt ')'
 		{ $$ = new MethodCallNode(new NameNode((NameNode) $1, $3), (LinkedList) $5); }
 	;
@@ -1142,16 +1134,44 @@ ArgumentList :
 /* Section 9.8 */
 
 AllocationExpression :
-	  NEW ClassOrInterfaceType '(' ArgumentListOpt ')'
-		{ $$ = new AllocateNode((TypeNode) $2, (LinkedList) $4); }
-     /* NEW: Java 1.1 : D.2.1 Anonymous Classes */
-   | NEW ClassOrInterfaceType '(' ArgumentListOpt ')' ClassBody
-       { $$ = new AllocateAnonymousClassNode((TypeNode) $2,
-         (LinkedList) $4, (LinkedList) $6); }
-	| NEW ClassOrInterfaceType DimExprs DimsOpt
-		{ $$ = new AllocateArrayNode((TypeNode) $2, (LinkedList) $3, $4); }
-   | NEW PrimitiveType DimExprs DimsOpt
-		{ $$ = new AllocateArrayNode((TypeNode) $2, (LinkedList) $3, $4); }
+   NEW ClassOrInterfaceType '(' ArgumentListOpt ')'
+   { $$ = new AllocateNode((TypeNode) $2, (LinkedList) $4); }
+   /* NEW: Java 1.1 : D.2.1 Anonymous classes */
+ | NEW ClassOrInterfaceType '(' ArgumentListOpt ')' ClassBody
+   {
+     $$ = new AllocateAnonymousClassNode((TypeNode) $2,
+               (LinkedList) $4, (LinkedList) $6);
+   }
+ | NEW ClassOrInterfaceType DimExprs DimsOpt
+   {
+     $$ = new AllocateArrayNode((TypeNode) $2, (LinkedList) $3, $4,
+           AbsentTreeNode.instance);
+   }
+   /* NEW: Java 1.1 : D.2.1 Anonymous arrays */
+ | NEW ClassOrInterfaceType DimsOpt ArrayInitializer
+   {
+     $$ = new AllocateArrayNode((TypeNode) $2, new LinkedList(), $3,
+          (TreeNode) $4);
+   }
+ | NEW PrimitiveType DimExprs DimsOpt
+   {
+     $$ = new AllocateArrayNode((TypeNode) $2, (LinkedList) $3, $4,
+           AbsentTreeNode.instance);
+   }
+   /* NEW: Java 1.1 : D.2.1 Anonymous arrays */
+ | NEW PrimitiveType DimsOpt ArrayInitializer
+   {
+     $$ = new AllocateArrayNode((TypeNode) $2, new LinkedList(), $3,
+           (TreeNode) $4);
+   }
+ | PrimaryExpression '.' NEW ClassOrInterfaceType '(' ArgumentListOpt ')'
+   {
+     $$ = AbsentTreeNode.instance; // FIXME
+   }
+ | PrimaryExpression '.' NEW ClassOrInterfaceType '(' ArgumentListOpt ')' ClassBody
+   {
+     $$ = AbsentTreeNode.instance; // FIXME
+   }
 	;
 
 DimExprs :
@@ -1162,8 +1182,8 @@ DimExprs :
 	;
 
 DimExpr :
-	  '[' Expression ']'
-		{ $$ = $2; }
+	'[' Expression ']'
+	{ $$ = $2; }
 	;
 
 DimsOpt :

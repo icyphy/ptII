@@ -86,6 +86,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
 "void"	        { return parser.VOID; }
 "volatile"     { return parser.VOLATILE; }
 "while"        { return parser.WHILE; }
+"strictfp"     { return parser.STRICTFP; }
 
 "const"|"goto"	{ throw new RuntimeException("reserved keyword " +
                   yytext() + " ignored"); }

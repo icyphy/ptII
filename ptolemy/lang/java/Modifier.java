@@ -14,6 +14,7 @@ public class Modifier {
   public static final int TRANSIENT_MOD    = 0x80;
   public static final int VOLATILE_MOD     = 0x100;
   public static final int STATIC_MOD       = 0x200;
+  public static final int STRICTFP_MOD     = 0x400;
 
   public static final String toString(final int modifier) {
     StringBuffer modString = new StringBuffer();
@@ -50,51 +51,86 @@ public class Modifier {
     if ((modifier & STATIC_MOD) != 0)
        modString.append("static ");
 
+    if ((modifier & STRICTFP_MOD) != 0)
+       modString.append("strictfp ");
+
     return modString.toString();
   }
 
   public static final void checkClassModifiers(final int modifiers) {
     if ((modifiers &
         ~(PUBLIC_MOD | PROTECTED_MOD | PRIVATE_MOD | FINAL_MOD |
-          ABSTRACT_MOD)) != 0) {
-       throw new RuntimeException("Illegal class modifier");
+          ABSTRACT_MOD | STRICTFP_MOD)) != 0) {
+       throw new RuntimeException("Illegal class modifier: " +
+        toString(modifiers));       
     }
   }
+
+  public static final void checkInterfaceModifiers(final int modifiers) {
+    if ((modifiers &
+        ~(PUBLIC_MOD | PROTECTED_MOD | PRIVATE_MOD | FINAL_MOD |
+          ABSTRACT_MOD | STRICTFP_MOD)) != 0) {
+       throw new RuntimeException("Illegal interface modifier: " +
+        toString(modifiers));
+    }
+  }
+
 
   public static final void checkConstructorModifiers(final int modifiers) {
     if ((modifiers &
         ~(PUBLIC_MOD | PROTECTED_MOD | PRIVATE_MOD)) != 0) {
-       throw new RuntimeException("Illegal constructor modifier");
+       throw new RuntimeException("Illegal constructor modifier: " +
+        toString(modifiers));
+
     }
   }
 
   public static final void checkConstantFieldModifiers(final int modifiers) {
     if ((modifiers &
         ~(PUBLIC_MOD | STATIC_MOD | FINAL_MOD)) != 0) {
-       throw new RuntimeException("Illegal constant field modifier");
+       throw new RuntimeException("Illegal constant field modifier: " +
+        toString(modifiers));
     }
   }
 
-  public static final void checkFieldModifiers(int modifiers) {
+  public static final void checkFieldModifiers(final int modifiers) {
     if ((modifiers &
         ~(PUBLIC_MOD | PROTECTED_MOD | PRIVATE_MOD | STATIC_MOD |
           FINAL_MOD | TRANSIENT_MOD | VOLATILE_MOD)) != 0) {
-       throw new RuntimeException("Illegal field modifier");
+       throw new RuntimeException("Illegal field modifier : " +
+        toString(modifiers));
     }
   }
+
+  public static final void checkLocalVariableModifiers(final int modifiers) {
+    if ((modifiers & ~(FINAL_MOD)) != 0) {
+       throw new RuntimeException("Illegal local variable modifier : " +
+        toString(modifiers));
+    }
+  }
+
 
   public static final void checkMethodModifiers(final int modifiers) {
     if ((modifiers &
         ~(PUBLIC_MOD | PROTECTED_MOD | PRIVATE_MOD | STATIC_MOD | FINAL_MOD |
-          ABSTRACT_MOD | NATIVE_MOD | SYNCHRONIZED_MOD)) != 0) {
-       throw new RuntimeException("Illegal method modifier");
+          ABSTRACT_MOD | NATIVE_MOD | SYNCHRONIZED_MOD | STRICTFP_MOD)) != 0) {
+       throw new RuntimeException("Illegal method modifier: " +
+        toString(modifiers));
     }
   }
 
   public static final void checkMethodSignatureModifiers(final int modifiers) {
     if ((modifiers &
         ~(PUBLIC_MOD | ABSTRACT_MOD)) != 0) {
-       throw new RuntimeException("Illegal method signature modifier");
+       throw new RuntimeException("Illegal method signature modifier: " +
+        toString(modifiers));
+    }
+  }
+
+  public static final void checkParameterModifiers(final int modifiers) {
+    if ((modifiers & ~(FINAL_MOD)) != 0) {
+       throw new RuntimeException("Illegal parameter modifier : " +
+        toString(modifiers));
     }
   }
 }

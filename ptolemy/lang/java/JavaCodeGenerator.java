@@ -74,7 +74,7 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitCharLitNode(CharLitNode node, LinkedList args) {
-        return node.getLiteral();
+        return node.getLiteral(); // check this
     }
 
     public Object visitStringLitNode(StringLitNode node, LinkedList args) {
@@ -131,7 +131,8 @@ public class JavaCodeGenerator extends JavaVisitor {
     }
 
     public Object visitDeclaratorNode(DeclaratorNode node, LinkedList args) {
-        return _defaultVisit((TreeNode) node, args);
+        throw new RuntimeException("DeclaratorNode should not appear in the " +
+         "final parse tree.");
     }
 
     public Object visitPackageNode(PackageNode node, LinkedList args) {
@@ -145,7 +146,11 @@ public class JavaCodeGenerator extends JavaVisitor {
          "final parse tree.");
     }
 
-    public Object visitOuterClassAccess(OuterClassAccess node, LinkedList args) {
+    public Object visitOuterThisAccessNode(OuterThisAccessNode node, LinkedList args) {
+        return _defaultVisit(node, args);
+    }
+
+    public Object visitOuterSuperAccess(OuterSuperAccessNode node, LinkedList args) {
         return _defaultVisit(node, args);
     }
 
@@ -279,7 +284,6 @@ public class JavaCodeGenerator extends JavaVisitor {
         sb.append(node.getName().getIdent());
         sb.append(" = ");
         sb.append((String) node.childReturnValueAt(node.CHILD_INDEX_INITEXPR));
-        // sb.append(";\n");
 
         return sb.toString();
     }
