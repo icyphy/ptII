@@ -1,17 +1,28 @@
 package doc.tutorial;
-import ptolemy.domains.de.gui.DEApplet;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.actor.lib.Clock;
 import ptolemy.actor.lib.gui.TimedPlotter;
+import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 
-public class TutorialApplet extends DEApplet {
-    public void init() {
-        super.init();
-        try {
-            Clock clock = new Clock(_toplevel,"clock");
-            TimedPlotter plotter = new TimedPlotter(_toplevel,"plotter");
-            _toplevel.connect(clock.output, plotter.input);
-        } catch (Exception ex) {
-            report("Error constructing model.", ex);
-        }
+public class TutorialApplet2 extends PtolemyApplet {
+    public NamedObj _createModel(Workspace workspace) 
+	throws Exception {
+        TypedCompositeActor toplevel = new TypedCompositeActor(workspace);
+        _toplevel = toplevel;
+
+	// Create the director.
+	DEDirector director = new DEDirector(toplevel, "director");
+	director.stopTime.setExpression("10");
+
+	// Create two actors.
+	Clock clock = new Clock(toplevel,"clock");
+	TimedPlotter plotter = new TimedPlotter(toplevel,"plotter");
+
+	// Connect them.
+	toplevel.connect(clock.output, plotter.input);
+	return toplevel;
     }
 }
