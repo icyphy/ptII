@@ -62,7 +62,8 @@ JSIMPLE_TESTS = \
 	SDFDirector.tcl \
 	SDFIOPort.tcl \
 	SDFReceiver.tcl \
-	SDFScheduler.tcl
+	SDFScheduler.tcl \
+	SDFSchedulerErrors.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
@@ -73,6 +74,9 @@ JGRAPHICAL_TESTS = \
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
 		SinewaveTest.xml \
+		badRateChanges.xml \
+		badRateChanges2.xml \
+		rateConsistency.xml
 		#$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
