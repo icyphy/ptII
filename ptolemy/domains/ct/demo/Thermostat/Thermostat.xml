@@ -1,1 +1,382 @@
-"/cygdrive/c/jdk1.3/bin/java" -Djava.security.policy=c:\users\cxh\ptII/bin/policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -Djava.rmi.server.codebase=http://localhost:4444/ "-Dptolemy.ptII.dir=c:\users\cxh\ptII" -classpath "c:\users\cxh\ptII;c:\users\cxh\ptII/lib/diva.jar;c:\users\cxh\ptII/vendors/sun/jini/jini1_0_1/lib/jini-jspaces.jar;c:\users\cxh\ptII/vendors/sun/jini/jini1_0_1/lib/mahalo-dl.jar;c:\users\cxh\ptII/vendors/sun/commapi/comm.jar" ptolemy.actor.gui.CompositeActorApplication -class ptolemy.domains.ct.demo.Thermostat.Thermostat
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Thermostat" class="ptolemy.domains.ct.demo.Thermostat.Thermostat">
+    <property name="CTTopLevelDirector" class="ptolemy.domains.ct.kernel.CTMultiSolverDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
+        </property>
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+        </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.05">
+        </property>
+        <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
+        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+        </property>
+        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+        </property>
+    </property>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="plot" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Thermostat</title>
+<xRange min="0.0" max="5.0"/>
+<yRange min="-1.6653345369377348E-16" max="0.2"/>
+</plot>?>
+        </configure>
+    </entity>
+    <entity name="HS" class="ptolemy.domains.ct.kernel.CTCompositeActor">
+        <property name="HSDirector" class="ptolemy.domains.fsm.kernel.HSDirector">
+            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="Controller">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="state" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <entity name="Controller" class="ptolemy.domains.fsm.kernel.FSMActor">
+            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="Increasing">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="state" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <entity name="Increasing" class="ptolemy.domains.fsm.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Increasing">
+                </property>
+                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+            </entity>
+            <entity name="Decreasing" class="ptolemy.domains.fsm.kernel.State">
+                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute" value="Decreasing">
+                </property>
+                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+                </port>
+            </entity>
+            <relation name="ctrlTr1" class="ptolemy.domains.fsm.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="output_S">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="act0" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="state_V">
+                    </property>
+                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Integrator.initialState">
+                    </property>
+                </property>
+                <property name="act1" class="ptolemy.domains.fsm.kernel.ResetRefinement">
+                </property>
+            </relation>
+            <relation name="ctrlTr2" class="ptolemy.domains.fsm.kernel.Transition">
+                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="output_S">
+                </property>
+                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
+                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="act2" class="ptolemy.domains.fsm.kernel.SetRefinementVariable">
+                    <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="state_V">
+                    </property>
+                    <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="Integrator.initialState">
+                    </property>
+                </property>
+                <property name="act3" class="ptolemy.domains.fsm.kernel.ResetRefinement">
+                </property>
+            </relation>
+            <link port="Increasing.incomingPort" relation="ctrlTr2"/>
+            <link port="Increasing.outgoingPort" relation="ctrlTr1"/>
+            <link port="Decreasing.incomingPort" relation="ctrlTr1"/>
+            <link port="Decreasing.outgoingPort" relation="ctrlTr2"/>
+        </entity>
+        <entity name="Increasing" class="ptolemy.domains.ct.kernel.CTCompositeActor">
+            <property name="CTIncDir" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+                <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
+                </property>
+                <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.05">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                </property>
+                <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+                </property>
+                <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                </property>
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="state" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trig" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <entity name="Hold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="-1.665334537E-16">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="ZD" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <entity name="EXPRESSION" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.data.expr.Parameter" value="in - 0.2">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="in" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="R2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="CTIncR1" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="input" relation="_R0"/>
+            <link port="output" relation="_R2"/>
+            <link port="state" relation="CTIncR1"/>
+            <link port="trig" relation="R2"/>
+            <link port="Hold.input" relation="_R0"/>
+            <link port="Hold.output" relation="_R1"/>
+            <link port="Integrator.input" relation="_R1"/>
+            <link port="Integrator.output" relation="CTIncR1"/>
+            <link port="ZD.input" relation="CTIncR1"/>
+            <link port="ZD.output" relation="_R2"/>
+            <link port="ZD.trigger" relation="R2"/>
+            <link port="EXPRESSION.output" relation="R2"/>
+            <link port="EXPRESSION.in" relation="CTIncR1"/>
+        </entity>
+        <entity name="Decreasing" class="ptolemy.domains.ct.kernel.CTCompositeActor">
+            <property name="CTDecDir" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+                <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
+                </property>
+                <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.01">
+                </property>
+                <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-3">
+                </property>
+                <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="0.05">
+                </property>
+                <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+                </property>
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                </property>
+                <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+                </property>
+                <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+                </property>
+                <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+                </property>
+                <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                </property>
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="state" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trig" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <entity name="Hold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
+                <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.2">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="Gain" class="ptolemy.actor.lib.Scale">
+                <property name="factor" class="ptolemy.data.expr.Parameter" value="-1.0">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+            </entity>
+            <entity name="ZD" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
+                <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+                </property>
+                <port name="input" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <entity name="EXPRESSION" class="ptolemy.actor.lib.Expression">
+                <property name="expression" class="ptolemy.data.expr.Parameter" value="in + 0.0">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="in" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                </port>
+            </entity>
+            <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="R2" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="_R3" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="CTDecR1" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="input" relation="_R0"/>
+            <link port="output" relation="_R3"/>
+            <link port="state" relation="CTDecR1"/>
+            <link port="trig" relation="R2"/>
+            <link port="Hold.input" relation="_R0"/>
+            <link port="Hold.output" relation="_R1"/>
+            <link port="Integrator.input" relation="_R2"/>
+            <link port="Integrator.output" relation="CTDecR1"/>
+            <link port="Gain.input" relation="_R1"/>
+            <link port="Gain.output" relation="_R2"/>
+            <link port="ZD.input" relation="CTDecR1"/>
+            <link port="ZD.output" relation="_R3"/>
+            <link port="ZD.trigger" relation="R2"/>
+            <link port="EXPRESSION.output" relation="R2"/>
+            <link port="EXPRESSION.in" relation="CTDecR1"/>
+        </entity>
+        <relation name="HSr1" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="HSr2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="HSr3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="HSr4" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="input" relation="HSr1"/>
+        <link port="state" relation="HSr3"/>
+        <link port="Controller.output" relation="HSr2"/>
+        <link port="Controller.state" relation="HSr3"/>
+        <link port="Increasing.input" relation="HSr1"/>
+        <link port="Increasing.output" relation="HSr2"/>
+        <link port="Increasing.state" relation="HSr3"/>
+        <link port="Increasing.trig" relation="HSr4"/>
+        <link port="Decreasing.input" relation="HSr1"/>
+        <link port="Decreasing.output" relation="HSr2"/>
+        <link port="Decreasing.state" relation="HSr3"/>
+        <link port="Decreasing.trig" relation="HSr4"/>
+    </entity>
+    <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Const.output" relation="_R0"/>
+    <link port="plot.input" relation="_R1"/>
+    <link port="HS.input" relation="_R0"/>
+    <link port="HS.state" relation="_R1"/>
+</entity>
+
