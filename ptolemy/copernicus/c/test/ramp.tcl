@@ -96,7 +96,12 @@ test ramp-1.1 {Generate .c, .i.h, and .h files for ramp.xml} {
     } else {
 	# The double quotes above cause problems under Solaris, and the
 	# > and 2> cause problems when code coverage is run for some reason
-	exec java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier
+
+	# -stderrok means that if make generates output on stderr, then
+	# exec will _not_ report this as an error. 
+	# -stderrok was introduced in $PTII/lib/ptjacl.jar on 8/14/02
+
+	exec -stderrok java -classpath $classpath ptolemy.copernicus.c.Main $modelFile -d $dummyDirectory $debugFlag -p $phaseName $outputDirectorySpecifier
     }
 
     # Make sure all the output files were created.
