@@ -181,8 +181,8 @@ proc Audio_CreateAUFile {name offset size format sampleRate numChannels} {
 ####
 #
 test Audio-2.5 {Audio(DataInputStream): .snd header, bogus offset} {
-    Audio_CreateAUFile tmp2.au 99999 1000 1 8000 1
-    set fis [java::new {java.io.FileInputStream String} "tmp2.au"]
+    Audio_CreateAUFile tmp2_5.au 99999 1000 1 8000 1
+    set fis [java::new {java.io.FileInputStream String} "tmp2_5.au"]
     set dis [java::new java.io.DataInputStream $fis]
     catch {set audio [java::new {ptolemy.media.Audio java.io.DataInputStream} $dis]} errMsg
     list $errMsg
@@ -205,8 +205,8 @@ test Audio-2.6 {Audio(DataInputStream): .snd header, bogus format} {
 ####
 #
 test Audio-2.7 {Audio(DataInputStream): .snd header, bogus channels} {
-    Audio_CreateAUFile tmp2.au 99 1000 1 8000 2
-    set fis [java::new {java.io.FileInputStream String} "tmp2.au"]
+    Audio_CreateAUFile tmp2_7.au 99 1000 1 8000 2
+    set fis [java::new {java.io.FileInputStream String} "tmp2_7.au"]
     set dis [java::new java.io.DataInputStream $fis]
     catch {set audio [java::new {ptolemy.media.Audio java.io.DataInputStream} $dis]} errMsg
     list $errMsg
@@ -301,4 +301,7 @@ sampleRate = 8000
 number of channels = 1
 info field = Ptolemy audio}}
 
-file delete -force tmp.au tmp.raw array.au tmp2.au
+sleep 2
+if [catch {file delete -force tmp.au tmp.raw array.au tmp2.au tmp2_5.au} msg] {
+    puts "deleteing files failed: $msg"
+}
