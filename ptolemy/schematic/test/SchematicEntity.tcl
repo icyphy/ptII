@@ -327,3 +327,70 @@ test SchematicEntity-11.2 {getEntityType tests} {
 </entity>
 } {<entitytype name="testentitytype"></entitytype>
 }}
+
+######################################################################
+####
+#
+test SchematicEntity-12.1 {addPort tests} {
+    set e0 [java::new ptolemy.schematic.SchematicEntity]
+    set g0 [java::new ptolemy.schematic.SchematicPort]
+    $g0 setName testport
+    $e0 addPort $g0
+    $e0 toString
+} {<entity name="">
+<entitytype name=""></entitytype>
+<port multiport="false" name="testport" input="false" type="undeclared" output="false"></port>
+</entity>
+}
+
+######################################################################
+####
+#
+test SchematicEntity-12.2 {containsPort tests} {
+    # Uses setup from above
+    list [$e0 containsPort testport] [$e0 containsPort failtest]
+} {1 0}
+
+######################################################################
+####
+#
+test SchematicEntity-12.3 {getPort tests} {
+    # Uses setup from above
+    set g1 [$e0 getPort testport]
+    list [$e0 toString] [$g1 toString]
+} {{<entity name="">
+<entitytype name=""></entitytype>
+<port multiport="false" name="testport" input="false" type="undeclared" output="false"></port>
+</entity>
+} {<port multiport="false" name="testport" input="false" type="undeclared" output="false"></port>
+}}
+
+
+######################################################################
+####
+#
+test SchematicEntity-12.4 {ports tests} {
+    # Uses setup from above
+    set genum [$e0 ports]
+    set s [$genum nextElement]
+    list [$s toString] [$genum hasMoreElements]
+} {{<port multiport="false" name="testport" input="false" type="undeclared" output="false"></port>
+} 0}
+   
+######################################################################
+####
+#
+test SchematicEntity-12.5 {removePort tests} {
+    # Uses setup from above
+    set s [$e0 toString]
+    $e0 removePort testport
+    set genum [$e0 ports]
+    list $s [$e0 toString] [$genum hasMoreElements]
+} {{<entity name="">
+<entitytype name=""></entitytype>
+<port multiport="false" name="testport" input="false" type="undeclared" output="false"></port>
+</entity>
+} {<entity name="">
+<entitytype name=""></entitytype>
+</entity>
+} 0}
