@@ -36,6 +36,7 @@ import java.util.LinkedList;
 import java.util.Map;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;

@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.Token;

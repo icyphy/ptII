@@ -38,6 +38,7 @@ import java.util.Map;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Expression;
+import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.kernel.Entity;

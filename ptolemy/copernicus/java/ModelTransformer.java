@@ -47,6 +47,7 @@ import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.actor.lib.Expression;
+import ptolemy.actor.util.ConstVariableModelAnalysis;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.copernicus.gui.GeneratorTableauAttribute;
 import ptolemy.copernicus.kernel.EntitySootClass;
