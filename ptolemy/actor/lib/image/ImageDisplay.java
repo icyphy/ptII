@@ -257,6 +257,12 @@ public class ImageDisplay extends Sink implements Placeable {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** A specification of the size of the pane if it's in its own window. */
+    protected SizeAttribute _paneSize;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The container for the image display. */
@@ -270,9 +276,6 @@ public class ImageDisplay extends Sink implements Placeable {
 
     /** The vertical size of the previous image. */
     private int _oldysize;
-
-    /** A specification of the size of the pane if it's in its own window. */
-    protected SizeAttribute _paneSize;
 
     // FIXME: Probably don't want to use Picture here.
     /** A panel that displays the image. */
