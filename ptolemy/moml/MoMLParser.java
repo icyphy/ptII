@@ -34,9 +34,11 @@ package ptolemy.moml;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.actor.gui.Placeable;
 import ptolemy.data.expr.Variable;
 
 // Java imports.
+import java.awt.Panel;
 import java.util.Map;
 import java.util.List;
 import java.util.LinkedList;
@@ -78,12 +80,26 @@ public class MoMLParser extends HandlerBase {
         this(null);
     }
 
-    /** Construct a parser that places the entities created by the parse()
-     *  method into the specified workspace.  If the argument is null,
+    /** Construct a parser that creates entities
+     *  in the specified workspace.  If the argument is null,
      *  create a new workspace with an empty name.
      *  @param workspace The workspace into which to place entities.
      */
     public MoMLParser(Workspace workspace) {
+        this(workspace, null);
+    }
+
+    /** Construct a parser that creates entities
+     *  in the specified workspace, and if any of these entities implements
+     *  the Placeable interface, then places the entity in the specified
+     *  panel.  If the workspace argument is null, then
+     *  create a new workspace with an empty name.
+     *  If the panel argument is null, then entities implenting Placeable
+     *  are not placed.
+     *  @param workspace The workspace into which to place entities.
+     *  @param panel The panel into which to place Placeable entities.
+     */
+    public MoMLParser(Workspace workspace, Panel panel) {
         super();
         if (workspace == null) {
             // NOTE: Workspace has no name, to ensure that full names
@@ -92,6 +108,7 @@ public class MoMLParser extends HandlerBase {
             workspace = new Workspace();
         }
         _workspace = workspace;
+        _panel = panel;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -406,6 +423,9 @@ public class MoMLParser extends HandlerBase {
                         + "is not a TypedCompositeActor. It is: "
                         + _current.toString());
                 Object newEntity = _createEntity(className, entityName);
+                if (_panel != null && newEntity instanceof Placeable) {
+                    ((Placeable)newEntity).setPanel(_panel);
+                }
                 _containers.push(_current);
                 _current = newEntity;
 
@@ -794,6 +814,9 @@ public class MoMLParser extends HandlerBase {
 
     // The manager for this model.
     private Manager _manager;
+
+    // The panel into which to place Placeable entities.
+    private Panel _panel;
 
     // The parser.
     private XmlParser _parser = new XmlParser();

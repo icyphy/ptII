@@ -32,12 +32,15 @@ package ptolemy.moml;
 
 import java.net.URL;
 import java.awt.Color;
+import java.util.Enumeration;
 
 import com.microstar.xml.XmlException;
 
 import ptolemy.moml.*;
 import ptolemy.gui.*;
+import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.gui.PtolemyApplet;
+import ptolemy.kernel.ComponentEntity;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLApplet
@@ -59,6 +62,10 @@ If the value is greater than zero, then a "Go" button
 created.  If the value is greater than one, then a "Stop" button
 is also created.
 </ul>
+Any entity that is created in parsing the MoML file that implements
+the Placeable interface is placed in the applet.  Thus, entities
+with visual displays automatically have their visual displays
+appearing in the applet.
 
 @author  Edward A. Lee
 @version $Id$
@@ -134,7 +141,8 @@ public class MoMLApplet extends PtolemyApplet {
                 throw new Exception(
                         "MoML applet does not not specify a model parameter!");
             }
-            MoMLParser parser = new MoMLParser();
+            // Specify that all Placeable entities be placed in the applet.
+            MoMLParser parser = new MoMLParser(null, this);
             URL docBase = getDocumentBase();
             URL xmlFile = new URL(docBase, modelURL);
             _toplevel = parser.parse(docBase, xmlFile.openStream());

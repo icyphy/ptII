@@ -27,6 +27,7 @@
       <?xml version="1.0" standalone="no"?>
       <!DOCTYPE model SYSTEM "../../plot/plotml/plotml.dtd">
       <plot>
+        <size width="450" height="300"/>
         <title>Modulated Waveform Example</title>
       </plot>
     ]]></configure>
