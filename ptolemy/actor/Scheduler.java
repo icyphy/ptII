@@ -88,7 +88,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  @param name Name of this scheduler.
      */
     public Scheduler(Workspace ws) {
-        super(ws, _staticname);
+        super(ws, _DEFAULT_SCHEDULER_NAME);
     }
 
     ///////////////////////////////////////////////////////////////////
