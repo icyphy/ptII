@@ -40,10 +40,14 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-JSRCS = 
+JSRCS = OrthogonalCom.java
+
+OTHER_FILES_TO_BE_JARED = \
+	OrthogonalCom.xml
 
 EXTRA_SRCS = \
-	$(JSRCS)
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
