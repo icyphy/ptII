@@ -47,7 +47,7 @@ public class Mailbox extends AbstractReceiver {
     /** Construct an empty Mailbox with no container.
      */
     public Mailbox() {
-	super();
+        super();
     }
 
     /** Construct an empty Mailbox with the specified container.
@@ -56,7 +56,7 @@ public class Mailbox extends AbstractReceiver {
      *   not accept this receiver.
      */
     public Mailbox(IOPort container) throws IllegalActionException {
-	super(container);
+        super(container);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -92,12 +92,12 @@ public class Mailbox extends AbstractReceiver {
      *   explicitly.
      */
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
-	if (numberOfTokens < 1) {
-	    throw new IllegalArgumentException(
+        if (numberOfTokens < 1) {
+            throw new IllegalArgumentException(
                     "hasRoom() requires a positive argument.");
         }
-	if (numberOfTokens == 1) return (_token == null);
-	return false;
+        if (numberOfTokens == 1) return (_token == null);
+        return false;
     }
 
     /** Return true if this mailbox is not empty.
@@ -117,11 +117,11 @@ public class Mailbox extends AbstractReceiver {
      */
     public boolean hasToken(int numberOfTokens)
             throws IllegalArgumentException {
-	if (numberOfTokens < 1)
-	    throw new IllegalArgumentException(
+        if (numberOfTokens < 1)
+            throw new IllegalArgumentException(
                     "hasToken() requires a positive argument.");
-	if (numberOfTokens == 1) return (_token != null);
-	return false;
+        if (numberOfTokens == 1) return (_token != null);
+        return false;
     }
 
     /** Put a token into the mailbox.  If the argument is null, then the

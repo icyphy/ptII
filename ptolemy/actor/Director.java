@@ -296,14 +296,14 @@ public class Director extends Attribute implements Executable {
     public void initialize() throws IllegalActionException {
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
-	    Nameable containersContainer = container.getContainer();
-	    if (containersContainer instanceof CompositeActor) {
-		double time = ((CompositeActor)containersContainer)
+            Nameable containersContainer = container.getContainer();
+            if (containersContainer instanceof CompositeActor) {
+                double time = ((CompositeActor)containersContainer)
                     .getDirector().getCurrentTime();
                 _currentTime = time;
-	    } else {
+            } else {
                 _currentTime = 0.0;
-	    }
+            }
             Iterator actors = ((CompositeActor)container)
                 .deepEntityList().iterator();
             while (actors.hasNext() && !_stopRequested) {
@@ -383,15 +383,15 @@ public class Director extends Attribute implements Executable {
      *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
     public int iterate(int count) throws IllegalActionException {
-	int n = 0;
-	while (n++ < count && !_stopRequested) {
-	    if (prefire()) {
-		fire();
-		if (!postfire()) return Executable.STOP_ITERATING;
-	    } else {
+        int n = 0;
+        while (n++ < count && !_stopRequested) {
+            if (prefire()) {
+                fire();
+                if (!postfire()) return Executable.STOP_ITERATING;
+            } else {
                 return Executable.NOT_READY;
-	    }
-	}
+            }
+        }
         if (_stopRequested) {
             return Executable.STOP_ITERATING;
         } else {
@@ -873,7 +873,7 @@ public class Director extends Attribute implements Executable {
 
     // Add an XML graphic as a hint to UIs for rendering the director.
     private void _addIcon() {
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-50\" y=\"-15\" "
                 + "width=\"100\" height=\"30\" "
                 + "style=\"fill:green\"/>\n" +

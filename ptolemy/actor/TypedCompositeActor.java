@@ -119,7 +119,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @param workspace The workspace that will list the actor.
      */
     public TypedCompositeActor(Workspace workspace) {
-	super(workspace);
+        super(workspace);
         // By default, when exporting MoML, the class name is whatever
         // the Java class is, which in this case is TypedCompositeActor.
         // In derived classes, however, we usually do not want to identify
@@ -222,79 +222,79 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      */
     public static void resolveTypes(TypedCompositeActor topLevel)
             throws TypeConflictException {
-	if (topLevel.getContainer() != null) {
-	    throw new IllegalArgumentException(
+        if (topLevel.getContainer() != null) {
+            throw new IllegalArgumentException(
                     "TypedCompositeActor.resolveTypes: The specified actor is "
                     + "not the top level container.");
-	}
+        }
 
         try {
             List conflicts = new LinkedList();
 
-	    // Check declared types across all connections.
+            // Check declared types across all connections.
             List typeConflicts = topLevel._checkDeclaredTypes();
             conflicts.addAll(typeConflicts);
 
-	    // Collect and solve type constraints.
+            // Collect and solve type constraints.
             List constraintList = topLevel.typeConstraintList();
-	    if (constraintList.size() > 0) {
+            if (constraintList.size() > 0) {
                 InequalitySolver solver = new InequalitySolver(
                         TypeLattice.lattice());
-       	        Iterator constraints = constraintList.iterator();
-		solver.addInequalities(constraints);
+                       Iterator constraints = constraintList.iterator();
+                solver.addInequalities(constraints);
 
                 // Find the least solution (most specific types)
                 boolean resolved = solver.solveLeast();
 
-	        // If some inequalities are not satisfied, or type variables
-	        // are resolved to unacceptable types, such as
-	        // BaseType.UNKNOWN, add the inequalities to the list of type
-	        // conflicts.
-	        Iterator inequalities = constraintList.iterator();
-	        while (inequalities.hasNext()) {
-	            Inequality inequality = (Inequality)inequalities.next();
-	            if ( !inequality.isSatisfied(TypeLattice.lattice())) {
-	                conflicts.add(inequality);
-		    } else {
-		        // Check if type variables are resolved to unacceptable
-		        //types
-		        InequalityTerm[] lesserVariables =
+                // If some inequalities are not satisfied, or type variables
+                // are resolved to unacceptable types, such as
+                // BaseType.UNKNOWN, add the inequalities to the list of type
+                // conflicts.
+                Iterator inequalities = constraintList.iterator();
+                while (inequalities.hasNext()) {
+                    Inequality inequality = (Inequality)inequalities.next();
+                    if ( !inequality.isSatisfied(TypeLattice.lattice())) {
+                        conflicts.add(inequality);
+                    } else {
+                        // Check if type variables are resolved to unacceptable
+                        //types
+                        InequalityTerm[] lesserVariables =
                             inequality.getLesserTerm().getVariables();
-		        InequalityTerm[] greaterVariables =
+                        InequalityTerm[] greaterVariables =
                             inequality.getGreaterTerm().getVariables();
-		        boolean added = false;
-		        for (int i = 0; i < lesserVariables.length; i++) {
-		            InequalityTerm variable = lesserVariables[i];
-		            if ( !variable.isValueAcceptable()) {
-		                conflicts.add(inequality);
-		                added = true;
-			        break;
-			    }
-		        }
-		        if (added == false) {
-		            for (int i = 0; i < greaterVariables.length; i++) {
-		                InequalityTerm variable = greaterVariables[i];
-			        if ( !variable.isValueAcceptable()) {
-		                    conflicts.add(inequality);
-			            break;
-			        }
-			    }
-		        }
-	            }
-	        }
+                        boolean added = false;
+                        for (int i = 0; i < lesserVariables.length; i++) {
+                            InequalityTerm variable = lesserVariables[i];
+                            if ( !variable.isValueAcceptable()) {
+                                conflicts.add(inequality);
+                                added = true;
+                                break;
+                            }
+                        }
+                        if (added == false) {
+                            for (int i = 0; i < greaterVariables.length; i++) {
+                                InequalityTerm variable = greaterVariables[i];
+                                if ( !variable.isValueAcceptable()) {
+                                    conflicts.add(inequality);
+                                    break;
+                                }
+                            }
+                        }
+                    }
+                }
             }
 
-   	    if (conflicts.size() > 0) {
-	        throw new TypeConflictException(conflicts,
+               if (conflicts.size() > 0) {
+                throw new TypeConflictException(conflicts,
                         "Type conflicts occurred in " + topLevel.getFullName()
                         + " on the following inequalities:");
-	    }
+            }
         } catch (IllegalActionException ex) {
-	    // This should not happen. The exception means that
-	    // _checkDeclaredType or typeConstraintList is called on a
-	    // transparent actor.
-	    throw new InternalErrorException(topLevel, ex, null);
-	}
+            // This should not happen. The exception means that
+            // _checkDeclaredType or typeConstraintList is called on a
+            // transparent actor.
+            throw new InternalErrorException(topLevel, ex, null);
+        }
     }
 
     /** Return the type constraints of this typed composite actor, if it
@@ -322,37 +322,37 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
      *  @see ptolemy.graph.Inequality
      */
     public List typeConstraintList() throws IllegalActionException {
-	try {
-	    workspace().getReadAccess();
+        try {
+            workspace().getReadAccess();
 
-	    if (!isOpaque()) {
+            if (!isOpaque()) {
                 throw new IllegalActionException(this,
                         "Cannot check types on a non-opaque actor.");
             }
 
-	    List result = new LinkedList();
-	    Iterator entities = deepEntityList().iterator();
-	    while (entities.hasNext()) {
-	        // Collect type constraints from contained actors.
-	        TypedActor actor = (TypedActor)entities.next();
-	        result.addAll(actor.typeConstraintList());
+            List result = new LinkedList();
+            Iterator entities = deepEntityList().iterator();
+            while (entities.hasNext()) {
+                // Collect type constraints from contained actors.
+                TypedActor actor = (TypedActor)entities.next();
+                result.addAll(actor.typeConstraintList());
 
-	        // Collect constraints on all the ports in the contained
-		// actor to the ports that the actor can send data to.
-		Iterator ports = ((Entity)actor).portList().iterator();
-		while (ports.hasNext()) {
-		    TypedIOPort sourcePort = (TypedIOPort)ports.next();
+                // Collect constraints on all the ports in the contained
+                // actor to the ports that the actor can send data to.
+                Iterator ports = ((Entity)actor).portList().iterator();
+                while (ports.hasNext()) {
+                    TypedIOPort sourcePort = (TypedIOPort)ports.next();
                     Receiver[][] receivers = sourcePort.getRemoteReceivers();
 
                     List destinationPorts = _receiverToPort(receivers);
                     result.addAll(_typeConstraintsFromTo(sourcePort,
                             destinationPorts));
-		}
+                }
             }
 
-	    // Also need to check connection from the input ports on
+            // Also need to check connection from the input ports on
             // this composite actor to input ports of contained actors.
-	    Iterator boundaryPorts = portList().iterator();
+            Iterator boundaryPorts = portList().iterator();
             while (boundaryPorts.hasNext()) {
                 TypedIOPort sourcePort = (TypedIOPort)boundaryPorts.next();
                 Receiver[][] receivers = sourcePort.deepGetReceivers();
@@ -361,23 +361,23 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                         destinationPorts));
             }
 
-	    // Collect constraints from contained Typeables
-	    Iterator ports = portList().iterator();
-	    while (ports.hasNext()) {
-		Typeable port = (Typeable)ports.next();
-		result.addAll(port.typeConstraintList());
-	    }
+            // Collect constraints from contained Typeables
+            Iterator ports = portList().iterator();
+            while (ports.hasNext()) {
+                Typeable port = (Typeable)ports.next();
+                result.addAll(port.typeConstraintList());
+            }
 
-	    Iterator typeables = attributeList(Typeable.class).iterator();
-	    while (typeables.hasNext()) {
-		Typeable typeable = (Typeable)typeables.next();
-		result.addAll(typeable.typeConstraintList());
-	    }
+            Iterator typeables = attributeList(Typeable.class).iterator();
+            while (typeables.hasNext()) {
+                Typeable typeable = (Typeable)typeables.next();
+                result.addAll(typeable.typeConstraintList());
+            }
 
-	    return result;
-	} finally {
-	    workspace().doneReading();
-	}
+            return result;
+        } finally {
+            workspace().doneReading();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -402,7 +402,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         if (!(entity instanceof TypedActor)) {
             throw new IllegalActionException(this, entity,
                     "TypedCompositeActor can only contain entities that " +
-		    "implement the TypedActor interface.");
+                    "implement the TypedActor interface.");
         }
         super._addEntity(entity);
     }
@@ -452,7 +452,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         if (!(relation instanceof TypedIORelation)) {
             throw new IllegalActionException(this, relation,
                     "TypedCompositeActor can only contain instances of " +
-		    "TypedIORelation.");
+                    "TypedIORelation.");
         }
         super._addRelation(relation);
     }
@@ -487,40 +487,40 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                     "Cannot check types on a non-opaque actor.");
         }
 
-	List result = new LinkedList();
+        List result = new LinkedList();
 
-	Iterator entities = deepEntityList().iterator();
-	while (entities.hasNext()) {
-	    // Check types on contained actors.
-	    TypedActor actor = (TypedActor)entities.next();
-	    if (actor instanceof TypedCompositeActor) {
-	        result.addAll(
-		        ((TypedCompositeActor)actor)._checkDeclaredTypes());
-	    }
+        Iterator entities = deepEntityList().iterator();
+        while (entities.hasNext()) {
+            // Check types on contained actors.
+            TypedActor actor = (TypedActor)entities.next();
+            if (actor instanceof TypedCompositeActor) {
+                result.addAll(
+                        ((TypedCompositeActor)actor)._checkDeclaredTypes());
+            }
 
-	    // Type check from all the ports on the contained actor.
-	    // to the ports that the actor can send data to.
-	    Iterator ports = ((Entity)actor).portList().iterator();
-	    while (ports.hasNext()) {
-	        TypedIOPort sourcePort = (TypedIOPort)ports.next();
-		Receiver[][] receivers = sourcePort.getRemoteReceivers();
+            // Type check from all the ports on the contained actor.
+            // to the ports that the actor can send data to.
+            Iterator ports = ((Entity)actor).portList().iterator();
+            while (ports.hasNext()) {
+                TypedIOPort sourcePort = (TypedIOPort)ports.next();
+                Receiver[][] receivers = sourcePort.getRemoteReceivers();
 
-		List destinationPorts = _receiverToPort(receivers);
-		result.addAll(_checkTypesFromTo(sourcePort, destinationPorts));
-	    }
-	}
+                List destinationPorts = _receiverToPort(receivers);
+                result.addAll(_checkTypesFromTo(sourcePort, destinationPorts));
+            }
+        }
 
-	// Also need to check connection from the input ports on
-	// this composite actor to input ports of contained actors.
-	Iterator boundaryPorts = portList().iterator();
-	while (boundaryPorts.hasNext()) {
-	    TypedIOPort sourcePort = (TypedIOPort)boundaryPorts.next();
-	    Receiver[][] receivers = sourcePort.deepGetReceivers();
-	    List destinationPorts = _receiverToPort(receivers);
-	    result.addAll(_checkTypesFromTo(sourcePort, destinationPorts));
-	}
+        // Also need to check connection from the input ports on
+        // this composite actor to input ports of contained actors.
+        Iterator boundaryPorts = portList().iterator();
+        while (boundaryPorts.hasNext()) {
+            TypedIOPort sourcePort = (TypedIOPort)boundaryPorts.next();
+            Receiver[][] receivers = sourcePort.deepGetReceivers();
+            List destinationPorts = _receiverToPort(receivers);
+            result.addAll(_checkTypesFromTo(sourcePort, destinationPorts));
+        }
 
-	return result;
+        return result;
     }
 
     // Check types from a source port to a group of destination ports,
@@ -529,48 +529,48 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // Inequality that have type conflicts.
     private List _checkTypesFromTo(TypedIOPort sourcePort,
             List destinationPortList) {
-	List result = new LinkedList();
+        List result = new LinkedList();
 
-	boolean isUndeclared = sourcePort.getTypeTerm().isSettable();
-	if (!isUndeclared) {
-	    // sourcePort has a declared type.
-	    Type srcDeclared = sourcePort.getType();
-	    Iterator destinationPorts = destinationPortList.iterator();
-	    while (destinationPorts.hasNext()) {
-            	TypedIOPort destinationPort =
+        boolean isUndeclared = sourcePort.getTypeTerm().isSettable();
+        if (!isUndeclared) {
+            // sourcePort has a declared type.
+            Type srcDeclared = sourcePort.getType();
+            Iterator destinationPorts = destinationPortList.iterator();
+            while (destinationPorts.hasNext()) {
+                    TypedIOPort destinationPort =
                     (TypedIOPort)destinationPorts.next();
-		isUndeclared = destinationPort.getTypeTerm().isSettable();
+                isUndeclared = destinationPort.getTypeTerm().isSettable();
 
-	    	if (!isUndeclared) {
-	    	    // both source/destination ports are declared, check type
-	    	    Type destDeclared = destinationPort.getType();
-		    int compare = TypeLattice.compare(srcDeclared,
+                    if (!isUndeclared) {
+                        // both source/destination ports are declared, check type
+                        Type destDeclared = destinationPort.getType();
+                    int compare = TypeLattice.compare(srcDeclared,
                             destDeclared);
-		    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
-		        Inequality inequality = new Inequality(
+                    if (compare == CPO.HIGHER || compare == CPO.INCOMPARABLE) {
+                        Inequality inequality = new Inequality(
                                 sourcePort.getTypeTerm(),
                                 destinationPort.getTypeTerm());
-		    	result.add(inequality);
-	    	    }
-		}
-	    }
+                            result.add(inequality);
+                        }
+                }
+            }
         }
-	return result;
+        return result;
     }
 
     // Return all the ports containing the specified receivers.
     private List _receiverToPort(Receiver[][] receivers) {
-	List result = new LinkedList();
-	if (receivers != null) {
-	    for (int i = 0; i < receivers.length; i++) {
-		if (receivers[i] != null) {
-		    for (int j = 0; j < receivers[i].length; j++) {
-			result.add(receivers[i][j].getContainer());
-		    }
-		}
-	    }
-	}
-	return result;
+        List result = new LinkedList();
+        if (receivers != null) {
+            for (int i = 0; i < receivers.length; i++) {
+                if (receivers[i] != null) {
+                    for (int j = 0; j < receivers[i].length; j++) {
+                        result.add(receivers[i][j].getContainer());
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     // Return the type constraints on all connections starting from the
@@ -578,23 +578,23 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // ports.
     private List _typeConstraintsFromTo(TypedIOPort sourcePort,
             List destinationPortList) {
-	List result = new LinkedList();
+        List result = new LinkedList();
 
-	boolean srcUndeclared = sourcePort.getTypeTerm().isSettable();
-	Iterator destinationPorts = destinationPortList.iterator();
-	while (destinationPorts.hasNext()) {
+        boolean srcUndeclared = sourcePort.getTypeTerm().isSettable();
+        Iterator destinationPorts = destinationPortList.iterator();
+        while (destinationPorts.hasNext()) {
             TypedIOPort destinationPort = (TypedIOPort)destinationPorts.next();
-	    boolean destUndeclared = destinationPort.getTypeTerm().isSettable();
+            boolean destUndeclared = destinationPort.getTypeTerm().isSettable();
 
-	    if (srcUndeclared || destUndeclared) {
-	    	// At least one of the source/destination ports does not have
-		// declared type, form type constraint.
-		Inequality ineq = new Inequality(sourcePort.getTypeTerm(),
+            if (srcUndeclared || destUndeclared) {
+                    // At least one of the source/destination ports does not have
+                // declared type, form type constraint.
+                Inequality ineq = new Inequality(sourcePort.getTypeTerm(),
                         destinationPort.getTypeTerm());
-		result.add(ineq);
-	    }
-	}
+                result.add(ineq);
+            }
+        }
 
-	return result;
+        return result;
     }
 }

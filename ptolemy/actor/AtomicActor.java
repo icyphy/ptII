@@ -70,7 +70,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  The object is added to the workspace directory.
      */
     public AtomicActor() {
-	super();
+        super();
     }
 
     /** Construct an actor in the specified workspace with an empty
@@ -81,7 +81,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @param workspace The workspace that will list this actor.
      */
     public AtomicActor(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Create a new actor in the specified container with the specified
@@ -120,7 +120,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
         AtomicActor newObject = (AtomicActor)super.clone(workspace);
-	// Reset to force reinitialization of cache.
+        // Reset to force reinitialization of cache.
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
         return newObject;
@@ -179,16 +179,16 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @return The manager.
      */
     public Manager getManager() {
-	try {
-	    _workspace.getReadAccess();
+        try {
+            _workspace.getReadAccess();
             Nameable container = getContainer();
             if (container instanceof Actor) {
-		return ((Actor)container).getManager();
-	    }
-	    return null;
-	} finally {
-	    _workspace.doneReading();
-	}
+                return ((Actor)container).getManager();
+            }
+            return null;
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Initialize this actor.  Derived classes override this method
@@ -248,15 +248,15 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
     public int iterate(int count) throws IllegalActionException {
-	int n = 0;
-	while (n++ < count && !_stopRequested) {
-	    if (prefire()) {
-		fire();
-		if (!postfire()) return Executable.STOP_ITERATING;
-	    } else {
+        int n = 0;
+        while (n++ < count && !_stopRequested) {
+            if (prefire()) {
+                fire();
+                if (!postfire()) return Executable.STOP_ITERATING;
+            } else {
                 return Executable.NOT_READY;
-	    }
-	}
+            }
+        }
         if (_stopRequested) {
             return Executable.STOP_ITERATING;
         } else {

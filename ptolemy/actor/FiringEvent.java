@@ -68,9 +68,9 @@ public class FiringEvent implements DebugEvent {
      *   BEFORE_PREFIRE, BEFORE_FIRE, BEFORE_POSTFIRE, or BEFORE_ITERATE.
      */
     public FiringEvent(Director source, Actor actor, FiringEventType type) {
-	_director = source;
-	_actor = actor;
-	_type = type;
+        _director = source;
+        _actor = actor;
+        _type = type;
     }
 
     /** Create a new firing event with the given source, actor, type,
@@ -88,9 +88,9 @@ public class FiringEvent implements DebugEvent {
             Actor actor,
             FiringEventType type,
             int multiplicity) {
-	_director = source;
-	_actor = actor;
-	_type = type;
+        _director = source;
+        _actor = actor;
+        _type = type;
         _multiplicity = multiplicity;
     }
 
@@ -100,13 +100,13 @@ public class FiringEvent implements DebugEvent {
 
     /** Return the actor that is being activated. */
     public Actor getActor() {
-	return _actor;
+        return _actor;
     }
 
     /** Return the director that activated the actor.
      */
     public Director getDirector() {
-	return _director;
+        return _director;
     }
 
     /** Return the source of the event.  This class returns the director
@@ -114,13 +114,13 @@ public class FiringEvent implements DebugEvent {
      *  @return An instance of Director.
      */
     public NamedObj getSource() {
-	return _director;
+        return _director;
     }
 
     /** Return the type of activation that this event represents.
      */
     public FiringEventType getType() {
-	return _type;
+        return _type;
     }
 
     /** Return a string representation of this event.
@@ -196,13 +196,13 @@ public class FiringEvent implements DebugEvent {
     public static class FiringEventType {
         // Create a new event type with the given name.
         private FiringEventType(String name) {
-	    _name = name;
-	}
+            _name = name;
+        }
 
         /** Return the string name of this event type. */
-	public String getName() {
-	    return _name;
-	}
+        public String getName() {
+            return _name;
+        }
 
         /** Return a string description of this event type. */
         public String toString() {
@@ -210,6 +210,6 @@ public class FiringEvent implements DebugEvent {
         }
 
         // The name of this event type.
-    	private String _name;
+            private String _name;
     }
 }

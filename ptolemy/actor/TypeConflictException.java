@@ -67,7 +67,7 @@ public class TypeConflictException extends KernelException {
      *  @see ptolemy.graph.Inequality#toString
      */
     public TypeConflictException(List inequalities) {
-	this(inequalities,
+        this(inequalities,
                 "Type conflicts occurred at the following inequalities:");
     }
 
@@ -82,8 +82,8 @@ public class TypeConflictException extends KernelException {
      *  @see ptolemy.graph.Inequality#toString
      */
     public TypeConflictException(List inequalities, String detail) {
-	_inequalities.addAll(inequalities);
-	_setMessage(detail + "\n" + _listInequalities());
+        _inequalities.addAll(inequalities);
+        _setMessage(detail + "\n" + _listInequalities());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,7 +93,7 @@ public class TypeConflictException extends KernelException {
      *  @return A List of Inequality instances where type conflicts occurred.
      */
     public List inequalityList() {
-	return _inequalities;
+        return _inequalities;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -104,12 +104,12 @@ public class TypeConflictException extends KernelException {
     // with 2 white spaces to make the String more readable.
     private String _listInequalities() {
         String result = "";
-	Iterator iterator = inequalityList().iterator();
-	while (iterator.hasNext()) {
-	    Object inequality = iterator.next();
-	    result += "  " + inequality.toString() + "\n";
-	}
-	return result;
+        Iterator iterator = inequalityList().iterator();
+        while (iterator.hasNext()) {
+            Object inequality = iterator.next();
+            result += "  " + inequality.toString() + "\n";
+        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////

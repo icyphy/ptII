@@ -83,7 +83,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  Increment the version number of the workspace.
      */
     public TypedAtomicActor() {
-	super();
+        super();
     }
 
     /** Construct an actor in the specified workspace with an empty
@@ -94,7 +94,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  @param workspace The workspace that will list the entity.
      */
     public TypedAtomicActor(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Create a new actor in the specified container with the specified
@@ -173,63 +173,63 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
      *  @see ptolemy.graph.Inequality
      */
     public List typeConstraintList() {
-	try {
-	    _workspace.getReadAccess();
+        try {
+            _workspace.getReadAccess();
 
-	    LinkedList result = new LinkedList();
-	    Iterator inPorts = inputPortList().iterator();
-	    while (inPorts.hasNext()) {
-	        TypedIOPort inPort = (TypedIOPort)inPorts.next();
-		boolean isUndeclared = inPort.getTypeTerm().isSettable();
-		if (isUndeclared) {
-		    // inPort has undeclared type.
-		    Iterator outPorts = outputPortList().iterator();
-	    	    while (outPorts.hasNext()) {
-		    	TypedIOPort outPort =
+            LinkedList result = new LinkedList();
+            Iterator inPorts = inputPortList().iterator();
+            while (inPorts.hasNext()) {
+                TypedIOPort inPort = (TypedIOPort)inPorts.next();
+                boolean isUndeclared = inPort.getTypeTerm().isSettable();
+                if (isUndeclared) {
+                    // inPort has undeclared type.
+                    Iterator outPorts = outputPortList().iterator();
+                        while (outPorts.hasNext()) {
+                            TypedIOPort outPort =
                             (TypedIOPort)outPorts.next();
 
-			isUndeclared = outPort.getTypeTerm().isSettable();
-		    	if (isUndeclared && inPort != outPort) {
-			    // output also undeclared, not bidirectional port,
-			    // check if there is any type constraints stored
-			    // in ports.
-			    List inPortConstraints =
+                        isUndeclared = outPort.getTypeTerm().isSettable();
+                            if (isUndeclared && inPort != outPort) {
+                            // output also undeclared, not bidirectional port,
+                            // check if there is any type constraints stored
+                            // in ports.
+                            List inPortConstraints =
                                 inPort.typeConstraintList();
-			    List outPortConstraints =
+                            List outPortConstraints =
                                 outPort.typeConstraintList();
                             if (inPortConstraints.isEmpty() &&
                                     outPortConstraints.isEmpty()) {
-				// ports not constrained, use default
-				// constraint
-		                Inequality inequality = new Inequality(
+                                // ports not constrained, use default
+                                // constraint
+                                Inequality inequality = new Inequality(
                                         inPort.getTypeTerm(),
                                         outPort.getTypeTerm());
-			        result.add(inequality);
+                                result.add(inequality);
                             }
 
-			}
-		    }
-		}
-	    }
+                        }
+                    }
+                }
+            }
 
-	    // collect constraints from contained Typeables
-	    Iterator ports = portList().iterator();
-	    while (ports.hasNext()) {
-		Typeable port = (Typeable)ports.next();
-		result.addAll(port.typeConstraintList());
-	    }
+            // collect constraints from contained Typeables
+            Iterator ports = portList().iterator();
+            while (ports.hasNext()) {
+                Typeable port = (Typeable)ports.next();
+                result.addAll(port.typeConstraintList());
+            }
 
-	    Iterator typeables = attributeList(Typeable.class).iterator();
-	    while (typeables.hasNext()) {
-		Typeable typeable = (Typeable)typeables.next();
-		result.addAll(typeable.typeConstraintList());
-	    }
+            Iterator typeables = attributeList(Typeable.class).iterator();
+            while (typeables.hasNext()) {
+                Typeable typeable = (Typeable)typeables.next();
+                result.addAll(typeable.typeConstraintList());
+            }
 
-	    return result;
+            return result;
 
-	} finally {
-	    _workspace.doneReading();
-	}
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -254,9 +254,9 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     protected void _addPort(Port port)
             throws IllegalActionException, NameDuplicationException {
         // In the future, this method can be changed to allow IOPort to be
-	// added. In that case, the type system just ignores instances of
-	// IOPort during type checking. Since there is no intended application
-	// for that change yet, constrain the port to be TypedIOPort for now.
+        // added. In that case, the type system just ignores instances of
+        // IOPort during type checking. Since there is no intended application
+        // for that change yet, constrain the port to be TypedIOPort for now.
         if (!(port instanceof TypedIOPort)) {
             throw new IllegalActionException(this, port,
                     "Incompatible port class for this actor.");

@@ -143,7 +143,7 @@ public class IOPort extends ComponentPort {
      *  @param workspace The workspace that will list the port.
      */
     public IOPort(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct an IOPort with a containing actor and a name
@@ -160,7 +160,7 @@ public class IOPort extends ComponentPort {
      */
     public IOPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-	super(container, name);
+        super(container, name);
     }
 
     /** Construct an IOPort with a container and a name that is
@@ -212,7 +212,7 @@ public class IOPort extends ComponentPort {
      *     it.
      */
     public void broadcast(Token token)
-	    throws IllegalActionException, NoRoomException {
+            throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
         if (_debugging) {
             _debug("broadcast " + token);
@@ -310,7 +310,7 @@ public class IOPort extends ComponentPort {
      *     it.
      */
     public void broadcastAbsent()
-	    throws IllegalActionException, NoRoomException {
+            throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
         if (_debugging) {
             _debug("broadcast absent.");
@@ -497,22 +497,22 @@ public class IOPort extends ComponentPort {
      *  @return A list of IOPort objects.
      */
     public List deepConnectedInPortList() {
-	try {
-	    _workspace.getReadAccess();
-	    LinkedList result = new LinkedList();
+        try {
+            _workspace.getReadAccess();
+            LinkedList result = new LinkedList();
 
-	    Iterator ports = deepConnectedPortList().iterator();
+            Iterator ports = deepConnectedPortList().iterator();
             //int myDepth = depthInHierarchy();
             while (ports.hasNext()) {
-		IOPort port = (IOPort)ports.next();
-		if (port.isInput()) {
-		    result.addLast(port);
+                IOPort port = (IOPort)ports.next();
+                if (port.isInput()) {
+                    result.addLast(port);
                 }
-	    }
-	    return result;
-	} finally {
-	    _workspace.doneReading();
-	}
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Deeply enumerate the ports connected to this port on the
@@ -541,22 +541,22 @@ public class IOPort extends ComponentPort {
      *  @return An enumeration of IOPort objects.
      */
     public List deepConnectedOutPortList() {
-	try {
-	    _workspace.getReadAccess();
-	    LinkedList result = new LinkedList();
+        try {
+            _workspace.getReadAccess();
+            LinkedList result = new LinkedList();
 
-	    Iterator ports = deepConnectedPortList().iterator();
+            Iterator ports = deepConnectedPortList().iterator();
             //int myDepth = depthInHierarchy();
             while (ports.hasNext()) {
-		IOPort port = (IOPort)ports.next();
-		if (port.isOutput()) {
-		    result.addLast(port);
+                IOPort port = (IOPort)ports.next();
+                if (port.isOutput()) {
+                    result.addLast(port);
                 }
-	    }
-	    return result;
-	} finally {
-	    _workspace.doneReading();
-	}
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** If the port is an input, return the receivers deeply linked on the
@@ -998,7 +998,7 @@ public class IOPort extends ComponentPort {
                                 _localReceivers[index++] = receiverRelation[i];
                             }
                         }
-		    }
+                    }
                 }
                 _localReceiversVersion = _workspace.getVersion();
                 return _localReceivers;
@@ -1613,9 +1613,9 @@ public class IOPort extends ComponentPort {
                 }
             }
             return result;
-	} finally {
-	    _workspace.doneReading();
-	}
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Return true if the port is an input.  The port is an input
@@ -2253,9 +2253,9 @@ public class IOPort extends ComponentPort {
                 }
             }
             return result;
-	} finally {
-	    _workspace.doneReading();
-	}
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Return a list of ports connected to this port on the
@@ -2269,22 +2269,22 @@ public class IOPort extends ComponentPort {
             _workspace.getReadAccess();
             Nameable container = getContainer();
             Director excDirector = ((Actor) container).getExecutiveDirector();
-	    int depthOfDirector = excDirector.depthInHierarchy();
+            int depthOfDirector = excDirector.depthInHierarchy();
             LinkedList result = new LinkedList();
-	    Iterator ports = deepConnectedPortList().iterator();
+            Iterator ports = deepConnectedPortList().iterator();
             while (ports.hasNext()) {
-		IOPort port = (IOPort)ports.next();
+                IOPort port = (IOPort)ports.next();
                 int depth = port.depthInHierarchy();
                 if (port.isInput() && depth <= depthOfDirector) {
                     result.addLast(port);
                 } else if (port.isOutput() && depth > depthOfDirector) {
                     result.addLast(port);
                 }
-	    }
-	    return result;
-	} finally {
-	    _workspace.doneReading();
-	}
+            }
+            return result;
+        } finally {
+            _workspace.doneReading();
+        }
     }
 
     /** Transfer data from this port to the ports it is connected to
@@ -2308,7 +2308,7 @@ public class IOPort extends ComponentPort {
         }
         boolean wasTransferred = false;
         for (int i = 0; i < getWidth(); i++) {
-	    // NOTE: This is not compatible with certain cases in PN,
+            // NOTE: This is not compatible with certain cases in PN,
             // where we don't want to block on a port if nothing is connected
             // to the port on the inside.
             try {

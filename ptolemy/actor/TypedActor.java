@@ -32,7 +32,7 @@
 package ptolemy.actor;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.graph.Inequality;	/* Needed by javadoc */
+import ptolemy.graph.Inequality;        /* Needed by javadoc */
 
 import java.util.List;
 

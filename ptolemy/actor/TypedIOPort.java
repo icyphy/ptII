@@ -110,7 +110,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param workspace The workspace that will list the port.
      */
     public TypedIOPort(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct a TypedIOPort with a containing actor and a name
@@ -209,7 +209,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *     it.
      */
     public void broadcast(Token token)
-	    throws IllegalActionException, NoRoomException {
+            throws IllegalActionException, NoRoomException {
         Receiver[][] farReceivers;
         if (_debugging) {
             _debug("broadcast " + token);
@@ -293,8 +293,8 @@ public class TypedIOPort extends IOPort implements Typeable {
         Token token = null;
         try {
             _workspace.getReadAccess();
-	    // check types
-	    for (int i = 0; i < tokenArray.length; i++) {
+            // check types
+            for (int i = 0; i < tokenArray.length; i++) {
                 token = tokenArray[i];
                 int compare = TypeLattice.compare(token.getType(),
                         _resolvedType);
@@ -305,7 +305,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                             + getFullName() + ", port type: "
                             + getType().toString());
                 }
-	    }
+            }
             farReceivers = getRemoteReceivers();
             if (farReceivers == null) {
                 return;
@@ -326,11 +326,11 @@ public class TypedIOPort extends IOPort implements Typeable {
                 boolean needConversion = false;
                 for (int k = 0; k < tokenArray.length; k++) {
                     if ( !farType.equals(tokenArray[k].getType())) {
-	                needConversion = true;
-		    }
-		}
+                        needConversion = true;
+                    }
+                }
 
-		if (!needConversion) {
+                if (!needConversion) {
                     // Good, no conversion necessary.
                     farReceivers[i][j].putArray(tokenArray, vectorLength);
                 } else {
@@ -385,51 +385,51 @@ public class TypedIOPort extends IOPort implements Typeable {
     public Type getType() {
         try {
             _workspace.getReadAccess();
-	    Type result = BaseType.UNKNOWN;
-	    if (isOpaque()) {
+            Type result = BaseType.UNKNOWN;
+            if (isOpaque()) {
                 result = _resolvedType;
-	    } else if (isInput()) {
+            } else if (isInput()) {
                 // is a transparent input port. Get all the ports connected
-		// on the inside through receivers.
-		Receiver[][] receivers = this.deepGetReceivers();
-	        List portTypeList = new LinkedList();
-	        if (receivers != null) {
-	            for (int i = 0; i < receivers.length; i++) {
-		        if (receivers[i] != null) {
-		            for (int j = 0; j < receivers[i].length; j++) {
-			        TypedIOPort port =
+                // on the inside through receivers.
+                Receiver[][] receivers = this.deepGetReceivers();
+                List portTypeList = new LinkedList();
+                if (receivers != null) {
+                    for (int i = 0; i < receivers.length; i++) {
+                        if (receivers[i] != null) {
+                            for (int j = 0; j < receivers[i].length; j++) {
+                                TypedIOPort port =
                                     (TypedIOPort)receivers[i][j].getContainer();
-		                portTypeList.add(port.getType());
-	                    }
-	                }
+                                portTypeList.add(port.getType());
+                            }
+                        }
                     }
                 }
 
-		CPO lattice = TypeLattice.lattice();
-		Object[] portTypeArray = portTypeList.toArray();
-	        result = (Type)lattice.greatestLowerBound(portTypeArray);
+                CPO lattice = TypeLattice.lattice();
+                Object[] portTypeArray = portTypeList.toArray();
+                result = (Type)lattice.greatestLowerBound(portTypeArray);
             } else if (isOutput()) {
-	        // is a transparent output port. Get all the ports connected
-		// on the inside through deepInsidePortList().
+                // is a transparent output port. Get all the ports connected
+                // on the inside through deepInsidePortList().
                 Iterator ports = deepInsidePortList().iterator();
-	        List portTypeList = new LinkedList();
+                List portTypeList = new LinkedList();
                 while (ports.hasNext()) {
                     TypedIOPort port = (TypedIOPort) ports.next();
                     // Rule out case where this port itself is listed...
                     if (port != this && port.isOutput()) {
-		        portTypeList.add(port.getType());
+                        portTypeList.add(port.getType());
                     }
                 }
 
-		CPO lattice = TypeLattice.lattice();
-		Object[] portTypeArray = portTypeList.toArray();
-	        result = (Type)lattice.leastUpperBound(portTypeArray);
+                CPO lattice = TypeLattice.lattice();
+                Object[] portTypeArray = portTypeList.toArray();
+                result = (Type)lattice.leastUpperBound(portTypeArray);
             }
-	    return result;
+            return result;
         } catch (IllegalActionException exception) {
-	    // deepGetReceiver throws it. This means that there is no director,
-	    // hence no receiver has been created. Return unknown.
-	    return BaseType.UNKNOWN;
+            // deepGetReceiver throws it. This means that there is no director,
+            // hence no receiver has been created. Return unknown.
+            return BaseType.UNKNOWN;
         } finally {
             _workspace.doneReading();
         }
@@ -692,11 +692,11 @@ public class TypedIOPort extends IOPort implements Typeable {
                     + " token array of length " + vectorLength);
         }
         Token token = null;
-	try {
+        try {
             try {
                 _workspace.getReadAccess();
                 // check types
-	        for (int i = 0; i < tokenArray.length; i++) {
+                for (int i = 0; i < tokenArray.length; i++) {
                     token = tokenArray[i];
                     int compare = TypeLattice.compare(token.getType(),
                             _resolvedType);
@@ -707,7 +707,7 @@ public class TypedIOPort extends IOPort implements Typeable {
                                 + getFullName() + ", port type: "
                                 + getType().toString());
                     }
-	        }
+                }
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
@@ -724,11 +724,11 @@ public class TypedIOPort extends IOPort implements Typeable {
                 Type farType = port.getType();
 
                 boolean needConversion = false;
-	        for (int k = 0; k < tokenArray.length; k++) {
+                for (int k = 0; k < tokenArray.length; k++) {
                     if ( !farType.equals(tokenArray[k].getType())) {
-	                needConversion = true;
-	            }
-	        }
+                        needConversion = true;
+                    }
+                }
 
                 if ( !needConversion) {
                     // Good, no conversion necessary.
@@ -736,10 +736,10 @@ public class TypedIOPort extends IOPort implements Typeable {
                             vectorLength);
                 } else {
                     // Note: This is very bad for performance!
-		    // For better efficiency, make sure
-		    // all ports have the same type.
-	    	    for (int i = 0; i < vectorLength; i++) {
-	    	        farReceivers[channelIndex][j].put(
+                    // For better efficiency, make sure
+                    // all ports have the same type.
+                        for (int i = 0; i < vectorLength; i++) {
+                            farReceivers[channelIndex][j].put(
                                 farType.convert(tokenArray[i]));
                     }
                 }
@@ -1060,8 +1060,8 @@ public class TypedIOPort extends IOPort implements Typeable {
         }
 
         /** Check whether the current value of this term is acceptable.
-	 *  This method delegates the check to the isTypeAcceptable()
-	 *  method of the outer class.
+         *  This method delegates the check to the isTypeAcceptable()
+         *  method of the outer class.
          *  @return True if the current value is acceptable.
          */
         public boolean isValueAcceptable() {
@@ -1083,11 +1083,11 @@ public class TypedIOPort extends IOPort implements Typeable {
             if ( !_declaredType.isSubstitutionInstance((Type)type)) {
                 throw new IllegalActionException(
                         "Type conflict on port "
-			+ TypedIOPort.this.getFullName() + ".\n"
-			+ "Declared type is " + _declaredType.toString()
-			+ ".\n"
+                        + TypedIOPort.this.getFullName() + ".\n"
+                        + "Declared type is " + _declaredType.toString()
+                        + ".\n"
                         + "The connection or type constraints, however, "
-			+ "requires type " + type.toString());
+                        + "requires type " + type.toString());
             }
 
             Type oldType = _resolvedType;

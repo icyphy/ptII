@@ -118,7 +118,7 @@ public class TypeAttribute extends Parameter {
         if (!(container instanceof TypedIOPort) && (container != null)) {
             throw new IllegalActionException(container, this,
                     "TypeAttribute can only be contained by instances " +
-		    "of TypedIOPort.");
+                    "of TypedIOPort.");
         }
     }
 }

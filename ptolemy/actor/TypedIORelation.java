@@ -79,7 +79,7 @@ public class TypedIORelation extends IORelation {
      *  @param workspace The workspace that will list the relation.
      */
     public TypedIORelation(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Construct a relation with the given name contained by the specified
@@ -118,7 +118,7 @@ public class TypedIORelation extends IORelation {
                 (container != null)) {
             throw new IllegalActionException (this, container,
                     "TypedIORelation can only be contained by " +
-		    "TypedCompositeActor.");
+                    "TypedCompositeActor.");
         }
     }
 

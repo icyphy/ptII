@@ -161,7 +161,7 @@ public class QueueReceiver extends AbstractReceiver {
      *  @return True if the queue has room for one more token.
      */
     public boolean hasRoom() {
-	return !_queue.isFull();
+        return !_queue.isFull();
     }
 
     /** Return true if the queue has room to put the given number of
@@ -173,10 +173,10 @@ public class QueueReceiver extends AbstractReceiver {
      *   be explicitly declared by the caller.
      */
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
-	if (numberOfTokens < 1)
-	    throw new IllegalArgumentException(
+        if (numberOfTokens < 1)
+            throw new IllegalArgumentException(
                     "The number of tokens must be greater than 0");
-	return (_queue.size() + numberOfTokens) < _queue.getCapacity();
+        return (_queue.size() + numberOfTokens) < _queue.getCapacity();
     }
 
     /** Return true if the next call to get() will succeed without a
@@ -197,8 +197,8 @@ public class QueueReceiver extends AbstractReceiver {
      */
     public boolean hasToken(int numberOfTokens)
             throws IllegalArgumentException {
-	if (numberOfTokens < 1)
-	    throw new IllegalArgumentException(
+        if (numberOfTokens < 1)
+            throw new IllegalArgumentException(
                     "The number of tokens must be greater than 0");
         return _queue.size() >= numberOfTokens;
     }

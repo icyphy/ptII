@@ -142,7 +142,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @param workspace The workspace that will list the actor.
      */
     public CompositeActor(Workspace workspace) {
-	super(workspace);
+        super(workspace);
     }
 
     /** Create an actor with a name and a container.
@@ -459,15 +459,15 @@ public class CompositeActor extends CompositeEntity implements Actor {
         if (_debugging) {
             _debug("Invoking iterate: " + count);
         }
-	int n = 0;
-	while (n++ < count && !_stopRequested) {
-	    if (prefire()) {
-		fire();
-		if (!postfire()) return Executable.STOP_ITERATING;
-	    } else {
+        int n = 0;
+        while (n++ < count && !_stopRequested) {
+            if (prefire()) {
+                fire();
+                if (!postfire()) return Executable.STOP_ITERATING;
+            } else {
                 return Executable.NOT_READY;
-	    }
-	}
+            }
+        }
         if (_stopRequested) {
             return Executable.STOP_ITERATING;
         } else {
@@ -698,16 +698,16 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
         Nameable container = getContainer();
         if (container instanceof NamedObj) {
-	    ((NamedObj)container).requestChange(change);
+            ((NamedObj)container).requestChange(change);
         } else {
-	    change.setListeners(_changeListeners);
-	    Manager manager = getManager();
-	    if (manager == null) {
-		change.execute();
-	    } else {
-		manager.requestChange(change);
-	    }
-	}
+            change.setListeners(_changeListeners);
+            Manager manager = getManager();
+            if (manager == null) {
+                change.execute();
+            } else {
+                manager.requestChange(change);
+            }
+        }
     }
 
     /** Override the base class to invalidate the schedule and
@@ -817,7 +817,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
             _workspace.getReadAccess();
             _stopRequested = true;
             if (!isOpaque()) {
-		return;
+                return;
             }
             getDirector().stop();
         } finally {
@@ -837,7 +837,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
         try {
             _workspace.getReadAccess();
             if (!isOpaque()) {
-		return;
+                return;
             }
             getDirector().stopFire();
         } finally {

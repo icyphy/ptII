@@ -33,7 +33,7 @@ package ptolemy.actor;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.Token;
-import ptolemy.actor.util.FIFOQueue;	/* Needed by javadoc */
+import ptolemy.actor.util.FIFOQueue;        /* Needed by javadoc */
 
 import java.util.NoSuchElementException;
 import java.util.Collections;
@@ -69,7 +69,7 @@ public abstract class AbstractReceiver implements Receiver {
      *   not accept this receiver.
      */
     public AbstractReceiver(IOPort container) throws IllegalActionException {
-	setContainer(container);
+        setContainer(container);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -118,16 +118,16 @@ public abstract class AbstractReceiver implements Receiver {
      *   calling this method.
      */
     public Token[] getArray(int numberOfTokens) throws NoTokenException {
-	// Check whether we need to reallocate the cached
-	// token array.
-	if (_tokenCache == null || numberOfTokens > _tokenCache.length) {
-	    // Reallocate the token array.
-	    _tokenCache = new Token[numberOfTokens];
-	}
-	for (int i = 0; i < numberOfTokens; i++) {
-	    _tokenCache[i] = get();
-	}
-	return _tokenCache;
+        // Check whether we need to reallocate the cached
+        // token array.
+        if (_tokenCache == null || numberOfTokens > _tokenCache.length) {
+            // Reallocate the token array.
+            _tokenCache = new Token[numberOfTokens];
+        }
+        for (int i = 0; i < numberOfTokens; i++) {
+            _tokenCache[i] = get();
+        }
+        return _tokenCache;
     }
 
     /** Return the container of this receiver, or null if there is none.
@@ -234,9 +234,9 @@ public abstract class AbstractReceiver implements Receiver {
      */
     public void putArray(Token[] tokenArray, int numberOfTokens)
             throws NoRoomException {
-	for (int i = 0; i < numberOfTokens; i++) {
-	    put(tokenArray[i]);
-	}
+        for (int i = 0; i < numberOfTokens; i++) {
+            put(tokenArray[i]);
+        }
     }
 
     /** Set the receiver to contain no tokens.
