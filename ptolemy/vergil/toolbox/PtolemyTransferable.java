@@ -77,7 +77,6 @@ public class PtolemyTransferable implements Transferable {
      */
     public boolean isDataFlavorSupported(DataFlavor flavor) {
 	int i;
-	System.out.println("requested dataflavor = " + flavor);
 	for(i = 0; i < _flavors.length; i++)
 	    if(_flavors[i].equals(flavor)) return true;
 	return false;
@@ -99,7 +98,6 @@ public class PtolemyTransferable implements Transferable {
      */
     public Object getTransferData(DataFlavor flavor)
 	throws UnsupportedFlavorException, IOException {
-	System.out.println("requested dataflavor = " + flavor);
 	if (flavor.equals(DataFlavor.plainTextFlavor)) {
 	    // plain text flavor is deprecated, but everybody still
 	    // implements it.  The problem is that all the implementations
