@@ -41,6 +41,9 @@ ME =		java/pt/kernel
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
+# Flags to pass to javadoc. (Override value in tycho.mk)
+JDOCFLAGS = 	-author -version -public
+
 DIRS = 		test doc
 
 # Used to build zip files
