@@ -285,7 +285,7 @@ public class CompositeProcessDirector extends ProcessDirector {
         return new MailboxBoundaryReceiver();
     }
 
-    /** Return false if the model has reached a deadlock and can
+    /** Return false if the model has reached deadlock and can
      *  be terminated if desired. Return true otherwise.
      *  This flag is set on detection of a deadlock in the fire() method.
      *
