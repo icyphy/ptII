@@ -665,12 +665,16 @@ AC_SUBST(PTJAVASOUND_DIR)
 AC_SUBST(PTJSPACES_DIR)
 
 # Set to kvm and used in 
-# $PTII/ptolemy/makefile if kvm was found
+# $PTII/ptolemy/apps/makefile if kvm was found
 AC_SUBST(PTKVM_DIR)
 
 # Set to lego and used in 
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
 AC_SUBST(PTLEGO_DIR)
+
+# Set to waba and used in 
+# $PTII/ptolemy/apps/makefile if Waba was found
+AC_SUBST(PTWABA_DIR)
 
 # Location of the PtII directory
 AC_SUBST(PTII_DEFAULT)
