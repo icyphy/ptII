@@ -4,8 +4,8 @@
 <iconlibrary name="SDF" version="1.0">
 <header>
 <description>Icons for use within SDF</description>
-<sublibrary>domains/sdf/lib/icons/htvq.pti</sublibrary>
-<sublibrary>domains/sdf/lib/icons/communication.pti</sublibrary>
+<sublibrary uri="../../domains/sdf/lib/icons/htvq.ptml/>
+<sublibrary uri="../../domains/sdf/lib/icons/communication.ptml/>
 </header>
 <icon name="LoadImage">
 <description>Load an image from a file</description>
