@@ -31,7 +31,7 @@
 
 ME =		ptolemy/vergil
 
-DIRS = 		toolbox graph ptolemy debugger icon
+DIRS = 		toolbox graph ptolemy debugger
 
 # Root of the Java directory
 ROOT =		../../
