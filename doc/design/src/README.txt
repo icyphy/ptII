@@ -2,7 +2,7 @@ Distiller
 ---------
 To create a PDF File
 1. Open the book file
-2. Select File->Generate/Update
+2. Select Edit -> Update Book (In frame 5.5, this was File->Generate/Update)
 3. After generating the toc and idx, edit the idx and
    move the first index entry for the UML symbol - to below the header.
 4. Select File->Print
