@@ -49,8 +49,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	BasicJApplet.java \
+	Configurer.java \
 	Message.java \
 	PanelDialog.java \
+	ParameterConfigurer.java \
 	Query.java \
 	QueryListener.java
 
