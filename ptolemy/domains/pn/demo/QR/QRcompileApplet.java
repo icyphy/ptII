@@ -91,10 +91,11 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 
 	    _printplot = new Print(_toplevel, "print");
             _printplot.place(getContentPane());
+            _printplot.plot.setBackground(_getBackground());
 
 	    _eventplot = new SequencePlotter(_toplevel, "plot");
             _eventplot.place(getContentPane());
-
+            _eventplot.plot.setBackground(_getBackground());
 	    _eventplot.plot.setGrid(false);
 	    _eventplot.plot.setTitle("Events");
 	    _eventplot.plot.addLegend(0, "Matrix R");
@@ -123,6 +124,7 @@ public class QRcompileApplet extends PNApplet implements QueryListener {
 
             _matrixViewer = new MatrixViewer(_toplevel,"MatrixViewer");
             _matrixViewer.place(getContentPane());
+            _matrixViewer.setBackground(_getBackground());
 
 	    System.out.println(" -- 1.) Process Nodes instantiated -- ");
 

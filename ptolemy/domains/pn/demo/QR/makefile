@@ -42,7 +42,7 @@ include $(CONFIG)
 
 TCL_SRCS = 
 
-JFLAGS= -g -deprecation
+JFLAGS= -g # -deprecation
 JSRCS = \
 	QRcompileApplet.java \
 	StreamToMatrix.java \
