@@ -108,9 +108,11 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         }
 
         if ((modifiers & ABSTRACT_MOD) == 0) {
-            if (_hasAbstractMethod(node)) {
-                ApplicationUtility.error(me.getName() +
-                        " has abstract methods: must be declared abstract");
+            if (_hasAbstractMethod(node, false)) {
+                _hasAbstractMethod(node, true);
+                ApplicationUtility.error("ResolveInheritanceVisitor." +
+                        "visitClassDeclNode(): " +  me.fullName() +
+                        " has abstract methods: it must be declared abstract");
             }
         }
         return null;
@@ -314,26 +316,6 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         }
     }
 
-    /** Return true if there is at least one abstract method in the class
-     *  environment.
-     */
-    protected static boolean _hasAbstractMethod(UserTypeDeclNode node) {
-        Environ classEnv = JavaDecl.getDecl((NamedNode) node).getEnviron();
-
-        Iterator memberItr = classEnv.allProperDecls();
-
-        while (memberItr.hasNext()) {
-            JavaDecl member = (JavaDecl) memberItr.next();
-
-            if ((member.category == CG_METHOD) &&
-                    ((member.getModifiers() & ABSTRACT_MOD) != 0)) {
-                ApplicationUtility.trace("found abstract method: " +  member);
-                return true;
-            }
-        }
-        return false;
-    }
-
     /** The default visit method. Visit all child nodes. */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         LinkedList childArgs = new LinkedList();
@@ -341,9 +323,43 @@ public class ResolveInheritanceVisitor extends ResolveVisitorBase
         return null;
     }
 
+    /** Return true if there is at least one abstract method in the class
+     *  environment.
+     */
+    private static boolean _hasAbstractMethod(UserTypeDeclNode node, boolean debug ) {
+        Environ classEnv = JavaDecl.getDecl((NamedNode) node).getEnviron();
+
+        Iterator memberItr = classEnv.allProperDecls();
+
+        if (node.getName().getIdent().equals("Variable")) {
+            System.out.println("----Now checking Variable");
+            debug = true;
+        }
+
+        while (memberItr.hasNext()) {
+            JavaDecl member = (JavaDecl) memberItr.next();
+            if (debug) {
+                System.out.println("ResolveInheritanceVisitor." +
+                            "_hasAbstractMethod: " + member.fullName());
+            }
+            if ((member.category == CG_METHOD) &&
+                    ((member.getModifiers() & ABSTRACT_MOD) != 0)) {
+                if (debug) {
+                    System.out.println("ResolveInheritanceVisitor." +
+                            "_hasAbstractMethod: Found abstract method " +
+                            member.fullName() + " while looking in " +
+                            node.getName().getIdent());
+                }
+                return true;
+            }
+        }
+        return false;
+    }
+
     /** The type policy used to do comparison of types. */
     protected TypePolicy _typePolicy = null;
 
     /** The Class object of this visitor. */
     private static Class _myClass = new ResolveInheritanceVisitor().getClass();
+
 }
