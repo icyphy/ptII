@@ -1,4 +1,4 @@
-/* Plot functions of time.
+/* Plot XY functions of time.
 
 @Copyright (c) 1998-1999 The Regents of the University of California.
 All rights reserved.
@@ -35,20 +35,19 @@ import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
-import ptolemy.actor.lib.TimeActor;
+import ptolemy.actor.lib.TimedActor;
 import ptolemy.plot.*;
 import java.awt.Panel;
 
-/** A signal plotter.  This plotter contains an instance of the Plot class
- *  from the Ptolemy plot package as a public member.  Data at the input, which
- *  can consist of any number of channels, is plotted on this instance.
- *  Each channel is plotted as a separate data set.
- *  The horizontal axis represents time.
- *
- *  @author  Edward A. Lee
+/** A XY signal plotter.  This plotter contains an instance of the Plot class
+ *  from the Ptolemy plot package as a public member.  Data at the inputX and 
+ *  input Y, which consist of only one channel, is plotted on this instance.
+ *  The horizontal axis is inputX and vertical axis is inputY.
+ * 
+ *  @author Jie Liu
  *  @version $Id$
  */
-public class TimePlotter extends Plotter implements Placeable, TimeActor {
+public class XYPlotter extends Plotter implements Placeable {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -58,21 +57,28 @@ public class TimePlotter extends Plotter implements Placeable, TimeActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public TimePlotter(TypedCompositeActor container, String name)
+    public XYPlotter(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // create the input port and make it a multiport.
-        input = new TypedIOPort(this, "input", true, false);
-        input.setMultiport(true);
-        input.setTypeEquals(DoubleToken.class);
+        // create the input ports and make them single ports.
+        inputX = new TypedIOPort(this, "inputX", true, false);
+        inputX.setMultiport(false);
+        inputX.setTypeEquals(DoubleToken.class);
+
+        inputY = new TypedIOPort(this, "inputY", true, false);
+        inputY.setMultiport(false);
+        inputY.setTypeEquals(DoubleToken.class);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
 
-    /** Input port, which has type DoubleToken. */
-    public TypedIOPort input;
+    /** Input port for data stream X, which has type DoubleToken. */
+    public TypedIOPort inputX;
+
+    /** Input port for data stream Y, which has type DoubleToken. */
+    public TypedIOPort inputY;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -83,29 +89,39 @@ public class TimePlotter extends Plotter implements Placeable, TimeActor {
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
-        TimePlotter newobj = (TimePlotter)super.clone(ws);
-        newobj.input = (TypedIOPort)newobj.getPort("input");
-        newobj.input.setMultiport(true);
-        newobj.input.setTypeEquals(DoubleToken.class);
+        XYPlotter newobj = (XYPlotter)super.clone(ws);
+        newobj.inputX = (TypedIOPort)newobj.getPort("inputX");
+        newobj.inputX.setMultiport(false);
+        newobj.inputX.setTypeEquals(DoubleToken.class);
+        newobj.inputY = (TypedIOPort)newobj.getPort("inputY");
+        newobj.inputY.setMultiport(false);
+        newobj.inputY.setTypeEquals(DoubleToken.class);
         return newobj;
     }
 
-    /** Read at most one input from each channel and plot it as a
-     *  function of time.
+    /** Read at most one input from each input port and plot it.
      *  This is done in postfire to ensure that data has settled.
+     *  Both input port should have at least one tokens. Otherwise,
+     *  one token will be consumed from the input port that has 
+     *  a token, but nothing will be plotted. 
      *  @exception IllegalActionException If there is no director, or
      *   if the base class throws it.
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {
-        double curtime = ((Director)getDirector()).getCurrentTime();
-        int width = input.getWidth();
-        for (int i = width - 1; i >= 0; i--) {
-            if (input.hasToken(i)) {
-                DoubleToken curToken = (DoubleToken)input.get(i);
-                double curValue = curToken.doubleValue();
-                plot.addPoint(i, curtime, curValue, true);
-            }
+        boolean hasX= false, hasY=false;
+        double xValue = 0.0;
+        double yValue = 0.0;
+        if (inputX.hasToken(0)) {
+            xValue = ((DoubleToken)inputX.get(0)).doubleValue();
+            hasX = true;
+        }
+        if (inputY.hasToken(0)) {
+            yValue = ((DoubleToken)inputY.get(0)).doubleValue();
+            hasY = true;
+        }
+        if(hasX && hasY) {
+            plot.addPoint(0, xValue, yValue, true);
         }
         return super.postfire();
     }

@@ -59,8 +59,8 @@ JSRCS = \
 	PtolemyApplet.java \
 	SequencePlotter.java \
 	Show.java \
-	TimePlotter.java\
-	TimeXYPlotter.java
+	TimedPlotter.java\
+	XYPlotter.java
 
 EXTRA_SRCS =	$(JSRCS)
 

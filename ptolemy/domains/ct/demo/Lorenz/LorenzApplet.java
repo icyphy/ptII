@@ -122,7 +122,7 @@ public class LorenzApplet extends CTApplet {
             Scale MINUS2 = new Scale(_toplevel, "MINUS2");
             Scale MINUS3 = new Scale(_toplevel, "MINUS3");
 
-            TimeXYPlotter myplot = new TimeXYPlotter(_toplevel, "CTXYPlot");
+            XYPlotter myplot = new XYPlotter(_toplevel, "CTXYPlot");
             myplot.setPanel(this);
             myplot.plot.setGrid(true);
             myplot.plot.setXRange(-25.0, 25.0);

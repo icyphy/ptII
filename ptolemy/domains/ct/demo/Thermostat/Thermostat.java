@@ -42,7 +42,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.util.*;
 import ptolemy.actor.lib.*;
-import ptolemy.actor.gui.TimePlotter;
+import ptolemy.actor.gui.TimedPlotter;
 import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.Parameter;
@@ -102,7 +102,7 @@ public class Thermostat extends CTApplet {
             p.setToken(new DoubleToken(0.0));
 
             // the plot
-            TimePlotter myplot = new TimePlotter(_toplevel, "plot");
+            TimedPlotter myplot = new TimedPlotter(_toplevel, "plot");
             myplot.setPanel(this);
             myplot.plot.setGrid(false);
             myplot.plot.setTitle("Thermostat");

@@ -127,7 +127,7 @@ public class InspectionApplet extends DEApplet {
             show.labels.setToken(new StringToken("Average waiting time"));
 
             // Create and configure plotter
-            _eventplot = new TimePlotter(_toplevel, "plot");
+            _eventplot = new TimedPlotter(_toplevel, "plot");
             _eventplot.setPanel(this);
             _eventplot.plot.setGrid(false);
             _eventplot.plot.setTitle("Events");
@@ -200,7 +200,7 @@ public class InspectionApplet extends DEApplet {
     private Query _query;
     private DEPoisson _bus;
     private DEPoisson _passenger1;
-    private TimePlotter _eventplot;
+    private TimedPlotter _eventplot;
     private HistogramPlotter _histplot;
     private DEWaitingTime _wait;
 
