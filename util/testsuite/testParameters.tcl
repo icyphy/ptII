@@ -65,8 +65,8 @@
 #### _testClone
 # Call clone on object, then cast it to the right type
 #
-proc _testClone {object} {
-    return [java::cast [java::info class $object] [$object clone]]
+proc _testClone {object workspace} {
+    return [java::cast [java::info class $object] [$object clone $workspace]]
 }
 
 ########################################################
