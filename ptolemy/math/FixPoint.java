@@ -841,7 +841,9 @@ public class FixPoint implements Cloneable, Serializable {
     /** Instances of this class represent a type safe enumeration of
      *  error conditions of the FixValue.
      */
-    protected static class Error {
+    public static class Error {
+        // This inner class is public so that we can test it under JDK1.4
+
 	// Constructor is private because only Manager instantiates this class.
 	private Error(String description) {
 	    _description = description;
