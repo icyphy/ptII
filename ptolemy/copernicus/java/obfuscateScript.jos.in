@@ -17,8 +17,12 @@ strip = "unreach","lvt","inner","source","lnt"
 load = new WildCard { value = "*" }
 
 # this variable will tell, which classes and packages must not be
-# renamed.
-preserve = new WildCard { value = "@targetPackage@.Main.main*" },	
+# renamed.  Note: If we pull in all the classes that are reachable,
+# then all of the ptolemy classes should not be preserved (with the
+# possible exception of the tag interfaces, which the obfuscator
+# doens't handle well.
+preserve = new WildCard { value = "@targetPackage@.Main.main*" },
+	new WildCard { value = "ptolemy.*" },	
 	new WildCard { value = "ptolemy.actor.lib.SequenceActor"},
 	new WildCard { value = "ptolemy.data.*Token" },
 	new WildCard { value = "ptolemy.data.Numerical" },
