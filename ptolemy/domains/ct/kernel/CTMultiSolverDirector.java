@@ -1013,7 +1013,7 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     protected void _iteratePurelyDiscreteActors(CTSchedule schedule)
         throws IllegalActionException {
-        _setExecutionPhase(CTExecutionPhase.ITERATING_PURELY_DISCRETE_PHASE);
+        _setExecutionPhase(CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE);
         _iterateSchedule(schedule.get(CTSchedule.DISCRETE_ACTORS));
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
     }

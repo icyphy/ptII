@@ -59,12 +59,6 @@ public final class CTExecutionPhase {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** This final static memeber indicates the director is creating
-     *  the starting states for the following continuous phase execution.
-     */
-    public final static CTExecutionPhase CREATING_STARTING_STATES_PHASE
-        = new CTExecutionPhase("CREATING_STARTING_STATES_PHASE");
-
     /** This final static memeber indicates the director is firing dynamic
      *  actors.
      */
@@ -80,8 +74,8 @@ public final class CTExecutionPhase {
     /** This final static memeber indicates the director is iterating
      *  purely discrete actors.
      */
-    public final static CTExecutionPhase ITERATING_PURELY_DISCRETE_PHASE
-        = new CTExecutionPhase("ITERATING_PURELY_DISCRETE_PHASE");
+    public final static CTExecutionPhase ITERATING_PURELY_DISCRETE_ACTORS_PHASE
+        = new CTExecutionPhase("ITERATING_PURELY_DISCRETE_ACTORS_PHASE");
 
     /** This final static memeber indicates the director is firing state
      *  transition actors.
@@ -118,12 +112,6 @@ public final class CTExecutionPhase {
      */
     public final static CTExecutionPhase PRODUCING_OUTPUTS_PHASE
         = new CTExecutionPhase("PRODUCING_OUTPUTS_PHASE");
-
-    /** This final static memeber indicates the director is solving
-     *  the states of dynamic actors.
-     */
-    public final static CTExecutionPhase SOLVING_STATES_PHASE
-        = new CTExecutionPhase("SOLVING_STATES_PHASE");
 
     /** This final static memeber indicates the director is not in any
      *  of the well-defined phases.

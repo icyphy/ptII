@@ -155,7 +155,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         CTExecutionPhase executionPhase = getExecutionPhase();
         
         if (executionPhase 
-            == CTExecutionPhase.ITERATING_PURELY_DISCRETE_PHASE) {
+            == CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE) {
             super._iteratePurelyDiscreteActors(schedule);
         } else if (executionPhase 
             == CTExecutionPhase.FIRING_DYNAMIC_ACTORS_PHASE) {
