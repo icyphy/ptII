@@ -60,6 +60,7 @@ JSRCS = \
 	IFace.java \
 	InnerClass.java \
 	InnerIFace.java \
+	JavaCodeGeneratorTest.java \
 	Methods.java \
 	OneFM.java \
 	OneField.java \
