@@ -59,7 +59,7 @@ then the classpath is used for identifying relative file names.
 Files can be given relative to a <i>base</i>, where the base is
 the URI of the first container above this one that has a URIAttribute.
 Normally, this URI specifies the file or URL containing the model
-definition. Thus, files that are refered to here can be kept in the
+definition. Thus, files that are referred to here can be kept in the
 same directory as the model, or in a related directory, and can
 moved together with the model.
 <p>
