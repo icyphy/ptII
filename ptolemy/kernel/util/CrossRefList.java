@@ -283,7 +283,7 @@ public final class CrossRefList {
                     _ref = _headNode;
                     return _ref._farOwner();
                 } else { // List is empty, throw exception.
-                    throw new NoSuchElementException("List is empty.");
+                    throw new NoSuchElementException("exhausted enumeration");
                 }
             } else { // If not at beginning of list.
                 if (_ref != _lastNode) { // If not at end of list.
@@ -294,10 +294,10 @@ public final class CrossRefList {
                     } else {
                         // If pointer is NULL, then end of list was
                         // already passed.  Throw exception.
-                        throw new NoSuchElementException("End of list passed.");
+                        throw new NoSuchElementException("exhausted enumeration");
                     }
                 } else { // If at end of list.
-                    throw new NoSuchElementException("End of list reached.");
+                    throw new NoSuchElementException("exhausted enumeration");
                 }
             }
         }
