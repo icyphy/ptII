@@ -52,12 +52,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	Equals.java \
-	LogicalAnd.java \
-	LogicalNand.java \
-	LogicalNor.java \
-	LogicalOr.java \
-	LogicalXor.java \
-	LogicalXnor.java \
+	LogicFunction.java \
 	LogicalNot.java
 
 EXTRA_SRCS =	$(JSRCS) \
