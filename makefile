@@ -45,7 +45,9 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	ptII
-PTVERSION =	1.1devel
+# If you change the version number, be sure to edit doc/makefile,
+# ptolemy/configs and ptolemy/configs/doc
+PTVERSION =	2.0devel
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
