@@ -88,8 +88,12 @@ public abstract class Element {
      *  caution since it may make the element incompatible with graphs that 
      *  already contain it. The method has no effect if the element is already
      *  unweighted. 
+     *  @see Graph#validEdgeWeight(Object)
+     *  @see Graph#validNodeWeight(Object)
+     *  @see Graph#validateWeight(Node)
      */
     public final void removeWeight() {
+        // FIXME: add @see Graph#validateWeight(Edge)
         _weight = null;
     } 
 
@@ -97,8 +101,12 @@ public abstract class Element {
      *  caution since it may make the element incompatible with graphs that 
      *  already contain it. 
      *  @param weight The new weight.
+     *  @see Graph#validEdgeWeight(Object)
+     *  @see Graph#validNodeWeight(Object)
+     *  @see Graph#validateWeight(Node)
      */
     public final void setWeight(Object weight) {
+        // FIXME: add @see Graph#validateWeight(Edge)
         if (weight == null) {
             throw new IllegalArgumentException("Attempt to assign a null "
                     + "weight to the following " + _descriptor() + ": "
