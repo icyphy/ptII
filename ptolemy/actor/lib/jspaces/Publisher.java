@@ -62,12 +62,13 @@ the token, to the JavaSpace with the name specified by the
 token entry is not used, and is always set to 0. Derived class may use
 the serial number to keep track of the order of the published
 tokens. If there is already an entry in the JavaSpace with the entry
-name, the new token will override the existing one. In thoery, an entry
-only exist in the JavaSpace for a limited amount of time, denoted
+name, the new token will override the existing one. In theory, an entry
+only exists in the JavaSpace for a limited amount of time, denoted
 as the <i>lease time</i>. If the lease time expires, the JavaSpace 
 can freely remote the entry from it. The lease time of an entry 
 published by this publisher is specified by the <i>leaseTime</i> 
-parameter in milliseconds.
+parameter in milliseconds. The default value LEASE_FOREVER will
+keep the entry as long as the JavaSpace exists. 
 
 @see TokenEntry
 @author Jie Liu, Yuhong Xiong

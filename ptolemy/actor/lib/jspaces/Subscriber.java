@@ -122,7 +122,7 @@ public class Subscriber extends Source implements RemoteEventListener {
 
     /** The default token. If the actor is nonblocking
      *  and there is no new token received after the last fire()
-     *  methed call, then this
+     *  method call, then this
      *  token will be output when the fire() method is called.
      *  The default value is 0.0. And the default type is
      *  double. Notice that the type of the output port
@@ -196,8 +196,8 @@ public class Subscriber extends Source implements RemoteEventListener {
         if (_debugging) {
             _debug(getName(), "Get notified from JavaSpaces.");
         }
-        NotifyHandler nh = new NotifyHandler(this, event);
-        new Thread(nh).start();
+        NotifyHandler handler = new NotifyHandler(this, event);
+        new Thread(handler).start();
     }
 
     /** Consume the trigger input if there are any, and output the latest
@@ -209,7 +209,7 @@ public class Subscriber extends Source implements RemoteEventListener {
      *  @exception IllegalActionException If the blocking is interrupted.
      */
     public void fire() throws IllegalActionException {
-        // Cosume tokens at the trigger input.
+        // Consume tokens at the trigger input.
         super.fire();
         synchronized(_lock) {
             while(true) {
@@ -303,7 +303,8 @@ public class Subscriber extends Source implements RemoteEventListener {
         //////////////////////////////////////////////////////////////
         ////                     public methods                   ////
 
-        /** Read the entry token from the javaspaces.
+        /** Read the entry from the JavaSpace, and store it so that
+         *  it can be output by the next fire() method call.
          */
         public void run() {
             // check if it is the right notification
