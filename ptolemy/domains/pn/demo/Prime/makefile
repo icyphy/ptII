@@ -52,7 +52,6 @@ JSRCS = \
 	PNPrimeGalaxy.java \
 	PNRamp.java \
 	PNSieve.java \
-	PNSink.java \
 	TimedPrimeExample.java \
 	TimedRamp.java
 
