@@ -193,18 +193,6 @@ public class Manager extends NamedObj implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add a change listener. The listener
-     *  will be notified of the execution of each change requested
-     *  via the requestChange() method.
-     *  If the listener is already in the list, do not add it again.
-     *  @param listener The listener to add.
-     *  @deprecated use addChangeListener on the toplevel composite actor 
-     *  instead.
-     */
-    public void addChangeListener(ChangeListener listener) {
-	((CompositeActor)getContainer()).addChangeListener(listener);
-    }
-
     /** Add a listener to be notified when the model execution changes state.
      *  @param listener The listener.
      */
@@ -513,15 +501,6 @@ public class Manager extends NamedObj implements Runnable {
                 "Attempted to call finish on an executing manager with no" +
                 " associated model");
         container.stopFire();
-    }
-
-    /** Remove a change listener. If the specified listener is not
-     *  on the list, do nothing.
-     *  @param listener The listener to remove.
-     *  @deprecated use method in CompositeActor instead.
-     */
-    public void removeChangeListener(ChangeListener listener) {
-	((CompositeActor)getContainer()).removeChangeListener(listener);
     }
 
     /** Remove a listener from the list of listeners that are notified

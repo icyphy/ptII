@@ -466,25 +466,6 @@ public class Director extends NamedObj implements Executable {
         if (_debugging) _debug("Finished preinitialize().");
     }
 
-    /** Queue a change request with the manager.
-     *  The indicated change will be executed at the next opportunity,
-     *  typically between top-level iterations of the model.
-     *  In this class the request is delegated to the container
-     *  of the container.
-     *  If there is no container, do nothing.
-     *  @param change The requested change.
-     *  @exception ChangeFailedException If the manager throws it.
-     *  @deprecated Use the method in CompositeActor instead.
-     */
-    public void requestChange(ChangeRequest change)
-	throws ChangeFailedException {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container != null) {
-	    CompositeEntity entity = (CompositeEntity)container.getContainer();
-	    entity.requestChange(change);
-        }
-    }
-
     /** Queue an initialization request with the manager.
      *  The specified actor will be initialized at an appropriate time,
      *  between iterations, by calling its preinitialize() and initialize()
