@@ -189,23 +189,23 @@ test ArrayFIFOQueue-3.4.1 {Put array of data on a queue} {
     $array set 3 $n4
     $array set 4 $n5
     $queue putArray $array
-    _testEnums elements $queue
-} {{n1 n2 n3 n4 n5}}
+    list [_testEnums elements $queue] [$queue size]
+} {{{n1 n2 n3 n4 n5}} 5}
 
 ######################################################################
 ####
 #
 test ArrayFIFOQueue-3.4.2 {Put array of data on a queue} {
     set queue [java::new ptolemy.domains.sdf.kernel.ArrayFIFOQueue]
-    set array [java::new {Object[]} {5} {}]
+    set array [java::new {Object[]} {25} {}]
     $array set 0 $n1
     $array set 1 $n2
     $array set 2 $n3
     $array set 3 $n4
     $array set 4 $n5
     $queue putArray $array 5
-    _testEnums elements $queue
-} {{n1 n2 n3 n4 n5}}
+    list [_testEnums elements $queue] [$queue size]
+} {{{n1 n2 n3 n4 n5}} 5}
 
 ######################################################################
 ####

@@ -325,7 +325,7 @@ public final class ArrayFIFOQueue implements Cloneable {
 		catch (Exception e) {
 		    e.printStackTrace();
 		}
-		return putArray(element);
+		return putArray(element, count);
 	    } else
 		return false;
         }
