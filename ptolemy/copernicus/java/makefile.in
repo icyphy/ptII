@@ -309,7 +309,7 @@ gcj:
 	echo " 3) Run 'make gcj2'"
 	echo " 4) Run 'make gcjRun'"
 
-gcjSetup:	demo treeShakeCodegen runTreeShakeCodegen
+gcjSetup:	demo treeShake runTreeShake
 
 
 gcjFix: $(TARGETPATH)/CGoutputBitDisplay.java
