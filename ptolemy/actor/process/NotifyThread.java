@@ -46,7 +46,7 @@ of locks. Since this is a new thread without any locks, calling notifyAll
 <p>
 To use this to wake up any threads waiting on a lock, create a new instance
 of this class with a LinkedList of lock objects (or single lock) to call
-notifyAll on. 
+notifyAll on.
 <p>
 @author Neil Smyth, Mudit Goel
 @version $Id$

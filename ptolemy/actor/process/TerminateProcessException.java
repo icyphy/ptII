@@ -37,18 +37,18 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// TerminateProcessException
 /**
-This exception is thrown to terminate a process. This is only a 
+This exception is thrown to terminate a process. This is only a
 notification exception that a ProcessDirector uses to terminate all the
-processes gracefully. It is not an exception that indicates an error in 
+processes gracefully. It is not an exception that indicates an error in
 the code or model.
 
 In the process domains (PN and CSP for example), a simulation is
-terminated only when a deadlock is detected. During a deadlock, the 
-threads corresponding to actors are normally blocked on a method call to 
-the receiver. This exception is normally thrown from these methods, so 
+terminated only when a deadlock is detected. During a deadlock, the
+threads corresponding to actors are normally blocked on a method call to
+the receiver. This exception is normally thrown from these methods, so
 that the threads can return from the call and terminate themselves.
 
-This class is a standalone class and not derived from the Ptolemy 
+This class is a standalone class and not derived from the Ptolemy
 Runtime exceptions as those exceptions indicate an error in the model,
 while this exception is used for passing of information to the threads.
 

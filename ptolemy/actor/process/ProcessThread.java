@@ -40,30 +40,30 @@ import ptolemy.actor.*;
 /**
 Thread class acting as a process for process oriented domains.
 <P>
-In process oriented domains, each actor acts as a separate process and 
+In process oriented domains, each actor acts as a separate process and
 its execution is not centrally controlled by the director. Each process
 runs concurrently with other processes and is responsible for calling
 its execution methods.
 <P>
-This class provides the mechanism to implement the above. 
-An instance of this class can be created by passing an actor as an 
+This class provides the mechanism to implement the above.
+An instance of this class can be created by passing an actor as an
 argument to the constructor. This class runs as a separate thread on
 being started and calls the execution methods on the actor, repeatedly.
 In specific, it calls the prefire(), fire() and postfire() methods
-of the actor. Before termination, this calls the wrapup() method of 
+of the actor. Before termination, this calls the wrapup() method of
 the actor.
 <P>
 If an actor returns false in its prefire() or postfire() methods, the
-actor is never fired again and the thread or process would terminate 
+actor is never fired again and the thread or process would terminate
 after calling wrapup() on the actor.
 <P>
-The initialize() method of the actor is not called from this class. It 
-should be called before starting this thread. 
+The initialize() method of the actor is not called from this class. It
+should be called before starting this thread.
 <P>
-In process oriented domains, the director needs to keep a count of the 
+In process oriented domains, the director needs to keep a count of the
 number of active processes in the system. This is used for detection of
 deadlocks, termination, and possibly some other reasons. For this two
-methods _increaseActiveCount() and _decreaseActiveCount() are defined 
+methods _increaseActiveCount() and _decreaseActiveCount() are defined
 in the ProcessDirector. _increaseActiveCount() is called on the director
 from the constructor of this class and the _decreaseActiveCount() method
 is called at the end of the run() method, i.e. before the thread terminates.
@@ -88,8 +88,8 @@ public class ProcessThread extends PtolemyThread {
         _manager = ((CompositeActor)
                 ((NamedObj)actor).getContainer()).getManager();
 
-	//This method is called here and not in the run() method as the 
-	//count should be incremented before any thread is started 
+	//This method is called here and not in the run() method as the
+	//count should be incremented before any thread is started
 	//or made active. This is because the second started thread might
 	//block on a read or write to this process and increment the block
 	//count even before this thread has incremented the active count.
@@ -108,7 +108,7 @@ public class ProcessThread extends PtolemyThread {
     }
 
     /** Initialize the actor, iterate it through the execution cycle
-     *  till it terminates. At the end of the termination, calls wrapup 
+     *  till it terminates. At the end of the termination, calls wrapup
      *  on the actor.
      */
     public void run() {

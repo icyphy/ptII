@@ -46,19 +46,19 @@ import collections.LinkedList;
 Base class of directors for the process oriented domains. It provides
 default implementations for methods that are common across such domains.
 <p>
-In the process oriented domains, the director controlling a model 
-needs to keep track of the state of the model. In particular it needs 
-to maintain an accurate count of the number of active processes under 
-its control, any processes that are blocked for whatever reason (trying 
-to read from an empty channel as in PN) and the number of processes that have 
-been paused. These counts, and perhaps other counts, are needed by the 
-director to control and respond when deadlock is detected (no processes 
+In the process oriented domains, the director controlling a model
+needs to keep track of the state of the model. In particular it needs
+to maintain an accurate count of the number of active processes under
+its control, any processes that are blocked for whatever reason (trying
+to read from an empty channel as in PN) and the number of processes that have
+been paused. These counts, and perhaps other counts, are needed by the
+director to control and respond when deadlock is detected (no processes
 can make progress), or to respond to requests from higher in the hierarchy.
 <p>
 The methods that control how the director detects and responds to deadlocks
 are _checkForDeadlock() and _handleDeadlock(). These methods should be
-overridden in derived classes to get domain-specific behaviour. The 
-implementations given here are trivial and suffice only to illustrate 
+overridden in derived classes to get domain-specific behaviour. The
+implementations given here are trivial and suffice only to illustrate
 the approach that should be followed.
 <p>
 @author Mudit Goel, Neil Smyth
@@ -90,7 +90,7 @@ public class ProcessDirector extends Director {
      *  The director is added to the list of objects in the workspace.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     * 
+     *
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
      */
@@ -105,7 +105,7 @@ public class ProcessDirector extends Director {
      *  <i>not</i> added to the directory of that workspace (It must be added
      *  by the user if he wants it to be there).
      *  The result is a new director with no container, no pending mutations,
-     *  and no topology listeners. The count of active processes is zero 
+     *  and no topology listeners. The count of active processes is zero
      *  and it is not paused.
      *
      *  @param ws The workspace for the cloned object.
@@ -152,14 +152,14 @@ public class ProcessDirector extends Director {
 
     /** Invokes the initialize() methods of all the deeply contained
      *  actors in the container (a composite actor) of this director.
-     *  It creates a new ProcessThread for each actor. It also creates 
+     *  It creates a new ProcessThread for each actor. It also creates
      *  receivers for all the ports.
      *  <p>
-     *  The current time of execution of the container and all the 
+     *  The current time of execution of the container and all the
      *  actors contained in it is set.
      *  <p>
      *
-     *  @exception IllegalActionException If the initialize() method 
+     *  @exception IllegalActionException If the initialize() method
      *   of one of the deeply contained actors throws it.
      */
     public void initialize()
@@ -186,8 +186,8 @@ public class ProcessDirector extends Director {
     /** Return false if the model has reached a deadlock and can
      *  be terminated if desired. Return true otherwise.
      *  This flag is set on detection of a deadlock in the fire() method.
-     *  @return false if the director has detected a deadlock and can be 
-     *  terminated if desired. 
+     *  @return false if the director has detected a deadlock and can be
+     *  terminated if desired.
      *  @exception IllegalActionException If a derived class throws it.
      */
     public boolean postfire() throws IllegalActionException {
@@ -195,7 +195,7 @@ public class ProcessDirector extends Director {
     }
 
     /** Return true.
-     *  This starts the threads, corresponding to all the actors, that 
+     *  This starts the threads, corresponding to all the actors, that
      *  were created in the initialize() method.
      *  @return true Always returns true.
      *  @exception IllegalActionException If a derived class throws it.
@@ -211,7 +211,7 @@ public class ProcessDirector extends Director {
         return true;
     }
 
-    /** Pause the execution of the model. This method iterates through the 
+    /** Pause the execution of the model. This method iterates through the
      *  set of actors in the compositeActor and sets the pause flag of all
      *  the receivers. It also sets the pause flag in all the output
      *  ports of the CompositeActor under control of this director.
@@ -220,7 +220,7 @@ public class ProcessDirector extends Director {
      */
     //  Note: Should be fixed after Director/Manager define pause, et. al.
     //  Should a pausedEvent be sent when the model is fully paused?
-    public void pause() 
+    public void pause()
             throws IllegalActionException {
         Workspace workspace = workspace();
 	workspace.getReadAccess();
@@ -230,7 +230,7 @@ public class ProcessDirector extends Director {
 	    Enumeration allMyActors = cont.deepGetEntities();
 	    Enumeration actorPorts;
 	    ProcessReceiver nextRec;
-	    
+
 	    while (allMyActors.hasMoreElements()) {
 		// Obtaining all the ports of each actor
 		Actor actor = (Actor)allMyActors.nextElement();
@@ -248,7 +248,7 @@ public class ProcessDirector extends Director {
 		    }
 		}
 	    }
-	    
+
 	    // If this director is controlling a CompositeActor with
 	    // output ports, need to set the finished flag
 	    // there as well.
@@ -269,7 +269,7 @@ public class ProcessDirector extends Director {
 	} finally {
 	    workspace.doneReading();
 	}
-	
+
 	synchronized (this) {
 	    while (!_checkForPause()) {
 		workspace.wait(this);
@@ -277,9 +277,9 @@ public class ProcessDirector extends Director {
 	}
         return;
     }
-    
-    /** Resumes execution of the model. 
-     *  All the actors that were paused using setResumePaused are resumed. 
+
+    /** Resumes execution of the model.
+     *  All the actors that were paused using setResumePaused are resumed.
      *  The pause flag of the receivers is set to false and all the threads
      *  that are waiting on the receiver are notified.
      */
@@ -302,7 +302,7 @@ public class ProcessDirector extends Director {
 
     /** Terminates all threads under control of this director immediately.
      *  This abrupt termination will not allow normal cleanup actions
-     *  to be performed, and the model should be recreated after calling 
+     *  to be performed, and the model should be recreated after calling
      *  this method.
      */
     //  Note: for now call Thread.stop() but should change to use
@@ -322,12 +322,12 @@ public class ProcessDirector extends Director {
     }
 
 
-    /** Ends the execution of the model under the control of this 
+    /** Ends the execution of the model under the control of this
      *  director. A flag is set in all the receivers
      *  which causes each process to terminate at the earliest
      *  communication point.
      *  <p>
-     *  This method is not synchronized on the workspace, so the caller 
+     *  This method is not synchronized on the workspace, so the caller
      *  should be.
      *  Note that the wrapup methods are not invoked on the actors
      *  under control of this director as each actor is executed by a
@@ -384,7 +384,7 @@ public class ProcessDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Add a thread to the list of threads in the model. 
+    /** Add a thread to the list of threads in the model.
      *  This list is used in case of abrupt termination of the model
      *  @param thr The newly created thread
      */
@@ -392,8 +392,8 @@ public class ProcessDirector extends Director {
 	_threadList.insertFirst(thr);
     }
 
-    /** Checks for deadlock. In the base class implementation it 
-     *  notifies the director of a deadlock only if there are no active 
+    /** Checks for deadlock. In the base class implementation it
+     *  notifies the director of a deadlock only if there are no active
      *  processes.
      */
     protected synchronized boolean _checkForDeadlock() {
@@ -405,7 +405,7 @@ public class ProcessDirector extends Director {
     }
 
     /** Checks if all active processes are either blocked or paused.
-     *  Should be overridden in derived classes. In the base class it 
+     *  Should be overridden in derived classes. In the base class it
      *  verifies if all the active actors are paused.
      */
     protected synchronized boolean _checkForPause() {
@@ -416,7 +416,7 @@ public class ProcessDirector extends Director {
 	}
     }
 
-    /** Decrease by one the count of active processes under the control of 
+    /** Decrease by one the count of active processes under the control of
      *  this director. Also check whether the model is now paused
      *  if a pause was requested.
      *  This method should be called only when an active thread that was
@@ -432,7 +432,7 @@ public class ProcessDirector extends Director {
 	}
     }
 
-    /** Return the number of active processes under the control of this 
+    /** Return the number of active processes under the control of this
      *  director.
      *  @return The number of active actors.
      */
@@ -441,7 +441,7 @@ public class ProcessDirector extends Director {
     }
 
 
-    /** Return the number of paused processes under the control of this 
+    /** Return the number of paused processes under the control of this
      *  director.
      *  @return The number of active actors.
      */
@@ -449,9 +449,9 @@ public class ProcessDirector extends Director {
 	return _actorsPaused;
     }
 
-    /** Return true. 
+    /** Return true.
      *  In derived classes, override this method to obtain domain
-     *  specific handling of deadlocks. It should return true if a 
+     *  specific handling of deadlocks. It should return true if a
      *  real deadlock has occurred and the simulation can be ended.
      *  It should return if the simulation has data to proceed and
      *  need not be terminated.
@@ -464,10 +464,10 @@ public class ProcessDirector extends Director {
 	return true;
     }
 
-    /** Increases the count of active actors in the composite actor 
-     *  corresponding to this director by 1. This method should be 
-     *  called when a new thread corresponding to an actor is started 
-     *  in the model under the control of this director. This method 
+    /** Increases the count of active actors in the composite actor
+     *  corresponding to this director by 1. This method should be
+     *  called when a new thread corresponding to an actor is started
+     *  in the model under the control of this director. This method
      *  is required for detection of deadlocks.
      *  The corresponding method _decreaseActiveCount should be called
      *  when the thread is terminated.
@@ -481,15 +481,15 @@ public class ProcessDirector extends Director {
 
     // Flag for determining when an iteration completes
     protected boolean _notdone = true;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Count of the number of processes that were started by this 
-    // director but have not yet finished.    
+    // Count of the number of processes that were started by this
+    // director but have not yet finished.
     private long _actorsActive = 0;
 
-    // Count of the number of processes that have been paused 
+    // Count of the number of processes that have been paused
     // following a request for a pause.
     private long _actorsPaused = 0;
 

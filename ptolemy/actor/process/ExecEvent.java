@@ -35,11 +35,11 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// ExecEvent
 /**
-An event passed from a process executing under the PN semantics to a 
+An event passed from a process executing under the PN semantics to a
 PNProcessListener. This is used to
 represent an event that happened during the execution of a topology.
 This event contains two pieces of information:  the actor under the control
-of the process and an exception that might be thrown. 
+of the process and an exception that might be thrown.
 The exception might not be a valid reference.
 
 @author Mudit Goel, John S. Davis II
@@ -48,7 +48,7 @@ The exception might not be a valid reference.
 
 public class ExecEvent {
 
-    /** Create a new event 
+    /** Create a new event
      *  @param actor The actor associated with the event.
      *  @param actor The state of the actor associated with this event.
      */
@@ -74,7 +74,7 @@ public class ExecEvent {
 
     //////////////////////////////////////////////////////////////
     ////                   public variables                  /////
-    
+
     //////////////////////////////////////////////////////////////
     ////                   private variables                 /////
 

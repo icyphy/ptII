@@ -39,21 +39,21 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// ProcessReceiver
 /**
-Interface for receivers in the process oriented domains. 
-It adds methods to the Receiver interface for setting flags that 
-indicate whether a pause, resume or termination of the simulation has 
+Interface for receivers in the process oriented domains.
+It adds methods to the Receiver interface for setting flags that
+indicate whether a pause, resume or termination of the simulation has
 been requested.
 
 In process oriented domains, simulations are normally ended on the
-detection of a deadlock. During a deadlock, processes or the 
-corresponding threads are normally waiting on a call to some 
-methods (for reading or writing) on a receiver. 
+detection of a deadlock. During a deadlock, processes or the
+corresponding threads are normally waiting on a call to some
+methods (for reading or writing) on a receiver.
 To terminate or end the simulation, these methods should
-either return or throw an exception to inform the processes that they 
+either return or throw an exception to inform the processes that they
 should terminate themselves. For this a method setFinish() is defined.
-This method would set a local flag in the receivers and wake up all the 
-processes waiting on some call to the receiver. On waking up these 
-processes would see that the termination flag set and behave accordingly. 
+This method would set a local flag in the receivers and wake up all the
+processes waiting on some call to the receiver. On waking up these
+processes would see that the termination flag set and behave accordingly.
 A sample implementation is <BR>
 <Code>
 public synchronized void setFinish() {
@@ -63,14 +63,14 @@ public synchronized void setFinish() {
 </code>
 <p>
 
-Similarly, in process oriented domains, a simulation can be paused, 
-safely, only when the processes try to communicate with some other 
-process by calling methods on the receiver. For this, a setPause() 
-method is defined. This method will set a local flag in the receiver 
-which indicates that a pause has been requested. When a process next 
-calls any of the methods in the receiver to read or write a token, 
-it will be paused. To resume the simulation, the method will be called 
-with false as an argument. This method will then reset the local flag 
+Similarly, in process oriented domains, a simulation can be paused,
+safely, only when the processes try to communicate with some other
+process by calling methods on the receiver. For this, a setPause()
+method is defined. This method will set a local flag in the receiver
+which indicates that a pause has been requested. When a process next
+calls any of the methods in the receiver to read or write a token,
+it will be paused. To resume the simulation, the method will be called
+with false as an argument. This method will then reset the local flag
 and resume the paused processes.
 A sample implementation is: <BR>
 <code>
@@ -93,7 +93,7 @@ public interface ProcessReceiver extends Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set a local flag that requests that the simulation be paused 
+    /** Set a local flag that requests that the simulation be paused
      *  or resumed.
      *  @param value The flag indicating a requested pause or resume.
      */
