@@ -303,7 +303,7 @@ proc objectsToTokenValues {objlist} {
     foreach obj $objlist {
         if [ java::instanceof $obj ptolemy.data.Token] {
             lappend results [[java::cast ptolemy.data.Token \
-                    $obj] stringValue]
+                    $obj] toString]
         } else {
             lappend results NOT_A_TOKEN.
         }
