@@ -942,13 +942,6 @@ public class PxgraphParser {
         }
     }
 
-    /** Write the current data and plot configuration to the
-     * specified stream.  This method is only used for testing
-     */
-    public void write(OutputStream out, String dtd) {
-        _plot.write(out, dtd);
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
