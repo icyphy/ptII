@@ -42,7 +42,7 @@ import diva.util.SemanticObjectContainer;
  * an adjacency matrix).  This class is a good reference class for how
  * to use the diva.graph.modular classes and will suffice as a data
  * structure for simple, throw-away applications (a heavy-weight
- * application like a schematic editor will probalby want to implement
+ * application like a schematic editor will probably want to implement
  * things differently.
  *
  * @author Michael Shilman  (michaels@eecs.berkeley.edu)
