@@ -89,7 +89,7 @@
         </property>
         <property name="portTypes" class="ptolemy.data.expr.Parameter" value="{Const={output=&quot;double&quot;, trigger=&quot;unknown&quot;}, Expression={f=&quot;double&quot;, output=&quot;{l1=double, l2=int}&quot;, x=&quot;int&quot;}, Expression2={output=&quot;{l1=double}&quot;, x=&quot;{l1=double, l2=int}&quot;}, MonitorValue={input=&quot;{l1=double}&quot;}, Ramp={output=&quot;int&quot;, step=&quot;int&quot;, trigger=&quot;unknown&quot;}}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 245.0">
         </property>
