@@ -73,7 +73,7 @@ import ptolemy.math.ComplexMatrixMath;
  * The bulk of the work done by this class is the conversion between
  * PtolemyII Tokens and matlab variables ("mxArrays").<p>
  *
- * {@link #get(long [], String name)} converts a matlab engine mxArray (ma)
+ * {@link #get(long[] eng, String name)} converts a matlab engine mxArray (ma)
  * variable to a Ptolemy II Token. Recursion is used if ma is a struct
  * or cell.  The type of the Token returned is determined according to
  * the following table:
@@ -100,10 +100,11 @@ import ptolemy.math.ComplexMatrixMath;
  * </pre>
  * <p>
  *
+
  * {@link #put(long[] eng, String name, Token t)} converts a PtolemyII
  * Token to a matlab engine mxArray. Recursion is used if t is a
- * RecordToken or ArrayToken.  The type of mxArray created is
- * determined according to the following table:
+ * RecordToken or ArrayToken.
+ * The type of mxArray created is determined according to the following table:
  * <pre>
  *     PtolemyII Token          Matlab type
  *     ------------------------------------------------------------------
@@ -125,8 +126,8 @@ import ptolemy.math.ComplexMatrixMath;
  * #setDebugging} with a byte parameter > 0. 1 enables basic tracing,
  * 2 includes traces from the dll as well.<p>
  *
- * {@link #evalString(long [] eng, String)} send a string to the
- * matlab engine for evaluation.<p>
+ * {@link #evalString(long[] eng, String)} send a string to the matlab
+ * engine for evaluation.<p>
  *
  * {@link #open} and {@link #close} are used to open / close the
  * connection to the matlab engine.<p>
