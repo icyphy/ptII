@@ -760,22 +760,60 @@ else
     else
 	AC_MSG_RESULT([Did not find
 	'$COMMAPI_DIR/comm.jar'])
-	AC_MSG_CHECKING([for commapi by compiling a test program ])
-        # We need to run javac in the config directory so that javac from
-        # jdk1.1.6 under NT and cygwin works properly
-	startdir=`pwd`
-	cd "$srcdir/config"
-	# Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-	if "$JAVAC" javaCommAPI.java ; then
-	    AC_MSG_RESULT(ok)
-	    PTLEGO_DIR=lego
-	    PTCOMM_DIR=comm
-	    COMMAPI_PRESENT=yes
-	else
-	    COMMAPI_DIR='${PTII}/vendors/sun/commapi'
-	fi
-	cd "$startdir"
     fi
+
+    # Set PTJAVA_HOME
+    # Under Cygwin, PTJAVA_HOME will not contain /cygdrive/c
+    # Under Cygwin, PTJAVA_DIR _will_ contain /cygdrive/c
+    # We need to run javac in the config directory so that javac from
+    # jdk1.1.6 under NT and cygwin works properly
+    startdir=`pwd`
+    cd "$srcdir/config"
+    AC_MSG_CHECKING([for java.home prop by compiling a test program ])
+    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+    if "$JAVAC" JavaHome.java ; then
+        AC_MSG_RESULT(ok)
+	AC_MSG_CHECKING([for java.home prop by running a test program ])
+	if env CLASSPATH="$PTII/config" "$JAVA" JavaHome > /dev/null; then
+	    # Run it again and get the results with \ converted to /
+	    PTJAVA_HOME=`CLASSPATH="$PTII/config" "$JAVA" JavaHome | sed 's@\\\@/@'g`
+	    AC_MSG_RESULT($PTJAVA_HOME)
+
+	    AC_MSG_CHECKING([for javax.comm.properties ])
+	    if test -f "$PTJAVA_HOME/lib/javax.comm.properties"; then
+	       AC_MSG_RESULT([$PTJAVA_HOME/lib/javax.comm.properties])
+	    else   
+	       AC_MSG_WARN([$PTJAVA_HOME/lib/javax.comm.properties
+    not found.
+    If you try to access a serial port and get 'No serial ports found!',
+    then the problem is that javax.comm.properties is not being found.
+    Download the Java Comm API from http://java.sun.com/products/javacomm/
+    and place javax.comm.properties in $PTJAVA_HOME/lib])
+	    fi  
+	    case "`uname -s`" in
+	    CYGWIN*)	 PTCYGWIN=yes;;
+	    *) PTCYGWIN=no;
+	    esac
+	    if test $PTCYGWIN = "yes"; then
+	       AC_MSG_CHECKING([for win32com.dll ])
+	       if test -f "$PTJAVA_HOME/lib/ext/win32com.dll"; then
+	           AC_MSG_RESULT([$PTJAVA_HOME/lib/ext/win32com.dll])
+   	       else   
+	           AC_MSG_WARN([$PTJAVA_HOME/lib/ext/win32com.dll
+    not found.
+    Download the Java Comm API from http://java.sun.com/products/javacomm/
+    and place win32com.dll in $PTJAVA_HOME/lib/ext])
+	       fi
+	    fi
+	else   
+	    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA JavaHome' failed.
+    Running models that access the serial port from within a sandbox
+    might fail.  This is usually only important if you plan on using
+    the sandbox feature, see $PTII/doc/sandbox.htm]);
+	fi
+    fi
+    cd "$startdir"
+
 
     if test "$COMMAPI_PRESENT" = "no"; then
         AC_MSG_WARN([Perhaps commapi is not installed?
@@ -2153,7 +2191,7 @@ else
 
     AC_MSG_CHECKING([for rt.jar by compiling config/SystemJar.java])
     AC_ARG_WITH(javasystemjar, [  --with-javasystemjar=DIR       use rt.lib from DIR,
-                          defaults to JRE java.home property],
+                          defaults to JRE java.home property with lib/rt.jar appended ],
 	JAVA_SYSTEM_JAR=$withval,
 	JAVA_SYSTEM_JAR='$(PTJAVA_DIR)/jre/lib/rt.jar')
 
@@ -2161,7 +2199,7 @@ else
     cd "$srcdir/config"
     if "$JAVAC" SystemJar.java ; then
 	AC_MSG_RESULT(ok)
-	AC_MSG_CHECKING([the value of the java.home property ])
+	AC_MSG_CHECKING([the location or rt.jar])
 	if env CLASSPATH="$PTII/config" "$JAVA" SystemJar > /dev/null; then
 	    # Run it again and get the results
 	    JAVA_SYSTEM_JAR=`CLASSPATH="$PTII/config" "$JAVA" SystemJar`
@@ -2603,6 +2641,9 @@ AC_SUBST(PTJAI_DIR)
 
 # Location of the JDK
 AC_SUBST(PTJAVA_DIR)
+
+# Value of java.home property, location of the JDK with /cygdrive/c/ converted to c:/
+AC_SUBST(PTJAVA_HOME)
 
 # Set to gr and used in
 # $PTII/ptolemy/domains/makefile if Java 3D was found
