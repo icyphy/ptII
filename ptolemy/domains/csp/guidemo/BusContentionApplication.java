@@ -284,15 +284,22 @@ public class BusContentionApplication implements ActionListener {
     /**
      */
     public void shutDown() {
+        Director director = _topLevelActor.getDirector(); 
         Manager manager = _topLevelActor.getManager(); 
-	manager.terminate(); 
+	try {
+	    director.wrapup();
+	    manager.finish();
+	    manager = null;
+	} catch( IllegalActionException e ) {
+	}
 	if( _appletPanel == null ) {
 	    _window.setVisible(false); 
-	    // FIXME: _window.displose(); 
-	    _window =  null;
+	    _window.dispose(); 
+	    _window = null;
+
 	    // This call to System.exit will not kill browser
 	    // windows because of security permission.
-	    System.exit(0);
+	    // System.exit(0);
 	}
     }
 
