@@ -36,7 +36,7 @@ ME =		ptolemy
 # any classes in other directories that we depend on.
 # Note that data.expr uses moml
 DIRS = kernel plot graph moml data actor gui math media	\
-	domains vergil apps configs
+	domains vergil configs #apps
 
 # Root of Ptolemy II directory
 ROOT =		..
