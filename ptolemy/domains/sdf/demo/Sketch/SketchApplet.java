@@ -36,6 +36,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
 import ptolemy.actor.gui.MoMLApplet;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.lib.gui.SequencePlotter;
@@ -71,7 +72,7 @@ public class SketchApplet extends MoMLApplet implements EditListener {
      */
     public void editDataModified(EditablePlot source, int dataset) {
         try {
-            if (_manager.getState() == _manager.IDLE) {
+            if (_manager.getState() == Manager.IDLE) {
                 _sketchedSource.editDataModified(source, dataset);
                 _go();
             }
