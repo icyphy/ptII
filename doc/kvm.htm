@@ -1,0 +1,222 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>KVM</title>
+<link href="default.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<h1>KVM</h1>
+Ptolemy II can generate simulations that run on the Palm Pilot
+and Handspring using the Java KVM or j2me_cldc facility.
+The Ptolemy II/Palm facility is extremely experimental, and is based
+on the <a href="codegen.htm">Ptolemy II Code Generation</a> facility
+
+<h2>Remote links</a>
+<menu>
+
+<li> <a href="http://java.sun.com/products/cldc/" target="_top">CLDC and the K Virtual Machine (KVM)</a>
+<A HREF="http://java.sun.com/products/kvm/wp/KVMwp.pdf" target="_top">KVM White paper</A>
+<li> <a href="http://java.sun.com/products/cldc/faqs.html">CLDC FAQ</a>
+
+<li> <a href="http://www.sun.com/software/communitysource/j2me/download.html">Download j2me</a>
+
+<li> <a href="http://kvm.exnet.com/"><CODE>http://kvm.exnet.com/</CODE></a>KVM FAQ and bugs
+
+<li> <a href="http://webdev.apl.jhu.edu/~rbe/kvm">Robert Evans KVM Pages</a>
+Tutorial with sample code, links
+
+<li> <a href="http://www.trantor.de/kawt/">KAWT Project</a>
+An abstract window toolkit for the KVM 
+
+<li> <a href="http://www.billday.com/KVMArchive/index.html">Billday.com KVMArchive</a>
+</menu>
+
+<h3><a name="kvm_installation">Using the kvm with the Ptolemy II tree</a></h3>
+The Ptolemy II tree has hacks in it so that it can be used to build
+binaries to run on the Palm.
+<ol>
+<li> Download the
+<a href="http://www.sun.com/software/communitysource/j2me/download.html">j2me</a>
+and unzip it so it <CODE>$PTII/vendors/sun</CODE>.  This should
+create a directory named <CODE>$PTII/vendors/sun/j2me_cldc</CODE>
+
+<li> The
+<a href="http://www.palm.com/devzone/pose/pose.html">Palm OS Emulator (POSE)</a>
+can be used to run the KVM, but you need to have access to a Palm to
+download the ROM code, or join the Palm Solution Provider Program and
+snail mail a signed form back to them.
+
+ <p>Note that the Palm OS Emulator does not work with the Handspring ROM
+image.
+
+
+<li> Start up the Palm emulator and point it at the ROM Image.
+
+<li> To transfer applications to the Palm Emulator, right click
+and select <CODE>Install Application/Database</CODE>
+
+ <br> To transfer applications to the Palm or Handspring, start
+up the <CODE>Palm Desktop</CODE>, click on the <CODE>Install</CODE>
+icon, find the application(s) to transfer, then select <CODE>Done</CODE>, then
+hotsync the Palm or Handspring.
+
+<li> <CODE>$PTII/vendors/sun/j2me_cldc/bin</CODE> contains
+<dl>
+<dt> <CODE>KVM.prc</CODE>
+<dd> The kvm Palm Program (required)
+<dt> <CODE>KVMutil.prc</CODE>
+<dd> The kvm Palm Utilities program which allows you to look at
+stderr and stdout 
+<dt> Several demos 
+<dd> (optional)
+</dl>
+Transfer <CODE>KVM.pdb</CODE> and <CODE>KVMutil.prc</CODE> and any
+demos to your Palm, Handspring or PalmOS emulator and try them out.
+
+<li> Ptolemy II can compile kvm apps for the Palm.
+ <br>Remove the Ptolemy configure cache files and rerun configure:
+<pre>
+cd $PTII
+rm config.status config.cache
+./configure
+</pre>
+configure should find the kvm installation and set the
+<CODE>KVM_CLASSES</CODE> and <CODE>KVM_DIR</CODE> makefile variables
+in <CODE>$PTII/mk/ptII.mk</CODE>
+
+
+<li> Compile a simple Palm KVM demo:
+<pre>
+cd $PTII/kvm/hello
+make
+</pre>
+
+<li> Transfer <CODE>$PTII/kvm/hello/Hello.prc</CODE> to your Palm
+or Handspring and run it.
+
+</ol>
+
+
+
+<h2><a name="kvm_executable">kvm executable</a></h2>
+<code>j2me_cldc</code> includes a simple Palm emulator for Windows
+and Solaris.  Unfortunately, it looks like the emulator requires
+a version of Solaris later than 2.5.1, but the Windows version
+builds under Windows 2000.  The advantage of using kw or ku
+is that you need not have PalmOS hardware or Palm ROM images.
+<h3>Building kw under Windows</h3>
+<ol>
+<li>You will need Microsoft Visual C++.
+<li>You will need a zip binary such as
+<A HREF="ftp://ftp.cdrom.com/pub/tex/ctan/tools/zip/info-zip/WIN32/zip22x\
+N.zip"><code>ftp://ftp.cdrom.com/pub/tex/ctan/tools/zip/info-zip/WIN32/zip22x</code></A>
+<li> You will need Cygwin or MKS tools.
+<li>To build:
+<pre>
+cd $PTII/vendors/sun/j2me_cldc/build/win32
+make
+</pre>
+<li> To run:
+<pre>
+$PTII/vendors/sun/j2me_cldc/kvm/VmWin/build/kvm.exe -classpath "$PTII/vendors/sun/j2me_cldc/apiclasses;/j2me_cldc/samples/classes" Dragon
+</pre>
+</ol>
+
+<h2>KVM Demonstration</h2>
+<a href="../ptolemy/kvm/demo/ramp"><code>$PTII/ptolemy/kvm/demo/ramp</code></a>
+contains a simple SDF demonstration system that consists of a Ramp and
+a FileWriter.
+<br><bold>FIXME: Ramp stars do not work yet</bold>
+
+<p>This simulation sets several makefile variables in
+<a href="../ptolemy/kvm/demo/ramp/makefile"><code>$PTII/ptolemy/kvm/demo/ramp/makefile</code></a> and then includes
+<a href="#kvm_mk"><code>$PTII/mk/kvm.mk</code></a>.
+<p>To run the demonstration:
+<ol>
+<li><a href="#kvm_installation">Install the KVM</a> and rerun configure.
+<li>Compile the <code>.java</code> files:
+<pre>
+cd $PTII/ptolemy/kvm/demo
+make
+</pre>
+<li> Run the demo as using the standard Ptolemy II runtime:
+<pre>
+make demo_interpreted
+</pre>
+<li> Run the demo as using the codegen facility
+<pre>
+make codegen
+</pre>
+The Palm binary should appear as
+<code>$PTII/cg/ramp/CG_Main.prc</code>.  Download this binary
+to your emulator or hardware and run it.
+</ol>
+
+
+<h3><name="kvm_mk"<code>$PTII/mk/kvm.mk</code></a></h3> <a
+href="../mk/kvm.mk"><code>$PTII/mk/kvm.mk</code></a> defines makefile
+variables and rules that generate code, compile it and build a Palm
+binary.  The comments in <code>kvm.mk</code> are the best
+documentation of how the facility works.
+<p> Note that to build a Palm binary, you should first
+run the preverifier and then use the <code>.class</code>
+files from the <code>output</code> directory that are
+created by the preverifier.  If you use the
+<code>.class<./code> files that were created by
+javac directly, then you may get verifier errors.
+
+
+
+
+
+<h2>KVM limitations</h2>
+<h3>doubles in the KVM</h3>
+<a href="http://java.sun.com/products/cldc/faqs.html"><code>http://java.sun.com/products/cldc/faqs.html</code> says
+<blockquote>
+Specifically, some features of larger Java virtual machine implementations, like double and long data types, are not supported. For more detail on
+specific differences, see the K virtual machine whitepaper at 
+<a href="http://java.sun.com/products/kvm/wp/KVMwp.pdf">http://java.sun.com/products/kvm/wp/KVMwp.pdf</a>  
+</blockquote>
+At run time, lines like:
+<pre>
+    public final static double[] _cg_output_7 = new double[8];
+</pre>
+cause errors like:
+<pre>
+ALERT: Error verifying class ptolemy/kvm/hello/Hello
+</pre>
+even though preverify does not indicate that there is an error
+
+<h3>Verifier errors</h3>
+The most common error message is 
+<code>ALERT: Error verifying class <i>foo/bar/baz</i></code>
+Unfortunately, this error is not very descriptive.
+To get better error messages:
+<ol>
+<li> Modify the 
+<code>j2me_cldc/kvm/VmCommon/src/class.c</code> so that 
+the return code is printed by modifying <code>initializeClass()</code>:
+<pre>
+	if (results = verifyClass(thisClass)) {
+	    START_TEMPORARY_ROOTS
+	    sprintf(str_buffer, 
+		    "Error verifying class %s: error code: %d", className(thisClass), results);
+	    fatalError(str_buffer);
+            END_TEMPORARY_ROOTS
+	}
+</pre>
+The error codes themselves are in <code>verifier.c</code> in the
+same directory.
+<li> To get a trace of the verifier, add
+<pre>
+#define TRACEVERIFIER 1
+</pre>
+to the top of <code>verifier.c</code>.
+<li> Recompile the kvm executable as per the
+<a href="#kvm_executable">kvm executable</a> instructions
+above.
+
+
+</body>
+</html>
