@@ -123,13 +123,13 @@ public class Exec extends TypedAtomicActor {
         String [] labels = new String [] {"name", "value"};
         Type [] values = new Type [] {BaseType.STRING, BaseType.STRING};
 
-        // An array of records {{name="", value=""}}
+        // An array of records {{name = "", value = ""}}
         environment.setTypeEquals(
                 new ArrayType(new RecordType(labels, values)));
 
         // Array with an empty name and value means
         // default environment of the calling process.
-        environment.setExpression("{{name=\"\", value=\"\"}}");
+        environment.setExpression("{{name = \"\", value = \"\"}}");
         // Hide the environment parameter.
         environment.setVisibility(Settable.EXPERT);
 
@@ -193,15 +193,15 @@ public class Exec extends TypedAtomicActor {
      *  <p>This parameter is an array of records that name an environment
      *  variable and the value for the value.  The format is:
      *  <pre>
-     *  {{name="<i>NAME1</i>", value="</i>value1</i>"}...}
+     *  {{name = "<i>NAME1</i>", value = "</i>value1</i>"}...}
      *  </pre>
      *  Where <code><i>NAME1</i></code> is the name of the environment
      *  variable, and <code><i>value1</i></code> is the value.
-     *  <p>For example <code>{{name="PTII", value="c:/ptII"}}</code>
+     *  <p>For example <code>{{name = "PTII", value = "c:/ptII"}}</code>
      *  would set the value of the <code>PTII</code> to <code>c:/ptII</code>.
      *
      *  <p>If the initial value of the parameter is <code>{{name="",
-     *  value=""}}</code>, then the environment from the calling or parent
+     *  value = ""}}</code>, then the environment from the calling or parent
      *  process is used in the new command.
      *
      *  <p>Note that if this parameter sets any environment variable,
@@ -397,10 +397,10 @@ public class Exec extends TypedAtomicActor {
             if (environmentTokens.length() >= 1) {
                 environmentArray = new String[environmentTokens.length()];
                 for (int i = 0; i < environmentTokens.length(); i++) {
-                    StringToken nameToken= (StringToken)
+                    StringToken nameToken = (StringToken)
                         (((RecordToken) environmentTokens.getElement(i))
                                 .get("name"));
-                    StringToken valueToken= (StringToken)
+                    StringToken valueToken = (StringToken)
                         (((RecordToken) environmentTokens.getElement(i))
                                 .get("value"));
                     environmentArray[i] = nameToken.stringValue()
