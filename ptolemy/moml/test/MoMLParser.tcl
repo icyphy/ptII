@@ -885,7 +885,7 @@ test MoMLParser-2.1 {Test incremental parsing: add entity} {
 }
 
 #----------------------------------------------------------------------
-test MoMLParser-2.2 {Test additional incremental parsing} {
+test MoMLParser-2.2 {Test incremental parsing: add entity deeper} {
     set incMoml_2 "<entity name=\".top.inside\">
 <property name=\"prop\" class=\"ptolemy.data.expr.Parameter\"/>
 </entity>
@@ -901,6 +901,63 @@ test MoMLParser-2.2 {Test additional incremental parsing} {
         <property name="prop" class="ptolemy.data.expr.Parameter">
         </property>
     </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+test MoMLParser-2.3 {Test incremental parsing: add port} {
+    set incMoml_2_3 "<entity name=\".top.inside\">
+<port name=\"input\" class=\"ptolemy.actor.TypedIOPort\"/>
+</entity>
+"
+    set toplevel [$parser parse $incMoml_2_3]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.TypedCompositeActor">
+    <doc>xxx</doc>
+    <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
+        <property name="prop" class="ptolemy.data.expr.Parameter">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+        </port>
+    </entity>
+</model>
+}
+
+#----------------------------------------------------------------------
+test MoMLParser-2.4 {Test incremental parsing: add another port, relation, and link} {
+    set incMoml_2_4 "<entity name=\".top\">
+    <entity name=\"a\" class=\"ptolemy.actor.TypedCompositeActor\">
+        <port name=\"output\" class=\"ptolemy.actor.TypedIOPort\"/>
+    </entity>
+    <relation name=\"r\" class=\"ptolemy.actor.TypedIORelation\"/>
+    <link relation=\"r\" port=\"a.output\"/>
+    <link relation=\"r\" port=\"inside.input\"/>
+</entity>
+"
+    set toplevel [$parser parse $incMoml_2_4]
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<model name="top" class="ptolemy.actor.TypedCompositeActor">
+    <doc>xxx</doc>
+    <entity name="inside" class="ptolemy.actor.TypedCompositeActor">
+        <property name="prop" class="ptolemy.data.expr.Parameter">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+        </port>
+    </entity>
+    <entity name="a" class="ptolemy.actor.TypedCompositeActor">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+        </port>
+    </entity>
+    <relation name="r" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="inside.input" relation="r"/>
+    <link port="a.output" relation="r"/>
 </model>
 }
 
