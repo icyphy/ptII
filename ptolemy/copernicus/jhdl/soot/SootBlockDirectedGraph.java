@@ -99,7 +99,7 @@ public class SootBlockDirectedGraph extends DirectedGraph {
 	List ifrNodes = new Vector();
 	for (Iterator i = nodes().iterator(); i.hasNext();){
 	    Node n = (Node) i.next();
-  	    if (n.weight() instanceof InstanceFieldRef) {
+  	    if (n.getWeight() instanceof InstanceFieldRef) {
 		ifrNodes.add(n);
 	    }
 	}
@@ -110,10 +110,10 @@ public class SootBlockDirectedGraph extends DirectedGraph {
 	List ifrRemoved = new Vector();
 	for (Iterator i = ifrNodes.iterator();i.hasNext();) {
 	    Node i_node = (Node) i.next();
-	    InstanceFieldRef i_ifr = (InstanceFieldRef) i_node.weight();
+	    InstanceFieldRef i_ifr = (InstanceFieldRef) i_node.getWeight();
 	    for (Iterator j = ifrConfirmed.iterator();j.hasNext();) {
 		Node j_node = (Node) j.next();
-		InstanceFieldRef j_ifr = (InstanceFieldRef) j_node.weight();
+		InstanceFieldRef j_ifr = (InstanceFieldRef) j_node.getWeight();
 		//System.out.println("Comparing "+i_node+" with "+j_node);
 
 		if (j_ifr.getBase().equals(i_ifr.getBase()) &&
@@ -128,7 +128,7 @@ public class SootBlockDirectedGraph extends DirectedGraph {
 			Edge i_in_edge = (Edge) i_input_edges.next();
 			removeEdges.add(i_in_edge);
 			if (i_in_edge.hasWeight() && 
-			    i_in_edge.weight().equals(BASE_WEIGHT)) {
+			    i_in_edge.getWeight().equals(BASE_WEIGHT)) {
 			    // delete edge
 			    //removeEdge(i_in_edge);
 			} else {
