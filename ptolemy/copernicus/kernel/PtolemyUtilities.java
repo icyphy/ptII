@@ -167,7 +167,7 @@ public class PtolemyUtilities {
             // recurse
             for (int i = 0; i < arrayToken.length(); i++) {
                 Local argLocal = buildConstantTokenLocal(body, insertPoint,
-                       arrayToken.getElement(i), localName + "_" + i);
+                        arrayToken.getElement(i), localName + "_" + i);
                 units.insertBefore(
                         Jimple.v().newAssignStmt(
                                 Jimple.v().newArrayRef(tokenArrayLocal,
@@ -221,8 +221,8 @@ public class PtolemyUtilities {
      *  point to initialize that local to an instance that is equal to the
      *  given type.
      */
-     // FIXME Records!
-   public static Local buildConstantTypeLocal(Body body, Object insertPoint,
+    // FIXME Records!
+    public static Local buildConstantTypeLocal(Body body, Object insertPoint,
             ptolemy.data.type.Type type) {
         Chain units = body.getUnits();
         if (type instanceof ptolemy.data.type.BaseType) {
@@ -350,7 +350,7 @@ public class PtolemyUtilities {
 
             int count = 0;
             for (Iterator labels = recordType.labelSet().iterator();
-                labels.hasNext(); count++) {
+                 labels.hasNext(); count++) {
                 String label = (String)labels.next();
                 ptolemy.data.type.Type elementType = recordType.get(label);
                 Local elementTypeLocal = buildConstantTypeLocal(body,
@@ -369,7 +369,7 @@ public class PtolemyUtilities {
                                 IntConstant.v(count)),
                         elementTypeLocal),
                         insertPoint);
-             }
+            }
 
             // Create the new local and assign to local variable.
             Local typeLocal = Jimple.v().newLocal(typeName,
@@ -630,7 +630,7 @@ public class PtolemyUtilities {
         } else {
             String string = "More than one definition of = " + local + "\n";
             for (Iterator i = definitionList.iterator();
-                i.hasNext();) {
+                 i.hasNext();) {
                 string += "Definition = " + i.next().toString();
             }
             throw new RuntimeException(string);
@@ -1098,7 +1098,7 @@ public class PtolemyUtilities {
         recordTypeClass =
             Scene.v().loadClassAndSupport("ptolemy.data.type.RecordType");
         baseTypeClass =
-                Scene.v().loadClassAndSupport("ptolemy.data.type.BaseType");
+            Scene.v().loadClassAndSupport("ptolemy.data.type.BaseType");
         unknownTypeField = baseTypeClass.getFieldByName("UNKNOWN");
         generalTypeField = baseTypeClass.getFieldByName("GENERAL");
         booleanTypeField = baseTypeClass.getFieldByName("BOOLEAN");

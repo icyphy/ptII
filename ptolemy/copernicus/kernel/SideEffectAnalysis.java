@@ -130,11 +130,11 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
         // A method has side effects if it sets the values of any fields.
         Body body = method.retrieveActiveBody();
         for (Iterator units = body.getUnits().iterator();
-            units.hasNext();) {
+             units.hasNext();) {
             Unit unit = (Unit)units.next();
             if (_debug) System.out.println("unit = " + unit);
             for (Iterator boxes = unit.getDefBoxes().iterator();
-                boxes.hasNext();) {
+                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value value = box.getValue();
                 if (value instanceof FieldRef) {
@@ -154,7 +154,7 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
             // assume that they have side effects.
             Hierarchy hierarchy = Scene.v().getActiveHierarchy();
             for (Iterator boxes = unit.getUseBoxes().iterator();
-                boxes.hasNext();) {
+                 boxes.hasNext();) {
                 ValueBox box = (ValueBox)boxes.next();
                 Value expr = box.getValue();
                 if (expr instanceof InvokeExpr) {
@@ -181,14 +181,14 @@ public class SideEffectAnalysis extends BackwardFlowAnalysis {
                         List list = hierarchy.resolveAbstractDispatch(
                                 ((RefType)baseType).getSootClass(), invokedMethod);
                         for (Iterator targets = list.iterator();
-                            targets.hasNext();) {
+                             targets.hasNext();) {
                             SootMethod target = (SootMethod)targets.next();
-                             if (!((MethodCallGraph)graph).isReachable(
-                                     target.getSignature())) {
-                                 if (_debug) System.out.println(
-                                         "SideEffectAnalysis: virtualInvokes method that is not in the graph");
-                                 out.setUnknownSideEffects();
-                             }
+                            if (!((MethodCallGraph)graph).isReachable(
+                                    target.getSignature())) {
+                                if (_debug) System.out.println(
+                                        "SideEffectAnalysis: virtualInvokes method that is not in the graph");
+                                out.setUnknownSideEffects();
+                            }
                         }
                     } else if (expr instanceof StaticInvokeExpr) {
                         if (!((MethodCallGraph)graph).isReachable(
