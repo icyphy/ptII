@@ -175,7 +175,9 @@ public class JAIPNGWriter extends Sink {
             throws IllegalActionException {
         if (attribute == fileName) {
             _file = fileName.asFile();
-            _fileRoot = _file.toString();
+            if (_file != null) {
+                _fileRoot = _file.toString();
+            }
         } else if (attribute == confirmOverwrite) {
             _confirmOverwriteValue =
                 ((BooleanToken)confirmOverwrite.getToken()).booleanValue();
