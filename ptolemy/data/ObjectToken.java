@@ -37,9 +37,7 @@ A token that contains a reference to an arbitrary object.
 Note that when this token is cloned, the clone will refer to exactly
 the same object.  Thus, care must be exercised to ensure that actors do
 not modify that object in a nondeterministic way, unless such nondeterminism
-is acceptable.  Note further that there is no way to implement fromString()
-for an arbitrary object, so we accept the base class implementation,
-which triggers an exception.
+is acceptable.
 
 @author Edward A. Lee
 @version $Id$
