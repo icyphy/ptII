@@ -14,13 +14,17 @@
 <h2>Major Features that are new in Ptolemy 3.0 </h2>
 <menu>
 
-<li> Continuous Time rework for improved mixed signal and
+<li> Continuous Time (CT) domain rework for improved mixed signal and
 hybrid systems semantics
-(Haiyang Zheng, Jie Liu (Parc).
+(Jie Liu, Parc, and Haiyang Zheng).
 
-<li> <a href="../ptolemy/domains/ci/doc/body.htm" target="body">Component Interaction Domain</a>
+<li> <a href="../ptolemy/domains/ci/doc/body.htm" target="body">
+Component Interaction Domain</a>
 (Yang Zhao, Xiaojun Liu) - The CI domain models systems that contain
 both data-driven and demand-driven styles of computation.
+
+<li> Rework of FSM domain to support chained transitions
+and better hybrid systems semantics (Haiyang Zheng).
 
 <li> Expression language rework to create a full-featured, functional
 and higher-order expression language with extensive support for
@@ -88,7 +92,8 @@ actor.
 
 <li>
 Python integration, with a
-<a href="codeDoc/ptolemy/actor/lib/python/PythonScript.java">PythonScript</a>
+<a href="codeDoc/ptolemy/actor/lib/python/PythonScript.html">
+PythonScript</a>
 actor that permits definition of actors in Python (Xiaojun Liu).
 This uses
 <a href="http://www.jython.org/#in_browser" target="_top">Jython</a>,
@@ -207,7 +212,7 @@ down slightly.
  </menu>
 
 
-<li><a href="../ptolemy/domains/giotto/doc/body.htm" target="body">FSM</a>:
+<li><a href="../ptolemy/domains/fsm/doc/body.htm" target="body">FSM</a>:
 	Finite State Machine
  <menu>
 <li> <a href="../ptolemy/domains/fsm/demo/ChainedTransitions/ChainedTransitions.xml">Chained Transitions</a>
@@ -218,7 +223,7 @@ down slightly.
 <li> <a href="../ptolemy/domains/sdf/doc/body.htm" target="body">SDF</a>:
 	Synchronous Dataflow
  <menu>
- <li><a href="../ptolemy/hoc/demo/DFTSubSet/DFTSubSet.xml">DFT Subset</a>
+ <li><a href="../ptolemy/actor/hoc/demo/DFTSubSet/DFTSubSet.xml">DFT Subset</a>
  <li><a href="../ptolemy/domains/sdf/demo/FourierSeries/FourierSeries.xml">Fourier Series</a>
  <li><a href="../ptolemy/domains/sdf/demo/SoundSpectrum/SoundSpectrum.xml">Sound Spectrum</a>
  </menu>
@@ -291,7 +296,7 @@ An actor that throws a model error when it receives a true token.
 An actor that reads expressions and parses them into tokens.
 
 
-<dt> <a href="codeDoc/ptolemy/actor/lib/conversions.html"><code>TokenToExpressions</code></a>
+<dt> <a href="codeDoc/ptolemy/actor/lib/conversions/TokenToExpressions.html"><code>TokenToExpressions</code></a>
 <dd> (Steve Neuendorffer)
 An actor that converts tokens into expressions.
 
@@ -321,24 +326,87 @@ Actors that use the Java Media Framework
 
 Most models developed under Ptolemy II 1.0.1 or
 2.0.1 or HyVisual 2.2-beta should run under Ptolemy II 3.0.
+The MoMLParser includes a list of backward
+compatibility filters that make certain changes on models
+when read, handling such issues as actors being moved or renamed
+and parameter names being changed.
+The filters themselves are defined in
+<a href="codeDoc/ptolemy/moml/filter/package-summary.html">
+ptolemy.moml.filter</a>.
+If you have developed your own actors under Ptolemy II 2.0.1 by
+writing your own Java files, you should recompile all your java code with
+the new release.  In theory, copying the .class files should work, but
+recompiling is safer.
+<p>
+Not all changes can be handled automatically, since
+some have semantic content. We begin with a description
+of the changes that are not handled, followed by a description
+of changes that are handled.
 
- <p>The MoMLParser has been extended to include a list of backward
-compatibility filters that look for actors that have changed while
-parsing a model.  The backward compatibility filters will make what
-ever change is necessary, and the user will eventually be prompted to
-save the model.  The filters themselves are defined in <a
-href="codeDoc/ptolemy/moml/filter/package-summary.html">ptolemy.moml.filter</a>
+<h3>Backward compatible issues that are not handled automatically</h3>
 
- <p>Below are the backward compatibility issues
-that are handled automatically.
+<menu>
+<li> In the CT (continuous-time) domain, instances of Clock and
+TriggeredClock very likely should be manually changed to
+ContinuousClock and TriggeredContinuousClock. The reason for this is that
+we have made progress on the semantics of signals with discontinuities
+and have improved the software implementation.
+We created a new set of clocks for the CT domain.
+ContinuousClock and TriggeredContinuousClock generate piecewise
+constant signals with discontinuities.  The discontinuities
+are correctly handled regardless of step sizes, and threshold
+crossing detectors properly identify discrete transitions
+across the threshold.
+In principle, Clock and TriggeredClock can still be used in
+CT models, e.g. to generate a sequence of events, but it is better to use
+the EventSource actor for this purpose.
+
+<li> In hybrid systems models (CT + FSM), the signal types for
+modal models may not be inferred as expected.
+If a modal model has both continuous and discrete signal
+types at its inputs, it may need manual adjustment of the output signal
+types. To do this, right click an output port and
+add a "signalType" parameter; then set the value of the parameter
+to "CONTINUOUS" or "DISCRETE" depending on your needs.
+
+<li> AudioReader now uses a FileAttribute instead of a string valued
+parameter.  The name of this parameter has changed from
+sourceURL to fileOrURL to conform with LineReader and ExpressionReader.
+
+<li> Longs are now printed with a trailing capital <CODE>L</CODE>
+character.
+
+<li> We have improved the way that the SDF (synchronous dataflow) domain
+implements rate propagation. Previously, SDF would infer the rates of
+ports of an SDF model, and create parameters named
+"tokenConsumptionRate" "tokenInitProduction" and
+"tokenConsumptionRate". However, this has two bad side effects:
+<ol>
+<li> 
+ If a port has these parameters already, then the SDF scheduler
+   overrides them.  This may not be correct.
+<li> If a port has these parameters already, then running a model
+   will mark it dirty, resulting in a prompt to save the model
+   on exit.
+</ol>
+We've changed this so that it sets these values only if the parameters
+do not exist already, and stores them in new attributes called
+"_tokenConsumptionRate" "_tokenInitProduction" and
+"_tokenConsumptionRate". These are transient (instances
+of Variable rather than
+Parameter), so they will not trigger a prompt to save.
+</menu>
+
+<h3>Backward compatible issues that are handled automatically</h3>
 
 <menu>
 <li>ptolemy.moml.filter.AddEditorFactory:
 If a parameter has a <code>_location</code>, then
 add a VisibleParameterEditorFactory named <code>_editorFactory</code>.
+This supports double clicking on visible parameters.
 
-<li>ptolemy.moml.filter.AddIcon: Add specialized icons that display the value
-of one of the parameters.
+<li>ptolemy.moml.filter.AddIcon: Add specialized icons that display
+in Vergil the value of one of the parameters or certain actors.
 The affected actors are:
         <menu>
 	<li>ptolemy.actor.lib.Const
@@ -347,26 +415,31 @@ The affected actors are:
 	<li>ptolemy.actor.lib.Scale
 	<li>ptolemy.actor.lib.Expression
 	</menu>
-<li>ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
-Below are original class names followed by the new class names.
+
+<li>ptolemy.moml.filter.ClassChanges:
+change class names that have been renamed or moved to a different package.
+The changes are:
         <menu>
 	<li>ptolemy.kernel.util.VersionAttribute	 -&gt; ptolemy.kernel.attributes.VersionAttribute
 	<li>ptolemy.moml.Location	 -&gt; ptolemy.kernel.util.Location
 	<li>ptolemy.actor.lib.comm.SerialComm	 -&gt; ptolemy.actor.lib.io.comm.SerialComm
         </menu>
+
 <li>ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
 'annotation1', then add <code>_hideName</code> if necessary.
+This prevents labels from appearing above visible parameters in Vergil.
 
 <li>ptolemy.moml.filter.ParameterNameChanges: Update any Parameter names
-that have been renamed.
+that have been changed.
 Below are the actors that are affected, along with the Parameter name 
 and the new name:	
        <menu>
        <li>ptolemy.domains.pn.kernel.PNDirector
 	<br>&nbsp;&nbsp;	Initial_queue_capacity	 -&gt; initialQueueCapacity
        </menu>
-<li>ptolemy.moml.filter.PortNameChanges: Update any actor port names that have been
-renamed.
+
+<li>ptolemy.moml.filter.PortNameChanges:
+Update any actor port names that have been changed.
 Below are the actors that are affected, along
 with the old port name and the new port name:
         <menu>
@@ -379,8 +452,9 @@ with the old port name and the new port name:
 	 <br>&nbsp;&nbsp;	imag	 -&gt; y
 	 <br>&nbsp;&nbsp;	real	 -&gt; x
         </menu>
-<li>ptolemy.moml.filter.PropertyClassChanges: Update any actor port class names
-that have been renamed.
+
+<li>ptolemy.moml.filter.PropertyClassChanges:
+Update any actor port class names that have been changed.
 Below are the actors that are affected, along with the port name
 and the new classname:
         <menu>
@@ -400,80 +474,6 @@ and the new classname:
 	 <br>&nbsp;&nbsp;	expression	 -&gt; ptolemy.kernel.util.StringAttribute
         </menu>
 </menu>
-
-
-Below are the changes that are not handled automatically:
-<menu>
-<li> AudioReader now uses a FileAttribute instead of a string valued
-parameter.  The name of this parameter has changed from
-sourceURL to fileOrURL to conform with LineReader and ExpressionReader.
-
-<li> Longs are now printed with a trailing capital <CODE>L</CODE>
-character.
-
-
-<li> We have improved the way that the SDF (synchronous dataflow) domain
-implements rate propagation. Previously, SDF would infer the rates of
-ports of an SDF model, and create parameters named
-"tokenConsumptionRate" "tokenInitProduction" and
-"tokenConsumptionRate". However, this has two bad side effects:
-
-<ol>
-<li> 
- If a port has these parameters already, then the SDF scheduler
-   overrides them.  This may not be correct.
-
-<li> If a port has these parameters already, then running a model
-   will mark it dirty, resulting in a prompt to save the model
-   on exit.
-</ol>
-
-We've changed this so that it sets these values only if the parameters
-do not exist already, and stores them in new attributes called
-"_tokenConsumptionRate" "_tokenInitProduction" and
-"_tokenConsumptionRate". These are transient (Variable rather than
-Parameter), so they will not trigger a prompt to save.
-
-<li> We made a further study of the semantics of signals with discontinuity
-in a continuous time domain and improved our implementation to handle
-discontinuity uniformly. We created a new set of clocks for the CT domain.
-The clocks are ContinuousClock and TriggeredContinuousClock actors
-listed under ptolemy/domains/ct/lib directory. They generate piecewise
-continuous clock signals with the discontinuities defined by offset parameters
-explicitly shown. We recommend the users not to use the Clock and
-TriggeredClock actors in CT domain but use the continuous versions
-mentioned above. In order to generate a sequence of events in CT domain,
-users should use the EventSource actor in ptolemy/domains/ct/lib directory,
-which produces DISCRETE outputs. This may cause back incompatibility.
-(I wonder if the change could be handled by MoML parser. The difficulty I can
-see is that the parser could not tell whether the clock is used as a continuous
-source or discrete source. And if it is used as a discrete source, signal types
-have to be adjusted. We can not force the signal types as discrete.)
-
- <p>Another issue is about the signal type inference for modal
-model. If the modal model has both Continuous and Discrete signal
-types for its inputs, it needs manual adjustment of the output signal
-types. This is not a new issue although.
-
-So, the solutions for the incompatible issues include:
-<ol>
-<li> Replace Clock with ContinuousClock if it is used as a continuous source.
-
-<li> Replace Clock with EventSource if it is used as a discrete source.
-
-<li> Manually configure the signal types of outputs of modal
-model. (Right click an output port; add "signalType" as a parameter;
-type "CONTINUOUS" or "DISCRETE"; and click commit.)
-
-</ol>
-
-
-</menu>
-
-If you have developed your own actors under Ptolemy II 2.0.1 by
-writing your own Java files, you should recompile all your java code with
-the new release.  In theory, copying the .class files should work, but
-recompiling is safer.
 
 </body>
 </html>
