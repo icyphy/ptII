@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="LevelCrossingDetector" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.0-devel">
+    </property>
     <property name="Continuous Time (CT) Solver" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -224,9 +226,11 @@ detectors.</text></svg></configure>
         </property>
         <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="useDefaultEventValue" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="useDefaultEventValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 335.0">
         </property>
@@ -267,9 +271,11 @@ detectors.</text></svg></configure>
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.5, 1.0}">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{2, 3}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{3, 2}">
         </property>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 335.0">
@@ -329,9 +335,11 @@ detectors.</text></svg></configure>
         </property>
         <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="useDefaultEventValue" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="useDefaultEventValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 185.0">
         </property>
@@ -372,9 +380,11 @@ detectors.</text></svg></configure>
         </property>
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1,0}">
         </property>
         <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <doc>Create a generalized square wave</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 185.0">
@@ -400,9 +410,11 @@ detectors.</text></svg></configure>
         </property>
         <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="useDefaultEventValue" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="useDefaultEventValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="230.75, 420.0">
         </property>
