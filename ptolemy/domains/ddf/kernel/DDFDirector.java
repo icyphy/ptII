@@ -97,7 +97,7 @@ import ptolemy.kernel.util.Workspace;
    else deadlocked.
    </pre>
 
-   The function "minimax(D)" returns the one actor with the smallest
+   The function "minimax(D)" returns set of actors with the smallest
    maximum number of tokens on its output paths.
 
    Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee.
@@ -187,8 +187,8 @@ public class DDFDirector extends Director {
             // be repeated until proved otherwise.
             repeatBasicIteration = false;
 
-            // The variable to store minimax actor.
-            Actor minimaxActor = null;
+            // The list to store minimax actors.
+            List minimaxActors = new LinkedList();
             int minimaxSize = Integer.MAX_VALUE;
 
             // The List to store actors that are enabled and not deferrable.
@@ -206,16 +206,19 @@ public class DDFDirector extends Director {
                     toBeFiredActors.add(actor);
                 }
 
-                // Find the minimax actor.
+                // Find set of minimax actors.
                 if (canFire == _ENABLED_DEFERRABLE) {
                     int newSize = flags[_maxNumberOfTokens];
                     if (newSize < minimaxSize) {
+                        minimaxActors.clear();                        
+                        minimaxActors.add(actor);
                         minimaxSize = newSize;
-                        minimaxActor = actor;
+                    } else if (newSize == minimaxSize) {
+                        minimaxActors.add(actor);
                     }
                 }
             }
-
+            
             // No actor has been fired at the beginning of the
             // basic iteration.
             _firedOne = false;
@@ -227,9 +230,13 @@ public class DDFDirector extends Director {
                 _fireActor(actor);
             }
 
-            // If no actor has been fired, fire the minimax actor.
-            if (!_firedOne && minimaxActor != null) {
-                _fireActor(minimaxActor);
+            // If no actor has been fired, fire set of minimax actors.
+            if (!_firedOne && minimaxActors.size() != 0) {
+                Iterator minimaxActorsIterator = minimaxActors.iterator();
+                while (minimaxActorsIterator.hasNext()) {
+                    Actor minimaxActor = (Actor)minimaxActorsIterator.next();
+                    _fireActor(minimaxActor);
+                }
             }
 
             // If still no actor has been fired, declare deadlock.
@@ -317,7 +324,7 @@ public class DDFDirector extends Director {
      *  merges with outside DDF domain.
      *  @param director The DDFDirector to merge with.
      */
-    public void merge(DDFDirector director){
+    public void merge(DDFDirector director) {
         _activeActors.addAll(director._activeActors);
         _actorsToCheckNumberOfFirings.addAll(director.
                 _actorsToCheckNumberOfFirings);
@@ -460,9 +467,14 @@ public class DDFDirector extends Director {
         Iterator insideSinkPorts = port.insideSinkPortList().iterator();
         while (insideSinkPorts.hasNext()) {
             IOPort insideSinkPort = (IOPort)insideSinkPorts.next();
-            Actor container = (Actor)insideSinkPort.getContainer();
-            int[] flags = (int[])_actorsFlags.get(container);
-            flags[_enablingStatus] = _actorStatus(container);
+            Actor actor = (Actor)insideSinkPort.getContainer();
+            // Skip it if the actor to be checked contains this director.
+            // In other words, the data directly go to output port instead 
+            // of any inside actors.
+            if (getContainer() != actor) {
+                int[] flags = (int[])_actorsFlags.get(actor);
+                flags[_enablingStatus] = _actorStatus(actor);
+            }
         }
         return wasTransferred;
     }
@@ -577,12 +589,12 @@ public class DDFDirector extends Director {
                     port.deepConnectedPortList().iterator();
             while (deepConnectedPorts.hasNext()) {
                 Port deepConnectedPort = (Port)deepConnectedPorts.next();
-                Actor container = (Actor)deepConnectedPort.getContainer();
-                // Skip it if the deepConnectedPort belongs to the actor which
-                // contains this director.
-                if (getContainer() != container) {
-                    int[] containerFlags = (int[])_actorsFlags.get(container);
-                    containerFlags[_enablingStatus] = _actorStatus(container);
+                Actor connectedActor = (Actor)deepConnectedPort.getContainer();
+                // Skip it if the connectedActor to be checked contains
+                // this director.
+                if (getContainer() != connectedActor) {
+                    int[] containerFlags = (int[])_actorsFlags.get(connectedActor);
+                    containerFlags[_enablingStatus] = _actorStatus(connectedActor);
                 }
             }
         }
