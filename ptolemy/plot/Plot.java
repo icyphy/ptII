@@ -303,11 +303,11 @@ public class Plot extends PlotBox {
 
         String arg;
 	String unsupportedOptions[] = {
-	    "-bd", "-bg", "-brb", "-bw", "-fg", "-gw", "-lf", "-lw",
+	    "-bd", "-brb", "-bw", "-gw", "-lf", "-lw",
 	    "-tf", "-zg", "-zw"
 	};
 	String unsupportedFlags[] = {
-	    "-bb", "-lnx", "-lny", "-rv"
+	    "-bb", "-lnx", "-lny"
 	};
 	// Default URL to be opened
 	String dataurl = "";
@@ -341,8 +341,10 @@ public class Plot extends PlotBox {
 
 		}
 		if (badarg) continue;
-
-		if (arg.equals("-brw")) {
+		if (arg.equals("-bg")) {
+		    saveBackground(getColorByName(args[i++]));
+		    continue;
+		} else if (arg.equals("-brw")) {
 		    // -brw <width> BarWidth Bars: 
 		    if (!_parseLine("Bars: " + args[i++])) {
 			throw new 
@@ -391,6 +393,9 @@ public class Plot extends PlotBox {
 		    // -debug is not in the original X11 pxgraph.
 		    _debug = (int)Integer.valueOf(args[i++]).intValue();
 		    continue;
+		} else if (arg.equals("-fg")) {
+		    saveForeground(getColorByName(args[i++]));
+		    continue;
 		} else if (arg.equals("-help")) {
 		    // -help is not in the original X11 pxgraph.
 		    //_help();
@@ -414,6 +419,10 @@ public class Plot extends PlotBox {
 		} else if (arg.equals("-P")) {
 		    // -P LargePixel Marks: dots\n 
 		    setMarksStyle("dots");
+		    continue;
+		} else if (arg.equals("-rv")) {
+		    saveBackground(getColorByName("black"));
+		    saveForeground(getColorByName("white"));
 		    continue;
 		} else if (arg.equals("-test")) {
 		    // -test is not in the original X11 pxgraph.
