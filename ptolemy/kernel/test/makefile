@@ -49,17 +49,6 @@ TCL_SRCS = \
 JSRCS = \
 	ParamTest.java 
 
-#	RampApplet.java \
-#	SDFPort.java \
-#	SDFRamp.java \
-#	SDFPlot.java \
-#	SDFPrint.java\
-#	SDFStar.java \
-#	StatusArrayTest.java \
-#	Sample.java \
-#	SampleTarget.java \
-#	SampleSDFExecutive.java
-
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	IntParam.tcl \
@@ -74,8 +63,7 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) \
-	RampApplet.html ptjdriver #$(JGRAPHICAL_TESTS) 
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS) 
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -91,13 +79,11 @@ JCLASS = $(JSRCS:%.java=%.class)
 # to run 'make tests' to run the tests.
 
 tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
-	chmod a+x ptjdriver
 
 test_java: jclass
-	#$(JAVAHOME)/bin/java -classpath ../../..:$(JAVAHOME)/lib/classes.zip pt.kernel.test.StatusArrayTest
 
 # These tests do not require a graphics terminal, but do use TclBlend and Java
-test_jsimple: $(EXTRA_SRCS) alljtests.tcl
+test_jsimple: $(EXTRA_SRCS) jclass alljtests.tcl
 	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) $(JTCLSH) alljtests.tcl
 
 docs: javadocs
