@@ -34,9 +34,15 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.c;
 
 import ptolemy.lang.java.RegenerateCode; 
+import ptolemy.lang.NullValue;
 import ptolemy.lang.java.ResolveNameVisitor;
 import java.util.LinkedList;
+import java.util.Iterator;
 import ptolemy.lang.java.PackageResolutionVisitor;
+import java.io.PrintWriter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -44,6 +50,7 @@ import ptolemy.lang.java.PackageResolutionVisitor;
 /** An application that parses a Java source file, and then constructs 
  *  an equivalent C source file using static resolution on the resulting AST, 
  *  followed by the Ptolemy II C code generator "back end."
+ *  The application takes a Java source file as its sole argument.
  *
  *  This class is used to test the Ptolemy II C code generation functionality.
  *  It can also be used as a standalone translator of arbitrary Java
@@ -53,15 +60,23 @@ import ptolemy.lang.java.PackageResolutionVisitor;
  *  @version $Id$
  */
 public class JavaToC {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
 
-        System.out.println("hello");
+        // Check validity of the application's argument.
+        if (args.length != 1) {
+            throw new Exception("JavaToC expects exactly one argument");
+        }
+        else if (!args[0].endsWith(".java")) {
+            throw new Exception("The specified file name must end with '.java'.");
+        }
 
         // Set up the code generator as follows:
         // Pass 1:  Compute indentation levels for code constructs
-        // Pass 2:  Generate equivalent C code
+        // Pass 2:  Generate a header file (i.e., a .h file)
+        // Pass 3:  Generate equivalent C code (i.e., a .c file)
         LinkedList passList = new LinkedList();
         passList.add(new IndentationVisitor());
+        passList.add(new HeaderFileGenerator());
         passList.add(new CCodeGenerator()); 
         RegenerateCode regenerator = new RegenerateCode(passList);
 
@@ -70,6 +85,34 @@ public class JavaToC {
         regenerator.configure(true, true);
 
         // Generate C code from the Java files specified on the command line.
-        regenerator.regenerate(args);
+        LinkedList passResultList = regenerator.regenerate(args);
+
+
+        // Write out the generated .c file.
+        Object generatedCode;
+        String baseName = args[0].substring(0, args[0].lastIndexOf('.'));
+        if ((generatedCode = passResultList.removeLast()) == null) {
+            throw new Exception("Generation of .c file has failed.");
+        }
+        PrintWriter out = new PrintWriter(
+                new FileOutputStream(baseName + ".c")); 
+        if (out==null) {
+            throw new IOException("Could not create .c file.");
+        }
+        out.println(generatedCode.toString());
+        out.close();
+
+        // Write out the generated .h file.
+        if ((generatedCode = passResultList.removeLast()) == null) {
+            throw new Exception("Generation of .h file has failed.");
+        }
+        out = new PrintWriter(
+                new FileOutputStream(baseName + ".h")); 
+        if (out==null) {
+            throw new IOException("Could not create .h file.");
+        }
+        out.println(generatedCode.toString());
+        out.close();
+
     }
 }
