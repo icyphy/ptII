@@ -323,10 +323,9 @@ public class Director extends NamedObj implements Executable {
             // Therefore, return false.
             return false;
         } else {
-            throw new InvalidStateException("Each director need to be " + 
-                    "associated with a composite actor before simulation " + 
+            throw new InvalidStateException("Each director need to be " +
+                    "associated with a composite actor before simulation " +
                     "is started.");
-
         }
     }
 
@@ -570,7 +569,7 @@ public class Director extends NamedObj implements Executable {
      *  actor.  This method should not be called directly.  Instead, call
      *  setDirector of the CompositeActor class (or a derived class).
      */
-    protected void _makeDirectorOf (CompositeActor cast) {
+    protected void _makeDirectorOf(CompositeActor cast) {
         _container = cast;
         if (cast != null) {
             workspace().remove(this);
@@ -583,7 +582,7 @@ public class Director extends NamedObj implements Executable {
      * is over a copy of the list, so it is safe for actors to perform
      * additional mutations during initialization.
      */
-    protected Enumeration _newActors () {
+    protected Enumeration _newActors() {
         LinkedList copy = new LinkedList();
         copy.appendElements(_newActors.elements());
         return copy.elements();
