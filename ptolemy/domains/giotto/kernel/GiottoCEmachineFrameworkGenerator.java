@@ -190,7 +190,6 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         switch(type.charAt(0)) {
             case '{':
              retval.append(type.substring(1,type.length()-1) + "array");
-             intarray = true;
              break;
              default:
              retval.append(type);
@@ -473,8 +472,6 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
 
         driverParas = "";
         actorName = "";
-//TODO
-// TODO
 
         actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName());
 
@@ -765,6 +762,7 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                     throws IllegalActionException, NameDuplicationException {
 
         dataTypes = new HashSet(); // Creating a set of all the unique types used
+        funcDeclString = "";  // Contains the declaration of functions defined in the C file
 
         // TODO: Get the ptolemy installation directory
         String directoryName = "ptolemy/domains/giotto/kernel/"+StringUtilities.sanitizeName(model.getName())+"/c_functionality/fcode/";
@@ -867,6 +865,12 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                         + "(" + portTypeID + " *p" + portID + ") {" + _endLine
                         + _tabChar + "*p" + portID + " = " + portInitialValue + ";" + _endLine
                         + "}" + _endLine + _endLine;
+
+                    funcDeclString += "inline void"
+                    + " "
+                    + portInitialValueFunction
+                    + "(" + portTypeID + " *p" + portID + ");"
+                    + _endLine + _endLine;
                 }
             }
         }
@@ -913,6 +917,15 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                         + _tabChar + "*dst = *src;"
                         + _endLine + "}"
                         + _endLine + _endLine;
+
+            funcDeclString += "inline void"
+                        + " copy_"
+                        + type
+                        + " ("
+                        + type + " *src, "
+                        + type + " *dst);"
+                        + _endLine + _endLine;
+
         }
         
         return codeString;
@@ -947,7 +960,8 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
             actorName = StringUtilities.sanitizeName(((NamedObj) actor).getName());
             boolean firstParameter = true;
             
-            codeString += "inline void " + actorName + "_inputdriver( ";
+            codeString     += "inline void " + actorName + "_inputdriver( ";
+            funcDeclString += "inline void " + actorName + "_inputdriver( ";
             
             Map driverIOMap = new LinkedHashMap();
             for (Iterator inPorts = actor.inputPortList().iterator();
@@ -972,8 +986,11 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                 }
                 else {
                     codeString += ", ";
+                    funcDeclString += ", ";
                 }
                 codeString += portType + " " + sanitizedPortName2
+                           + ", " + _getTypeString(inPort) + " " + sanitizedPortName;
+                funcDeclString += portType + " " + sanitizedPortName2
                            + ", " + _getTypeString(inPort) + " " + sanitizedPortName;
                 
                      // Allocate memory for the arrays
@@ -983,7 +1000,7 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                          }
                          String arrayLength = _getArrayLength(port);
                          varDeclString += _tabChar + "static "
-                                         + portType.substring(0,portType.length() - 5/* Length of "array" */)
+                                         + portType.substring(0, portType.length()-5/* Length of "array" */)
                                          + "[" + arrayLength + "] "
                                          + "array" + sanitizedPortName2 + ";" + _endLine;
                     
@@ -1000,9 +1017,10 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
                      }
             }
             codeString += ") {" + _endLine;
-            codeString += varDeclString + _endLine
+            funcDeclString += ");" + _endLine + _endLine;
+            codeString += varDeclString + _endLine // Statically allocate space for all the arrays used
                         + arrayInitString + _endLine // Include static variable allocations
-                        + assgtStmtString;
+                        + assgtStmtString; // Copy values from the global section to the input of the task
             codeString += "}" + _endLine;
         }
 
@@ -1021,20 +1039,41 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
         
         codeString += copyrightString;
         codeString += "/* This file was automatically generated by the Ptolemy-II C-Emachine Framework Generator */" + _endLine;
-        codeString += "\n#include \"f_code.h\"" + _endLine;
-        codeString += "#include <stdlib.h>" + _endLine;
-        codeString += "\n// Legacy Emachine code" + _endLine;
-        codeString += "void giotto_timer_enable_code(e_machine_type e_machine_func, int relative_time) {" + _endLine;
-        codeString += "}" + _endLine;
-        codeString += "\nint giotto_timer_save_code(void) {" + _endLine;
-        codeString += _tabChar + "return get_logical_time();" + _endLine;
-        codeString += "}" + _endLine;
-        codeString += "\nunsigned giotto_timer_trigger_code(int initial_time, int relative_time) {" + _endLine;
-        codeString += _tabChar + "return (get_logical_time() == (initial_time + relative_time) % get_logical_time_overflow());" + _endLine;
-        codeString += "}" + _endLine;
-        codeString += "\ninline unsigned constant_true( void ) {" + _endLine;
-        codeString += _tabChar + "return ( (unsigned)1 );" + _endLine;
-        codeString += "}" + _endLine + _endLine;
+        codeString +=  _endLine;
+        
+        // Writing code to prevent multiple inclusion of the file
+        codeString += "#ifndef _F_CODE_" + _endLine;
+        codeString += "#define _F_CODE_" + _endLine;
+        codeString +=  _endLine;
+        codeString += "// Header file Inclusions" + _endLine;
+        codeString += "#include \"f_table.h\"" + _endLine;
+        codeString += "#include \"f_spec.h\"" + _endLine;
+        codeString += "#include \"f_interface.h\"" + _endLine;
+        codeString +=  _endLine;
+        
+        codeString += "// Datatype Declarations" + _endLine;
+        Iterator dataType = dataTypes.iterator();
+        while(dataType.hasNext()) {
+            String type = (String)dataType.next();
+            if (type.endsWith("array")) {
+            codeString += "typedef " + type.substring(0, type.length()-5 /* Length of "array" */) + " *"
+                        + type + ";" + _endLine + _endLine;
+            }
+        }
+        codeString += "typedef unsigned char boolean;" + _endLine + _endLine;
+        
+        codeString += "// Legacy Emachine function declarations" + _endLine;
+        codeString += "void giotto_timer_enable_code(e_machine_type, int);" +  _endLine;
+        codeString += _endLine;
+        codeString += "int giotto_timer_save_code(void);" +  _endLine;
+        codeString += _endLine;
+        codeString += "unsigned giotto_timer_trigger_code(int, int);" +  _endLine;
+        codeString += _endLine;
+        codeString += "inline unsigned constant_true( void );" +  _endLine;
+        codeString += _endLine;
+        codeString += funcDeclString;
+        codeString += _endLine;
+        codeString += "#endif" +  _endLine;
         
         return codeString;
     }
@@ -1042,10 +1081,10 @@ public class GiottoCEmachineFrameworkGenerator extends Attribute {
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
-    private static boolean intarray = false;
     private static Set dataTypes;
     private static String _endLine = "\n";
     private static String _tabChar = "\t";
+    private static String funcDeclString;  // Contains the declaration of functions defined in the C file
 
     private static String copyrightString = "/*" + _endLine + _endLine+
 " Copyright (c) 2001 The Regents of the University of California." + _endLine +
