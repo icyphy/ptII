@@ -75,13 +75,21 @@ to the top of the Ptplot tree.  Under C-shell, one would do:
 setenv PTII ~/src/ptplot5.1p2
 </pre>
 
+Under Cygwin with bash:
+<pre>
+PTII=c:\\Program\ Files\\Ptolemy\\Ptplot\ 5.1p1 
+export PTII
+</pre>
+
 <li> cd into the <CODE>PTII</CODE> directory:
 <pre>
-cd $PTII
+cd "$PTII"
 </pre>
+(The double quotes are only necessary if $PTII has spaces in it)
 
 <li> Run <CODE>configure</CODE>
 <pre>
+rm -f config.*
 ./configure
 </pre>
 
