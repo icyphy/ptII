@@ -55,6 +55,7 @@ JSRCS = \
 	CrossRefList.java \
 	Entity.java \
 	GraphException.java \
+	HierEntity.java \
 	IntParam.java \
 	NamedObj.java \
 	NamedObjList.java \
