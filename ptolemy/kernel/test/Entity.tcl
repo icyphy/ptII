@@ -142,3 +142,30 @@ test Entity-3.4 {Test enumRelations()} {
     catch {$enum nextElement} errmsg
     list $errmsg [$enum hasMoreElements]
 } {{java.util.NoSuchElementException: exhausted enumeration} 0}
+
+######################################################################
+####
+# 
+test Entity-4.0 {Connect Entities} {
+    # Create objects
+    set ramp [java::new pt.kernel.Entity "Ramp"]
+    set print [java::new pt.kernel.Entity "Print"]
+    set out [java::new pt.kernel.Port "Ramp out"]
+    set in [java::new pt.kernel.Port "Print in"]
+    set arc [java::new pt.kernel.test.RelationTest "Arc"]
+
+    # Connect
+    $out setEntity $ramp
+    $in setEntity $print
+    $out connectToRelation $arc
+    $in connectToRelation $arc
+
+    for {set enum [$ramp enumEntities]} \
+	    {[$enum hasMoreElements] == 1} \
+	    {} {
+	set enumelement [$enum nextElement]
+	lappend lresults [$enumelement getName]
+    }
+    list $lresults
+} {}
+
