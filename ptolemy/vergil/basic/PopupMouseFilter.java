@@ -63,7 +63,6 @@ public class PopupMouseFilter extends MouseFilter {
 
     /** Create an attribute controller associated with the specified graph
      *  controller.
-     *  @param controller The associated graph controller.
      */
     public PopupMouseFilter() {
         super(InputEvent.BUTTON3_MASK);
