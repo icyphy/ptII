@@ -621,51 +621,6 @@ public class Histogram extends PlotBox {
         }
     }
 
-    /* If this method is called in the event thread, then simply
-     * execute the specified action.  Otherwise,
-     * if there are already deferred actions, then add the specified
-     * one to the list.  Otherwise, create a list of deferred actions,
-     * if necessary, and request that the list be processed in the
-     * event dispatch thread.
-     *
-     * Note that it does not work nearly as well to simply schedule
-     * the action yourself on the event thread because if there are a
-     * large number of actions, then the event thread will not be able
-     * to keep up.  By grouping these actions, we avoid this problem.
-     *
-     * This method is not synchronized, so the caller should be.
-     */
-    private void _deferIfNecessary(Runnable action) {
-        // In swing, updates to showing graphics must be done in the
-        // event thread.  If we are in the event thread, then proceed.
-        // Otherwise, queue a request or add to a pending request.
-        if(EventQueue.isDispatchThread()) {
-            action.run();
-        } else {
-            if (!_actionsDeferred) {
-                if (_deferredActions == null) {
-                    _deferredActions = new LinkedList();
-                }
-                Runnable doActions = new Runnable() {
-                    public void run() {
-                        _executeDeferredActions();
-                    }
-                };
-                try {
-                    // NOTE: Using invokeAndWait() here risks causing
-                    // deadlock.  Don't do it!
-                    SwingUtilities.invokeLater(doActions);
-                } catch (Exception ex) {
-                    // Ignore InterruptedException.
-                    // Other exceptions should not occur.
-                }
-            }
-            // Add the specified action to the list of actions to perform.
-            _deferredActions.add(action);
-            _actionsDeferred = true;
-        }
-    }
-
     /* Draw the specified histogram bar.
      * Note that paint() should be called before
      * calling this method so that it calls _drawPlot(), which sets
@@ -719,26 +674,6 @@ public class Histogram extends PlotBox {
         graphics.setColor(_foreground);
     }
 
-    // Execute all actions pending on the deferred action list.
-    // The list is cleared and the _actionsDeferred variable is set
-    // to false, even if one of the deferred actions fails.
-    // This method should only be invoked in the event dispatch thread.
-    // It is synchronized, so the integrity of the deferred actions list
-    // is ensured, since modifications to that list occur only in other
-    // synchronized methods.
-    private synchronized void _executeDeferredActions() {
-        try {
-            Iterator actions = _deferredActions.iterator();
-            while (actions.hasNext()) {
-                Runnable action = (Runnable)actions.next();
-                action.run();
-            }
-        } finally {
-            _actionsDeferred = false;
-            _deferredActions.clear();
-        }
-    }
-
     /* Rescale so that the data that is currently plotted just fits.
      * This simply calls the base class.
      *
@@ -752,12 +687,6 @@ public class Histogram extends PlotBox {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** @serial Indicator of whether actions are deferred. */
-    private boolean _actionsDeferred = false;
-
-    /** @serial List of deferred actions. */
-    private List _deferredActions;
 
     /** @serial The width of a bar. */
     private double _barwidth = 0.5;
