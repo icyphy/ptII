@@ -86,6 +86,18 @@ set p15 [java::new {Double double} 1002.3 ]
 set p16 [java::new {Double double} 1002.4 ]
 set p1again [java::new {Double double} 0.0 ]
 
+set p666 [java::new {Double double} 666.0 ]
+
+
+test CalendarQueue-2.0 {log} {
+    catch {java::call ptolemy.actor.util.CalendarQueue log -1} errMsg1
+    catch {java::call ptolemy.actor.util.CalendarQueue log 0} errMsg0
+    set r1 [java::call ptolemy.actor.util.CalendarQueue log 1]
+    set r2 [java::call ptolemy.actor.util.CalendarQueue log 2]
+    set r3 [java::call ptolemy.actor.util.CalendarQueue log 10]
+    list $errMsg1 $errMsg0 $r1 $r2 $r3
+} {{java.lang.ArithmeticException: CalendarQueue: Cannot take the log of a non-positive number: -1} {java.lang.ArithmeticException: CalendarQueue: Cannot take the log of a non-positive number: 0} 0 1 4}
+
 ######################################################################
 ####
 #
@@ -187,8 +199,22 @@ test CalendarQueue-3.6 {Test toArray} {
 ######################################################################
 ####
 #
+test CalendarQueue-3.7 {Test toArray} {
+    set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
+    $queue put $p9
+    $queue put $p666
+    $queue put $p666
+    $queue put $p7
+    catch {$queue toArray} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.InternalErrorException: Queue is empty, but size() is not zero! It is: 4}}
+
+######################################################################
+####
+#
 test CalendarQueue-5.1 {Test remove and includes methods} {
     set queue [java::new ptolemy.actor.util.CalendarQueue $comparator]
+    set r1 [$queue remove $p1]
     $queue put $p1
     $queue put $p2
     set mylist [list [$queue get] \
@@ -208,8 +234,8 @@ test CalendarQueue-5.1 {Test remove and includes methods} {
             [$queue take]
     catch {[$queue take]} msg1
     catch {[$queue get]} msg2
-    lappend mylist $msg1 $msg2
-} {0.0 1 0.1 0.1 1 0 1 1 0.1 4.0 {ptolemy.kernel.util.InvalidStateException: Cannot take from an empty queue.} {ptolemy.kernel.util.InvalidStateException: Queue is empty.}}
+    list $r1 $mylist $msg1 $msg2
+} {0 {0.0 1 0.1 0.1 1 0 1 1 0.1 4.0} {ptolemy.kernel.util.InvalidStateException: Cannot take from an empty queue.} {ptolemy.kernel.util.InvalidStateException: Queue is empty.}}
 
 ######################################################################
 ####
@@ -313,14 +339,23 @@ test CalendarQueue-8.0 {check out debugListener} {
     set listener [java::new ptolemy.kernel.util.RecorderListener]
     $queue addDebugListener $listener
     $queue put $p4
+
     # Call addDebugListener again with the same listener so as
     # to increase basic block coverage
     $queue addDebugListener $listener
+
+    # Try adding another listener so as to increase coverage	
+    set listener2 [java::new ptolemy.kernel.util.RecorderListener]
+    $queue addDebugListener $listener2
+
     $queue put $p2
     # Remove and then readd the listener
     $queue removeDebugListener $listener
     # Call removeDebugListener twice so as to increase coverage
     $queue removeDebugListener $listener
+    # Remove the other listener so as to increase coverage
+    $queue removeDebugListener $listener2
+
     $queue put $p3
     $queue addDebugListener $listener
 
