@@ -1,0 +1,103 @@
+#!/bin/sh
+# $Id$
+# Make Giotto Code Gen Java files
+# Given a .giotto file, create .java stub files
+#
+
+if [ $# -ne 1 ]; then
+    echo "$0: Usage: $0 giottofile"
+    exit 3
+fi	
+
+giottoFile=$1
+if [ ! -r "$giottoFile" ]; then
+    echo "$0: $giottoFile is not readable"
+    exit 4
+fi
+
+basename=`basename $giottoFile .giotto`
+if [ ! -d $basename ]; then
+    mkdir $basename
+fi
+
+# Create the task files
+tasks=`grep schedule $giottoFile | awk '{split($2,f,"("); print f[1]}'`
+for task in $tasks
+do
+  taskFileName=$basename/$task.java
+
+  echo "$taskFileName"
+  cat > $taskFileName <<EOF
+/** Task for $task in $basename giotto model.
+*/
+
+package $basename;
+
+import giotto.functionality.interfaces.TaskInterface;
+import giotto.functionality.table.Parameter;
+
+import java.io.Serializable;
+
+/**
+Task for $task in $basename giotto model.
+<p>Created by $PTII/ptolemy/domains/gr/kernel/mkGiottoCGJava.
+@author $USERNAME
+@version $Id$
+@since `date`
+*/
+public class $task implements TaskInterface, Serializable {
+
+    /**
+     * @see giotto.functionality.interfaces.DriverInterface#run(Parameter)
+     */
+    public void run(Parameter parameter) {
+        System.out.println("$task");
+        //((PortMove)p.getPortVariable(1)).setIntValue(idle);
+        //((PortDoor)p.getPortVariable(2)).setIntValue(idle);
+        //                JElevator.elIdle((Buttons)p.getPortVariable(0), (Move)p.getPortVariable(1), (Door)p.getPortVariable(2));
+    }
+}
+EOF
+done
+
+# Create the driver
+drivers1=`egrep "^driver" $giottoFile | awk '{print substr($2, 1, length($2) - length("driver"))"inputdriver"}'`
+drivers2=`egrep ":=" $giottoFile | awk '{print substr($4, 1, length($4)-1)}'`
+drivers="$drivers1 $drivers2"
+for driver in $drivers
+do
+  driverFileName=$basename/$driver.java
+
+  echo "$driverFileName"
+  cat > $driverFileName <<EOF2
+/** Driver for $driver in $basename giotto model.
+*/
+
+package $basename;
+
+import giotto.functionality.interfaces.DriverInterface;
+import giotto.functionality.table.Parameter;
+
+import java.io.Serializable;
+
+/**
+Driver for $driver in $basename giotto model.
+<p>Created by $PTII/ptolemy/domains/gr/kernel/mkGiottoCGJava.
+@author $USERNAME
+@version $Id$
+@since `date`
+*/
+public class $driver implements DriverInterface, Serializable {
+
+    /**
+     * @see giotto.functionality.interfaces.DriverInterface#run(Parameter)
+     */
+    public void run(Parameter parameter) {
+        System.out.println("$driver");  
+        //giotto.functionality.code.elevator.PortMove m0 = (giotto.functionality.code.elevator.PortMove)parameter.getPortVariable(0);
+        //giotto.functionality.code.elevator.PortMove m1 = (giotto.functionality.code.elevator.PortMove)parameter.getPortVariable(1);
+        //m1.copyValueFrom(m0);
+    }
+}
+EOF2
+done
