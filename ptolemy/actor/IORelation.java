@@ -281,20 +281,6 @@ public class IORelation extends ComponentRelation {
         return (_width != 0);
     }
 
-    /** Enumerate the input ports that we are linked to from the outside,
-     *  and the output ports that we are linked to from the inside.
-     *  I.e., enumerate the ports through or to which we could send data.
-     *  This method is deprecated and calls linkedDestinationPortList().
-     *  This method read-synchronizes on the workspace.
-     *
-     *  @see ptolemy.kernel.Relation#linkedPorts
-     *  @deprecated Use linkedDestinationPortList() instead.
-     *  @return An enumeration of IOPort objects.
-     */
-    public Enumeration linkedDestinationPorts() {
-        return linkedDestinationPorts(null);
-    }
-
     /** List the input ports that we are linked to from the
      *  outside, and the output ports that we are linked to from
      *  the inside. I.e., list the ports through or to which we
@@ -305,23 +291,6 @@ public class IORelation extends ComponentRelation {
      */
     public List linkedDestinationPortList() {
         return linkedDestinationPortList(null);
-    }
-
-    /** Enumerate the input ports that we are linked to from the
-     *  outside, and the output ports that we are linked to from
-     *  the inside, except the port given as an argument.
-     *  I.e., enumerate the ports through or to which we could send data.
-     *  This method is deprecated and calls
-     *  linkedDestinationPortList(IOPort).
-     *  This method read-synchronizes on the workspace.
-     *
-     *  @see ptolemy.kernel.Relation#linkedPorts(ptolemy.kernel.Port)
-     *  @param except The port not included in the returned Enumeration.
-     *  @deprecated Use linkDestinationPortList(IOPort) instead.
-     *  @return An enumeration of IOPort objects.
-     */
-    public Enumeration linkedDestinationPorts(IOPort except) {
-        return Collections.enumeration( linkedDestinationPortList(except) );
     }
 
     /** Enumerate the input ports that we are linked to from the
@@ -362,19 +331,35 @@ public class IORelation extends ComponentRelation {
         }
     }
 
-    /** Enumerate the output ports that we are linked to from the outside
-     *  and the input ports that we are linked to from the inside.
-     *  I.e. enumerate the ports from or through which we might receive
-     *  data. This method is deprecated and calls
-     *  linkedSourcePortList().
+    /** Enumerate the input ports that we are linked to from the outside,
+     *  and the output ports that we are linked to from the inside.
+     *  I.e., enumerate the ports through or to which we could send data.
+     *  This method is deprecated and calls linkedDestinationPortList().
      *  This method read-synchronizes on the workspace.
      *
      *  @see ptolemy.kernel.Relation#linkedPorts
-     *  @deprecated Use linkedSourcePortList() instead.
+     *  @deprecated Use linkedDestinationPortList() instead.
      *  @return An enumeration of IOPort objects.
      */
-    public Enumeration linkedSourcePorts() {
-        return Collections.enumeration( linkedSourcePortList() );
+    public Enumeration linkedDestinationPorts() {
+        return linkedDestinationPorts(null);
+    }
+
+    /** Enumerate the input ports that we are linked to from the
+     *  outside, and the output ports that we are linked to from
+     *  the inside, except the port given as an argument.
+     *  I.e., enumerate the ports through or to which we could send data.
+     *  This method is deprecated and calls
+     *  linkedDestinationPortList(IOPort).
+     *  This method read-synchronizes on the workspace.
+     *
+     *  @see ptolemy.kernel.Relation#linkedPorts(ptolemy.kernel.Port)
+     *  @param except The port not included in the returned Enumeration.
+     *  @deprecated Use linkDestinationPortList(IOPort) instead.
+     *  @return An enumeration of IOPort objects.
+     */
+    public Enumeration linkedDestinationPorts(IOPort except) {
+        return Collections.enumeration( linkedDestinationPortList(except) );
     }
 
     /** List the output ports that we are linked to from the outside
@@ -387,21 +372,6 @@ public class IORelation extends ComponentRelation {
      */
     public List linkedSourcePortList() {
         return linkedSourcePortList(null);
-    }
-
-    /** Enumerate the output ports that we are linked to from the outside
-     *  and the input ports that we are linked to from the inside.
-     *  I.e. enumerate the ports from or through which we might receive
-     *  This method is deprecated and calls
-     *  linkedSourcePortList(IOPort).
-     *  This method read-synchronizes on the workspace.
-     *  @see ptolemy.kernel.Relation#linkedPorts(ptolemy.kernel.Port)
-     *  @param except The port not included in the returned Enumeration.
-     *  @deprecated Use linkedSourcePortList(IOPort) instead.
-     *  @return An enumeration of IOPort objects.
-     */
-    public Enumeration linkedSourcePorts(IOPort except) {
-        return Collections.enumeration( linkedSourcePortList(except) );
     }
 
     /** List the output ports that we are linked to from the outside
@@ -437,6 +407,36 @@ public class IORelation extends ComponentRelation {
         } finally {
             _workspace.doneReading();
         }
+    }
+
+    /** Enumerate the output ports that we are linked to from the outside
+     *  and the input ports that we are linked to from the inside.
+     *  I.e. enumerate the ports from or through which we might receive
+     *  data. This method is deprecated and calls
+     *  linkedSourcePortList().
+     *  This method read-synchronizes on the workspace.
+     *
+     *  @see ptolemy.kernel.Relation#linkedPorts
+     *  @deprecated Use linkedSourcePortList() instead.
+     *  @return An enumeration of IOPort objects.
+     */
+    public Enumeration linkedSourcePorts() {
+        return Collections.enumeration( linkedSourcePortList() );
+    }
+
+    /** Enumerate the output ports that we are linked to from the outside
+     *  and the input ports that we are linked to from the inside.
+     *  I.e. enumerate the ports from or through which we might receive
+     *  This method is deprecated and calls
+     *  linkedSourcePortList(IOPort).
+     *  This method read-synchronizes on the workspace.
+     *  @see ptolemy.kernel.Relation#linkedPorts(ptolemy.kernel.Port)
+     *  @param except The port not included in the returned Enumeration.
+     *  @deprecated Use linkedSourcePortList(IOPort) instead.
+     *  @return An enumeration of IOPort objects.
+     */
+    public Enumeration linkedSourcePorts(IOPort except) {
+        return Collections.enumeration( linkedSourcePortList(except) );
     }
 
     /** Specify the container, adding the relation to the list
