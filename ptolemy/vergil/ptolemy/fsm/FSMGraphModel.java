@@ -130,13 +130,13 @@ public class FSMGraphModel extends AbstractGraphModel
      * Add a node to the given graph and notify listeners with a
      * NODE_ADDED event. <p>
      */
-    public void addNode(Object node, Object parent) {
+    public void addNode(Object eventSource, Object node, Object parent) {
 	 if (node instanceof Icon &&
 		   parent instanceof CompositeEntity) {
-	    addNode((Icon)node, (CompositeEntity)parent);
+	    addNode(eventSource, (Icon)node, (CompositeEntity)parent);
 	} else if (node instanceof Port &&
 		   parent instanceof CompositeEntity) {
-	    addNode((ComponentPort)node, (CompositeEntity)parent);
+	    addNode(eventSource, (ComponentPort)node, (CompositeEntity)parent);
 	} else {
 	    throw new RuntimeException("FSMGraphModel only handles " +
 				       "named objects. node = " + node + 
@@ -148,7 +148,7 @@ public class FSMGraphModel extends AbstractGraphModel
      * Add a node to the given graph and notify listeners with a
      * NODE_ADDED event. <p>
      */
-    public void addNode(Icon icon, CompositeEntity parent) {
+    public void addNode(Object eventSource, Icon icon, CompositeEntity parent) {
 	ComponentEntity entity = (ComponentEntity)icon.getContainer();
 	try {
 	    entity.setContainer(parent);
@@ -156,8 +156,8 @@ public class FSMGraphModel extends AbstractGraphModel
 	    ex.printStackTrace();
 	    throw new RuntimeException(ex.getMessage());
 	}
-        GraphEvent e = new GraphEvent(GraphEvent.NODE_ADDED,
-                this, icon, parent);
+        GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_ADDED,
+                icon, parent);
         dispatchGraphEvent(e);
     }
 
@@ -165,15 +165,15 @@ public class FSMGraphModel extends AbstractGraphModel
      * Add a node to the given graph and notify listeners with a
      * NODE_ADDED event. <p>
      */
-    public void addNode(ComponentPort port, CompositeEntity parent) {
+    public void addNode(Object eventSource, ComponentPort port, CompositeEntity parent) {
 	try {
 	    port.setContainer(parent);
 	} catch (Exception ex) {
 	    ex.printStackTrace();
 	    throw new RuntimeException(ex.getMessage());
 	}
-        GraphEvent e = new GraphEvent(GraphEvent.NODE_ADDED,
-                this, port, parent);
+        GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_ADDED,
+                port, parent);
         dispatchGraphEvent(e);
     }
 
@@ -181,13 +181,15 @@ public class FSMGraphModel extends AbstractGraphModel
      * Connect the given edge to the given tail and head nodes,
      * then dispatch events to the listeners.
      */
-    public void connectEdge(Object link,
+    public void connectEdge(Object eventSource, 
+			    Object link,
 			    Object tail,
 			    Object head) {
 	if(link instanceof Arc) {
 	    if(tail instanceof Icon &&
 	       head instanceof Icon) {
-		connectEdge((Arc)link, 
+		connectEdge(eventSource, 
+			    (Arc)link, 
 			    (Icon)tail,
 			    (Icon)head);
 	    }
@@ -198,11 +200,12 @@ public class FSMGraphModel extends AbstractGraphModel
 	}
     }
 
-    public void connectEdge(Arc link, 
+    public void connectEdge(Object eventSource, 
+			    Arc link, 
 			    Icon tail,
 			    Icon head) {
-	setEdgeTail(link, tail);
-	setEdgeHead(link, head);
+	setEdgeTail(eventSource, link, tail);
+	setEdgeHead(eventSource, link, head);
     }
 
     /**
@@ -217,9 +220,9 @@ public class FSMGraphModel extends AbstractGraphModel
      * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
      * event.
      */
-    public void disconnectEdge(Object edge) {
+    public void disconnectEdge(Object eventSource, Object edge) {
 	if(edge instanceof Arc) {
-	    disconnectEdge((Arc) edge);
+	    disconnectEdge(eventSource, (Arc) edge);
 	} else {
 	    throw new RuntimeException("FSMGraphModel only handles " +
 				       "named objects. edge = " + edge);
@@ -231,8 +234,9 @@ public class FSMGraphModel extends AbstractGraphModel
      * listeners with an EDGE_HEAD_CHANGED and an EDGE_TAIL_CHANGED
      * event.
      */
-    public void disconnectEdge(Arc edge) {
-	/*  Edge edgePeer = (Edge)edge;
+    public void disconnectEdge(Object eventSource, Arc edge) {
+	/*  FIXME
+	    Edge edgePeer = (Edge)edge;
         Node headPeer = edgePeer.getHead();
         Node tailPeer = edgePeer.getTail();
         if(headPeer != null) {
@@ -560,16 +564,16 @@ public class FSMGraphModel extends AbstractGraphModel
      * Delete a node from its parent graph and notify
      * graph listeners with a NODE_REMOVED event.
      */
-    public void removeNode(Object node) {
+    public void removeNode(Object eventSource, Object node) {
 	Object parent = getParent(node);
 	if(node instanceof Icon) {
-	    removeNode((Icon)node);
+	    removeNode(eventSource, (Icon)node);
 	} else {
 	    throw new RuntimeException("Ptolemy Graph Model only handles " +
 				       "named objects. node = " + node);
 	}
-	GraphEvent e = new GraphEvent(GraphEvent.NODE_REMOVED,
-				      this, node, parent);
+	GraphEvent e = new GraphEvent(eventSource, GraphEvent.NODE_REMOVED,
+				      node, parent);
 	dispatchGraphEvent(e);
     }
 
@@ -577,7 +581,7 @@ public class FSMGraphModel extends AbstractGraphModel
      * Delete a node from its parent graph and notify
      * graph listeners with a NODE_REMOVED event.
      */
-    public void removeNode(Icon icon) {
+    public void removeNode(Object eventSource, Icon icon) {
 	ComponentEntity entity = (ComponentEntity)icon.getContainer();
 	try {
 	    Iterator ports = entity.portList().iterator();
@@ -596,9 +600,9 @@ public class FSMGraphModel extends AbstractGraphModel
      * Connect an edge to the given head node and notify listeners
      * with an EDGE_HEAD_CHANGED event.
      */
-    public void setEdgeHead(Object link, Object object) {
+    public void setEdgeHead(Object eventSource, Object link, Object object) {
 	if(link instanceof Arc) {
-	    setEdgeHead((Arc)link,
+	    setEdgeHead(eventSource, (Arc)link,
 			(NamedObj)object);
 	    } else {
 		throw new RuntimeException("FSMGraphModel only handles " +
@@ -611,12 +615,13 @@ public class FSMGraphModel extends AbstractGraphModel
      * Connect an edge to the given head node and notify listeners
      * with an EDGE_HEAD_CHANGED event.
      */
-    public void setEdgeHead(Arc link, Object head) {
+    public void setEdgeHead(Object eventSource, Arc link, Object head) {
 	link.unlink();
 	link.setHead(head);
 	link.link();
-        GraphEvent e = new GraphEvent(GraphEvent.EDGE_HEAD_CHANGED,
-                this, link, head);
+        GraphEvent e = 
+	    new GraphEvent(eventSource, GraphEvent.EDGE_HEAD_CHANGED,
+			   link, head);
         dispatchGraphEvent(e);
     }
 
@@ -624,9 +629,9 @@ public class FSMGraphModel extends AbstractGraphModel
      * Connect an edge to the given head node and notify listeners
      * with an EDGE_HEAD_CHANGED event.
      */
-    public void setEdgeTail(Object link, Object object) {
+    public void setEdgeTail(Object eventSource, Object link, Object object) {
 	if(link instanceof Arc) {
-	    setEdgeTail((Arc)link,
+	    setEdgeTail(eventSource, (Arc)link,
 			(NamedObj)object);
 	} else {
 	    throw new RuntimeException("Ptolemy Graph Model only handles " +
@@ -639,12 +644,13 @@ public class FSMGraphModel extends AbstractGraphModel
      * Connect an edge to the given tail node and notify listeners
      * with an EDGE_TAIL_CHANGED event.
      */
-    public void setEdgeTail(Arc link, NamedObj tail) {
+    public void setEdgeTail(Object eventSource, Arc link, NamedObj tail) {
 	link.unlink();
 	link.setTail(tail);
 	link.link();
-        GraphEvent e = new GraphEvent(GraphEvent.EDGE_TAIL_CHANGED,
-                this, link, tail);
+        GraphEvent e = 
+	    new GraphEvent(eventSource, GraphEvent.EDGE_TAIL_CHANGED,
+			   link, tail);
         dispatchGraphEvent(e);
     }
 

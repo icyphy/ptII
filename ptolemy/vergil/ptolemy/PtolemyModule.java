@@ -622,9 +622,9 @@ public class PtolemyModule implements Module {
 		Object origHead = model.getHead(origEdge);
 		if(origHead != null && origTail != null) {
 		    Figure tailFigure = 
-			(Figure)model.getVisualObject(origTail);
+			(Figure)target.getVisualObject(origTail);
 		    Figure headFigure = 
-			(Figure)model.getVisualObject(origHead);
+			(Figure)target.getVisualObject(origHead);
 		    // Swap the head and the tail if it will improve the 
 		    // layout, since LevelLayout only uses directed edges.
 		    if(tailFigure instanceof Terminal) {
@@ -711,8 +711,7 @@ public class PtolemyModule implements Module {
 		double location[] = ((Locatable)node).getLocation();
 		if(location == null) {
 		    location = new double[2];
-		    Figure figure = 
-			(Figure)getGraphModel().getVisualObject(node);
+		    Figure figure = getController().getFigure(node);
 		    location[0] = figure.getBounds().getCenterX();
 		    location[1] = figure.getBounds().getCenterY();
 		} else {

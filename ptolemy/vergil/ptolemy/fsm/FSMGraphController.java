@@ -133,7 +133,7 @@ public class FSMGraphController extends FSMViewerController {
 
 	    // Add it to the selection so it gets a manipulator, and
 	    // make events go to the grab-handle under the mouse
-	    Figure ef = (Figure) getGraphModel().getVisualObject(link);
+	    Figure ef = getFigure(link);
 	    getSelectionModel().addSelection(ef);
 	    ConnectorManipulator cm =
 		(ConnectorManipulator) ef.getParent();

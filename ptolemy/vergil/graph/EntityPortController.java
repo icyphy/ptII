@@ -104,9 +104,9 @@ public class EntityPortController extends NodeController {
 
         figure.setInteractor(getNodeInteractor());
         figure.setUserObject(port);
-        model.setVisualObject(port, figure);
+        getController().setFigure(port, figure);
         CompositeFigure parentFigure =
-	    (CompositeFigure)model.getVisualObject(parent);
+	    (CompositeFigure)getController().getFigure(parent);
 	BoundsSite site =
 	    new BoundsSite(parentFigure.getBackgroundFigure(), 0,
                     direction, fraction);
