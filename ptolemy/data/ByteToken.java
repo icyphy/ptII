@@ -47,7 +47,7 @@ import ptolemy.data.type.TypeLattice;
 A token that contains a byte number in the range 0 through 255.
 This is in contrast to Java's default that a byte is in the range
 -128 through 127.  To get our desired behavior we need only apply 
-a custom conversion <i>unsignedConvert()<\i> from byte to integer.  
+a custom conversion <i>unsignedConvert()</i> from byte to integer.  
 Conversion to byte already gives the desired behavior of truncating 
 the value, keeping the lowest 8 bits.  Thus, for example, the integers 
 -1 and 1023 both truncate to the byte 255.
@@ -111,7 +111,7 @@ public class ByteToken extends ScalarToken {
     }
 
     /** Return a new token whose value is the sum of this token
-     *  and the argument. Type resolution also occurs here, with
+     *  and the argument.  Type resolution also occurs here, with
      *  the returned token type chosen to achieve a lossless conversion.
      *  @param rightArgument The token to add to this token.
      *  @return A new token containing the result.
@@ -150,15 +150,14 @@ public class ByteToken extends ScalarToken {
         }
     }
 
-    /** Return a new token whose value is the sum of this token
-     *  and the argument. Type resolution also occurs here, with
-     *  the returned token type chosen to achieve
-     *  a lossless conversion.
+    /** Return a new token whose value is the sum of this token and
+     *  the argument. Type resolution also occurs here, with the
+     *  returned token type chosen to achieve a lossless conversion.
      *  @param leftArgument The token to add this token to.
      *  @return A new token containing the result.
      *  @exception IllegalActionException If the argument token
      *   is not of a type that can be added to this token, or
-     *   the units of this token and the argument token are not the same.
+     *   the units of this token and the argument token are not the same.  
      */
     public Token addReverse(ptolemy.data.Token leftArgument)
             throws IllegalActionException {
@@ -175,18 +174,17 @@ public class ByteToken extends ScalarToken {
     }
 
     /** Convert the specified token into an instance of ByteToken.
-     *  This method does lossless conversion.
-     *  If the argument is already an instance of ByteToken,
-     *  it is returned without any change. Otherwise, if the argument
-     *  is below ByteToken in the type hierarchy, it is converted to
-     *  an instance of ByteToken or one of the subclasses of
-     *  ByteToken and returned. If none of the above condition is
+     *  This method does lossless conversion, or throws an exception
+     *  if it cannot.  If the argument is already an instance of
+     *  ByteToken, it is returned without any change. Otherwise, if
+     *  the argument is below ByteToken in the type hierarchy, it is
+     *  converted to an instance of ByteToken or one of the subclasses
+     *  of ByteToken and returned. If none of the above condition is
      *  met, an exception is thrown.
      *  @param token The token to be converted to a ByteToken.
      *  @return A ByteToken.
      *  @exception IllegalActionException If the conversion
-     *   cannot be carried out.
-     */
+     *   cannot be carried out.  */
     public static Token convert(Token token) throws IllegalActionException {
         int compare = TypeLattice.compare(BaseType.BYTE, token);
         if (compare == CPO.LOWER || compare == CPO.INCOMPARABLE) {
@@ -199,6 +197,13 @@ public class ByteToken extends ScalarToken {
         if (token instanceof ByteToken) {
             return token;
         }
+
+	// This is where conversion from a lower type (such as nybble)
+        // would be carried out.  But byte is the bottom of this string 
+        // in the CPO so nothing is done here.  (However, when creating 
+        // this byte type, I had to also add a section here to the int 
+        // type!  Previously int was bottom.)
+
         throw new IllegalActionException("Cannot convert from token " +
                 "type: " + token.getClass().getName() + " to an ByteToken");
     }

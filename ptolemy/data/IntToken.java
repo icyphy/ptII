@@ -180,6 +180,14 @@ public class IntToken extends ScalarToken {
         if (token instanceof IntToken) {
             return token;
         }
+
+        // This section added when ByteToken.java created.
+	compare = TypeLattice.compare(BaseType.BYTE, token);
+	if (compare == CPO.SAME || compare == CPO.HIGHER) {
+	    ByteToken bytetoken = (ByteToken)ByteToken.convert(token);
+	    return new IntToken(bytetoken.intValue());
+	}
+
         throw new IllegalActionException("cannot convert from token " +
                 "type: " + token.getClass().getName() + " to an IntToken");
     }
