@@ -296,7 +296,7 @@ public final class SignalProcessing {
      *  <p>
      *  This implementation is ported from the Ptolemy 0.x implementation
      *  by Joe Buck, Brian Evans, and Edward A. Lee.
-     *  Reference: E. A. Lee and D. G. Messerchmitt,
+     *  Reference: E. A. Lee and D. G. Messerschmitt,
      *  <i>Digital Communication, Second Edition</i>,
      *  Kluwer Academic Publishers, Boston, 1994.
      *
@@ -418,7 +418,7 @@ public final class SignalProcessing {
      *  <p>
      *  This implementation is ported from the Ptolemy 0.x implementation
      *  by Joe Buck, Brian Evans, and Edward A. Lee.
-     *  Reference: E. A. Lee and D. G. Messerchmitt,
+     *  Reference: E. A. Lee and D. G. Messerschmitt,
      *  <i>Digital Communication, Second Edition</i>,
      *  Kluwer Academic Publishers, Boston, 1994.
      *
@@ -588,7 +588,7 @@ public final class SignalProcessing {
         for (int index = 0; index<order; index++){
             le = le >> 1;
 
-            // first iteration has no mutiplies
+            // first iteration has no multiplies
             for (int i = 0; i < size; i += 2*le) {
                 int k = i+le;
                 Complex temp = Complex.add(x[i], x[k]);
