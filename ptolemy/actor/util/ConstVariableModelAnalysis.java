@@ -357,11 +357,13 @@ public class ConstVariableModelAnalysis {
                         _variableToChangeContext.get(variable);
                 }
                 for(Iterator declarations =
-                        variable.attributeList(DependencyDeclaration.class).iterator();
+                        variable.attributeList(DependencyDeclaration.class)
+                        .iterator();
                     declarations.hasNext() && !isNotConstant;) {
                     DependencyDeclaration declaration =
                         (DependencyDeclaration) declarations.next();
-                    for(Iterator dependents = declaration.getDependents().iterator();
+                    for(Iterator dependents =
+                            declaration.getDependents().iterator();
                         dependents.hasNext() && !isNotConstant;) {
                         Variable scopeVariable = (Variable)dependents.next();
                         boolean scopeVariableChanges =
