@@ -1,35 +1,3 @@
-/* A type polymorphic FIR filter.
-
- Copyright (c) 1998-2001 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
-
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
-
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
-
-                                        PT_COPYRIGHT_VERSION_2
-                                        COPYRIGHTENDKEY
-
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
-*/
-
-package ptolemy.domains.sdf.lib;
-
 import ptolemy.actor.*;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
@@ -128,7 +96,7 @@ public class FIR extends SDFTransformer {
         taps.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         taps.setExpression("{1.0}");
 
-	// set type constraints.
+	// Set type constraints.
 	ArrayType paramType = (ArrayType)taps.getType();
 	InequalityTerm elemTerm = paramType.getElementTypeTerm();
 	output.setTypeAtLeast(elemTerm);
@@ -229,7 +197,7 @@ public class FIR extends SDFTransformer {
 	    throws CloneNotSupportedException {
         FIR newObject = (FIR)(super.clone(workspace));
 
-        // set the type constraints
+        // Set the type constraints.
         ArrayType paramType = (ArrayType)newObject.taps.getType();
         InequalityTerm elemTerm = paramType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elemTerm);
@@ -245,7 +213,7 @@ public class FIR extends SDFTransformer {
      */
     public void fire() throws IllegalActionException {
 
-        // phase keeps track of which phase of the filter coefficients
+        // Phase keeps track of which phase of the filter coefficients
         // are used. Starting phase depends on the _decPhase value.
         int phase = _dec - _decPhase - 1;
 
@@ -290,7 +258,7 @@ public class FIR extends SDFTransformer {
      */
     public boolean prefire() throws IllegalActionException {
         // If an attribute has changed since the last fire(), or if
-        // this is the first fire(), then renitialize.
+        // this is the first fire(), then reinitialize.
         if (_reinitializeNeeded) _reinitialize();
 
         if (input.hasToken(0, _dec)) return super.prefire();
@@ -306,7 +274,7 @@ public class FIR extends SDFTransformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        // must be sure to throw away the old data buffer.
+        // Must be sure to throw away the old data buffer.
         _data = null;
         _reinitializeNeeded = true;
     }
