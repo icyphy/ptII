@@ -37,7 +37,7 @@ package ptolemy.actor;
 An ExecutionEvent is passed from a Manager to an ExecutionListener to
 represent an event that happened during the execution of a topology.
 This event contains three pieces of information:  the manager that created
-the event, the toplevel iteration number during which the event occured and
+the event, the toplevel iteration number during which the event occurred and
 an exception.   Each object may or may not be a valid reference.
 
 @author Steve Neuendorffer
