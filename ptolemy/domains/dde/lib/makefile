@@ -49,13 +49,11 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	DDEConsonants.java \
 	DDEInPunctuation.java \
-	DDEPrintString.java \
-	DDEPunctuation.java \
+	DDEPrinter.java \
 	DDEStringMerge.java \
 	DDEStringSource.java \
-	DDEVowels.java
+	TimedSource.java
 
 EXTRA_SRCS =	$(JSRCS)
 
