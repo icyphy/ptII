@@ -1,10 +1,10 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="TestExpression" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[597, 693]">
+<entity name="MatlabExpression" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[597, 667]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[127, 221]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[106, -6]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -17,24 +17,33 @@
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Matlab Expression Actor Demo
 
-Similar to TestEngine. It could be made more interesting
-by using more complex matrix functions from a library and
-testing against matlab...</text></svg></configure>
+It could be made more interesting
+by using more complex matrix functions 
+from a library and testing against matlab...</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
         </property>
         <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="211.0, 53.0">
+        <property name="_location" class="ptolemy.moml.Location" value="170.0, 65.0">
         </property>
     </property>
     <entity name="DoubleMatrixMatlabExpression" class="ptolemy.matlab.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="output=input.*input;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="261.0, 294.0">
+        <property name="_location" class="ptolemy.moml.Location" value="335.0, 310.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -50,7 +59,7 @@ testing against matlab...</text></svg></configure>
     <entity name="ComplexMatrixMatlabExpression" class="ptolemy.matlab.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="output=input*iteration">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="345.0, 440.0">
+        <property name="_location" class="ptolemy.moml.Location" value="335.0, 450.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -70,7 +79,7 @@ testing against matlab...</text></svg></configure>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="85.0, 256.0">
+        <property name="_location" class="ptolemy.moml.Location" value="170.0, 275.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -83,7 +92,7 @@ testing against matlab...</text></svg></configure>
     <entity name="DoubleMatrixExpression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="input*2.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="244.0, 227.0">
+        <property name="_location" class="ptolemy.moml.Location" value="335.0, 240.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -99,7 +108,7 @@ testing against matlab...</text></svg></configure>
     <entity name="ComplexMatrixExpression" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="input * iteration">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="325.0, 362.0">
+        <property name="_location" class="ptolemy.moml.Location" value="335.0, 380.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -121,7 +130,7 @@ testing against matlab...</text></svg></configure>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="67.0, 500.0">
+        <property name="_location" class="ptolemy.moml.Location" value="170.0, 455.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -136,7 +145,7 @@ testing against matlab...</text></svg></configure>
     <entity name="MatlabStructWriteRead" class="ptolemy.matlab.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="output=input;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="227.0, 563.0">
+        <property name="_location" class="ptolemy.moml.Location" value="225.0, 585.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -150,7 +159,7 @@ testing against matlab...</text></svg></configure>
     <entity name="CompareRecords" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="reference.isEqualTo(test)">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="334.0, 507.0">
+        <property name="_location" class="ptolemy.moml.Location" value="330.0, 520.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -173,7 +182,7 @@ testing against matlab...</text></svg></configure>
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="469.0, 506.0">
+        <property name="_location" class="ptolemy.moml.Location" value="525.0, 510.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -189,7 +198,7 @@ testing against matlab...</text></svg></configure>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="52.0, 375.0">
+        <property name="_location" class="ptolemy.moml.Location" value="50.0, 380.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -202,7 +211,7 @@ testing against matlab...</text></svg></configure>
     <entity name="CheckPackageDirectories" class="ptolemy.matlab.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="output=path;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="235.0, 650.0">
+        <property name="_location" class="ptolemy.moml.Location" value="225.0, 645.0">
         </property>
         <property name="packageDirectories" class="ptolemy.data.expr.Parameter" value="&quot;../ml,ptolemy/matlab/test&quot;">
         </property>
@@ -238,7 +247,7 @@ testing against matlab...</text></svg></configure>
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="189.0, 374.0">
+        <property name="_location" class="ptolemy.moml.Location" value="170.0, 380.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -251,7 +260,7 @@ testing against matlab...</text></svg></configure>
     <entity name="MarkIteration" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.data.expr.Parameter" value="&quot;Iteration &quot;+iteration.toString()+&quot;:&quot;">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="217.0, 154.0">
+        <property name="_location" class="ptolemy.moml.Location" value="500.0, 240.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -260,15 +269,15 @@ testing against matlab...</text></svg></configure>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="131.0, 261.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="230.0, 275.0">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="212.0, 380.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="245.0, 380.0">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="147.0, 505.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="175.0, 515.0">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -288,7 +297,7 @@ testing against matlab...</text></svg></configure>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="251.0, 521.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="285.0, 585.0">
         </vertex>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
