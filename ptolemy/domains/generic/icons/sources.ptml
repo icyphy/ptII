@@ -1,0 +1,27 @@
+<!-- Generic icons for sinks -->
+
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE iconlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
+
+<iconlibrary name="sources" version="1.0">
+<header>
+    <description>Generic source icons</description>
+</header>
+
+<icon name="LoadImage">
+    <description>Load an image from a file</description>
+    <entitytype name="loadimage" ports="2"/>
+
+    <graphic format="tcl">
+        <tclscript>
+        <!-- Some Tcl script -->
+       </tclscript>
+    </graphic>
+
+    <parameter name="filename" type="string"/>
+    <port name="image" output="true" type="doubleArray"/>
+</icon>
+
+
+</iconlibrary>
+

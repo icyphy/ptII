@@ -1,0 +1,33 @@
+<!-- Generic icons for sinks -->
+
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE iconlibrary  PUBLIC "ptml.dtd" "http://ptolemy.eecs.berkeley.edu/ptml.dtd">
+
+<iconlibrary name="sinks" version="1.0">
+<header>
+    <description>Generic sink icons</description>
+</header>
+
+<icon name="SaveImage">
+    <entitytype name="saveimage" ports="2"/>
+    <port name="filename" input="true" type="string"/>
+    <port name="image" input="true" type="doubleArray"/>
+    <graphic format="xml">
+        <line style="dotted" width="5" points="0 0 10 10"/>
+        <rect color="blue" fill="hatch" points="0 0 10 10"/>
+
+        <!-- ovals are described in terms of a bounding box -->
+        <ellipse fill="blue" points="0 0 10 10"/>
+        <polygon points="0 0 10 10 15 10 15 0"/>
+        <textline font="helvetica" points="0 0">Hello!</textline>
+        <textbox alignX="center" alignY="top" points="0 0 100 100">
+            Hello! This is a nice big text box in a ptolemy icon.
+        </textbox>
+        <image format="gif" compression="zip" file="icon.gif" 
+             points="0 0 100 100"/>
+    </graphic>
+</icon>
+
+
+</iconlibrary>
+
