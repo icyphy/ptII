@@ -541,3 +541,8 @@ proc diffText {texta textb} {
     file delete -force $atmpfile $btmpfile
     return $results
 }
+
+# Set a property that signifies we are running the tests so
+# that classes like actor.lib.NonStrictTest will check to see if
+# the training flag is set
+java::call System setProperty ptolemy.ptII.testbed true
