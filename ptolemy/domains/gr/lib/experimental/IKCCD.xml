@@ -2,7 +2,7 @@
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="IK example" class="ptolemy.actor.TypedCompositeActor">
-    <director name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
+    <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -10,7 +10,7 @@
         <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
             <location value="557.6600000000001, 83.69999999999999"/>
         </rendition>
-    </director>
+    </property>
     <entity name="ViewScreen0" class="ptolemy.domains.gr.lib.ViewScreen">
         <property name="horizontal resolution" class="ptolemy.data.expr.Parameter" value="400">
         </property>
@@ -27,7 +27,7 @@
         <property name="show axes" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="532.6600152587891, 184.29999999999998"/>
+            <location value="518.6600152587891, 172.29999999999998"/>
         </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -93,7 +93,7 @@
         <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="427.58000000000004, 177.29999999999998"/>
+            <location value="414.58000000000004, 172.29999999999998"/>
         </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -122,7 +122,7 @@
         <property name="pivot location" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
         </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="301.5, 165.7"/>
+            <location value="306.5, 170.7"/>
         </rendition>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -150,7 +150,7 @@
         </port>
     </entity>
     <class name="robot arm" extends="ptolemy.actor.TypedCompositeActor">
-        <director name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
+        <property name="GR" class="ptolemy.domains.gr.kernel.GRDirector">
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -158,7 +158,7 @@
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="15.0, -2.75"/>
             </rendition>
-        </director>
+        </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
             <location value="225.00000095367432, 170.75"/>
         </rendition>
@@ -238,7 +238,7 @@
             </port>
         </entity>
         <class name="lower limb12" extends="ptolemy.actor.TypedCompositeActor">
-            <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -247,7 +247,7 @@
                 </property>
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 </rendition>
-            </director>
+            </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="100.0, 166.0"/>
             </rendition>
@@ -975,7 +975,7 @@
             </port>
         </entity>
         <class name="upper limb0" extends="ptolemy.actor.TypedCompositeActor">
-            <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -984,7 +984,7 @@
                 </property>
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 </rendition>
-            </director>
+            </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="97.0, 239.0"/>
             </rendition>
@@ -1891,7 +1891,7 @@
             </port>
         </entity>
         <class name="wrist0" extends="ptolemy.actor.TypedCompositeActor">
-            <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -1900,7 +1900,7 @@
                 </property>
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 </rendition>
-            </director>
+            </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="97.0, 308.0"/>
             </rendition>
@@ -2642,7 +2642,7 @@
             <link port="Translate3D22.output" relation="relation24"/>
         </class>
         <class name="gripper0" extends="ptolemy.actor.TypedCompositeActor">
-            <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -2651,7 +2651,7 @@
                 </property>
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 </rendition>
-            </director>
+            </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="94.0, 387.0"/>
             </rendition>
@@ -3502,7 +3502,7 @@
             </port>
         </entity>
         <class name="stand0" extends="ptolemy.actor.TypedCompositeActor">
-            <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -3511,7 +3511,7 @@
                 </property>
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 </rendition>
-            </director>
+            </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="95.0, 36.0"/>
             </rendition>
@@ -3751,7 +3751,7 @@
             <link port="Translate3D1.output" relation="relation7"/>
         </class>
         <class name="shoulder base0" extends="ptolemy.actor.TypedCompositeActor">
-            <director name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
+            <property name="DD3D" class="ptolemy.domains.gr.kernel.GRDirector">
                 <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                 </property>
                 <property name="iteration time upper bound" class="ptolemy.data.expr.Parameter" value="33">
@@ -3761,7 +3761,7 @@
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                     <location value="12.0, 5.25"/>
                 </rendition>
-            </director>
+            </property>
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="106.0, 97.0"/>
             </rendition>
@@ -4228,7 +4228,7 @@
         <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
             <location value="77.00000095367432, 170.25"/>
         </rendition>
-        <director name="DE0" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="DE0" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
@@ -4246,7 +4246,7 @@
             <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                 <location value="468.0, 35.0"/>
             </rendition>
-        </director>
+        </property>
         <port name="in_x" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="location1" class="ptolemy.moml.Location">
@@ -4259,22 +4259,22 @@
                 <location value="18.0, 69.0"/>
             </property>
         </port>
-        <port name="out_wrist" class="ptolemy.actor.TypedIOPort">
+        <port name="out_shoulder" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="location1" class="ptolemy.moml.Location">
-                <location value="705.0, 20.0"/>
+                <location value="731.0, 75.0"/>
             </property>
         </port>
         <port name="out_elbow" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="location1" class="ptolemy.moml.Location">
-                <location value="706.0, 48.0"/>
+                <location value="730.0, 47.0"/>
             </property>
         </port>
-        <port name="out_shoulder" class="ptolemy.actor.TypedIOPort">
+        <port name="out_wrist" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="location1" class="ptolemy.moml.Location">
-                <location value="705.0, 72.0"/>
+                <location value="729.0, 18.0"/>
             </property>
         </port>
         <entity name="Merge0" class="ptolemy.domains.de.lib.Merge">
@@ -4538,15 +4538,17 @@
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                     <location value="162.00000095367432, 76.25"/>
                 </rendition>
-                <director name="SDF0" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
+                    <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
                     <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                        <location value="481.0, 34.0"/>
+                        <location value="516.0, 43.0"/>
                     </rendition>
-                </director>
+                </property>
                 <port name="pivotX" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="location1" class="ptolemy.moml.Location">
@@ -4985,18 +4987,20 @@
                 <link port="MathFunction1.output" relation="relation11"/>
             </class>
             <class name="rotator_end" extends="ptolemy.actor.TypedCompositeActor">
-                <director name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+                    <location value="453.0, 144.75"/>
+                </rendition>
+                <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
+                    <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
                     <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                        <location value="559.0, 343.0"/>
+                        <location value="527.0, 331.0"/>
                     </rendition>
-                </director>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                    <location value="453.0, 144.75"/>
-                </rendition>
+                </property>
                 <port name="pivot_X" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="location1" class="ptolemy.moml.Location">
@@ -5215,18 +5219,20 @@
                 <link port="Expression16.sine" relation="relation3"/>
             </class>
             <class name="rotator_wrist" extends="ptolemy.actor.TypedCompositeActor">
-                <director name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+                    <location value="447.3288879394531, 259.25"/>
+                </rendition>
+                <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
+                    <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
                     <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                        <location value="559.0, 343.0"/>
+                        <location value="552.0, 305.0"/>
                     </rendition>
-                </director>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                    <location value="447.3288879394531, 259.25"/>
-                </rendition>
+                </property>
                 <port name="pivot_X" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="location1" class="ptolemy.moml.Location">
@@ -5487,18 +5493,20 @@
                 </port>
             </entity>
             <class name="rotator_elbow" extends="ptolemy.actor.TypedCompositeActor">
-                <director name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+                    <location value="450.8288879394531, 322.25"/>
+                </rendition>
+                <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
+                    <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
                     <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                        <location value="559.0, 343.0"/>
+                        <location value="524.0, 323.0"/>
                     </rendition>
-                </director>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                    <location value="450.8288879394531, 322.25"/>
-                </rendition>
+                </property>
                 <port name="pivot_X" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="location1" class="ptolemy.moml.Location">
@@ -5979,7 +5987,7 @@
             </port>
             <class name="clamp" extends="ptolemy.actor.TypedCompositeActor">
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                    <location value="257.0000009536743, 83.25"/>
+                    <location value="266.0000009536743, 195.25"/>
                 </rendition>
                 <port name="deltaAngle" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -6210,15 +6218,17 @@
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                     <location value="162.00000095367432, 76.25"/>
                 </rendition>
-                <director name="SDF0" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
+                    <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
                     <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                        <location value="481.0, 34.0"/>
+                        <location value="508.0, 41.0"/>
                     </rendition>
-                </director>
+                </property>
                 <port name="pivotX" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="location1" class="ptolemy.moml.Location">
@@ -6657,7 +6667,7 @@
                 <link port="MathFunction1.output" relation="relation11"/>
             </class>
             <class name="rotator_end" extends="ptolemy.actor.TypedCompositeActor">
-                <director name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="DT1" class="ptolemy.domains.dt.kernel.DTDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -6665,7 +6675,7 @@
                     <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                         <location value="559.0, 343.0"/>
                     </rendition>
-                </director>
+                </property>
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                     <location value="453.0, 144.75"/>
                 </rendition>
@@ -6887,18 +6897,20 @@
                 <link port="Expression16.sine" relation="relation3"/>
             </class>
             <class name="rotator_wrist" extends="ptolemy.actor.TypedCompositeActor">
-                <director name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+                    <location value="447.3288879394531, 259.25"/>
+                </rendition>
+                <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
+                    <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
                     <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                        <location value="559.0, 343.0"/>
+                        <location value="542.0, 334.0"/>
                     </rendition>
-                </director>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                    <location value="447.3288879394531, 259.25"/>
-                </rendition>
+                </property>
                 <port name="pivot_X" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="location1" class="ptolemy.moml.Location">
@@ -7559,19 +7571,27 @@
                 <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
                     <location value="158.00000095367432, 74.25"/>
                 </rendition>
-                <director name="SDF0" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <property name="DT0" class="ptolemy.domains.dt.kernel.DTDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
+                    <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
                     <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                        <location value="483.0, 36.0"/>
+                        <location value="502.0, 38.0"/>
                     </rendition>
-                </director>
+                </property>
                 <port name="pivotX" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="location1" class="ptolemy.moml.Location">
                         <location value="13.0, 25.0"/>
+                    </property>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </port>
                 <port name="pivotY" class="ptolemy.actor.TypedIOPort">
@@ -7579,11 +7599,23 @@
                     <property name="location1" class="ptolemy.moml.Location">
                         <location value="18.0, 88.0"/>
                     </property>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 </port>
                 <port name="srcX" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="location1" class="ptolemy.moml.Location">
                         <location value="18.0, 141.0"/>
+                    </property>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </port>
                 <port name="srcY" class="ptolemy.actor.TypedIOPort">
@@ -7591,11 +7623,23 @@
                     <property name="location1" class="ptolemy.moml.Location">
                         <location value="18.0, 178.0"/>
                     </property>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 </port>
                 <port name="destX" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="location1" class="ptolemy.moml.Location">
                         <location value="19.0, 276.0"/>
+                    </property>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </port>
                 <port name="destY" class="ptolemy.actor.TypedIOPort">
@@ -7603,11 +7647,23 @@
                     <property name="location1" class="ptolemy.moml.Location">
                         <location value="21.0, 303.0"/>
                     </property>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
                 </port>
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="location1" class="ptolemy.moml.Location">
                         <location value="606.0, 235.0"/>
+                    </property>
+                    <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+                    </property>
+                    <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+                    </property>
+                    <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                 </port>
                 <entity name="AddSubtract7" class="ptolemy.actor.lib.AddSubtract">
@@ -8006,18 +8062,20 @@
                 <link port="MathFunction1.output" relation="relation11"/>
             </class>
             <class name="rotator" extends="ptolemy.actor.TypedCompositeActor">
-                <director name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
+                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
+                    <location value="453.0, 144.75"/>
+                </rendition>
+                <property name="DT1" class="ptolemy.domains.dt.kernel.DTDirector">
                     <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
                     </property>
                     <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
                     </property>
+                    <property name="period" class="ptolemy.data.expr.Parameter" value="1.0">
+                    </property>
                     <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                        <location value="559.0, 343.0"/>
+                        <location value="555.0, 337.0"/>
                     </rendition>
-                </director>
-                <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
-                    <location value="453.0, 144.75"/>
-                </rendition>
+                </property>
                 <port name="pivot_X" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="location1" class="ptolemy.moml.Location">
@@ -8045,7 +8103,7 @@
                 <port name="angle" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="location1" class="ptolemy.moml.Location">
-                        <location value="27.0, 316.0"/>
+                        <location value="27.0, 331.0"/>
                     </property>
                 </port>
                 <port name="rotatedx" class="ptolemy.actor.TypedIOPort">
@@ -8078,7 +8136,7 @@
                         </property>
                     </property>
                     <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                        <location value="141.0, 254.0"/>
+                        <location value="132.0, 264.0"/>
                     </rendition>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -8105,7 +8163,7 @@
                         </property>
                     </property>
                     <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-                        <location value="141.0, 317.0"/>
+                        <location value="135.0, 325.0"/>
                     </rendition>
                     <port name="input" class="ptolemy.actor.TypedIOPort">
                         <property name="input"/>
@@ -8172,7 +8230,7 @@
                 </entity>
                 <relation name="relation7" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
-                        <location value="68.0, 316.0"/>
+                        <location value="66.0, 331.0"/>
                     </vertex>
                 </relation>
                 <relation name="relation18" class="ptolemy.actor.TypedIORelation">
@@ -8181,12 +8239,12 @@
                 </relation>
                 <relation name="relation2" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
-                        <location value="238.0, 260.0"/>
+                        <location value="230.0, 287.0"/>
                     </vertex>
                 </relation>
                 <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                     <vertex name="vertex1" class="ptolemy.moml.Vertex">
-                        <location value="261.0, 323.0"/>
+                        <location value="258.0, 331.0"/>
                     </vertex>
                 </relation>
                 <relation name="relation9" class="ptolemy.actor.TypedIORelation">
@@ -9138,9 +9196,9 @@
         </relation>
         <link port="in_x" relation="relation21"/>
         <link port="in_y" relation="relation22"/>
-        <link port="out_wrist" relation="relation3"/>
-        <link port="out_elbow" relation="relation13"/>
         <link port="out_shoulder" relation="relation17"/>
+        <link port="out_elbow" relation="relation13"/>
+        <link port="out_wrist" relation="relation3"/>
         <link port="Merge0.input" relation="relation18"/>
         <link port="Merge0.input" relation="relation83"/>
         <link port="Merge0.output" relation="relation4"/>
@@ -9291,7 +9349,7 @@
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="150.0, 167.0"/>
+            <location value="150.0, 166.0"/>
         </vertex>
     </relation>
     <link port="ViewScreen0.input" relation="relation4"/>
@@ -9313,7 +9371,7 @@
     <link port="robot arm.wristAngle" relation="relation1"/>
     <link port="ComputeCCD.in_x" relation="relation6"/>
     <link port="ComputeCCD.in_y" relation="relation12"/>
-    <link port="ComputeCCD.out_wrist" relation="relation1"/>
-    <link port="ComputeCCD.out_elbow" relation="relation5"/>
     <link port="ComputeCCD.out_shoulder" relation="relation7"/>
+    <link port="ComputeCCD.out_elbow" relation="relation5"/>
+    <link port="ComputeCCD.out_wrist" relation="relation1"/>
 </model>
