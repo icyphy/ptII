@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Real Time Operating System Domain
+# Makefile for the Ptolemy Timed Multitasking (tm) domain
 #
 # @Version: $Id$
 # @Author: Christopher Hylands (makefile only)
