@@ -655,6 +655,151 @@ public class InterfaceAutomaton extends FSMActor {
         return set;
     }
 
+    /** Return the reacheable state pairs in the specified alternating
+     *  simulation. A state pair is reacheable if they can be reached
+     *  from the initial states of their corresponding automata through the
+     *  same input or output transitions, or internal transitions. The
+     *  internal transitions in the two automata that are taken to reach
+     *  a state pair do not have to be the same.
+     *  @param alternatingSimulation A set of instances of StatePair.
+     *  @param superAutomaton The automaton that contains the first state
+     *   in the state pairs in alternatingSimulation.
+     *  @param subAutomaton The automaton that contains the second state
+     *   in the state pairs in alternatingSimulation.
+     *  @return A set of instances of StatePair that only contain the
+     *   reacheable state pairs in alternatingSimulation.
+     *  @exception IllegalActionException If thrown by getInitialState().
+     */
+    public static Set reacheableAlternatingSimulation(
+            Set alternatingSimulation, InterfaceAutomaton superAutomaton,
+            InterfaceAutomaton subAutomaton) throws IllegalActionException {
+
+        // Use frontier exploration:
+        // Init:
+        //     if initial states not in alternatingSimulation
+        //         return a null set
+        //     else
+        //         reacheableSimulation = frontier = initial state pair
+        //
+        // Repeat:
+        //     take a state pair (p, q) from frontier
+        //     for each transition pTp'
+        //         if T is input or output
+        //             if the subAutomaton has transition(s) qTq'
+        //                 if (p', q') is in alternatingSimulation
+        //                     if (p', q') not already in reacheableSimulation
+        //                         put it in both reacheableSimulation and
+        //                         frontier
+        //         else (pTp' is internal transition)
+        //             if (p', q) is in alternatingSimulation
+        //                 if (p', q) is not already in reacheableSimulation
+        //                     put it in both reacheableSimulation and frontier
+        //
+        //     for each internal transition qTq'
+        //         if (p, q') is in alternatingSimulation
+        //             if (p, q') is not already in reacheableSimulation
+        //                 put it in both reacheableSimulation and frontier
+        //
+        //     stop until frontier is empty
+
+        State superInitial = superAutomaton.getInitialState();
+        State subInitial = subAutomaton.getInitialState();
+        StatePair pair = new StatePair(superInitial, subInitial);
+        if ( !alternatingSimulation.contains(pair)) {
+            // initial states not in alternating simulation, return
+            // an empty set.
+            return new HashSet();
+        }
+
+        // initial states in alternating simulation
+        Set reacheableSimulation = new HashSet();
+        Set frontier = new HashSet();
+        reacheableSimulation.add(pair);
+        frontier.add(pair);
+
+        // repeat
+        while ( !frontier.isEmpty()) {
+            // pick a state from frontier. It seems that there isn't an
+            // easy way to pick an arbitrary entry from a HashSet, except
+            // through Iterator
+            Iterator iterator = frontier.iterator();
+            StatePair currentPair = (StatePair)iterator.next();
+	    frontier.remove(currentPair);
+
+            State superState = currentPair.first();
+            State subState = currentPair.second();
+
+            ComponentPort superPort = superState.outgoingPort;
+            Iterator superTransitions =
+                                    superPort.linkedRelationList().iterator();
+            while (superTransitions.hasNext()) {
+                InterfaceAutomatonTransition superTransition =
+                        (InterfaceAutomatonTransition)superTransitions.next();
+                State superDestination = superTransition.destinationState();
+                String superLabel = superTransition.getLabel();
+
+                int transitionType = superTransition.getType();
+                if ((transitionType ==
+                        InterfaceAutomatonTransition._INPUT_TRANSITION) ||
+                    (transitionType ==
+                        InterfaceAutomatonTransition._OUTPUT_TRANSITION)) {
+
+                    // check whether sub automaton has same transition
+                    ComponentPort subPort = subState.outgoingPort;
+                    Iterator subTransitions =
+                                    subPort.linkedRelationList().iterator();
+                    while (subTransitions.hasNext()) {
+                        InterfaceAutomatonTransition subTransition =
+                            (InterfaceAutomatonTransition)subTransitions.next();
+                        String subLabel = subTransition.getLabel();
+                        if (superLabel.equals(subLabel)) {
+                            State subDestination =
+                                            subTransition.destinationState();
+                            StatePair newPair = new StatePair(superDestination,
+                                                              subDestination);
+                            if (alternatingSimulation.contains(newPair) &&
+                                ( !reacheableSimulation.contains(newPair))) {
+                                reacheableSimulation.add(newPair);
+                                frontier.add(newPair);
+                            }
+                        }
+                    }
+                } else {
+                    // internal transition in super automaton
+                    StatePair newPair = new StatePair(superDestination,
+                                                          subState);
+                    if (alternatingSimulation.contains(newPair) &&
+                        ( !reacheableSimulation.contains(newPair))) {
+                        reacheableSimulation.add(newPair);
+                        frontier.add(newPair);
+                    }
+                }
+            }
+                    
+            // explore internal transitions from subState
+            ComponentPort subPort = subState.outgoingPort;
+            Iterator subTransitions = subPort.linkedRelationList().iterator();
+            while (subTransitions.hasNext()) {
+                InterfaceAutomatonTransition subTransition =
+                        (InterfaceAutomatonTransition)subTransitions.next();
+
+                int transitionType = subTransition.getType();
+                if ((transitionType ==
+                        InterfaceAutomatonTransition._INTERNAL_TRANSITION)) {
+                    State subDestination = subTransition.destinationState();
+                    StatePair newPair = new StatePair(superState,
+                                                          subDestination);
+                    if (alternatingSimulation.contains(newPair) &&
+                        ( !reacheableSimulation.contains(newPair))) {
+                        reacheableSimulation.add(newPair);
+                        frontier.add(newPair);
+                    }
+                }
+            }
+        }
+        return reacheableSimulation;
+    }
+
     /** Rename the labels on some transitions. The argument is a Map
      *  specifying which transition labels should be renamed. The keys of the
      *  Map are the old label names, and the values are the new label names.

@@ -61,10 +61,12 @@ public class AlternatingSimulation {
      *  super one and list the result to stdout.
      *  @param superMoML The MoML file name for the super interface automaton.
      *  @param subMoML The MoML file name for the sub interface automaton.
+     *  @param onlyReacheable True to indicate only print the reacheable
+     *   state pairs.
      *  @exception Exception If the specified automata cannot be constructed.
      */
-    public AlternatingSimulation (String superMoML, String subMoML)
-            throws Exception {
+    public AlternatingSimulation (String superMoML, String subMoML,
+                boolean onlyReacheable) throws Exception {
         // Construct the super automaton
         URL url = MoMLApplication.specToURL(superMoML);
         // following the comments in MoMLApplication, use the same URL for
@@ -89,6 +91,11 @@ public class AlternatingSimulation {
         // Compute alternating simulation
         Set alternatingSimulation =
                 superAutomaton.computeAlternatingSimulation(subAutomaton);
+        if (onlyReacheable) {
+            alternatingSimulation =
+                InterfaceAutomaton.reacheableAlternatingSimulation(
+                        alternatingSimulation, superAutomaton, subAutomaton);
+        }
 
         // Display result
         if (alternatingSimulation.isEmpty()) {
@@ -114,19 +121,45 @@ public class AlternatingSimulation {
      *  @param args The command line arguments.
      */
     public static void main (String[] args) {
-        if (args.length != 2) {
-            System.out.println("Usage: java ptolemy.domains.fsm.kernel."
-                    + "test.AlternatingSimulation <super_automaton.xml> "
-                    + "<sub_automaton.xml>");
-        } else {
-            try {
-                new AlternatingSimulation(args[0], args[1]);
-            } catch (Exception exception) {
-                System.out.println(exception.getClass().getName() + ": "
-                        + exception.getMessage());
-                exception.printStackTrace();
+        boolean onlyReacheable = false;
+        String superMoML = null, subMoML = null;
+
+        if (args.length == 2) {
+            superMoML = args[0];
+            subMoML = args[1];
+        } else if (args.length == 3) {
+            if (args[0].equals("-reacheable")) {
+                onlyReacheable = true;
+                superMoML = args[1];
+                subMoML = args[2];
             }
+        } else {
+            _printUsageAndExit();
         }
+ 
+        try {
+            new AlternatingSimulation(superMoML, subMoML, onlyReacheable);
+        } catch (Exception exception) {
+            System.out.println(exception.getClass().getName() + ": "
+                    + exception.getMessage());
+            exception.printStackTrace();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        private methods                    ////
+
+    private static void _printUsageAndExit() {
+        System.out.println("Usage: java ptolemy.domains.fsm.kernel."
+                + "test.AlternatingSimulation <-reacheable> "
+                + "<super_automaton.xml> <sub_automaton.xml>");
+        System.out.println("-reacheable indicates to only print out "
+                + "the reacheable alternating simulation state pairs. "
+                + "This is optional.");
+        System.out.println("super_automaton.xml and sub_automaton.xml "
+                + "are the MoML files for the super and sub automata. "
+                + "They must be present.");
+        System.exit(1);
     }
 }
 
