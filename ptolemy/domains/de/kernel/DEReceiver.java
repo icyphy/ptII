@@ -36,7 +36,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
-import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -45,21 +44,17 @@ import ptolemy.kernel.util.InternalErrorException;
 //// DEReceiver
 
 /** An implementation of the ptolemy.actor.Receiver interface for the
-    DE domain.  Tokens that are put into this receiver logically have time
-    stamps. If the time stamp is not explicitly given using the setDelay()
-    method, then it is assumed to be the current time (which is maintained
-    by the director).  The put() method sends the specified token to the
+    DE domain. Tokens that are put into this receiver logically have time
+    stamps. The put() method sends the specified token to the
     director, which returns it to this receiver (via the protected method
     _triggerEvent()) when current time matches the time stamp of the
     token. The get() method returns only tokens that the director has so
     returned. Thus, when a token is put into the receiver using put(), it
     does not become immediately available to the get() method.
 
-    <p>By default, the time stamp of a token is the current time of the
-    director when put() is called. To specify a time stamp in the future,
-    call setDelay() prior to calling put(). This should be done in a
-    synchronized manner, since there could be multiple thread running in
-    this domain.
+    <p>By default, the time stamp of a token is the current model time of the
+    director when put() is called. This should be done in a synchronized manner, 
+    since there could be multiple thread running in this domain.
 
     <p>Before firing an actor, the director is expected to put at least one
     token into at least one of the receivers contained by the actor.
@@ -96,7 +91,7 @@ public class DEReceiver extends AbstractReceiver {
         _tokens.clear();
     }
 
-    /** Get a token from the receiver.  The token returned is one that
+    /** Get the first token from the receiver. The token returned is one that
      *  was put in the receiver with a time stamp equal to or earlier than
      *  the current time.  Note that there might be multiple such
      *  tokens in the receiver. In that case, FIFO behaviour is used with
@@ -105,7 +100,7 @@ public class DEReceiver extends AbstractReceiver {
      *  execute in the same thread as the director.
      *  @return A token.
      *  @exception NoTokenException If there are no more tokens. This is
-     *   a runtime exception, so it need not be declared explicitly.
+     *   a runtime exception, so it need not to be declared explicitly.
      */
     public synchronized Token get() throws NoTokenException {
         if (_tokens.isEmpty()) {
@@ -126,35 +121,36 @@ public class DEReceiver extends AbstractReceiver {
      *  tokens into it (via the put() method).
      *  Returning true in this method should also guarantee that calling
      *  the put() method will not result in an exception.
+     *  @return True.
      */
     public boolean hasRoom(int tokens) {
         return true;
     }
 
-    /** Return true if there are tokens available to the get() method.
+    /** Return true if there is at least one token available to the 
+     *  get() method.
      *  @return True if there are more tokens.
      */
-    public  boolean hasToken() {
+    public boolean hasToken() {
         return (!_tokens.isEmpty());
     }
 
     /** Return true if there are <i>numberOfTokens</i>
      *  tokens tokens available to the get() method.
-     *  @return True if there are <i>numberOfTokens</i> tokens available.
+     *  @param numberOfTokens An int indicating how many tokens are needed.
+     *  @return True if there are numberOfTokens tokens available.
      */
-    public  boolean hasToken(int numberOfTokens) {
+    public boolean hasToken(int numberOfTokens) {
         return (_tokens.size() >= numberOfTokens);
     }
 
     /** Put a token into this receiver. Note that
      *  this token does not become immediately available to the get() method.
      *  Instead, the token is queued with the director, and the director
-     *  must put the token back into this receiver using the _triggerEvent()
-     *  protected method in order for the token to become available to
-     *  the get() method.  By default, this token will be enqueued by
-     *  the director with the current time
-     *  of the director.  However, by calling setDelay() before calling put(),
-     *  you can enqueue the event with a time stamp at a future time.
+     *  must put the token back into this receiver using the protected method
+     *  _triggerEvent() in order for the token to become available to
+     *  the get() method. This token will be enqueued by
+     *  the director with the current model time of the director.  
      *  This method is synchronized since the actor may not
      *  execute in the same thread as the director.
      *  @param token The token to be put.
@@ -238,9 +234,7 @@ public class DEReceiver extends AbstractReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The director where this DEReceiver should register the
-    // events being put in it.
-    // NOTE: This should be accessed only via getDirector().
+    // The director where this DEReceiver should register for De events.
     private DEDirector _director;
     private long _directorVersion = -1;
 

@@ -268,6 +268,8 @@ public class DEEDirector extends DEDirector {
     }
 
     /** Return the depth of an ioPort.
+     *  @param ioPort An IOPort whose depth is requested.
+     *  @return An Int representing the depth of the given ioPort.
      *  @exception IllegalActionException If the actor is not accessible.
      */
     protected int _getDepth(IOPort ioPort) throws IllegalActionException {

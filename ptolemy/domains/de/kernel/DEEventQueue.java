@@ -36,23 +36,21 @@ import ptolemy.kernel.util.InvalidStateException;
 //// DEEventQueue
 /**
    This interface defines the global event queue used by DE directors
-   to sort and manage events. Events are sorted according to their time
+   to sort and manage DE events. DE events are sorted according to their time
    stamps, microstep and the depth of the destination actor.
-   One DEEvent is said to be earlier than another, if it has
+   One DE event is said to be earlier than another, if it has
    a smaller time stamp, or when the time stamps are identical,
    it has a smaller microstep, or when both time stamps and
    microsteps are identical, it has a smaller depth.
-   If all three entries are identical, the events are stored in
-   a FIFO way.
+   If all three entries are identical, the DE events are stored in
+   the order they are added into this event queue.
 
    @author Lukito Muliadi, Jie Liu
    @version $Id$
    @since Ptolemy II 0.2
    @Pt.ProposedRating Green (liuj)
    @Pt.AcceptedRating Green (cxh)
-   @see DEReceiver
-   @see ptolemy.actor.util.CalendarQueue
-   @see DEDirector
+   @see DEEvent
 */
 public interface DEEventQueue extends Debuggable {
 
@@ -63,10 +61,10 @@ public interface DEEventQueue extends Debuggable {
      */
     public void clear();
 
-    /** Return the event associated with the earliest tag in this
-     *  event queue. Note that the event is not dequeued.
-     *  @return The earliest event.
-     *  @exception InvalidStateException If the queue is empty.
+    /** Return the earliest DE event in this event queue.  
+     *  Note that the DE event is not dequeued. 
+     *  @return The earliest DE event.
+     *  @exception InvalidStateException If the event queue is empty.
      */
     public DEEvent get() throws InvalidStateException;
 
@@ -75,21 +73,19 @@ public interface DEEventQueue extends Debuggable {
      */
     public boolean isEmpty();
 
-    /** Enqueue an event into the event queue.
-     *  @param event The event to be put into the queue.
-     *  @exception IllegalActionException If the event cannot be
-     *      enqueued.
+    /** Enqueue a DE event into the event queue.
+     *  @param deEvent The DE event to be put into the queue.
+     *  @exception IllegalActionException If the event cannot be enqueued.
      */
-    public void put(DEEvent event) throws IllegalActionException;
+    public void put(DEEvent deEvent) throws IllegalActionException;
 
     /** Return the size of the event queue.  
      *  @return The size of the event queue.
      */
     public int size();
     
-    /** Dequeue the earliest event in this event queue.
-     *  @return The DEEvent object associated with the earliest event in
-     *    the queue.
+    /** Dequeue the earliest DE event in this event queue.
+     *  @return The earliest DE event in the event queue.
      *  @exception InvalidStateException If the queue is empty.
      */
     public DEEvent take() throws InvalidStateException;
