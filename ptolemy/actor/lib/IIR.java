@@ -46,7 +46,7 @@ This filter has a transfer function given by:
 <pre>
        b<sub>0</sub> + b<sub>1</sub>z<sup>-1</sup> + ... + b<sub>M</sub>z<sup>-M</sup>
       ------------------------
-       1 + a<sub>1</sub>z<sup>-1</sup> + ... + a<sub>N</sub>z<sup>-N</sup>
+       1 - a<sub>1</sub>z<sup>-1</sup> - ... - a<sub>N</sub>z<sup>-N</sup>
 </pre>
 The constant terms of the numerator polynomial are specified by the <i>numerator</i> parameter and the constant terms of the denominator polynomial are specified by the <i>denominator</i> parameter.
 <p>
