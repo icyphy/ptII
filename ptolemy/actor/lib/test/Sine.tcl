@@ -69,7 +69,7 @@ test Sine-2.1 {test with the default output values} {
        [java::cast ptolemy.actor.lib.Transformer $sin] output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
     [$e0 getManager] execute
-    close [enumToTokenValues [$rec getRecord 0]] \
+    ptclose [enumToTokenValues [$rec getRecord 0]] \
             {0.0 0.841 0.909 0.141 -0.757} \
             0.001
 } {1}

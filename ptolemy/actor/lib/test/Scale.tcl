@@ -75,14 +75,14 @@ test Scale-2.2 {test with the alternative parameter values} {
     $gain setExpression {0.1}
     [$gain getToken] stringValue
     [$e0 getManager] execute
-    close [enumToTokenValues [$rec getRecord 0]] {0.0 0.1 0.2 0.3 0.4}
+    ptclose [enumToTokenValues [$rec getRecord 0]] {0.0 0.1 0.2 0.3 0.4}
 } {1}
 
 test Scale-2.3 {test with the alternative parameter values} {
     $step setExpression {0.1}
     [$gain getToken] stringValue
     [$e0 getManager] execute
-    close [enumToTokenValues [$rec getRecord 0]] {0.0 0.01 0.02 0.03 0.04}
+    ptclose [enumToTokenValues [$rec getRecord 0]] {0.0 0.01 0.02 0.03 0.04}
 } {1}
 
 ######################################################################

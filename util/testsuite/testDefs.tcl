@@ -242,12 +242,12 @@ if {[info command update] == ""} then {
 }
 
 ############################################################################
-#### close
+#### ptclose
 # Return 1 if the first argument (a list of numbers) is close to
 # second argument (also a list of numbers), where "close" is within
 # epsilon (the third argument).  Otherwise, return 0.
 #
-proc close {newresults oldresults {epsilon 0.00001}} {
+proc ptclose {newresults oldresults {epsilon 0.00001}} {
     if {[expr {[epsilonDiff $newresults $oldresults $epsilon] == {}}]} {
         return 1
     } else {
