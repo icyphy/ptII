@@ -122,13 +122,20 @@ public class JVMTableau extends Tableau {
 	    String lineSeparator = System.getProperty("line.separator");
 	    StringBuffer propertyBuffer = new StringBuffer();
 
-	    Properties properties = System.getProperties();
-	    Enumeration propertyNames = properties.propertyNames();
-	    while (propertyNames.hasMoreElements()) {
-		String propertyName = (String)propertyNames.nextElement();
-		propertyBuffer.append(propertyName + " = "
-                        + properties.getProperty(propertyName)
-                        + lineSeparator);
+	    try {
+		Properties properties = System.getProperties();
+		Enumeration propertyNames = properties.propertyNames();
+		while (propertyNames.hasMoreElements()) {
+		    String propertyName = (String)propertyNames.nextElement();
+		    propertyBuffer.append(propertyName + " = "
+					  + properties
+					  .getProperty(propertyName)
+					  + lineSeparator);
+		}
+	    } catch (java.security.AccessControlException accessControl) {
+		propertyBuffer.append("AccessControlException, probably from "
+				      + "System.getProperties():\n" +
+				      accessControl);
 	    }
             final JTextArea messageArea =
 		new JTextArea(propertyBuffer.toString(), 20, 100);
