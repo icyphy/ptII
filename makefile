@@ -185,6 +185,10 @@ ChangeLog:
 		echo "CVS directory not present, so we can't update $@"; \
 	fi
 
+update:
+	cvs update
+	$(MAKE) -k clean fast
+
 # Include rules to build Web Start JNLP files
 include $(ROOT)/mk/jnlp.mk
 
