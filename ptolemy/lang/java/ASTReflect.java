@@ -32,8 +32,35 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.lang.java;
 
-import ptolemy.lang.*;
-import ptolemy.lang.java.nodetypes.*;
+import ptolemy.lang.StringManip;
+import ptolemy.lang.TNLManip;
+import ptolemy.lang.TreeNode;
+
+import ptolemy.lang.java.nodetypes.AbsentTreeNode;
+import ptolemy.lang.java.nodetypes.ArrayTypeNode;
+import ptolemy.lang.java.nodetypes.BlockNode;
+import ptolemy.lang.java.nodetypes.BoolTypeNode;
+import ptolemy.lang.java.nodetypes.ByteTypeNode;
+import ptolemy.lang.java.nodetypes.CharTypeNode;
+import ptolemy.lang.java.nodetypes.ClassDeclNode;
+import ptolemy.lang.java.nodetypes.ConstructorDeclNode;
+import ptolemy.lang.java.nodetypes.CompileUnitNode;
+import ptolemy.lang.java.nodetypes.DoubleTypeNode;
+import ptolemy.lang.java.nodetypes.FieldDeclNode;
+import ptolemy.lang.java.nodetypes.FloatTypeNode;
+import ptolemy.lang.java.nodetypes.IntTypeNode;
+import ptolemy.lang.java.nodetypes.InterfaceDeclNode;
+import ptolemy.lang.java.nodetypes.LongTypeNode;
+import ptolemy.lang.java.nodetypes.MethodDeclNode;
+import ptolemy.lang.java.nodetypes.NameNode;
+import ptolemy.lang.java.nodetypes.ParameterNode;
+import ptolemy.lang.java.nodetypes.ShortTypeNode;
+import ptolemy.lang.java.nodetypes.SuperConstructorCallNode;
+import ptolemy.lang.java.nodetypes.TypeNameNode;
+import ptolemy.lang.java.nodetypes.TypeNode;
+import ptolemy.lang.java.nodetypes.UserTypeDeclNode;
+import ptolemy.lang.java.nodetypes.VoidTypeNode;
+
 import java.io.File;
 import java.lang.reflect.*;
 import java.util.Arrays;
@@ -321,7 +348,7 @@ public class ASTReflect {
 
 	NameNode packageNode = (NameNode) loadedAST.getPkg();
 	while (packageNode.getQualifier() != AbsentTreeNode.instance) {
-	    packageBuffer.insert(0,packageNode.getIdent() + '.');
+	    packageBuffer.insert(0, packageNode.getIdent() + '.');
 	    packageNode = (NameNode) packageNode.getQualifier();
 	}
 	packageBuffer.insert(0, packageNode.getIdent() + '.');
@@ -455,9 +482,10 @@ public class ASTReflect {
 	if(pathname.lastIndexOf('.') != -1) {
 	    // Strip out anything after the last '.', such as .java
 	    classname =
-		new StringBuffer(StringManip.baseFilename(StringManip.partBeforeLast(pathname, '.')));
+		new StringBuffer(StringManip.baseFilename(
+                        StringManip.partBeforeLast(pathname, '.')));
 	} else {
-	    classname =	new StringBuffer(StringManip.baseFilename(pathname));
+	    classname = new StringBuffer(StringManip.baseFilename(pathname));
 	}
 
 	// restOfPath contains the directories that we add one by one.
@@ -551,7 +579,6 @@ public class ASTReflect {
 
         int firstDotPosition;
 
-	//System.out.println("ASTReflect._makeNameNode("+ qualifiedName + ")");
         do {
             firstDotPosition = qualifiedName.indexOf('.');
 

@@ -65,7 +65,7 @@ Portions of this code were derived from sources developed under the
 auspices of the Titanium project, under funding from the DARPA, DoE,
 and Army Research Office.
 
-FIXME: This should probably not extend Vector, instead it should
+<p>FIXME: This should probably not extend Vector, instead it should
 extend ArrayList, which is not synchronized.
 http://www.javasoft.com/docs/books/tutorial/collections/implementations/general.html
 
@@ -85,8 +85,6 @@ public class SearchPath extends Vector {
     public SearchPath(String propertyName, String fallbackPaths) {
         if (propertyName != null) {
             String propertyValue = System.getProperty(propertyName, ".");
-
-            //System.out.println("propertyValue = " + propertyValue);
 
             if (propertyValue != null) {
                 _addPaths(propertyValue);
@@ -186,8 +184,9 @@ public class SearchPath extends Vector {
                                     equals(".class")) {
                                 className = name.substring(0, length - 6);
                             }
-                        classSet.add(ptolemyCorePackages[p].replace('/','.') + "." +
-                                className);
+                        classSet.add(
+                                ptolemyCorePackages[p].replace('/', '.') +
+                                "." + className);
                     }
                 }
             }
@@ -200,7 +199,8 @@ public class SearchPath extends Vector {
                         " Could not find package " + ptolemyCorePackages[p] +
                         " Searched in " + NAMED_PATH.toString());
             }
-            ptolemyCorePackageSet.add(ptolemyCorePackages[p].replace('/','.'));
+            ptolemyCorePackageSet.add(
+                    ptolemyCorePackages[p].replace('/', '.'));
         }
 
         return classSet;
@@ -244,17 +244,16 @@ public class SearchPath extends Vector {
 	for (Enumeration enumeration = systemJar.entries();
 	     enumeration.hasMoreElements();) {
 	    JarEntry jarEntry = (JarEntry)enumeration.nextElement();
-	    //System.out.println(jarEntry.getName());
 	    File jarFile = new File(jarEntry.getName());
 	    if (jarEntry.isDirectory()) {
                 systemPackageSet.add(jarFile.getPath().
-				     replace(File.separatorChar,'.'));
+				     replace(File.separatorChar, '.'));
             } else {
                 if (jarFile.getPath().endsWith(".class")) {
 		    // Strip off the .class, 
 		    // substitute . for File.separatorChar
                     classSet.add((StringManip.partBeforeLast(jarFile.getPath(),
-                            '.')).replace(File.separatorChar,'.'));
+                            '.')).replace(File.separatorChar, '.'));
                 }
             }
 	}
@@ -301,14 +300,12 @@ public class SearchPath extends Vector {
             if (end == -1) {
                 path = paths.substring(begin);
                 if (path.length() > 0) {
-                    System.out.println("adding " + path + File.separatorChar);
 		    add(path + File.separatorChar);
                 }
             } else {
                 path = paths.substring(begin, end).replace('/',
 							   File.separatorChar);
                 if (path.length() > 0) {
-                    System.out.println("adding"  + path + File.separatorChar);
 		    add(path + File.separatorChar);
                 }
                 begin = end + 1;
