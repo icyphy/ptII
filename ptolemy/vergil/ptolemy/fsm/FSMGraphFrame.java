@@ -30,6 +30,7 @@
 
 package ptolemy.vergil.ptolemy.fsm;
 
+// FIXME: Trim this.
 import ptolemy.vergil.ptolemy.GraphFrame;
 import ptolemy.vergil.ptolemy.EditorDropTarget;
 import ptolemy.data.StringToken;
@@ -164,16 +165,17 @@ public class FSMGraphFrame extends GraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the menus that are used by this frame.
+    /** Create the menus and menu items that are used by this frame.
      */
     protected void _addMenus() {
 	super._addMenus();
-	// FIXME: Does executing an FSM make sense?
-	//       	_executeMenu = new JMenu("Execute");
-        //_executeMenu.setMnemonic(KeyEvent.VK_X);
-	//_menubar.add(_executeMenu);
+	// NOTE: Does executing an FSM make sense?
+	// _executeMenu = new JMenu("Execute");
+        // _executeMenu.setMnemonic(KeyEvent.VK_X);
+	// _menubar.add(_executeMenu);
 	diva.gui.GUIUtilities.addMenuItem(_graphMenu, _newStateAction);
-        //diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newStateAction);
+        // To get a new-state item on the toolbar, uncomment this:
+        // diva.gui.GUIUtilities.addToolBarButton(_toolbar, _newStateAction);
     }
 
     /** Create a new graph pane.
@@ -182,6 +184,7 @@ public class FSMGraphFrame extends GraphFrame {
 	// create the graph editor
 	// These two things control the view of a ptolemy model.
 	_controller = new FSMGraphController();
+        _controller.setConfiguration(getConfiguration());
 	final FSMGraphModel graphModel = new FSMGraphModel(getModel());
 
 	GraphPane pane = new GraphPane(_controller, graphModel);
@@ -209,18 +212,6 @@ public class FSMGraphFrame extends GraphFrame {
         ActionInteractor doubleClickInteractor = new ActionInteractor(action);
         doubleClickInteractor.setConsuming(false);
         doubleClickInteractor.setMouseFilter(new MouseFilter(1, 0, 0, 2));
-
- 	_controller.getPortController().setMenuFactory(
-                 new PortContextMenuFactory(_controller));
-        _addDoubleClickInteractor((NodeInteractor)
-                _controller.getPortController().getNodeInteractor(),
-                doubleClickInteractor);        
-        
-        _controller.getStateController().setMenuFactory(
-                new StateContextMenuFactory(_controller));
-        _addDoubleClickInteractor((NodeInteractor)
-                _controller.getStateController().getNodeInteractor(),
-                doubleClickInteractor);        
         
 	_controller.getTransitionController().setMenuFactory(
                 new TransitionContextMenuFactory(_controller));
@@ -245,58 +236,6 @@ public class FSMGraphFrame extends GraphFrame {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private inner classes                 ////
-
-    /**
-     * The factory for creating context menus on ports.
-     */
-    public class PortContextMenuFactory extends PtolemyMenuFactory {
-	public PortContextMenuFactory(GraphController controller) {
-	    super(controller);
-	    addMenuItemFactory(new PortDescriptionFactory());
-	    addMenuItemFactory(new EditParametersFactory());
-	    addMenuItemFactory(new RenameDialogFactory());
-	    addMenuItemFactory(new MenuActionFactory(_getDocumentationAction));
-	}
-
-        // FIXME: This is silly.  This should be a tooltip.
-	public class PortDescriptionFactory implements MenuItemFactory {
-	    /**
-	     * Add an item to the given context menu that will configure the
-	     * parameters on the given target.
-	     */
-	    public JMenuItem create(JContextMenu menu, NamedObj target) {
-                // Removed this method since it was never used. EAL
-		// target = _getItemTargetFromMenuTarget(target);
-		if(target instanceof IOPort) {
-		    IOPort port = (IOPort)target;
-		    String string = "";
-		    int count = 0;
-		    if(port.isInput()) {
-			string += "Input";
-			count++;
-		    }
-		    if(port.isOutput()) {
-			if(count > 0) {
-			    string += ", ";
-			}
-			string += "Output";
-			count++;
-		    }
-		    if(port.isMultiport()) {
-			if(count > 0) {
-			    string += ", ";
-			}
-			string += "Multiport";
-			count++;
-		    }
-		    if(count > 0) {
-			return menu.add(new JMenuItem("   " + string));
-		    }
-		}
-		return null;
-	    }
-	}
-    }
 
     /**
      * The factory for creating context menus on states.

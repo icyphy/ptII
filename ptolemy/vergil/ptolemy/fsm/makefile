@@ -53,7 +53,6 @@ JSRCS = \
 	FSMGraphModel.java \
 	FSMGraphFrame.java \
 	FSMGraphTableau.java \
-	FSMPortController.java \
 	FSMStateController.java \
 	FSMTransitionController.java \
 	FSMViewerController.java

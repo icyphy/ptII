@@ -30,89 +30,50 @@
 
 package ptolemy.vergil.ptolemy.fsm;
 
-import ptolemy.actor.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.vergil.*;
-import ptolemy.vergil.toolbox.*;
-import ptolemy.vergil.ptolemy.*;
-import ptolemy.gui.*;
-import ptolemy.moml.*;
-import diva.gui.*;
-import diva.gui.toolbox.*;
-import diva.graph.*;
-import diva.canvas.*;
-import diva.canvas.connector.*;
-import diva.canvas.event.*;
-import diva.canvas.interactor.*;
-import diva.canvas.toolbox.*;
-import java.awt.geom.Rectangle2D;
-import diva.util.Filter;
-import java.awt.event.InputEvent;
-import java.awt.event.ActionEvent;
-import java.util.*;
-import java.net.URL;
-import javax.swing.JPopupMenu;
-import javax.swing.SwingConstants;
-import javax.swing.event.*;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.Location;
+import ptolemy.vergil.ptolemy.kernel.AttributeController;
+import ptolemy.vergil.toolbox.EditorIcon;
+import ptolemy.vergil.toolbox.XMLIcon;
+
+import diva.canvas.Figure;
+import diva.graph.GraphController;
+import diva.graph.NodeRenderer;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMStateController
 /**
-This class provides interaction with nodes that represent Ptolemy II entities.
-(Or, more specifically, with the icon that is contained in an entity.)
-It contains a node controller for the ports that the entity contains, and when
-it draws an entity, it defers to that controller to draw the ports.  The
-figures for ports are automatically placed on the left and right side of the
-figure for the entity.  Standard selection and movement interaction is
-provided.  In addition, right clicking on the entity will create a context
-menu for the entity.
+This class provides interaction with nodes that represent states in an
+FSM graph.  It provides a double click binding to edit the parameters
+of the state, and a context menu containing a command to edit parameters
+("Configure"), a command to rename, and a command to get documentation.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
-public class FSMStateController extends LocatableNodeController {
+public class FSMStateController extends AttributeController {
 
-    /** Create an entity controller associated with the specified graph
+    /** Create a state controller associated with the specified graph
      *  controller.
      *  @param controller The associated graph controller.
      */
     public FSMStateController(GraphController controller) {
 	super(controller);
 	setNodeRenderer(new StateRenderer());
-
-	SelectionModel sm = controller.getSelectionModel();
-        SelectionInteractor interactor =
-            (SelectionInteractor) getNodeInteractor();
-	interactor.setSelectionModel(sm);
-
-	_menuCreator = new MenuCreator(null);
-	interactor.addInteractor(_menuCreator);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                         inner classes                     ////
 
-    /** Get the menu factory that will create context menus for this
-     *  controller.
+    /** Render the state as a circle.
      */
-    public MenuFactory getMenuFactory() {
-        return _menuCreator.getMenuFactory();
-    }
-
-    /** Set the menu factory that will create menus for this Entity.
-     */
-    public void setMenuFactory(MenuFactory factory) {
-        _menuCreator.setMenuFactory(factory);
-    }
-
     public static class StateRenderer implements NodeRenderer {
 	public Figure render(Object n) {
 	    Location location = (Location)n;
 	    NamedObj object = (NamedObj) location.getContainer();
 
-	    // FIXME: may want to use another type of icon
-	    // FIXME: this code is the same as in PtolemyTreeCellRenderer.
 	    EditorIcon icon;
             try {
                 icon = (EditorIcon)object.getAttribute("_icon");
@@ -130,10 +91,4 @@ public class FSMStateController extends LocatableNodeController {
 	    return figure;
 	}
     }
-
-    private MenuCreator _menuCreator;
 }
-
-
-
-

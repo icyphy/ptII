@@ -36,6 +36,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.vergil.*;
 import ptolemy.vergil.ptolemy.*;
+import ptolemy.vergil.ptolemy.kernel.PortController;
 import ptolemy.vergil.ptolemy.kernel.PortDialogFactory;
 import ptolemy.vergil.toolbox.*;
 import ptolemy.gui.*;
@@ -82,20 +83,13 @@ public class FSMViewerController extends AbstractGraphController {
      * terminal and edge interactors.
      */
     public FSMViewerController() {
-        _portController = new FSMPortController(this);
+        _portController = new PortController(this);
 	_stateController = new FSMStateController(this);
 	_transitionController = new FSMTransitionController(this);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /**
-     * Return the controller for entities
-     */
-    public FSMPortController getPortController() {
-	return _portController;
-    }
 
     /**
      * Return the controller for entities
@@ -161,6 +155,15 @@ public class FSMViewerController extends AbstractGraphController {
         return _transitionController;
     }
 
+    /** Set the configuration.  This is may be used by derived controllers
+     *  to open files or URLs.
+     *  @param configuration The configuration.
+     */
+    public void setConfiguration(Configuration configuration) {
+        _portController.setConfiguration(configuration);
+        _stateController.setConfiguration(configuration);
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                          inner classes                    ////
 
@@ -188,7 +191,7 @@ public class FSMViewerController extends AbstractGraphController {
     private MenuCreator _menuCreator;
 
     // The controllers
-    private FSMPortController _portController;
+    private PortController _portController;
     private FSMStateController _stateController;
     private FSMTransitionController _transitionController;
 }
