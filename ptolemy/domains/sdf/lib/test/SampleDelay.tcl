@@ -105,10 +105,10 @@ test SampleDelay-2.5 {test with type change to error condition} {
 	    {ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following inequalities:} \
 	    $msg]
     set containsRecInput [regexp \
-	    {(ptolemy.actor.TypedIOPort {.top.rec.input}, \[\])} \
+	    {(ptolemy.actor.TypedIOPort {.top.rec.input}, \[general\])} \
 	    $msg]
     set containsSampleDelayOutput [regexp \
-	    {(ptolemy.domains.sdf.kernel.SDFIOPort {.top.SampleDelay.output}, \[\])} \
+	    {(ptolemy.domains.sdf.kernel.SDFIOPort {.top.SampleDelay.output}, \[general\])} \
 	    $msg]
     list $containsException $containsRecInput $containsSampleDelayOutput
 } {1 1 1}
