@@ -34,7 +34,7 @@ package ptolemy.data.expr;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.Token;
-import ptolemy.data.TypeCPO;
+import ptolemy.data.TypeLattice;
 import collections.LinkedList;
 import java.util.*;
 import ptolemy.graph.CPO;
@@ -580,7 +580,7 @@ public class Parameter extends Attribute implements ParameterListener {
      */
     private void _checkType(Class tryType)
             throws IllegalArgumentException {
-        int typeInfo = TypeCPO.compare(_paramType, tryType);
+        int typeInfo = TypeLattice.compare(_paramType, tryType);
         if ( (typeInfo == CPO.HIGHER) || (typeInfo == CPO.SAME) ) {
             return;
         }

@@ -77,7 +77,7 @@ JSRCS = \
 	ScalarToken.java \
 	StringToken.java \
 	Token.java \
-	TypeCPO.java
+	TypeLattice.java
 
 EXTRA_SRCS =	$(JSRCS)
 
