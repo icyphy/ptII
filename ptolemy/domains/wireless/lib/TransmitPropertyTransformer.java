@@ -168,7 +168,8 @@ public class TransmitPropertyTransformer extends RunCompositeActor
     
     /** Read at most one token from the <i>input</i>
      *  port and simply transmit the data on the <i>output</i> port.
-     *  If it has not registered with the channel, then register.
+     *  @exception IllegalActionException If there is no director, or if
+     *   the director's action methods throw it.
      */
     public void fire() throws IllegalActionException {
 
@@ -183,6 +184,8 @@ public class TransmitPropertyTransformer extends RunCompositeActor
     
     /** Register itself with the channel as a PropertyTranformer
      *  for its connected wireless output port.
+     *  @exception IllegalActionException Not thrown, but declared
+     *   so the subclasses can throw it.
      */
     public void initialize() throws IllegalActionException {
         if (_debugging) {
@@ -227,7 +230,8 @@ public class TransmitPropertyTransformer extends RunCompositeActor
         return true;
     }
 
-    /** Invoke the execution of the specified model and return the result.
+    /** Invoke the execution of the subsysteml and return the result.
+     *  see RunCompositeActor.fire().
      * @param properties The transform properties.
      * @param sender The sending port.
      * @param destination The receiving port.
@@ -259,30 +263,7 @@ public class TransmitPropertyTransformer extends RunCompositeActor
 
         try {
             setDeferChangeRequests(true);
-            // FIXME: Should preinitialize() also be called?
-            // FIXME: Reset time to zero.
-            // NOTE: Use the superclass initialize() because this method overrides
-            // initialize() and does not initialize the model.
-            super.initialize();
-            // Call iterate() until finish() is called or postfire()
-            // returns false.
-            _debug("-- RunCompositeActor beginning to iterate.");
-
-            // FIXME: This result is not used... Should it be to determine postfire() result?
-            _lastIterateResult = COMPLETED;
-            while (!_stopRequested) {
-                executeChangeRequests();
-                if (super.prefire()) {
-                    super.fire();
-                    if (!super.postfire()) {
-                        _lastIterateResult = STOP_ITERATING;
-                        break;
-                    }
-                } else {
-                    _lastIterateResult = NOT_READY;
-                    break;
-                }
-            }
+            _executeInsideModel();
         } finally {
             try {
                 super.wrapup();
