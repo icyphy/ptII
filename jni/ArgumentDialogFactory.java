@@ -1,5 +1,6 @@
-/** A menu item factory that opens a dialog for adding arguments.
- * Largely inspired by PortDialogFactory
+/* A menu item factory that opens a dialog for adding arguments.
+Largely inspired by PortDialogFactory
+
  Copyright (c) 1999-2002 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -24,8 +25,8 @@
  PT_COPYRIGHT_VERSION_2
  COPYRIGHTENDKEY
 
- @ProposedRating Red (vincent.arnould@thalesgroup.com)
- @AcceptedRating Red (vincent.arnould@thalesgroup.com)
+@ProposedRating Red (vincent.arnould@thalesgroup.com)
+@AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 
 package jni;
@@ -50,12 +51,12 @@ import ptolemy.vergil.debugger.BreakpointConfigurerDialog;
 //////////////////////////////////////////////////////////////////////////
 //// ArgumentDialogFactory
 /**
-   A factory that creates a dialog to configure, add, or remove Arguments
-   from objects.
+A factory that creates a dialog to configure, add, or remove Arguments
+from objects.
 
-   @author Edward A. Lee and Steve Neuendorffer, modified by Vincent Arnould
-   @version $Id$
-   @since Ptolemy II 2.0
+@author Edward A. Lee and Steve Neuendorffer, modified by Vincent Arnould
+@version $Id$
+@since Ptolemy II 2.3
 */
 public class ArgumentDialogFactory implements MenuItemFactory {
 

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
- @ProposedRating Yellow (vincent.arnould@thalesgroup.com)
- @AcceptedRating Red (vincent.arnould@thalesgroup.com)
+@ProposedRating Red (vincent.arnould@thalesgroup.com)
+@AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 
 package jni;
@@ -76,16 +76,48 @@ public class Argument extends Attribute implements Settable {
         super();
     }
 
-    /** Get the C type of the argument.
-     *   @return the _cType attribute
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Add a listener to be notified when the value of this settable
+     *  object changes. An implementation of this method should ignore
+     *  the call if the specified listener is already on the list of
+     *  listeners.  In other words, it should not be possible for the
+     *  same listener to be notified twice of a value update.
+     *  @param listener The listener to add.
      */
-    public String getCType() {
-        return _cType;
+    public void addValueListener(
+            ptolemy.kernel.util.ValueListener listener) {
     }
 
+    /** Export the Argument in a property MoML
+     *   @return void
+     *   @exception IOException If an IO error occurs
+     */
+    public void exportMoML(Writer output, int depth, String name)
+            throws IOException {
+        String value = getExpression();
+        output.write(
+                _getIndentPrefix(depth)
+                + "<"
+                + getMoMLInfo().elementName
+                + " name=\""
+                + name.trim()
+                + "\" class=\""
+                + getMoMLInfo().className.trim()
+                + "\" value=\""
+                + value.trim()
+                + "\" >\n");
+        _exportMoMLContents(output, depth + 1);
+        output.write(
+                _getIndentPrefix(depth) + "</"
+                + getMoMLInfo().elementName + ">\n");
+    }
+
+
     /** Get the C type of the argument as a pointer if it is an array.
-     @return the _cType attribute in pointer
-    */
+     *  @return the _cType attribute in pointer
+     */
     public String getC2Type() {
         String ret = _cType;
         if(_cType.endsWith("[]")) {
@@ -96,7 +128,6 @@ public class Argument extends Attribute implements Settable {
         }
         return ret;
     }
-
 
     /** Get the C2 Type Array, but if we are under SunOS, and
      *  getC2Type returns long, then return int *.  On other platforms,
@@ -115,6 +146,21 @@ public class Argument extends Attribute implements Settable {
         return returnValue;
     }
 
+    /** Get the C type of the argument.
+     *   @return the _cType attribute
+     */
+    public String getCType() {
+        return _cType;
+    }
+
+    /** Get the container entity.
+     *  @return The container, which is an instance
+     *   of CompositeEntity.
+     */
+    public Nameable getContainer() {
+        return _container;
+    }
+
     /** Get the expression of the argument.
      * The format is "_isInput, _isOutput, _isReturn, _cType".
      * @return the string containing the argument specifications
@@ -129,6 +175,41 @@ public class Argument extends Attribute implements Settable {
             + ","
             + getCType();
         return ret;
+    }
+
+    /** Get the JNI type of the argument.
+     *  @return the corresponding JNI type.
+     */
+    public String getJNIType() {
+        String returnJNIType = "";
+        if (_cType.endsWith("[]")) {
+                returnJNIType = "Array";
+        }
+        if (_cType.equals("char") || _cType.startsWith("char")) {
+            returnJNIType = "jboolean" + returnJNIType;
+        } else if (_cType.equals("short")
+                   || _cType.startsWith("short")) {
+            // a C char is 8 bits. a java char is 16 bits,
+            // so we use jbyte
+            returnJNIType = "jchar" + returnJNIType;
+        } else if (_cType.equals("long")
+                   || _cType.startsWith("long")) {
+            // a C long is 32 bits. a java long is 64 bits,
+            // so we use jint
+            returnJNIType = "jint" + returnJNIType;
+        } else if (_cType.equals("double")
+                   || _cType.startsWith("double")) {
+            returnJNIType = "jdouble" + returnJNIType;
+        } else if (_cType.equals("void")
+                   || _cType.startsWith("void")) {
+            returnJNIType = "void" + returnJNIType;
+        } else {
+            MessageHandler.error(
+                    "JNIType unavailable for '"
+                    + _cType + "': not convertible JNI type");
+            returnJNIType = "void";
+        }
+        return returnJNIType;
     }
 
     /** Get the Java type of the argument
@@ -196,43 +277,6 @@ public class Argument extends Attribute implements Settable {
         return returnValue;
     }
 
-    /** Get the JNI type of the argument
-        @return the corresponding JNI type
-    */
-    public String getJNIType() {
-
-        String returnJNIType = "";
-        if (_cType.endsWith("[]")) {
-                returnJNIType = "Array";
-        }
-        if (_cType.equals("char") || _cType.startsWith("char")) {
-            returnJNIType = "jboolean" + returnJNIType;
-        } else if (_cType.equals("short")
-                   || _cType.startsWith("short")) {
-            // a C char is 8 bits. a java char is 16 bits,
-            // so we use jbyte
-            returnJNIType = "jchar" + returnJNIType;
-        } else if (_cType.equals("long")
-                   || _cType.startsWith("long")) {
-            // a C long is 32 bits. a java long is 64 bits,
-            // so we use jint
-            returnJNIType = "jint" + returnJNIType;
-        } else if (_cType.equals("double")
-                   || _cType.startsWith("double")) {
-            returnJNIType = "jdouble" + returnJNIType;
-        } else if (_cType.equals("void")
-                   || _cType.startsWith("void")) {
-            returnJNIType = "void" + returnJNIType;
-        } else {
-            MessageHandler.error(
-                    "JNIType unavailable for '"
-                    + _cType + "': not convertible JNI type");
-            returnJNIType = "void";
-        }
-        return returnJNIType;
-    }
-
-
     /** Get the Java class corresponding to the Java Type
      *  @return the corresponding Java class
      */
@@ -293,10 +337,92 @@ public class Argument extends Attribute implements Settable {
         return _isReturn;
     }
 
+    /** Remove a listener to be notified when the value of
+     *  this settable object changes.
+     *  @param listener The listener to remove.
+     */
+    public void removeValueListener(ptolemy.kernel.util.ValueListener
+                                    listener) {
+    }
+
     /** Set the C type of the argument with the given string
      */
     public void setCType(String cType) {
         _cType = cType.trim();
+    }
+
+
+    /** Specify the container, adding the entity to the list
+     *  of entities in the container.
+     *  If the container already contains
+     *  an entity with the same name,
+     *  then throw an exception and do not make
+     *  any changes.  Similarly, if the container is not in the same
+     *  workspace as this entity, throw an exception.
+     *  If the entity is already contained by the container,
+     *  do nothing.
+     *  If this entity already has a container, remove it
+     *  from that container first.  Otherwise, remove it from
+     *  the directory of the workspace, if it is present.
+     *  If the argument is null, then unlink the ports of the entity
+     *  from any relations and remove it from its container.
+     *  It is not added to the workspace directory,
+     *  so this could result in
+     *  this entity being garbage collected.
+     *  Derived classes may further constrain the container
+     *  to subclasses of CompositeEntity by overriding the protected
+     *  method _checkContainer(). This method is write-synchronized
+     *  to the workspace and increments its version number.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action
+     *   would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace, or
+     *   if the protected method _checkContainer() throws it.
+     *  @exception NameDuplicationException If the name of this entity
+     *   collides with a name already in the container.
+     */
+    public void setContainer(GenericJNIActor container)
+            throws IllegalActionException, NameDuplicationException {
+
+        if (container != null && _workspace != container.workspace()) {
+            throw new IllegalActionException(
+                    this,
+                    container,
+                    "Cannot set container "
+                    + "because workspaces are different.");
+        }
+        try {
+            _workspace.getWriteAccess();
+            _checkContainer(container);
+            // NOTE: The following code is quite tricky.
+            // It is very careful
+            // to leave a consistent state even
+            // in the face of unexpected
+            // exceptions.  Be very careful if modifying it.
+            GenericJNIActor previousContainer =
+                (GenericJNIActor) getContainer();
+            if (previousContainer == container)
+                return;
+
+            // Do this first, because it may throw an exception,
+            // and we have
+            // not yet changed any state.
+            if (container != null) {
+                container._addArgument(this);
+                if (previousContainer == null) {
+                    _workspace.remove(this);
+                }
+            }
+            _container = (GenericJNIActor) container;
+            if (previousContainer != null) {
+                // This is safe now because it does not
+                // throw an exception.
+                previousContainer._removeArgument(this);
+            }
+        } finally {
+            _workspace.doneWriting();
+        }
     }
 
     /** Set the expression of the argument.
@@ -418,131 +544,8 @@ public class Argument extends Attribute implements Settable {
             container.attributeChanged(this);
     }
 
-    /** Export the Argument in a property MoML
-        @return void
-        @exception IOException If an IO error occurs
-    */
-    public void exportMoML(Writer output, int depth, String name)
-            throws IOException {
-        String value = getExpression();
-        output.write(
-                _getIndentPrefix(depth)
-                + "<"
-                + getMoMLInfo().elementName
-                + " name=\""
-                + name.trim()
-                + "\" class=\""
-                + getMoMLInfo().className.trim()
-                + "\" value=\""
-                + value.trim()
-                + "\" >\n");
-        _exportMoMLContents(output, depth + 1);
-        output.write(
-                _getIndentPrefix(depth) + "</"
-                + getMoMLInfo().elementName + ">\n");
-    }
-
-
-    /** Add a listener to be notified when the value of this settable
-     *  object changes. An implementation of this method should ignore
-     *  the call if the specified listener is already on the list of
-     *  listeners.  In other words, it should not be possible for the
-     *  same listener to be notified twice of a value update.
-     *  @param listener The listener to add.
-     */
-    public void addValueListener(
-            ptolemy.kernel.util.ValueListener listener) {
-    }
-
-    /** Remove a listener to be notified when the value of
-     *  this settable object changes.
-     *  @param listener The listener to remove.
-     */
-    public void removeValueListener(ptolemy.kernel.util.ValueListener
-                                    listener) {
-    }
-
-
-    /** Get the container entity.
-     *  @return The container, which is an instance
-     *   of CompositeEntity.
-     */
-    public Nameable getContainer() {
-        return _container;
-    }
-
-    /** Specify the container, adding the entity to the list
-     *  of entities in the container.
-     *  If the container already contains
-     *  an entity with the same name,
-     *  then throw an exception and do not make
-     *  any changes.  Similarly, if the container is not in the same
-     *  workspace as this entity, throw an exception.
-     *  If the entity is already contained by the container,
-     *  do nothing.
-     *  If this entity already has a container, remove it
-     *  from that container first.  Otherwise, remove it from
-     *  the directory of the workspace, if it is present.
-     *  If the argument is null, then unlink the ports of the entity
-     *  from any relations and remove it from its container.
-     *  It is not added to the workspace directory,
-     *  so this could result in
-     *  this entity being garbage collected.
-     *  Derived classes may further constrain the container
-     *  to subclasses of CompositeEntity by overriding the protected
-     *  method _checkContainer(). This method is write-synchronized
-     *  to the workspace and increments its version number.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the action
-     *   would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace, or
-     *   if the protected method _checkContainer() throws it.
-     *  @exception NameDuplicationException If the name of this entity
-     *   collides with a name already in the container.
-     */
-    public void setContainer(GenericJNIActor container)
-            throws IllegalActionException, NameDuplicationException {
-
-        if (container != null && _workspace != container.workspace()) {
-            throw new IllegalActionException(
-                    this,
-                    container,
-                    "Cannot set container "
-                    + "because workspaces are different.");
-        }
-        try {
-            _workspace.getWriteAccess();
-            _checkContainer(container);
-            // NOTE: The following code is quite tricky.
-            // It is very careful
-            // to leave a consistent state even
-            // in the face of unexpected
-            // exceptions.  Be very careful if modifying it.
-            GenericJNIActor previousContainer =
-                (GenericJNIActor) getContainer();
-            if (previousContainer == container)
-                return;
-
-            // Do this first, because it may throw an exception,
-            // and we have
-            // not yet changed any state.
-            if (container != null) {
-                container._addArgument(this);
-                if (previousContainer == null) {
-                    _workspace.remove(this);
-                }
-            }
-            _container = (GenericJNIActor) container;
-            if (previousContainer != null) {
-                // This is safe now because it does not
-                // throw an exception.
-                previousContainer._removeArgument(this);
-            }
-        } finally {
-            _workspace.doneWriting();
-        }
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Check that the specified container is of a suitable class for
      *  this entity.  In this base class, this method returns immediately

@@ -161,6 +161,50 @@ public class GenericJNIActor extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Add a return argument to this entity
+     *  @return void
+     */
+    public void addArgumentReturn()
+            throws IllegalActionException, NameDuplicationException {
+        try {
+            _workspace.getReadAccess();
+            Argument ret = new Argument(this, "return");
+            ret.setReturn(true);
+            ret.setCType("void");
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
+    /** Get the arguments belonging to this entity.
+     *  The order is the order in which they became contained by this entity.
+     *  This method is read-synchronized on the workspace.
+     *  @return An unmodifiable list of Port objects.
+     */
+    public List argumentsList() {
+        try {
+            _workspace.getReadAccess();
+            return _argumentsList.elementList();
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
+    /** If the getDirector() returns something other than null, then
+     *  invalidate the resolved types.
+     *  @param attribute The attribute that has changed.
+     *  @exception IllegalActionException If the parameters are out of range.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        Director director = getDirector();
+        if (director != null) {
+            // FIXME: should this happen every time we call attribute changed?
+            director.invalidateResolvedTypes();
+        }
+    }
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -209,20 +253,6 @@ public class GenericJNIActor extends TypedAtomicActor {
             }
         }
         return newEntity;
-    }
-
-    /** If the getDirector() returns something other than null, then
-     *  invalidate the resolved types.
-     *  @param attribute The attribute that has changed.
-     *  @exception IllegalActionException If the parameters are out of range.
-     */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        Director director = getDirector();
-        if (director != null) {
-            // FIXME: should this happen every time we call attribute changed?
-            director.invalidateResolvedTypes();
-        }
     }
 
     /** For each Argument, a port of the same name is created,
@@ -291,221 +321,6 @@ public class GenericJNIActor extends TypedAtomicActor {
                     port.setTypeEquals(BaseType.GENERAL);
                 }
             }
-        }
-    }
-
-    /** Return the argument contained by this entity that has the
-     *  specified name.  If there is no such port, return null.  This
-     *  method is read-synchronized on the workspace.
-     *  @param name The name of the desired argument.
-     *  @return A argument with the given name, or null if none exists.
-     */
-    public Argument getArgument(String name) {
-        try {
-            _workspace.getReadAccess();
-            return (Argument) _argumentsList.get(name);
-        } finally {
-            _workspace.doneReading();
-        }
-    }
-
-    /** Get the arguments belonging to this entity.
-     *  The order is the order in which they became contained by this entity.
-     *  This method is read-synchronized on the workspace.
-     *  @return An unmodifiable list of Port objects.
-     */
-    public List argumentsList() {
-        try {
-            _workspace.getReadAccess();
-            return _argumentsList.elementList();
-        } finally {
-            _workspace.doneReading();
-        }
-    }
-
-    /** Return the argument contained by this entity that is return.
-     *  If there is no such argument, return null.
-     *  This method is read-synchronized on the workspace.
-     *  @return the argument return, or null if none exists.
-     */
-    public Argument getArgumentReturn() {
-        try {
-            _workspace.getReadAccess();
-            Iterator arguments = this.argumentsList().iterator();
-            Argument returnValue = null;
-            while (arguments.hasNext()) {
-                Argument argument = (Argument) arguments.next();
-                if (argument != null && argument.isReturn()) {
-                    return (Argument) argument;
-                }
-            }
-            return (Argument) returnValue;
-        } finally {
-            _workspace.doneReading();
-        }
-    }
-
-    /** Add an argument to this entity
-     *  @return void
-     */
-    protected void _addArgument(Argument arg)
-            throws IllegalActionException, NameDuplicationException {
-        _argumentsList.append((Nameable) arg);
-    }
-
-    /** Add a return argument to this entity
-     *  @return void
-     */
-    public void addArgumentReturn()
-            throws IllegalActionException, NameDuplicationException {
-        try {
-            _workspace.getReadAccess();
-            Argument ret = new Argument(this, "return");
-            ret.setReturn(true);
-            ret.setCType("void");
-        } finally {
-            _workspace.doneReading();
-        }
-    }
-
-    /** Remove an argument from this entity.
-     * @exception IllegalActionException If an error occurs.
-     */
-    protected void _removeArgument(Argument arg)
-            throws IllegalActionException {
-        _argumentsList.remove(((Nameable) arg));
-    }
-
-    /** Load the generated class and search for its fire method.
-     */
-    public void initialize() throws IllegalActionException {
-        String nativeLibraryValue = "";
-        String libraryDirectoryValue = "";
-        try {
-            libraryDirectoryValue =
-                ((StringToken) ((Parameter) this
-                        .getAttribute("libraryDirectory"))
-                        .getToken())
-                .stringValue();
-
-            nativeLibraryValue =
-                ((StringToken) ((Parameter) this
-                        .getAttribute("nativeLibrary"))
-                        .getToken())
-                .toString();
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                                             "no libraryDirectory or "
-                                             + "nativeLibrary Parameter");
-        }
-
-//         String interNativeLibraryValue =
-//             "jni" + nativeLibraryValue
-//             .substring(1, nativeLibraryValue.length() - 1);
-
-//        String interNativeLibrary = JNIUtilities._getInterNativeLibrary(this);
-        //searching the class generated
-
-//        String className = "jni." + interNativeLibrary + ".Jni"
-//            + this.getName();
-
-        String nativeLibrary = JNIUtilities._getNativeLibrary(this);
-        String className = "jni." + nativeLibrary + ".Jni"
-            + this.getName();
-
-
-
-        URL[] tab = new URL[1];
-        try {
-            File userDirAsFile =
-                new File(StringUtilities.getProperty("user.dir"));
-            tab[0] = userDirAsFile.toURL();
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex, "Could not create URL "
-                                             + "from user.dir ("
-                                             + StringUtilities
-                                             .getProperty("user.dir") + ")");
-        }
-        try {
-            ClassLoader cl = new URLClassLoader(tab);
-            _class = cl.loadClass(className);
-        } catch (Throwable ex) {
-            throw new IllegalActionException(this, ex,
-                                             "Could not load JNI C class '"
-                                             + className + "' relative to "
-                                             + tab[0]);
-
-        }
-
-        if (_class == null) {
-            throw new IllegalActionException(this,
-                                             "Could load JNI C class, '"
-                                             + className + "' relative to "
-                                             + tab[0]);
-        }
-
-        // FIXME: This adds to the path every time the actor is initialized
-        // FIXME: This does not work for me anyway.  I think the
-        // java.library.path needs to be set by the environment before
-        // the java process starts or else it needs to be set with
-        // -Djava.library.path when java is invoked
-
-        // Add the value of libraryDirectory to the java.library.path
-        // First, look relative to the current directory (user.dir)
-        // Second, look relative to $PTII
-
-//         System.setProperty("java.library.path",
-//                 StringUtilities.getProperty("user.dir")
-//                 + File.separator
-//                 + libraryDirectoryValue
-//                 + File.pathSeparator
-
-//                 + StringUtilities
-//                 .getProperty("ptolemy.ptII.dir")
-//                 + File.separator
-//                 + libraryDirectoryValue
-//                 + File.pathSeparator
-
-//                 + StringUtilities.getProperty("user.dir")
-//                 + File.separator
-//                 + "jni"
-//                 + File.separator
-//                 + "jnitestDeux"
-//                 + File.pathSeparator
-
-//                 + System.getProperty("java.library.path"));
-
-        _methods = null;
-
-        try {
-            _methods = _class.getMethods();
-        } catch (Exception ex) {
-            throw new IllegalActionException(this, ex,
-                                             "Interface C _methods not found "
-                                             + "class was: " + _class);
-        }
-
-        if (_methods == null) {
-            throw new IllegalActionException(this,
-                                             "getMethods() returned null?, "
-                                             + "class was: " + _class);
-
-        }
-        //getting the fire _method
-        _methodIndex = -1;
-        for (int i = 0; i < _methods.length; i++) {
-            if (_methods[i].getName().equals("fire"))
-                _methodIndex = i;
-            break;
-        }
-
-        if (_methodIndex == -1) {
-            throw new IllegalActionException(this,
-                                             "After looking at "
-                                             + _methods.length + " method(s),"
-                                             + "did not find fire method in '"
-                                             +  _class + "'");
-
         }
     }
 
@@ -693,7 +508,8 @@ public class GenericJNIActor extends TypedAtomicActor {
                 if (typ.equals("boolean")) {
                     try {
                         port.send(0,
-                                (Token) new BooleanToken(field.getBoolean(obj)));
+                                (Token) new BooleanToken(field
+                                        .getBoolean(obj)));
                     } catch (IllegalAccessException ex) {
                         throw new IllegalActionException(this, ex,
                                 "Type '" + typ + "' is not castable");
@@ -759,6 +575,198 @@ public class GenericJNIActor extends TypedAtomicActor {
             }
         }
     }
+
+    /** Return the argument contained by this entity that has the
+     *  specified name.  If there is no such port, return null.  This
+     *  method is read-synchronized on the workspace.
+     *  @param name The name of the desired argument.
+     *  @return A argument with the given name, or null if none exists.
+     */
+    public Argument getArgument(String name) {
+        try {
+            _workspace.getReadAccess();
+            return (Argument) _argumentsList.get(name);
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
+    /** Return the argument contained by this entity that is return.
+     *  If there is no such argument, return null.
+     *  This method is read-synchronized on the workspace.
+     *  @return the argument return, or null if none exists.
+     */
+    public Argument getArgumentReturn() {
+        try {
+            _workspace.getReadAccess();
+            Iterator arguments = this.argumentsList().iterator();
+            Argument returnValue = null;
+            while (arguments.hasNext()) {
+                Argument argument = (Argument) arguments.next();
+                if (argument != null && argument.isReturn()) {
+                    return (Argument) argument;
+                }
+            }
+            return (Argument) returnValue;
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
+    /** Load the generated class and search for its fire method.
+     */
+    public void initialize() throws IllegalActionException {
+        String nativeLibraryValue = "";
+        String libraryDirectoryValue = "";
+        try {
+            libraryDirectoryValue =
+                ((StringToken) ((Parameter) this
+                        .getAttribute("libraryDirectory"))
+                        .getToken())
+                .stringValue();
+
+            nativeLibraryValue =
+                ((StringToken) ((Parameter) this
+                        .getAttribute("nativeLibrary"))
+                        .getToken())
+                .toString();
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                                             "no libraryDirectory or "
+                                             + "nativeLibrary Parameter");
+        }
+
+//         String interNativeLibraryValue =
+//             "jni" + nativeLibraryValue
+//             .substring(1, nativeLibraryValue.length() - 1);
+
+//        String interNativeLibrary = JNIUtilities._getInterNativeLibrary(this);
+        //searching the class generated
+
+//        String className = "jni." + interNativeLibrary + ".Jni"
+//            + this.getName();
+
+        String nativeLibrary = JNIUtilities.getNativeLibrary(this);
+        String className = "jni." + nativeLibrary + ".Jni"
+            + this.getName();
+
+
+
+        URL[] tab = new URL[1];
+        try {
+            File userDirAsFile =
+                new File(StringUtilities.getProperty("user.dir"));
+            tab[0] = userDirAsFile.toURL();
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, "Could not create URL "
+                                             + "from user.dir ("
+                                             + StringUtilities
+                                             .getProperty("user.dir") + ")");
+        }
+        try {
+            ClassLoader cl = new URLClassLoader(tab);
+            _class = cl.loadClass(className);
+        } catch (Throwable ex) {
+            throw new IllegalActionException(this, ex,
+                                             "Could not load JNI C class '"
+                                             + className + "' relative to "
+                                             + tab[0]);
+
+        }
+
+        if (_class == null) {
+            throw new IllegalActionException(this,
+                                             "Could load JNI C class, '"
+                                             + className + "' relative to "
+                                             + tab[0]);
+        }
+
+        // FIXME: This adds to the path every time the actor is initialized
+        // FIXME: This does not work for me anyway.  I think the
+        // java.library.path needs to be set by the environment before
+        // the java process starts or else it needs to be set with
+        // -Djava.library.path when java is invoked
+
+        // Add the value of libraryDirectory to the java.library.path
+        // First, look relative to the current directory (user.dir)
+        // Second, look relative to $PTII
+
+//         System.setProperty("java.library.path",
+//                 StringUtilities.getProperty("user.dir")
+//                 + File.separator
+//                 + libraryDirectoryValue
+//                 + File.pathSeparator
+
+//                 + StringUtilities
+//                 .getProperty("ptolemy.ptII.dir")
+//                 + File.separator
+//                 + libraryDirectoryValue
+//                 + File.pathSeparator
+
+//                 + StringUtilities.getProperty("user.dir")
+//                 + File.separator
+//                 + "jni"
+//                 + File.separator
+//                 + "jnitestDeux"
+//                 + File.pathSeparator
+
+//                 + System.getProperty("java.library.path"));
+
+        _methods = null;
+
+        try {
+            _methods = _class.getMethods();
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex,
+                                             "Interface C _methods not found "
+                                             + "class was: " + _class);
+        }
+
+        if (_methods == null) {
+            throw new IllegalActionException(this,
+                                             "getMethods() returned null?, "
+                                             + "class was: " + _class);
+
+        }
+        //getting the fire _method
+        _methodIndex = -1;
+        for (int i = 0; i < _methods.length; i++) {
+            if (_methods[i].getName().equals("fire"))
+                _methodIndex = i;
+            break;
+        }
+
+        if (_methodIndex == -1) {
+            throw new IllegalActionException(this,
+                                             "After looking at "
+                                             + _methods.length + " method(s),"
+                                             + "did not find fire method in '"
+                                             +  _class + "'");
+
+        }
+    }
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Add an argument to this entity
+     *  @return void
+     */
+    protected void _addArgument(Argument arg)
+            throws IllegalActionException, NameDuplicationException {
+        _argumentsList.append((Nameable) arg);
+    }
+
+    /** Remove an argument from this entity.
+     * @exception IllegalActionException If an error occurs.
+     */
+    protected void _removeArgument(Argument arg)
+            throws IllegalActionException {
+        _argumentsList.remove(((Nameable) arg));
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

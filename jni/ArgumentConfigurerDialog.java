@@ -1,4 +1,4 @@
-/** A top-level dialog window for configuring the arguments of an entity.
+/* A top-level dialog window for configuring the arguments of an entity.
     Largely inspired of PortConfigurerDialog
 
     Copyright (c) 1998-2001 The Regents of the University of California.
@@ -24,8 +24,8 @@
 
     PT_COPYRIGHT_VERSION_2
     COPYRIGHTENDKEY
-    @ProposedRating Yellow (vincent.arnould@thalesgroup.com)
-    @AcceptedRating Red (vincent.arnould@thalesgroup.com)
+@ProposedRating Yellow (vincent.arnould@thalesgroup.com)
+@AcceptedRating Red (vincent.arnould@thalesgroup.com)
 */
 
 package jni;

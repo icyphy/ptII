@@ -54,15 +54,16 @@ import javax.swing.BoxLayout;
 //////////////////////////////////////////////////////////////////////////
 //// ArgumentConfigurer
 /**
-   This class is an editor to configure the arguments of an object.
-   It supports setting kind :input, output, in-output or return and a type
-   and adding and removing arguments. Only arguments that extend the Argument
-   class are listed, since more primitive Argument cannot be configured
-   in this way.
+This class is an editor to configure the arguments of an object.
+It supports setting kind :input, output, in-output or return and a type
+and adding and removing arguments. Only arguments that extend the Argument
+class are listed, since more primitive Argument cannot be configured
+in this way.
 
-   @author Steve Neuendorffer, Edward A. Lee, V. Arnould (Thales)
-   @version $Id$
- */
+@author Steve Neuendorffer, Edward A. Lee, V. Arnould (Thales)
+@version $Id$
+@since Ptolemy II 2.3
+*/
 public class ArgumentConfigurer extends Query implements QueryListener {
     /** Construct a argument configurer for the specified entity.
      *  @param object The entity to configure.
