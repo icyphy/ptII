@@ -281,7 +281,7 @@ public class CompositeActor extends CompositeEntity
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
-            _debug("Called fire()");
+            _debug("Calling fire()");
         }
         try {
             _workspace.getReadAccess();
@@ -323,6 +323,9 @@ public class CompositeActor extends CompositeEntity
             }
         } finally {
             _workspace.doneReading();
+        }
+        if (_debugging) {
+            _debug("Called fire()");
         }
     }
 
@@ -669,7 +672,7 @@ public class CompositeActor extends CompositeEntity
      */
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
-            _debug("Called postfire()");
+            _debug("Calling postfire()");
         }
         try {
             _workspace.getReadAccess();
@@ -682,6 +685,9 @@ public class CompositeActor extends CompositeEntity
             boolean result = getDirector().postfire();
             if (_debugging) {
                 _debug("Postfire returns (from director) " + result);
+            }
+            if (_debugging) {
+                _debug("Called postfire()");
             }
             return result;
         } finally {
@@ -701,7 +707,7 @@ public class CompositeActor extends CompositeEntity
     public boolean prefire()
             throws IllegalActionException {
         if (_debugging) {
-            _debug("Called prefire()");
+            _debug("Calling prefire()");
         }
         try {
             _workspace.getReadAccess();
@@ -712,6 +718,9 @@ public class CompositeActor extends CompositeEntity
             boolean result = getDirector().prefire();
             if (_debugging) {
                 _debug("Prefire returns (from director) " + result);
+            }
+            if (_debugging) {
+                _debug("Called prefire()");
             }
             return result;
         } finally {
