@@ -32,6 +32,7 @@ package ptolemy.domains.sdf.kernel;
 
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.actor.sched.*;
 //import ptolemy.actor.NotSchedulableException;
 import ptolemy.kernel.util.*;
 import ptolemy.data.expr.*;

@@ -31,6 +31,7 @@ package ptolemy.domains.sdf.kernel;
 
 import ptolemy.graph.*;
 import ptolemy.actor.*;
+import ptolemy.actor.sched.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
