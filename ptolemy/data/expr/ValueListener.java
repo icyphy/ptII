@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
@@ -32,7 +32,7 @@ package ptolemy.data.expr;
 
 //////////////////////////////////////////////////////////////////////////
 //// ValueListener
-/** 
+/**
 This is an interface for listeners that are notified when the value
 of a variable changes.
 
@@ -47,6 +47,6 @@ public interface ValueListener {
 
     /** Notify the listener that the value of the variable has changed.
      *  @param variable The variable that has changed value.
-     */	
+     */
     public void valueChanged(Variable variable);
 }

@@ -359,7 +359,7 @@ public class DoubleMatrixToken extends MatrixToken {
 	    	if (tem.getRowCount() != _columnCount) {
 
                     throw new IllegalActionException("Cannot multiply " +
-                            "matrix with " + _columnCount + 
+                            "matrix with " + _columnCount +
                             " columns by a matrix with " +
                             tem.getRowCount() + " rows.");
 	    	}

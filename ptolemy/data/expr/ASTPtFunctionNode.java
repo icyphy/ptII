@@ -244,10 +244,10 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 sb.append(", " + argValues[i].toString());
             }
         }
-        throw new IllegalActionException("ASTFunction Function " + _funcName 
+        throw new IllegalActionException("ASTFunction Function " + _funcName
                 + "( " + sb + " ) cannot be executed with given arguments.");
     }
-         
+
     public ASTPtFunctionNode(int id) {
         super(id);
     }

@@ -696,7 +696,7 @@ public class Variable extends Attribute implements Typeable {
 
     /** Constrain the type of this variable to be equal to or
      *  greater than the type represented by the specified InequalityTerm.
-     *  This constraint is not enforced here, but is returned by the 
+     *  This constraint is not enforced here, but is returned by the
      *  typeConstraintList() method for use by a type system.
      *  @param typeTerm An InequalityTerm object.
      */
@@ -860,8 +860,8 @@ public class Variable extends Attribute implements Typeable {
      *  of this variable.  If the value has been set by an expression,
      *  then return that expression.  If the value has been set via
      *  a token, then return a string representation of the value of that
-     *  token that can be passed to the expression language in order to 
-     *  return a token with the same value.  If neither, then return an 
+     *  token that can be passed to the expression language in order to
+     *  return a token with the same value.  If neither, then return an
      *  empty string.
      *  @return A string representation of this variable.
      */
@@ -874,7 +874,7 @@ public class Variable extends Attribute implements Typeable {
             } catch (IllegalActionException ex) {}
             if (token != null) {
                 if(token instanceof ptolemy.data.StringToken) {
-                    // Double quotes must be added to the value of a 
+                    // Double quotes must be added to the value of a
                     // string token.
                     value = "\"" + token.toString() + "\"";
                 } else {
@@ -898,7 +898,7 @@ public class Variable extends Attribute implements Typeable {
         } catch (IllegalActionException ex) {
             // The value of this variable is undefined.
         }
-        return super.toString() + " " + 
+        return super.toString() + " " +
                 ((val == null) ? "value undefined" : val.toString());
     }
 
@@ -939,7 +939,7 @@ public class Variable extends Attribute implements Typeable {
             TypeConstant atMost = new TypeConstant(_typeAtMost);
             Inequality ineq = new Inequality(getTypeTerm(), atMost);
             result.add(ineq);
-        }            
+        }
 
 	return result;
     }
@@ -1039,7 +1039,7 @@ public class Variable extends Attribute implements Typeable {
      *  Part of this method is read-synchronized on the workspace.
      *
      *  @exception IllegalActionException If the expression cannot
-     *   be parsed or cannot be evaluated. 
+     *   be parsed or cannot be evaluated.
      */
     protected void _evaluate() throws IllegalActionException {
         if (!_needsEvaluation) return;
@@ -1248,7 +1248,7 @@ public class Variable extends Attribute implements Typeable {
                     + tokenType.toString()
                     + ", which is not less than or equal to "
                     + _typeAtMost.toString());
-                    
+
                 }
             }
             if (_noTokenYet) {

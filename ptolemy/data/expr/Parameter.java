@@ -149,7 +149,7 @@ public class Parameter extends Variable {
         if(value != null && !value.equals("")) {
             valueTerm = " value=\"" + MoMLUtilities.escapeAttribute(stringRepresentation()) + "\"";
         }
-        
+
         output.write(_getIndentPrefix(depth)
                + "<"
                + getMoMLElementName()
