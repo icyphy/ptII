@@ -176,11 +176,7 @@ compileDemo: $(JCLASS)
 
 runJava: runDemo
 runDemo:
-	@echo "Run the deep model"
-	"$(JAVA)" \
-	-Xfuture -classpath "$(CLASSPATH)" \
-	$(TARGETPACKAGE).Main 
-
+	(cd cg/$(MODEL); $(MAKE) runJava)
 
 treeShakeDemo:
 	cd $(ROOT)/$(TARGETPATH); $(MAKE) treeShake
