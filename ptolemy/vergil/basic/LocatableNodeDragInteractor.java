@@ -33,16 +33,22 @@ package ptolemy.vergil.basic;
 import diva.canvas.Figure;
 import diva.canvas.event.LayerEvent;
 import diva.canvas.interactor.DragInteractor;
+import diva.canvas.interactor.SelectionModel;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.NodeDragInteractor;
 import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
+import ptolemy.moml.MoMLUndoEntry;
+import ptolemy.moml.UndoInfoAttribute;
 import ptolemy.vergil.toolbox.SnapConstraint;
 
 import java.awt.Point;
 import java.awt.geom.Point2D;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// LocatableNodeDragInteractor
@@ -51,6 +57,11 @@ An interaction role that drags nodes that have locatable objects
 as semantic objects.  When the node is dragged, this interactor
 updates the location in the locatable object with the new location of the
 figure.
+<p>
+The dragging of a selection is undoable, and is based on the difference
+between the point where the mouse was pressed and where the mouse was
+released. This informatio is used to create MoML to undo the move if
+requested.
 
 @author Steve Neuendorffer
 @version $Id$
@@ -78,19 +89,132 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** When the mouse is pressed before dragging, store a copy of the
+     *  pressed point location so that a relative move can be
+     *  evaluated for undo purposes.
+     *  @param  e  The press event.
+     */
+    public void mousePressed(LayerEvent e) {
+        super.mousePressed(e);
+        _dragStart = _getConstrainedPoint(e);
+    }
+
+
     /** When the mouse is released after dragging, mark the frame modified
      *  and update the panner.
      *  @param e The release event.
      */
     public void mouseReleased(LayerEvent e) {
+        // FIXME: This method needed to be hacked so that undo would work.
+        // We should factor out the common code in this method and in
+        // transform().
+
+        // Work out the transform the drag performed
+        double[] dragEnd = _getConstrainedPoint(e);
+        double[] transform = new double[2];
+        transform[0] = _dragStart[0] - dragEnd[0];
+        transform[1] = _dragStart[1] - dragEnd[1];
+
+        // Note that this now goes through the MoML parser so it is
+        // undoable
+        //PtolemyGraphController graphController
+        //         = (PtolemyGraphController)_controller.getController();
+        //GraphFrame frame = graphController.getFrame();
         BasicGraphController graphController
                 = (BasicGraphController)_controller.getController();
         BasicGraphFrame frame = graphController.getFrame();
+
+        SelectionModel model = graphController.getSelectionModel();
+        //GraphModel graphModel = graphController.getGraphModel();
+        AbstractBasicGraphModel graphModel =
+            (AbstractBasicGraphModel)graphController.getGraphModel();
+        Object selection[] = model.getSelectionAsArray();
+        Object userObjects[] = new Object[selection.length];
+        // First get the user objects from the selection.
+        for (int i = 0; i < selection.length; i++) {
+            userObjects[i] = ((Figure)selection[i]).getUserObject();
+        }
+
+        // First make a set of all the semantic objects as they may
+        // appear more than once
+        HashSet namedObjSet = new HashSet();
+        for (int i = 0; i < selection.length; i++) {
+            if (selection[i] instanceof Figure) {
+                Object userObject = ((Figure)selection[i]).getUserObject();
+                if (graphModel.isEdge(userObject) ||
+                        graphModel.isNode(userObject)) {
+                    NamedObj actual =
+                            (NamedObj)graphModel.getSemanticObject(userObject);
+                    if (actual != null) {
+                        namedObjSet.add(actual);
+                    }
+                    else {
+                        // Special case, may need to handle by not going to
+                        // MoML and which may not be undoable
+                        System.out.println("Object with no semantic object , class: " + userObject.getClass().getName());
+                    }
+                }
+            }
+        }
+        // Generate the MoML to carry out the deletion
+        StringBuffer moml = new StringBuffer();
+        moml.append("<group>\n");
+        Iterator elements = namedObjSet.iterator();
+        while (elements.hasNext()) {
+            NamedObj element = (NamedObj)elements.next();
+            List locationList = element.attributeList(Location.class);
+            if (locationList.isEmpty()) {
+                // Nothing to do as there was no previous location
+                // attribute (applies to "unseen" relations)
+                continue;
+            }
+            // Set the new location attribute.
+            Location newLoc = (Location)locationList.get(0);
+            // Give default values in case the previous locations value
+            // has not yet been set
+            double[] newLocation = new double[]{0, 0};
+            if (newLoc.getLocation() != null) {
+                newLocation = newLoc.getLocation();
+            }
+            // NOTE: we use the trasform worked out for the drag to
+            // set the original MoML location
+            double[] oldLocation = new double[2];
+            oldLocation[0] = newLocation[0] + transform[0];
+            oldLocation[1] = newLocation[1] + transform[1];
+            // Create the MoML, wrapping the new location attribute
+            // in an element refering to the container
+            String containingElementName = element.getMoMLInfo().elementName;
+            moml.append("<" + containingElementName + " name=\"" +
+                    element.getName() + "\" >\n");
+            // NOTE: use the moml info element name here in case the
+            // location is a vertex
+            moml.append("<" + newLoc.getMoMLInfo().elementName + " name=\"" +
+                    newLoc.getName() + "\" value=\"" + oldLocation[0] + ", " +
+                    oldLocation[1] + "\" />\n");
+            moml.append("</" + containingElementName + ">\n");
+        }
+        moml.append("</group>\n");
+        // Finally create and register the undo entry;
+        // NOTE: this is a bit of a hack but the only easy way I could
+        // find to do this without making all the incremental moves
+        // also go through the parser
+        try {
+            CompositeEntity toplevel = (CompositeEntity)graphModel.getRoot();
+            MoMLUndoEntry newEntry = new MoMLUndoEntry(toplevel, moml.toString());
+            UndoInfoAttribute undoInfo = UndoInfoAttribute.getUndoInfo(toplevel);
+            undoInfo.pushUndoEntry(newEntry);
+        }
+        catch (Exception ex) {
+            // Unable to queue undo
+        }
         if (frame != null) {
             // NOTE: Use changeExecuted rather than directly calling
             // setModified() so that the panner is also updated.
             frame.changeExecuted(null);
         }
+
+
+
     }
 
     /** Drag all selected nodes and move any attached edges.
@@ -180,5 +304,40 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         }
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // Returns a constrained point from the given event
+    private double[] _getConstrainedPoint(LayerEvent e) {
+        Iterator targets = targets();
+        double[] result = new double[2];
+        if (targets.hasNext()) {
+            Figure figure = (Figure)targets.next();
+            // The transform context is always (0,0) so no use
+            // NOTE: this is a bit of hack, needed to allow the undo of
+            // the movement of vertexes by themselves
+            result[0] = e.getLayerX();
+            result[1] = e.getLayerY();
+            return SnapConstraint.constrainPoint(result);
+        }
+        /*
+         * else {
+         * AffineTransform transform
+         * = figure.getTransformContext().getTransform();
+         * result[0] = transform.getTranslateX();
+         * result[1] = transform.getTranslateY();
+         * }
+         * Only snap the first figure in the set.
+         * break;
+         */
+        return result;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
     private LocatableNodeController _controller;
+
+    // Used to undo a locatable node movement
+    private double[] _dragStart;
 }
