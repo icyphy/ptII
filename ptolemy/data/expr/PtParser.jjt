@@ -275,13 +275,12 @@ public class PtParser {
         Map map;
         try {
             // Parse the expression to obtain the parse tree.
+            // startAssignmentList() might throw TokenMgrError which is 
+            // an Error, not an Exception, so we catch Throwables here. 
             map = startAssignmentList();
-        } catch (ParseException x) {
-            throw new IllegalActionException("Error parsing expression \""
-                    + stringIn + "\":\n" + x.getMessage());
-        } catch (TokenMgrError x) {
-            throw new IllegalActionException("Error parsing expression \""
-                    + stringIn + "\":\n" + x.getMessage());
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(null, throwable,
+                    "Error parsing expression \"" + stringIn + "\"");
         }
         return map;
     }
