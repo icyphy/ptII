@@ -299,6 +299,23 @@ Check 'InsertSpace for tabs (see Code Formatter preference page)
 </ol>
 
 
+<h2><a name="ignoreClassAndJar">Ignore .class and .jar files</a></h2>
+This setting is in the <code>$PTII/.eclipse.epf</code> file.
+See <a href="#importPreferences">Import the Ptolemy II specific preferences</a>
+for details.
+
+<ol>
+<li> Window -&gt; Preferences -&gt; Team -&gt; CVS -&gt; Ignored
+Resources
+
+<li> Add <CODE>*.class</CODE> and <CODE>*.jar</CODE>
+
+</ol>
+The semantics seem to be ignore .jar files that are not already part of CVS.
+This can be overridden on a case by case base if new .jar files get created
+that need to be part of CVS.
+
+
 <h2><a name="tcl">Associating the Text editor with .tcl files</a></h2>
 This setting is <b>not</b> in the <code>$PTII/.eclipse.epf</code> file.
 
