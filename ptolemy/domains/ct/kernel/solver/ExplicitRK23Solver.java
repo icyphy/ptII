@@ -82,12 +82,7 @@ public class ExplicitRK23Solver extends ODESolver {
      *  The name of the solver is set to "CT_Runge_Kutta_2_3_Solver".
      */
     public ExplicitRK23Solver() {
-        super();
-        try {
-            setName(_DEFAULT_NAME);
-        } catch (KernelException ex) {
-            throw new InternalErrorException(ex.getMessage());
-        }
+        this(null);
     }
 
     /** Construct a solver in the given workspace.

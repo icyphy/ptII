@@ -81,13 +81,7 @@ public class DerivativeResolver extends ODESolver {
      *  Increment the version number of the workspace.
      */
     public DerivativeResolver() {
-        super();
-        try {
-            setName(_DEFAULT_NAME);
-        } catch (KernelException e) {
-            // this should never happen.
-            throw new InternalErrorException(e.toString());
-        }
+       this(null);
     }
 
     /** Construct a solver in the given workspace with the name 

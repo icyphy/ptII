@@ -66,13 +66,7 @@ public class ImpulseBESolver extends BackwardEulerSolver {
      *  The name of the solver is set to "CT_ImpulseBE_Solver".
      */
     public ImpulseBESolver() {
-        super();
-        try {
-            setName(_DEFAULT_NAME);
-        } catch (KernelException e) {
-            // this should never happen.
-            throw new InternalErrorException(e.getMessage());
-        }
+        this(null);
     }
 
     /** Construct a solver in the given workspace.

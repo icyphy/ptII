@@ -67,12 +67,7 @@ public class ForwardEulerSolver extends FixedStepSolver {
      *  The name of the solver is set to "CT_Forward_Euler_Solver".
      */
     public ForwardEulerSolver() {
-        super();
-        try {
-            setName(_DEFAULT_NAME);
-        } catch (KernelException ex) {
-            throw new InternalErrorException(ex.toString());
-        }
+        this(null);
     }
 
     /** Construct a solver in the given workspace.

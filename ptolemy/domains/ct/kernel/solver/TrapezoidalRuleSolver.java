@@ -70,13 +70,7 @@ public class TrapezoidalRuleSolver extends ODESolver{
      *  The name of the solver is set to "CT_Trapezoidal_Rule_Solver".
      */
     public TrapezoidalRuleSolver() {
-        super();
-        try {
-            setName(_DEFAULT_NAME);
-        } catch (KernelException e) {
-            // this should never happen.
-            throw new InternalErrorException(e.getMessage());
-        }
+        this(null);
     }
 
     /** Construct a solver in the given workspace.
