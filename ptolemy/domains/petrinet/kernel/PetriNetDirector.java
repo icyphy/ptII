@@ -33,6 +33,7 @@ import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.Manager;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
@@ -77,6 +78,9 @@ it reduces the tokens in the places connected to the input of the
 transition, and increase the tokens in places connected to the output
 of the transition.
 
+In Ptolemy environment, a transition can be any TypedCompositeActor
+which can have its own firing method. 
+
 <p>The key methods are the testing whether a transition
 is ready or not _testReadyTransition, and fire an enabled transition
 _fireTransition. The sequence of firing is determinated by the method
@@ -84,7 +88,6 @@ fireHierarchicalPetriNet.
 
 <p>It is assumed that the Peri net is a hierarchical petri net. This works
 fine for flat Petri net.
-
 
 @author  Yuke Wang and Edward A. Lee
 @version $Id$
@@ -164,9 +167,10 @@ public class PetriNetDirector extends Director {
             Nameable chosenTransition = (Nameable)
                 nextComponents.get(randomIndex);
             _debug("start firing "
-                    + chosenTransition.getFullName());
-            if(chosenTransition instanceof Transition) {
-                Transition realTransition = (Transition) chosenTransition;
+                             + chosenTransition.getFullName());
+            if(chosenTransition instanceof TypedCompositeActor) {
+                TypedCompositeActor realTransition =
+                                (TypedCompositeActor) chosenTransition;
                 _fireTransition(realTransition);
             }
             else if(chosenTransition instanceof PetriNetActor) {
@@ -190,16 +194,16 @@ public class PetriNetDirector extends Director {
         }
     }
 
-    /** This method calls the private method _testReadyTransition
-     *  to see whether the given transition is ready to fire or not.
-     *  FIXME: testReadyTransition is not a good name.
-     *
-     *  @param transition Transition to be tested to be ready or not.
-     *  @return true or false The testing transition is ready to fire or not.
-     *  @exception IllegalActionException If
-     *  method "_testReadyTransition" throws exception.
-     */
-    public boolean testReadyTransition(Transition transition)
+   /** This method calls the private method _testReadyTransition
+    *  to see whether the given transition is ready to fire or not.
+    *  FIXME: testReadyTransition is not a good name.
+    *
+    *  @param transition Transition to be tested to be ready or not.
+    *  @return true or false The testing transition is ready to fire or not.
+    *  @exception IllegalActionException If
+    *  method "_testReadyTransition" throws exception.
+    */
+    public boolean testReadyTransition(TypedCompositeActor transition)
             throws IllegalActionException {
         return (_testReadyTransition(transition));
     }
@@ -232,7 +236,7 @@ public class PetriNetDirector extends Director {
      *  @exception IllegalActionException If the method
      *  "_getWeightNumber" throws exceptions.
      */
-    private boolean  _testReadyTransition(Transition transition)
+    private boolean  _testReadyTransition(TypedCompositeActor transition)
             throws IllegalActionException {
 
         boolean readyToFire = true;
@@ -242,8 +246,15 @@ public class PetriNetDirector extends Director {
             Place item = (Place) placeLists.next();
             item.setTemporaryMarking(item.getMarking());
         }
+
+
         LinkedList newRelationList = new LinkedList();
-        newRelationList.addAll(transition.input.linkedRelationList());
+        Iterator inputPorts = transition.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inPort = (IOPort) inputPorts.next();
+            newRelationList.addAll(inPort.linkedRelationList());
+        }
+
         LinkedList temporarySourcePortList = new LinkedList();
         while(newRelationList.size() > 0 )  {
             IORelation weights = (IORelation) newRelationList.getFirst();
@@ -273,7 +284,7 @@ public class PetriNetDirector extends Director {
 
                 int weightNumber = _getWeightNumber(weights);
                 LinkedList  updatePlace =
-                    _findBackwardConnectedPlaces(weights);
+                             _findBackwardConnectedPlaces(weights);
                 Iterator pointer = updatePlace.iterator();
                 while (pointer.hasNext()) {
                     Place item = (Place) pointer.next();
@@ -299,24 +310,48 @@ public class PetriNetDirector extends Director {
      *  or prefire throws exception.
      */
     private LinkedList _readyComponents(TypedCompositeActor container)
-            throws IllegalActionException {
+          throws IllegalActionException {
         Iterator actors = container.entityList().iterator();
         LinkedList readyComponentList = new LinkedList();
         while (actors.hasNext()) {
             Nameable component = (Nameable) actors.next();
             if (component instanceof PetriNetActor)  {
                 PetriNetActor pnActor = (PetriNetActor) component;
+                _debug("the component to be tested ready is "
+                        + component.getFullName());
                 if( pnActor.prefire()) {
                     readyComponentList.add(pnActor);
                     _debug("found a readyPetriNetActor  "
                             + pnActor.getFullName());
+                } 
+
+                LinkedList componentList = _findTransitions(pnActor);
+                Iterator components = componentList.iterator();
+                while (components.hasNext()) {
+
+                    Nameable component1 = (Nameable) components.next();
+                    if (component1 instanceof TypedCompositeActor) {
+                        TypedCompositeActor transitionComponent 
+                                 = (TypedCompositeActor) component1;
+		        if(_testReadyTransition(transitionComponent))
+                            readyComponentList.add(transitionComponent);
+                    }
                 }
             }
-            else if (component instanceof Transition) {
-                Transition componentTransition = (Transition) component;
+            else if (component instanceof TypedCompositeActor) {
+                TypedCompositeActor componentTransition =
+                                    (TypedCompositeActor) component;
                 if( _testReadyTransition(componentTransition))
                     readyComponentList.add(componentTransition);
-            }
+            } 
+        }
+
+
+        Iterator pointer = readyComponentList.iterator();
+        while (pointer.hasNext()) {
+            Nameable transitionName = (Nameable) pointer.next();
+            _debug("******* " + transitionName.getFullName() +
+                      " container " + container.getFullName());
         }
         return readyComponentList;
     }
@@ -331,16 +366,47 @@ public class PetriNetDirector extends Director {
      *  @exception IllegalActionException If any of the three methods
      *   _getWeightNumber throws exception.
      */
-    private void _fireTransition(Transition transition)
-            throws IllegalActionException {
+
+    private void _fireTransition(TypedCompositeActor transition)
+           throws IllegalActionException {
 
         if(transition.isOpaque()) {
+            Director componentDirector = transition.getDirector();
+            Director componentExecutiveDirector =
+                            transition.getExecutiveDirector();
+            Manager componentManager = transition.getManager();
+            _debug("the director of " + transition.getFullName()
+                            + "  is    "
+                            + componentDirector.getFullName());
+            _debug("the executivedirector of "
+                                + transition.getFullName()
+                            + "  is    "
+                            + componentDirector.getFullName());
+            _debug("the manager of "
+                             + transition.getFullName()
+                            + "  is    "
+                            + componentDirector.getFullName());
+
             transition.fire();
+            _debug("After the transition fire.....");
+            componentDirector.fire();
+            _debug("after the director fire..............");
+          
+
         } else {
             _debug("transition can not fire, update places");
         }
+
+
+
         LinkedList newRelationList = new LinkedList();
-        newRelationList.addAll(transition.output.linkedRelationList());
+        Iterator outputPorts = transition.outputPortList().iterator();
+        while (outputPorts.hasNext()) {
+            IOPort outPort = (IOPort) outputPorts.next();
+            newRelationList.addAll(outPort.linkedRelationList());
+        }
+
+
         LinkedList temporaryDestinationPortList = new LinkedList();
         while(newRelationList.size()>0 )  {
             IORelation weights = (IORelation) newRelationList.getFirst();
@@ -398,7 +464,12 @@ public class PetriNetDirector extends Director {
         }
 
         LinkedList backRelationList = new LinkedList();
-        backRelationList.addAll(transition.input.linkedRelationList());
+        Iterator inputPorts = transition.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inPort = (IOPort) inputPorts.next();
+            backRelationList.addAll(inPort.linkedRelationList());
+        }
+
         LinkedList temporarySourcePortList = new LinkedList();
         while(backRelationList.size()>0 )  {
             IORelation weights = (IORelation) backRelationList.getFirst();
@@ -456,17 +527,16 @@ public class PetriNetDirector extends Director {
         LinkedList components = _readyComponents(container);
         int i = components.size();
         if (i > 0) {
-            _debug(i + "  transitions ready in choosing");
-            _debug(" transitions--");
+            _debug(i + "  transitions ready in choosing transitions");
 
             java.util.Random generator = new
                 java.util.Random(System.currentTimeMillis());
             int j = generator.nextInt(i);
             Nameable chosenTransition = (Nameable) components.get(j);
             _debug("start firing " + chosenTransition.getFullName());
-            if(chosenTransition instanceof Transition) {
-                Transition realTransition
-                    = (Transition) chosenTransition;
+            if(chosenTransition instanceof TypedCompositeActor) {
+                TypedCompositeActor realTransition
+                              = (TypedCompositeActor) chosenTransition;
                 _fireTransition(realTransition);
             }
             else if(chosenTransition instanceof PetriNetActor) {
@@ -560,8 +630,7 @@ public class PetriNetDirector extends Director {
                     else if(weightPlace instanceof Place)
                         temporaryPlaceList.add(weightPlace);
                     else {
-                        _debug(
-                                "*******found no place/PetriNetActor  "
+                        _debug("*******found no place/PetriNetActor  "
                                 + weightPort.getFullName());
                         return null;
                     }
@@ -582,10 +651,16 @@ public class PetriNetDirector extends Director {
      *  @return LinkedList Returns all the backward connected places to the
      *   transition.
      */
-    private LinkedList _findBackwardConnectedPlaces(Transition transition) {
-
+    private LinkedList _findBackwardConnectedPlaces
+                                     (TypedCompositeActor transition) {
         LinkedList newRelationList = new LinkedList();
-        newRelationList.addAll(transition.input.linkedRelationList());
+
+        Iterator inputPorts = transition.inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            IOPort inPort = (IOPort) inputPorts.next();
+            newRelationList.addAll(inPort.linkedRelationList());
+        }
+
         LinkedList temporaryPlaceList = new LinkedList();
         while(newRelationList.size()>0 )  {
             IORelation weights = (IORelation) newRelationList.getFirst();
@@ -594,6 +669,52 @@ public class PetriNetDirector extends Director {
             newRelationList.remove(weights);
         }
         return temporaryPlaceList;
+    }
+
+  /** This method finds all the possible transitions of the given  
+   *  compositeactor. In short, any atomic, Opaque, and other 
+   *  compositeActors can be a transition. In other words, a transition 
+   *  is an object which is not a place and not a PetrinetActor.
+   */
+    private LinkedList _findTransitions(TypedCompositeActor transition) {
+
+        Iterator components = transition.entityList().iterator();
+        LinkedList temporaryList = new LinkedList();
+
+        while (components.hasNext()) {
+            Nameable component = (Nameable) components.next();
+            if (component instanceof Place) {
+
+            } 
+            else if(component instanceof PetriNetActor)
+            {
+                TypedCompositeActor componentActor = 
+                             (TypedCompositeActor) component;
+                _debug("test recursive of _findTransitions");
+                LinkedList newComponentList 
+                                 = _findTransitions(componentActor);
+                Iterator pointer = newComponentList.iterator();
+                while (pointer.hasNext()) {
+                    Nameable transitionName = (Nameable) pointer.next();
+                    _debug("recursive transition is " + transitionName.getFullName() +
+                      " container " + transition.getFullName());
+                }
+
+
+
+
+                temporaryList.addAll(newComponentList);
+            } else
+                temporaryList.add(component);  
+        }
+
+        Iterator pointer = temporaryList.iterator();
+        while (pointer.hasNext()) {
+            Nameable transitionName = (Nameable) pointer.next();
+            _debug("this transition is " + transitionName.getFullName() +
+                      " container " + transition.getFullName());
+        }
+        return temporaryList;
     }
 
     /** This method gets the weight assigned to the given relation.
