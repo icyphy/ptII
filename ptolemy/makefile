@@ -56,7 +56,7 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 
 # Include these jars in PTAUXALLJAR
-# plotmlapplet pulls in the com/microstar/xml classes
+# plotmlapplet pulls in the com/microstar/xml and util/ classes
 PTAUXALLJARS = \
 		actor/actor.jar \
 		configs/configs.jar \
@@ -68,6 +68,9 @@ PTAUXALLJARS = \
 		media/media.jar \
 		moml/moml.jar \
 		plot/plotmlapplet.jar
+
+# No need for util/util.jar, plotmlapplet.jar includes those classes
+# util/util.jar
 
 # hsif.jar is not included in ptsupport.jar because it only works
 # with the -hyvisual configuration.
