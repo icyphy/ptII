@@ -81,8 +81,12 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
+all: jclass $(ROOT)/ptKeystore
 install: jclass jars
+
+# The default keystore is $(PTII)/ptKeystore
+$(ROOT)/ptKeystore:
+	(cd $(ROOT); $(MAKE) ptKeystore)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
