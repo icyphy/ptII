@@ -651,13 +651,17 @@ public class DEDirector extends Director {
         if (!_eventQueue.isEmpty()) {
                 nextEventTime =  _eventQueue.get().timeStamp();
         }
+        // FIXME: Ideally, we should add this test. But DT does not
+        // return a correct getCurrentTime.
+        /*
         if (outsideCurrentTime > nextEventTime + 1e-10) {
             throw new IllegalActionException(this,
                     "Missed a firing at "
-                    + getCurrentTime() + "."
-                    + " The outside time is already" + 
+                    + nextEventTime + "."
+                    + " The outside time is already " + 
                     + outsideCurrentTime + ".");
         }
+        */
         // Now we check if there's any input.
         Iterator inputPorts = container.inputPortList().iterator();
         boolean hasInput = false;
