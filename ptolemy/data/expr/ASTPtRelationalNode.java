@@ -45,14 +45,14 @@ Created : May 1998
  * 
  * @author Neil Smyth
  * @version $Id$
- * @see pt.data.parser.ASTPtSimpleNode
+ * @see pt.data.parser.ASTPtRootNode
  * @see pt.data.parser.PtParser 
  * @see pt.data.Token 
 */
 
 package pt.data.parser;
 
-public class ASTPtRelationalNode extends ASTPtSimpleNode {
+public class ASTPtRelationalNode extends ASTPtRootNode {
     
     protected pt.data.Token  _resolveNode() throws IllegalArgumentException {
         int num =  jjtGetNumChildren();

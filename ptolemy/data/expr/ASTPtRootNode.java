@@ -89,7 +89,7 @@ public class ASTPtRootNode implements Node {
      *  trying to evaluate the PtToken type and/or value to be stored in 
      *  node in the tree.
      */
-    protected pt.data.Token evaluateParseTree() throws IllegalArgumentException {
+    public pt.data.Token evaluateParseTree() throws IllegalArgumentException {
         int numChildren = jjtGetNumChildren();
         if (numChildren == 0) {
             // leaf node, should not be here
@@ -122,8 +122,11 @@ public class ASTPtRootNode implements Node {
      */
     protected pt.data.Token _resolveNode() throws IllegalArgumentException {  
         int num = jjtGetNumChildren();
-        if (num > 0) {
-            String str = "Node has children, this method ";
+        if (num > 1) {
+            String str = "Node has several children, this method ";
+            throw new IllegalArgumentException(str + "should be overridden!");
+        } else if (num == 0) {
+            String str = "Node has no children, this method ";
             throw new IllegalArgumentException(str + "should be overridden!");
         }
         return childTokens[0];

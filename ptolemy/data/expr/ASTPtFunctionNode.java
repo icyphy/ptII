@@ -43,7 +43,7 @@ Created : May 1998
  * 
  * @author Neil Smyth
  * @version $Id$
- * @see pt.data.parser.ASTPtSimpleNode
+ * @see pt.data.parser.ASTPtRootNode
  * @see pt.data.parser.PtParser 
  * @see pt.data.Token 
 */
@@ -53,7 +53,7 @@ package pt.data.parser;
 import pt.data.*;
 import java.lang.reflect.*;
 
-public class ASTPtFunctionNode extends ASTPtSimpleNode {
+public class ASTPtFunctionNode extends ASTPtRootNode {
     protected String funcName;
 
     protected pt.data.Token _resolveNode() throws IllegalArgumentException {

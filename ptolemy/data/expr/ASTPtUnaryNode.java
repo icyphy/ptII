@@ -41,7 +41,7 @@ Created : May 1998
  * 
  * @author Neil Smyth
  * @version $Id$
- * @see pt.data.parser.ASTPtSimpleNode
+ * @see pt.data.parser.ASTPtRootNode
  * @see pt.data.parser.PtParser 
  * @see pt.data.Token 
 */
@@ -50,7 +50,7 @@ package pt.data.parser;
 
 import pt.data.*;
 
-public class ASTPtUnaryNode extends ASTPtSimpleNode {
+public class ASTPtUnaryNode extends ASTPtRootNode {
     protected boolean isMinus = false;
     protected boolean isNot = false;
     protected boolean isBitwiseNot = false;

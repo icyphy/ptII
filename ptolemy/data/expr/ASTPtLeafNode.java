@@ -37,13 +37,15 @@ Created : May 1998
 /**
  * The parse tree created from the expression string consists of a 
  * hierarchy of node objects, each of which is an instance of a class
- * derived from this class.
+ * derived from this class. This class represents the leaf nodes of the 
+ * tree.
  *
  * The tree is resolved in a top down manner, calling resolve on the 
  * children of each node before resolving the type of the current node.
  * 
  * @author Neil Smyth
  * @version$Id$
+ * @see pt.data.parser.ASTPTRootNode
  * @see pt.data.parser.PtParser 
  * @see pt.data.Token 
 */
@@ -76,7 +78,7 @@ public class ASTPtLeafNode extends ASTPtRootNode implements Node {
      *  trying to evaluate the PtToken type and/or value to be stored in 
      *  node in the tree.
      */
-    protected pt.data.Token evaluateParseTree() throws IllegalArgumentException {
+    public pt.data.Token evaluateParseTree() throws IllegalArgumentException {
         if (_param != null) {
             _ptToken = _param.getToken();
         } else if (_ptToken == null) {
@@ -87,23 +89,22 @@ public class ASTPtLeafNode extends ASTPtRootNode implements Node {
     }
    
     ////////////////////////////////////////////////////////////////
-  public ASTPtLeafNode(int i) {
-    id = i;
+ public ASTPtLeafNode(int id) {
+    super(id);
   }
 
-  public ASTPtLeafNode(PtParser p, int i) {
-    this(i);
-    parser = p;
+  public ASTPtLeafNode(PtParser p, int id) {
+    super(p, id);
   }
 
   public static Node jjtCreate(int id) {
-    return new ASTPtLeafNode(id);
+      return new ASTPtLeafNode(id);
   }
 
   public static Node jjtCreate(PtParser p, int id) {
-    return new ASTPtLeafNode(p, id);
+      return new ASTPtLeafNode(p, id);
   }
-
+    
   public void jjtOpen() {
   }
 
