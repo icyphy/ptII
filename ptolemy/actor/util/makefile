@@ -40,9 +40,9 @@
 # Note that none of these classes would be relevant to FSMs, for example.
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../..
 
-ME =		java/pt/actor/util
+ME =		pt/actor/util
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
