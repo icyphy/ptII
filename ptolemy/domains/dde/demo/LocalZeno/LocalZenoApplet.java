@@ -77,7 +77,7 @@ public class LocalZenoApplet extends DDEApplet {
     /** Initialize the applet.
      */
     public void init() {
-	setSingleParameter("stopTime", "90");
+	// setSingleParameter("stopTime", "90");
 	super.init();
 
 	setLayout( new BorderLayout(5, 5) );
