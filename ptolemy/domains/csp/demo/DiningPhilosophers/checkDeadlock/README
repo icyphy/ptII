@@ -15,9 +15,9 @@ receivers and conditional send block. It also gives the names for all
 the transitions in the composition.
 
 The program Check.java composes the Dinining Philosopher model and checks for
-deadlock. The usage is:
+deadlock. This program needs to run in this directory. The usage is:
 
-java -Xmx256m -classpath /users/yuhong/ptII ptolemy.domains.csp.demo.DiningPhilosophers.checkDeadlock.Check <numberOfPhilosophers>
+java -Xmx256m -classpath <class_path_of_ptII> ptolemy.domains.csp.demo.DiningPhilosophers.checkDeadlock.Check <numberOfPhilosophers>
 
 If the number of philosophers is 2, the program finishes in about
 5 minutes on an IBM Thinkpad 600X laptop. A sample output of the program is
