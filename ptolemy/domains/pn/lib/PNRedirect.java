@@ -49,6 +49,13 @@ public class PNRedirect extends PNStar{
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
+    /** Initializes and adds ports to the star
+     * @param initValue is the initial token that the star puts in the stream
+     * @exception NameDuplicationException indicates that an attempt to add
+     *  two ports with the same name has been made
+     * @exception GraphException is thrown to indicate that a port with no
+     *  name is being added to the star
+     */
     public void initialize(int initValue)
             throws NameDuplicationException, GraphException {
         _initValue = initValue;
@@ -56,8 +63,14 @@ public class PNRedirect extends PNStar{
         _output = addOutPort(this, "output");
     }
 
-    /** Description
-     */	
+    /** Initializes and adds ports to the star
+     * @param initValue is the initial token that the star puts in the stream
+     * @param myExecutive is the executive responsible for the simulation
+     * @exception NameDuplicationException indicates that an attempt to add
+     *  two ports with the same name has been made
+     * @exception GraphException is thrown to indicate that a port with no
+     *  name is being added to the star
+     */
     public void initialize(PNExecutive myExecutive, int initValue)
             throws NameDuplicationException, GraphException {
         _myExecutive = myExecutive;
@@ -65,6 +78,8 @@ public class PNRedirect extends PNStar{
         initialize(initValue);
     }
 
+    /** Reads a token from it's input stream and writes it to the outout
+     */
     public void run() {
         int i;
         int data;
@@ -84,8 +99,11 @@ public class PNRedirect extends PNStar{
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
+    /* This is the initial value that the star puts in the stream */
     private int _initValue;
+    /* Input port */
     private PNInPort _input;
+    /* Output port */
     private PNOutPort _output;
     
 

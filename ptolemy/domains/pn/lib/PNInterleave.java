@@ -1,4 +1,4 @@
-/* This interleaves elements from two streams into one stream
+/* This interleaves elements from it's different streams into one stream
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -32,7 +32,8 @@ import java.util.Enumeration;
 //////////////////////////////////////////////////////////////////////////
 //// PNInterleave
 /** 
-Merges two input streams into one output stream by alternating between the two outputs.
+Merges it's input streams into one output stream by alternating/circulating 
+between it's inputs and directing them to the output.
 
 @author Mudit Goel
 @version $Id$
@@ -53,6 +54,13 @@ public class PNInterleave extends PNStar{
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
+    /** Initializes and adds ports to the star
+     * @param myExecutive is the executive responsible for the simulation
+     * @exception NameDuplicationException indicates that an attempt to add
+     *  two ports with the same name has been made
+     * @exception GraphException is thrown to indicate that a port with no 
+     *  name is being added to the star
+     */ 
     public void initialize(PNExecutive myExecutive) 
             throws NameDuplicationException, GraphException {
         _input = addInPort(this, "input");
@@ -61,7 +69,8 @@ public class PNInterleave extends PNStar{
         _myExecutive.registerStar(this);
     }
 
-    /** Description
+    /** This reads tokens from each of it's inputs in a circular fashion and
+     *  redirects them each to the output 
      */	
     public void run() {
         int data;
@@ -86,7 +95,9 @@ public class PNInterleave extends PNStar{
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
+    /* Input port */
     private PNInPort _input;
+    /* Output port */
     private PNOutPort _output;
 
 }
