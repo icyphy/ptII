@@ -73,5 +73,5 @@ addCode(fixtoint);
     ////                     Codeblocks                     ////
 
     public String fixtoint =
-        "	        $ref(output) = FIX_Fix2Int($ref(input));\n";
+        "                $ref(output) = FIX_Fix2Int($ref(input));\n";
 }

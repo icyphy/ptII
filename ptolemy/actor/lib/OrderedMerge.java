@@ -167,7 +167,7 @@ public class OrderedMerge extends TypedAtomicActor {
                     output.send(0, readToken);
                     // Token was just read from _nextPort.
                     if (_nextPort == inputA) {
-                    	selectedA.send(0, BooleanToken.TRUE);
+                            selectedA.send(0, BooleanToken.TRUE);
                     } else {
                         selectedA.send(0, BooleanToken.FALSE);
                     }

@@ -176,10 +176,10 @@ public class PortConfigurerDialog
             public void mouseClicked(MouseEvent mouseEvent) {
                 if ((VergilUtilities.macOSLookAndFeel()
                     && (mouseEvent.isPopupTrigger()
-                    	|| (mouseEvent.getButton() == MouseEvent.BUTTON1
-                    	    && ((mouseEvent.getModifiersEx() | java.awt.event.InputEvent.CTRL_MASK)
-                    	       == java.awt.event.InputEvent.CTRL_MASK))
-                    	       ))
+                            || (mouseEvent.getButton() == MouseEvent.BUTTON1
+                                && ((mouseEvent.getModifiersEx() | java.awt.event.InputEvent.CTRL_MASK)
+                                   == java.awt.event.InputEvent.CTRL_MASK))
+                                   ))
                     || (!VergilUtilities.macOSLookAndFeel()
                         && mouseEvent.getButton() == MouseEvent.BUTTON3)) {
                     Point point = mouseEvent.getPoint();

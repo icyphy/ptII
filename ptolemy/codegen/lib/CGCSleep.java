@@ -79,7 +79,7 @@ noInternalState();
     public void  generatePreinitializeCode() {
 
 addInclude("<sys/types.h>");
-		addInclude("<sys/time.h>");
+                addInclude("<sys/time.h>");
      }
 
     /**
@@ -92,12 +92,12 @@ addCode(std);
     ////                     Codeblocks                     ////
 
     public String std =
-        "	    {\n"
-        + "	    static struct timeval delay;\n"
-        + "	    delay.tv_sec = $val(interval)/1000;\n"
-        + "	    delay.tv_usec = ($val(interval)%1000)*1000;\n"
-        + "	    (void) select(0, (fd_set *) 0, (fd_set *) 0,\n"
-        + "        	    (fd_set *) 0, &delay);\n"
-        + "	    }\n"
-        + "	    $ref(output) = $ref(input);\n";
+        "            {\n"
+        + "            static struct timeval delay;\n"
+        + "            delay.tv_sec = $val(interval)/1000;\n"
+        + "            delay.tv_usec = ($val(interval)%1000)*1000;\n"
+        + "            (void) select(0, (fd_set *) 0, (fd_set *) 0,\n"
+        + "                    (fd_set *) 0, &delay);\n"
+        + "            }\n"
+        + "            $ref(output) = $ref(input);\n";
 }

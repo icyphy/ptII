@@ -51,7 +51,7 @@ public class CGCSwitch extends ClassicCGCActor {
 
 /*
 trueOutput.setRelation(DF_true, &control);
-		falseOutput.setRelation(DF_false, &control);
+                falseOutput.setRelation(DF_false, &control);
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -92,20 +92,20 @@ return 0;
     public void  generateInitializeCode() throws IllegalActionException {
 
 // all connected buffers must be size 1, for now.
-		// need to check this.
-		// FIXME: we can permit input to be > 1 by generating
-		// a copy of the input buffer to the (shared) output.
-		if (notone(input) || notone(trueOutput) ||
-		    notone(falseOutput) || notone(control))
-			throw new IllegalActionException(this,
-		"Non-unity buffers connected to a switch not yet supported");
-		else {
-			// make all the buffers overlap.
-			input.embed(trueOutput,0);
-			input.embed(falseOutput,0);
-			trueOutput.setRelation(DF_true, &control);
-			falseOutput.setRelation(DF_false, &control);
-		}
+                // need to check this.
+                // FIXME: we can permit input to be > 1 by generating
+                // a copy of the input buffer to the (shared) output.
+                if (notone(input) || notone(trueOutput) ||
+                    notone(falseOutput) || notone(control))
+                        throw new IllegalActionException(this,
+                "Non-unity buffers connected to a switch not yet supported");
+                else {
+                        // make all the buffers overlap.
+                        input.embed(trueOutput,0);
+                        input.embed(falseOutput,0);
+                        trueOutput.setRelation(DF_true, &control);
+                        falseOutput.setRelation(DF_false, &control);
+                }
      }
 
     /**
@@ -113,7 +113,7 @@ return 0;
     protected int notone (CGCPortHole& port) {
 
 return (port.numInitDelays() > 1 ||
-				port.far()->numXfer() > 1);
+                                port.far()->numXfer() > 1);
     }
 
 }

@@ -115,15 +115,15 @@ test.  This ensures that the first test result will always be true. parameter wi
     public void  generateInitializeCode() throws IllegalActionException {
 
 String cn = condition;
-		if ( cn.equalsIgnoreCase("EQ")) test = EQID;
-		else if ( cn.equalsIgnoreCase("NE") ) test = NEID;
-		else if ( cn.equalsIgnoreCase("GT") ) test = GTID;
-		else if ( cn.equalsIgnoreCase("GE") ) test = GEID;
-		else if ( strcasecmp(cn, "==") == 0 ) test = EQID;
-		else if ( strcasecmp(cn, "!=") == 0 ) test = NEID;
-		else if ( strcasecmp(cn, ">") == 0 ) test = GTID;
-		else if ( strcasecmp(cn, ">=") == 0 ) test = GEID;
-		else throw new IllegalActionException(this, "Unrecognized test.", cn);
+                if ( cn.equalsIgnoreCase("EQ")) test = EQID;
+                else if ( cn.equalsIgnoreCase("NE") ) test = NEID;
+                else if ( cn.equalsIgnoreCase("GT") ) test = GTID;
+                else if ( cn.equalsIgnoreCase("GE") ) test = GEID;
+                else if ( strcasecmp(cn, "==") == 0 ) test = EQID;
+                else if ( strcasecmp(cn, "!=") == 0 ) test = NEID;
+                else if ( strcasecmp(cn, ">") == 0 ) test = GTID;
+                else if ( strcasecmp(cn, ">=") == 0 ) test = GEID;
+                else throw new IllegalActionException(this, "Unrecognized test.", cn);
      }
 
     /**
@@ -131,28 +131,28 @@ String cn = condition;
     public void  generateFireCode() {
 
 StringBuffer compare = new StringBuffer("($ref(upper) ");
-		compare.append(test  + " $ref(lower)) ? 1 : 0;\n");
+                compare.append(test  + " $ref(lower)) ? 1 : 0;\n");
 
-		if ( ((IntToken)((crossingsOnly).getToken())).intValue() ) {
-			addCode(decl);
+                if ( ((IntToken)((crossingsOnly).getToken())).intValue() ) {
+                        addCode(decl);
 StringBuffer setResult = new StringBuffer("result = ");
-			setResult.append(compare);
-			addCode(setResult);
-			addCode(crossings);
-		}
-		else {
+                        setResult.append(compare);
+                        addCode(setResult);
+                        addCode(crossings);
+                }
+                else {
 StringBuffer simpleCode = new StringBuffer("$ref(output) = ");
-			simpleCode.append(compare);
-			addCode(simpleCode);
-		}
+                        simpleCode.append(compare);
+                        addCode(simpleCode);
+                }
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String decl =
-        "		int result;\n";
+        "                int result;\n";
 
     public String crossings =
-        "		$ref(output) = ( $ref(prevResult) != result );\n"
-        + "		$ref(prevResult) = result;\n";
+        "                $ref(output) = ( $ref(prevResult) != result );\n"
+        + "                $ref(prevResult) = result;\n";
 }

@@ -84,23 +84,23 @@ class DFInputChannel implements InputChannel {
      * available for reading.
      */
     public void commit() {
-    	assert tokensRead <= buffer.size();
+            assert tokensRead <= buffer.size();
 
-    	if (tokensRead == buffer.size()) {
+            if (tokensRead == buffer.size()) {
             buffer.clear();
-    	} else {
+            } else {
             for (int i = 0; i < tokensRead; i++) {
-    	    	buffer.remove(0);
+                        buffer.remove(0);
             }
-    	}
-    	tokensRead = 0;
+            }
+            tokensRead = 0;
     }
 
     /** Rollback any reads from this channel, allowing the tokens to
      * be read again.
      */
     public void rollback() {
-    	tokensRead = 0;
+            tokensRead = 0;
     }
 
     /** Return true if the given number of tokens are available to be

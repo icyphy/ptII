@@ -137,11 +137,11 @@ public class CGCIntegrator extends ClassicCGCActor {
     public int  myExecTime() {
 
 int x = 0;
-		if (spread > 0.0) {
-			if (((IntToken)((saturate).getToken())).intValue() == 1) // FIXME saturate should be a Boolean x = 3;
-			else x = 5;
-		}
-		return 3 + x + 2;
+                if (spread > 0.0) {
+                        if (((IntToken)((saturate).getToken())).intValue() == 1) // FIXME saturate should be a Boolean x = 3;
+                        else x = 5;
+                }
+                return 3 + x + 2;
      }
 
     /**
@@ -163,46 +163,46 @@ spread = ((DoubleToken)((top).getToken())).doubleValue() - ((DoubleToken)((botto
     public void  generateFireCode() {
 
 addCode(integrate);
-	    if (spread > 0.0)
-		if (((IntToken)((saturate).getToken())).intValue() == 1) // FIXME saturate should be a Boolean
-		    addCode(limitWithSat);
-		else
-		    addCode(limitWithoutSat);
-	    addCode(write);
+            if (spread > 0.0)
+                if (((IntToken)((saturate).getToken())).intValue() == 1) // FIXME saturate should be a Boolean
+                    addCode(limitWithSat);
+                else
+                    addCode(limitWithoutSat);
+            addCode(write);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String declarations =
-        "	    double $starSymbol(t);\n";
+        "            double $starSymbol(t);\n";
 
     public String integrate =
-        "	    if ($ref(reset) != 0) {\n"
-        + "		$starSymbol(t) = $ref(data);\n"
-        + "	    } else {\n"
-        + "		$starSymbol(t) = $ref(data) +\n"
-        + "			$val(feedbackGain) * $ref(state);\n"
-        + "	    }\n";
+        "            if ($ref(reset) != 0) {\n"
+        + "                $starSymbol(t) = $ref(data);\n"
+        + "            } else {\n"
+        + "                $starSymbol(t) = $ref(data) +\n"
+        + "                        $val(feedbackGain) * $ref(state);\n"
+        + "            }\n";
 
     public String limitWithSat =
-        "	    /* Limiting is in effect */\n"
-        + "	    /* Take care of the top */\n"
-        + "	    if ($starSymbol(t) > $val(top)) $starSymbol(t) = $val(top);\n"
-        + "	    /* Take care of the bottom */\n"
-        + "	    if ($starSymbol(t) < $val(bottom)) $starSymbol(t) = $val(bottom);\n";
+        "            /* Limiting is in effect */\n"
+        + "            /* Take care of the top */\n"
+        + "            if ($starSymbol(t) > $val(top)) $starSymbol(t) = $val(top);\n"
+        + "            /* Take care of the bottom */\n"
+        + "            if ($starSymbol(t) < $val(bottom)) $starSymbol(t) = $val(bottom);\n";
 
     public String limitWithoutSat =
-        "	    /* Limiting is in effect */\n"
-        + "	    /* Take care of the top */\n"
-        + "	    if ($starSymbol(t) > $val(top))\n"
-        + "		do $starSymbol(t) -= ($val(top) - $val(bottom));\n"
-        + "		while ($starSymbol(t) > $val(top));\n"
-        + "	    /* Take care of the bottom */\n"
-        + "	    if ($starSymbol(t) < $val(bottom))\n"
-        + "		do $starSymbol(t) += ($val(top) - $val(bottom));\n"
-        + "		while ($starSymbol(t) < $val(bottom));\n";
+        "            /* Limiting is in effect */\n"
+        + "            /* Take care of the top */\n"
+        + "            if ($starSymbol(t) > $val(top))\n"
+        + "                do $starSymbol(t) -= ($val(top) - $val(bottom));\n"
+        + "                while ($starSymbol(t) > $val(top));\n"
+        + "            /* Take care of the bottom */\n"
+        + "            if ($starSymbol(t) < $val(bottom))\n"
+        + "                do $starSymbol(t) += ($val(top) - $val(bottom));\n"
+        + "                while ($starSymbol(t) < $val(bottom));\n";
 
     public String write =
-        "	    $ref(output) = $starSymbol(t);\n"
-        + "	    $ref(state) = $starSymbol(t);\n";
+        "            $ref(output) = $starSymbol(t);\n"
+        + "            $ref(state) = $starSymbol(t);\n";
 }

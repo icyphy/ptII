@@ -2,9 +2,9 @@
 */
 /*
 Copyright (c) 1990-1996 The Regents of the University of California.
-	All rights reserved.
-	See the file $PTOLEMY/copyright for copyright notice,
-	limitation of liability, and disclaimer of warranty provisions.
+        All rights reserved.
+        See the file $PTOLEMY/copyright for copyright notice,
+        limitation of liability, and disclaimer of warranty provisions.
  */
 package ptolemy.codegen.lib;
 
@@ -93,17 +93,17 @@ return ((IntToken)((nBits).getToken())).intValue()*2;
     public void  generateInitializeCode() throws IllegalActionException {
 
 /* Need (int) cast on sizeof to eliminate gcc warning */
-	if (((IntToken)((nBits).getToken())).intValue() > /*sizeof(int)*/ 16 *8) {
+        if (((IntToken)((nBits).getToken())).intValue() > /*sizeof(int)*/ 16 *8) {
 StringBuffer message = new StringBuffer("nBits needs to be less than");
-	    message.append(/*(unsigned int)(sizeof(int)*/ ( 16 *8));
-	    throw new IllegalActionException(this,message);
-	    return;
-	}
-	if (((IntToken)((nBits).getToken())).intValue() < 0) {
-	    throw new IllegalActionException(this, "nBits must be positive");
-	    return;
-	}
-	input.setSDFParams(((IntToken)((nBits).getToken())).intValue(),((IntToken)((nBits).getToken())).intValue()-1);
+            message.append(/*(unsigned int)(sizeof(int)*/ ( 16 *8));
+            throw new IllegalActionException(this,message);
+            return;
+        }
+        if (((IntToken)((nBits).getToken())).intValue() < 0) {
+            throw new IllegalActionException(this, "nBits must be positive");
+            return;
+        }
+        input.setSDFParams(((IntToken)((nBits).getToken())).intValue(),((IntToken)((nBits).getToken())).intValue()-1);
      }
 
     /**
@@ -116,12 +116,12 @@ addCode(readNwrite);
     ////                     Codeblocks                     ////
 
     public String readNwrite =
-        "	int i;\n"
-        + "	int word = 0;\n"
-        + "	for (i=$val(nBits)-1;i>=0;i--) {\n"
-        + "	    /* shift new bits into the shift register */\n"
-        + "	    word <<= 1;\n"
-        + "	    if ($ref(input,i)) word += 1;\n"
-        + "	}\n"
-        + "	$ref(output) = word;\n";
+        "        int i;\n"
+        + "        int word = 0;\n"
+        + "        for (i=$val(nBits)-1;i>=0;i--) {\n"
+        + "            /* shift new bits into the shift register */\n"
+        + "            word <<= 1;\n"
+        + "            if ($ref(input,i)) word += 1;\n"
+        + "        }\n"
+        + "        $ref(output) = word;\n";
 }

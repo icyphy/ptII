@@ -145,13 +145,13 @@ public class CGCLMSOscDet extends CGCLMS {
         addCode(outputSecondTap);
 
         // 3. Run the FIR filter
-	{ StringList _str_; _str_ <<
+        { StringList _str_; _str_ <<
                                 "/* run FIR FILTER */\n"
                                 "{\n"
 
                                 addCode(_str_); }
         CGCFIR :: go();
-	{ StringList _str_; _str_ <<
+        { StringList _str_; _str_ <<
                                 "}"
 
                                 addCode(_str_); }
@@ -162,17 +162,17 @@ public class CGCLMSOscDet extends CGCLMS {
 
     public String updateSecondTap (int index) {
         return
-            "	/* 1. Update the second tap = -a1[k]\n"
-            + "	      update:        a1[k] = a1[k]  + 2 mu e[n] x[n-1]\n"
-            + "	      second tap:   -a1[k] = -a1[k] - 2 mu e[n] x[n-1]\n"
-            + "	      new tap:      newtap = newtap - 2 mu e[n] x[n-1]   */\n"
-            + "	double mu = $val(stepSize);\n"
-            + "	double e = $ref(error);\n"
-            + "	double xnMinus1 = $ref(signalIn," + index + ");\n"
-            + "	double newSecondTap = $ref(taps,1) - 2 * mu * e * xnMinus1;\n"
-            + "	$ref(taps,1) = newSecondTap;\n";
+            "        /* 1. Update the second tap = -a1[k]\n"
+            + "              update:        a1[k] = a1[k]  + 2 mu e[n] x[n-1]\n"
+            + "              second tap:   -a1[k] = -a1[k] - 2 mu e[n] x[n-1]\n"
+            + "              new tap:      newtap = newtap - 2 mu e[n] x[n-1]   */\n"
+            + "        double mu = $val(stepSize);\n"
+            + "        double e = $ref(error);\n"
+            + "        double xnMinus1 = $ref(signalIn," + index + ");\n"
+            + "        double newSecondTap = $ref(taps,1) - 2 * mu * e * xnMinus1;\n"
+            + "        $ref(taps,1) = newSecondTap;\n";
     }
 
     public String outputSecondTap =
-    "	$ref(cosOmega) = -newSecondTap;\n";
+    "        $ref(cosOmega) = -newSecondTap;\n";
 }

@@ -128,7 +128,7 @@ public class SRReceiver extends AbstractReceiver
             // sr/lib/test/auto/EnabledComposite.xml
             // If we don't call receiverChanged, then SendClearTest fails.
             _director.receiverChanged(this);
-	}
+        }
         _token = null;
         _known = true;
     }

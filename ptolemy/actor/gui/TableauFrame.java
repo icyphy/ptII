@@ -461,11 +461,11 @@ public class TableauFrame extends Top {
                 // chosen to not save the changes, so the next time
                 // this is opened, it should be read again from the file.
                 try {
-					MoMLParser.purgeModelRecord(masterEffigy.uri.getURL());
-				} catch (MalformedURLException e) {
-					// Ignore... Hopefully will be harmless.
-				}
-            	return true;
+                                        MoMLParser.purgeModelRecord(masterEffigy.uri.getURL());
+                                } catch (MalformedURLException e) {
+                                        // Ignore... Hopefully will be harmless.
+                                }
+                    return true;
             }
             return false;
         } else {

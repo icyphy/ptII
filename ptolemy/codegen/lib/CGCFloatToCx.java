@@ -92,9 +92,9 @@ numSample = output.numXfer();
     public void  generateInitializeCode() throws IllegalActionException {
 
 if (((IntToken)((numSample).getToken())).intValue() > 1) {
-			input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
-			output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
-		}
+                        input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
+                        output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
+                }
      }
 
     /**
@@ -107,9 +107,9 @@ addCode(body);
     ////                     Codeblocks                     ////
 
     public String body =
-        "	int i = 0;\n"
-        + "	for ( ; i < $val(numSample); i++) {\n"
-        + "		$ref(output, i).real = $ref(input, i);\n"
-        + "		$ref(output, i).imag = 0;\n"
-        + "	}\n";
+        "        int i = 0;\n"
+        + "        for ( ; i < $val(numSample); i++) {\n"
+        + "                $ref(output, i).real = $ref(input, i);\n"
+        + "                $ref(output, i).imag = 0;\n"
+        + "        }\n";
 }

@@ -143,18 +143,18 @@ public class NondeterministicMerge extends TypedCompositeActor  {
             int inputWidth = input.getWidth();
             for (int i = 0; i < inputWidth; i++) {
                 if (i < numberOfContainedActors) {
-                	// Local actor already exists for this channel.
+                        // Local actor already exists for this channel.
                     // Just wake it up.
                     Object localActor = containedActors.get(i);
                     synchronized(localActor) {
-                    	localActor.notifyAll();
+                            localActor.notifyAll();
                     }
                     // ProcessThread associated with the actor might
                     // be blocked on a wait on the director.
                     // So we need to notify on the director also.
                     Director director = getDirector();
                     synchronized(director) {
-                    	director.notifyAll();
+                            director.notifyAll();
                     }
                 } else {
                     try {
@@ -227,21 +227,21 @@ public class NondeterministicMerge extends TypedCompositeActor  {
                     }
                 }
             } else {
-            	// Input channel is no longer connected.
+                    // Input channel is no longer connected.
                 // We don't want to spin lock here, so we
                 // wait.
                 synchronized(this) {
-                	try {
-                		workspace().wait(this);
+                        try {
+                                workspace().wait(this);
                     } catch (InterruptedException ex) {
                         // Ignore and continue executing.
                     }
                 }
             }
-		}
+                }
         // Override to return the manager associate with the host.
         public Manager getManager() {
-        	return NondeterministicMerge.this.getManager();
+                return NondeterministicMerge.this.getManager();
         }
         private int _channelIndex;
         private IntToken _channelValue;
@@ -252,7 +252,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
     private class MergeDirector extends PNDirector {
         public MergeDirector(CompositeEntity container, String name)
                 throws IllegalActionException, NameDuplicationException {
-        	super(container, name);
+                super(container, name);
         }
         // Return false since this director has nothing to do
         // in its iteration loop, unless pause has been requested,
@@ -266,20 +266,20 @@ public class NondeterministicMerge extends TypedCompositeActor  {
             // Can we check here whether postfire() is
             // being called because we are pausing?
             if (_debugging) {
-            	_debug("Called postfire().");
+                    _debug("Called postfire().");
             }
             if (_stopFireRequested && !_stopRequested) {
                 if (_debugging) {
                     _debug("postfire() returns true.");
                 }
-            	return true;
+                    return true;
             }
             // FIXME: This is going to return false immediately
             // because fire() returns immediately.
             if (_debugging) {
                 _debug("postfire() returns false.");
             }
-        	return false;
+                return false;
         }
         // Override this to notify the containing director only.
         // This local director does not keep a count of active
@@ -320,7 +320,7 @@ public class NondeterministicMerge extends TypedCompositeActor  {
         // Override since deadlock cannot ever occur internally.
         protected boolean _resolveDeadlock() {
             if (_debugging) {
-            	_debug("Deadlock is not real as " +
+                    _debug("Deadlock is not real as " +
                         "NondeterministicMerge can't deadlock.");
             }
             return true;

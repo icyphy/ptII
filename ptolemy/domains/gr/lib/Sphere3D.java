@@ -173,7 +173,7 @@ public class Sphere3D extends GRShadedShape {
             scaler.addChild(_containedNode);
             _containedNode = scaler;
         } else {
-        	_scaleTransform = null;
+                _scaleTransform = null;
         }
     }
 

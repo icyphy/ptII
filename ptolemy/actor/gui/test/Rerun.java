@@ -54,15 +54,15 @@ java -classpath $PTII ptolemy.actor.gui.test.Rerun 10 ../../lib/test/auto/Sinewa
 To create a ptplot file of the times and memory:
 <pre>
 awk '{  t[NR] = $1;
-	m[NR] = substr($4, 0, length($4) - 1);
-	f[NR] = substr($6, 0, length($6) - 1);
+        m[NR] = substr($4, 0, length($4) - 1);
+        f[NR] = substr($6, 0, length($6) - 1);
      }
  END {  print "dataset: time (ms)";
-	for (i=1;i<=NR;i++) {print i, t[i]};
-	print "dataset: memory (K)";
-	for (i=1;i<=NR;i++) {print i, m[i]};
-	print "dataset: free (K)";
-	for (i=1;i<=NR;i++) {print i, f[i]};
+        for (i=1;i<=NR;i++) {print i, t[i]};
+        print "dataset: memory (K)";
+        for (i=1;i<=NR;i++) {print i, m[i]};
+        print "dataset: free (K)";
+        for (i=1;i<=NR;i++) {print i, f[i]};
      }' /tmp/t > /tmp/t.plt
 
 <pre>

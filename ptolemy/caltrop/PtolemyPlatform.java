@@ -649,7 +649,7 @@ public class PtolemyPlatform implements Platform {
         env.bind("UVOFFSET", _theContext.createInteger(128));
 
         env.bind("INT19_mul", _theContext.createFunction(new Function () {
-        	public Object apply(Object[] args) {
+                public Object apply(Object[] args) {
                     try {
                         IntToken a = (IntToken) args[0];
                         IntToken b = (IntToken) args[1];
@@ -658,15 +658,15 @@ public class PtolemyPlatform implements Platform {
                     } catch (Exception ex) {
                         throw new InterpreterException("Function 'RGBCLIP': Cannot apply.", ex);
                     }
-        	}
+                }
 
-        	public int arity() {
+                public int arity() {
                     return 2;
-        	}
+                }
             }));
 
         env.bind("RGBCLIP", _theContext.createFunction(new Function () {
-        	public Object apply(Object[] args) {
+                public Object apply(Object[] args) {
                     try {
                         Token a = (Token) args[0];
                         if (a instanceof IntToken) {
@@ -679,15 +679,15 @@ public class PtolemyPlatform implements Platform {
                     } catch (Exception ex) {
                         throw new InterpreterException("Function 'RGBCLIP': Cannot apply.", ex);
                     }
-        	}
+                }
 
-        	public int arity() {
+                public int arity() {
                     return 1;
-        	}
+                }
             }));
 
         env.bind("readByte", _theContext.createFunction(new Function () {
-        	public Object apply(Object[] args) {
+                public Object apply(Object[] args) {
                     try {
                         Token a = (Token) args[0];
                         if (a instanceof ObjectToken) {
@@ -699,15 +699,15 @@ public class PtolemyPlatform implements Platform {
                     } catch (Exception ex) {
                         throw new InterpreterException("Function 'readByte': Cannot apply.", ex);
                     }
-        	}
+                }
 
-        	public int arity() {
+                public int arity() {
                     return 1;
-        	}
+                }
             }));
 
         env.bind("openFile", _theContext.createFunction(new Function () {
-        	public Object apply(Object[] args) {
+                public Object apply(Object[] args) {
                     try {
                         Token a = (Token) args[0];
                         if (a instanceof StringToken) {
@@ -719,11 +719,11 @@ public class PtolemyPlatform implements Platform {
                     } catch (Exception ex) {
                         throw new InterpreterException("Function 'openFile': Cannot apply.", ex);
                     }
-        	}
+                }
 
-        	public int arity() {
+                public int arity() {
                     return 1;
-        	}
+                }
             }));
 
 

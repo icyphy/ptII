@@ -87,15 +87,15 @@ addCode(ordertwoint);
     ////                     Codeblocks                     ////
 
     public String ordertwoint =
-        "		int greaterValue = (int)$ref(upper);\n"
-        + "		int lesserValue = (int) $ref(lower);\n"
+        "                int greaterValue = (int)$ref(upper);\n"
+        + "                int lesserValue = (int) $ref(lower);\n"
         + "\n"
-        + "		if ( greaterValue < lesserValue ) {\n"
-        + "		    int swap = greaterValue;\n"
-        + "		    greaterValue = lesserValue;\n"
-        + "		    lesserValue = swap;\n"
-        + "		}\n"
+        + "                if ( greaterValue < lesserValue ) {\n"
+        + "                    int swap = greaterValue;\n"
+        + "                    greaterValue = lesserValue;\n"
+        + "                    lesserValue = swap;\n"
+        + "                }\n"
         + "\n"
-        + "		$ref(greater) = greaterValue;\n"
-        + "		$ref(lesser) = lesserValue;\n";
+        + "                $ref(greater) = greaterValue;\n"
+        + "                $ref(lesser) = lesserValue;\n";
 }

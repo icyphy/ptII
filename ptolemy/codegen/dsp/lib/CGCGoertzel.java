@@ -128,7 +128,7 @@ public class CGCGoertzel extends CGCGoertzelBase {
     ////                     Codeblocks                     ////
 
     public String finalValue =
-    "		$ref(output).real = $ref(state1) +\n"
-    + "				    $ref(state2) * $ref(negWnReal);\n"
-    + "		$ref(output).imag = $ref(state2) * $ref(negWnImag);\n";
+    "                $ref(output).real = $ref(state1) +\n"
+    + "                                    $ref(state2) * $ref(negWnReal);\n"
+    + "                $ref(output).imag = $ref(state2) * $ref(negWnImag);\n";
 }

@@ -89,20 +89,20 @@ return 0;
     public void  generateInitializeCode() throws IllegalActionException {
 
 // all connected buffers must be size 1, for now.
-		// need to check this.
-		// FIXME: we can permit output to be > 1 by generating
-		// a copy of the (shared) input buffer to the output.
-		if (notone(output) || notone(trueInput) ||
-		    notone(falseInput) || notone(control))
-			throw new IllegalActionException(this,
-		"Non-unity buffers connected to a Select not yet supported");
-		else {
-			// make all the buffers overlap.
-			output.embed(trueInput,0);
-			output.embed(falseInput,0);
-			trueInput.setRelation(DF_true,&control);
-			falseInput.setRelation(DF_false,&control);
-		}
+                // need to check this.
+                // FIXME: we can permit output to be > 1 by generating
+                // a copy of the (shared) input buffer to the output.
+                if (notone(output) || notone(trueInput) ||
+                    notone(falseInput) || notone(control))
+                        throw new IllegalActionException(this,
+                "Non-unity buffers connected to a Select not yet supported");
+                else {
+                        // make all the buffers overlap.
+                        output.embed(trueInput,0);
+                        output.embed(falseInput,0);
+                        trueInput.setRelation(DF_true,&control);
+                        falseInput.setRelation(DF_false,&control);
+                }
      }
 
     /**
@@ -110,7 +110,7 @@ return 0;
     protected int notone (CGCPortHole& port) {
 
 return (port.numInitDelays() > 1 ||
-				port.far()->numXfer() > 1);
+                                port.far()->numXfer() > 1);
     }
 
 }

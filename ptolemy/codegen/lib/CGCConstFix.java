@@ -87,7 +87,7 @@ public class CGCConstFix extends CGCFix {
 
 super.generateInitializeCode();
 
-		output.setPrecision(OutputPrecision);
+                output.setPrecision(OutputPrecision);
      }
 
     /**
@@ -98,7 +98,7 @@ super.clearOverflow();
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "               FIX_Assign($ref(output), $ref(level));\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
                 super.checkOverflow();
      }
 }

@@ -305,68 +305,68 @@ public class CGCFIRFix extends CGCFix {
         addCode(bodyDecl);
         CGCFix::clearOverflow();
 
-	{ StringList _str_; _str_ <<
-                                "	/* phase keeps track of which phase of the filter coefficients is used.\n"
-                                "	   Starting phase depends on the decimationPhase state. */\n"
-                                "	phase = $val(decimation) - $val(decimationPhase) - 1;   \n"
+        { StringList _str_; _str_ <<
+                                "        /* phase keeps track of which phase of the filter coefficients is used.\n"
+                                "           Starting phase depends on the decimationPhase state. */\n"
+                                "        phase = $val(decimation) - $val(decimationPhase) - 1;   \n"
 
                                 addCode(_str_); }
 
-	{ StringList _str_; _str_ <<
-                                "	/* Iterate once for each input consumed */\n"
-                                "	for (inC = 1; inC <= $val(decimation) ; inC++) {\n"
+        { StringList _str_; _str_ <<
+                                "        /* Iterate once for each input consumed */\n"
+                                "        for (inC = 1; inC <= $val(decimation) ; inC++) {\n"
 
                                 addCode(_str_); }
 
-	{ StringList _str_; _str_ <<
-                                "		/* Produce however many outputs are required for each \n"
-                                "		   input consumed */\n"
-                                "		while (phase < $val(interpolation)) {\n"
+        { StringList _str_; _str_ <<
+                                "                /* Produce however many outputs are required for each \n"
+                                "                   input consumed */\n"
+                                "                while (phase < $val(interpolation)) {\n"
 
                                 addCode(_str_); }
 
-	{ StringList _str_; _str_ <<
-                                "			FIX_SetToZero($ref(Accum));\n"
+        { StringList _str_; _str_ <<
+                                "                        FIX_SetToZero($ref(Accum));\n"
 
                                 addCode(_str_); }
 
-	{ StringList _str_; _str_ <<
-                                "			/* Compute the inner product. */\n"
-                                "			for (i = 0; i < $val(phaseLength); i++) {\n"
-                                "				tapsIndex = i * $val(interpolation) + phase;\n"
-                                "				if (tapsIndex >= $val(tapSize))\n"
-                                "			    		FIX_SetToZero($ref(tap));\n"
-                                "				else\n"
-                                "			 		FIX_Assign($ref(tap),$ref(taps,tapsIndex));\n"
+        { StringList _str_; _str_ <<
+                                "                        /* Compute the inner product. */\n"
+                                "                        for (i = 0; i < $val(phaseLength); i++) {\n"
+                                "                                tapsIndex = i * $val(interpolation) + phase;\n"
+                                "                                if (tapsIndex >= $val(tapSize))\n"
+                                "                                            FIX_SetToZero($ref(tap));\n"
+                                "                                else\n"
+                                "                                         FIX_Assign($ref(tap),$ref(taps,tapsIndex));\n"
 
                                 addCode(_str_); }
 
-	{ StringList _str_; _str_ <<
-                                "				inPos = $val(decimation) - inC + i;\n"
-
-                                addCode(_str_); }
-        CGCFix::clearOverflow();
-	{ StringList _str_; _str_ <<
-                                "				FIX_MulAdd($ref(Accum), $ref(tap),$ref(signalIn,inPos));\n"
-
-                                addCode(_str_); }
-        CGCFix::checkOverflow();
-	{ StringList _str_; _str_ <<
-                                "			}\n"
+        { StringList _str_; _str_ <<
+                                "                                inPos = $val(decimation) - inC + i;\n"
 
                                 addCode(_str_); }
         CGCFix::clearOverflow();
-	{ StringList _str_; _str_ <<
-                                "			FIX_Assign($ref(signalOut,outCount),$ref(Accum));\n"
+        { StringList _str_; _str_ <<
+                                "                                FIX_MulAdd($ref(Accum), $ref(tap),$ref(signalIn,inPos));\n"
 
                                 addCode(_str_); }
         CGCFix::checkOverflow();
-	{ StringList _str_; _str_ <<
-                                "			outCount--;;\n"
-                                "			phase += $val(decimation);\n"
-                                "		}\n"
-                                "		phase -= $val(interpolation);\n"
-                                "	}"
+        { StringList _str_; _str_ <<
+                                "                        }\n"
+
+                                addCode(_str_); }
+        CGCFix::clearOverflow();
+        { StringList _str_; _str_ <<
+                                "                        FIX_Assign($ref(signalOut,outCount),$ref(Accum));\n"
+
+                                addCode(_str_); }
+        CGCFix::checkOverflow();
+        { StringList _str_; _str_ <<
+                                "                        outCount--;;\n"
+                                "                        phase += $val(decimation);\n"
+                                "                }\n"
+                                "                phase -= $val(interpolation);\n"
+                                "        }"
 
                                 addCode(_str_); }
 
@@ -377,5 +377,5 @@ public class CGCFIRFix extends CGCFix {
     public String bodyDecl =
     "                int phase, tapsIndex, inC, i;\n"
     + "                int outCount = $val(interpolation) - 1;\n"
-    + "	        int inPos;\n";
+    + "                int inPos;\n";
 }

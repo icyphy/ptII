@@ -2,9 +2,9 @@
 */
 /*
 Copyright (c) 1990-1996 The Regents of the University of California.
-	All rights reserved.
-	See the file $PTOLEMY/copyright for copyright notice,
-	limitation of liability, and disclaimer of warranty provisions.
+        All rights reserved.
+        See the file $PTOLEMY/copyright for copyright notice,
+        limitation of liability, and disclaimer of warranty provisions.
  */
 package ptolemy.codegen.lib;
 
@@ -89,17 +89,17 @@ return ((IntToken)((nBits).getToken())).intValue()*2;
     public void  generateInitializeCode() throws IllegalActionException {
 
 /* Need (int) cast on sizeof to eliminate gcc warning */
-	if (((IntToken)((nBits).getToken())).intValue() > int(sizeof(int)*8)) {
+        if (((IntToken)((nBits).getToken())).intValue() > int(sizeof(int)*8)) {
 StringBuffer message = new StringBuffer("nBits needs to be less than ");
-	    message.append(/*(unsigned int)(sizeof(int)*/ ( 16 *8));
-	    throw new IllegalActionException(this, message);
-	    return;
-	}
-	if (((IntToken)((nBits).getToken())).intValue() < 0) {
-	    throw new IllegalActionException(this, "nBits must be positive");
-	    return;
-	}
-	output.setSDFParams(((IntToken)((nBits).getToken())).intValue(),((IntToken)((nBits).getToken())).intValue()-1);
+            message.append(/*(unsigned int)(sizeof(int)*/ ( 16 *8));
+            throw new IllegalActionException(this, message);
+            return;
+        }
+        if (((IntToken)((nBits).getToken())).intValue() < 0) {
+            throw new IllegalActionException(this, "nBits must be positive");
+            return;
+        }
+        output.setSDFParams(((IntToken)((nBits).getToken())).intValue(),((IntToken)((nBits).getToken())).intValue()-1);
      }
 
     /**
@@ -112,11 +112,11 @@ addCode(readNwrite);
     ////                     Codeblocks                     ////
 
     public String readNwrite =
-        "	int word;\n"
-        + "	int i = 0;\n"
-        + "	word = $ref(input);\n"
-        + "	for (; i < $val(nBits); i++) {\n"
-        + " 	    $ref(output,i) = (word & 1);\n"
-        + "	    word >>= 1;\n"
-        + "	}\n";
+        "        int word;\n"
+        + "        int i = 0;\n"
+        + "        word = $ref(input);\n"
+        + "        for (; i < $val(nBits); i++) {\n"
+        + "             $ref(output,i) = (word & 1);\n"
+        + "            word >>= 1;\n"
+        + "        }\n";
 }

@@ -31,7 +31,7 @@ public class CodeStream {
     }
 
     public void append(String codeBlock) {
-    	_stream.append(codeBlock);
+            _stream.append(codeBlock);
     }
 
     public void append(StringBuffer codeBlock) {
@@ -43,7 +43,7 @@ public class CodeStream {
     }
 
     public void appendCodeBlock(String name) throws IOException {
-    	// read from .c file
+            // read from .c file
         URL file = FileUtilities.nameToURL(_cgHelper.getClass().toString(), null, null);
 
         // fetch the code within the file
@@ -54,20 +54,20 @@ public class CodeStream {
     }
 
     /**
-	 * @param file
-	 * @param name
+         * @param file
+         * @param name
      * Given the name of the CodeBlock,
-	 * @return the string representation of the code within the file
+         * @return the string representation of the code within the file
      * @exception IOException
-	 */
-	private StringBuffer _fetchCodeBlock(URL file, String name) throws IOException {
+         */
+        private StringBuffer _fetchCodeBlock(URL file, String name) throws IOException {
 
         StringBuffer codeInFile = new StringBuffer((String) file.getContent());
         int startIndex = codeInFile.lastIndexOf(_startCodeBlock1 + name + _startCodeBlock2) + 1;
         int endIndex = codeInFile.indexOf(_endCodeBlock1 + name + _endCodeBlock2) - 1;
 
         return new StringBuffer(codeInFile.substring(startIndex, endIndex));
-	}
+        }
 
 
     /**

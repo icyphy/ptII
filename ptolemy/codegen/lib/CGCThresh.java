@@ -84,5 +84,5 @@ addCode(gen);
     ////                     Codeblocks                     ////
 
     public String gen =
-        "		$ref(output) = ($ref(input) > $val(threshold)) ? 1 : 0;\n";
+        "                $ref(output) = ($ref(input) > $val(threshold)) ? 1 : 0;\n";
 }

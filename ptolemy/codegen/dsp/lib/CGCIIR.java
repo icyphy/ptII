@@ -127,37 +127,37 @@ public class CGCIIR extends ClassicCGCActor {
     public void  generateInitializeCode() {
         //# line 82 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCIIR.pl"
         int numNumer = numerator.size();
-	int numDenom = denominator.size();
-	double b0, scaleDenom, scaleNumer;
-	numState = max(numNumer,numDenom);
+        int numDenom = denominator.size();
+        double b0, scaleDenom, scaleNumer;
+        numState = max(numNumer,numDenom);
 
-	// Set up scaling to distribute the gain through the numerator,
-	// and scale both numer and denom to make b0=1
-	if ( numDenom < 1 ) {
-	    b0 = 1.0;
-	} else {
-	    if ( (b0 = denominator[0]) == 0.0 ) {
-		// FIXME: should sanity-check b0 more thoroughly
-		// (e.g., shouldn't even be close to zero)
-		Error::abortRun(*this,
+        // Set up scaling to distribute the gain through the numerator,
+        // and scale both numer and denom to make b0=1
+        if ( numDenom < 1 ) {
+            b0 = 1.0;
+        } else {
+            if ( (b0 = denominator[0]) == 0.0 ) {
+                // FIXME: should sanity-check b0 more thoroughly
+                // (e.g., shouldn't even be close to zero)
+                Error::abortRun(*this,
                         "Must have non-zero leading coefficient in the denominator");
-		return;
-	    }
-	}
-	scaleDenom = 1.0 / b0;
-	scaleNumer = scaleDenom * double(gain);
+                return;
+            }
+        }
+        scaleDenom = 1.0 / b0;
+        scaleNumer = scaleDenom * double(gain);
 
-	// Set up the state vector.  The state vector includes
-	// both the delay states and the coefficients in the appropriate
-	// order:
-	// S(0) A(0) -1 S(1) A(1) -B(1) ... S(n-1) A(n-1) -B(n-1) Sn An -Bn
-	// state[0] and state[2] are never referenced
-	state.resize(numState*3);
-	for ( int i=0; i < numState; i++) {
-	    state[i*3+0] = 0;
-	    state[i*3+1] = i < numNumer ? scaleNumer * numerator[i] : 0;
-	    state[i*3+2] = i < numDenom ? scaleDenom * -denominator[i] : 0;
-	}
+        // Set up the state vector.  The state vector includes
+        // both the delay states and the coefficients in the appropriate
+        // order:
+        // S(0) A(0) -1 S(1) A(1) -B(1) ... S(n-1) A(n-1) -B(n-1) Sn An -Bn
+        // state[0] and state[2] are never referenced
+        state.resize(numState*3);
+        for ( int i=0; i < numState; i++) {
+            state[i*3+0] = 0;
+            state[i*3+1] = i < numNumer ? scaleNumer * numerator[i] : 0;
+            state[i*3+2] = i < numDenom ? scaleDenom * -denominator[i] : 0;
+        }
     }
 
     /**
@@ -165,37 +165,37 @@ public class CGCIIR extends ClassicCGCActor {
     public void  generateFireCode() {
         //# line 145 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCIIR.pl"
         if ( numState == 1 ) addCode(feedThrough);
-	else addCode(iir);
+        else addCode(iir);
     }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String feedThrough =
-    "	/* No state for the IIR filter: just scale the input */\n"
-    + "	$ref(signalOut) = $ref(state,1) * $ref(signalIn);\n";
+    "        /* No state for the IIR filter: just scale the input */\n"
+    + "        $ref(signalOut) = $ref(state,1) * $ref(signalIn);\n";
 
     public String iir =
-    "	/*\n"
-    + "	   v[0] is the current state variable, v[1] is the current numerator\n"
-    + "	   coefficient, and v[2] is the currrent denominator coefficient\n"
-    + "	 */\n"
-    + "	double* v = & $ref(state,3);\n"
-    + "	double* stateEnd = (double *) $ref(state) + $size(state);\n"
-    + "	double s0 = $ref(signalIn);\n"
-    + "	double  s, y;\n"
+    "        /*\n"
+    + "           v[0] is the current state variable, v[1] is the current numerator\n"
+    + "           coefficient, and v[2] is the currrent denominator coefficient\n"
+    + "         */\n"
+    + "        double* v = & $ref(state,3);\n"
+    + "        double* stateEnd = (double *) $ref(state) + $size(state);\n"
+    + "        double s0 = $ref(signalIn);\n"
+    + "        double  s, y;\n"
     + "\n"
-    + "	s = *v++;\n"
-    + "	y = s * *v++;\n"
-    + "	s0 += s * *v++;\n"
+    + "        s = *v++;\n"
+    + "        y = s * *v++;\n"
+    + "        s0 += s * *v++;\n"
     + "\n"
-    + "	for ( ; v < stateEnd; ) {\n"
-    + "	    double sTmp = *v;\n"
-    + "	    *v++ = s;\n"
-    + "	    s = sTmp;\n"
-    + "	    y += s * *v++;\n"
-    + "	    s0 += s * *v++;\n"
-    + "	}\n"
-    + "	$ref(state,3) = s0;\n"
-    + "	y += s0 * $ref(state,1);\n"
-    + "	$ref(signalOut) = y;\n";
+    + "        for ( ; v < stateEnd; ) {\n"
+    + "            double sTmp = *v;\n"
+    + "            *v++ = s;\n"
+    + "            s = sTmp;\n"
+    + "            y += s * *v++;\n"
+    + "            s0 += s * *v++;\n"
+    + "        }\n"
+    + "        $ref(state,3) = s0;\n"
+    + "        y += s0 * $ref(state,1);\n"
+    + "        $ref(signalOut) = y;\n";
 }

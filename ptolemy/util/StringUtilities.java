@@ -523,7 +523,7 @@ public class StringUtilities {
     public static URL stringToURL(
             String name, URI baseDirectory, ClassLoader classLoader)
             throws IOException {
-    	return FileUtilities.nameToURL(name, baseDirectory, classLoader);
+            return FileUtilities.nameToURL(name, baseDirectory, classLoader);
     }
 
     /** Replace all occurrences of <i>pattern</i> in the specified

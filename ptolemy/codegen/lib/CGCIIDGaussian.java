@@ -97,11 +97,11 @@ return 300;
     public void  generatePreinitializeCode() {
 
 // Declare prototypes for srand and rand functions
-		addInclude("<stdlib.h>");
-		// Declare prototype for sqrt
-		addInclude("<math.h>");
-		// Initialize the random number generator
-		addCode(initSeed);
+                addInclude("<stdlib.h>");
+                // Declare prototype for sqrt
+                addInclude("<math.h>");
+                // Initialize the random number generator
+                addCode(initSeed);
      }
 
     /**
@@ -118,24 +118,24 @@ addCode(randomGen);
         + "srand($val(seed));\n";
 
     public String randomGen =
-        "		int i;\n"
-        + "		double sum = 0.0;\n"
-        + "		/* Sum a large number of zero-mean random numbers that  */\n"
-        + "		/* are uniformly distributed on the interval [-0.5,0.5] */\n"
-        + "		/* to approximate a Gaussian distribution		*/\n"
-        + "		for (i = 0; i < 27; i++) {\n"
-        + "		    /* RAND_MAX is an ANSI C standard constant */\n"
-        + "		    /* If not defined, then just use the lower 15 bits */\n"
-        + "		    double randomValue = 0.0;\n"
-        + "		    int randomInt = rand();\n"
+        "                int i;\n"
+        + "                double sum = 0.0;\n"
+        + "                /* Sum a large number of zero-mean random numbers that  */\n"
+        + "                /* are uniformly distributed on the interval [-0.5,0.5] */\n"
+        + "                /* to approximate a Gaussian distribution                */\n"
+        + "                for (i = 0; i < 27; i++) {\n"
+        + "                    /* RAND_MAX is an ANSI C standard constant */\n"
+        + "                    /* If not defined, then just use the lower 15 bits */\n"
+        + "                    double randomValue = 0.0;\n"
+        + "                    int randomInt = rand();\n"
         + "#ifdef RAND_MAX\n"
-        + "		    randomValue = ((double) randomInt) / ((double) RAND_MAX);\n"
+        + "                    randomValue = ((double) randomInt) / ((double) RAND_MAX);\n"
         + "#else\n"
-        + "		    randomInt &= 0x7FFF;\n"
-        + "		    randomValue = ((double) randomInt) / 32767.0;\n"
+        + "                    randomInt &= 0x7FFF;\n"
+        + "                    randomValue = ((double) randomInt) / 32767.0;\n"
         + "#endif\n"
-        + "		    sum += (randomValue - 0.5);\n"
-        + "		}\n"
-        + "		if ($val(var) != 1.0) sum *= sqrt($val(var));\n"
-        + "		$ref(output) = (2.0/3.0) * sum + $val(mean);\n";
+        + "                    sum += (randomValue - 0.5);\n"
+        + "                }\n"
+        + "                if ($val(var) != 1.0) sum *= sqrt($val(var));\n"
+        + "                $ref(output) = (2.0/3.0) * sum + $val(mean);\n";
 }

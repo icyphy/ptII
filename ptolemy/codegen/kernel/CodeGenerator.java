@@ -65,15 +65,15 @@ import ptolemy.util.MessageHandler;
  */
 public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
 
-	/** Create a new instance of the C code generator.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException
-	 *  @exception NameDuplicationException
-	 */
-	public CodeGenerator(NamedObj container, String name)
-			throws IllegalActionException, NameDuplicationException {
-		super(container, name);
+        /** Create a new instance of the C code generator.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException
+         *  @exception NameDuplicationException
+         */
+        public CodeGenerator(NamedObj container, String name)
+                        throws IllegalActionException, NameDuplicationException {
+                super(container, name);
 
         codeDirectory = new FileParameter(this, "codeDirectory");
         codeDirectory.setExpression("$HOME/codegen");
@@ -94,7 +94,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
         // This attibute could be put in the MoML in the library instead
         // of here in the Java code.
         new CodeGeneratorGUIFactory(this, "_codeGeneratorGUIFactory");
-	}
+        }
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
@@ -278,7 +278,7 @@ public class CodeGenerator extends Attribute implements ComponentCodeGenerator {
      *  @return The component for which this is a helper to generate code.
      */
     public NamedObj getComponent() {
-    	return getContainer();
+            return getContainer();
     }
 
     /** Return the buffer capacity of the given port. This method always

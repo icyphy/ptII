@@ -68,7 +68,7 @@ noInternalState();
      */
     public int  myExecTime() {
 
-return 23;	/* value taken from CG96Sin */
+return 23;        /* value taken from CG96Sin */
      }
 
     /**
@@ -88,5 +88,5 @@ addCode(singen);
     ////                     Codeblocks                     ////
 
     public String singen =
-        "	$ref(output) = sin($ref(input));\n";
+        "        $ref(output) = sin($ref(input));\n";
 }

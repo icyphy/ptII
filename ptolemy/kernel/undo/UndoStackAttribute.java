@@ -104,12 +104,12 @@ public class UndoStackAttribute extends SingletonAttribute {
      *  @return The current undo stack attribute if there is one, or a new one.
      */
     public static UndoStackAttribute getUndoInfo(final NamedObj object) {
-	// Note, the parameter is final so we do not assign to it,
-	// so we are sure that we call getReadAccess on the same object.
+        // Note, the parameter is final so we do not assign to it,
+        // so we are sure that we call getReadAccess on the same object.
         try {
             object.workspace().getReadAccess();
             NamedObj topLevel = object.toplevel();
-	    NamedObj container = object;
+            NamedObj container = object;
             while (container != null) {
                 List attrList = object.attributeList(UndoStackAttribute.class);
                 if (attrList.size() > 0) {
@@ -125,7 +125,7 @@ public class UndoStackAttribute extends SingletonAttribute {
                 throw new InternalErrorException(e);
             }
         } finally {
-	    object.workspace().doneReading();
+            object.workspace().doneReading();
         }
     }
 
@@ -142,21 +142,21 @@ public class UndoStackAttribute extends SingletonAttribute {
     public void mergeTopTwo() {
         try {
             workspace().getWriteAccess();
-			if (_inUndo == 0 && _inRedo == 0) {
-			    if (_undoEntries.size() > 1) {
-			        UndoAction lastUndo = (UndoAction)_undoEntries.pop();
-			        UndoAction firstUndo = (UndoAction)_undoEntries.pop();
-			        UndoAction mergedAction = _mergeActions(lastUndo, firstUndo);
-			        _undoEntries.push(mergedAction);
-			        if (_debugging) {
-			            _debug("=======> Merging top two on undo stack:\n"
-			                    + mergedAction);
-			        }
-			    }
-			}
-		} finally {
-			workspace().doneWriting();
-		}
+                        if (_inUndo == 0 && _inRedo == 0) {
+                            if (_undoEntries.size() > 1) {
+                                UndoAction lastUndo = (UndoAction)_undoEntries.pop();
+                                UndoAction firstUndo = (UndoAction)_undoEntries.pop();
+                                UndoAction mergedAction = _mergeActions(lastUndo, firstUndo);
+                                _undoEntries.push(mergedAction);
+                                if (_debugging) {
+                                    _debug("=======> Merging top two on undo stack:\n"
+                                            + mergedAction);
+                                }
+                            }
+                        }
+                } finally {
+                        workspace().doneWriting();
+                }
     }
 
     /** Push an action to the undo stack, or if we are executing an undo,
@@ -210,7 +210,7 @@ public class UndoStackAttribute extends SingletonAttribute {
                 _redoEntries.clear();
             }
         } finally {
-        	workspace().doneWriting();
+                workspace().doneWriting();
         }
     }
 
@@ -242,7 +242,7 @@ public class UndoStackAttribute extends SingletonAttribute {
                     _inRedo = 0;
                 }
             } finally {
-            	workspace().doneWriting();
+                    workspace().doneWriting();
             }
         }
     }
@@ -270,7 +270,7 @@ public class UndoStackAttribute extends SingletonAttribute {
                 }
             }
         } finally {
-        	workspace().doneWriting();
+                workspace().doneWriting();
         }
     }
 

@@ -18,9 +18,9 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class Limiter extends CCodeGeneratorHelper {
 
-	/**
-	 * @param component
-	 */
+        /**
+         * @param component
+         */
     public Limiter(ptolemy.actor.lib.Limiter actor) {
         super(actor);
     }

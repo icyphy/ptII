@@ -89,8 +89,8 @@ return ((IntToken)((blockSize).getToken())).intValue()*2*input.numberPorts();
     public void  generateInitializeCode() throws IllegalActionException {
 
 int n = input.numberPorts();
-		input.setSDFParams(((IntToken)((blockSize).getToken())).intValue(),((IntToken)((blockSize).getToken())).intValue()-1);
-		output.setSDFParams(n*((IntToken)((blockSize).getToken())).intValue(),n*((IntToken)((blockSize).getToken())).intValue()-1);
+                input.setSDFParams(((IntToken)((blockSize).getToken())).intValue(),((IntToken)((blockSize).getToken())).intValue()-1);
+                output.setSDFParams(n*((IntToken)((blockSize).getToken())).intValue(),n*((IntToken)((blockSize).getToken())).intValue()-1);
      }
 
     /**
@@ -98,24 +98,24 @@ int n = input.numberPorts();
     public void  generateFireCode() {
 
 StringBuffer out = new StringBuffer();
-		if (((IntToken)((blockSize).getToken())).intValue() > 1) out.append("\tint j;\n");
-		for (int i = input.numberPorts()-1; i >= 0; i--) {
-		    int port = input.numberPorts() - i;
-		    if (((IntToken)((blockSize).getToken())).intValue() > 1) {
-			out.append("\tfor (j = ");
-			out.append(((IntToken)((blockSize).getToken())).intValue()-1);
-			out.append("; j >= 0; j--)\n");
-			out.append("\t\t$ref2(output,j+");
-			out.append(i*((IntToken)((blockSize).getToken())).intValue());
-			out.append(") = $ref2(input#" + port  + ",j");
-		   } else {
-			out.append("\t$ref2(output,");
-			out.append(i);
-			out.append(") = $ref2(input#" + port  + ",0");
-		   }
-		   out.append(");\n");
-		   addCode(out);
-		   out.initialize();
-		}
+                if (((IntToken)((blockSize).getToken())).intValue() > 1) out.append("\tint j;\n");
+                for (int i = input.numberPorts()-1; i >= 0; i--) {
+                    int port = input.numberPorts() - i;
+                    if (((IntToken)((blockSize).getToken())).intValue() > 1) {
+                        out.append("\tfor (j = ");
+                        out.append(((IntToken)((blockSize).getToken())).intValue()-1);
+                        out.append("; j >= 0; j--)\n");
+                        out.append("\t\t$ref2(output,j+");
+                        out.append(i*((IntToken)((blockSize).getToken())).intValue());
+                        out.append(") = $ref2(input#" + port  + ",j");
+                   } else {
+                        out.append("\t$ref2(output,");
+                        out.append(i);
+                        out.append(") = $ref2(input#" + port  + ",0");
+                   }
+                   out.append(");\n");
+                   addCode(out);
+                   out.initialize();
+                }
      }
 }

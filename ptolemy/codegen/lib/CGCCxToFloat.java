@@ -85,7 +85,7 @@ return ((IntToken)((numSample).getToken())).intValue() * 200;
     public void  generatePreinitializeCode() {
 
 numSample = output.numXfer();
-		addInclude("<math.h>");
+                addInclude("<math.h>");
      }
 
     /**
@@ -93,9 +93,9 @@ numSample = output.numXfer();
     public void  generateInitializeCode() throws IllegalActionException {
 
 if (((IntToken)((numSample).getToken())).intValue() > 1) {
-			input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
-			output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
-		}
+                        input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
+                        output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
+                }
      }
 
     /**
@@ -108,11 +108,11 @@ addCode(body);
     ////                     Codeblocks                     ////
 
     public String body =
-        "	int i = 0;\n"
-        + "	double p, q;\n"
-        + "	for ( ; i < $val(numSample); i++) {\n"
-        + "		p = $ref(input, i).real;\n"
-        + "		q = $ref(input, i).imag;\n"
-        + "		$ref(output, i) = sqrt(p*p + q*q);\n"
-        + "	}\n";
+        "        int i = 0;\n"
+        + "        double p, q;\n"
+        + "        for ( ; i < $val(numSample); i++) {\n"
+        + "                p = $ref(input, i).real;\n"
+        + "                q = $ref(input, i).imag;\n"
+        + "                $ref(output, i) = sqrt(p*p + q*q);\n"
+        + "        }\n";
 }

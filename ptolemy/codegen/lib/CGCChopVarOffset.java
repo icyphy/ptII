@@ -46,7 +46,7 @@ public class CGCChopVarOffset extends CGCChop {
 
 /*
 noInternalState();
-		offset.setAttributes(A_NONCONSTANT|A_NONSETTABLE);
+                offset.setAttributes(A_NONCONSTANT|A_NONSETTABLE);
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -71,19 +71,19 @@ return super.myExecTime() + 8;
      */
     public void  generateFireCode() {
 
-addCode(decl); 			// look at CGCChop star
-		addCode(init);
-		addCode(range);
-		if (input.resolvedType() == COMPLEX)
-		  addCode(complexOut); 		// look at CGCChop star
-		else
-		  addCode(nonComplexOut); 	// look at CGCChop star
+addCode(decl);                         // look at CGCChop star
+                addCode(init);
+                addCode(range);
+                if (input.resolvedType() == COMPLEX)
+                  addCode(complexOut);                 // look at CGCChop star
+                else
+                  addCode(nonComplexOut);         // look at CGCChop star
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String init =
-        "	$ref(offset) = $ref(offsetCntrl);\n";
+        "        $ref(offset) = $ref(offsetCntrl);\n";
 
     public String range =
         "        int hiLim = $val(nwrite) - $ref(offset) - 1;\n"

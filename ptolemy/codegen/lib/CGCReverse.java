@@ -84,7 +84,7 @@ return ((IntToken)((N).getToken())).intValue();
     public void  generateInitializeCode() throws IllegalActionException {
 
 input.setSDFParams(((IntToken)((N).getToken())).intValue(),((IntToken)((N).getToken())).intValue()-1);
-		output.setSDFParams(((IntToken)((N).getToken())).intValue(),((IntToken)((N).getToken())).intValue()-1);
+                output.setSDFParams(((IntToken)((N).getToken())).intValue(),((IntToken)((N).getToken())).intValue()-1);
      }
 
     /**
@@ -97,7 +97,7 @@ addCode(out);
     ////                     Codeblocks                     ////
 
     public String out =
-        "	int i, j;\n"
-        + "	for (i = 0, j = $val(N) - 1; j >= 0; i++, j--)\n"
-        + "		$ref(output,i) = $ref(input,j);\n";
+        "        int i, j;\n"
+        + "        for (i = 0, j = $val(N) - 1; j >= 0; i++, j--)\n"
+        + "                $ref(output,i) = $ref(input,j);\n";
 }

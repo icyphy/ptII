@@ -98,21 +98,21 @@ addInclude("<stdio.h>");
     public void  generateFireCode() {
 
 addCode(readIdx);
-		if (((IntToken)((runTimeCheck).getToken())).intValue() == 1) // FIXME runTimeCheck should be a Boolean addCode(check);
-		addCode(lookup);
+                if (((IntToken)((runTimeCheck).getToken())).intValue() == 1) // FIXME runTimeCheck should be a Boolean addCode(check);
+                addCode(lookup);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String readIdx =
-        "		int idx = $ref(input);\n";
+        "                int idx = $ref(input);\n";
 
     public String check =
-        "		if (idx < 0 || idx >= $size(values)) {\n"
-        + "			fprintf(stderr, \"ERROR: input to CGCTable out of range\\n\");\n"
-        + "			exit(1);\n"
-        + "		}\n";
+        "                if (idx < 0 || idx >= $size(values)) {\n"
+        + "                        fprintf(stderr, \"ERROR: input to CGCTable out of range\\n\");\n"
+        + "                        exit(1);\n"
+        + "                }\n";
 
     public String lookup =
-        "		$ref(output) = $ref2(values,idx);\n";
+        "                $ref(output) = $ref2(values,idx);\n";
 }

@@ -97,8 +97,8 @@ return 1;
     public void  generateInitializeCode() throws IllegalActionException {
 
 input.setSDFParams(((IntToken)((factor).getToken())).intValue(),((IntToken)((factor).getToken())).intValue()-1);
-		if (((IntToken)((phase).getToken())).intValue() >= ((IntToken)((factor).getToken())).intValue())
-			throw new IllegalActionException(this, ": phase must be < factor");
+                if (((IntToken)((phase).getToken())).intValue() >= ((IntToken)((factor).getToken())).intValue())
+                        throw new IllegalActionException(this, ": phase must be < factor");
      }
 
     /**
@@ -111,5 +111,5 @@ addCode(sendsample);
     ////                     Codeblocks                     ////
 
     public String sendsample =
-        "	$ref(output) = $ref2(input,phase);\n";
+        "        $ref(output) = $ref2(input,phase);\n";
 }

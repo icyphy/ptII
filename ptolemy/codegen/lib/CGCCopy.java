@@ -80,9 +80,9 @@ noInternalState();
     public int  myExecTime() {
 
 if (input.resolvedType() == COMPLEX)
-			return 2 * ((IntToken)((numSample).getToken())).intValue();
-		else
-			return ((IntToken)((numSample).getToken())).intValue();
+                        return 2 * ((IntToken)((numSample).getToken())).intValue();
+                else
+                        return ((IntToken)((numSample).getToken())).intValue();
      }
 
     /**
@@ -97,9 +97,9 @@ numSample = output.numXfer();
     public void  generateInitializeCode() throws IllegalActionException {
 
 if (((IntToken)((numSample).getToken())).intValue() > 1) {
-			input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
-			output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
-		}
+                        input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
+                        output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
+                }
      }
 
     /**
@@ -107,23 +107,23 @@ if (((IntToken)((numSample).getToken())).intValue() > 1) {
     public void  generateFireCode() {
 
 if (input.resolvedType() == COMPLEX)
-			addCode(complexBody);
-		else
-			addCode(floatBody);
+                        addCode(complexBody);
+                else
+                        addCode(floatBody);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String floatBody =
-        "	int i;\n"
-        + "	for (i = 0; i < $val(numSample); i++) {\n"
-        + "		$ref(output, i) = $ref(input, i);\n"
-        + "	}\n";
+        "        int i;\n"
+        + "        for (i = 0; i < $val(numSample); i++) {\n"
+        + "                $ref(output, i) = $ref(input, i);\n"
+        + "        }\n";
 
     public String complexBody =
-        "	int i;\n"
-        + "	for (i = 0; i < $val(numSample); i++) {\n"
-        + "		$ref(output, i).real = $ref(input, i).real;\n"
-        + "		$ref(output, i).imag = $ref(input, i).imag;\n"
-        + "	}\n";
+        "        int i;\n"
+        + "        for (i = 0; i < $val(numSample); i++) {\n"
+        + "                $ref(output, i).real = $ref(input, i).real;\n"
+        + "                $ref(output, i).imag = $ref(input, i).imag;\n"
+        + "        }\n";
 }

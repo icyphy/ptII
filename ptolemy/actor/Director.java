@@ -587,7 +587,7 @@ public class Director extends Attribute implements Executable {
      */
     public void initialize() throws IllegalActionException {
         if (_debugging) {
-        	_debug("Called initialize().");
+                _debug("Called initialize().");
         }
         Nameable container = getContainer();
         if (container instanceof CompositeActor) {
@@ -636,7 +636,7 @@ public class Director extends Attribute implements Executable {
      */
     public void initialize(Actor actor) throws IllegalActionException {
         if (_debugging) {
-        	_debug("Initializing actor: "
+                _debug("Initializing actor: "
                     + ((Nameable)actor).getFullName()
                     + ".");
         }

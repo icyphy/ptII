@@ -130,8 +130,8 @@ the output is set to its maximum value (or minimum for negative magnitudes). par
 super.generateInitializeCode();
 
                 if (!((IntToken)((ArrivingPrecision).getToken())).intValue())
-		    input.setPrecision(InputPrecision);
-		output.setPrecision(OutputPrecision);
+                    input.setPrecision(InputPrecision);
+                output.setPrecision(OutputPrecision);
      }
 
     /**
@@ -139,14 +139,14 @@ super.generateInitializeCode();
     public void  generateFireCode() {
 
 // insert code to clear overflow flag
-		super.clearOverflow();
+                super.clearOverflow();
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	FIX_Mul($ref(output),$ref(input),$ref(gain));\n"
+"        FIX_Mul($ref(output),$ref(input),$ref(gain));\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
-		// insert code to test overflow flag
-		super.checkOverflow();
+                // insert code to test overflow flag
+                super.checkOverflow();
      }
 }

@@ -78,8 +78,8 @@ noInternalState();
     public int  myExecTime() {
 
 int time = 1;
-		if ( ((IntToken)((gain).getToken())).intValue() == 1 ) time = 0;
-		return time;
+                if ( ((IntToken)((gain).getToken())).intValue() == 1 ) time = 0;
+                return time;
      }
 
     /**
@@ -87,27 +87,27 @@ int time = 1;
     public void  generateFireCode() {
 
 // Check for simple multiple of 2
-		int reg = 0x01;
-		int found = false;
-		int gainValue = gain;
-		int i = -1;
-		while (++i < 7) {
-			if ( gainValue == reg ) {
-				found = true;
-				break;
-			}
-			reg <<= 1;
-		}
+                int reg = 0x01;
+                int found = false;
+                int gainValue = gain;
+                int i = -1;
+                while (++i < 7) {
+                        if ( gainValue == reg ) {
+                                found = true;
+                                break;
+                        }
+                        reg <<= 1;
+                }
 
 StringBuffer code = new StringBuffer("\t$ref(output) = ");
-		if ( found ) {
-			if ( i == 0 ) code.append("$ref(input)");
-			else code.append("$ref(input)  + " + i);
-		}
-		else {
-			code.append("$val(gain) * $ref(input)");
-		}
-		code.append(";\n");
-		addCode(code);
+                if ( found ) {
+                        if ( i == 0 ) code.append("$ref(input)");
+                        else code.append("$ref(input)  + " + i);
+                }
+                else {
+                        code.append("$val(gain) * $ref(input)");
+                }
+                code.append(";\n");
+                addCode(code);
      }
 }

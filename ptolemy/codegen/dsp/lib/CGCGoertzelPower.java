@@ -113,8 +113,8 @@ public class CGCGoertzelPower extends CGCGoertzelBase {
     ////                     Codeblocks                     ////
 
     public String finalValue =
-    "		/* Compute z z* where z is the last ouput of Goertzel filter */\n"
-    + "		$ref(output) = $ref(state1)*$ref(state1) -\n"
-    + "			       $ref(state1)*$ref(state2)*$ref(d1) +\n"
-    + "			       $ref(state2)*$ref(state2);\n";
+    "                /* Compute z z* where z is the last ouput of Goertzel filter */\n"
+    + "                $ref(output) = $ref(state1)*$ref(state1) -\n"
+    + "                               $ref(state1)*$ref(state2)*$ref(d1) +\n"
+    + "                               $ref(state2)*$ref(state2);\n";
 }

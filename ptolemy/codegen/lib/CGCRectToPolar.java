@@ -83,7 +83,7 @@ noInternalState();
      */
     public int  myExecTime() {
 
-return 200;	/* based on CG96 stars */
+return 200;        /* based on CG96 stars */
      }
 
     /**
@@ -103,11 +103,11 @@ addCode(body);
     ////                     Codeblocks                     ////
 
     public String body =
-        "	double xpart, ypart, m;\n"
-        + "	xpart = $ref(x);\n"
-        + "	ypart = $ref(y);\n"
-        + "	m = sqrt(xpart*xpart + ypart*ypart);\n"
-        + "	$ref(magnitude) = m;\n"
-        + "	if (m == 0) $ref(phase) = 0;\n"
-        + "	else $ref(phase) = atan2(ypart,xpart);\n";
+        "        double xpart, ypart, m;\n"
+        + "        xpart = $ref(x);\n"
+        + "        ypart = $ref(y);\n"
+        + "        m = sqrt(xpart*xpart + ypart*ypart);\n"
+        + "        $ref(magnitude) = m;\n"
+        + "        if (m == 0) $ref(phase) = 0;\n"
+        + "        else $ref(phase) = atan2(ypart,xpart);\n";
 }

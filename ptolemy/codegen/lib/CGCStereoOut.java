@@ -53,7 +53,7 @@ public class CGCStereoOut extends CGCAudioBase {
         aheadLimit = new Parameter(this, "aheadLimit");
         aheadLimit.setExpression("-1");
 
-        // If set to 1, the star receives 2 samples of data per\n	     firing IntState
+        // If set to 1, the star receives 2 samples of data per\n             firing IntState
         homogeneous = new Parameter(this, "homogeneous");
         homogeneous.setExpression("0");
 
@@ -85,7 +85,7 @@ Right channel input Range: -1.0 to 1.0
 
     /**
      *  If set to 1, the star receives 2 samples of data per
-	     firing parameter with initial value "0".
+             firing parameter with initial value "0".
      */
      public Parameter homogeneous;
 
@@ -114,8 +114,8 @@ super.initCode();
 
     /* variable for the sync codeblock below */
     if ((int)aheadLimit >= 0 ) {
-    	addDeclaration(syncCounter);
-	addCode("$starSymbol(count) = 0; ");
+            addDeclaration(syncCounter);
+        addCode("$starSymbol(count) = 0; ");
        }
     /* Declare "buffer" to be of type short and blockSize/2 bytes */
     addDeclaration(declarations("short", ((IntToken)((blockSize).getToken())).intValue()/2));
@@ -124,22 +124,22 @@ super.initCode();
     /* Set the audio driver if file is "/dev/audio" */
     if (strcasecmp(fileName, "/dev/audio") == 0)
       {
-	/* audio_setup : to set encodingType, sampleRate and channels */
+        /* audio_setup : to set encodingType, sampleRate and channels */
 StringBuffer setupParameters = new StringBuffer("$sharedSymbol(CGCAudioBase,audio_setup)");
-	setupParameters   + "($starSymbol(file), "
-			  + "\"" + encodingType  + "\", "
-			 <<  sampleRate  + ", "
-			.append( channels    + ");\n");
+        setupParameters   + "($starSymbol(file), "
+                          + "\"" + encodingType  + "\", "
+                         <<  sampleRate  + ", "
+                        .append( channels    + ");\n");
 
-	addCode(setupParameters);
-	/* audio_control : to set portType, volume and balance */
+        addCode(setupParameters);
+        /* audio_control : to set portType, volume and balance */
 StringBuffer controlParameters = new StringBuffer("$sharedSymbol(CGCAudioBase,audio_control)");
-	controlParameters  + "($starSymbol(file), "
-			   + "\"" + portType  + "\", "
-			  <<  volume  + ", "
-			  <<  balance  + ", "
-			 .append("0);\n");
-	addCode(controlParameters);
+        controlParameters  + "($starSymbol(file), "
+                           + "\"" + portType  + "\", "
+                          <<  volume  + ", "
+                          <<  balance  + ", "
+                         .append("0);\n");
+        addCode(controlParameters);
       }
      }
 
@@ -196,11 +196,11 @@ if (homogeneous == 1) {
         + "    {\n"
         + "      int i, j;\n"
         + "      for (i = 0; i < ($val(blockSize)/4); i ++) {\n"
-        + "	j = i*2;\n"
-        + "	$starSymbol(buffer)[j] = \n"
-        + "	  (short)($ref(left,($val(blockSize)/4) -1 - i)*32768.0);\n"
-        + "	$starSymbol(buffer)[j+1] = \n"
-        + "	  (short)($ref(right,($ref(blockSize)/4) - 1 - i)*32768.0);\n"
+        + "        j = i*2;\n"
+        + "        $starSymbol(buffer)[j] = \n"
+        + "          (short)($ref(left,($val(blockSize)/4) -1 - i)*32768.0);\n"
+        + "        $starSymbol(buffer)[j+1] = \n"
+        + "          (short)($ref(right,($ref(blockSize)/4) - 1 - i)*32768.0);\n"
         + "      }\n"
         + "    }\n";
 

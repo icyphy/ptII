@@ -735,7 +735,7 @@ public class IOPort extends ComponentPort {
         while (index < localReceivers[channelIndex].length) {
             // Read and discard data from other channels in the group.
             localReceivers[channelIndex][index].getArray(vectorLength);
-        	index++;
+                index++;
         }
         if (_debugging) {
             _debug("get vector from channel " + channelIndex

@@ -52,8 +52,8 @@ public class CGCXYgraph extends CGCXgraph {
 
 /*
 // make xInit and xUnits invisible
-		xUnits.setAttributes(A_NONSETTABLE);
-		xInit.setAttributes(A_NONSETTABLE);
+                xUnits.setAttributes(A_NONSETTABLE);
+                xInit.setAttributes(A_NONSETTABLE);
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -79,10 +79,10 @@ return 6;
     public void  generateFireCode() {
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	if (++$ref(count) >= $val(ignore)) \n"
-"		fprintf($starSymbol(fp),\"%g %g\\n\",$ref(xInput),$ref(input));"
+"        if (++$ref(count) >= $val(ignore)) \n"
+"                fprintf($starSymbol(fp),\"%g %g\\n\",$ref(xInput),$ref(input));"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
      }
 }

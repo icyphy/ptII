@@ -216,8 +216,8 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         // Request the change.
         MoMLChangeRequest request = new MoMLChangeRequest(
                 this, toplevel, moml.toString()) {
-        	protected void _execute() throws Exception {
-        		super._execute();
+                protected void _execute() throws Exception {
+                        super._execute();
 
                 // Next create and register the undo entry;
                 // The MoML by itself will not cause an undo

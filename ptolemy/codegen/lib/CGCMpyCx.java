@@ -77,27 +77,27 @@ return 4*input.numberPorts();
     public void  generateFireCode() {
 
 addCode(startOp(input.numberPorts()));
-	int i;
-	for (i=2;i<=input.numberPorts();i++)
-	    addCode(doOp(i));
+        int i;
+        for (i=2;i<=input.numberPorts();i++)
+            addCode(doOp(i));
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String startOp (int i) {
         return
-        "	" + (i>1?"complex temp;":"/*Unit gain - no multiplication required*/") + "\n"
-        + "	$ref(output).real = $ref(input#1).real;\n"
-        + "	$ref(output).imag = $ref(input#1).imag;\n";
+        "        " + (i>1?"complex temp;":"/*Unit gain - no multiplication required*/") + "\n"
+        + "        $ref(output).real = $ref(input#1).real;\n"
+        + "        $ref(output).imag = $ref(input#1).imag;\n";
     }
 
     public String doOp (int i) {
         return
-        "	temp.real = $ref(output).real * $ref(input#" + i + ").real -\n"
-        + "		    $ref(output).imag * $ref(input#" + i + ").imag;\n"
-        + "	temp.imag = $ref(output).real * $ref(input#" + i + ").imag +\n"
-        + "		    $ref(output).imag * $ref(input#" + i + ").real;\n"
-        + "	$ref(output).real = temp.real;\n"
-        + "	$ref(output).imag = temp.imag;\n";
+        "        temp.real = $ref(output).real * $ref(input#" + i + ").real -\n"
+        + "                    $ref(output).imag * $ref(input#" + i + ").imag;\n"
+        + "        temp.imag = $ref(output).real * $ref(input#" + i + ").imag +\n"
+        + "                    $ref(output).imag * $ref(input#" + i + ").real;\n"
+        + "        $ref(output).real = temp.real;\n"
+        + "        $ref(output).imag = temp.imag;\n";
     }
 }

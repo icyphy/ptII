@@ -120,9 +120,9 @@ public class Box3D extends GRShadedShape {
     /** If the dimensions change, then update the box.
      */
     public void attributeChanged(Attribute attribute)
-    		throws IllegalActionException {
-    	// Check that a box has been previously created.
-    	if (_changesAllowedNow
+                    throws IllegalActionException {
+            // Check that a box has been previously created.
+            if (_changesAllowedNow
                 && (attribute == xLength
                 || attribute == yHeight
                 || attribute == zWidth)) {
@@ -142,7 +142,7 @@ public class Box3D extends GRShadedShape {
                 ((TransformGroup)_containedNode).setTransform(_scaleTransform);
             }
         } else {
-        	super.attributeChanged(attribute);
+                super.attributeChanged(attribute);
         }
     }
 
@@ -159,7 +159,7 @@ public class Box3D extends GRShadedShape {
         _createBox();
     }
 
-	/** Return the Java3D box.
+        /** Return the Java3D box.
      *  @return The Java3D box.
      */
     protected Node _getNodeObject() {
@@ -170,18 +170,18 @@ public class Box3D extends GRShadedShape {
     ////                         private methods                   ////
 
     /** Create a box with the current parameter values.
-	 *  @exception IllegalActionException If the parameters are malformed.
-	 */
-	private void _createBox() throws IllegalActionException {
-		int primitiveFlags = Primitive.GENERATE_NORMALS;
+         *  @exception IllegalActionException If the parameters are malformed.
+         */
+        private void _createBox() throws IllegalActionException {
+                int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();
         if (textureURL != null || _changesAllowedNow) {
             primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
         }
         if (_changesAllowedNow) {
-        	// Sharing the geometry leads to artifacts when changes
-        	// are made at run time.
-        	primitiveFlags = primitiveFlags | Primitive.GEOMETRY_NOT_SHARED;
+                // Sharing the geometry leads to artifacts when changes
+                // are made at run time.
+                primitiveFlags = primitiveFlags | Primitive.GEOMETRY_NOT_SHARED;
         }
 
         // Although it is completely undocument in Java3D, the "dimension"
@@ -213,7 +213,7 @@ public class Box3D extends GRShadedShape {
                     primitiveFlags, _appearance);
             _scaleTransform = null;
         }
-	}
+        }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

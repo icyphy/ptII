@@ -80,11 +80,11 @@ minimum for negative magnitudes). parameter with initial value "".
     public void  begin() {
 
 // if the precision for the output port is not defined
-		// - neither by this nor the successor star -, the actual
-		// precision is determined at runtime
+                // - neither by this nor the successor star -, the actual
+                // precision is determined at runtime
 
-		if (!output.precision().isValid())
-			output.setAttributes(A_VARPREC);
+                if (!output.precision().isValid())
+                        output.setAttributes(A_VARPREC);
      }
 
     /**
@@ -92,7 +92,7 @@ minimum for negative magnitudes). parameter with initial value "".
     public void  generateInitializeCode() throws IllegalActionException {
 
 super.generateInitializeCode();
-		output.setPrecision(OutputPrecision);
+                output.setPrecision(OutputPrecision);
      }
 
     /**
@@ -100,15 +100,15 @@ super.generateInitializeCode();
     public void  generateFireCode() {
 
 // insert code to clear overflow flag
-		super.clearOverflow();
+                super.clearOverflow();
 
-		// do the assignment
+                // do the assignment
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	FIX_Assign($ref(output),$ref(input));\n"
+"        FIX_Assign($ref(output),$ref(input));\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
-		// insert code to test overflow flag
-		super.checkOverflow();
+                // insert code to test overflow flag
+                super.checkOverflow();
      }
 }

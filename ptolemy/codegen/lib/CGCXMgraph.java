@@ -169,64 +169,64 @@ return 6 * ((IntToken)((numIn).getToken())).intValue() + 1;
     public void  wrapup() {
 
 int i;
-		addCode("{\n");
-		addCode("int i; \n");
+                addCode("{\n");
+                addCode("int i; \n");
 
-		// close the files
-		addCode(closeFile);
+                // close the files
+                addCode(closeFile);
 
 StringBuffer cmd = new StringBuffer("( ");
 
-		// save File
-		String sf = saveFile;
-		if (sf != null && *sf != 0) {
-			for (i = 0; i<((IntToken)((numIn).getToken())).intValue(); i++) {
-				cmd.append("/bin/cat ");
-				cmd << target()->name();
-				cmd.append("_$starSymbol(temp)" + i  + " >> ");
-				cmd.append(sf  + "; /bin/echo \"\" >> " + sf);
-				cmd.append("; ");
-			}
-		}
+                // save File
+                String sf = saveFile;
+                if (sf != null && *sf != 0) {
+                        for (i = 0; i<((IntToken)((numIn).getToken())).intValue(); i++) {
+                                cmd.append("/bin/cat ");
+                                cmd << target()->name();
+                                cmd.append("_$starSymbol(temp)" + i  + " >> ");
+                                cmd.append(sf  + "; /bin/echo \"\" >> " + sf);
+                                cmd.append("; ");
+                        }
+                }
 
-		cmd.append("pxgraph ");
+                cmd.append("pxgraph ");
 
-		// put title on command line
+                // put title on command line
 
-		String ttl = title;
+                String ttl = title;
 
-		if (ttl && *ttl) {
-			if (strchr(ttl,'\'')) {
-				cmd.append("-t \"" + ttl  + "\" ");
-			}
-			else {
-				cmd.append("-t '" + ttl  + "' ");
-			}
-		}
+                if (ttl && *ttl) {
+                        if (strchr(ttl,'\'')) {
+                                cmd.append("-t \"" + ttl  + "\" ");
+                        }
+                        else {
+                                cmd.append("-t '" + ttl  + "' ");
+                        }
+                }
 
-		String opt = options;
+                String opt = options;
 
-		// put options on the command line
-		if (opt && *opt) {
-			cmd.append(opt  + " ");
-		}
+                // put options on the command line
+                if (opt && *opt) {
+                        cmd.append(opt  + " ");
+                }
 
-		// put file names
-		for (i = 0; i < ((IntToken)((numIn).getToken())).intValue(); i++) {
-			cmd.append(target()->name()  + "_$starSymbol(temp)");
-			cmd.append(i  + " ");
-		}
+                // put file names
+                for (i = 0; i < ((IntToken)((numIn).getToken())).intValue(); i++) {
+                        cmd.append(target()->name()  + "_$starSymbol(temp)");
+                        cmd.append(i  + " ");
+                }
 
-		// remove temporary files
-		for (i = 0; i < ((IntToken)((numIn).getToken())).intValue(); i++) {
-			cmd.append("; /bin/rm -f " + target()->name());
-			cmd.append("_$starSymbol(temp)" + i);
-		}
+                // remove temporary files
+                for (i = 0; i < ((IntToken)((numIn).getToken())).intValue(); i++) {
+                        cmd.append("; /bin/rm -f " + target()->name());
+                        cmd.append("_$starSymbol(temp)" + i);
+                }
 
-		cmd.append(") &");
+                cmd.append(") &");
 StringBuffer out = new StringBuffer("system(\"");
-		out.append(sanitizeString(cmd)  + "\");\n}\n");
-		addCode(out);
+                out.append(sanitizeString(cmd)  + "\");\n}\n");
+                addCode(out);
      }
 
     /**
@@ -234,17 +234,17 @@ StringBuffer out = new StringBuffer("system(\"");
     public void  generatePreinitializeCode() {
 
 StringBuffer s = new StringBuffer("FILE* $starSymbol(fp)[");
-		s.append(input.numberPorts()  + "];");
+                s.append(input.numberPorts()  + "];");
                 addDeclaration(s);
                 addInclude("<stdio.h>");
-		for (int i = 0; i < input.numberPorts(); i++) {
+                for (int i = 0; i < input.numberPorts(); i++) {
 StringBuffer w = new StringBuffer("if (!($starSymbol(fp)[");
-			w.append(i <<  "] = fopen(\"");
-			w.append(target()->name()  + "_$starSymbol(temp)");
-			w.append(i  + "\",\"w\")))");
-			addCode(w);
-			addCode(err);
-		}
+                        w.append(i <<  "] = fopen(\"");
+                        w.append(target()->name()  + "_$starSymbol(temp)");
+                        w.append(i  + "\",\"w\")))");
+                        addCode(w);
+                        addCode(err);
+                }
      }
 
     /**
@@ -252,7 +252,7 @@ StringBuffer w = new StringBuffer("if (!($starSymbol(fp)[");
     public void  generateInitializeCode() throws IllegalActionException {
 
 index = xInit;
-		numIn = input.numberPorts();
+                numIn = input.numberPorts();
      }
 
     /**
@@ -262,19 +262,19 @@ index = xInit;
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "    if (++$ref(count) >= $val(ignore)) {\n"
 
-); 	 addCode(_str_);  }
-	  for (int i = 1; i <= ((IntToken)((numIn).getToken())).intValue(); i++) {
+);          addCode(_str_);  }
+          for (int i = 1; i <= ((IntToken)((numIn).getToken())).intValue(); i++) {
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "        fprintf($starSymbol(fp)[" + i-1 + "],\"%g %g\\n\",\n"
-"		 $ref(index),$ref(input#" + i + "));\n"
+"                 $ref(index),$ref(input#" + i + "));\n"
 
-); 	 addCode(_str_);  }
-	  }
+);          addCode(_str_);  }
+          }
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
 "    }\n"
 "    $ref(index) += $val(xUnits);"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
      }
 
@@ -283,46 +283,46 @@ index = xInit;
     protected String sanitizeString (StringList s) {
 
 // quick implementation of a string buffer
-			static class Buffer {
-			   public:
-				Buffer()  { buf = null; vsize = psize = 0; }
-			// omitting the destructor since GCC 2.5.8 reports an internal
-			// compiler error
-			//	~Buffer() { if (buf)  free(buf); }
+                        static class Buffer {
+                           public:
+                                Buffer()  { buf = null; vsize = psize = 0; }
+                        // omitting the destructor since GCC 2.5.8 reports an internal
+                        // compiler error
+                        //        ~Buffer() { if (buf)  free(buf); }
 
-				void initialize() {
-				    if (buf)  free(buf), buf = null;
-				    vsize = psize = 0;
-				}
+                                void initialize() {
+                                    if (buf)  free(buf), buf = null;
+                                    vsize = psize = 0;
+                                }
 
-				void append(char c) {
-				    if (vsize >= psize)
-					    buf = (char*) (buf ? realloc(buf, psize += 1024)
-							       : malloc(psize += 1024));
-				    buf[vsize++] = c;
-				}
+                                void append(char c) {
+                                    if (vsize >= psize)
+                                            buf = (char*) (buf ? realloc(buf, psize += 1024)
+                                                               : malloc(psize += 1024));
+                                    buf[vsize++] = c;
+                                }
 
-				operator String ()
-				{
-				    if (vsize == 0 || buf[vsize-1])
-					append('\0');
-				    return buf;
-				}
-			   private:
-				// the string buffer
-				char* buf;
-				// virtual/physical buffer size
-				int vsize, psize;
-			} buffer;
+                                operator String ()
+                                {
+                                    if (vsize == 0 || buf[vsize-1])
+                                        append('\0');
+                                    return buf;
+                                }
+                           private:
+                                // the string buffer
+                                char* buf;
+                                // virtual/physical buffer size
+                                int vsize, psize;
+                        } buffer;
 
-			buffer.initialize();
+                        buffer.initialize();
 
-			for (String sp=s; *sp; sp++) {
-			    if (*sp == '\"')
-				    buffer.append('\\');
-			    buffer.append(*sp);
-			}
-			return (String) buffer;
+                        for (String sp=s; *sp; sp++) {
+                            if (*sp == '\"')
+                                    buffer.append('\\');
+                            buffer.append(*sp);
+                        }
+                        return (String) buffer;
     }
 
     ///////////////////////////////////////////////////////////////////

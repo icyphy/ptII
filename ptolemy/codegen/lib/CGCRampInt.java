@@ -92,6 +92,6 @@ addCode(std);
     ////                     Codeblocks                     ////
 
     public String std =
-        "	$ref(output) = $ref(value);\n"
-        + "	$ref(value) += $val(step);\n";
+        "        $ref(output) = $ref(value);\n"
+        + "        $ref(value) += $val(step);\n";
 }

@@ -98,5 +98,5 @@ public class CGCSinc extends ClassicCGCActor {
     ////                     Codeblocks                     ////
 
     public String sinc =
-    "	        $ref(output) = Ptdsp_Sinc((double)$ref(input));\n";
+    "                $ref(output) = Ptdsp_Sinc((double)$ref(input));\n";
 }

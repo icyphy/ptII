@@ -92,6 +92,6 @@ addCode(ln);
     ////                     Codeblocks                     ////
 
     public String ln =
-        "	if ($ref(input) <= 0) $ref(output) = -100.0;\n"
-        + "	else $ref(output) = log($ref(input));\n";
+        "        if ($ref(input) <= 0) $ref(output) = -100.0;\n"
+        + "        else $ref(output) = log($ref(input));\n";
 }

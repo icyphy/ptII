@@ -88,6 +88,6 @@ addCode(body);
     ////                     Codeblocks                     ////
 
     public String body =
-        "	$ref(output).real = $ref(real);\n"
-        + "	$ref(output).imag = $ref(imag);\n";
+        "        $ref(output).real = $ref(real);\n"
+        + "        $ref(output).imag = $ref(imag);\n";
 }

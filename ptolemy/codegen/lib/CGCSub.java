@@ -93,14 +93,14 @@ return 1 + neg.numberPorts();
     public void  generateFireCode() {
 
 addCode(init);
-	   for (int i = 1; i <= neg.numberPorts(); i++) {
-		index = i;
-		addCode("\t$ref(output) -= $ref(neg#index); \n");
-	   }
+           for (int i = 1; i <= neg.numberPorts(); i++) {
+                index = i;
+                addCode("\t$ref(output) -= $ref(neg#index); \n");
+           }
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String init =
-        "	$ref(output) = $ref(pos);\n";
+        "        $ref(output) = $ref(pos);\n";
 }

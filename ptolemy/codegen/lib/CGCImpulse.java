@@ -101,17 +101,17 @@ public class CGCImpulse extends ClassicCGCActor {
     public void  generateInitializeCode() throws IllegalActionException {
 
 if (((IntToken)((period).getToken())).intValue() < 0) {
-			throw new IllegalActionException(this, "Period must be non-negative");
-		}
-		if (((IntToken)((delay).getToken())).intValue() < 0) {
-			throw new IllegalActionException(this, "Delay must be non-negative");
-		}
-		if (((IntToken)((period).getToken())).intValue() == 0) {
-			count = - ((IntToken)((delay).getToken())).intValue();
-		}
-		else {
-			count = - (((IntToken)((delay).getToken())).intValue()%((IntToken)((period).getToken())).intValue());
-		}
+                        throw new IllegalActionException(this, "Period must be non-negative");
+                }
+                if (((IntToken)((delay).getToken())).intValue() < 0) {
+                        throw new IllegalActionException(this, "Delay must be non-negative");
+                }
+                if (((IntToken)((period).getToken())).intValue() == 0) {
+                        count = - ((IntToken)((delay).getToken())).intValue();
+                }
+                else {
+                        count = - (((IntToken)((delay).getToken())).intValue()%((IntToken)((period).getToken())).intValue());
+                }
      }
 
     /**
@@ -119,17 +119,17 @@ if (((IntToken)((period).getToken())).intValue() < 0) {
     public void  generateFireCode() {
 
 addCode(init);
-		if (((IntToken)((period).getToken())).intValue() > 0) addCode(periodic);
+                if (((IntToken)((period).getToken())).intValue() > 0) addCode(periodic);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String init =
-        "	/* If count != 0, then output 0.0 else output \"level\" */\n"
-        + "	/* Increment count */\n"
-        + "	$ref(output) = ($ref(count)++) ? 0.0 : $val(level);\n";
+        "        /* If count != 0, then output 0.0 else output \"level\" */\n"
+        + "        /* Increment count */\n"
+        + "        $ref(output) = ($ref(count)++) ? 0.0 : $val(level);\n";
 
     public String periodic =
-        "	/* Reset the counter to zero if one period has elapsed */\n"
-        + "	if ($ref(count) >= $val(period)) $ref(count) = 0;\n";
+        "        /* Reset the counter to zero if one period has elapsed */\n"
+        + "        if ($ref(count) >= $val(period)) $ref(count) = 0;\n";
 }

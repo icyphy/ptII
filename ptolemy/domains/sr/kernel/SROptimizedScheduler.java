@@ -193,7 +193,7 @@ public class SROptimizedScheduler extends Scheduler {
             // then skip this actor. The container of the director
             // should not be listed in the schedule.
             if (actor == compositeActor) {
-            	continue;
+                    continue;
             }
             // We record the information of last actor.
             // If some consecutive ports belong to the

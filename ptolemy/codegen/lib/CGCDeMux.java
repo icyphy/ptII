@@ -101,11 +101,11 @@ return 1 + (output.numberPorts() + 1) * ((IntToken)((blockSize).getToken())).int
     public void  generateInitializeCode() throws IllegalActionException {
 
 if ( ((IntToken)((blockSize).getToken())).intValue() < 1 ) {
-			throw new IllegalActionException(this, "blockSize must be positive");
-			return;
-		}
-		input.setSDFParams(((IntToken)((blockSize).getToken())).intValue(),((IntToken)((blockSize).getToken())).intValue()-1);
-		output.setSDFParams(((IntToken)((blockSize).getToken())).intValue(),((IntToken)((blockSize).getToken())).intValue()-1);
+                        throw new IllegalActionException(this, "blockSize must be positive");
+                        return;
+                }
+                input.setSDFParams(((IntToken)((blockSize).getToken())).intValue(),((IntToken)((blockSize).getToken())).intValue()-1);
+                output.setSDFParams(((IntToken)((blockSize).getToken())).intValue(),((IntToken)((blockSize).getToken())).intValue()-1);
      }
 
     /**
@@ -113,41 +113,41 @@ if ( ((IntToken)((blockSize).getToken())).intValue() < 1 ) {
     public void  generateFireCode() {
 
 addCode(init);
-		addCode(blockIterator);
-		addCode("\t{\n");
-		// control value i means port number i+1
-		for (int i = 0; i < output.numberPorts(); i++) {
-		  if (input.resolvedType() == COMPLEX)
-		    addCode(complexCopyData(i,i+1));
-		  else
-		    addCode(nonComplexCopyData(i,i+1));
-		}
-		addCode("\t}\n");
+                addCode(blockIterator);
+                addCode("\t{\n");
+                // control value i means port number i+1
+                for (int i = 0; i < output.numberPorts(); i++) {
+                  if (input.resolvedType() == COMPLEX)
+                    addCode(complexCopyData(i,i+1));
+                  else
+                    addCode(nonComplexCopyData(i,i+1));
+                }
+                addCode("\t}\n");
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String init =
-        "	int n = $ref(control);\n"
-        + "	int j = $val(blockSize);\n";
+        "        int n = $ref(control);\n"
+        + "        int j = $val(blockSize);\n";
 
     public String nonComplexCopyData (int i, int portnum) {
         return
-        "		/* Output port #" + portnum + " */\n"
-        + "		if (n != " + i + ") $ref(output#" + portnum + ",j) = 0;\n"
-        + "		else $ref(output#" + portnum + ",j) = $ref(input,j);\n";
+        "                /* Output port #" + portnum + " */\n"
+        + "                if (n != " + i + ") $ref(output#" + portnum + ",j) = 0;\n"
+        + "                else $ref(output#" + portnum + ",j) = $ref(input,j);\n";
     }
 
     public String complexCopyData (int i, int portnum) {
         return
-        "		/* Output port #" + portnum + " */\n"
-        + "		if (n != " + i + ") {\n"
-        + "		  $ref(output#" + portnum + ",j).real = 0;\n"
-        + "		  $ref(output#" + portnum + ",j).imag = 0;\n"
-        + "		}\n"
-        + "		else $ref(output#" + portnum + ",j) = $ref(input,j);\n";
+        "                /* Output port #" + portnum + " */\n"
+        + "                if (n != " + i + ") {\n"
+        + "                  $ref(output#" + portnum + ",j).real = 0;\n"
+        + "                  $ref(output#" + portnum + ",j).imag = 0;\n"
+        + "                }\n"
+        + "                else $ref(output#" + portnum + ",j) = $ref(input,j);\n";
     }
 
     public String blockIterator =
-        "	while (j--)\n";
+        "        while (j--)\n";
 }

@@ -99,14 +99,14 @@ bit sequence out (zero or one)
     public void  generateInitializeCode() throws IllegalActionException {
 
 // Should check that generator polynomial does not exceed 31 bits. How?
-	  // To avoid sign extension problems, the hob must be zero
-	  if (((IntToken)((polynomial).getToken())).intValue() < 0) {
-	    throw new IllegalActionException(this,"Sorry, polynomials of order higher than 31 are not supported");
-	    return;
-	  }
-	  if (!(((IntToken)((polynomial).getToken())).intValue() & 1)) {
-	    throw new IllegalActionException(this,"The low-order bit of the polynomial is not set. Input will have no effect");
-	  }
+          // To avoid sign extension problems, the hob must be zero
+          if (((IntToken)((polynomial).getToken())).intValue() < 0) {
+            throw new IllegalActionException(this,"Sorry, polynomials of order higher than 31 are not supported");
+            return;
+          }
+          if (!(((IntToken)((polynomial).getToken())).intValue() & 1)) {
+            throw new IllegalActionException(this,"The low-order bit of the polynomial is not set. Input will have no effect");
+          }
      }
 
     /**
@@ -119,18 +119,18 @@ addCode(descramble);
     ////                     Codeblocks                     ////
 
     public String descramble =
-        "	  int reg, masked, parity;\n"
-        + "	  reg = $ref(shiftReg) << 1;\n"
-        + "	  /* put the input in the low order bit */\n"
-        + "	  reg += ($ref(input) != 0);\n"
-        + "	  masked = $val(polynomial) & reg;\n"
-        + "	  /* Now we need to find the parity of \"masked\". */\n"
-        + "	  parity = 0;\n"
-        + "	  /* Calculate the parity of the masked word */\n"
-        + "	  while (masked > 0) {\n"
-        + "	    parity = parity ^ (masked & 1);\n"
-        + "	    masked = masked >> 1;\n"
-        + "	  }\n"
-        + "	  $ref(output) = parity;\n"
-        + "	  $ref(shiftReg) = reg;\n";
+        "          int reg, masked, parity;\n"
+        + "          reg = $ref(shiftReg) << 1;\n"
+        + "          /* put the input in the low order bit */\n"
+        + "          reg += ($ref(input) != 0);\n"
+        + "          masked = $val(polynomial) & reg;\n"
+        + "          /* Now we need to find the parity of \"masked\". */\n"
+        + "          parity = 0;\n"
+        + "          /* Calculate the parity of the masked word */\n"
+        + "          while (masked > 0) {\n"
+        + "            parity = parity ^ (masked & 1);\n"
+        + "            masked = masked >> 1;\n"
+        + "          }\n"
+        + "          $ref(output) = parity;\n"
+        + "          $ref(shiftReg) = reg;\n";
 }

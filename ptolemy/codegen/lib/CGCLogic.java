@@ -88,19 +88,19 @@ non-zero integer (not necessarily 1).
     public void  generateInitializeCode() throws IllegalActionException {
 
 String cn = logic;
-		if ( cn.equalsIgnoreCase("NOT")) {
-		    test = NOTID;
-		    if (input.numberPorts() > 1)
-			throw new IllegalActionException(this,
-			    "NOT operation can only have one input");
-		}
-		else if ( cn.equalsIgnoreCase("AND") ) test = ANDID;
-		else if ( cn.equalsIgnoreCase("NAND") ) test = NANDID;
-		else if ( cn.equalsIgnoreCase("OR") ) test = ORID;
-		else if ( cn.equalsIgnoreCase("NOR") ) test = NORID;
-		else if ( cn.equalsIgnoreCase("XOR") ) test = XORID;
-		else if ( cn.equalsIgnoreCase("XNOR") ) test = XNORID;
-		else throw new IllegalActionException(this, "Unrecognized test.");
+                if ( cn.equalsIgnoreCase("NOT")) {
+                    test = NOTID;
+                    if (input.numberPorts() > 1)
+                        throw new IllegalActionException(this,
+                            "NOT operation can only have one input");
+                }
+                else if ( cn.equalsIgnoreCase("AND") ) test = ANDID;
+                else if ( cn.equalsIgnoreCase("NAND") ) test = NANDID;
+                else if ( cn.equalsIgnoreCase("OR") ) test = ORID;
+                else if ( cn.equalsIgnoreCase("NOR") ) test = NORID;
+                else if ( cn.equalsIgnoreCase("XOR") ) test = XORID;
+                else if ( cn.equalsIgnoreCase("XNOR") ) test = XNORID;
+                else throw new IllegalActionException(this, "Unrecognized test.");
      }
 
     /**
@@ -108,65 +108,65 @@ String cn = logic;
     public void  generateFireCode() {
 
 // The inverter (not) star is the simplest case
-		if ( test == NOTID ) {
-			addCode("\t$ref(output) = ! $ref(input#1); \n");
-			return;
-		}
+                if ( test == NOTID ) {
+                        addCode("\t$ref(output) = ! $ref(input#1); \n");
+                        return;
+                }
 
-		// Declare and initialize local variables i and result
-		if ( test == ANDID || test == NANDID ) {
-			addCode("\tint result = 1; \n");
-		}
-		else {
-			addCode("\tint result = 0; \n");
-		}
+                // Declare and initialize local variables i and result
+                if ( test == ANDID || test == NANDID ) {
+                        addCode("\tint result = 1; \n");
+                }
+                else {
+                        addCode("\tint result = 0; \n");
+                }
 
-		// Generate the code that walks through the input values
-		int i = 1;
-		switch( test ) {
-		  case ANDID:
-		  case NANDID:
-			for (i = 1; i <= input.numberPorts(); i++ ) {
-			    addCode(logicAndOp(i));
-			}
-			break;
-		  case ORID:
-		  case NORID:
-			for (i = 1; i <= input.numberPorts(); i++ ) {
-			    addCode(logicOrOp(i));
-			}
-			break;
-		  case XORID:
-		  case XNORID:
-			for (i = 1; i <= input.numberPorts(); i++ ) {
-			    addCode(logicXorOp(i));
-			    break;
-			}
-		}
+                // Generate the code that walks through the input values
+                int i = 1;
+                switch( test ) {
+                  case ANDID:
+                  case NANDID:
+                        for (i = 1; i <= input.numberPorts(); i++ ) {
+                            addCode(logicAndOp(i));
+                        }
+                        break;
+                  case ORID:
+                  case NORID:
+                        for (i = 1; i <= input.numberPorts(); i++ ) {
+                            addCode(logicOrOp(i));
+                        }
+                        break;
+                  case XORID:
+                  case XNORID:
+                        for (i = 1; i <= input.numberPorts(); i++ ) {
+                            addCode(logicXorOp(i));
+                            break;
+                        }
+                }
 
-		// Compute final result
-		StringBuffer finalCode = new StringBuffer();
-		if (test == NANDID || test == NORID || test == XNORID ) {
-			finalCode.append("\tresult = ! result;\n");
-		}
-		finalCode.append("\t$ref(output) = result;\n");
-		addCode(finalCode);
+                // Compute final result
+                StringBuffer finalCode = new StringBuffer();
+                if (test == NANDID || test == NORID || test == XNORID ) {
+                        finalCode.append("\tresult = ! result;\n");
+                }
+                finalCode.append("\t$ref(output) = result;\n");
+                addCode(finalCode);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String logicAndOp (int i) {
         return
-        "	result = result && $ref(input#" + i + ");\n";
+        "        result = result && $ref(input#" + i + ");\n";
     }
 
     public String logicOrOp (int i) {
         return
-        "	result = result || $ref(input#" + i + ");\n";
+        "        result = result || $ref(input#" + i + ");\n";
     }
 
     public String logicXorOp (int i) {
         return
-        "	if ( $ref(input#" + i + ") ) result = ! result;\n";
+        "        if ( $ref(input#" + i + ") ) result = ! result;\n";
     }
 }

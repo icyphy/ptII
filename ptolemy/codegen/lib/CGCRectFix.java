@@ -112,10 +112,10 @@ the output is set to its maximum value (or minimum for negative magnitudes). par
     public void  generateInitializeCode() throws IllegalActionException {
 
 super.generateInitializeCode();
-		// if the user specified an invalid precision string, the error
-		// will be automatically reported in the initialize method of
-		// class PrecisionState
-		output.setPrecision(OutputPrecision);
+                // if the user specified an invalid precision string, the error
+                // will be automatically reported in the initialize method of
+                // class PrecisionState
+                output.setPrecision(OutputPrecision);
      }
 
     /**
@@ -123,27 +123,27 @@ super.generateInitializeCode();
     public void  generateFireCode() {
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	FIX_SetToZero($ref(output));\n"
+"        FIX_SetToZero($ref(output));\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	if ($ref(count) < $ref(width)) {\n"
+"        if ($ref(count) < $ref(width)) {\n"
 
-); 	 addCode(_str_);  }
-		super.clearOverflow();
+);          addCode(_str_);  }
+                super.clearOverflow();
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"		FIX_Assign($ref(output),$ref(height));\n"
+"                FIX_Assign($ref(output),$ref(height));\n"
 
-); 	 addCode(_str_);  }
-		super.checkOverflow();
+);          addCode(_str_);  }
+                super.checkOverflow();
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	}\n"
-"	$ref(count)++;\n"
-"	if ($ref(period) > 0 && $ref(count) > $ref(period))\n"
-"		$ref(count) = 0;"
+"        }\n"
+"        $ref(count)++;\n"
+"        if ($ref(period) > 0 && $ref(count) > $ref(period))\n"
+"                $ref(count) = 0;"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
      }
 }

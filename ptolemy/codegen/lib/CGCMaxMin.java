@@ -123,11 +123,11 @@ noInternalState();
     public void  generateInitializeCode() throws IllegalActionException {
 
 if ( ((IntToken)((N).getToken())).intValue() <= 0 ) {
-		    throw new IllegalActionException(this,
-				    "Number of samples, N, must be positive.");
-		    return;
-		}
-		input.setSDFParams(((IntToken)((N).getToken())).intValue(), ((IntToken)((N).getToken())).intValue()-1);
+                    throw new IllegalActionException(this,
+                                    "Number of samples, N, must be positive.");
+                    return;
+                }
+                input.setSDFParams(((IntToken)((N).getToken())).intValue(), ((IntToken)((N).getToken())).intValue()-1);
      }
 
     /**
@@ -135,55 +135,55 @@ if ( ((IntToken)((N).getToken())).intValue() <= 0 ) {
     public void  generateFireCode() {
 
 addCode(macros);
-		addCode(decl);
-		addCode(initData);
-		addCode(compareData);
-		addCode(outputValue);
+                addCode(decl);
+                addCode(initData);
+                addCode(compareData);
+                addCode(outputValue);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String macros =
-        "#define FABS(a)	( ((a) > 0.0) ? (a) : -(a) )\n";
+        "#define FABS(a)        ( ((a) > 0.0) ? (a) : -(a) )\n";
 
     public String decl =
-        "	double current, currentCmp, value, valueCmp;\n"
-        + "	int i, minChangeFlag, valueIndex;\n"
-        + "	int cmpMagFlag, maxflag;\n";
+        "        double current, currentCmp, value, valueCmp;\n"
+        + "        int i, minChangeFlag, valueIndex;\n"
+        + "        int cmpMagFlag, maxflag;\n";
 
     public String initData =
-        "	cmpMagFlag = $val(compareMagnitude);\n"
-        + "	maxflag = $val(MAX);\n"
-        + "	i = $val(N) - 1;\n"
-        + "	value = $ref(input,i);\n"
-        + "	valueCmp = cmpMagFlag ? FABS(value) : value;\n"
-        + "	valueIndex = i;\n";
+        "        cmpMagFlag = $val(compareMagnitude);\n"
+        + "        maxflag = $val(MAX);\n"
+        + "        i = $val(N) - 1;\n"
+        + "        value = $ref(input,i);\n"
+        + "        valueCmp = cmpMagFlag ? FABS(value) : value;\n"
+        + "        valueIndex = i;\n";
 
     public String compareData =
-        "	while ( i-- > 0 ) {\n"
-        + "		current = $ref(input,i);\n"
-        + "		currentCmp = cmpMagFlag ? FABS(current) : current;\n"
-        + "		minChangeFlag = ( currentCmp < valueCmp );\n"
+        "        while ( i-- > 0 ) {\n"
+        + "                current = $ref(input,i);\n"
+        + "                currentCmp = cmpMagFlag ? FABS(current) : current;\n"
+        + "                minChangeFlag = ( currentCmp < valueCmp );\n"
         + "\n"
-        + "		/* Logical exclusive OR between maxflag and minChangeFlag\n"
-        + "		   but we cannot use the bitwise xor ^ */\n"
-        + "		if ( (maxflag && !minChangeFlag) ||\n"
-        + "		     (!maxflag && minChangeFlag) ) {\n"
-        + "			value = current;\n"
-        + "			valueCmp = currentCmp;\n"
-        + "			valueIndex = i;\n"
-        + "		}\n"
-        + "	}\n";
+        + "                /* Logical exclusive OR between maxflag and minChangeFlag\n"
+        + "                   but we cannot use the bitwise xor ^ */\n"
+        + "                if ( (maxflag && !minChangeFlag) ||\n"
+        + "                     (!maxflag && minChangeFlag) ) {\n"
+        + "                        value = current;\n"
+        + "                        valueCmp = currentCmp;\n"
+        + "                        valueIndex = i;\n"
+        + "                }\n"
+        + "        }\n";
 
     public String outputValue =
-        "	/* Output the value or the magnitude of the value */\n"
-        + "	if ( $val(outputMagnitude) ) {\n"
-        + "		if ( value < 0.0 ) value = -value;\n"
-        + "	}\n"
+        "        /* Output the value or the magnitude of the value */\n"
+        + "        if ( $val(outputMagnitude) ) {\n"
+        + "                if ( value < 0.0 ) value = -value;\n"
+        + "        }\n"
         + "\n"
-        + "	/* Send the maximum/minimum value to the output port */\n"
-        + "	$ref(output) = value;\n"
+        + "        /* Send the maximum/minimum value to the output port */\n"
+        + "        $ref(output) = value;\n"
         + "\n"
-        + "	/* Adjust the index due to the LIFO nature of input data */\n"
-        + "	$ref(index) = $val(N) - valueIndex - 1;\n";
+        + "        /* Adjust the index due to the LIFO nature of input data */\n"
+        + "        $ref(index) = $val(N) - valueIndex - 1;\n";
 }

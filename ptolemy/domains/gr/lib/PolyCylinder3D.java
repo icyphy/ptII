@@ -268,7 +268,7 @@ public class PolyCylinder3D extends GRShadedShape {
      */
     private int _getVertexCount() throws IllegalActionException {
         ArrayToken polygonToken
-		        = ((ArrayToken) polygon.getToken());
+                        = ((ArrayToken) polygon.getToken());
         return polygonToken.length()/2;
     }
 

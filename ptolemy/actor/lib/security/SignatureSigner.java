@@ -86,14 +86,14 @@ public class SignatureSigner extends SignatureActor {
      *   actor with this name.
      */
     public SignatureSigner(CompositeEntity container, String name)
-	throws NameDuplicationException, IllegalActionException  {
-	super(container, name);
+        throws NameDuplicationException, IllegalActionException  {
+        super(container, name);
 
-	privateKey = new TypedIOPort(this, "privateKey", true, false);
-	privateKey.setTypeEquals(KeyToken.KEY);
+        privateKey = new TypedIOPort(this, "privateKey", true, false);
+        privateKey.setTypeEquals(KeyToken.KEY);
 
-	signature = new TypedIOPort(this, "signature", false, true);
-	signature.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+        signature = new TypedIOPort(this, "signature", false, true);
+        signature.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -124,33 +124,33 @@ public class SignatureSigner extends SignatureActor {
      *  throws it, or if there is a problem cryptographic configuration.
      */
     public void fire() throws IllegalActionException {
-	// super.fire() should be called before accessing _signature
-	// so that we handle any updates of _signature made necessary
-	// by attribute changes.
-	super.fire();
-	if (privateKey.hasToken(0)) {
-	    KeyToken keyToken = (KeyToken)privateKey.get(0);
-	    _privateKey = (PrivateKey)keyToken.getValue();
-	}
+        // super.fire() should be called before accessing _signature
+        // so that we handle any updates of _signature made necessary
+        // by attribute changes.
+        super.fire();
+        if (privateKey.hasToken(0)) {
+            KeyToken keyToken = (KeyToken)privateKey.get(0);
+            _privateKey = (PrivateKey)keyToken.getValue();
+        }
 
-	if (input.hasToken(0)) {
-	    try {
-		// Process the input data to generate a signature.
-		byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray(
-									    (ArrayToken)input.get(0));
+        if (input.hasToken(0)) {
+            try {
+                // Process the input data to generate a signature.
+                byte[] dataBytes = ArrayToken.arrayTokenToUnsignedByteArray(
+                                                                            (ArrayToken)input.get(0));
 
-		_signature.initSign(_privateKey);
-		_signature.update(dataBytes);
+                _signature.initSign(_privateKey);
+                _signature.update(dataBytes);
 
-		output.send(0, ArrayToken.unsignedByteArrayToArrayToken(
-									dataBytes));
-		signature.send(0, ArrayToken.unsignedByteArrayToArrayToken(
-									   _signature.sign()));
-	    } catch (Exception ex) {
-		throw new IllegalActionException(this, ex,
-						 "Problem sending data");
-	    }
-	}
+                output.send(0, ArrayToken.unsignedByteArrayToArrayToken(
+                                                                        dataBytes));
+                signature.send(0, ArrayToken.unsignedByteArrayToArrayToken(
+                                                                           _signature.sign()));
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                                                 "Problem sending data");
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

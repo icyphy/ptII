@@ -61,16 +61,16 @@ import ptolemy.kernel.util.NamedObj;
 public class StaticSchedulingCodeGenerator
         extends CodeGenerator implements ActorCodeGenerator {
 
-	/** Create a new instance of the C code generator.
-	 *  @param container The container.
-	 *  @param name The name.
-	 *  @exception IllegalActionException
-	 *  @exception NameDuplicationException
-	 */
-	public StaticSchedulingCodeGenerator(NamedObj container, String name)
-			throws IllegalActionException, NameDuplicationException {
-		super(container, name);
-	}
+        /** Create a new instance of the C code generator.
+         *  @param container The container.
+         *  @param name The name.
+         *  @exception IllegalActionException
+         *  @exception NameDuplicationException
+         */
+        public StaticSchedulingCodeGenerator(NamedObj container, String name)
+                        throws IllegalActionException, NameDuplicationException {
+                super(container, name);
+        }
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
@@ -102,7 +102,7 @@ public class StaticSchedulingCodeGenerator
             CompositeActor toplevel = (CompositeActor)
                     ((NamedObj)container).toplevel();
             manager = new Manager(toplevel.workspace(), "Manager");
-        	toplevel.setManager(manager);
+                toplevel.setManager(manager);
         }
         try {
             manager.preinitializeAndResolveTypes();

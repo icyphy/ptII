@@ -18,9 +18,9 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class TrigFunction extends CCodeGeneratorHelper {
 
-	/**
-	 * @param component
-	 */
+        /**
+         * @param component
+         */
     public TrigFunction(ptolemy.actor.lib.TrigFunction actor) {
         super(actor);
     }

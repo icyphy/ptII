@@ -130,11 +130,11 @@ addCode(body);
     ////                     Codeblocks                     ////
 
     public String body =
-        "	double f = $ref(input);\n"
-        + "	if (f <= 0.0) $ref(output) = $val(min);\n"
-        + "	else {\n"
-        + "		f = $val(gain) * log10 (f);\n"
-        + "		if (f < $val(min)) f = $val(min);\n"
-        + "		$ref(output) = f;\n"
-        + "	}\n";
+        "        double f = $ref(input);\n"
+        + "        if (f <= 0.0) $ref(output) = $val(min);\n"
+        + "        else {\n"
+        + "                f = $val(gain) * log10 (f);\n"
+        + "                if (f < $val(min)) f = $val(min);\n"
+        + "                $ref(output) = f;\n"
+        + "        }\n";
 }

@@ -153,10 +153,10 @@ public class PropertyClassChanges implements MoMLFilter {
                 // We found a class with a property class change.
                 _currentlyProcessingActorWithPropertyClassChanges = true;
                 if (container != null) {
-                	_currentActorFullName = container.getFullName()
+                        _currentActorFullName = container.getFullName()
                             + "." + _lastNameSeen;
                 } else {
-                	_currentActorFullName = "." + _lastNameSeen;
+                        _currentActorFullName = "." + _lastNameSeen;
                 }
                 _propertyMap =
                     (HashMap) _actorsWithPropertyClassChanges

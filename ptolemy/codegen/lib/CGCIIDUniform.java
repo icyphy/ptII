@@ -89,7 +89,7 @@ public class CGCIIDUniform extends ClassicCGCActor {
      */
     public int  myExecTime() {
 
-return 10 + 5;	/* based on CG96IIDUniform */
+return 10 + 5;        /* based on CG96IIDUniform */
      }
 
     /**
@@ -97,9 +97,9 @@ return 10 + 5;	/* based on CG96IIDUniform */
     public void  generatePreinitializeCode() {
 
 // Pull in prototypes for srand and rand
-		addInclude("<stdlib.h>");
-		// Initialize the random number generator
-		addCode(initSeed);
+                addInclude("<stdlib.h>");
+                // Initialize the random number generator
+                addCode(initSeed);
      }
 
     /**
@@ -107,10 +107,10 @@ return 10 + 5;	/* based on CG96IIDUniform */
     public void  generateInitializeCode() throws IllegalActionException {
 
 if ( ((DoubleToken)((lower).getToken())).doubleValue() > ((DoubleToken)((upper).getToken())).doubleValue() ) {
-		    throw new IllegalActionException(this, "The upper limit must be greater ",
-				    "than the lower limit");
-		    return;
-		}
+                    throw new IllegalActionException(this, "The upper limit must be greater ",
+                                    "than the lower limit");
+                    return;
+                }
      }
 
     /**
@@ -127,20 +127,20 @@ addCode(randomGen);
         + "srand($val(seed));\n";
 
     public String randomGen =
-        "		/* Generate a random number on the interval [0,1] and */\n"
-        + "		/* map it into the interval [$val(lower),$val(upper)] */\n"
-        + "		double randomValue = 0.0;\n"
-        + "		int randomInt = rand();\n"
-        + "		double scale = $val(upper) - ($val(lower));\n"
-        + "		double center = ($val(upper) + ($val(lower)))/2.0;\n"
+        "                /* Generate a random number on the interval [0,1] and */\n"
+        + "                /* map it into the interval [$val(lower),$val(upper)] */\n"
+        + "                double randomValue = 0.0;\n"
+        + "                int randomInt = rand();\n"
+        + "                double scale = $val(upper) - ($val(lower));\n"
+        + "                double center = ($val(upper) + ($val(lower)))/2.0;\n"
         + "\n"
-        + "		/* RAND_MAX is an ANSI C standard constant */\n"
-        + "		/* If not defined, then just use the lower 15 bits */\n"
+        + "                /* RAND_MAX is an ANSI C standard constant */\n"
+        + "                /* If not defined, then just use the lower 15 bits */\n"
         + "#ifdef RAND_MAX\n"
-        + "		randomValue = ((double) randomInt) / ((double) RAND_MAX);\n"
+        + "                randomValue = ((double) randomInt) / ((double) RAND_MAX);\n"
         + "#else\n"
-        + "		randomInt &= 0x7FFF;\n"
-        + "		randomValue = ((double) randomInt) / 32767.0;\n"
+        + "                randomInt &= 0x7FFF;\n"
+        + "                randomValue = ((double) randomInt) / 32767.0;\n"
         + "#endif\n"
-        + "		$ref(output) = scale * (randomValue - 0.5) + center;\n";
+        + "                $ref(output) = scale * (randomValue - 0.5) + center;\n";
 }

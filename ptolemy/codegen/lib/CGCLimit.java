@@ -95,11 +95,11 @@ addCode(cbBody);
     ////                     Codeblocks                     ////
 
     public String cbBody =
-        "	    /*IF*/ if ( $ref(input) > $val(top) ) {\n"
-        + "		$ref(output) = $val(top);\n"
-        + "	    } else if ( $ref(input) < $val(bottom) ) {\n"
-        + "		$ref(output) = $val(bottom);\n"
-        + "	    } else {\n"
-        + "		$ref(output) = $ref(input);\n"
-        + "	    }\n";
+        "            /*IF*/ if ( $ref(input) > $val(top) ) {\n"
+        + "                $ref(output) = $val(top);\n"
+        + "            } else if ( $ref(input) < $val(bottom) ) {\n"
+        + "                $ref(output) = $val(bottom);\n"
+        + "            } else {\n"
+        + "                $ref(output) = $ref(input);\n"
+        + "            }\n";
 }

@@ -48,7 +48,7 @@ public class CCodeGeneratorHelper extends CodeGeneratorHelper {
     /** FIXME
      */
     public CCodeGeneratorHelper(NamedObj component) {
-    	super(component);
+            super(component);
     }
 
     ///////////////////////////////////////////////////////////////////

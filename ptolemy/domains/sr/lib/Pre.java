@@ -95,7 +95,7 @@ public class Pre extends Transformer {
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-       	    if (_currentToken != null) {
+                   if (_currentToken != null) {
                 output.send(0, _currentToken);
             } else {
                 output.sendClear(0);
@@ -119,7 +119,7 @@ public class Pre extends Transformer {
      */
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
-        	_currentToken = input.get(0);
+                _currentToken = input.get(0);
         }
         return super.postfire();
     }

@@ -131,7 +131,7 @@ public class CGCWindow extends CGCWaveForm {
         }
 
         value.resize(int(length));
-        window.initialize();		// initialize to a null string
+        window.initialize();                // initialize to a null string
         for (int i = 0; i < realLen; i++) {
             window << windowTaps[i] << " ";
         }

@@ -14,13 +14,13 @@ public class Unboxing4
     static ArrayToken arraytoken;
 
     public static void main(String args[]) throws IllegalActionException {
-	tokens = new Token[1];
-	tokens[0] = intToken;
-	arraytoken = new ArrayToken(tokens);
-	if (arraytoken.getType().equals(new ArrayType(BaseType.INT)))
-	    token = intToken;
-	else
-	    token = arraytoken;
-	System.out.println("token = " + token.toString());
+        tokens = new Token[1];
+        tokens[0] = intToken;
+        arraytoken = new ArrayToken(tokens);
+        if (arraytoken.getType().equals(new ArrayType(BaseType.INT)))
+            token = intToken;
+        else
+            token = arraytoken;
+        System.out.println("token = " + token.toString());
     }
 }

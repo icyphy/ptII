@@ -100,7 +100,7 @@ public class TextString3D extends GRShadedShape {
             .getLocalGraphicsEnvironment()
             .getAvailableFontFamilyNames();
         for (int i = 0; i < families.length; i++) {
-        	fontFamily.addChoice(families[i]);
+                fontFamily.addChoice(families[i]);
         }
 
         extrusionDepth = new Parameter(this, "extrusionDepth");
@@ -163,7 +163,7 @@ public class TextString3D extends GRShadedShape {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-    	if (attribute == text && _textGeometry != null) {
+            if (attribute == text && _textGeometry != null) {
             String textValue = ((StringToken) text.getToken()).stringValue();
             _textGeometry.setString(textValue);
         } else if ((attribute == fontFamily
@@ -198,7 +198,7 @@ public class TextString3D extends GRShadedShape {
                 ((TransformGroup)_containedNode).setTransform(_scaleTransform);
             }
         } else {
-        	super.attributeChanged(attribute);
+                super.attributeChanged(attribute);
         }
     }
 
@@ -238,7 +238,7 @@ public class TextString3D extends GRShadedShape {
         String alignmentValue = alignment.stringValue();
         int align = Text3D.ALIGN_CENTER;
         if (alignmentValue.equals("first")) {
-        	align = Text3D.ALIGN_FIRST;
+                align = Text3D.ALIGN_FIRST;
         } else if (alignmentValue.equals("last")) {
             align = Text3D.ALIGN_LAST;
         }

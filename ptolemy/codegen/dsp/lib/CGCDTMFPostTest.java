@@ -136,25 +136,25 @@ public class CGCDTMFPostTest extends ClassicCGCActor {
     ////                     Codeblocks                     ////
 
     public String decl =
-    "		int retval = 0;\n"
-    + "		int inputValue = $val(initialLastInput);\n"
-    + "		int lastValue = $ref(last);\n"
+    "                int retval = 0;\n"
+    + "                int inputValue = $val(initialLastInput);\n"
+    + "                int lastValue = $ref(last);\n"
     + "\n";
 
     public String test =
-    "		/* if the current input is valid, then compare it with the\n"
-    + "		   last and second-to-last valid inputs; else, return FALSE */\n"
-    + "		if ( $ref(valid) ) {\n"
-    + "		  inputValue = $ref(input);\n"
-    + "		  retval = ( inputValue == lastValue &&\n"
-    + "		             lastValue != $ref(secondToLast) );\n"
-    + "		}\n"
+    "                /* if the current input is valid, then compare it with the\n"
+    + "                   last and second-to-last valid inputs; else, return FALSE */\n"
+    + "                if ( $ref(valid) ) {\n"
+    + "                  inputValue = $ref(input);\n"
+    + "                  retval = ( inputValue == lastValue &&\n"
+    + "                             lastValue != $ref(secondToLast) );\n"
+    + "                }\n"
     + "\n"
-    + "		/* Update the last and second-to-last input storage */\n"
-    + "		$ref(secondToLast) = lastValue;\n"
-    + "		$ref(last) = inputValue;\n";
+    + "                /* Update the last and second-to-last input storage */\n"
+    + "                $ref(secondToLast) = lastValue;\n"
+    + "                $ref(last) = inputValue;\n";
 
     public String sendOutput =
     "\n"
-    + "		$ref(output) = retval;\n";
+    + "                $ref(output) = retval;\n";
 }

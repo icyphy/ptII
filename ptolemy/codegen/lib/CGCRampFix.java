@@ -129,12 +129,12 @@ The precision of this state is the precision of the accumulation. parameter with
     public void  generateInitializeCode() throws IllegalActionException {
 
 super.generateInitializeCode();
-		// if the user specified an invalid precision string, the error
-		// will be automatically reported in the initialize method of
-		// class PrecisionState
-		output.setPrecision(OutputPrecision);
-		value.setPrecision(ValuePrecision);
-		step.setPrecision(StepPrecision);
+                // if the user specified an invalid precision string, the error
+                // will be automatically reported in the initialize method of
+                // class PrecisionState
+                output.setPrecision(OutputPrecision);
+                value.setPrecision(ValuePrecision);
+                step.setPrecision(StepPrecision);
      }
 
     /**
@@ -142,15 +142,15 @@ super.generateInitializeCode();
     public void  generateFireCode() {
 
 // insert code to clear overflow flag
-		super.clearOverflow();
+                super.clearOverflow();
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	FIX_Assign($ref(output), $ref(value));\n"
-"	FIX_Add($ref(value), $ref(value),$ref(step));\n"
+"        FIX_Assign($ref(output), $ref(value));\n"
+"        FIX_Add($ref(value), $ref(value),$ref(step));\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
-		// insert code to test overflow flag
-		super.checkOverflow();
+                // insert code to test overflow flag
+                super.checkOverflow();
      }
 }

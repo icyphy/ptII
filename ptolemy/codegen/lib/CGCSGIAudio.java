@@ -61,23 +61,23 @@ addCode(close);
     public void  generatePreinitializeCode() {
 
 addInclude("<audio.h>");
-	addGlobal(declare);
-	addCode(setup);
+        addGlobal(declare);
+        addCode(setup);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String declare =
-        "	ALport $starSymbol(port);\n"
-        + "	ALconfig $starSymbol(config);\n";
+        "        ALport $starSymbol(port);\n"
+        + "        ALconfig $starSymbol(config);\n";
 
     public String setup =
-        "	$starSymbol(config) = ALnewconfig();\n"
-        + "	ALsetwidth($starSymbol(config), AL_SAMPLE_16);\n"
-        + "	ALsetchannels($starSymbol(config), AL_STEREO);\n"
-        + "	ALsetqueuesize($starSymbol(config), 0x1000);\n";
+        "        $starSymbol(config) = ALnewconfig();\n"
+        + "        ALsetwidth($starSymbol(config), AL_SAMPLE_16);\n"
+        + "        ALsetchannels($starSymbol(config), AL_STEREO);\n"
+        + "        ALsetqueuesize($starSymbol(config), 0x1000);\n";
 
     public String close =
-        "	ALcloseport($starSymbol(port));\n"
-        + "	ALfreeconfig($starSymbol(config));\n";
+        "        ALcloseport($starSymbol(port));\n"
+        + "        ALfreeconfig($starSymbol(config));\n";
 }

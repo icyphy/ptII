@@ -17,9 +17,9 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class Accumulator extends CCodeGeneratorHelper {
 
-	/**
-	 * @param component
-	 */
+        /**
+         * @param component
+         */
     public Accumulator(ptolemy.actor.lib.Accumulator actor) {
         super(actor);
     }
@@ -27,27 +27,27 @@ public class Accumulator extends CCodeGeneratorHelper {
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
-    	ptolemy.actor.lib.Sequence actor =
-    		(ptolemy.actor.lib.Sequence)getComponent();
+            ptolemy.actor.lib.Sequence actor =
+                    (ptolemy.actor.lib.Sequence)getComponent();
 
-    	StringBuffer tmpStream = new StringBuffer();
+            StringBuffer tmpStream = new StringBuffer();
 
-    	tmpStream.append(
-    			  "if ($val(reset)) {\n"
-    			+ "    sum = $val(init);\n"
+            tmpStream.append(
+                              "if ($val(reset)) {\n"
+                            + "    sum = $val(init);\n"
                 + "} else {\n"
-				+ "    sum += $val(input);\n"
-				+ "    $val(output) = sum;\n"
+                                + "    sum += $val(input);\n"
+                                + "    $val(output) = sum;\n"
                 + "}\n");
 
 
-    	_codeBlock = tmpStream.toString();
+            _codeBlock = tmpStream.toString();
         stream.append(processCode(_codeBlock));
     }
 
     public String generateInitializeCode()
             throws IllegalActionException {
-    	return processCode(_initBlock);
+            return processCode(_initBlock);
     }
 
 

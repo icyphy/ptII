@@ -77,8 +77,8 @@ public class CGCDelay extends ClassicCGCActor {
     public void  generatePreinitializeCode() {
 
 if (!(int) delay) return;
-	addDeclaration(declarations);
-	addCode(init);
+        addDeclaration(declarations);
+        addCode(init);
      }
 
     /**
@@ -93,27 +93,27 @@ if (!(int) delay) forkInit(input,output);
     public void  generateFireCode() {
 
 if (!(int) delay) return;
-	addCode(main);
+        addCode(main);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String declarations =
-        "	/* static so that buffer will be initialized to zero */\n"
-        + "	double $starSymbol(buffer)[$val(delay)];\n"
-        + "	int $starSymbol(index);\n";
+        "        /* static so that buffer will be initialized to zero */\n"
+        + "        double $starSymbol(buffer)[$val(delay)];\n"
+        + "        int $starSymbol(index);\n";
 
     public String init =
-        "	$starSymbol(index) = 0;\n"
+        "        $starSymbol(index) = 0;\n"
         + "    {\n"
-        + "	int i;\n"
-        + "	for (i = 0 ; i < $val(delay) ; i++)\n"
-        + "	    $starSymbol(buffer)[i] = 0;\n"
+        + "        int i;\n"
+        + "        for (i = 0 ; i < $val(delay) ; i++)\n"
+        + "            $starSymbol(buffer)[i] = 0;\n"
         + "    }\n";
 
     public String main =
-        "	$ref(output) = $starSymbol(buffer)[$starSymbol(index)];\n"
-        + "	$starSymbol(buffer)[$starSymbol(index)] = $ref(input);\n"
-        + "	if ( ++$starSymbol(index) >= $val(delay) )\n"
-        + "	    $starSymbol(index) -= $val(delay);\n";
+        "        $ref(output) = $starSymbol(buffer)[$starSymbol(index)];\n"
+        + "        $starSymbol(buffer)[$starSymbol(index)] = $ref(input);\n"
+        + "        if ( ++$starSymbol(index) >= $val(delay) )\n"
+        + "            $starSymbol(index) -= $val(delay);\n";
 }

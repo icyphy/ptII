@@ -77,11 +77,11 @@ Output complex type
     public void  generateInitializeCode() throws IllegalActionException {
 
 if (((IntToken)((numSample).getToken())).intValue() <= 0) {
-			throw new IllegalActionException(this, "numSample must be positive");
-			return;
-		}
-		input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
-		output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
+                        throw new IllegalActionException(this, "numSample must be positive");
+                        return;
+                }
+                input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
+                output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
      }
 
     /**
@@ -94,9 +94,9 @@ addCode(body);
     ////                     Codeblocks                     ////
 
     public String body =
-        "		int i = 0;\n"
-        + "		for (; i < $val(numSample); i++) {\n"
-        + "			$ref(output,i).real = FIX_Fix2Double($ref(input,i));\n"
-        + "			$ref(output,i).imag = 0;\n"
-        + "		}\n";
+        "                int i = 0;\n"
+        + "                for (; i < $val(numSample); i++) {\n"
+        + "                        $ref(output,i).real = FIX_Fix2Double($ref(input,i));\n"
+        + "                        $ref(output,i).imag = 0;\n"
+        + "                }\n";
 }

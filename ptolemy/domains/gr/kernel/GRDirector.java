@@ -330,7 +330,7 @@ public class GRDirector extends StaticSchedulingDirector {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
         Iterator actors = container.deepEntityList().iterator();
         while (actors.hasNext()) {
-        	Object actor = actors.next();
+                Object actor = actors.next();
             if (actor instanceof ViewScreenInterface) {
                 if (viewScreen != null) {
                     throw new IllegalActionException(this,
@@ -349,7 +349,7 @@ public class GRDirector extends StaticSchedulingDirector {
         while (actors.hasNext()) {
             NamedObj actor = (NamedObj)actors.next();
             if (actor instanceof GRActor) {
-            	((GRActor)actor)._setViewScreen((GRActor)viewScreen);
+                    ((GRActor)actor)._setViewScreen((GRActor)viewScreen);
             }
         }
     }

@@ -70,7 +70,7 @@ noInternalState();
      */
     public int  myExecTime() {
 
-return 165;	/* value taken from CG96Sqrt */
+return 165;        /* value taken from CG96Sqrt */
      }
 
     /**
@@ -90,5 +90,5 @@ addCode(ln);
     ////                     Codeblocks                     ////
 
     public String ln =
-        "	$ref(output) = sqrt($ref(input));\n";
+        "        $ref(output) = sqrt($ref(input));\n";
 }

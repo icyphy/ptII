@@ -313,7 +313,7 @@ public class NonStrictTest extends Sink {
 
                     System.err.println("Warning: '" + getFullName() + "' "
                              + errorMessage
-					);
+                                        );
             }
         }
         _initialized = false;

@@ -68,7 +68,7 @@ Right channel.
     public void  generatePreinitializeCode() {
 
 super.initCode();
-	addCode(open);
+        addCode(open);
      }
 
     /**
@@ -81,14 +81,14 @@ addCode(write);
     ////                     Codeblocks                     ////
 
     public String open =
-        "	$starSymbol(port) = ALopenport(\"$starSymbol(port)\", \"w\", $starSymbol(config));\n";
+        "        $starSymbol(port) = ALopenport(\"$starSymbol(port)\", \"w\", $starSymbol(config));\n";
 
     public String write =
-        "	{\n"
-        + "	    short buffer[2];\n"
+        "        {\n"
+        + "            short buffer[2];\n"
         + "\n"
-        + "	    buffer[0] = (short)($ref(left) * 32768.0);\n"
-        + "	    buffer[1] = (short)($ref(right)* 32768.0);\n"
-        + "	    ALwritesamps($starSymbol(port), buffer, 2);\n"
-        + "	}\n";
+        + "            buffer[0] = (short)($ref(left) * 32768.0);\n"
+        + "            buffer[1] = (short)($ref(right)* 32768.0);\n"
+        + "            ALwritesamps($starSymbol(port), buffer, 2);\n"
+        + "        }\n";
 }

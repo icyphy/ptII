@@ -77,20 +77,20 @@ return 2*input.numberPorts();
     public void  generateFireCode() {
 
 addCode(startOp);
-	int i;
-	for (i=2;i<=input.numberPorts();i++)
-	    addCode(doOp(i));
+        int i;
+        for (i=2;i<=input.numberPorts();i++)
+            addCode(doOp(i));
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String startOp =
-        "	$ref(output).real = $ref(input#1).real;\n"
-        + "	$ref(output).imag = $ref(input#1).imag;\n";
+        "        $ref(output).real = $ref(input#1).real;\n"
+        + "        $ref(output).imag = $ref(input#1).imag;\n";
 
     public String doOp (int i) {
         return
-        "	$ref(output).real += $ref(input#" + i + ").real;\n"
-        + "	$ref(output).imag += $ref(input#" + i + ").imag;\n";
+        "        $ref(output).real += $ref(input#" + i + ").real;\n"
+        + "        $ref(output).imag += $ref(input#" + i + ").imag;\n";
     }
 }

@@ -84,11 +84,11 @@ value (or minimum for negative magnitudes). parameter with initial value "".
     public void  begin() {
 
 // if the precision for the output port is not defined
-		// - neither by this nor the successor star -, the actual
-		// precision is determined at runtime
+                // - neither by this nor the successor star -, the actual
+                // precision is determined at runtime
 
-		if (!output.precision().isValid())
-			output.setAttributes(A_VARPREC);
+                if (!output.precision().isValid())
+                        output.setAttributes(A_VARPREC);
      }
 
     /**
@@ -96,7 +96,7 @@ value (or minimum for negative magnitudes). parameter with initial value "".
     public void  generateInitializeCode() throws IllegalActionException {
 
 super.generateInitializeCode();
-		output.setPrecision(OutputPrecision);
+                output.setPrecision(OutputPrecision);
      }
 
     /**
@@ -104,20 +104,20 @@ super.generateInitializeCode();
     public void  generateFireCode() {
 
 // insert code to clear overflow flag
-		super.clearOverflow();
+                super.clearOverflow();
 
-		if (output.attributes() & AB_VARPREC)
+                if (output.attributes() & AB_VARPREC)
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	FIX_SetPrecisionFromDouble($precision(output),$ref(input));\n"
+"        FIX_SetPrecisionFromDouble($precision(output),$ref(input));\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	FIX_DoubleAssign($ref(output),$ref(input));\n"
+"        FIX_DoubleAssign($ref(output),$ref(input));\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
-		// insert code to test overflow flag
-		super.checkOverflow();
+                // insert code to test overflow flag
+                super.checkOverflow();
      }
 }

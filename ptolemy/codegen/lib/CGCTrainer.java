@@ -105,8 +105,8 @@ return 1;
     public void  generatePreinitializeCode() {
 
 if (train.resolvedType() == FIX) {
-			super.initCode();
-		}
+                        super.initCode();
+                }
      }
 
     /**
@@ -114,15 +114,15 @@ if (train.resolvedType() == FIX) {
     public void  begin() {
 
 // handle precisions for fix types
-		if (train.resolvedType() == FIX) {
+                if (train.resolvedType() == FIX) {
 
-			// if the precision for the output port is not defined
-			// by the successor star, the precisions of the input
-			// ports are passed through to the output ports
+                        // if the precision for the output port is not defined
+                        // by the successor star, the precisions of the input
+                        // ports are passed through to the output ports
 
-			if (!output.precision().isValid())
-				output.setAttributes(A_VARPREC);
-		}
+                        if (!output.precision().isValid())
+                                output.setAttributes(A_VARPREC);
+                }
      }
 
     /**
@@ -137,53 +137,53 @@ count = 0;
     public void  generateFireCode() {
 
 // check for fix types
-		if (train.resolvedType() == FIX) {
+                if (train.resolvedType() == FIX) {
 
-			// if we use variable precision representation,
-			// set the precision of the output port from
-			// the source
-			if (output.attributes() & AB_VARPREC) {
-
-{ StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	if ($ref(count) < $val(trainLength)) {\n"
-"		$precision(output).len  = FIX_GetLength($ref(train));\n"
-"		$precision(output).intb = FIX_GetIntBits($ref(train));\n"
-"		FIX_Assign($ref(output),$ref(train));\n"
-"		$ref(count)++;\n"
-"	} else {\n"
-"		$precision(output).len  = FIX_GetLength($ref(decision));\n"
-"		$precision(output).intb = FIX_GetIntBits($ref(decision));\n"
-"		FIX_Assign($ref(output),$ref(decision));\n"
-"	}\n"
-
-); 	 addCode(_str_);  }
-
-			} else {
+                        // if we use variable precision representation,
+                        // set the precision of the output port from
+                        // the source
+                        if (output.attributes() & AB_VARPREC) {
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	if ($ref(count) < $val(trainLength)) {\n"
-"		FIX_Assign($ref(output),$ref(train));\n"
-"		$ref(count)++;\n"
-"	} else {\n"
-"		FIX_Assign($ref(output),$ref(decision));\n"
-"	}\n"
+"        if ($ref(count) < $val(trainLength)) {\n"
+"                $precision(output).len  = FIX_GetLength($ref(train));\n"
+"                $precision(output).intb = FIX_GetIntBits($ref(train));\n"
+"                FIX_Assign($ref(output),$ref(train));\n"
+"                $ref(count)++;\n"
+"        } else {\n"
+"                $precision(output).len  = FIX_GetLength($ref(decision));\n"
+"                $precision(output).intb = FIX_GetIntBits($ref(decision));\n"
+"                FIX_Assign($ref(output),$ref(decision));\n"
+"        }\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
-			}
-
-		} else {
+                        } else {
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	if ($ref(count) < $val(trainLength)) {\n"
-"		$ref(output) = $ref(train);\n"
-"		$ref(count)++;\n"
-"	} else {\n"
-"		$ref(output) = $ref(decision);\n"
-"	}\n"
+"        if ($ref(count) < $val(trainLength)) {\n"
+"                FIX_Assign($ref(output),$ref(train));\n"
+"                $ref(count)++;\n"
+"        } else {\n"
+"                FIX_Assign($ref(output),$ref(decision));\n"
+"        }\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
-		}
+                        }
+
+                } else {
+
+{ StringBuffer _str_ = new StringBuffer(); _str_.append(
+"        if ($ref(count) < $val(trainLength)) {\n"
+"                $ref(output) = $ref(train);\n"
+"                $ref(count)++;\n"
+"        } else {\n"
+"                $ref(output) = $ref(decision);\n"
+"        }\n"
+
+);          addCode(_str_);  }
+
+                }
      }
 }

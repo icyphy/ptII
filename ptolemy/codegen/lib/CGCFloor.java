@@ -73,9 +73,9 @@ addCode(floor);
     ////                     Codeblocks                     ////
 
     public String floor =
-        "		double t = (double)$ref(input);\n"
-        + "		int it = (int)t;\n"
-        + "		// handle rounding towards 0 on some processors\n"
-        + "		if (it > t) it -= 1;\n"
-        + "		$ref(output) = it;\n";
+        "                double t = (double)$ref(input);\n"
+        + "                int it = (int)t;\n"
+        + "                // handle rounding towards 0 on some processors\n"
+        + "                if (it > t) it -= 1;\n"
+        + "                $ref(output) = it;\n";
 }

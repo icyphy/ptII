@@ -148,26 +148,26 @@ public class CGCBiquad extends ClassicCGCActor {
     ////                     Codeblocks                     ////
 
     public String mainDecl =
-    "	  double $starSymbol(filtertaps)[5];\n";
+    "          double $starSymbol(filtertaps)[5];\n";
 
     public String settapDef =
-    "	  $starSymbol(filtertaps)[0]=$val(d1);\n"
-    + "	  $starSymbol(filtertaps)[1]=$val(d2);\n"
-    + "	  $starSymbol(filtertaps)[2]=$val(n0);\n"
-    + "	  $starSymbol(filtertaps)[3]=$val(n1);\n"
-    + "	  $starSymbol(filtertaps)[4]=$val(n2);\n";
+    "          $starSymbol(filtertaps)[0]=$val(d1);\n"
+    + "          $starSymbol(filtertaps)[1]=$val(d2);\n"
+    + "          $starSymbol(filtertaps)[2]=$val(n0);\n"
+    + "          $starSymbol(filtertaps)[3]=$val(n1);\n"
+    + "          $starSymbol(filtertaps)[4]=$val(n2);\n";
 
     public String localDecl =
-    "	  double nextstate,out;\n";
+    "          double nextstate,out;\n";
 
     public String iirfilter =
-    "	  nextstate = $ref(input) - $starSymbol(filtertaps)[0] *\n"
-    + "	    (double)$ref(state1) - $starSymbol(filtertaps)[1] *\n"
-    + "	    (double)$ref(state2);\n"
-    + "	  out = nextstate * $starSymbol(filtertaps)[2] +\n"
-    + "	    (double)$ref(state1) * $starSymbol(filtertaps)[3] +\n"
-    + "	    (double)$ref(state2) * $starSymbol(filtertaps)[4];\n"
-    + "	  $ref(output)=out;\n"
-    + "	  $ref(state2)=$ref(state1);\n"
-    + "	  $ref(state1)=nextstate;\n";
+    "          nextstate = $ref(input) - $starSymbol(filtertaps)[0] *\n"
+    + "            (double)$ref(state1) - $starSymbol(filtertaps)[1] *\n"
+    + "            (double)$ref(state2);\n"
+    + "          out = nextstate * $starSymbol(filtertaps)[2] +\n"
+    + "            (double)$ref(state1) * $starSymbol(filtertaps)[3] +\n"
+    + "            (double)$ref(state2) * $starSymbol(filtertaps)[4];\n"
+    + "          $ref(output)=out;\n"
+    + "          $ref(state2)=$ref(state1);\n"
+    + "          $ref(state1)=nextstate;\n";
 }

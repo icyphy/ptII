@@ -135,10 +135,10 @@ public class CGCFix extends ClassicCGCActor {
 
     public String report_overflow (String      starName) {
         return
-            "	if ($ref(ov_cnt)) {\n"
-            + "		double percentage = (100.0*$ref(ov_cnt)) / ($ref(ck_cnt) ? $ref(ck_cnt):1.0);\n"
-            + "		fprintf(stderr, \"star " + starName + ": experienced overflow in %d out of %d fixed-point calculations checked (%.1f%%)\\n\",\n"
-            + "			$ref(ov_cnt), $ref(ck_cnt), percentage);\n"
-            + "	}\n";
+            "        if ($ref(ov_cnt)) {\n"
+            + "                double percentage = (100.0*$ref(ov_cnt)) / ($ref(ck_cnt) ? $ref(ck_cnt):1.0);\n"
+            + "                fprintf(stderr, \"star " + starName + ": experienced overflow in %d out of %d fixed-point calculations checked (%.1f%%)\\n\",\n"
+            + "                        $ref(ov_cnt), $ref(ck_cnt), percentage);\n"
+            + "        }\n";
     }
 }

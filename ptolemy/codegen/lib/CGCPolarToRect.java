@@ -102,9 +102,9 @@ addCode(body);
     ////                     Codeblocks                     ////
 
     public String body =
-        "	double m,p;\n"
-        + "	m = $ref(magnitude);\n"
-        + "	p = $ref(phase);\n"
-        + "	$ref(x) = m * cos(p);\n"
-        + "	$ref(y) = m * sin(p);\n";
+        "        double m,p;\n"
+        + "        m = $ref(magnitude);\n"
+        + "        p = $ref(phase);\n"
+        + "        $ref(x) = m * cos(p);\n"
+        + "        $ref(y) = m * sin(p);\n";
 }

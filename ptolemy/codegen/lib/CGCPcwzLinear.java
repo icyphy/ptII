@@ -95,15 +95,15 @@ public class CGCPcwzLinear extends ClassicCGCActor {
     public void  begin() {
 
 // Check to make sure that x values are increasing
-	  double previous = breakpoints[0].real();
-	  for (int i = 1; i < breakpoints.size(); i++) {
-	    if (breakpoints[i].real() <= previous) {
-	      throw new IllegalActionException(this,"Breakpoints are not increasing in x");
-	      return;
-	    } else {
-	      previous = breakpoints[i].real();
-	    }
-	  }
+          double previous = breakpoints[0].real();
+          for (int i = 1; i < breakpoints.size(); i++) {
+            if (breakpoints[i].real() <= previous) {
+              throw new IllegalActionException(this,"Breakpoints are not increasing in x");
+              return;
+            } else {
+              previous = breakpoints[i].real();
+            }
+          }
      }
 
     /**
@@ -116,28 +116,28 @@ addCode(lookup);
     ////                     Codeblocks                     ////
 
     public String lookup =
-        "	  double in, x1, x2, y1, y2;\n"
-        + "	  int i, ind, sz;\n"
-        + "	  in = $ref(input);\n"
-        + "	  if (in < $ref(breakpoints,0).real) {\n"
-        + "	    $ref(output) = $ref(breakpoints,0).imag;\n"
-        + "	  } else {\n"
-        + "	    ind = 0;\n"
-        + "	    sz = $size(breakpoints);\n"
-        + "	    for (i = 1; i < sz; i++) {\n"
-        + "	      if (in < $ref(breakpoints,i).real) {\n"
-        + "		x1 = $ref(breakpoints,i-1).real;\n"
-        + "		y1 = $ref(breakpoints,i-1).imag;\n"
-        + "		x2 = $ref(breakpoints,i).real;\n"
-        + "		y2 = $ref(breakpoints,i).imag;\n"
-        + "		$ref(output) = y1 + (y2 - y1)*(in - x1)/(x2 - x1);\n"
-        + "		ind = 1;\n"
-        + "		break;\n"
-        + "	      }\n"
-        + "	    }\n"
-        + "	    if (!ind) {\n"
-        + "	      sz--;\n"
-        + "	      $ref(output) = $ref(breakpoints,sz).imag;\n"
-        + "	    }\n"
-        + "	  }\n";
+        "          double in, x1, x2, y1, y2;\n"
+        + "          int i, ind, sz;\n"
+        + "          in = $ref(input);\n"
+        + "          if (in < $ref(breakpoints,0).real) {\n"
+        + "            $ref(output) = $ref(breakpoints,0).imag;\n"
+        + "          } else {\n"
+        + "            ind = 0;\n"
+        + "            sz = $size(breakpoints);\n"
+        + "            for (i = 1; i < sz; i++) {\n"
+        + "              if (in < $ref(breakpoints,i).real) {\n"
+        + "                x1 = $ref(breakpoints,i-1).real;\n"
+        + "                y1 = $ref(breakpoints,i-1).imag;\n"
+        + "                x2 = $ref(breakpoints,i).real;\n"
+        + "                y2 = $ref(breakpoints,i).imag;\n"
+        + "                $ref(output) = y1 + (y2 - y1)*(in - x1)/(x2 - x1);\n"
+        + "                ind = 1;\n"
+        + "                break;\n"
+        + "              }\n"
+        + "            }\n"
+        + "            if (!ind) {\n"
+        + "              sz--;\n"
+        + "              $ref(output) = $ref(breakpoints,sz).imag;\n"
+        + "            }\n"
+        + "          }\n";
 }

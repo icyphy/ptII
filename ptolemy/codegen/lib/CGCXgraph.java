@@ -162,53 +162,53 @@ return 7;
     public void  wrapup() {
 
 // close the files
-		addCode(closeFile);
+                addCode(closeFile);
 
-		StringBuffer cmd = new StringBuffer();
-		cmd.append("( ");
+                StringBuffer cmd = new StringBuffer();
+                cmd.append("( ");
 
-		// save File
-		String sf = saveFile;
-		if (sf != null && *sf != 0) {
-			cmd.append("/bin/cat ");
-			cmd << target()->name();
-			cmd.append("_$starSymbol(temp)" + " >> ");
-			cmd.append(sf  + "; /bin/echo \"\" >> " + sf  + "; ");
-		}
+                // save File
+                String sf = saveFile;
+                if (sf != null && *sf != 0) {
+                        cmd.append("/bin/cat ");
+                        cmd << target()->name();
+                        cmd.append("_$starSymbol(temp)" + " >> ");
+                        cmd.append(sf  + "; /bin/echo \"\" >> " + sf  + "; ");
+                }
 
-		cmd.append("pxgraph ");
+                cmd.append("pxgraph ");
 
-		// put title on command line
+                // put title on command line
 
-		String ttl = title;
+                String ttl = title;
 
-		if (ttl && *ttl) {
-			if (strchr(ttl,'\'')) {
-				cmd.append("-t \"" + ttl  + "\" ");
-			}
-			else {
-				cmd.append("-t '" + ttl  + "' ");
-			}
-		}
+                if (ttl && *ttl) {
+                        if (strchr(ttl,'\'')) {
+                                cmd.append("-t \"" + ttl  + "\" ");
+                        }
+                        else {
+                                cmd.append("-t '" + ttl  + "' ");
+                        }
+                }
 
-		String opt = options;
+                String opt = options;
 
-		// put options on the command line
-		if (opt && *opt) {
-			cmd.append(opt  + " ");
-		}
+                // put options on the command line
+                if (opt && *opt) {
+                        cmd.append(opt  + " ");
+                }
 
-		// put file name
-		cmd.append(target()->name()  + "_$starSymbol(temp)");
+                // put file name
+                cmd.append(target()->name()  + "_$starSymbol(temp)");
 
-		// remove temporary files
-		cmd.append("; /bin/rm -f " + target()->name());
-		cmd.append("_$starSymbol(temp)");
+                // remove temporary files
+                cmd.append("; /bin/rm -f " + target()->name());
+                cmd.append("_$starSymbol(temp)");
 
-		cmd.append(") &");
+                cmd.append(") &");
 StringBuffer out = new StringBuffer("    system(\"");
-		out.append(sanitizeString(cmd)  + "\");\n");
-		addCode(out);
+                out.append(sanitizeString(cmd)  + "\");\n");
+                addCode(out);
      }
 
     /**
@@ -218,10 +218,10 @@ StringBuffer out = new StringBuffer("    system(\"");
 addDeclaration("    FILE* $starSymbol(fp);");
                 addInclude("<stdio.h>");
 StringBuffer w = new StringBuffer("    if (!($starSymbol(fp) = fopen(\"");
-		w.append(target()->name()  + "_$starSymbol(temp)");
-		w.append("\",\"w\")))");
-		addCode(w);
-		addCode(err);
+                w.append(target()->name()  + "_$starSymbol(temp)");
+                w.append("\",\"w\")))");
+                addCode(w);
+                addCode(err);
      }
 
     /**
@@ -236,11 +236,11 @@ index = xInit;
     public void  generateFireCode() {
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	if (++$ref(count) >= $val(ignore)) \n"
-"		fprintf($starSymbol(fp),\"%g %g\\n\",$ref(index),$ref(input));\n"
-"	$ref(index) += $val(xUnits);"
+"        if (++$ref(count) >= $val(ignore)) \n"
+"                fprintf($starSymbol(fp),\"%g %g\\n\",$ref(index),$ref(input));\n"
+"        $ref(index) += $val(xUnits);"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
      }
 
@@ -249,46 +249,46 @@ index = xInit;
     protected String sanitizeString (StringList s) {
 
 // quick implementation of a string buffer
-			static class Buffer {
-			   public:
-				Buffer()  { buf = null; vsize = psize = 0; }
-			// omitting the destructor since GCC 2.5.8 reports an internal
-			// compiler error
-			//	~Buffer() { if (buf)  free(buf); }
+                        static class Buffer {
+                           public:
+                                Buffer()  { buf = null; vsize = psize = 0; }
+                        // omitting the destructor since GCC 2.5.8 reports an internal
+                        // compiler error
+                        //        ~Buffer() { if (buf)  free(buf); }
 
-				void initialize() {
-				    if (buf)  free(buf), buf = null;
-				    vsize = psize = 0;
-				}
+                                void initialize() {
+                                    if (buf)  free(buf), buf = null;
+                                    vsize = psize = 0;
+                                }
 
-				void append(char c) {
-				    if (vsize >= psize)
-					    buf = (char*) (buf ? realloc(buf, psize += 1024)
-							       : malloc(psize += 1024));
-				    buf[vsize++] = c;
-				}
+                                void append(char c) {
+                                    if (vsize >= psize)
+                                            buf = (char*) (buf ? realloc(buf, psize += 1024)
+                                                               : malloc(psize += 1024));
+                                    buf[vsize++] = c;
+                                }
 
-				operator String ()
-				{
-				    if (vsize == 0 || buf[vsize-1])
-					append('\0');
-				    return buf;
-				}
-			   private:
-				// the string buffer
-				char* buf;
-				// virtual/physical buffer size
-				int vsize, psize;
-			} buffer;
+                                operator String ()
+                                {
+                                    if (vsize == 0 || buf[vsize-1])
+                                        append('\0');
+                                    return buf;
+                                }
+                           private:
+                                // the string buffer
+                                char* buf;
+                                // virtual/physical buffer size
+                                int vsize, psize;
+                        } buffer;
 
-			buffer.initialize();
+                        buffer.initialize();
 
-			for (String sp=s; *sp; sp++) {
-			    if (*sp == '\"')
-				    buffer.append('\\');
-			    buffer.append(*sp);
-			}
-			return (String) buffer;
+                        for (String sp=s; *sp; sp++) {
+                            if (*sp == '\"')
+                                    buffer.append('\\');
+                            buffer.append(*sp);
+                        }
+                        return (String) buffer;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -297,7 +297,7 @@ index = xInit;
     public String err =
         "    {\n"
         + "        fprintf(stderr,\"ERROR: cannot open output file for Xgraph star.\\n\");\n"
-        + "	exit(1);\n"
+        + "        exit(1);\n"
         + "    }\n";
 
     public String closeFile =

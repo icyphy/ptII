@@ -77,21 +77,21 @@ return input.numberPorts() + 1;
     public void  generateFireCode() {
 
 addCode(startOp);
-	for (int i = 2; i <= input.numberPorts(); i++)
-	    addCode(doOp(i));
-	addCode(saveResult);
+        for (int i = 2; i <= input.numberPorts(); i++)
+            addCode(doOp(i));
+        addCode(saveResult);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String startOp =
-        "	int sum = $ref(input#1);\n";
+        "        int sum = $ref(input#1);\n";
 
     public String doOp (int i) {
         return
-        "	sum *= $ref(input#" + i + ");\n";
+        "        sum *= $ref(input#" + i + ");\n";
     }
 
     public String saveResult =
-        "	$ref(output) = sum;\n";
+        "        $ref(output) = sum;\n";
 }

@@ -100,8 +100,8 @@ addCode(out);
     ////                     Codeblocks                     ////
 
     public String out =
-        "	int i;\n"
-        + "	for (i = 0; i < $val(numTimes); i++) {\n"
-        + "		$ref(output, i) = $ref(input);\n"
-        + "	}\n";
+        "        int i;\n"
+        + "        for (i = 0; i < $val(numTimes); i++) {\n"
+        + "                $ref(output, i) = $ref(input);\n"
+        + "        }\n";
 }

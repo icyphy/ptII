@@ -63,11 +63,11 @@ Level of the quantization from 0 to N-1
     public void  generateFireCode() {
 
 CGCQuant.go();
-		addCode(writeStep);
+                addCode(writeStep);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String writeStep =
-        "	$ref(stepNumber) = mid;\n";
+        "        $ref(stepNumber) = mid;\n";
 }

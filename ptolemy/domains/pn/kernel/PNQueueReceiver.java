@@ -130,7 +130,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
      *   is not an instance of PNDirector.
      */
     public void setContainer(IOPort port) throws IllegalActionException {
-    	super.setContainer(port);
+            super.setContainer(port);
         Actor actor = (Actor) port.getContainer();
         Director director;
         // For a composite actor,
@@ -145,7 +145,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
             director = actor.getDirector();
         }
         if (!(director instanceof PNDirector)) {
-        	throw new IllegalActionException(port,
+                throw new IllegalActionException(port,
                     "Cannot use an instance of PNQueueReceiver " +
                     "since the director is not a PNDirector.");
         }
@@ -364,7 +364,7 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
         // receiver, but since it is called by synchronized methods in
         // the director, that can cause deadlock.
         synchronized (_director) {
-        	return _readBlocked;
+                return _readBlocked;
         }
     }
 

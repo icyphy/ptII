@@ -221,13 +221,13 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
             File sourceFile = directoryOrURL.asFile();
             if (sourceFile.isDirectory()) {
                 if (_debugging) {
-                	_debug("Reading directory.");
+                        _debug("Reading directory.");
                 }
                 File[] files = sourceFile.listFiles(this);
                 ArrayList result = new ArrayList();
                 for (int i = 0; i < files.length; i++) {
                     if (filesOnly && !files[i].isFile()) {
-                    	continue;
+                            continue;
                     }
                     if (directoriesOnly && !files[i].isDirectory()) {
                         continue;
@@ -237,7 +237,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                         if (_debugging) {
                             _debug("Path: " + path);
                         }
-                    	result.add(new StringToken(path));
+                            result.add(new StringToken(path));
                     }
                 }
                 if (result.size() == 0) {
@@ -246,7 +246,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                 }
                 StringToken[] resultArray = new StringToken[result.size()];
                 for (int i = 0; i < resultArray.length; i++) {
-                	resultArray[i] = (StringToken)result.get(i);
+                        resultArray[i] = (StringToken)result.get(i);
                 }
                 output.broadcast(new ArrayToken(resultArray));
             } else if (sourceFile.isFile()) {
@@ -284,7 +284,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
             throws IOException, IllegalActionException {
         // Handle urls here.
         if (_debugging) {
-        	_debug("Reading URL: " + sourceURL);
+                _debug("Reading URL: " + sourceURL);
         }
         URLConnection urlConnection = sourceURL.openConnection();
         String contentType = urlConnection.getContentType();
@@ -326,7 +326,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         while ((line = in.readLine()) != null) {
             line = line.trim();
             if (_debugging) {
-            	_debug(line);
+                    _debug(line);
             }
             if (line.startsWith("<BODY")
                     || line.startsWith("<body")) {
@@ -352,7 +352,7 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                                     // the same as the last token.
                                     String reference = target;
                                     if (reference.length() > 20) {
-                                    	reference = target.substring(0, 20);
+                                            reference = target.substring(0, 20);
                                     }
                                     if (!token.startsWith(reference)) {
                                         sawHREF = false;
@@ -361,12 +361,12 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                                             // Make sure directoryOrURL ends with a slash.
                                             String base = directoryOrURL.stringValue();
                                             if (!base.endsWith("/")) {
-                                            	base = base + "/";
+                                                    base = base + "/";
                                             }
                                             // FIXME: Is there any way to tell whether
                                             // the result is a directory or file?
                                             resultsList.add(new StringToken(
-                                            		base + target));
+                                                            base + target));
                                         }
                                         sawHREF = false;
                                     }
@@ -379,11 +379,11 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         }
         in.close();
         if (_debugging) {
-        	_debug("----- end of listing.");
+                _debug("----- end of listing.");
             _debug("----- extracted results:");
             Iterator results = resultsList.iterator();
             while (results.hasNext()) {
-            	_debug(((StringToken)results.next()).stringValue());
+                    _debug(((StringToken)results.next()).stringValue());
             }
         }
         StringToken[] results = new StringToken[resultsList.size()];

@@ -151,34 +151,34 @@ public class CGCLMS extends CGCFIR {
      */
     public void  generateFireCode() {
         //# line 88 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCLMS.pl"
-        addCode(bodyDecl);	// from FIR
+        addCode(bodyDecl);        // from FIR
         addCode(update);
-        addCode(body);		// from FIR
+        addCode(body);                // from FIR
     }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String update =
-    "	int ix;\n"
-    + "	/* First update the taps */\n"
-    + "	double e = $ref(error);\n"
-    + "	int index = $val(errorDelay)*$val(decimation) + $val(decimationPhase);\n"
+    "        int ix;\n"
+    + "        /* First update the taps */\n"
+    + "        double e = $ref(error);\n"
+    + "        int index = $val(errorDelay)*$val(decimation) + $val(decimationPhase);\n"
     + "\n"
-    + "	for (ix = 0; ix < $val(tapSize); ix++) {\n"
-    + "		$ref2(taps,ix) = $ref2(taps,ix) +\n"
-    + "			e * $ref2(signalIn,index) * $ref(stepSize);\n"
-    + "		index++;\n"
-    + "	}\n";
+    + "        for (ix = 0; ix < $val(tapSize); ix++) {\n"
+    + "                $ref2(taps,ix) = $ref2(taps,ix) +\n"
+    + "                        e * $ref2(signalIn,index) * $ref(stepSize);\n"
+    + "                index++;\n"
+    + "        }\n";
 
     public String save =
     "    FILE* fp;\n"
     + "    int i;\n"
     + "    if (!(fp = fopen(saveFileName,\"w\"))) {\n"
-    + "	/* File cannot be opened */\n"
-    + "	fprintf(stderr,\"ERROR: Cannot open saveTapsFile for writing:\\n\");\n"
-    + "    	exit(1);\n"
+    + "        /* File cannot be opened */\n"
+    + "        fprintf(stderr,\"ERROR: Cannot open saveTapsFile for writing:\\n\");\n"
+    + "            exit(1);\n"
     + "    }\n"
     + "    for (i = 0; i < $val(tapSize); i++)\n"
-    + "	fprintf(fp, \"%d %g\\n\", i, $ref2(taps,i));\n"
+    + "        fprintf(fp, \"%d %g\\n\", i, $ref2(taps,i));\n"
     + "    fclose(fp);\n";
 }

@@ -12,10 +12,10 @@ public class Unboxing6
     static Token castToken;
 
     public static void main(String args[]) throws IllegalActionException {
-	tokens = new Token[1];
-	tokens[0] = intToken;
-	token = tokens[0];
-	castToken = (IntToken) token;
-	System.out.println("token = " + castToken.toString());
+        tokens = new Token[1];
+        tokens[0] = intToken;
+        token = tokens[0];
+        castToken = (IntToken) token;
+        System.out.println("token = " + castToken.toString());
     }
 }

@@ -108,7 +108,7 @@ return 8;
     public void  generateInitializeCode() throws IllegalActionException {
 
 traceCount= 0-(int)ignore;
-	    super.generateInitializeCode();
+            super.generateInitializeCode();
      }
 
     /**
@@ -117,18 +117,18 @@ traceCount= 0-(int)ignore;
 
 if (((IntToken)((traceLength).getToken())).intValue() > 0) {
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	if ($ref(traceCount) >= $val(traceLength)) {\n"
-"		$ref(traceCount) = 0;\n"
-"		fprintf($starSymbol(fp), \"move \");\n"
-"		$ref(index) = $val(xInit);\n"
-"		$ref(nTracesSoFar)++;\n"
-"	}\n"
-"	$ref(traceCount)++;\n"
-"	if (!$ref(traceCount)) $ref(index) = 0;\n"
+"        if ($ref(traceCount) >= $val(traceLength)) {\n"
+"                $ref(traceCount) = 0;\n"
+"                fprintf($starSymbol(fp), \"move \");\n"
+"                $ref(index) = $val(xInit);\n"
+"                $ref(nTracesSoFar)++;\n"
+"        }\n"
+"        $ref(traceCount)++;\n"
+"        if (!$ref(traceCount)) $ref(index) = 0;\n"
 
-); 	 addCode(_str_);  }
-		}
+);          addCode(_str_);  }
+                }
 
-		super.go();
+                super.go();
      }
 }

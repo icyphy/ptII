@@ -186,8 +186,8 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
      * @exception IllegalActionException If the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
-  	super.postfire();
-  	return _ddi.postfire();
+          super.postfire();
+          return _ddi.postfire();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -359,11 +359,11 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     // Process actor import statements
     private Environment _extendEnvWithImports(
             Environment env, Import[] imports) {
-  	Environment newEnv =
+          Environment newEnv =
             ImportUtil.handleImportList(env, importHandlers, imports);
-  	if (newEnv == null)
+          if (newEnv == null)
             throw new RuntimeException("Failed to process import list.");
-  	return newEnv;
+          return newEnv;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -394,14 +394,14 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     // List of import handlers.
     private static List importHandlers;
     static {
-  	importHandlers = new ArrayList();
-  	importHandlers.add(
+          importHandlers = new ArrayList();
+          importHandlers.add(
                 new EnvironmentFactoryImportHandler(
                         PtolemyPlatform.thePlatform));
-  	importHandlers.add(
+          importHandlers.add(
                 new CalScriptImportHandler(
                         PtolemyPlatform.thePlatform));
-  	importHandlers.add(
+          importHandlers.add(
                 new ClassLoadingImportHandler(
                         PtolemyPlatform.thePlatform,
                         AbstractCalInterpreter.class.getClassLoader()));
@@ -410,11 +410,11 @@ abstract public class AbstractCalInterpreter extends TypedAtomicActor {
     // Map of substitutions from CAL types to Ptolemy types.
     private static Map _typeReplacementMap;
     static {
-  	_typeReplacementMap = new HashMap();
-  	_typeReplacementMap.put("UINT8", "int");
-  	_typeReplacementMap.put("UINT9", "int");
-  	_typeReplacementMap.put("INT19", "int");
-  	_typeReplacementMap.put("positive", "int");
+          _typeReplacementMap = new HashMap();
+          _typeReplacementMap.put("UINT8", "int");
+          _typeReplacementMap.put("UINT9", "int");
+          _typeReplacementMap.put("INT19", "int");
+          _typeReplacementMap.put("positive", "int");
     }
 
     private String _lastGeneratedActorName = null;

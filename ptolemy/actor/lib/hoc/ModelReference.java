@@ -275,7 +275,7 @@ public class ModelReference
             throws IllegalActionException {
         if (attribute == modelFileOrURL) {
             if (_debugging) {
-            	_debug("Setting modelFileOrURL to: " + modelFileOrURL.getExpression());
+                    _debug("Setting modelFileOrURL to: " + modelFileOrURL.getExpression());
             }
             // Open the file and read the MoML to create a model.
             URL url = modelFileOrURL.asURL();

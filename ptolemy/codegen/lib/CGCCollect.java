@@ -71,12 +71,12 @@ public class CGCCollect extends ClassicCGCActor {
     public void  generateInitializeCode() throws IllegalActionException {
 
 MPHIter iter(input);
-		CGCPortHole* p;
-		int loc = 0;
-		while ((p = (CGCPortHole*) iter++) != 0) {
-			output.embed(*p, loc);
-			loc += p->numXfer();
-		}
+                CGCPortHole* p;
+                int loc = 0;
+                while ((p = (CGCPortHole*) iter++) != 0) {
+                        output.embed(*p, loc);
+                        loc += p->numXfer();
+                }
      }
 
     /**

@@ -373,7 +373,7 @@ public class ArrayToken extends AbstractNotConvertibleToken {
       if (selection.getElementType() == BaseType.BOOLEAN) {
           if (selection.length() != length()) {
               throw new IllegalActionException(
-	          "When the argument is an array of booleans, it must have "
+                  "When the argument is an array of booleans, it must have "
               +  "the same length as this array.");
           }
           for (int i = 0; i < selection.length(); i++) {

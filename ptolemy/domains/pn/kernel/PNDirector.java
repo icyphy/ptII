@@ -225,12 +225,12 @@ public class PNDirector extends CompositeProcessDirector {
         // Set the capacity to the default. Note that it will also
         // be set in preinitialize().
         try {
-			int capacity = ((IntToken)initialQueueCapacity.getToken())
+                        int capacity = ((IntToken)initialQueueCapacity.getToken())
                     .intValue();
-			receiver.setCapacity(capacity);
-		} catch (IllegalActionException e) {
-			throw new InternalErrorException(e);
-		}
+                        receiver.setCapacity(capacity);
+                } catch (IllegalActionException e) {
+                        throw new InternalErrorException(e);
+                }
         return receiver;
     }
 
@@ -271,10 +271,10 @@ public class PNDirector extends CompositeProcessDirector {
         int capacity = ((IntToken)parameter.getToken()).intValue();
         ListIterator receivers = _receivers.listIterator();
         while (receivers.hasNext()) {
-        	WeakReference reference = (WeakReference)receivers.next();
+                WeakReference reference = (WeakReference)receivers.next();
             if (reference.get() == null) {
                 // Reference has been garbage collected.
-            	receivers.remove();
+                    receivers.remove();
             } else {
                 PNQueueReceiver receiver = (PNQueueReceiver)reference.get();
                 receiver.clear();

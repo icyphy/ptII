@@ -104,8 +104,8 @@ addCode(cbMain);
     ////                     Codeblocks                     ////
 
     public String cbMain =
-        "		$ref(output) = ($ref(count) < $val(width)) ? $val(height) : 0.0;\n"
-        + "		++$ref(count);\n"
-        + "		if ( $val(period) > 0 && $ref(count) >= $val(period) )\n"
-        + "		    $ref(count) = 0;\n";
+        "                $ref(output) = ($ref(count) < $val(width)) ? $val(height) : 0.0;\n"
+        + "                ++$ref(count);\n"
+        + "                if ( $val(period) > 0 && $ref(count) >= $val(period) )\n"
+        + "                    $ref(count) = 0;\n";
 }

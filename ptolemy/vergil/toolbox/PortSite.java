@@ -204,7 +204,7 @@ public class PortSite extends AbstractSite {
                 }
                 if (!((IOPort)_port).isInput() && ((IOPort)_port).isOutput()) {
                     // Port is an output only.
-                	return 0.0;
+                        return 0.0;
                 }
             }
             // Port is neither an input nor an output,

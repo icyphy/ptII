@@ -120,16 +120,16 @@ high, low, and levels. parameter with initial value "1.0".
     public void  generateInitializeCode() throws IllegalActionException {
 
 if (((IntToken)((levels).getToken())).intValue() <= 0 ) {
-		    throw new IllegalActionException(this, "levels must be positive");
-		}
-		else if (((DoubleToken)((high).getToken())).doubleValue() <= ((DoubleToken)((low).getToken())).doubleValue()) {
-		    throw new IllegalActionException(this,
-				    "quantization range incorrectly ",
-				    "specified: high <= low");
-		}
-		else {
-		    height = (((DoubleToken)((high).getToken())).doubleValue() - ((DoubleToken)((low).getToken())).doubleValue())/(((IntToken)((levels).getToken())).intValue() - 0);
-		}
+                    throw new IllegalActionException(this, "levels must be positive");
+                }
+                else if (((DoubleToken)((high).getToken())).doubleValue() <= ((DoubleToken)((low).getToken())).doubleValue()) {
+                    throw new IllegalActionException(this,
+                                    "quantization range incorrectly ",
+                                    "specified: high <= low");
+                }
+                else {
+                    height = (((DoubleToken)((high).getToken())).doubleValue() - ((DoubleToken)((low).getToken())).doubleValue())/(((IntToken)((levels).getToken())).intValue() - 0);
+                }
      }
 
     /**
@@ -142,21 +142,21 @@ addCode(linquantidx);
     ////                     Codeblocks                     ////
 
     public String linquantidx =
-        "	    	double in = (double)$ref(input);\n"
-        + "		double highvalue = (double)$val(high);\n"
-        + "		double lowvalue = (double)$val(low);\n"
+        "                    double in = (double)$ref(input);\n"
+        + "                double highvalue = (double)$val(high);\n"
+        + "                double lowvalue = (double)$val(low);\n"
         + "\n"
-        + "	    	if ( in >= highvalue ) {\n"
-        + "		    $ref(amplitude) = highvalue;\n"
+        + "                    if ( in >= highvalue ) {\n"
+        + "                    $ref(amplitude) = highvalue;\n"
         + "                    $ref(stepNumber) << (int)$val(levels) - 1;\n"
-        + "		}\n"
-        + "		else if ( in <= lowvalue ) {\n"
-        + "		    $ref(amplitude) = lowvalue;\n"
+        + "                }\n"
+        + "                else if ( in <= lowvalue ) {\n"
+        + "                    $ref(amplitude) = lowvalue;\n"
         + "                    $ref(stepNumber) = 0;\n"
-        + "		}\n"
-        + "		else {\n"
-        + "		    int step = (int)((in - lowvalue)/((double)$val(height)));\n"
-        + "		    $ref(stepNumber) = step;\n"
-        + "        	    $ref(amplitude) = (double)(lowvalue + step * ((double)$val(height)));\n"
-        + "		}\n";
+        + "                }\n"
+        + "                else {\n"
+        + "                    int step = (int)((in - lowvalue)/((double)$val(height)));\n"
+        + "                    $ref(stepNumber) = step;\n"
+        + "                    $ref(amplitude) = (double)(lowvalue + step * ((double)$val(height)));\n"
+        + "                }\n";
 }

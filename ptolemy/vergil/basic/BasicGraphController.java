@@ -544,7 +544,7 @@ public abstract class BasicGraphController
             // NOTE: Between Ptolemy 3.0 and 5.0, this would ignore
             // the source argument, even if it was non-null.  Why?
             // EAL 2/5/05.
-        	if (source != null) {
+                if (source != null) {
                 Object object = source.getUserObject();
                 return (NamedObj)getController().getGraphModel().getSemanticObject(object);
             } else {

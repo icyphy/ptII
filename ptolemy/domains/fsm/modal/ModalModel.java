@@ -210,7 +210,7 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
      *   the change was not done via a ChangeRequest.
      */
     public void changeExecuted(ChangeRequest change) {
-    	// Ignore... Nothing to do.
+            // Ignore... Nothing to do.
     }
 
     /** React to a change request has resulted in an exception.
@@ -238,15 +238,15 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         newModel._controller = (FSMActor)newModel.getEntity("_Controller");
 
         try {
-			// Validate the directorClass parameter so that the director
-			// gets created in the clone.
-			newModel.directorClass.validate();
+                        // Validate the directorClass parameter so that the director
+                        // gets created in the clone.
+                        newModel.directorClass.validate();
             newModel.executeChangeRequests();
-		} catch (IllegalActionException e) {
-			throw new CloneNotSupportedException(
+                } catch (IllegalActionException e) {
+                        throw new CloneNotSupportedException(
                     "Failed to validate the director of the clone of "
                     + getFullName());
-		}
+                }
         return newModel;
     }
 

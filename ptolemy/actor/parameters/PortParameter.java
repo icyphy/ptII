@@ -355,7 +355,7 @@ public class PortParameter extends Parameter {
             Token token = port.get(0);
             setCurrentValue(token);
             if (_debugging) {
-            	_debug("Updated parameter value to: " + token);
+                    _debug("Updated parameter value to: " + token);
             }
         }
     }

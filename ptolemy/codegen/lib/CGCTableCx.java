@@ -98,22 +98,22 @@ addInclude("<stdio.h>");
     public void  generateFireCode() {
 
 addCode(readIdx);
-		if (runTimeCheck) addCode(check);
-		addCode(lookup);
+                if (runTimeCheck) addCode(check);
+                addCode(lookup);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String readIdx =
-        "		int idx = $ref(input);\n";
+        "                int idx = $ref(input);\n";
 
     public String check =
-        "		if (idx < 0 || idx >= $size(values)) {\n"
-        + "			fprintf(stderr, \"ERROR: input to CGCTable out of range\\n\");\n"
-        + "			exit(1);\n"
-        + "		}\n";
+        "                if (idx < 0 || idx >= $size(values)) {\n"
+        + "                        fprintf(stderr, \"ERROR: input to CGCTable out of range\\n\");\n"
+        + "                        exit(1);\n"
+        + "                }\n";
 
     public String lookup =
-        "		$ref(output).real = $ref2(values,idx).real;\n"
-        + "		$ref(output).imag = $ref2(values,idx).imag;\n";
+        "                $ref(output).real = $ref2(values,idx).real;\n"
+        + "                $ref(output).imag = $ref2(values,idx).imag;\n";
 }

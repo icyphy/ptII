@@ -103,8 +103,8 @@ super.initCode();
     /* variable for the sync codeblock below and its initialization */
     if ((int)aheadLimit >= 0 )
        {
-	addDeclaration(syncCounter);
-	addCode("$starSymbol(count) = 0; ");
+        addDeclaration(syncCounter);
+        addCode("$starSymbol(count) = 0; ");
        }
     /* Declare buffer type and size depending on the encoding */
     if (encodingType.equalsIgnoreCase("linear16")) {
@@ -118,11 +118,11 @@ super.initCode();
     /* Setting the audio driver if the output file is /dev/audio */
     if (strcasecmp(fileName, "/dev/audio") == 0)
       {
-	/* audio_setup : to set encodingType, sampleRate and channels */
-	addCode("$sharedSymbol(CGCAudioBase,audio_setup)($starSymbol(file), $ref(encodingType), $ref(sampleRate), $ref(channels)); ");
-	/* audio_control : to set portType, volume and balance */
-	addCode("$sharedSymbol(CGCAudioBase,audio_control)($starSymbol(file), $ref(portType), $ref(volume), $ref(balance), 0); ");
-	addCode("$sharedSymbol(CGCAudioBase,audio_balance)($starSymbol(file), $ref(balance)); ");
+        /* audio_setup : to set encodingType, sampleRate and channels */
+        addCode("$sharedSymbol(CGCAudioBase,audio_setup)($starSymbol(file), $ref(encodingType), $ref(sampleRate), $ref(channels)); ");
+        /* audio_control : to set portType, volume and balance */
+        addCode("$sharedSymbol(CGCAudioBase,audio_control)($starSymbol(file), $ref(portType), $ref(volume), $ref(balance), 0); ");
+        addCode("$sharedSymbol(CGCAudioBase,audio_balance)($starSymbol(file), $ref(balance)); ");
       }
      }
 
@@ -142,17 +142,17 @@ if (encodingType.equalsIgnoreCase("linear16")) {
     public void  generateFireCode() {
 
 if (encodingType.equalsIgnoreCase("linear16")) {
-	addCode(convertLinear);
+        addCode(convertLinear);
     } else {
-	addCode(convertUlaw);
+        addCode(convertUlaw);
     }
     if ((int)aheadLimit >= 0 ) {
-	if (encodingType.equalsIgnoreCase("linear16")) {
-	    addCode(syncLinear16);
-    	} else {
-	    addCode(syncUlaw);
-    	}
-	}
+        if (encodingType.equalsIgnoreCase("linear16")) {
+            addCode(syncLinear16);
+            } else {
+            addCode(syncUlaw);
+            }
+        }
     addCode(setbufptr);
     addCode(write);
      }
@@ -169,7 +169,7 @@ if (encodingType.equalsIgnoreCase("linear16")) {
         + "    for (i=0; i <($val(blockSize)/2); i++) {\n"
         + "      /* Convert from floating point [-1.0,1.0] to 16-bit sample */\n"
         + "     $starSymbol(buffer)[$val(blockSize)/2-1-i] \n"
-        + "	= (short)($ref(input, i)*32767.0);\n"
+        + "        = (short)($ref(input, i)*32767.0);\n"
         + "    }\n"
         + "  }";
 
@@ -182,7 +182,7 @@ if (encodingType.equalsIgnoreCase("linear16")) {
         + "      short sample16 = (short)($ref(input,i) * 32767.0);\n"
         + "      /* Convert 16-bit sample to PCM mu-law */\n"
         + "      $starSymbol(buffer)[$val(blockSize)-1-i] = \n"
-        + "	      Ptdsp_LinearToPCMMuLaw(sample16);\n"
+        + "              Ptdsp_LinearToPCMMuLaw(sample16);\n"
         + "    }\n"
         + "  }";
 }

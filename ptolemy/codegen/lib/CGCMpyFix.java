@@ -115,8 +115,8 @@ the output is set to its maximum value (or minimum for negative magnitudes). par
 super.generateInitializeCode();
 
                 if (!((IntToken)((ArrivingPrecision).getToken())).intValue())
-		    input.setPrecision(InputPrecision);
-		output.setPrecision(OutputPrecision);
+                    input.setPrecision(InputPrecision);
+                output.setPrecision(OutputPrecision);
      }
 
     /**
@@ -124,32 +124,32 @@ super.generateInitializeCode();
     public void  generateFireCode() {
 
 // insert code to clear overflow flag
-		super.clearOverflow();
+                super.clearOverflow();
 
-		// avoid FIX_Assign if possible
-		if (input.numberPorts() == 2)
+                // avoid FIX_Assign if possible
+                if (input.numberPorts() == 2)
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	FIX_Mul($ref(output), $ref(input#1),$ref(input#2));\n"
+"        FIX_Mul($ref(output), $ref(input#1),$ref(input#2));\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
-		else {
-			// initialize the product
+                else {
+                        // initialize the product
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	FIX_Assign($ref(output),$ref(input#1));\n"
+"        FIX_Assign($ref(output),$ref(input#1));\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
-			for (int i=2; i <= input.numberPorts(); i++) {
-			    index = i;
+                        for (int i=2; i <= input.numberPorts(); i++) {
+                            index = i;
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	FIX_Mul($ref(output), $ref(output),$ref(input#index));\n"
+"        FIX_Mul($ref(output), $ref(output),$ref(input#index));\n"
 
-); 	 addCode(_str_);  }
-			}
-		}
+);          addCode(_str_);  }
+                        }
+                }
 
-		// insert code to test overflow flag
-		super.checkOverflow();
+                // insert code to test overflow flag
+                super.checkOverflow();
      }
 }

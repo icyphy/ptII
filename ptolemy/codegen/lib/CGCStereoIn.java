@@ -49,7 +49,7 @@ public class CGCStereoIn extends CGCAudioBase {
         right = new ClassicPort(this, "right", false, true);
         right.setTypeEquals(BaseType.DOUBLE);
 
-        // If set to 1, the star sends out 2 samples of data per\n	     firing IntState
+        // If set to 1, the star sends out 2 samples of data per\n             firing IntState
         homogeneous = new Parameter(this, "homogeneous");
         homogeneous.setExpression("0");
 
@@ -75,7 +75,7 @@ Right channel output Range : -1.0 to 1.0
 
     /**
      *  If set to 1, the star sends out 2 samples of data per
-	     firing parameter with initial value "0".
+             firing parameter with initial value "0".
      */
      public Parameter homogeneous;
 
@@ -108,22 +108,22 @@ super.initCode();
     /* Set the audio driver if file is "/dev/audio" */
     if (strcasecmp(fileName, "/dev/audio") == 0)
       {
-	/* audio_setup : to set encodingType, sampleRate and channels */
+        /* audio_setup : to set encodingType, sampleRate and channels */
 StringBuffer setupParameters = new StringBuffer("$sharedSymbol(CGCAudioBase,audio_setup)");
-	setupParameters   + "($starSymbol(file), "
-			  + "\"" + encodingType  + "\", "
-			 <<  sampleRate  + ", "
-			.append( channels    + ");\n");
+        setupParameters   + "($starSymbol(file), "
+                          + "\"" + encodingType  + "\", "
+                         <<  sampleRate  + ", "
+                        .append( channels    + ");\n");
 
-	addCode(setupParameters);
-	/* audio_control : to set portType, volume and balance */
+        addCode(setupParameters);
+        /* audio_control : to set portType, volume and balance */
 StringBuffer controlParameters = new StringBuffer("$sharedSymbol(CGCAudioBase,audio_control)");
-	controlParameters  + "($starSymbol(file), "
-			   + "\"" + portType  + "\", "
-			  <<  volume  + ", "
-			  <<  balance  + ", "
-			 .append("1);\n");
-	addCode(controlParameters);
+        controlParameters  + "($starSymbol(file), "
+                           + "\"" + portType  + "\", "
+                          <<  volume  + ", "
+                          <<  balance  + ", "
+                         .append("1);\n");
+        addCode(controlParameters);
       }
      }
 
@@ -178,11 +178,11 @@ if (homogeneous == 1) {
         + "    {\n"
         + "      int i, j;\n"
         + "      for (i=0; i <($val(blockSize)/4); i++) {\n"
-        + "	j = 2*i;\n"
-        + "	$ref(left,($val(blockSize)/4) - 1 - i) = \n"
-        + "	  $starSymbol(buffer)[j] /32768.0;\n"
-        + "	$ref(right,($val(blockSize)/4) - 1 - i) = \n"
-        + "	  $starSymbol(buffer)[j+1] /32768.0;\n"
+        + "        j = 2*i;\n"
+        + "        $ref(left,($val(blockSize)/4) - 1 - i) = \n"
+        + "          $starSymbol(buffer)[j] /32768.0;\n"
+        + "        $ref(right,($val(blockSize)/4) - 1 - i) = \n"
+        + "          $starSymbol(buffer)[j+1] /32768.0;\n"
         + "      }\n"
         + "    }\n";
 

@@ -87,10 +87,10 @@ return 0;
     public void  generateFireCode() {
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	$ref(output).real = $val(real);\n"
-"	$ref(output).imag = $val(imag);"
+"        $ref(output).real = $val(real);\n"
+"        $ref(output).imag = $val(imag);"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
      }
 }

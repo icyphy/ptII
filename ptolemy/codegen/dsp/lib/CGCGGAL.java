@@ -77,7 +77,7 @@ public class CGCGGAL extends CGCGAL {
     public void  generateInitializeCode() {
         //# line 57 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCGGAL.pl"
         B.resize(order+1);
-	CGCGAL::setup();
+        CGCGAL::setup();
     }
 
     /**
@@ -85,23 +85,23 @@ public class CGCGGAL extends CGCGAL {
     public void  generateFireCode() {
         //# line 63 "/users/ptolemy/src/domains/cgc/dsp/stars/CGCGGAL.pl"
         addCode(main);
-	CGCGAL::go();
+        CGCGAL::go();
     }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String main =
-    "	{\n"
-    + "	    double F;\n"
-    + "	    int m;\n"
+    "        {\n"
+    + "            double F;\n"
+    + "            int m;\n"
     + "\n"
-    + "	    F = $ref(synthIn);\n"
-    + "	    for (m = $val(order)-1; m >= 0; m--)\n"
-    + "	    {\n"
-    + "		F += $ref(k,m+1) * $ref(B,m);\n"
-    + "		$ref(B,m+1) = $ref(B,m) - $ref(k,m+1) * F;\n"
-    + "	    }\n"
-    + "	    $ref(B,0) = F;\n"
-    + "	    $ref(synthOut) = F;\n"
-    + "	}\n";
+    + "            F = $ref(synthIn);\n"
+    + "            for (m = $val(order)-1; m >= 0; m--)\n"
+    + "            {\n"
+    + "                F += $ref(k,m+1) * $ref(B,m);\n"
+    + "                $ref(B,m+1) = $ref(B,m) - $ref(k,m+1) * F;\n"
+    + "            }\n"
+    + "            $ref(B,0) = F;\n"
+    + "            $ref(synthOut) = F;\n"
+    + "        }\n";
 }

@@ -248,7 +248,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             transition = _getLastChosenTransition();
             if (transition == null) {
                 throw new IllegalActionException(this,
-                		"Reached a state without a refinement: "
+                                "Reached a state without a refinement: "
                         + state.getName());
             }
             actors = (transition.destinationState()).getRefinement();
@@ -274,7 +274,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
         // NOTE: Paranoid coding.
         if (actors == null || actors.length != 1) {
-        	throw new IllegalActionException(this,
+                throw new IllegalActionException(this,
                     "Current state is required to have exactly one refinement: "
                     + currentState.getName());
         }
@@ -711,7 +711,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         CompositeActor container = (CompositeActor)getContainer();
         Director director = container.getExecutiveDirector();
         while (director != null) {
-        	if (director instanceof HDFDirector) {
+                if (director instanceof HDFDirector) {
                 _embeddedInHDF = true;
                 return container;
             } else if (director instanceof HDFFSMDirector) {

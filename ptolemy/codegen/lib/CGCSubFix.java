@@ -124,10 +124,10 @@ magnitudes). parameter with initial value "2.14".
 
 super.generateInitializeCode();
                 if (((IntToken)((ArrivingPrecision).getToken())).intValue() == 0) // FIXME ArrivingPrecision should be a Boolean{
-		    pos.setPrecision(InputPrecision);
-		    neg.setPrecision(InputPrecision);
-		}
-		output.setPrecision(OutputPrecision);
+                    pos.setPrecision(InputPrecision);
+                    neg.setPrecision(InputPrecision);
+                }
+                output.setPrecision(OutputPrecision);
      }
 
     /**
@@ -135,32 +135,32 @@ super.generateInitializeCode();
     public void  generateFireCode() {
 
 // insert code to clear overflow flag
-		super.clearOverflow();
+                super.clearOverflow();
 
-		// avoid FIX_Assign if possible
-		if (neg.numberPorts() == 1)
+                // avoid FIX_Assign if possible
+                if (neg.numberPorts() == 1)
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	FIX_Sub($ref(output), $ref(pos),$ref(neg#1));\n"
+"        FIX_Sub($ref(output), $ref(pos),$ref(neg#1));\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
-		else {
-			// initialize sum
+                else {
+                        // initialize sum
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	FIX_Assign($ref(output),$ref(pos));\n"
+"        FIX_Assign($ref(output),$ref(pos));\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
-			for (int i=1; i <= neg.numberPorts(); i++) {
-			    index = i;
+                        for (int i=1; i <= neg.numberPorts(); i++) {
+                            index = i;
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	FIX_Sub($ref(output), $ref(output),$ref(neg#index));\n"
+"        FIX_Sub($ref(output), $ref(output),$ref(neg#index));\n"
 
-); 	 addCode(_str_);  }
-			}
-		}
+);          addCode(_str_);  }
+                        }
+                }
 
-		// insert code to test overflow flag
-		super.checkOverflow();
+                // insert code to test overflow flag
+                super.checkOverflow();
      }
 }

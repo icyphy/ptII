@@ -18,9 +18,9 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class Counter extends CCodeGeneratorHelper {
 
-	/**
-	 * @param component
-	 */
+        /**
+         * @param component
+         */
     public Counter(ptolemy.actor.lib.Counter actor) {
         super(actor);
     }
@@ -28,20 +28,20 @@ public class Counter extends CCodeGeneratorHelper {
     public void  generateFireCode(StringBuffer stream)
             throws IllegalActionException {
 
-    	ptolemy.actor.lib.Sequence actor =
-    		(ptolemy.actor.lib.Sequence)getComponent();
+            ptolemy.actor.lib.Sequence actor =
+                    (ptolemy.actor.lib.Sequence)getComponent();
 
-    	StringBuffer tmpStream = new StringBuffer();
+            StringBuffer tmpStream = new StringBuffer();
 
-    	tmpStream.append(
-    			  "if ($val(increment)) {\n"
+            tmpStream.append(
+                              "if ($val(increment)) {\n"
                 + "    $val(output)++;\n"
                 + "} else if ($val(decrement)) {\n"
-				+ "    $val(output)--;\n"
+                                + "    $val(output)--;\n"
                 + "}\n");
 
 
-    	_codeBlock = tmpStream.toString();
+            _codeBlock = tmpStream.toString();
         stream.append(processCode(_codeBlock));
     }
 

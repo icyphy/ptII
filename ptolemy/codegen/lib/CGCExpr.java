@@ -121,7 +121,7 @@ return ((IntToken)((runTime).getToken())).intValue();
     public void  generatePreinitializeCode() {
 
 for (int i = 0; i < include.size(); i++)
-	    addInclude(include[i]);
+            addInclude(include[i]);
      }
 
     /**
@@ -129,8 +129,8 @@ for (int i = 0; i < include.size(); i++)
     public void  generateFireCode() {
 
 StringBuffer code = new StringBuffer();
-	code.append("$ref(out) = " + expr  + ";\n");
-	addCode(code);
+        code.append("$ref(out) = " + expr  + ";\n");
+        addCode(code);
      }
 
     /**
@@ -138,55 +138,55 @@ StringBuffer code = new StringBuffer();
     public void preinitialize () {
 
 // We must change the porthole types at preinitialize time
-	// so that porthole type resolution works correctly.
-	// That means we have to initialize the states ourselves.
-	initState();
-	String letter = inDataType;
-	switch (letter[0]) {
-	case 'F':
-	case 'f':
-	    in.setPort(in.name(),this,FLOAT);
-	    break;
-	case 'I':
-	case 'i':
-	    in.setPort(in.name(),this,INT);
-	    break;
-	case 'C':
-	case 'c':
-	    in.setPort(in.name(),this,COMPLEX);
-	    break;
-	case 'A':
-	case 'a':
-	    in.setPort(in.name(),this,ANYTYPE);
-	    break;
-	default:
-	    throw new IllegalActionException(this,"CGC Expr does not support the type",
-			    inDataType);
-	    break;
-	}
-	letter = outDataType;
-	switch (letter[0]) {
-	case 'F':
-	case 'f':
-	    out.setPort(out.name(),this,FLOAT);
-	    break;
-	case 'I':
-	case 'i':
-	    out.setPort(out.name(),this,INT);
-	    break;
-	case 'C':
-	case 'c':
-	    out.setPort(out.name(),this,COMPLEX);
-	    break;
-	case '=':
-	    out.setPort(out.name(),this,ANYTYPE);
-	    out.inheritTypeFrom(in);
-	    break;
-	default:
-	    throw new IllegalActionException(this,"CGC Expr does not support the type",
-			    outDataType);
-	    break;
-	}
+        // so that porthole type resolution works correctly.
+        // That means we have to initialize the states ourselves.
+        initState();
+        String letter = inDataType;
+        switch (letter[0]) {
+        case 'F':
+        case 'f':
+            in.setPort(in.name(),this,FLOAT);
+            break;
+        case 'I':
+        case 'i':
+            in.setPort(in.name(),this,INT);
+            break;
+        case 'C':
+        case 'c':
+            in.setPort(in.name(),this,COMPLEX);
+            break;
+        case 'A':
+        case 'a':
+            in.setPort(in.name(),this,ANYTYPE);
+            break;
+        default:
+            throw new IllegalActionException(this,"CGC Expr does not support the type",
+                            inDataType);
+            break;
+        }
+        letter = outDataType;
+        switch (letter[0]) {
+        case 'F':
+        case 'f':
+            out.setPort(out.name(),this,FLOAT);
+            break;
+        case 'I':
+        case 'i':
+            out.setPort(out.name(),this,INT);
+            break;
+        case 'C':
+        case 'c':
+            out.setPort(out.name(),this,COMPLEX);
+            break;
+        case '=':
+            out.setPort(out.name(),this,ANYTYPE);
+            out.inheritTypeFrom(in);
+            break;
+        default:
+            throw new IllegalActionException(this,"CGC Expr does not support the type",
+                            outDataType);
+            break;
+        }
     }
 
 }

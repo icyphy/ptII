@@ -68,9 +68,9 @@ Output float type
     public void  generateFireCode() {
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	$ref(output) = FIX_Fix2Double($ref(input));"
+"        $ref(output) = FIX_Fix2Double($ref(input));"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
      }
 }

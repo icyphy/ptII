@@ -186,11 +186,11 @@ bit sequence out (zero or one)
     public void  generateInitializeCode() throws IllegalActionException {
 
 // Should check that generator polynomial does not exceed 31 bits. How?
-	  // To avoid sign extension problems, the hob must be zero
-	  if (((IntToken)((polynomial).getToken())).intValue() < 0) {
-	    throw new IllegalActionException(this,"Sorry, the polynomial must be a positive integer.");
-	    return;
-	  }
+          // To avoid sign extension problems, the hob must be zero
+          if (((IntToken)((polynomial).getToken())).intValue() < 0) {
+            throw new IllegalActionException(this,"Sorry, the polynomial must be a positive integer.");
+            return;
+          }
      }
 
     /**
@@ -203,19 +203,19 @@ addCode(scramble);
     ////                     Codeblocks                     ////
 
     public String scramble =
-        "	  int reg, masked, parity;\n"
-        + "	  reg = $ref(shiftReg) << 1;\n"
-        + "	  masked = $val(polynomial) & reg;\n"
-        + "	  /* Now we need to find the parity of \"masked\". */\n"
-        + "	  parity = 0;\n"
-        + "	  /* Calculate the parity of the masked word */\n"
-        + "	  while (masked > 0) {\n"
-        + "	    parity = parity ^ (masked & 1);\n"
-        + "	    masked = masked >> 1;\n"
-        + "	  }\n"
-        + "	  /* Exclusive-or with the input */\n"
-        + "	  parity = parity ^ ($ref(input) != 0);\n"
-        + "	  $ref(output) = parity;\n"
-        + "	  /* Put the parity bit into the shift register */\n"
-        + "	  $ref(shiftReg) = reg + parity;\n";
+        "          int reg, masked, parity;\n"
+        + "          reg = $ref(shiftReg) << 1;\n"
+        + "          masked = $val(polynomial) & reg;\n"
+        + "          /* Now we need to find the parity of \"masked\". */\n"
+        + "          parity = 0;\n"
+        + "          /* Calculate the parity of the masked word */\n"
+        + "          while (masked > 0) {\n"
+        + "            parity = parity ^ (masked & 1);\n"
+        + "            masked = masked >> 1;\n"
+        + "          }\n"
+        + "          /* Exclusive-or with the input */\n"
+        + "          parity = parity ^ ($ref(input) != 0);\n"
+        + "          $ref(output) = parity;\n"
+        + "          /* Put the parity bit into the shift register */\n"
+        + "          $ref(shiftReg) = reg + parity;\n";
 }

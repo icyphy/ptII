@@ -480,10 +480,10 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                         + " "
                         + portInitialValueFunction
                         + "(" + portTypeID + " *p" + portID + ") {" + _endLine;
-        		    // TODO: Take care of array datatype initialization. Ignoring it for the moment
-		      	    if (!portTypeID.endsWith("array")) {
-			            FCoutDriversImplString += _tabChar + "*p" + portID + " = " + portInitialValue + ";" + _endLine;
-		            }
+                            // TODO: Take care of array datatype initialization. Ignoring it for the moment
+                                  if (!portTypeID.endsWith("array")) {
+                                    FCoutDriversImplString += _tabChar + "*p" + portID + " = " + portInitialValue + ";" + _endLine;
+                            }
                     FCoutDriversImplString += "}" + _endLine + _endLine;
 
                     FHfuncVarDeclString += "inline void"
@@ -535,10 +535,10 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                                          + "[" + arrayLength + "]" + ";" + _endLine;
                     FHfuncVarDeclString += _endLine;
 
-		    FHfuncVarDeclString += "extern " + portType
-			                 + " local_" + sanitizedPortName + ";" + _endLine;
-		    FHfuncVarDeclString += "extern " + portType
-			                 + " global_" + sanitizedPortName + ";" + _endLine;
+                    FHfuncVarDeclString += "extern " + portType
+                                         + " local_" + sanitizedPortName + ";" + _endLine;
+                    FHfuncVarDeclString += "extern " + portType
+                                         + " global_" + sanitizedPortName + ";" + _endLine;
                     FHfuncVarDeclString += _endLine;
 
                     // Writing into f_code_init
@@ -572,8 +572,8 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
                                          + "[" + arrayLength + "]" + ";" + _endLine;
                     FHfuncVarDeclString += _endLine;
 
-		    FHfuncVarDeclString += "extern " + portType
-			                 + " " + actorName + "_" + sanitizedPortName + ";" + _endLine;
+                    FHfuncVarDeclString += "extern " + portType
+                                         + " " + actorName + "_" + sanitizedPortName + ";" + _endLine;
                     FHfuncVarDeclString += _endLine;
 
                     // Writing into f_code_init
@@ -658,11 +658,11 @@ public class GiottoCEmachineFrameworkGenerator extends GiottoCodeGenerator {
             FCinDriversImplString += "inline void " + actorName + "_inputdriver( ";
             FHfuncVarDeclString      += "inline void " + actorName + "_inputdriver( ";
 
-    	    assgtStmtString = "";
+                assgtStmtString = "";
 
             Map driverIOMap = new LinkedHashMap();
             boolean firstParameter = true;
-    	    boolean firstArray = true;
+                boolean firstArray = true;
 
             for (Iterator inPorts = actor.inputPortList().iterator();
                  inPorts.hasNext();) {

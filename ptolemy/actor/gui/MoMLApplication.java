@@ -206,7 +206,7 @@ public class MoMLApplication implements ExecutionListener {
                     // So instead, we create a new thread to
                     // do it.
                     Thread waitThread = new Thread() {
-                    	public void run() {
+                            public void run() {
                             waitForFinish();
                             System.exit(0);
                         }
@@ -494,7 +494,7 @@ public class MoMLApplication implements ExecutionListener {
             String [] commandFlags) {
         StringBuffer result = new StringBuffer(
                 "Usage: " + commandTemplate + "\n\n"
-				+ "Options that take values:\n");
+                                + "Options that take values:\n");
         int i;
         // Print any command options from this class first
         for (i = 0; i < _commandOptions.length; i++) {
@@ -536,7 +536,7 @@ public class MoMLApplication implements ExecutionListener {
                     result.append(" -" + configurationName);
                     // Pad out to a fixed number of spaces to get good alignment.
                     for (int j = configurationName.length(); j < 20; j++) {
-                    	result.append(" ");
+                            result.append(" ");
                     }
                     String configurationFileName = configurationDirectories[i]
                         + File.separator

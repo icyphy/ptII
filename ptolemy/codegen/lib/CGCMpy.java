@@ -77,12 +77,12 @@ return input.numberPorts();
     public void  generateFireCode() {
 
 StringBuffer out = new StringBuffer();
-		out.append("\t$ref(output) = ");
-		for (int i = 1; i <= input.numberPorts(); i++) {
-			out.append("$ref(input#" + i  + ")");
-			if (i < input.numberPorts()) out.append(" * ");
-			else out.append(";\n");
-		}
-		addCode((String)out);
+                out.append("\t$ref(output) = ");
+                for (int i = 1; i <= input.numberPorts(); i++) {
+                        out.append("$ref(input#" + i  + ")");
+                        if (i < input.numberPorts()) out.append(" * ");
+                        else out.append(";\n");
+                }
+                addCode((String)out);
      }
 }

@@ -80,7 +80,7 @@ noInternalState();
     public int  myExecTime() {
 
 // Alert: rough estimate
-	  return input.numberPorts();
+          return input.numberPorts();
      }
 
     /**
@@ -88,10 +88,10 @@ noInternalState();
     public void  begin() {
 
 if (input.numberPorts() != outputA.numberPorts() ||
-	      input.numberPorts() != outputB.numberPorts()) {
-	    throw new IllegalActionException(this, "Bus widths don't match");
-	    return;
-	  }
+              input.numberPorts() != outputB.numberPorts()) {
+            throw new IllegalActionException(this, "Bus widths don't match");
+            return;
+          }
      }
 
     /**
@@ -99,16 +99,16 @@ if (input.numberPorts() != outputA.numberPorts() ||
     public void  generateFireCode() {
 
 MPHIter nextin(input), nextoutA(outputA), nextoutB(outputB);
-	  PortHole *in, *outA, *outB;
-	  int port = 0;
-	  while (((in = nextin++) != 0) &&
-		 ((outA = nextoutA++) != 0) &&
-		 ((outB = nextoutB++) != 0)) {
-	    port++;
+          PortHole *in, *outA, *outB;
+          int port = 0;
+          while (((in = nextin++) != 0) &&
+                 ((outA = nextoutA++) != 0) &&
+                 ((outB = nextoutB++) != 0)) {
+            port++;
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"	$ref(outputA#" + port + ") = $ref(outputB#" + port + ") = $ref(input#" + port + ");\n"
+"        $ref(outputA#" + port + ") = $ref(outputB#" + port + ") = $ref(input#" + port + ");\n"
 
-); 	 addCode(_str_);  }
-	  }
+);          addCode(_str_);  }
+          }
      }
 }

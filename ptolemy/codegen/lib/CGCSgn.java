@@ -77,9 +77,9 @@ addCode(std);
     ////                     Codeblocks                     ////
 
     public String std =
-        "	  double x;\n"
-        + "	  int sgn;\n"
-        + "	  x = $ref(input);\n"
-        + "	  sgn = (x >= 0.0) ? 1 : -1;\n"
-        + "	  $ref(output) = sgn;\n";
+        "          double x;\n"
+        + "          int sgn;\n"
+        + "          x = $ref(input);\n"
+        + "          sgn = (x >= 0.0) ? 1 : -1;\n"
+        + "          $ref(output) = sgn;\n";
 }

@@ -106,11 +106,11 @@ addInclude("<stdio.h>");
     public void  generateInitializeCode() throws IllegalActionException {
 
 if ( ((IntToken)((blockSize).getToken())).intValue() < 1 ) {
-		 	throw new IllegalActionException(this, "blockSize must be positive");
-			return;
-		}
-		output.setSDFParams(((IntToken)((blockSize).getToken())).intValue(),((IntToken)((blockSize).getToken())).intValue()-1);
-		input.setSDFParams(((IntToken)((blockSize).getToken())).intValue(),((IntToken)((blockSize).getToken())).intValue()-1);
+                         throw new IllegalActionException(this, "blockSize must be positive");
+                        return;
+                }
+                output.setSDFParams(((IntToken)((blockSize).getToken())).intValue(),((IntToken)((blockSize).getToken())).intValue()-1);
+                input.setSDFParams(((IntToken)((blockSize).getToken())).intValue(),((IntToken)((blockSize).getToken())).intValue()-1);
      }
 
     /**
@@ -118,35 +118,35 @@ if ( ((IntToken)((blockSize).getToken())).intValue() < 1 ) {
     public void  generateFireCode() {
 
 addCode(init);
-		addCode(switchStatement);
-		addCode("\t{\n");
-		// control value i means port number i+1
-		for (int i = 0; i < input.numberPorts(); i++) {
-			addCode(copydata(i,i+1));
-		}
-		addCode(badPortNum);
-		addCode("\t}\n");
+                addCode(switchStatement);
+                addCode("\t{\n");
+                // control value i means port number i+1
+                for (int i = 0; i < input.numberPorts(); i++) {
+                        addCode(copydata(i,i+1));
+                }
+                addCode(badPortNum);
+                addCode("\t}\n");
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String init =
-        "	int n = $ref(control);\n"
-        + "	int j = $val(blockSize);\n";
+        "        int n = $ref(control);\n"
+        + "        int j = $val(blockSize);\n";
 
     public String switchStatement =
-        "	switch(n)\n";
+        "        switch(n)\n";
 
     public String copydata (int i, int portnum) {
         return
-        "	    case " + i + ":\n"
-        + "		while (j--) {\n"
-        + "			$ref(output,j) = $ref(input#" + portnum + ",j);\n"
-        + "		}\n"
-        + "		break;\n";
+        "            case " + i + ":\n"
+        + "                while (j--) {\n"
+        + "                        $ref(output,j) = $ref(input#" + portnum + ",j);\n"
+        + "                }\n"
+        + "                break;\n";
     }
 
     public String badPortNum =
-        "	    default:\n"
-        + "		fprintf(stderr, \"invalid control input %d\", n);\n";
+        "            default:\n"
+        + "                fprintf(stderr, \"invalid control input %d\", n);\n";
 }

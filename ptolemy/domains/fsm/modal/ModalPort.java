@@ -517,7 +517,7 @@ public class ModalPort extends TypedIOPort {
                             // is changed, that change is not
                             // mirrored.
                             if (!isInput()) {
-                            	castPort._automaticallyInput = true;
+                                    castPort._automaticallyInput = true;
                             }
                         } finally {
                             castPort._mirrorDisable = controlPortStatus;

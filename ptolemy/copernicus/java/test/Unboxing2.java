@@ -12,10 +12,10 @@ public class Unboxing2
     static Token token;
 
     public static void main(String[] strings) {
-	if (intToken.getType().equals(BaseType.INT))
-	    token = intToken;
-	else
-	    token = doubleToken;
-	System.out.println("token = " + token.toString());
+        if (intToken.getType().equals(BaseType.INT))
+            token = intToken;
+        else
+            token = doubleToken;
+        System.out.println("token = " + token.toString());
     }
 }

@@ -162,7 +162,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
         if (_model != null) {
             NamedObj toplevel = _model.toplevel();
             if (toplevel == _model) {
-            	return this;
+                    return this;
             }
             Effigy effigyForToplevel = Configuration.findEffigy(toplevel);
             if (effigyForToplevel != null) {

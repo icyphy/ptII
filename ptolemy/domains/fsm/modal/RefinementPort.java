@@ -335,7 +335,7 @@ public class RefinementPort extends TypedIOPort {
                 // the moveUp. But if there are no mirror
                 // ports, we need to do it here.
                 if (!success) {
-                	result = super.moveUp();
+                        result = super.moveUp();
                 }
             }
             return result;

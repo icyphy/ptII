@@ -18,9 +18,9 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class AbsoluteValue extends CCodeGeneratorHelper {
 
-	/**
-	 * @param component
-	 */
+        /**
+         * @param component
+         */
     public AbsoluteValue(ptolemy.actor.lib.AbsoluteValue actor) {
         super(actor);
     }

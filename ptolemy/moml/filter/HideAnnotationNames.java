@@ -131,7 +131,7 @@ public class HideAnnotationNames implements MoMLFilter {
                 hide.setToken(BooleanToken.TRUE);
                 hide.setVisibility(Settable.EXPERT);
 
-            	MoMLParser.setModified(true);
+                    MoMLParser.setModified(true);
             } catch (NameDuplicationException ex) {
                 // Ignore, the container already has a _hideName.
                 // The Network model has this problem.

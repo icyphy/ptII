@@ -105,8 +105,8 @@ return 1 + ((IntToken)((factor).getToken())).intValue();
     public void  generateInitializeCode() throws IllegalActionException {
 
 output.setSDFParams(((IntToken)((factor).getToken())).intValue(),((IntToken)((factor).getToken())).intValue()-1);
-		if (((IntToken)((phase).getToken())).intValue() >= ((IntToken)((factor).getToken())).intValue())
-			throw new IllegalActionException(this, ": phase must be < factor");
+                if (((IntToken)((phase).getToken())).intValue() >= ((IntToken)((factor).getToken())).intValue())
+                        throw new IllegalActionException(this, ": phase must be < factor");
      }
 
     /**
@@ -114,25 +114,25 @@ output.setSDFParams(((IntToken)((factor).getToken())).intValue(),((IntToken)((fa
     public void  generateFireCode() {
 
 int index = ((IntToken)((factor).getToken())).intValue() - ((IntToken)((phase).getToken())).intValue() - 1;
-		if (output.staticBuf() && output.linearBuf())
-			addCode(sendOne(index));
-		else
-			addCode(sendAll(index));
+                if (output.staticBuf() && output.linearBuf())
+                        addCode(sendOne(index));
+                else
+                        addCode(sendAll(index));
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String sendOne (int index) {
         return
-        "	$ref2(output," + index + ") = $ref(input);\n";
+        "        $ref2(output," + index + ") = $ref(input);\n";
     }
 
     public String sendAll (int index) {
         return
-        "	int i;\n"
-        + "	for (i = 0; i < $val(factor); i++) {\n"
-        + "		$ref2(output,i) = $val(fill);\n"
-        + "	}\n"
-        + "	$ref2(output," + index + ") = $ref(input);\n";
+        "        int i;\n"
+        + "        for (i = 0; i < $val(factor); i++) {\n"
+        + "                $ref2(output,i) = $val(fill);\n"
+        + "        }\n"
+        + "        $ref2(output," + index + ") = $ref(input);\n";
     }
 }

@@ -93,10 +93,10 @@ addInclude("<math.h>");
     public void  generateInitializeCode() throws IllegalActionException {
 
 if ( ((DoubleToken)((modulo).getToken())).doubleValue() == 0.0 ) {
-		    throw new IllegalActionException(this,
-				    "The modulo parameter cannot be zero");
-		    return;
-		}
+                    throw new IllegalActionException(this,
+                                    "The modulo parameter cannot be zero");
+                    return;
+                }
      }
 
     /**
@@ -104,14 +104,14 @@ if ( ((DoubleToken)((modulo).getToken())).doubleValue() == 0.0 ) {
     public void  generateFireCode() {
 
 addCode(decl);
-		addCode(out);
+                addCode(out);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String decl =
-        "	double dummy;\n";
+        "        double dummy;\n";
 
     public String out =
-        "	$ref(output) = modf((double)$ref(input)/(double)$ref(modulo), &dummy);\n";
+        "        $ref(output) = modf((double)$ref(input)/(double)$ref(modulo), &dummy);\n";
 }

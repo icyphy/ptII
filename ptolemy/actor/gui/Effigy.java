@@ -287,7 +287,7 @@ public class Effigy extends CompositeEntity {
      *  @return The effigy in charge of this effigy.
      */
     public Effigy masterEffigy() {
-    	return topEffigy();
+            return topEffigy();
     }
 
     /** Return the total number of open tableau for this effigy

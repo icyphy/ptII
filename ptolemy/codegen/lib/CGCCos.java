@@ -68,7 +68,7 @@ noInternalState();
      */
     public int  myExecTime() {
 
-return 23;	/* value taken from CG96Cos */
+return 23;        /* value taken from CG96Cos */
      }
 
     /**
@@ -88,5 +88,5 @@ addCode(cosgen);
     ////                     Codeblocks                     ////
 
     public String cosgen =
-        "	$ref(output) = cos($ref(input));\n";
+        "        $ref(output) = cos($ref(input));\n";
 }

@@ -12,13 +12,13 @@ public class Unboxing13 {
 
     public void fire() throws IllegalActionException {
         IntToken inttoken = new IntToken(1);
-	inputToken = inttoken;
-	inttoken = inputToken;
+        inputToken = inttoken;
+        inttoken = inputToken;
         bitwiseoperationtoken = inttoken;
-	bitwiseoperationtoken = bitwiseoperationtoken.bitwiseNot();
-	Token token = (Token) bitwiseoperationtoken;
-	if (!(token instanceof IntToken))
-	    throw new RuntimeException("Token Exception");
+        bitwiseoperationtoken = bitwiseoperationtoken.bitwiseNot();
+        Token token = (Token) bitwiseoperationtoken;
+        if (!(token instanceof IntToken))
+            throw new RuntimeException("Token Exception");
         System.out.println("token = " + token.toString());
     }
 

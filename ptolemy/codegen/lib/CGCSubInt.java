@@ -84,21 +84,21 @@ return neg.numberPorts() + 1;
     public void  generateFireCode() {
 
 addCode(startOp);
-	for (int i = 1; i <= neg.numberPorts(); i++)
-	    addCode(doOp(i));
-	addCode(saveResult);
+        for (int i = 1; i <= neg.numberPorts(); i++)
+            addCode(doOp(i));
+        addCode(saveResult);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String startOp =
-        "	int diff = $ref(pos);\n";
+        "        int diff = $ref(pos);\n";
 
     public String doOp (int i) {
         return
-        "	diff -= $ref(neg#" + i + ");\n";
+        "        diff -= $ref(neg#" + i + ");\n";
     }
 
     public String saveResult =
-        "	$ref(output) = diff;\n";
+        "        $ref(output) = diff;\n";
 }

@@ -92,6 +92,6 @@ public class CGCRamp extends ClassicCGCActor implements CodeGeneratingActor {
     ////                     Codeblocks                     ////
 
     public String std =
-    "	$ref(output) = $ref(value);\n"
-    + "	$ref(value) += $val(step);\n";
+    "        $ref(output) = $ref(value);\n"
+    + "        $ref(value) += $val(step);\n";
 }

@@ -116,40 +116,40 @@ public class CGCFastFIR extends ClassicCGCActor {
     ////                     Codeblocks                     ////
 
     public String mainDecl =
-    "	  int currentValue,i;\n"
-    + "	  double src[$val(tapSize)], fir[$val(tapSize)];\n";
+    "          int currentValue,i;\n"
+    + "          double src[$val(tapSize)], fir[$val(tapSize)];\n";
 
     public String initialize =
-    "	  currentValue = 0;\n"
-    + "	  for (i=0;i<$val(tapSize);i++){\n"
-    + "	    fir[i]=$ref2(taps,i);\n"
-    + "	    src[i] = 0.0;\n"
-    + "	  }\n";
+    "          currentValue = 0;\n"
+    + "          for (i=0;i<$val(tapSize);i++){\n"
+    + "            fir[i]=$ref2(taps,i);\n"
+    + "            src[i] = 0.0;\n"
+    + "          }\n";
 
     public String bodyDecl =
-    "	  double accum;\n"
-    + "	  int nminusk,k;\n";
+    "          double accum;\n"
+    + "          int nminusk,k;\n";
 
     public String body =
     "\n"
-    + "	  if (currentValue > $val(tapSize)-1){\n"
-    + "	    currentValue -= $val(tapSize);\n"
-    + "	  }\n"
-    + "	  \n"
-    + "	  accum = 0.0;\n"
-    + "	  nminusk = currentValue;\n"
-    + "	  src[nminusk] = $ref(signalIn);\n"
-    + "	  for (k=0; k < currentValue + 1; k++){\n"
-    + "	    accum += fir[k] * src[nminusk];\n"
-    + "	    nminusk--;\n"
-    + "	  }\n"
+    + "          if (currentValue > $val(tapSize)-1){\n"
+    + "            currentValue -= $val(tapSize);\n"
+    + "          }\n"
+    + "          \n"
+    + "          accum = 0.0;\n"
+    + "          nminusk = currentValue;\n"
+    + "          src[nminusk] = $ref(signalIn);\n"
+    + "          for (k=0; k < currentValue + 1; k++){\n"
+    + "            accum += fir[k] * src[nminusk];\n"
+    + "            nminusk--;\n"
+    + "          }\n"
     + "\n"
-    + "	  nminusk = $val(tapSize)-1;\n"
-    + "	  for (k = currentValue+1; k < $val(tapSize); k++){\n"
-    + "	    accum += fir[k] * src[nminusk];\n"
-    + "	    nminusk--;\n"
-    + "	  }\n"
+    + "          nminusk = $val(tapSize)-1;\n"
+    + "          for (k = currentValue+1; k < $val(tapSize); k++){\n"
+    + "            accum += fir[k] * src[nminusk];\n"
+    + "            nminusk--;\n"
+    + "          }\n"
     + "\n"
-    + "	  $ref(signalOut) = accum;\n"
-    + "	  currentValue++;\n";
+    + "          $ref(signalOut) = accum;\n"
+    + "          currentValue++;\n";
 }

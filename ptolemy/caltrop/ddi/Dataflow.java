@@ -175,20 +175,20 @@ public class Dataflow extends AbstractDDI implements DDI {
      * action was selected.
      */
     private int  _selectAction() {
-    	_rollbackInputChannels();
+            _rollbackInputChannels();
         for (int i = 0; i < _actions.length; i++) {
-        	if (this.isEligibleAction(_actions[i])) {
-        		// Note: could we perhaps reuse environment?
-            	_rollbackInputChannels();
-        		_actorInterpreter.actionSetup(_actions[i]);
-        		if (_actorInterpreter.actionEvaluatePrecondition()) {
-        			return i;
-        		} else {
-        			_actorInterpreter.actionClear();
-        		}
-        	}
+                if (this.isEligibleAction(_actions[i])) {
+                        // Note: could we perhaps reuse environment?
+                    _rollbackInputChannels();
+                        _actorInterpreter.actionSetup(_actions[i]);
+                        if (_actorInterpreter.actionEvaluatePrecondition()) {
+                                return i;
+                        } else {
+                                _actorInterpreter.actionClear();
+                        }
+                }
         }
-    	_rollbackInputChannels();
+            _rollbackInputChannels();
         return -1;
     }
 
@@ -214,12 +214,12 @@ public class Dataflow extends AbstractDDI implements DDI {
      * @exception IllegalActionException
      */
     public void initialize() throws IllegalActionException {
-    	if (_actor.getScheduleFSM() == null) {
+            if (_actor.getScheduleFSM() == null) {
             _currentStateSet = null;
-    	} else {
+            } else {
             _currentStateSet = Collections.singleton(
                     _actor.getScheduleFSM().getInitialState());
-    	}
+            }
 
         try {
             _selectInitializer();
@@ -267,10 +267,10 @@ public class Dataflow extends AbstractDDI implements DDI {
      * Postfire this actor.
      */
     public boolean postfire() throws IllegalActionException {
-    	_currentStateSet =
+            _currentStateSet =
             computeNextStateSet(_currentStateSet, _lastFiredAction);
-    	_commitInputChannels();
-    	_lastFiredAction = null;
+            _commitInputChannels();
+            _lastFiredAction = null;
         return true;
     }
 
@@ -283,7 +283,7 @@ public class Dataflow extends AbstractDDI implements DDI {
      *
      */
     public boolean prefire() throws IllegalActionException {
-		_lastFiredAction = null;
+                _lastFiredAction = null;
         try {
             _selectAction();
 //            if (_actorInterpreter.currentAction() != null)
@@ -299,50 +299,50 @@ public class Dataflow extends AbstractDDI implements DDI {
     }
 
     private boolean  isEligibleAction(Action a) {
-    	QID tag = a.getTag();
-    	if (tag != null && _currentStateSet != null) {
-    		Transition [] ts = _actor.getScheduleFSM().getTransitions();
-    		for (int i = 0; i < ts.length; i++) {
-    			Transition t = ts[i];
-    			if (_currentStateSet.contains(t.getSourceState())
-    			    && isPrefixedByTagList(tag, t.getActionTags())) {
+            QID tag = a.getTag();
+            if (tag != null && _currentStateSet != null) {
+                    Transition [] ts = _actor.getScheduleFSM().getTransitions();
+                    for (int i = 0; i < ts.length; i++) {
+                            Transition t = ts[i];
+                            if (_currentStateSet.contains(t.getSourceState())
+                                && isPrefixedByTagList(tag, t.getActionTags())) {
 
-    				return true;
-    			}
-    		}
-    		return false;
-    	} else {
-    		return true;
-    	}
+                                    return true;
+                            }
+                    }
+                    return false;
+            } else {
+                    return true;
+            }
     }
 
     private Set  computeNextStateSet(Set s, Action a) {
-    	if (s == null)
-    		return null;
-    	if (a == null || a.getTag() == null)
-    		return s;
+            if (s == null)
+                    return null;
+            if (a == null || a.getTag() == null)
+                    return s;
 
-    	Set ns = new HashSet();
-    	QID tag = a.getTag();
-    	Transition [] ts = _actor.getScheduleFSM().getTransitions();
-    	for (int i = 0; i < ts.length; i++) {
-    		Transition t = ts[i];
-    		if (s.contains(t.getSourceState())
-    		    && isPrefixedByTagList(tag, t.getActionTags())) {
+            Set ns = new HashSet();
+            QID tag = a.getTag();
+            Transition [] ts = _actor.getScheduleFSM().getTransitions();
+            for (int i = 0; i < ts.length; i++) {
+                    Transition t = ts[i];
+                    if (s.contains(t.getSourceState())
+                        && isPrefixedByTagList(tag, t.getActionTags())) {
 
-				ns.add(t.getDestinationState());
-			}
-    	}
-    	return ns;
+                                ns.add(t.getDestinationState());
+                        }
+            }
+            return ns;
     }
 
     private boolean  isPrefixedByTagList(QID tag, QID [] tags) {
-    	for (int j = 0; j < tags.length; j++) {
-    		if (tags[j].isPrefixOf(tag)) {
-    			return true;
-    		}
-    	}
-    	return false;
+            for (int j = 0; j < tags.length; j++) {
+                    if (tags[j].isPrefixOf(tag)) {
+                            return true;
+                    }
+            }
+            return false;
     }
 }
 

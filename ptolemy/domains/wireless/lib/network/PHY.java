@@ -556,7 +556,7 @@ public class PHY extends NetworkActorBase {
             int length =((IntToken)msg.get("length")).intValue();
             // compute the duration of this packet ( with the PHY overhead added)
             _txDuration=(double)length/_txRate+(_aPreambleLength+
-	                   _aPlcpHeaderLength)*1e-6;
+                           _aPlcpHeaderLength)*1e-6;
 
             // send TxStartConfirm to the MAC
 

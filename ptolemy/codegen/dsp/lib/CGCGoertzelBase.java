@@ -180,24 +180,24 @@ public class CGCGoertzelBase extends ClassicCGCActor {
     ////                     Codeblocks                     ////
 
     public String decl =
-    "		double acc = 0.0;\n"
-    + "		double d1val = $ref(d1);\n"
-    + "		int i;\n";
+    "                double acc = 0.0;\n"
+    + "                double d1val = $ref(d1);\n"
+    + "                int i;\n";
 
     public String filter =
-    "		/* Run all-pole section of Goertzel's algorithm N iterations.\n"
-    + "		   Only one multiplier (d1) in iteration.\n"
-    + "		   Zero the IIR state for each DFT calculation; otherwise,\n"
-    + "		   the filter output could grow without bound.\n"
-    + "		   state1 and state2 are states and not local variables\n"
-    + "		   ONLY to pass their values to derived stars */\n"
-    + "		$ref(state1) = 0.0;\n"
-    + "		$ref(state2) = 0.0;\n"
-    + "		for (i = $val(N)-1; i >= 0; i--) {\n"
-    + "		  acc = $ref2(input,i);\n"
-    + "		  acc += d1val * $ref(state1);\n"
-    + "		  acc -= $ref(state2);\n"
-    + "		  $ref(state2) = $ref(state1);\n"
-    + "		  $ref(state1) = acc;\n"
-    + "		}\n";
+    "                /* Run all-pole section of Goertzel's algorithm N iterations.\n"
+    + "                   Only one multiplier (d1) in iteration.\n"
+    + "                   Zero the IIR state for each DFT calculation; otherwise,\n"
+    + "                   the filter output could grow without bound.\n"
+    + "                   state1 and state2 are states and not local variables\n"
+    + "                   ONLY to pass their values to derived stars */\n"
+    + "                $ref(state1) = 0.0;\n"
+    + "                $ref(state2) = 0.0;\n"
+    + "                for (i = $val(N)-1; i >= 0; i--) {\n"
+    + "                  acc = $ref2(input,i);\n"
+    + "                  acc += d1val * $ref(state1);\n"
+    + "                  acc -= $ref(state2);\n"
+    + "                  $ref(state2) = $ref(state1);\n"
+    + "                  $ref(state1) = acc;\n"
+    + "                }\n";
 }

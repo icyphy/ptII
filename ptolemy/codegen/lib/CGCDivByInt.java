@@ -80,8 +80,8 @@ noInternalState();
     public void  generateInitializeCode() throws IllegalActionException {
 
 if ( ((IntToken)((divisor).getToken())).intValue() == 0 ) {
-		     throw new IllegalActionException(this, "divisor cannot be zero");
-		}
+                     throw new IllegalActionException(this, "divisor cannot be zero");
+                }
      }
 
     /**
@@ -94,5 +94,5 @@ addCode(divide);
     ////                     Codeblocks                     ////
 
     public String divide =
-        "	$ref(output) = $ref(input) / $val(divisor);\n";
+        "        $ref(output) = $ref(input) / $val(divisor);\n";
 }

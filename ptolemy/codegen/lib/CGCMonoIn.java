@@ -101,11 +101,11 @@ super.initCode();
     addCode(openFileForReading);
     if (strcasecmp(fileName, "/dev/audio") == 0)
       {
-	/* audio_setup : to set encodingType, sampleRate and channels */
-	addCode("$sharedSymbol(CGCAudioBase,audio_setup)($starSymbol(file), $ref(encodingType), $ref(sampleRate), $ref(channels)); ");
-	/* audio_control : to set portType, volume and balance */
-	addCode("$sharedSymbol(CGCAudioBase,audio_control)($starSymbol(file), $ref(portType), $ref(volume), $ref(balance), 1); ");
-	addCode("$sharedSymbol(CGCAudioBase,audio_balance)($starSymbol(file), $ref(balance)); ");
+        /* audio_setup : to set encodingType, sampleRate and channels */
+        addCode("$sharedSymbol(CGCAudioBase,audio_setup)($starSymbol(file), $ref(encodingType), $ref(sampleRate), $ref(channels)); ");
+        /* audio_control : to set portType, volume and balance */
+        addCode("$sharedSymbol(CGCAudioBase,audio_control)($starSymbol(file), $ref(portType), $ref(volume), $ref(balance), 1); ");
+        addCode("$sharedSymbol(CGCAudioBase,audio_balance)($starSymbol(file), $ref(balance)); ");
       }
      }
 
@@ -128,9 +128,9 @@ if (encodingType.equalsIgnoreCase("ulaw8")) {
 addCode(setbufptr);
     addCode(read);
     if (encodingType.equalsIgnoreCase("linear16")) {
-	addCode(convertLinear);
+        addCode(convertLinear);
     } else {
-	addCode(convertUlaw);
+        addCode(convertUlaw);
     }
      }
     ///////////////////////////////////////////////////////////////////
@@ -142,7 +142,7 @@ addCode(setbufptr);
         + "     int i;\n"
         + "     for (i=0; i <($val(blockSize)/2); i++) {\n"
         + "       /* Convert the 16-bit sample to a floating point [-1.0,1.0] */\n"
-        + "	$ref(output,i) = $starSymbol(buffer)[i] /32768.0;\n"
+        + "        $ref(output,i) = $starSymbol(buffer)[i] /32768.0;\n"
         + "     }\n"
         + "  }";
 

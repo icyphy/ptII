@@ -76,7 +76,7 @@ addCode(abs);
     ////                     Codeblocks                     ////
 
     public String abs =
-        "		double t = $ref(input);\n"
-        + "		if (t < 0.0) t = -t;\n"
-        + "		$ref(output) = t;\n";
+        "                double t = $ref(input);\n"
+        + "                if (t < 0.0) t = -t;\n"
+        + "                $ref(output) = t;\n";
 }

@@ -84,11 +84,11 @@ value (or minimum for negative magnitudes). parameter with initial value "".
     public void  begin() {
 
 // if the precision for the output port is not defined
-		// - neither by this nor the successor star -, the actual
-		// precision is determined at runtime
+                // - neither by this nor the successor star -, the actual
+                // precision is determined at runtime
 
-		if (!output.precision().isValid())
-			output.setAttributes(A_VARPREC);
+                if (!output.precision().isValid())
+                        output.setAttributes(A_VARPREC);
      }
 
     /**
@@ -96,7 +96,7 @@ value (or minimum for negative magnitudes). parameter with initial value "".
     public void  generateInitializeCode() throws IllegalActionException {
 
 super.generateInitializeCode();
-		output.setPrecision(OutputPrecision);
+                output.setPrecision(OutputPrecision);
      }
 
     /**
@@ -104,22 +104,22 @@ super.generateInitializeCode();
     public void  generateFireCode() {
 
 // insert code to clear overflow flag
-		super.clearOverflow();
+                super.clearOverflow();
 
-		if (output.attributes() & AB_VARPREC)
-		     addCode(setprec);
+                if (output.attributes() & AB_VARPREC)
+                     addCode(setprec);
 
-		addCode(assign);
+                addCode(assign);
 
-		// insert code to test overflow flag
-		super.checkOverflow();
+                // insert code to test overflow flag
+                super.checkOverflow();
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String setprec =
-        "	        FIX_SetPrecisionFromDouble($precision(output),(double)((int)$ref(input)));\n";
+        "                FIX_SetPrecisionFromDouble($precision(output),(double)((int)$ref(input)));\n";
 
     public String assign =
-        "	        FIX_DoubleAssign($ref(output),(double)((int)$ref(input)));\n";
+        "                FIX_DoubleAssign($ref(output),(double)((int)$ref(input)));\n";
 }

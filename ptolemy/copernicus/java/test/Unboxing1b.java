@@ -11,9 +11,9 @@ public class Unboxing1b
     static Token[] tokens;
 
     public static void main(String[] strings) throws IllegalActionException {
-	tokens = new Token[1];
-	tokens[0] = intToken;
-	ArrayToken arraytoken = new ArrayToken(tokens);
-	System.out.println("token = " + arraytoken.toString());
+        tokens = new Token[1];
+        tokens[0] = intToken;
+        ArrayToken arraytoken = new ArrayToken(tokens);
+        System.out.println("token = " + arraytoken.toString());
     }
 }

@@ -84,19 +84,19 @@ return 2*(1 + neg.numberPorts());
     public void  generateFireCode() {
 
 addCode(startOp);
-	for (int i = 1; i <= neg.numberPorts(); i++)
-	    addCode(doOp(i));
+        for (int i = 1; i <= neg.numberPorts(); i++)
+            addCode(doOp(i));
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String startOp =
-        "	$ref(output).real = $ref(pos).real;\n"
-        + "	$ref(output).imag = $ref(pos).imag;\n";
+        "        $ref(output).real = $ref(pos).real;\n"
+        + "        $ref(output).imag = $ref(pos).imag;\n";
 
     public String doOp (int i) {
         return
-        "	$ref(output).real -= $ref(neg#" + i + ").real;\n"
-        + "	$ref(output).imag -= $ref(neg#" + i + ").imag;\n";
+        "        $ref(output).real -= $ref(neg#" + i + ").real;\n"
+        + "        $ref(output).imag -= $ref(neg#" + i + ").imag;\n";
     }
 }

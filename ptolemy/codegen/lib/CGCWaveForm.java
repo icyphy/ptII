@@ -160,17 +160,17 @@ public class CGCWaveForm extends ClassicCGCActor {
     ////                     Codeblocks                     ////
 
     public String body =
-    "	if ($val(haltAtEnd) && ($ref(pos) >= $val(size)))\n"
-    + "		break;\n"
-    + "	else if ($ref(pos) >= $val(size)) {\n"
-    + "		$ref(output) = 0.0;\n"
-    + "		$ref(pos)++;\n"
-    + "	} else {\n"
-    + "		$ref(output) = $ref(value)[$ref(pos)++];\n"
-    + "	}\n"
-    + "	if ($val(periodic))\n"
-    + "	    if ($val(period) <= 0 && $ref(pos) >= $val(size)) \n"
-    + "		$ref(pos) = 0;\n"
-    + "	    else if ($val(period) > 0 && $ref(pos) >= $val(period)) \n"
-    + "		$ref(pos) = 0;\n";
+    "        if ($val(haltAtEnd) && ($ref(pos) >= $val(size)))\n"
+    + "                break;\n"
+    + "        else if ($ref(pos) >= $val(size)) {\n"
+    + "                $ref(output) = 0.0;\n"
+    + "                $ref(pos)++;\n"
+    + "        } else {\n"
+    + "                $ref(output) = $ref(value)[$ref(pos)++];\n"
+    + "        }\n"
+    + "        if ($val(periodic))\n"
+    + "            if ($val(period) <= 0 && $ref(pos) >= $val(size)) \n"
+    + "                $ref(pos) = 0;\n"
+    + "            else if ($val(period) > 0 && $ref(pos) >= $val(period)) \n"
+    + "                $ref(pos) = 0;\n";
 }

@@ -91,7 +91,7 @@ public class CGCQuant extends ClassicCGCActor {
     public int  myExecTime() {
 
 double x = log(thresholds.size()) / log(2.0);
-		return 8 + 5 * int(x-0.01);
+                return 8 + 5 * int(x-0.01);
      }
 
     /**
@@ -106,17 +106,17 @@ addDeclaration(declarations);
     public void  generateInitializeCode() throws IllegalActionException {
 
 int n = thresholds.size();
-		if (levels.size() == 0) {
-			// default: 0, 1, 2...
+                if (levels.size() == 0) {
+                        // default: 0, 1, 2...
 
-			levels.resize(n + 1);
-			for (int i = 0; i <= n; i++)
-				levels[i] = i;
-		}
-		else if (levels.size() != n+1) {
-			throw new IllegalActionException(this,
-			      "must have one more level than thresholds");
-		}
+                        levels.resize(n + 1);
+                        for (int i = 0; i <= n; i++)
+                                levels[i] = i;
+                }
+                else if (levels.size() != n+1) {
+                        throw new IllegalActionException(this,
+                              "must have one more level than thresholds");
+                }
      }
 
     /**
@@ -125,37 +125,37 @@ int n = thresholds.size();
 
 addCode (maindecl);
 StringBuffer st = new StringBuffer("\t\t$starSymbol(siz) = ");
-	    st.append(thresholds.size());
-	    st.append(";\n");
-	    addCode((String)st);
-	    addCode (main);
+            st.append(thresholds.size());
+            st.append(";\n");
+            addCode((String)st);
+            addCode (main);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String declarations =
-        "	    int $starSymbol(siz);\n";
+        "            int $starSymbol(siz);\n";
 
     public String maindecl =
-        "		float in;\n"
-        + "		int lo, hi, mid;\n";
+        "                float in;\n"
+        + "                int lo, hi, mid;\n";
 
     public String main =
-        "		in = $ref(input);\n"
-        + "		lo = 0;\n"
-        + "		hi = $starSymbol(siz);\n"
-        + "		mid = (hi+lo)/2;\n"
-        + "		do {\n"
-        + "			if (in <= $ref2(thresholds,mid)) {\n"
-        + "				hi = mid;\n"
-        + "			} else {\n"
-        + "				lo = mid+1;\n"
-        + "			}\n"
-        + "			mid = (hi+lo)/2;\n"
-        + "		} while (mid < $starSymbol(siz) && hi > lo);\n"
+        "                in = $ref(input);\n"
+        + "                lo = 0;\n"
+        + "                hi = $starSymbol(siz);\n"
+        + "                mid = (hi+lo)/2;\n"
+        + "                do {\n"
+        + "                        if (in <= $ref2(thresholds,mid)) {\n"
+        + "                                hi = mid;\n"
+        + "                        } else {\n"
+        + "                                lo = mid+1;\n"
+        + "                        }\n"
+        + "                        mid = (hi+lo)/2;\n"
+        + "                } while (mid < $starSymbol(siz) && hi > lo);\n"
         + "\n"
-        + "		/* now in is <= thresholds[mid] but > all smaller ones. */\n"
-        + "		/* (where thresholds[$starSymbol(siz)] is infinity) */\n"
+        + "                /* now in is <= thresholds[mid] but > all smaller ones. */\n"
+        + "                /* (where thresholds[$starSymbol(siz)] is infinity) */\n"
         + "\n"
-        + "		$ref(output) = $ref2(levels,mid);\n";
+        + "                $ref(output) = $ref2(levels,mid);\n";
 }

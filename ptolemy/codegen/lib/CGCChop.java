@@ -146,7 +146,7 @@ noInternalState();
     public int  myExecTime() {
 
 computeRange();
-		return ((IntToken)((nwrite).getToken())).intValue() + 2 * (((IntToken)((hiLim).getToken())).intValue() - ((IntToken)((loLim).getToken())).intValue());
+                return ((IntToken)((nwrite).getToken())).intValue() + 2 * (((IntToken)((hiLim).getToken())).intValue() - ((IntToken)((loLim).getToken())).intValue());
      }
 
     /**
@@ -165,12 +165,12 @@ if (((IntToken)((nread).getToken())).intValue() <= 0) {
                 }
 
                 if (((IntToken)((use_past_inputs).getToken())).intValue() == 1) // FIXME use_past_inputs should be a Boolean
-		    input.setSDFParams(((IntToken)((nread).getToken())).intValue(),((IntToken)((nread).getToken())).intValue()+((IntToken)((offset).getToken())).intValue()-1);
-		else
-		    input.setSDFParams(((IntToken)((nread).getToken())).intValue(),((IntToken)((nread).getToken())).intValue()-1);
+                    input.setSDFParams(((IntToken)((nread).getToken())).intValue(),((IntToken)((nread).getToken())).intValue()+((IntToken)((offset).getToken())).intValue()-1);
+                else
+                    input.setSDFParams(((IntToken)((nread).getToken())).intValue(),((IntToken)((nread).getToken())).intValue()-1);
 
-		output.setSDFParams(((IntToken)((nwrite).getToken())).intValue(),((IntToken)((nwrite).getToken())).intValue()-1);
-		computeRange();
+                output.setSDFParams(((IntToken)((nwrite).getToken())).intValue(),((IntToken)((nwrite).getToken())).intValue()-1);
+                computeRange();
      }
 
     /**
@@ -178,16 +178,16 @@ if (((IntToken)((nread).getToken())).intValue() <= 0) {
     public void  generateFireCode() {
 
 StringBuffer moreDeclarations = new StringBuffer("\tint ");
-		moreDeclarations  + "hiLim = " + ((IntToken)((hiLim).getToken())).intValue()  + ", "
-				  + "inputIndex = " + ((IntToken)((inidx).getToken())).intValue()  + ", "
-				.append("loLim = " + ((IntToken)((loLim).getToken())).intValue()  + ";\n");
+                moreDeclarations  + "hiLim = " + ((IntToken)((hiLim).getToken())).intValue()  + ", "
+                                  + "inputIndex = " + ((IntToken)((inidx).getToken())).intValue()  + ", "
+                                .append("loLim = " + ((IntToken)((loLim).getToken())).intValue()  + ";\n");
 
-		addCode(decl);
-		addCode(moreDeclarations);
-		if (input.resolvedType() == COMPLEX)
-		  addCode(complexOut);
-		else
-		  addCode(nonComplexOut);
+                addCode(decl);
+                addCode(moreDeclarations);
+                if (input.resolvedType() == COMPLEX)
+                  addCode(complexOut);
+                else
+                  addCode(nonComplexOut);
      }
 
     /**
@@ -213,28 +213,28 @@ StringBuffer moreDeclarations = new StringBuffer("\tint ");
     ////                     Codeblocks                     ////
 
     public String decl =
-        "	int i;\n";
+        "        int i;\n";
 
     public String nonComplexOut =
-        "	for (i = 0; i < $val(nwrite); i++) {\n"
-        + "	    if (i > hiLim || i < loLim) {\n"
-        + "		$ref(output,i) = 0;\n"
-        + "	    }\n"
-        + "	    else {\n"
-        + "		$ref(output,i) = $ref(input,inputIndex);\n"
-        + "		inputIndex++;\n"
+        "        for (i = 0; i < $val(nwrite); i++) {\n"
+        + "            if (i > hiLim || i < loLim) {\n"
+        + "                $ref(output,i) = 0;\n"
+        + "            }\n"
+        + "            else {\n"
+        + "                $ref(output,i) = $ref(input,inputIndex);\n"
+        + "                inputIndex++;\n"
         + "            }\n"
         + "        }\n";
 
     public String complexOut =
-        "	for (i = 0; i < $val(nwrite); i++) {\n"
-        + "	    if (i > hiLim || i < loLim) {\n"
-        + "		$ref(output,i).real = 0;\n"
-        + "		$ref(output,i).imag = 0;\n"
-        + "	    }\n"
-        + "	    else {\n"
-        + "		$ref(output,i) = $ref(input,inputIndex);\n"
-        + "		inputIndex++;\n"
+        "        for (i = 0; i < $val(nwrite); i++) {\n"
+        + "            if (i > hiLim || i < loLim) {\n"
+        + "                $ref(output,i).real = 0;\n"
+        + "                $ref(output,i).imag = 0;\n"
+        + "            }\n"
+        + "            else {\n"
+        + "                $ref(output,i) = $ref(input,inputIndex);\n"
+        + "                inputIndex++;\n"
         + "            }\n"
         + "        }\n";
 }

@@ -83,12 +83,12 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
      *  @param parent The parent window, or null if there is none.
      */
     public void createEditor(NamedObj object, Frame parent) {
-    	// This is always used to configure the container, so
+            // This is always used to configure the container, so
         // we just use that.
         CodeGenerator codeGenerator = (CodeGenerator)getContainer();
 
         if (!(parent instanceof TableauFrame)) {
-        	throw new InternalErrorException(
+                throw new InternalErrorException(
                     "Can't create a CodeGeneratorGUI without a tableau!");
         }
         Effigy effigy = ((TableauFrame)parent).getEffigy();
@@ -96,16 +96,16 @@ public class CodeGeneratorGUIFactory extends EditorFactory {
         Tableau tableau = (Tableau)effigy.getEntity("codeGeneratorGUI");
         if (tableau == null) {
             try {
-				tableau = new Tableau(effigy, "codeGeneratorGUI");
-			} catch (KernelException e) {
+                                tableau = new Tableau(effigy, "codeGeneratorGUI");
+                        } catch (KernelException e) {
                 throw new InternalErrorException(e);
-			}
+                        }
         }
 
         Frame frame = tableau.getFrame();
         if (frame == null) {
             try {
-            	frame = new CodeGeneratorGUI(codeGenerator, tableau);
+                    frame = new CodeGeneratorGUI(codeGenerator, tableau);
             } catch (KernelException e) {
                 throw new InternalErrorException(e);
             }

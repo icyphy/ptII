@@ -193,21 +193,21 @@ public class PtolemyQuery extends Query
                     foundStyle = true;
                 } else if (attribute instanceof DoubleRangeParameter) {
                     double current = ((DoubleToken)
-                    		((DoubleRangeParameter)attribute)
-							.getToken()).doubleValue();
+                                    ((DoubleRangeParameter)attribute)
+                                                        .getToken()).doubleValue();
                     double max = ((DoubleToken)
-                    		((DoubleRangeParameter)attribute)
-							.max.getToken()).doubleValue();
+                                    ((DoubleRangeParameter)attribute)
+                                                        .max.getToken()).doubleValue();
                     double min = ((DoubleToken)
-                    		((DoubleRangeParameter)attribute)
-							.min.getToken()).doubleValue();
+                                    ((DoubleRangeParameter)attribute)
+                                                        .min.getToken()).doubleValue();
                     int precision = ((IntToken)
-                    		((DoubleRangeParameter)attribute)
-                    		.precision.getToken()).intValue();
+                                    ((DoubleRangeParameter)attribute)
+                                    .precision.getToken()).intValue();
 
                     // Get the quantized integer for the current value.
                     int quantized = ((int)Math.round((current - min)*precision
-                    		/(max - min)));
+                                    /(max - min)));
                     addSlider(name, name, quantized, 0, precision);
                     attachParameter(attribute, name);
                     foundStyle = true;
@@ -246,7 +246,7 @@ public class PtolemyQuery extends Query
                         if (marker != null) {
                             Token value = marker.getToken();
                             if (value instanceof BooleanToken) {
-                            	allowFiles = ((BooleanToken)value)
+                                    allowFiles = ((BooleanToken)value)
                                         .booleanValue();
                             }
                         }
@@ -575,8 +575,8 @@ public class PtolemyQuery extends Query
             ChangeRequest request;
 
            if (attribute instanceof PasswordAttribute) {
-           	    // Passwords have to be handled specially because the password
-           	    // is not represented in a string.
+                       // Passwords have to be handled specially because the password
+                       // is not represented in a string.
                 request = new ChangeRequest(this, name) {
                         protected void _execute()
                                 throws IllegalActionException {
@@ -585,7 +585,7 @@ public class PtolemyQuery extends Query
                             attribute.validate();
                             Iterator derived = ((PasswordAttribute)attribute).getDerivedList().iterator();
                             while (derived.hasNext()) {
-                            	PasswordAttribute derivedPassword = (PasswordAttribute)derived.next();
+                                    PasswordAttribute derivedPassword = (PasswordAttribute)derived.next();
                                 derivedPassword.setPassword(password);
                             }
                        }
@@ -603,22 +603,22 @@ public class PtolemyQuery extends Query
                 // JSlider into a double.
                 if (attribute instanceof DoubleRangeParameter) {
                     try {
-                    	int newValue = Integer.parseInt(stringValue);
-    					int precision = ((IntToken)
-    							((DoubleRangeParameter)attribute)
-    							.precision.getToken()).intValue();
-    					double max = ((DoubleToken)
-    							((DoubleRangeParameter)attribute)
-    							.max.getToken()).doubleValue();
-    					double min = ((DoubleToken)
-    							((DoubleRangeParameter)attribute)
-    							.min.getToken()).doubleValue();
-    					double newValueAsDouble
-    							= min + ((max - min)*newValue)/precision;
-    					stringValue = "" + newValueAsDouble;
-    				} catch (IllegalActionException e) {
-    					throw new InternalErrorException(e);
-    				}
+                            int newValue = Integer.parseInt(stringValue);
+                                            int precision = ((IntToken)
+                                                            ((DoubleRangeParameter)attribute)
+                                                            .precision.getToken()).intValue();
+                                            double max = ((DoubleToken)
+                                                            ((DoubleRangeParameter)attribute)
+                                                            .max.getToken()).doubleValue();
+                                            double min = ((DoubleToken)
+                                                            ((DoubleRangeParameter)attribute)
+                                                            .min.getToken()).doubleValue();
+                                            double newValueAsDouble
+                                                            = min + ((max - min)*newValue)/precision;
+                                            stringValue = "" + newValueAsDouble;
+                                    } catch (IllegalActionException e) {
+                                            throw new InternalErrorException(e);
+                                    }
                 }
 
                 // The context for the MoML should be the first container
@@ -833,27 +833,27 @@ public class PtolemyQuery extends Query
         // double in the range to an int for the
         // JSlider.
         if (attribute instanceof DoubleRangeParameter) {
-        	try {
-				double current = Double.parseDouble(newValue);
-				double max = ((DoubleToken)
-						((DoubleRangeParameter)attribute)
-						.max.getToken()).doubleValue();
-				double min = ((DoubleToken)
-						((DoubleRangeParameter)attribute)
-						.min.getToken()).doubleValue();
-				int precision = ((IntToken)
-						((DoubleRangeParameter)attribute)
-						.precision.getToken()).intValue();
+                try {
+                                double current = Double.parseDouble(newValue);
+                                double max = ((DoubleToken)
+                                                ((DoubleRangeParameter)attribute)
+                                                .max.getToken()).doubleValue();
+                                double min = ((DoubleToken)
+                                                ((DoubleRangeParameter)attribute)
+                                                .min.getToken()).doubleValue();
+                                int precision = ((IntToken)
+                                                ((DoubleRangeParameter)attribute)
+                                                .precision.getToken()).intValue();
 
-				// Get the quantized integer for the current value.
-				int quantized = ((int)Math.round(
-						(current - min)*precision
-						/(max - min)));
+                                // Get the quantized integer for the current value.
+                                int quantized = ((int)Math.round(
+                                                (current - min)*precision
+                                                /(max - min)));
 
-				newValue = "" + quantized;
-			} catch (IllegalActionException e) {
-				throw new InternalErrorException(e);
-			}
+                                newValue = "" + quantized;
+                        } catch (IllegalActionException e) {
+                                throw new InternalErrorException(e);
+                        }
         }
         return newValue;
     }

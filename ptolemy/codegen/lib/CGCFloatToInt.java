@@ -85,7 +85,7 @@ return ((IntToken)((numSample).getToken())).intValue();
     public void  generatePreinitializeCode() {
 
 addInclude("<math.h>");
-		numSample = output.numXfer();
+                numSample = output.numXfer();
      }
 
     /**
@@ -93,9 +93,9 @@ addInclude("<math.h>");
     public void  generateInitializeCode() throws IllegalActionException {
 
 if (((IntToken)((numSample).getToken())).intValue() > 1) {
-			input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
-			output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
-		}
+                        input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
+                        output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
+                }
      }
 
     /**
@@ -108,8 +108,8 @@ addCode(body);
     ////                     Codeblocks                     ////
 
     public String body =
-        "	int i = 0;\n"
-        + "	for (; i < $val(numSample); i++) {\n"
-        + "		$ref(output, i) = (int) floor($ref(input, i) + 0.5);\n"
-        + "	}\n";
+        "        int i = 0;\n"
+        + "        for (; i < $val(numSample); i++) {\n"
+        + "                $ref(output, i) = (int) floor($ref(input, i) + 0.5);\n"
+        + "        }\n";
 }

@@ -380,7 +380,7 @@ public class CompositeActor extends CompositeEntity
             try {
                 functionDependency
                     = new FunctionDependencyOfCompositeActor(
-                    	this, FunctionDependency.UniqueName);
+                            this, FunctionDependency.UniqueName);
             } catch (NameDuplicationException e) {
                 // This should not happen.
                 throw new InternalErrorException("Failed to construct a" +

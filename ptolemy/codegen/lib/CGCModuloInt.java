@@ -21,8 +21,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// CGCModuloInt
 /**
 The output of this star is the input modulo the
-		"modulo" parameter. The input, output, and modulo
-		are all integers.
+                "modulo" parameter. The input, output, and modulo
+                are all integers.
 
  @Author Siamak Modjtahedi
  @Version $Id$, based on version 1.2 of /users/ptolemy/src/domains/cgc/stars/CGCModuloInt.pl, from Ptolemy Classic
@@ -94,10 +94,10 @@ addInclude("<math.h>");
     public void  generateInitializeCode() throws IllegalActionException {
 
 if ( ((IntToken)((modulo).getToken())).intValue() == 0 ) {
-		    throw new IllegalActionException(this,
-				    "The modulo parameter cannot be zero");
-		    return;
-		}
+                    throw new IllegalActionException(this,
+                                    "The modulo parameter cannot be zero");
+                    return;
+                }
      }
 
     /**
@@ -110,5 +110,5 @@ addCode(out);
     ////                     Codeblocks                     ////
 
     public String out =
-        "	$ref(output) = $ref(input) % $ref(modulo);\n";
+        "        $ref(output) = $ref(input) % $ref(modulo);\n";
 }

@@ -56,8 +56,8 @@ public class CGCReciprocal extends ClassicCGCActor {
 
 /*
 // Indicate that there is no dynamically changing internal
-		// state, so the star can be parallelized.
-		noInternalState();
+                // state, so the star can be parallelized.
+                noInternalState();
 */
     }
     ///////////////////////////////////////////////////////////////////
@@ -86,8 +86,8 @@ public class CGCReciprocal extends ClassicCGCActor {
     public int  myExecTime() {
 
 /* based on CG96Reciprocal */
-		if (((DoubleToken)((magLimit).getToken())).doubleValue() == 0.0) return 8;
-		else return 12;
+                if (((DoubleToken)((magLimit).getToken())).doubleValue() == 0.0) return 8;
+                else return 12;
      }
 
     /**
@@ -95,27 +95,27 @@ public class CGCReciprocal extends ClassicCGCActor {
     public void  generateFireCode() {
 
 if (((DoubleToken)((magLimit).getToken())).doubleValue() == 0.0)
-		addCode(reciprocal);
-	    else
-		addCode(satrec);
+                addCode(reciprocal);
+            else
+                addCode(satrec);
      }
     ///////////////////////////////////////////////////////////////////
     ////                     Codeblocks                     ////
 
     public String reciprocal =
-        "	$ref(output) = 1/$ref(input);\n";
+        "        $ref(output) = 1/$ref(input);\n";
 
     public String satrec =
-        "	if ($ref(input) == 0.0)\n"
-        + "	    $ref(output) = $val(magLimit);\n"
-        + "	else {\n"
-        + "	    double t;\n"
-        + "	    t = 1/$ref(input);\n"
-        + "	    if (t>$val(magLimit))\n"
-        + "		$ref(output) = $val(magLimit);\n"
-        + "	    else if (t < - $val(magLimit))\n"
-        + "		$ref(output) = - $val(magLimit);\n"
-        + "	    else\n"
-        + "		$ref(output) = t;\n"
-        + "	}\n";
+        "        if ($ref(input) == 0.0)\n"
+        + "            $ref(output) = $val(magLimit);\n"
+        + "        else {\n"
+        + "            double t;\n"
+        + "            t = 1/$ref(input);\n"
+        + "            if (t>$val(magLimit))\n"
+        + "                $ref(output) = $val(magLimit);\n"
+        + "            else if (t < - $val(magLimit))\n"
+        + "                $ref(output) = - $val(magLimit);\n"
+        + "            else\n"
+        + "                $ref(output) = t;\n"
+        + "        }\n";
 }

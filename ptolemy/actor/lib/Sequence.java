@@ -149,7 +149,7 @@ public class Sequence extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         if (enable.getWidth() == 0
-        		|| (enable.hasToken(0)
+                        || (enable.hasToken(0)
                     && ((BooleanToken)enable.get(0)).booleanValue())) {
             ArrayToken valuesArray = (ArrayToken)values.getToken();
             if (_currentIndex < valuesArray.length()) {
@@ -181,9 +181,9 @@ public class Sequence extends TypedAtomicActor {
             if (_currentIndex >= valuesArray.length()) {
                 boolean repeatValue = ((BooleanToken)repeat.getToken()).booleanValue();
                 if (repeatValue) {
-                	_currentIndex = 0;
+                        _currentIndex = 0;
                 } else {
-                	// To prevent overflow...
+                        // To prevent overflow...
                     _currentIndex = valuesArray.length();
                 }
             }

@@ -280,18 +280,18 @@ public class VisualModelReference
                                     _debug("** Using the configuration to open a tableau.");
                                 }
                                 try {
-									// NOTE: Executing this in the event thread averts
-									// a race condition... Previous close(), which was
-									// deferred to the UI thread, will have completed.
+                                                                        // NOTE: Executing this in the event thread averts
+                                                                        // a race condition... Previous close(), which was
+                                                                        // deferred to the UI thread, will have completed.
                                     _exception = null;
-									_tableau = configuration.openModel(_model, myEffigy);
+                                                                        _tableau = configuration.openModel(_model, myEffigy);
                                     // Set this tableau to be a master so that when it
                                     // gets closed, all its subwindows get closed.
                                     _tableau.setMaster(true);
-								} catch (KernelException e) {
-									// Record the exception for later reporting.
-									_exception = e;
-								}
+                                                                } catch (KernelException e) {
+                                                                        // Record the exception for later reporting.
+                                                                        _exception = e;
+                                                                }
                                 _tableau.show();
 
                                 JFrame frame = _tableau.getFrame();
@@ -306,12 +306,12 @@ public class VisualModelReference
                             }
                         };
                         try {
-                        	SwingUtilities.invokeAndWait(doOpen);
+                                SwingUtilities.invokeAndWait(doOpen);
                         } catch (Exception ex) {
-                        	throw new IllegalActionException(this, null, ex, "Open failed.");
+                                throw new IllegalActionException(this, null, ex, "Open failed.");
                         }
                         if (_exception != null) {
-                        	// An exception occurred while trying to open.
+                                // An exception occurred while trying to open.
                             throw new IllegalActionException(this, null, _exception, "Failed to open.");
                         }
                     } else {

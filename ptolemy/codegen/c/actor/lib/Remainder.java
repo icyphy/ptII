@@ -18,9 +18,9 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class Remainder extends CCodeGeneratorHelper {
 
-	/**
-	 * @param component
-	 */
+        /**
+         * @param component
+         */
     public Remainder(ptolemy.actor.lib.Remainder actor) {
         super(actor);
     }

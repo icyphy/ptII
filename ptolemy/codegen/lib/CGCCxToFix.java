@@ -96,8 +96,8 @@ minimum for negative magnitudes). parameter with initial value "".
     public void  generatePreinitializeCode() {
 
 super.initCode();
-		numSample = output.numXfer();
-		addInclude("<math.h>");
+                numSample = output.numXfer();
+                addInclude("<math.h>");
      }
 
     /**
@@ -105,11 +105,11 @@ super.initCode();
     public void  begin() {
 
 // if the precision for the output port is not defined
-		// - neither by this nor the successor star -, the actual
-		// precision is determined at runtime
+                // - neither by this nor the successor star -, the actual
+                // precision is determined at runtime
 
-		if (!output.precision().isValid())
-			output.setAttributes(A_VARPREC);
+                if (!output.precision().isValid())
+                        output.setAttributes(A_VARPREC);
      }
 
     /**
@@ -118,12 +118,12 @@ super.initCode();
 
 super.generateInitializeCode();
 
-		if (((IntToken)((numSample).getToken())).intValue() > 1) {
-			input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
-			output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
-		}
+                if (((IntToken)((numSample).getToken())).intValue() > 1) {
+                        input.setSDFParams(((IntToken)((numSample).getToken())).intValue());
+                        output.setSDFParams(((IntToken)((numSample).getToken())).intValue());
+                }
 
-		output.setPrecision(OutputPrecision);
+                output.setPrecision(OutputPrecision);
      }
 
     /**
@@ -131,31 +131,31 @@ super.generateInitializeCode();
     public void  generateFireCode() {
 
 // insert code to clear overflow flag
-		super.clearOverflow();
+                super.clearOverflow();
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"     {	int i = 0;\n"
-"	double p, q;\n"
-"	for (; i < $val(numSample); i++) {\n"
-"		p = $ref(input, i).real;\n"
-"		q = $ref(input, i).imag;\n"
-"		p = sqrt(p*p+q*q);\n"
+"     {        int i = 0;\n"
+"        double p, q;\n"
+"        for (; i < $val(numSample); i++) {\n"
+"                p = $ref(input, i).real;\n"
+"                q = $ref(input, i).imag;\n"
+"                p = sqrt(p*p+q*q);\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
-	    if (output.attributes() & AB_VARPREC)
+            if (output.attributes() & AB_VARPREC)
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"		FIX_SetPrecisionFromDouble($precision(output),p);\n"
+"                FIX_SetPrecisionFromDouble($precision(output),p);\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
 { StringBuffer _str_ = new StringBuffer(); _str_.append(
-"		FIX_DoubleAssign($ref(output,i),p);\n"
+"                FIX_DoubleAssign($ref(output,i),p);\n"
 "     } }\n"
 
-); 	 addCode(_str_);  }
+);          addCode(_str_);  }
 
-		// insert code to test overflow flag
-		super.checkOverflow();
+                // insert code to test overflow flag
+                super.checkOverflow();
      }
 }

@@ -174,12 +174,12 @@ public class ProcessDirector extends Director {
                     _debug("Deadlock detected.");
                 }
                 try {
-					_notDone = _resolveDeadlock();
-				} catch (IllegalActionException e) {
-					// stop all threads.
+                                        _notDone = _resolveDeadlock();
+                                } catch (IllegalActionException e) {
+                                        // stop all threads.
                     stop();
                     throw e;
-				}
+                                }
             }
         }
     }
@@ -458,7 +458,7 @@ public class ProcessDirector extends Director {
             // Have to click the stop button twice.
             // (new NotifyThread(manager)).start();
             synchronized(manager) {
-            	manager.notifyAll();
+                    manager.notifyAll();
             }
 
             // Wait until all process threads stop.
@@ -648,7 +648,7 @@ public class ProcessDirector extends Director {
     protected synchronized void _increaseActiveCount() {
         _activeActorCount++;
         if (_debugging) {
-        	_debug("Increasing active count to: " + _activeActorCount);
+                _debug("Increasing active count to: " + _activeActorCount);
         }
         notifyAll();
     }
