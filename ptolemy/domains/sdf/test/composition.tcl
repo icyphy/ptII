@@ -84,4 +84,5 @@ test composition-1.0 {DE model contained within SDF} {
 
     $manager run
     list [enumToTokenValues [$a3 getRecord 0]] [enumToStrings [$a3 getTimeRecord]]
-} {}
+} {} {Hmm..  what should this do?}
+
