@@ -34,17 +34,22 @@ import ptolemy.domains.csp.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.data.Token;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 import java.util.Random;
 
 
 //////////////////////////////////////////////////////////////////////////
 //// Customer
 /** 
-Customer arriving in M/M/1 demo.
-Default rate is 1.
-
+Customer arriving in M/M/1 demo. Customers arrive in a Poisson 
+fashion, i.e the inter-arrival times are exponentially distributed.
+It is parameterized by the Parameter "arrivalRate". The default rate 
+of arrival is 1.
+<p>
 @author Neil Smyth
 @version $Id$
 
@@ -53,7 +58,7 @@ Default rate is 1.
 public class Customer extends CSPActor {
     public Customer() throws IllegalActionException, NameDuplicationException {
         super();
-        _rate = 1;
+        _rate = new Parameter(this, "arrivalRate", (new DoubleToken(1)) );
         output = new IOPort(this, "output", false, true);
     }
     
@@ -62,10 +67,10 @@ public class Customer extends CSPActor {
          this(cont, name, 1);
     }
 
-    public Customer(CompositeActor cont, String name, int rate) 
+    public Customer(CompositeActor cont, String name, double rate) 
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
-         _rate = rate;
+         _rate = new Parameter(this, "arrivalRate", (new DoubleToken(rate)) );
          output = new IOPort(this, "output", false, true);
     }
 
@@ -78,8 +83,9 @@ public class Customer extends CSPActor {
             int count = 0;
             double interval = 0;
             while (count < 100 ) {
-                // exponential distribution parameterised by _rate.
-                interval = Math.exp(-(rand.nextDouble())*_rate);
+                double rate = ((DoubleToken)_rate.getToken()).doubleValue();
+                // exponential distribution parameterised by rate.
+                interval = Math.exp(-(rand.nextDouble())*rate);
                 interval = (int)(interval*1000);
                 delay(interval/1000);
                 Token t = new IntToken(count);
@@ -90,21 +96,34 @@ public class Customer extends CSPActor {
             }
             System.out.println("Customer(" + getName() + 
                     "):finished normally.");
-            _again = false;
+            finish();
             return;
         } catch (IllegalActionException ex) {
             System.out.println("Customer: illegalActionException, exiting");
-        }  
-    }
-
-    public boolean prefire() {
-        return _again;
+        } finally {
+            
+            /*try {
+                setContainer(null);
+            } catch (NameDuplicationException ex) {
+                // should not happen.
+                throw new InternalErrorException("CSPBuffer: cannot" +
+                        "set container to null.");
+            } catch (IllegalActionException ex) {
+                // should not happen.
+                throw new InternalErrorException("CSPBuffer: cannot" +
+                        "set container to null.");
+                        }*/
+        }
     }
     
     ////////////////////////////////////////////////////////////////////////
     ////                         public variables                       ////
     
     public IOPort output;
-    private boolean _again = true;
-    private int _rate;
+
+    
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
+ 
+    private Parameter _rate;
 }

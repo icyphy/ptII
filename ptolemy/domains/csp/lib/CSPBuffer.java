@@ -35,12 +35,17 @@ import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.data.Token;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPBuffer
 /** 
-  Implements a single channel buffer. The default depth of the buffer is 1.
-    FIXME: add description!!
+A single channel buffer. It is parameterized by the Parameter "depth", 
+which controls how many Tokens can be stored in this buffer.
+The default depth of the buffer is 1. The buffer depth can change 
+between firings of this actor.
+<p>
 
 @author Neil Smyth
 @version $Id$
@@ -50,9 +55,8 @@ import ptolemy.data.Token;
 public class CSPBuffer extends CSPActor {
     public CSPBuffer() throws IllegalActionException, NameDuplicationException{
         super();
-        _depth = 1;
-        _buffer = new Token[_depth];
-         output = new IOPort(this, "bufferOutput", false, true);
+        _depth = new Parameter(this, "depth", (new IntToken(1)) );
+        output = new IOPort(this, "bufferOutput", false, true);
         input = new IOPort(this, "bufferInput", true, false);
     }
     
@@ -64,8 +68,7 @@ public class CSPBuffer extends CSPActor {
     public CSPBuffer(CompositeActor cont, String name, int depth) 
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
-         _depth = depth;
-         _buffer = new Token[_depth];
+         _depth = new Parameter(this, "depth", (new IntToken(depth)) );
          output = new IOPort(this, "bufferOutput", false, true);
          input = new IOPort(this, "bufferInput", true, false);
     }
@@ -75,13 +78,16 @@ public class CSPBuffer extends CSPActor {
 
     public void fire() {
         try {
+            //Parameter depth = (Parameter)getAttribute("depth");
+            int depth = ((IntToken)_depth.getToken()).intValue();
+            _buffer = new Token[depth];
             int count = 0;
             boolean guard = false;
             boolean continueCDO = true;
             ConditionalBranch[] branches = new ConditionalBranch[2];
             while (continueCDO) {
                 // step 1
-                guard = (_size < _depth);
+                guard = (_size < depth);
                 branches[0] = new ConditionalReceive(guard, input, 0, 0);
               
                 guard = (_size > 0);
@@ -98,13 +104,13 @@ public class CSPBuffer extends CSPActor {
                     System.out.println(getName() + " got Token: " + 
                             _buffer[_writeTo].toString() + ", size is: " + 
                             _size);
-                    _writeTo = ++_writeTo % _depth;
+                    _writeTo = ++_writeTo % depth;
                 } else if (successfulBranch == 1) {
                     _size--;
                     System.out.println(getName() + " sent Token: " + 
                             _buffer[_readFrom].toString() + ", size is: " +
                             _size);
-                    _readFrom = ++_readFrom % _depth;
+                    _readFrom = ++_readFrom % depth;
                 } else if (successfulBranch == -1) {
                     // all guards false so exit CDO
                     continueCDO = false;
@@ -120,29 +126,20 @@ public class CSPBuffer extends CSPActor {
                     ex.getMessage());
         } catch (NoTokenException ex) {
             System.out.println("CSPBuffer: cannot get token.");
-        } finally {
-            _again = false;
-        }
-    }
-    
-    public boolean prefire() {
-        return _again;
+        } 
     }
 
     public IOPort input;
     public IOPort output;
 
     ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
+    ////                         private variables                      ////
 
-    // Flag indicating if this actor should be fired again.
-    private boolean _again = true;
-
-     // The array storing the buffered Tokens.
+    // The array storing the buffered Tokens.
     private Token[] _buffer;
     
-    // The depth of the buffer.
-     private int _depth = 1;
+    // The Parameter storing the depth of the buffer.
+     private Parameter _depth;
 
     // The number of Tokens currently stored in the buffer.
     private int _size = 0;
@@ -152,5 +149,4 @@ public class CSPBuffer extends CSPActor {
 
     // The next location to read Tokenfromo.
     private int _readFrom = 0;
-
-   }
+}

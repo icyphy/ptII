@@ -34,30 +34,41 @@ import ptolemy.domains.csp.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.data.Token;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.expr.Parameter;
 import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPSink
 /** 
   
-Model of a server in a M/M/1 queue. It deals with arrivals with 
-an exponential distribution.
-Default service rate is 1.
-
+Model of a server in a M/M/1 queue. It serves customers with times 
+that are exponentially distributed. It is parameterized by the 
+Parameter "servicelRate". The default service rate is 1.
+<p>
 @author Neil Smyth
 @version $Id$
 
  */
 public class Server extends CSPActor {
-    public Server() {
+    public Server() throws IllegalActionException, NameDuplicationException {
         super();
+        _rate = new Parameter(this, "serviceRate", (new DoubleToken(1)) );
+        input = new IOPort(this, "input", true, false);
     }
-    
+
     public Server(CompositeActor cont, String name) 
+            throws IllegalActionException, NameDuplicationException {
+         this(cont, name, 1);
+    }
+
+    public Server(CompositeActor cont, String name, double rate) 
         throws IllegalActionException, NameDuplicationException {
         super(cont, name);
-        input = new IOPort(this, "input", true, false);
+        _rate = new Parameter(this, "serviceRate", (new DoubleToken(rate)) );
+         input = new IOPort(this, "input", true, false);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -70,8 +81,9 @@ public class Server extends CSPActor {
         try {
             while (count < 10 ) {
                 Token t = input.get(0);
-                // exponential distribution parameterised by _rate.
-                interval = Math.exp(-(rand.nextDouble())*_rate);
+                double rate = ((DoubleToken)_rate.getToken()).doubleValue();
+                // exponential distribution parameterised by rate.
+                interval = Math.exp(-(rand.nextDouble())*rate);
                 interval = (int)(interval*1000);
                 delay(interval/1000);
                 System.out.println(getName() + " serviced customer: " + 
@@ -79,20 +91,36 @@ public class Server extends CSPActor {
                 count++;
             }
             System.out.println("Server(" + getName() + "):finished normally.");
-            _again = false;
+            finish();
             return;
         } catch (IllegalActionException ex) {
             System.out.println("CSPSink invalid get, exiting...");
         } catch (NoTokenException ex) {
             System.out.println("CSPSink invalid get, exiting...");
-        } 
+        } finally {
+            
+            /*try {
+                setContainer(null);
+            } catch (NameDuplicationException ex) {
+                // should not happen.
+                throw new InternalErrorException(getName() + ": cannot" +
+                        "set container to null.");
+            } catch (IllegalActionException ex) {
+                // should not happen.
+                throw new InternalErrorException(getName() + ": cannot" +
+                        "set container to null.");
+                        }*/
+        }
     }
     
-    public boolean prefire() {
-        return _again;
-    }
-
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public variables                       ////
+    
    public IOPort input;
-   private boolean _again = true;
-    private int _rate;
+    
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
+ 
+    private Parameter _rate;
+
 }
