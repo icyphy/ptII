@@ -355,14 +355,16 @@ public class SDFDirector extends StaticSchedulingDirector {
     }
 
     /** Override the base class method to transfer enough tokens to
-     *  complete an internal iteration.
-     *  This behavior is required to handle the case of non-homogeneous
-     *  opaque composite actors. The port argument must be an opaque
-     *  input port. If any channel of the input port has no data, then
-     *  that channel is ignored.
+     *  complete an internal iteration.  If there are not enough tokens,
+     *  then throw an exception.  If the port is not connected on the
+     *  inside, or has a narrower width on the inside than on the outside,
+     *  then consume exactly one token from the corresponding outside
+     *  channels and discard it.  Thus, a port connected on the outside
+     *  but not on the inside can be used as a trigger for an SDF
+     *  composite actor.
      *
      *  @exception IllegalActionException If the port is not an opaque
-     *   input port.
+     *   input port, or if there are not enough input tokens available.
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
      */
@@ -376,19 +378,29 @@ public class SDFDirector extends StaticSchedulingDirector {
 	boolean wasTransferred = false;
         for (int i = 0; i < port.getWidth(); i++) {
             try {
-                for (int k = 0; k < rate; k++) {
+                if (i < port.getWidthInside()) {
+                    for (int k = 0; k < rate; k++) {
+                        if (port.hasToken(i)) {
+                            Token t = port.get(i);
+                            if (_debugging) _debug(getName(),
+                                   "transferring input from "
+                                   + getName());
+                                   port.sendInside(i, t);
+                            wasTransferred = true;
+                        } else {
+                            throw new IllegalActionException(this, port,
+                                   "Port should consume "
+                                   + rate
+                                   + " tokens, but there were only "
+                                   + k
+                                   + " tokens available.");
+                        }
+                    }
+                } else {
+                    // No inside connection to transfer tokens to.
+                    // In this case, consume one input token if there is one.
                     if (port.hasToken(i)) {
-                        Token t = port.get(i);
-                        if (_debugging) _debug(getName(),
-                                "transferring input from "
-                                + getName());
-                        port.sendInside(i, t);
-                        wasTransferred = true;
-                    } else {
-                        throw new IllegalActionException(this, port,
-                                "Port should consume " + rate
-                                + " tokens, but there were only "
-                                + k + " tokens available.");
+                        port.get(i);
                     }
                 }
             } catch (NoTokenException ex) {
