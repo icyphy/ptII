@@ -286,18 +286,13 @@ public class Scale extends Transformer {
 	private Object compute(Type portType, Type paramType) {
 	    if (portType == BaseType.UNKNOWN) {
 	        return BaseType.UNKNOWN;
-	    } else if (portType instanceof BaseType) {
-	        CPO lattice = TypeLattice.lattice();
-		return lattice.leastUpperBound(portType, paramType);
 	    } else if (portType instanceof ArrayType) {
 	        Type elementType = ((ArrayType)portType).getElementType();
                 Type newElementType = (Type)compute(elementType, paramType);
 		return new ArrayType(newElementType);
-	    } else {
-	        throw new InvalidStateException("Type resolution finds that "
-		        + "the type of the port " + _port.getFullName()
-			+ " is " + portType.toString() + ", which is not "
-			+ "supported.");
+	    } else { 
+	        CPO lattice = TypeLattice.lattice();
+		return lattice.leastUpperBound(portType, paramType);
 	    }
         }
 
