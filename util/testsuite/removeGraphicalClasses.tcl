@@ -46,28 +46,26 @@ proc removeGraphicalClasses {parser} {
 
 
     set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
+    $filter put "caltrop.ptolemy.actors.CalInterpreter" [java::null]
     $filter put "ptolemy.actor.lib.gui.PlotterBase" [java::null]
     $filter put "ptolemy.actor.lib.gui.Plotter" [java::null]
     $filter put "ptolemy.actor.lib.gui.BarGraph" [java::null]
     $filter put "ptolemy.actor.lib.gui.Display" [java::null]
+    $filter put "ptolemy.actor.lib.gui.HistogramPlotter" [java::null]
     $filter put "ptolemy.actor.lib.gui.RealTimePlotter" [java::null]
     $filter put "ptolemy.actor.lib.gui.SequencePlotter" [java::null]
     $filter put "ptolemy.actor.lib.gui.SequenceScope" [java::null]
+    $filter put "ptolemy.actor.lib.gui.SketchedSource" [java::null]
     $filter put "ptolemy.actor.lib.gui.TimedPlotter" [java::null]
     $filter put "ptolemy.actor.lib.gui.TimedScope" [java::null]
     $filter put "ptolemy.actor.lib.gui.XYPlotter" [java::null]
     $filter put "ptolemy.actor.lib.gui.XYScope" [java::null]
-    $filter put "ptolemy.domains.sr.lib.NonStrictDisplay" [java::null]
     $filter put "ptolemy.actor.lib.gui.MatrixVisualizer" [java::null]
     $filter put "ptolemy.actor.lib.gui.MatrixViewer" [java::null]
+    $filter put "ptolemy.actor.lib.joystick.Joystick" [java::null]
     #$filter put "ptolemy.domains.tm.kernel.TMDirector" [java::null]
+    $filter put "ptolemy.domains.sr.lib.NonStrictDisplay" [java::null]
     $filter put "ptolemy.domains.tm.kernel.SchedulePlotter" [java::null]
 
-    $filter put "ptolemy.actor.lib.gui.HistogramPlotter" [java::null]
-
-    $filter put "ptolemy.actor.lib.gui.SketchedSource" [java::null]
-
-    $filter put "caltrop.ptolemy.actors.CalInterpreter" [java::null]
-    $filter put "ptolemy.actor.lib.joystick.Joystick" [java::null]
     $parser addMoMLFilter $filter
 }
