@@ -471,8 +471,10 @@ public class InlinePortTransformer extends SceneTransformer {
                     }
                 }
             } else {
-                System.out.println("InlinePortTransformer.getAttributeValue(): Unknown value = " 
-                        + value + " searching for local " + local + " in method " + method);
+                System.out.println("InlinePortTransformer.getPortValue():" +
+                        " Unknown value = " + value + 
+                        " searching for local " + local + 
+                        " in method " + method);
             }
         } else {
             System.out.println("more than one definition of = " + local);

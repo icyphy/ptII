@@ -233,6 +233,8 @@ public class ActorTransformer extends SceneTransformer {
                     body, entity, thisLocal, 
                     entity, thisLocal, entityInstanceClass, createdSet);
 
+            // FIXME: this is very similar to other code in the 
+            // ModelTransformer.
             // Set the types of all the ports.
             Local portLocal = Jimple.v().newLocal("port",
                     RefType.v("ptolemy.kernel.Port"));
@@ -241,16 +243,65 @@ public class ActorTransformer extends SceneTransformer {
                 Jimple.v().newLocal("typedport",
                         PtolemyUtilities.ioportType);
             body.getLocals().add(ioportLocal);
+
             for(Iterator ports = entity.portList().iterator();
                 ports.hasNext();) {
                 TypedIOPort port = (TypedIOPort)ports.next();
-                // Call the getPort method to get a reference to the port.
-                body.getUnits().add(Jimple.v().newAssignStmt(
-                        portLocal,
-                        Jimple.v().newVirtualInvokeExpr(
-                                thisLocal,
-                                PtolemyUtilities.getPortMethod,
-                                StringConstant.v(port.getName()))));
+                if(classEntity.getPort(port.getName()) != null) {
+                    System.out.println("getting port for " + port.getName());
+                    // Call the getPort method to get a reference to the port.
+                    body.getUnits().add(Jimple.v().newAssignStmt(
+                            portLocal,
+                            Jimple.v().newVirtualInvokeExpr(
+                                    thisLocal,
+                                    PtolemyUtilities.getPortMethod,
+                                    StringConstant.v(port.getName()))));
+                } else {
+                    System.out.println("creating port for " + port.getName());
+                    // If the class does not create the port,
+                    // then create a new port with the right name.
+                    Local local = PtolemyUtilities.createNamedObjAndLocal(
+                            body, className,
+                            thisLocal, port.getName());
+                    // and then cast to portLocal
+                    body.getUnits().add(Jimple.v().newAssignStmt(ioportLocal,
+                            Jimple.v().newCastExpr(local,
+                                    PtolemyUtilities.portType)));
+
+                    // Create a new field for the attribute, and initialize
+                    // it to the the attribute above.
+                    SootUtilities.createAndSetFieldFromLocal(body, local, 
+                            entityInstanceClass,
+                            PtolemyUtilities.portType, 
+                            ModelTransformer.getFieldNameForPort(port, 
+                                    entity));
+                    
+
+                    if(port instanceof TypedIOPort) {
+                        TypedIOPort ioport = (TypedIOPort)port;
+                        if(ioport.isInput()) {
+                            body.getUnits().add(Jimple.v().newInvokeStmt(
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            ioportLocal,
+                                            PtolemyUtilities.setInputMethod,
+                                            IntConstant.v(1))));
+                        }
+                        if(ioport.isOutput()) {
+                            body.getUnits().add(Jimple.v().newInvokeStmt(
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            ioportLocal,
+                                            PtolemyUtilities.setOutputMethod,
+                                            IntConstant.v(1))));
+                        }
+                        if(ioport.isMultiport()) {
+                            body.getUnits().add(Jimple.v().newInvokeStmt(
+                                    Jimple.v().newVirtualInvokeExpr(
+                                            ioportLocal,
+                                            PtolemyUtilities.setMultiportMethod,
+                                            IntConstant.v(1))));
+                        }
+                    }
+                }
 
                 // Create attributes for the port
                 ModelTransformer.createFieldsForAttributes(
