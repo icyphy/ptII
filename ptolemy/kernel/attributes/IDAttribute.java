@@ -102,6 +102,15 @@ public class IDAttribute extends SingletonAttribute {
         // Cannot change the base class.
         baseClass.setVisibility(Settable.NOT_EDITABLE);
         
+        URIAttribute modelURI = (URIAttribute)container.getAttribute(
+               "_uri", URIAttribute.class);
+        if (modelURI != null) {
+            StringAttribute definedIn = new StringAttribute(this, "definedIn");
+            definedIn.setExpression(modelURI.getURI().toString());
+            definedIn.setPersistent(false);
+            definedIn.setVisibility(Settable.NOT_EDITABLE);
+        }
+        
         lastUpdated = new StringAttribute(this, "lastUpdated");
         setDate(null);
         lastUpdated.setVisibility(Settable.NOT_EDITABLE);
