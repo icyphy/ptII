@@ -223,13 +223,6 @@ public class FixToken extends ScalarToken {
         return new FixToken(result);
     }
 
-    /** Return the value of this token as a double.
-     *  @return A double
-     */
-    public double doubleValue() {
-	return _value.doubleValue();
-    }
-
     /** Return the value of this token as a Fixpoint.
      *  @return A Fixpoint
      */
@@ -261,8 +254,8 @@ public class FixToken extends ScalarToken {
 	if (compare == CPO.INCOMPARABLE) {
             throw new IllegalActionException("FixToken.isEqualTo: " +
                     "type of argument: " + token.getClass().getName() +
-                    "is incomparable with FixToken in the type " +
-                    "hierarchy.");
+                    " is incomparable with FixToken in the type " +
+                    " hierarchy.");
         }
 
         if (compare == CPO.LOWER) {
@@ -511,7 +504,8 @@ public class FixToken extends ScalarToken {
        double [][] fxa = new double[1][values.getColumnCount()];
        for( int i=0; i<values.getColumnCount(); i++) {
            // fxa[0][i] = 1.0;
-           fxa[0][i] = (new FixToken( values.getElementAt(0,i), numberOfBits, integerBits ) ).doubleValue();
+           Precision precision = new Precision( numberOfBits, integerBits );
+           fxa[0][i] = (Quantizer.round(values.getElementAt(0,i), precision)).doubleValue();;
            System.out.println(" Result["+i+"] = " + fxa[0][i] );
        }
        return new DoubleMatrixToken( fxa );
