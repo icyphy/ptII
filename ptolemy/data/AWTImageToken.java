@@ -72,6 +72,22 @@ public class AWTImageToken extends ImageToken {
         return _value;
     }
 
+    /** Return a description of the token.  
+     *  If possible, derived classes should override this method and
+     *  return the value of this token as a string that can be parsed
+     *  by the expression language to recover a token with the same value.
+     *  Unfortunately, in this base class, we can only return the 
+     *  classname, the width and the height as a string representation of
+     *  a record.
+     *  @return The classname, width and height as string representation
+     *  of a record.
+     */
+    public String toString() {
+        return "{type=\"" + getClass()
+            + "\" width=\"" + _value.getWidth(null)
+            + "\" height=\"" + _value.getHeight(null) + "\"}";
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
