@@ -442,4 +442,13 @@ public class Token implements Serializable {
                 "Additive identity not supported on "
                 + this.getClass().getName() + ".");
     }
+    
+    /** Return the (exact) return type of the zero function above.
+     *  The argument type is always returned
+     *  @param type The type of the argument to the corresponding function.
+     *  @return The type of the value returned from the corresponding function.
+     */
+    public static Type zeroReturnType(Type type) {
+        return type;
+    }
 }
