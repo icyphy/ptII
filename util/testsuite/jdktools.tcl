@@ -104,16 +104,16 @@ proc ::jdk::version {} {
 ######################################################################
 ####::jdk::properties
 # Print the value of the Java System Properties
+# This proc shows how to use printStreams within TclBlend
 #
 proc ::jdk::properties {} {
-    set props [list java.version java.vendor java.vendor.url java.home \
-	    java.class.version java.class.path os.name os.arch os.version \
-	    file.separator path.separator line.separator \
-	    user.name user.home user.dir]
-    foreach prop $props {
-	puts "$prop: [java::call System getProperty $prop]"
-    }
-    
+    set props [java::call System getProperties]
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+	    {java.io.PrintStream java.io.OutputStream} $stream]
+    $props {list java.io.PrintStream} $printStream
+    $printStream flush
+    puts [$stream toString]
 }
 
 
