@@ -360,6 +360,37 @@ fi
 
 
 
+#--------------------------------------------------------------------
+#       KVM is the JDK for PalmOS
+#	See if there was a command-line option for where
+#       kvm/tools/classes.zip is;  if not,
+#       check to see if $PTII/vendors/sun/kvm exists
+#--------------------------------------------------------------------
+
+# We only need to look for kvm if $PTII/ptolemy/kvm exists
+if test ! -d "$PTII/ptolemy/kvm"; then
+    AC_MSG_RESULT([$PTII/ptolemy/kvm is not present, so we need not
+find the PalmOS kvm])
+else
+    AC_MSG_CHECKING([for kvm classes.zip])
+    AC_ARG_WITH(kvm_classes, [  --with-kvm-classes=DIR       use PalmOS KVM from DIR,
+                          defaults to \$PTII/vendors/sun/kvm/tools/classes.zip],
+	KVM_CLASSES=$withval,
+	KVM_CLASSES=$PTII/vendors/sun/kvm/tools/classes.zip)
+
+    if test -f "$KVM_CLASSES"; then
+	AC_MSG_RESULT([$KVM_CLASSES])
+    else    
+        AC_MSG_WARN(['Failed to find kvm/tools/classes.zip,
+perhaps Kvm is not installed?
+You need not download Kvm unless you plan on building applications
+for the PalmPilot or Handspring Visor.
+Kvm can be downloaded from http://java.sun.com/products/kvm'])
+	# Note that we don't substitute in the $(PTII) here
+   	KVM_CLASSES='$(PTII)/vendors/sun/kvm/tools/classes.zip'
+    fi    
+fi
+
 # Keep these substitutions alphabetical, with a description
 
 # Separator in CLASSPATH,  For Unix, this should be :, for Cygwin use ;
@@ -387,6 +418,9 @@ AC_SUBST(JTREE)
 
 # JDK Version determined by running confTest.class and getting java.version
 AC_SUBST(JVERSION)
+
+# kvm/tools/classes.jar file used by the PalmOS KVM
+AC_SUBST(KVM_CLASSES)
 
 # ptjacl.jar file, used to run the test suites
 AC_SUBST(PTJACL_JAR)
