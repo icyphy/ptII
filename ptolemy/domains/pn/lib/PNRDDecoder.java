@@ -174,8 +174,8 @@ public class PNRDDecoder extends AtomicActor {
 				    (CompositeActor)getContainer(), 
 				    "adder-"+j+"-0-0");
 			    //System.out.println("AdderCreated" + adder.getName());
-			    IOPort out1 = createSubtree(j,1,0,info.left); 
-			    IOPort out2 = createSubtree(j,1,1,info.right);
+			    IOPort out1 = createSubtree(j, 1, 0, info.left); 
+			    IOPort out2 = createSubtree(j, 1, 1, info.right);
 			    inport = (IOPort)adder.getPort("input-0");
 			    temps = out1.linkedRelations();
 			    if (temps.hasMoreElements()) {
