@@ -41,6 +41,7 @@ import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.resource.DefaultBundle;
 import diva.resource.RelativeBundle;
+import java.awt.Event;
 import java.awt.dnd.*;
 import java.awt.event.*;
 import java.awt.datatransfer.*;
@@ -426,28 +427,6 @@ public class VergilApplication extends MDIApplication {
                 "Save the current graph document to a different file");
 
         action = DefaultActions.printAction(this);
-
-            /*new AbstractAction ("Print") {
-            public void actionPerformed(ActionEvent e) {
-                Document d = getCurrentDocument();
-                if (d == null) {
-                    System.out.println("Graph document is null");
-                } else {
-                    if(d instanceof Printable) {
-                        PrinterJob job = PrinterJob.getPrinterJob();
-                        PageFormat format = job.pageDialog(job.defaultPage());
-			job.setPrintable((Printable)d, format);
-			if (job.printDialog()) {
-			    try {
-                                job.print();
-			    } catch (Exception ex) {
-				showError("PrintingFailed", ex);
-			    }
-			}
-		    }
-                }
-            }
-            };*/
         addAction(action);
         addMenuItem(menuFile, action, 'P', "Print current document");
 
@@ -462,17 +441,26 @@ public class VergilApplication extends MDIApplication {
         menuFile.setMnemonic('E');
         menuBar.add(menuFile);
 
-        action = DefaultActions.cutAction(this);
-        addAction(action);
-        addMenuItem(menuFile, action, 'u', "Cut");
+	// FIXME implement cut.
+	//action = DefaultActions.cutAction(this);
+        //addAction(action);
+        //addMenuItem(menuFile, action, 'u', "Cut");
 
         action = DefaultActions.copyAction(this);
         addAction(action);
         addMenuItem(menuFile, action, 'C', "Copy");
+	getApplicationFrame().getRootPane().
+	    registerKeyboardAction(action, "Copy",
+	    KeyStroke.getKeyStroke(KeyEvent.VK_C, Event.CTRL_MASK),
+	    JComponent.WHEN_IN_FOCUSED_WINDOW);	
 
         action = DefaultActions.pasteAction(this);
         addAction(action);
         addMenuItem(menuFile, action, 'P', "Paste");
+	getApplicationFrame().getRootPane().
+	    registerKeyboardAction(action, "Paste",
+	    KeyStroke.getKeyStroke(KeyEvent.VK_V, Event.CTRL_MASK),
+	    JComponent.WHEN_IN_FOCUSED_WINDOW);	
 
     }
 
