@@ -47,6 +47,43 @@ if {[string compare test [info procs test]] == 1} then {
 # Check for necessary classes and adjust the auto_path accordingly.
 #
 
+# _testIterator
+# This proc returns a list consisting of the names of all of the
+# elements in the iterator returned by calling the method named by itermethod.
+# If an element is null, then it return java::null.
+#
+# itermethod is the name of the method to be called on the object to get
+# the enum.
+#
+# args is one or more objects.
+#
+proc _testIterator {itermethod args} {
+    set results {}
+    foreach objecttoenum $args {
+	if {$objecttoenum == [java::null]} {
+	    lappend results [java::null]
+	} else {
+	    set lresults {}
+	    for {set enum [$objecttoenum $itermethod]} \
+		    {$enum != [java::null] && \
+		    [$enum hasNext] == 1} \
+		    {} {
+                set enumelement [$enum next]
+		if [ java::instanceof $enumelement ptolemy.kernel.util.NamedObj] {
+                         set enumelement \
+                                 [java::cast ptolemy.kernel.util.NamedObj \
+                                 $enumelement]
+		    lappend lresults [$enumelement getName]
+		} else {
+		    lappend lresults $enumelement
+		}
+	    }
+	    lappend results $lresults
+	}
+    }
+    return $results
+}
+
 
 ######################################################################
 ####
@@ -116,3 +153,93 @@ test Scheduler-5.1 {Scheduling tests} {
     _testEnums schedule $scheduler
     
 } {{A1 A2}}
+
+######################################################################
+####
+#
+test Scheduler-6.1 {Test actorIterator method of Schedule} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set toplevel [java::new ptolemy.actor.CompositeActor $w]
+    set director [java::new ptolemy.actor.sched.StaticSchedulingDirector \
+	    $toplevel Director]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    set scheduler [java::new ptolemy.actor.sched.Scheduler $w]
+    $director setScheduler $scheduler
+
+    set a1 [java::new ptolemy.actor.test.TestActor $toplevel A1]
+    set a2 [java::new ptolemy.actor.test.TestActor $toplevel A2]
+    $scheduler setValid false
+    set schedule [$scheduler getSchedule]
+    _testIterator actorIterator $schedule
+    
+} {{A1 A2}}
+
+######################################################################
+####
+#
+test Scheduler-6.2 {Test firingIterator method of Schedule} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set toplevel [java::new ptolemy.actor.CompositeActor $w]
+    set director [java::new ptolemy.actor.sched.StaticSchedulingDirector \
+	    $toplevel Director]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    set scheduler [java::new ptolemy.actor.sched.Scheduler $w]
+    $director setScheduler $scheduler
+
+    set a1 [java::new ptolemy.actor.test.TestActor $toplevel A1]
+    set a2 [java::new ptolemy.actor.test.TestActor $toplevel A2]
+    $scheduler setValid false
+    set schedule [$scheduler getSchedule]
+    set firingit [$schedule firingIterator]
+    set firing1 [$firingit next]
+    set firing1 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing1]
+    set firing2 [$firingit next]
+    set firing2 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing2]
+    set actor1 [$firing1 getActor]
+    set actor1 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor1]
+    set actor2 [$firing2 getActor]
+    set actor2 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor2]
+    list [$actor1 getName] [$actor2 getName]
+    
+} {A1 A2}
+
+######################################################################
+####
+#
+test Scheduler-6.2 {Test setIterationCount, getIterationCount method of ScheduleElement} {
+    set manager [java::new ptolemy.actor.Manager $w Manager]
+    set toplevel [java::new ptolemy.actor.CompositeActor $w]
+    set director [java::new ptolemy.actor.sched.StaticSchedulingDirector \
+	    $toplevel Director]
+    $toplevel setName Toplevel
+    $toplevel setManager $manager
+    set scheduler [java::new ptolemy.actor.sched.Scheduler $w]
+    $director setScheduler $scheduler
+
+    set a1 [java::new ptolemy.actor.test.TestActor $toplevel A1]
+    set a2 [java::new ptolemy.actor.test.TestActor $toplevel A2]
+    $scheduler setValid false
+    set schedule [$scheduler getSchedule]
+    set firingit [$schedule firingIterator]
+    set firing1 [$firingit next]
+    set firing1 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing1]
+    $firing1 setIterationCount 5
+    set firing2 [$firingit next]
+    set firing2 [java::cast ptolemy.actor.sched.Firing \
+                                 $firing2]
+    set actor1 [$firing1 getActor]
+    set actor1 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor1]
+    set actor2 [$firing2 getActor]
+    set actor2 [java::cast ptolemy.actor.AtomicActor \
+                                 $actor2]
+    list [$firing1 getIterationCount] [$firing2 getIterationCount]
+    
+} {5 1}

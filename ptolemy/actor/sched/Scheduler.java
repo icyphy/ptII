@@ -38,6 +38,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// Scheduler
@@ -135,6 +136,48 @@ public class Scheduler extends NamedObj {
         return _container;
     }
 
+    /** Return the scheduling sequence as an instance of Schedule.
+     *  For efficiency, this method returns a cached version of the schedule,
+     *  if it is valid.  Otherwise, it calls the protected method _getSchedule()
+     *  to update the schedule.  Derived classes would normally override
+     *  the protected method, not this one.
+     *  The validity of the current schedule is set by the setValid() method.
+     *  This method is read-synchronized on the workspace.
+     *
+     * @return The Schedule returned by the _getSchedule() method.
+     * @exception IllegalActionException If the scheduler has no container
+     *  (a director), or the director has no container (a CompositeActor).
+     * @exception NotSchedulableException If the _getSchedule() method
+     *  throws it. Not thrown in this base class, but may be needed
+     *  by the derived schedulers.
+     */
+     public Schedule getSchedule() throws
+            IllegalActionException, NotSchedulableException {
+	 try {
+            workspace().getReadAccess();
+            StaticSchedulingDirector dir =
+                (StaticSchedulingDirector)getContainer();
+            if (dir == null) {
+                throw new IllegalActionException(this,
+                        "Scheduler has no director.");
+            }
+            CompositeActor ca = (CompositeActor)(dir.getContainer());
+            if (ca == null) {
+                throw new IllegalActionException(this,
+                        "Director has no container.");
+            }
+            if(!isValid()) {
+                _cachedGetSchedule = _getSchedule();
+            }
+	    if (_cachedGetSchedule == null) {
+		_cachedGetSchedule = _getSchedule();
+	    }
+            return _cachedGetSchedule;
+        } finally {
+            workspace().doneReading();
+        }
+     }
+
     /** Return the scheduling sequence as an enumeration.
      *  For efficiency, this method returns a cached version of the schedule,
      *  if it is valid.  Otherwise, it calls the protected method _schedule()
@@ -207,6 +250,38 @@ public class Scheduler extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Return the scheduling sequence. In this base class, it returns
+     *  the containees of the CompositeActor in the order of construction.
+     *  (Same as calling CompositeActor.deepGetEntities()).
+     *  The derived classes should
+     *  override this method and add their scheduling algorithms here.
+     *  This method should not be called directly, but rather the  
+     *  getSchedule() method will call it when the schedule is invalid. So 
+     *  it is not synchronized on the workspace.
+     *
+     * @see ptolemy.kernel.CompositeEntity#deepGetEntities()
+     * @return A Schedule of the deeply contained opaque entities
+     *  in the firing order.
+     * @exception NotSchedulableException If the CompositeActor is not
+     *  schedulable. Not thrown in this base class, but may be needed
+     *  by the derived scheduler.
+     */
+    protected Schedule _getSchedule() throws NotSchedulableException {
+	StaticSchedulingDirector dir =
+            (StaticSchedulingDirector)getContainer();
+        CompositeActor ca = (CompositeActor)(dir.getContainer());
+        List actors = ca.deepEntityList();
+	Schedule schdule = new Schedule();
+	Iterator actorIterator = actors.iterator();
+	while (actorIterator.hasNext()) {
+	    Executable actor = (Executable)actorIterator.next();
+	    Firing firing = new Firing();
+	    firing.setActor(actor);
+	    schdule.add(firing);
+	}
+	return schdule;
+    }
+
     /** Make this scheduler the scheduler of the specified director, and
      *  register it as a topology listener of the director.
      *  This method should not be called directly.  Instead, call the
@@ -253,4 +328,6 @@ public class Scheduler extends NamedObj {
     private boolean _valid = false;
     // The cached schedule.
     private List _cachedSchedule = null;
+    // The cached schedule for getSchedule().
+    private Schedule _cachedGetSchedule = null;
 }

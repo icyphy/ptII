@@ -50,6 +50,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	NotSchedulableException.java \
+	Firing.java \
+	Schedule.java \
+	ScheduleElement.java \
 	Scheduler.java \
 	StaticSchedulingDirector.java
 
