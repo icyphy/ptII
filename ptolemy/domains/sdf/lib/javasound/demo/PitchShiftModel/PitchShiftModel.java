@@ -1,4 +1,4 @@
-/* An model that uses Ptolemy II SDF domain to perform
+/* A model that uses Ptolemy II SDF domain to perform
  * real-time pitch shifting of audio signals.
 
  Copyright (c) 1999 The Regents of the University of California.
@@ -147,7 +147,7 @@ public class PitchShiftModel extends TypedCompositeActor {
 	    // End of gui stuff.
 
 	    // Set the sampling rate to use.
-	    int sampleRate = 8000;
+	    int sampleRate = 11025;
 
 	    // Set the token consumption rate and production rate to use.
 	    // Larger values may speed up execution.
