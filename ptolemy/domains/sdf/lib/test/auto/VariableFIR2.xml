@@ -11,7 +11,7 @@
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -137,7 +137,7 @@
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="120.0, 170.0">
+        <vertex name="vertex1" value="120.0, 170.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">

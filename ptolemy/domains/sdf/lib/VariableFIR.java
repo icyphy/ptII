@@ -62,6 +62,18 @@ and <i>blockSize</i>, and all these inputs are processed using the
 filter coefficients provided on <i>newTaps</i>.
 In all other respects, the behavior of this
 actor is the same as that of the base class.
+<p>
+Note that when a new set of filter coefficients arrives on <i>newTaps</i>,
+if the new set has more coefficients than the old set, then a transient
+will occur that may be unexpected.  The delay line containing previously
+consumed data has to be increased in length to match the number of
+new coefficients.  However, the extended part of the delay line cannot
+possibly be initialized with previously consumed data because that
+data has not been saved.  Unless this actor were to save <i>all</i>
+previously consumed data (which would be hopelessly inefficient), there
+is no way it can be assured of always having the requisite data.
+Thus, the actor initializes the extended part of the delay line
+with zeros of the same type as the input data.
 
 @author Edward A. Lee, Yuhong Xiong
 @version $Id$
@@ -168,7 +180,7 @@ public class VariableFIR extends FIR {
             // Get a token representing zero in the appropriate type.
             _zero = _taps[0].zero();
 
-            _reinitializeNeeded = true;
+            _reinitialize();
         }
         for (int i = 0; i < _blockSizeValue; i++) {
             super.fire();
