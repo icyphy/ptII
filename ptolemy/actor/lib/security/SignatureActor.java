@@ -53,7 +53,7 @@ A common base class for actors that use cryptographic signatures.
 
 <p>In cryptography, digital signatures can be used to verify that the
 data was not modified in transit.  However, the data itself is passed
-in cleartext.
+in clear text.
 
 <p>The signature algorithms that maybe implemented are limited to the
 signature algorithms that are implemented by providers following the

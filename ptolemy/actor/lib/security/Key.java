@@ -58,7 +58,7 @@ import javax.crypto.SecretKey;
 Create a key and send it on the <i>output</i>.
 
 <p>The key can be used by the {@link SymmetricEncryption} and
-{@link SymmetricDecryption} actors.  In prinicple, a class
+{@link SymmetricDecryption} actors.  In principle, a class
 derived from this class could generate asymmetric public and private keys.
 
 <p>This key should be not be visible to users as the security of
