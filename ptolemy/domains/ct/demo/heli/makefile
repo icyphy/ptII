@@ -75,7 +75,7 @@ install: all
 PTAUXJAR = Helicopter.jar
 
 demo: Helicopter.jar
-	CLASSPATH=$(CLASSPATH) appletviewer Helicopter.html
+	CLASSPATH=$(CLASSPATH) appletviewer HeliControl.html
 
 
 
@@ -94,6 +94,3 @@ depend:
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
