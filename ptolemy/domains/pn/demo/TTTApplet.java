@@ -73,7 +73,7 @@ public class TTTApplet extends PNApplet {
 	add(displayPanel);
         // Construct the Ptolemy kernel topology
         constructPtolemyModel();
-	_display.setPanel(displayPanel);
+	//_display.setPanel(displayPanel);
 	//pack();
 	validate();
 	return;
@@ -93,6 +93,12 @@ public class TTTApplet extends PNApplet {
             throw new RuntimeException(e.toString());
         }
         return;
+    }
+
+    protected void _go() {
+	displayPanel.removeAll();
+	_display.setPanel(displayPanel);
+	super._go();
     }
 
     /** Stop the simulation of the system
