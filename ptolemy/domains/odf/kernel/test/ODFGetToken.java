@@ -85,22 +85,34 @@ public class ODFGetToken extends ODFGet {
     /**
      */
     public void fire() throws IllegalActionException {
+	int aCntr = 0;
+	Receiver[][] theRcvrs = inputPort.getReceivers();
+	for( int i = 0; i < theRcvrs.length; i++ ) {
+	    for( int j = 0; j < theRcvrs[i].length; j++ ) {
+		aCntr++;
+	    }
+	}
+	System.out.println("There are "+aCntr+" receivers in "+getName());
 	int cnt = 0; 
 	while(cnt < _numTokens) {
 	    Receiver[][] rcvrs = inputPort.getReceivers();
 	    for( int i = 0; i < rcvrs.length; i++ ) {
 		for( int j = 0; j < rcvrs[i].length; j++ ) {
 		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j]; 
+		    System.out.println("ODFGetToken receiver["+i+"]["+j+"]; cnt = "+cnt);
 		    if( rcvr.hasToken() ) {
 			_rcvrTimes[cnt] = rcvr.getRcvrTime();
 	                _tokens[cnt] = rcvr.get();
 	                ODFThread thread = rcvr.getThread();
 			_threadTimes[cnt] = thread.getCurrentTime();
+		    } else {
+			System.out.println("No token for cnt "+cnt);
 		    }
 		}
 	    }
 	    cnt++;
 	}
+	System.out.println("ODFGetToken() ends with cnt = "+cnt);
     }
 
     ////////////////////////////////////////////////////////////////////////
