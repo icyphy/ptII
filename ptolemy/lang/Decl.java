@@ -65,7 +65,7 @@ and Army Research Office.
 @author Jeff Tsay
 @version $Id$
  */
-public class Decl extends TrackedPropertyMap {
+public abstract class Decl extends TrackedPropertyMap {
 
     public Decl(String name, int category0) {
         _name = name;
