@@ -47,6 +47,8 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
+import java.util.Properties;
+import java.util.StringTokenizer;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -136,8 +138,9 @@ public class UtilityFunctions {
      *  is returned if the specified file could not be located.
      *  FIXME: what do with format of file?, e.g. if file is
      *  spread over many lines should we remove the newlines
-     *  and make one long one line string? Also this currently
-     *  only looks in the working directory.
+     *  and make one long one line string?<p>
+     *  Use readFile({@link #findFile}) to specify files relative to the
+     *  current user directory or classpath.<p>
      *
      *  @param filename The file we want to read the text from.
      *  @return StringToken containing the text contained in
@@ -148,11 +151,7 @@ public class UtilityFunctions {
     public static StringToken readFile(String filename)
             throws IllegalActionException {
 
-        // temporary hack, need to work out way to obtain the path.
-        String curDir = System.getProperty("user.dir");
-
-        //System.out.println("Directory is " + curDir);
-        File fileT = new File(curDir, filename);
+        File fileT = new File(filename);
         //System.out.println("Trying to open file: " + fileT.toString());
         BufferedReader fin = null;
         String line;
@@ -204,9 +203,8 @@ public class UtilityFunctions {
         int row = -1;
         int column = -1;
 
-        // Matlab Matrices always start at 1 instead of 0.
-        int posRow = 1;
-        int posColumn = 1;
+        int posRow = 0;
+        int posColumn = 0;
         double[][] mtr = null;
 
         if (fileT.exists()) {
@@ -239,7 +237,7 @@ public class UtilityFunctions {
                     // the row size.
                     row = l.size();
                     // create a new matrix definition
-                    mtr = new double[column+1][row+1];
+                    mtr = new double[column][row];
                 } else {
                     if ( row != l.size() ) {
                         throw new  IllegalActionException(" The Row" +
@@ -252,7 +250,7 @@ public class UtilityFunctions {
                     Double s = (Double) j.next();
                     mtr[posColumn][posRow++] = s.doubleValue();
                 }
-                posRow=1;
+                posRow=0;
                 posColumn++;
             }
 
@@ -285,7 +283,7 @@ public class UtilityFunctions {
 	ArrayToken arrayToken;
 	try {
 	    arrayToken = new ArrayToken(result);
-	} catch (IllegalActionException illegalAction) {
+	} catch (IllegalArgumentException illegalAction) {
 	    // This should not happen since the elements of the array always
 	    // have the same type.
 	    throw new InternalErrorException("UtilityFunctions.repeat: "
@@ -301,6 +299,38 @@ public class UtilityFunctions {
      */
     public static LongToken totalMemory() {
 	return new LongToken(Runtime.getRuntime().totalMemory());
+    }
+
+    /** Find a file. Uses the supplied name and if it does not exist as is,
+     * searches the user directory followed by the current system
+     * java.class.path list and returns the first match or name unchanged.
+     * @param name Relative pathname of file/directory to find.
+     * @return Canonical absolute path if file/directory was found, otherwise
+     * returns unchanged name. */
+    public static String findFile(String name) {
+        File fileT = new File(name);
+        if (!fileT.exists()) {
+            String curDir = System.getProperty("user.dir");
+            fileT = new File(curDir, name);
+        }
+        if (!fileT.exists()) {
+            String cp = System.getProperty("java.class.path");
+            StringTokenizer tokens = new StringTokenizer(cp, System.getProperty("path.separator"));
+            while (tokens.hasMoreTokens()) {
+                String token = tokens.nextToken();
+                fileT = new File(token,name);
+                if (fileT.exists()) break;
+            }
+        }
+        if (fileT.exists()) {
+            try {
+                return fileT.getCanonicalPath();
+            } catch (java.io.IOException ex) {
+                return fileT.getAbsolutePath();
+            }
+        }
+        else
+            return name;
     }
 
     ///////////////////////////////////////////////////////////////////
