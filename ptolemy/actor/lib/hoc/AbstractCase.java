@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.hoc;
@@ -127,8 +127,8 @@ public abstract class AbstractCase extends TypedCompositeActor {
         /** Construct a director in the given container with the given name.
          *  @param container The container.
          *  @param name The name of this director.
-         *  @exception IllegalActionException If the name has a period in it, or
-         *   the director is not compatible with the specified container.
+         *  @exception IllegalActionException If the name has a period in it,
+         *   or the director is not compatible with the specified container.
          *  @exception NameDuplicationException If the container already
          *   contains an entity with the specified name.
          */

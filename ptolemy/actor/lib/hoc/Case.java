@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.hoc;
@@ -38,7 +38,6 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// Case
 /**
-
 An actor with several possible refinements.
 
 @author  Joern Janneck and Edward A. Lee
