@@ -1,8 +1,5 @@
 /* Demo for a live signal plotter.
 
-@Author: Edward A. Lee
-@Version: $Id$
-
 @Copyright (c) 1997 The Regents of the University of California.
 All rights reserved.
 
@@ -35,24 +32,30 @@ import java.applet.Applet;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotLiveDemo
-/** 
- * Dynamically plot a test signal, illustrating how to use the <code>PlotLive</code> class.
+/**
+ * Dynamically plot a test signal, illustrating how to use the
+ * <code>PlotLive</code> class.
+ *
+ * @author: Edward A. Lee
+ * @version: $Id$
  */
 public class PlotLiveDemo extends PlotLive {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
    
-	/**
-     * Add points to the plot.  This is called by the base class <code>run()</code>
-     * method while live plotting is enabled.
+   /** Add points to the plot.  This is called by the base class
+     * <code>run()</code> method while live plotting is enabled.
      */
     public void addPoints() {
         // Plot 6 points at a time for faster response.
         for (int i = 0; i < 6; i++) {
-            addPoint(0, Math.sin(Math.PI*_count/25), Math.cos(Math.PI * _count/100), false);
-            addPoint(0, Math.sin(Math.PI*_count/45), Math.cos(Math.PI * _count/70), true);
-            addPoint(1, Math.sin(Math.PI*_count/45), Math.cos(Math.PI * _count/70), !_first);
+            addPoint(0, Math.sin(Math.PI*_count/25),
+		     Math.cos(Math.PI * _count/100), false);
+            addPoint(0, Math.sin(Math.PI*_count/45),
+		     Math.cos(Math.PI * _count/70), true);
+            addPoint(1, Math.sin(Math.PI*_count/45),
+		     Math.cos(Math.PI * _count/70), !_first);
             _first = false;
             _count += 1.0;
         }
@@ -65,15 +68,16 @@ public class PlotLiveDemo extends PlotLive {
         return "PlotLiveDemo 1.0: Demo of PlotLive. By: Edward A. Lee, eal@eecs.berkeley.edu";
     }
 
-    /**
-     * Define static properties of the plot, such as the title and axis labels.
-     * This also calls the base class <code>init()</code>, which performs various
-     * initialization functions and reads commands from a file given by a URL,
-     * if the <i>dataurl</i> applet parameter is given.  Since the base class
-     * <code>init()</code> is called after the static plot parameters are
-     * defined, then the commands from the file will override the static ones
-     * given here.  This method also creates start and stop buttons to control
-     * the plot.
+    /** 
+     * Define static properties of the plot, such as the title and
+     * axis labels.  This also calls the base class
+     * <code>init()</code>, which performs various initialization
+     * functions and reads commands from a file given by a URL, if the
+     * <i>dataurl</i> applet parameter is given.  Since the base class
+     * <code>init()</code> is called after the static plot parameters
+     * are defined, then the commands from the file will override the
+     * static ones given here.  This method also creates start and
+     * stop buttons to control the plot.
      */
     public void init () {
         setTitle("Live Plot Demo");
