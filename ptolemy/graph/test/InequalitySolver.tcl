@@ -37,6 +37,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 }
 
+if {[string compare lcompare [info procs lcompare]] == 1} then {
+    source [file join $PTII util testsuite lcompare.tcl]
+} {}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -198,12 +202,31 @@ test InequalitySolver-2.5 {constraints with no solution} {
 ######################################################################
 ####
 # 
-test InequalitySolver-2.6 {solve for greatest solutino for above} {
+test InequalitySolver-2.6 {solve for greatest solution for above} {
     set sat [$s1 solveGreatest]
     list $sat [$ta getValue] [$tb getValue] \
          [iterToInfo [$s1 bottomVariables]] [iterToInfo [$s1 topVariables]] \
          [iterToInfo [$s1 unsatisfiedInequalities]]
 } {0 w z B(variable)_z A(variable)_w {{Y(constant)_y B(variable)_z}}}
+
+######################################################################
+####
+# 
+test InequalitySolver-2.7 {description method} {
+    lcompare [$s1 description] \
+{{_Ilist:
+ {_ineq: ptolemy.graph.test.TestVariableA(variable)_w <= ptolemy.graph.test.TestConstantW(constant)_w _inCvar: true _inserted: false}
+  {_ineq: ptolemy.graph.test.TestConstantW(constant)_w <= ptolemy.graph.test.TestVariableA(variable)_w _inCvar: false _inserted: false}
+  {_ineq: ptolemy.graph.test.TestVariableB(variable)_z <= ptolemy.graph.test.TestConstantZ(constant)_z _inCvar: true _inserted: false}
+  {_ineq: ptolemy.graph.test.TestConstantY(constant)_y <= ptolemy.graph.test.TestVariableB(variable)_z _inCvar: false _inserted: false}
+  }
+{Clist:
+ {ptolemy.graph.test.TestVariableB(variable)_z}
+ {ptolemy.graph.test.TestVariableA(variable)_w}
+ }
+}
+} {1}
+
 
 ######################################################################
 ####

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Green (yuhong@eecs.berkeley.edu)
-@AcceptedRating Green (kienhuis@eecs.berkeley.edu)
+@ProposedRating Red (cxh@eecs.berkeley.edu) was green, description() method only makes it red
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 
 */
 
@@ -108,6 +108,30 @@ public class InequalitySolver {
 
 	return _filterVariables(bottom);
     }
+
+    /** Return a description of this solver as a String */
+    public String description() {
+	// This method is useful for debugging.
+	StringBuffer results =
+	    new StringBuffer("{_Ilist:\n ");
+	for (int i = 0; i < _Ilist.size(); i++) {
+	    Info info = (Info)_Ilist.get(i);
+	    results.append("{_ineq: " + info._ineq
+			   + " _inCvar: " + info._inCvar
+			   + " _inserted: " + info._inserted
+			   + "}\n  ");
+	}
+	results.append("}\n{Clist:\n ");
+	for (Enumeration e = _Clist.keys(); e.hasMoreElements() ;) {
+	    InequalityTerm variable = (InequalityTerm)e.nextElement();
+	    results.append("{"
+			   + ((variable == null) ?
+			      "variable==null" : variable.toString())
+			   + "}\n ");
+	}
+	results.append("}\n");
+	return results.toString();
+    } 
 
     /** Solve the set of inequalities for the greatest solution.
      *  If the set of inequalities is definite (when solving for the greatest
