@@ -56,7 +56,7 @@ and then discards the token.
 <p>
 Some derived classes may attach additional significance to an input
 on the trigger port. For example, they might fix the type and attach
-some significance to the value.  Note that it is not recommendd to
+some significance to the value.  Note that it is not recommend to
 use getWidth() on the port to determine whether the port is connected,
 since the width may be greater than zero even if there
 is no actual source of data.  This can occur, for example, if a trigger port
