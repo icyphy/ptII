@@ -32,38 +32,45 @@ This FAQ can be found at:
 <li> <a href="#General Questions"><b>1. General</b></a>
 	<menu>
 	<li> <a href="#ptolemy II description"><b>1.1 What is Ptolemy II?</b></a>
-	<li> <a href="#ptolemy classic"><b>1.2 What about compatibility with Ptolemy Classic (Ptolemy 0.7.x)?</b></a>
-
-	<li> <a href="#ptolemy II copyright"><b>1.3 What is the copyright?</b></a>
-	<li> <a href="#mailing list"><b>1.4 Is there a mailing list?</b></a>
+	<li> <a href="#ptolemy II copyright"><b>1.2 What is the copyright?</b></a>
+	<li> <a href="#mailing list"><b>1.3 Is there a mailing list?</b></a>
 	</menu>
 
-<li> <a href="#ptolemy II faq: installation"><b>2. Installation questions</b></a>
+<li> <a href="#Relationship with other packages"><b>2. Relationship with other packages</b></a>
 	<menu>
-	<li> <a href="#downloading Ptolemy II"><b>2.1 How do I download
+	<li> <a href="#ptolemy classic"><b>2.1 What about compatibility with Ptolemy Classic (Ptolemy 0.7.x)?</b></a>
+
+	<li> <a href="#simulink"><b>2.2 How are Ptolemy II and Matlab/Simulink different?</b></a>
+
+	<li> <a href="#metropolis"><b>2.3 What is the relationship between Ptolemy and Metropolis?</b></a>
+	</menu>
+
+<li> <a href="#ptolemy II faq: installation"><b>3. Installation questions</b></a>
+	<menu>
+	<li> <a href="#downloading Ptolemy II"><b>3.1 How do I download
 	Ptolemy II?</b></a>
 
-	<li> <a href="#platforms that Ptolemy II runs under"><b>2.2 What
+	<li> <a href="#platforms that Ptolemy II runs under"><b>3.2 What
 	platforms does Ptolemy II run under?</b></a>
 
-	<li> <a href="#ptolemy II installation, what do I need"><b>2.3 What do I need to Install Ptolemy II?</b></a>
+	<li> <a href="#ptolemy II installation, what do I need"><b>3.3 What do I need to Install Ptolemy II?</b></a>
 	</menu> 
 
-<li> <a href="#ptolemy II faq: using Ptolemy II"><b>3. Using Ptolemy II</b></a>
+<li> <a href="#ptolemy II faq: using Ptolemy II"><b>4. Using Ptolemy II</b></a>
 	<menu>
-	<li> <a href="#invoking Ptolemy II?"><b>3.1 How do I invoke Ptolemy II?</b></a>
-	<li> <a href="#reading data from files?"><b>3.2 How do I read data from a file?</b></a>
+	<li> <a href="#invoking Ptolemy II?"><b>4.1 How do I invoke Ptolemy II?</b></a>
+	<li> <a href="#reading data from files?"><b>4.2 How do I read data from a file?</b></a>
 	</menu>
 
-<li> <a href="#ptolemy II faq: extending"><b>4. Extending Ptolemy II</b></a>
+<li> <a href="#ptolemy II faq: extending"><b>5. Extending Ptolemy II</b></a>
 	<menu>
-	<li> <a href="#Adding actors"><b>4.1 How do I add an actor?</b></a>
+	<li> <a href="#Adding actors"><b>5.1 How do I add an actor?</b></a>
 
-	<li> <a href="#Interfacing to C/C++"><b>4.1 How do I interface to C/C++</b></a>
+	<li> <a href="#Interfacing to C/C++"><b>5.1 How do I interface to C/C++</b></a>
 
-	<li> <a href="#Customizing the GUI"><b>4.3 How do I customize the GUI?</b></a>
-	<li> <a href="#MoML"><b>4.4 What file format are the models stored in?</b></a>
-	<li> <a href="#Scripting"><b>4.5 Is there a scripting interface to Ptolemy II ?</b></a>
+	<li> <a href="#Customizing the GUI"><b>5.3 How do I customize the GUI?</b></a>
+	<li> <a href="#MoML"><b>5.4 What file format are the models stored in?</b></a>
+	<li> <a href="#Scripting"><b>5.5 Is there a scripting interface to Ptolemy II ?</b></a>
 	</menu>
 
 </menu>
@@ -109,41 +116,7 @@ The project is named after
 the second century Greek astronomer, mathematician, and geographer.
 </p>
 
-
-
-<dt> <a name="ptolemy classic"><b>1.2 What about compatibility with Ptolemy Classic (Ptolemy 0.7.x)?</b></a>
-<dd>
- <p>
-This FAQ covers Ptolemy II.
-The Ptolemy Classic FAQ can be found at  
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyclassic/ptolemy.faq"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyclassic/ptolemy.faq</CODE></a>
-</p>
-
- <p>Ptolemy 0.x is fairly mature software in that the design is stable and
-mostly unchanging. The Ptolemy II software system is under active development.
-
-<menu>
-<li> They are written in different languages (Java vs. C++)
-
-<li> They have different file formats. Ptolemy 0.x uses Octtools,
-Ptolemy II uses a system based on XML
-
-<li> They have different user interfaces.  The Ptolemy II UI
-is much easier to use than the Ptolemy Classic UI.
-<li> Ptolemy Classic works best under Unix.  There is a 
-Windows port of Ptolemy Classic, but it does not work well.
-<br>Ptolemy II works under both Unix and Windows.
-<li> Ptolemy Classic can generate code for various DSP primarily
-using SDF semantics.
-<br> Ptolemy II can generate code for non-hierarchical SDF models
-and for hierarchical Giotto models.
-
-</menu>
-For more information about the current status of code generation in
-Ptolemy II, see
-<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codegen.htm"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codegen.htm</code></a>
-
-<dt> <a name="ptolemy II copyright"><b>1.3 What is the copyright?</b></a>
+<dt> <a name="ptolemy II copyright"><b>1.2 What is the copyright?</b></a>
 <DD> Ptolemy II is released under the fairly liberal UC Berkeley copyright,
 
 see 
@@ -161,7 +134,7 @@ copyright was also used in Ptolemy Classic, which has been used in
 commercial products, see
 <a href="http://ptolemy.eecs.berkeley.edu/archive/links.htm"><code>http://ptolemy.eecs.berkeley.edu/archive/links.htm</code></a>
 
-<dt> <a name="mailing list"><b>1.4 Is there a mailing list?</b></a>
+<dt> <a name="mailing list"><b>1.3 Is there a mailing list?</b></a>
 <DD> 
 The Ptolemy mailing lists are run by the Majordomo mailing list 
 server.  This server can automatically subscribe you to mailing
@@ -211,21 +184,172 @@ send email to: ptolemy@eecs.berkeley.edu.
 
 </dl>
 
-<h2><a name="ptolemy II faq: installation"><b>2. Installation questions</b></a></h2>
+
+<h2><a name="Relationship with other packages"><b>2. Relationship with other packages</b></a>
 <dl>
-<dt> <a name="downloading Ptolemy II"><b>2.1 How do I download	Ptolemy II?</b></a>
+<dt> <a name="ptolemy classic"><b>2.1 What about compatibility with Ptolemy Classic (Ptolemy 0.7.x)?</b></a>
+<dd>
+ <p>
+This FAQ covers Ptolemy II.
+The Ptolemy Classic FAQ can be found at  
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyclassic/ptolemy.faq"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyclassic/ptolemy.faq</CODE></a>
+</p>
+
+ <p>Ptolemy 0.x is fairly mature software in that the design is stable and
+mostly unchanging. The Ptolemy II software system is under active development.
+
+<menu>
+<li> They are written in different languages (Java vs. C++)
+
+<li> They have different file formats. Ptolemy 0.x uses Octtools,
+Ptolemy II uses a system based on XML
+
+<li> They have different user interfaces.  The Ptolemy II UI
+is much easier to use than the Ptolemy Classic UI.
+<li> Ptolemy Classic works best under Unix.  There is a 
+Windows port of Ptolemy Classic, but it does not work well.
+<br>Ptolemy II works under both Unix and Windows.
+<li> Ptolemy Classic can generate code for various DSP primarily
+using SDF semantics.
+<br> Ptolemy II can generate code for non-hierarchical SDF models
+and for hierarchical Giotto models.
+
+</menu>
+For more information about the current status of code generation in
+Ptolemy II, see
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codegen.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/codegen.htm</code></a>
+
+<dt> <a name="simulink"><b>2.2 How are Ptolemy II and Matlab/Simulink different?</b></a>
+ <dd> 
+
+     Ptolemy II has very little in common with Matlab, which is
+     a textual, imperative, interactive, scientific programming
+     language.  Ptolemy II works with Matlab, thanks to an interface
+     developed by Zoltan Kemenczy and others at Research In Motion,
+     Ltd.  See
+
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/matlab/matlab.htm"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/ptolemy/matlab/matlab.htm</code></a>
+
+
+ <p>    Ptolemy II has much more in common with Simulink, which is
+     a graphical block-diagram language, originally developed for
+     control system design.  Simulink has a rich and expressive
+     model of computation with continuous-time semantics and support
+     for periodic discrete-time signals.  Some of its principles have
+     been incorporated in the CT (continuous-time) domain of Ptolemy II,
+     but not all.  The CT domain, for example, does not have the
+     notion of "sample time" (which in Simulink provides the periodic
+     discrete-time support) nor the support for algebraic loops.
+     There is also currently no code generation support in CT
+     (in Simulink, this is provided through the associated product
+     Real-Time Workshop).  Also, the CT domain has implemented
+     fewer ODE solvers than those provided by Simulink and has a
+     smaller actor library.
+
+
+ <p>     Ptolemy II and Simulink both support extension of the actor
+     library through well-defined interfaces (in Simulink, this is
+     called the S-function interface).  However, Ptolemy II is a more
+     open architecture in that its infrastructure is open source,
+     and the interfaces to the core mechanisms in the software
+     are published and documented.  The persistent file format
+     (MoML) is XML in Ptolemy II, which makes it both more verbose
+     and more portable than the Simulink syntax (MDL files).
+     Simulink supports one model of computation, whereas Ptolemy II
+     supports several, and can be extended with new models of
+     computation.  Simulink can also be extended, as for example
+     it has been with the associated product Stateflow, which
+     supports state-machine modeling. But in Simulink, the extension
+     is done by defining new blocks using the S-function interface.
+     As such, additional models of computation added this way are
+     second class. For example, they cannot define the model of
+     computation at the top level of the hierarchy, and cannot
+     contain Simulink models within their own components.
+
+
+<dt> <a name="metropolis"><b>2.3 What is the relationship between Ptolemy and Metropolis?</b></a>
+ <dd> 
+
+Ptolemy (<a href="http://ptolemy.eecs.berkeley.edu" target="_top"><CODE>http://ptolemy.eecs.berkeley.edu</CODE></a>)
+and Metropolis (<a href="http://www.gigascale.org/metropolis/" target="_top"><CODE>http://www.gigascale.org/metropolis/</CODE></a>) 
+are separate research projects at Berkeley,
+albeit ones with considerable cross-influences. Ptolemy is headed by
+<a href="<a href="http://ptolemy.eecs.berkeley.edu/~eal" target="_top">Edward Lee</a>,
+while Metropolis is headed by 
+<a href="http://www-cad.eecs.berkeley.edu/~alberto" target="_top">Alberto Sangiovanni-Vincentelli</a>.
+A key principle in Metropolis is its "meta model,"
+which in the terminology of the Ptolemy project we would call
+its "abstract semantics." In Metropolis, models consist of processes,
+with their own thread of control, that communicate through ports and
+"media." The media are roughly equivalent to Ptolemy Receivers; they
+define the communication semantics between components. The abstract
+semantics of Metropolis, is an abstraction of the model of computation
+that appears in the Ptolemy PN and CSP domains. It is an abstraction
+because in Metropolis, the communication semantics is not defined,
+whereas in PN and CSP, it is (in two different ways). Metropolis model
+builders construct the media that processes use to communicate. One
+could build, for example, media in Metropolis to implement either PN or
+CSP. Moreover, Metropolis model builders construct much of what would
+be the director in a Ptolemy model.
+
+ <p>The abstract semantics that binds most Ptolemy domains (with the
+exception of PN and CSP) is significantly different. Instead of
+processes, components are actors with three-phase firings. The
+objective of this abstract semantics is to be able to define "domain
+polymorphic" actors, which are actors that operate in several models
+of computation. This enables hierarchically composing distinct models
+of computation, since an aggregation of actors in one domain becomes an
+actor in another. No such composition is possible (by any method we
+know of) with processes. Indeed, both PN and CSP fall outside this
+preferred Ptolemy abstract semantics, and hence do not compose well
+with other domains. There is no systematic way to embed PN or CSP
+models within other, firing-based models of computation.
+
+ <p>A key reason for the choice of abstract semantics in Metropolis is the
+desire to model parallel hardware systems well. The separate threads of
+control do this well, and mesh well with trends in hardware design,
+particularly SystemC, which uses a similar abstract semantics.
+
+ <p>Processes in Metropolis are defined in a Java-like syntax, and follow a
+stylistic pattern that effectively realizes a cooperative multitasking
+strategy. Processes yield to other processes when they call certain
+core system methods. This permits, for example, the "simulation
+manager" to coordinate notions of time across components. A variety of
+back-ends have been built or are under construction, including ones
+that target Java, SystemC, and C. By contrast, in Ptolemy, actors are
+defined in ordinary Java. More easily retargeted actor-definition
+languages are under development, including Cal and Actif
+(<a href="http://www.gigascale.org/caltrop" target="_top"><CODE>http://www.gigascale.org/caltrop</CODE></a>).
+
+ <p>One of the key innovations in Metropolis is the notion of "quantity
+managers." Quantity managers contain code that is invoked when a
+process calls certain core system methods. Quantity managers can
+enforce constraints defined by users, including constraints that
+involve time. Quantity managers are used to get discrete-event
+semantics, where events are processed in chronological order. They are
+also used to enforce constraints that are specified in a linear
+temporal logic. In Ptolemy, quantity managers would be associated
+with the director, although no director has been developed (to our
+knowledge) with such a broadly applicable mechanism.
+
+</dl>
+
+
+<h2><a name="ptolemy II faq: installation"><b>3. Installation questions</b></a></h2>
+<dl>
+<dt> <a name="downloading Ptolemy II"><b>3.1 How do I download	Ptolemy II?</b></a>
 <dd> Ptolemy II is available in several formats including applets, source code, a Windows installer and Web Start. 
 For details, see
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/</code></a>
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/"><code></code></a>
 
-<dt> <a name="platforms that Ptolemy II runs under"><b>2.2 What platforms does Ptolemy II run under?</b></a>
+<dt> <a name="platforms that Ptolemy II runs under"><b>3.2 What platforms does Ptolemy II run under?</b></a>
 <dd> Ptolemy II is written in Java, so it should run on any platform
 that supports a recent Java Virtual machine.  Locally, we use
 Windows XP and Windows 2000 with the Cygwin toolkit for development.
 The nightly builds run under Solaris 8.  Some people in the group use Linux.
 
-<dt> <a name="ptolemy II installation, what do I need"><b>2.3 What do I need to Install Ptolemy II?</b></a>
+<dt> <a name="ptolemy II installation, what do I need"><b>3.3 What do I need to Install Ptolemy II?</b></a>
 <dd> At the minimum, you need the Java Runtime Environment.
 For details, see the installation pages at
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/</code></a>
@@ -234,10 +358,10 @@ For details, see the installation pages at
 </dl>
 
 
-<h2><a name="ptolemy II faq: using Ptolemy II"><b>3. Using Ptolemy II</b></a></h2>
+<h2><a name="ptolemy II faq: using Ptolemy II"><b>4. Using Ptolemy II</b></a></h2>
 
 <dl>
-<dt> <a name="invoking Ptolemy II?"><b>3.1 How do I invoke Ptolemy II?</b></a>
+<dt> <a name="invoking Ptolemy II?"><b>4.1 How do I invoke Ptolemy II?</b></a>
 <dd> 
 If you install Ptolemy II using the Windows installer, then
 menu choices should be added to <CODE>Start</CODE> -&gt; 
@@ -260,7 +384,7 @@ for the nightly test suite.
   <dd> will run the model.  The model need not be graphical.
   </dl>
 
-<dt> <a name="reading data from files?"><b>3.2 How do I read data from a file?</b></a>
+<dt> <a name="reading data from files?"><b>4.2 How do I read data from a file?</b></a>
 <dd> 
 
 How we read in values from files needs to be revamped, we could do
@@ -318,13 +442,13 @@ property("ptolemy.ptII.dir") + "/ptolemy/actor/lib/test/auto/FileWriter1Output.t
 
 </dl>
 
-<h2><a name="ptolemy II faq: extending"><b>4. Extending Ptolemy II</b></a></h2>
+<h2><a name="ptolemy II faq: extending"><b>5. Extending Ptolemy II</b></a></h2>
 <dl>
-<dt> <a name="Adding actors"><b>4.1 How do I add an actor?</b></a>
+<dt> <a name="Adding actors"><b>5.1 How do I add an actor?</b></a>
 <dd> See the <code>Add Actor</code> link in
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/index.htm" target="_top"><code>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptIIlatest/ptII/doc/coding/</code></a>
 
-<dt> <a name="Interfacing to C/C++"><b>4.1 How do I interface to C/C++</b></a>
+<dt> <a name="Interfacing to C/C++"><b>5.1 How do I interface to C/C++</b></a>
 <dd>
 Ptolemy II is written in Java, and Java has the Java Native Interface
 (JNI), see
@@ -341,7 +465,7 @@ code will work on multiple platforms.  For example, the Ptolemy II/Matlab interf
 
 
 
-<dt> <a name="Customizing the GUI"><b>4.3 How do I customize the GUI?</b></a>
+<dt> <a name="Customizing the GUI"><b>5.3 How do I customize the GUI?</b></a>
 <dd> 
 Ptolemy II uses Diva to display block diagram editors.
  <br>Information about Diva can be found at
@@ -364,14 +488,14 @@ adds this feature with this line:
 </pre>
 
 
-<dt> <a name="MoML"><b>4.4 What file format are the models stored in?</b></a>
+<dt> <a name="MoML"><b>5.4 What file format are the models stored in?</b></a>
 <dd> Ptolemy II stores models in an XML format called MoML.
 The design doc covers MoML in detail.
  <p>The beauty of using a human readable (though verbose) file
 format is that we can use standard tools like XSLT and sed to 
 transform models.
 	
-<dt> <a name="Scripting"><b>4.5 Is there a scripting interface to Ptolemy II ?</b></a>
+<dt> <a name="Scripting"><b>5.5 Is there a scripting interface to Ptolemy II ?</b></a>
 
 <dd> The Ptolemy II test suite uses Jacl, a Java implementation of Tcl
 as a scripting language.  With Jacl, we can build and run models
