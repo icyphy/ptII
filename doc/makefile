@@ -102,11 +102,11 @@ codeDoc/tree.html: 	../collections/*.java \
 			../ptolemy/domains/ct/lib/*.java \
 			../ptolemy/domains/ct/kernel/*.java \
 			../ptolemy/domains/ct/kernel/util/*.java \
+			../ptolemy/domains/dde/kernel/*.java \
+			../ptolemy/domains/dde/lib/*.java \
 			../ptolemy/domains/de/demo/*.java \
 			../ptolemy/domains/de/kernel/*.java \
 			../ptolemy/domains/de/lib/*.java \
-			../ptolemy/domains/odf/kernel/*.java \
-			../ptolemy/domains/odf/lib/*.java \
 			../ptolemy/domains/pn/kernel/*.java \
 			../ptolemy/domains/pn/lib/*.java \
 			../ptolemy/domains/sc/kernel/*.java \
