@@ -28,10 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil;
 
-// Ptolemy imports
 import java.io.File;
 import java.io.FileWriter;
-import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
@@ -52,7 +50,6 @@ import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.moml.MoMLParser;
-import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
@@ -73,10 +70,10 @@ import ptolemy.vergil.basic.BasicGraphFrame;
    other command-line arguments are processed.
 
    <p>This application also takes an optional command line argument pair
-   <code>-conf <i>configurationFile.xml</i></code> that names a configuration
+   <code>-configuration <i>configurationFile.xml</i></code> that names a configuration
    to be read.  For example,
    <pre>
-   $PTII/bin/vergil -conf ptolemy/configs/ptiny/configuration.xml
+   $PTII/bin/vergil -configuration ptolemy/configs/ptiny/configuration.xml
    </pre>
    and
    <pre>
@@ -148,7 +145,7 @@ public class VergilApplication extends MoMLApplication {
             SwingUtilities.invokeLater(new Runnable() {
                     public void run() {
                         try {
-                            new VergilApplication(args);
+                            VergilApplication application = new VergilApplication(args);
                         } catch (Throwable throwable) {
                             // If we get an Error or and Exception while
                             // configuring, we will end up here.
@@ -442,7 +439,7 @@ public class VergilApplication extends MoMLApplication {
 
     /** The command-line options that take arguments. */
     protected static String _commandOptions[][] = {
-        {"-config",
+        {"-configuration",
          "<configuration URL, defaults to ptolemy/configs/full/configuration.xml>"},
     };
 
@@ -526,7 +523,7 @@ public class VergilApplication extends MoMLApplication {
         // registered the GraphicalMessageHandler yet
         // so we do so now so that we are sure
         // the user can see the message.
-        // One way to test this is to run vergil -conf foo
+        // One way to test this is to run vergil -configuration foo
 
         MessageHandler.setMessageHandler(new GraphicalMessageHandler());
 
