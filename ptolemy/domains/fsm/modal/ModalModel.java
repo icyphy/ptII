@@ -215,7 +215,7 @@ public class ModalModel extends CTCompositeActor {
      *  a path between a pair, input and output, they are dependent.
      *  Otherwise, they are independent.
      */
-    public FunctionDependency getFunctionDependencies() {
+    public FunctionDependency getFunctionDependency() {
         if (_functionDependency == null) {
             _functionDependency =
                 new FunctionDependencyOfModalModel(this);
