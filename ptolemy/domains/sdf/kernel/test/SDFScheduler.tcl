@@ -341,9 +341,9 @@ test SDFScheduler-7.1 {Multirate and Hierarchy Scheduling tests} {
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
-    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
     $p1 setInput 1
-    set p2 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p2]
+    set p2 [java::new ptolemy.actor.TypedIOPort $c1 p2]
     $p2 setOutput 1
     set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
     $c1 setDirector $d5
@@ -692,7 +692,7 @@ test SDFScheduler-9.1 {Input Multirate and Hierarchy Scheduling tests} {
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp1]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp2]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
-    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
     $p1 setInput 1
     $p1 setMultiport true
     set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
@@ -784,24 +784,24 @@ test SDFScheduler-9.11 {Output Multirate and Hierarchy Scheduling tests} {
     $toplevel setDirector $director
     set scheduler [java::cast ptolemy.domains.sdf.kernel.SDFScheduler [$director getScheduler]]
 
-    set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer1]
-    set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer2]
+    set Consumer1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer1]
+    set Consumer2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer2]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
-    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
     $p1 setOutput 1
     $p1 setMultiport true
     set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
     $c1 setDirector $d5
     set s5 [$d5 getScheduler]
-    set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $c1 Ramp]
-    set port [java::field $a1 output]
+    set Ramp [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $c1 Ramp]
+    set port [java::field $Ramp output]
     $port setMultiport true
 
-    $c1 connect [java::field $a1 output] $p1 R1
+    $c1 connect [java::field $Ramp output] $p1 R1
     set r1 [$c1 getRelation R1]
     [java::cast ptolemy.actor.IORelation $r1] setWidth 2
-    $toplevel connect $p1 [java::field $a2 input] R2
-    $toplevel connect $p1 [java::field $a3 input] R3
+    $toplevel connect $p1 [java::field $Consumer1 input] R2
+    $toplevel connect $p1 [java::field $Consumer2 input] R3
 
     $scheduler setValid false
     $s5 setValid false
@@ -814,59 +814,59 @@ test SDFScheduler-9.11 {Output Multirate and Hierarchy Scheduling tests} {
 
 test SDFScheduler-9.12 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    setTokenProductionRate [java::field $a1 output] 2
+    setTokenProductionRate [java::field $Ramp output] 2
 
     $scheduler setValid false
     $s5 setValid false
      _initialize $toplevel
     set sched1 [_getSchedule $scheduler]
     set sched2 [_getSchedule $s5]
-    setTokenProductionRate [java::field $a1 output] 1
+    setTokenProductionRate [java::field $Ramp output] 1
     list $sched1 $sched2
 } {{{Cont Consumer1 Consumer1 Consumer2 Consumer2}} Ramp}
 
 test SDFScheduler-9.13 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    setTokenConsumptionRate [java::field $a2 input] 2
+    setTokenConsumptionRate [java::field $Consumer1 input] 2
 
     $scheduler setValid false
     $s5 setValid false
      _initialize $toplevel
     set sched1 [_getSchedule $scheduler]
     set sched2 [_getSchedule $s5]
-    setTokenConsumptionRate [java::field $a2 input] 1
+    setTokenConsumptionRate [java::field $Consumer1 input] 1
     list $sched1 $sched2
 } {{{Cont Cont Consumer1 Consumer2 Consumer2}} Ramp}
 
 test SDFScheduler-9.14 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    setTokenProductionRate [java::field $a1 output] 2
-    setTokenConsumptionRate [java::field $a2 input] 2
+    setTokenProductionRate [java::field $Ramp output] 2
+    setTokenConsumptionRate [java::field $Consumer1 input] 2
 
     $scheduler setValid false
     $s5 setValid false
      _initialize $toplevel
     set sched1 [_getSchedule $scheduler]
     set sched2 [_getSchedule $s5]
-    setTokenProductionRate [java::field $a1 output] 1
-    setTokenConsumptionRate [java::field $a2 input] 1
+    setTokenProductionRate [java::field $Ramp output] 1
+    setTokenConsumptionRate [java::field $Consumer1 input] 1
     list $sched1 $sched2
 } {{{Cont Consumer1 Consumer2 Consumer2}} Ramp}
 
 test SDFScheduler-9.15 {output Multiport, Multirate Scheduling tests} {
     # uses previous setup.
-    setTokenProductionRate [java::field $a1 output] 2
-    setTokenConsumptionRate [java::field $a2 input] 2
-    setTokenConsumptionRate [java::field $a3 input] 2
+    setTokenProductionRate [java::field $Ramp output] 2
+    setTokenConsumptionRate [java::field $Consumer1 input] 2
+    setTokenConsumptionRate [java::field $Consumer2 input] 2
 
     $scheduler setValid false
     $s5 setValid false
      _initialize $toplevel
     set sched1 [_getSchedule $scheduler]
     set sched2 [_getSchedule $s5]
-    setTokenProductionRate [java::field $a1 output] 1
-    setTokenConsumptionRate [java::field $a2 input] 1
-    setTokenConsumptionRate [java::field $a3 input] 1
+    setTokenProductionRate [java::field $Ramp output] 1
+    setTokenConsumptionRate [java::field $Consumer1 input] 1
+    setTokenConsumptionRate [java::field $Consumer2 input] 1
     list $sched1 $sched2
 } {{{Cont Consumer1 Consumer2}} Ramp}
 
@@ -993,9 +993,9 @@ test SDFScheduler-11.1 {Multirate and transparent hierarchy Scheduling tests} {
 
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
-    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
     $p1 setInput 1
-    set p2 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p2]
+    set p2 [java::new ptolemy.actor.TypedIOPort $c1 p2]
     $p2 setOutput 1
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer]
@@ -1084,7 +1084,7 @@ test SDFScheduler-12.1 {Input Multirate and transparent hierarchy Scheduling tes
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp1]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp2]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
-    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
     $p1 setInput 1
     $p1 setMultiport true
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $c1 Consumer]
@@ -1163,7 +1163,7 @@ test SDFScheduler-12.11 {Output Multirate and hierarch Scheduling tests} {
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer1]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $toplevel Consumer2]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
-    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
     $p1 setOutput 1
     $p1 setMultiport true
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $c1 Ramp]
@@ -1283,7 +1283,7 @@ test SDFScheduler-13.2 {Output External port connected } {
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp1]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp2]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
-    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
     $p1 setInput 1
     $p1 setMultiport true
     set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
@@ -1345,89 +1345,6 @@ test SDFScheduler-13.3 {_debugging code coverage} {
     set sched2 [_getSchedule $s5]
     list $sched1 $sched2
 } {{{Ramp Cont Consumer}} Delay}
-
-test SDFScheduler-13.5 {buffersize annotation} {
-    # This test used to contain buffersize annotations, but does not
-    # now contain them
-    $toplevel exportMoML
-} {<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Toplevel" class="ptolemy.actor.TypedCompositeActor">
-    <property name="Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-        </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </property>
-    <entity name="Ramp" class="ptolemy.domains.sdf.kernel.test.SDFTestRamp">
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
-    </entity>
-    <entity name="Cont" class="ptolemy.actor.TypedCompositeActor">
-        <property name="d5" class="ptolemy.domains.sdf.kernel.SDFDirector">
-            <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
-            </property>
-            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-            <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </property>
-        <port name="p1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
-        <port name="p2" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-            </property>
-        </port>
-        <entity name="Delay" class="ptolemy.domains.sdf.kernel.test.SDFTestDelay">
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
-                </property>
-            </port>
-        </entity>
-        <relation name="R2" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="R3" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <link port="p1" relation="R2"/>
-        <link port="p2" relation="R3"/>
-        <link port="Delay.input" relation="R2"/>
-        <link port="Delay.output" relation="R3"/>
-    </entity>
-    <entity name="Consumer" class="ptolemy.domains.sdf.kernel.test.SDFTestConsumer">
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
-    </entity>
-    <relation name="R1" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="R4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="Ramp.output" relation="R1"/>
-    <link port="Cont.p1" relation="R1"/>
-    <link port="Cont.p2" relation="R4"/>
-    <link port="Consumer.input" relation="R4"/>
-</entity>
-}
 
 
 ######################################################################

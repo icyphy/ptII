@@ -50,6 +50,11 @@ This class extends IOPort with convenience methods for handling the token
 production and consumption rates.  These are merely convenience methods,
 as the pertinent attributes can be added to any IOPort and the SDF domain
 will respect them.
+<p>
+It is not recommended to use this port as a port for composite actors
+because the presence of the rate parameters will prevent the inner SDF
+scheduler from propagating it rates to the outside.  That is, if the
+parameters are present, the scheduler does not override them.
 
 @author Stephen Neuendorffer
 @version $Id$

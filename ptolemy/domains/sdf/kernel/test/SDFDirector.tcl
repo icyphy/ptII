@@ -231,9 +231,9 @@ test SDFDirector-6.1 {Test wormhole activation} {
     $e1 setDirector $d3
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e1 Ramp]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $e1 Cont]
-    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
     $p1 setInput 1
-    set p2 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p2]
+    set p2 [java::new ptolemy.actor.TypedIOPort $c1 p2]
     $p2 setOutput 1
     set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
@@ -272,9 +272,9 @@ test SDFDirector-6.2 {Test transparent activation} {
     $e1 setDirector $d3
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $e1 Ramp]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $e1 Cont]
-    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
     $p1 setInput 1
-    set p2 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p2]
+    set p2 [java::new ptolemy.actor.TypedIOPort $c1 p2]
     $p2 setOutput 1
     set a2 [java::new ptolemy.domains.sdf.kernel.test.SDFTestDelay $c1 Delay]
     set a3 [java::new ptolemy.domains.sdf.kernel.test.SDFTestConsumer $e1 Consumer]
@@ -315,9 +315,9 @@ test SDFDirector-7.1 {Multirate and Hierarchy execution tests} {
  
     set a1 [java::new ptolemy.domains.sdf.kernel.test.SDFTestRamp $toplevel Ramp]
     set c1 [java::new ptolemy.actor.TypedCompositeActor $toplevel Cont]
-    set p1 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p1]
+    set p1 [java::new ptolemy.actor.TypedIOPort $c1 p1]
     $p1 setInput 1
-    set p2 [java::new ptolemy.domains.sdf.kernel.SDFIOPort $c1 p2]
+    set p2 [java::new ptolemy.actor.TypedIOPort $c1 p2]
     $p2 setOutput 1
     set d5 [java::new ptolemy.domains.sdf.kernel.SDFDirector $c1 d5]
     $c1 setDirector $d5

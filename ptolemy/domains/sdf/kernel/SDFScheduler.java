@@ -678,7 +678,7 @@ public class SDFScheduler extends Scheduler {
         Variable parameter = (Variable)port.getAttribute(name);
         if (parameter == null) {
             String altName = "_" + name;
-            parameter = (Parameter)port.getAttribute(altName);
+            parameter = (Variable)port.getAttribute(altName);
             if (parameter == null) {
                 return defaultValue;
             }
