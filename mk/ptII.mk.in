@@ -122,8 +122,9 @@ JAVACC_DIR =	@JAVACC_DIR@
 JJTREE =	@JJTREE@
 JAVACC =	@JAVACC@
 
-# jtclsh script to run tclBlend for the test suite.
-JTCLSH =	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH) @JTCLSH@
+# jtclsh script to run Jacl for the test suite.
+PTJACL_JAR =	@PTJACL_JAR@
+JTCLSH =	CLASSPATH=$(CLASSPATH)$(AUXCLASSPATH)\$(CLASSPATHSEPARATOR)$(PTJACL_JAR) @JTCLSH@
 
 # Commands used to install scripts and data
 INSTALL =		$(PTII)/config/install-sh -c
