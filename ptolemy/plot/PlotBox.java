@@ -360,6 +360,56 @@ public class PlotBox extends JPanel implements Printable {
         _legendDatasets = new Vector();
     }
 
+    /** If this method is called in the event thread, then simply
+     * execute the specified action.  Otherwise,
+     * if there are already deferred actions, then add the specified
+     * one to the list.  Otherwise, create a list of deferred actions,
+     * if necessary, and request that the list be processed in the
+     * event dispatch thread.
+     *
+     * Note that it does not work nearly as well to simply schedule
+     * the action yourself on the event thread because if there are a
+     * large number of actions, then the event thread will not be able
+     * to keep up.  By grouping these actions, we avoid this problem.
+     *
+     * This method is not synchronized, so the caller should be.
+     * @param action The Runnable object to execute.
+     */
+    public void deferIfNecessary(Runnable action) {
+        // In swing, updates to showing graphics must be done in the
+        // event thread.  If we are in the event thread, then proceed.
+        // Otherwise, queue a request or add to a pending request.
+        if (EventQueue.isDispatchThread()) {
+            action.run();
+        } else {
+
+            if (_deferredActions == null) {
+                _deferredActions = new LinkedList();
+            }
+            // Add the specified action to the list of actions to perform.
+            _deferredActions.add(action);
+
+            // If it hasn't already been requested, request that actions
+            // be performed in the event dispatch thread.
+            if (!_actionsDeferred) {
+                Runnable doActions = new Runnable() {
+                    public void run() {
+                        _executeDeferredActions();
+                    }
+                };
+                try {
+                    // NOTE: Using invokeAndWait() here risks causing
+                    // deadlock.  Don't do it!
+                    SwingUtilities.invokeLater(doActions);
+                } catch (Exception ex) {
+                    // Ignore InterruptedException.
+                    // Other exceptions should not occur.
+                }
+                _actionsDeferred = true;
+            }
+        }
+    }
+
     /** Export a description of the plot.
      *  Currently, only EPS is supported.  But in the future, this
      *  may cause a dialog box to open to allow the user to select
@@ -454,14 +504,14 @@ public class PlotBox extends JPanel implements Printable {
         Graphics2D graphics = bufferedImage.createGraphics();
         graphics.addRenderingHints(_defaultImageRenderingHints());
         if ( !transparent ) {
-            graphics.setColor(Color.white);        // set the background color
+            graphics.setColor(Color.white);	// set the background color
             graphics.fill(rectangle);
         }
         _drawPlot(graphics, false , rectangle);
         return bufferedImage;
     }
 
-    /**        Draw this plot onto the provided image.
+    /**	Draw this plot onto the provided image.
      *  This method does not paint the background, so the plot is
      *  transparent.  The plot fills the image, and is rendered
      *  using anti-aliasing.  This method can be used to overlay
@@ -530,7 +580,7 @@ public class PlotBox extends JPanel implements Printable {
             {"black", "00000"}, {"white", "ffffff"},
             {"red", "ff0000"}, {"green", "00ff00"}, {"blue", "0000ff"}
         };
-        for (int i = 0; i< names.length; i++) {
+        for (int i = 0; i < names.length; i++) {
             if (name.equals(names[i][0])) {
                 try {
                     Color col = new Color(Integer.parseInt(names[i][1], 16));
@@ -998,10 +1048,10 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_printButton == null) {
             // Load the image by using the absolute path to the gif.
-            // Using a relative location should work, but it does not.
+	    // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
-            // For more information, see
-            // file:///C|/jdk1.3/docs/guide/resources/resources.html
+	    // For more information, see
+	    // file:///C|/jdk1.3/docs/guide/resources/resources.html
             URL img = getClass().getResource("/ptolemy/plot/img/print.gif");
             if (img != null) {
                 ImageIcon printIcon = new ImageIcon(img);
@@ -1012,8 +1062,8 @@ public class PlotBox extends JPanel implements Printable {
                 // class loader.
                 _printButton = new JButton("P");
             }
-            // FIXME: If we failed to get an image, then the letter "P"
-            // Is not likely to fit into a 20x20 button.
+	    // FIXME: If we failed to get an image, then the letter "P"
+	    // Is not likely to fit into a 20x20 button.
             _printButton.setPreferredSize(new Dimension(20, 20));
             _printButton.setToolTipText("Print the plot.");
             _printButton.addActionListener(new ButtonListener());
@@ -1023,10 +1073,10 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_resetButton == null) {
             // Load the image by using the absolute path to the gif.
-            // Using a relative location should work, but it does not.
+	    // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
-            // For more information, see
-            // file:///C|/jdk1.3/docs/guide/resources/resources.html
+	    // For more information, see
+	    // file:///C|/jdk1.3/docs/guide/resources/resources.html
             URL img = getClass().getResource("/ptolemy/plot/img/reset.gif");
             if (img != null) {
                 ImageIcon resetIcon = new ImageIcon(img);
@@ -1037,8 +1087,8 @@ public class PlotBox extends JPanel implements Printable {
                 // class loader.
                 _resetButton = new JButton("R");
             }
-            // FIXME: If we failed to get an image, then the letter "R"
-            // Is not likely to fit into a 20x20 button.
+	    // FIXME: If we failed to get an image, then the letter "R"
+	    // Is not likely to fit into a 20x20 button.
             _resetButton.setPreferredSize(new Dimension(20, 20));
             _resetButton.setToolTipText(
                     "Reset X and Y ranges to their original values");
@@ -1049,10 +1099,10 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_formatButton == null) {
             // Load the image by using the absolute path to the gif.
-            // Using a relative location should work, but it does not.
+	    // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
-            // For more information, see
-            // file:///C|/jdk1.3/docs/guide/resources/resources.html
+	    // For more information, see
+	    // file:///C|/jdk1.3/docs/guide/resources/resources.html
             URL img = getClass().getResource("/ptolemy/plot/img/format.gif");
             if (img != null) {
                 ImageIcon formatIcon = new ImageIcon(img);
@@ -1063,8 +1113,8 @@ public class PlotBox extends JPanel implements Printable {
                 // class loader.
                 _formatButton = new JButton("S");
             }
-            // FIXME: If we failed to get an image, then the letter "S"
-            // Is not likely to fit into a 20x20 button.
+	    // FIXME: If we failed to get an image, then the letter "S"
+	    // Is not likely to fit into a 20x20 button.
             _formatButton.setPreferredSize(new Dimension(20, 20));
             _formatButton.setToolTipText(
                     "Set the plot format");
@@ -1075,10 +1125,10 @@ public class PlotBox extends JPanel implements Printable {
 
         if (_fillButton == null) {
             // Load the image by using the absolute path to the gif.
-            // Using a relative location should work, but it does not.
+	    // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
-            // For more information, see
-            // file:///C|/jdk1.3/docs/guide/resources/resources.html
+	    // For more information, see
+	    // file:///C|/jdk1.3/docs/guide/resources/resources.html
             URL img = getClass().getResource("/ptolemy/plot/img/fill.gif");
             if (img != null) {
                 ImageIcon fillIcon = new ImageIcon(img);
@@ -1089,8 +1139,8 @@ public class PlotBox extends JPanel implements Printable {
                 // class loader.
                 _fillButton = new JButton("F");
             }
-            // FIXME: If we failed to get an image, then the letter "F"
-            // Is not likely to fit into a 20x20 button.
+	    // FIXME: If we failed to get an image, then the letter "F"
+	    // Is not likely to fit into a 20x20 button.
             _fillButton.setPreferredSize(new Dimension(20, 20));
             _fillButton.setToolTipText(
                     "Rescale the plot to fit the data");
@@ -1219,7 +1269,7 @@ public class PlotBox extends JPanel implements Printable {
     }
 
     /** Specify whether the X axis is drawn with a logarithmic scale.
-     *  If you would like to have the X axis drawn with a
+     *  If you would like to have the X axis drawn with a 
      *  logarithmic axis, then setXLog(true) should be called before
      *  adding any data points.
      *  @param xlog If true, logarithmic axis is used.
@@ -1255,7 +1305,7 @@ public class PlotBox extends JPanel implements Printable {
     }
 
     /** Specify whether the Y axis is drawn with a logarithmic scale.
-     *  If you would like to have the Y axis drawn with a
+     *  If you would like to have the Y axis drawn with a 
      *  logarithmic axis, then setYLog(true) should be called before
      *  adding any data points.
      *  @param ylog If true, logarithmic axis is used.
@@ -1449,60 +1499,10 @@ public class PlotBox extends JPanel implements Printable {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    public static final String PTPLOT_RELEASE = "5.2";
+    public static final String PTPLOT_RELEASE = "5.2p1";
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** If this method is called in the event thread, then simply
-     * execute the specified action.  Otherwise,
-     * if there are already deferred actions, then add the specified
-     * one to the list.  Otherwise, create a list of deferred actions,
-     * if necessary, and request that the list be processed in the
-     * event dispatch thread.
-     *
-     * Note that it does not work nearly as well to simply schedule
-     * the action yourself on the event thread because if there are a
-     * large number of actions, then the event thread will not be able
-     * to keep up.  By grouping these actions, we avoid this problem.
-     *
-     * This method is not synchronized, so the caller should be.
-     * @param action The Runnable object to execute.
-     */
-    protected void _deferIfNecessary(Runnable action) {
-        // In swing, updates to showing graphics must be done in the
-        // event thread.  If we are in the event thread, then proceed.
-        // Otherwise, queue a request or add to a pending request.
-        if (EventQueue.isDispatchThread()) {
-            action.run();
-        } else {
-
-            if (_deferredActions == null) {
-                _deferredActions = new LinkedList();
-            }
-            // Add the specified action to the list of actions to perform.
-            _deferredActions.add(action);
-
-            // If it hasn't already been requested, request that actions
-            // be performed in the event dispatch thread.
-            if (!_actionsDeferred) {
-                Runnable doActions = new Runnable() {
-                    public void run() {
-                        _executeDeferredActions();
-                    }
-                };
-                try {
-                    // NOTE: Using invokeAndWait() here risks causing
-                    // deadlock.  Don't do it!
-                    SwingUtilities.invokeLater(doActions);
-                } catch (Exception ex) {
-                    // Ignore InterruptedException.
-                    // Other exceptions should not occur.
-                }
-                _actionsDeferred = true;
-            }
-        }
-    }
 
     /** Draw the axes using the current range, label, and title information.
      *  If the second argument is true, clear the display before redrawing.
@@ -1609,7 +1609,7 @@ public class PlotBox extends JPanel implements Printable {
         // for labeling ticks and the height of the window.
         Font previousFont = graphics.getFont();
         graphics.setFont(_labelFont);
-        graphics.setColor(_foreground);        // foreground color not set here  --Rob.
+        graphics.setColor(_foreground);	// foreground color not set here  --Rob.
         int labelheight = _labelFontMetrics.getHeight();
         int halflabelheight = labelheight/2;
 
@@ -2034,7 +2034,7 @@ public class PlotBox extends JPanel implements Printable {
                     // Draw the label mark on the axis
                     graphics.drawLine(xCoord1, _uly, xCoord1, yCoord1);
                     graphics.drawLine(xCoord1, _lry, xCoord1, yCoord2);
-
+                    
                     // Draw the grid line
                     if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
                         graphics.setColor(Color.lightGray);
@@ -2271,7 +2271,7 @@ public class PlotBox extends JPanel implements Printable {
      *  @param padding The padding multiple.
      */
     protected void _setPadding(double padding) {
-        _padding = padding;
+	_padding = padding;
     }
 
     /** Write plot information to the specified output stream in the
@@ -2931,15 +2931,15 @@ public class PlotBox extends JPanel implements Printable {
             max += 1.0;
         }
 
-        //if (_xRangeGiven) {
+	//if (_xRangeGiven) {
         // The user specified the range, so don't pad.
-        //    _xMin = min;
-        //    _xMax = max;
-        //} else {
+	//    _xMin = min;
+	//    _xMax = max;
+	//} else {
         // Pad slightly so that we don't plot points on the axes.
         _xMin = min - ((max - min) * _padding);
         _xMax = max + ((max - min) * _padding);
-        //}
+	//}
 
         // Find the exponent.
         double largest = Math.max(Math.abs(_xMin), Math.abs(_xMax));
@@ -2969,15 +2969,15 @@ public class PlotBox extends JPanel implements Printable {
             min -= 0.1;
             max += 0.1;
         }
-        //if (_yRangeGiven) {
+	//if (_yRangeGiven) {
         // The user specified the range, so don't pad.
-        //    _yMin = min;
-        //    _yMax = max;
-        //} else {
+	//    _yMin = min;
+	//    _yMax = max;
+	//} else {
         // Pad slightly so that we don't plot points on the axes.
         _yMin = min - ((max - min) * _padding);
         _yMax = max + ((max - min) * _padding);
-        //}
+	//}
 
         // Find the exponent.
         double largest = Math.max(Math.abs(_yMin), Math.abs(_yMax));
@@ -3303,7 +3303,7 @@ public class PlotBox extends JPanel implements Printable {
     "<!-- PlotML DTD, created by Edward A. Lee, eal@eecs.berkeley.edu.\n"
     + "   See http://ptolemy.eecs.berkeley.edu/java/ptplot -->\n"
     + "<!ELEMENT plot (barGraph | bin | dataset | default | noColor | \n"
-    + "        noGrid | title | wrap | xLabel | xLog | xRange | xTicks | yLabel | \n"
+    + "	noGrid | title | wrap | xLabel | xLog | xRange | xTicks | yLabel | \n"
     + " yLog | yRange | yTicks)*>\n"
     + "  <!ELEMENT barGraph EMPTY>\n"
     + "    <!ATTLIST barGraph width CDATA #IMPLIED>\n"
