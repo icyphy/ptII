@@ -46,7 +46,7 @@ import java.util.EmptyStackException;
  *  and is an instance of the base class, SingletonAttribute.
  *  <p>
  *  Two stacks of information are maintained - one for undo information and
- *  one for redo information. The informtion in the redo stack is placed there
+ *  one for redo information. The information in the redo stack is placed there
  *  whenever an undo is carried out, and can be used to reverese the effect
  *  of the undo.
  *  <p>
