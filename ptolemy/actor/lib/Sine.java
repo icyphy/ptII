@@ -40,18 +40,21 @@ import ptolemy.data.expr.Parameter;
 /**
 Produce an output token on each firing with a value that is
 equal to the sine of the input. The input and output types
-are DoubleToken. The actor achieves the function:
+are DoubleToken. The actor implements the function:
 <br>
 y = A*Sin(w*x+p)
 <br>
 where: <br>
 x is the input;<br>
 y is the output; <br>
-A is the magnitude, with default value 1; <br>
-w is the (angle) frequency, with default value 1; <br>
-p is the phase, with default value 0.
+A is the amplitude, with default value 1; <br>
+w is the radian frequency, with default value 1; <br>
+p is the phase, with default value 0.<br>
 
-@author Edward A. Lee
+A Cos function can be implemented using this actor by setting
+the phase to pi/2.
+
+@author Edward A. Lee, Jie Liu
 @version $Id$
 */
 
@@ -70,8 +73,8 @@ public class Sine extends Transformer {
         super(container, name);
 
         // parameters
-        magnitude = new Parameter(this, "magnitude", new DoubleToken(1.0));
-        frequency = new Parameter(this, "frequency", new DoubleToken(1.0));
+        amplitude = new Parameter(this, "amplitude", new DoubleToken(1.0));
+        radianFreq = new Parameter(this, "radianFreq", new DoubleToken(1.0));
         phase = new Parameter(this, "phase", new DoubleToken(0.0));
 
 
@@ -85,12 +88,12 @@ public class Sine extends Transformer {
     /** The magnitude.
      *  The default value of this parameter is the double 1.0.
      */
-    public Parameter magnitude;
+    public Parameter amplitude;
 
     /** The (angle) frequency.
      *  The default value of this parameter is the double 1.0.
      */
-    public Parameter frequency;
+    public Parameter radianFreq;
 
     /** The phase.
      *  The default value of this parameter is the double 0.0.
@@ -108,8 +111,8 @@ public class Sine extends Transformer {
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             DoubleToken in = (DoubleToken)input.get(0);
-            double A = ((DoubleToken)magnitude.getToken()).doubleValue();
-            double w = ((DoubleToken)frequency.getToken()).doubleValue();
+            double A = ((DoubleToken)amplitude.getToken()).doubleValue();
+            double w = ((DoubleToken)radianFreq.getToken()).doubleValue();
             double p = ((DoubleToken)phase.getToken()).doubleValue();
 
             double result = A*Math.sin(w*in.doubleValue()+p);
