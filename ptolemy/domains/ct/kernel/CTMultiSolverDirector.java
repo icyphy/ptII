@@ -969,6 +969,8 @@ public class CTMultiSolverDirector extends CTDirector {
             ODESolver.addChoice(
                     new StringToken("ExplicitRK23Solver").toString());
             ODESolver.addChoice(
+                    new StringToken("ExplicitRK45Solver").toString());
+            ODESolver.addChoice(
                     new StringToken("BackwardEulerSolver").toString());
             ODESolver.addChoice(
                     new StringToken("ForwardEulerSolver").toString());

@@ -51,6 +51,7 @@ JSRCS = \
 	BackwardEulerSolver.java \
 	DerivativeResolver.java \
 	ExplicitRK23Solver.java \
+	ExplicitRK45Solver.java \
 	FixedStepSolver.java \
 	ForwardEulerSolver.java \
 	TrapezoidalRuleSolver.java
