@@ -47,7 +47,6 @@ import ptolemy.actor.sched.Scheduler;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
-import ptolemy.domains.fsm.modal.ModalModel;
 import ptolemy.graph.DirectedAcyclicGraph;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.ChangeRequest;
