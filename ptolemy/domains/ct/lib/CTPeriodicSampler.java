@@ -188,13 +188,18 @@ public class CTPeriodicSampler extends Transformer
                 + _nextSamplingTime);
     }
 
-    /** Return true always. If the current time is greater than the next
+    /* FIXME: This method is commented out, and should be removed
+     * I went ahead and changed removed one of the * from the
+     * start javadoc comment tag so as to stop javadoc warnings.
+     */
+    /* Return true always. If the current time is greater than the next
      *  sampling time, increase the next sample time until it is
      *  greater than the current time. Request a director refire at the
      *  next sampling time.
      *  @return True always.
      *  @exception IllegalActionException If parameter update throws it.
-     *
+     */
+    /*
     public boolean prefire() throws IllegalActionException {
         CTDirector dir = (CTDirector) getDirector();
         boolean hasjump = false;
