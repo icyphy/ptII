@@ -820,14 +820,6 @@ public class NamedObj implements Nameable, Debuggable,
         return null;
     }
 
-    /** Get the model error handler specified by setErrorHandler().
-     *  @return The error handler, or null if none.
-     *  @see #setModelErrorHandler(ModelErrorHandler handler)
-     */
-    public ModelErrorHandler getModelErrorHandler() {
-        return _modelErrorHandler;
-    }
-
     /** Return a string of the form ".name1.name2...nameN". Here,
      *  "nameN" is the name of this object,
      *  and the intervening names are the names of the containers
@@ -888,6 +880,14 @@ public class NamedObj implements Nameable, Debuggable,
             _MoMLInfo = new MoMLInfo(this);
         }
         return _MoMLInfo;
+    }
+
+    /** Get the model error handler specified by setErrorHandler().
+     *  @return The error handler, or null if none.
+     *  @see #setModelErrorHandler(ModelErrorHandler handler)
+     */
+    public ModelErrorHandler getModelErrorHandler() {
+        return _modelErrorHandler;
     }
 
     /** Get the name. If no name has been given, or null has been given,
@@ -1134,6 +1134,13 @@ public class NamedObj implements Nameable, Debuggable,
         }
     }
 
+    /** Return the class name and the full name of the object,
+     *  with syntax "className {fullName}".
+     *  @return The class name and the full name. */
+    public String toString() {
+        return getClass().getName() + " {" + getFullName()+ "}";
+    }
+
     /** Return the top level of the containment hierarchy.
      *  @return The top level, or this if this has no container.
      */
@@ -1143,13 +1150,6 @@ public class NamedObj implements Nameable, Debuggable,
             result = (NamedObj)result.getContainer();
         }
         return result;
-    }
-
-    /** Return the class name and the full name of the object,
-     *  with syntax "className {fullName}".
-     *  @return The class name and the full name. */
-    public String toString() {
-        return getClass().getName() + " {" + getFullName()+ "}";
     }
 
     /** Return a name that is guaranteed to not be the name of any

@@ -109,82 +109,6 @@ public class KernelException extends Exception {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the cause of this exception.
-     *  @return The cause that was passed in as an argument to the
-     *  constructor, or null of no cause was specified.
-     */
-    public Throwable getCause() {
-        return _cause;
-    }
-
-    /** Get the message of this exception.  The message may have been
-     *  adjusted if one of the constructor arguments was null, so the
-     *  value returned by this method may not necessarily equal the
-     *  value of the detail argument of of the constructor.
-     *
-     *  @return The error message.
-     */
-    public String getMessage() {
-        return _message;
-    }
-
-    /** Print the following to stderr:
-     *  this exception, its stack trace and if the cause
-     *  exception is known, print the cause exception and the
-     *  cause stacktrace.
-     */
-    public void printStackTrace() {
-        // Note that chained exceptions are new JDK1.4.
-        // We are implement them ourselves here so that we can
-        // use JVMs earlier than JDK1.4.  The JDK1.4 Throwable.getCause()
-        // documentation states that it is not necessary to overwrite
-        // printStackTrace, but this is only the case when we have a JDK1.4
-        // JVM.
-        printStackTrace(new PrintWriter(System.err));
-    }
-
-    /** Print this exception, its stack trace and if the cause
-     *  exception is known, print the cause exception and the cause
-     *  stacktrace.
-     *  @param printStream The PrintStream to write to.
-     */
-    public void printStackTrace(PrintStream printStream) {
-        printStackTrace(new PrintWriter(printStream));
-    }
-
-    /** Print this exception, its stack trace and if the cause
-     *  exception is known, print the cause exception and the
-     *  cause stacktrace.
-     *  @param printWriter The PrintWriter to write to.
-     */
-    public void printStackTrace(PrintWriter printWriter) {
-        super.printStackTrace(printWriter);
-        if (_cause != null) {
-            printWriter.print("Caused by: ");
-            _cause.printStackTrace(printWriter);
-        }
-        printWriter.flush();
-    }
-
-    /** Return the stack trace of the given argument as a String.
-     *  This method is useful if we are catching and rethrowing
-     *  a throwable that does not take a throwable cause argument.
-     *  For example, the XML parser exception does not take
-     *  a cause argument, so we call this method instead.
-     *  This method should be used instead of
-     *  Throwable.printStackTrace(), which prints the stack trace
-     *  to stderr, which is likely to be hidden if we are running
-     *  a Ptolemy application from anything but a shell console.
-     *  @param throwable A throwable.
-     *  @return The stack trace of the throwable.
-     */
-    public static String stackTraceToString(Throwable throwable) {
-        StringWriter stringWriter = new StringWriter();
-        PrintWriter printWriter = new PrintWriter(stringWriter);
-        throwable.printStackTrace(printWriter);
-        return stringWriter.toString();
-    }
-
     /** Generate a properly formatted exception message.
      *  If one or more of the parameters are null, then the message
      *  of the exception is adjusted accordingly.  In particular, if
@@ -322,30 +246,12 @@ public class KernelException extends Exception {
                     "" : ("Because:\n" + cause.getMessage()));
     }
 
-    /** Get the name of a Nameable object.
-     *  If the argument is a null reference, return an empty string.
-     *  If the name is the empty string, then we return "<Unnamed Object>".
-     *
-     *  @param object An object with a name.
-     *  @return The name of the argument.
+    /** Get the cause of this exception.
+     *  @return The cause that was passed in as an argument to the
+     *  constructor, or null of no cause was specified.
      */
-    public static String getName(Nameable object) {
-        if (object == null) {
-            return "";
-        } else {
-            String name;
-            name = object.getName();
-            if (name == null || name.equals("")) {
-                // If NamedObj.setName() throws an exception, then the
-                // nameable object might be non-null, but the name might
-                // not yet have been set and getName() might return null.
-                // The tcl command:
-                // java::new ptolemy.kernel.util.NamedObj "This.name.has.dots"
-                // will trigger this sort of error.
-                return "<Unnamed Object>";
-            }
-            return name;
-        }
+    public Throwable getCause() {
+        return _cause;
     }
 
     /** Get the name of a Nameable object.  This method uses
@@ -392,6 +298,100 @@ public class KernelException extends Exception {
             name = "." + name;
             return name;
         }
+    }
+
+    /** Get the message of this exception.  The message may have been
+     *  adjusted if one of the constructor arguments was null, so the
+     *  value returned by this method may not necessarily equal the
+     *  value of the detail argument of of the constructor.
+     *
+     *  @return The error message.
+     */
+    public String getMessage() {
+        return _message;
+    }
+
+    /** Get the name of a Nameable object.
+     *  If the argument is a null reference, return an empty string.
+     *  If the name is the empty string, then we return "<Unnamed Object>".
+     *
+     *  @param object An object with a name.
+     *  @return The name of the argument.
+     */
+    public static String getName(Nameable object) {
+        if (object == null) {
+            return "";
+        } else {
+            String name;
+            name = object.getName();
+            if (name == null || name.equals("")) {
+                // If NamedObj.setName() throws an exception, then the
+                // nameable object might be non-null, but the name might
+                // not yet have been set and getName() might return null.
+                // The tcl command:
+                // java::new ptolemy.kernel.util.NamedObj "This.name.has.dots"
+                // will trigger this sort of error.
+                return "<Unnamed Object>";
+            }
+            return name;
+        }
+    }
+
+    /** Print the following to stderr:
+     *  this exception, its stack trace and if the cause
+     *  exception is known, print the cause exception and the
+     *  cause stacktrace.
+     */
+    public void printStackTrace() {
+        // Note that chained exceptions are new JDK1.4.
+        // We are implement them ourselves here so that we can
+        // use JVMs earlier than JDK1.4.  The JDK1.4 Throwable.getCause()
+        // documentation states that it is not necessary to overwrite
+        // printStackTrace, but this is only the case when we have a JDK1.4
+        // JVM.
+        printStackTrace(new PrintWriter(System.err));
+    }
+
+    /** Print this exception, its stack trace and if the cause
+     *  exception is known, print the cause exception and the cause
+     *  stacktrace.
+     *  @param printStream The PrintStream to write to.
+     */
+    public void printStackTrace(PrintStream printStream) {
+        printStackTrace(new PrintWriter(printStream));
+    }
+
+    /** Print this exception, its stack trace and if the cause
+     *  exception is known, print the cause exception and the
+     *  cause stacktrace.
+     *  @param printWriter The PrintWriter to write to.
+     */
+    public void printStackTrace(PrintWriter printWriter) {
+        super.printStackTrace(printWriter);
+        if (_cause != null) {
+            printWriter.print("Caused by: ");
+            _cause.printStackTrace(printWriter);
+        }
+        printWriter.flush();
+    }
+
+    /** Return the stack trace of the given argument as a String.
+     *  This method is useful if we are catching and rethrowing
+     *  a throwable that does not take a throwable cause argument.
+     *  For example, the XML parser exception does not take
+     *  a cause argument, so we call this method instead.
+     *  This method should be used instead of
+     *  Throwable.printStackTrace(), which prints the stack trace
+     *  to stderr, which is likely to be hidden if we are running
+     *  a Ptolemy application from anything but a shell console.
+     *  @param throwable A throwable.
+     *  @return The stack trace of the throwable.
+     */
+    public static String stackTraceToString(Throwable throwable) {
+        StringWriter stringWriter = new StringWriter();
+        PrintWriter printWriter = new PrintWriter(stringWriter);
+        throwable.printStackTrace(printWriter);
+        return stringWriter.toString();
     }
 
     ///////////////////////////////////////////////////////////////////

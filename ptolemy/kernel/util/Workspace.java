@@ -200,14 +200,6 @@ public final class Workspace implements Nameable, Serializable {
         return _description(detail, 0, 0);
     }
 
-    /** Return an unmodifiable list of the items in the directory,
-     *  in the order in which they were added.
-     *  @return A list of instances of NamedObj.
-     */
-    public synchronized List directoryList() {
-        return Collections.unmodifiableList(_directory);
-    }
-
     /** Enumerate the items in the directory, in the order in which
      *  they were added.
      *  @deprecated Use directoryList() instead.
@@ -215,6 +207,14 @@ public final class Workspace implements Nameable, Serializable {
      */
     public synchronized Enumeration directory() {
         return Collections.enumeration(_directory);
+    }
+
+    /** Return an unmodifiable list of the items in the directory,
+     *  in the order in which they were added.
+     *  @return A list of instances of NamedObj.
+     */
+    public synchronized List directoryList() {
+        return Collections.unmodifiableList(_directory);
     }
 
     /** Indicate that the calling thread is finished reading.
