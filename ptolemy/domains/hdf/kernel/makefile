@@ -60,7 +60,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
 	'HDFDirector$$1.class' \
 	'HDFFSMDirector$$1.class' \
 	'HDFFSMDirector$$2.class'

@@ -107,7 +107,7 @@ OPTIONAL_FILES = \
 	doc \
 	index.xml \
 	'Autocorrelation$$1.class' \
-	'Autocorrelation$$FunctionTerm.class'
+	'Autocorrelation$$FunctionTerm.class' \
 	'DotProduct$$1.class' \
 	'DotProduct$$PortFunction.class' \
 	'MatrixToSequence$$1.class' \
