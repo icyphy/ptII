@@ -170,28 +170,6 @@ public class ParameterPort extends TypedIOPort {
         }
     }
 
-    /** Set the container to null, irrespective of the argument.
-     *  The container of a ParameterPort is immutable, and is set
-     *  in the constructor.  This method is called on a new
-     *  ParameterPort that is created if the container is cloned.
-     *  However, the clone() method of the associated PortParameter
-     *  will create a new ParameterPort, so the clone of the ParameterPort
-     *  should be removed.  Setting the container to null here
-     *  accomplishes that.
-     *  @param entity The container.
-     *  @exception IllegalActionException If the superclass throws it
-     *   (should not occur).
-     *  @exception NameDuplicationException If the superclass throws it
-     *   (should not occur).
-     */
-/* FIXME
-
-    public void setContainer(Entity entity)
-            throws IllegalActionException, NameDuplicationException {
-        super.setContainer(null);
-    }
-*/
-
     /** Set or change the name, and propagate the name change to the
      *  associated port.  If a null argument is given, then the
      *  name is set to an empty string.

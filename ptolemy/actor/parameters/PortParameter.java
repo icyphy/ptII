@@ -127,6 +127,41 @@ public class PortParameter extends Parameter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** React to a change in an attribute.  This method is called by
+     *  a contained attribute when its value changes.  In this class,
+     *  if the attribute is an instance of Location, then the location
+     *  of the associated port is set as well.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (not thrown in this base class).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute instanceof Locatable) {
+            Locatable location = (Locatable)attribute;
+            if (_port != null) {
+                Attribute portAttribute = _port.getAttribute("_location");
+                Locatable portLocation = null;
+                if (portAttribute instanceof Locatable) {
+                    portLocation = (Locatable)portAttribute;
+                } else {
+                    try {
+                        portLocation = new Location(_port, "_location");
+                    } catch (KernelException ex) {
+                        throw new InternalErrorException(ex);
+                    }
+                }
+                double[] locationValues = location.getLocation();
+                double[] portLocationValues = new double[2];
+                portLocationValues[0] = locationValues[0] - 20.0;
+                portLocationValues[1] = locationValues[1] - 5.0;
+                portLocation.setLocation(portLocationValues);
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
     /** Clone the parameter. This overrides the base class to remove
      *  the current association with a port.  It is assumed that the
      *  port will also be cloned, and when the containers are set of

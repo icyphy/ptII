@@ -50,6 +50,7 @@ PTCLASSALLJARS =
 
 # Keep this list alphabetized.
 JSRCS = \
+	LocationParameter.java \
 	ParameterPort.java \
 	PortParameter.java
 
