@@ -723,7 +723,7 @@ public class DoubleMatrixMath {
 
         /* Find an orthogonal basis using _orthogonalizeRows().  Note
          * that _orthogonalizeRows() orthogonalizes row vectors, so
-         * we have use the transpose of input matrix to orthogonlize
+         * we have use the transpose of input matrix to orthogonalize
          * its columns vectors. The output will be the transpose of
          * Q.
          */
