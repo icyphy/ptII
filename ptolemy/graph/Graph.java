@@ -48,7 +48,7 @@ public class Graph {
      */
     public Graph() {
         _graph = new Vector();
-        _backRef = new Vector();
+        _nodeObject = new Vector();
         _nodeIdTable = new Hashtable();
     }
     
@@ -56,12 +56,12 @@ public class Graph {
      *  specified number of nodes.  Memory management is more
      *  efficient with this constructor if the number of nodes is
      *  known.
-     *  @param numNodes the integer specifying the number of nodes
+     *  @param nodeCount the integer specifying the number of nodes
      */ 
-    public Graph(int numNodes) {
-        _graph = new Vector(numNodes);
-        _backRef = new Vector(numNodes);
-        _nodeIdTable = new Hashtable(numNodes);
+    public Graph(int nodeCount) {
+        _graph = new Vector(nodeCount);
+        _nodeObject = new Vector(nodeCount);
+        _nodeIdTable = new Hashtable(nodeCount);
     }
  
     ///////////////////////////////////////////////////////////////////
@@ -89,7 +89,7 @@ public class Graph {
             throw new IllegalArgumentException("Graph.add: Object is " +
 			"already in the graph.");
         }
-        _backRef.addElement(o);
+        _nodeObject.addElement(o);
         _graph.addElement(new Vector());
         _nodeIdTable.put(o, new Integer(_graph.size() - 1));
     }
@@ -110,52 +110,19 @@ public class Graph {
         int id2 = _getNodeId(o2);
         
         ((Vector)(_graph.elementAt(id1))).addElement(new Integer(id2));
-	_numEdges++;
+	_edgeCount++;
     }
 
-    /** Returns all the edges in this graph in the form of a 2-D Object
-     *  array. Each row of the array represents an edge, corresponding
-     *  to a successful <code>addEdge</code> call, but the order of the
-     *  rows is not necessarily the same as the calls. The array always
-     *  has two columns, corresponding to the two arguments of the
-     *  <code>addEdge</code> calls, in the order the arguments are
-     *  listed.
-     *  @return a 2-D Object array.
+    /** Tests if the specified Object is a node in this graph. The
+     *  Object is a node if it is equal to an Object specified in
+     *  a successful <code>add</code> call. The equality is determined
+     *  by the <code>equals</code> method.
+     *  @param o the Object to be tested.
+     *  @return <code>true</code> if the specified Object is a node
+     *   in this graph; <code>false</code> otherwise.
      */
-    public Object[][] allEdges() {
-	Object[][] result = new Object[_numEdges][2];
-
-	int count = 0;
-	for (int i = 0; i < numNodes(); i++) {
-	    Object source = _getBackRef(i);
-	    Vector sinkIds = (Vector)_graph.elementAt(i);
-	    for (int j = 0; j < sinkIds.size(); j++) {
-		int id = ((Integer)(sinkIds.elementAt(j))).intValue();
-		Object sink = _getBackRef(id);
-		result[count][0] = source;
-		result[count++][1] = sink;
-	    }
-	}
-
-	return result;
-    }
-
-    /** Returns all the nodes in this graph in the form of an Objects array.
-     *  The Objects are the ones passed in successful <code>add()</code>
-     *  calls.
-     *  @return an Object array
-     */
-    public Object[] allNodes() {
-
-	// FIXME: restore this line for jdk1.2
-        //	return _backRef.toArray();
-
-	// FIXME: delete the following code for jdk1.2
-	Object[] arr = new Object[numNodes()];
-	for (int i = 0; i < numNodes(); i++) {
-	    arr[i] = _backRef.elementAt(i);
-	}
-	return arr;
+    public boolean contains(Object o) {
+        return _nodeIdTable.containsKey(o);
     }
 
     /** Returns a description of this graph.
@@ -174,15 +141,15 @@ public class Graph {
     public String description() {
 	String result = new String("{" + this.getClass().getName() + "\n");
 
-        for (int i = 0; i < numNodes(); i++) {
-            Object elem = _getBackRef(i);
+        for (int i = 0; i < getNodeCount(); i++) {
+            Object elem = _getNodeObject(i);
             result = result.concat("  {" + elem.toString());
 
             Vector re = (Vector)(_graph.elementAt(i));
             for (Enumeration e = re.elements(); e.hasMoreElements(); ) {
                 int i2 = ((Integer)e.nextElement()).intValue();
                 result = result.concat(" " +
-                        _getBackRef(i2).toString());
+                        _getNodeObject(i2).toString());
             }
             result = result.concat("}\n");
         }
@@ -194,55 +161,64 @@ public class Graph {
      *  connections between two nodes are counted multiple times.
      *  @return the total number of edges in this graph.
      */
-    public int numEdges() {
-	return _numEdges;
+    public int getEdgeCount() {
+	return _edgeCount;
+    }
+
+    /** Returns all the edges in this graph in the form of a 2-D Object
+     *  array. Each row of the array represents an edge, corresponding
+     *  to a successful <code>addEdge</code> call, but the order of the
+     *  rows is not necessarily the same as the calls. The array always
+     *  has two columns, corresponding to the two arguments of the
+     *  <code>addEdge</code> calls, in the order the arguments are
+     *  listed.
+     *  @return a 2-D Object array.
+     */
+    public Object[][] getEdges() {
+	Object[][] result = new Object[_edgeCount][2];
+
+	int count = 0;
+	for (int i = 0; i < getNodeCount(); i++) {
+	    Object source = _getNodeObject(i);
+	    Vector sinkIds = (Vector)_graph.elementAt(i);
+	    for (int j = 0; j < sinkIds.size(); j++) {
+		int id = ((Integer)(sinkIds.elementAt(j))).intValue();
+		Object sink = _getNodeObject(id);
+		result[count][0] = source;
+		result[count++][1] = sink;
+	    }
+	}
+
+	return result;
     }
 
     /** Returns the total number of nodes in this graph.
      *  @return the total number of nodes in this graph.
      */
-    public int numNodes() {
-        return _backRef.size();
+    public int getNodeCount() {
+        return _nodeObject.size();
     }
 
-    /** Tests if the specified Object is a node in this graph. The
-     *  Object is a node if it is equal to an Object specified in
-     *  a successful <code>add</code> call. The equality is determined
-     *  by the <code>equals</code> method.
-     *  @param o the Object to be tested.
-     *  @return <code>true</code> if the specified Object is a node
-     *   in this graph; <code>false</code> otherwise.
+    /** Returns all the nodes in this graph in the form of an Objects array.
+     *  The Objects are the ones passed in successful <code>add()</code>
+     *  calls.
+     *  @return an Object array
      */
-    public boolean contains(Object o) {
-        return _nodeIdTable.containsKey(o);
-    }
+    public Object[] getNodes() {
 
-    /** Tests if this graph is directed.
-     *  @return alway returns <code>false</code> in this class.
-     */
-    public boolean isDirected() {
-        return false;
+	// FIXME: restore this line for jdk1.2
+        //	return _nodeObject.toArray();
+
+	// FIXME: delete the following code for jdk1.2
+	Object[] arr = new Object[getNodeCount()];
+	for (int i = 0; i < getNodeCount(); i++) {
+	    arr[i] = _nodeObject.elementAt(i);
+	}
+	return arr;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** Returns the node in this graph with the specified node ID.
-     *  @param nodeId a node ID
-     *  @return an Object representing a node.
-     *  @exception IllegalArgumentException the node ID is negative
-     *   or is not less than the total number of nodes in
-     *   this graph.
-     */
-    protected Object _getBackRef(int nodeId) {
-	try {
-	    return _backRef.elementAt(nodeId);
-	} catch (ArrayIndexOutOfBoundsException ex) {
-	    throw new IllegalArgumentException("Graph._getBackRef: " +
-		"node ID is negative or is not less than the total " +
-		"number of nodes in this graph.");
-	}
-    }
 
     /** Returns the node ID of the specified node.
      *  @param o an Object representing a graph node.
@@ -258,6 +234,23 @@ public class Graph {
         }
         
         return v.intValue();
+    }
+
+    /** Returns the node in this graph with the specified node ID.
+     *  @param nodeId a node ID
+     *  @return an Object representing a node.
+     *  @exception IllegalArgumentException the node ID is negative
+     *   or is not less than the total number of nodes in
+     *   this graph.
+     */
+    protected Object _getNodeObject(int nodeId) {
+	try {
+	    return _nodeObject.elementAt(nodeId);
+	} catch (ArrayIndexOutOfBoundsException ex) {
+	    throw new IllegalArgumentException("Graph._getNodeObject: " +
+		"node ID is negative or is not less than the total " +
+		"number of nodes in this graph.");
+	}
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -278,18 +271,18 @@ public class Graph {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    // Tranlation from nodeId to node.
-    // This vector is indexed by node ID. The entries are the Objects
-    // representing the graph nodes with the corresponding node IDs.
-    private Vector _backRef;
-    
+    // number of edges in this graph
+    private int _edgeCount = 0;
+
     // Translation from node to node ID. The keys of this Hashtable
     // are the Objects representing graph nodes, and the values are
     // the corresponding node IDs.  This translation can also be
-    // done with _backRef.indexOf(), but Hashtable is faster.
+    // done with _nodeObject.indexOf(), but Hashtable is faster.
     private Hashtable _nodeIdTable;
 
-    // number of edges in this graph
-    private int _numEdges = 0;
+    // Tranlation from nodeId to node.
+    // This vector is indexed by node ID. The entries are the Objects
+    // representing the graph nodes with the corresponding node IDs.
+    private Vector _nodeObject;
 }
 

@@ -55,10 +55,10 @@ public class DirectedGraph extends Graph {
      *  for the specified number of nodes.  Memory management is more
      *  efficient with this constructor if the number of nodes is
      *  known.
-     *  @param numNodes the integer specifying the number of nodes
+     *  @param nodeCount the integer specifying the number of nodes
      */ 
-    public DirectedGraph(int numNodes) {
-        super(numNodes);
+    public DirectedGraph(int nodeCount) {
+        super(nodeCount);
     }
  
     ///////////////////////////////////////////////////////////////////
@@ -80,7 +80,7 @@ public class DirectedGraph extends Graph {
         super.add(o);
 
         _inDegree.addElement(new Integer(0));
-	_tranClosure = null;
+	_transitiveClosure = null;
     }
  
     /** Adds a directed edge to connect two nodes. The first argument
@@ -101,15 +101,8 @@ public class DirectedGraph extends Graph {
         int id2 = _getNodeId(o2);
         int indeg = ((Integer)(_inDegree.elementAt(id2))).intValue();
         _inDegree.setElementAt(new Integer(indeg+1), id2);
-	_tranClosure = null;
+	_transitiveClosure = null;
     }
-
-    /** Tests if this graph is directed.
-     *  @return always returns <code>true</code>.
-     */
-    public boolean isDirected() {
-        return true;
-    } 
 
     /** Tests if this graph is acyclic (is a DAG).
      *  The implementation computes the transitive closure of the
@@ -122,7 +115,7 @@ public class DirectedGraph extends Graph {
      *  @exception InvalidStateException the graph is empty.
      */
     public boolean isAcyclic() {
-        _compTranClosure();
+        _computeTransitiveClosure();
         
         return _isAcyclic;
     }
@@ -143,13 +136,13 @@ public class DirectedGraph extends Graph {
      *   not a node in this graph.
      */
     public Object[] reachableNodes(Object o) {
-	_compTranClosure();
+	_computeTransitiveClosure();
 
 	int id = _getNodeId(o);
-	Vector nodes = new Vector(_tranClosure.length);
-	for (int i = 0; i < _tranClosure.length; i++) {
-	    if (_tranClosure[id][i]) {
-		nodes.addElement(_getBackRef(i));
+	Vector nodes = new Vector(_transitiveClosure.length);
+	for (int i = 0; i < _transitiveClosure.length; i++) {
+	    if (_transitiveClosure[id][i]) {
+		nodes.addElement(_getNodeObject(i));
 	    }
 	}
 
@@ -175,7 +168,7 @@ public class DirectedGraph extends Graph {
      *  @exception InvalidStateException the graph is cyclic.
      */
     public Object[] topSort() {
-        int size = numNodes();
+        int size = getNodeCount();
         int[] indeg = new int[size];
         for (int i = 0; i < size; i++) {
             indeg[i] = ((Integer)_inDegree.elementAt(i)).intValue();
@@ -193,7 +186,7 @@ public class DirectedGraph extends Graph {
                 }
                 if(indeg[id] == 0) {
                     finished = false;
-                    result[nextResultIndex++] = _getBackRef(id);
+                    result[nextResultIndex++] = _getNodeObject(id);
                     indeg[id]--;
                     Vector arcs = (Vector)(_graph.elementAt(id));
                     for(int i = 0; i < arcs.size(); i++) {
@@ -213,35 +206,36 @@ public class DirectedGraph extends Graph {
     ////                         protected methods                 ////
 
     /*  Computes the transitive closure. Puts the result in the
-     *  boolean array _tranClosure. The implementation uses Warshall's
-     *  algorithm, which can be found in chapter 6 of "Discrete
-     *  Mathematics and Its Applications", 3rd Ed., by Kenneth H. Rosen.
-     *  The complexity of this algorithm is O(|N|^3), where N for nodes.
+     *  boolean array _transitiveClosure. The implementation uses
+     *  Warshall's algorithm, which can be found in chapter 6 of
+     *  "Discrete Mathematics and Its Applications", 3rd Ed.,
+     *  by Kenneth H. Rosen.  The complexity of this algorithm is
+     *  O(|N|^3), where N for nodes.
      */ 
     // This method also checks if the graph is acyclic and set
     // _isAcyclic.
-    protected void _compTranClosure() {
-        if (_tranClosure != null) {
+    protected void _computeTransitiveClosure() {
+        if (_transitiveClosure != null) {
             return;
         }
 
-        int size = numNodes();
+        int size = getNodeCount();
         if (size == 0) {          // graph empty
-            throw new InvalidStateException("DirectedGraph._compTranClosure:"
-						+ " graph empty.");
+            throw new InvalidStateException(
+		"DirectedGraph._computeTransitiveClosure: graph empty.");
         }
 
-	// Initialize _tranClosure to the adjacency matrix
-        _tranClosure = new boolean[size][size];
+	// Initialize _transitiveClosure to the adjacency matrix
+        _transitiveClosure = new boolean[size][size];
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
-                _tranClosure[i][j] = false;
+                _transitiveClosure[i][j] = false;
             }
 
             Vector edge = (Vector)(_graph.elementAt(i));
             for (int j = 0; j < edge.size(); j++) {
                 int k = ((Integer)edge.elementAt(j)).intValue();
-                _tranClosure[i][k] = true;
+                _transitiveClosure[i][k] = true;
             }
         }
 
@@ -249,8 +243,8 @@ public class DirectedGraph extends Graph {
         for (int k=0; k<size; k++) {
             for (int i=0; i<size; i++) {
                 for (int j=0; j<size; j++) {
-                    _tranClosure[i][j] |= _tranClosure[i][k] &
-                        _tranClosure[k][j];
+                    _transitiveClosure[i][j] |= _transitiveClosure[i][k] &
+                        _transitiveClosure[k][j];
                 }
             }
         }
@@ -258,7 +252,7 @@ public class DirectedGraph extends Graph {
         // check for cycles.
         _isAcyclic = true;
         for (int i = 0; i < size; i++) {
-            if (_tranClosure[i][i]) {
+            if (_transitiveClosure[i][i]) {
                 _isAcyclic = false;
             }
         }
@@ -277,11 +271,11 @@ public class DirectedGraph extends Graph {
     /** The adjacency matrix representation of the transitive closure.
      *  The entry (i, j) is <code>true</code> if and only if there
      *  exists a path from the node with ID i to the node with ID j.
-     *  This array is computed by <code>_compTranClosure</code>. After
-     *  each graph mutation, that method should be called before this
-     *  array is used. Otherwise, this array is not valid.
+     *  This array is computed by <code>_computeTransitiveClosure</code>.
+     *  After each graph mutation, that method should be called before
+     *  this array is used. Otherwise, this array is not valid.
      */
-    protected boolean[][] _tranClosure = null;
+    protected boolean[][] _transitiveClosure = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
