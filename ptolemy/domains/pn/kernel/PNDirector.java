@@ -30,6 +30,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.mutation.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
+import ptolemy.actor.util.*;
 import ptolemy.data.*;
 import java.util.Enumeration;
 import collections.LinkedList;
@@ -50,6 +51,7 @@ public class PNDirector extends ProcessDirector {
      */
     public PNDirector() {
         super();
+        _eventQueue = new CalendarQueue(new DoubleCQComparator());
     }
 
     /** Construct a director in the default workspace with the given name.
@@ -60,6 +62,7 @@ public class PNDirector extends ProcessDirector {
      */
     public PNDirector(String name) {
         super(name);
+        _eventQueue = new CalendarQueue(new DoubleCQComparator());
     }
 
     /** Construct a director in the given workspace with the given name.
@@ -72,11 +75,34 @@ public class PNDirector extends ProcessDirector {
      */
     public PNDirector(Workspace workspace, String name) {
         super(workspace, name);
+        _eventQueue = new CalendarQueue(new DoubleCQComparator());
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+
+    /** Increments the number of processes blocked on a delay.
+     *  It checks for deadlocks as a consequence of an additional process being
+     *  blocked. If a pause is requested, it even checks if the simulation has
+     *  paused. 
+     */
+    public synchronized void delayBlock() {
+	_delayBlockCount++;
+	//System.out.println("Readblocked with count "+_readBlockCount);
+	_checkForDeadlock();
+        if (_pauseRequested) {
+            _checkForPause();
+        }
+	return;
+    }
+
+    /** Decreases the number of queues and hence processes blocked on a read.
+     */
+    public synchronized  void delayUnblock() {
+	_delayBlockCount--;
+	return;
+    }    
     
     /** This handles deadlocks in PN. It is responsible for doing mutations, 
      *  and increasing queue capacities in PNQueueReceivers if required.
@@ -88,37 +114,37 @@ public class PNDirector extends ProcessDirector {
         //System.out.println("Done firing");
     }
 
-    /** This invokes the initialize() methods of all its deeply contained 
-     *  actors. It also creates receivers for all the ports and increases the
-     *  number of active threads for each actor being initialized.
-     *  <p>
-     *  This method should be invoked once per execution, before any
-     *  iteration. It may produce output data.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *
-     *  @exception IllegalActionException If the initialize() method of the
-     *   container or one of the deeply contained actors throws it.
+    /** Schedule to be restart execution after a specified delay 
+     *  with respect to the current time.
      */
-    public void initialize()
+    public synchronized void fireAfterDelay(Actor actor, double delay) 
             throws IllegalActionException {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            Enumeration allactors = container.deepGetEntities();
-            //Creating receivers and threads for all actors;
-            while (allactors.hasMoreElements()) {
-                Actor actor = (Actor)allactors.nextElement(); 
-                //increaseActiveCount should be called before createReceivers
-                // as that might increase the count of processes blocked 
-                //and deadlocks might get detected even if there are no 
-                //deadlocks
-                increaseActiveCount();
-                actor.createReceivers();
-                actor.initialize();
-                ProcessThread pnt = new ProcessThread(actor, this);
-                _threadlist.insertFirst(pnt);
+        double newfiringtime = getCurrentTime()+delay;
+        _eventQueue.put(actor, new Double(newfiringtime));
+        //FIXME: Blocked on a delay
+        try {
+            while (getCurrentTime() < newfiringtime) {
+                wait(); //Should I call workspace().wait(this) ?
             }
-        }
+        } catch (InterruptedException e) {}
+        //FIXME: Unblocked on a delay
+    }
+
+    /** Return the current time of the simulation. 
+     *  @return the current time of the simulation
+     */
+    public double getCurrentTime() {
+        return _currenttime;
+    }
+
+    /** Set the current time.
+     *  @exception IllegalActionException If time cannot be changed 
+     *   due to the state of the simulation. 
+     *  @param newTime The new current simulation time.
+     */
+    // FIXME: complete this.
+    public void setCurrentTime(double newTime) throws IllegalActionException {
+        _currenttime = newTime;
     }
 
 
@@ -169,7 +195,7 @@ public class PNDirector extends ProcessDirector {
      *  was set to true in the setPause() method
      */
     //FIXME: Should the list of receivers be passed as an argument?
-    public void setResume() {
+    public void setResumeRequested() {
 	Enumeration receivers = _pausedRecs.elements();
 	while (receivers.hasMoreElements()) {
 	    PNQueueReceiver receiver = (PNQueueReceiver)receivers.nextElement();
@@ -195,23 +221,6 @@ public class PNDirector extends ProcessDirector {
 	return _notdone;
     }
 
-    /** return true indicating that the director is ready to be fired. This 
-     *  starts a thread corresponding to all the actors that are initialized
-     *  using the initialize() method.
-     *  @return true always.
-     *  @exception IllegalActionException This is never thrown in PN
-     */
-    public boolean prefire() 
-	    throws IllegalActionException  {
-        Enumeration threads = _threadlist.elements();
-        //Starting threads;
-        while (threads.hasMoreElements()) {
-            ProcessThread pnt = (ProcessThread)threads.nextElement();
-            pnt.start();
-        }
-        _threadlist.clear();
-        return true;
-    }
 
     /** Return a new receiver compatible with this director.
      *  In the PN domain, we use PNQueueReceivers.
@@ -255,6 +264,26 @@ public class PNDirector extends ProcessDirector {
 	}
     }
 
+    /** Return true indicating that the director is ready to be fired. This 
+     *  starts a thread corresponding to all the actors that were created
+     *  in the initialize() method.
+     *  @return true always.
+     *  @exception IllegalActionException This is never thrown in PN
+     */
+    public boolean prefire() 
+            throws IllegalActionException  {
+        Enumeration threads = _threadList.elements();
+        // Starting threads.
+        while (threads.hasMoreElements()) {
+            ProcessThread pnt = (ProcessThread)threads.nextElement();
+            pnt.start();        
+        }
+        _threadList.clear(); // Should it be cleared or given to manager?
+        return true;
+    }
+
+
+
     /** Increments the number of queues and hence processes blocked on a read.
      *  It checks for deadlocks as a consequence of an additional process being
      *  blocked. If a pause is requested, it even checks if the simulation has
@@ -276,6 +305,11 @@ public class PNDirector extends ProcessDirector {
     public synchronized  void readUnblock() {
 	_readBlockCount--;
 	return;
+    }
+
+
+    public void terminate() {
+        //FIXME: Create this method. Should wait till the end of ActorListener
     }
 
     /** This terminates all the actors in the corresponding CompositeActor
@@ -348,7 +382,7 @@ public class PNDirector extends ProcessDirector {
     // This is not synchronized and thus should be called from a synchronized
     // method
     protected synchronized void _checkForDeadlock() {
-	if (_readBlockCount + _writeBlockCount >= _actorsActive) {
+	if (_readBlockCount + _writeBlockCount + _delayBlockCount >= _actorsActive) {
 	    _deadlock = true;
             //System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" **************************");
             
@@ -360,7 +394,7 @@ public class PNDirector extends ProcessDirector {
     //Check if all threads are either blocked or paused
     protected synchronized void _checkForPause() {
 	//System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" *PAUSED*"+"pausedcoint = "+_actorsPaused);
-	if (_readBlockCount + _writeBlockCount + _actorsPaused >= _actorsActive) {
+	if (_readBlockCount + _writeBlockCount + _actorsPaused + _delayBlockCount >= _actorsActive) {
 	    _paused = true;
             notifyAll();
 	}
@@ -457,10 +491,22 @@ public class PNDirector extends ProcessDirector {
 	    return false;
 	}
         if (writebl==0 && deadl) {
-            //_terminateAll();
-            System.out.println("real deadlock. Everyone would be erased");
-            _notdone = false;
-            return true;
+            //Check if there are any events in the future.
+            if (_eventQueue.isEmpty()) {
+                System.out.println("real deadlock. Everyone would be erased");
+                _notdone = false;
+                return true;
+            } else {
+                //Advance time to next possible time.
+                try {
+                    _currenttime = ((Double)_eventQueue.take()).doubleValue();
+                } catch (IllegalAccessException e) {
+                    throw new InternalErrorException(e.toString());
+                }
+                synchronized(this) {
+                    notifyAll();
+                }
+            }
         } else {
             //its an artificial deadlock;
             System.out.println("Artificial deadlock");
@@ -474,6 +520,7 @@ public class PNDirector extends ProcessDirector {
     }
         
     // Terminates all stars and hence the simulation 
+    //FIXME: This does not handle compositeActors within toplevel CompositeActor
     private void _terminateAll() throws IllegalActionException {
 	    // Obtaining all stars in the current galaxy 
 	    Enumeration allStars =
@@ -490,7 +537,7 @@ public class PNDirector extends ProcessDirector {
 			Receiver[][] receivers = port.getReceivers();
 			for (int i=0; i<receivers.length; i++) {
 			    for (int j=0; j<receivers[i].length; j++) {
-				((PNQueueReceiver)receivers[i][j]).setTerminate();
+				((PNQueueReceiver)receivers[i][j]).setFinish();
 			    }
 			}
 		    }
@@ -503,12 +550,13 @@ public class PNDirector extends ProcessDirector {
     
     //private long _pausedcount = 0;
 
-    private LinkedList _threadlist = new LinkedList();
+    //private LinkedList _threadlist = new LinkedList();
     //private boolean _pause = false;
     private boolean _paused = false;
     private boolean _mutate = true;
     private boolean _deadlock = false;
     private boolean _notdone = true;
+    private int _delayBlockCount = 0;
     private int _readBlockCount = 0;    
     private boolean _terminate = false;
     private boolean _urgentMutations = false;
@@ -516,6 +564,9 @@ public class PNDirector extends ProcessDirector {
     private LinkedList _pausedRecs = new LinkedList();
     private LinkedList _writeblockedQs = new LinkedList();
     private PNActorListener _pnActorListener;
+    //FIXME: This constructor doesn't work!!
+    private CalendarQueue _eventQueue; 
+    private double _currenttime = 0;
 }
 
 
