@@ -232,26 +232,12 @@ public class GenericJNIActor extends TypedAtomicActor {
         }
     }
 
-    /** Get the arguments belonging to this entity.
-     *  The order is the order in which they became contained by this entity.
-     *  This method is read-synchronized on the workspace.
-     *  @return An unmodifiable list of Port objects.
-     */
-    public List argumentsList() {
-        try {
-            _workspace.getReadAccess();
-            return _argumentsList.elementList();
-        } finally {
-            _workspace.doneReading();
-        }
-    }
-
     /** For each Argument, a port of the same name is created,
      * belonging to this argument.
      *  @return void
      */
     public void createPorts() {
-        Iterator arguments = argumentsList().iterator();
+        Iterator arguments = this.argumentsList().iterator();
         TypedIOPort port;
         boolean exist = false;
         while (arguments.hasNext()) {
@@ -323,6 +309,20 @@ public class GenericJNIActor extends TypedAtomicActor {
         }
     }
 
+    /** Get the arguments belonging to this entity.
+     *  The order is the order in which they became contained by this entity.
+     *  This method is read-synchronized on the workspace.
+     *  @return An unmodifiable list of Port objects.
+     */
+    public List argumentsList() {
+        try {
+            _workspace.getReadAccess();
+            return _argumentsList.elementList();
+        } finally {
+            _workspace.doneReading();
+        }
+    }
+
     /** Return the argument contained by this entity that is return.
      *  If there is no such argument, return null.
      *  This method is read-synchronized on the workspace.
@@ -331,7 +331,7 @@ public class GenericJNIActor extends TypedAtomicActor {
     public Argument getArgumentReturn() {
         try {
             _workspace.getReadAccess();
-            Iterator arguments = argumentsList().iterator();
+            Iterator arguments = this.argumentsList().iterator();
             Argument returnValue = null;
             while (arguments.hasNext()) {
                 Argument argument = (Argument) arguments.next();
@@ -462,7 +462,6 @@ public class GenericJNIActor extends TypedAtomicActor {
 	Iterator ports = this.portList().iterator();
         Vector args = new Vector();
         while (ports.hasNext()) {
-	    Object object = ports.next();
 	    TypedIOPort port = (TypedIOPort) ports.next();
 	    if (port.isInput() && port.hasToken(0) &&
 		!(port.isOutput()&&!port.isInput())) {
@@ -563,9 +562,9 @@ public class GenericJNIActor extends TypedAtomicActor {
 					     );
         }
 
-        Iterator arguments = argumentsList().iterator();
-        while (arguments.hasNext()) {
-            TypedIOPort port = (TypedIOPort) arguments.next();
+        ports = portList().iterator();
+        while (ports.hasNext()) {
+            TypedIOPort port = (TypedIOPort) ports.next();
             //if the argument is return
             if (port.getName().equals(this.getArgumentReturn().getName())) {
                 String typ = "";
