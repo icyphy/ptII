@@ -3,6 +3,7 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="sinks" class="ptolemy.moml.EntityLibrary">
   <configure>
+    <?moml
       <group>
 <doc>Domain-polymorphic sinks</doc>
 
@@ -46,5 +47,6 @@
 </entity>
 
       </group>
+    ?>
   </configure>
 </entity>
