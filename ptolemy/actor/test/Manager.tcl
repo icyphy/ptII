@@ -259,7 +259,7 @@ test Manager-10.0 {Test execution listener} {
     } stdoutResults
 
     # Strip out the time in ms, which will vary between runs  
-    regsub {[0-9]* ms} $stdoutResults "xxx ms" stdoutResultsWithoutTime
+    regsub {[0-9]* ms.*$} $stdoutResults "xxx ms" stdoutResultsWithoutTime
 
     #puts "------- result: [enumToTokenValues [$rec getRecord 0]]"
     list $stdoutResultsWithoutTime [[$manager getState] getDescription] 
@@ -270,7 +270,7 @@ executing number 1
 wrapping up
 idle
 Completed execution with 2 iterations
-ptolemy.actor.Manager run(): elapsed time: xxx ms
+Manager.run(): Elapsed Time: xxx ms
 } idle}
 
 ######################################################################
@@ -297,7 +297,7 @@ test Manager-10.1 {Test execution listener with one arg} {
     } stdoutResults
 
     # Strip out the time in ms, which will vary between runs  
-    regsub {[0-9]* ms} $stdoutResults "xxx ms" stdoutResultsWithoutTime
+    regsub {[0-9]* ms.*$} $stdoutResults "xxx ms" stdoutResultsWithoutTime
 
     # Strip out a bunch of the tcl.lang stack frames
     regsub -all {	at tcl.lang.*$\n} $stdoutResultsWithoutTime "." \
@@ -311,12 +311,12 @@ executing number 1
 wrapping up
 idle
 Completed execution with 2 iterations
-ptolemy.actor.Manager run(): elapsed time: xxx ms
+Manager.run(): Elapsed Time: xxx ms
 Execution error.
 This exception is testing the execution listener
 ptolemy.actor.NoRoomException: This exception is testing the execution listener
 	at java.lang.reflect.Constructor.newInstance(Native Method)
-.........................................................}}
+....................................}}
 
 ######################################################################
 ####
