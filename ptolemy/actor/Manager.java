@@ -372,10 +372,12 @@ public final class Manager extends NamedObj implements Runnable {
             if (_container.prefire()) {
                 _debug(getName() + ": fire the system.");
                 _container.fire();
+		_debug(getName() + ": postfire the system.");
                 result = _container.postfire();
             }
             _debug(getName() + ": finish one iteration, returning " + result);
-        } finally {
+        } 
+	finally {
             workspace().setReadOnly(false);
             workspace().doneReading();
         }
@@ -390,9 +392,11 @@ public final class Manager extends NamedObj implements Runnable {
      *  @param ex The exception.
      */
     public void notifyListenersOfException(Exception ex) {
-        _debug(ex.getMessage());
+	String errorMessage = new String("Exception Caught:" + ex.getClass());
+	errorMessage += "(" + ex.getMessage() + ")";
+        _debug(errorMessage);
         if (_executionListeners == null) {
-            System.err.println(ex.getMessage());
+            System.err.println(errorMessage);
         } else {
             Enumeration listeners = _executionListeners.elements();
             while(listeners.hasMoreElements()) {
