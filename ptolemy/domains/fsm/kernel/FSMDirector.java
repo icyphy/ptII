@@ -54,7 +54,7 @@ The same holds for output ports (in this case transferOutputs() will
 silently fail if the names are not the same).
 
 @author Xiaojun Liu
-@version: $Id$
+@version $Id$
 */
 public class FSMDirector extends Director {
 
@@ -83,8 +83,8 @@ public class FSMDirector extends Director {
      *
      *  @param container Container of the director.
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException If the director is not compatible
+     *  with the specified container.  May be thrown in a derived class.
      */
     public FSMDirector(CompositeActor container, String name)
             throws IllegalActionException {
@@ -228,7 +228,8 @@ public class FSMDirector extends Director {
         CompositeActor container = (CompositeActor)getContainer();
         if (container != null) {
 	    //Enumeration allActors = container.deepGetEntities();
-            Enumeration allActors = Collections.enumeration( container.deepEntityList());
+            Enumeration allActors = Collections.enumeration(
+                    container.deepEntityList());
             while (allActors.hasMoreElements()) {
                 Actor actor = (Actor)allActors.nextElement();
                 if (actor == _controller) {
@@ -265,7 +266,7 @@ public class FSMDirector extends Director {
      *
      *  @return True if the Director wishes to be scheduled for another
      *  iteration
-     *  @exception IllegalActionException *Deprecate* If the postfire()
+     *  @exception IllegalActionException If the postfire()
      *  method of the container or one of the deeply contained actors
      *  throws it.
      */
@@ -294,7 +295,7 @@ public class FSMDirector extends Director {
      *
      *  @return True if the Director wishes to be scheduled for another
      *  iteration
-     *  @exception IllegalActionException *Deprecate* If the postfire()
+     *  @exception IllegalActionException If the postfire()
      *  method of the container or one of the deeply contained actors
      *  throws it.
      */
@@ -302,16 +303,13 @@ public class FSMDirector extends Director {
         // elaborate
         Actor refine = _controller.currentRefinement();
 
-        // REMOVE
-        //System.out.println("FSMDirector: get controller's current refinement.");
-
         boolean result = true;
         if (refine != null) {
             result = refine.prefire();
 
             /* REMOVE! */
-            //System.out.println("Result of prefire " + ((ComponentEntity)refine).getFullName()
-            //+ " is " + result);
+            //System.out.println("Result of prefire " +
+            //     ((ComponentEntity)refine).getFullName() + " is " + result);
         }
 
         // result = result & _controller.prefire();
@@ -365,7 +363,8 @@ public class FSMDirector extends Director {
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque input port.");
+                    "transferInputs: port argument is not an opaque " +
+                    "input port.");
         }
         // do not handle multiple tokens, multiple channels now
         boolean trans = false;
@@ -377,7 +376,8 @@ public class FSMDirector extends Director {
                 Token t = port.get(0);
                 p = (IOPort)_controller.getPort(port.getName());
 
-                //System.out.println("Try get a port from " + ((ComponentEntity)_controller).getFullName());
+                //System.out.println("Try to get a port from " +
+                //         ((ComponentEntity)_controller).getFullName());
 
                 if (p != null) {
                     rec = (p.getReceivers())[0][0];
