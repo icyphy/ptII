@@ -259,7 +259,7 @@ public class PortConfigurerDialog
             portInfo[COL_INPUT] = Boolean.FALSE;
             portInfo[COL_OUTPUT] = Boolean.FALSE;
             portInfo[COL_MULTIPORT] = Boolean.FALSE;
-            portInfo[COL_TYPE] = "general";
+            portInfo[COL_TYPE] = "unknown";
             portInfo[COL_DIRECTION] = "";
             portInfo[COL_SHOW_NAME] = Boolean.FALSE;
             portInfo[COL_UNITS] = "";
