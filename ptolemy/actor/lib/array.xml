@@ -17,7 +17,9 @@
 <entity name="ArrayMinimum" class="ptolemy.actor.lib.ArrayMinimum"/>
 <entity name="ArrayPeakSearch" class="ptolemy.actor.lib.ArrayPeakSearch"/>
 <entity name="ArraySort" class="ptolemy.actor.lib.ArraySort"/>
+<entity name="ArrayToElements" class="ptolemy.domains.sdf.lib.ArrayToElements"/>
 <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence"/>
+<entity name="ElementsToArray" class="ptolemy.domains.sdf.lib.ElementsToArray"/>
 <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray"/>
 
       </group>
