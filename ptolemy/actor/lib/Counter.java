@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -40,15 +40,15 @@ import ptolemy.data.type.BaseType;
 //// Counter
 /**
 This actor implements an up-down counter of received tokens.  Whenever
-a token is received from the <i>increment</i> input, the internal 
-counter is incremented.  Whenever a token is received from the 
+a token is received from the <i>increment</i> input, the internal
+counter is incremented.  Whenever a token is received from the
 <i>decrement</i> port, the internal counter is decremented.  Whenever
 a token is received from either input port, a token is created on the
-output port.  At most one token will be consumed from each input
-during each firing.  If a token is present on both input ports during 
-any firing, then the increment and the decrement will cancel out, and
-only one output token will be produced.
-<p>
+output port with the integer value of the current count.  At most one
+token will be consumed from each input during each firing.  If a token
+is present on both input ports during any firing, then the increment
+and the decrement will cancel out, and only one output token will be
+produced.  
 
 @author Steve Neuendorffer
 @version $Id$
@@ -68,7 +68,9 @@ public class Counter extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         increment = new TypedIOPort(this, "increment", true, false);
+        increment.setTypeEquals(BaseType.GENERAL);
         decrement = new TypedIOPort(this, "decrement", true, false);
+        decrement.setTypeEquals(BaseType.GENERAL);
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.INT);
     }
@@ -77,12 +79,14 @@ public class Counter extends TypedAtomicActor {
     ////                     ports and parameters                  ////
 
     /** The increment port. If this input port
-     *  receives a token, then the counter is incremented.
+     *  receives a token, then the counter is incremented.  The port
+     *  has type general.
      */
     public TypedIOPort increment;
 
     /** The decrement port. If this input port
-     *  receives a token, then the counter is decremented.
+     *  receives a token, then the counter is decremented.  The port
+     *  has type general.
      */
     public TypedIOPort decrement;
 
@@ -93,25 +97,21 @@ public class Counter extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume at most one token from each input
-     *  and update the counter appropriately. Send the current
-     *  value of the counter to the output.  
-     *  If there are no input tokens available,
-     *  no output will be produced.  For each token consumed from the
-     *  <i>increment</i> port the output value will be one more 
-     *  than the previous output value.  For each token consumed from the
-     *  <i>decrement</i> port the output value will be one less
-     *  than the previous output value.  If equal numbers of tokens are
-     *  consumed from 
-     *  both input ports, then the output value will be the same as
-     *  the previous output value.  If the fire method
-     *  is invoked multiple times in one iteration, then only the
-     *  input read on the last invocation in the iteration will affect
-     *  future outputs of the counter.  
-     *  Inputs that are read earlier in the iteration
-     *  are forgotten.
-     *  @exception IllegalActionException If addition or division by an
-     *   integer are not supported by the supplied tokens.
+    /** Consume at most one token from each input and update the
+     *  counter appropriately. Send the current value of the counter
+     *  to the output.  If there are no input tokens available, no
+     *  output will be produced.  If a tokem is consumed from only the
+     *  <i>increment</i> port the output value will be one more than
+     *  the previous output value.  If a token consumed from only the
+     *  <i>decrement</i> port the output value will be one less than
+     *  the previous output value.  If a token is consumed from both
+     *  input ports, then the output value will be the same as the
+     *  previous output value.  If the fire method is invoked multiple
+     *  times in one iteration, then only the input read on the last
+     *  invocation in the iteration will affect future outputs of the
+     *  counter.
+     * 
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         _latestCount = _count;
@@ -139,7 +139,7 @@ public class Counter extends TypedAtomicActor {
         }
     }
 
-    /** Reset the count of inputs.
+    /** Reset the count of inputs to zero.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -147,8 +147,7 @@ public class Counter extends TypedAtomicActor {
         _count = 0;
     }
 
-    /** Record the most recent input as part of the running average.
-     *  Do nothing if there is no input.
+    /** Record the most recent output count as the actual count.
      *  @exception IllegalActionException If the base class throws it.
      */
     public boolean postfire() throws IllegalActionException {
