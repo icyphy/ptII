@@ -69,12 +69,12 @@ import ptolemy.kernel.util.Workspace;
    of three variables and then performs a complete execution of the
    contained model. The three variables are <i>senderLocation</i>
    (an array of doubles), <i>receiverLocation</i> (also an array of
-   doubles), and <i>property</i> (a record token containing the
+   doubles), and <i>properties</i> (a record token containing the
    transmit properties to be modified). After execution of the contained
-   model, the (possibly modified) value of the record <i>property</i>
+   model, the (possibly modified) value of the record <i>properties</i>
    is taken to be the modified properties. Thus, a contained model would
-   normally read the variable <i>property</i>, change it, and use
-   a SetVariable actor to set the new value of <i>property</i>.
+   normally read the variable <i>properties</i>, change it, and use
+   a SetVariable actor to set the new value of <i>properties</i>.
    <p>
    This actor expects its output port to be connected directly
    to the inside of a WirelessIOPort belonging to this actor's container.
@@ -118,9 +118,9 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         receiverLocation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
         receiverLocation.setExpression("{0.0, 0.0}");
 
-        property = new Variable(this, "property");
-        // FIXME: property type should be at least an empty record.
-        property.setExpression("{power = 0.0, range = 0.0}");
+        properties = new Variable(this, "properties");
+        // FIXME: properties type should be at least an empty record.
+        properties.setExpression("{power = 0.0, range = 0.0}");
 
         // Create the icon.
         _attachText("_iconDescription", "<svg>\n" +
@@ -159,7 +159,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
     /** The properties to be transformed. This is a
      *  record token with value {power = 0.0, range = 0.0}.
      */
-    public Variable property;
+    public Variable properties;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -270,8 +270,8 @@ public class TransmitPropertyTransformer extends LifeCycleManager
     }
 
     /** Set the <i>senderLocation</i>, <i>receiverLocation</i>, and
-     *  <i>property</i> variables and execute the contained model.
-     *  Return the final value of the <i>property</i> variable.
+     *  <i>properties</i> variables and execute the contained model.
+     *  Return the final value of the <i>properties</i> variable.
      *  @param properties The initial value of the properties.
      *  @param sender The sending port.
      *  @param destination The receiving port.
@@ -295,7 +295,7 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         }
         senderLocation.setToken(new ArrayToken(t1));
         receiverLocation.setToken(new ArrayToken(t2));
-        property.setToken(properties);
+        (this.properties).setToken(properties);
 
         if (_debugging) {
             _debug("----transformProperties is called; "
@@ -305,9 +305,9 @@ public class TransmitPropertyTransformer extends LifeCycleManager
         // FIXME: Should use return value to determine what postfire() returns?
         _executeInsideModel();
 
-        RecordToken result = (RecordToken)property.getToken();
+        RecordToken result = (RecordToken)(this.properties).getToken();
         if (_debugging) {
-            _debug("---- the modified property is. "
+            _debug("---- the modified properties value is. "
                     + result.toString());
         }
         return result;

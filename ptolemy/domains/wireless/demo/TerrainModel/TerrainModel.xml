@@ -398,7 +398,7 @@ Sender.</text></svg></configure>
             </property>
             <property name="receiverLocation" class="ptolemy.data.expr.Parameter" value="{35.0, 244.9999999999999}">
             </property>
-            <property name="property" class="ptolemy.data.expr.Parameter" value="{power = 0.0245527553556, range = Infinity}">
+            <property name="properties" class="ptolemy.data.expr.Parameter" value="{power = 0.0245527553556, range = Infinity}">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 145.0">
             </property>
@@ -442,7 +442,7 @@ Sender.</text></svg></configure>
                 </property>
             </port>
             <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
-                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="property">
+                <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="properties">
                 </property>
                 <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
                     <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
@@ -465,7 +465,7 @@ Sender.</text></svg></configure>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="225.0, 95.0">
                     </property>
                 </port>
-                <port name="property" class="ptolemy.actor.TypedIOPort">
+                <port name="properties" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="_type" class="ptolemy.actor.TypeAttribute" value="unknown">
                     </property>
@@ -506,7 +506,7 @@ Sender.</text></svg></configure>
                     </port>
                 </entity>
                 <entity name="Const" class="ptolemy.actor.lib.Const">
-                    <property name="value" class="ptolemy.data.expr.Parameter" value="property">
+                    <property name="value" class="ptolemy.data.expr.Parameter" value="properties">
                     </property>
                     <doc>Create a constant sequence</doc>
                     <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
@@ -577,7 +577,7 @@ Sender.</text></svg></configure>
                 <relation name="relation5" class="ptolemy.actor.TypedIORelation">
                 </relation>
                 <link port="gain" relation="relation6"/>
-                <link port="property" relation="relation5"/>
+                <link port="properties" relation="relation5"/>
                 <link port="Expression.output" relation="relation2"/>
                 <link port="Expression.gain" relation="relation6"/>
                 <link port="Expression.power" relation="relation3"/>
