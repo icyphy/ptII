@@ -37,6 +37,7 @@ import ptolemy.actor.*;
 import ptolemy.data.*;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.data.expr.Parameter;
 import ptolemy.actor.lib.Transformer;
 
 //////////////////////////////////////////////////////////////////////////
@@ -68,8 +69,20 @@ public class ZeroOrderHold extends Transformer
     public ZeroOrderHold(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        output.setTypeSameAs(input);
+        defaultValue = new Parameter(this, "defaultValue", 
+                new IntToken(0));
+        output.setTypeAtLeast(input);
+	output.setTypeAtLeast(defaultValue);
     }
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                       ////
+
+    /**Default output before any input has received.
+     * The default is an integer with value 0.
+     * The type of the output is set to at least this type.
+     */
+    Parameter defaultValue;
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
@@ -83,7 +96,8 @@ public class ZeroOrderHold extends Transformer
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
         ZeroOrderHold newObject = (ZeroOrderHold)super.clone(workspace);
-        newObject.output.setTypeSameAs(newObject.input);
+        output.setTypeAtLeast(input);
+	output.setTypeAtLeast(defaultValue);
         return newObject;
     }
 
@@ -116,16 +130,7 @@ public class ZeroOrderHold extends Transformer
      */
     public void initialize() throws IllegalActionException{
         super.initialize();
-        Type outtype = output.getType();
-        if (outtype.equals(BaseType.BOOLEAN)) {
-            _lastToken = new BooleanToken(false);
-        } else if(outtype.equals(BaseType.DOUBLE)) {
-            _lastToken = new DoubleToken(0.0);
-        } else if(outtype.equals(BaseType.INT)) {
-            _lastToken = new IntToken(0);
-        } else {
-            _lastToken = new StringToken("");
-        }
+        _lastToken = defaultValue.getToken();
     }
 
     ////////////////////////////////////////////////////////////////////////
