@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="vergilAppletDemo" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.0.1">
     </property>
     <property name="SDF1" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
@@ -109,8 +109,6 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
         </port>
     </entity>
     <entity name="Carrier Source" class="ptolemy.actor.lib.Sinewave">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
-        </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -149,8 +147,6 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
         </property>
     </entity>
     <entity name="Signal Source" class="ptolemy.actor.lib.Sinewave">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
-        </property>
         <property name="samplingFrequency" class="ptolemy.data.expr.Parameter" value="8000.0">
             <doc>The sampling frequency, in the same units as the frequency.</doc>
         </property>
@@ -223,7 +219,7 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/256.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="410.0, 420.0">
+        <property name="_location" class="ptolemy.moml.Location" value="490.0, 420.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -237,14 +233,12 @@ Click on "Quick Tour" and then "Spectrum of a modulated sine wave".</text>
 <xLabel>frequency</xLabel>
 <yLabel>dB</yLabel>
 <xRange min="-4000.0" max="3968.75"/>
-<yRange min="-21.208318390214906" max="36.538209132222235"/>
+<yRange min="-38.971016685258746" max="12.090810674639247"/>
 <noGrid/>
 </plot>?>
         </configure>
     </entity>
     <entity name="Spectrum" class="ptolemy.domains.sdf.lib.Spectrum">
-        <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel">
-        </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
@@ -271,7 +265,7 @@ centered at zero frequency.</text>
         <property name="order" class="ptolemy.data.expr.Parameter" value="8">
         </property>
         <doc>This composite actor calculates the spectrum of the input.</doc>
-        <property name="_location" class="ptolemy.moml.Location" value="330.0, 420.0">
+        <property name="_location" class="ptolemy.moml.Location" value="365.0, 420.0">
         </property>
     </entity>
     <entity name="Time Domain Display" class="ptolemy.actor.lib.gui.SequencePlotter">
@@ -285,7 +279,7 @@ centered at zero frequency.</text>
         </property>
         <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="315.0, 490.0">
+        <property name="_location" class="ptolemy.moml.Location" value="360.0, 485.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -299,7 +293,7 @@ centered at zero frequency.</text>
 <xLabel>time index</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="255.0"/>
-<yRange min="-1.154037151526568" max="1.1568297032397656"/>
+<yRange min="-1.1349038320975628" max="1.2042564811536631"/>
 <noGrid/>
 </plot>?>
         </configure>
@@ -313,12 +307,13 @@ centered at zero frequency.</text>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="285.0, 420.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="305.0, 420.0">
         </vertex>
     </relation>
     <link port="Noise Source.output" relation="relation2"/>
     <link port="Carrier Source.output" relation="relation3"/>
     <link port="Signal Source.output" relation="relation4"/>
+    <link port="Expression.output" relation="relation7"/>
     <link port="Expression.signal" relation="relation4"/>
     <link port="Expression.carrier" relation="relation3"/>
     <link port="Expression.noise" relation="relation2"/>
