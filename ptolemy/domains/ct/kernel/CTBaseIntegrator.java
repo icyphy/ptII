@@ -170,6 +170,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         CTBaseIntegrator newobj = (CTBaseIntegrator)super.clone(ws);
         newobj.input = (TypedIOPort)newobj.getPort("input");
         newobj.output = (TypedIOPort)newobj.getPort("output");
+        newobj.initialState = (Parameter)newobj.getAttribute("initialState");
         return newobj;
     }
 
