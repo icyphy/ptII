@@ -113,7 +113,10 @@ public abstract class NamedObj {
      * @return The full object name
      * @exception full-classname description 
      */
-    abstract public String getFullName();
+    public String getFullName() {
+        if(prnt == null) { return nm; }
+        else { return new String(prnt.getFullName() + "." + nm); }
+    }
 
     /** Set the object name
      * @see full-classname/method-name
@@ -156,13 +159,23 @@ public abstract class NamedObj {
     abstract public void initialize();
 
     /** Print a description of the object
-     * (abstract - must be defined in derived class)
      * @see full-classname/method-name
      * @param verbose If true, verbose description, else less verbose
      * @return A String describing the object
      * @exception full-classname description
      */	
-    abstract public String print(boolean verbose);
+    public String print(boolean verbose) {
+        return new String(getFullName() + ": " + getClassName() + "\n");
+    }
+
+    /** Print the object's class name
+     * @see full-classname/method-name
+     * @return A String giving the class name of the object
+     * @exception full-classname description
+     */	
+    public String getClassName() {
+        return getClass().getName();
+    }
 
 
     //////////////////////////////////////////////////////////////////////////
@@ -176,7 +189,7 @@ public abstract class NamedObj {
      */	
      protected void setDescriptor(String myDescriptor) {
          dscrptr = myDescriptor;
-    }
+     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
@@ -190,7 +203,7 @@ public abstract class NamedObj {
     ////                         private variables                        ////
 
     /* Private variables should not have doc comments, they should
-       have regular comments.
+     * have regular comments.
      */
      private String nm;            // name
      private Block prnt;           // parent
