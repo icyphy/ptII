@@ -107,10 +107,11 @@ test StringUtilities-4.1 {split short string} {
 } {short string}
 
 test StringUtilities-4.2 {split long string} {
-    java::call ptolemy.util.StringUtilities split \
-	"This string is long, and should be abbreviated, it is more than 80 characters long, is it not?"
-} {This string is long, and should be abbreviated, it is more than 80 characters l
-ng, is it not?}
+    set result [java::call ptolemy.util.StringUtilities split \
+	"This string is long, and should be abbreviated, it is more than 80 characters long, is it not?"]
+    list $result	
+} {{This string is long, and should be abbreviated, it is more than 80 characters l
+ong, is it not?}}
 
 test StringUtilities-4.3 {split with null} {
     java::call ptolemy.util.StringUtilities split [java::null]
