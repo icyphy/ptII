@@ -187,7 +187,7 @@ public class TankRemote extends Spotlet {
                         
             for (int i = 0; i < 3; i++) {
                                 // try to register with a tank
-                //out.write("register\n".toByteArray());
+                out.write("register\n".toByteArray());
 
                 displayStatus((byte)in.read());
                 newline = (byte) in.read();
@@ -271,8 +271,7 @@ public class TankRemote extends Spotlet {
                         
             if (cmd == null) return ;
                         
-            //out.write((cmd + "\n").toByteArray());
-            //out.write((cmd + "\n").toCharArray());
+            out.write((cmd + "\n").toByteArray());
             reply = (byte) in.read();
             newline = (byte) in.read();
             displayStatus(reply);
