@@ -18,7 +18,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="85.0, 40.0">
         </property>
     </property>
-    <entity name="Const" class="ptolemy.copernicus.jhdl.demo.FIR2.Const">
+    <entity name="Const" class="ptolemy.actor.lib.Const">
         <property name="value" class="ptolemy.data.expr.Parameter" value="fix(1,16,2)">
         </property>
         <doc>Create a constant sequence</doc>
@@ -41,7 +41,7 @@
     <entity name="FIR" class="ptolemy.copernicus.jhdl.demo.FIR2.FIR">
         <property name="_location" class="ptolemy.moml.Location" value="190.0, 120.0">
         </property>
-        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -50,7 +50,7 @@
             <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>
         </port>
-        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+        <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
             </property>

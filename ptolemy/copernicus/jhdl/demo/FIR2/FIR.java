@@ -46,7 +46,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.domains.sdf.kernel.SDFIOPort;
+import ptolemy.actor.TypedIOPort;
 
 //////////////////////////////////////////////////////////////////////////
 //// FIR
@@ -121,8 +121,8 @@ public class FIR extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 	
-        input = new SDFIOPort(this, "input", true, false);
-        output = new SDFIOPort(this, "output", false, true);
+        input = new TypedIOPort(this, "input", true, false);
+        output = new TypedIOPort(this, "output", false, true);
 	// Set type constraints.
 //  	ArrayType paramType = (ArrayType)taps.getType();
 //  	InequalityTerm elementTerm = paramType.getElementTypeTerm();
@@ -144,12 +144,12 @@ public class FIR extends TypedAtomicActor {
 //      ///////////////////////////////////////////////////////////////////
 //      ////                         public variables                  ////
 
-    public SDFIOPort input;
+    public TypedIOPort input;
 
     /** The output port. By default, the type of this output is constrained
      *  to be at least that of the input.
      */
-    public SDFIOPort output;
+    public TypedIOPort output;
 //      /** The decimation ratio of the filter. This must contain an
 //       *  IntToken, and by default it has value one.
 //       */
