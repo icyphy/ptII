@@ -2792,7 +2792,8 @@ public class PlotBox extends Panel {
                     // The "null" sends the output to the clipboard.
                     export(null);
                     Message message = new Message(
-                            "Encapsulated PostScript (EPS) exported to clipboard.",
+                            "Encapsulated PostScript (EPS) " +
+                            "exported to clipboard.",
                             null, null, 1, 60, TextArea.SCROLLBARS_NONE);
                     message.setTitle("Ptolemy Plot Message");
                 }
@@ -2814,7 +2815,8 @@ public class PlotBox extends Panel {
                 if (!_control && _shift) {
                     export(System.out);
                     Message message = new Message(
-                            "Encapsulated PostScript (EPS) exported to standard out.",
+                            "Encapsulated PostScript (EPS) " +
+                            "exported to standard out.",
                             null, null, 1, 60, TextArea.SCROLLBARS_NONE);
                     message.setTitle("Ptolemy Plot Message");
                 }
