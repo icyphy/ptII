@@ -185,7 +185,7 @@ JDOCSOURCEFLAGS = -source 1.4
 JDOCCHECKFLAGS = $(JDOCBREAKITERATOR) $(JDOCMEMORY) $(JDOCSOURCEFLAGS)
 
 # Flags to pass to javadoc.
-JDOCFLAGS = 	-author -version $(DOCCHECKFLAGS) $(JDOCTAG)
+JDOCFLAGS = 	-author -version $(JDOCCHECKFLAGS) $(JDOCTAG)
 
 # The jar command, used to produce jar files, which are similar to tar files
 JAR =		$(PTJAVA_DIR)/bin/jar
