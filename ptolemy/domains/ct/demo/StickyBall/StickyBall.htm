@@ -53,45 +53,33 @@ applet is displayed on a XGA screen-->
 </NOEMBED></EMBED>
 </OBJECT>
 </center>
-<hr>
-
-This applet models two (sticky) masses on a flat frictionless table. 
-As shown in Figure 1.
+This applet models two (sticky) masses on a flat frictionless table, as
+shown in the figure below.
 Each of the masses is attached to a spring with distinct spring constant.
-So if both balls are free, they will swing back and forth. 
-However, if the two balls hit each other, they stick together.
-The stickiness is assumed to be exponentially decaying after they
-hit, and the decay speed is controlled by the parameter "Stickiness Decay"
-So after a while, they will separate.
+If the balls are not stuck together, they will independently
+swing back and forth. 
+If they collide, they stick together, and swing together depending on
+their momentum when they collided.
+The stickiness is assumed to exponentially decay with rate
+controlled by the parameter "Stickiness Decay."
+With reasonable decay values, after a while, the masses will separate.
+The plot above shows the positions of the two masses as a function of time.
 <P>
-<CENTER><img src="SBphysics.gif">
-<P>
-Figure 1. The physical model of the sticky masses.
-</CENTER>
+<CENTER><img src="SBphysics.gif" width="400"></center>
 <P>
 
 The model is built in Ptolemy II using the continuous time (CT) domain 
-and the finite state machine (FSM) domain. The block diagram of the system
-is shown in Figure 2.
+and the finite state machine (FSM) domain. The block diagram
+is shown in the figure below:
 <P>
 <CENTER><img src="SBdiagram.gif">
-<P>
-Figure 2. The Ptolemy II model of the sticky masses.
 </CENTER>
 <P>
-
-To run the applet, click <B> Go </B>
-
-<P>
-If the applet runs correctly, the result will be a plot like Figure 3.
+If the applet runs correctly, the result will look something
+like the figure below:
 <P>
 <CENTER><img src="SBresult.gif">
-<P>
-Figure 3. The Ptolemy II simulation result.
 </CENTER>
 <P>
-
-<hr>  
-<p><font size="2" color="#cc0000">Last Updated: : 1999/05/11 16:32:12 $</font>
 </body>
 </html>
