@@ -666,7 +666,7 @@ public class Helicopter extends TypedCompositeActor {
 
         subdir.initStepSize.setToken(new DoubleToken(0.1));
 
-        subdir.minStepSize.setToken(new DoubleToken(1e-3));
+        subdir.minStepSize.setToken(new DoubleToken(1e-7));
 
         subdir.maxStepSize.setToken(new DoubleToken(0.5));
 
