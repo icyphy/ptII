@@ -299,7 +299,7 @@ public class JPanner extends JPanel {
                 TransformContext context =
                     canvas.getCanvasPane().getTransformContext();
                 // clone the transform that is in the context, so we can
-                // avoid alot of repeated scaling of the same transform.
+                // avoid a lot of repeated scaling of the same transform.
                 transformOrigin =
                     (AffineTransform)context.getTransform().clone();
 
