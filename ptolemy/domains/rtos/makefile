@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/rtos
 
-DIRS =		kernel lib test
+DIRS =		kernel lib demo test
 
 # Root of Ptolemy II directory
 ROOT =		../../..
