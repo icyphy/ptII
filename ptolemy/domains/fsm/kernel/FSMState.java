@@ -110,7 +110,7 @@ public class FSMState extends ComponentEntity {
         newobj._localValueVars = null;
         try {
             VariableList vlist =
-                    (VariableList)newobj.getAttribute(LOCAL_INPUT_STATUS_VAR_LIST);
+                (VariableList)newobj.getAttribute(LOCAL_INPUT_STATUS_VAR_LIST);
             if (vlist != null) {
                 vlist.setContainer(null);
             }

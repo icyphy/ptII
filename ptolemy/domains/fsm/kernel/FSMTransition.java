@@ -303,9 +303,9 @@ public class FSMTransition extends ComponentRelation {
     public void setupScope() throws NameDuplicationException, IllegalActionException {
         FSMState src = sourceState();
         VariableList localInputVarS =
-                (VariableList)src.getAttribute(FSMState.LOCAL_INPUT_STATUS_VAR_LIST);
+            (VariableList)src.getAttribute(FSMState.LOCAL_INPUT_STATUS_VAR_LIST);
         VariableList localInputVarV =
-                (VariableList)src.getAttribute(FSMState.LOCAL_INPUT_VALUE_VAR_LIST);
+            (VariableList)src.getAttribute(FSMState.LOCAL_INPUT_VALUE_VAR_LIST);
 
 
         VariableList inputVarS = null;
@@ -428,7 +428,7 @@ public class FSMTransition extends ComponentRelation {
 
         if (_teSet) {
 
-//System.out.println("Testing trigger event of " + this.getFullName());
+            //System.out.println("Testing trigger event of " + this.getFullName());
 
             _te.evaluate();
             if (((BooleanToken)_te.getToken()).booleanValue() == false) {
@@ -437,7 +437,7 @@ public class FSMTransition extends ComponentRelation {
         }
         if (_tcSet) {
 
-//System.out.println("Testing condition of " + this.getFullName());
+            //System.out.println("Testing condition of " + this.getFullName());
 
             _tc.evaluate();
             if (((BooleanToken)_tc.getToken()).booleanValue() == false) {

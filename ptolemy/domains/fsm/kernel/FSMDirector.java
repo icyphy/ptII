@@ -232,8 +232,8 @@ public class FSMDirector extends Director {
             _controller.initialize();
         }
 
-/* REMOVE! */
-//System.out.println("Initializing FSMDirector " + this.getFullName());
+        /* REMOVE! */
+        //System.out.println("Initializing FSMDirector " + this.getFullName());
 
     }
 
@@ -269,10 +269,10 @@ public class FSMDirector extends Director {
         if (refine != null) {
             refine.postfire();
             /*Enumeration outports = refine.outputPorts();
-            while(outports.hasMoreElements()) {
-                IOPort p = (IOPort)outports.nextElement();
-                transferOutputs(p);
-            }*/
+              while(outports.hasMoreElements()) {
+              IOPort p = (IOPort)outports.nextElement();
+              transferOutputs(p);
+              }*/
         }
         return _controller.postfire();
     }
@@ -294,16 +294,16 @@ public class FSMDirector extends Director {
         // elaborate
         Actor refine = _controller.currentRefinement();
 
-// REMOVE
-//System.out.println("FSMDirector: get controller's current refinement.");
+        // REMOVE
+        //System.out.println("FSMDirector: get controller's current refinement.");
 
         boolean result = true;
         if (refine != null) {
             result = refine.prefire();
 
-/* REMOVE! */
-//System.out.println("Result of prefire " + ((ComponentEntity)refine).getFullName()
-//+ " is " + result);
+            /* REMOVE! */
+            //System.out.println("Result of prefire " + ((ComponentEntity)refine).getFullName()
+            //+ " is " + result);
         }
 
         // result = result & _controller.prefire();
@@ -360,7 +360,7 @@ public class FSMDirector extends Director {
                 Token t = port.get(0);
                 p = (IOPort)_controller.getPort(port.getName());
 
-//System.out.println("Try get a port from " + ((ComponentEntity)_controller).getFullName());
+                //System.out.println("Try get a port from " + ((ComponentEntity)_controller).getFullName());
 
                 if (p != null) {
                     rec = (p.getReceivers())[0][0];
@@ -420,9 +420,9 @@ public class FSMDirector extends Director {
                 }
             } catch (NoTokenException ex) {
                 throw new InternalErrorException(
-                    "Director.transferOutputs: " +
-                    "Internal error: " +
-                    ex.getMessage());
+                        "Director.transferOutputs: " +
+                        "Internal error: " +
+                        ex.getMessage());
             }
         }
     }

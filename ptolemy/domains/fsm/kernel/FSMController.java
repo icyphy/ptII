@@ -99,13 +99,13 @@ public class FSMController extends CompositeEntity implements TypedActor {
         FSMController newobj = (FSMController)super.clone();
         if (_initialState != null) {
             newobj._initialState =
-                    (FSMState)newobj.getEntity(_initialState.getName());
+                (FSMState)newobj.getEntity(_initialState.getName());
         }
         newobj._inputStatusVars = null;
         newobj._inputValueVars = null;
         try {
             VariableList vlist =
-                    (VariableList)newobj.getAttribute(INPUT_STATUS_VAR_LIST);
+                (VariableList)newobj.getAttribute(INPUT_STATUS_VAR_LIST);
             if (vlist != null) {
                 vlist.setContainer(null);
             }
@@ -169,10 +169,10 @@ public class FSMController extends CompositeEntity implements TypedActor {
     }
 
 
-// When an FSMController fires, its behavior is the parallel composition of
-// its own sequential controll logic and its current refinement.
-// Preemptive transitions of controll logic take precedence of refinement.
-// Question: what to do to the refinement when a transition is taken?
+    // When an FSMController fires, its behavior is the parallel composition of
+    // its own sequential controll logic and its current refinement.
+    // Preemptive transitions of controll logic take precedence of refinement.
+    // Question: what to do to the refinement when a transition is taken?
     public void fire() throws IllegalActionException {
         _takenTransition = null;
         _setInputVars();
@@ -273,7 +273,7 @@ public class FSMController extends CompositeEntity implements TypedActor {
             // FIXME!!
             // ignore for now
 
-throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
+            throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
 
         }
         // Set local variables to their initial value.
@@ -457,7 +457,7 @@ throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
             return true;
         }
 
-// What to do to the refinement of the state left?
+        // What to do to the refinement of the state left?
 
         _currentState = _takenTransition.destinationState();
 
@@ -470,15 +470,15 @@ throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
             if (actor == null) {
                 return true;
             }
-// If the refinement is an FSMController or an FSM system, then the trigger
-// actions of the taken transition should be input to the actor to enable
-// initial transitions.
-// ADD THIS!
-//            if (actor instanceof FSMController) {
-//                // Do what's needed.
-//            } else {
-//                // Do what's needed.
-//            }
+            // If the refinement is an FSMController or an FSM system, then the trigger
+            // actions of the taken transition should be input to the actor to enable
+            // initial transitions.
+            // ADD THIS!
+            //            if (actor instanceof FSMController) {
+            //                // Do what's needed.
+            //            } else {
+            //                // Do what's needed.
+            //            }
             // FIXME!
             actor.initialize();
         }
@@ -741,13 +741,13 @@ throw new InvalidStateException(this, "DEAL WITH IT" + ex.getMessage());
             if (port.numLinks() > 0) {
                 if (port.hasToken(0)) {
 
-//System.out.println("Port " + port.getFullName() + " has token.");
+                    //System.out.println("Port " + port.getFullName() + " has token.");
 
                     _inputStatusVars.setVarValue(port.getName(), PRESENT);
                     _inputValueVars.setVarValue(port.getName(), port.get(0));
                 } else {
 
-//System.out.println("Port " + port.getFullName() + " has no token.");
+                    //System.out.println("Port " + port.getFullName() + " has no token.");
 
                     _inputStatusVars.setVarValue(port.getName(), ABSENT);
                 }
