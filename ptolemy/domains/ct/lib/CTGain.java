@@ -48,9 +48,9 @@ public class CTGain extends CTActor {
     /** Construct the gain, default gain is 1.0. Single input, single
      *  output.
      * @see ptolemy.domains.ct.kernel.CTActor
-     * @param container The CTSubSystem this star belongs to
+     * @param container The TypedCompositeActor this star belongs to
      * @param name The name
-     * @exception NameDuplicationException another star already had this name
+     * @exception NameDuplicationException another actor already had this name
      * @exception IllegalActionException illustrates internal problems
      */
     public CTGain(TypedCompositeActor container, String name)
