@@ -40,7 +40,7 @@ import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.plot.*;
-import ptolemy.plot.plotml.PlotBoxMLParser;
+import ptolemy.plot.plotml.PlotMLParser;
 
 /** Base class for plotters.  This class contains an instance of the
  *  Plot class from the Ptolemy plot package as a public member.
@@ -140,8 +140,7 @@ public class Plotter extends TypedAtomicActor
             setPanel(_panel);
         }
 
-        // FIXME: This should be PlotMLParser, when that exists.
-        PlotBoxMLParser parser = new PlotBoxMLParser(plot);
+        PlotMLParser parser = new PlotMLParser(plot);
         parser.parse(base, in);
     }
 
