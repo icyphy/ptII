@@ -255,7 +255,7 @@ JOYSTICK_JARS=""
 if [ "$PTJOYSTICK_DIR" = "joystick" ]; then
     # Jar file that contains Joystick interface,
     # see http://sourceforge.net/projects/javajoystick/
-    JOYSTICK_JARS="$(CLASSPATHSEPARATOR)@JOYSTICK_JAR@"
+    JOYSTICK_JARS="${CLASSPATHSEPARATOR}@JOYSTICK_JAR@"
 fi
 
 
