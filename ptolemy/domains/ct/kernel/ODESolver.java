@@ -203,6 +203,10 @@ public abstract class ODESolver extends NamedObj {
      *  provide when solving the ODE. Auxiliary variables are variables
      *  in integrators to store integrator-dependent intermediate results
      *  when solving an ODE.
+     *  <br> 
+     *  For example, the fixed-step solvers need 0 auxiliary variable, but
+     *  the RK23 solver needs 4 auxiliary variables to store the temporary
+     *  derivatives at different time points during an integration.
      *  @return The number of auxiliary variables.
      */
     public abstract int getIntegratorAuxVariableCount();

@@ -184,11 +184,11 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     }
 
     /** Return the current integration step size, which is inherited from the
-     *  enclosing CT director.
+     *  executive CT director.
      *  @return The current step size.
      */
     public double getCurrentStepSize() {
-        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
 
         if (executiveDirector != null) {
             return executiveDirector.getCurrentStepSize();
@@ -201,10 +201,10 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Return the enclosing CT general director of this director.
-     *  @return The enclosing CT general director of this director.
+    /** Return the executive CT general director of this director.
+     *  @return The executive CT general director of this director.
      */
-    public CTGeneralDirector getEnclosingCTGeneralDirector() {
+    public CTGeneralDirector getExecutiveCTGeneralDirector() {
         CompositeActor container = (CompositeActor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
 
@@ -219,12 +219,12 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
         }
     }
 
-    /** Get the current execution phase, which is inherited from the enclosing
+    /** Get the current execution phase, which is inherited from the executive
      *  CT director.
      *  @return The current execution phase.
      */
     public CTExecutionPhase getExecutionPhase() {
-        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
 
         if (executiveDirector != null) {
             return executiveDirector.getExecutionPhase();
@@ -241,7 +241,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  @return The begin time of the current iteration.
      */
     public Time getIterationBeginTime() {
-        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
 
         if (executiveDirector != null) {
             return executiveDirector.getIterationBeginTime();
@@ -279,7 +279,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *  @return True if this is the discrete phase execution.
      */
     public boolean isDiscretePhase() {
-        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
 
         if (executiveDirector != null) {
             return executiveDirector.isDiscretePhase();

@@ -423,7 +423,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @return The current execution phase of this director.
      */
     public CTExecutionPhase getExecutionPhase() {
-        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
 
         if (executiveDirector != null) {
             return executiveDirector.getExecutionPhase();
@@ -628,62 +628,64 @@ public abstract class CTDirector extends StaticSchedulingDirector
         // This is crucial to implement Dirac function.
         _setExecutionPhase(CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE);
 
-        CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
-        Iterator actors = 
-            schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-
-        while (actors.hasNext() && !_stopRequested) {
-            Actor actor = (Actor) actors.next();
-
-            if (_debugging && _verbose) {
-                _debug("Prefire dynamic actor: " 
-                        + ((Nameable) actor).getName());
-            }
-
-            boolean ready = actor.prefire();
-
-            if (actor instanceof CTCompositeActor) {
-                ready = ready
+        try {
+            CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
+            Iterator actors = 
+                schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
+            
+            while (actors.hasNext() && !_stopRequested) {
+                Actor actor = (Actor) actors.next();
+                
+                if (_debugging && _verbose) {
+                    _debug("Prefire dynamic actor: " 
+                            + ((Nameable) actor).getName());
+                }
+                
+                boolean ready = actor.prefire();
+                
+                if (actor instanceof CTCompositeActor) {
+                    ready = ready
                     && ((CTCompositeActor) actor).prefireDynamicActors();
+                }
+                
+                // If ready is false, at least one dynamic actor is not
+                // ready to fire. This should never happen.
+                if (!ready) {
+                    _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
+                    throw new IllegalActionException((Nameable) actor,
+                            "Actor is not ready to fire. In the CT domain, all "
+                            + "dynamic actors should be ready to fire at "
+                            + "all times.\n Does the actor only operate on " 
+                            + "sequence of tokens?");
+                }
+                
+                if (_debugging && _verbose) {
+                    _debug("Prefire of " + ((Nameable) actor).getName()
+                            + " returns " + ready);
+                }
             }
-
-            // If ready is false, at least one dynamic actor is not
-            // ready to fire. This should never happen.
-            if (!ready) {
-                _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
-                throw new IllegalActionException((Nameable) actor,
-                        "Actor is not ready to fire. In the CT domain, all "
-                        + "dynamic actors should be ready to fire at "
-                        + "all times.\n "
-                        + "Does the actor only operate on sequence of tokens?");
-            }
-
-            if (_debugging && _verbose) {
-                _debug("Prefire of " + ((Nameable) actor).getName()
-                        + " returns " + ready);
-            }
-        }
-
-        // NOTE: Need for integrators to emit their current states so that
-        // the state transition actors can operate on the most up-to
-        // date inputs and generate derivatives for integrators.
-        // Without this, on the first round of integration, the state
-        // transition actors will complain that inputs are not ready.
-        Iterator integrators = schedule.get(CTSchedule.DYNAMIC_ACTORS)
+            
+            // NOTE: Need for integrators to emit their current states so that
+            // the state transition actors can operate on the most up-to
+            // date inputs and generate derivatives for integrators.
+            // Without this, on the first round of integration, the state
+            // transition actors will complain that inputs are not ready.
+            Iterator integrators = schedule.get(CTSchedule.DYNAMIC_ACTORS)
             .actorIterator();
-
-        while (integrators.hasNext() && !_stopRequested) {
-            CTDynamicActor dynamic = (CTDynamicActor) integrators.next();
-
-            if (_debugging && _verbose) {
-                _debug("Emit tentative state " + ((Nameable) dynamic).getName());
+            
+            while (integrators.hasNext() && !_stopRequested) {
+                CTDynamicActor dynamic = (CTDynamicActor) integrators.next();
+                
+                if (_debugging && _verbose) {
+                    _debug("Emit tentative state " 
+                            + ((Nameable) dynamic).getName());
+                }
+                
+                dynamic.emitCurrentStates();
             }
-
-            dynamic.emitCurrentStates();
+        } finally {
+            _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
         }
-
-        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
-
         return !_stopRequested;
     }
 

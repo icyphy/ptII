@@ -315,11 +315,11 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     }
 
     /** Ask for the current step size used by the solver from the
-     *  enclosing CT director.
+     *  executive CT director.
      *  @return The current step size.
      */
     public double getCurrentStepSize() {
-        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
 
         if (executiveDirector != null) {
             return executiveDirector.getCurrentStepSize();
@@ -331,14 +331,14 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         }
     }
 
-    /** Return the enclosing CT director of this director, or null if
-     *  this director is at the top level or the enclosing director is
+    /** Return the executive CT director of this director, or null if
+     *  this director is at the top level or the executive director is
      *  not a CT general director.
      *
-     *  @return The enclosing CT general director of this director, if there
+     *  @return The executive CT general director of this director, if there
      *  is any.
      */
-    public CTGeneralDirector getEnclosingCTGeneralDirector() {
+    public CTGeneralDirector getExecutiveCTGeneralDirector() {
         CompositeActor container = (CompositeActor) getContainer();
         Director executiveDirector = container.getExecutiveDirector();
 
@@ -353,7 +353,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return The current execution phase of this director.
      */
     public CTExecutionPhase getExecutionPhase() {
-        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
 
         if (executiveDirector != null) {
             return executiveDirector.getExecutionPhase();
@@ -371,7 +371,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return The begin time of the current iteration.
      */
     public Time getIterationBeginTime() {
-        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
 
         if (executiveDirector != null) {
             return executiveDirector.getIterationBeginTime();
@@ -414,13 +414,13 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return getModelNextIterationTime().getDoubleValue();
     }
 
-    /** Return the ODE solver of the enclosing CT general director
+    /** Return the ODE solver of the executive CT general director
      *  for normal integration.
-     *  @return The ODE solver of the enclosing CT general director
+     *  @return The ODE solver of the executive CT general director
      *  for normal integration.
      */
     public ODESolver getNormalODESolver() {
-        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
 
         if (executiveDirector != null) {
             return executiveDirector.getNormalODESolver();
@@ -492,7 +492,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *  @return True if this is the discrete phase execution.
      */
     public boolean isDiscretePhase() {
-        CTGeneralDirector executiveDirector = getEnclosingCTGeneralDirector();
+        CTGeneralDirector executiveDirector = getExecutiveCTGeneralDirector();
 
         if (executiveDirector != null) {
             return executiveDirector.isDiscretePhase();
@@ -810,17 +810,17 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
             // If this iteration will not generate more events, (the
             // current phase of execution is neithter generating-event nor
-            // iterating-purely-discrete-actors), or the enclosing director
+            // iterating-purely-discrete-actors), or the executive director
             // is not a CT director, reset the _enabledTransition to null.
             // Here we reset the cached enabled transition at the
             // updating-continuous-states phase, indicating the end of a
-            // complete iteration of the enclosing CT director.
+            // complete iteration of the executive CT director.
             // This guarantees that at most one transition is taken in an
             // iteration of discrete phase of execution.
             // To be more specific, for each (t, n), there is at most
             // one event.
             if ((getExecutionPhase() == CTExecutionPhase.UPDATING_CONTINUOUS_STATES_PHASE)
-                    || (getEnclosingCTGeneralDirector() == null)) {
+                    || (getExecutiveCTGeneralDirector() == null)) {
                 // Only clear the cached enabled transition when no more events
                 // will be generated at the current discrete phase of execution.
                 _enabledTransition = null;

@@ -33,14 +33,23 @@ import ptolemy.actor.util.Time;
 //// CTGeneralDirector
 
 /**
-   Interface for CT directors that defines the methods for lower
-   level CT directors to access information of the upper level CT director.
+   Interface that defines the methods for lower level CT directors in hierarchy
+   to query information from the upper level CT directors. The information 
+   includes the current step size for integration, the current execution phase,
+   the beginning time of the current integration, and the current solver. 
+   All CT directors must implement this interface. 
+   <p>
+   The {@link CTDirector} class and {@link CTTransparentDirector} interface 
+   directly implements this interface. The CTDirector class focuses on how to 
+   solve ordinary differential equations. The CTTransparentDirector interface
+   defines the methods for upper level CT directors in hierarchy to query 
+   step size control information from the lower level CT directors.
 
    @author  Haiyang Zheng
    @version $Id$
    @since Ptolemy II 4.1
-   @Pt.ProposedRating Yellow (hyzheng)
-   @Pt.AcceptedRating Red (hyzheng)
+   @Pt.ProposedRating Green (hyzheng)
+   @Pt.AcceptedRating Green (hyzheng)
 
 */
 public interface CTGeneralDirector {
@@ -52,21 +61,21 @@ public interface CTGeneralDirector {
      */
     public double getCurrentStepSize();
 
-    /** Return the enclosing CT general director of this director, or null if
-     *  this director is at the top level or the enclosing director is
-     *  not a CT general director.
-     *  @return The enclosing CT general director of this director, if there
+    /** Return the executive CT general director of this director, or null if
+     *  this director is at the top level or the executive director is
+     *  not a CT general director. 
+     *  @return The executive CT general director of this director, if there
      *  is any.
      */
-    public CTGeneralDirector getEnclosingCTGeneralDirector();
+    public CTGeneralDirector getExecutiveCTGeneralDirector();
 
     /** Return the current execution phase.
      *  @return The the current execution phase.
      */
     public CTExecutionPhase getExecutionPhase();
 
-    /** Return the time the current iteration starts.
-     *  @return The time the current iteration starts.
+    /** Return the time the current iteration starts from.
+     *  @return The time the current iteration starts from.
      */
     public Time getIterationBeginTime();
 
@@ -75,14 +84,8 @@ public interface CTGeneralDirector {
      */
     public ODESolver getNormalODESolver();
 
-    /** Implementations of this method should return
-     *  true if there is an event at current time.
-     *  @return True if there is an event at current time.
-     */
-    public boolean hasCurrentEvent();
-
-    /** Return true if the current phase execution is a discrete one.
-     *  @return true if the current phase execution is a discrete one.
+    /** Return true if the current phase of execution is a discrete one.
+     *  @return true if the current phase of execution is a discrete one.
      */
     public boolean isDiscretePhase();
 }
