@@ -449,7 +449,7 @@ public abstract class ActorController extends AttributeController {
             int number = 0;
             int count = portList.size();
             while (ports.hasNext()) {
-                IOPort port = (IOPort)ports.next();
+                Port port = (Port)ports.next();
                 Figure portFigure = getController().getFigure(port);
                 // If there is no figure, then ignore this port.  This may
                 // happen if the port hasn't been rendered yet.
@@ -474,18 +474,20 @@ public abstract class ActorController extends AttributeController {
 
                 // If the actor contains an attribute named "_showRate",
                 // then visualize the rate information.
-                if (port.getAttribute("_showRate") != null) {
+                // NOTE: Showing rates only makes sense for IOPorts.
+                if (port instanceof IOPort &&
+                        port.getAttribute("_showRate") != null) {
                     // Infer the rate.  See SDFUtilities.
                     String rateString = "";
                     Variable rateParameter = null;
-                    if (port.isInput()) {
+                    if (((IOPort)port).isInput()) {
                         rateParameter = 
                             (Variable)port.getAttribute("tokenConsumptionRate");
                         if (rateParameter == null) {
                             String altName = "_tokenConsumptionRate";
                             rateParameter = (Variable)port.getAttribute(altName);
                         }
-                    } else if (port.isOutput()) {
+                    } else if (((IOPort)port).isOutput()) {
                         rateParameter = 
                             (Variable)port.getAttribute("tokenProductionRate");
                         if (rateParameter == null) {
