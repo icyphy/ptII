@@ -66,7 +66,7 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Case" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
@@ -87,12 +87,14 @@ test AbstractCase-1.1 {call _exportMoMLContents} {
     <entity name="Case" class="ptolemy.actor.lib.hoc.Case">
         <property name="_location" class="ptolemy.kernel.util.Location" value="207.0, 146.0">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[535, 350]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={241, 155, 750, 466}}">
+        </property>
         <entity name="typed composite actor" class="ptolemy.actor.TypedCompositeActor">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="163.0, 141.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 145.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
             </property>
