@@ -232,6 +232,7 @@ public abstract class ChangeRequest {
     
     /** Set the description.
      *  @param description The description.
+     *  @since Ptolemy II 3.1
      */
     public void setDescription(String description) {
         _description = description;
