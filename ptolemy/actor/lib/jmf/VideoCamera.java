@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Red
+@AcceptedRating Red
 */
 
 
@@ -131,8 +131,57 @@ public class VideoCamera extends Source implements ControllerListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /**
+     * Controller Listener.
+     */
+    public void controllerUpdate(ControllerEvent evt) {
+
+	if (evt instanceof ConfigureCompleteEvent ||
+	    evt instanceof RealizeCompleteEvent ||
+	    evt instanceof PrefetchCompleteEvent) {
+	    synchronized (waitSync) {
+		stateTransitionOK = true;
+		waitSync.notifyAll();
+	    }
+	} else if (evt instanceof ResourceUnavailableEvent) {
+	    synchronized (waitSync) {
+		stateTransitionOK = false;
+		waitSync.notifyAll();
+	    }
+	} else if (evt instanceof EndOfMediaEvent) {
+	    _processor.close();
+	    //System.exit(0);
+	}
+    }
+
+    /** Capture a frame and send a java.awt.Image object
+     *  to the output port.	
+     *  @exception IllegalActionException If there's no director.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+// 	while (!_newFrame) {
+// 	    if (_debugging) {
+// 		_debug("image not new");
+// 	    }
+//             try {
+//                 wait();
+//             } catch (InterruptedException ex) {
+//                 throw new IllegalActionException(this,
+// 		"Interrupted while waiting for the first video frame.");
+//             }
+//         }	
+	//_imageNew = JamesCodec.getFrame();
+	//output.send(0, new ObjectToken(frameBuffer));
+	_bufferNew = CameraCodec.getFrame();
+	if (_bufferNew != null) {
+	    //_bufferNew.setFormat(new YUVFormat());
+	    output.send(0, new ObjectToken(_bufferNew));
+	}
+    }
+
     /** Open the file at the URL, and set the width of the output.
-     *  @throws IllegalActionException If there are no video capture
+     *  @exception IllegalActionException If there are no video capture
      *   devices.
      */
     public void initialize() throws IllegalActionException {
@@ -240,32 +289,6 @@ public class VideoCamera extends Source implements ControllerListener {
 	_processor.start();
     }
 
-    /** Capture a frame and send a java.awt.Image object
-     *  to the output port.	
-     *  @exception IllegalActionException If there's no director.
-     */
-    public void fire() throws IllegalActionException {
-        super.fire();
-// 	while (!_newFrame) {
-// 	    if (_debugging) {
-// 		_debug("image not new");
-// 	    }
-//             try {
-//                 wait();
-//             } catch (InterruptedException ex) {
-//                 throw new IllegalActionException(this,
-// 		"Interrupted while waiting for the first video frame.");
-//             }
-//         }	
-	//_imageNew = JamesCodec.getFrame();
-	//output.send(0, new ObjectToken(frameBuffer));
-	_bufferNew = CameraCodec.getFrame();
-	if (_bufferNew != null) {
-	    //_bufferNew.setFormat(new YUVFormat());
-	    output.send(0, new ObjectToken(_bufferNew));
-	}
-    }
-
     /** Close the media processor.
      */
     public void wrapup() {
@@ -291,30 +314,6 @@ public class VideoCamera extends Source implements ControllerListener {
     }
 
     // FIXME: Got to here.
-
-    /**
-     * Controller Listener.
-     */
-    public void controllerUpdate(ControllerEvent evt) {
-
-	if (evt instanceof ConfigureCompleteEvent ||
-	    evt instanceof RealizeCompleteEvent ||
-	    evt instanceof PrefetchCompleteEvent) {
-	    synchronized (waitSync) {
-		stateTransitionOK = true;
-		waitSync.notifyAll();
-	    }
-	} else if (evt instanceof ResourceUnavailableEvent) {
-	    synchronized (waitSync) {
-		stateTransitionOK = false;
-		waitSync.notifyAll();
-	    }
-	} else if (evt instanceof EndOfMediaEvent) {
-	    _processor.close();
-	    //System.exit(0);
-	}
-    }
-
 
     /*********************************************************
      * Inner class.

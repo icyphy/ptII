@@ -24,6 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
+@ProposedRating Red
+@AcceptedRating Red
 */
 
 package ptolemy.actor.lib.jmf;
