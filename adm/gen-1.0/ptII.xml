@@ -105,7 +105,7 @@ Berkeley, CA 94706</property>
             </key>
             <built>19691131 160000.000-0800</built>
             <name>feature47</name>
-            <displayName>Runtime Core</displayName>
+            <displayName>Ptiny Core</displayName>
             <shareable>false</shareable>
             <active>true</active>
             <installStatus>0</installStatus>
@@ -119,7 +119,7 @@ Berkeley, CA 94706</property>
                 </key>
                 <built>19691131 160000.000-0800</built>
                 <name>component47</name>
-                <displayName>Runtime Files</displayName>
+                <displayName>Ptiny Files</displayName>
                 <shareable>false</shareable>
                 <active>true</active>
                 <installStatus>0</installStatus>
@@ -135,7 +135,7 @@ Berkeley, CA 94706</property>
                             <property name="usingGNUPattern">False</property>
                             <property name="type">4</property>
                             <property name="pattern"/>
-                            <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\runtime</property>
+                            <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\ptiny</property>
                         </arrayItem>
                     </property>
                     <property name="totalBytes">-1</property>
@@ -180,7 +180,7 @@ Berkeley, CA 94706</property>
                         <arrayItem>./</arrayItem>
                         <arrayItem>./ptolemy/vergil/vergil.jar</arrayItem>
                         <arrayItem>./ptolemy/ptolemy.jar</arrayItem>
-                        <arrayItem>./ptolemy/configs/configsRuntime.jar</arrayItem>
+                        <arrayItem>./ptolemy/configs/configsPtiny.jar</arrayItem>
                         <arrayItem>./lib/diva.jar</arrayItem>
                         <arrayItem/>
                     </property>
@@ -555,7 +555,7 @@ Berkeley, CA 94706</property>
             <property name="navigationOptions">0</property>
             <property name="text"/>
             <property name="textSource">2</property>
-            <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\runtime\copyright.txt</property>
+            <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\ptiny\copyright.txt</property>
             <property name="includeLocalizedFiles">False</property>
             <property name="contentType">1</property>
             <property name="approveCaption">$L(com.installshield.product.i18n.ProductResources, LicensePanel.approval)</property>
@@ -602,12 +602,12 @@ Berkeley, CA 94706</property>
                     <property name="id">custom</property>
                 </arrayItem>
                 <arrayItem type="com.installshield.product.wizardbeans.SetupType">
-                    <property name="displayName">Runtime Core</property>
+                    <property name="displayName">Ptiny Core</property>
                     <property array="True" length="1" name="features" type="string">
                         <arrayItem>bean866</arrayItem>
                     </property>
                     <property name="description">The minimum setup to create models</property>
-                    <property name="id">runtime core</property>
+                    <property name="id">ptiny core</property>
                 </arrayItem>
             </property>
             <property name="selectedSetupTypeId">typical</property>
