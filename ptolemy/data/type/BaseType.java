@@ -272,7 +272,9 @@ public class BaseType implements Type {
     public static final BaseType NAT = new BaseType(Void.TYPE, "NaT",
 	new ConvertOperator() {
 	    public Token convert(Token t) throws IllegalActionException {
-		throw new IllegalActionException("Cannot convert to NaT.");
+		// Since any type is a substitution instance of NAT, just
+		// return the argument.
+		return t;
 	    }
 	});
 

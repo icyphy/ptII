@@ -708,24 +708,34 @@ public class Variable extends Attribute implements Typeable {
      */
     public void setTypeEquals(Type type) throws IllegalActionException {
         if (_token != null) {
-	    if (type.isConstant()) {
-                int typeInfo = TypeLattice.compare(_token.getType(), type);
-                if ((typeInfo == CPO.HIGHER)
-                			|| (typeInfo == CPO.INCOMPARABLE)) {
-                    throw new IllegalActionException(this, "setTypeEquals(): "
-                        + "the currently contained token " + _token.toString()
-                        + " cannot be losslessly converted to the desired "
-			+ "type " + type.toString());
-                }
-                _token = type.convert(_token);
+
+	//    if (type.isConstant()) {
+        //        int typeInfo = TypeLattice.compare(_token.getType(), type);
+        //        if ((typeInfo == CPO.HIGHER)
+        //        			|| (typeInfo == CPO.INCOMPARABLE)) {
+        //            throw new IllegalActionException(this, "setTypeEquals(): "
+        //                + "the currently contained token " + _token.toString()
+        //                + " cannot be losslessly converted to the desired "
+	//		+ "type " + type.toString());
+        //        }
+        //        _token = type.convert(_token);
+	//    } else {
+	//	// argument is a variable
+	//	if ( !type.isSubstitutionInstance(_token.getType())) {
+        //            throw new IllegalActionException(this, "setTypeEquals(): "
+        //                + "the currently contained token " + _token.toString()
+        //                + " is not a substitution instance of the desired "
+	//		+ "type " + type.toString());
+	//	}
+	//    }
+
+	    if (type.isCompatible(_token)) {
+		_token = type.convert(_token);
 	    } else {
-		// argument is a variable
-		if ( !type.isSubstitutionInstance(_token.getType())) {
-                    throw new IllegalActionException(this, "setTypeEquals(): "
-                        + "the currently contained token " + _token.toString()
-                        + " is not a substitution instance of the desired "
-			+ "type " + type.toString());
-		}
+                throw new IllegalActionException(this,
+		    "Variable.setTypeEquals(): the currently contained " +
+		    "token " + _token.toString() + " is not compatible " +
+		    "with the desired type " + type.toString());
 	    }
         }
 
@@ -1101,53 +1111,69 @@ public class Variable extends Attribute implements Typeable {
 	    }
         } else {
             // Argument is not null
-            Type tokenType = newToken.getType();
-            if (_declaredType.isConstant()) {
+            // Type tokenType = newToken.getType();
+
+            // if (_declaredType.isConstant()) {
                 // Type has been set by setTypeEquals().
                 // Check whether new token is instance of this type.
-                if (!_declaredType.isEqualTo(newToken.getType())) {
+            //     if (!_declaredType.isEqualTo(newToken.getType())) {
                     // Check to see whether new token can be converted
                     // to this type.
-                    int typeInfo
-                        = TypeLattice.compare(_declaredType, tokenType);
-                    if (typeInfo == CPO.HIGHER) {
+            //         int typeInfo
+            //             = TypeLattice.compare(_declaredType, tokenType);
+            //         if (typeInfo == CPO.HIGHER) {
                         // Convert newToken to _declaredType.
-                        newToken = _declaredType.convert(newToken);
-                    } else {
+            //             newToken = _declaredType.convert(newToken);
+            //         } else {
                         // Incompatible type!
-                        throw new IllegalActionException(this,
-                            "Variable._setToken: Cannot store a token of type "
-                            + tokenType.toString()
-                            + ", which is incompatible with type "
-                            + _varType.toString());
-                    }
-                }
-            } else {
+            //             throw new IllegalActionException(this,
+            //                 "Variable._setToken: Cannot store a token of type "
+            //                 + tokenType.toString()
+            //                 + ", which is incompatible with type "
+            //                 + _varType.toString());
+            //         }
+            //     }
+            // } else {
 		// _declaredType is a variable.
-		if (_declaredType.isSubstitutionInstance(tokenType)) {
-		    if (_declaredType == BaseType.NAT) {
-		        _varType = tokenType;
-		    } else {
+	    //	if (_declaredType.isSubstitutionInstance(tokenType)) {
+	    //	    if (_declaredType == BaseType.NAT) {
+	    //	        _varType = tokenType;
+	    //	    } else {
 			// _declaredType is a structured type
-			((StructuredType)_varType).updateType(
-						(StructuredType)tokenType);
-		    }
-		} else {
-                        throw new IllegalActionException(this,
-                        "Variable._setToken: Cannot store a token of type "
-                        + tokenType.toString()
-                        + ", which is incompatible with type "
-                        + _varType.toString());
-		}
-            }
-            // New token is now assured of meeting _declaredType constraint,
-            // if there is one, and to match _varType (to be an instance
-            // thereof).
+	    //		((StructuredType)_varType).updateType(
+	    //					(StructuredType)tokenType);
+	    //	    }
+	    //	} else {
+            //            throw new IllegalActionException(this,
+            //            "Variable._setToken: Cannot store a token of type "
+            //            + tokenType.toString()
+            //            + ", which is incompatible with type "
+            //            + _varType.toString());
+	    //	}
+            // }
+
+	    if (_declaredType.isCompatible(newToken)) {
+		newToken = _declaredType.convert(newToken);
+	    } else {
+                throw new IllegalActionException(this, "Variable._setToken: " +
+		    "Cannot store a token of type " +
+		    newToken.getType().toString() + ", which is incompatible" +
+		    " with type " + _varType.toString());
+	    }
+
+	    // update _varType to the type of the new token.
+	    if (_declaredType instanceof StructuredType) {
+	    	((StructuredType)_varType).updateType(
+				(StructuredType)newToken.getType());
+	    } else {
+		// _declaredType is a BaseType
+		_varType = newToken.getType();
+	    }
 
             // Check setTypeAtMost constraint.
             if (_typeAtMost != BaseType.NAT) {
                 // Recalculate this in case the type has changed.
-                tokenType = newToken.getType();
+                Type tokenType = newToken.getType();
                 int comparison
                         = TypeLattice.compare(tokenType, _typeAtMost);
                 if ((comparison == CPO.HIGHER)

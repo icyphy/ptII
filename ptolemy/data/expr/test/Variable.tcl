@@ -216,7 +216,7 @@ test Variable-5.1 {Set types without first clearing} {
     catch {$p1 setTypeEquals $doubleClass} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: .E.P1:
-setTypeEquals(): the currently contained token ptolemy.data.StringToken(foo) cannot be losslessly converted to the desired type double}}
+Variable.setTypeEquals(): the currently contained token ptolemy.data.StringToken(foo) is not compatible with the desired type double}}
 
 test Variable-5.2 {Set types with first clearing} {
     $p1 setToken [java::null]
