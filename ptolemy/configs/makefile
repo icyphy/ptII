@@ -55,7 +55,6 @@ JSRCS =
 #  so we include it in this jar
 OTHER_FILES_TO_BE_JARED = \
 	annotation.xml \
-	commonEffigies.xml \
 	experimentalDirectors.xml \
 	fsmLibrary.xml \
 	fsmTableaux.xml \
