@@ -2,36 +2,34 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="AssemblyLine" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-alpha">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="50">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={26, 7, 856, 879}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 2, 1019, 780}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[641, 761]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[804, 662]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{246.5694444444445, 358.3767361111111}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{402.0, 331.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how to use the NonInterruptibleTimer actor and Pulse actor to&#10;model an assembly line.&#10;&#10;The Clock actor (Jobs) generates a set of jobs at different times, where no two&#10;jobs happen at the same time. The Pulse actor (ServiceTimes) takes a job &#10;request and produces the service time of the job request. &#10;&#10;The NonInterruptibleTimer actor (Station) takes the service time and sets a&#10;timer. The timer goes off when the service time expires. The timer can not&#10;be interrupted to respond to another input when it is running. &#10;&#10;A job has to be passed along all three stations. &#10;&#10;The Plotter monitors the outputs from Stations plots the times when jobs &#10;leaves the station.&#10;&#10;This model is based on the assembly line example described in &quot;Distributed &#10;Discrete-Event Simulation&quot; by Jayadev Misra, Computer Serveys, Vol. 18, &#10;No. 1, March 1986.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows how to use the NonInterruptibleTimer actor and Pulse actor to&#10;model an assembly line.&#10;&#10;The Clock actor (Jobs) generates a set of jobs at different times, where no two&#10;jobs happen at the same time. The Pulse actor (ServiceTimes) takes a job &#10;request and produces the service time of the job request. &#10;&#10;The NonInterruptibleTimer actor (Station) takes the service time and sets a&#10;timer. The timer goes off when the service time expires. The timer can not&#10;be interrupted to respond to another input when it is running. &#10;&#10;A job is passed along all three stations. The Plotter monitors the outputs&#10;from Stations plots the times when jobs leaves the station.&#10;&#10;This model is based on the assembly line example described in &quot;Distributed &#10;Discrete-Event Simulation&quot; by Jayadev Misra, Computer Serveys, Vol. 18, &#10;No. 1, March 1986.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-47.5, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 340.0]">
         </property>
     </property>
-    <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
-        <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Oct 22, 2004 12:00:12 AM">
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Feb 24, 2005 5:05:55 PM">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng">
         </property>
-        <property name="author" class="ptolemy.kernel.util.StringAttribute" value="hyzheng">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 670.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 20.0]">
         </property>
     </property>
     <entity name="Jobs" class="ptolemy.actor.lib.Clock">
@@ -42,7 +40,7 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{4, 10, 1, 5}">
         </property>
         <doc>Create a set of pulses</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[47.5, 42.5]">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -54,7 +52,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[450, 176]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[392.5, 290.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 260.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -74,7 +72,7 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{12, 15, 2, 7}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 225.0]">
         </property>
     </entity>
     <entity name="ServiceTimes 3" class="ptolemy.actor.lib.Pulse">
@@ -82,7 +80,7 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{2, 3, 1, 4}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[37.5, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 310.0]">
         </property>
     </entity>
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -92,7 +90,7 @@
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[434, 176]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[362.5, 97.5]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -112,12 +110,12 @@
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{4, 10, 1, 5}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 150.0]">
         </property>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{195, 125}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[227.5, 97.5]">
         </property>
     </entity>
     <entity name="Station 1" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
@@ -129,7 +127,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 150.0}">
         </property>
     </entity>
     <entity name="Station 2" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
@@ -141,7 +139,7 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 225.0}">
         </property>
     </entity>
     <entity name="Station 3" class="ptolemy.domains.de.lib.NonInterruptibleTimer">
@@ -153,19 +151,19 @@
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[132.5, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 310.0}">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[197.5, 212.5]">
+        <vertex name="vertex1" value="{230.0, 185.0}">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[192.5, 290.0]">
+        <vertex name="vertex1" value="[230.0, 260.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[70.0, 125.0]">
+        <vertex name="vertex1" value="[102.5, 97.5]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
