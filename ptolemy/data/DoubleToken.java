@@ -382,6 +382,7 @@ public class DoubleToken extends ScalarToken {
      */
     public String stringValue() {
         NumberFormat nf = NumberFormat.getNumberInstance();
+        nf.setMinimumFractionDigits(1);
         return nf.format(_value);
     }
 
