@@ -67,7 +67,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    Specify the name of the supplier with <i>remoteSupplierName<i>, which is
    the supplier it wants to request data from.
 
-   If the <i>blocking<i> paremerter is true, then wait until there is
+   If the <i>blocking<i> parameter is true, then wait until there is
    token received, otherwise, send a default value specified by the
    <i>defaultToken<i> paremerter. Notice that the type of the output port
    is determined by the type of this parameter.
