@@ -203,6 +203,7 @@ COMPLEXCLASSFILES = \
 		'$(ME)/EditablePlot$$ModifyListener.class' \
 		'$(ME)/EditablePlot$$UndoListener.class' \
 		$(ME)/EditablePlot.class \
+		$(ME)/EditListener.class \
 		$(ME)/Histogram.class \
 		$(ME)/HistogramApplet.class \
 		'$(ME)/PlotLive$$StartButtonListener.class' \
