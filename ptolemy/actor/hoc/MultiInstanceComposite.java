@@ -242,7 +242,7 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                                 otherPorts.next();
                             if (port.isOutput() &&
                                     !otherPort.isMultiport()) {
-                                throw new IllegalActionException(this, 
+                                throw new IllegalActionException(this,
                                     getFullName() + ".preinitialize(): "
                                     + "output port "+ port.getName()
                                     + "must be connected to a multi-port");
