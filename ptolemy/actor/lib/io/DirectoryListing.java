@@ -35,6 +35,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -43,10 +44,12 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.Source;
+import ptolemy.actor.lib.SequenceSource;
 import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -65,7 +68,12 @@ import ptolemy.kernel.util.NameDuplicationException;
    <a href="http://java.sun.com/docs/books/tutorial/extra/regex/index.html">
    http://java.sun.com/docs/books/tutorial/extra/regex/index.html</a>.
    <p>
-   FIXME: Useful options would be to output only files or only directories.
+   If <i>directoryOrURL</i> is a directory (not a URL), then you can
+   optionally list only contained files or directories.
+   If <i>listOnlyDirectories</i> is true, then only directories will be
+   listed on the output.  If <i>listOnlyFiles</i> is true, then only
+   files will be listed on the output. If both are true, then an exception
+   is thrown.
 
    @author  Christopher Hylands, Edward A. Lee
    @version $Id$
@@ -73,7 +81,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (liuj)
 */
-public class DirectoryListing extends Source implements FilenameFilter {
+public class DirectoryListing extends SequenceSource implements FilenameFilter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -87,11 +95,11 @@ public class DirectoryListing extends Source implements FilenameFilter {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // FIXME: The file browser doesn't allow me to select a directory.
+        // Tell the file browser to allow only selection of directories.
         directoryOrURL = new FileParameter(this, "directoryOrURL");
-        Attribute noFiles = new Attribute(directoryOrURL, "noFiles");
-        Attribute allowDirectories = new Attribute(directoryOrURL, "allowDirectories");
-
+        new Parameter(directoryOrURL, "allowFiles", BooleanToken.FALSE);
+        new Parameter(directoryOrURL, "allowDirectories", BooleanToken.TRUE);
+ 
         directoryOrURLPort = new TypedIOPort(this, "directoryOrURL", true, false);
         directoryOrURLPort.setTypeEquals(BaseType.STRING);
 
@@ -99,6 +107,14 @@ public class DirectoryListing extends Source implements FilenameFilter {
 
         pattern = new StringParameter(this, "pattern");
         pattern.setExpression("");
+        
+        listOnlyDirectories = new Parameter(this, "listOnlyDirectories");
+        listOnlyDirectories.setTypeEquals(BaseType.BOOLEAN);
+        listOnlyDirectories.setExpression("false");
+
+        listOnlyFiles = new Parameter(this, "listOnlyFiles");
+        listOnlyFiles.setTypeEquals(BaseType.BOOLEAN);
+        listOnlyFiles.setExpression("false");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -114,6 +130,16 @@ public class DirectoryListing extends Source implements FilenameFilter {
      *  type string.
      */
     public TypedIOPort directoryOrURLPort;
+    
+    /** If true, then only directories will be listed on the output.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter listOnlyDirectories;
+
+    /** If true, then only file will be listed on the output.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter listOnlyFiles;
 
     /** If non-empty, then only output file and directory names that
      *  match the specified (regular expression) pattern.
@@ -127,7 +153,8 @@ public class DirectoryListing extends Source implements FilenameFilter {
 
     /** Return true if the specified name matches the specified pattern,
      *  or if no pattern has been specified.
-     *  @param directory The directory in which the file was found.
+     *  @param directory The directory in which the file was found
+     *   (ignored, but required by the FilenameFilter interface).
      *  @param name The name of the file or directory.
      *  @return True if the specified name matches.
      */
@@ -160,7 +187,7 @@ public class DirectoryListing extends Source implements FilenameFilter {
         super.attributeChanged(attribute);
     }
 
-    /** Output the data read in the prefire.
+    /** Output an array containing file and/or directory names.
      *  @exception IllegalActionException If there's no director or
      *   if the directory or URL is invalid.
      */
@@ -182,15 +209,36 @@ public class DirectoryListing extends Source implements FilenameFilter {
                     "directoryOrURL is empty.");
         }
 
+        boolean directoriesOnly = ((BooleanToken)
+                listOnlyDirectories.getToken()).booleanValue();
+        boolean filesOnly = ((BooleanToken)
+                listOnlyDirectories.getToken()).booleanValue();
         if (sourceURL.getProtocol().equals("file")) {
             File sourceFile = directoryOrURL.asFile();
             if (sourceFile.isDirectory()) {
                 File[] files = sourceFile.listFiles(this);
-                StringToken[] result = new StringToken[files.length];
+                ArrayList result = new ArrayList();
                 for (int i = 0; i < files.length; i++) {
-                    result[i] = new StringToken(files[i].getAbsolutePath());
+                    if (filesOnly && !files[i].isFile()) {
+                    	continue;
+                    }
+                    if (directoriesOnly && !files[i].isDirectory()) {
+                        continue;
+                    }
+                    if (accept(null, files[i].getName())) {
+                    	result.add(new StringToken(
+                                files[i].getAbsolutePath()));
+                    }
                 }
-                output.broadcast(new ArrayToken(result));
+                if (result.size() == 0) {
+                    throw new IllegalActionException(this,
+                            "No files or directories that match the pattern.");                    
+                }
+                StringToken[] resultArray = new StringToken[result.size()];
+                for (int i = 0; i < resultArray.length; i++) {
+                	resultArray[i] = (StringToken)result.get(i);
+                }
+                output.broadcast(new ArrayToken(resultArray));
                 return;
             } else if (sourceFile.isFile()) {
                 StringToken[] result = new StringToken[1];
