@@ -68,25 +68,27 @@ public class NamedObjAnalysis {
                     DefinitionStmt stmt = (DefinitionStmt)unit;
                     Value rightValue = (Value)stmt.getRightOp();
                   
-                        if(stmt.getLeftOp() instanceof Local) {
-                            Local local = (Local)stmt.getLeftOp();
-                            if (rightValue instanceof Local) {
-                                _update(local, (Local)rightValue);
-                            } else if (rightValue instanceof CastExpr) {
-                                _update(local, 
-                                        (Local)((CastExpr)rightValue).getOp());
-                            } else if (rightValue instanceof FieldRef) {
-                                SootField field = ((FieldRef)rightValue).getField();
-                                _set(local, _getFieldValueTag(field));
+                    if(stmt.getLeftOp() instanceof Local) {
+                        Local local = (Local)stmt.getLeftOp();
+                        if (rightValue instanceof Local) {
+                            _update(local, (Local)rightValue);
+                        } else if (rightValue instanceof CastExpr) {
+                            Value value = ((CastExpr)rightValue).getOp();
+                            if(value instanceof Local) {
+                                _update(local, (Local)value);
                             }
-                        } else if(stmt.getLeftOp() instanceof FieldRef) {
-                            if(rightValue instanceof Local) {
-                                SootField field = 
-                                    ((FieldRef)stmt.getLeftOp()).getField();
-                                _set((Local)rightValue, _getFieldValueTag(field));
-                            }
-                        } else {
-                            // Ignore..  probably not a named obj anyway.
+                        } else if (rightValue instanceof FieldRef) {
+                            SootField field = ((FieldRef)rightValue).getField();
+                            _set(local, _getFieldValueTag(field));
+                        }
+                    } else if(stmt.getLeftOp() instanceof FieldRef) {
+                        if(rightValue instanceof Local) {
+                            SootField field = 
+                                ((FieldRef)stmt.getLeftOp()).getField();
+                            _set((Local)rightValue, _getFieldValueTag(field));
+                        }
+                    } else {
+                        // Ignore..  probably not a named obj anyway.
                         
                     }
                 }
