@@ -1,0 +1,28 @@
+#!/bin/sh
+
+for file in $@
+do
+    echo $file
+    awk '$0 ~ /@AcceptedRating/ {
+             acceptedRating=$2
+             for(i = 3; i<=NF; i++) {
+                acceptedRating=acceptedRating, $i
+             }
+         }
+         $0 ~ /@ProposedRating/ {
+             proposedRating=$2
+             for(i = 3; i<=NF; i++) {
+                proposedRating=proposedRating, $i
+             }
+         $0 ~ /@since/ {
+             print $0
+             print "@Pt.ProposedRating", proposedRating
+             print "@Pt.AcceptedRating", acceptedRating
+         }
+        $file > /tmp/mvratings.tmp
+    diff $file /tmp/mvratings.tmp
+    cp /tmp/mvratings.tmp $file 
+
+done
+
+rm -f /tmp/mvratings.tmp
