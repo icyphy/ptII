@@ -116,6 +116,10 @@ ptolemy/domains/sdf/lib/javasound
 ptolemy/domains/sdf/test/pitchshift
 ptolemy/domains/tm/runtime
 ptolemy/domains/wireless/lib/tinyOS
+ptolemy/domains/wireless/demo/MACProtocolModel
+ptolemy/domains/wireless/demo/Network
+ptolemy/domains/wireless/demo/PersonalAreaNetwork
+ptolemy/domains/wireless/demo/TerrainModel
 ptolemy/kernel/test/TestSerializable.data
 ptolemy/kernel/util/LibraryMarkerAttribute.java
 ptolemy/kernel/util/UserSettable.java
