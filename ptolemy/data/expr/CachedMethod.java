@@ -163,14 +163,16 @@ public class CachedMethod {
      *  @param conversions An array of conversions that will convert
      *  arguments of the corresponding argument types to arguments
      *  that the method will accept.  If the method accepts Token
-     *  arguments, then this array will contain IDENTITY_CONVERSION conversions.
-     *  This array must be the same size as the number of arguments to
-     *  the method.
+     *  arguments, then this array will contain IDENTITY_CONVERSION
+     *  conversions.  This array must be the same size as the number
+     *  of arguments to the method.
      *  @param type The type of the method.
+     *  @exception IllegalActionException If the return type of the
+     *  cached method cannot be determined.
      */
     protected CachedMethod(String methodName, Type[] argumentTypes,
             Method method, ArgumentConversion[] conversions,
-            int type) {
+            int type) throws IllegalActionException {
         // Note clones for safety...
         _methodName = methodName;
         _argumentTypes = (Type[]) argumentTypes.clone();
@@ -181,6 +183,35 @@ public class CachedMethod {
             _conversions = null;
         }
         _type = type;
+        
+        _returnType = null;
+        // Determine the return type of the method, given our argument types.
+        if(_method != null) {
+            // The default is to look at the return type of the method.
+            Class returnClass = _method.getReturnType();
+            _returnType = ConversionUtilities.convertJavaTypeToTokenType(
+                    returnClass);
+
+            // Check to see if there is a function that
+            // provides a better return type.
+            try {
+                Method typeFunction = _method.getDeclaringClass().getMethod(
+                        "_typeof_" + _methodName, new Class[]{Type[].class});
+                // Invoke the function, and save the return type.
+                try {
+                    _returnType = (Type)typeFunction.invoke(
+                            null, new Object[]{_argumentTypes});
+                } catch (IllegalAccessException ex) {
+                    throw new RuntimeException(ex); // TODO
+                } catch (InvocationTargetException ex) {
+                    throw new RuntimeException(ex); // TODO
+                }
+            } 
+            catch (NoSuchMethodException ex) {
+                // Ignore.  Just use the default return type above.
+            }
+        }
+        
 
         // Compute the hashcode, based on the method name and argument
         // types.
@@ -420,14 +451,12 @@ public class CachedMethod {
      *  the correct argument types was not found.
      */
     public Type getReturnType() throws IllegalActionException {
-        if (!isValid()) {
+        if (_returnType == null) {
             throw new IllegalActionException("The return type of the method "
                     + toString() + " cannot be determined because "
                     + "no matching method was found.");
         }
-        Class returnType = _method.getReturnType();
-        Type type = ConversionUtilities.convertJavaTypeToTokenType(returnType);
-        return type;
+        return _returnType;
     }
 
     /** Return the hash code.  This method is overridden to be
@@ -950,7 +979,8 @@ public class CachedMethod {
      *  argumentTypes if it had been cached previously.
      */
     private static CachedMethod _getCachedMethod(
-            String methodName, Type[] argumentTypes, int type) {
+            String methodName, Type[] argumentTypes, int type) 
+            throws IllegalActionException {
         CachedMethod key = new CachedMethod(
                 methodName, argumentTypes, null, null, type);
         // System.out.println("findMethod:" + key);
@@ -972,6 +1002,9 @@ public class CachedMethod {
     private ArgumentConversion[] _conversions;
     // The precomputed hashcode for this cached method.
     private int _hashcode;
+    // The return type of the the method, as determined from the method itself,
+    // or from a monotonic function.
+    private Type _returnType;
     // The type.
     private int _type;
     // Flag determining validity of the method.  (i.e. whether or not
@@ -1109,7 +1142,8 @@ public class CachedMethod {
         private BaseConvertCachedMethod(
                 String methodName, Type[] argumentTypes,
                 Method method, ArgumentConversion baseConversion,
-                ArgumentConversion[] conversions) {
+                ArgumentConversion[] conversions) 
+                throws IllegalActionException {
             super(methodName, argumentTypes, method, conversions, METHOD);
             _baseConversion = baseConversion;
         }
@@ -1138,7 +1172,8 @@ public class CachedMethod {
 
         public ArrayMapCachedMethod(
                 String methodName, Type[] argumentTypes, int type,
-                CachedMethod cachedMethod, boolean[] reducedArgs) {
+                CachedMethod cachedMethod, boolean[] reducedArgs)
+                throws IllegalActionException {
             super(methodName, argumentTypes, null, null, type);
             _cachedMethod = cachedMethod;
             _reducedArgs = reducedArgs;
@@ -1240,7 +1275,8 @@ public class CachedMethod {
     public static class MatrixMapCachedMethod extends CachedMethod {
         public MatrixMapCachedMethod(
                 String methodName, Type[] argumentTypes, int type,
-                CachedMethod cachedMethod, boolean[] reducedArgs) {
+                CachedMethod cachedMethod, boolean[] reducedArgs)
+                throws IllegalActionException {
             super(methodName, argumentTypes, null, null, type);
             _cachedMethod = cachedMethod;
             _reducedArgs = reducedArgs;

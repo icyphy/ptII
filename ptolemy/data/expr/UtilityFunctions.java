@@ -31,14 +31,14 @@
 
 package ptolemy.data.expr;
 
-import ptolemy.data.ArrayToken;
+import ptolemy.data.*;
 import ptolemy.data.Token;
-import ptolemy.data.StringToken;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
-import ptolemy.util.StringUtilities;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.data.*;
+import ptolemy.util.StringUtilities;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -235,6 +235,20 @@ public class UtilityFunctions {
         return StringUtilities.getProperty(propertyName);
     }
 
+    /** Infer the type of the given string as an expression in the
+     *  expression language. Return a string representation of the
+     *  given type.
+     *  @param string The string to be parsed and evaluated.
+     *  @return A string representing an inferred type.
+     */
+    public static String inferType(String string) 
+            throws IllegalActionException {
+        PtParser parser = new PtParser();
+        ASTPtRootNode parseTree = parser.generateParseTree(string);
+        ParseTreeTypeInference typeInference = new ParseTreeTypeInference();
+        return typeInference.inferTypes(parseTree).toString();
+    }
+
     /** Load a library by first using the default platform dependent
      *  System.loadLibrary() method.  If the library cannot be loaded
      *  using System.loadLibrary(), then search for the library using
@@ -343,7 +357,17 @@ public class UtilityFunctions {
             return y;
         }
     }
-
+    
+    public static Type _typeof_max(Type[] types) {
+        Type type = types[0];
+        if(type instanceof ArrayType) {
+            ArrayType arrayType = (ArrayType) type;
+            return arrayType.getElementType();
+        } else {
+            return BaseType.UNKNOWN;
+        }
+    }
+     
     /** Return the maximum of the contents of the array.
      *  @param array An array of scalar tokens.
      *  @return The largest element of the array.
@@ -734,7 +758,7 @@ public class UtilityFunctions {
      *  trace of the evaluation, including such useful information as
      *  what registered method is actually invoked.
      *  @param string The string to be parsed and evaluated.
-     *  @return A string representing an evaluating trace.
+     *  @return A string representing an evaluation trace.
      */
     public static String traceEvaluation(String string) 
             throws IllegalActionException {
