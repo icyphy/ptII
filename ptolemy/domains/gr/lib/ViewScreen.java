@@ -265,7 +265,10 @@ public class ViewScreen extends GRActor implements Placeable {
         while (branches.hasMoreElements()) {
             BranchGroup branchGroup = (BranchGroup) branches.nextElement();
             if (branchGroup.getCapability(BranchGroup.ALLOW_DETACH)) {
-                simpleUniverse.getLocale().removeBranchGraph(branchGroup);
+                if (!(branchGroup instanceof
+                            com.sun.j3d.utils.universe.ViewingPlatform)) {
+                    simpleUniverse.getLocale().removeBranchGraph(branchGroup);
+                }
             }
         }
 
@@ -394,7 +397,7 @@ public class ViewScreen extends GRActor implements Placeable {
      *  @return null
      */
     protected Node _getNodeObject() {
-        return null;
+         return null;
     }
 
     /**
