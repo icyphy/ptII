@@ -51,17 +51,10 @@ JARFILE = 	$(JPACKAGE).jar
 CLASSPATH = ../../../..
 
 JSRCS = \
-	PNAlternate.java \
 	PNExecutive.java \
 	PNInPort.java \
-	PNInterleave.java \
-	PNInterleavingExample.java \
 	PNOutPort.java \
 	PNPort.java \
-	PNPrimeExample.java \
-	PNRamp.java \
-	PNRedirect.java \
-	PNSieve.java \
 	PNStar.java \
 	PNUniverse.java 
 
