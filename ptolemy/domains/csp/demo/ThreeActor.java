@@ -65,9 +65,9 @@ public class ThreeActor {
         try {
             CompositeActor univ = new CompositeActor();
             univ.setName( "Universe");
-            Director execdir = new Director("Executive");
+            Manager manager = new Manager("Manager");
             CSPDirector localdir = new CSPDirector("Local Director");
-            univ.setExecutiveDirector(execdir);
+            univ.setManager(manager);
             univ.setDirector(localdir);
 
 	    CSPSource source = new CSPSource(univ, "Source");
@@ -83,7 +83,7 @@ public class ThreeActor {
             IORelation rel2 = (IORelation)univ.connect(out2, in2, "R2");
             //System.out.println(univ.description(1023));
             System.out.println(univ.getFullName() + " starting!");
-            univ.getExecutiveDirector().go(1);
+            univ.getManager().go(1);
         } catch (Exception e) {
             System.out.println(e.getMessage() + ": " + e.getClass().getName());
             throw new InvalidStateException(e.getMessage());

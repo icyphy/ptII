@@ -65,9 +65,9 @@ public class BasicDemo {
         try {
             CompositeActor univ = new CompositeActor();
             univ.setName( "Universe");
-            Director execdir = new Director("Executive");
-            CSPDirector localdir = new CSPDirector("Local Director");
-            univ.setExecutiveDirector(execdir);
+            Manager manager = new Manager("Manager");
+            CSPDirector localdir = new CSPDirector("CSPDirector");
+            univ.setManager(manager);
             univ.setDirector(localdir);
 
 	    CSPSource source = new CSPSource(univ, "Source");
@@ -79,7 +79,7 @@ public class BasicDemo {
             IORelation rel = (IORelation)univ.connect(out, in, "R1");
             //System.out.println(univ.description(1023));
             System.out.println(univ.getFullName() + " starting!");
-            univ.getExecutiveDirector().go(1);
+            univ.getManager().go(1);
         } catch (Exception e) {
             System.out.println(e.getMessage() + ": " + e.getClass().getName());
             throw new InvalidStateException("hello" + e.getMessage());
