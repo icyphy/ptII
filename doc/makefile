@@ -53,16 +53,14 @@ DIRS =		 internals #usersGuides
 
 ALLJSRCS = 	pn/*/*.java tcl/*.java tycho/*.java \
 			tycho/Cool_Beans/util/*.java \
-			plot/*.java \
+			ptplot/*.java \
 			pt/kernel/*.java pt/kernel/test/*.java \
-			pt/exceptions/*.java
 all: codeDoc/tree.html
 
 codeDoc/tree.html: ../pn/*/*.java ../tcl/*.java ../tycho/*.java \
 		../tycho/Cool_Beans/util/*.java \
-		../plot/*.java \
-		../pt/kernel/*.java ../pt/kernel/test/*.java \
-		../pt/exceptions/*.java
+		../ptplot/*.java \
+		../pt/kernel/*.java ../pt/kernel/test/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip:.. $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
 	@for x in codeDoc/*.html; do \
