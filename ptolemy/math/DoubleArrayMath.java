@@ -1,4 +1,4 @@
-/* 
+/*
 A library for mathematical operations on arrays of doubles.
 
 Copyright (c) 1998 The Regents of the University of California.
@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (ctsay@eecs.berkeley.edu)
+@ProposedRating Yellow (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
@@ -54,70 +54,6 @@ public class DoubleArrayMath {
   protected DoubleArrayMath() {}
 
   /////////////////////////////////////////////////////////////////////////
-  ////                         Public classes                          ////
-
-  /** Implements ArrayStringFormat to produce strings in the format used
-   *  to initialize arrays in Java. More specifically, the format
-   *  "{x[0], x[1], x[2], ... , x[n-1]}",
-   *  where x[i] is the ith element of the array.
-   */
-  public static class JavaArrayStringFormat implements
-   ArrayStringFormat {
-
-    public JavaArrayStringFormat() {}
-    
-    public String beginString() {
-      return "{";
-    }
-
-    public String complexString(Complex c) {
-      return c.toString();
-    }
-
-    public String deliminatorString() {
-      return ", ";
-    }
-
-    public String doubleString(double d) {
-      return Double.toString(d);
-    }
-
-    public String endString() {
-      return "}";
-    }
-  }
-
-  /** Implements ArrayStringFormat to produce strings in the format used
-   *  in the Ptolemy II expression language and Matlab. More specifically,
-   *  the format
-   *  "[x[0] x[1] x[2] ...  x[n-1]]",
-   */
-  public static class ExprArrayStringFormat implements
-   ArrayStringFormat {
-    public ExprArrayStringFormat() {}
-
-    public String beginString() {
-      return "[";
-    }
-
-    public String complexString(Complex c) {
-      return c.toString();
-    }
-
-    public String deliminatorString() {
-      return " ";
-    }
-
-    public String doubleString(double d) {
-      return Double.toString(d);
-    }
-
-    public String endString() {
-      return "]";
-    }
-  };
-
-  /////////////////////////////////////////////////////////////////////////
   ////                         Public methods                          ////
 
   /** Return a new array that is the element-by-element sum of the two
@@ -125,11 +61,8 @@ public class DoubleArrayMath {
    *  If the lengths of both arrays are 0, return a new array of length 0.
    *  If the two arrays do not have the same length, throw an
    *  IllegalArgumentException.
-   *  @param array1 The first array of doubles.
-   *  @param array2 The second array of doubles.
-   *  @return A new array of doubles.
    */
-  public final static double[] add(double[] array1, double[] array2) {
+  public static final double[] add(double[] array1, double[] array2) {
     int length = _commonLength(array1, array2, "DoubleArrayMath.add");
     double[] retval = new double[length];
     for (int i = 0; i < length; i++) {
@@ -140,10 +73,8 @@ public class DoubleArrayMath {
 
   /** Return a new array that is the absolute value of the input array.
    *  If the length of the array is 0, return a new array of length 0.
-   *  @param array An array of doubles.
-   *  @return A new array of doubles.
    */
-  public final static double[] abs(double[] array) {
+  public static final double[] abs(double[] array) {
     double[] retval = new double[array.length];
     for (int i = 0; i < array.length; i++) {
         retval[i] = Math.abs(array[i]);
@@ -152,18 +83,20 @@ public class DoubleArrayMath {
   }
 
   /** Return a new array that is the result of appending array2 to the end
-   *  of array1.
-   *  @param array1 The first array of doubles.
-   *  @param array2 The second array of doubles, which is appended.
-   *  @return A new array of doubles.
+   *  of array1. This method simply calls
+   *  append(array1, 0, array1.length, array2, 0, array2.length)
    */
   public static final double[] append(double[] array1, double[] array2) {
     return append(array1, 0, array1.length, array2, 0, array2.length);
   }
 
-  /** Return a new array that is the result of appending width2 elements
-   *  of array2, starting from the array1[idx2] to width1 elements of array1,
+  /** Return a new array that is the result of appending length2 elements
+   *  of array2, starting from the array1[idx2] to length1 elements of array1,
    *  starting from array1[idx1].
+   *  Appending empty arrays is supported. In that case, the corresponding
+   *  idx may be any number. Allow System.arraycopy() to throw array access
+   *  exceptions if idx .. idx + length - 1 are not all valid array indices,
+   *  for both of the arrays.
    *  @param array1 The first array of doubles.
    *  @param idx1 The starting index for array1.
    *  @param length1 The number of elements of array1 to use.
@@ -172,12 +105,17 @@ public class DoubleArrayMath {
    *  @param length2 The number of elements of array2 to append.
    *  @return A new array of doubles.
    */
-  public final static double[] append(double[] array1, int idx1,
+  public static final double[] append(double[] array1, int idx1,
     int length1, double[] array2, int idx2, int length2) {
     double[] retval = new double[length1 + length2];
 
-    System.arraycopy(array1, idx1, retval, 0, length1);
-    System.arraycopy(array2, idx2, retval, length1, length2);
+    if (length1 > 0) {
+       System.arraycopy(array1, idx1, retval, 0, length1);
+    }
+
+    if (length2 > 0) {
+       System.arraycopy(array2, idx2, retval, length1, length2);
+    }
 
     return retval;
   }
@@ -191,7 +129,7 @@ public class DoubleArrayMath {
    *  @param array2 The second array of doubles.
    *  @return A new array of doubles.
    */
-  public final static double[] divide(double[] array1, double[] array2) {
+  public static final double[] divide(double[] array1, double[] array2) {
       int length = _commonLength(array1, array2, "DoubleArrayMath.divide");
       double[] retval = new double[length];
       for (int i = 0; i < length; i++) {
@@ -204,11 +142,8 @@ public class DoubleArrayMath {
    *  If the lengths of the array are both 0, return 0.0.
    *  If the two arrays do not have the same length, throw an
    *  IllegalArgumentException.
-   *  @param array1 The first array of doubles.
-   *  @param array2 The first array of doubles.
-   *  @return A double.
    */
-  public final static double dotProduct(double[] array1, double[] array2) {
+  public static final double dotProduct(double[] array1, double[] array2) {
     int length = _commonLength(array1, array2, "DoubleArrayMath.dotProduct");
 
     double sum = 0.0;
@@ -231,7 +166,7 @@ public class DoubleArrayMath {
    *  @param top The top limit.
    *  @return A new array with values in the range [bottom, top].
    */
-  public final static double[] limit(double[] array, double bottom,
+  public static final double[] limit(double[] array, double bottom,
     double top) {
     double[] result = new double[array.length];
     for (int i = 0; i < array.length; i++) {
@@ -255,11 +190,8 @@ public class DoubleArrayMath {
    *  If the lengths of both arrays are 0, return a new array of length 0.
    *  If the two arrays do not have the same length, throw an
    *  IllegalArgumentException.
-   *  @param array1 The first array of doubles.
-   *  @param array2 The second array of doubles.
-   *  @return A new array of doubles.
    */
-  public final static double[] multiply(double[] array1, double[] array2) {
+  public static final double[] multiply(double[] array1, double[] array2) {
     int length = _commonLength(array1, array2, "DoubleArrayMath.multiply");
     double[] retval = new double[length];
     for (int i = 0; i < length; i++) {
@@ -271,10 +203,8 @@ public class DoubleArrayMath {
   /** Return a new array of doubles that is formed by raising each
    *  element to the specified exponent.
    *  If the length of the array is 0, return a new array of length 0.
-   *  @param array An array of doubles.
-   *  @return A new array of doubles.
    */
-  public final static double[] pow(double[] array, double exponent) {
+  public static final double[] pow(double[] array, double exponent) {
     int length = array.length;
     double[] retval = new double[length];
 
@@ -290,8 +220,9 @@ public class DoubleArrayMath {
    *  resize(array, newLength, 0)
    *  @param array An array of doubles.
    *  @param newLength The desired length of the output array.
+   *  @return A new array of doubles of length newLength.
    */
-  public final static double[] resize(double[] array, int newLength) {
+  public static final double[] resize(double[] array, int newLength) {
      return resize(array,  newLength, 0);
   }
 
@@ -309,13 +240,14 @@ public class DoubleArrayMath {
    *  @param array An array of doubles.
    *  @param newLength The desired length of the output array.
    *  @param startIdx The starting index for the input array.
+   *  @return A new array of doubles of length newLength.
    */
-  public final static double[] resize(double[] array, int newLength,
+  public static final double[] resize(double[] array, int newLength,
    int startIdx) {
 
     double[] retval = new double[newLength];
     int copySize = Math.min(newLength, array.length - startIdx);
-    if ((startIdx >= array.length) && (copySize >= 0)) {
+    if ((startIdx >= array.length) && (copySize > 0)) {
        throw new IllegalArgumentException(
         "ptolemy.math.DoubleArrayMath.resize() : input array size is " +
         "less than the start index");
@@ -329,13 +261,10 @@ public class DoubleArrayMath {
   }
 
   /** Return a new array of doubles produced by scaling the input
-   *  array elements by a constant.
+   *  array elements by scalefactor.
    *  If the length of the array is 0, return a new array of length 0.
-   *  @param array An array of doubles.
-   *  @param scalefactor A double.
-   *  @return A new array of doubles.
    */
-  public final static double[] scale(double[] array, double scalefactor) {
+  public static final double[] scale(double[] array, double scalefactor) {
     double[] retval = new double[array.length];
     for (int i = 0; i < array.length; i++) {
         retval[i] = scalefactor * array[i];
@@ -350,7 +279,7 @@ public class DoubleArrayMath {
    *  @param array2 The second array of doubles.
    *  @return A new array of doubles.
    */
-  public final static double[] subtract(double[] array1, double[] array2) {
+  public static final double[] subtract(double[] array1, double[] array2) {
     int length = _commonLength(array1, array2, "DoubleArrayMath.subtract");
     double[] retval = new double[length];
 
@@ -395,7 +324,7 @@ public class DoubleArrayMath {
   /** Return a new array that is formed by converting the floats in
    *  the argument to doubles.
    *  If the length of the argument array is 0, return a new array of length 0.
-   *  @param array An array of shorts.
+   *  @param array An array of floats.
    *  @return A new array of doubles.
    */
   public static final double[] toDoubleArray(float[] array) {
@@ -408,56 +337,47 @@ public class DoubleArrayMath {
     return retval;
   }
 
-  /** Return a new String in the format "{x[0], x[1], x[2], ... , x[n-1]}",
-   *  where x[i] is the ith element of the array.
-   *  @param array An array of doubles.
-   *  @return A new String representing the contents of the array.
+  /** Return a new String representing the array, formatted as
+   *  in Java array initializers.
    */
-  public final static String toString(double[] array) {
-    return toString(array, javaASFormat);
+  public static final String toString(double[] array) {
+    return toString(array, ArrayStringFormat.javaASFormat);
   }
 
   /** Return a new String representing the array, formatted as
    *  specified by the ArrayStringFormat argument.
    *  To get a String in the Ptolemy expression language format,
-   *  call this method with DoubleArrayMath.exprASFormat as the
+   *  call this method with ArrayStringFormat.exprASFormat as the
    *  format argument.
-   *  @param array An array of doubles.
-   *  @return A new String representing the contents of the array.
    */
-  public final static String toString(double[] array,
+  public static final String toString(double[] array,
    ArrayStringFormat format) {
     int length = array.length;
     StringBuffer sb = new StringBuffer();
 
-    sb.append(format.beginString());
+    sb.append(format.vectorBeginString());
 
     for (int i = 0; i < length; i++) {
 
         sb.append(format.doubleString(array[i]));
 
         if (i < (length - 1)) {
-           sb.append(format.deliminatorString());
+           sb.append(format.elementDeliminatorString());
         }
     }
 
-    sb.append(format.endString());
+    sb.append(format.vectorEndString());
 
     return new String(sb);
   }
-
 
   /** Return true if all the absolute differences between corresponding
    *  elements of array1 and array2 are all less than or equal to maxError.
    *  Otherwise return false.
    *  If the two arrays do not have the same length, throw an
    *  IllegalArgumentException.
-   *  @param array1 An array of doubles.
-   *  @param array2 An array of doubles.
-   *  @param maxError A double.
-   *  @return A boolean.
    */
-  public final static boolean within(double[] array1, double[] array2,
+  public static final boolean within(double[] array1, double[] array2,
    double maxError) {
     int length = _commonLength(array1, array2, "DoubleArrayMath.within");
 
@@ -468,29 +388,14 @@ public class DoubleArrayMath {
     }
     return true;
   }
-
-  /////////////////////////////////////////////////////////////////////////
-  ////                         Public fields                           ////
-
-  /** A static instance of JavaArrayStringFormat.
-   *  @see JavaArrayStringFormat
-   */
-  public static final ArrayStringFormat javaASFormat =
-   new JavaArrayStringFormat();
-
-  /** A static instance of ExprArrayStringFormat.
-   *  @see ExprArrayStringFormat
-   */
-  public static final ArrayStringFormat exprASFormat =
-   new ExprArrayStringFormat();
-
+  
   /////////////////////////////////////////////////////////////////////////
   //    protected methods
 
   /** Throw an exception if the array is null or length 0.
    *  Otherwise return the length of the array.
    *  @param array An array of doubles.
-   *  @param methodName A String representing the method name of the caller, 
+   *  @param methodName A String representing the method name of the caller,
    *  without parentheses.
    *  @return The length of the array.
    */

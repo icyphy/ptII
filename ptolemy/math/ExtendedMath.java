@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -47,7 +47,7 @@ import java.lang.reflect.*;
  * @version $Id$
  */
 
-public final class ExtendedMath {
+public class ExtendedMath {
 
     /** Return the inverse hyperbolic cosine of the argument.
      *  The argument is required to be greater than one, or an
@@ -56,7 +56,7 @@ public final class ExtendedMath {
      *  The returned value is positive.
      *  FIXME: Is the range of the argument correct?
      */
-    public static double acosh(double x) {
+    public static final double acosh(double x) {
         if (x < 1) {
             throw new IllegalArgumentException("ExtendedMath.acosh: Argument "
                     + "is required to be greater than 1.  Got " + x);
@@ -67,7 +67,7 @@ public final class ExtendedMath {
     /** Return the inverse hyperbolic sine of the argument.
      *  FIXME: What is the assumed range of the argument?
      */
-    public static double asinh(double x) {
+    public static final double asinh(double x) {
         double result;
         if (x<0) {
             result = -Math.log( -x+Math.sqrt(x*x+1) );
@@ -81,7 +81,7 @@ public final class ExtendedMath {
     /** Return the hyperbolic cosine of the argument.
      *  FIXME: What is the assumed range of the argument?
      */
-    public static double cosh(double x) {
+    public static final double cosh(double x) {
         return (Math.exp(x) + Math.exp(-x))/2;
     }
 
@@ -89,7 +89,7 @@ public final class ExtendedMath {
      *  @param x A double.
      *  @return A double.
      */
-    public static double log10(double x) {
+    public static final double log10(double x) {
         return Math.log(x) * _ONEOVERLN10;
     }
 
@@ -97,31 +97,37 @@ public final class ExtendedMath {
      *  @param x A double.
      *  @return A double.
      */
-    public static double log2(double x) {
+    public static final double log2(double x) {
         return Math.log(x) * _ONEOVERLN2;
     }
 
     /** Return the hyperbolic sine of the argument.
      *  FIXME: What is the assumed range of the argument?
      */
-    public static double sinh(double x) {
+    public static final double sinh(double x) {
         return (Math.exp(x) - Math.exp(-x))/2;
     }
 
     /** If the argument is less than zero, return -1, otherwise
      *  return 1.
      */
-    public static int sgn(double x) {
+    public static final int sgn(double x) {
         if (x<0) return -1;
         else return 1;
     }
 
-    private final static double _ONEOVERLN2  = 1.0 / Math.log(2.0);
-    private final static double _ONEOVERLN10 = 1.0 / Math.log(10.0);
+    private static final double _ONEOVERLN2  = 1.0 / Math.log(2.0);
+    private static final double _ONEOVERLN10 = 1.0 / Math.log(10.0);
 
+    /** sqrt(2) */
     public static final double SQRT_2 = Math.sqrt(2.0);
+
+    /** 1 / sqrt(2) */
     public static final double ONE_OVER_SQRT_2 = 1.0 / SQRT_2;
 
+    /** PI / 2 */
     public static final double PI_OVER_2 = Math.PI * 0.5;
+
+    /** PI / 4 */
     public static final double PI_OVER_4 = Math.PI * 0.25;
 }

@@ -334,8 +334,16 @@ public final class Complex implements Cloneable, Serializable {
 
     /** Return the magnitude or absolute value of this complex number.
      *  @return A non-negative number.
+     *  @deprecated
      */
     public double mag() {
+        return magnitude();
+    }
+
+    /** Return the magnitude or absolute value of this complex number.
+     *  @return A non-negative number.
+      */
+    public double magnitude() {
         return Math.sqrt(magSquared());
     }
 
@@ -344,10 +352,22 @@ public final class Complex implements Cloneable, Serializable {
      *  to compute than the magnitude (which is the square root of this
      *  result).
      *  @return A non-negative number.
+     *  @deprecated
      */
     public double magSquared() {
+        return magnitudeSquared();
+    }
+
+    /** Return the square of the magnitude of this complex number.
+     *  This is provided for efficiency, since it is considerably easier
+     *  to compute than the magnitude (which is the square root of this
+     *  result).
+     *  @return A non-negative number.
+     */
+    public double magnitudeSquared() {
         return (real*real) + (imag*imag);
     }
+
 
     /** Multiply this complex number by the specified complex number.
      *  @param w A complex number.

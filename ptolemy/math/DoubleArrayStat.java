@@ -26,7 +26,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (ctsay@eecs.berkeley.edu)
+@ProposedRating Yellow (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
@@ -105,7 +105,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     /** Return the geometric mean of the elements in the array. This
-     *  is defined to be the Nth root of the product of the elements 
+     *  is defined to be the Nth root of the product of the elements
      *  in the array, where N is the length of the array.
      *  This method is only useful for arrays of non-negative numbers. If
      *  the product of the elements in the array is negative, throw an
@@ -147,7 +147,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
         int length = _nonZeroLength(array, "DoubleArrayStat.min");
 
         double minElement = array[0];
-        
+
         for (int i = 1; i < length; i++) {
             minElement = Math.min(array[i], minElement);
         }
@@ -159,8 +159,30 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @param array An array of doubles.
      *  @return A double.
      */
-    /* FIXME, have a version that normalized by length-1 */
     public static double variance(double[] array) {
+      return variance(array, false);
+    }
+
+    /** Return the variance of the elements in the array.
+     *  The variance is computed as follows :
+     *  <p>
+     *  <pre>
+     *  variance = (sum(X<sup>2</sup>) - sum(X)<sup>2</sup>) / N
+     *  </pre>
+     *  <p>
+     *  The sample variance is computed as follows :
+     *  <p>
+     *  <pre>
+     *  variance<sub>sample</sub> = (sum(X<sup>2</sup>) - sum(X)<sup>2</sup>) / (N - 1)
+     *  </pre>
+     *  <p>
+     *  where E[X] denotes the expectation of X :
+     *
+     *  Return 0.0 if the length of the array is 0.
+     *  @param array An array of doubles.
+     *  @return A double.
+     */
+    public static double variance(double[] array, boolean sample) {
         int length = array.length;
         double ex2 = 0.0;
         double sum = 0.0;
@@ -170,9 +192,9 @@ public class DoubleArrayStat extends DoubleArrayMath {
         }
         double retval = ex2 - (sum * sum);
 
-        return retval / (double) length;
+        double norm = sample ? (length - 1) : length;
+        return retval / (double) norm;
     }
-
 
     /** Return the standard deviation of the elements in the array.
      *  Return 0.0 if the length of the array is 0.
@@ -180,7 +202,29 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @return A double.
      */
     public static double standardDeviation(double[] array) {
-        return Math.sqrt(variance(array));
+        return Math.sqrt(variance(array, false));
+    }
+
+    /** Return the standard deviation of the elements in the array.
+     *  The standard deviation is computed as follows :
+     *  <p>
+     *  <pre>
+     *  stdDev = sqrt(variance)
+     *  </pre>
+     *  <p>
+     *  The sample standard deviation is computed as follows
+     *  <p>
+     *  <pre>
+     *  stdDev = sqrt(variance<sub>sample</sub>)
+     *  </pre>
+     *  <p>
+     *  Return 0.0 if the length of the array is 0.
+     *  @param array An array of doubles.
+     *  @param sample
+     *  @return A double.
+     */
+    public static double standardDeviation(double[] array, boolean sample) {
+        return Math.sqrt(variance(array, sample));
     }
 
     /** Return the cross-correlation of two arrays at a certain lag value,
@@ -191,7 +235,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @param N An integer indicating the  number of samples to sum over.
      *  This must be non-negative, but large numbers are ok because this
      *  routine will not overrun reading of the arrays.
-     *  @param lag An integer indicating the lag value (may be negative). 
+     *  @param lag An integer indicating the lag value (may be negative).
      *  @return A double, Rxy[lag].
      */
     public static double crossCorrelationAt(double[] x, double[] y,
@@ -369,7 +413,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  <p>
      *   D(p||q) = - sum (p[x] * log<sup>2</sup>(p[x]/q[x]))
      *  </p> 
-     *  Throw an IllegalArgumentException if either array has length 0. 
+     *  Throw an IllegalArgumentException if either array has length 0.
      *  If the two arrays do not have the same length, throw an 
      *  IllegalArgumentException.
      *  @param p An array of doubles representing the first pmf.
@@ -484,7 +528,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return a new array of Poisson random variables (as doubles) with 
      *  a given mean. The number of elements to allocate is given by N.
-     *  This algorithm is from [1]. 
+     *  This algorithm is from [1].
      *  @param mean A double.
      *  @param N An int indicating how many elements to generate.
      *  @return A new array of doubles.

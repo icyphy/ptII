@@ -30,7 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (ctsay@eecs.berkeley.edu)
+@ProposedRating Yellow (ctsay@eecs.berkeley.edu)
 @AcceptedRating Red (ctsay@eecs.berkeley.edu)
 */
 
@@ -590,42 +590,49 @@ public class MatrixMath {
         return retval;
     }
 
-    /** Return the string representation of this matrix.
-     *  The format of the string representing an m x n matrix is the following :
-     *  "{" row(0) "," row(1) "," ... row(m-1) "}"; each row i is in the format :
-     *  "{" matrix[i][0] "," matrix[i][1] "," ... "," matrix[i][n-1] "}", where
-     *  n is the number of
-     *  @return The string representing the matrix.
-     *  @param matrix A matrix of doubles.
-     */
-    public static final String toString(double[][] matrix) {
-        StringBuffer sb = new StringBuffer();
-        sb.append('{');
+  /** Return a new String representing the matrix, formatted as
+   *  in Java array initializers.
+   */
+  public static final String toString(double[][] matrix) {
+    return toString(matrix, ArrayStringFormat.javaASFormat);
+  }
+
+  /** Return a new String representing the matrix, formatted as
+   *  specified by the ArrayStringFormat argument.
+   *  To get a String in the Ptolemy expression language format,
+   *  call this method with ArrayStringFormat.exprASFormat as the
+   *  format argument.
+   */
+  public static final String toString(double[][] matrix,
+   ArrayStringFormat asf) {
+    StringBuffer sb = new StringBuffer();
+    sb.append(asf.matrixBeginString());
 
         for (int i = 0; i < _rows(matrix); i++) {
 
             // Replace with ArrayMath.toString(matrix[i]) when it gets in line
 
-            sb.append('{');
+            sb.append(asf.vectorBeginString());
             for (int j = 0; j < _columns(matrix); j++) {
-               sb.append(Double.toString(matrix[i][j]));
+               sb.append(asf.doubleString(matrix[i][j]));
 
                if (j < (_columns(matrix) - 1)) {
-                  sb.append(',');
+                  sb.append(asf.elementDeliminatorString());
                }
             }
 
-            sb.append('}');
+            sb.append(asf.vectorEndString());
 
             if (i < (_rows(matrix) - 1)) {
-               sb.append(',');
+               sb.append(asf.vectorDeliminatorString());
             }
         }
 
-        sb.append('}');
+        sb.append(asf.matrixEndString());
 
         return new String(sb);
     }
+
 
   /** Return the trace of a square matrix, which is the sum of the
    *  diagonal entries a<sub>11</sub> + <sub>a22</sub> + ... + a<sub>nn</sub>
