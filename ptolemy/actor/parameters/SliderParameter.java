@@ -31,18 +31,19 @@
 package ptolemy.actor.parameters;
 
 import ptolemy.data.IntToken;
-import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// SliderParameter
 /**
 This is a parameter with type integer with a limited range.
-Its value is a record token with three fields, <i>min</i>, <i>max</i>,
-and <i>current</i>.  These specify the minimum and maximum values
-as well as the current value.  A user interface will typically use this
+Its value is an integer token that is constrained to lie
+within the boundaries specified by its two parameters,
+<i>min</i> and <i>max</i>.  These specify the minimum and maximum values.
+A user interface will typically use this
 information to represent the parameter value using a slider.
 <p>
 @author Edward A. Lee
@@ -67,16 +68,68 @@ public class SliderParameter extends Parameter {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        setExpression("{min = 0, max = 100, current = 100}");
-        setTypeEquals(getToken().getType());
+        min = new Parameter(this, "min", new IntToken(0));
+        max = new Parameter(this, "max", new IntToken(100));
+
+        setToken(new IntToken(50));
+        setTypeEquals(BaseType.INT);
+
+	_attachText("_iconDescription", "<svg>\n"
+                + "<rect x=\"-30\" y=\"-2\" "
+                + "width=\"60\" height=\"4\" "
+                + "style=\"fill:white\"/>\n"
+                + "<rect x=\"15\" y=\"-10\" "
+                + "width=\"4\" height=\"20\" "
+                + "style=\"fill:grey\"/>\n"
+                + "</svg>\n");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** The maximum value. */
+    public Parameter max;
+
+    /** The minimum value. */
+    public Parameter min;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the current value of the slider.
-     *  Contrast this to getToken(), which returns the record containing
-     *  the min, max, and current value.
+    /** React to a change in an attribute by ensuring that the current
+     *  value remains within the range given by <i>min</i> and <i>max</i>.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (should not be thrown).
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == max && !_inCheck) {
+            try {
+                _inCheck = true;
+                int maxValue = ((IntToken)max.getToken()).intValue();
+                if (getCurrentValue() > maxValue) {
+                    setToken(max.getToken());
+                }
+            } finally {
+                _inCheck = false;
+            }
+        } else if (attribute == min  && !_inCheck) {
+            try {
+                _inCheck = true;
+                int minValue = ((IntToken)min.getToken()).intValue();
+                if (getCurrentValue() < minValue) {
+                    setToken(min.getToken());
+                }
+            } finally {
+                _inCheck = false;
+            }
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
+    /** Return the current value of the slider as an integer.
      *  @return The current slider value.
      *  @exception IllegalActionException If the expression cannot
      *   be parsed or cannot be evaluated, or if the result of evaluation
@@ -84,12 +137,10 @@ public class SliderParameter extends Parameter {
      *   and there are variables that depend on this one.
      */
     public int getCurrentValue() throws IllegalActionException {
-        return ((IntToken)((RecordToken)getToken()).get("current")).intValue();
+        return ((IntToken)getToken()).intValue();
     }
 
-    /** Return the maximum value of the slider.
-     *  Contrast this to getToken(), which returns the record containing
-     *  the min, max, and current value.
+    /** Return the maximum value of the slider as an integer.
      *  @return The maximum slider value.
      *  @exception IllegalActionException If the expression cannot
      *   be parsed or cannot be evaluated, or if the result of evaluation
@@ -97,20 +148,18 @@ public class SliderParameter extends Parameter {
      *   and there are variables that depend on this one.
      */
     public int getMaxValue() throws IllegalActionException {
-        return ((IntToken)((RecordToken)getToken()).get("max")).intValue();
+        return ((IntToken)max.getToken()).intValue();
     }
 
     /** Return the minimum value of the slider.
-     *  Contrast this to getToken(), which returns the record containing
-     *  the min, max, and current value.
-     *  @return The maximum slider value.
+     *  @return The minimum slider value.
      *  @exception IllegalActionException If the expression cannot
      *   be parsed or cannot be evaluated, or if the result of evaluation
      *   violates type constraints, or if the result of evaluation is null
      *   and there are variables that depend on this one.
      */
     public int getMinValue() throws IllegalActionException {
-        return ((IntToken)((RecordToken)getToken()).get("min")).intValue();
+        return ((IntToken)min.getToken()).intValue();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -125,31 +174,45 @@ public class SliderParameter extends Parameter {
      *  the specified token into one of the appropriate type, if needed,
      *  rather than changing the type.
      *  @param newToken The new value of the variable.
-     *  @exception IllegalActionException If the token type is not
-     *   a properly structured record, or if the current value is outside
-     *   of the specified range, or if you are attempting
-     *   to set to null a variable that has value dependents.
+     *  @exception IllegalActionException If the token is not an IntToken
+     *   or its value is out of range.
      */
     protected void _setTokenAndNotify(Token newToken)
             throws IllegalActionException {
-        if (newToken instanceof RecordToken) {
-            Token min = ((RecordToken)newToken).get("min");
-            Token max = ((RecordToken)newToken).get("max");
-            Token current = ((RecordToken)newToken).get("current");
-            if (min instanceof IntToken
-                    && max instanceof IntToken
-                    && current instanceof IntToken) {
-                int currentValue = ((IntToken)current).intValue();
-                if (((IntToken)min).intValue() <= currentValue
-                       && currentValue <= ((IntToken)max).intValue()) {
+        if (_inCheck) {
+            super._setTokenAndNotify(newToken);
+            return;
+        }
+        if (newToken instanceof IntToken) {
+            try {
+                _inCheck = true;
+                int minValue = ((IntToken)min.getToken()).intValue();
+                int maxValue = ((IntToken)max.getToken()).intValue();
+                int currentValue = ((IntToken)newToken).intValue();
+                if (minValue <= currentValue && currentValue <= maxValue) {
                     // All is OK.
                     super._setTokenAndNotify(newToken);
                     return;
                 }
+                throw new IllegalActionException(this,
+                        "Value is required to lie between "
+                        + min
+                        + " and "
+                        + max
+                        + ".");
+            } finally {
+                _inCheck = false;
             }
         }
         throw new IllegalActionException(this,
-                "Value is required to be a record of form "
-                + "{min = m, max = M, current = c}, where min <= c <= max.");
+                "Value is required to be an integer token.");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       private variables                   ////
+
+    /** Indicator that we are in the middle of a check, so skip
+     *  circular dependency.
+     */
+    private boolean _inCheck = false;
 }
