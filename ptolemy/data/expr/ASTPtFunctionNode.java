@@ -187,27 +187,12 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 	    } else if (child instanceof FixToken) {
 		argValues[i] = ((FixToken)child).fixValue();
 		argTypes[i] = argValues[i].getClass();;
-	    } else if (child instanceof IntMatrixToken) {
-		argValues[i] = child;
-		argTypes[i] = argValues[i].getClass();;
-	    } else if (child instanceof DoubleMatrixToken) {
-		argValues[i] = child;
-		argTypes[i] = argValues[i].getClass();;
-	    } else if (child instanceof ComplexMatrixToken) {
-		argValues[i] = child;
-		argTypes[i] = argValues[i].getClass();;
-	    } else if (child instanceof FixMatrixToken) {
-		argValues[i] = child;
-		argTypes[i] = argValues[i].getClass();;
 	    } else {
-		throw new IllegalActionException("FunctionNode: "+
-                        "Invalid argument  type, valid types are: " +
-			"boolean, complex, fixpoint, double, int, long, " +
-                        "String, IntMatrixToken, DoubleMatrixToken, " +
-                        "ComplexMatrixToken, FixMatrixToken. " );
+		argValues[i] = child;
+		argTypes[i] = argValues[i].getClass();;
 	    }
 	    // FIXME: what is the TYPE that needs to be filled
-	    // in in the argValues[]. Current it is from the
+	    // in the argValues[]. Current it is from the
 	    // child.
 	}
 	// Now have the arguments converted, look through all the

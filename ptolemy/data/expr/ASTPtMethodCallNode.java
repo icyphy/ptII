@@ -35,7 +35,15 @@ Created : May 1998
 package ptolemy.data.expr;
 
 import ptolemy.data.Token;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.FixToken;
+import ptolemy.data.ComplexToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.LongToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.BooleanToken;
+import ptolemy.math.Complex;
+import ptolemy.math.FixPoint;
 import ptolemy.kernel.util.*;
 import java.lang.reflect.*;
 
@@ -114,14 +122,74 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
                 argTypes[i-1] = Class.forName("ptolemy.data.Token");
             }
             Class destTokenClass = _childTokens[0].getClass();
-            Method m = destTokenClass.getMethod(_methodName, argTypes);
+	    Method m = null;
+	    // first try to find a method whose arguments are all of type
+	    // ptolemy.data.Token
+	    try {
+		m = destTokenClass.getMethod(_methodName, argTypes);
+	    } catch (java.lang.NoSuchMethodException ex) {
+		// ignore
+	    }
+	    if (m == null) {
+		for (int i = 0; i < num - 1; i++) {
+		    ptolemy.data.Token child = _childTokens[i + 1];
+		    if (child instanceof DoubleToken) {
+			argValues[i] =
+			        new Double(((DoubleToken)child).doubleValue());
+			argTypes[i] = Double.TYPE;
+		    } else if (child instanceof IntToken) {
+			argValues[i] =
+			        new Integer(((IntToken)child).intValue());
+			argTypes[i] = Integer.TYPE;
+		    } else if (child instanceof LongToken) {
+			argValues[i] =
+			        new Long(((LongToken)child).longValue());
+			argTypes[i] = Long.TYPE;
+		    } else if (child instanceof StringToken) {
+			argValues[i] =
+			        new String(((StringToken)child).stringValue());
+			argTypes[i] = argValues[i].getClass();
+		    } else if (child instanceof BooleanToken) {
+			argValues[i] =
+			    new Boolean(((BooleanToken)child).booleanValue());
+			argTypes[i] = Boolean.TYPE;
+		    } else if (child instanceof ComplexToken) {
+			argValues[i] = ((ComplexToken)child).complexValue();
+			argTypes[i] = argValues[i].getClass();
+		    } else if (child instanceof FixToken) {
+			argValues[i] = ((FixToken)child).fixValue();
+			argTypes[i] = argValues[i].getClass();
+		    } else {
+			argValues[i] = child;
+			argTypes[i] = argValues[i].getClass();
+		    }
+		}
+		m = destTokenClass.getMethod(_methodName, argTypes);
+	    }
             Object result = m.invoke(_childTokens[0], argValues);
             // Method call can only return ptolemy.data.Token, we want?
             if (result instanceof ptolemy.data.Token) {
                 return (ptolemy.data.Token)result;
-            } else {
+            } else if (result instanceof Double) {
+		return new DoubleToken(((Double)result).doubleValue());
+	    } else if (result instanceof Integer) {
+		return new IntToken(((Integer)result).intValue());
+	    } else if (result instanceof Long) {
+		return new LongToken(((Long)result).longValue());
+	    } else if (result instanceof String) {
+		return new StringToken((String)result);
+	    } else if (result instanceof Boolean) {
+		return new BooleanToken(((Boolean)result).booleanValue());
+	    } else if (result instanceof Complex) {
+		return new ComplexToken((Complex)result);
+	    } else if (result instanceof FixPoint) {
+		return new FixToken((FixPoint)result);
+	    } else {
                 throw new IllegalActionException(
-                        "Method calls on Token must return a Token");
+                        "Result of method call is not of a supported type: "
+			+ result.getClass().toString() + " - supported types "
+			+ "are: boolean, complex, fixpoint, double, int, "
+			+ "long, String, and ptolemy.data.Token.");
             }
         } catch (java.lang.NoSuchMethodException ex) {
             // The detailed message of the caught exception is included in
@@ -148,7 +216,7 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
                 sb.append(", " + _childTokens[i].toString());
             }
         }
-        return  "Function " + _methodName + "(" + sb + ") cannot" +
+        return "Method " + _methodName + "() cannot" +
             " be executed with given arguments, on ptTokens of " +
             "type " + _childTokens[0].getClass().getName() + ": " +
             ex.getMessage();
