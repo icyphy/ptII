@@ -44,6 +44,8 @@ import java.util.Enumeration;
 import collections.LinkedList;
 import ptolemy.domains.fsm.*;
 import ptolemy.domains.fsm.kernel.util.VariableList;
+import ptolemy.domains.sdf.kernel.*;
+import ptolemy.actor.sched.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// HDFFSMController
@@ -149,8 +151,16 @@ public class HDFFSMController  extends FSMController implements TypedActor {
         return (FSMTransition)source.createTransitionTo(dest);
     }
 
+    /** Initialize the controller. Initialize the number of
+     *  times fire() has been called in the current iteration
+     *  of the current HDF/SDF schedule of the graph containing
+     *  this FSM to 0.
+     *  FIXME: This code should be in the director.
+     */
     public void initialize() throws IllegalActionException {
-        // FIXME: What should this do?
+	// Initialize the current firing count in the current
+	// iteration of the current static schedule to 0.
+	currentIterFireCount = 0;
     }
 
     public Object clone(Workspace ws) throws CloneNotSupportedException {
@@ -226,6 +236,13 @@ public class HDFFSMController  extends FSMController implements TypedActor {
      */
     public void fire() throws IllegalActionException {
 	System.out.println("FSMController: fire()");
+
+	// Increment current firing count. This is the number of
+	// times the current refining HDF actor has been fired
+	// in the current iteration of the current static schedule
+	// of the SDF/HDF graph containing this FSM.
+	currentIterFireCount++;
+
         _takenTransition = null;
         //_setInputVars();
 	//System.out.println("FSMController:  fire(): finished _setInputVars();");
@@ -234,10 +251,10 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 	
 	// Check if the guard token is null. If the guard token is not
 	// null, then this means that a token(s) was successfully read
-	// from the single input port of this controller's container. This
+	// from the input port(s) of this controller's container. This
 	// means it is safe to fire the refinment, since token(s) will
 	// be available to it.
-        if (((HDFFSMDirector)getDirector()).t != null) {
+        //if (((HDFFSMDirector)getDirector()).t != null) {
             
 	    
 	    /** Set the value of the local input status variables to ABSENT.
@@ -251,13 +268,13 @@ public class HDFFSMController  extends FSMController implements TypedActor {
                 currentRefinement().fire();
             }
 
-            // Evaluate the nonpreemptive transitions.
+            // Evaluate the transitions.
             Enumeration nonPreTrans = _currentState.getNonPreemptiveTrans();
             while (nonPreTrans.hasMoreElements()) {
                 trans = (FSMTransition)nonPreTrans.nextElement();
 		System.out.println("FSMController:  fire(): transistion name: " + trans.getFullName());
                 if (trans.isEnabled()) {
-		    System.out.println("FSMController:  fire(): cccc");
+		    System.out.println("FSMController:  fire(): transition enabled");
                     if (_takenTransition != null) {
                         // Nondeterminate transition!
                         //System.out.println("Nondeterminate transition!");
@@ -266,7 +283,7 @@ public class HDFFSMController  extends FSMController implements TypedActor {
                     }
                 }
             }
-        }
+
 	System.out.println("FSMController:  fire(): ***********");
         if (_takenTransition != null) {
             _outputTriggerActions(_takenTransition.getTriggerActions());
@@ -373,8 +390,6 @@ public class HDFFSMController  extends FSMController implements TypedActor {
     }
 
 
-    // newRelation
-    // Should return an FSMTransition?
 
 
     /** Return a new receiver of a type compatible with the director.
@@ -497,46 +512,112 @@ public class HDFFSMController  extends FSMController implements TypedActor {
 
     /** Change state according to the enabled transition determined
      *  from last fire.
+     *  FIXME: Move this code into the local director's postfire().
      *  @return True, the execution can continue into the next iteration.
      *  @exception IllegalActionException If the refinement of the state
      *   transitioned into cannot be initialized.
      */
     public boolean postfire() throws IllegalActionException {
-        if (_takenTransition == null) {
-            // No transition is enabled when last fire. FSMController does not
-            // change state. Note this is different from when a transition
-            // back to the current state is taken.
-            return true;
-        }
+	// Check if the current iteration of the HDF/SDF graph in
+	// which this FSM refines has completed yet. The
+	// iteration is complete iff the current refinement has
+	// been fired the number of times specified by the current
+	// static schedule of the HDF/SDF graph in which this FSM
+	// refines.
+	
+	// Get the HDF/SDF schedule.
+	CompositeActor container = (CompositeActor)getContainer();
+	if (_debugging) _debug("Name of HDF composite acotr: " +
+			       ((Nameable)container).getName());
+	String hdfCompositeActName = ((Nameable)container).getName();
+	
+	// Get the SDF Director.
+	SDFDirector sdfDir = (SDFDirector)(container.getExecutiveDirector());
+	Scheduler s = sdfDir.getScheduler();
+	if (s == null)
+	    throw new IllegalActionException("Attempted to postfire " +
+					     "FSM system with no SDF scheduler");
+	Enumeration allactors = s.schedule();
+	
+	
+	int hdfCompositeActOccurrence = 0;
+	
+	while (allactors.hasMoreElements()) {
+	    Actor actor = (Actor)allactors.nextElement();
+	    String schedActName = ((Nameable)actor).getName();
+	    
+	    if (schedActName.equals(hdfCompositeActName)) {
+		// Current actor in the static schedule is
+		// the HDF compisite actor containing this FSM.
+		
+		// Increment the occurence count of this actor.
+		hdfCompositeActOccurrence++;
+	    }
+	    
+	    if (_debugging) _debug("Actor in static schedule: " +
+				   ((Nameable)actor).getName());
+	}
+	if (_debugging) _debug("Actors in static schedule: **** " +
+			       hdfCompositeActOccurrence);
+	if (_debugging) _debug("current fire count: **** " +
+			       currentIterFireCount);
+	boolean okToMakeTransition;
+	// Check if the fire() has been called the number of
+	// times specified in the static schedule.
+	if (currentIterFireCount == hdfCompositeActOccurrence) {
+	    // The current refinement has been fired the number
+	    // of times speified by the current static schedule.
+	    // A state transition can now occur.
+	    okToMakeTransition = true;
+	    // Set firing count back to zero for next iteration.
+	    currentIterFireCount = 0;
+	} else {
+	    okToMakeTransition = false;
+	}
+	
+	if (okToMakeTransition) {
 
-        // What to do to the refinement of the state left?
+	    if (_takenTransition == null) {
+		// Do not make a state transition (remain in the current
+		// state).
+		
+		// No transition is enabled when last fire. FSMController does not
+		// change state. Note this is different from when a transition
+		// back to the current state is taken.
+		if (_debugging) _debug("Making a state transition back to the current state. ");
+	    } else {
+		// Make a state transition (possibly back to the current
+		// state).
+		
+		// The HDF/SDF graph in which this FSM is embedded has
+		// just finished one iteration, so change state. Note
+		// that this transition could simply
+		// be a transition back to the current state.
 
-        _currentState = _takenTransition.destinationState();
+		if (_debugging) _debug("Making a state transition. ");
 
-        // execute the transition actions
-        //_takenTransition.executeTransitionActions();
+		// Update the current refinement to point to the destination
+		// state of the (enabled) transition.
+		_currentState = _takenTransition.destinationState();
+		
+		// execute the transition actions
+		//_takenTransition.executeTransitionActions();
+		
+		if (_takenTransition.isInitEntry() || _currentState.isInitEntry()) {
+		    // Initialize the refinement.
+		    Actor actor = currentRefinement();
+		    if (actor == null) {
+			return true;
+		    }
 
-        if (_takenTransition.isInitEntry() || _currentState.isInitEntry()) {
-            // Initialize the refinement.
-            Actor actor = currentRefinement();
-            if (actor == null) {
-                return true;
-            }
-            // If the refinement is an FSMController or an FSM system, then the trigger
-            // actions of the taken transition should be input to the actor to enable
-            // initial transitions.
-            // ADD THIS!
-            //            if (actor instanceof FSMController) {
-            //                // Do what's needed.
-            //            } else {
-            //                // Do what's needed.
-            //            }
-            // FIXME!
-            // FIXME: Is this correct?  initialize() is supposed to be
-            // called only once, per documentation.
-            actor.initialize();
-        }
-        return true;
+		    // FIXME: Is this right? and/or preinitialize()?
+		    actor.initialize();
+		}
+	    }
+	
+	}	
+
+	return true;
     }
 
 
@@ -912,5 +993,12 @@ public class HDFFSMController  extends FSMController implements TypedActor {
             inport.createReceivers();
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // The number of times fire() has been called in the current
+    // iteration of the SDF graph containing this FSM.
+    int currentIterFireCount;
 
 }

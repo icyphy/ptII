@@ -214,12 +214,7 @@ public class HDFFSMDirector extends FSMDirector {
         return new SDFReceiver();
     }
 
-    /** Return false. The default director will only get fired once, and will
-     *  terminate execution afterwards.   Domain Directors will probably want
-     *  to override this method.   Note that this is called by the container of
-     *  this Director to see if the Director wishes to execute anymore, and
-     *  should *NOT*, in general, just take the logical AND of calling
-     *  postfire on all the contained actors.
+    /** 
      *
      *  @return True if the Director wishes to be scheduled for another
      *  iteration
@@ -467,14 +462,13 @@ public class HDFFSMDirector extends FSMDirector {
      * then things silently fail! :(
      */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
-	// Reset the gard token to null.
-	t = null;
+	
 
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
                     "transferInputs: port argument is not an opaque input port.");
         }
-        // do not handle multiple tokens, multiple channels now
+        // do not handle multiple channels now
         boolean trans = false;
         Entity refine = (Entity)_controller.currentRefinement();
 	if (refine == null) {
@@ -488,6 +482,8 @@ public class HDFFSMDirector extends FSMDirector {
 	// Get token queue associated with "port".
 	ArrayFIFOQueue guardTokenArray = (ArrayFIFOQueue)inputPortNameToArrayFIFOQueue.get(port.getName());
 
+	// Reset the gard token to null.
+	Token t = null;
         while (port.hasToken(0)) {
             try {
 		
@@ -572,7 +568,7 @@ public class HDFFSMDirector extends FSMDirector {
             }
         }
 	// Copy the token(s) into the array of variables.
-	// FIXME: As a performance optimization, only do this
+	// FIXME: As a performance optimization, should only do this
 	// on the last firing of an iteration.
 	// Get the array of variables associated with "port".
 	Variable[] guardVarArray = (Variable[])inputPortNameToVariableArray.get(port.getName());
@@ -680,10 +676,7 @@ public class HDFFSMDirector extends FSMDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    // This is the token used to evaluate the guard. It is curently
-    // constained to consist of the most recent token read from the
-    // input port of the CompositeActor containing this director.
-    public Token t;
+
     
     public Variable guardVar;
 
