@@ -310,7 +310,9 @@ public class CTScheduler extends Scheduler {
 
         Iterator allActors = container.deepEntityList().iterator();
         while(allActors.hasNext()) {
+
             Actor a = (Actor) allActors.next();
+            System.out.println("examine " + ((Nameable)a).getFullName());
 
             // Now classify actors by their interfaces.
             // Event generators are treated as sinks, and
@@ -779,12 +781,14 @@ public class CTScheduler extends Scheduler {
                 _map.put(port, type);
                 Entity actor = (Entity)port.getContainer();
                 if (type.equals(CONTINUOUS) && 
-                        !_continuousActors.contains(actor)) {
+                        actor != CTScheduler.this.getContainer().getContainer()
+                        && !_continuousActors.contains(actor)) {
                     //System.out.println(actor.getName() + " is CONTINUOUS.");
                     _continuousActors.add(actor);
                 }
                 if (type.equals(DISCRETE) &&
-                        !_discreteActors.contains(actor)) {
+                        actor != CTScheduler.this.getContainer().getContainer()
+                        && !_discreteActors.contains(actor)) {
                     //System.out.println(actor.getName() + " is DISCRETE.");
                     _discreteActors.add(actor);
                 }
