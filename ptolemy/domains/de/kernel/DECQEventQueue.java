@@ -166,9 +166,8 @@ public class DECQEventQueue implements DEEventQueue {
 
 
 	/** Given an array of DEEventTag objects, find the appropriate bin
-	 *  width. By 'appropriate', the bin width is chosen such that
-         *  on average
-	 *  the number of entry in all non-empty bins is equal to one.
+	 *  width. Ideally, the bin width is chosen so that
+	 *  the average number of entries in non-empty bins is equal to one.
 	 *  If the argument is null, return the default bin width which is 1.0
 	 *  for this implementation.
 	 *  <p>
