@@ -1714,9 +1714,9 @@ echo "configure:1698: checking for javax.comm.properties " >&5
        echo $ac_n "checking for win32com.dll ""... $ac_c" 1>&6
 echo "configure:1716: checking for win32com.dll " >&5
        if test -f "$PTJAVA_HOME/bin/win32com.dll"; then
-           echo "$ac_t""$PTJAVA_HOME/jre/bin/win32com.dll" 1>&6
+           echo "$ac_t""$PTJAVA_HOME/bin/win32com.dll" 1>&6
        else   
-           echo "configure: warning: $PTJAVA_HOME/jre/bin/win32com.dll
+           echo "configure: warning: $PTJAVA_HOME/bin/win32com.dll
     not found.
     Download the Java Comm API from http://java.sun.com/products/javacomm/
     and place win32com.dll in $PTJAVA_HOME/jre/bin" 1>&2
@@ -3226,11 +3226,11 @@ echo "configure:3216: checking for the proper JNI architecture" >&5
 
     echo $ac_n "checking for the proper JNI architecture include directory""... $ac_c" 1>&6
 echo "configure:3229: checking for the proper JNI architecture include directory" >&5
-    if test ! -d "$PTJAVA_HOME/include/$PTJNI_ARCHITECTURE"; then 
-	echo "configure: warning: "$PTJAVA_HOME/include/$PTJNI_ARCHITECTURE" was not found.
+    if test ! -d "$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE"; then 
+	echo "configure: warning: "$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE" was not found.
     As a result, compilation of JNI actors will fail." 1>&2
     else 
-	echo "$ac_t""$PTJAVA_HOME/include/$PTJNI_ARCHITECTURE" 1>&6
+	echo "$ac_t""$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE" 1>&6
     fi
 
     echo $ac_n "checking for if the -mno-cygwin flag is available""... $ac_c" 1>&6
@@ -3830,7 +3830,7 @@ SOOT_DIR='${PTII}/lib'
 # Soot needs to find java.lang.Object	
 # Use {} here instead of () because bin/ptinvoke uses JAVA_SYSTEM_JAR
 # and under /bin/sh $(FOO) does not work, but ${FOO} does
-JAVA_SYSTEM_JAR='${PTJAVA_HOME}jre/lib/rt.jar'
+JAVA_SYSTEM_JAR='${PTJAVA_HOME}/lib/rt.jar'
 
 # We don't bother overriding this below so that something close
 # to the right default is in ptII.mk and the user can just change
@@ -3894,7 +3894,7 @@ if test "${with_javasystemjar+set}" = set; then
   withval="$with_javasystemjar"
   JAVA_SYSTEM_JAR=$withval
 else
-  JAVA_SYSTEM_JAR='$(PTJAVA_HOME)/jre/lib/rt.jar'
+  JAVA_SYSTEM_JAR='$(PTJAVA_HOME)/lib/rt.jar'
 fi
 
 
@@ -4293,7 +4293,7 @@ fi
 # Usually it looks like '"$(JAR)" -i $@'
 
 
-# Location of rt.jar, usually $(PTJAVA_HOME)/jre/lib/rt.jar
+# Location of rt.jar, usually $(PTJAVA_HOME)/lib/rt.jar
 # However, we have to be careful of backslashes and /cygwin
 # Soot uses this variable to find java.lang.Object
 
