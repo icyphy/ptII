@@ -170,6 +170,18 @@ public class Commutator extends Transformer implements SequenceActor {
         return super.postfire();
     }
 
+    /** Return false if the current input position does not have an
+     *  input token.
+     *  @return False if the current input position has no token.
+     *  @exception IllegalActionException If input.hasToken() throws it.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (!input.hasToken(_currentInputPosition)) {
+            return false;
+        }
+        return super.postfire();
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
