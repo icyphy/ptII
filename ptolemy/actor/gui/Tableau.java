@@ -63,7 +63,7 @@ make the associated frame visible.  To do that, call show().
 @version $Id$
 @see Effigy
 */
-public class Tableau extends ComponentEntity {
+public class Tableau extends CompositeEntity {
 
     /** Construct a tableau with the given name and container.
      *  @param container The container.
