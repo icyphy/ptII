@@ -67,14 +67,11 @@ test ObjectSingle-1.1 {Generate .c, _i.h and .h files for java.lang.Object} {
     
     # Check if the .out directory exists.
     if {[file isdirectory $outputDir]} {
-        cd $outputDir
         # Remove all files generated in the previous run.
-        exec "rm -rf *"
-        cd ..
-        # Now back in c/test directory.
+	file delete -force [glob -nocomplain $outputDir/*]
     } else {
         # Create the Simple.out directory.
-        exec mkdir $outputDir
+        file mkdir $outputDir
     }
 
 
@@ -91,7 +88,7 @@ test ObjectSingle-1.1 {Generate .c, _i.h and .h files for java.lang.Object} {
     # exec javac $javaFile
 
     # Generate the code using singleClass compilation mode.
-    exec java ptolemy.copernicus.c.JavaToC $classpath \
+    exec java -classpath $classpath ptolemy.copernicus.c.JavaToC $classpath \
             -singleClass $className
 
     # NOTE: JavaToC expects the class file to be converted to be in the
@@ -103,7 +100,7 @@ test ObjectSingle-1.1 {Generate .c, _i.h and .h files for java.lang.Object} {
     # solve this might exist.
 
     # Move the generated files to the SimpleSingle.out directory.
-    exec mv $cFile $hFile $iFile $outputDir
+    file rename -force $cFile $hFile $iFile $outputDir
     
     cd $outputDir
 

@@ -68,14 +68,11 @@ test Object-1.1 {Generate all required files for java.lang.Object} {
     
     # Check if the .out directory exists.
     if {[file isdirectory $outputDir]} {
-        cd $outputDir
         # Remove all files generated in the previous run.
-        exec "rm -rf *"
-        cd ..
-        # Now back in c/test directory.
+	file delete -force [glob -nocomplain $outputDir/*]
     } else {
         # Create the Simple.out directory.
-        exec mkdir $outputDir
+        file mkdir $outputDir
     }
 
 
@@ -111,7 +108,7 @@ test Object-1.1 {Generate all required files for java.lang.Object} {
     # solve this might exist.
 
     # Move the generated files to the SimpleSingle.out directory.
-    exec mv $cFile $hFile $iFile $mkFile $outputDir
+    file rename -force $cFile $hFile $iFile $mkFile $outputDir
     
     cd $outputDir
 

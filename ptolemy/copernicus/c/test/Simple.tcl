@@ -68,14 +68,11 @@ test Simple-1.1 {Generate all required files for Simple.java} {
 
     # Check if the .out directory exists.
     if {[file isdirectory $outputDir]} {
-        cd $outputDir
         # Remove all files generated in the previous run.
-        exec "rm -rf *"
-        cd ..
-        # Now back in c/test directory.
+	file delete -force [glob -nocomplain $outputDir/*]
     } else {
         # Create the Simple.out directory.
-        exec mkdir $outputDir
+        file mkdir $outputDir
     }
 
 
@@ -102,7 +99,7 @@ test Simple-1.1 {Generate all required files for Simple.java} {
     set errors $className-err.txt
     # Generate the code.
     #java::call ptolemy.copernicus.c.JavaToC main $args 
-    exec java ptolemy.copernicus.c.JavaToC $classpath -lib $outputDir/j2c_lib $className
+    exec java -classpath $classpath ptolemy.copernicus.c.JavaToC $classpath -lib $outputDir/j2c_lib $className
     
     # NOTE: JavaToC expects the class file to be converted to be in the
     # directory from which it is invoked. It outputs the generated code
@@ -113,7 +110,7 @@ test Simple-1.1 {Generate all required files for Simple.java} {
     # solve this might exist.
 
     # Move the generated files to the SimpleSingle.out directory.
-    exec mv $cFile $hFile $iFile $mkFile $outputDir
+    file rename -force $cFile $hFile $iFile $mkFile $outputDir
     
     cd $outputDir
 
