@@ -53,11 +53,11 @@ JSRCS = \
 	StreamToMatrix.java \
 	SourceMatrix.java \
 	ArrayIndex.java \
-	QRCompileApplet.java
+	QR.java
 
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
-	QRCompileApplet.htm \
+	QR.htm \
 	QRprocessnetwork.gif \
 	QRnetwork.gif \
 	QRvr.wmf \
