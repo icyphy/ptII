@@ -1427,7 +1427,7 @@ public class DEDirector extends Director {
             // it anyway. 
             if (ioDependence == null) {
                 throw new IllegalActionException(this, "doesn't " +
-                    "contain a valid IODependence attribute.");
+                        "contain a valid IODependence attribute.");
             }
 
             // get all the input ports of the current actor
