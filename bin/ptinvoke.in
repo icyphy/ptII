@@ -334,12 +334,6 @@ if [ "$jarfile" = "$PTJACL_JAR" ]; then
     fi
 fi
 
-# Append the user classpath at the end
-if [ "$CLASSPATH" != "" ]; then
-    jarfile="$jarfile${CLASSPATHSEPARATOR}${CLASSPATH}"
-fi
-
-
 # Determine if we are on windows and try to set JAVAHOME
 windows=no
 if [ "${OSTYPE-no}" = "no" ]; then
@@ -397,6 +391,38 @@ if [ -z "$JAVAHOME" ]; then
     fi
 fi
 
+javac="\$JAVAHOME/bin/java"
+jdbflags=""
+quiet=0
+while [ "${1#-}" != "$1" ]; do
+    # If -debug is supplied then allow debugger attaches to java VM.
+    # Run "jdb -attach javadebug" to attach debugger to JVM.
+    if [ "$1" = "-debug" ]; then
+        # TODO: jvm interface selection based on platform. This works on Windows
+        jdbflags="-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,suspend=n"
+        shift
+        continue
+    fi
+    # If -jdb is supplied then run jdb instead of java.
+    if [ "$1" = "-jdb" ]; then
+        javac="\$JAVAHOME/bin/jdb"
+        shift
+        continue
+    fi
+    if [ "$1" = "-q" ]; then
+        # Do not echo the command. Useful for batch mode (repeated test runs)
+        # to reduce stdout clutter
+        quiet=1
+        shift
+        continue
+    fi
+    if [ "$1" = "-profiler" ]; then
+        # This could be done "manually" through JAVAFLAGS, but here it is canned
+        javaflag="-Xrunhprof:cpu=samples,format=a $javaflag"
+        shift
+        continue
+    fi
+done
 
 # Unfortunately, there are issues around setting PTII if your
 # Cygwin installation is installed in c:/cygwin.  
@@ -433,14 +459,20 @@ else
     PTII_DIR=$PTII
 fi
 
-
+# Add the user classpath (we prepend to be able to override classes,
+# but Berkeley prefers to append, so append)
+if [ "$CLASSPATH" != "" ]; then
+    CLASSPATH="$PTII_DIR$CLASSPATHSEPARATOR$jarfile${CLASSPATHSEPARATOR}${CLASSPATH}"
+else
+    CLASSPATH="$PTII_DIR$CLASSPATHSEPARATOR$jarfile"
+fi
 
 if [ "`basename $0`" = "decompile" -a ! -f "$JODE_JAR" ]; then
-    str="\"$JAVAHOME/bin/javap\" -classpath \"$PTII_DIR$CLASSPATHSEPARATOR$jarfile\" ${1+"$@"}"
+    str="\"$JAVAHOME/bin/javap\" -classpath \"$CLASSPATH\" ${1+"$@"}"
 
 else
     # If JAVAHOME has spaces in it, we need to jump through hoops
-    str="\"$JAVAHOME/bin/java\" $javaflag \"-Dptolemy.ptII.dir=$PTII\" $JAVAFLAGS -classpath \"$PTII_DIR$CLASSPATHSEPARATOR$jarfile\" $javastartupclass $applicationflags ${1+"$@"}"
+    str="\"$javac\" $jdbflags $javaflag \"-Dptolemy.ptII.dir=$PTII\" $JAVAFLAGS -classpath \"$CLASSPATH\" $javastartupclass $applicationflags ${1+"$@"}"
 fi 
-echo $str
+if [ "$quiet" = "0" ]; then echo $str;fi
 eval exec $str
