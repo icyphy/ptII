@@ -43,7 +43,7 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_location" class="ptolemy.moml.Location" value="106.0, 195.0">
+            <property name="_location" class="ptolemy.moml.Location" value="59.0, 188.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="256">
             </property>
@@ -51,7 +51,7 @@
         <entity name="FFT" class="ptolemy.domains.sdf.lib.FFT">
             <property name="order" class="ptolemy.data.expr.Parameter" value="8">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="259.0, 196.0">
+            <property name="_location" class="ptolemy.moml.Location" value="262.0, 197.0">
             </property>
             <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
                 <property name="input"/>
@@ -72,18 +72,32 @@
                 </property>
             </port>
         </entity>
-        <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
+            <property name="_location" class="ptolemy.moml.Location" value="367.0, 197.0">
+            </property>
+            <port name="input" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="legend" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+            <property name="xInit" class="ptolemy.data.expr.Parameter" value="-PI">
             </property>
-            <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+            <property name="xUnit" class="ptolemy.data.expr.Parameter" value="PI/128.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="488.0, 195.0">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="256">
+            </property>
+            <property name="persistence" class="ptolemy.data.expr.Parameter" value="256">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="474.0, 136.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -93,34 +107,68 @@
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>SequencePlotter</title>
-<xRange min="0.0" max="1023.0"/>
-<yRange min="0.12252180954073806" max="131.80816273344314"/>
+<title>SequenceScope</title>
+<xRange min="-3.1415926535895693" max="3.117048960983846"/>
+<yRange min="0.3083664263125335" max="126.46280484869555"/>
+<wrap/>
+<default marks="pixels"/>
 </plot>?>
             </configure>
         </entity>
-        <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
-            <property name="_location" class="ptolemy.moml.Location" value="378.0, 307.0">
+        <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+            <property name="_location" class="ptolemy.moml.Location" value="147.0, 196.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
+            <port name="multiply" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="divide" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
         </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
+        <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
+            <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="indexes" class="ptolemy.data.expr.Parameter" value="{0, 1}">
+            </property>
+            <property name="values" class="ptolemy.data.expr.Parameter" value="{1.0, -1.0}">
+            </property>
+            <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
+            </property>
+            <property name="_location" class="ptolemy.moml.Location" value="47.0, 248.0">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+        </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="input" relation="relation"/>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="input" relation="relation4"/>
         <link port="FFT.input" relation="relation"/>
         <link port="FFT.output" relation="relation3"/>
-        <link port="SequencePlotter.input" relation="relation4"/>
         <link port="AbsoluteValue.input" relation="relation3"/>
-        <link port="AbsoluteValue.output" relation="relation4"/>
+        <link port="AbsoluteValue.output" relation="relation7"/>
+        <link port="SequenceScope.input" relation="relation7"/>
+        <link port="MultiplyDivide.multiply" relation="relation4"/>
+        <link port="MultiplyDivide.multiply" relation="relation5"/>
+        <link port="MultiplyDivide.output" relation="relation"/>
+        <link port="Pulse.output" relation="relation5"/>
     </entity>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -165,7 +213,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="1.0E-4" max="9.9922875"/>
-<yRange min="-1.6710201236597593" max="1.6604079662003655"/>
+<yRange min="-1.797956359507482" max="1.822304758410949"/>
 </plot>?>
         </configure>
     </entity>
