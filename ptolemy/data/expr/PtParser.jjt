@@ -129,7 +129,8 @@ invalid.
 @version $Id$
 
 @see ptolemy.data.expr.ASTPtBitwiseNode
-@see ptolemy.data.expr.ASTPtFunctionNode
+@see ptolemy.data.expr.ASTPtFunctionApplicationNode
+@see ptolemy.data.expr.ASTPtFunctionDefinitionNode
 @see ptolemy.data.expr.ASTPtFunctionalIfNode
 @see ptolemy.data.expr.ASTPtLeafNode
 @see ptolemy.data.expr.ASTPtLogicalNode
@@ -191,6 +192,33 @@ public class PtParser {
         primary.jjtSetParent(null);
         return primary;
     }
+    
+    /** Generates a parse tree from the given String, which may optionally
+     *  contain an assignment. The root node is
+     *  returned. If the string represents an assignment, then the
+     *  toplevel node will be an ASTPtAssignmentNode.
+     *  @param stringIn The expression to be parsed.
+     *  @exception IllegalActionException If the parse fails.
+     *  @return The root node of the parse tree.
+     */
+    public ASTPtRootNode generateSimpleAssignmentParseTree(String stringIn)
+            throws IllegalActionException {
+
+        Reader reader = new StringReader(stringIn);
+        this.ReInit(reader);
+        ASTPtRootNode rootNode;
+        try {
+            // Parse the expression to obtain the parse tree
+            rootNode = startSimpleAssignment();
+            if (debug) rootNode.displayParseTree(" ");
+        } catch (ParseException x) {
+            throw new IllegalActionException("Error parsing expression \""
+                    + stringIn + "\":\n" + x.getMessage());
+        }
+        ASTPtRootNode primary = (ASTPtRootNode)rootNode.jjtGetChild(0);
+        primary.jjtSetParent(null);
+        return primary;
+    }
           
     /** Generates a parse tree from the given String.  
      *  The string will be parsed according to rules for assignment lists. 
@@ -208,7 +236,7 @@ public class PtParser {
         this.ReInit(reader);
         Map map;
         try {
-            // Parse the expression to obtain the parse tree
+            // Parse the expression to obtain the parse tree.
             map = startAssignmentList();
         } catch (ParseException x) {
             throw new IllegalActionException("Error parsing expression \""
@@ -513,6 +541,17 @@ TOKEN : /* Assignment */
 	< SEPARATOR: ";" >
 }
 
+// A simple, optional assigment used by the expression evaluator
+ASTPtRootNode startSimpleAssignment() #PtRootNode :
+{ }
+{
+    ( LOOKAHEAD(<ID> <SETEQUALS>) assignment()
+            | expression() 
+      ) 
+        <EOF> { 
+            return jjtThis; }
+}
+
 Map startAssignmentList() #PtRootNode :
 {
     Map map = new LinkedHashMap();
@@ -771,7 +810,7 @@ void element() #void :
 				jjtThis._methodName = name;
 			}
 		) #PtMethodCallNode(hasName)
-    ) #PtFunctionNode(!hasName && hasCall)
+    ) #PtFunctionApplicationNode(!hasName && hasCall)
 }
 
 void primaryElement() #void :
@@ -1026,7 +1065,7 @@ void optTypeSpecifier() #void :
         jjtree.pushNode(node);
     }
 }
-void function() #PtFunctionNode :
+void function() #PtFunctionApplicationNode :
 {}
 {    
 	identifier()

@@ -17,7 +17,7 @@ public interface PtParserTreeConstants
   public int JJTPTPRODUCTNODE = 10;
   public int JJTPTUNARYNODE = 11;
   public int JJTPTMETHODCALLNODE = 12;
-  public int JJTPTFUNCTIONNODE = 13;
+  public int JJTPTFUNCTIONAPPLICATIONNODE = 13;
   public int JJTPTLEAFNODE = 14;
   public int JJTPTFUNCTIONDEFINITIONNODE = 15;
   public int JJTPTMATRIXCONSTRUCTNODE = 16;
@@ -39,7 +39,7 @@ public interface PtParserTreeConstants
     "PtProductNode",
     "PtUnaryNode",
     "PtMethodCallNode",
-    "PtFunctionNode",
+    "PtFunctionApplicationNode",
     "PtLeafNode",
     "PtFunctionDefinitionNode",
     "PtMatrixConstructNode",

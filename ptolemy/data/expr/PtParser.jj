@@ -126,7 +126,8 @@ invalid.
 @version $Id$
 
 @see ptolemy.data.expr.ASTPtBitwiseNode
-@see ptolemy.data.expr.ASTPtFunctionNode
+@see ptolemy.data.expr.ASTPtFunctionApplicationNode
+@see ptolemy.data.expr.ASTPtFunctionDefinitionNode
 @see ptolemy.data.expr.ASTPtFunctionalIfNode
 @see ptolemy.data.expr.ASTPtLeafNode
 @see ptolemy.data.expr.ASTPtLogicalNode
@@ -191,6 +192,33 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
         primary.jjtSetParent(null);
         return primary;
     }
+    
+    /** Generates a parse tree from the given String, which may optionally
+     *  contain an assignment. The root node is
+     *  returned. If the string represents an assignment, then the
+     *  toplevel node will be an ASTPtAssignmentNode.
+     *  @param stringIn The expression to be parsed.
+     *  @exception IllegalActionException If the parse fails.
+     *  @return The root node of the parse tree.
+     */
+    public ASTPtRootNode generateSimpleAssignmentParseTree(String stringIn)
+            throws IllegalActionException {
+
+        Reader reader = new StringReader(stringIn);
+        this.ReInit(reader);
+        ASTPtRootNode rootNode;
+        try {
+            // Parse the expression to obtain the parse tree
+            rootNode = startSimpleAssignment();
+            if (debug) rootNode.displayParseTree(" ");
+        } catch (ParseException x) {
+            throw new IllegalActionException("Error parsing expression \""
+                    + stringIn + "\":\n" + x.getMessage());
+        }
+        ASTPtRootNode primary = (ASTPtRootNode)rootNode.jjtGetChild(0);
+        primary.jjtSetParent(null);
+        return primary;
+    }
           
     /** Generates a parse tree from the given String.  
      *  The string will be parsed according to rules for assignment lists. 
@@ -208,7 +236,7 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants/*@egen*/ 
         this.ReInit(reader);
         Map map;
         try {
-            // Parse the expression to obtain the parse tree
+            // Parse the expression to obtain the parse tree.
             map = startAssignmentList();
         } catch (ParseException x) {
             throw new IllegalActionException("Error parsing expression \""
@@ -511,6 +539,48 @@ TOKEN : /* Assignment */
 {
 	< SETEQUALS: "=" > | 
 	< SEPARATOR: ";" >
+}
+
+// A simple, optional assigment used by the expression evaluator
+ASTPtRootNode startSimpleAssignment()             :
+{/*@bgen(jjtree) PtRootNode */
+  ASTPtRootNode jjtn000 = new ASTPtRootNode(JJTPTROOTNODE);
+  boolean jjtc000 = true;
+  jjtree.openNodeScope(jjtn000);
+/*@egen*/ }
+{/*@bgen(jjtree) PtRootNode */
+    try {
+/*@egen*/
+    ( LOOKAHEAD(<ID> <SETEQUALS>) assignment()
+            | expression() 
+      ) 
+        <EOF>/*@bgen(jjtree)*/
+              {
+                jjtree.closeNodeScope(jjtn000, true);
+                jjtc000 = false;
+              }
+/*@egen*/ { 
+            return jjtn000; }/*@bgen(jjtree)*/
+    } catch (Throwable jjte000) {
+      if (jjtc000) {
+        jjtree.clearNodeScope(jjtn000);
+        jjtc000 = false;
+      } else {
+        jjtree.popNode();
+      }
+      if (jjte000 instanceof RuntimeException) {
+        throw (RuntimeException)jjte000;
+      }
+      if (jjte000 instanceof ParseException) {
+        throw (ParseException)jjte000;
+      }
+      throw (Error)jjte000;
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
+    }
+/*@egen*/
 }
 
 Map startAssignmentList()             :
@@ -1256,9 +1326,9 @@ void element()       :
 	boolean hasCall = false;
 	String name = null;
 }
-{/*@bgen(jjtree) #PtFunctionNode( ! hasName && hasCall) */
+{/*@bgen(jjtree) #PtFunctionApplicationNode( ! hasName && hasCall) */
     {
-      ASTPtFunctionNode jjtn002 = new ASTPtFunctionNode(JJTPTFUNCTIONNODE);
+      ASTPtFunctionApplicationNode jjtn002 = new ASTPtFunctionApplicationNode(JJTPTFUNCTIONAPPLICATIONNODE);
       boolean jjtc002 = true;
       jjtree.openNodeScope(jjtn002);
     }
@@ -1714,13 +1784,13 @@ void optTypeSpecifier()       :
         jjtree.pushNode(node);
     }
 }
-void function()                 :
-{/*@bgen(jjtree) PtFunctionNode */
-  ASTPtFunctionNode jjtn000 = new ASTPtFunctionNode(JJTPTFUNCTIONNODE);
+void function()                            :
+{/*@bgen(jjtree) PtFunctionApplicationNode */
+  ASTPtFunctionApplicationNode jjtn000 = new ASTPtFunctionApplicationNode(JJTPTFUNCTIONAPPLICATIONNODE);
   boolean jjtc000 = true;
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
-{/*@bgen(jjtree) PtFunctionNode */
+{/*@bgen(jjtree) PtFunctionApplicationNode */
         try {
 /*@egen*/    
 	identifier()
