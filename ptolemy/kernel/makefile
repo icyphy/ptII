@@ -63,7 +63,6 @@ JSRCS = \
 	NameDuplicationException.java \
 	ObservableParameter.java \
 	Param.java \
-	ParamList.java \
 	Parameter.java \
 	Port.java \
 	PortList.java \
