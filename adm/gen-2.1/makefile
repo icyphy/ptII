@@ -847,13 +847,15 @@ $(REMOTE2PTJACL_JAR):
 
 remote2distjdk1.4test: $(REMOTE2PTJACL_JAR)
 	@echo "#"
-	@echo "# Now testing with JDK1.4"
+	@echo "# Now testing with JDK1.4 on carson, a two processor machine"
 	@echo "#"
 	@echo "$@ `date`"
 	-(cd $(REMOTE2PTIIDIST); \
 		PTII=$(REMOTE2PTIIDIST) \
 		PATH=/usr/local/j2se/bin:$$PATH \
-		$(MAKE) -k tests)
+		$(MAKE) -k \
+			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+			tests)
 	@echo "$@ `date`"
 
 
@@ -945,7 +947,9 @@ remote3disttest: $(REMOTE3PTJACL_JAR)
 	@echo "#"
 	@echo "$@ `date`"
 	-(cd $(REMOTE3PTIIDIST); \
-		$(OTHERMAKE) tests)
+		$(OTHERMAKE) \
+			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+		tests)
 	@echo "$@ `date`"
 
 
@@ -1099,8 +1103,10 @@ remote4javatest:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test;	PTII=$(REMOTE4PTIIDIST) $(MAKE) test_long)
-
+	(cd $(REMOTE4PTIIDIST)/ptolemy/copernicus/java/test; \
+		PTII=$(REMOTE4PTIIDIST) $(MAKE) \
+		JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+		test_long)
 
 ##########################################################################
 # Build from a src tar file - similar to remote1, but w/o test case coverage
@@ -1168,9 +1174,11 @@ remote5shallowtest:
 	@echo "# on  `hostname`"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test; PTII=$(REMOTE5PTIIDIST) $(MAKE) test_long)
-
-
+	(cd $(REMOTE5PTIIDIST)/ptolemy/copernicus/shallow/test; \
+		PTII=$(REMOTE5PTIIDIST) \
+		$(MAKE) \
+			JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
+		test_long)
 
 
 
@@ -1280,6 +1288,7 @@ remote6autojsall:
 			( cd $$x/test ; \
 			echo making jstest_jauto in $$x/test ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
+				JTCLSHFLAGS=-Dptolemy.ptII.isRunningNightlyBuild=true \
 				jstest_jauto; \
 			);  \
 		    fi ; \
