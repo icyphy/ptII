@@ -1,0 +1,17 @@
+adm
+#.glimpse#
+core
+*/codeDoc/*
+*/\#*
+*/*\~
+*/.??*
+*/,*
+*.exe
+*/SCCS
+*/RCS
+OLD
+*/junk/*
+*/logs*/*
+*/tclIndex
+*/.glimpse_exclude
+*htmlchek*
