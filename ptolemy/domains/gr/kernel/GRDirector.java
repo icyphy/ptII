@@ -277,8 +277,8 @@ public class GRDirector extends StaticSchedulingDirector {
      *
      *  see other mutation methods:
      *
-     *  @see ptolemy.kernel.util.NamedObj.#attributeChanged
-     *  @see ptolemy.kernel.util.NamedObj.#attributeTypeChanged
+     *  @see ptolemy.kernel.util.NamedObj#attributeChanged
+     *  @see ptolemy.kernel.util.NamedObj#attributeTypeChanged
      */
     public void invalidateSchedule() {
         //  -invalidateSchedule-
