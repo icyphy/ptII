@@ -50,6 +50,7 @@ JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \
 	basicHelp.htm \
+	copyright.htm \
 	demos.htm \
 	vergilFsmEditorHelp.htm \
 	vergilGraphEditorHelp.htm
