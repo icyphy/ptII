@@ -37,7 +37,7 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// CTZeroCrossingDetector
 /**
-This is a event detector that monitors the signal coming in from the
+This is an event detector that monitors the signal coming in from the
 "trigger" input. If the trigger is zero, then output the token from
 the "input." port.
 This actor controls the integration step size to accurately resolve
