@@ -30,19 +30,25 @@
 
 package ptolemy.vergil.toolbox;
 
+import diva.canvas.CanvasComponent;
 import diva.canvas.CanvasLayer;
 import diva.canvas.CanvasPane;
 import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
 import diva.canvas.event.LayerEvent;
 import diva.graph.GraphController;
 import diva.graph.GraphModel;
 import diva.graph.GraphPane;
+import diva.graph.JGraph;
 import diva.gui.toolbox.JContextMenu;
+
 import ptolemy.kernel.util.*;
 
 import javax.swing.AbstractAction;
 import javax.swing.JButton;
 import javax.swing.JMenuItem;
+
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 
 //////////////////////////////////////////////////////////////////////////
@@ -104,6 +110,29 @@ public class FigureAction extends AbstractAction {
 	    // presumably we are in a toolbar...
 	    _sourceType = TOOLBAR_TYPE;
 	    _target = null;
+	} else if (source instanceof JGraph) {
+            // This is an absurdly convoluted way to get the info we need.
+            // But there seems to be no other way.
+            // This is an architectural flaw in vergil.
+            GraphPane pane = (GraphPane)((JGraph)source).getGraphPane();
+            FigureLayer layer = pane.getForegroundLayer();
+            CanvasComponent currentFigure = layer.getCurrentFigure();
+            GraphController controller = pane.getGraphController();
+            GraphModel model = controller.getGraphModel();
+            if (currentFigure != null) {
+                _target = null;
+                while(_target == null && currentFigure != null) {
+                    Object object = currentFigure;
+                    if (object instanceof Figure) {
+                        object = ((Figure)currentFigure).getUserObject();
+                    }
+                    _target = (NamedObj) model.getSemanticObject(object);
+                    currentFigure = currentFigure.getParent();
+                }
+            } else {
+		_target = (NamedObj) model.getRoot();
+            }
+            _sourceType = HOTKEY_TYPE;
 	} else {
 	    _sourceType = null;
 	    _target = null;
@@ -145,6 +174,9 @@ public class FigureAction extends AbstractAction {
      */
     public static SourceType MENUBAR_TYPE = new SourceType("menubar");
 
+    /** When the action was fired from a hotkey.
+     */
+    public static SourceType HOTKEY_TYPE = new SourceType("hotkey");
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

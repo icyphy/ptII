@@ -44,6 +44,7 @@ import diva.graph.GraphPane;
 import diva.graph.GraphUtilities;
 import diva.graph.NodeController;
 import diva.graph.NodeRenderer;
+import diva.gui.GUIUtilities;
 import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.MenuCreator;
 import diva.gui.toolbox.MenuFactory;
@@ -428,10 +429,10 @@ public abstract class BasicGraphController extends AbstractGraphController
 	    Figure figure = renderer.render(location);
 
 	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
-	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+	    putValue(GUIUtilities.LARGE_ICON, icon);
 
 	    putValue("tooltip", description);
-	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+	    putValue(GUIUtilities.MNEMONIC_KEY,
                     new Integer(mnemonicKey));
 	}
 

@@ -33,7 +33,10 @@ package ptolemy.vergil.fsm;
 import diva.canvas.Figure;
 import diva.graph.GraphController;
 import diva.graph.NodeRenderer;
+import diva.gui.GUIUtilities;
+
 import ptolemy.actor.TypedActor;
+import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.util.*;
@@ -44,8 +47,12 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 
-import javax.swing.Action;
+import java.awt.Event;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.Action;
+import javax.swing.KeyStroke;
 
 //////////////////////////////////////////////////////////////////////////
 //// StateController
@@ -79,11 +86,37 @@ public class StateController extends AttributeController {
 	super(controller, access);
 	setNodeRenderer(new StateRenderer());
 
-        // NOTE: This requires that the configuration be non null,
-        // or it will report an error.
-        _menuFactory.addMenuItemFactory(
-                new MenuActionFactory(new LookInsideAction()));
+	if (_configuration != null) {
+            // NOTE: The following requires that the configuration be
+            // non-null, or it will report an error.
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_lookInsideAction));
+	}
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Set the configuration.  This is used to open documentation files.
+     *  @param configuration The configuration.
+     */
+    public void setConfiguration(Configuration configuration) {
+        super.setConfiguration(configuration);
+	if (_configuration != null) {
+            // NOTE: The following requires that the configuration be
+            // non-null, or it will report an error.
+            _menuFactory.addMenuItemFactory(
+                    new MenuActionFactory(_lookInsideAction));
+	}
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The action that handles look inside.  This is accessed by
+     *  by ActorViewerController to create a hot key for the editor.
+     */
+    protected LookInsideAction _lookInsideAction = new LookInsideAction();
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -94,7 +127,11 @@ public class StateController extends AttributeController {
      */
     private class LookInsideAction extends FigureAction {
 	public LookInsideAction() {
-	    super("Look Inside");
+	    super("Look Inside (Ctrl+L)");
+            // For some inexplicable reason, the I key doesn't work here.
+            // So we use L.
+	    putValue(GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_L, Event.CTRL_MASK));
 	}
 	public void actionPerformed(ActionEvent e) {
 

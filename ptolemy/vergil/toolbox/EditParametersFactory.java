@@ -30,18 +30,24 @@
 
 package ptolemy.vergil.toolbox;
 
+import diva.gui.GUIUtilities;
 import diva.gui.toolbox.JContextMenu;
+
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.actor.gui.EditParametersDialog;
 import ptolemy.kernel.util.*;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JMenuItem;
 import java.awt.Component;
+import java.awt.Event;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.util.List;
+
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.KeyStroke;
+import javax.swing.JMenuItem;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditParametersFactory
@@ -84,33 +90,15 @@ public class EditParametersFactory implements MenuItemFactory {
      *  @param menu The context menu.
      *  @param object The object whose parameters are being configured.
      */
-    public JMenuItem create(final JContextMenu menu, NamedObj object) {
+    public JMenuItem create(JContextMenu menu, NamedObj target) {
 
-        // Removed this method since it was never used. EAL
-	// final NamedObj target = _getItemTargetFromMenuTarget(object);
-        final NamedObj target = object;
-
+// FIXME
+System.out.println("=========== " + target);
 	// ensure that we actually have a target.
 	if (target == null) return null;
-	Action action = new AbstractAction(_name) {
-                public void actionPerformed(ActionEvent e) {
-                    // Create a dialog for configuring the object.
-                    // First, identify the top parent frame.
-                    // Normally, this is a Frame, but just in case, we check.
-                    // If it isn't a Frame, then the edit parameters dialog
-                    // will not have the appropriate parent, and will disappear
-                    // when put in the background.
-                    Component parent = menu.getInvoker();
-                    while (parent.getParent() != null) {
-                        parent = parent.getParent();
-                    }
-                    if (parent instanceof Frame) {
-                        openDialog((Frame)parent, target);
-                    } else {
-                        openDialog(null, target);
-                    }
-                }
-            };
+
+	Action action = new ConfigureAction(_name, menu, target);
+
 	return menu.add(action, _name);
     }
 
@@ -135,4 +123,43 @@ public class EditParametersFactory implements MenuItemFactory {
 
     // The name of this factory.
     private String _name;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    // An action to edit parameters of a composite.
+    private class ConfigureAction extends FigureAction {
+        public ConfigureAction(
+                String description,
+                JContextMenu menu,
+                NamedObj target) {
+            super(description);
+            _target = target;
+            _menu = menu;
+            // FIXME: Doesn't work because the action is tightly
+            // bound to the menu.  Need to change it to work like
+            // look inside.
+	    putValue(GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_E, Event.CTRL_MASK));
+        }
+        public void actionPerformed(ActionEvent e) {
+            // Create a dialog for configuring the object.
+            // First, identify the top parent frame.
+            // Normally, this is a Frame, but just in case, we check.
+            // If it isn't a Frame, then the edit parameters dialog
+            // will not have the appropriate parent, and will disappear
+            // when put in the background.
+            Component parent = _menu.getInvoker();
+            while (parent.getParent() != null) {
+                parent = parent.getParent();
+            }
+            if (parent instanceof Frame) {
+                openDialog((Frame)parent, _target);
+            } else {
+                openDialog(null, _target);
+            }
+        }
+        private NamedObj _target;
+        private JContextMenu _menu;
+    }
 }

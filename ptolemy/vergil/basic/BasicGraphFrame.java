@@ -38,6 +38,8 @@ import diva.canvas.Site;
 import diva.canvas.TransformContext;
 import diva.canvas.connector.FixedNormalSite;
 import diva.canvas.connector.Terminal;
+import diva.canvas.event.LayerEvent;
+import diva.canvas.event.LayerMotionAdapter;
 import diva.canvas.interactor.SelectionModel;
 import diva.graph.GraphController;
 import diva.graph.GraphEvent;
@@ -88,11 +90,14 @@ import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.border.Border;
 import javax.swing.tree.TreeModel;
+
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.Dimension;
+import java.awt.Event;
+import java.awt.Point;
 import java.awt.Graphics;
 import java.awt.Window;
 import java.awt.datatransfer.Clipboard;
@@ -103,6 +108,7 @@ import java.awt.datatransfer.Transferable;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.NoninvertibleTransformException;
@@ -508,6 +514,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	return _jgraph;
     }
 
+    /** Get the mouse position recorded by the last mouse motion event.
+     *  @return The position of the mouse in the component, or null if
+     *   no motion event has been recorded.
+     */
+    public Point getMousePosition() {
+        return _mousePosition;
+    }
+
     /** Return the rectangle representing the visible part of the
      *  pane, transformed into canvas coordinates.  This is the range
      *  of locations that are visible, given the current pan and zoom.
@@ -846,17 +860,20 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** Point of last mouse motion. */
+    private Point _mousePosition;
+
     /** Action for zooming in. */
-    private Action _zoomInAction = new ZoomInAction();
+    private Action _zoomInAction = new ZoomInAction("Zoom In");
 
     /** Action for zoom reset. */
-    private Action _zoomResetAction = new ZoomResetAction();
+    private Action _zoomResetAction = new ZoomResetAction("Zoom Reset");
 
     /** Action for zoom fitting. */
-    private Action _zoomFitAction = new ZoomFitAction();
+    private Action _zoomFitAction = new ZoomFitAction("Zoom Fit");
 
     /** Action for zooming out. */
-    private Action _zoomOutAction = new ZoomOutAction();
+    private Action _zoomOutAction = new ZoomOutAction("Zoom Out");
 
     // NOTE: should be somewhere else?
     // Default background color is a light grey.
@@ -903,7 +920,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "Copy the current selection onto the clipboard.");
 	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_C,
-                            java.awt.Event.CTRL_MASK));
+                            Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_C));
 	}
@@ -927,7 +944,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "Cut the current selection onto the clipboard.");
 	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_X,
-                            java.awt.Event.CTRL_MASK));
+                            Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_T));
 	}
@@ -988,7 +1005,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 	    putValue("tooltip", "Execute The Model");
 	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_G,
-                    java.awt.Event.CTRL_MASK));
+                    Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_G));
 	}
@@ -1081,10 +1098,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         /** Create a new action to automatically lay out the graph. */
 	public LayoutAction() {
 	    super("Automatic Layout");
-	    putValue("tooltip", "Layout the Graph");
+	    putValue("tooltip", "Layout the Graph (Ctrl+T)");
 	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_L,
-                            java.awt.Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_T, Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_L));
 	}
@@ -1114,7 +1130,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                     "Paste the contents of the clipboard.");
 	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_V,
-                            java.awt.Event.CTRL_MASK));
+                            Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_P));
 	}
@@ -1358,8 +1374,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
     // An action to zoom in.
     public class ZoomInAction extends AbstractAction {
-	public ZoomInAction() {
-	    super("Zoom In");
+	public ZoomInAction(String description) {
+	    super(description);
             // Load the image by using the absolute path to the gif.
 	    // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
@@ -1371,14 +1387,14 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 ImageIcon icon = new ImageIcon(img);
                 putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             }
-	    putValue("tooltip", "Zoom in");
+	    putValue("tooltip", description + " (Ctrl+Shift+=)");
             // NOTE: The following assumes that the + key is the same
             // as the = key.  Unfortunately, the VK_PLUS key event doesn't
             // work, so we have to do it this way.
 	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
-                            java.awt.Event.CTRL_MASK
-                            | java.awt.Event.SHIFT_MASK));
+                            Event.CTRL_MASK
+                            | Event.SHIFT_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_Z));
 	}
@@ -1393,8 +1409,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
     // An action to reset zoom.
     public class ZoomResetAction extends AbstractAction {
-	public ZoomResetAction() {
-	    super("Zoom Reset");
+	public ZoomResetAction(String description) {
+	    super(description);
             // Load the image by using the absolute path to the gif.
 	    // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
@@ -1406,10 +1422,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 ImageIcon icon = new ImageIcon(img);
                 putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             }
-	    putValue("tooltip", "Zoom reset");
+	    putValue("tooltip", description + " (Ctrl+=)");
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS,
-                            java.awt.Event.CTRL_MASK));
+                            Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_M));
 	}
@@ -1422,10 +1438,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     ///////////////////////////////////////////////////////////////////
     //// ZoomFitAction
 
-    // An action to zoom in.
+    // An action to zoom fit.
     public class ZoomFitAction extends AbstractAction {
-	public ZoomFitAction() {
-	    super("Zoom Fit");
+	public ZoomFitAction(String description) {
+	    super(description);
             // Load the image by using the absolute path to the gif.
 	    // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
@@ -1437,10 +1453,11 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 ImageIcon icon = new ImageIcon(img);
                 putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             }
-	    putValue("tooltip", "Zoom fit");
+	    putValue("tooltip", description + " (Ctrl+Shift+-)");
             putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
-                    KeyStroke.getKeyStroke(KeyEvent.VK_F,
-                            java.awt.Event.CTRL_MASK));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
+                            Event.CTRL_MASK
+                            | Event.SHIFT_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_F));
 	}
@@ -1455,8 +1472,8 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
     // An action to zoom out.
     public class ZoomOutAction extends AbstractAction {
-	public ZoomOutAction() {
-	    super("Zoom Out");
+	public ZoomOutAction(String description) {
+	    super(description);
             // Load the image by using the absolute path to the gif.
 	    // Using a relative location should work, but it does not.
             // Use the resource locator of the class.
@@ -1468,10 +1485,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 ImageIcon icon = new ImageIcon(img);
                 putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
             }
-	    putValue("tooltip", "Zoom out");
+	    putValue("tooltip", description + " (Ctrl+-)");
 	    putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
                     KeyStroke.getKeyStroke(KeyEvent.VK_MINUS,
-                            java.awt.Event.CTRL_MASK));
+                            Event.CTRL_MASK));
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_U));
 	}
