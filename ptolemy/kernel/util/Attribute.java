@@ -146,7 +146,8 @@ public class Attribute extends NamedObj {
             workspace().write();
             if (deepContains(container)) {
                 throw new IllegalActionException(this, container,
-                        "Attempt to construct recursive containment of attributes.");
+                        "Attempt to construct recursive containment " +
+                        "of attributes.");
             }
 
             NamedObj prevcontainer = (NamedObj)getContainer();
