@@ -2140,7 +2140,7 @@ public class PlotBox extends JPanel implements Printable {
             "   E: export plot to standard out (EPS format)\n" +
             "   F: fill plot\n" +
             "   H or ?: print help message (this message)\n" +
-            "   Cntr-D or Q: quit\n" +
+            "   Cntrl-D or Q: quit\n" +
             "For more information, see\n" +
             "http://ptolemy.eecs.berkeley.edu/java/ptplot\n";
         JOptionPane.showMessageDialog(this, message,
