@@ -46,7 +46,9 @@ TCL_SRCS = \
 	testDefs.tcl \
 	testEnums.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS)
+EXTRA_SRCS =	$(TCL_SRCS) \
+	chkjava \
+	rmextraspace
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -56,8 +58,14 @@ MISC_FILES =
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
+# Do make sources so that we ensure that the subdirectories are checked out
+all:  sources $(MISC_SRCS)
+	-chmod a+x chkjava rmextraspace
+
+install: all
+
 # Get the rest of the rules
-include $(ROOT)/mk/no-compile.mk
+include $(ROOT)/mk/tycommon.mk
 
 
 
