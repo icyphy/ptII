@@ -64,9 +64,7 @@ JSRCS = \
 	CSPSieve.java \
 	CSPSink.java \
 	CSPSource.java \
-	Customer.java \
-	PortChannelCode.java \
-	Server.java
+	PortChannelCode.java 
 
 
 EXTRA_SRCS =	$(JSRCS)
