@@ -55,8 +55,8 @@ import java.util.List;
 
 FIXME: document this.
 
-@see ptolemy.domains.kernel.GiottoReceiver
-@see ptolemy.domains.kernel.GiottoScheduler
+@see ptolemy.domains.giotto.kernel.GiottoReceiver
+@see ptolemy.domains.giotto.kernel.GiottoScheduler
 
 @author  Christoph Meyer, Ben Horowitz, and Edward A. Lee
 @version $Id$
