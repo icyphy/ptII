@@ -355,7 +355,7 @@ public final class CrossRefList implements Serializable  {
 
         private CrossRef _previous;
 
-        private CrossRef() { this((CrossRef)null); }
+        private CrossRef() { this(null); }
 
         private CrossRef(CrossRef spouse) {
             _far = spouse;
