@@ -26,38 +26,56 @@ FIXME:
 
 <P>
 The above applet uses the Ptolemy II Discrete Event (DE) domain
-to simulate a bus stop where passengers arrive with random probability
-(according to a Poisson process with unity mean inter-arrival time), and
-buses arrive with either a fix inter-arrival time or random probability
-(again according to Poisson process with variable mean inter-arrival time).
-<P>
-The top plot shows the passengers and buses arrival times. The buses
-and passengers arrivals are plotted in red and blue impulses. All passengers
+to illustrate the inspection paradox.
+The inspection paradox concerns Poisson arrivals of events.
+The metaphor used in this applet is that of busses and passengers.
+Passengers arrive according to a Poisson process.
+Busses arrive either at regular intervals or according to a Poisson
+process.  The user selects from these two options by clicking the
+appropriate on-screen control.  The user can also control the mean
+interarrival time of both busses and passengers.
+<p>
+The inspection paradox concerns the average time that a passenger
+waits for a bus (more precisely, the expected value).  If the busses
+arrive at regular intervals with interarrival time equal to <i>T</i>,
+then the expected waiting time is <i>T</i>/2, which is perfectly
+intuitive.  Counterintuitively, however, if the busses arrive
+according to a Poisson process with mean interarrival time equal
+<i>T</i>, the expected waiting time is <i>T</i>, not <i>T</i>/2.
+These expected waiting times are approximated in this applet by
+the average waiting time.  The applet also shows that actual
+arrival times for both passengers and busses, and the waiting
+time of each passenger.
+<p>
+The top plot shows the passengers and buses arrival times. The bus
+and passenger arrivals are shown with red and blue impulses. All passengers
 arriving before and at the time bus <I>i</I> arrives and after the time
-bus
-<I>i-1</I> arrives will get on bus <I>i</I>. On each bus arrival, all
-passengers getting on that bus report their wait times. The wait times
-are plotted on the same plot using green impulses.
-<P>
+bus <I>i-1</I> arrives will get on bus <I>i</I>. On each bus arrival, all
+passengers getting on that bus report their waiting times. The waiting times
+are plotted on the same plot using cyan impulses.
 The bottom plot shows the distribution histogram of all wait times.
-The bin width used is equal to 0.1.
-<P>You can interact with the applet by choosing one of the two bus arrival
-time distributions, the stop time of the simulation, and the mean inter-arrival
-time of the bus. Note that the mean inter-arrival time can be adjusted while
-the simulation is running, and the change is immediately reflected by
-the upper plot.
+The bin width used is equal to 0.2.
 <P>
-One can observe that if the bus arrives in fixed interval, <I>T</I>,
-then the average waiting time will be equal to <I>0.5*T</I> and will be
-uniformly distributed from 0 to <I>T</I>.
-<BR>
-On the other hand, if the bus arrives according to Poisson process,
-then the average waiting time will be equal to <I>T</I> and will be 
-exponentially distributed with mean <I>T</I>, where <I>T</I> is equal 
-to the mean inter-arrival time.
+You can interact with the applet by choosing one of the two bus arrival
+time distributions, the stop time of the simulation, and the mean inter-arrival
+time of the busses or passengers.
+<p>
+The intuition that resolves the paradox is as follows.
+If the busses are arriving according to a Poisson process,
+then some intervals between busses are larger than other intervals.
+A particular passenger is more likely to arrive at the bus stop
+during one of these larger intervals than during one of the smaller
+intervals.  Thus, the expected waiting time is larger if the bus
+arrival times are irregular.
+<p>
+This paradox is called the <i>inspection paradox</i> because the
+passengers are viewed as inspecting the Poisson process of
+bus arrivals.
 
-<P>This applet is implemented by
-<TT><A HREF="HistogramApplet.java">HistogramApplet.java</A></TT>.
+<P>
+<!-- FIXME: The following info is wrong -->
+This applet is implemented by
+<TT><A HREF="InspectionParadox.java">InspectionParadox.java</A></TT>.
 <P>The simulation consists of a <A HREF="../lib/DEClock.java">Clock</A>
 Actor, a
 <A HREF="../lib/DEPoisson.java">Poisson</A> Actor, and a

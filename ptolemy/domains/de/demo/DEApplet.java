@@ -41,14 +41,15 @@ import ptolemy.domains.de.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// DEApplet
 /**
-A base class for applets that use the DE domain.
-It creates and configures a director.
+A base class for applets that use the DE domain. This is provided
+for convenience, in order to promote certain common elements among
+DE applets. It is by no means required in order to create an applet
+that uses the DE domain. In particular, it creates and configures a director.
 If the applet parameter "stoptime" has been set, then it uses that
 parameter to define the duration of the execution of the model.
 Otherwise, it creates an entry box in the applet for specifying the
 stop time.  If the applet parameter "defaultstoptime" has been set,
 then the entry box is initialized with the value given by that parameter.
-
 
 @author Edward A. Lee
 @version $Id$
@@ -62,28 +63,20 @@ public class DEApplet extends PtolemyApplet {
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        String basepinfo[][] = super.getParameterInfo();
-        String[][] pinfo = new String[basepinfo.length + 2][];
-        for (int i = 0; i < basepinfo.length; i++) {
-            pinfo[i] = basepinfo[i];
-        }
         String newinfo[][] = {
             {"stoptime", "", "when to stop"},
             {"defaultstoptime", "1.0", "default value for when to stop"}
         };
-        pinfo[basepinfo.length] = newinfo[0];
-        pinfo[basepinfo.length+1] = newinfo[1];
-        return pinfo;
+        return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
-    /** Initialize the applet. The stop time is given by an
-     *  applet parameter "stoptime".  If this parameter is not given,
-     *  then a dialog is created on screen to query the user for the
+    /** Initialize the applet.  After calling the base class init() method,
+     *  this method creates a director which is accessible
+     *  to derived classes via a protected member.
+     *  If the applet parameter "stoptime" is given, then set
+     *  the director stop time to its value. If this parameter is not given,
+     *  then create a dialog on screen to query the user for the
      *  stop time.
-     *  After calling the base class init() method,
-     *  this method creates a top-level composite actor
-     *  and director for that composite.  Both are accessible
-     *  to derived classes via protected members.
      */
     public void init() {
         super.init();
@@ -114,10 +107,12 @@ public class DEApplet extends PtolemyApplet {
     ////                         protected methods                      ////
 
     /** In addition to creating the buttons provided by the base class,
-     *  if the stop time has not been specified, then create
+     *  if the stop time has not been specified by the applet parameter
+     *  "stoptime," then create
      *  a dialog box for that number to be entered.  The panel containing
      *  the buttons and the entry box is returned.
      *  @param numbuttons The number of buttons to create.
+     *  @return The panel containing the controls.
      */
     protected Panel _createRunControls(int numbuttons) {
         Panel panel = super._createRunControls(numbuttons);
@@ -143,6 +138,7 @@ public class DEApplet extends PtolemyApplet {
 
     /** Get the stop time from the entry box, if there is one,
      *  or from the director, if not.
+     *  @return The stop time.
      */
     protected double _getStopTime() {
         double result = 1.0;
@@ -159,8 +155,8 @@ public class DEApplet extends PtolemyApplet {
         return result;
     }
 
-    /** Get the stop time from the entry box, if there is one,
-     *  and then execute the system.
+    /** Execute the system until the stop time given by the
+     *  _getStopTime() method.
      */
     protected void _go() {
         try {

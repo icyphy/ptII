@@ -34,21 +34,20 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.Hashtable;
 
-// import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.util.*;
-// import ptolemy.domains.sdf.kernel.*;
-// import ptolemy.domains.sdf.lib.*;
-// import ptolemy.plot.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeApplet
 /**
-An applet that demonstrates the Ptolemy II type system.
+An applet that demonstrates the Ptolemy II type system.  This applet
+connects two ramps to two inputs of an expression actor, and connects
+the output of the expression actor to either a printer or a plotter.
+It displays a Diva animation of the type resolution process.
 
 @author Yuhong Xiong
 @version $Id$
@@ -59,7 +58,8 @@ public class TypeApplet extends SDFApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initialize the applet.
+    /** After invoking super.init(), create and connect the actors.
+     *  Also, create the on-screen Diva displays.
      */
     public void init() {
         super.init();
@@ -94,6 +94,13 @@ public class TypeApplet extends SDFApplet {
         }
     }
 
+    /** Override the base class to avoid executing the model automatically
+     *  when the applet starts.  This way, the initial types (NaT) are
+     *  displayed in the Diva animation.
+     */
+    public void start() {
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -102,8 +109,9 @@ public class TypeApplet extends SDFApplet {
      */
     protected void _go() {
 	try {
-	    // FIXME: Before parameter change is supported, totally
-	    // replace the parameters by new instances.
+	    // FIXME: None of this should be necessary.  These
+            // parameters should be connected to a listener attached to
+            // the query object.
 	    _ramp1.init.setContainer(null);
 	    Parameter init1 = new Parameter(_ramp1, "init");
 	    _ramp1.init = init1;

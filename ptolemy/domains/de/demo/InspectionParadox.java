@@ -48,7 +48,37 @@ import ptolemy.plot.*;
 //// InspectionParadox
 /**
 An applet that uses Ptolemy II DE domain to illustrate the inspection
-paradox.  The inspection paradox deals with Poisson arrivals of events.
+paradox.  The inspection paradox concerns Poisson arrivals of events.
+The metaphor used in this applet is that of busses and passengers.
+Passengers arrive according to a Poisson process.
+Busses arrive either at regular intervals or according to a Poisson
+process.  The user selects from these two options by clicking the
+appropriate on-screen control.  The user can also control the mean
+interarrival time of both busses and passengers.
+<p>
+The inspection paradox concerns the average time that a passenger
+waits for a bus (more precisely, the expected value).  If the busses
+arrive at regular intervals with interarrival time equal to <i>T</i>,
+then the expected waiting time is <i>T</i>/2, which is perfectly
+intuitive.  Counterintuitively, however, if the busses arrive
+according to a Poisson process with mean interarrival time equal
+<i>T</i>, the expected waiting time is <i>T</i>, not <i>T</i>/2.
+These expected waiting times are approximated in this applet by
+the average waiting time.  The applet also shows that actual
+arrival times for both passengers and busses, and the waiting
+time of each passenger.
+<p>
+The intuition that resolves the paradox is as follows.
+If the busses are arriving according to a Poisson process,
+then some intervals between busses are larger than other intervals.
+A particular passenger is more likely to arrive at the bus stop
+during one of these larger intervals than during one of the smaller
+intervals.  Thus, the expected waiting time is larger if the bus
+arrival times are irregular.
+<p>
+This paradox is called the <i>inspection paradox</i> because the
+passengers are viewed as inspecting the Poisson process of
+bus arrivals.
 
 @author Edward A. Lee and Lukito Muliadi
 @version $Id$
@@ -67,7 +97,7 @@ public class InspectionParadox extends DEApplet {
             _query.addQueryListener(new ParameterListener());
             _query.line("busmean", "Bus mean interarrival time", "1.0");
             _query.line("passmean", "Passenger mean interarrival time", "1.0");
-            _query.onoff("regular", "Regular arrivals", false);
+            _query.onoff("regular", "Regular bus arrivals", false);
             add(_query);
 
             // The 2 argument requests a go and stop button.

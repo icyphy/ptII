@@ -49,7 +49,11 @@ import ptolemy.plot.*;
 //////////////////////////////////////////////////////////////////////////
 //// ComSystem
 /**
-An applet that uses Ptolemy II SDF domain.
+This applet displays the eye diagram of a simple basedband communication
+system.  The transmit pulse is a 100% excess-bandwidth square-root
+raised-cosine pulse.  The channel adds Gaussian noise.  The receiver
+consists of a matched filter.  The eye diagram for the signal after
+the matched filter is shown.
 
 @author Edward A. Lee
 @version $Id$
@@ -59,7 +63,7 @@ public class ComSystem extends SDFApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initialize the applet.
+    /** After invoking super.init(), create and connect the actors.
      */
     public void init() {
         super.init();
@@ -97,8 +101,6 @@ public class ComSystem extends SDFApplet {
             myplot.plot.setXRange(0.0, 32.0);
             myplot.plot.setWrap(true);
             myplot.plot.setYRange(-1.3, 1.3);
-            // FIXME: bug in plot -- successive line
-            // segments overlap by one pixel, and leave a blank spot.
             myplot.plot.setMarksStyle("none");
             myplot.plot.setPointsPersistence(512);
             myplot.plot.setSize(500, 300);

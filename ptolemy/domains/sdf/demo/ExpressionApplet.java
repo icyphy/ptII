@@ -50,7 +50,11 @@ import ptolemy.plot.*;
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionApplet
 /**
-An applet that uses Ptolemy II SDF domain.
+A demonstration of the Expression actor.  This applet feeds two ramp
+signals, on slowly rising and one quickly rising, into two inputs
+named "slow" and "fast" of an Expression actor.  That actor evaluates
+whatever expression you give it in the on-screen dialog, and sends
+the result to a plotter.
 
 @author Edward A. Lee
 @version $Id$
@@ -60,7 +64,8 @@ public class ExpressionApplet extends SDFApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initialize the applet.
+    /** After invoking super.init(), create and connect the actors.
+     *  Also, create an on-screen dialog for the expression to evaluate.
      */
     public void init() {
         super.init();

@@ -47,7 +47,9 @@ import ptolemy.plot.*;
 //////////////////////////////////////////////////////////////////////////
 //// Pulses
 /**
-An applet that uses Ptolemy II SDF domain.
+Calculate and display various raised-cosine pulses.  One of the pulses
+is configured by parameters that are specified in dialog boxes on the
+screen. The others are provided for comparison.
 
 @author Edward A. Lee
 @version $Id$
@@ -57,7 +59,9 @@ public class Pulses extends SDFApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initialize the applet.
+    /** After invoking super.init(), create and connect the actors.
+     *  Also, create an on-screen dialog for the parameters of the
+     *  configurable raised=cosine pulse.
      */
     public void init() {
         super.init();
@@ -125,9 +129,6 @@ public class Pulses extends SDFApplet {
             _toplevel.connect(pulse2.output, myplot.input);
             _toplevel.connect(pulse3.output, myplot.input);
             _toplevel.connect(pulse4.output, myplot.input);
-
-            // Get one iteration right away.
-            _manager.run();
         } catch (Exception ex) {
             report("Setup failed:", ex);
         }
@@ -137,7 +138,8 @@ public class Pulses extends SDFApplet {
     ////                         protected methods                      ////
 
     /** Execute the system.  This overrides the base class to read the
-     *  values in the query box first and set parameters.
+     *  values in the query box and set the parameters of the configurable
+     *  raised-cosine pulse.
      */
     protected void _go() {
         _yours.excessBW.setToken
@@ -153,7 +155,7 @@ public class Pulses extends SDFApplet {
     ////                         private variables                      ////
 
     private Query _query;
-    RaisedCosine _yours;
+    private RaisedCosine _yours;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

@@ -10,11 +10,11 @@
 <link href="../../../../doc/default.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-<H1><I>CSP Hardware Bus Contention Demo </I></H1>
+<H1>CSP Hardware Bus Contention Demo</H1>
 <P>
 The following applet uses the Ptolemy II CSP domain to model resource
-contention. The model serves as an example of how the CSP model of
-computation can deal with determinacy using time.
+contention. The model shows the use of timed CSP to deterministically
+handle nondeterministic events.
 <P>
  <!-- All of the controls of the applet should be visible when the
 applet is displayed on a XGA screen-->
@@ -51,27 +51,33 @@ WIDTH = 500 HEIGHT = 20 NAME = "BusContentionApplet"  codebase="http://java.sun.
 The applet consists of a controller, three processors and a memory block. 
 At randomly selected points in time, each processor can request permission 
 from the controller to access the memory. The processors each have priorities 
-associated with them and in cases where there is a simultaneous memory 
+associated with them, and in cases where there is a simultaneous memory 
 access request, the controller grants permission to the processor with the 
-highest priority. 
+highest priority.
 <P>
 All communication between actors in a CSP model of computation occurs via
-<I>rendezvous</I>. Rendezvous is an atomic form of communication. Because 
-of the atomic nature of rendezvous, it is impossible for the controller in
-this demo to check priorities of incoming requests at the same time that 
-requests are occuring. To overcome this difficulty, an alarm is employed. 
+<I>rendezvous</I>. Rendezvous is an atomic form of communication.
+This model uses a timed extension to CSP, so each rendezvous logically
+occurs at a specific point in time.
+<p>
+Because 
+of the atomic nature of rendezvous, when the controller receives a request
+for access, it cannot know whether there is another, higher priority
+request pending at the same time. To overcome this difficulty, an
+alarm is employed. 
 The alarm is started by the controller immediately following the first 
-request for memory access. It is awakened when a delay block occurs to 
-indicate to the controller that no more memory requests will occur at the 
-given point in time. Hence, the alarm uses CSP's notion of centralized time 
+request for memory access. It is awakened when time is ready to advance
+(the model blocks on delays).  This
+indicates to the controller that no more memory requests will occur at the 
+given point in time. Hence, the alarm uses centralized time 
 to make deterministic an inherently non-deterministic activity. 
 <P>
-In the applet below, each of the initially blue processors (the circular 
+In the applet, each of the initially blue processors (the circular 
 nodes) can be in one of three states. The color yellow indicates that a 
-processor is in state 1 and is awaiting the controller to give it permission 
+processor is in state 1 and is waiting for the controller to give it permission 
 to access memory. The color green indicates that a processor has been granted 
 permission to access memory. The color red indicates that the processor has
-been denied memory access. 
+been denied memory access.
 <P>
 This applet consists of four types of actors:
 <UL>

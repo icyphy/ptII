@@ -41,15 +41,19 @@ import ptolemy.domains.sdf.kernel.*;
 //////////////////////////////////////////////////////////////////////////
 //// SDFApplet
 /**
-A base class for applets that use the SDF domain.
-It creates and configures a director.
-It defines an applet parameter, "iterations", which it uses to set
-the iterations parameter of the director.  If that parameter is not
-set by the applet, then when (and if) the applet requests run controls,
-it creates a dialog box on the screen in which the applet user can
-enter the number of iterations.  If the applet parameter "defaultiterations"
-is given, then the value of this parameter is the default value in the
-dialog box.
+A base class for applets that use the SDF domain. This is provided
+for convenience, in order to promote certain common elements among
+SDF applets. It is by no means required in order to create an applet
+that uses the SDF domain. In particular, it creates and configures a
+director. It defines two applet parameters, "iterations" and
+"defaultiterations", which it uses to set the iterations parameter
+of the director. If "iterations" is set, then that defines the number
+of iterations. Otherwise, then when (and if) the applet requests on-screen
+controls for model execution, it creates a dialog box on the screen in
+which the applet user can enter the number of
+iterations. If the applet parameter "defaultiterations" is given,
+then the value of this parameter is the default value in the dialog
+box.
 
 @author Edward A. Lee
 @version $Id$
@@ -63,28 +67,19 @@ public class SDFApplet extends PtolemyApplet {
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        String basepinfo[][] = super.getParameterInfo();
-        String[][] pinfo = new String[basepinfo.length + 2][];
-        for (int i = 0; i < basepinfo.length; i++) {
-            pinfo[i] = basepinfo[i];
-        }
         String newinfo[][] = {
             {"iterations", "", "number of iterations"},
             {"defaultiterations", "1", "default number of iterations"}
         };
-        pinfo[basepinfo.length] = newinfo[0];
-        pinfo[basepinfo.length+1] = newinfo[1];
-        return pinfo;
+        return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 
-    /** Initialize the applet. The number of iterations is given by an
-     *  applet parameter "iterations".  If this parameter is not given,
-     *  then a dialog is created on screen to query the user for the number
-     *  of iterations.
-     *  After calling the base class init() method,
-     *  this method creates a top-level composite actor
-     *  and director for that composite.  Both are accessible
-     *  to derived classes via protected members.
+    /** Initialize the applet. After calling the base class init() method,
+     *  this method creates a director which is accessible
+     *  to derived classes via a protected member.
+     *  If the applet parameter "iterations" has been given, then it
+     *  sets the iterations parameter of the director.  This method
+     *  also creates a scheduler associated with the director.
      */
     public void init() {
         super.init();
@@ -121,10 +116,12 @@ public class SDFApplet extends PtolemyApplet {
     ////                         protected methods                      ////
 
     /** In addition to creating the buttons provided by the base class,
-     *  if the number of iterations has not been specified, then create
+     *  if the number of iterations has not been specified by the applet
+     *  parameter "iterations," then create
      *  a dialog box for that number to be entered.  The panel containing
      *  the buttons and the entry box is returned.
      *  @param numbuttons The number of buttons to create.
+     *  @return The panel containing the controls.
      */
     protected Panel _createRunControls(int numbuttons) {
         Panel panel = super._createRunControls(numbuttons);
@@ -150,6 +147,7 @@ public class SDFApplet extends PtolemyApplet {
 
     /** Get the number of iterations from the entry box, if there is one,
      *  or from the director, if not.
+     *  @return The number of iterations to execute.
      */
     protected int _getIterations() {
         int result = 1;
@@ -168,8 +166,8 @@ public class SDFApplet extends PtolemyApplet {
         return result;
     }
 
-    /** Get the number of iterations from the entry box, if there is one,
-     *  and then execute the system.
+    /** Execute the system for the number of iterations given by the
+     *  _getIterations() method.
      */
     protected void _go() {
         try {
