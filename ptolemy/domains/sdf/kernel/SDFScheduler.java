@@ -1478,7 +1478,7 @@ public class SDFScheduler extends Scheduler {
                 // Note that this is a very simple type of inference...  
                 // However, in general, we don't want to try to 
                 // flatten this model...
-                Iterator connectedPorts = port.insidePortList().iterator();
+                Iterator connectedPorts = port.deepInsidePortList().iterator();
                 IOPort foundOutputPort = null;
                 while (connectedPorts.hasNext()) {
                     IOPort connectedPort = (IOPort) connectedPorts.next();
