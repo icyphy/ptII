@@ -113,7 +113,20 @@ cruiseControl.xml: cruiseControl.mdl
 demo: all cruiseControlECSL.moml
 	$(PTII)/bin/vergil cruiseControlECSL.moml
 
-# Electronic Throttle Control (etc) demo
+# Steer By Wire (sbw) demo
+demo_sbw: all sbw_ECSL.moml
+	$(PTII)/bin/vergil sbw_ECSL.moml
+
+sbw_ECSL.moml: sbw_ECSL.xml ecsl2moml
+	./ecsl2moml $<
+
+sbw_ECSL.xml: ../sbw/sbw_data_flow_12_1.xml
+	../XML2ECSL/bin/Xml2Ecsl_d $< $@
+
+../sbw/sbw_data_flow_12_1.xml: ../sbw/sbw_data_flow_12_1.mdl
+	../MDL2XML/bin/MDL2XMLd $<
+
+# Electronic Throttle Control (sbw) demo
 demo_etc: all etc_controlECSL.moml
 	$(PTII)/bin/vergil etc_controlECSL.moml
 
