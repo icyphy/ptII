@@ -66,24 +66,45 @@ public class TestSerializable {
         String filename = new String("TestSerializable.data");
 
         if (args.length > 0 && args[0].equals("write")) {
+            FileOutputStream f = null;
+            ObjectOutput s = null;
             try {
                 // Write the system out.
-                FileOutputStream f = new FileOutputStream(filename);
-                ObjectOutput s = new ObjectOutputStream(f);
+                f = new FileOutputStream(filename);
+                s = new ObjectOutputStream(f);
                 s.writeObject(exampleSystem);
-                s.flush();
-                f.close();
             } catch (IOException e) {
                 System.err.println("Exception while writing: "+ e);
+            } finally {
+                if (f != null) {
+                    try {
+                        f.close();
+                    } catch (Throwable throwable) {
+                        System.out.println("Ignoring failure to close stream "
+                                + "on '" + filename + "'");
+                        throwable.printStackTrace();
+                    }
+                }
+                if (s != null) {
+                    try {
+                        s.close();
+                    } catch (Throwable throwable) {
+                        System.out.println("Ignoring failure to close stream "
+                                + "on '" + filename + "'");
+                        throwable.printStackTrace();
+                    }
+                }
             }
             System.out.println("Wrote to " + filename);
         } else {
+            FileInputStream f = null;
+            ObjectInputStream s = null;
+
             try {
                 // Read the system in
-                FileInputStream f = new FileInputStream(filename);
-                ObjectInputStream s = new ObjectInputStream(f);
+                f = new FileInputStream(filename);
+                s = new ObjectInputStream(f);
                 ExampleSystem newExampleSystem = (ExampleSystem)s.readObject();
-                f.close();
                 String newDescription = newExampleSystem.toString();
                 String oldDescription = exampleSystem.toString();
                 if (oldDescription.equals(newDescription)) {
@@ -102,6 +123,25 @@ public class TestSerializable {
             } catch (ClassNotFoundException e) {
                 System.err.println("ClassNotFoundException while reading: "
                         + e);
+            } finally {
+                if (f != null) {
+                    try {
+                        f.close();
+                    } catch (Throwable throwable) {
+                        System.out.println("Ignoring failure to close stream "
+                                + "on '" + filename + "'");
+                        throwable.printStackTrace();
+                    }
+                }
+                if (s != null) {
+                    try {
+                        s.close();
+                    } catch (Throwable throwable) {
+                        System.out.println("Ignoring failure to close stream "
+                                + "on '" + filename + "'");
+                        throwable.printStackTrace();
+                    }
+                }
             }
         }
     }
