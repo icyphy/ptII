@@ -83,6 +83,14 @@ public final class Edge extends Element {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** A one-word description of the type of this graph element.
+     *  @return The description.
+     */
+    public String descriptor() {
+        return "edge";
+    }
+
     /** Return true if this is a self-loop edge.
      *  @return True if this is a self-loop edge.
      */
@@ -140,17 +148,6 @@ public final class Edge extends Element {
      */
     public String toString() {
         return toString(true);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** A one-word description of the element type that is used to specialize
-     *  error messages. 
-     *  @return The description.
-     */
-    protected String _descriptor() {
-        return "edge";
     }
 
     ///////////////////////////////////////////////////////////////////

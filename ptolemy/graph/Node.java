@@ -61,6 +61,14 @@ public final class Node extends Element {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** A one-word description of the type of this graph element.
+     *  @return The description.
+     */
+    public String descriptor() {
+        return "node";
+    }
+
     /** Return a string representation of the node.
      *  The string representation is simply a representation of the node
      *  weight (or the string <code>"<unweighted node>"</code> if
@@ -73,16 +81,4 @@ public final class Node extends Element {
             return _weight.toString();
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** A one-word description of the element type that is used to specialize
-     *  error messages. 
-     *  @return The description.
-     */
-    protected String _descriptor() {
-        return "node";
-    }
-
 }

@@ -63,6 +63,13 @@ public abstract class Element {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** A one-word description of the type of this graph element.
+     *  @return The description.
+     */
+    public String descriptor() {
+        return "element";
+    }
+
     /** Return the weight that has been associated with this element.
      *  @return The associated weight.
      *  @exception IllegalStateException If this is an unweighted element.
@@ -70,7 +77,7 @@ public abstract class Element {
     public final Object getWeight() {
         if (!hasWeight()) {
             throw new IllegalStateException("Attempt to access the weight "
-                    + "of the following unweighted " + _descriptor() + ": "
+                    + "of the following unweighted " + descriptor() + ": "
                     + this + "\n");
         } else {
             return _weight;
@@ -109,7 +116,7 @@ public abstract class Element {
         // FIXME: add @see Graph#validateWeight(Edge)
         if (weight == null) {
             throw new IllegalArgumentException("Attempt to assign a null "
-                    + "weight to the following " + _descriptor() + ": "
+                    + "weight to the following " + descriptor() + ": "
                     + this + "\n");
         } else {
             _weight = weight;
@@ -124,7 +131,7 @@ public abstract class Element {
     public final Object weight() {
         if (!hasWeight()) {
             throw new IllegalStateException("Attempt to access the weight "
-                    + "of the following unweighted " + _descriptor() + ": "
+                    + "of the following unweighted " + descriptor() + ": "
                     + this + "\n");
         } else {
             return _weight;
@@ -133,14 +140,6 @@ public abstract class Element {
     
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-
-    /** A one-word description of the element type that is used to specialize
-     *  error messages. 
-     *  @return The description.
-     */
-    protected String _descriptor() {
-        return "element";
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

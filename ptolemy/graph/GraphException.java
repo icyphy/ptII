@@ -74,6 +74,23 @@ public class GraphException extends RuntimeException {
         return _elementDump(edge, graph, new String("edge"));
     }
 
+    /** Return a dump of a graph element and the container graph suitable to
+     *  be appended to an error message.
+     *
+     *  @param element The element to dump.
+     *  @param graph The graph where the element resides.
+     *  @return A text string dump of the element and graph.
+     */
+    static public String elementDump(Element element, Graph graph) {
+        String descriptor;
+        if (element == null) {
+            descriptor = "element";
+        } else {
+            descriptor = element.descriptor();
+        }
+        return _elementDump(element, graph, descriptor);
+    }
+
     /** Return a dump of an node and the container graph suitable to
      *  be appended to an error message.
      *

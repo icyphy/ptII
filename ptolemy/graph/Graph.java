@@ -45,6 +45,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// Graph
@@ -644,13 +646,12 @@ public class Graph implements Cloneable {
      *  @return All the edges in this graph.
      */
     public Collection edges() {
-        int hiddenEdgeCount = _hiddenEdgeSet.size();
-        if (hiddenEdgeCount == 0) {
+        if (hiddenEdgeCount() == 0) {
             return Collections.unmodifiableList(_edges);
         }
 
         // There is at least one hidden edge.
-        int visibleEdgeCount = _edges.size() - hiddenEdgeCount;
+        int visibleEdgeCount = _edges.size() - hiddenEdgeCount();
         ArrayList result = new ArrayList(visibleEdgeCount);
         if (visibleEdgeCount == 0) {
             return Collections.unmodifiableList(result);
@@ -667,17 +668,19 @@ public class Graph implements Cloneable {
         return Collections.unmodifiableList(result);
     }
 
-    /** Return all the nodes in this graph that have a specified weight.
-     *  The nodes are returned in the form of a collection.
-     *  If the specified weight is null, return all the unweighted nodes.
-     *  If no nodes have the specified weight (or if the argument is null and
-     *  there are no unweighted nodes), return an empty collection.
+    /** Return all the edges in this graph that have a specified weight.
+     *  The edges are returned in the form of a collection.
+     *  If the specified weight is null, return all the unweighted edges.
+     *  If no edges have the specified weight (or if the argument is null and
+     *  there are no unweighted edges), return an empty collection.
      *  Each element in the returned collection is an instance of {@link Node}.
      *  @param weight The specified weight.
-     *  @return The nodes in this graph that have the specified weight.
+     *  @return The edges in this graph that have the specified weight.
      */
     public Collection edges(Object weight) {
-        return _elements(_unweightedNodeSet, _nodeWeightMap, weight);
+        // Hidden edges will not be included since they are removed from
+        // the weight map.
+        return _elements(_unweightedEdgeSet, _edgeWeightMap, weight);
     }
 
     /** Return all the edges in this graph whose weights are contained
@@ -696,6 +699,8 @@ public class Graph implements Cloneable {
      *  @see #edges(Object)
      */
     public Collection edges(Collection collection) {
+        // Hidden edges will not be included since they are removed from
+        // the weight map.
         ArrayList edges = new ArrayList();
         Iterator weights = collection.iterator();
         while (weights.hasNext()) {
@@ -1314,6 +1319,10 @@ public class Graph implements Cloneable {
      *  @see #validateWeight(Node, Object).
      */
     public boolean validateWeight(Node node) {
+        if (node == null) {
+            throw new NullPointerException("Attempt to validate the weight "
+                    + "of a null graph node.");
+        }
         if (!containsNode(node)) {
             throw new GraphElementException(
                     "The specified node is not in the graph."
@@ -1327,7 +1336,7 @@ public class Graph implements Cloneable {
         }
         boolean changed = _removeWeight(node, weightArgument, _nodeWeightMap,
                 _unweightedNodeSet);
-        _registerWeight(node);
+        _registerWeight(node, _nodeWeightMap, _unweightedNodeSet);
         return changed;
     }
 
@@ -1375,36 +1384,8 @@ public class Graph implements Cloneable {
                     "Invalid weight associated with a node in the graph."
                     + GraphException.nodeDump(node, this));
         }
-        boolean changed = false;
-        if (oldWeight == null) {
-            if (!_unweightedNodeSet.contains(node)) {
-                // This 'dump' of a null weight will also dump the graph.
-                throw new GraphElementException(
-                        "Incorrect previous weight specified."
-                        + GraphException.weightDump(oldWeight, this));
-            }
-            if (newWeight == null) {
-                return false;
-            }
-            _unweightedNodeSet.remove(node);
-            changed = true;
-        } else {
-            // The weight may have changed in value even if comparison under
-            // the equals method has not changed. Thus we proceed
-            // with the removal unconditionally.
-            List nodeList = (List)_nodeWeightMap.get(oldWeight);
-            if ((nodeList == null) || !nodeList.remove(node)) {
-                throw new GraphElementException(
-                        "Incorrect previous weight specified."
-                        + GraphException.weightDump(oldWeight, this));
-            }
-            changed = !oldWeight.equals(newWeight);
-        }
-        if (changed) {
-            _registerChange();
-        }
-        _registerWeight(node);
-        return changed;
+        return _validateWeight(node, oldWeight, newWeight, _nodes, 
+                _nodeWeightMap, _unweightedNodeSet);
      }
 
 
@@ -1537,7 +1518,7 @@ public class Graph implements Cloneable {
         if (!edge.isSelfLoop()) {
             _connect(edge, edge.sink());
         }
-        _registerWeight(edge);
+        _registerWeight(edge, _edgeWeightMap, _unweightedEdgeSet);
         _registerChange();
     }
 
@@ -1672,7 +1653,7 @@ public class Graph implements Cloneable {
         }
         _nodes.add(node);
         _incidentEdgeMap.put(node, new ArrayList());
-        _registerWeight(node);
+        _registerWeight(node, _nodeWeightMap, _unweightedNodeSet);
         _registerChange();
     }
 
@@ -1749,39 +1730,23 @@ public class Graph implements Cloneable {
         return (ArrayList)_incidentEdgeMap.get(node);
     }
 
-    // Associate an edge to its weight in the internal mapping of edge
-    // weights to edges. If the edge is unweighted, add it to the set
-    // of unweighted edges.
-    // @param edge The edge.
-    private void _registerWeight(Edge edge) {
-        if (edge.hasWeight()) {
-            Object weight = edge.getWeight();
-            ArrayList sameWeightList = (ArrayList)(_edgeWeightMap.get(weight));
+    // Associate a graph element to its weight in given the relevant mapping of
+    // weights to elements, and the set of unweighted elements of the same
+    // type (nodes or edges). If the element is unweighted, add it to the set
+    // of unweighted elements.
+    // @param element The element.
+    private void _registerWeight(Element element, Map weightMap,
+            Set unweightedSet) {
+        if (element.hasWeight()) {
+            Object weight = element.getWeight();
+            ArrayList sameWeightList = (ArrayList)(weightMap.get(weight));
             if (sameWeightList == null) {
                 sameWeightList = new ArrayList();
-                _edgeWeightMap.put(weight, sameWeightList);
+                weightMap.put(weight, sameWeightList);
             }
-            sameWeightList.add(edge);
+            sameWeightList.add(element);
         } else {
-            _unweightedEdgeSet.add(edge);
-        }
-    }
-
-    // Associate a node to its weight in the internal mapping of node
-    // weights to nodes. If the node is unweighted, add it to the set
-    // of unweighted nodes.
-    // @param node The node.
-    private void _registerWeight(Node node) {
-        if (node.hasWeight()) {
-            Object weight = node.getWeight();
-            ArrayList sameWeightList = (ArrayList)(_nodeWeightMap.get(weight));
-            if (sameWeightList == null) {
-                sameWeightList = new ArrayList();
-                _nodeWeightMap.put(weight, sameWeightList);
-            }
-            sameWeightList.add(node);
-        } else {
-            _unweightedNodeSet.add(node);
+            unweightedSet.add(element);
         }
     }
 
@@ -1890,6 +1855,45 @@ public class Graph implements Cloneable {
             }
         }
     }
+
+     // Validate the weight of a given graph element, given the previous
+     // weight of that element and the element set, weight map, and unweighted 
+     // element set for all elements of the same type (nodes or edges).
+     // Assume that the element and weight are valid.
+     private boolean _validateWeight(Element element, Object oldWeight,
+             Object newWeight, List elementSet, Map weightMap, 
+             Set unweightedSet) {
+        boolean changed = false;
+        if (oldWeight == null) {
+            if (!unweightedSet.contains(element)) {
+                // This 'dump' of a null weight will also dump the graph.
+                throw new GraphElementException(
+                        "Incorrect previous weight specified."
+                        + GraphException.weightDump(oldWeight, this));
+            }
+            if (newWeight == null) {
+                return false;
+            }
+            unweightedSet.remove(element);
+            changed = true;
+        } else {
+            // The weight may have changed in value even if comparison under
+            // the equals method has not changed. Thus we proceed
+            // with the removal unconditionally.
+            List elementList = (List)weightMap.get(oldWeight);
+            if ((elementList == null) || !elementList.remove(element)) {
+                throw new GraphElementException(
+                        "Incorrect previous weight specified."
+                        + GraphException.weightDump(oldWeight, this));
+            }
+            changed = !oldWeight.equals(newWeight);
+        }
+        if (changed) {
+            _registerChange();
+        }
+        _registerWeight(element, weightMap, unweightedSet);
+        return changed;
+     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
