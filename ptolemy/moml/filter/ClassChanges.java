@@ -149,6 +149,6 @@ public class ClassChanges implements MoMLFilter {
 
         // New in 2.1-devel-2
         _classChanges.put("ptolemy.kernel.util.VersionAttribute",
-                "ptolemy.kernel.attributes.VersionLocation");
+                "ptolemy.kernel.attributes.VersionAttribute");
     }
 }
