@@ -296,7 +296,11 @@ public class Variable extends Parameter {
      *  time its value is queried.
      */
     protected void _invalidateDependencies() {
+        ptolemy.data.Token tok = getToken();
         setExpression(getExpression());
+        if (getExpression() == null) {
+            setToken(tok);
+        }
     }
 
     /** If this variable is contained in a VariableList and 
