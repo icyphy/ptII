@@ -66,7 +66,7 @@ public class WallClockTime extends Source {
     ////                         public methods                    ////
 
     /** Output the elapsed time in seconds since the invocation
-     *  of the initalize() method.
+     *  of the initialize() method.
      *  @exception IllegalActionException If there is no director, or
      *   if the base class throws it.
      */
