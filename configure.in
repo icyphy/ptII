@@ -441,7 +441,7 @@ AC_MSG_CHECKING([for java.home property by compiling a test program ])
 # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
 if "$JAVAC" JavaHome.java ; then
    AC_MSG_RESULT(ok)
-   AC_MSG_CHECKING([for java.home prop by running a test program ])
+   AC_MSG_CHECKING([for java.home property by running a test program ])
    if env CLASSPATH="$PTII/config" "$JAVA" JavaHome > /dev/null; then
       # Run it again and get the results with \ converted to /
       PTJAVA_HOME=`CLASSPATH="$PTII/config" "$JAVA" JavaHome`
