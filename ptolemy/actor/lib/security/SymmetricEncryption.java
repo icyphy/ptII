@@ -69,6 +69,10 @@ on the <i>key</i> port.
 This key should be protected in some manner as the security of
 the encrypted message relies on the secrecy of this key.
 
+<p>Note that for simplicity, this actor does not support the
+notion of algorithm parameters, so the algorithm must not require
+that algorithm parameters be transmitted separately from the key.
+
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
 
@@ -100,9 +104,6 @@ public class SymmetricEncryption extends CipherActor {
 
         key = new TypedIOPort(this, "key", true, false);
         key.setTypeEquals(BaseType.OBJECT);
-
-        parameters = new TypedIOPort(this, "parameters", false, true);
-        parameters.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -113,14 +114,6 @@ public class SymmetricEncryption extends CipherActor {
      *  The type is an ObjectToken of type java.security.Key.
      */
     public TypedIOPort key;
-
-    /** Algorithm specific parameters that are sent to the decryption
-     *  actor.  The type is an array of unsigned bytes.  The values
-     *  depend on the algorithm chosen
-     */   
-    public TypedIOPort parameters;
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -142,7 +135,6 @@ public class SymmetricEncryption extends CipherActor {
                 //SecretKey key = (SecretKey)objectToken.getValue();
                 java.security.Key key = (java.security.Key)objectToken.getValue(); 
                 _cipher.init(Cipher.ENCRYPT_MODE, key);
-                _algorithmParameters = _cipher.getParameters();
             } catch (Exception ex) {
                 throw new IllegalActionException (this, ex,
                         "Failed to initialize Cipher");
@@ -150,15 +142,6 @@ public class SymmetricEncryption extends CipherActor {
         }
 
         super.fire();
-        if (_algorithmParameters != null) {
-            try {
-                parameters.send(0,
-                        CryptographyActor.unsignedByteArrayToArrayToken(
-                        _algorithmParameters.getEncoded()));
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex, "send failed");
-            }
-        }
     }
 
     /** Get an instance of the cipher and outputs the key required for
@@ -223,8 +206,6 @@ public class SymmetricEncryption extends CipherActor {
      * for symmetric decryption.
      */
     private SecretKey _secretKey = null;
-
-    private AlgorithmParameters _algorithmParameters;
 
     private static int BUFFER_SIZE = 8192;
 

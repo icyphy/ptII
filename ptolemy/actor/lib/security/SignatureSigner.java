@@ -31,6 +31,7 @@
 package ptolemy.actor.lib.security;
 
 
+import ptolemy.data.ArrayToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -60,20 +61,13 @@ import java.util.Set;
 data was not modified in transit.  However, the data itself is passed
 in cleartext.
 
-<p> In this case, the SignatureSigner actor generates private and
-public keys. 
-
-<p>The public key is passed as an unsigned byte array on the
-<i>publicKey</i> port to the SignatureVerifier actor to verify that
-the data has not been tampered with.
-
-<p>Each time fire() is called, the private key is used to create a
+<p>Each time fire() is called, the <i>privateKey</i> is used to create a
 signature for each block of unsigned byte array read from the
 <i>input</i> port.  The signed data is passed to a SignatureVerifier
-actor on the <i>output</i> port as an unsigned byte array.
+actor on the <i>signature</i> port as an unsigned byte array.
 
 <p>The <i>input</i> data itself is passed to in <b>cleartext</b>
-on the <i>data</i> port.
+on the <i>output</i> port.
 
 <p>In this actor, the <i>algorithm<ii> parameter is used to set
 the Signature and the <i>keyPairGenerator</i> parameter is used
@@ -100,8 +94,6 @@ Cryptography Extension (JCE).
 */
 public class SignatureSigner extends SignatureActor {
 
-    // TODO: Use cipher streaming to allow for easier file input reading.
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -126,27 +118,17 @@ public class SignatureSigner extends SignatureActor {
             keyPairGenerator.addChoice(algorithmName);
         }
 
-        publicKey = new TypedIOPort(this, "publicKey", false, true);
-        publicKey.setTypeEquals(BaseType.OBJECT);
+        privateKey = new TypedIOPort(this, "privateKey", true, false);
+        privateKey.setTypeEquals(BaseType.OBJECT);
 
-        data = new TypedIOPort(this, "data", false, true);
-        data.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+        signature = new TypedIOPort(this, "signature", false, true);
+        signature.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
 
-    /** The original data in cleartext to be verified with the the
-     *  signed digest.  The type is unsigned byte array.
-     */
-    public TypedIOPort data;
-
-    /** The public key to be used by the SignatureVerifier actor
-     *  to verify the data on the <i>output</i> port.
-     *  The type is an ObjectToken containin a java.security.Key.
-     */
-    public TypedIOPort publicKey;
 
     /** The algorithm to be used to generate the key pair.  For
      *  example, using RSAwithMD5 as the signature algorithm in the
@@ -156,6 +138,17 @@ public class SignatureSigner extends SignatureActor {
      *  this parameter would be DSA.
      */
     public StringParameter keyPairGenerator;
+
+    /** The private key to be used by the SignatureVerifier actor
+     *  to verify the data on the <i>output</i> port.
+     *  The type is an ObjectToken containin a java.security.Key.
+
+     */
+    public TypedIOPort privateKey;
+
+    /** The signature of the data.  The type is unsigned byte array.
+     */
+    public TypedIOPort signature;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -183,24 +176,31 @@ public class SignatureSigner extends SignatureActor {
      *  @exception IllegalActionException If thrown by base class.
      */
     public void fire() throws IllegalActionException {
-        // This method merely calls the super class which eventually
-        // calls CryptographicActor.fire() which in turn calls 
-        // SignatureSigner_process().
-        super.fire();
-    }
+        if (privateKey.hasToken(0)) {
+            ObjectToken objectToken = (ObjectToken)privateKey.get(0);
+            _privateKey = (PrivateKey)objectToken.getValue(); 
+        }
 
-    /** Create asymmetric keys and place the output the public key.
-     *  decryption.
-     *  @exception IllegalActionException If thrown by base class.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-        // _createAsymmetricKeys uses _keyPairGenerator.
-        KeyPair pair = _createAsymmetricKeys();
-        _publicKey = pair.getPublic();
-        _privateKey = pair.getPrivate();
-        publicKey.send(0, new ObjectToken(_publicKey));
+        if (input.hasToken(0)) {
+            try {
+                // Process the input data to generate a signature
+                byte[] dataBytes =
+                    _arrayTokenToUnsignedByteArray((ArrayToken)input.get(0));
+                dataBytes = _process(dataBytes);
+                signature.send(0, 
+                        CryptographyActor.unsignedByteArrayToArrayToken(dataBytes));
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                        "Problem sending data");
+            }
+        }
+        
+        // Most actors let CryptographyActor.fire() read the input
+        // port and process the data and generate tokens on the output port
+        // However, this reads the input port and generates tokens on
+        // both the signature and output ports, so we don't call
+        // CryptographyActor.fire(), we call _fireWithoutProcessing().
+        super._fireWithoutProcessing();
     }
 
     /** Calculate a signature.
@@ -212,8 +212,8 @@ public class SignatureSigner extends SignatureActor {
         ByteArrayOutputStream byteArrayOutputStream =
             new ByteArrayOutputStream();
         try {
-            // The data port contains the unsigned data.
-            data.send(0,
+            // The output port contains the unsigned data.
+            output.send(0,
                     CryptographyActor.unsignedByteArrayToArrayToken(dataBytes));
             _signature.initSign(_privateKey);
             _signature.update(dataBytes);

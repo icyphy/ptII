@@ -45,7 +45,7 @@ import java.security.PublicKey;
 import java.security.SignatureException;
 
 //////////////////////////////////////////////////////////////////////////
-//// AsymmetricEncryption
+//// SignatureVerifier 
 /**
 Verify the signature of the input data.
 <p>
@@ -77,9 +77,6 @@ Cryptography Extension (JCE).
 */
 public class SignatureVerifier extends SignatureActor {
 
-    // TODO: include sources of information on JCE cipher and algorithms
-    // TODO: Use cipher streaming to allow for easier file input reading.
-
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -92,8 +89,8 @@ public class SignatureVerifier extends SignatureActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        data = new TypedIOPort(this, "data", true, false);
-        data.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+        signature = new TypedIOPort(this, "signature", true, false);
+        signature.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
         publicKey = new TypedIOPort(this, "publicKey", true, false);
         publicKey.setTypeEquals(BaseType.OBJECT);
@@ -102,10 +99,9 @@ public class SignatureVerifier extends SignatureActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The original data in clear text that is signed.
-     *  The type is unsigned byte array.   
+     /** The signature of the data.  The type is unsigned byte array.
      */
-    public TypedIOPort data;
+    public TypedIOPort signature;
 
     /** This port receives the public key to be used from the
      *  The type is an ObjectToken containin a java.security.Key.
@@ -115,7 +111,7 @@ public class SignatureVerifier extends SignatureActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read in the publicKey, input and data tokens and verify
+    /** Read in the publicKey, input and signature tokens and verify
      *  the signature.  
      *
      *  @exception IllegalActionException If thrown by base class
@@ -126,10 +122,25 @@ public class SignatureVerifier extends SignatureActor {
             ObjectToken objectToken = (ObjectToken)publicKey.get(0);
             _publicKey = (PublicKey)objectToken.getValue(); 
         }
-        if (input.hasToken(0) && data.hasToken(0) && _publicKey != null) {
-            _data = _arrayTokenToUnsignedByteArray((ArrayToken)data.get(0));
-            // Don't read input here, super.fire() will read it for us.
-            super.fire();
+        if (input.hasToken(0) && signature.hasToken(0) && _publicKey != null) {
+            // Process the input data to generate a signature.
+
+            byte [] signatureData =
+                _arrayTokenToUnsignedByteArray((ArrayToken)signature.get(0));
+            ArrayToken inputToken = (ArrayToken)input.get(0);
+            _inputBytes =
+                _arrayTokenToUnsignedByteArray(inputToken);
+            // We ignore the output of _process(): If the signature is
+            // invalid, then _process() throws an exception
+            _process(signatureData);
+
+            // If we got to here, then the signature verified, so
+            // output the data
+            output.send(0, inputToken);
+
+            // Don't call CryptograpyActor.fire() here, we already processed
+            // the input data.
+            super._fireWithoutProcessing();
         }
     }
 
@@ -146,10 +157,10 @@ public class SignatureVerifier extends SignatureActor {
             new ByteArrayOutputStream();
         try {
             _signature.initVerify(_publicKey);
-            _signature.update(_data);
+            _signature.update(_inputBytes);
             boolean verify = _signature.verify(signatureData);
             if (verify) {
-                return _data;
+                return _inputBytes;
             } else {
                 throw new IllegalActionException("Signature verification "
                         + "failed");
@@ -164,6 +175,6 @@ public class SignatureVerifier extends SignatureActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The original data in cleartext that is being verified.
-    private byte[] _data;
+    // The original input data in cleartext that is being verified.
+    private byte[] _inputBytes;
 }

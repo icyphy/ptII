@@ -43,7 +43,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.security.AlgorithmParameters;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -63,16 +62,18 @@ import javax.crypto.spec.IvParameterSpec;
 This actor takes an unsigned byte array at the input and decrypts the
 message.  The resulting output is an unsigned byte array.  The shared
 secret key is received from the SymmetricEncryption actor on the
-<i>key</i> and is used to decrypt the message.  Certain algorithms
-may also require extra parameters generated during encryption to
-decrypt the message.  These are received on the <i>parameters</i>
-port.  Various ciphers that are implemented by "providers" and
+<i>key</i> and is used to decrypt the message. 
+Various ciphers that are implemented by "providers" and
 installed maybe used by specifying the algorithm in the
 <i>algorithm</i> parameter.  The algorithm specified must be
 symmetric. The mode and padding can also be specified in the
 <i>mode</i> and <i>padding</i> parameters.  In case a provider
 specific instance of an algorithm is needed the provider may also be
 specified in the provider parameter.
+
+<p>Note that for simplicity, this actor does not support the
+notion of algorithm parameters, so the algorithm must not require
+that algorithm parameters be transmitted separately from the key.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
@@ -149,20 +150,6 @@ public class SymmetricDecryption extends CipherActor {
                 _key = (java.security.Key)objectToken.getValue();
             }
 
-            if (parameters.hasToken(0)) {
-                if (_provider.equalsIgnoreCase("SystemDefault")) {
-                    _algorithmParameters = AlgorithmParameters.getInstance(_algorithm);
-                } else {
-                    _algorithmParameters =
-                        AlgorithmParameters.getInstance(_algorithm, _provider);
-                }
-                byte [] encodedAP =
-                    _arrayTokenToUnsignedByteArray(
-                            (ArrayToken)parameters.get(0));
-
-                _algorithmParameters.init(encodedAP);
-            }
-
             if (_key != null) {
                 super.fire();
             }
@@ -190,11 +177,9 @@ public class SymmetricDecryption extends CipherActor {
         ByteArrayOutputStream byteArrayOutputStream =
             new ByteArrayOutputStream();
         try {
-
-            _cipher.init(Cipher.DECRYPT_MODE, _key, _algorithmParameters);
+            _cipher.init(Cipher.DECRYPT_MODE, _key);
             byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
             return byteArrayOutputStream.toByteArray();
-
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Problem processing " + dataBytes.length + " bytes.");
@@ -208,10 +193,4 @@ public class SymmetricDecryption extends CipherActor {
      * This key is null for asymmetric decryption.
      */
     private java.security.Key _key = null;
-
-    // The initialization parameter used in a block ciphering mode.
-    private IvParameterSpec _spec;
-
-    // The algorithm parameters to be used if they exist.
-    private AlgorithmParameters _algorithmParameters;
 }

@@ -383,6 +383,18 @@ public class CryptographyActor extends TypedAtomicActor {
         }
     }
 
+    /** Call super.fire() without calling _process().  
+     *  This method is necessary so that derived classes
+     *  that want to process data specially can still call super.fire().
+     *  Most actors will call fire() instead of this method.
+     *
+     * @exception IllegalActionException If thrown by the base class.
+     */
+    public void _fireWithoutProcessing() throws IllegalActionException {
+        super.fire();
+    }
+
+
     /** Processes the data based on parameter specifications.  This
      *  class returns the data in its original form.  Subclasses
      *  should process the data using one of the signature or cipher
