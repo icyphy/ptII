@@ -1,4 +1,4 @@
-/* An event that indicates a change in the state of an actor.
+/* An event that indicates that an actor is in a particular state.
 
 Copyright (c) 1997-1999 The Regents of the University of California.
 All rights reserved.
@@ -35,10 +35,17 @@ import ptolemy.actor.*;
 //////////////////////////////////////////////////////////////////////////
 //// ExecEvent
 /**
-/* An event that indicates a change in the state of an actor.
-The event contains two pieces of information:  the actor under the
-control of the process and an exception that might be thrown.
-The exception might not be a valid reference.
+An event that indicates that an actor is in a particular state.
+The event contains two pieces of information:  the actor that
+generated the event and the (integer) state of the actor when
+the event was generated. A class that listens for ExecEvents
+must implement the ExecEventListener interface. 
+
+The interpretation of state is determined by the actors and 
+listeners that use the ExecEvent class and ExecEventListener
+interface. The author of code that takes advantage of these
+facilities should write the actors and listeners so that they 
+utilize a common meaning for the integer states.
 
 @author Mudit Goel, John S. Davis II
 @version $Id$
@@ -46,9 +53,10 @@ The exception might not be a valid reference.
 
 public class ExecEvent {
 
-    /** Create a new event
-     *  @param actor The actor associated with the event.
-     *  @param actor The state of the actor associated with this event.
+    /** Create an ExecEvent with the specified actor and state.
+     *  @param actor The actor that generated the event.
+     *  @param actor The state of the actor when the event is
+     *   is generated.
      */
     public ExecEvent(Actor actor, int state) {
         _actor = actor;
@@ -59,12 +67,16 @@ public class ExecEvent {
     ////                    public methods                   /////
 
     /** Return the actor corresponding to the event.
+     *  @return The actor that generated this event.
      */
     public Actor getActor() {
         return _actor;
     }
 
-    /** Return the current state of the actor.
+    /** Return the state of the actor when the event
+     *  was generated.
+     *  @return The state of the actor when the event
+     *   was generated.
      */
     public int getCurrentState() {
         return _state;
