@@ -11,6 +11,13 @@
 <entity name="Discard" class="ptolemy.actor.lib.Discard"/>
 <entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
 <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter"/>
+<entity name="Monitor" class="ptolemy.actor.lib.Monitor">
+<doc>Monitor and display values</doc>
+   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+      <property name="attributeName" value="value"/>
+      <property name="displayWidth" value="40"/>
+   </property>
+</entity>
 <entity name="RealTimePlotter" class="ptolemy.actor.lib.gui.RealTimePlotter"/>
 <entity name="Recorder" class="ptolemy.actor.lib.Recorder"/>
 <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter"/>
