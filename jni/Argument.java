@@ -60,8 +60,6 @@ public class Argument extends Attribute implements Settable {
     public Argument(GenericJNIActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        // FIXME: Why do I need to call setContainer? (3/17/04)
-        setContainer(container);
     }
 
     /** Default constructor */
@@ -350,47 +348,51 @@ public class Argument extends Attribute implements Settable {
 
     /** Specify the container, adding the entity to the list
      *  of entities in the container.
-     *  If the container already contains
-     *  an entity with the same name,
-     *  then throw an exception and do not make
-     *  any changes.  Similarly, if the container is not in the same
-     *  workspace as this entity, throw an exception.
-     *  If the entity is already contained by the container,
+     *
+     *  <p>If the container already contains an entity with the same
+     *  name, then throw an exception and do not make any changes.
+     *  Similarly, if the container is not in the same workspace as
+     *  this entity, throw an exception.
+     *
+     *  <br>If the entity is already contained by the container,
      *  do nothing.
-     *  If this entity already has a container, remove it
+     *
+     *  <br>If this entity already has a container, remove it
      *  from that container first.  Otherwise, remove it from
      *  the directory of the workspace, if it is present.
-     *  If the argument is null, then unlink the ports of the entity
+     *
+     *  <br> If the argument is null, then unlink the ports of the entity
      *  from any relations and remove it from its container.
-     *  It is not added to the workspace directory,
-     *  so this could result in
-     *  this entity being garbage collected.
-     *  Derived classes may further constrain the container
-     *  to subclasses of CompositeEntity by overriding the protected
-     *  method _checkContainer(). This method is write-synchronized
-     *  to the workspace and increments its version number.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the action
-     *   would result in a
-     *   recursive containment structure, or if
-     *   this entity and container are not in the same workspace, or
-     *   if the protected method _checkContainer() throws it.
+     *
+     *  <br> It is not added to the workspace directory, so this could
+     *  result in this entity being garbage collected.
+     *
+     *  <br>Derived classes may further constrain the container to
+     *  subclasses of CompositeEntity by overriding the protected
+     *  method _checkContainer(). This method is write-synchronized to
+     *  the workspace and increments its version number.
+     *
+     *  @param container The proposed container, which must be
+     *  a GenericJNIActor.
+     *  @exception IllegalActionException If the action would result
+     *  in a recursive containment structure, or if this entity and
+     *  container are not in the same workspace, or if the container
+     *  is not an instance of GenericJNIActor.
      *  @exception NameDuplicationException If the name of this entity
      *   collides with a name already in the container.
      */
-    public void setContainer(GenericJNIActor container)
+    public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
 
         if (container != null && _workspace != container.workspace()) {
             throw new IllegalActionException(
                     this,
                     container,
-                    "Cannot set container "
-                    + "because workspaces are different.");
+                    "Cannot set container because workspaces are different.");
         }
         try {
             _workspace.getWriteAccess();
-            _checkContainer(container);
+            _checkContainer((GenericJNIActor) container);
             // NOTE: The following code is quite tricky.
             // It is very careful
             // to leave a consistent state even
@@ -398,14 +400,14 @@ public class Argument extends Attribute implements Settable {
             // exceptions.  Be very careful if modifying it.
             GenericJNIActor previousContainer =
                 (GenericJNIActor) getContainer();
-            if (previousContainer == container)
+            if (previousContainer == container) {
                 return;
+            }
 
-            // Do this first, because it may throw an exception,
-            // and we have
-            // not yet changed any state.
+            // Do this first, because it may throw an exception, and
+            // we have not yet changed any state.
             if (container != null) {
-                container._addArgument(this);
+                ((GenericJNIActor) container)._addArgument(this);
                 if (previousContainer == null) {
                     _workspace.remove(this);
                 }
@@ -556,7 +558,7 @@ public class Argument extends Attribute implements Settable {
      */
     protected void _checkContainer(GenericJNIActor container)
             throws IllegalActionException {
-        if (container.getClass().getName() != "jni.GenericJNIActor") {
+        if (!(container instanceof GenericJNIActor)) {
             throw new IllegalActionException(
                     this,
                     container,
@@ -565,6 +567,7 @@ public class Argument extends Attribute implements Settable {
                     + ", which are not GenericJNIActor.");
         }
     }
+
 
     /** Check that the specified type is a suitable type for
      *  this entity.
