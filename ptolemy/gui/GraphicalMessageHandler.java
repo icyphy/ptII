@@ -29,6 +29,7 @@
 
 package ptolemy.gui;
 
+import ptolemy.util.StringUtilities;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.io.PrintWriter;
@@ -152,7 +153,7 @@ public class GraphicalMessageHandler extends MessageHandler {
      */
     protected void _message(String info) {
         Object[] message = new Object[1];
-        message[0] = info;
+	message[0] = _ellipsis(info, 4000);
         Object[] options = {"OK"};
 
         // Show the MODAL dialog
@@ -177,7 +178,11 @@ public class GraphicalMessageHandler extends MessageHandler {
      */
     protected void _warning(String info) throws CancelException {
         Object[] message = new Object[1];
-        message[0] = info;
+        // If the message lines are longer than 80 characters, we split it
+        // into shorter new line separated strings.
+        // Running vergil on a HSIF .xml file will create a line longer
+        // than 80 characters
+	message[0] = _ellipsis(info, 4000);
         Object[] options = {"OK", "Cancel"};
 
         // Show the MODAL dialog
@@ -212,7 +217,7 @@ public class GraphicalMessageHandler extends MessageHandler {
     protected void _warning(String info, Throwable throwable)
             throws CancelException {
         Object[] message = new Object[1];
-        message[0] = info;
+	message[0] = _ellipsis(info, 4000);
         Object[] options = {"OK", "Display Stack Trace", "Cancel"};
 
         // Show the MODAL dialog
@@ -240,7 +245,7 @@ public class GraphicalMessageHandler extends MessageHandler {
      */
     protected boolean _yesNoQuestion(String question) {
         Object[] message = new Object[1];
-        message[0] = question;
+	message[0] = _ellipsis(question, 4000);
         Object[] options = {"Yes", "No"};
 
         // Show the MODAL dialog
@@ -270,13 +275,15 @@ public class GraphicalMessageHandler extends MessageHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return a string that contains the original string, limited to the
-     *  given number of characters.  If the string is truncated, an ellipsis
-     *  will be appended to the end of the string.
+    /** Return a string with a maximum line length of 80 characters, limited
+     *  to the given number of characters. 
+     *  If the string is truncated, an ellipsis will be appended to the end
+     *  of the string.
      *  @param string The string to truncate.
      *  @param length The length to which to truncate the string.
      */
     private String _ellipsis(String string, int length) {
+        string = StringUtilities.split(string);
 	if (string.length() > length) {
 	    return string.substring(0, length-3) + "...";
 	}
@@ -310,7 +317,7 @@ public class GraphicalMessageHandler extends MessageHandler {
         } else {
             string = throwable.getMessage();
         }
-        message[0] = _ellipsis(string, 400);
+        message[0] = _ellipsis(string, 4000);
         message[1] = stext;
 
         // Show the MODAL dialog
