@@ -54,7 +54,6 @@ JSRCS = \
 	ListenSink.java \
 	ListenWire.java \
 	LocalZenoApplet.java \
-	LocalZenoApplication.java \
 	ZenoDelay.java
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
@@ -75,12 +74,7 @@ OPTIONAL_FILES = \
 	'LocalZenoApplet$$LayoutListener.class' \
 	'LocalZenoApplet$$LocalEdgeRenderer.class' \
 	'LocalZenoApplet$$StateListener.class' \
-	'LocalZenoApplet$$ThreadRenderer.class' \
-	'LocalZenoApplication$$1.class' \
-	'LocalZenoApplication$$2.class' \
-	'LocalZenoApplication$$LocalEdgeRenderer.class' \
-	'LocalZenoApplication$$StateListener.class' \
-	'LocalZenoApplication$$ThreadRenderer.class'
+	'LocalZenoApplet$$ThreadRenderer.class' 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -92,7 +86,7 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 demo:
-	CLASSPATH="$(CLASSPATH)" $(JAVA) ptolemy.domains.dde.demo.LocalZeno.LocalZenoApplication
+	CLASSPATH="$(CLASSPATH)" appletviewer LocalZeno.htm
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
