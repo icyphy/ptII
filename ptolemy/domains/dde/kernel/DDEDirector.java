@@ -189,7 +189,7 @@ public class DDEDirector extends ProcessDirector {
         Actor threadActor = ddeThread.getActor();
         if( threadActor != actor ) {
             throw new IllegalActionException("Actor argument of " 
-                    + "must DDEDirector.fireAt() must be contained "
+                    + "DDEDirector.fireAt() must be contained "
                     + "by the DDEThread that calls fireAt()");
         }
         
