@@ -434,6 +434,12 @@ public class CompositeActor extends CompositeEntity
                     if (port.isInput()) {
                         // Clear all receivers.
                         Receiver[][] receivers = port.getReceivers();
+                        if (receivers == null) {
+                            throw new InternalErrorException(this, null,
+                                    "port.getReceivers() returned null! "
+                                    + "This should never happen. "
+                                    + "port was '" + port + "'");
+                        }
                         for (int i = 0; i < receivers.length; i++) {
                             Receiver[] receivers2 = receivers[i];
                             for (int j = 0; j < receivers2.length; j++) {
