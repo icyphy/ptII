@@ -1,5 +1,6 @@
 /* An actor that operates a serial port.
-
+123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_1
+123456789_123456789_123456789_123456789_123456789_123456789_123456789_123456789_
  Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -46,23 +47,26 @@ import java.net.*;
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// SerialComm
+//// TxDatagram
 /**
 This actor sends and receives integer arrays via the serial port.
-Each integer represents a byte, and is truncated to 8 bits prior
+Each integer represents a byte, and is truncated to 8 bits prior 
 to transmission.
 
-This actor contains a nested class which implements the
+This actor contains a nested class which implements the 
 SerialPortEventListener to recieve from the serial port and calls
-the director's fireAt method to broadcast the bytes received as
+the director's fireAt method to broadcast the bytes received as 
 an array of integers.
 
 This actor has a parameter 'serialPortName' for the serial port.
+
+This actor has a parameter 'baudRate' for the serial baud rate.
+
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
 (Based on my RxDatagram, and on the IRLink class writen by Xiaojun Liu)
 @version $Id$
 */
-public class SerialComm extends TypedAtomicActor
+public class SerialComm extends TypedAtomicActor 
         implements SerialPortEventListener {
 
     public SerialComm(CompositeEntity container, String name)
@@ -120,22 +124,30 @@ public class SerialComm extends TypedAtomicActor
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    /** If the parameter changed is <i>serialPortName</i>, then hope
+    /** If the parameter changed is <i>serialPortName</i>, then hope 
      * the model is not running and do nothing.  Likewise if baudRate.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == serialPortName || attribute == baudRate) {
             /* Do nothing */
+            // Desired behavior would be to use new serial port 
+            // and/or new baud rate with next transmission and 
+            // to set to receive on new port and/or at new baud rate.
+            // The latter may be tricky since this actor (which is a 
+            // java class) implements 'SerialPortEventListener'.
+            // I'm not sure what happens when baud rate is altered 
+            // while it is listening.
         } else {
             super.attributeChanged(attribute);
         }
     }
 
-    /** Broadcasts the data if received, & outputs bitstream if token.
+    /** Broadcasts the data if received.
+        Sends serial output if token is present with data to send.
      */
-    public void fire() throws IllegalActionException {
-        //System.out.println("Actor is fired");
+    public void fire() throws IllegalActionException {      
+        if (_debugging) _debug("Actor is fired");
 
         try {
 
@@ -155,17 +167,15 @@ public class SerialComm extends TypedAtomicActor
                 ArrayToken dataIntArrayToken = (ArrayToken) dataToSend.get(0);
                 OutputStream out = serialPort.getOutputStream();
                 for (int j = 0; j < dataIntArrayToken.length(); j++) {
-                    IntToken dataIntOneToken =
-                        (IntToken) dataIntArrayToken.getElement(j);
+                    IntToken dataIntOneToken = (IntToken) dataIntArrayToken.getElement(j);
                     out.write((byte)dataIntOneToken.intValue());
                 }
                 out.flush();
             }
 
         } catch (Exception ex) {
-            System.err.println("Win0" + ex.getMessage());
-            throw new IllegalActionException(this,
-                    "I/O error " + ex.getMessage());
+            if (_debugging) _debug("Win0" + ex.getMessage());
+            throw new IllegalActionException(this, "I/O error " + ex.getMessage());
         }
 
     }
@@ -176,29 +186,30 @@ public class SerialComm extends TypedAtomicActor
         super.preinitialize();
 
         try {
-            String _serialPortName =
-                ((StringToken)(serialPortName.getToken())).stringValue();
-            CommPortIdentifier portID =
-                CommPortIdentifier.getPortIdentifier(_serialPortName);
+            String _serialPortName = 
+                    ((StringToken)(serialPortName.getToken())).stringValue();
+            CommPortIdentifier portID = 
+                    CommPortIdentifier.getPortIdentifier(_serialPortName);
             serialPort = (SerialPort) portID.open("Ptolemy!", 2000);
 
             int bits_per_second = ((IntToken)(baudRate.getToken())).intValue();
-            serialPort.setSerialPortParams(bits_per_second,
-                    SerialPort.DATABITS_8,
-                    SerialPort.STOPBITS_1,
+            serialPort.setSerialPortParams(
+                    bits_per_second, 
+                    SerialPort.DATABITS_8, 
+                    SerialPort.STOPBITS_1, 
                     SerialPort.PARITY_NONE);
 
             serialPort.addEventListener(this);
             serialPort.notifyOnDataAvailable(true);
             // Directs serial events on this port to my serialEvent method.
         } catch (Exception ex) {
-            System.err.println("Win1 " + ex.getClass().getName()
+            if (_debugging) _debug("Win1 " + ex.getClass().getName() 
                     + " " + ex.getMessage());
         }
     }
 
 
-    /** serialEvent - The one and only method
+    /** serialEvent - The one and only method 
      *  required to implement SerialPortEventListener
      */
     public void serialEvent(SerialPortEvent e) {
@@ -207,7 +218,7 @@ public class SerialComm extends TypedAtomicActor
                 getDirector().fireAt(this, getDirector().getCurrentTime());
             }
         } catch (Exception ex) {
-            System.err.println("Win2 " + ex.getMessage());
+            if (_debugging) _debug("Win2 " + ex.getMessage());
         }
     }
 
@@ -231,4 +242,3 @@ public class SerialComm extends TypedAtomicActor
         driver.initialize();
     }
 }
-
