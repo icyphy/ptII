@@ -121,7 +121,7 @@ public class FileReader extends TypedAtomicActor{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Output the data read from the file or URL as a string.
-     *  @exception IllegalActionException.
+     *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException  {
         if (_debugging) {
