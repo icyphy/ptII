@@ -86,26 +86,15 @@ public class TwoPut extends TypedAtomicActor {
 	for( int i = 0; i < inRcvrs.length; i++ ) {
 	    for( int j = 0; j < inRcvrs[i].length; j++ ) {
 		DDEReceiver inRcvr = (DDEReceiver)inRcvrs[i][j];
+		/*
 		System.out.println("\n");
 		System.out.println("\n");
 		System.out.println("#####");
 		System.out.println("TwoPut receiver["+i+"]["+j+"];");
+		*/
 		if( inRcvr.hasToken() ) {
 		    token = inRcvr.get();
 		    output1.broadcast(token);
-		    /*
-		    Receiver[][] outRcvrs = output.getRemoteReceivers();
-		    for( int k = 0; k < outRcvrs.length; k++ ) {
-			for( int l = 0; l < outRcvrs[k].length; l++ ) {
-			    DDEReceiver outRcvr = (DDEReceiver)outRcvrs[k][l];
-			    Thread thr = Thread.currentThread();
-			    if( thr instanceof DDEThread ) {
-				TimeKeeper kpr = ((DDEThread)thr).getTimeKeeper();
-			        outRcvr.put(token, kpr.getCurrentTime());
-			    }
-			}
-		    }
-		    */
 		}
 	    }
 	}
