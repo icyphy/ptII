@@ -52,8 +52,8 @@ public class ExampleSystemApplet extends ExampleApplet
         _exsys = new ExampleSystem();
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         public methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Action when click on the button
     *  Print all results in the text area. Override ExampleApplet.buttonAction
@@ -98,8 +98,8 @@ public class ExampleSystemApplet extends ExampleApplet
         f.show();
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     
     // Example System containing Entities, Relations and Ports.
     ExampleSystem _exsys;

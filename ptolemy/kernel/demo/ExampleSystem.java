@@ -102,8 +102,8 @@ public class ExampleSystem implements Serializable {
        
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** 
     *  Return the results as a String.
@@ -252,8 +252,8 @@ public class ExampleSystem implements Serializable {
         System.out.println(exsys.toString());
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     
     // Components of the system.
 

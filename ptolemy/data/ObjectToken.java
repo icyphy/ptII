@@ -61,8 +61,8 @@ public class ObjectToken extends Token {
         setValue(value);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the value of the token, a reference to an object.
      	FIXME: this method should only be in leaf classes
@@ -98,8 +98,8 @@ public class ObjectToken extends Token {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                        protected variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables                  ////
 
     // This is protected to allow access in derived classes only.
     protected Object _value = null;

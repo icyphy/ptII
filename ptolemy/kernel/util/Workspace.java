@@ -460,7 +460,7 @@ public class Workspace implements Nameable, Serializable {
     private Hashtable _readers = new Hashtable();
 
     ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                            ////
+    ////                         inner classes                     ////
 
     // Class ReadDepth
     // Keeps track of the number of reader permissions that a thread has.

@@ -63,8 +63,8 @@ public class StringToken extends ObjectToken {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Add the value of the argument Token to this Token. The value of
      *  the argument token is converted to a String and concatenated
@@ -218,7 +218,7 @@ public class StringToken extends ObjectToken {
         return str;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                        private variables                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     private String _value;
 }

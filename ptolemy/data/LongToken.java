@@ -52,8 +52,8 @@ public class LongToken extends ScalarToken {
 	_value = value;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
 
     /** Add the value of the argument Token to this Token. Type resolution
@@ -351,8 +351,8 @@ public class LongToken extends ScalarToken {
     }
 
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                        private variables                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     private long _value;
 }
 

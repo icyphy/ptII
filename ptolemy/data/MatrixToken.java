@@ -41,8 +41,8 @@ of the token.
 */
 public abstract class MatrixToken extends Token {
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the number of rows in the matrix.
      */

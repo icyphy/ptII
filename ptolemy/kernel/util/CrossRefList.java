@@ -255,7 +255,7 @@ public final class CrossRefList implements Serializable  {
     private Object _container;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         inner classes                            ////
+    ////                         inner classes                     ////
 
     // Class CrossRef.
     // Objects of this type form the elements of the list.

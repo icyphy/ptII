@@ -62,7 +62,7 @@ public class ASTPtRootNode implements Node {
   protected int id;
   protected PtParser parser;
 
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     /// from here until next line of dashes is code for PtParser
 
     /** Each node stores its type and state information in this variable.
@@ -134,7 +134,7 @@ public class ASTPtRootNode implements Node {
     }
         
    
-    ////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
   public ASTPtRootNode(int i) {
     id = i;
   }

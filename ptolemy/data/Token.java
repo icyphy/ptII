@@ -59,8 +59,8 @@ import java.util.Observable;
 public abstract class Token implements Cloneable {
 
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         public methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Add the value of the argument Token to the current Token. It should be
      *  overridden in derived classes to provide type specific actions for
@@ -329,8 +329,8 @@ public abstract class Token implements Cloneable {
         throw new IllegalActionException(str);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // the associated TokenPublisher
     private TokenPublisher _publisher;

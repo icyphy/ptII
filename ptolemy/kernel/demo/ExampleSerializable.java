@@ -42,8 +42,8 @@ saves it to a file and then reloads it.
 */
 public class ExampleSerializable {
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
         
     /** Create an Example System, then print it out. */

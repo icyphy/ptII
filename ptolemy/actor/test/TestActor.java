@@ -63,8 +63,8 @@ public class TestActor extends AtomicActor {
         super(container, name);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Mutation test.  Create a new instance of this test actor with
      *  the same container using queueMutation of the director.
@@ -139,8 +139,8 @@ public class TestActor extends AtomicActor {
         _actions.append(getFullName() + ".wrapup\n");
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The list of action method invocations.
     private static StringBuffer _actions = new StringBuffer(1024);

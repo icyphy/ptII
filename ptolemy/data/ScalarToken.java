@@ -41,8 +41,8 @@ It provides interface for type conversion among different scalar types.
 */
 public abstract class ScalarToken extends Token {
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the value in the token as a byte.
       * In this base class, we just throw an exception.

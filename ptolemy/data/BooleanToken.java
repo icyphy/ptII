@@ -52,8 +52,8 @@ public class BooleanToken extends Token {
 	_value = b;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Test to see if the argument Token has the same truth value as this
      *  Token.
@@ -113,8 +113,8 @@ public class BooleanToken extends Token {
         return str;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                        private variables                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     private boolean _value;
 }
 

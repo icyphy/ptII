@@ -48,8 +48,8 @@ public class DoubleMatrixToken extends MatrixToken {
 	_value = value;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Make a deep copy of the token.
      *  @return An identical token.
@@ -168,8 +168,8 @@ public class DoubleMatrixToken extends MatrixToken {
 	return array;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                        private variables                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     private double[][] _value = null;
 }
 

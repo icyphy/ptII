@@ -45,8 +45,8 @@ public class ExampleFrame extends java.awt.Frame
         super();
     }
     
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Event handling method for the frame. The WINDOW_DESTROY event is
      *  handled. All the other events are passed to the applet inside.

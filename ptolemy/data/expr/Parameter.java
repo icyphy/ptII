@@ -141,8 +141,8 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
          _token = token;
      }
      
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the parameter. 
      *  The state of the cloned parameter will be identical to the original 
@@ -415,8 +415,8 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
     
     /** Checks to see if the new token type is compatible with the initial 
      *  Token type stored. If the new Token cannot be converted in a lossless 
@@ -452,14 +452,14 @@ public class Parameter extends ptolemy.kernel.util.Attribute implements Observer
     }
 
        
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables                  ////
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
 
     // Stores the string used to set this expression. It is null if 

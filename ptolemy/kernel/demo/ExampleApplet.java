@@ -57,8 +57,8 @@ class ExampleApplet extends java.applet.Applet
         super();
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Gerneral perpose method. Redefine the Rectangle to support full
      *  letter display.
@@ -188,8 +188,8 @@ class ExampleApplet extends java.applet.Applet
         _tarea.setText("");
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables                  ////
 
     /** A label, a text area and a button */
     

@@ -57,7 +57,7 @@ import collections.LinkedList;
 
 public class ASTPtLeafNode extends ASTPtRootNode {
   
-    /////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     /// from here until next line of dashes is code for PtParser
 
     /** When the input String refers to another parameter, we store the 
@@ -85,7 +85,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
         return _ptToken;
     }
    
-    ////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
  public ASTPtLeafNode(int id) {
     super(id);
   }
