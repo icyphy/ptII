@@ -67,7 +67,7 @@ all windows have been closed. This is done with code something like:
     });
 </pre>
 <p>
-PlotFrame contains an instance of PlotBox. PlotBox is the base class for
+PlotFrame contains an instance of PlotBox. PlotBox is the base class for 
 classes with drawing capability, e.g. Plot, LogicAnalyzer. If not
 specified in the constructor, the default is to contain a Plot object. This
 field is set once in the constructor and immutable afterwards.
@@ -75,7 +75,11 @@ field is set once in the constructor and immutable afterwards.
 @see Plot
 @see PlotBox
 @author Christopher Hylands and Edward A. Lee
+<<<<<<< PlotFrame.java
 @version $Id$
+=======
+@version $Id$
+>>>>>>> 1.9
 */
 public class PlotFrame extends Frame {
 
@@ -84,7 +88,7 @@ public class PlotFrame extends Frame {
      */
     public PlotFrame() {
         this("Ptolemy Plot Frame");
-
+        
     }
 
     /** Construct a plot frame with the specified title and by default
@@ -105,13 +109,14 @@ public class PlotFrame extends Frame {
         } else {
             plot = plotArg;
         }
-
+        
         // File menu
         MenuItem[] fileMenuItems = {
             // FIXME: These shortcuts are not right.
             new MenuItem("Open", new MenuShortcut(KeyEvent.VK_O)),
             new MenuItem("Save", new MenuShortcut(KeyEvent.VK_S)),
             new MenuItem("SaveAs", new MenuShortcut(KeyEvent.VK_A)),
+            new MenuItem("Export", new MenuShortcut(KeyEvent.VK_E)),
             new MenuItem("Print", new MenuShortcut(KeyEvent.VK_P)),
             new MenuItem("Close", new MenuShortcut(KeyEvent.VK_W)),
         };
@@ -126,9 +131,10 @@ public class PlotFrame extends Frame {
 
         // Special menu
         MenuItem[] specialMenuItems = {
+            // FIXME: These shortcuts are not right.
             new MenuItem("About", null),
             new MenuItem("Help", new MenuShortcut(KeyEvent.VK_H)),
-            new MenuItem("Clear", new MenuShortcut(KeyEvent.VK_C)),
+            new MenuItem("Clear", new MenuShortcut(KeyEvent.VK_R)),
             new MenuItem("Fill", new MenuShortcut(KeyEvent.VK_F)),
             new MenuItem("Sample plot", null),
         };
@@ -188,7 +194,11 @@ public class PlotFrame extends Frame {
                 "Ptolemy plot frame\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu\n" +
                 "and Christopher Hylands, cxh@eecs.berkeley.edu\n" +
+<<<<<<< PlotFrame.java
                 "Version 2.0, Build: $Id$\n\n"+
+=======
+                "Version 2.0, Build: $Id$\n\n"+
+>>>>>>> 1.9
                 "For more information, see\n" +
                 "http://ptolemy.eecs.berkeley.edu/java/ptplot\n");
         message.setTitle("About Ptolemy Plot");
@@ -200,18 +210,41 @@ public class PlotFrame extends Frame {
         dispose();
     }
 
+    /** Query the user for a filename and export the plot to that file.
+     *  Currently, the only supported format is EPS.
+     */
+    protected void _export() {
+        FileDialog filedialog = new FileDialog(this, "Export EPS to...");
+        if (_directory != null) {
+            filedialog.setDirectory(_directory);
+        }
+        filedialog.setFile("plot.eps");
+        filedialog.setVisible(true);
+        String filename = filedialog.getFile();
+        if (filename == null) return;
+        String directory = filedialog.getDirectory();
+        File file = new File(directory, filename);
+        try {
+            FileOutputStream fout = new FileOutputStream(file);
+            plot.export(fout);
+        } catch (IOException ex) {
+            Message msg = new Message("Error exporting plot: " + ex);
+        }
+    }
+
     /** Display more detailed information than given by _about().
      */
     protected void _help() {
         Message message = new Message(
-                "PlotFrame is a versatile two-dimensional data plotter " +
+                "PlotFrame is a versatile two-dimensional data plotter " + 
                 "that runs as part of an application, but in its own " +
                 "window. It can read files compatible with the Ptolemy " +
                 "plot file format (currently only ASCII), or the " +
                 "application can interact directly with the contained " +
                 "Plot object, which is visible as a public member. " +
                 "For a description of the file format, see the Plot " +
-                "and PlotBox classes.");
+                "and PlotBox classes.",
+                null, null, 8, 60, TextArea.SCROLLBARS_NONE);
         message.setTitle("Plot frame");
     }
 
@@ -232,6 +265,7 @@ public class PlotFrame extends Frame {
         try {
             plot.clear(true);
             plot.read(new FileInputStream(file));
+            plot.repaint();
         } catch (FileNotFoundException ex) {
             Message msg = new Message("File not found: " + ex);
         } catch (IOException ex) {
@@ -322,6 +356,7 @@ public class PlotFrame extends Frame {
             if (actionCommand.equals("Open")) _open();
             else if (actionCommand.equals("Save")) _save();
             else if (actionCommand.equals("SaveAs")) _saveAs();
+            else if (actionCommand.equals("Export")) _export();
             else if (actionCommand.equals("Print")) _print();
             else if (actionCommand.equals("Close")) _close();
         }
