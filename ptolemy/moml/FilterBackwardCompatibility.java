@@ -77,7 +77,6 @@ public class FilterBackwardCompatibility implements MoMLFilter {
             return null;
 	}
 
-
 	if (attributeName.equals("name")) {
 	    // Save the name of the for later use if we see a "class"
 	    _lastNameSeen = attributeValue;
@@ -212,15 +211,15 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    MoMLParser.setModified(true);
 		    return temporaryNewClass;
 		} else if ((!_currentlyProcessingActorThatRequiresUpdating
-			    || !_currentlyProcessingActorWithPropertyClassChanges
-			    || (container != null
-			     && !container.getFullName()
-			     .equals(_currentActorFullName)
-			     && !container.getFullName()
-			     .startsWith(_currentActorFullName))
+                        || !_currentlyProcessingActorWithPropertyClassChanges
+                        || (container != null
+                                && !container.getFullName()
+                                .equals(_currentActorFullName)
+                                && !container.getFullName()
+                                .startsWith(_currentActorFullName))
 			    )
-			   && attributeValue
-			   .equals("ptolemy.data.expr.Parameter")){
+                        && attributeValue
+                        .equals("ptolemy.data.expr.Parameter")){
 		    // This test should be last in case we are currently
 		    // processing an attribute that needs a different
 		    // sort of change
@@ -286,15 +285,15 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     public String filterEndElement(NamedObj container, String elementName)
             throws Exception {
 	if ( _currentlyProcessingActorThatMayNeedAnIcon
-	     && elementName.equals("entity")
+                && elementName.equals("entity")
                 && container != null
                 && container.getFullName().equals(_currentActorFullName)) {
 	    _parse(container, _iconMoML);
 	} else if (_currentlyProcessingActorThatMayNeedAnEditorFactory
-		   && _currentAttributeHasLocation
-		   && elementName.equals("property")
-		   && container != null
-		   && container.getFullName().equals(_currentActorFullName)) {
+                && _currentAttributeHasLocation
+                && elementName.equals("property")
+                && container != null
+                && container.getFullName().equals(_currentActorFullName)) {
 	    // In theory, we could do something like the lines below
 	    // but that would mean that the moml package would depend
 	    // on the vergil.toolbox package.
@@ -303,11 +302,14 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    //	new VisibleParameterEditorFactory(container, "_editorFactory");
 
 	    _parse(container, "<property name=\"_editorFactory\""
-		   + "class=\"ptolemy.vergil.toolbox."
-		   + "VisibleParameterEditorFactory\">"
-		   + "</property>");
+                    + "class=\"ptolemy.vergil.toolbox."
+                    + "VisibleParameterEditorFactory\">"
+                    + "</property>");
 
-	}
+	} else if (elementName.equals("entity")) {
+            _reset();
+        }
+
 	return elementName;
     }
 
@@ -316,7 +318,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 
     // Parse the moml in the container context.
     private void _parse(NamedObj container, String moml)
-	throws IllegalActionException {
+            throws IllegalActionException {
 	_reset();
 	if (_parser == null) {
 	    _parser = new MoMLParser();
@@ -328,7 +330,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    MoMLParser.setModified(true);
 	} catch (Exception ex) {
 	    throw new IllegalActionException(null, ex, "Failed to parse\n"
-					     + _iconMoML);
+                    + _iconMoML);
 	}
     }
 
@@ -383,17 +385,17 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     // Set to true if we are currently processing an actor with parameter
     // class changes, set to false when we are done.
     private static boolean
-	_currentlyProcessingActorWithPropertyClassChanges = false;
+    _currentlyProcessingActorWithPropertyClassChanges = false;
 
     // Set to true if we are currently processing an actor with port name
     // changes, set to false when we are done.
     private static boolean
-	_currentlyProcessingActorWithPortNameChanges = false;
+    _currentlyProcessingActorWithPortNameChanges = false;
 
     // Set to true if we are currently processing an actor that may
     // need _editorFactory added, set to false when we are done.
     private boolean
-	_currentlyProcessingActorThatMayNeedAnEditorFactory = false;
+    _currentlyProcessingActorThatMayNeedAnEditorFactory = false;
 
     // Set to true if we are currently processing an actor that may
     // need _icon added, set to false when we are done.
@@ -427,7 +429,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     // that requires processing. Set to false once we are
     // done processing that actor.  This is done for performance reasons.
     private static boolean _currentlyProcessingActorThatRequiresUpdating =
-	false;
+    false;
 
     static {
 	///////////////////////////////////////////////////////////
