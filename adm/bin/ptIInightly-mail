@@ -96,13 +96,13 @@ echo "" >> $mailmsg
 # The deprecated section works with jdk1.3 and probably won't work with jdk1.2
 echo "The build had the following `egrep 'has been deprecated' $ptbuildlog| egrep 'in ptolemy.' | wc -l ` warnings for using deprecated ptolemy methods" >> $mailmsg
 echo "The warnings are broken down as:" >> $mailmsg
-egrep 'has been deprecated' $ptbuildlog | egrep 'in ptolemy.' | $AWK '{printf("%35s in %-35s\n", $3,$5)}'  | sort | uniq -c | sort -nr >> $mailmsg
+egrep 'has been deprecated' $ptbuildlog | egrep 'in (diva|ptolemy).' | $AWK '{printf("%35s in %-35s\n", $3,$5)}'  | sort | uniq -c | sort -nr >> $mailmsg
 
 echo "" >> $mailmsg
 echo "The warnings themselves are:" >> $mailmsg
-egrep 'deprecated\.' $ptbuildlog | egrep 'in (class|interface) ptolemy.' >> $mailmsg
+egrep 'has been deprecated.' $ptbuildlog | egrep 'in (diva|ptolemy).' >> $mailmsg
 
-#egrep '\*\*\*' $ptbuildlog >> $mailmsg
+egrep '\*\*\*' $ptbuildlog >> $mailmsg
 
 #echo "" >> $mailmsg
 #echo "------------------------------------------------" >> $mailmsg
