@@ -33,7 +33,6 @@ import ptolemy.actor.IOPort;
 import java.util.HashSet;
 import java.util.Iterator;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.wireless.lib.network.NetworkActorBase;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.Settable;
 import ptolemy.actor.TypedIOPort;
@@ -47,6 +46,7 @@ import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.math.Utilities;
 
 
 ////////////////////////////////////////////////////////////////////////=
