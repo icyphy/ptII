@@ -47,7 +47,7 @@ PTPACKAGE = 	math
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
+JSRCS = ArrayStringFormat.java \
 	Complex.java \
 	ExtendedMath.java \
 	Fraction.java \

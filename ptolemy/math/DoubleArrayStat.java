@@ -45,24 +45,24 @@ import java.util.*;
 
 public class DoubleArrayStat extends DoubleArrayMath {
 
-    // Private constructor prevents construction of this class.
-    private DoubleArrayStat() {}
+  // Protected constructor prevents construction of this class.
+  protected DoubleArrayStat() {}
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         Public methods                          ////
+  /////////////////////////////////////////////////////////////////////////
+  ////                         Public methods                          ////
 
-    /** Return the sum of all of the elements in the array.
-     *  Return 0.0 of the size of the array is 0.
-     *  @param array An array of doubles.
-     *  @return A double.
-     */
-    public static double sumOfElements(double[] array) {
-        double sum = 0.0;
-        for (int i = 0; i < array.length; i++) {
-            sum += array[i];
-        }
-        return sum;
+  /** Return the sum of all of the elements in the array.
+   *  Return 0.0 of the size of the array is 0.
+   *  @param array An array of doubles.
+   *  @return A double.
+   */
+  public static final double sumOfElements(double[] array) {
+    double sum = 0.0;
+    for (int i = 0; i < array.length; i++) {
+        sum += array[i];
     }
+    return sum;
+  }
 
     /** Return the product of all of the elements in the array.
      *  Return 1.0 if the size of the array is 0.
@@ -99,7 +99,13 @@ public class DoubleArrayStat extends DoubleArrayMath {
         return sumOfElements(array) / (double) array.length;
     }
 
-    /** Return the geometric mean of the elements in the array.
+    /** Return the geometric mean of the elements in the array. This
+     *  is defined to be the Nth root of the product of the elements 
+     *  in the array, where N is the length of the array.
+     *  This method is only useful for arrays of non-negative numbers. If
+     *  the product of the elements in the array is negative, throw an
+     *  IllegalArgumentException. However, the individual elements of the array
+     *  are not verified to be non-negative.
      *  Return 1.0 if the size of the array is 0.
      *  @param array An array of doubles.
      *  @return A double. 
@@ -127,7 +133,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
 
     /** Return the minimum value in the array.
      *  Throw an exception if the length of the array is 0.
-     *  @param array An array of doubles.  
+     *  @param array An array of doubles.
      *  @param array An array of doubles.
      *  @return A double.
      */
@@ -161,13 +167,13 @@ public class DoubleArrayStat extends DoubleArrayMath {
         return retval / (double) length;
     }
 
-    
+
     /** Return the standard deviation of the elements in the array.
      *  Return 0.0 if the size of the array is 0.
      *  @param array An array of doubles.
      *  @return A double.
      */
-    public static double stdDev(double[] array) {
+    public static double standardDeviation(double[] array) {
         return Math.sqrt(variance(array));
     }
 
@@ -240,13 +246,13 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  cross-correlation at a lag of endlag.
      *  @param x The first array of doubles.
      *  @param y The second array of doubles.
-     *  @param startLag An int indicating at which lag to start (may be 
+     *  @param startLag An int indicating at which lag to start (may be
      *  negative).
      *  @param endLag An int indicating at which lag to end.
      *  @return A new array of doubles.
      */
-    public double[] crossCorrelation(double[] x, double[] y, int N, 
-                                     int startLag, int endLag) {
+    public static final double[] crossCorrelation(double[] x, double[] y, int N,
+     int startLag, int endLag) {
         int outputLength = endLag - startLag + 1;
         double[] retval = new double[outputLength];
        
@@ -267,16 +273,16 @@ public class DoubleArrayStat extends DoubleArrayMath {
             }
 
             retval[lag - startLag] = sum;
-        } 
+        }
 
         return retval;
-    }        
+    }
 
     /** Return a new array that is the auto-correlation of the 
      *  argument array, starting and ending at user-specified lag values.
      *  The output array will have length (endlag - startlag + 1).  The first
      *  element of the output will have the auto-correlation at a lag of 
-     *  startlag. The last element of the output will have the 
+     *  startlag. The last element of the output will have the
      *  auto-correlation at a lag of endlag.
      *  @param x An array of doubles.
      *  @param startLag An int indicating at which lag to start (may be 
@@ -284,7 +290,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @param endLag An int indicating at which lag to end.
      *  @return A new array of doubles.
      */
-    public final static double[] autoCorrelation(double[] x, int N, 
+    public static final double[] autoCorrelation(double[] x, int N,
      int startLag, int endLag) {
         int outputLength = endLag - startLag + 1;
         double[] retval = new double[outputLength];
@@ -312,12 +318,12 @@ public class DoubleArrayStat extends DoubleArrayMath {
     }
 
     /** Given an array of probabilities, treated as a probability mass 
-     *  function (pmf), calculate the entropy (in bits). 
+     *  function (pmf), calculate the entropy (in bits).
      *  Throw an IllegalArgumentException if the size of the array is 0.
      *  @param p An array of doubles representing the pmf.
      *  @return A double.
      */
-    public final static double entropy(double[] p) {
+    public static final double entropy(double[] p) {
 
         int length = _nonZeroLength(p, "DoubleArrayStat.entropy");
 
@@ -347,10 +353,10 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  IllegalArgumentException.
      *  @param p An array of doubles representing the first pmf.
      *  @param q An array of doubles representing the second pmf.
-     *  @return A double representing the relative entropy of the 
+     *  @return A double representing the relative entropy of the
      *  random variable.
      */
-    public final static double relativeEntropy(double[] p, double[] q) {
+    public static final double relativeEntropy(double[] p, double[] q) {
 
         int length = _commonLength(p, q, "DoubleArrayStat.relativeEntropy");
 
@@ -399,7 +405,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @param N An int indicating how many elements to generate.
      *  @return A new array of doubles.
      */
-    public final static double[] randomGaussian(double mean, double stdDev, 
+    public static final double[] randomGaussian(double mean, double stdDev, 
      int N) {
         double t;
         double x, v1, v2, r;
@@ -433,7 +439,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @param N An int indicating how many elements to generate.
      *  @return A new array of doubles.
      */
-    public final static double[] randomBernoulli(double p, int N) {
+    public static final double[] randomBernoulli(double p, int N) {
         Random random = new Random();
         double[] retval = new double[N];
 
@@ -451,7 +457,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @param N An int indicating how many elements to generate.
      *  @return A new array of doubles.
      */
-    public final static double[] randomExponential(double lambda, int N) {
+    public static final double[] randomExponential(double lambda, int N) {
         Random random = new Random();
         double[] retval = new double[N];
 
@@ -474,7 +480,7 @@ public class DoubleArrayStat extends DoubleArrayMath {
      *  @param N An int indicating how many elements to generate.
      *  @return A new array of doubles.
      */
-    public final static double[] randomPoisson(double mean, int N) {
+    public static final double[] randomPoisson(double mean, int N) {
         Random random = new Random();
         double[] retval = new double[N];
 

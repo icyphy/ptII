@@ -122,10 +122,10 @@ public class MatrixMath {
     /** Return the determinate of a square matrix.
      *  This algorithm uses LU decomposition, and is taken from [1]
      *  @param matrix A matrix of doubles.
-     *  @retval The determinate of the matrix.
+     *  @return The determinate of the matrix.
      */
     public static final double determinate(double[][] matrix) {
-         _checkSquare("determinite", matrix);
+         _checkSquare("determinate", matrix);
 
         double[][] a;
         double det = 1.0;
@@ -190,7 +190,7 @@ public class MatrixMath {
      *  second matrix.  The matrices must be of the same size.
      *  @param matrix1 A matrix of doubles.
      *  @param matrix2 A matrix of doubles.
-     *  @retval A new matrix of doubles.
+     *  @return A new matrix of doubles.
      */
     public static final double[][] divideElements(double[][] matrix1,
                                                   double[][] matrix2) {
@@ -214,7 +214,7 @@ public class MatrixMath {
      *  for a (m,n) matrix :
      *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
      *  @param A matrix of doubles.
-     *  @retval A new array of doubles.
+     *  @return A new array of doubles.
      */
     public static final double[] fromMatrixToArray(double[][] matrix) {
         return fromMatrixToArray(matrix, _rows(matrix), _columns(matrix));
@@ -231,7 +231,7 @@ public class MatrixMath {
      *  for a matrix, limited to m rows and n columns :
      *  (0, 0), (0, 1), (0, 2), ... , (0, n-1), (1, 0), (1, 1), ..., (m-1)(n-1)
      *  @param matrix A matrix of doubles.
-     *  @retval A new array of doubles.
+     *  @return A new array of doubles.
      */
     public static final double[] fromMatrixToArray(double[][] matrix, int maxRow,
                                                    int maxCol) {
@@ -246,7 +246,7 @@ public class MatrixMath {
      *  the Hilbert matrix. The matrix is square with one
      *  dimension specifier required.
      *  @param dim An int
-     *  @retval A new Hilbert matrix of doubles
+     *  @return A new Hilbert matrix of doubles
      */
     public static final double[][] hilbert(int dim) {
         double[][] retval = new double[dim][dim];
@@ -261,7 +261,7 @@ public class MatrixMath {
     /** Return an identity matrix with the specified dimension. The
      *  matrix is square, so only one dimension specifier is needed.
      *  @param dim An int
-     *  @retval A new identity matrix of doubles
+     *  @return A new identity matrix of doubles
      */
     public static final double[][] identity(int dim) {
         double[][] retval = new double[dim][dim];
@@ -519,7 +519,7 @@ public class MatrixMath {
      *  of the same size.
      *  @param matrix1 A matrix of doubles.
      *  @param matrix2 A matrix of doubles.
-     *  @retval A new matrix of doubles.
+     *  @return A new matrix of doubles.
      */
     public static final double[][] multiplyElements(double[][] matrix1,
                                                     double[][] matrix2) {
@@ -579,7 +579,7 @@ public class MatrixMath {
      *  @param array An array of doubles.
      *  @param rows An int.
      *  @param cols An int.
-     *  @retval A new matrix of doubles.
+     *  @return A new matrix of doubles.
      */
     public static final double[][] toMatrixFromArray(double[] array, int rows,
                                                      int cols) {
@@ -595,7 +595,7 @@ public class MatrixMath {
      *  "{" row(0) "," row(1) "," ... row(m-1) "}"; each row i is in the format :
      *  "{" matrix[i][0] "," matrix[i][1] "," ... "," matrix[i][n-1] "}", where
      *  n is the number of
-     *  @retval The string representing the matrix.
+     *  @return The string representing the matrix.
      *  @param matrix A matrix of doubles.
      */
     public static final String toString(double[][] matrix) {
@@ -627,6 +627,22 @@ public class MatrixMath {
         return new String(sb);
     }
 
+  /** Return the trace of a square matrix, which is the sum of the
+   *  diagonal entries a<sub>11</sub> + <sub>a22</sub> + ... + a<sub>nn</sub>
+   *  Throw an IllegalArgumentException if the matrix is not square.
+   *  @param matrix A matrix of doubles.
+   *  @return The trace of the matrix.
+   */
+  public static final double trace(double[][] matrix) {
+    int dim = _checkSquare("trace", matrix);
+    double sum = 0.0;
+
+    for (int i = 0; i < dim; i++) {
+        sum += matrix[i][i];
+    }
+    return sum;
+  }
+
     /** Return a new matrix that is constructed by transposing the input
      *  matrix.
      *  @param matrix A matrix of doubles.
@@ -655,7 +671,7 @@ public class MatrixMath {
      *  @param matrix2 A matrix of doubles.
      *  @param absoluteError A double indicating the absolute value of the
      *  allowed error.
-     *  @retval A boolean condition.
+     *  @return A boolean condition.
      */
     public static final boolean within(double[][] matrix1, double[][] matrix2,
                                        double absoluteError) {
@@ -690,7 +706,7 @@ public class MatrixMath {
      *  @param matrix1 A matrix of doubles.
      *  @param matrix2 A matrix of doubles.
      *  @param errorMatrix A matrix of doubles.
-     *  @retval A boolean condition.
+     *  @return A boolean condition.
      */
     public static final boolean within(double[][] matrix1, double[][] matrix2,
                                        double[][] errorMatrix) {
@@ -713,7 +729,7 @@ public class MatrixMath {
 
     /** Return the number of columns of a matrix.
      *  @param matrix A matrix of doubles.
-     *  @retval An int.
+     *  @return An int.
      */
     private static final int _columns(double[][] matrix) {
         return matrix[0].length;
@@ -744,14 +760,15 @@ public class MatrixMath {
      *  square, an IllegalArgumentException is thrown.
      *  @param caller A string representing the caller method name.
      *  @param matrix A matrix of doubles.
-     *  @retval An int which is the dimension of the square matrix.
+     *  @return The dimension of the square matrix.
      */
-    private static final void _checkSquare(String caller, double[][] matrix) {
+    private static final int _checkSquare(String caller, double[][] matrix) {
         if (_rows(matrix) != _columns(matrix)) {
            throw new IllegalArgumentException(
            "ptolemy.math.MatrixMath." + caller + "() : matrix argument "
-           + _dimensionString(matrix) + " is not a square matrix");
+           + _dimensionString(matrix) + " is not a square matrix.");
         }
+        return _rows(matrix);
     }
 
     private static final String _dimensionString(double[][] matrix) {
@@ -760,11 +777,10 @@ public class MatrixMath {
 
     /** Return the number of rows of a matrix.
      *  @param matrix A matrix of doubles.
-     *  @retval An int.
+     *  @return An int.
      */
     private static final int _rows(double[][] matrix) {
         return matrix.length;
     }
-
 }
 

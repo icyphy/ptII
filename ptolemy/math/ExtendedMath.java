@@ -118,4 +118,10 @@ public final class ExtendedMath {
 
     private final static double _ONEOVERLN2  = 1.0 / Math.log(2.0);
     private final static double _ONEOVERLN10 = 1.0 / Math.log(10.0);
+
+    public static final double SQRT_2 = Math.sqrt(2.0);
+    public static final double ONE_OVER_SQRT_2 = 1.0 / SQRT_2;
+
+    public static final double PI_OVER_2 = Math.PI * 0.5;
+    public static final double PI_OVER_4 = Math.PI * 0.25;
 }

@@ -34,8 +34,6 @@
 
 package ptolemy.math;
 
-import ptolemy.kernel.util.*;
-
 //////////////////////////////////////////////////////////////////////////
 //// Fraction
 /**
@@ -130,7 +128,7 @@ public class Fraction extends Object {
         if(b instanceof Fraction) 
             return ((_num == ((Fraction) b)._num) && 
                     (_den == ((Fraction) b)._den));
-        else 
+        else
             return false;
     }
     
