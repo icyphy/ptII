@@ -46,7 +46,7 @@ include $(CONFIG)
 PTPACKAGE = 	plot
 # If you change PTVERSION, modify the version numbers in:
 #    Pxgraph.java, PlotApplication.java, doc/index.htm, doc/changes.htm
-PTVERSION =	2.2
+PTVERSION =	3.0
 PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
@@ -271,6 +271,12 @@ fixtmpdist:
 	@echo "JShield needs the ico file to be in the top level directory"
 	cp $(PTTMPDIR)/$(PTDIST)/ptolemy/plot/doc/img/ptplot.ico \
 		$(PTTMPDIR)/$(PTDIST)
+	@echo "Copy over xml stuff"
+	mkdir -p $(PTTMPDIR)/$(PTDIST)/com
+	cp -r $(PTII)/com/microstar $(PTII)/com/makefile \
+		$(PTTMPDIR)/$(PTDIST)/com
+	@echo "Copy over gui stuff"
+	cp -r $(PTII)/ptolemy/gui $(PTTMPDIR)/$(PTDIST)/ptolemy
 	@echo "Setting up doc directory"
 	mkdir -p $(PTTMPDIR)/$(PTDIST)/doc/codeDoc
 	cd $(PTTMPDIR)/$(PTDIST); \
