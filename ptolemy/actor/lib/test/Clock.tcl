@@ -73,6 +73,10 @@ test Clock-2.1 {test with the default output value} {
 test Clock-2.2 {change output value and type and rerun} {
     set p [getParameter $clock values]
     $p setExpression {[0.5, -0.5]}
+    set mt [java::cast ptolemy.data.DoubleMatrixToken [$p getToken]]
+    $mt getRowCount
+    $mt getColumnCount
+    $mt stringValue
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {3.0}
+} {0.5 -0.5 0.5 -0.5}
