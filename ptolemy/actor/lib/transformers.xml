@@ -4,19 +4,19 @@
   <doc>
 	Generic domain polymorphic actors
   </doc>
-  <!-- Define the actors -->
-  <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
-    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-       <configure>generic.transformer</configure>
-    </rendition>
-  </entity>
-  
+  <!-- Define the actors -->  
   <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
  
+  <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+       <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
   <entity name="Average" class="ptolemy.actor.lib.Average">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
@@ -44,6 +44,12 @@
   <entity name="Minimum" class="ptolemy.actor.lib.Minimum">
     <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
       <configure>generic.transformer</configure>
+    </rendition>
+  </entity>
+
+  <entity name="MultiplyDivide" class="ptolemy.actor.lib.MultiplyDivide">
+    <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+       <configure>generic.transformer</configure>
     </rendition>
   </entity>
 
