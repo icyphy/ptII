@@ -33,6 +33,8 @@ Created : May 1998
 
 package ptolemy.data.expr;
 
+import ptolemy.data.*;
+
 //////////////////////////////////////////////////////////////////////////
 //// ASTPtRelationalNode
 /**
