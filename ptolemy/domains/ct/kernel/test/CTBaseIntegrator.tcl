@@ -72,7 +72,7 @@ test CTBaseIntegrator-1.1 {Construct a CTBaseIntegrator, get parameters} {
 ######################################################################
 ####  Test change of parameter.
 #
-test CTBaseIntegrator-1.1 {Construct a CTBaseIntegrator, get parameters} {
+test CTBaseIntegrator-2.1 {Construct a CTBaseIntegrator, get parameters} {
     $param setToken [java::new ptolemy.data.DoubleToken 1.0]
     [java::cast ptolemy.data.DoubleToken [ \
 	    [java::cast ptolemy.data.expr.Parameter $param] getToken]] \
@@ -82,7 +82,7 @@ test CTBaseIntegrator-1.1 {Construct a CTBaseIntegrator, get parameters} {
 ######################################################################
 ####  check initialization
 #
-test CTBaseIntegrator-2.1 {check intialization} {
+test CTBaseIntegrator-3.1 {check intialization} {
     $integ initialize
     list [$integ getInitialState] [$integ getState]  [$integ getTentativeState]
 } {1.0 1.0 1.0}
@@ -90,25 +90,25 @@ test CTBaseIntegrator-2.1 {check intialization} {
 ######################################################################
 ####  check history
 #
-test CTBaseIntegrator-3.1 {default history capacity} {
+test CTBaseIntegrator-4.1 {default history capacity} {
     list [$integ getHistoryCapacity]
 } {1}
 
-test CTBaseIntegrator-3.2 {check history} {
+test CTBaseIntegrator-4.2 {check history} {
     $integ setTentativeState 1.0
     $integ setTentativeDerivative 0.0
     $integ postfire
     arrayToStrings [$integ getHistory 0]
 } {1.0 0.0}
 
-test CTBaseIntegrator-3.3 {override history} {
+test CTBaseIntegrator-4.3 {override history} {
     $integ setTentativeState -1.0
     $integ setTentativeDerivative 0.0
     $integ postfire
     arrayToStrings [$integ getHistory 0]
 } {-1.0 0.0}
 
-test CTBaseIntegrator-3.4 {add history capacity} {
+test CTBaseIntegrator-4.4 {add history capacity} {
     $integ setHistoryCapacity 2
     $integ setTentativeState -2.0
     $integ setTentativeDerivative 0.0
@@ -117,7 +117,7 @@ test CTBaseIntegrator-3.4 {add history capacity} {
 	    [arrayToStrings [$integ getHistory 1]]
 } {2 {-2.0 0.0} {-1.0 0.0}}
 
-test CTBaseIntegrator-3.5 {override the history again} {
+test CTBaseIntegrator-4.5 {override the history again} {
     $integ setTentativeState -3.0
     $integ setTentativeDerivative 0.0
     $integ postfire
@@ -125,7 +125,7 @@ test CTBaseIntegrator-3.5 {override the history again} {
 	    [arrayToStrings [$integ getHistory 1]]
 } {2 {-3.0 0.0} {-2.0 0.0}}
 
-test CTBaseIntegrator-3.6 {access out of bounds} {
+test CTBaseIntegrator-4.6 {access out of bounds} {
     catch {$integ getHistory 3} msg
     list $msg
 } {{java.lang.IndexOutOfBoundsException: Index: 3, Size: 2}}
@@ -133,12 +133,12 @@ test CTBaseIntegrator-3.6 {access out of bounds} {
 ######################################################################
 #### test auxVariables
 #
-test CTBaseIntegrator-4.1 {test auxVariables} {
+test CTBaseIntegrator-5.1 {test auxVariables} {
     $integ prefire
     arrayToStrings [$integ getAuxVariables]
 } {0.0 0.0 0.0 0.0}
 
-test CTBaseIntegrator-4.2 {set auxVariables} {
+test CTBaseIntegrator-5.2 {set auxVariables} {
     $integ setAuxVariables 1 1.0
     arrayToStrings [$integ getAuxVariables]
 } {0.0 1.0 0.0 0.0}
