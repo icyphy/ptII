@@ -58,8 +58,7 @@ image to the output port as an ObjectToken that is a java.awt.Image.
 
 @author  Christopher Hylands
 @version $Id$
-@since Ptolemy II 2.0
- */
+*/
 public class ImageRotate extends Transformer {
 
     /** Construct an actor with the given container and name.

@@ -1,4 +1,5 @@
-/* An actor that reads a String input token naming a URL and outputs an Image of type Object.
+/* An actor that reads a String input token naming a URL and outputs
+an Image of type Object.
 
 @Copyright (c) 2001-2002 The Regents of the University of California.
 All rights reserved.
@@ -67,8 +68,7 @@ should be set to "file:///tmp/test.jpg" The default value is
 @see ImageReader
 @author  Christopher Hylands
 @version $Id$
-@since Ptolemy II 2.0
- */
+*/
 public class URLToImage extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.

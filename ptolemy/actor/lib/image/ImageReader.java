@@ -1,4 +1,5 @@
-/* An actor that reads an image from a URL parameter and Object Token that contains a java.awt.Image
+/* An actor that reads an image from a URL parameter and Object Token
+that contains a java.awt.Image
 
 @Copyright (c) 2001-2002 The Regents of the University of California.
 All rights reserved.
@@ -67,8 +68,7 @@ should be set to "file:///tmp/test.jpg" The default value is
 @see URLToImage
 @author  Christopher Hylands
 @version $Id$
-@since Ptolemy II 2.0
- */
+*/
 public class ImageReader extends Source {
     // We don't extend ptolemy.actor.lib.Reader because we are not
     // reading in data by columns.  Probably this class and

@@ -29,31 +29,20 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.actor.lib.image;
 
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.expr.*;
-import ptolemy.actor.*;
-import ptolemy.actor.lib.Sink;
 import ptolemy.actor.gui.Placeable;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.actor.lib.Sink;
+import ptolemy.data.ObjectToken;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.*;
 import ptolemy.media.Picture;
 
-import java.io.*;
-import java.text.MessageFormat;
-import java.util.Enumeration;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Container;
-import java.awt.BorderLayout;
 import java.awt.Image;
-import java.awt.event.*;
-import java.awt.image.*;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.JWindow;
 import javax.swing.SwingUtilities;
-import java.awt.Dimension;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageDisplay
@@ -72,9 +61,7 @@ these two actors can be combined?
 
 @author Christopher Hylands, Steve Neuendorffer (based on sdf.lib.vq.ImageDisplay)
 @version $Id$
-@since Ptolemy II 2.0
 */
-
 public class ImageDisplay extends Sink implements Placeable {
     /** Construct an actor with the given container and name.
      *  @param container The container.
