@@ -47,12 +47,12 @@
         </property>
         <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={94, 38, 815, 644}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={209, 1, 815, 569}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 526]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 453]">
     </property>
     <property name="level1" class="ptolemy.data.expr.Parameter" value="0.5">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -66,7 +66,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 20.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 20.0]">
         </property>
     </property>
     <property name="level3" class="ptolemy.data.expr.Parameter" value="-0.45">
@@ -81,7 +81,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 70.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 60.0]">
         </property>
     </property>
     <property name="level2" class="ptolemy.data.expr.Parameter" value="1.25">
@@ -96,23 +96,27 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 45.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 40.0]">
         </property>
     </property>
     <property name="annotation" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model shows that the level crossing
-detectors detect both the continuities 
-and discontinuities properly. 
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model shows that level crossing
+detectors detect both continuous and
+discontinuous level crossings. 
 
-The three level crossing detectors detect
-levels 0.5, 1.25, and -0.45 respectively.
+The three level crossing detectors
+detect levels set by the three
+parameters of the model.
 
-The modal model produces a piecewise 
-continuous signal with glitchs (produced 
-by the output actions of the transient states.)
+The SignalWithGlitches model is a
+modal model that produces a
+piecewise continuous signal with
+glitches. The glitches are produced
+by the output actions on transitions
+from transient states.
 
 </text></svg></configure>
         </property>
@@ -127,14 +131,22 @@ by the output actions of the transient states.)
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 180.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 180.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 263.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 226.5}">
     </property>
-    <entity name="signal with glitches" class="ptolemy.domains.fsm.modal.ModalModel">
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Haiyang Zheng and Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 500.0]">
+        </property>
+    </property>
+    <entity name="SignalWithGlitches" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
@@ -146,12 +158,14 @@ by the output actions of the transient states.)
             </property>
         </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
+            <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 135.0]">
         </property>
         <port name="input" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -165,7 +179,7 @@ by the output actions of the transient states.)
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure><entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property></entity></entity></configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 125, 815, 518}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={83, 232, 815, 423}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -175,9 +189,12 @@ by the output actions of the transient states.)
                 <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This finite state machine generates a piecewise-continuous signal with glitches.
 
-The "init" state produces a consistent continuous signal. The states: state1,
-state2, and state3, are transient states. Their transitions produce glitches
-with their output actions.</text></svg></configure>
+The refinement of the "init" state produces a continuous signal.
+The states state1, state2, and state3, are transient states, because
+the guards on the outgoing transitions are always true. Those transitions
+produce glitches (zero-width pulses) with their output actions.
+The final state (state4) simply connects connects the input to the
+output.</text></svg></configure>
                 </property>
                 <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
                     <configure>
@@ -190,7 +207,7 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 235.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 150.0]">
                 </property>
             </property>
             <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
@@ -199,13 +216,13 @@ with their output actions.</text></svg></configure>
             </property>
             <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 225.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 125.0]">
                 </property>
             </port>
             <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 235.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[570.0, 135.0]">
                 </property>
             </port>
             <entity name="state1" class="ptolemy.domains.fsm.kernel.State">
@@ -213,7 +230,7 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 150.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 50.0]">
                 </property>
             </entity>
             <entity name="state2" class="ptolemy.domains.fsm.kernel.State">
@@ -221,7 +238,7 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 150.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 50.0]">
                 </property>
             </entity>
             <entity name="state3" class="ptolemy.domains.fsm.kernel.State">
@@ -229,7 +246,7 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 155.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 55.0]">
                 </property>
             </entity>
             <entity name="state4" class="ptolemy.domains.fsm.kernel.State">
@@ -237,7 +254,7 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 155.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 55.0]">
                 </property>
             </entity>
             <entity name="init" class="ptolemy.domains.fsm.kernel.State">
@@ -245,7 +262,7 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 55.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
@@ -353,17 +370,17 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 70.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
                 </property>
             </property>
             <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="175.0, 210.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 105.0]">
                 </property>
             </port>
             <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="375.0, 210.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 105.0]">
                 </property>
             </port>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -413,22 +430,22 @@ with their output actions.</text></svg></configure>
                 </property>
                 <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 65.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
                 </property>
             </property>
             <port name="input" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 150.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 115.0]">
                 </property>
             </port>
             <port name="output" class="ptolemy.domains.fsm.modal.RefinementPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 220.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 115.0]">
                 </property>
             </port>
             <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
                 <doc>Output the current time.</doc>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 220.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 115.0]">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -459,10 +476,10 @@ with their output actions.</text></svg></configure>
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="110.0, 135.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 135.0]">
         </property>
     </entity>
-    <entity name="detect level1" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
+    <entity name="LevelCrossingDetector1" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
         <property name="level" class="ptolemy.data.expr.Parameter" value="level1">
         </property>
         <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -471,7 +488,13 @@ with their output actions.</text></svg></configure>
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="397.9379425048828, 125.97323608398438">
+        <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 210, 815, 516}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 125.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -489,7 +512,7 @@ with their output actions.</text></svg></configure>
             </property>
         </port>
     </entity>
-    <entity name="detect level2" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
+    <entity name="LevelCrossingDetector2" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
         <property name="level" class="ptolemy.data.expr.Parameter" value="level2">
         </property>
         <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -498,7 +521,13 @@ with their output actions.</text></svg></configure>
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="397.9379425048828, 205.97323608398438">
+        <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 210, 815, 516}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 195.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -516,7 +545,7 @@ with their output actions.</text></svg></configure>
             </property>
         </port>
     </entity>
-    <entity name="detect level3" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
+    <entity name="LevelCrossingDetector3" class="ptolemy.domains.ct.lib.LevelCrossingDetector">
         <property name="level" class="ptolemy.data.expr.Parameter" value="level3">
         </property>
         <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="3.0">
@@ -525,7 +554,13 @@ with their output actions.</text></svg></configure>
         </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="397.9379425048828, 275.9732360839844">
+        <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 210, 815, 516}, maximized=false}">
+            </property>
+            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 260.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -546,7 +581,7 @@ with their output actions.</text></svg></configure>
     <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="392.9379425048828, 350.9732360839844">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 350.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -562,7 +597,7 @@ with their output actions.</text></svg></configure>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="462.9379425048828, 350.9732360839844">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 350.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -578,35 +613,37 @@ with their output actions.</text></svg></configure>
         </port>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 505, 413, 252}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[405, 197]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{550.0, 350.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 350.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
+<title>Integral of the Signal</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
 <xRange min="0.0" max="2.0"/>
 <yRange min="0.0" max="1.6250250012500003"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 254, 413, 252}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[405, 197]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 195.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter2</title>
-<xLabel></xLabel>
+<title>Detected Threshold Crossings</title>
+<xLabel>time</xLabel>
 <yLabel></yLabel>
 <xRange min="0.5" max="1.50005"/>
 <yRange min="-0.45" max="1.25"/>
@@ -615,17 +652,19 @@ with their output actions.</text></svg></configure>
         </configure>
     </entity>
     <entity name="TimedPlotter3" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 2, 413, 252}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[405, 197]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 45.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>TimedPlotter</title>
+<title>Piecewise Continuous Signal</title>
+<xLabel>time</xLabel>
+<yLabel></yLabel>
 <xRange min="0.0" max="2.0"/>
 <yRange min="0.0" max="1.50005"/>
 </plot>?>
@@ -634,7 +673,7 @@ with their output actions.</text></svg></configure>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[340.0, 135.0]">
+        <vertex name="vertex1" value="[260.0, 135.0]">
         </vertex>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -647,15 +686,15 @@ with their output actions.</text></svg></configure>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="signal with glitches.input" relation="relation"/>
-    <link port="signal with glitches.output" relation="relation3"/>
+    <link port="SignalWithGlitches.input" relation="relation"/>
+    <link port="SignalWithGlitches.output" relation="relation3"/>
     <link port="Const.output" relation="relation"/>
-    <link port="detect level1.output" relation="relation2"/>
-    <link port="detect level1.trigger" relation="relation3"/>
-    <link port="detect level2.output" relation="relation4"/>
-    <link port="detect level2.trigger" relation="relation3"/>
-    <link port="detect level3.output" relation="relation6"/>
-    <link port="detect level3.trigger" relation="relation3"/>
+    <link port="LevelCrossingDetector1.output" relation="relation2"/>
+    <link port="LevelCrossingDetector1.trigger" relation="relation3"/>
+    <link port="LevelCrossingDetector2.output" relation="relation4"/>
+    <link port="LevelCrossingDetector2.trigger" relation="relation3"/>
+    <link port="LevelCrossingDetector3.output" relation="relation6"/>
+    <link port="LevelCrossingDetector3.trigger" relation="relation3"/>
     <link port="Integrator.input" relation="relation3"/>
     <link port="Integrator.output" relation="relation5"/>
     <link port="PeriodicSampler.input" relation="relation5"/>
