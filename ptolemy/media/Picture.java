@@ -141,7 +141,7 @@ public class Picture extends Canvas {
         _pixels = pixels;
         if (_imageSource != null) {
             _imageSource.newPixels(pixels,
-				   ColorModel.getRGBdefault(), 0, _width);
+                    ColorModel.getRGBdefault(), 0, _width);
         }
     }
 
