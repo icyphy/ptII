@@ -1,6 +1,6 @@
 # Makefile for Ptolemy Tycho system, java/ptplot/doc/usersGuides directory.
 #
-# @(#)makefile	1.17	08/15/97
+# $Id$
 # Author: Christopher Hylands
 #
 # Copyright (c) 1996-1997 The Regents of the University of California.
