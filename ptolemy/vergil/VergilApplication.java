@@ -366,9 +366,10 @@ public class VergilApplication extends MoMLApplication {
         try {
             // Look for configuration directories in ptolemy/configs
             // This will likely fail if ptolemy/configs is in a jar file
+	    // We use a URI here so that we cause call File(URI).
             URI configurationURI =
                 new URI(specToURL("ptolemy/configs").toExternalForm());
-            File configurationDirectory = new File(configurationURI);
+            File configurationDirectory = new File(configurationURL);
             ConfigurationFilenameFilter filter =
                 new ConfigurationFilenameFilter();
             File [] configurationDirectories =
