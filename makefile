@@ -32,8 +32,7 @@ ME =		ptII
 
 # Order matters here.
 # Go into util first so we get the latest version of the testsuite
-# Don't go down into collections, it does not have a makefile
-DIRS = util ptolemy bin doc com #collections
+DIRS = util ptolemy bin doc com
 
 # Root of Ptolemy II directory
 ROOT =		.
@@ -53,7 +52,6 @@ EXTRA_SRCS = \
 MISC_FILES = \
 	$(DIRS) \
 	bin \
-	collections \
 	config \
 	lib \
 	mk
@@ -72,18 +70,14 @@ OPTIONAL_FILES = \
 	vendors 
 
 # Files to be removed by 'make clean'
-KRUFT =	\
-	collections/ptcollections.jar
+KRUFT =
 
 # Files to be removed by 'make distclean'
 DISTCLEAN_STUFF = \
 	mk/ptII.mk config.log config.status config.cache
 
-all: mk/ptII.mk suball collections/ptcollections.jar
-install: subinstall collections/ptcollections.jar
-
-collections/ptcollections.jar:
-	(cd collections; $(MAKE) ptcollections.jar)
+all: mk/ptII.mk suball
+install: subinstall
 
 # Glimpse is a tool that prepares an index of a directory tree.
 # glimpse is not included with Ptolemy II, see http://glimpse.cs.arizona.edu
