@@ -303,8 +303,10 @@ compareTreeShakeJars:
 # Jode can be downloaded from
 # http://jode.sourceforge.net/download.php
 
+# Jode writes to stderr, which causes problem with the test suite because
+# Tcl exec will throw an error if stderr gets written to.
 obfuscate:
-	"$(ROOT)/bin/obfuscate" "\"$(TARGETPATH)/obfuscateScript.jos\""
+	"$(ROOT)/bin/obfuscate" "\"$(TARGETPATH)/obfuscateScript.jos\"" 2>&1
 	@ls -l treeshake_codegen_obfuscated.jar
 	@echo "run 'make runObfuscate' to run the obfuscated code"
 
