@@ -319,8 +319,7 @@ public class GeneratorAttribute extends SingletonAttribute
                 } else {
                     ptIIUserDirectory = ptIIUserDirectoryFile.getPath();
                     ((StringParameter)getAttribute("ptIIUserDirectory"))
-                        .setExpression("property(\"user.dir\") + "
-                                + "\"/ptII/cg\"");
+                        .setExpression("$HOME/ptII/cg");
                 }
             }
         }
