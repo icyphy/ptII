@@ -176,8 +176,8 @@ test SearchPath-4.1 {PtolemyCoreClasses} {
 test SearchPath-4.2 {Do we need to resize the ptolemyCoreClassSet HashSet?} {
     set ptolemyCoreClassSet \
 	    [java::call ptolemy.lang.java.SearchPath ptolemyCoreClasses]
-    # Originally, the number of classes in rt.jar was 186
+    # Originally, the number of ptolemy core classes is 219
     # If the number gets too large then modify the initial size 
-    # of the hashset
-    list [expr {[$ptolemyCoreClassSet size] > 240}]
+    # of the hashset in SearchPath.java
+    list [expr {[$ptolemyCoreClassSet size] > 280}]
 } {0}
