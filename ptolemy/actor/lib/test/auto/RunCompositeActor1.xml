@@ -52,7 +52,7 @@ RunCompositeActor3.xml</text></svg></configure>
         </property>
     </property>
     <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
-        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="RunCompositeActor.txt">
+        <property name="fileName" class="ptolemy.data.expr.FileParameter" value="${TMPDIR}RunCompositeActor.txt">
         </property>
         <property name="append" class="ptolemy.data.expr.Parameter" value="false">
         </property>

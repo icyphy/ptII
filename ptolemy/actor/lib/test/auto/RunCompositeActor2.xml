@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="RunCompositeActor" class="ptolemy.actor.TypedCompositeActor">
+<entity name="RunCompositeActor2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -123,14 +123,14 @@ RunCompositeActor3.xml</text></svg></configure>
             </port>
         </entity>
         <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
-            <property name="fileName" class="ptolemy.data.expr.FileParameter" value="RunCompositeActor.txt">
+            <property name="fileName" class="ptolemy.data.expr.FileParameter" value="${TMPDIR}RunCompositeActor.txt">
             </property>
             <property name="append" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="confirmOverwrite" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <doc>Write the value of a string token, one per line, to a text file.</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 165.0">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 165.0">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>

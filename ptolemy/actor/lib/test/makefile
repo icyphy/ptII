@@ -109,13 +109,17 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
-		cleanFileWriter test_auto
+		cleanFileWriter cleanRunCompositeActor test_auto
 	$(JTCLSH) alljtests.tcl
 
 # auto/FileWriter1.xml creates this file, so we remove it before running
 # the tests
 cleanFileWriter:
 	echo 'file delete -force [file join [java::call System getProperty java.io.tmpdir] FileWriter1Output.txt];exit ' | $(JTCLSH)
+
+cleanRunCompositeActor
+	echo 'file delete -force [file join [java::call System getProperty java.io.tmpdir] RunCompositeActor.txt];exit ' | $(JTCLSH)
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

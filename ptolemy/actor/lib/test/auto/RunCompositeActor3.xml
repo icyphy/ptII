@@ -51,7 +51,7 @@ RunCompositeActor3.xml</text></svg></configure>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <entity name="LineReader" class="ptolemy.actor.lib.io.LineReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="RunCompositeActor.txt">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="${TMPDIR}RunCompositeActor.txt">
         </property>
         <property name="numberOfLinesToSkip" class="ptolemy.data.expr.Parameter" value="0">
         </property>
