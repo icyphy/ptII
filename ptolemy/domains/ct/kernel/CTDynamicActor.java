@@ -24,11 +24,12 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.ct.kernel;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.actor.Actor;
 
@@ -44,12 +45,14 @@ y = g(x, u, t)<BR>
 are dynamic actors.
 <P>
 There is one method defined in this interface, which is
-emitTentativeOutput(). The tentative output is the output of the actor
+emitTentativeOutput(). 
+The tentative output is the output if the current integration step is
+accurate. It may not be the "real" output, if there is an "missed" event
+reported by some event detectors.
+The tentative output is the output of the actor
 after each iteration (but before the states are updated). They are
 emitted for exciting the event generating and the output schedule.
-The tentative output is the output if the current integration step is
-acceptable. It may not be the "real" output, if there is an "missed" event
-reported by some event detectors.
+
 @author Jie Liu
 @version $Id$
 */

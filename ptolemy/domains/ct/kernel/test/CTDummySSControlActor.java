@@ -65,7 +65,7 @@ public class CTDummySSControlActor extends TypedAtomicActor
     ////                         public methods                    ////
     /** Return true always.
      */
-    public boolean isThisStepSuccessful() {
+    public boolean isThisStepAccurate() {
         return true;
     }
 

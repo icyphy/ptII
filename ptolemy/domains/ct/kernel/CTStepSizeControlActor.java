@@ -23,7 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 
 */
@@ -35,21 +35,39 @@ import ptolemy.actor.Actor;
 //////////////////////////////////////////////////////////////////////////
 //// CTStepSizeControlActor
 /**
-Interface for actors that controls integration step sizes. Typically,
-the step size of an integration algorithm is determined by the initial
-step size parameter, the local truncation error at the integrators,
-the discontinuity of actor behaviors, etc. All actors that want to
-effect the integration step size should implement this interface.
+Interface for actors that controls integration step sizes for handling 
+unpredictable breakpoints or controlling numerical error. 
+Typically, the actors that implement this interface are dynamic actors
+and event detectors.
 <P>
-Three methods are defined in this interface, isThisStepSuccessful(),
-refinedStepSize(), and predictedStepSize(). At the end of each integration
-step, the CTStepSizeControlActors will be asked whether this step is
-successful. If one of the actor is not satisfied, then the actor
-will be asked
-for a refined step size. The integration step will be restarted with
-the smallest refined step size.
-If all the step size control actors are satisfied,
+Actors can affect the integration step size in two ways. The first one
+is by introducing predictable breakpoints. When the fireAt() method of
+the CTDirector is called with an argument <i>t</i>, 
+the CTDirector will treat <i>t</i> as a breakpoint. Actors that only
+introduce predictable breakpoints need not to implement this interface. 
+<P>
+The second way of controlling step size is through the accuracy checking
+after each integration step. Accuracy, in this context, means that
+the numerical integration error is less than the error tolerance and 
+there is no (unpredictable) breakpoints within this step.  
+Actors that uses this mechanism need to implement this interface.  
+At the end of each integration step, each CTStepSizeControlActors 
+will be asked whether this step is accurate by calling their 
+isThisStepAccurate() method.
+If it returns false, that actor
+will then be asked to suggest a refined step size. If there are more 
+than one actors find that this step is not accurate, then the 
+smallest of the suggested step size will be 
+used by the director to restart the integration step.
+
+If all step size control actors find the integration step is accurate,
 they will be asked for a (predicted) next step size.
+The smallest predicted next step size will be used for the next
+integration step.
+<P>
+If there are no step size control actors in a model, the step sizes
+are solely controlled by the director based on the initial
+step size parameter, ODE solvers, and predictable breakpoints.
 @author  Jie Liu
 @version $Id$
 */
@@ -58,18 +76,20 @@ public interface CTStepSizeControlActor extends Actor{
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if the current integration step is successful.
-     *  Actors that implement this interface will interpret "successful"
-     *  themselves. For example, for integrators, "successful" could
+    /** Return true if the current integration step is accurate 
+     *  from this actor's point of view.
+     *  Actors that implement this interface will interpret "accurate"
+     *  themselves. For example, for integrators, "accurate" could
      *  mean that the local truncation error is small enough; for
-     *  event detectors, "successful" could mean that there is not event
-     *  missed during the integration step.
-     *  @return True if the current integration step is acceptable.
+     *  event detectors, "accurate" could mean that there is not event
+     *  missed during the integration step. The actor may only care
+     *  about one of these aspects.
+     *  @return True if the current integration step is accurate.
      */
-    public boolean isThisStepSuccessful();
+    public boolean isThisStepAccurate();
 
     /** Return the predicted next step size. If the current integration
-     *  step is successful, the actor will be asked for the prediction
+     *  step is accurate, the actor will be asked for the prediction
      *  of the next step size. If the actor that implement this interface
      *  does not know how to predict the next step size, it should
      *  return java.lang.Double.MAX_VALUE.
@@ -77,12 +97,12 @@ public interface CTStepSizeControlActor extends Actor{
      */
     public double predictedStepSize();
 
-    /** Return the refined step size for restarting the current step. If the
-     *  current integration is not successful, the actor will
-     *  be asked for a refined step size. The current integration step
-     *  will be restarted with the minimum of all returned values.
+    /** Return the refined step size for restarting the current step.
+     *  If this actor returns false when calling isThisStepAccurate,
+     *  then it will
+     *  be asked for a refined step size.
      *  If the actor does not want to restart the current integration
-     *  step, this method should return the current step size from the
+     *  step, this method should return the current step size of the
      *  director.
      *  @return The refined step size.
      */

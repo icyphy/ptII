@@ -145,7 +145,7 @@ public class DerivativeResolver extends ODESolver {
      *  @param integrator The integrator of that calls this method.
      *  @return True always.
      */
-    public boolean integratorIsSuccessful(CTBaseIntegrator
+    public boolean integratorIsAccurate(CTBaseIntegrator
             integrator) {
         return true;
     }

@@ -151,34 +151,29 @@ public class TrapezoidalRuleSolver extends ODESolver{
         integrator.output.broadcast(new DoubleToken(pstate));
     }
 
-    /** Perform the isSuccessful() test for integrators under this solver.
+    /** Perform the isThisStepAccurate() test for integrators under
+     *  this solver.
      *  It calculates the tentative state and test for local
      *  truncation error.
      *  @param integrator The integrator of that calls this method.
      *  @return True if the intergrator report a success on the this step.
      */
-    public boolean integratorIsSuccessful(CTBaseIntegrator integrator) {
-        try {
-            CTDirector dir = (CTDirector)getContainer();
-            double errtol = dir.getErrorTolerance();
-            double[] k = integrator.getAuxVariables();
-            double lte = 0.5*Math.abs(integrator.getTentativeState() - k[0]);
-            integrator.setAuxVariables(1, lte);
-            _debug("Integrator: "+ integrator.getName() +
-                    " local truncation error = " + lte);
-            if(lte<errtol) {
-                _debug("Integrator: " + integrator.getName() +
-                        " report a success.");
-                return true;
-            } else {
-                _debug("Integrator: " + integrator.getName() +
-                        " reports a failure.");
-                return false;
-            }
-        } catch (IllegalActionException e) {
-            //should never happen.
-            throw new InternalErrorException(integrator.getName() +
-                    " No input token available." + e.getMessage());
+    public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
+        CTDirector dir = (CTDirector)getContainer();
+        double errtol = dir.getErrorTolerance();
+        double[] k = integrator.getAuxVariables();
+        double lte = 0.5*Math.abs(integrator.getTentativeState() - k[0]);
+        integrator.setAuxVariables(1, lte);
+        _debug("Integrator: "+ integrator.getName() +
+                " local truncation error = " + lte);
+        if(lte<errtol) {
+            _debug("Integrator: " + integrator.getName() +
+                    " report a success.");
+            return true;
+        } else {
+            _debug("Integrator: " + integrator.getName() +
+                    " reports a failure.");
+            return false;
         }
     }
 

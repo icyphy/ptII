@@ -1,4 +1,4 @@
-/* Interface for actors that generates continuou waveforms.
+/* Interface for actors that convert discrete events to continuous waveforms.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
@@ -50,8 +50,7 @@ public interface CTWaveformGenerator extends Actor{
 
     /** Consume the discrete event that happens at the current time.
      *  If there are no such events, do nothing.
-     *  @exception IllegalActionException If a derived class detects
-     *  a problem.
+     *  @exception IllegalActionException If the action failed.
      */
     public void consumeCurrentEvents() throws IllegalActionException;
 

@@ -149,18 +149,18 @@ public class ThresholdMonitor extends TypedAtomicActor
     /** Return true if this step did not cross the threshold.
      *  @return True if this step did not cross the threshold.
      */
-    public boolean isThisStepSuccessful() {
+    public boolean isThisStepAccurate() {
         if (!_first) {
             if (((_lastInput >= _upperBound) && (_thisInput <= _lowerBound)) ||
                     ((_lastInput <= _lowerBound) &&
                             (_thisInput >= _upperBound))) {
                 _debug(getFullName() + "one step crosses the threshold" +
                         "cutting the step size in half.");
-                _success = false;
+                _accurate = false;
                 return false;
             }
         }
-        _success = true;
+        _accurate = true;
         return true;
     }
 
@@ -190,13 +190,13 @@ public class ThresholdMonitor extends TypedAtomicActor
         return java.lang.Double.MAX_VALUE;
     }
 
-    /** Return half the current step size if the step is not successful.
+    /** Return half the current step size if the step crosses the threshold.
      *  Otherwise, return the current step size.
-     *  @return Half the current step size if the step is not successful.
+     *  @return Half of the current step size if the step is not accurate.
      */
     public double refinedStepSize() {
         CTDirector dir = (CTDirector)getDirector();
-        if(!_success) {
+        if(!_accurate) {
             return 0.5*dir.getCurrentStepSize();
         }
         return dir.getCurrentStepSize();
@@ -215,8 +215,8 @@ public class ThresholdMonitor extends TypedAtomicActor
     // flag indicting if this is the first iteration in an execution.
     private boolean _first;
 
-    // flag indicating if the current step is successful
-    private boolean _success;
+    // flag indicating if the current step is accurate
+    private boolean _accurate;
 
     // upper bound of the input value, = thCenter + thWidth/2
     private double _upperBound;

@@ -29,8 +29,7 @@
 */
 
 package ptolemy.domains.ct.kernel;
-//import ptolemy.kernel.util.*;
-import ptolemy.kernel.*;
+
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
@@ -39,9 +38,12 @@ import ptolemy.data.Token;
 //////////////////////////////////////////////////////////////////////////
 //// CTReceiver
 /**
-The receiver for the continuous time domain. This is a mailbox, which
-has a capacity of one token. Any token put in the receiver overwrites
-any token previously present in the reciever.
+The receiver for the continuous time domain. This is a mailbox with
+capacity one, and any token put in the receiver overwrites
+any token previously present in the reciever. As a consquence, 
+hasRoom() method always returns true. The get() method will consume
+the token if there exists one. After the consumption, the hasToken()
+method will return false, until a token is put into this receiver.
 
 @author  Jie Liu
 @version $Id$
@@ -55,7 +57,7 @@ public class CTReceiver extends Mailbox {
     }
 
     /** Construct an empty CTReceiver with the specified container.
-     *  @param container The container.
+     *  @param container The port that contains the receiver.
      */
     public CTReceiver(IOPort container) {
         super(container);
@@ -64,7 +66,7 @@ public class CTReceiver extends Mailbox {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true always, since the new token will override the old one.
+    /** Return true, since the new token will override the old one.
      *  @return True.
      */
     public boolean hasRoom() {
@@ -72,9 +74,11 @@ public class CTReceiver extends Mailbox {
     }
 
     /** Put a token into this receiver. If the argument is null,
-     *  then this receiver will not contain a token after this
-     *  returns. If the receiver already has a token, then the old
-     *  token will be lost
+     *  then this receiver will not contain any token after this method
+     *  returns. If the receiver already has a token, then the new token
+     *  will override the old token, and the old 
+     *  token will be lost. 
+     * 
      *  @param token The token to be put into this receiver.
      *  @exception NoRoomException Not thrown in this class.
      */
@@ -83,7 +87,8 @@ public class CTReceiver extends Mailbox {
             get();
         }
         super.put(token);
-        //System.out.println(getContainer().getFullName() + 
+        // Uncomment the following lines when debugging the receiver.
+        // System.out.println(getContainer().getFullName() + 
         //        " received " + token);
     }
 }

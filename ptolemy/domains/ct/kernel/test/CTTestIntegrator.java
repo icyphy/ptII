@@ -59,7 +59,7 @@ public class CTTestIntegrator extends CTBaseIntegrator {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /** call to balance of the history.
+    /** call to balance the history.
      */
     public void balanceHistory() {
         double stepsize =((CTDirector)getDirector()).getCurrentStepSize();

@@ -1,4 +1,4 @@
-/* An interface for actors that can remembers their state.
+/* An interface for actors that can remembers their state and go back to the state that is remembered.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -23,12 +23,13 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
+@ProposedRating Green (liuj@eecs.berkeley.edu)
 @AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 
 */
 
 package ptolemy.domains.ct.kernel;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.actor.Actor;
 
@@ -39,7 +40,7 @@ An interface for actors that have states. The state of the actor can be
 marked (saved). The saved state can be restored so that the actor can go
 back to its previously marked state. This feature is used for rolling
 back the simulation when needed, which is essential when embedding
-CT subsystem in an event-based system.
+CT subsystem in a discrete event system.
 <P>
 The interface defines two methods, markState() and goToMarkedState().
 If the markState() method is called, the current state of the actor,
@@ -49,7 +50,7 @@ should be restored.
 @author  Jie Liu
 @version $Id$
 */
-public interface CTStatefulActor extends Actor{
+public interface CTStatefulActor extends Actor {
 
     /** Go to the marked state. If there's no marked state, throws
      *  an exception.

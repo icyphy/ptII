@@ -107,12 +107,14 @@ public class CTCompositeActor extends TypedCompositeActor
 
     /** This method is delegated to the local director if the local
      *  director is an instance of CTTransparentDirector. Otherwise,
-     *  return true.
+     *  return true, indicating that this composite actor does not
+     *  perform step size control.
+     *  @return True if this step is accurate.
      */
-    public boolean isThisStepSuccessful() {
+    public boolean isThisStepAccurate() {
         Director dir = getDirector();
         if((dir != null) && (dir instanceof CTTransparentDirector)) {
-            return ((CTTransparentDirector)dir).isThisStepSuccessful();
+            return ((CTTransparentDirector)dir).isThisStepAccurate();
         }
         return true;
     }

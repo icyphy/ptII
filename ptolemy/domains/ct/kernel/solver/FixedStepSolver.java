@@ -103,7 +103,7 @@ public abstract class FixedStepSolver extends ODESolver {
      *  @param integrator The integrator that wants to do the test.
      *  @return True always.
      */
-    public final boolean integratorIsSuccessful(CTBaseIntegrator integrator) {
+    public final boolean integratorIsAccurate(CTBaseIntegrator integrator) {
         return true;
     }
 

@@ -166,12 +166,13 @@ public abstract class ODESolver extends NamedObj {
     public abstract void integratorFire(CTBaseIntegrator integrator)
             throws  IllegalActionException;
 
-    /** The isThisStepSuccessful() method of the integrator is delegated to
-     *  this method.
+    /** The isThisStepAccurate() method of the integrator is delegated to
+     *  this method. It returns true if the current integration step 
+     *  is accurate from the argument integrator's point of view.
      *  @param integrator The integrator of that calls this method.
-     *  @return True if the intergrator report a success on the last step.
+     *  @return True if the integrator finds the step accurate.
      */
-    public abstract boolean integratorIsSuccessful(CTBaseIntegrator
+    public abstract boolean integratorIsAccurate(CTBaseIntegrator
             integrator);
 
     /** The predictedStepSize() method of the integrator is delegated

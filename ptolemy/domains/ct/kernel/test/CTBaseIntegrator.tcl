@@ -201,6 +201,7 @@ test CTBaseIntegrator-5.2 {set auxVariables} {
 test CTBaseIntegrator-6.1 {set and get states and derivatives} {
     $integ setTentativeState 1.0
     $integ setTentativeDerivative 0.0
+    $integ setHistoryCapacity 1
     $integ postfire
     list [$integ getState] [$integ getDerivative]
 } {1.0 0.0}

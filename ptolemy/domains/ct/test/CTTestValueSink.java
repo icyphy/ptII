@@ -119,11 +119,15 @@ public class CTTestValueSink extends TypedAtomicActor {
      */
     public void wrapup() throws IllegalActionException {
         _debug(getName() + " wrapping up.");
-        double v = ((DoubleToken)_lastToken).doubleValue();
-        //System.out.println("lasttoken=" + v);
-        double p = ((DoubleToken)testValue.getToken()).doubleValue();
-        if (Math.abs(v-p) < 1e-10) {
-            _success = true;
+        if(_lastToken != null) {
+            double v = ((DoubleToken)_lastToken).doubleValue();
+            //System.out.println("lasttoken=" + v);
+            double p = ((DoubleToken)testValue.getToken()).doubleValue();
+            if (Math.abs(v-p) < 1e-10) {
+                _success = true;
+            } else {
+                _success = false;
+            }
         } else {
             _success = false;
         }

@@ -527,7 +527,7 @@ public class CTMultiSolverDirector extends CTDirector {
                 (CTStepSizeControlActor) sscs.next();
             if(_debugging) _debug("Checking Output Step Size Control Actor: "
                     + ((NamedObj)a).getName());
-            successful = successful && a.isThisStepSuccessful();
+            successful = successful && a.isThisStepAccurate();
         }
         if(_debugging) 
             _debug(getFullName() + " output successful ? " + successful); 
@@ -546,7 +546,7 @@ public class CTMultiSolverDirector extends CTDirector {
         while (sscs.hasNext()) {
             CTStepSizeControlActor a =
                 (CTStepSizeControlActor) sscs.next();
-            boolean thisSuccessful = a.isThisStepSuccessful();
+            boolean thisSuccessful = a.isThisStepAccurate();
             if(_debugging) _debug("Checking State Step Size Control Actor: " +
                     ((NamedObj)a).getName() + " " + thisSuccessful);
             successful = successful && thisSuccessful;

@@ -123,12 +123,14 @@ test CTExpoSystem-4.1 {Expo with ForwardEulerSolver} {
 	    [$testV getAttribute "Value"]]
     $testvalue setToken [java::new ptolemy.data.DoubleToken 1.5937424601000005]
 
-    # set debugger [java::cast ptolemy.data.expr.Parameter \
-	    # 	    [$testV getAttribute Print]]
+    #set debugger [java::cast ptolemy.data.expr.Parameter \
+	    # [$testV getAttribute Print]]
     # set token [java::new ptolemy.data.BooleanToken true]
     # $debugger setToken $token
 
+    # $dir addDebugListener [java::new ptolemy.kernel.util.StreamListener]
     $man run
+
     list [$testV isSuccessful]  
 } {1}
 

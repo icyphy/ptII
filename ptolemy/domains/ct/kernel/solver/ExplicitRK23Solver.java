@@ -169,14 +169,14 @@ public class ExplicitRK23Solver extends ODESolver {
         integrator.output.broadcast(new DoubleToken(outvalue));
     }
 
-    /** Return true if the integration is successful for the given 
+    /** Return true if the integration is accurate for the given 
      *  integrator. It estimates the local truncation error for that
      *  integrator and compare it with the error tolerance.
      *  
      *  @param integrator The integrator of that calls this method.
      *  @return True if the integration is successful.
      */
-    public boolean integratorIsSuccessful(CTBaseIntegrator integrator) {
+    public boolean integratorIsAccurate(CTBaseIntegrator integrator) {
         try {
             CTDirector dir = (CTDirector)getContainer();
             double errtol = dir.getErrorTolerance();

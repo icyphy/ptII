@@ -143,7 +143,7 @@ public class ZeroCrossingDetector extends Transformer
     }
 
     /** Consume the input token and the trigger token. The trigger token
-     *  will be used for finding the zero crossing in isThisStepSuccessful()
+     *  will be used for finding the zero crossing in isThisStepAccurate()
      *  method.
      *  @exception IllegalActionException If no token is available.
      */
@@ -173,14 +173,16 @@ public class ZeroCrossingDetector extends Transformer
     }
 
     /** Return true if this step does not cross zero. The current trigger
-     *  token will be compared to the history trigger token. If they
-     *  cross the zero threshold, this step is not successful.
-     *  A special case is taken care such that if the history trigger
+     *  token will be compared to the previous trigger token. If they
+     *  cross the zero threshold, this step is not accurate.
+     *  A special case is taken care such that if the previous trigger
      *  and the current trigger are both zero, then no new event is
-     *  triggered. If this step crosses zero, then the refined integration
-     *  step size is computed.
+     *  detected. If this step crosses zero, then the refined integration
+     *  step size is computed by linear interpolation.
+     *  @return True if the trigger input in this integration step 
+     *          does not cross zero.
      */
-    public boolean isThisStepSuccessful() {
+    public boolean isThisStepAccurate() {
         if (_first) {
             _first = false;
             return true;
@@ -200,7 +202,7 @@ public class ZeroCrossingDetector extends Transformer
             _eventMissed = false;
             return true;
         } else {
-            if(!_enabled) {  // if last step is a zero, always successful.
+            if(!_enabled) {  // if last step is a zero, always accurate.
                 _enabled = true;
             } else {
                 if ((_lastTrg * _thisTrg) < 0.0) {

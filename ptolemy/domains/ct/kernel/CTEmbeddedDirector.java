@@ -56,8 +56,8 @@ time and understands the meaning of step size.
 @see CTMultiSolverDirector
 @see CTTransparentDirector
 */
-public class CTEmbeddedDirector  extends CTMultiSolverDirector
-    implements CTTransparentDirector{
+public class CTEmbeddedDirector extends CTMultiSolverDirector
+    implements CTTransparentDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -150,13 +150,13 @@ public class CTEmbeddedDirector  extends CTMultiSolverDirector
         exeDir.fireAt(ca, time);
     }
 
-    /** Return true if the current fire
-     *  is successful. The success is determined by asking all the
-     *  step size control actors in the output schedule. If this is a
-     *  top level director, then return true always.
-     *  @return True if the current step is successful.
+    /** Return true if the current integration step
+     *  is accurate. This is determined by asking all the
+     *  step size control actors in the state transition schedule and
+     *  output schedule.
+     *  @return True if the current step is accurate.
      */
-    public boolean isThisStepSuccessful() {
+    public boolean isThisStepAccurate() {
         try {
             _debug(getName() + ": Checking local actors for success.");
             if (!_isStateAcceptable()) {

@@ -47,10 +47,11 @@ public interface CTTransparentDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if the current integration step is successful.
-     *  @return True if the current step is successful.
+    /** Return true if the current integration step is accurate from
+     *  this director's point of view.
+     *  @return True if the current step is accurate.
      */
-    public boolean isThisStepSuccessful();
+    public boolean isThisStepAccurate();
 
     /** Return the predicted next step size if this step is successful.
      *  @return The predicted step size.
