@@ -123,6 +123,29 @@ public class Director extends NamedObj implements Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Invoke the begin() method of each deeply contained actor.
+     *  This method should be invoked once per execution, after the
+     *  initialization phase, but before any iteration.  Since type
+     *  resolution has been completed, the begin() method of a contained
+     *  actor may produce output or schedule events.
+     *  This method is <i>not</i> synchronized on the workspace, so the
+     *  caller should be.
+     *
+     *  @exception IllegalActionException If the begin() method of
+     *   one of the associated actors throws it.
+     */
+    public void begin() throws IllegalActionException {
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container!= null) {
+            Enumeration allactors = container.deepGetEntities();
+            while (allactors.hasMoreElements()) {
+                Actor actor = (Actor)allactors.nextElement();
+                _debug("Invoking begin(): ", ((NamedObj)actor).getFullName());
+                actor.begin();
+            }
+        }
+    }
+
     /** Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -172,6 +195,21 @@ public class Director extends NamedObj implements Executable {
                 }
             }
         }
+    }
+
+    /** Schedule a firing of the given actor at the current time. Normally,
+     *  a domain will implement this by firing the actor only after all
+     *  other pending firings at the current time have been processed.
+     *  In this base class, this method simply calls fireAt() with the
+     *  current time.
+     *  @param actor The actor scheduled to be fired.
+     *  @exception IllegalActionException If the operation is not
+     *    permissible (e.g. the given time is in the past).
+     */
+    public void fireAfterIteration(Actor actor)
+            throws IllegalActionException {
+
+        fireAt(actor, getCurrentTime());
     }
 
     /** Schedule a firing of the given actor at the given time. It does
@@ -237,7 +275,7 @@ public class Director extends NamedObj implements Executable {
      *  Set the current time to be 0.0.
      *  <p>
      *  This method should be invoked once per execution, before any
-     *  iteration. It may produce output data.
+     *  iteration, and before the begin() method.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
@@ -251,8 +289,7 @@ public class Director extends NamedObj implements Executable {
             Enumeration allactors = container.deepGetEntities();
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
-                _debug(getName() + " initializes actor "+
-                        ((NamedObj)actor).getName());
+                _debug("Initializing actor: ", ((NamedObj)actor).getFullName());
                 actor.initialize();
             }
         }
@@ -412,6 +449,27 @@ public class Director extends NamedObj implements Executable {
             Manager manager = container.getManager();
             if (manager != null) {
                 manager.requestChange(change);
+            }
+        }
+    }
+
+    /** Queue an initialization request with the manager.
+     *  The specified actor will be initialized at an appropriate time,
+     *  between iterations, by calling its initialize() and begin() methods.
+     *  This method is called by CompositeActor when an actor an actor
+     *  sets its container to that composite actor.  Typically, that
+     *  will occur when a model is first constructed, and during the
+     *  execute() method of a ChangeRequest that is queued using
+     *  requestChange().
+     *  If there is no container, or if it has no manager, do nothing.
+     *  @param actor The actor to initialize.
+     */
+    public void requestInitialization(Actor actor) {
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container!= null) {
+            Manager manager = container.getManager();
+            if (manager != null) {
+                manager.requestInitialization(actor);
             }
         }
     }
