@@ -104,21 +104,6 @@ public abstract class DEActor extends TypedAtomicActor implements TimedActor {
 	return dir.getStopTime();
     }
 
-    /** Schedule this actor to be fired at a specified delay relative
-     *  to the current time. If the delay is less than zero, then
-     *  an exception will be thrown.
-     *  @param delay The delay, relative to the current time.
-     *  @exception IllegalActionException If the delay is negative.
-     */
-    public void fireAfterDelay(double delay) throws IllegalActionException {
-	DEDirector dir = (DEDirector)getDirector();
-        // If this actor has input ports, then the depth is set to be
-        // one higher than the max depth of the input ports.
-        // If this actor has no input ports, then the depth is set to
-        // to be zero.
-        dir.fireAfterDelay(this, delay);
-    }
-
     /** Schedule this actor to be fired at a specified time in the future.
      *  If the time is not in the future (i.e. is less than the current
      *  time), then throw an exception.  This is a facade for the fireAt()
