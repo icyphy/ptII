@@ -30,15 +30,15 @@
 
 package ptolemy.domains.dde.gui;
 
-import java.awt.*;
-import java.awt.event.*;
-
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
 import ptolemy.actor.gui.PtolemyApplet;
 import ptolemy.domains.dde.kernel.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+
+import java.awt.*;
+import java.awt.event.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEApplet
@@ -61,44 +61,10 @@ public class DDEApplet extends PtolemyApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the value of the specified applet parameter. If the
-     *  specified parameter does not exist, then return null. Note
-     *  that the notion of parameter associated with this method
-     *  is equivalent to that which is returned by 
-     *  java.applet.Applet.getParameterInfo() and is distinct from 
-     *  that which is returned from java.applet.Applet.getParameter(). 
-     * @return String The value of the specified applet parameter;
-     *  returns null if the specified parameter does not exist.
-    public String getSingleParameter(String name) {
-	String params[][] = getParameterInfo();
-
-	if( params == null ) {
-	    return null;
-	}
-
-	for( int i = 0; i < params.length; i++ ) {
-	    if( params[i][0].equals(name) ) {
-		return params[i][1];
-	    }
-	}
-	return null;
-    }
-     */
-
     /** Describe the applet parameters.
      *  @return An array describing the applet parameters.
      */
     public String[][] getParameterInfo() {
-        /*
-	if( _params == null ) {
-	    String newinfo[][] = {
-		{"stopTime", "", "when to stop"},
-		{"defaultStopTime", "100.0", "default value for when to stop"}
-	    };
-            _params = _concatStringArrays(super.getParameterInfo(), newinfo);
-	}
-        return _params;
-        */
 	String newinfo[][] = {
 	    {"stopTime", "", "when to stop"},
 	    {"defaultStopTime", "100.0", "default value for when to stop"}
@@ -114,29 +80,6 @@ public class DDEApplet extends PtolemyApplet {
      *  the user for the stop time.
      */
     public void init() {
-        /*
-        super.init();
-
-        // Instantiate the director and process the 
-	// stopTime parameter.
-        try {
-	    _director = new DDEDirector(_toplevel, "DDEDirector");
-
-            String stopSpec = getSingleParameter("stopTime");
-            if (stopSpec != null) {
-                double stopTime = (new Double(stopSpec)).doubleValue();
-                _stopTimeGiven = true;
-		Parameter dirStopTime = 
-		        (Parameter)_director.getAttribute("stopTime");
-		dirStopTime.setToken( new DoubleToken(stopTime) );
-	    }
-        } catch (IllegalActionException ex) {
-	    report("Error in instantiating the director:\n", ex);
-        } catch (Exception ex) {
-            report("Error in setting the director's " 
-		    + "stopTime parameter\n", ex);
-        }
-        */
         super.init();
 
         // Process the stopTime parameter.
@@ -155,34 +98,10 @@ public class DDEApplet extends PtolemyApplet {
             // Initialization
             _director = new DDEDirector(_toplevel, "DDEDirector");
 	    _director.stopTime.setToken( new DoubleToken(stopTime) );
-            // _director.setStopTime(stopTime);
         } catch (Exception ex) {
             report("Failed to setup director:\n", ex);
         }
     }
-
-    /** Set the value of the name applet parameter to the specified
-     *  value. If the name applet parameter does not exist, do 
-     *  nothing.
-    public void setSingleParameter(String name, String value) {
-	String params[][] = getParameterInfo();
-	if( params == null ) {
-	    return;
-	}
-
-	String newParams[][] = new String[params.length][3];
-	for( int i = 0; i < params.length; i++ ) {
-	    for( int j = 0; j < 3; j++ ) {
-		newParams[i][j] = params[i][j];
-	    }
-	    if( params[i][0].equals(name) ) {
-		newParams[i][1] = value;
-	    }
-	}
-
-	_params = newParams;
-    }
-     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -277,14 +196,6 @@ public class DDEApplet extends PtolemyApplet {
      *  there is none.
      */
     protected TextField _stopTimeBox;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private members                   ////
-
-    /** The applet parameters associated with this applet. These
-     *  parameters are returned by getParameterInfo().
-    private String[][] _params;
-     */
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
