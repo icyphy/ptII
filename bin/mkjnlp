@@ -42,6 +42,11 @@ tmpfile=/tmp/mkjnlp.$$
 
 otherjars="$@"
 
+for file in $otherjars
+do
+    otherjarssizes="$otherjarssizes `ls -l $file | awk '{print $5}' - `"
+done
+
 # Read in the jar files and generate jar and package lines for them
 # * We need to take in to account that one of the jar files
 # will need main="true"
@@ -53,6 +58,11 @@ awk '{
 	printf("\t<!-- The list of jars below is automatically generated\n") 
 	printf("\t     by $PTII/bin/mkjnlp -->\n");
 	njars = split(otherjars, jars, " ") 
+	nsizes = split(otherjarssizes, sizes, " ") 
+	if (njars != nsizes) {
+	    error "njars != nsizes (" nsizes " != " njars ")"
+	}
+
 	for(n = 1; n <= njars; n++) {
 	    ndirs = split(jars[n], dirs, "/")
 	    # If the jar file is in the lib directory then skip 
@@ -68,7 +78,9 @@ awk '{
 		}
 	    }
 	    part = package
-	    printf("\t<jar href=%c%s%c\n\t\tpart=%c%s%c download=%clazy%c", 34, jars[n], 34, 34, part, 34, 34, 34)
+	    printf("\t<jar href=%c%s%c\n\t\tpart=%c%s%c", 34, jars[n], 34, 34, part, 34)
+	    #printf("\n\t\tdownload=%clazy%c", 34, 34)
+	    printf("\n\t\tsize=%c%s%c", 34, sizes[n], 34)
 	    if (jars[n] == mainjar) {
 		printf("\n\t\tmain=%ctrue%c", 34, 34)
 	    }
@@ -85,7 +97,10 @@ awk '{
 	    }
 	}
     }
-}' mainjar=$mainjar otherjars="$otherjars" $jnlpfile > $tmpfile
+}' mainjar=$mainjar \
+    otherjars="$otherjars" \
+    otherjarssizes="$otherjarssizes" \
+    $jnlpfile > $tmpfile
 
 #diff $tmpfile $jnlpfile
 cp $tmpfile $jnlpfile
