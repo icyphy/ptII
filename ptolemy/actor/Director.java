@@ -427,12 +427,13 @@ public class Director extends Attribute implements Executable {
      *  If this director is not at the top level of the hierarchy,
      *  and the current time of the enclosing model is greater than the
      *  current time of this director, then this base class updates
-     *  current time to match that of the enclosing model
+     *  current time to match that of the enclosing model.
      *  <p>
      *  In this base class, assume that the director is always ready to
      *  be fired, and so return true. Domain directors should probably
-     *  override this method.  They should call super.prefire() if they
-     *  wish to propogate time as done here.
+     *  override this method to provide domain-specific behavior.  
+     *  However, they should call super.prefire() if they
+     *  wish to propagate time as done here.
      *
      *  @return True.
      *  @exception IllegalActionException Not thrown in this base class.
