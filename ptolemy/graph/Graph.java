@@ -273,6 +273,21 @@ public class Graph implements Cloneable {
         }
     }
 
+    /** Add a given graph to this graph. This base class method simply
+     *  adds all nodes and edges in the given graph to this graph. If a derived
+     *  class contains extra fields associated with
+     *  edges, nodes and the graph itself, it can override this method to
+     *  handle those fields. This method does not add hidden edges of
+     *  the argument graph to this graph.
+     *  @param graph The graph to add.
+     *  @return True if this graph changed as a result of the call.
+     */
+    public boolean addGraph(Graph graph) {
+        addNodes(graph.nodes());
+        addEdges(graph.edges());
+        return graph.nodeCount() + graph.edgeCount() > 0;
+    }
+
     /** Add an unweighted node to this graph.
      *  @return The node.
      */
