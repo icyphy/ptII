@@ -584,10 +584,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 	 *   false otherwise.
          */
         public boolean isSettable() {
-	    if ( !_declaredType.isConstant()) {
-		return true;
-	    }
-	    return false;
+	    return ( !_declaredType.isConstant());
         }
 
         /** Check whether the current type of this port is acceptable.

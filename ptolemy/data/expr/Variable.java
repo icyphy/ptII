@@ -1282,10 +1282,7 @@ public class Variable extends Attribute implements Typeable {
 	 *   false otherwise.
          */
         public boolean isSettable() {
-	    if ( !_declaredType.isConstant()) {
-		return true;
-	    }
-	    return false;
+	    return ( !_declaredType.isConstant());
         }
 
         /** Check whether the current type of this term is acceptable,
