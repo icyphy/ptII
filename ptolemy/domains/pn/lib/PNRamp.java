@@ -72,7 +72,8 @@ public class PNRamp extends AtomicActor {
             //while(true) {
             IntToken data = new IntToken(_seed);
 	    _output.broadcast(data);
-            getDirector().fireAfterDelay(this, _delay);
+            Director dir = getDirector();
+            dir.fireAt(this, dir.getCurrentTime() + _delay);
 	    _seed++;
 	    //System.out.println("Ramp printed "+_seed);
         }
