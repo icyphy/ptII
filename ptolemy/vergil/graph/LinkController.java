@@ -110,7 +110,6 @@ public class LinkController extends EdgeController {
         }
 
         public Site getHeadSite(Figure f, double x, double y) {
-            System.out.println("getting headsite for " + f);
 	    if(f instanceof Terminal) {
 		Site site = ((Terminal)f).getConnectSite();
 		return site;
