@@ -95,12 +95,15 @@ public class SDFCodeGenerator extends CompositeActorApplication
         _compositeActor = (TypedCompositeActor)
             _models.iterator().next();
 
+        // FIXME: this should not be CG_Main.
+        //_systemName = _compositeActor.getName();
+
         // Write a dummy main file to the output package directory so
         // that a ClassDecl stub is placed in the package scope for it
         // FIXME: (this is a nasty hack)
         try {
             new File(_packageDirectoryName
-		     + _compositeActor.getName()
+		     + _systemName
 		     + ".java").createNewFile();
         } catch (IOException ioe) {
             throw new RuntimeException("could not create output directory " +
@@ -352,7 +355,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
         }
 
         ClassDeclNode classDeclNode = new ClassDeclNode(PUBLIC_MOD,
-                new NameNode(AbsentTreeNode.instance, _compositeActor.getName()),
+                new NameNode(AbsentTreeNode.instance, _systemName),
                 new LinkedList(), memberList,
                 (TypeNameNode) StaticResolution.OBJECT_TYPE.clone());
 
@@ -378,14 +381,14 @@ public class SDFCodeGenerator extends CompositeActorApplication
                 importList, TNLManip.addFirst(classDeclNode));
 
         String outFileName = _packageDirectoryName
-	    + _compositeActor.getName()
+	    + _systemName
 	    + ".java";
 
         // Remove extra imports in the source code before writing to a file,
         // namely those for Complex and FixPoint added previously.
         // The CompileUnitNode must first undergo pass 2.
         unitNode.setProperty(IDENT_KEY, _packageDirectoryName
-			     + _compositeActor.getName());
+			     + _systemName);
         unitNode = StaticResolution.loadCompileUnit(unitNode, 2);
         unitNode.accept(new FindExtraImportsVisitor(true, null), null);
 
@@ -973,6 +976,14 @@ public class SDFCodeGenerator extends CompositeActorApplication
      *  code.
      */
     protected TypedCompositeActor _compositeActor = null;
+
+    /** The name of the system.
+     *  FIXME: Currently, this defaults to CG_Main, we should 
+     *  get the name using _compositeActor.getName(), but
+     *  sdf/codegen/SDFActorTransformer needs to be able to get the
+     *  name too.
+     */
+    protected String _systemName = new String("CG_Main");
 
     /** The director for the SDF system. */
     protected SDFDirector _director = null;
