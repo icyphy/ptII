@@ -73,8 +73,12 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
+	'ArrayStringFormat$$ArrayStringFormatBase.class' \
 	'ArrayStringFormat$$ExprArrayStringFormat.class' \
 	'ArrayStringFormat$$JavaArrayStringFormat.class' \
+	'FixPoint$$1.class' \
+	'FixPoint$$Error.class' \
+	'FixPoint$$Fixvalue.class' \
 	'SignalProcessing$$GaussianSampleGenerator.class' \
 	'SignalProcessing$$LineSampleGenerator.class' \
 	'SignalProcessing$$RaisedCosineSampleGenerator.class' \
