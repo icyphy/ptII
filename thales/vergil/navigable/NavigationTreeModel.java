@@ -59,7 +59,7 @@ public class NavigationTreeModel extends ClassAndEntityTreeModel {
             return true;
         // NOTE: The following is probably not a good idea because it
         // will force evaluation of the contents of a Library prematurely.
-        else if (((CompositeEntity) object).numEntities() == 0)
+        else if (((CompositeEntity) object).numberOfEntities() == 0)
             return true;
         return false;
     }
