@@ -52,9 +52,7 @@ JSRCS =
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	DECQDirector.tcl \
-	DECQReceiver.tcl \
-	DETag.tcl \
-	DEToken.tcl
+	DEReceiver.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
