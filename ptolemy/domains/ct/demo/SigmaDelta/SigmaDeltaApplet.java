@@ -235,9 +235,9 @@ public class SigmaDeltaApplet extends CTApplet {
 
             sine.omega.setToken(new DoubleToken(0.5));
 
-            gain0.gain.setToken(new DoubleToken(50.0));
-            gain1.gain.setToken(new DoubleToken(-2.50));
-            gain2.gain.setToken(new DoubleToken(-250.0));
+            gain0.factor.setToken(new DoubleToken(50.0));
+            gain1.factor.setToken(new DoubleToken(-2.50));
+            gain2.factor.setToken(new DoubleToken(-250.0));
 
         } catch (Exception ex) {
             report("Setup failed: ",  ex);
@@ -261,7 +261,7 @@ public class SigmaDeltaApplet extends CTApplet {
                 double stopT = _query.doubleValue("stopT");
                 _deDirector.setStopTime(stopT);
                 //System.out.println("stop time set");
-                _gain3.gain.setToken(new DoubleToken(
+                _gain3.factor.setToken(new DoubleToken(
                         _query.doubleValue("feedback")));
                 //System.out.println("feedback gain set");
                 _sampler.SamplePeriod.setToken(new DoubleToken(

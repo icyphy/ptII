@@ -180,9 +180,9 @@ public class LorenzApplet extends CTApplet {
             X2.InitialState.setToken(new DoubleToken(1.0));
             X3.InitialState.setToken(new DoubleToken(1.0));
 
-            MINUS1.gain.setToken(new DoubleToken(-1.0));
-            MINUS2.gain.setToken(new DoubleToken(-1.0));
-            MINUS3.gain.setToken(new DoubleToken(-1.0));
+            MINUS1.factor.setToken(new DoubleToken(-1.0));
+            MINUS2.factor.setToken(new DoubleToken(-1.0));
+            MINUS3.factor.setToken(new DoubleToken(-1.0));
 
         } catch (Exception ex) {
             report("Setup failed: ",  ex);
@@ -201,9 +201,9 @@ public class LorenzApplet extends CTApplet {
                     _query.doubleValue("stopT")));
             _LAMBDA.value.setToken(new DoubleToken(
                     _query.doubleValue("lambda")));
-            _SIGMA.gain.setToken(new DoubleToken(
+            _SIGMA.factor.setToken(new DoubleToken(
                     _query.doubleValue("sigma")));
-            _B.gain.setToken(new DoubleToken(
+            _B.factor.setToken(new DoubleToken(
                     _query.doubleValue("b")));
             super._go();
         } catch (Exception ex) {
@@ -232,9 +232,9 @@ public class LorenzApplet extends CTApplet {
                         _query.doubleValue("stopT")));
                 _LAMBDA.value.setToken(new DoubleToken(
                         _query.doubleValue("lambda")));
-                _SIGMA.gain.setToken(new DoubleToken(
+                _SIGMA.factor.setToken(new DoubleToken(
                         _query.doubleValue("sigma")));
-                _B.gain.setToken(new DoubleToken(
+                _B.factor.setToken(new DoubleToken(
                         _query.doubleValue("b")));
             } catch (Exception ex) {
                 report(ex);

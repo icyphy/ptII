@@ -493,7 +493,7 @@ public class HelicopterApplet extends CTApplet {
 
             Tm.InitialState.setToken(new DoubleToken(48.02));
 
-            MINUS.gain.setToken(new DoubleToken(-1.0));
+            MINUS.factor.setToken(new DoubleToken(-1.0));
 
             //_paramButton = (Parameter)button.getAttribute("ButtonClicked");
             // System.out.println(_toplevel.description());

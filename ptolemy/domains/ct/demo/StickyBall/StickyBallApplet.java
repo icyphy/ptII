@@ -256,7 +256,7 @@ public class StickyBallApplet extends CTApplet {
             Integrator ctDecP1 = new Integrator(ctDec, "P1");
             Integrator ctDecSTI = new Integrator(ctDec, "STI");
             _ctGain = new Scale(ctDec, "Gain");
-            _ctGain.gain.setToken(new DoubleToken(-1.0));
+            _ctGain.factor.setToken(new DoubleToken(-1.0));
 
             Expression ctDecE1 = new Expression(ctDec, "E1");
             TypedIOPort ctDecE1P1 = (TypedIOPort)ctDecE1.newPort("P1");
@@ -395,7 +395,7 @@ public class StickyBallApplet extends CTApplet {
      */
     protected void _go() throws IllegalActionException {
         try {
-            _ctGain.gain.setToken(new DoubleToken(
+            _ctGain.factor.setToken(new DoubleToken(
                     _query.doubleValue("sticky")));
             _ctIncV1.InitialState.setToken(new DoubleToken(0.0));
             _ctIncP1.InitialState.setToken(new DoubleToken(0.0));
@@ -432,7 +432,7 @@ public class StickyBallApplet extends CTApplet {
     private class ParameterListener implements QueryListener {
         public void changed(String name) {
             try {
-                _ctGain.gain.setToken(new DoubleToken(
+                _ctGain.factor.setToken(new DoubleToken(
                         _query.doubleValue("sticky")));
             } catch (Exception ex) {
                 report(ex);
