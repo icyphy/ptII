@@ -49,6 +49,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 JSRCS = \
 	BaseUnit.java \
+	BasicEdgeHighlighter.java \
 	Bindings.java \
 	EquationVisitor.java \
 	ExpandPortNames.java \
