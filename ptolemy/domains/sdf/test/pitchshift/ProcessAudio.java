@@ -29,10 +29,7 @@
 */
 package ptolemy.domains.sdf.test.pitchshift;
 
-import ptolemy.domains.sdf.test.pitchshift.*;
-import java.io.*;
-import javax.media.sound.sampled.*;
-
+import ptolemy.media.javasound.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessAudio
@@ -70,8 +67,6 @@ Pentium II 400 MHz class processor (for 22050 Hz sample rate).
 public class ProcessAudio implements Runnable {
 
     String errStr;
-    AudioInputStream audioInputStream;
-    AudioInputStream properFormatAudioInputStream;
 
     Thread thread;
 
@@ -80,11 +75,6 @@ public class ProcessAudio implements Runnable {
 
     // Default pitch scale factor(s).
     double pitchScaleIn1 = 1.0;
-    //double pitchScaleIn2 = 1.0;
-    //double pitchScaleIn3 = 1.5;
-    //double pitchScaleIn4 = 1.75;
-    //double pitchScaleIn5 = 2.0;
-
 
     public void start() {
 	System.out.println("Sampling rate = " + sampleRate + " Hz.");
@@ -125,163 +115,71 @@ public class ProcessAudio implements Runnable {
 
 	// Capture specific stuff:
 
-	// Number of sample frames to attempt to read from the target data
-	// line. Also number of sample frames to attempt to wrte to the
-	// source data line. This size should be chosen smaller (1/2 to 1/8)
-	// the size of the queues used by JavaSound.
-	// The number of samples frames to attempt to read/write from the
-	// target/source data line is given by (readWriteDataSizeInFrames*
-	// jsBufferSizeOverReadWriteSize). The sampleRate is in there
-	// to force the delay (in seconds) to be be independent of the
-	// sample rate.
-	int readWriteDataSizeInFrames = (int)(512*sampleRate/44100);
-	int jsBufferSizeOverReadWriteSize = 8;
-	TargetDataLine targetLine;
+        int sampleSizeInBits = 16;
+        int channels = 1; 
 
+	int inBufferSize = 4096;  // Internal buffer size for capture.
+	int outBufferSize = 4096; // Internal buffer size for playback.
 
-        int sampleSizeInBitsInt = 16;
-        int channels = 1; // If change this, then need to change
-        //frameSizeInBits and frameRate accordingly.
-        int frameSizeInBits = sampleSizeInBitsInt;
-        double frameRate = sampleRate;
-        boolean signed = true;
-        boolean bigEndian = true;
+	// Amount of data to read or write from/to the internal buffer
+	// at a time. This should be set smaller than the internal buffer
+	// size!
+	int getSamplesSize = 256; 
 
+	SoundCapture soundCapture = 
+	    new SoundCapture((float)sampleRate, sampleSizeInBits,
+			     channels, inBufferSize,
+			     getSamplesSize);
 
+	int putSamplesSize = getSamplesSize;
 
-        AudioFormat format = new AudioFormat((float)sampleRate,
-                sampleSizeInBitsInt,
-                channels, signed, bigEndian);
+// Construct a sound playback object that plays audio 
+	//through the computer's speaker.
+	SoundPlayback soundPlayback = new SoundPlayback((float)sampleRate,
+					  sampleSizeInBits,
+					  channels,
+					  outBufferSize,
+					  putSamplesSize);
 
-        int frameSizeInBytes = format.getFrameSize();
-
-
-	DataLine.Info targetInfo = new DataLine.Info(TargetDataLine.class,
-                null, null,
-                new Class[0], format
-                ,  AudioSystem.NOT_SPECIFIED);
-
-
-        if (!AudioSystem.isSupportedLine(targetInfo)) {
-            shutDown("Line matching " + targetInfo + " not supported.");
-            return;
-        }
-
-        try {
-            targetLine = (TargetDataLine) AudioSystem.getLine(targetInfo);
-            targetLine.open(format, readWriteDataSizeInFrames*jsBufferSizeOverReadWriteSize);
-        } catch (LineUnavailableException ex) {
-            shutDown("Unable to open the line: " + ex);
-            return;
-        }
-
-
-
-
-        System.out.println("JavaSound target (microphone/line in)" +
-                "line buffer size in sample frames = " +
-                targetLine.getBufferSize());
-
-        int targetBufferLengthInBytes = readWriteDataSizeInFrames *
-            frameSizeInBytes;
-        byte[] targetData = new byte[targetBufferLengthInBytes];
-
-        int numFramesRead;
-
-	// uses 32768 sample frames for buffer length no matter what
-	// I request! :(
-	DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
-                null, null,
-                new Class[0], format,
-                AudioSystem.NOT_SPECIFIED);
-
-
-
-	if (!AudioSystem.isSupportedLine(sourceInfo)) {
-	    shutDown("Line matching " + sourceInfo + " not supported.");
-	    return;
+	// Initialize and begin real-time capture and playback.
+	try{
+	    soundCapture.startCapture();
+	    soundPlayback.startPlayback();
+	} catch (Exception ex) {
+	    System.err.println(ex);
 	}
 
-	// get and open the source data line for playback.
-	SourceDataLine sourceLine;
-	try {
-	    sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
-	    sourceLine.open(format, readWriteDataSizeInFrames*jsBufferSizeOverReadWriteSize);
-	} catch (LineUnavailableException ex) {
-	    shutDown("Unable to open the line: " + ex);
-	    return;
-	}
-
-
-	System.out.println("JavaSound source (audio out/speaker) " +
-                "line buffer size in sample frames  = " +
-                sourceLine.getBufferSize());
-
-	// Array of audio samples in double format.
-	double[] audioInDoubleArray;
-
-	byte[] audioOutByteArray;
-	int numBytesRead = 0;
-
-	// start the target data line
-	targetLine.start();
-
-	// start the source data line
-	sourceLine.start();
-
-	if (thread == null) {
-	    System.out.println("thread == null !!!!");
-	}
+	
+	double[][] capturedSamplesArray = 
+	    new double[channels][getSamplesSize];
 
 
 	// Initialize the pitch detector.
-	PitchDetector pd = new PitchDetector(readWriteDataSizeInFrames,
+	int vectorSize = getSamplesSize*channels;
+	PitchDetector pd = new PitchDetector(vectorSize,
                 (int)sampleRate);
 	// Initialize the pitch shifter.
 	PitchShift ps = new PitchShift((float)sampleRate);
-
-	double[] psArray1 = new double[readWriteDataSizeInFrames];
-	double[] psArray2 = new double[readWriteDataSizeInFrames];
 
 	double[] currPitchArray;
 
 	while (thread != null) {
 	    try {
-
-
-
-		// Read some audio into data[].
-		if ((numFramesRead = targetLine.read(targetData, 0,
-                        readWriteDataSizeInFrames)) == -1) {
-                    break;
-		}
-
-
-
-		audioInDoubleArray = _byteArrayToDoubleArray(targetData,
-                        frameSizeInBytes);
+		
+		// Read in some captured audio.
+		capturedSamplesArray = soundCapture.getSamples();
 
 		///////////////////////////////////////////////////////////
 		//////   Do processing on audioInDoubleArray here     /////
 
-		currPitchArray = pd.performPitchDetect(audioInDoubleArray);
+		currPitchArray = pd.performPitchDetect(capturedSamplesArray[0]);
 
-		audioInDoubleArray = ps.performPitchShift(audioInDoubleArray,
+		capturedSamplesArray[0] = ps.performPitchShift(capturedSamplesArray[0],
                         currPitchArray, pitchScaleIn1);
 
-		audioOutByteArray = _doubleArrayToByteArray(audioInDoubleArray,
-                        frameSizeInBytes);
+		// Play the processed audio samples.
+		soundPlayback.putSamples(capturedSamplesArray);
 
-		int numFramesRemaining = numFramesRead;
-
-
-		// I think this while loop is not needed, since it should
-		// only execute 1 iteration.
-		while (numFramesRemaining > 0) {
-		    // Write the data to the output device.
-		    numFramesRemaining -= sourceLine.write(audioOutByteArray,
-                            0, numFramesRemaining);
-		}
 	    } catch (Exception e) {
 		shutDown("Error during playback: " + e);
 		break;
@@ -289,76 +187,8 @@ public class ProcessAudio implements Runnable {
 	}
 	// we reached the end of the stream.  let the data play out, then
 	// stop and close the line.
-	if (thread != null) {
-	    sourceLine.drain();
-	}
-	sourceLine.stop();
-	sourceLine.close();
-	sourceLine = null;
+
 	shutDown(null);
 
     }
-
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-
-    /* Convert a byte array of audio samples in linear signed pcm big endian
-     * format into a double array of audio samples (-1,1) range.
-     * FIXME: This method only works for mono (single channel) audio.
-     */
-    private double[] _byteArrayToDoubleArray(byte[] byteArray,
-            int _bytesPerSample) {
-
-	//System.out.println("_bytesPerSample = " + _bytesPerSample);
-	//System.out.println("byteArray length = " + byteArray.length);
-	int lengthInSamples = byteArray.length / _bytesPerSample;
-	double[] doubleArray = new double[lengthInSamples];
-	double mathDotPow = Math.pow(2, 8 * _bytesPerSample - 1)
-	    ;
-	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
-
-	    byte[] b = new byte[_bytesPerSample];
-	    for (int i = 0; i < _bytesPerSample; i += 1) {
-		// Assume we are dealing with big endian.
-		b[i] = byteArray[currSamp*_bytesPerSample + i];
-	    }
-	    long result = (b[0] >> 7) ;
-	    for (int i = 0; i < _bytesPerSample; i += 1)
-		result = (result << 8) + (b[i] & 0xff);
-	    doubleArray[currSamp] = ((double) result/
-                    (mathDotPow));
-        }
-	//System.out.println("a value " + doubleArray[34]);
-	return doubleArray;
-    }
-
-    /* Convert a double array of audio samples in linear signed pcm big endian
-     * format into a byte array of audio samples (-1,1) range.
-     * FIXME: This method only works for mono (single channel) audio.
-     */
-    private byte[] _doubleArrayToByteArray(double[] doubleArray,
-            int _bytesPerSample) {
-
-	//System.out.println("_bytesPerSample = " + _bytesPerSample);
-	int lengthInSamples = doubleArray.length;
-	double mathDotPow = Math.pow(2, 8 * _bytesPerSample - 1);
-	byte[] byteArray = new byte[lengthInSamples * _bytesPerSample];
-	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
-	    long l = Math.round((doubleArray[currSamp] * mathDotPow));
-	    byte[] b = new byte[_bytesPerSample];
-	    for (int i = 0; i < _bytesPerSample; i += 1, l >>= 8)
-		b[_bytesPerSample - i - 1] = (byte) l;
-	    for (int i = 0; i < _bytesPerSample; i += 1) {
-		//if (_isBigEndian)
-                byteArray[currSamp*_bytesPerSample + i] = b[i];
-                //else put(b[_bytesPerSample - i - 1]);
-	    }
-	}
-	return byteArray;
-    }
-
-
 }

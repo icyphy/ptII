@@ -38,8 +38,6 @@ import java.text.NumberFormat;
 import javax.swing.border.*;
 import java.io.File;
 import java.util.Vector;
-import javax.media.sound.sampled.*;
-import javax.media.sound.midi.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// PitchSlider

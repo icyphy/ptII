@@ -46,12 +46,10 @@ JSRCS = \
 	ConverterRangeModel.java \
 	DecimalField.java \
 	FormattedDocument.java \
-	HarmonizerSlider.java \
 	PitchDetector.java \
 	PitchShift.java \
 	PitchSlider.java \
-	ProcessAudio.java \
-	ProcessAudioHarmonizer.java
+	ProcessAudio.java
 
 EXTRA_SRCS =	$(JSRCS) \
 
@@ -70,16 +68,12 @@ JCLASS = $(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
 all: jclass
-	@echo "To run PitchSlider, run 'make demo1'"
-	@echo "To run HarmonizerSlider, run 'make demo2'"
+	@echo "To run PitchSlider, run 'make demo'"
 
 install: all
 
-demo1:
+demo:
 	CLASSPATH="$(CLASSPATH)" java  ptolemy.domains.sdf.test.pitchshift.PitchSlider
-
-demo2:
-	CLASSPATH="$(CLASSPATH)" java  ptolemy.domains.sdf.test.pitchshift.HarmonizerSlider
 
 depend:
 	@echo "no dependencies in this directory"
