@@ -57,6 +57,8 @@ JSRCS = \
 	FSMActor.java \
 	FSMDirector.java \
 	HSDirector.java \
+	InterfaceAutomaton.java \
+	InterfaceAutomatonTransition.java \
 	OutputActionsAttribute.java \
 	State.java \
 	Transition.java \
