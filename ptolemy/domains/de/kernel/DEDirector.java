@@ -356,6 +356,12 @@ public class DEDirector extends Director {
                     _debug("Iterating actor", ((Entity)actorToFire).getName(),
                             "at time ", Double.toString(getCurrentTime()));
                 }
+                if (((Nameable)actorToFire).getContainer() == null) {
+                    if (_debugging) _debug(
+                            "Actor has no container. Disabling actor.");
+                    disableActor(actorToFire);
+                    break;
+                }
                 if (!actorToFire.prefire()) {
                     if (_debugging) _debug("Prefire returned false.");
                     break;
@@ -825,6 +831,12 @@ public class DEDirector extends Director {
                     }
                     synchronized(_eventQueue) {
                         try {
+                            // FIXME: If the manager gets a change request
+                            // during this wait, the change request will
+                            // not be executed until we emerge from this
+                            // wait.  This can lead to deadlock if the UI
+                            // waits for the change request to complete
+                            // (which it typically does).
                             _eventQueue.wait();
                         } catch (InterruptedException e) {
                             // If the wait is interrupted, then stop waiting.
