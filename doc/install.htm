@@ -259,6 +259,9 @@ cp $PTII/vendors/misc/joystick/lib/jjstick.dll $PTII/bin
 The <a name="codeDoc/ptolemy/actor/lib/jai/package-summary.html">Java Media Framework (JMF) actors</a> require that JMF, which can be  downloaded from
 <a href="http://java.sun.com/products/java-media/jmf/" target="_top"><code>http://java.sun.com/products/java-media/jmf/</code></a>
 <p>You need not install JMF if you are not planning on using the JMF Actors.
+<p>The installer also looks for the USB camera, so you may find
+it helpful if you connect a USB camera before running the installer.
+To configure a USB camera after installation, run <code>c:/Program Files/JMF2.1.1e/bin/jmfinit.exe</code>
 <p>We verified that JMF 2.1.1c works with these actors.
 
 
@@ -306,6 +309,14 @@ make
 $PTII/bin/vergil ./demo/MatlabExpression/MatlabExpression
 </pre>
 
+<h3>X10</h3>
+X10 is a protocol used to control household electrical devices. 
+
+<p>The <a name="codeDoc/ptolemy/actor/lib/x10/package-summary.html">X10 actors</a>
+require the Java serial port communcations package and the X10 package.
+
+<p>For installation instructions, see the 
+<a name="codeDoc/ptolemy/actor/lib/x10/X10Interface.htm">X10Interface class documentation</a>.
 
 
 <h2>Optional Packages not shipped with Ptolemy that are used
@@ -441,11 +452,11 @@ make fast all
 </pre>
 
 <h3><a name="Windows">Windows</a></h3>
-Ptolemy II was developed under Windows 2000.  We have successfully
+Ptolemy II was developed under Windows XP.  We have successfully
 installed Ptolemy II under Windows '98, but if you have problems under 
-Windows '98 we recommend upgrading Windows 2000.
+Windows '98 we recommend upgrading Windows XP.
 
-<p>To build Ptolemy II under Windows 2000:
+<p>To build Ptolemy II under Windows XP:
 <ol>
 <li>Install JDK 1.4 from
 <a href="http://java.sun.com/j2se/1.4/" target="_top"><CODE>http://java.sun.com/j2se/1.4/</CODE></a>
