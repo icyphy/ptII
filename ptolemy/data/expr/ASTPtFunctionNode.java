@@ -172,11 +172,25 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             } else if (child instanceof ComplexToken) {
                 argValues[i] = ((ComplexToken)child).complexValue();
                 argTypes[i] = argValues[i].getClass();;
+            } else if (child instanceof IntMatrixToken) {
+                argValues[i] = child;
+                argTypes[i] = argValues[i].getClass();;
+            } else if (child instanceof DoubleMatrixToken) {
+                argValues[i] = child;
+                argTypes[i] = argValues[i].getClass();;
+            } else if (child instanceof ComplexMatrixToken) {
+                argValues[i] = child;
+                argTypes[i] = argValues[i].getClass();;
             } else {
                 throw new IllegalActionException("FunctionNode: "+
                         "Invalid argument  type, valid types are: " +
-                        "boolean, complex, double, int, long  and String");
+                        "boolean, complex, double, int, long, String" +
+                        "IntMatrixToken, DoubleMatrixToken, " +
+                        "ComplexMatrixToken. " );
             }
+            // FIXME: what is the TYPE that needs to be filled
+            // in in the argValues[]. Current it is from the
+            // child.
         }
         // Now have the arguments converted, look through all the
         // classes registered with the parser for the appropriate function.
@@ -192,7 +206,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             } catch (Exception  ex) {
                 // FIXME: a lot of exceptions get caught here, perhaps
                 // want to specify each of them separately?
-                //System.out.println("Method " + _funcName + " not found in " +
+                // System.out.println("Method " + _funcName + " not found in " +
                 //  nextClass.getName());
             }
             if (foundMethod) {
@@ -230,12 +244,10 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 sb.append(", " + argValues[i].toString());
             }
         }
-        throw new IllegalActionException("Function " + _funcName + "(" + sb +
-                ") cannot be executed with given arguments.");
+        throw new IllegalActionException("ASTFunction Function " + _funcName 
+                + "( " + sb + " ) cannot be executed with given arguments.");
     }
-
-
-
+         
     public ASTPtFunctionNode(int id) {
         super(id);
     }

@@ -69,6 +69,7 @@ JSRCS = \
 	Parameter.java \
 	SetParameter.java \
 	UtilityFunctions.java \
+	FixPointFunctions.java \
 	Variable.java
 
 EXTRA_SRCS =	PtParser.jjt $(JSRCS)
