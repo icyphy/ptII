@@ -64,7 +64,7 @@ and each of the update ports.  To use this class, instantiate it, and
 then add input ports (instances of TypedIOPort).  This actor is polymorphic.
 The type constraint is that the output record contains all the labels in
 the input record plus the names of added input ports. The type of a field
-in the ouput is the same as the type of the added input port, if that field
+in the output is the same as the type of the added input port, if that field
 is updated by an added input port. If a field in the output is not updated
 by an input port, its type is the same as the corresponding field in the
 input record. For example, if the input record has type
@@ -145,13 +145,13 @@ public class RecordUpdater extends TypedAtomicActor {
         for(Iterator i = recordLabels.iterator(); i.hasNext(); ) {
             String name = (String)i.next();
             Token value = record.get(name);
-            outputMap.put(name,value);
+            outputMap.put(name, value);
         }
 
         List inputPorts = inputPortList();
-	Iterator iter = inputPorts.iterator();
-	while(iter.hasNext()) {
-	    TypedIOPort inputPort = (TypedIOPort)iter.next();
+	Iterator inputPortsIterator = inputPorts.iterator();
+	while(inputPortsIterator.hasNext()) {
+	    TypedIOPort inputPort = (TypedIOPort)inputPortsIterator.next();
 	    if (inputPort != input) {
                 outputMap.put(inputPort.getName(), inputPort.get(0));
 	    }
@@ -209,14 +209,14 @@ public class RecordUpdater extends TypedAtomicActor {
     // types. The value of the function is a record type that contains
     // all the labels in the input record, plus the names of the added
     // input ports. The type of a field in the function value is the
-    // same as the type of an added input port, if the lable of that
+    // same as the type of an added input port, if the label of that
     // field is the same as that input port, or, the type of a field
     // is the same as that of the corresponding field in the input
     // record.
     // To ensure that this function is monotonic, the value of the function
     // is bottom if the type of the port with name "input" is bottom. If
     // the type of this port is not bottom (it must be a record), the value
-    // of the fundtion is computed as described above.
+    // of the function is computed as described above.
     private class FunctionTerm implements InequalityTerm {
 
 	// The constructor takes a reference to the RecordUpdater actor
@@ -256,17 +256,17 @@ public class RecordUpdater extends TypedAtomicActor {
             RecordType recordType = (RecordType)inputType;
             Map outputMap = new HashMap();
 	    Set recordLabels = recordType.labelSet();
-	    Iterator iter = recordLabels.iterator();
-	    while (iter.hasNext()) {
-	        String label = (String)iter.next();
+	    Iterator iterator = recordLabels.iterator();
+	    while (iterator.hasNext()) {
+	        String label = (String)iterator.next();
 		Type type = recordType.get(label);
 		outputMap.put(label, type);
 	    }
 
 	    List inputPorts = _updater.inputPortList();
-	    iter = inputPorts.iterator();
-	    while (iter.hasNext()) {
-	        TypedIOPort port = (TypedIOPort)iter.next();
+	    iterator = inputPorts.iterator();
+	    while (iterator.hasNext()) {
+	        TypedIOPort port = (TypedIOPort)iterator.next();
 		if (port != recordInput) {
 		    outputMap.put(port.getName(), port.getType());
 		}

@@ -139,9 +139,11 @@ public class LevinsonDurbin extends TypedAtomicActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        autocorrelation = new TypedIOPort(this, "autocorrelation", true, false);
+        autocorrelation =
+            new TypedIOPort(this, "autocorrelation", true, false);
         errorPower = new TypedIOPort(this, "errorPower", false, true);
-        linearPredictor = new TypedIOPort(this, "linearPredictor", false, true);
+        linearPredictor =
+            new TypedIOPort(this, "linearPredictor", false, true);
         reflectionCoefficients = new TypedIOPort(
                 this, "reflectionCoefficients", false, true);
 
@@ -177,19 +179,19 @@ public class LevinsonDurbin extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Consume the autocorrelation input, and calcuate the predictor
+    /** Consume the autocorrelation input, and calculate the predictor
      *  coefficients, reflection coefficients, and prediction error power.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        ArrayToken autocor = (ArrayToken)autocorrelation.get(0);
-        int autocorLength = autocor.length();
+        ArrayToken autocorrelationValue = (ArrayToken)autocorrelation.get(0);
+        int autocorrelationValueLength = autocorrelationValue.length();
 
         // If the length of the input is odd, then the order is
         // (length + 1)/2. Otherwise, it is 1 + length/2.
         // Both numbers are the result of integer division
         // (length + 2)/2.
-        int order = autocorLength/2;
+        int order = autocorrelationValueLength/2;
 
         Token[] power = new Token[order + 1];
         Token[] refl = new Token[order];
@@ -201,14 +203,15 @@ public class LevinsonDurbin extends TypedAtomicActor {
         a[0] = 1.0;
         aP[0] = 1.0;
 
-        // for convenience, read the autocorrelation lags into a vector
+        // For convenience, read the autocorrelation lags into a vector.
         for (int i = 0; i <= order; i++) {
-            r[i] = ((DoubleToken)autocor
-                    .getElement(autocorLength - order + i - 1)).doubleValue();
+            r[i] = ((DoubleToken)autocorrelationValue
+                    .getElement(autocorrelationValueLength - order + i - 1))
+                .doubleValue();
         }
 
         // Output the zeroth order prediction error power, which is
-        // simply the power of the input process
+        // simply the power of the input process.
         double P = r[0];
         power[0] = new DoubleToken(P);
 
@@ -217,13 +220,13 @@ public class LevinsonDurbin extends TypedAtomicActor {
         // The order recurrence
         for (int M = 0; M < order; M++ ) {
 
-            // Compute the new reflection coefficient
+            // Compute the new reflection coefficient.
             double deltaM = 0.0;
             for (int m = 0; m < M+1; m++) {
                 deltaM += a[m]*r[M+1-m];
             }
             // Compute and output the reflection coefficient
-            // (which is also equal to the last AR parameter)
+            // (which is also equal to the last AR parameter).
             if (SignalProcessing.close(P, 0.0)) {
                 aP[M+1] = gamma = 0.0;
             } else {
@@ -236,19 +239,19 @@ public class LevinsonDurbin extends TypedAtomicActor {
                 aP[m] = a[m] + gamma*a[M+1-m];
             }
 
-            // Update the prediction error power
+            // Update the prediction error power.
             P = P*(1.0 - gamma*gamma);
             if (P < 0.0 || SignalProcessing.close(P, 0.0)) {
                 P = 0.0;
             }
             power[M + 1] = new DoubleToken(P);
 
-            // Swap a and aP for next order recurrence
+            // Swap a and aP for next order recurrence.
             double[] temp = a;
             a = aP;
             aP = temp;
         }
-        // generate the lp outputs
+        // Generate the lp outputs.
         for (int m = 1; m <= order; m++ ) {
             lp[m-1] = new DoubleToken(-a[m]);
         }
@@ -264,7 +267,9 @@ public class LevinsonDurbin extends TypedAtomicActor {
      *  @return True if it is ok to continue.
      */
     public boolean prefire() throws IllegalActionException {
-        if (!autocorrelation.hasToken(0)) return false;
+        if (!autocorrelation.hasToken(0)) {
+            return false;
+        }
         return super.prefire();
     }
 }

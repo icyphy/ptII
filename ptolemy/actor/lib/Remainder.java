@@ -63,7 +63,7 @@ argument. Special cases:
 </quote>
 
 Sidenote: The divisor parameter is available as a input port in
-the MathFunction:Modulo function. If you need to change the divisor
+the MathFunction.Modulo() method. If you need to change the divisor
 during run-time, the MathFunction actor may be the a better choice.
 
 @author Edward A. Lee

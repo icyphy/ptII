@@ -66,7 +66,7 @@ files and subdirectories.
 
 <p>If the <i>endsWith</i> String parameter is non-null and non-empty,
 then only file names or subdirectories that end with the value
-of the <i>endsWith</i> parameter are ouput.
+of the <i>endsWith</i> parameter are output.
 
 <p>One alternative implementation would be that if the URL named a file,
 then the actor would output the names of the files and subdirectories

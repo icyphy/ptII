@@ -76,7 +76,7 @@ NOTES:
 operand only.  Other functions like modulo act on two operands.
 The actor acquires a second input when the function is changed to
 modulo, and loses the input when the function is changed back.
-2. There is an alternative to using the MathFunction:Modulo function.
+2. There is an alternative to using the MathFunction.modulo() method
 If you want to use the IEEE remainder standard, use the Remainder actor.
 
 @author C. Fong

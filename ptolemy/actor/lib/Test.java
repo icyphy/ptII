@@ -161,7 +161,7 @@ public class Test extends Sink {
      *  the value specified in <i>correctValues</i>.  If the iteration count
      *  is larger than the length of <i>correctValues</i>, then return
      *  immediately, indicating that the inputs correctly matched
-     *  the values in <i>correctValues</i> and that the test suceeded.
+     *  the values in <i>correctValues</i> and that the test succeeded.
      *
      *  @exception IllegalActionException If an input is missing,
      *   or if its value does not match the required value.

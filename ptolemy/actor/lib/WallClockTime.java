@@ -37,7 +37,7 @@ import ptolemy.data.type.BaseType;
 
 /**
 Upon firing, this actor outputs the elapsed real time in seconds
-since the invocation of its intialize() method.  The output type is double.
+since the invocation of its initialize() method.  The output type is double.
 The resolution of time depends on the implementation of the Java
 virtual machine, but with Sun's JDK 1.3 under Windows 2000, it is
 10 milliseconds.

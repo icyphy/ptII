@@ -82,7 +82,7 @@ public class Scale extends Transformer {
                 new BooleanToken(true));
 
 	// set the type constraints.
-	output.setTypeAtLeast(new PortParamFunction(input, factor));
+	output.setTypeAtLeast(new PortParameterFunction(input, factor));
 
          // icon
 	_attachText("_iconDescription", "<svg>\n"
@@ -121,7 +121,7 @@ public class Scale extends Transformer {
     public Object clone(Workspace workspace)
 	    throws CloneNotSupportedException {
         Scale newObject = (Scale)super.clone(workspace);
-	PortParamFunction function = new PortParamFunction(newObject.input,
+	PortParameterFunction function = new PortParameterFunction(newObject.input,
 	                                                   newObject.factor);
         newObject.output.setTypeAtLeast(function);
         return newObject;
@@ -161,9 +161,9 @@ public class Scale extends Transformer {
     // function value is also an array. The element type of the function value
     // array is the result of a recursive call to this function. This allows
     // the port type to be an array or array, for example.
-    private class PortParamFunction implements InequalityTerm {
+    private class PortParameterFunction implements InequalityTerm {
 
-	private PortParamFunction(TypedIOPort port, Parameter param) {
+	private PortParameterFunction(TypedIOPort port, Parameter param) {
 	    _port = port;
 	    _param = param;
 	}
