@@ -153,6 +153,10 @@ awk ' {
        useGiottoCodeGenerator = 1
        if (sawFirstEntity == 0 && useGiottoCodeGenerator == 1) {
            sawFirstEntity = 1
+           print indent "    <property name=\"Giotto Director\" class=\"ptolemy.domains.giotto.kernel.GiottoDirector\">"
+           print indent "        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{245, 40}\">"
+           print indent "        </property>"
+           print indent "    </property>"
            print indent "    <property name=\"CodeGenerator\" class=\"ptolemy.domains.giotto.kernel.GiottoCodeGenerator\">"
            print indent "        <property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{400, 35}\">"
            print indent "        </property>"
