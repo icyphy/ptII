@@ -29,6 +29,7 @@ package diva.canvas.interactor;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Iterator;
 
 import diva.canvas.Figure;
@@ -69,10 +70,6 @@ public class SelectionDragger extends DragInteractor {
      */
     private FigureLayer _figureLayer;
 
-    /* The set of valid selection interactors
-     */
-    private ArrayList _selectionInteractors = new ArrayList();
-
     /* The rubber-band
      */
     private Rectangle2D _rubberBand = null;
@@ -94,6 +91,10 @@ public class SelectionDragger extends DragInteractor {
      */
     private double _originX;
     private double _originY;
+
+    /** The list of selection models selected by this dragger.
+     */
+    private List _selectionModels = new ArrayList();
 
     /** The mouse filter for selecting items
      */
@@ -133,13 +134,14 @@ public class SelectionDragger extends DragInteractor {
     //// public methods
 
     /**
-     * Add a selection interactor to the list of valid interactor.
-     * When drag-selecting, only figures that have an interactor
-     * in this last are added to the selection model.
+     * Add the given selection model to the set of selection models
+     * selected by this dragger.  When drag-selecting, only figures
+     * that have a selection interactor with a selection model in this
+     * list are added to the selection model.
      */
-    public void addSelectionInteractor (SelectionInteractor i) {
-        if ( !(_selectionInteractors.contains(i))) {
-            _selectionInteractors.add(i);
+    public void addSelectionModel (SelectionModel model) {
+        if ( !(_selectionModels.contains(model))) {
+            _selectionModels.add(model);
         }
     }
 
@@ -147,10 +149,10 @@ public class SelectionDragger extends DragInteractor {
      * Clear the selection in all the relevant selection interactors.
      */
     public void clearSelection () {
-        Iterator is = _selectionInteractors.iterator();
-        while (is.hasNext()) {
-            SelectionInteractor i = (SelectionInteractor) is.next();
-            i.getSelectionModel().clearSelection();
+        Iterator models = _selectionModels.iterator();
+        while (models.hasNext()) {
+            SelectionModel model = (SelectionModel) models.next();
+            model.clearSelection();
         }
     }
 
@@ -289,10 +291,13 @@ public class SelectionDragger extends DragInteractor {
             while (i.hasNext()) {
                 Figure f = (Figure) i.next();
                 Interactor r = f.getInteractor();
-                if (r != null &&
-                        r instanceof SelectionInteractor &&
-                        _selectionInteractors.contains(r)) {
-                    expandSelection((SelectionInteractor) r, f);
+               if (r != null &&
+                        r instanceof SelectionInteractor) {
+                    SelectionInteractor interactor = (SelectionInteractor)r;
+                    if(_selectionModels.contains(
+                               interactor.getSelectionModel())) {
+                        expandSelection((SelectionInteractor) r, f);
+                    }
                 }
             }
 
@@ -302,9 +307,12 @@ public class SelectionDragger extends DragInteractor {
                 Figure f = (Figure) i.next();
                 Interactor r = f.getInteractor();
                 if (r != null &&
-                        r instanceof SelectionInteractor &&
-                        _selectionInteractors.contains(r)) {
-                    contractSelection((SelectionInteractor) r, f);
+                        r instanceof SelectionInteractor) {
+                    SelectionInteractor interactor = (SelectionInteractor)r;
+                    if(_selectionModels.contains(
+                               interactor.getSelectionModel())) {
+                        contractSelection((SelectionInteractor) r, f);
+                    }
                 }
             }
         } else {
@@ -316,13 +324,15 @@ public class SelectionDragger extends DragInteractor {
                 Figure f = (Figure) i.next();
                 Interactor r = f.getInteractor();
                 if (r != null &&
-                        r instanceof SelectionInteractor &&
-                        _selectionInteractors.contains(r)) {
-                    SelectionInteractor s = (SelectionInteractor)r;
-                    if (s.getSelectionModel().containsSelection(f)) {
-                        contractSelection(s, f);
-                    } else {
-                        expandSelection(s, f);
+                        r instanceof SelectionInteractor) {
+                    SelectionInteractor interactor = (SelectionInteractor)r;
+                    if(_selectionModels.contains(
+                               interactor.getSelectionModel())) {
+                        if (interactor.getSelectionModel().containsSelection(f)) {
+                            contractSelection(interactor, f);
+                        } else {
+                            expandSelection(interactor, f);
+                        }
                     }
                 }
             }
@@ -393,19 +403,20 @@ public class SelectionDragger extends DragInteractor {
     }
 
     /**
-     * Remove a selection interactor from the list of valid interactors.
+     * Remove a selection model from the list of models selected by
+     * this dragger.
      */
-    public void removeSelectionInteractor (SelectionInteractor i) {
-        if (_selectionInteractors.contains(i) ) {
-            _selectionInteractors.remove(i);
+    public void removeSelectionModel (SelectionModel model) {
+        if (_selectionModels.contains(model) ) {
+            _selectionModels.remove(model);
         }
     }
 
     /**
      * Get the selection interactors
      */
-    public Iterator selectionInteractors () {
-        return _selectionInteractors.iterator();
+    public Iterator selectionModels() {
+        return _selectionModels.iterator();
     }
 
     /**

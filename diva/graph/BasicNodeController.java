@@ -53,10 +53,6 @@ import diva.canvas.interactor.SelectionModel;
  */
 public class BasicNodeController implements NodeController {
 
-    /** The selection interactor for drag-selecting nodes
-     */
-    private SelectionDragger _selectionDragger;
-
     /** The filter for control operations
      */
     private MouseFilter _controlFilter = new MouseFilter (

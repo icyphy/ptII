@@ -77,7 +77,8 @@ public class BasicController {
 
         // Create a selection drag-selector
         _selectionDragger = new SelectionDragger(pane);
-        _selectionDragger.addSelectionInteractor(_selectionInteractor);
+        _selectionDragger.addSelectionModel(
+                _selectionInteractor.getSelectionModel());
 
         // Add the drag interactor to the selection interactor so
         // selected items are dragged
