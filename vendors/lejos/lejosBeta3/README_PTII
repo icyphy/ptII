@@ -1,6 +1,0 @@
-$Id$
-
-This is the 1.0.0beta3 version of lejos, massaged to work well with 
-W2K/cygwin.   In particular there have been several updates to the
-serial upload code to make it work more consistently and the invoking
-of javac with strange paths has been moved into application makefiles.
