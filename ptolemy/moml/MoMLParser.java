@@ -1663,7 +1663,17 @@ public class MoMLParser extends HandlerBase {
             }
         }
         // If we get here, then there is no matching constructor.
-        throw new XmlException("Cannot find a suitable constructor for "
+
+	// Generate a StringBuffer containing what we were looking for. 
+	StringBuffer argumentBuffer = new StringBuffer();
+	for (int i = 0; i < arguments.length; i++) {	
+	    argumentBuffer.append(arguments[i].getClass() + " = \""
+				  + arguments[i].toString() + "\" " );
+	}
+
+        throw new XmlException("Cannot find a suitable constructor ("
+			       + arguments.length + " args) ( "
+			       + argumentBuffer + ") for'" 
                 + newClass.getName(),
                 _currentExternalEntity(),
                 _parser.getLineNumber(),
