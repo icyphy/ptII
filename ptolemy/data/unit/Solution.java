@@ -201,7 +201,8 @@ public class Solution {
      * and have tooltips that will convey various aspects of the solution.
      */
     public void annotateGraph() {
-        //_createAnnotations();
+        if (_debug)
+            trace();
         String color;
         StringBuffer moml = new StringBuffer();
         for (int j = 0; j < _numVariables; j++) {
@@ -262,7 +263,8 @@ public class Solution {
             String momlUpdate = "<group>" + moml.toString() + "</group>";
             MoMLChangeRequest request =
                 new MoMLChangeRequest(this, _model, momlUpdate);
-            request.setUndoable(false);
+            request.setUndoable(true);
+            request.setPersistent(false);
             _debug("Solver.annotateGraph moml " + momlUpdate);
             _model.requestChange(request);
         }
@@ -272,21 +274,11 @@ public class Solution {
      * @return The solution.
      */
     public Solution completeSolution() {
-        _debug("Solver.solve " + headerInfo() + " initial\n" + stateInfo());
+        _debug("Solver.completeSolution.initial " + headerInfo() + stateInfo());
         Index g;
         while ((g = _findG()) != null) {
-            int k = g.getK();
-            int l = g.getL();
-            Unit U = _vectorA[k].pow(1.0 / _arrayP[k][l]);
-            _vectorA[k] = U;
-            _arrayP[k][l] = 1;
-            for (int i = 0; i < _numConstraints; i++) {
-                if (i != k && !_done[i] && _arrayP[i][l] != 0) {
-                    _vectorA[i] = _vectorA[i].divideBy(U.pow(_arrayP[i][l]));
-                    _arrayP[i][l] = 0;
-                }
-            }
-            _done[k] = true;
+            _eliminate(g);
+            _debug("Solver.completeSolution " + stateInfo());
         }
         for (int i = 0; i < _numConstraints; i++) {
             _done[i] = true;
@@ -329,9 +321,9 @@ public class Solution {
      */
     public String getShortStateDesc() {
         switch (_solveState) {
-            case _NOTRUN :
+            case _UNKNOWN :
                 {
-                    return "NotRun";
+                    return "UnKnown";
                 }
             case _NONUNIQUE :
                 {
@@ -411,7 +403,7 @@ public class Solution {
         }
         // The solution may already be inconsistent. This would be the case if
         // two statically bound ports are connected but have different units.
-        root._checkConsistency();
+        root._checkForInConsistency();
         if (root._solveState == _INCONSISTENT) {
             root._analyzeState();
             solutions.add(root);
@@ -507,7 +499,7 @@ public class Solution {
         _constraintState = new int[_numConstraints];
         String inconsistencyDesc = "";
         for (int i = 0; i < _numConstraints; i++) {
-            _constraintState[i] = _NOTRUN;
+            _constraintState[i] = _UNKNOWN;
             _constraintExplanations[i] = "";
             if (_done[i]) {
                 int numNonZeroP = 0;
@@ -558,40 +550,65 @@ public class Solution {
             }
         }
 
+        boolean stateInconsistent = false;
+        boolean stateNonUnique = false;
         _solveState = _CONSISTENT;
         for (int i = 0; i < _numConstraints; i++) {
-            if (_constraintState[i] == _INCONSISTENT) {
-                _solveState = _INCONSISTENT;
-                NamedObj source = _source[i];
-                String sourceName = "NoSource";
-                if (source instanceof IORelation) {
-                    sourceName = ((IORelation) source).getName();
-                } else if (source instanceof ComponentEntity) {
-                    sourceName = ((ComponentEntity) source).getName();
-                } else if (source instanceof TypedIOPort) {
-                    sourceName =
-                        source.getName(source.getContainer().getContainer());
-                }
-                inconsistencyDesc += " "
-                    + sourceName
-                    + " "
-                    + _constraintExplanations[i];
+            switch (_constraintState[i]) {
+                case _INCONSISTENT :
+                    {
+                        stateInconsistent = true;
+                        NamedObj source = _source[i];
+                        String sourceName = "NoSource";
+                        if (source instanceof IORelation) {
+                            sourceName = ((IORelation) source).getName();
+                        } else if (source instanceof ComponentEntity) {
+                            sourceName = ((ComponentEntity) source).getName();
+                        } else if (source instanceof TypedIOPort) {
+                            sourceName =
+                                source.getName(
+                                    source.getContainer().getContainer());
+                        }
+                        inconsistencyDesc += " "
+                            + sourceName
+                            + " "
+                            + _constraintExplanations[i];
+                        break;
+                    }
+                case _NONUNIQUE :
+                    {
+                        stateNonUnique = true;
+                        break;
+                    }
             }
+        }
+
+        if (stateInconsistent && stateNonUnique) {
+            _debug("State is both Inconsistent and NonUnique");
         }
 
         for (int j = 0; j < _numVariables; j++) {
             if (_varState[j] == _INCONSISTENT) {
-                _solveState = _INCONSISTENT;
+                stateInconsistent = true;
                 inconsistencyDesc += " "
                     + _variables[j]
                     + "="
                     + _varBindings[j];
             }
         }
+
+        if (stateInconsistent) {
+            _solveState = _INCONSISTENT;
+        } else if (stateNonUnique) {
+            _solveState = _NONUNIQUE;
+        } else {
+            _solveState = _CONSISTENT;
+        }
+
         switch (_solveState) {
-            case _NOTRUN :
+            case _UNKNOWN :
                 {
-                    _stateDescription = "NotRun";
+                    _stateDescription = "UnKnown";
                     break;
                 }
             case _NONUNIQUE :
@@ -630,7 +647,7 @@ public class Solution {
         return retv;
     }
 
-    private void _checkConsistency() {
+    private void _checkForInConsistency() {
         for (int i = 0; i < _numConstraints; i++) {
             if (!_vectorA[i].equals(UnitLibrary.Identity)) {
                 boolean inconsistent = true;
@@ -813,7 +830,7 @@ public class Solution {
                 + stateInfo());
         int rows[] = _branchesFrom(g);
         _eliminate(g);
-        _checkConsistency();
+        _checkForInConsistency();
         _branchPoints = _findAllGInRows(rows);
         if (_solveState != _INCONSISTENT && _branchPoints.size() > 0) {
             if (_debug) {
@@ -850,7 +867,7 @@ public class Solution {
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
-    private static final int _NOTRUN = -1;
+    private static final int _UNKNOWN = -1;
     private static final int _CONSISTENT = 0;
     private static final int _INCONSISTENT = 1;
     private static final int _NONUNIQUE = 2;
@@ -866,7 +883,7 @@ public class Solution {
     int _numConstraints = 0;
     int _numVariables = 0;
     private static final DecimalFormat _pFormat = new DecimalFormat(" 0;-0");
-    private int _solveState = _NOTRUN;
+    private int _solveState = _UNKNOWN;
     NamedObj _source[];
     String _stateDescription = "No description";
     Solution _upper = null;

@@ -223,6 +223,7 @@ public class UnitSolverDialog
                     new UnitConstraints(_model, _entities, _relations);
                 Solution solution = _uConstraints.completeSolution();
                 _fullSolutionResult.setText(solution.getShortStateDesc());
+                //solution.trace();
             } catch (IllegalActionException e) {
                 MessageHandler.error("Full Solver failed: ", e);
                 return;
@@ -285,7 +286,8 @@ public class UnitSolverDialog
             String momlUpdate = "<group>" + moml.toString() + "</group>";
             MoMLChangeRequest request =
                 new MoMLChangeRequest(this, _model, momlUpdate);
-            request.setUndoable(false);
+            request.setUndoable(true);
+            request.setPersistent(false);
             if (_debug) {
                 System.out.println("Solver.annotateGraph moml " + momlUpdate);
             }
