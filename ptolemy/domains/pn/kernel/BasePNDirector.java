@@ -171,8 +171,8 @@ public class BasePNDirector extends ProcessDirector {
      *  the receivers created in the PN domain.
      *  @param container Container of the director.
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException If the director is not compatible
+     *  with the specified container.  Thrown in derived classes.
      */
     public BasePNDirector(CompositeActor container, String name)
             throws IllegalActionException {
@@ -296,7 +296,7 @@ public class BasePNDirector extends ProcessDirector {
      *  any of its input ports.
      *  @return true to indicate that the composite actor can continue
      *  executing on receiving additional input on its input ports.
-     *  @exception IllegalActionException Not thrown in this class. Might be
+     *  @exception IllegalActionException Not thrown in this base class. May be
      *  thrown by derived classes.
      */
     public boolean postfire() throws IllegalActionException {

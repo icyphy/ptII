@@ -156,8 +156,8 @@ public class PNDirector extends BasePNDirector {
      *  the receivers created in the PN domain.
      *  @param container Container of the director.
      *  @param name Name of this director.
-     *  @exception It may be thrown in derived classes if the
-     *      director is not compatible with the specified container.
+     *  @exception IllegalActionException If the director is not compatible
+     *  with the specified container.  May be thrown in derived classes.
      */
     public PNDirector(CompositeActor container, String name)
             throws IllegalActionException {
