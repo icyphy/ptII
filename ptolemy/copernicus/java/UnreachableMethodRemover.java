@@ -102,13 +102,15 @@ public class UnreachableMethodRemover extends SceneTransformer {
              i.hasNext();) {
             SootClass theClass = (SootClass)i.next();
 
-            // If we are in actor mode, then assert that all the methods
-            // of the toplevel class are reachable.
-            SootClass modelClass = ModelTransformer.getModelClass();
-            if(false && theClass.equals(modelClass)) { // FIXME
-                Set methodSignatureSet = _getMethodSignatureSet(theClass);
-                forcedReachableMethodSet.addAll(methodSignatureSet);
-            }
+            // If we are in actor mode, then assert that all the
+            // methods of the toplevel class are reachable.  We need a
+            // way of preserving the container, name constructor
+            // instead of the no arg constructor for the toplevel.
+          //   SootClass modelClass = ModelTransformer.getModelClass();
+//             if(theClass.equals(modelClass)) {
+//                 Set methodSet = _getMethodSet(theClass);
+//                 forcedReachableMethodSet.addAll(methodSet);
+//             }
             
             // Assume that any method that is part of an interface that this
             // object implements, is reachable.
@@ -120,8 +122,15 @@ public class UnreachableMethodRemover extends SceneTransformer {
                         "ptolemy.graph.InequalityTerm")) {
                     continue;
                 }
-                Set methodSignatureSet = _getMethodSignatureSet(theInterface);
-                forcedReachableMethodSet.addAll(methodSignatureSet);
+                Set methodSet = _getMethodSet(theInterface);
+                for (Iterator methods = methodSet.iterator();
+                     methods.hasNext();) {
+                    SootMethod method = (SootMethod)
+                        methods.next();
+                    SootMethod classMethod = theClass.getMethod(
+                            (String)method.getSubSignature());
+                    forcedReachableMethodSet.add(classMethod);
+                }
             }
         }       
 
@@ -156,8 +165,8 @@ public class UnreachableMethodRemover extends SceneTransformer {
 
     // Return a set of strings containing all the signatures of
     // methods in the cgiven class.
-    private Set _getMethodSignatureSet(SootClass theClass) {
-        Set methodSignatureSet = new HashSet();
+    private Set _getMethodSet(SootClass theClass) {
+        Set methodSet = new HashSet();
         for (Iterator methods =
                  theClass.getMethods().snapshotIterator();
              methods.hasNext();) {
@@ -167,10 +176,10 @@ public class UnreachableMethodRemover extends SceneTransformer {
             if (aMethod != null) {
                 System.out.println("Assuming method " +
                         aMethod + " is reachable");
-                methodSignatureSet.add(aMethod);
+                methodSet.add(aMethod);
             }
         }
-        return methodSignatureSet;
+        return methodSet;
     }
 
     private static UnreachableMethodRemover instance =
