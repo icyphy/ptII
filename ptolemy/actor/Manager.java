@@ -1,0 +1,304 @@
+/* A Manager governs the execution of an entire simulation.
+
+ Copyright (c) 1997-1998 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+*/
+
+package ptolemy.actor;
+
+import ptolemy.graph.*;
+import ptolemy.kernel.*;
+import ptolemy.kernel.util.*;
+import ptolemy.kernel.mutation.*;
+import ptolemy.data.*;
+
+import collections.LinkedList;
+import java.util.Enumeration;
+
+
+//////////////////////////////////////////////////////////////////////////
+//// Manager
+/**
+A Manager is a domain-independant object that manages the execution of 
+a model.   Most often, methods in this object will be called by a 
+graphical user interface.  However, it is possible to manually call 
+these methods from a java object, a java applet, or an interactive 
+prompt, such as TclBlend.   
+Because user interaction will likely be occuring asynchronously to the 
+execution of the model, it is important that all the processing for the 
+model occur in a separate thread.   The Manager is responsible for creating 
+and managing the java thread in which execution begins, although some 
+domains may spawn additional threads of their own.  
+
+@author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer
+@version: $Id$
+*/
+public class Manager extends NamedObj implements Runnable {
+
+    /** Construct a manager in the default workspace with an empty string
+     *  as its name. The manager is added to the list of objects in
+     *  the workspace. Increment the version number of the workspace.
+     */
+    public Manager() {
+        super();
+    }
+
+    /** Construct a manager in the default workspace with the given name.
+     *  If the name argument is null, then the name is set to the empty
+     *  string. The manager is added to the list of objects in the workspace.
+     *  Increment the version number of the workspace.
+     *  @param name Name of this object.
+     */
+    public Manager(String name) {
+       super(name);
+    }
+
+    /** Construct a manager in the given workspace with the given name.
+     *  If the workspace argument is null, use the default workspace.
+     *  The manager is added to the list of objects in the workspace.
+     *  If the name argument is null, then the name is set to the
+     *  empty string. Increment the version number of the workspace.
+     *
+     *  @param workspace Object for synchronization and version tracking
+     *  @param name Name of this director.
+     */
+    public Manager(Workspace workspace, String name) {
+        super(workspace, name);
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return the container, which is the composite actor for which this
+     *  is the Manager.   This composite actor does not have a parent, and 
+     *  contains the entire hierarchy for an execution.
+     *  @return The CompositeActor that this Manager is responsible for.
+     */
+    public Nameable getContainer() {
+        return _container;
+    }
+
+
+    /** Start an execution that will run for an unspecified number of 
+     *  iterations.   This will normally be terminated by calling abort, 
+     *  finish, or returning false in a postfire method.
+     */
+    public void go() {
+        go(-1);
+    }
+
+    /** Start an execution that will run for no more than a specified
+     *  number of iterations.   The execution may be terminated early 
+     *  by calling abort, finish, or returning false in a postfire method.
+     */
+     public synchronized void go(int iterations) {
+         // Is it really necessary to block on the whole workspace, or can 
+         // we just synchronize on this object??
+
+         if(_isRunning) return;
+         
+         _isRunning = true;
+         _isPaused = false;
+         _iterations = iterations;
+         // If the previous run hasn't totally finished yet, then be sure 
+         // it is good and dead before continuing.
+         if(_runningthread!=null) {
+             _runningthread.stop();
+             try {
+                 _runningthread.join();
+             }
+             catch (InterruptedException e) {
+                 // Well, if we bothered to kill it, then this should 
+                 // always get thrown, so just ignore it.
+             }
+             _runningthread = null;
+         }
+         _runningthread = new Thread(this);
+         _runningthread.start();
+     }
+         
+    /** Invoke one iteration.  In this base class, one iteration consists of
+     *  exactly one invocation of prefire(), fire(), and postfire(), in that
+     *  order. If prefire() return false, then fire() and postfire() are not
+     *  invoked. In derived classes, there may be more than one invocation of
+     *  fire(). This method is read-synchronized on the workspace.
+     *  @return True if postfire() returns true.
+     *  @exception IllegalActionException If any of the called methods
+     *   throws it.
+     */
+    public boolean iterate() throws IllegalActionException {
+        CompositeActor actor = (CompositeActor)getContainer();
+
+        // if mutations
+        try {
+            workspace().getWriteAccess();
+            //While mutations remain
+            //process mutations
+            //initialize new actors
+            //create receivers?
+        } 
+        finally {
+            workspace().doneWriting();
+        }
+        
+        try {
+            workspace().getReadAccess();
+            // Check types.
+            if (actor.prefire()) {
+                actor.fire();
+                return actor.postfire();
+            }
+            return false;
+        } finally {
+            workspace().doneReading();
+        }
+    }
+
+    /** If not paused, then pause the simulation.
+     */
+    public synchronized void pause() {
+        _isPaused = true;
+    }
+    
+    /** If paused, resume the currently paused simulation.
+     */
+    public synchronized void resume() {
+        _isPaused = false;
+        _runningthread.notify();
+    }
+ 
+    /** This is the thread that is started to actually perform the execution.
+     *  It begins by calling initialize on its container, which is the
+     *  toplevel composite actor.   It then continually calls iterate based on
+     *  the variables _isRunning, _isPaused, and _iterations.  It finally 
+     *  calls wrapup on its container to clean up after the execution.
+     */
+    public void run() {
+        CompositeActor container = ((CompositeActor)getContainer());
+        int count = 0;
+        int iterations;
+        try {
+            try {
+                iterations = _iterations;
+                container.initialize();
+                
+                while (_isRunning && 
+                        ((iterations < 0) || (count++ < iterations)) &&
+                        iterate()) {
+                    
+                    try {
+                        if(_isPaused) _runningthread.wait();
+                    }
+                    catch (InterruptedException e) {
+                        // We don't care if we were interrupted..
+                        // Just ignore.
+                    }
+                }
+            }
+            finally {
+                container.wrapup();
+            }
+        }
+        catch (IllegalActionException e) {
+            // I'm not sure exactly what to do in this case.   We used to just
+            // throw these, but we can't since Runnable doesn't throw them.
+            // CT did:
+            //  public void run() throws InvalidStateException {
+            //      try {
+            //        --SNIP--
+            //       } 
+            //       catch(KernelException ex) {
+            //            throw new InvalidStateException(this,
+            //             "Execution failed: "+ex.getMessage());
+            //       }
+            //   }
+            // but this seems pretty vague.
+            System.out.println("IllegalActionException caught in Manager:");
+            e.printStackTrace();
+        }
+    }
+
+    /** Terminate any currently executing simulation with extreme prejudice.  
+     *  Kill the main execution thread and call terminate on the toplevel 
+     *  container.   This should cause any actors to free up any resources 
+     *  they have allocated and directors should kill any threads they have 
+     *  created.   However, a consistant state is not guaraunteed.   The 
+     *  environment should probably be restarted before attemping any
+     *  further operations.
+     */
+    public void terminate() {
+        _runningthread.stop();
+        try {
+            _runningthread.join();
+        }
+        catch (InterruptedException e) {
+            // This will usually get thrown, since we are forcibly terminating
+            // the thread.   We just ignore it.
+        }
+        _runningthread = null;
+        CompositeActor container = ((CompositeActor)getContainer());
+        container.terminate();
+    }
+      
+    /** Stop any currently executing simulation and cleanup nicely.
+     */
+    public synchronized void wrapup() {
+        _isRunning = false;
+        _isPaused = false;
+        _runningthread.notify();
+    }
+ 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Make this director the Manager of the specified composite
+     *  actor.  This method should not be called directly.  Instead, call
+     *  setManager of the CompositeActor class (or a derived class).
+     *  If the argument is not the toplevel CompositeActor, then we throw
+     *  an InvalidStateException.
+     */
+    protected void _makeManagerOf (CompositeActor ca) {
+        _container = ca;
+        if (ca != null) {
+            if(ca.getContainer() != null) 
+                throw new InvalidStateException("Manager's container must " +
+                        "be the toplevel CompositeActor!");
+            workspace().remove(this);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private boolean _isRunning;
+    private boolean _isPaused;
+    private int _iterations;
+    private Thread _runningthread;
+    private CompositeActor _container = null;
+
+}
+
+
