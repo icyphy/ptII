@@ -31,8 +31,9 @@
 
 */
 
-package ptolemy.actor;
+package ptolemy.actor.process;
 
+import ptolemy.actor.*;
 import collections.LinkedList;
 import java.util.Enumeration;
 
