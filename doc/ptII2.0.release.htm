@@ -153,7 +153,7 @@ facility, which allows end users to download fully functional distributions
 via the web.
 
 <li> Vergil updates
-(Steve Neuendorffer, Edward A. Lee, John Reekie
+(Steve Neuendorffer, Edward A. Lee, John Reekie)
  Vergil has been improved
  and the following features have been added
 	<menu>
@@ -169,7 +169,9 @@ via the web.
 	when.
 	<li> Better icons - Some icons such as Const, Scale and Expression
 	will display their values.  
-	<li> set data types of ports
+	<li> Set data types of ports
+	<li> Java Virtual Machine properties window - JVM Properties
+	can be queried and garbage collection requested.
 	</menu>
 See <a href="design/usingVergil/index.htm"><code>$PTII/doc/design/usingVergil/index.htm</code></a> for more complete information
 
@@ -207,11 +209,18 @@ java-type conversions for function arguments and results.
 
 <li> <a href="../ptolemy/domains/fsm/demo/MultipleRuns/MultipleRuns.htm">Multiple Runs</a>
 (Xiaojun Liu, Edward A. Lee) - The FSM domain as been extended
-to perform multiple runs of refinement on a model
+to perform multiple runs of refinement on a model.
 
 <li> <a href="codeDoc/ptolemy/graph/package-summary.html">ptolemy.graph</a>
  (Shuvra S. Bhattacharyya (University of Maryland at College Park)) -
 The graph package was redesigned and reimplemented.
+
+
+<li> <a href="codeDoc/ptolemy/kernel/util/VersionAttribute.html">VersionAttribute</a>
+(Christopher Hylands, Edward A. Lee) -
+Models can be annotated with the Web Start format version number of
+Ptolemy II that is required to run the model.  In the future, we will
+use this attribute to manage backward compatibility.
 
  <!-- Tcl shell is not shipping in 2.0, it makes the download larger.-->
 
@@ -682,7 +691,8 @@ in:
 <li> Instructions for adding an actor may be found at
 <a href="http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm"><CODE>http://ptolemy.eecs.berkeley.edu/~cxh/ptpub/addinganactor.htm</CODE></a>
 
-<li> The Using Vergil html file has some bogus characters in it.
+<li> The Using Vergil html file has some bogus characters in it, and
+the internal hyperlinks refer to usingVergil.html instead of index.htm
 
 <li> <code>vergil foo</code> hangs.  No window comes up if foo does not exist.
 
@@ -692,12 +702,6 @@ included in the release.
 
 <li> Ptolemy II will not configure and build properly if the pathname leading 
 up to the Ptolemy II directory contains a space. 
-
-
-<li> Dragging the UnitConversion icon into a blank canvas will
-throw an exception because UnitConversion requires data
-in the other Unit icons.
-
 
 <li> Applet issues:
 	<ul>
@@ -712,12 +716,12 @@ in the other Unit icons.
 
 
 	<li> SDF Spectrum plot is not filled at the end
-	<li> $PTII/doc/expression.htm needs to be updated
 
 <li> The DDE Zeno demo produces an error message in the Java Plug-in console
 window:
 <pre>
-java.lang.IllegalArgumentException: LowerJoin - Attempt to set current time to the past; time = 50.001. The _lastTime was 54.0
+java.lang.IllegalArgumentException: LowerJoin - Attempt to set current time
+	      to the past; time = 50.001. The _lastTime was 54.0
 	at ptolemy.domains.dde.kernel.PrioritizedTimedQueue.put(PrioritizedTimedQueue.java:297)
 	at ptolemy.domains.dde.kernel.DDEReceiver.put(DDEReceiver.java:580)
 	at ptolemy.domains.dde.kernel.DDEReceiver.put(DDEReceiver.java:549)
@@ -733,7 +737,11 @@ file system results in an AccessControlException.
 com.microstar.xml.XmlException: XML element "entity" triggers exception:
   java.lang.Exception: Attempted to lookup 'Waveform', but got: 
   java.lang.ClassNotFoundException: Waveform
-Attempted to find as a moml class, but got: java.security.AccessControlException: access denied (java.net.SocketPermission ptolemy.eecs.berkeley.edu resolve) in file:/C:/Program Files/Ptolemy/Ptolemy II 2.0 beta2/ptolemy/moml/demo/Networked/ at line 62 and column 118
+Attempted to find as a moml class, but got: 
+             java.security.AccessControlException: access denied
+             (java.net.SocketPermission ptolemy.eecs.berkeley.edu resolve)
+	     in file:/C:/Program Files/Ptolemy/Ptolemy II 2.0 beta2/
+                   ptolemy/moml/demo/Networked/ at line 62 and column 118
 	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:1341)
 	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:944)
 	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1117)
@@ -769,6 +777,10 @@ java.lang.OutOfMemoryError
 
 	&lt;&lt;no stack trace available&gt;&gt;
 </pre>
+	One workaround is to request garbage collection by doing
+	<CODE>File</CODE> -&gt; <CODE>View</CODE> -&gt;
+	<CODE>JVM Properties</CODE> -&gt;
+	<CODE>Request Garbage Collection</CODE>
 	</ul>
 </ul>
 
@@ -796,9 +808,8 @@ R11 (5.3) and up to and including R12.1 (6.1)
 
 <li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
 
-<a href="http://java.sun.com/products/javacomm/index.html#in_browser" target="_top"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.  The SerialComm actor
-
-will only work under Windows.
+<a href="http://java.sun.com/products/javacomm/index.html#in_browser" target="_top"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.
+The SerialComm actor will only work under Windows.
 
 </ul>
 
