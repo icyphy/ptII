@@ -566,7 +566,10 @@ test SDFScheduler-8.7 {input Multiport with no connections - disconnected graph}
     catch { _initialize $toplevel
     set sched1 [_getSchedule $scheduler]} s1
     list $sched1 $s1
-} {{} {ptolemy.actor.sched.NotSchedulableException: SDF scheduler found disconnected actors! Usually, disconnected actors in an SDF model indicates an error.  If this is not an error, try setting the SDFDirector parameter allowDisconnectedGraphs to true.
+} {{} {ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
+  in .Toplevel.Director
+Because:
+SDF scheduler found disconnected actors! Usually, disconnected actors in an SDF model indicates an error.  If this is not an error, try setting the SDFDirector parameter allowDisconnectedGraphs to true.
 Reached Actors:
 .Toplevel.Consumer1
 Unreached Actors:
@@ -1297,7 +1300,10 @@ test SDFScheduler-13.1 {connected graph, disconnected relation} {
     catch { _initialize $toplevel
     set sched1 [_getSchedule $scheduler]} err1
     list $sched1 $err1
-} {{} {ptolemy.actor.sched.NotSchedulableException: Actors remain that cannot be scheduled!
+} {{} {ptolemy.kernel.util.IllegalActionException: Failed to compute schedule:
+  in .Toplevel.Director
+Because:
+Actors remain that cannot be scheduled!
 Scheduled actors:
 .Toplevel.Ramp2
 Unscheduled actors:
