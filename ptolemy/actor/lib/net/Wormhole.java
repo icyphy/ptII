@@ -30,8 +30,7 @@
 
 package ptolemy.actor.lib.net;
 
-// BasicGraphFrame imports
-// From ptolemy/vergil/basic/BasicGraphFrame.java
+// Imports from ptolemy/vergil/basic/BasicGraphFrame.java
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.LocationAttribute;
@@ -156,29 +155,29 @@ public class Wormhole extends TypedAtomicActor {
     ////                         public methods                    ////
 
     public void fire() throws IllegalActionException {
-	if (_debugging) _debug("fire has been called");
-	Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
-	        .getSystemClipboard();
-	Transferable transferable = clipboard.getContents(_myframe);
-	try{
-	    pasteOutput.broadcast(new StringToken( (String)transferable
+        if (_debugging) _debug("fire has been called");
+        Clipboard clipboard = java.awt.Toolkit.getDefaultToolkit()
+                .getSystemClipboard();
+        Transferable transferable = clipboard.getContents(_myframe);
+        try{
+            pasteOutput.broadcast(new StringToken( (String)transferable
                     .getTransferData(DataFlavor.stringFlavor) ));
-	// NullPointerException also possible //
-	    ////////////////////////////////////
-	} catch (java.io.IOException ex) {
-	    throw new IllegalActionException(this,
+        // NullPointerException also possible //
+            ////////////////////////////////////
+        } catch (java.io.IOException ex) {
+            throw new IllegalActionException(this,
                     " Failed to paste (IO Exception): " + ex);
-	} catch (java.awt.datatransfer.UnsupportedFlavorException ex) {
-	    throw new IllegalActionException(this,
+        } catch (java.awt.datatransfer.UnsupportedFlavorException ex) {
+            throw new IllegalActionException(this,
                     " Failed to paste: (Flavor Exception)" + ex);
-	}
-	if (_debugging) _debug("fire has completed");
+        }
+        if (_debugging) _debug("fire has completed");
     }
 
     public void preinitialize() {
-	if (_debugging) _debug("frame will be constructed");
-	_myframe = new MyFrame();
-	if (_debugging) _debug("frame was constructed");
+        if (_debugging) _debug("frame will be constructed");
+        _myframe = new MyFrame();
+        if (_debugging) _debug("frame was constructed");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -201,14 +200,14 @@ public class Wormhole extends TypedAtomicActor {
          *  @param entity The model to put in this frame.
          *  @param tableau The tableau responsible for this frame.  */
         public MyFrame() {
-	    if (_debugging) _debug("frame constructor called");
+            if (_debugging) _debug("frame constructor called");
             ActionListener myPasteListener = new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
                     pasteFromBufferToPasteOutput(); } };
             getContentPane().setLayout(new BorderLayout());
-	    JLabel label = new JLabel("Paste here!");
+            JLabel label = new JLabel("Paste here!");
             getContentPane().add(label);
-	    label.registerKeyboardAction(myPasteListener, "Paste",
+            label.registerKeyboardAction(myPasteListener, "Paste",
                     KeyStroke.getKeyStroke(
                     KeyEvent.VK_V, java.awt.Event.CTRL_MASK),
                     JComponent.WHEN_IN_FOCUSED_WINDOW);
@@ -218,14 +217,14 @@ public class Wormhole extends TypedAtomicActor {
             // Note that the location is of the frame, while the size
             // is of the scrollpane.
             pack();
-	    if (_debugging) _debug("frame constructor completes");
+            if (_debugging) _debug("frame constructor completes");
         }
 
         /** Get the currently selected objects from this document, if any,
          *  and place them on the clipboard in MoML format.
          */
         /*
-	public void copy() {
+        public void copy() {
             String buff = new String("xyz");
             Clipboard clipboard =
                 java.awt.Toolkit.getDefaultToolkit().getSystemClipboard();
@@ -237,25 +236,29 @@ public class Wormhole extends TypedAtomicActor {
                 MessageHandler.error("Copy failed", ex);
             }
         }
-	*/
+        */
 
-	public void lostOwnership(Clipboard clipboard, Transferable contents) {
-	}
+        /** Comply with the ClipboardOwner interface.
+         *  It requires a method exist named <i>lostOwnership</i>.
+	 */
+        public void lostOwnership(Clipboard clipboard, 
+                Transferable contents) {
+        }
 
-        /** Assuming the contents of the clipboard is MoML code, paste it into
-         *  the current model by issuing a change request.
+        /** Assuming the contents of the clipboard is MoML code, paste
+         *  it into the current model by issuing a change request.  
          */
         public void pasteFromBufferToPasteOutput() {
-	    if (_debugging) _debug("paste* has been called");
+            if (_debugging) _debug("paste* has been called");
             try {
                 getDirector().fireAtCurrentTime(Wormhole.this);
             } catch (IllegalActionException ex) {
-		System.out.println(this 
+                System.out.println(this 
                         + "Exception calling fireAtCurrentTime");
-		throw new RuntimeException("-fireAt* catch-");
-	    }
-	    if (_debugging) _debug("paste* has completed");
-	}
+                throw new RuntimeException("-fireAt* catch-");
+            }
+            if (_debugging) _debug("paste* has completed");
+        }
     }
 }
 
