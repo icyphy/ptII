@@ -199,8 +199,6 @@ test MoMLChangeRequest-1.5b {Test deleting an entity} {
         </port>
     </entity>
     <relation name="r" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
     </relation>
     <link port="rec.input" relation="r"/>
 </entity>
