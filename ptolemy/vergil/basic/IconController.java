@@ -97,9 +97,10 @@ public class IconController extends ParameterizedNodeController {
                     }
                 }
 	    } catch (KernelException ex) {
-		throw new InternalErrorException("could not create icon " +
+		throw new InternalErrorException(null, ex,
+ 			"Could not create icon " +
                         "in " + object + " even " +
-                        "though one did not previously exist");
+                        "though one did not previously exist.");
 	    }
             result.setToolTipText(object.getClass().getName());
 	    return result;
