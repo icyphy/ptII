@@ -77,7 +77,7 @@ public class LocalZenoApplet extends DDEApplet {
     /** Initialize the applet.
      */
     public void init() {
-	setSingleParameter("stopTime", "30");
+	setSingleParameter("stopTime", "90");
 	super.init();
 
 	setLayout( new BorderLayout(5, 5) );
@@ -195,21 +195,17 @@ public class LocalZenoApplet extends DDEApplet {
         try {
             // Instantiate the Actors 
 	    _clock = new ListenClock( _toplevel, "Clock" );
-	    Parameter values = (Parameter)_clock.getAttribute("values");
-	    values.setExpression( "[1, 1]" );
-	    Parameter period = (Parameter)_clock.getAttribute("period");
-	    period.setToken( new DoubleToken(20.0) );
-	    Parameter offsets = (Parameter)_clock.getAttribute("offsets");
-	    offsets.setExpression( "[5.0, 15.0]" );
-	    Parameter clkStopTime = (Parameter)_clock.getAttribute("stopTime");
-	    clkStopTime.setToken( new DoubleToken(90.0) );
+	    _clock.values.setExpression( "[1, 1, 1]" );
+	    _clock.period.setToken( new DoubleToken(20.0) );
+	    _clock.offsets.setExpression( "[5.0, 10.0, 15.0]" );
+	    _clock.stopTime.setToken( new DoubleToken(90.0) );
 
 	    _join1 = new ListenWire( _toplevel, "UpperJoin" );
 	    _fork1 = new ListenFork( _toplevel, "UpperFork" );
 	    _fBack1 = new ListenFBDelay( _toplevel, "UpperFeedBack" );
 	    _join2 = new ListenWire( _toplevel, "LowerJoin" );
 	    _fork2 = new ListenFork( _toplevel, "LowerFork" );
-	    _fBack2 = new ListenFBDelay( _toplevel, "LowerFeedBack" );
+	    _fBack2 = new ZenoDelay( _toplevel, "LowerFeedBack" );
             
 	    _rcvr1 = new ListenSink( _toplevel, "UpperRcvr" );
 	    _rcvr2 = new ListenSink( _toplevel, "LowerRcvr" );
@@ -233,7 +229,7 @@ public class LocalZenoApplet extends DDEApplet {
 	    _lowerPlotter.plot.addLegend(0, "Time");
             
 	    _fBack1.setDelay(4.5);
-	    _fBack2.setDelay(0.5);
+	    _fBack2.setDelay(4.5);
 
 	    // Set up ports, relation 
 	    TypedIOPort clockOut = (TypedIOPort)_clock.getPort("output"); 
@@ -319,7 +315,7 @@ public class LocalZenoApplet extends DDEApplet {
     private ListenSink _rcvr1;
     private ListenWire _join2;
     private ListenFork _fork2;
-    private ListenFBDelay _fBack2;
+    private ZenoDelay _fBack2;
     private ListenSink _rcvr2;
     private TimeAdvance _upperTime;
     private TimeAdvance _lowerTime;

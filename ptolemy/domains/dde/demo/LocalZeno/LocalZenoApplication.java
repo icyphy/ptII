@@ -194,14 +194,10 @@ public class LocalZenoApplication implements ActionListener {
 	    
             // Instantiate Actors 
 	    _clock = new ListenClock( _topLevel, "clock" );
-	    Parameter values = (Parameter)_clock.getAttribute("values");
-	    values.setExpression( "[1, 1]" );
-	    Parameter period = (Parameter)_clock.getAttribute("period");
-	    period.setToken( new DoubleToken(20.0) );
-	    Parameter offsets = (Parameter)_clock.getAttribute("offsets");
-	    offsets.setExpression( "[5.0, 15.0]" );
-	    Parameter clkStopTime = (Parameter)_clock.getAttribute("stopTime");
-	    clkStopTime.setToken( new DoubleToken(30.0) );
+	    _clock.values.setExpression( "[1, 1]" );
+	    _clock.period.setToken( new DoubleToken(20.0) );
+	    _clock.offsets.setExpression( "[5.0, 15.0]" );
+	    _clock.stopTime.setToken( new DoubleToken(30.0) );
 
 	    _join1 = new ListenWire( _topLevel, "join1" );
 	    _fork1 = new ListenFork( _topLevel, "fork1" );
