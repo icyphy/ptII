@@ -1004,12 +1004,12 @@ public class HDFFSMDirector extends FSMDirector {
 	    // of 1 port).
 	    Iterator outPortsOutside =
 		refineOutPort.deepConnectedOutPortList().iterator();
-	    if (!outPortsOutside.hasNext()) {
-		throw new IllegalActionException("Current " +
-                        "state's refining actor has an output " +
-                        "port not connected to an output port " +
-                        "of its container.");
-	    }
+	    //if (!outPortsOutside.hasNext()) {
+	    //throw new IllegalActionException("Current " +
+	    //          "state's refining actor has an output " +
+	    //          "port not connected to an output port " +
+	    //          "of its container.");
+	    //}
 	    while (outPortsOutside.hasNext()) {
 		IOPort outputPortOutside =
 		    (IOPort)outPortsOutside.next();
