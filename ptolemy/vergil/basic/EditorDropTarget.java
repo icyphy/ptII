@@ -238,7 +238,7 @@ public class EditorDropTarget extends DropTarget {
                         protected void _execute() throws Exception {
                             super._execute();
                             NamedObj newObject = toplevel.getEntity(name);
-                            _setLocation(newObject, point);
+                            _setLocation(name, newObject, point);
                         }
                     };
 
@@ -250,7 +250,7 @@ public class EditorDropTarget extends DropTarget {
                         protected void _execute() throws Exception {
                             super._execute();
                             NamedObj newObject = toplevel.getPort(name);
-                            _setLocation(newObject, point);
+                            _setLocation(name, newObject, point);
                         }
                     };
 
@@ -262,7 +262,7 @@ public class EditorDropTarget extends DropTarget {
                         protected void _execute() throws Exception {
                             super._execute();
                             NamedObj newObject = toplevel.getRelation(name);
-                            _setLocation(newObject, point);
+                            _setLocation(name, newObject, point);
                         }
                     };
 
@@ -274,7 +274,7 @@ public class EditorDropTarget extends DropTarget {
                         protected void _execute() throws Exception {
                             super._execute();
                             NamedObj newObject = toplevel.getAttribute(name);
-                            _setLocation(newObject, point);
+                            _setLocation(name, newObject, point);
                         }
                     };
                 }
@@ -302,11 +302,14 @@ public class EditorDropTarget extends DropTarget {
         // and set the location to the specified point.
         // Note that this needs to be done after the change request
         // that creates the object has succeeded.
-        private void _setLocation(NamedObj newObject, Point2D point)
+        private void _setLocation(String name,
+				  NamedObj newObject, Point2D point)
                 throws Exception {
             if (newObject == null) {
-                throw new InternalErrorException(
-                        "Dropped object not found after change completed!");
+                throw new InternalErrorException("Dropped object '"
+						 + name
+						 + "' not found after "
+						 + "change completed!");
             }
             // Constrain point to snap to grid.
             Point2D newPoint = SnapConstraint.constrainPoint(point);
