@@ -115,7 +115,7 @@ public class MouseInput3D extends GRActor {
                     "GR error: no ViewScreen actor");
         } else {
             _viewScreen.addChild(_getNodeObject());
-        }      
+        }
         // It would be nice if we did this..
         //sceneGraphOut.send(0, new SceneGraphToken(_getNodeObject()));
     }

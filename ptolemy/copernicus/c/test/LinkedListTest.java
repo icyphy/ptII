@@ -57,7 +57,7 @@ public class  LinkedListTest{
         list.addLast("4");
         list.addFirst("0");
 
-        
+
         LinkedList list2 = new LinkedList();
         list.addAll(list2);
         list2.add("5");

@@ -892,7 +892,7 @@ public class PlotBox extends JPanel implements Printable {
         }
         // Blit the offscreen image onto the screen.
         graphics.drawImage(newPlotImage, 0, 0, null);
-        
+
 
         // Acquire the focus so that key bindings work.
         // NOTE: no longer needed?
@@ -1142,7 +1142,7 @@ public class PlotBox extends JPanel implements Printable {
     public synchronized void setBounds(int x, int y, int width, int height) {
         _width = width;
         _height = height;
-        
+
         // Resizing the component means we need to redraw the buffer.
         _plotImage = null;
 

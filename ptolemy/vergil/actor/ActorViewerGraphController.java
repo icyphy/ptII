@@ -167,11 +167,11 @@ public class ActorViewerGraphController extends RunnableGraphController {
     }
 
     /** Return the value of the entity controller so that callers
-     *  can add context menus by calling 
+     *  can add context menus by calling
      *  <pre>
      *  getEntityController.addMenuItemFactory(new XXXDialogFactory);
      *  </pre>
-     *  @return that ActorController that is used to  
+     *  @return that ActorController that is used to
      */
     public ActorController getEntityController() {
         // Used by jni.ThalesGraphFrame to add jni.ArgumentDialogFactory

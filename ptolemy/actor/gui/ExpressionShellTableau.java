@@ -163,10 +163,10 @@ public class ExpressionShellTableau extends Tableau
 
     /** The associated frame. */
     public ExpressionShellFrame frame;
-    
+
     /** The contained shell. */
     public ShellTextArea shell;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -783,7 +783,7 @@ public class IntegerMatrixMath {
         }
         return sum;
     }
-        
+
     /** Return a new matrix that is formed by converting the integers
      *  in the argument matrix to complex numbers. Each complex number
      *  has a real part equal to the value in the argument matrix and a

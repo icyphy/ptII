@@ -131,7 +131,7 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                     Object taskID = _taskMap.get(actorName);
                     int id;
                     if (taskID == null) {
-                        
+
                         id = _taskMap.size();
                         final int finalid = id;
                         _taskMap.put(actorName, new Integer(id));
@@ -210,13 +210,13 @@ public class SchedulePlotter extends Attribute implements ScheduleListener {
                 // so that it closes when the model is closed.
                 Effigy effigy = Configuration.findEffigy(toplevel());
                 PlotEffigy schedulePlotterEffigy =
-                    new PlotEffigy(effigy, 
+                    new PlotEffigy(effigy,
                             container.uniqueName("schedulePlotterEffigy"));
                 schedulePlotterEffigy.setPlot(plot);
                 schedulePlotterEffigy.identifier.setExpression("TM Schedule");
 
                 configuration.createPrimaryTableau(schedulePlotterEffigy);
-               
+
                 plot.setVisible(true);
 
             } catch (Exception ex) {

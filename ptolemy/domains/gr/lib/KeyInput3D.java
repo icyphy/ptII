@@ -110,7 +110,7 @@ public class KeyInput3D extends GRActor {
                     "GR error: no ViewScreen actor");
         } else {
             _viewScreen.addChild(_getNodeObject());
-        }      
+        }
     }
 
     private class React extends Behavior {

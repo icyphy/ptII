@@ -362,7 +362,7 @@ public class LongMatrixMath {
 
         return returnValue;
     }
-        
+
     /** Return a new matrix that is constructed from the argument by
      *  dividing the second argument to every element.
      *  @param matrix A matrix of longs.
@@ -770,7 +770,7 @@ public class LongMatrixMath {
         }
         return returnValue;
     }
-    
+
     /** Return the sum of the elements of a matrix.
      *  @return The sum of the elements of the matrix.
      */

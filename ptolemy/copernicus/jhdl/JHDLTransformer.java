@@ -153,7 +153,7 @@ class JHDLTransformer extends SceneTransformer {
              entities.hasNext();) {
             Entity theEntity = (Entity) entities.next();
             String entityName = theEntity.getName();
-            String newClassName = 
+            String newClassName =
                 ModelTransformer.getInstanceClassName(theEntity, options);
             SootClass theClass = Scene.v().loadClassAndSupport(newClassName);
 

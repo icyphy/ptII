@@ -50,7 +50,7 @@ import soot.*;
 import soot.jimple.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
 
 @author Mike Wirthlin
@@ -82,7 +82,7 @@ public class ActorModelGraph extends ModelGraph {
         PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
         dgToDotty.writeDotFile(".", "entity", fireGraph);
 
-        // 
+        //
         Map portCallNodes = _getPortCallNodes(entity,fireGraph);
         dgToDotty = new PtDirectedGraphToDotty();
         dgToDotty.writeDotFile(".", "fixed", fireGraph);
@@ -188,7 +188,7 @@ public class ActorModelGraph extends ModelGraph {
                 // In this case, the successor to the getInt call is
                 // identified as the Node associated with this port
                 // call (i.e. input port)
-                portNode = 
+                portNode =
                     (Node) entityGraph.successors(node).iterator().next();
             } else {
                 // "sendInt" method call
@@ -296,7 +296,7 @@ public class ActorModelGraph extends ModelGraph {
         graph.removeNode(node);
     }
 
-    public AtomicActor getAtomicActor() { 
+    public AtomicActor getAtomicActor() {
         return (AtomicActor) getEntity();
     }
 

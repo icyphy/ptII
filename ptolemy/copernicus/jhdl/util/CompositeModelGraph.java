@@ -43,7 +43,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.ComponentEntity;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
 
 @author Mike Wirthlin
@@ -70,13 +70,13 @@ public class CompositeModelGraph extends ModelGraph {
         //    - a Node in the graph for each input and output
         //      port of the entity
         //    - appropriate edges between input/output ports and entity
-        for (Iterator i = getCompositeActor().entityList().iterator(); 
+        for (Iterator i = getCompositeActor().entityList().iterator();
              i.hasNext();) {
 
             ComponentEntity entity = (ComponentEntity)i.next();
 
             // Create Node for entity
-            Object entityWeight = null;            
+            Object entityWeight = null;
             if (entity instanceof CompositeActor)
                 entityWeight = new CompositeModelGraph((CompositeActor) entity,_options);
             else if (entity instanceof AtomicActor)

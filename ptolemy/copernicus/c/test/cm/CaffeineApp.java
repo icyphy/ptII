@@ -3,7 +3,7 @@ public class CaffeineApp {
 
     public static void main(String[] args) {
         float total = 1;
-                
+
         BenchmarkUnit units[] = new BenchmarkUnit[6];
         units[0] = new BenchmarkUnit(new SieveAtom());
         units[1] = new BenchmarkUnit(new LoopAtom());
@@ -18,7 +18,7 @@ public class CaffeineApp {
             System.out.print(unit.testName());
             System.out.print(" score = ");
             System.out.println(score);
-                    
+
             // We need the geometric mean.
             total = total * (float)Math.exp(Math.log(score)/6);
         }

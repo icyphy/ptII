@@ -364,8 +364,8 @@ do
             if [ "x$results2" = "x" ]; then
                 echo "$file: calls setTypeAtLeast, but does not define clone()"
                 echo "$results"
-            fi                
-        fi    
+            fi
+        fi
         # 23) Check that the methods are alphabetical
         # This is important because the javadoc output follows
         # the order of the methods in the file.
@@ -373,11 +373,11 @@ do
         for access in $accesses
         do
           # Once we see the string 'inner class' we stop checking
-          awk '{print $0; if ($0 ~ /inner class/) { exit}}' $file |  
-          egrep "^    $access" | grep -v = | grep '[a-zA-Z](' | 
+          awk '{print $0; if ($0 ~ /inner class/) { exit}}' $file |
+          egrep "^    $access" | grep -v = | grep '[a-zA-Z](' |
                 sed 's/.* \([_A-Za-z0-9]*(\).*/\1/'  > /tmp/chkjava.a
-          awk '{print $0; if ($0 ~ /inner class/) { exit}}' $file |  
-          egrep "^    $access" | grep -v = | grep '[a-zA-Z](' | 
+          awk '{print $0; if ($0 ~ /inner class/) { exit}}' $file |
+          egrep "^    $access" | grep -v = | grep '[a-zA-Z](' |
                 sed 's/.* \([_A-Za-z0-9]*(\).*/\1/' | sort > /tmp/chkjava.b
           diff /tmp/chkjava.a /tmp/chkjava.b > /dev/null
           retval=$?

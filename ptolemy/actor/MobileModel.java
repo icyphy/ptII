@@ -125,7 +125,7 @@ public class MobileModel extends TypedCompositeActor {
     ////                         public variables                  ////
     //public Parameter modelURL;
 
-    // FIXME: Need documentation 
+    // FIXME: Need documentation
     public TypedIOPort input, modelString, output;
 
     // FIXME: Need documentation.  What is the type and initial value

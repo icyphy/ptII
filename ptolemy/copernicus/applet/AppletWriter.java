@@ -359,7 +359,7 @@ public class AppletWriter extends SceneTransformer {
         jarFilesThatHaveBeenRequired.add("ptolemy/actor/actor.jar");
         jarFilesThatHaveBeenRequired.add("ptolemy/actor/lib/lib.jar");
 
-        // Set to true if we need to fix up jar files because 
+        // Set to true if we need to fix up jar files because
         // jar files are not present probably because
         // 'make install' was not run.
         boolean fixJarFiles = false;
@@ -410,7 +410,7 @@ public class AppletWriter extends SceneTransformer {
                 // but looking up a file will fail if the file has
                 // a space in it and we are looking for a %20.
                 classResource = StringUtilities
-                    .substitute(classResource, "%20", " "); 
+                    .substitute(classResource, "%20", " ");
 
                 // We need to actually look up the file to deal with
                 // the various C:/ptII, c:/ptII, c:\ptII, C:\ptII possibilities
@@ -428,7 +428,7 @@ public class AppletWriter extends SceneTransformer {
                     if (_codeBase.equals(".")) {
                         // We only need print an error message if
                         // we are actually trying to copy the file
-                        throw new IOException(warning 
+                        throw new IOException(warning
                                 + "\nIf the jar files are not "
                                 + "present, then we cannot copy "
                                 + "them to the new location.");
@@ -458,11 +458,11 @@ public class AppletWriter extends SceneTransformer {
                     // we copy the jar file.
                     _copyFile(classResource, _outputDirectory,
                             (String)classMap.get(className));
-                } 
+                }
             }
         }
 
-        
+
         jarFilesThatHaveBeenRequired.remove("ptolemy/actor/actor.jar");
         jarFilesThatHaveBeenRequired.remove("ptolemy/actor/lib/lib.jar");
 
@@ -470,7 +470,7 @@ public class AppletWriter extends SceneTransformer {
             // If the code generator was run but codeBase != . and
             // make install was not run, then we will not have figured
             // out very many jar files.  So, we fix up the list
-            // 
+            //
             jarFilesThatHaveBeenRequired.add("ptolemy/ptsupport.jar");
             jarFilesThatHaveBeenRequired.add(_domainJar);
         }

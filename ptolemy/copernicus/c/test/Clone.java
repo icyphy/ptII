@@ -57,6 +57,6 @@ public class  Clone implements Cloneable{
         }
 
         System.out.println(object.hashCode() == object2.hashCode());
-        
+
     }
 }

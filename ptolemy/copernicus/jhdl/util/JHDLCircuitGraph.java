@@ -36,9 +36,9 @@ import ptolemy.graph.Edge;
 import ptolemy.graph.Node;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
- * 
+ *
  *
 @author Mike Wirthlin
 @version $Id$
@@ -60,7 +60,7 @@ public class JHDLCircuitGraph extends DirectedGraph {
     }
 
     public Node addOutPortNodeWeight(Object weight) {
-        Node n = addNodeWeight(weight);        
+        Node n = addNodeWeight(weight);
         _outPortNodes.add(n);
         return n;
     }

@@ -210,7 +210,7 @@ public class BoundaryDetector {
                 _isConnectedOutsideOfBoundaryValue = false;
                 return _isConnectedOutsideOfBoundaryValue;
             }
-      
+
             Iterator ports = contPort.connectedPortList().iterator();
             while ( ports.hasNext() ) {
                 IOPort connectedPort = (IOPort)ports.next();

@@ -29,7 +29,7 @@
 */
 
 /** Print the major operating system name of the current JVM.
- 
+
 @author Christopher Hylands
 @version $Id$
 @since Ptolemy II 3.0

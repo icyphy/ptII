@@ -69,7 +69,7 @@ import ptolemy.moml.MoMLChangeRequest;
 ///////////////////////////////////////////////////////////
 //// UnsafeSDFScheduler
 /**
-A scheduler that does basic scheduling of SDF graphs. 
+A scheduler that does basic scheduling of SDF graphs.
 <p>This is a newer version of the SDF scheduler that attempts to fix a
 significant shortcoming in the existing implementation.  In
 SDFScheduler, scheduling constraints are traversed and solved
@@ -355,7 +355,7 @@ public class UnsafeSDFScheduler extends Scheduler {
         for (Iterator entities = container.deepEntityList().iterator();
              entities.hasNext();) {
             ComponentEntity entity = (ComponentEntity)entities.next();
-            
+
             // Fill allActorList with the list of things that we can schedule
             // FIXME: What if other things can be scheduled than actors?
             if (entity instanceof Actor) {
@@ -481,7 +481,7 @@ public class UnsafeSDFScheduler extends Scheduler {
      *  @exception IllegalActionException If the rate parameters are invalid.
      */
     private int _computeMaximumFirings(ComponentEntity currentActor,
-            Map sinkPortToSourcePortToWaitingTokens) 
+            Map sinkPortToSourcePortToWaitingTokens)
             throws IllegalActionException {
         int maximumFirings = Integer.MAX_VALUE;
 
@@ -490,7 +490,7 @@ public class UnsafeSDFScheduler extends Scheduler {
             ((Actor) currentActor).inputPortList().iterator();
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
-          
+
             int tokenRate = getTokenConsumptionRate(inputPort);
 
             // Ignore zero rate ports.. they don't limit the number of times
@@ -501,11 +501,11 @@ public class UnsafeSDFScheduler extends Scheduler {
 
             Map sourcePortToWaitingTokens = (Map)
                 sinkPortToSourcePortToWaitingTokens.get(inputPort);
-            
+
             for (Iterator sourcePorts = inputPort.sourcePortList().iterator();
                  sourcePorts.hasNext();) {
                 IOPort sourcePort = (IOPort)sourcePorts.next();
-                
+
                 Integer waitingTokens = (Integer)
                     sourcePortToWaitingTokens.get(sourcePort);
                 int firings = waitingTokens.intValue() / tokenRate;
@@ -564,15 +564,15 @@ public class UnsafeSDFScheduler extends Scheduler {
                      inputPort.sourcePortList().iterator();
                  sourcePorts.hasNext();) {
                 IOPort sourcePort = (IOPort)sourcePorts.next();
-                
+
                 Integer waitingTokens = (Integer)
                     sourcePortToWaitingTokens.get(sourcePort);
-                
+
                 if (_debugging && VERBOSE) {
-                    _debug("Has " + waitingTokens + 
+                    _debug("Has " + waitingTokens +
                             " from " + sourcePort.getFullName());
                 }
-                
+
                 if (waitingTokens.intValue() < threshold) {
                     isFulfilled = false;
                     break;
@@ -1149,10 +1149,10 @@ public class UnsafeSDFScheduler extends Scheduler {
                              inputPort.sourcePortList().iterator();
                          remotePorts.hasNext();) {
                         IOPort remotePort = (IOPort) remotePorts.next();
-                        sourcePortToWaitingTokens.put(remotePort, 
+                        sourcePortToWaitingTokens.put(remotePort,
                                 new Integer(0));
                     }
-                    sinkPortToSourcePortToWaitingTokens.put(inputPort, 
+                    sinkPortToSourcePortToWaitingTokens.put(inputPort,
                             sourcePortToWaitingTokens);
                 }
             }
@@ -1169,7 +1169,7 @@ public class UnsafeSDFScheduler extends Scheduler {
                          outputPort.insideSourcePortList().iterator();
                      remotePorts.hasNext();) {
                     IOPort remotePort = (IOPort) remotePorts.next();
-                    sourcePortToWaitingTokens.put(remotePort, 
+                    sourcePortToWaitingTokens.put(remotePort,
                             new Integer(0));
                 }
                 sinkPortToSourcePortToWaitingTokens.put(outputPort,
@@ -1236,20 +1236,20 @@ public class UnsafeSDFScheduler extends Scheduler {
             while (readyToScheduleActorList.size() > 0) {
                 if (_debugging && VERBOSE) {
                     _debug("\nwaitingTokens: ");
-                    for (Iterator sinkPorts = 
+                    for (Iterator sinkPorts =
                              sinkPortToSourcePortToWaitingTokens.keySet().iterator();
                          sinkPorts.hasNext();) {
                         IOPort sinkPort = (IOPort)sinkPorts.next();
                         _debug("sinkPort " + sinkPort.getFullName());
                         Map sourcePortToWaitingTokens = (Map)
                             sinkPortToSourcePortToWaitingTokens.get(sinkPort);
-                        for (Iterator sourcePorts = 
+                        for (Iterator sourcePorts =
                                  sourcePortToWaitingTokens.keySet().iterator();
                              sourcePorts.hasNext();) {
                             IOPort sourcePort = (IOPort)sourcePorts.next();
                             Integer tokens = (Integer)
                                 sourcePortToWaitingTokens.get(sourcePort);
-                            _debug("There are " + tokens.intValue() + 
+                            _debug("There are " + tokens.intValue() +
                                     " tokens waiting from sourcePort " +
                                     sourcePort.getFullName());
                         }
@@ -1279,7 +1279,7 @@ public class UnsafeSDFScheduler extends Scheduler {
 
                 // Determine the number of times currentActor can fire.
                 int numberOfFirings =
-                    _computeMaximumFirings(currentActor, 
+                    _computeMaximumFirings(currentActor,
                             sinkPortToSourcePortToWaitingTokens);
 
                 // We should never schedule something more than the number
@@ -1663,12 +1663,12 @@ public class UnsafeSDFScheduler extends Scheduler {
             IOPort sinkPort = (IOPort)sinkPorts.next();
             Map sourcePortToWaitingTokens = (Map)
                 sinkPortToSourcePortToWaitingTokens.get(sinkPort);
-            
+
             Integer waitingTokens = (Integer)
                 sourcePortToWaitingTokens.get(port);
             int newTokenCount = waitingTokens.intValue() + createdTokens;
             // Increment the number of waiting tokens.
-            sourcePortToWaitingTokens.put(port, 
+            sourcePortToWaitingTokens.put(port,
                     new Integer(newTokenCount));
 
             if (_debugging && VERBOSE) {
@@ -1687,17 +1687,17 @@ public class UnsafeSDFScheduler extends Scheduler {
                 if (relation == null) {
                     continue;
                 }
-                
+
                 List relationPortList = relation.linkedDestinationPortList();
                 if (relationPortList.contains(sinkPort)) {
                     // The bufferSize for the current relation.  This is
                     // put back into the buffer at the end after (possibly)
                     // being updated.
-                    Integer bufferSize = (Integer) 
+                    Integer bufferSize = (Integer)
                         minimumBufferSize.get(relation);
                     if (bufferSize != null &&
                             bufferSize.intValue() < newTokenCount) {
-                        minimumBufferSize.put(relation, 
+                        minimumBufferSize.put(relation,
                                 new Integer(newTokenCount));
                     }
                 }
@@ -1729,22 +1729,22 @@ public class UnsafeSDFScheduler extends Scheduler {
         boolean stillReadyToSchedule = true;
 
         // Update the number of tokens waiting on the actor's input ports.
-        Iterator inputPorts = 
+        Iterator inputPorts =
             ((Actor) currentActor).inputPortList().iterator();
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
-            
+
             int tokenRate = getTokenConsumptionRate(inputPort);
             Map sourcePortToWaitingTokens =
                 (Map)sinkPortToSourcePortToWaitingTokens.get(inputPort);
-            
+
             for (Iterator sourcePorts = inputPort.sourcePortList().iterator();
                  sourcePorts.hasNext();) {
                 IOPort sourcePort = (IOPort)sourcePorts.next();
-                
+
                 Integer waitingTokens = (Integer)
                     sourcePortToWaitingTokens.get(sourcePort);
-       
+
                 int newTokenCount = waitingTokens.intValue() -
                     (tokenRate * firingCount);
 
@@ -1799,14 +1799,14 @@ public class UnsafeSDFScheduler extends Scheduler {
             IOPort sinkPort = (IOPort)sinkPorts.next();
             Map sourcePortToWaitingTokens = (Map)
                 sinkPortToSourcePortToWaitingTokens.get(sinkPort);
-            
+
             Integer waitingTokens = (Integer)
                 sourcePortToWaitingTokens.get(outputPort);
             int newTokenCount = waitingTokens.intValue() + createdTokens;
             // Increment the number of waiting tokens.
-            sourcePortToWaitingTokens.put(outputPort, 
+            sourcePortToWaitingTokens.put(outputPort,
                     new Integer(newTokenCount));
-            
+
             if (_debugging && VERBOSE) {
                 _debug("sinkPort " + sinkPort.getFullName() + " now has " +
                         newTokenCount + " tokens waiting from " + outputPort.getFullName());
@@ -1823,17 +1823,17 @@ public class UnsafeSDFScheduler extends Scheduler {
                 if (relation == null) {
                     continue;
                 }
-                
+
                 // It would be nice if we could get a list of all the
                 // relations assocated with the channel.
                 List relationPortList = relation.linkedDestinationPortList();
                 if (relationPortList.contains(sinkPort)) {
                     // Update the bufferSize for the current relation.
-                    Integer bufferSize = (Integer) 
+                    Integer bufferSize = (Integer)
                         minimumBufferSize.get(relation);
                     if (bufferSize != null &&
                             bufferSize.intValue() < newTokenCount) {
-                        minimumBufferSize.put(relation, 
+                        minimumBufferSize.put(relation,
                                 new Integer(newTokenCount));
                     }
                 }
@@ -1867,7 +1867,7 @@ public class UnsafeSDFScheduler extends Scheduler {
                     // be demonstrated by animating the simulations"
                     readyToScheduleActorList.addFirst(connectedActor);
                 }
-            }            
+            }
         }
     }
 

@@ -49,7 +49,7 @@ is not guaranteed to be consistent, but the size of the HashSet is.
 */
 
 public class HashSetTest{
-    
+
     public static void main(String[] args) {
 
         // Check that Object.hashCode works.
@@ -111,7 +111,7 @@ public class HashSetTest{
         set2.add("9");
         set.addAll(set2);
         System.out.println(set.size());
-        
+
         // Check Iteration and removal.
         System.out.println("\nChecking HashSet.iterator() ...");
         Iterator items = set.iterator();
@@ -120,6 +120,6 @@ public class HashSetTest{
             Object item = items.next();
             System.out.println(i++);
         }
-        
+
     }
 }

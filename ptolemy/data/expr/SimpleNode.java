@@ -22,7 +22,7 @@ public class SimpleNode implements Node {
 
   public void jjtClose() {
   }
-  
+
   public void jjtSetParent(Node n) { parent = n; }
   public Node jjtGetParent() { return parent; }
 

@@ -8,7 +8,7 @@
 #        ((TypedIORelation) (obj3)).TypedIORelation(this, "relation6");
 # to
 #         obj3 = new TypedIORelation(this, "relation6")
-# or 
+# or
 #        TypedIORelation typediorelation = JVM INSTR new #35  <Class TypedIORelation>;
 #        typediorelation.TypedIORelation(this, "relation");
 # to
@@ -24,7 +24,7 @@ awk ' { if ($0 ~ /JVM INSTR/) {
                     break;
                 } else {
                     printf("%s ", $i)
-                } 
+                }
             }
         } else {
             if (sawjvminstr == 1) {
@@ -36,7 +36,7 @@ awk ' { if ($0 ~ /JVM INSTR/) {
             } else {
                 print $0
             }
-        } 
+        }
       }' $1 |
 awk '{if ($0 ~ /public void __CGInit/) {
             print $0, "throws IllegalActionException, NameDuplicationException"

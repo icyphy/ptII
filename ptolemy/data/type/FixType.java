@@ -97,7 +97,7 @@ public class FixType extends StructuredType
     public boolean equals(Object object) {
         if (!(object instanceof FixType)) {
             return false;
-        } 
+        }
         return true;
     }
 

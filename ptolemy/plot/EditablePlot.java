@@ -233,7 +233,7 @@ public class EditablePlot extends Plot {
                 }
             }
         }
-        
+
         // Ensure replot of offscreen buffer.
         _plotImage = null;
         repaint();

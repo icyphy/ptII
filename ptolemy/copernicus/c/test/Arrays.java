@@ -127,7 +127,7 @@ public class Arrays{
             for (int i = 0; i < 10; i++) {
                 source[i] = i;
             }
-            
+
             int[] dest = new int[4];
             dest[0] = 8;
             System.arraycopy(source, 2, dest, 1, 2);
@@ -136,6 +136,6 @@ public class Arrays{
                 System.out.println(dest[i]);
             }
         }
-                
+
     }
 }

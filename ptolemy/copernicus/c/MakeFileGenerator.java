@@ -78,7 +78,7 @@ public class MakeFileGenerator {
 
         code.append("#Standard variables\n");
         code.append("PTII = ../../../..\n");
-        
+
         code.append("THIS = " + className + ".make\n");
         code.append("RUNTIME = ../runtime\n");
         code.append("NATIVE_BODIES ="
@@ -153,7 +153,7 @@ public class MakeFileGenerator {
         }
         code.append(" $< -o $@ \n\n");
 
-            
+
         // Library generation.
         code.append("$(LIB_FILE): $(LIB_OBJECTS)\n");
         code.append("\tar cr $(LIB_FILE) $(LIB_OBJECTS)\n");

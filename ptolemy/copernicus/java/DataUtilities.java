@@ -216,7 +216,7 @@ public class DataUtilities {
      *  identifier values when they are discovered in traversing the
      *  parse tree.
      */
-    public static class ActorCodeGenerationScope 
+    public static class ActorCodeGenerationScope
         extends ptolemy.data.expr.ModelScope
         implements CodeGenerationScope {
         public ActorCodeGenerationScope(
@@ -308,11 +308,11 @@ public class DataUtilities {
                 Local tokenLocal = Jimple.v().newLocal("token",
                         PtolemyUtilities.tokenType);
                 _body.getLocals().add(tokenLocal);
-                
+
                 NamedObj toplevel = _entity.toplevel();
                 String deepName = result.getName(toplevel);
-                
-                
+
+
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(containerLocal,
                                 Jimple.v().newVirtualInvokeExpr(
@@ -338,7 +338,7 @@ public class DataUtilities {
                                         attributeLocal,
                                         PtolemyUtilities.variableGetTokenMethod)),
                         _insertPoint);
-                
+
                 return tokenLocal;
             } else {
                 throw new IllegalActionException(
@@ -370,7 +370,7 @@ public class DataUtilities {
         public Set identifierSet() {
             return getAllScopedVariableNames(null, _entity);
         }
-        
+
         private Map _nameToField;
         private Map _nameToType;
         private JimpleBody _body;

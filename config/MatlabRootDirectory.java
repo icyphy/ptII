@@ -69,9 +69,9 @@ public class MatlabRootDirectory {
         // Return the directory above the bin/ directory in
         // the path to the matlab executable
 
-        // Under Solaris, we might pass this: 
+        // Under Solaris, we might pass this:
         //   /usr/sww/bin/matlab
-        // Under Windows: 
+        // Under Windows:
         //   /cygdrive/c/matlab6p1/bin/win32/matlab
 
         if (File.separatorChar == '\\') {
@@ -91,7 +91,7 @@ public class MatlabRootDirectory {
             // we shipped with Ptolemy II 2.0.1
             _checkForBin(matlabExecutable);
             return matlabExecutable.substring(0,matlabExecutable.lastIndexOf("/bin/"));
-        } 
+        }
 
         // matlabExecutable might be a symbolic link, so dereference it.
         File matlabFile = new File(matlabExecutable);

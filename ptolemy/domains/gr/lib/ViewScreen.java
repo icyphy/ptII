@@ -237,7 +237,7 @@ public class ViewScreen extends GRActor implements Placeable {
         return _canvas;
     }
 
-    /** Initialize the execution.  Create the ViewScreen frame if 
+    /** Initialize the execution.  Create the ViewScreen frame if
      *  it hasn't been set using the place() method.
      *  @exception IllegalActionException If the base class throws it.
      */
@@ -248,12 +248,12 @@ public class ViewScreen extends GRActor implements Placeable {
         // Create a frame, if necessary, along with the canvas and
         // simple universe.
         _createViewScreen();
-       
+
         // Make the frame visible.
         if (_frame != null) {
             _frame.setVisible(true);
         }
-                
+
         Enumeration branches
             = _simpleUniverse.getLocale().getAllBranchGraphs();
 
@@ -342,12 +342,12 @@ public class ViewScreen extends GRActor implements Placeable {
 
         // Setup the lights.
         BranchGroup lightRoot = new BranchGroup();
-        
+
         AmbientLight lightAmbient
             = new AmbientLight(new Color3f(0.8f, 0.8f, 0.8f));
         lightAmbient.setInfluencingBounds(_bounds);
         lightRoot.addChild(lightAmbient);
-        
+
         DirectionalLight lightDirectional = new DirectionalLight();
         lightDirectional.setInfluencingBounds(_bounds);
         Vector3f direction = new Vector3f(0.0f, -1.0f, -1.0f);
@@ -355,11 +355,11 @@ public class ViewScreen extends GRActor implements Placeable {
         lightDirectional.setDirection(direction);
         lightDirectional.setColor(new Color3f(1.0f, 1.0f, 1.0f));
         lightRoot.addChild(lightDirectional);
-        
+
         _simpleUniverse.getViewer().getView()
             .setLocalEyeLightingEnable(true);
         _simpleUniverse.addBranchGraph(lightRoot);
-        
+
         if (_iterationSynchronized) {
             if (_canvas != null) _canvas.stopRenderer();
         }
@@ -407,7 +407,7 @@ public class ViewScreen extends GRActor implements Placeable {
      *  in this actor.
      */
     protected void _addChild(Node node) {
-        _userTransformation.addChild(node);        
+        _userTransformation.addChild(node);
     }
 
     /** Create the view screen component.  If place() was called with
@@ -434,7 +434,7 @@ public class ViewScreen extends GRActor implements Placeable {
             _frame.show();
             _frame.validate();
             _frame.setSize(horizontalDimension+50,verticalDimension);
-            _container = _frame.getContentPane();    
+            _container = _frame.getContentPane();
         }
         // Set the frame to be visible.
         if (_frame != null) {
@@ -446,13 +446,13 @@ public class ViewScreen extends GRActor implements Placeable {
             _container.remove(_canvas);
         }
         _canvas = new Canvas3D(config);
-       
+
         _container.add("Center", _canvas);
         _canvas.setSize(new Dimension(horizontalDimension,
                 verticalDimension));
         _simpleUniverse = new SimpleUniverse(_canvas);
         _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
-      
+
 
         /* FIXME: experimental code for changing views.
            TransformGroup VPTG = new TransformGroup();
@@ -497,7 +497,7 @@ public class ViewScreen extends GRActor implements Placeable {
         return new Background(color);
     }
 
-    /** Setup the scene graph connections of this actor.  
+    /** Setup the scene graph connections of this actor.
      */
     protected void _makeSceneGraphConnection() throws IllegalActionException {
         int width = sceneGraphIn.getWidth();

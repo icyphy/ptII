@@ -39,7 +39,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.ComponentEntity;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
 
 @author Mike Wirthlin

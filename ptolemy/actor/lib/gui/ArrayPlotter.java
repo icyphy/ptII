@@ -95,7 +95,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
 
         iterationsPerUpdate = new Parameter(this, "iterationsPerUpdate");
         iterationsPerUpdate.setExpression("1");
-        
+
         // set the parameters
         xInit = new Parameter(this, "xInit", new DoubleToken(0.0));
         xInit.setTypeEquals(BaseType.DOUBLE);
@@ -119,7 +119,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
      *  Its value must be non-negative.
      */
     public Parameter iterationsPerUpdate;
-    
+
     /** The increment of the X axis. */
     public Parameter xUnit;
 
@@ -145,7 +145,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
             }
         }
     }
-        
+
     /** If the plot has not already been created, create it.
      *  If configurations specified by a call to configure() have not yet
      *  been processed, process them.  This overrides the base class to
@@ -234,7 +234,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
 
     /** Increment of the X axis counter. */
     protected double _xUnit;
-        
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

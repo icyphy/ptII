@@ -987,7 +987,7 @@ public class ComplexArrayMath {
      *  complex numbers, so unlike the within() methods for other
      *  types, this method will not return false if an element of the
      *  maxError matrix is negative.
-     * 
+     *
      *  @param array1 The first array.
      *  @param array2 The second array.
      *  @param maxError An array of complex numbers whose magnitude

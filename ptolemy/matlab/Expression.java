@@ -316,7 +316,7 @@ public class Expression extends TypedAtomicActor {
                 if (_addPathCommand != null) {
                     matlabEngine.evalString(engine, _addPathCommand);
                 }
-                
+
                 matlabEngine.put(engine, "time",
                         new DoubleToken(director.getCurrentTime()));
                 matlabEngine.put(engine, "iteration",

@@ -111,7 +111,7 @@ public class VergilErrorHandler implements ErrorHandler {
 
         if (context == null) {
             // Top-level object, so continuing is not an option.
-            messageArray[0] = messageArray[0]  
+            messageArray[0] = messageArray[0]
                 + "\nThis is a top-level element, so cannot continue.";
             Object[] options = {"Display stack trace",
                                 "Cancel"};
@@ -242,7 +242,7 @@ public class VergilErrorHandler implements ErrorHandler {
         } else {
             string = exception.getMessage();
         }
-        message[0] = 
+        message[0] =
             StringUtilities.ellipsis(string,
                     StringUtilities.ELLIPSIS_LENGTH_SHORT);
 

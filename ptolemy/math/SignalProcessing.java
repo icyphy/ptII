@@ -230,7 +230,7 @@ public class SignalProcessing {
     public static final double decibel(double value) {
         return toDecibels(value);
     }
-    
+
     /** Return a new array the value of the argument array
      *  in decibels, using the previous decibel() method.
      *  You may wish to combine this with DoubleArrayMath.limit().
@@ -313,7 +313,7 @@ public class SignalProcessing {
     public static final Complex[] FFT(Complex[] x) {
         return FFTComplexOut(x, order(x.length));
     }
-    
+
     /** Return a new array of complex numbers which is the FFT
      *  of an input array of complex numbers.
      *  The input is zero-padded if it does not match the length.
@@ -324,7 +324,7 @@ public class SignalProcessing {
     public static final Complex[] FFT(Complex[] x, int order) {
         return FFTComplexOut(x, order);
     }
-    
+
     /** Return a new array of Complex's which is the forward FFT
      *  of an input array of Complex's.
      *  This method automatically computes the order of the transform
@@ -556,7 +556,7 @@ public class SignalProcessing {
 
         return returnValue;
     }
-    
+
     /** Return a new array of doubles that is the inverse, normalized
      *  DCT of the input array of doubles.
      *  This method automatically computes the order of the transform
@@ -581,7 +581,7 @@ public class SignalProcessing {
     public static final double[] IDCT(double[] x, int order) {
         return IDCT(x, order, DCT_TYPE_NORMALIZED);
     }
-    
+
     /** Return a new array of doubles that is the inverse DCT of the
      *  input array of doubles.
      *  See the DCT_TYPE_XXX constants for documentation of the
@@ -686,7 +686,7 @@ public class SignalProcessing {
     public static final Complex[] IFFT(Complex[] x, int order) {
         return IFFTComplexOut(x, order);
     }
-    
+
     /** Return a new array of Complex's which is the inverse FFT
      *  of an input array of Complex's.
      *  This method automatically computes the order of the transform
@@ -785,7 +785,7 @@ public class SignalProcessing {
         double oneOverN = 1.0 / (double) (1 << order);
         return DoubleArrayMath.scale(y, oneOverN);
     }
-    
+
     /** Return a new array that is filled with samples of a Bartlett
      *  window of a specified length. Throw an IllegalArgumentException
      *  if the length is less than 1 or the window type is unknown.
@@ -799,19 +799,19 @@ public class SignalProcessing {
                     "ptolemy.math.SignalProcessing" +
                     ".generateBartlettWindow(): " +
                     " length of window should be greater than 0.");
-        }        
-        
+        }
+
         int M = length - 1;
         int n;
         double[] window = new double[length];
 
         int halfM = M / 2;
         double twoOverM = 2.0 / (double) M;
-        
+
         for (n = 0; n <= halfM; n++) {
             window[n] = n * twoOverM;
         }
-        
+
         for (n = halfM + 1; n < length; n++) {
             window[n] = 2.0 - n * twoOverM;
         }
@@ -831,22 +831,22 @@ public class SignalProcessing {
                     "ptolemy.math.SignalProcessing" +
                     ".generateBlackmanWindow(): " +
                     " length of window should be greater than 0.");
-        }        
-        
+        }
+
         int M = length - 1;
         int n;
         double[] window = new double[length];
-                
+
         double twoPiOverM = 2.0 * Math.PI / (double) M;
         double fourPiOverM = 2.0 * twoPiOverM;
-        
+
         for (n = 0; n < length; n++) {
             window[n] = 0.42 - 0.5 * Math.cos(twoPiOverM * n) +
                 0.08 * Math.cos(fourPiOverM * n);
         }
         return window;
     }
-    
+
     /** Return a new array that is filled with samples of a Blackman Harris
      *  window of a specified length. Throw an IllegalArgumentException
      *  if the length is less than 1 or the window type is unknown.
@@ -860,16 +860,16 @@ public class SignalProcessing {
                     "ptolemy.math.SignalProcessing" +
                     ".generateBlackmanHarrisWindow(): " +
                     " length of window should be greater than 0.");
-        }        
-        
+        }
+
         int M = length - 1;
         int n;
         double[] window = new double[length];
-                
+
         double twoPiOverM = 2.0 * Math.PI / (double) M;
         double fourPiOverM = 2.0 * twoPiOverM;
         double sixPiOverM = 3.0 * twoPiOverM;
-        
+
         for (n = 0; n < length; n++) {
             window[n] = 0.35875 - 0.48829 * Math.cos(twoPiOverM * n) +
                 0.14128 * Math.cos(fourPiOverM * n) -
@@ -877,7 +877,7 @@ public class SignalProcessing {
         }
         return window;
     }
-    
+
     /** Return an array with samples the Gaussian curve (the "bell curve").
      *  The returned array is symmetric.  E.g., to get a Gaussian curve
      *  that extends out to "four sigma," then the <i>extent</i> argument
@@ -898,7 +898,7 @@ public class SignalProcessing {
                 2.0*extent*standardDeviation/length,
                 generator);
     }
-    
+
     /** Return a new array that is filled with samples of a Hamming
      *  window of a specified length. Throw an IllegalArgumentException
      *  if the length is less than 1 or the window type is unknown.
@@ -911,19 +911,19 @@ public class SignalProcessing {
             throw new IllegalArgumentException(
                     "ptolemy.math.SignalProcessing.generateHammingWindow(): " +
                     " length of window should be greater than 0.");
-        }        
-        
+        }
+
         int M = length - 1;
         int n;
         double[] window = new double[length];
 
         double twoPiOverM = 2.0 * Math.PI / (double) M;
-        
+
         for (n = 0; n < length; n++) {
             window[n] = 0.54 - 0.46 * Math.cos(twoPiOverM * n);
         }
         return window;
-    }    
+    }
 
     /** Return a new array that is filled with samples of a Hanning
      *  window of a specified length. Throw an IllegalArgumentException
@@ -937,14 +937,14 @@ public class SignalProcessing {
             throw new IllegalArgumentException(
                     "ptolemy.math.SignalProcessing.generateHanningWindow(): " +
                     " length of window should be greater than 0.");
-        }        
-        
+        }
+
         int M = length - 1;
         int n;
         double[] window = new double[length];
-        
+
         double twoPiOverM = 2.0 * Math.PI / (double) M;
-        
+
         for (n = 0; n < length; n++) {
             window[n] = 0.5 - 0.5 * Math.cos(twoPiOverM * n);
         }
@@ -971,7 +971,7 @@ public class SignalProcessing {
                 step,
                 generator);
     }
-    
+
     /** Return an array containing a symmetric raised-cosine pulse.
      *  This pulse is widely used in communication systems, and is called
      *  a "raised cosine pulse" because the magnitude its Fourier transform
@@ -1004,7 +1004,7 @@ public class SignalProcessing {
                 length,
                 -(length-1)/2.0,
                 1.0,
-                generator);        
+                generator);
     }
 
     /** Return a new array that is filled with samples of a rectangular
@@ -1020,11 +1020,11 @@ public class SignalProcessing {
                     "ptolemy.math.SignalProcessing"
                     + ".generateRectangularWindow(): " +
                     " length of window should be greater than 0.");
-        }        
-        
+        }
+
         int n;
         double[] window = new double[length];
-                 
+
         for (n = 0; n < length; n++) {
             window[n] = 1.0;
         }
@@ -1066,9 +1066,9 @@ public class SignalProcessing {
                 length,
                 -(length-1)/2.0,
                 1.0,
-                generator);        
+                generator);
     }
-    
+
     /** Return a new array that is filled with samples of a window of a
      *  specified length and type. Throw an IllegalArgumentException
      *  if the length is less than 1 or the window type is unknown.

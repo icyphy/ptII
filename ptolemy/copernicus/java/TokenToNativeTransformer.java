@@ -294,7 +294,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
         while (doneSomething && count < 20) {
             doneSomething = false;
             count++;
-            
+
             if (debug) {
                 System.err.println("inlining token methods in " + entityClass + " iteration " +
                         count + " depth = " + depth);
