@@ -41,6 +41,7 @@ import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Prototype;
 import ptolemy.kernel.undo.UndoStackAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 
@@ -178,7 +179,6 @@ public class MoMLChangeRequest extends ChangeRequest {
         _context = context;
         _base = base;
         _propagator = propagator;
-        _propagating = true;
         _undoable = propagator._undoable;
         _mergeWithPreviousUndo = propagator._mergeWithPreviousUndo;
     }
@@ -299,7 +299,7 @@ public class MoMLChangeRequest extends ChangeRequest {
             _parser = new MoMLParser();
         }
         try {
-            _parser._propagating = _propagating;
+            _parser._propagator = _propagator;
 
             if (_context != null) {
                 _parser.setContext(_context);
@@ -321,7 +321,7 @@ public class MoMLChangeRequest extends ChangeRequest {
                 }
             }
         } finally {
-            _parser._propagating = false;
+            _parser._propagator = null;
         }
 
         // Merge the undo entry created if needed
@@ -346,10 +346,16 @@ public class MoMLChangeRequest extends ChangeRequest {
             _propagator = this;
         }
 
+        String relativeName = null;
         while(context != null) {
             if (!(context instanceof Prototype)) {
                 // This level can't possibly defer.
                 // Continue to the next level up.
+                if (relativeName == null) {
+                    relativeName = context.getName();
+                } else {
+                    relativeName = context.getName() + "." + relativeName;
+                }
                 context = (NamedObj)context.getContainer();
                 continue;
             }
@@ -383,8 +389,6 @@ public class MoMLChangeRequest extends ChangeRequest {
                             // etc.
                             if (context != _context
                                     && (other instanceof CompositeEntity)) {
-                                String trueContextName
-                                        = _context.getName(context);
                                 // Only have to worry about entities
                                 // for now, since only entities can
                                 // participate in deferral mechanisms.
@@ -394,7 +398,7 @@ public class MoMLChangeRequest extends ChangeRequest {
                                 // getEntity().
                                 ComponentEntity trueContext
                                         = ((CompositeEntity)other)
-                                        .getEntity(trueContextName);
+                                        .getEntity(relativeName);
                                 if (trueContext != null) {
                                     if (_propagator._propagatedContexts
                                             .contains(trueContext)) {
@@ -433,7 +437,7 @@ public class MoMLChangeRequest extends ChangeRequest {
                             moml = "<"
                                     + elementName
                                     + " name=\""
-                                    + _context.getName(context)
+                                    + relativeName
                                     + "\">"
                                     + getDescription()
                                     + "</"
@@ -456,11 +460,129 @@ public class MoMLChangeRequest extends ChangeRequest {
                     }
                 }
             }
-
+            if (relativeName == null) {
+                relativeName = context.getName();
+            } else {
+                relativeName = context.getName() + "." + relativeName;
+            }
             context = (NamedObj)context.getContainer();        
         }
     }
-
+    
+    /** Return true if the specified attribute is modified from
+     *  its class definition, or if any object along the propagation
+     *  change from this change request to the specified object
+     *  has been modified.  That is, return true if the specified
+     *  object should <i>not</i> be changed as a side effect
+     *  of this change request.  If the specified object is
+     *  not in the propagation chain from this change request,
+     *  the return false, indicating that it is safe to change
+     *  the object.
+     *  @param attribute An attribute that might be subject
+     *   a propagating change.
+     *  @return True if the specified attribute should not be
+     *   changed as a consequence of this change request.
+     */
+    protected boolean _isShadowed(Attribute attribute) {
+        if (attribute.isModifiedFromClass()) {
+            return true;
+        }
+        
+        // NOTE: This mechanism has a vulnerability.
+        // If a change request is made in an overly broad context,
+        // then it may prematurely conclude that the change
+        // can propagate. I see no workaround except to make
+        // sure that attribute values are changed in a context
+        // no broader than their container.
+        
+        // Attributes cannot themselves defer to other objects,
+        // but the container might.
+        NamedObj context = (NamedObj)attribute.getContainer();
+        String relativeName = attribute.getName();
+        
+        if (_DEBUG) {
+            System.out.println(
+                    "===> Checking for shadowing before changing "
+                    + attribute.getFullName());
+        }
+        
+        // Stop at the top of the hierarchy, or when the context
+        // matches that of the original change request.       
+        while(context != null
+                && context != _context
+                && !_context.deepContains(context)) {
+            if (!(context instanceof Prototype)) {
+                // This level can't possibly defer.
+                // Continue to the next level up.
+                relativeName = context.getName() + "." + relativeName;
+                context = (NamedObj)context.getContainer();
+                continue;
+            }
+            Prototype defersTo = ((Prototype)context).getDeferTo();
+            if (defersTo == _context || _context.deepContains(defersTo)) {
+                // No shadowing here.
+                if (_DEBUG) {
+                    System.out.println(
+                            "===> Done checking because it defers to "
+                            + defersTo.getFullName()
+                            + ", which matches original context "
+                            + _context.getFullName());
+                }
+                // Continue up the hierarchy.
+                relativeName = context.getName() + "." + relativeName;
+                context = (NamedObj)context.getContainer();
+                continue;
+            }
+            if (defersTo == null) {
+                // Dead end path. Continue to the
+                // next level up.
+                relativeName = context.getName() + "." + relativeName;
+                context = (NamedObj)context.getContainer();
+                continue;
+            }
+            // Got a live defers to...
+            Attribute possibleShadow = defersTo.getAttribute(relativeName);
+            if (possibleShadow == null) {
+                // This should not occur.
+                if (_DEBUG) {
+                    System.out.println(
+                            "===> Inconsistent condition where "
+                            + defersTo.getFullName()
+                            + " does not contain attribute "
+                            + relativeName);
+                }
+                // Continue up the higherarchy.                
+                relativeName = context.getName() + "." + relativeName;
+                context = (NamedObj)context.getContainer();
+                continue;
+            } else {
+                if (possibleShadow.isModifiedFromClass()) {
+                    if (_DEBUG) {
+                        System.out.println(
+                                "===> Is shadowed by "
+                                + possibleShadow.getFullName());
+                    }
+                    return true;
+                }
+                // Check whether this deferred to object is shadowed.
+                if (_DEBUG) {
+                    System.out.println(
+                            "===> Checking there is a shadow for "
+                            + possibleShadow.getFullName());
+                }
+                if (_isShadowed(possibleShadow)) {
+                    return true;
+                }
+            }
+            
+            relativeName = context.getName() + "." + relativeName;
+            context = (NamedObj)context.getContainer();
+            // Continue with the next level up the hierarchy.
+        }
+        // Have searched all the paths and haven't found a shadow.
+        return false;
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -482,10 +604,6 @@ public class MoMLChangeRequest extends ChangeRequest {
     // Set of contexts into which this change request has already
     // propagated.
     private Set _propagatedContexts = null;
-    
-    // Indicator of whether this request is the result of a
-    // propagating change.
-    private boolean _propagating = false;
     
     // The original change request that triggered this one, or
     // null if there is none.

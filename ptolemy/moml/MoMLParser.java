@@ -296,7 +296,7 @@ public class MoMLParser extends HandlerBase {
         // this would otherwise just result in chaotic names for
         // propagated changes.
         if (_namespace == _AUTO_NAMESPACE
-                && !_propagating
+                && (_propagator == null)
                 && _current != null
                 && (name.equals("name")
                         || name.equals("port")
@@ -643,8 +643,13 @@ public class MoMLParser extends HandlerBase {
                         // previously changed, then don't allow this to mark
                         // it changed from class.
                         // EAL 2/04.
-                        if (_propagating) {
-                            if (!previous.isModifiedFromClass()) {
+                        if (_propagator != null) {
+                            // NOTE: This is not sufficient to use
+                            // previous.isModifiedFromClass() here.
+                            // The property may have been modified from class
+                            // in an intermediate subclass, and this will not
+                            // show up as a false from isModifiedFromClass().
+                            if (!_propagator._isShadowed(previous)) {
                                 // Propagating, and value has not been modified.
                                 previous.setExpression(_currentCharData.toString());
                                 // The above will mark it modified, which we don't
@@ -663,7 +668,7 @@ public class MoMLParser extends HandlerBase {
                         // If we are currently propagating, then mark the new
                         // doc element itself as a class element and restore
                         // the container to the state it was in before.  EAL 2/04
-                        if (_propagating) {
+                        if (_propagator != null) {
                             doc.setClassElement(true);
                         }
                     }
@@ -1762,7 +1767,7 @@ public class MoMLParser extends HandlerBase {
                         new MoMLParser(_workspace, _classLoader);
 
                     newParser.setContext(_current);
-                    newParser._propagating = _propagating;
+                    newParser._propagator = _propagator;
                     _parse(newParser, _base, source);
                 }
 
@@ -1884,7 +1889,7 @@ public class MoMLParser extends HandlerBase {
                         // cannot be changed.  EAL 1/04.
                         if (alreadyExisted
                                 &&  ioport.isClassElement()
-                                && !_propagating) {
+                                && (_propagator == null)) {
                             if (ioport.isInput() != isInput
                                     || ioport.isOutput() != isOutput) {
                                 throw new IllegalActionException(ioport,
@@ -1997,7 +2002,9 @@ public class MoMLParser extends HandlerBase {
                     
                     // NOTE: Added to ensure that class elements aren't changed.
                     // EAL 1/04.
-                    if (!oldName.equals(newName) && _current.isClassElement() && !_propagating) {
+                    if (!oldName.equals(newName) 
+                            && _current.isClassElement() 
+                            && (_propagator == null)) {
                         throw new IllegalActionException(_current,
                             "Cannot change the name to "
                             + newName
@@ -2293,10 +2300,11 @@ public class MoMLParser extends HandlerBase {
     ///////////////////////////////////////////////////////////////////
     ////                         package friendly variables        ////
 
-    // Indicator that the MoML currently being evaluated is the result
-    // of propagating a change from a master to something that was cloned
-    // from the master.  This is set by MoMLChangeRequest only.
-    boolean _propagating = false;
+    // If this is non-null, then it specifies that an instance of
+    // MoMLChangeRequest triggered the current parse action by
+    // propagating its own change request to objects that defer
+    // their definition to it, directly or indirectly.
+    MoMLChangeRequest _propagator = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -2677,7 +2685,7 @@ public class MoMLParser extends HandlerBase {
             
             // If we are currently propagating, then mark the new
             // entity itself as a class element.  EAL 2/04
-            if (_propagating) {
+            if (_propagator != null) {
                 newEntity.setClassElement(true);
             }
 
@@ -2728,7 +2736,7 @@ public class MoMLParser extends HandlerBase {
                 _markContentsClassElements(newEntity);
                 // If we are currently propagating, then mark the new
                 // entity itself as a class element.  EAL 2/04
-                if (_propagating) {
+                if (_propagator != null) {
                     newEntity.setClassElement(true);
                 }
                 return newEntity;
@@ -2769,7 +2777,7 @@ public class MoMLParser extends HandlerBase {
 
         // NOTE: Added to ensure that class elements aren't changed.
         // EAL 1/04.
-        if (toDelete.isClassElement() && !_propagating) {
+        if (toDelete.isClassElement() && (_propagator == null)) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This entity is part of the class definition.");
         }
@@ -2853,7 +2861,7 @@ public class MoMLParser extends HandlerBase {
 
         // NOTE: Added to ensure that class elements aren't changed.
         // EAL 1/04.
-        if (toDelete.isClassElement() && !_propagating) {
+        if (toDelete.isClassElement() && (_propagator == null)) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This port is part of the class definition.");
         }
@@ -2943,7 +2951,7 @@ public class MoMLParser extends HandlerBase {
         }
         // NOTE: Added to ensure that class elements aren't changed.
         // EAL 1/04.
-        if (toDelete.isClassElement() && !_propagating) {
+        if (toDelete.isClassElement() && (_propagator == null)) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This attribute is part of the class definition.");
         }
@@ -2966,7 +2974,7 @@ public class MoMLParser extends HandlerBase {
 
         // NOTE: Added to ensure that class elements aren't changed.
         // EAL 1/04.
-        if (toDelete.isClassElement() && !_propagating) {
+        if (toDelete.isClassElement() && (_propagator == null)) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This relation is part of the class definition.");
         }
@@ -3082,7 +3090,7 @@ public class MoMLParser extends HandlerBase {
                 // If this object is a class element, then its I/O status
                 // cannot be changed.  EAL 1/04.
                 if (_current.isClassElement()
-                        && !_propagating 
+                        && (_propagator == null) 
                         && ((IOPort)_current).isMultiport() != newValue) {
                     throw new IllegalActionException(_current,
                             "Cannot change whether this port is " +
@@ -3094,7 +3102,7 @@ public class MoMLParser extends HandlerBase {
                 // If this object is a class element, then its I/O status
                 // cannot be changed.  EAL 1/04.
                 if (_current.isClassElement()
-                        && !_propagating 
+                        && (_propagator == null) 
                         && ((IOPort)_current).isMultiport() != newValue) {
                     throw new IllegalActionException(_current,
                             "Cannot change whether this port is " +
@@ -3140,7 +3148,7 @@ public class MoMLParser extends HandlerBase {
                 // If this object is a class element, then its I/O status
                 // cannot be changed.  EAL 1/04.
                 if (_current.isClassElement()
-                        && !_propagating 
+                        && (_propagator == null) 
                         && ((IOPort)_current).isOutput() != newValue) {
                     throw new IllegalActionException(_current,
                             "Cannot change whether this port is " +
@@ -3153,7 +3161,7 @@ public class MoMLParser extends HandlerBase {
                 // If this object is a class element, then its I/O status
                 // cannot be changed.  EAL 1/04.
                 if (_current.isClassElement()
-                        && !_propagating 
+                        && (_propagator == null) 
                         && ((IOPort)_current).isOutput() != newValue) {
                     throw new IllegalActionException(_current,
                             "Cannot change whether this port is " +
@@ -3200,7 +3208,7 @@ public class MoMLParser extends HandlerBase {
                 // If this object is a class element, then its I/O status
                 // cannot be changed.  EAL 1/04.
                 if (_current.isClassElement()
-                        && !_propagating 
+                        && (_propagator == null) 
                         && ((IOPort)_current).isInput() != newValue) {
                     throw new IllegalActionException(_current,
                             "Cannot change whether this port is " +
@@ -3213,7 +3221,7 @@ public class MoMLParser extends HandlerBase {
                 // If this object is a class element, then its I/O status
                 // cannot be changed.  EAL 1/04.
                 if (_current.isClassElement()
-                        && !_propagating 
+                        && (_propagator == null) 
                         && ((IOPort)_current).isInput() != newValue) {
                     throw new IllegalActionException(_current,
                             "Cannot change whether this port is " +
@@ -3341,6 +3349,10 @@ public class MoMLParser extends HandlerBase {
                                     _parser.getColumnNumber());
                         }
                         Settable settable = (Settable)property;
+                        // NOTE: Since this property is being now created,
+                        // we do not have to worry about whether we are
+                        // propagating a change that is shadowed by a
+                        // change from class definition.
                         settable.setExpression(value);
                         _paramsToParse.add(property);
                     }
@@ -3375,12 +3387,13 @@ public class MoMLParser extends HandlerBase {
                     // previously changed, then don't allow this to mark
                     // it changed from class.
                     // EAL 2/04.
-                    if (_propagating) {
-                        // FIXME: This is not really sufficient.
+                    if (_propagator != null) {
+                        // NOTE: This is not sufficient to use
+                        // previous.isModifiedFromClass() here.
                         // The property may have been modified from class
                         // in an intermediate subclass, and this will not
                         // show up as a false from isModifiedFromClass().
-                        if (!property.isModifiedFromClass()) {
+                        if (!_propagator._isShadowed((Attribute)property)) {
                             // Propagating, and value has not been modified.
                             settable.setExpression(value);
                             // The above will mark it modified, which we don't
@@ -3521,7 +3534,7 @@ public class MoMLParser extends HandlerBase {
         // FIXME: Should we keep the parser to re-use?
         MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
         newParser.setContext(context);
-        newParser._propagating = _propagating;
+        newParser._propagator = _propagator;
         NamedObj result = newParser.parse(_base, input);
         
         // Have to mark the contents class elements, so that
@@ -3792,7 +3805,7 @@ public class MoMLParser extends HandlerBase {
         // EAL 1/04. We have to prohit adding links between class
         // elements because this operation cannot be undone, and
         // it will not be persistent.
-        if (!_propagating && _isLinkInClass(context, port, relation)) {
+        if ((_propagator == null) && _isLinkInClass(context, port, relation)) {
             throw new IllegalActionException(port,
                     "Cannot link a port to a relation when both" +
                     " are part of the class definition.");
@@ -3923,7 +3936,7 @@ public class MoMLParser extends HandlerBase {
             
             // NOTE: Added to ensure that class elements aren't changed.
             // EAL 1/04.
-            if (!_propagating && _isLinkInClass(context, port, relation)) {
+            if ((_propagator == null) && _isLinkInClass(context, port, relation)) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
@@ -3962,7 +3975,7 @@ public class MoMLParser extends HandlerBase {
             // expensive.
             List relationList = port.linkedRelationList();
             Relation relation = (Relation)relationList.get(index);
-            if (!_propagating && _isLinkInClass(context, port, relation)) {
+            if ((_propagator == null) && _isLinkInClass(context, port, relation)) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
@@ -3996,7 +4009,7 @@ public class MoMLParser extends HandlerBase {
             // expensive.
             List relationList = port.insideRelationList();
             Relation relation = (Relation)relationList.get(index);
-            if (!_propagating && _isLinkInClass(context, port, relation)) {
+            if ((_propagator == null) && _isLinkInClass(context, port, relation)) {
                 throw new IllegalActionException(port,
                         "Cannot unlink a port from a relation when both" +
                         " are part of the class definition.");
