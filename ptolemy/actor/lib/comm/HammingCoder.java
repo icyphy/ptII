@@ -69,7 +69,7 @@ combinations of <i>m</i> bits.
 <p>
 To generate a Hamming code, the <i>k</i> information bits is considered
 as a row vector <i><u>X</u></i>. Its Hamming code is 
-<i><u>Y</u><i> = <i><u>X</u></i> * G.
+<i><u>Y</u></i> = <i><u>X</u></i> * G.
 Hence <i><u>Y</u></i> is a row vector of length <i>n</i>. The result is
 then sent to the output port in sequence.
 <p>
