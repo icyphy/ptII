@@ -42,7 +42,18 @@ public final class CTExecutionPhase {
 
     /** A private constructor.
      */
-    private CTExecutionPhase() {
+    private CTExecutionPhase(String executionPhaseName) {
+        _executionPhaseName = executionPhaseName;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** Return the string representation of this object.
+     *  @return the string representation of this object.
+     */
+    public String toString() {
+        return _executionPhaseName;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -52,7 +63,7 @@ public final class CTExecutionPhase {
      *  the starting states for the following continuous phase execution. 
      */
     public final static CTExecutionPhase CREATINGSTARTINGSTATES_PHASE 
-        = new CTExecutionPhase();
+        = new CTExecutionPhase("CREATINGSTARTINGSTATES_PHASE");
 
 //    /** This final static memeber indicates the director is in 
 //     *  a discrete phase execution. 
@@ -64,65 +75,71 @@ public final class CTExecutionPhase {
      *  actors. 
      */
     public final static CTExecutionPhase FIRINGDYNAMICACTORS_PHASE 
-        = new CTExecutionPhase();
+        = new CTExecutionPhase("FIRINGDYNAMICACTORS_PHASE");
 
     /** This final static memeber indicates the director is firing event
      *  generators.
      */
     public final static CTExecutionPhase FIRINGEVENTGENERATORS_PHASE 
-        = new CTExecutionPhase();
+        = new CTExecutionPhase("FIRINGEVENTGENERATORS_PHASE");
 
     /** This final static memeber indicates the director is firing
      *  purely discrete actors. 
      */
     public final static CTExecutionPhase FIRINGPURELYDISCRETE_PHASE 
-        = new CTExecutionPhase();
+        = new CTExecutionPhase("FIRINGPURELYDISCRETE_PHASE");
 
     /** This final static memeber indicates the director is firing state 
      *  transition actors. 
      */
     public final static CTExecutionPhase FIRINGSTATETRANSITIONACTORS_PHASE 
-        = new CTExecutionPhase();
+        = new CTExecutionPhase("FIRINGSTATETRANSITIONACTORS_PHASE");
 
     /** This final static memeber indicates the director is generating
      *  discrete events by iterating event generators. 
      */
     public final static CTExecutionPhase GENERATINGEVENTS_PHASE 
-        = new CTExecutionPhase();
+        = new CTExecutionPhase("GENERATINGEVENTS_PHASE");
 
     /** This final static memeber indicates the director is generating
      *  continuous waveforms by iterating waveform generators. 
      */
     public final static CTExecutionPhase GENERATINGWAVEFORMS_PHASE 
-        = new CTExecutionPhase();
+        = new CTExecutionPhase("GENERATINGWAVEFORMS_PHASE");
 
     /** This final static memeber indicates the director is prefiring
      *  dynamic actors. 
      */
     public final static CTExecutionPhase PREFIRINGDYNAMICACTORS_PHASE 
-        = new CTExecutionPhase();
+        = new CTExecutionPhase("PREFIRINGDYNAMICACTORS_PHASE");
 
     /** This final static memeber indicates the director is producing
      *  outputs. 
      */
     public final static CTExecutionPhase PRODUCINGOUTPUTS_PHASE 
-        = new CTExecutionPhase();
+        = new CTExecutionPhase("PRODUCINGOUTPUTS_PHASE");
 
     /** This final static memeber indicates the director is solving
      *  the states of dynamic actors. 
      */
     public final static CTExecutionPhase SOLVINGSTATES_PHASE 
-        = new CTExecutionPhase();
+        = new CTExecutionPhase("SOLVINGSTATES_PHASE");
 
     /** This final static memeber indicates the director is not in any 
      *  of the above phases.
      */
     public final static CTExecutionPhase UNKNOWN_PHASE 
-        = new CTExecutionPhase();
+        = new CTExecutionPhase("UNKNOWN_PHASE");
 
     /** This final static memeber indicates the director is updating
      *  (postfiring) all the continuous actors. 
      */
     public final static CTExecutionPhase UPDATINGCONTINUOUSSTATES_PHASE 
-        = new CTExecutionPhase();
+        = new CTExecutionPhase("UPDATINGCONTINUOUSSTATES_PHASE");
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    // private name of execution phase.
+    private String _executionPhaseName;
 }
