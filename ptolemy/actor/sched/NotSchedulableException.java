@@ -24,54 +24,51 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (liuj@eecs.berkeley.edu)
-@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
+@ProposedRating Red (liuj@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu) This class was
+saving the actors as an enumeration, but this value was not
+used anywhere so I pulled out that code.
 */
 
 package ptolemy.actor.sched;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.kernel.util.*;
+
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Enumeration;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// NotSchedulableException
 /**
 This is a special case of the InvalidStateException such that a
 CompositeActor is not schedulable by a certain scheduler.
-This class has the same constructors as its supper class, but it also
-has an Enumeration that contains the unschedulable
-actors in the CompositeActor. The enumeration can be used by other
-algorithms to do further scheduling, or by the UI to present to the users.
-@author Jie Liu
+@author Jie Liu, Christopher Hylands
 @version $Id$
 @see ptolemy.kernel.util.InvalidStateException
 */
 public class NotSchedulableException extends InvalidStateException {
 
     /** Constructs an Exception with only a detail message.
-     *  The unschedulable actors are set to null.
      *  @param detail The message.
      */
     public NotSchedulableException(String detail) {
         super(detail);
-        _unschedulableActors = null;
     }
 
     /** Constructs an Exception with a detail message that includes the
      *  name of the first argument and the second argument string.
-     *  The unschedulable actors are set to null.
      *  @param nameable The object.
      *  @param detail The message.
      */
     public NotSchedulableException(Nameable nameable, String detail) {
         super(nameable, detail);
-        _unschedulableActors = null;
     }
 
     /** Constructs an Exception with a detail message that includes the
      *  names of the first two arguments plus the third argument string.
-     *  The unschedulable actors are set to null.
      *  @param nameable1 The first object.
      *  @param nameable2 The second object.
      *  @param detail The message.
@@ -79,43 +76,43 @@ public class NotSchedulableException extends InvalidStateException {
     public NotSchedulableException(Nameable nameable1, Nameable nameable2,
             String detail) {
         super(nameable1, nameable2, detail);
-        _unschedulableActors = null;
     }
 
     /** Constructs an Exception with a detail message that includes the
-     *  names of an enumeration of nameable plus the an argument string. An
-     *  addition Enumeration of unschedulable actors is also set. This
-     *  enumeration may be used by the UI to illustrate the unschedulable
-     *  actors, or by the directors to perform some actions to correct
-     *  the error.
+     *  names of an enumeration of nameables plus the an argument string.
+     *  @deprecated Use
+     *    NotSchedulableException(Collection, Throwable, String) instead.
      *  @param detail The message.
      *  @param actors The unschedulable actors.
      */
     public NotSchedulableException(Enumeration actors, String detail) {
-        super(actors, detail);
-        _unschedulableActors = actors;
+        this(_list(actors), null, detail);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Return the unschedulable actors enumeration.
-     *  @return the unschedulable actors enumeration.
+    /** Constructs an Exception with a detail message that includes the
+     *  names of a Collection of nameables plus the an argument string.
+     *  @param detail The message.
+     *  @param actors The unschedulable actors.
      */
-    public Enumeration getUnschedulableActors() {
-        return _unschedulableActors;
+    public NotSchedulableException(Collection actors,
+            Throwable cause, String detail) {
+        super(actors, cause, detail);
     }
-
-    /** Return true if the unschedulable actors has been set.
-     *  @return True if the unschedulable actors has been set.
-     */
-    public boolean hasUnschedulableActors() {
-        return _unschedulableActors != null;
-    }
-
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         private methods                   ////
 
-    // The Enumeration of actors that are not schedulable.
-    private Enumeration _unschedulableActors = null;
+    // Convert from an Enumeration to a List.
+    //
+    // JDK1.4 has a Collections.list(Enumeration) method
+    // that would be good to use.
+    // For suggestions about converting from Enumerations to Lists,
+    // see 
+    // http://java.sun.com/docs/books/tutorial/collections/interoperability/compatibility.html
+    private static List _list(Enumeration objects) {
+        List list = new ArrayList();
+        while (objects.hasMoreElements()) {
+            list.add(objects.nextElement());
+        }
+        return list;
+    }
 }
