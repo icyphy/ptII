@@ -71,7 +71,7 @@ which takes the parameters and construct a Ptolemy model for you.</text>
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={175, 68, 819, 563}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={175, 68, 819, 570}}">
     </property>
     <entity name="ContinuousTransferFunction1" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
         <property name="numerator" class="ptolemy.data.expr.Parameter" value="{500.0}">
@@ -236,35 +236,6 @@ which takes the parameters and construct a Ptolemy model for you.</text>
         <link port="Feedforward1.input" relation="node1"/>
         <link port="Feedforward1.output" relation="_R4"/>
     </entity>
-    <entity name="Clock2" class="ptolemy.actor.lib.Clock">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
-        </property>
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{2.0, -2.0}">
-        </property>
-        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <doc>Create a generalized square wave</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 290.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-        <port name="start" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
-            </property>
-        </port>
-    </entity>
     <entity name="PeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
@@ -283,8 +254,30 @@ which takes the parameters and construct a Ptolemy model for you.</text>
             </property>
         </port>
     </entity>
+    <entity name="ContinuousClock" class="ptolemy.actor.lib.ContinuousClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{2.0, -2.0}">
+        </property>
+        <property name="numberOfCycles" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 245.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.5985861967092, 0.6442999307919, 1.2111074686226, 0.9005005391433, 1.057328772796, 0.9746812509773, 1.009239367163, 0.9975174635908, 1.0003337552912, 1.0001070191256, -2.2030110548596, -0.2792663531346, -1.429638223606, -0.7462675205993, -1.1467126375012, -0.9161620700758, -1.0392809745813, -0.9824126861889, -1.00537484747, -0.9988232215809, 2.2022159974974, 0.2797644391196, 1.4293335238133, 0.746446375567, 1.1466047543006, 0.916225215706, 1.0392598386812, 0.9824189275186, 1.0053664265829, 0.9988258288765}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.5985861967092, 0.6442999307919, 1.2111074686226, 0.9005005391433, 1.057328772796, 0.9746812509773, 1.009239367163, 0.9975174635908, 1.0003337552912, 0.9999852223474, -2.2029370006388, -0.2793126937473, -1.4296098837663, -0.7462841656998, -1.1467026014651, -0.9161679452598, -1.0392789905482, -0.9824132814461, -1.0053740698175, -0.9979798516423, 2.2017044283934, 0.2800754251181, 1.4291448964757, 0.7465602446384, 1.1465368978998, 0.9162652799983, 1.0392414563347, 0.982426756972, 1.005361994222, 0.9979850294248}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
@@ -299,18 +292,18 @@ which takes the parameters and construct a Ptolemy model for you.</text>
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="440.0, 310.0">
         </vertex>
     </relation>
-    <link port="ContinuousTransferFunction1.input" relation="relation2"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ContinuousTransferFunction1.input" relation="relation"/>
     <link port="ContinuousTransferFunction1.output" relation="relation3"/>
-    <link port="Clock2.output" relation="relation2"/>
     <link port="PeriodicSampler.input" relation="relation3"/>
     <link port="PeriodicSampler.output" relation="relation4"/>
+    <link port="ContinuousClock.output" relation="relation"/>
     <link port="NonStrictTest.input" relation="relation4"/>
 </entity>
