@@ -60,7 +60,7 @@ be of type ptolemy.data.Token
 public class ASTPtMethodCallNode extends ASTPtRootNode {
     /** Need to store the method name of the method call.
      */
-    protected String methodName;
+    protected String _methodName;
 
     /** Resolves the Token to be stored in the node. When this
      *  method is called by resolveTree, the tokens in each of the children
@@ -78,8 +78,8 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
         if (num == 1) return childTokens[0];
 
         try {
-            if (methodName == null) {
-                String msg = "Invalid method call: " + methodName;
+            if (_methodName == null) {
+                String msg = "Invalid method call: " + _methodName;
                 throw new IllegalArgumentException(msg);
             }
             // we have a valid method call!!
@@ -100,7 +100,7 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
                     argTypes[i-1] = Class.forName("ptolemy.data.Token");
                 }
                 Class destTokenClass = childTokens[0].getClass();
-                Method m = destTokenClass.getMethod(methodName, argTypes);
+                Method m = destTokenClass.getMethod(_methodName, argTypes);
                 Object result = m.invoke(childTokens[0], argValues);
                 // Method call can only return ptolemy.data.Token, we want?
                 if (result instanceof ptolemy.data.Token) {
@@ -118,7 +118,7 @@ public class ASTPtMethodCallNode extends ASTPtRootNode {
                         sb.append(", " + argValues[i].toString());
                     }
                 }
-                String str = "Function " + methodName + "(" + sb + ") cannot";
+                String str = "Function " + _methodName + "(" + sb + ") cannot";
                 str += " be executed with given arguments, on ptTokens of ";
                 str += "type " + childTokens[0].getClass().getName() + ": ";
                 throw new IllegalArgumentException(str + ex.getMessage());
