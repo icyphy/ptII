@@ -62,6 +62,7 @@ public class Ramp extends CCodeGeneratorHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variable                ////
 
+    // FIXME: the input to trigger is ignored.
     protected String _codeBlock =    
               "$ref(output) = $ref(init);\n"
             + "$ref(init) += $val(step);\n";

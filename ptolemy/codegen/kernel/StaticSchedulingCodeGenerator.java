@@ -39,6 +39,7 @@ import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
@@ -90,10 +91,14 @@ public class StaticSchedulingCodeGenerator
         if (manager == null) {
             CompositeActor toplevel = (CompositeActor)
                     ((NamedObj)container).toplevel();
-        	toplevel.setManager(new Manager(
-                    toplevel.workspace(), "Manager"));
+            manager = new Manager(toplevel.workspace(), "Manager");
+        	toplevel.setManager(manager);
         }
-        container.preinitialize();
+        try {
+			manager.preinitializeAndResolveTypes();
+		} catch (KernelException ex) {
+			throw new IllegalActionException(getContainer());
+		}
         
         super.generateCode(code);
     }

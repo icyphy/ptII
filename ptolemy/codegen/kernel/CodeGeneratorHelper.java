@@ -271,6 +271,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         // Try if the name is a parameter.
         Attribute attribute = _component.getAttribute(name);
         if (attribute != null) {
+            result.append(_component.getFullName().replace('.', '_'));
+            result.append("_");
             result.append(name);
             return result.toString();
         }
