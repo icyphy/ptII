@@ -179,20 +179,16 @@ test BooleanToken-9.0 {Test identities} {
 } {true false}
 
 test BooleanToken-10.0 {Test subtraction of booleans} {
-    set r1 [$falseToken subtract $falseToken]
-    set r2 [$trueToken subtract $falseToken]
-    set r3 [$falseToken subtract $trueToken]
-    set r4 [$trueToken subtract $trueToken]
-    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
-} {false true true true}
+    catch {set r1 [$falseToken subtract $falseToken]} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.BooleanToken 'false' and ptolemy.data.BooleanToken 'false'}}
 
 test BooleanToken-11.0 {Test reverse subtraction of booleans} {
-    set r1 [$falseToken subtractReverse $falseToken]
-    set r2 [$trueToken subtractReverse $falseToken]
-    set r3 [$falseToken subtractReverse $trueToken]
-    set r4 [$trueToken subtractReverse $trueToken]
-    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
-} {false true true true}
+    catch {set r1 [$falseToken subtract $falseToken]} errMsg
+    list $errMsg
+} {{ptolemy.kernel.util.IllegalActionException: subtract operation not supported between ptolemy.data.BooleanToken 'false' and ptolemy.data.BooleanToken 'false'}}
+
+
 
 ######################################################################
 ####
