@@ -337,7 +337,7 @@ public class DoubleMatrixToken extends MatrixToken {
     }
 
     /** Return the number of rows in the matrix.
-     *  @return An intefer.
+     *  @return An integer.
      */
     public int numRows() {
 	return _numRows;
