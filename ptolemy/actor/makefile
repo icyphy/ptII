@@ -77,7 +77,6 @@ JSRCS = \
 	Manager.java \
 	NoRoomException.java \
 	NoTokenException.java \
-	NotifyThread.java \
 	QueueReceiver.java \
 	Receiver.java \
 	TypedActor.java \
