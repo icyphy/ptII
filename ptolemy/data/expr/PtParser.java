@@ -1183,10 +1183,10 @@ String tidied, x;
                     // Input is a hex number.
                     radix = 16;
                     prefixLength = 2;
-                } else if(x.startsWith("0") && (x.length() > 1)) {
+                } else if(x.startsWith("0")) {
                     // Input is an octal number.
                     radix = 8;
-                    prefixLength = 1;
+                    prefixLength = 0;
                 } else {
                     // Input is a decimal number.
                     radix = 10;
@@ -1201,9 +1201,9 @@ String tidied, x;
                     jjtn003._ptToken = new LongToken(Long.parseLong(x, radix));
                 } else if (mustBeUnsignedByte) {
                     // If the size was specified as unsignedbyte, 
-                    // then create an unsigned byte.
+                    // then create an unsigned byte, truncating if necessary.
                     jjtn003._ptToken =
-                        new UnsignedByteToken(Byte.parseByte(x, radix));
+                        new UnsignedByteToken(Integer.parseInt(x, radix));
                 } else {
                     // Try to infer the size.  Inferred sizes are at least
                     // integer.

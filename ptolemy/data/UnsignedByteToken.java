@@ -104,7 +104,14 @@ public class UnsignedByteToken extends ScalarToken {
      */
     public UnsignedByteToken(String init) throws IllegalActionException {
         try {
-            _value = Byte.parseByte(init);
+            // Note that Byte.parseByte performs signed conversion,
+            // which is not really what we want.
+            int value = Integer.parseInt(init);
+            if(value > 255 || value < 0) {
+                throw new IllegalActionException("Value '" + init +
+                        "' is out of the range of Unsigned Byte");
+            }
+            _value = (byte)value;
         } catch (NumberFormatException e) {
             throw new IllegalActionException(e.getMessage());
         }
@@ -276,7 +283,7 @@ public class UnsignedByteToken extends ScalarToken {
         if ( !_isUnitless()) {
             unitString = " * " + unitsString();
         }
-        return Byte.toString(_value) + unitString;
+        return Integer.toString(unsignedConvert(_value)) + unitString;
     }
 
     /** Convert a byte to an integer, treating the byte as an unsigned

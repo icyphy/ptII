@@ -60,16 +60,19 @@ test UnsignedByteToken-1.0 {Create an empty instance} {
 # 
 test UnsignedByteToken-1.1 {Create an instance with a value} {
     set token [java::new {ptolemy.data.UnsignedByteToken byte} 3]
-    $token toString
-} {3}
+    set token2 [java::new {ptolemy.data.UnsignedByteToken byte} -1]
+    list [$token toString] [$token2 toString]
+} {3 255}
 
 ######################################################################
 ####
 # 
 test UnsignedByteToken-1.2 {Create an instance from a string value} {
     set token [java::new {ptolemy.data.UnsignedByteToken String} "5"]
-    $token toString
-} {5}
+    set token2 [java::new {ptolemy.data.UnsignedByteToken String} "255"]
+    catch {[[java::new {ptolemy.data.UnsignedByteToken String} "-1"] toString]} res3
+    list [$token toString] [$token2 toString] $res3
+} {5 255 {ptolemy.kernel.util.IllegalActionException: Value '-1' is out of the range of Unsigned Byte}}
 
 ######################################################################
 ####
