@@ -138,7 +138,7 @@ if [ "$PTCAL_DIR" = "cal" ]; then
     # Directory that contains the Cal jar file ptCal.jar
     # used by bin/ptinvoke.in
     CAL_DIR="@CAL_DIR@"
-    CAL_JARS="${CLASSPATHSEPARATOR}${CAL_DIR}/ptCal.jar${CLASSPATHSEPARATOR}${CAL_DIR}/saxon7.jar"
+    CAL_JARS="${CLASSPATHSEPARATOR}${CAL_DIR}/ptCal.jar${CLASSPATHSEPARATOR}${CAL_DIR}/saxon7.jar${CLASSPATHSEPARATOR}${CAL_DIR}/java_cup.jar"
 fi
 
 #### Serial port stuff
@@ -305,6 +305,10 @@ fi
 
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
 # arbitrary files
+#
+# Note that CAL_JARS should be before SOOT_JARS because
+# CAL_JARS contains java_cup.jar and jasminclasses.jar contains
+# a version of java cup
 ALL_JAR="${DIVA_JAR}${JINI_JARS}${CAL_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${X10_JARS}${CHIC_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG}"
 
