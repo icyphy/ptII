@@ -108,8 +108,13 @@ public class InterfaceAutomatonTransition extends Transition {
 	    throws IllegalActionException, NameDuplicationException {
 
         super(container, name);
-	label = new StringAttribute(this, "");
-	guardExpression.setVisibility(Settable.NONE);
+        label = new StringAttribute(this, "label");
+	label.setExpression("");
+        outputActions.setVisibility(Settable.NONE);
+        setActions.setVisibility(Settable.NONE);  
+        preemptive.setVisibility(Settable.NONE);
+        reset.setVisibility(Settable.NONE);
+        guardExpression.setVisibility(Settable.NONE);
 	triggerExpression.setVisibility(Settable.NONE);
     }
 
@@ -137,6 +142,8 @@ public class InterfaceAutomatonTransition extends Transition {
         super.attributeChanged(attribute);
         if (attribute == label) {
 	    String labelString = label.getExpression();
+            // The default label is the null string.
+            if (labelString.equals("")) return;
 	    String name = labelString.substring(0, labelString.length()-1);
             if (labelString.endsWith("?")) {
 	        setGuardExpression(name + "_isPresent");
@@ -147,12 +154,20 @@ public class InterfaceAutomatonTransition extends Transition {
 	    } else if (labelString.endsWith(";")) {
 	        // FIXME: create(?) set parameter, set action to <param>=true
 		setGuardExpression("true");
+                outputActions.setExpression("");
 	    } else {
 	        throw new IllegalArgumentException(
 	                "InterfaceAutomatonTransition.setLabel: The argument "
 		        + label + " does not end with ? or ! or ;");
 	    }
         }
+    }
+
+    /** Return the label of this transition.
+     *  @return The label of this transition.
+     */
+    public String getLabel() {
+        return label.getExpression();
     }
 
     /** Return the transition type. The transition type is one of
