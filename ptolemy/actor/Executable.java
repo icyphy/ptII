@@ -60,6 +60,9 @@ public interface Executable {
      *  invocations of prefire() and postfire(). It may produce output
      *  data. Typically, the fire() method performs the computation associated
      *  with an actor.
+     *
+     *  @exception IllegalActionException If the fire() method of the
+     *   container or one of the deeply contained actors throws it.
      */
     public void fire() throws IllegalActionException;
 
@@ -67,15 +70,22 @@ public interface Executable {
      *  of an application, before any of these other methods are invoked.
      *  It may produce output data.  This method typically initializes
      *  internal members of an actor and produces initial output data.
+     *
+     *  @exception IllegalActionException If the initialize() method of the
+     *   container or one of the deeply contained actors throws it.
      */
     public void initialize() throws IllegalActionException;
 
     /** This method should be invoked once per iteration, after the last
      *  invocation of fire() in that iteration. It may produce output data.
      *  It returns true if the execution can proceed into the next iteration.
-     *  @return True if the execution can continue.  This method typically
-     *  wraps up an iteration, which may involve updating local state.
-     *  In an opaque, non-atomic entity, it may also transfer output data.
+     *  This method typically wraps up an iteration, which may involve
+     *  updating local state. In an opaque, non-atomic entity, it may also
+     *  transfer output data.
+     *
+     *  @return True if the execution can continue.
+     *  @exception IllegalActionException If the postfire() method of the
+     *   container or one of the deeply contained actors throws it.
      */
     public boolean postfire() throws IllegalActionException;
 
@@ -85,7 +95,12 @@ public interface Executable {
      *  this method will typically check preconditions for an iteration, if
      *  there are any. In an opaque, non-atomic entity,
      *  it may move data into an inner subsystem.
+     *
      *  @return True if the iteration can proceed.
+     *  @exception IllegalActionException If the prefire() method of the
+     *   container or one of the deeply contained actors throws it, or a
+     *   pending mutation throws it, or if all receivers could not be created.
+     *  @exception NameDuplicationException If a pending mutation throws it.
      */
     public boolean prefire() throws IllegalActionException,
             NameDuplicationException;
@@ -94,6 +109,9 @@ public interface Executable {
      *  of an application.  None of the other action methods should be
      *  be invoked afer it.  It finalizes an execution, typically closing
      *  files, displaying final results, etc.
+     *
+     *  @exception IllegalActionException If the wrapup() method of the
+     *   container or one of the deeply contained actors throws it.
      */
     public void wrapup() throws IllegalActionException;
 }
