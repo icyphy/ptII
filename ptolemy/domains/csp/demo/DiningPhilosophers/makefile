@@ -31,7 +31,7 @@
 
 ME =		ptolemy/domains/csp/demo/DiningPhilosophers
 
-DIRS =		checkDeadlock
+DIRS =		#checkDeadlock
 
 # Root of the Java directory
 ROOT =		../../../../..
