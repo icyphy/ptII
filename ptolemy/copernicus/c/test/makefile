@@ -51,14 +51,15 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	Simple.java
+	Simple.java \
+	FIRsingle.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	Object.tcl \
 	Simple.tcl \
     ramp.tcl \
-    FIR.tcl
+    FIRsingle.tcl \
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
