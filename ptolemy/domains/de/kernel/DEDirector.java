@@ -1012,7 +1012,7 @@ public class DEDirector extends Director {
     private void _computeDepth() {
         Object[] sort = (Object[]) _dag.topologicalSort();
         if (DEBUG) {
-            System.out.println("*** Result of topological sort: ***");
+            System.out.println("### Result of topological sort: ###");
         }
 	for(int i=sort.length-1; i >= 0; i--) {
             IOPort p = (IOPort)sort[i];

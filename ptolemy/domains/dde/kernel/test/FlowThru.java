@@ -81,7 +81,7 @@ public class FlowThru extends TypedAtomicActor {
 		DDEReceiver inRcvr = (DDEReceiver)inRcvrs[i][j];
 		System.out.println("\n");
 		System.out.println("\n");
-		System.out.println("*****");
+		System.out.println("#####");
 		System.out.println("DDEPutToken receiver["+i+"]["+j+"];");
 		if( inRcvr.hasToken() ) {
 		    token = inRcvr.get();

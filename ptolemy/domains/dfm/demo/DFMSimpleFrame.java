@@ -267,7 +267,7 @@ public class DFMSimpleFrame implements ActionListener {
   
    class MyThread extends Thread {
         public void run() {
-            System.out.println("*********  Manager start **********");
+            System.out.println("##########  Manager start ##########");
             exec.run(); 
         } 
    }

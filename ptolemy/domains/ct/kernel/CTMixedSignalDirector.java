@@ -469,7 +469,7 @@ public class CTMixedSignalDirector extends CTMultiSolverDirector
         while(getCurrentTime() < (getOutsideTime()-getTimeResolution())) {
             _fireOneIteration();
         }
-        //_debug("***Catch up time"+getCurrentTime());
+        //_debug("###Catch up time"+getCurrentTime());
     }
 
     /** Initialize parameters in addition to the parameters inherited

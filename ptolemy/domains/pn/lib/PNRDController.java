@@ -279,9 +279,9 @@ public class PNRDController extends AtomicActor {
 		    newrate += _rdnew[j].rate;
 		    newdist += _rdnew[j].distortion;
 		}
-		System.out.println("******newrate = "+newrate+
+		System.out.println("######newrate = "+newrate+
 			" rateU="+rateU+" rateL="+rateL);
-		System.out.println("******newdist = "+newdist+" distU="+distU+
+		System.out.println("######newdist = "+newdist+" distU="+distU+
 			" distL="+distL);
 		System.out.println("lambda is "+lambdaNext);
 		//If this is the first iteration, then find lambda for the 
