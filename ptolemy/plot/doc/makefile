@@ -42,12 +42,14 @@ EXTRA_SRCS = \
 	acks.htm \
 	body.htm \
 	changes.htm \
+	default.css \
 	index.htm \
 	install.htm \
 	main.htm \
 	plot.pdf \
 	ptplotfaq.htm \
 	thirdparty.htm \
+	toc.css \
 	toc.htm \
 	troubleshooting.htm
 
