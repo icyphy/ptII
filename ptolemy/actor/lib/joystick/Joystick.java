@@ -49,13 +49,13 @@ import com.centralnexus.input.JoystickListener;
 ////
 /**
 This actor reads data from a Joystick using the Joystick interface
-from 
-<a href="http://sourceforge.net/projects/javajoystick/" 
+from
+<a href="http://sourceforge.net/projects/javajoystick/"
 target="_top"><code>http://sourceforge.net/projects/javajoystick/</code></a>
 and generates output ranging between -1.0 and 1.0 on the <i>x</i>
 and <i>x</i> ports.
 
-<p>Currently, this actor will only work under Windows, though 
+<p>Currently, this actor will only work under Windows, though
 the Joystick interface also supports Linux.
 
 <p>Under Windows, <code>jjstick.dll</code> must be in your path
@@ -90,7 +90,7 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
      *   actor with this name.
      */
     public Joystick(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException, 
+            throws NameDuplicationException, IllegalActionException,
             IOException {
         super(container, name);
 
@@ -115,14 +115,14 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
     ////                     ports and parameters                  ////
 
     /** The deadzone of the Joystick: Under this absolute value, the
-     *  joystick coordinate is 0.0.  The default value is a 
+     *  joystick coordinate is 0.0.  The default value is a
      *  DoubleToken of value 0.01
      */
     public Parameter deadZone;
 
-    /** Set to true if polling is used to access the Joystick, false if 
+    /** Set to true if polling is used to access the Joystick, false if
      *  we use a JoystickListener.  The initial value is a BooleanToken
-     *  with value true.  
+     *  with value true.
      */
     public Parameter isPolling;
 
@@ -184,12 +184,12 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
     }
 
     /** Get the current location values from the joystick
-     *  and generate a DoubleMatrixToken on the output. 
+     *  and generate a DoubleMatrixToken on the output.
      */
     public synchronized void fire() throws IllegalActionException {
         super.fire();
         if (_isPollingValue) {
-            _joy.poll();    
+            _joy.poll();
         }
         x.send(0, new DoubleToken (_joy.getX()));
         y.send(0, new DoubleToken (_joy.getY()));
@@ -239,8 +239,8 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
     }
 
     /** This method gets called periodically when a joystick button
-     *  changes its value.  
-     */ 
+     *  changes its value.
+     */
     public void joystickButtonChanged(com.centralnexus.input.Joystick j) {
 
     }
@@ -259,11 +259,11 @@ public class Joystick extends TypedAtomicActor implements JoystickListener {
     ////                         private variables                 ////
 
     // Set from the isPolling parameter.  True if we call poll(), false
-    // if we add this as a listener. 
+    // if we add this as a listener.
     private boolean _isPollingValue;
 
     // The joystick
     private com.centralnexus.input.Joystick _joy;
-    
+
 }
 
