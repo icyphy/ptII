@@ -45,11 +45,27 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// HammingDecoder
 /**
-FIXME
+Decode a (<i>n</i>, <i>k</i>) Hamming code, where <i>n</i> is specified by
+parameter <i>codeBlockSize</i> nad <i>k</i> is specified by parameter
+<i>uncodeBlockSize</i>.
 <p>
+The Hamming code can correct one-bit error. 
+To encode a Hamming code, the HammingCoder consumes <i>k</i> information bits
+during each firing and consider them as a row vector <i><u>X</u></i>. Its
+Hamming code is <i><u>Y</u><i> = <i><u>X</u></i> * G.
+If there is no error in <i><u>Y</u><i>,
+<i><u>Y</u><i> * H<sup>T</sup> should be a zero vector of length <i>n-k</i>.
+Otherwise <i><u>S</u></i> =  <i><u>Y</u><i> * H<sup>T</sup> is called the
+syndrome. Let <i><u>S</u></i> be the i-th column of H. The HammingDecoder
+declares there is an error at the i-th element of <i><u>Y</i><u>.
+<p>
+For more information on Hamming codes, see HammingCoder and Proakis, Digital
+Communications, Fourth Edition, McGraw-Hill, 2001, pp. 448-450.
+<p> 
 @author Rachel Zhou
 @version $Id$
 @since Ptolemy II 3.0
+@see HammingCoder
 */
 
 public class HammingDecoder extends Transformer {
@@ -246,7 +262,7 @@ public class HammingDecoder extends Transformer {
     // Order of the Hamming code.
     private int _order;
 
-    // parity matrix.
+    // Matrix "P".
      private int[][] _parityMatrix;
     
     // Look-up table for correcting one-bit error.

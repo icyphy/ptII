@@ -31,11 +31,11 @@
 package ptolemy.actor.lib.comm;
 
 import ptolemy.actor.lib.Transformer;
-import ptolemy.data.ArrayToken;
+//import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.ArrayType;
+//import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -45,7 +45,37 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// HammingCoder
 /**
-FIXME
+Encode the information symbols into Hamming code. 
+Let <i>k</i> denotes parameter <i>uncodeBlockSize</i> and <i>n</i> denotes 
+parameter <i>codeBlockSize</i>. During each firing, the actor consumes 
+<i>k</i> bits and encode them into a block of code with length <i>n</i>.
+The rate of the code is <i>k/n</i>.
+<p>
+For a Hamming code, <i>k</i> and <i>n</i> must satisfiy the following:
+<i>n</i> = 2<sup>m</sup> - 1
+<i>k</i> = 2<sup>m</sum> - 1 - m;
+where <i>m</i> is any positive integer. Note <i>m</i> = <i>n</i> - <i>k</i>.
+It is called the order of the Hamming code. The lowest order is <i>m</i> = 2,
+and (<i>n</i>, <i>k</i>) = (3, 1).
+<p>
+The generator matrix G is defined as:
+G<sub>k*n</sub> = [I<sub>k</sub> | P<sub>k*(n-k)</sub> ]
+where P is called the parity matrix.
+The subscript of a matrix indicates its dimension.
+<p>
+The parity check matrix H is defined as:
+H<sub>(n-k)*n</sub> = [P<sup>T</sup> | I<sub>n-k</sub> ]
+Each column of H must be one of the non-zero <i>n</i> = 2<sup>m</sup> - 1
+combinations of <i>m</i> bits.
+<p>
+To generate a Hamming code, the <i>k</i> information bits is considered
+as a row vector <i><u>X</u></i>. Its Hamming code is 
+<i><u>Y</u><i> = <i><u>X</u></i> * G.
+Hence <i><u>Y</u><i> is a row vector of length <i>n</i>. The result is
+then sent to the output port in sequence.
+<p>
+For more information on Hamming codes, see Proakis, Digital
+Communications, Fourth Edition, McGraw-Hill, 2001, pp. 416-424.
 <p>
 @author Rachel Zhou
 @version $Id$
@@ -155,7 +185,7 @@ public class HammingCoder extends Transformer {
                 throw new IllegalActionException(this,
                         "Invalid codeBlockSize or _uncodeBlockSize.");
             }
-
+            // Generate P.
             _parityMatrix = new int[_uncodeSizeValue][_order];
             
             int flag = 0;
@@ -230,7 +260,7 @@ public class HammingCoder extends Transformer {
     // Order of the Hamming code.
     private int _order;
 
-    // Parity matrix for this Hamming code.
+    // matrix "P" for this Hamming code.
     private int[][] _parityMatrix;
 
     // A flag indicating that the private variable
