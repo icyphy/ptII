@@ -124,16 +124,16 @@ public class Variable extends Parameter {
      *  of class Parameter (or a derived class), then a class-cast
      *  exception may eventually result (when the items in the scope
      *  are accessed).
-     *  @param varlist The list of parameters to be added to scope.
+     *  @param varList The list of parameters to be added to scope.
      */
-    public void addToScope(NamedList varlist) {
-        if (varlist == null) {
+    public void addToScope(NamedList varList) {
+        if (varList == null) {
             return;
         }
         if (_addedVarLists == null) {
             _addedVarLists = new LinkedList();
         }
-        _addedVarLists.insertFirst(varlist);
+        _addedVarLists.insertFirst(varList);
         _scopeVersion = -1;
     }
 
@@ -170,15 +170,15 @@ public class Variable extends Parameter {
         try {
             workspace().getReadAccess();
             // get the list of parameters visible to this variable
-            NamedList paramlist = super.getScope();
-            if (_addedVarLists == null) return paramlist;
+            NamedList paramList = super.getScope();
+            if (_addedVarLists == null) return paramList;
 
-            // combine paramlist with the added variables
+            // combine paramList with the added variables
             NamedList result = new NamedList();
-            Enumeration scopelists = _addedVarLists.elements();
-            while (scopelists.hasMoreElements()) {
-                NamedList scopelist = (NamedList)scopelists.nextElement();
-                Enumeration variables = scopelist.elements();
+            Enumeration scopeLists = _addedVarLists.elements();
+            while (scopeLists.hasMoreElements()) {
+                NamedList scopeList = (NamedList)scopeLists.nextElement();
+                Enumeration variables = scopeList.elements();
                 while (variables.hasMoreElements()) {
                     Parameter param = (Parameter)variables.nextElement();
                     try {
@@ -194,7 +194,7 @@ public class Variable extends Parameter {
                 }
             }
 
-            Enumeration params = paramlist.elements();
+            Enumeration params = paramList.elements();
             while (params.hasMoreElements()) {
                 Nameable param = (Nameable)params.nextElement();
                 try {

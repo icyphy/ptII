@@ -45,7 +45,7 @@ The parse tree created from the expression string consists of a
 hierarchy of node objects. This class represents functional if-then-else
 nodes.
 <p>
-A functional if-then-else if of the form booleantoken ? token : token
+A functional if-then-else if of the form booleanToken ? token : token
 The token returned depends on the value of the boolean.
 <p>
 @author Neil Smyth

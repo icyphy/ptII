@@ -321,14 +321,14 @@ public class Parameter extends Attribute implements ParameterListener {
                 Enumeration level1 = container.getAttributes();
                 Attribute p;
                 while (level1.hasMoreElements() ) {
-                    // Now copy the namedlist, omitting the current Parameter.
+                    // Now copy the namedList, omitting the current Parameter.
                     if ( (p = (Attribute)level1.nextElement()) != this ) {
                         try {
                             if ((p instanceof Parameter) && (p != this) ){
                                 _scope.append(p);
                             }
                         } catch (NameDuplicationException ex) {
-                            // since we're basically copying a namedlist,
+                            // since we're basically copying a namedList,
                             // this exceptions should not occur
                         }
                     }
@@ -351,7 +351,7 @@ public class Parameter extends Attribute implements ParameterListener {
             _scopeVersion = workspace().getVersion();
             return _scope;
         } catch (IllegalActionException ex) {
-            // since we're basically copying namedlists,
+            // since we're basically copying namedLists,
             // this exception should not occur
             throw new InternalErrorException(ex.getMessage());
         } finally {
@@ -767,7 +767,7 @@ public class Parameter extends Attribute implements ParameterListener {
     // the first token placed in the parameter was not parsed from a string.
     private String _initialExpression;
 
-    // Each Parameter stores a linkedlist of the ParameterListeners it
+    // Each Parameter stores a LinkedList of the ParameterListeners it
     // needs to notify whenever it changes.
     private LinkedList _listeners;
 

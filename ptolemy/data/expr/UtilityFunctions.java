@@ -63,9 +63,9 @@ public class UtilityFunctions {
     }
 
     /** Get the string text contained in the specified file. For
-     *  now this just looks in the idrectory where the parser
+     *  now this just looks in the directory where the parser
      *  is located, but will eventually (hopefully!) be able
-     *  to use environment variable, usernames etc. in
+     *  to use environment variable, user names etc. in
      *  creating a file path. An empty string
      *  is returned if the specified file could not be located.
      *  FIXME: what do with format of file?, e.g. if file is
@@ -73,7 +73,7 @@ public class UtilityFunctions {
      *  and make one long one line string? Alos this currently
      *  only looks in the working directory.
      * @param filename The file we want to read the text from.
-     * @return StringToken containg the text contained in
+     * @return StringToken containing the text contained in
      *   the specified file.
      * */
      public static StringToken readFile(String filename) {

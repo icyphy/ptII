@@ -75,7 +75,7 @@ public class ASTPtProductNode extends ASTPtRootNode {
                 } else if (op.compareTo("%") == 0) {
                     result = result.modulo(childTokens[i]);
                 } else {
-                    String str = "Invlid concatenator in term() production, ";
+                    String str = "Invalid concatenator in term() production, ";
                     throw new IllegalArgumentException(str + "check parser");
                 }
 
