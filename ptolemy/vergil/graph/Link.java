@@ -140,7 +140,8 @@ public class Link extends Attribute {
         if(_head instanceof ComponentPort && _tail instanceof ComponentPort) {
 	    relation = 
                 container.newRelation(container.uniqueName("relation"));
-           
+	    setRelation(relation);
+          
 	    port = (ComponentPort)_head;
             port.link(relation);
 	    _checkReceivers(container, port);
@@ -149,9 +150,7 @@ public class Link extends Attribute {
             port.link(relation);
 	    _checkReceivers(container, port);
 	    _checkSchedule(container);
-	    
-	    setRelation(relation);
-            return;
+	    return;
         }
 
 	if(_tail instanceof ComponentPort && _head instanceof Vertex) {
@@ -223,6 +222,15 @@ public class Link extends Attribute {
     public void exportMoML(Writer output, int depth) 
 	throws IOException {
 	return;
+    }
+
+    /** Return a string representation of this link
+     */
+    public String toString() {
+	return "Link(" 
+	    + _head + ", " 
+	    + _tail + ", " 
+	    + _relation + ")";
     }
 
     // If the container has a director, then invalidate its schedule and
