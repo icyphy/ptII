@@ -12,7 +12,7 @@ import diva.graph.layout.*;
 import diva.canvas.*;
 import diva.canvas.connector.*;
 import diva.canvas.toolbox.*;
-import diva.util.gui.TutorialWindow;
+import diva.util.gui.BasicWindow;
 
 import ptolemy.domains.csp.kernel.*;
 import ptolemy.domains.csp.lib.*;
@@ -222,7 +222,7 @@ public class BusContentionApplication {
      * and then set the model once the _window is showing.
      */
     public void displayGraph(JGraph g, GraphModel model) {
-        _window = new TutorialWindow("CSP Bus Contention Demo");
+        _window = new BasicWindow("CSP Bus Contention Demo");
         
         // Display the window
         _window.getContentPane().add("Center", g);
@@ -255,7 +255,7 @@ public class BusContentionApplication {
     private JGraph _jgraph;
 
     // The window to display in
-    private TutorialWindow _window;
+    private BasicWindow _window;
 
     // The actors
     CSPController _contentionActor;
