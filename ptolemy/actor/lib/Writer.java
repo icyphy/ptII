@@ -89,8 +89,8 @@ public class Writer extends Sink {
             for (int i = 0; i < width; i++) {
                 if (i > 0) _writer.write("\t");
                 if (input.hasToken(i)) {
-                    Token token = input.get(i);
-                    _writer.write(token.toString());
+                    Token inputToken = input.get(i);
+                    _writer.write(inputToken.toString());
                 }
             }
             _writer.write("\n");
