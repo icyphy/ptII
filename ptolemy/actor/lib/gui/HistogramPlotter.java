@@ -46,6 +46,7 @@ import java.awt.Container;
 import java.io.InputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.io.Writer;
 import java.net.URL;
 import java.util.Iterator;
@@ -240,6 +241,39 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
             _configureBases.add(base);
             _configureSources.add(source);
             _configureTexts.add(text);
+        }
+    }
+
+    /** Return the input source that was specified the last time the configure
+     *  method was called.
+     *  @return The string representation of the input URL.
+     */
+    public String getSource() {
+        return null;
+    }
+
+    /** Return the text string that represents the current configuration of
+     *  this object.  Note that any configuration that was previously
+     *  specified using the source attribute need not be returned here.
+     */
+    public String getText() {
+        if(histogram == null) {
+            // FIXME
+            return "";
+        } else {
+            // NOTE: Cannot include xml spec in the header because processing
+            // instructions cannot be nested in XML (lame, isn't it?).
+            String header
+            = "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n"                + "\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">";
+            StringBuffer buffer = new StringBuffer();
+            buffer.append(header);           
+            buffer.append("\n<plot>\n");
+	    PrintWriter print = new PrintWriter(new StringWriter());
+	    // The second (null) argument indicates that PlotML PUBLIC DTD
+	    // should be referenced.
+	    histogram.writeFormat(print);
+            buffer.append(print.toString());
+            return buffer.toString();
         }
     }
 
