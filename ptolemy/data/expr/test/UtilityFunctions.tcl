@@ -69,6 +69,21 @@ test UtilityFunctions-1.0 {Check readFile method} {
 
 ######################################################################
 ####
+# 
+test UtilityFunctions-1.1 {Check readFile method on a file that does not exist} {
+    # To be honest, I think that if the file cannot be read,
+    # we should throw something.
+    set parser [java::new ptolemy.data.expr.PtParser]
+    
+    set tree [$parser generateParseTree "readFile(\"not a file\")"]
+
+    #$tree displayParseTree " "
+    set res [$tree evaluateParseTree]
+    $res toString
+} {}
+
+######################################################################
+####
 # result is 50 as the string for the re-invoked parser is 3+43+4 !
 test UtilityFunctions-3.0 {Check recurive calls to the parser with eval method} {
     set parser [java::new ptolemy.data.expr.PtParser]
