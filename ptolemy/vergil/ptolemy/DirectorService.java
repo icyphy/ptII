@@ -51,6 +51,7 @@ import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.ct.kernel.*;
 import ptolemy.domains.dt.kernel.*;
 import ptolemy.domains.giotto.kernel.GiottoDirector;
+import ptolemy.domains.rtp.kernel.*;
 
 import java.awt.event.*;
 import java.util.*;
@@ -123,10 +124,36 @@ public class DirectorService extends AbstractService {
 		"ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
 	    new Parameter(style, "choice2", new StringToken(
 		"ptolemy.domains.ct.kernel.solver.ImpulseBESolver"));
+            addDirector(dir);
 
+            dir = new CTEmbeddedDirector();	    
+	    dir.setName("CTEmbedded");
+	    //Parameter solver;
+	    solver = (Parameter)dir.getAttribute("ODESolver");
+	    //EditableChoiceStyle style;
+	    style = new EditableChoiceStyle(solver, "style");
+	    new Parameter(style, "choice0", new StringToken(
+		"ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver"));
+	    new Parameter(style, "choice1", new StringToken(
+                "ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
+	    new Parameter(style, "choice2", new StringToken(
+	        "ptolemy.domains.ct.kernel.solver.ForwardEulerSolver"));
+
+	    solver = (Parameter)dir.getAttribute("breakpointODESolver");
+	    style = new EditableChoiceStyle(solver, "style");
+	    new Parameter(style, "choice0", new StringToken(
+                "ptolemy.domains.ct.kernel.solver.DerivativeResolver"));
+	    new Parameter(style, "choice1", new StringToken(
+		"ptolemy.domains.ct.kernel.solver.BackwardEulerSolver"));
+	    new Parameter(style, "choice2", new StringToken(
+		"ptolemy.domains.ct.kernel.solver.ImpulseBESolver"));
 	    addDirector(dir);
+
 	    dir = new GiottoDirector();
 	    dir.setName("Giotto");
+	    addDirector(dir);
+            dir = new RTPDirector();
+	    dir.setName("RTP");
 	    addDirector(dir);
 	}
 	catch (Exception ex) {
