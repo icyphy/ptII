@@ -151,7 +151,6 @@ public class BasicEdgeController implements EdgeController {
      * given location. Give the new edge the given semanticObject.
      * The "end" flag is either HEAD_END
      * or TAIL_END, from diva.canvas.connector.ConnectorEvent.
-     * @return The new edge.
      * @exception GraphException If the connector target cannot return a
      * valid site on the node's figure.
      */

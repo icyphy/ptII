@@ -100,7 +100,6 @@ public abstract class AbstractGraphController implements GraphController {
 
     /** Add an edge to this graph between the given tail and head
      * nodes.  Give the new edge the given semanticObject.
-     * @return the new edge.
      */
     public void addEdge(Object edge, Object tail, Object head) {
         getEdgeController(edge).addEdge(edge, tail, head);
