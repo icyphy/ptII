@@ -6,6 +6,25 @@ written by Zoltan Kemenczy of Research in Motion Limited.
 
 Christopher Hylands wrote the notes below, so any mistakes are his.
 
+Running
+-------
+The Matlab interface works only under Windows, and requires that Matlab
+be installed on your local machine.
+
+You must have ptmatlab.dll in your path, which is initially created in
+this directory, and eventually moved to $PTII/bin.  It is best if
+your path includes $PTII/bin
+
+For instructions about setting your path, see $PTII/doc/install.htm
+
+The Matlab interface also requires that libeng.dll be in your path.
+libeng.dll is located in the bin/win32 subdirectory of Matlab.
+
+
+Compiling
+---------
+The Ptolemy II Matlab interface requires the GNU C compiler.
+
 Below are instructions for building the interface at UC Berkeley:
 
 1. Go to
@@ -13,9 +32,8 @@ Below are instructions for building the interface at UC Berkeley:
    and install the Cygwin Setup tool
 
 2. Start up the Cygwin Setup tool and install
-    binutils:	Needed for dlltool
-    gcc:	Needed for gcc
-    w32api:	Needed for the user32 library
+    Basic
+    Devel:	Needed for gcc
 
 3. Install or mount the Matlab share.
    In the UC Berkeley EECS Department, the Matlab binary is at
