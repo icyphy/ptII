@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -45,7 +45,7 @@ import ptolemy.actor.util.*;
 */
 public class DEFIFOQueue extends AtomicActor {
     /** Construct a DEFIFOQueue star.
-     *  
+     *
      * @param value The initial output event value.
      * @param step The step size by which to increase the output event values.
      * @param container The composite actor that this actor belongs too.
@@ -53,19 +53,19 @@ public class DEFIFOQueue extends AtomicActor {
      *
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
-     */	
+     */
     public DEFIFOQueue(int numDemandsPending,
 	    boolean consolidateDemands,
 	    int capacity,
-	    CompositeActor container, 
-            String name) 
+	    CompositeActor container,
+            String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
         outData = new IOPort(this, "outData", false, true);
 	overflow = new IOPort(this, "overflow", false, true);
 	queueSize = new IOPort(this, "queueSize", false, true);
-	
+
         // create input ports
         inData = new IOPort(this, "inData", true, false);
         demand = new IOPort(this, "demand", true, false);
@@ -84,11 +84,11 @@ public class DEFIFOQueue extends AtomicActor {
 
     /** If there's an event in the clock input port then produce an event,
      *  otherwise just record the value of the input port.
-     * 
+     *
      * @exception CloneNotSupportedException Error when cloning event.
      * @exception IllegalActionException Not thrown in this class.
-     */	
-    public void fire() 
+     */
+    public void fire()
             throws CloneNotSupportedException, IllegalActionException{
         System.out.println("Firing "+
                 description(CLASSNAME|FULLNAME));
@@ -113,7 +113,7 @@ public class DEFIFOQueue extends AtomicActor {
 		_numDemandsPending--;
 	    } else {
 		//put the token into the queue.
-		_queue.put(inDataToken);		
+		_queue.put(inDataToken);
 	    }
 	    queueSize.broadcast(new DoubleToken((double)_queue.size()));
 	}
@@ -138,9 +138,9 @@ public class DEFIFOQueue extends AtomicActor {
 		// queue is not empty
 		outData.broadcast((Token)_queue.take());
 	    }
-	    queueSize.broadcast(new DoubleToken((double)_queue.size()));   
+	    queueSize.broadcast(new DoubleToken((double)_queue.size()));
 	}
-	
+
 	if (!bugFree) {
 	    throw new InvalidStateException("Bug in scheduler, look at "+
                     "DEFIFOQueue");
@@ -154,7 +154,7 @@ public class DEFIFOQueue extends AtomicActor {
     private int _numDemandsPending = 0;
     private int _capacity;
     private boolean _consolidateDemands = true;
-    
+
     // the ports.
     public IOPort outData;
     public IOPort inData;

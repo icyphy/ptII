@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -37,7 +37,7 @@ import java.awt.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEPlot
-/** 
+/**
 A DE Star that calls ptplot to plot the result. Single input only.
 @author Lukito Muliadi
 @version $Id$
@@ -45,8 +45,8 @@ A DE Star that calls ptplot to plot the result. Single input only.
 public class DEPlot extends AtomicActor{
     /** Construct a DEPlot star in a CT universe. Default Y-range is
      *  [-1, 1]. Default X-range is from the startTime to the stopTime.
-     */	
-    public DEPlot(CompositeActor container, String name) 
+     */
+    public DEPlot(CompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create the input port and make it a multiport.
@@ -60,16 +60,16 @@ public class DEPlot extends AtomicActor{
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Initalize.
      */
-    public void initialize() 
+    public void initialize()
             throws CloneNotSupportedException, IllegalActionException {
-   
+
         _exe = (DECQDirector) getDirector();
         if (_exe == null) {
             throw new IllegalActionException(this, "No director available");
-        } 
+        }
         _inputWidth = _input.getWidth();
         if (_inputWidth == 0) {
             throw new InvalidStateException("DEPlot.initialize(), bug in "+
@@ -85,14 +85,14 @@ public class DEPlot extends AtomicActor{
         // some stars enqueue it.
     }
 
-    /** fire: consume the input tokens. In the first fire() round, 
+    /** fire: consume the input tokens. In the first fire() round,
      *  print out the data.
      */
-    public void fire() 
+    public void fire()
             throws CloneNotSupportedException, IllegalActionException{
-        
+
 	if (_frame == null) {
-            _frame = new DEPlotFrame(); 
+            _frame = new DEPlotFrame();
             _frame.resize(800, 400);
             _frame.setXRange(_exe.startTime(), _exe.stopTime());
             _frame.setYRange(getYMin(), getYMax());
@@ -101,41 +101,41 @@ public class DEPlot extends AtomicActor{
             // initialize the plot.
             _frame.init();
         }
-        
+
         int numEmptyChannel = 0;
 
         for (int i = 0; i<_inputWidth; i++) {
-        
+
             try {
                 // the following statement might throw an exception.
                 DoubleToken curToken = (DoubleToken)_input.get(i);
-                
+
                 // if an exception is not thrown then continue below.
                 double curValue = curToken.doubleValue();
                 double curTime = ((DECQDirector)getDirector()).currentTime();
-                
+
                 if (_firstPoint[i]) {
                     _frame.addPoint(i, curTime, curValue, false);
                     _firstPoint[i] = false;
                 } else {
                     _frame.addPoint(i, curTime, curValue, true);
                 }
-                
+
             } catch (NoSuchItemException e) {
                 // Some channels might have no token in them, and it's okay.
                 numEmptyChannel++;
             }
-            
-        } 
+
+        }
         // If all channels are empty, then the scheduler is wrong.
         if (numEmptyChannel == _inputWidth) {
             throw new InvalidStateException("DEPlot.fire(), no tokens in the "+
                     "input port, bad scheduler ?");
         }
-        
+
     }
-    
-    /*    
+
+    /*
           public void setParam(String name, String valueString) {
           double value = (new Double(valueString)).doubleValue();
           if(name.equals("YMin")) {
@@ -166,20 +166,20 @@ public class DEPlot extends AtomicActor{
     public class DEPlotFrame extends Frame {
 
         // constructors
-                
+
         public DEPlotFrame() {
             super("DE Plot");
             _plotter = new Plot();
             _plotter.setPointsPersistence(0);
             pack();
-            
+
             add("Center", _plotter);
-            
+
         }
 
         // public methods
 
-        public void init() {   
+        public void init() {
             show();
             _plotter.setMarksStyle("dots");
             _plotter.init();
@@ -202,12 +202,12 @@ public class DEPlot extends AtomicActor{
             _plotter.setNumSets(numSet);
 	    for (int i=0; i<numSet; i++) {
 		_plotter.addLegend(i, "Data " + i);
-	    } 
+	    }
         }
 
         public boolean handleEvent(java.awt.Event event) {
             Object pEvtSource = event.target;
-            if( pEvtSource == this && 
+            if( pEvtSource == this &&
                     event.id == java.awt.Event.WINDOW_DESTROY ) {
                 hide();
                 dispose();
@@ -216,12 +216,12 @@ public class DEPlot extends AtomicActor{
                 return super.handleEvent( event );
             }
         }
-        
+
         // private variables
         private Plot _plotter;
 
     }
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////

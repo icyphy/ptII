@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -36,7 +36,7 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEClock
-/** 
+/**
 An actor that generate events at regular intervals, starting at time zero.
 The actor has 2 output ports and 1 input ports. One input port and one
 output port is connected together forming a loop. The loop is used by the
@@ -51,14 +51,14 @@ public class DEClock extends AtomicActor {
      *  The default output value is 0.
      * @see CTActor#CTActor()
      * @param container The CTSubSystem this star belongs to
-     * @param name 
+     * @param name
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
-     */	
-    public DEClock(double value, 
-            double interval, 
-            CompositeActor container, 
-            String name) 
+     */
+    public DEClock(double value,
+            double interval,
+            CompositeActor container,
+            String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
@@ -73,7 +73,7 @@ public class DEClock extends AtomicActor {
         // set the interval between events.
         _interval = interval;
         _value = value;
-        
+
     }
 
 
@@ -86,20 +86,20 @@ public class DEClock extends AtomicActor {
      *  @exception CloneNotSupportedException Not thrown in this base class.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    public void initialize() 
+    public void initialize()
             throws CloneNotSupportedException, IllegalActionException {
         // The initializer event is at _interval behind time zero.
         DoubleToken initEvent = new DoubleToken(_value);
         // Send out via the self loop output port.
         _loopOut.send(0, initEvent, 0.0-_interval);
-        
+
     }
 
     /** Produce the next event at _interval unit-time aparts.
-     * 
+     *
      * @exception CloneNotSupportedException Error when cloning event.
      * @exception IllegalActionException Not thrown in this class.
-     */	
+     */
     public void fire() throws CloneNotSupportedException, IllegalActionException{
 	// get the input token from the self loop input port.
         DoubleToken inputToken;
@@ -110,10 +110,10 @@ public class DEClock extends AtomicActor {
             throw new InvalidStateException("In DEClock.fire() the receiver" +
                     " is empty.");
         }
-        
+
         // obtain the time stamp of the input token.
         double inputTime = ((DECQDirector)getDirector()).currentTime();
-    
+
         // send the delayed input token via _loopOut and output DEIOPort.
         _loopOut.send(0, inputToken, inputTime + _interval);
         output.broadcast((DoubleToken)inputToken.clone(), inputTime + _interval);

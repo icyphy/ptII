@@ -31,7 +31,7 @@ package ptolemy.domains.de.kernel;
 //////////////////////////////////////////////////////////////////////////
 //// DESortKey
 /** An event in Discrete Event domain is modeled as an instance of Token and
- *  an instance of DESortKey. DESortKey is an aggregation of time stamp 
+ *  an instance of DESortKey. DESortKey is an aggregation of time stamp
  *  (double)and depth (long)
  *  <p>
  *  In a particular implementation of the global event queue, namely
@@ -47,16 +47,16 @@ package ptolemy.domains.de.kernel;
 public class DESortKey {
 
     /** Construct a DESortKey object with the given time stamp and receiver
-     *  depth. Time stamp is a double quantity indicating the time when 
-     *  the event takes place. Receiver depth is a long quantity 
-     *  indicating the 'topological' depth of the IOport containing the 
-     *  receiver of the event. Receiver depths are useful for scheduling 
+     *  depth. Time stamp is a double quantity indicating the time when
+     *  the event takes place. Receiver depth is a long quantity
+     *  indicating the 'topological' depth of the IOport containing the
+     *  receiver of the event. Receiver depths are useful for scheduling
      *  simultaneous events.
-     * 
+     *
      * @param timeStamp the time when the event occurs.
      * @param receiverDepth 'topological' depth of the receiving receiver.
-     * 
-     */	
+     *
+     */
     public DESortKey(double timeStamp, long receiverDepth) {
         _timeStamp = timeStamp;
         _receiverDepth = receiverDepth;
@@ -84,9 +84,9 @@ public class DESortKey {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    
+
     // FIXME: change double to Number ?
-    // _timeStamp 
+    // _timeStamp
     private double _timeStamp;
     // _receiverDepth
     private long _receiverDepth;

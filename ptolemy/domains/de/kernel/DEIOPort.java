@@ -179,7 +179,7 @@ public class DEIOPort extends IOPort {
                     } catch (ClassCastException e) {
                         throw new InvalidStateException("DEIOPort.send() is" +
                                 " expected to have receivers of type "+
-                                "DEReceiver (2)");                        
+                                "DEReceiver (2)");
                     }
                 }
             }
@@ -193,7 +193,7 @@ public class DEIOPort extends IOPort {
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.
-    
+
     // FIXME: public ?
     public DEIOPort beforePort = null;
     // use insertLast() and take() methods to access it.

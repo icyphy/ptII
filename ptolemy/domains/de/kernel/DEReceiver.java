@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -39,13 +39,13 @@ import collections.CollectionEnumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEReceiver
-/** An implementation of Receiver interface for DE domain. In DE domain 
+/** An implementation of Receiver interface for DE domain. In DE domain
  *  receiver, the put() method is overloaded with one more argument
  *  representing time stamp. DEReceiver can contain any number of tokens
  *  corresponding to simultaneous events. It also has a 'depth' field
  *  indicating its depth in the topology.
  *  <p>
- *  Before firing an actor, the director is responsible to put at least one 
+ *  Before firing an actor, the director is responsible to put at least one
  *  token into at least one of the receivers contained by the actor.
 
 @author Lukito Muliadi
@@ -78,10 +78,10 @@ public class DEReceiver implements Receiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
 
-    /** Get the contained tokens one by one.  If there is no more, throw an 
-     *  exception. 
+
+    /** Get the contained tokens one by one.  If there is no more, throw an
+     *  exception.
      *  <p>
      *  Tokens contained by this receiver will all have the same
      *  time stamps. During one firing phase of an actor, this method could
@@ -119,24 +119,24 @@ public class DEReceiver implements Receiver {
         return true;
     }
 
-    /** Set the container. 
+    /** Set the container.
      *
      *  @param port The IOPort containing this receiver.
      */
     public void setContainer(IOPort port) {
         _container = port;
-    }    
-   
+    }
+
     /** Put a token and its time stamp into the receiver. Actor that produce
      *  delayed outputs should use this method.
      *
      * @param token The token being put.
      * @param timeStamp The time stamp of the token.
-     * 
+     *
      */
-    public void put(Token token, double timeStamp) 
+    public void put(Token token, double timeStamp)
             throws IllegalActionException {
-        
+
         // First check if _actor field is already set.
         // If not, then ask the port containing this object for its
         // container.
@@ -148,23 +148,23 @@ public class DEReceiver implements Receiver {
             throw new IllegalStateException("In DEReceiver, _actor is null");
         }
         // Enqueue the actor, the receiver and the token, respectively.
-        _deDirector.enqueueEvent(_actor, 
-                this, 
-                token, 
+        _deDirector.enqueueEvent(_actor,
+                this,
+                token,
                 new DESortKey(timeStamp, _depth));
     }
 
     /** Put a token into the receiver with its time stamp equal to the current
      *  time obtained from the director. Actor that produce zero-delay outputs
      *  and polymorphic actors should use this method.
-     *  
+     *
      * @param token The token being put.
      */
     public void put(Token token) throws IllegalActionException{
         put(token, _deDirector.currentTime());
     }
 
-    /** Trigger an event by inserting its corresponding token into the 
+    /** Trigger an event by inserting its corresponding token into the
      *  receiver. Only a director should use this method.
      *
      *  @param token The token triggered.
@@ -186,7 +186,7 @@ public class DEReceiver implements Receiver {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // _deDirector: the director that created this receiver.
     DECQDirector _deDirector = null;
     // _actor: the actor that contains this receiver.
@@ -201,7 +201,7 @@ public class DEReceiver implements Receiver {
     private LinkedList _tokens = new LinkedList();
 
     // If _dirty is set (true) then the _tokens LinkedList will be cleared
-    // at the next invocation of superPut(). 
+    // at the next invocation of superPut().
     boolean _dirty = true;
 }
 

@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -36,9 +36,9 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEPoisson
-/** 
+/**
 An actor that generate events according to Poisson process. The first event is
-generated at time zero. The mean inter-arrival time and magnitude of the 
+generated at time zero. The mean inter-arrival time and magnitude of the
 events are given as parameters.
 
 @author Lukito Muliadi
@@ -54,10 +54,10 @@ public class DEPoisson extends AtomicActor {
      * @param name The name of this actor.
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
-     */	
-    public DEPoisson(double lambda, 
-            double magnitude, 
-            CompositeActor container, 
+     */
+    public DEPoisson(double lambda,
+            double magnitude,
+            CompositeActor container,
             String name) throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
@@ -92,15 +92,15 @@ public class DEPoisson extends AtomicActor {
         DoubleToken initEvent = new DoubleToken(_magnitude);
         // Send out via the self loop output port.
         _loopOut.send(0, initEvent, -1.0);
-        
+
     }
 
     /** Produce the next event T time unit in the future, where T is a random
      *  variable with exponential distribution.
-     * 
+     *
      * @exception CloneNotSupportedException Error when cloning event.
      * @exception IllegalActionException Not thrown in this class.
-     */	
+     */
     public void fire() throws CloneNotSupportedException, IllegalActionException{
         // get the input token from the self loop input port.
         DoubleToken inputToken;
@@ -115,7 +115,7 @@ public class DEPoisson extends AtomicActor {
         double T = -Math.log((1-Math.random()))*_lambda;
 
         // produce the output token which is delayed by T time unit.
-                        
+
         double nextEventTime = 0.0;
         if (_firstTime) {
             nextEventTime = 0.0;
@@ -123,9 +123,9 @@ public class DEPoisson extends AtomicActor {
         } else {
             nextEventTime = T + ((DECQDirector)getDirector()).currentTime();
         }
-    
+
         // send the output token via _loopOut and output IOPort.
-        
+
         _loopOut.send(0, inputToken, nextEventTime);
         output.broadcast((Token)inputToken.clone(), nextEventTime);
     }
@@ -142,7 +142,7 @@ public class DEPoisson extends AtomicActor {
 
     // an aux variable to make sure we have the first event at time zero.
     private boolean _firstTime = true;
-    
+
     // the ports.
     public DEIOPort output;
     private DEIOPort _loopIn;

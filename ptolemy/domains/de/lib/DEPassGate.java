@@ -20,7 +20,7 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
- 
+
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 */
@@ -36,9 +36,9 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEPassGate
-/** If the gate is open, then particles pass from "input" to "output." 
+/** If the gate is open, then particles pass from "input" to "output."
  *  When the gate is closed, no outputs are produced. If input particles
- *  arrive while the gate is closed, the most recent one will be passed to 
+ *  arrive while the gate is closed, the most recent one will be passed to
  *  "output" when the gate is reopened.
 
 @author Lukito Muliadi
@@ -47,15 +47,15 @@ import java.util.Enumeration;
 */
 public class DEPassGate extends AtomicActor {
     /** Construct a DEPassGate star.
-     *  
+     *
      * @param container The composite actor that this actor belongs too.
      * @param name The name of this actor.
      *
      * @exception NameDuplicationException Other star already had this name
      * @exception IllegalActionException internal problem
-     */	
-    public DEPassGate(CompositeActor container, 
-            String name) 
+     */
+    public DEPassGate(CompositeActor container,
+            String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         // create an output port
@@ -67,7 +67,7 @@ public class DEPassGate extends AtomicActor {
         //input.beforePort = gate;
         //input.triggerList.insertLast(output);
 	//gate.triggerList.insertLast(output);
-        
+
     }
 
 
@@ -78,16 +78,16 @@ public class DEPassGate extends AtomicActor {
     /** If there's an event in the "input" port, pass it depending on
      *  the "gate" input; if there's no event in the input port, but only
      *  in the "gate" input, pass event when the gate reopens.
-     * 
+     *
      * @exception CloneNotSupportedException Error when cloning event.
      * @exception IllegalActionException Not thrown in this class.
-     */	
-    public void fire() 
+     */
+    public void fire()
             throws CloneNotSupportedException, IllegalActionException{
         System.out.println("Firing "+
                 description(CLASSNAME|FULLNAME));
 
-        
+
         // Check if there's an event in the "input" port.
         if (input.hasToken(0)) {
             DoubleToken inputToken = null;
@@ -111,12 +111,12 @@ public class DEPassGate extends AtomicActor {
 		if (gateToken.getValue() == 0.0) {
 		    // gate is closing (or closed)
 		    _gateOpen = false;
-		    
+
 		} else {
 		    _gateOpen = true;
 		}
             }
-	    
+
 	    // pass the token if the gate is open
 	    if (_gateOpen) {
 		output.broadcast(inputToken);
@@ -134,7 +134,7 @@ public class DEPassGate extends AtomicActor {
                 // Can't occur.
                 throw new IllegalStateException("Check DEPassGate.fire() "+
                         "for bug (3)" + e.getMessage());
-             
+
             }
 	    if (gateToken.getValue() != 0.0 && _gateOpen == false) {
 		// gate just reoopened.
@@ -148,9 +148,9 @@ public class DEPassGate extends AtomicActor {
         } else {
             // if both inputs are empty, then the scheduler is wrong.
             throw new InvalidStateException("DEPassGate.fire(), "+
-                    "bad scheduling");  
+                    "bad scheduling");
         }
-    
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -164,7 +164,7 @@ public class DEPassGate extends AtomicActor {
 
     // the last token seen in the input port.
     private DoubleToken _lastToken = null;
-    
+
     // the ports.
     public IOPort output;
     public IOPort input;
