@@ -144,7 +144,8 @@ public class Timer extends TimedDelay {
         Time currentTime = getDirector().getModelTime();
         _currentOutput = null;
         if (_delayedTokens.size() > 0) {
-            _currentOutput = (Token)_delayedTokens.get(currentTime);
+            _currentOutput = (Token)_delayedTokens.get(
+                new Double(currentTime.getTimeValue()));
             if (_currentOutput != null) {
                 output.send(0, _currentOutput);
                 return;
@@ -172,12 +173,13 @@ public class Timer extends TimedDelay {
         // at the current time.
         if (_delayedTokens.size() > 0 && 
             _currentOutput != null) {
-            _delayedTokens.remove(currentTime);
+            _delayedTokens.remove(new Double(currentTime.getTimeValue()));
         }
         // Store the not handled token that is scheduled to 
         // be sent in future.
         if (_currentInput != null && _delay >= 0) {
-            _delayedTokens.put(delayToTime, value.getToken());
+            _delayedTokens.put(new Double(delayToTime.getTimeValue()), 
+                value.getToken());
             getDirector().fireAt(this, delayToTime);
         }
         return super.postfire();
