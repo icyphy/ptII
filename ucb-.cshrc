@@ -68,9 +68,9 @@ endif
 if ($?prompt) then
 	# The alias below depends on stuff local to UCB, so it should
 	# not be shipped
-	if ($TERM == "xterm") then
-		alias cd 'cd \!* ; (echo -n "]2;ptuser:`$HOME/adm/ptuser/scwd`]1;PT:`$HOME/adm/ptuser/scwd short`" &)'
-	endif
+#	if ($TERM == "xterm") then
+#		alias cd 'cd \!* ; (echo -n "]2;ptuser:`$HOME/adm/ptuser/scwd`]1;PT:`$HOME/adm/ptuser/scwd short`" &)'
+#	endif
 endif
 
 # Modify the printer variable
