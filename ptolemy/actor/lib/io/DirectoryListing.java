@@ -36,6 +36,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;
@@ -74,6 +75,16 @@ import ptolemy.kernel.util.NameDuplicationException;
    listed on the output.  If <i>listOnlyFiles</i> is true, then only
    files will be listed on the output. If both are true, then an exception
    is thrown.
+   <p>
+   If <i>directoryOrURL</i> is a URL, then this actor assumes that the
+   server will list the contents of the referenced directory in an
+   HTML file where each file listed will have the following form:
+   <pre>
+      &lt;a href="filename"&gt;filename&lt;/a&gt;
+   </pre>
+   If the filename is longer than 20 characters, then only the first
+   20 characters of the two appearances of the filename are compared,
+   since some servers truncate the file names.
 
    @author  Christopher Hylands, Edward A. Lee
    @version $Id$
@@ -269,6 +280,9 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
     private void _readURL(URL sourceURL)
             throws IOException, IllegalActionException {
         // Handle urls here.
+        if (_debugging) {
+        	_debug("Reading URL: " + sourceURL);
+        }
         URLConnection urlConnection = sourceURL.openConnection();
         String contentType = urlConnection.getContentType();
         if (!contentType.startsWith("text/html")
@@ -308,6 +322,9 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
         boolean sawBody = false, sawHREF = false;
         while ((line = in.readLine()) != null) {
             line = line.trim();
+            if (_debugging) {
+            	_debug(line);
+            }
             if (line.startsWith("<BODY")
                     || line.startsWith("<body")) {
                 sawBody = true;
@@ -323,18 +340,28 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
                         } else {
                             if (sawHREF) {
                                 if (target == null) {
-                                    // Here, we should check that target
+                                    // FIXME: Here, we should check that target
                                     // is a relative pathname.
                                     target = token;
                                 } else {
-                                    // Check to see if the token is
+                                    // Check to see whether the first 20
+                                    // characters of the token are
                                     // the same as the last token.
-                                    if (token.compareTo(target) != 0) {
+                                    String reference = target;
+                                    if (reference.length() > 20) {
+                                    	reference = target.substring(0, 20);
+                                    }
+                                    if (!token.startsWith(reference)) {
                                         sawHREF = false;
                                     } else {
                                         if (accept(null, target)) {
+                                            // Make sure directoryOrURL ends with a slash.
+                                            String base = directoryOrURL.getExpression();
+                                            if (!base.endsWith("/")) {
+                                            	base = base + "/";
+                                            }
                                             resultsList.add(new StringToken(
-                                                                    directoryOrURL + target));
+                                            		base + target));
                                         }
                                         sawHREF = false;
                                     }
@@ -346,7 +373,15 @@ public class DirectoryListing extends SequenceSource implements FilenameFilter {
             }
         }
         in.close();
-        StringToken [] results = new StringToken[resultsList.size()];
+        if (_debugging) {
+        	_debug("----- end of listing.");
+            _debug("----- extracted results:");
+            Iterator results = resultsList.iterator();
+            while (results.hasNext()) {
+            	_debug(((StringToken)results.next()).stringValue());
+            }
+        }
+        StringToken[] results = new StringToken[resultsList.size()];
         output.broadcast(new ArrayToken((StringToken [])(resultsList.toArray(results))));
     }
 
