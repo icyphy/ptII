@@ -54,6 +54,7 @@ JSIMPLE_TESTS = \
 	Bernoulli.tcl \
 	Const.tcl \
 	Gaussian.tcl \
+	MultiplyDivide.tcl \
 	Pulse.tcl \
 	Ramp.tcl
 

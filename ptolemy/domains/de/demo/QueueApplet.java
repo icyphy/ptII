@@ -247,8 +247,8 @@ public class QueueApplet extends Applet {
     }
 
     private class MyExecutionListener extends DefaultExecutionListener {
-        public void executionFinished(ExecutionEvent e) {
-            super.executionFinished(e);
+        public void executionFinished(Manager manager) {
+            super.executionFinished(manager);
             _isSimulationRunning = false;
         }
 

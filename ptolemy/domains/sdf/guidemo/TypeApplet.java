@@ -893,13 +893,14 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
         }
     }
 
+// FIXME: The following error handling should be done by PtolemyApplet.
+
     /** Execution listener for type conflict.
      */
     public class MyTypeConflictListener implements ExecutionListener {
 	/** pop up a message.
 	 */
-	public void executionError(ExecutionEvent event) {
-	    Exception ex = event.getException();
+	public void executionError(Manager manager, Exception ex) {
 	    if (ex instanceof TypeConflictException) {
 		Message msg = new Message(ex.getMessage());
 	    }
@@ -907,33 +908,13 @@ public class TypeApplet extends ptolemy.domains.sdf.demo.SDFApplet {
 
 	/** do nothing.
          */
-	public void executionFinished(ExecutionEvent event) {
+	public void executionFinished(Manager manager) {
 	}
 
 	/** do nothing.
          */
-	public void executionIterationStarted(ExecutionEvent event) {
-	}
-
-	/** do nothing.
-         */
-	public void executionPaused(ExecutionEvent event) {
-	}
-
-	/** do nothing.
-         */
-	public void executionResumed(ExecutionEvent event) {
-	}
-
-	/** do nothing.
-         */
-	public void executionStarted(ExecutionEvent event) {
-	}
-
-	/** do nothing.
-         */
-	public void executionTerminated(ExecutionEvent event) {
-	}
+        public void managerStateChanged(Manager manager) {
+        }
     }
 }
 

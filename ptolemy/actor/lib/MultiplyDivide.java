@@ -164,9 +164,9 @@ public class MultiplyDivide extends TypedAtomicActor {
 	for (int i = 0; i < divide.getWidth(); i++) {
 	    if (divide.hasToken(i)) {
                 in = divide.get(i);
-                if (firstin == null) firstin = in;
 		if (denominator == null) {
 		    denominator = in;
+                    firstin = in;
 		} else {
 		    denominator = denominator.multiply(in);
 		}
@@ -179,7 +179,7 @@ public class MultiplyDivide extends TypedAtomicActor {
             result = firstin.one();
         }
         if (denominator != null) {
-            result = result.divide(in);
+            result = result.divide(denominator);
 	}
         output.broadcast(result);
     }

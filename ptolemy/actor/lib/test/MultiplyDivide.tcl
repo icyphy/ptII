@@ -1,4 +1,4 @@
-# Test MultiplyDivide.  FIXME: copies from AddSubtract.
+# Test MultiplyDivide.
 #
 # @Author: Edward A. Lee
 #
@@ -41,9 +41,9 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 test MultiplyDivide-1.1 {test constructor and clone} {
-    set e0 [sdfModel 3]
-    set addsub [java::new ptolemy.actor.lib.MultiplyDivide $e0 addsub]
-    set newobj [java::cast ptolemy.actor.lib.MultiplyDivide [$addsub clone]]
+    set e0 [sdfModel 2]
+    set muldiv [java::new ptolemy.actor.lib.MultiplyDivide $e0 muldiv]
+    set newobj [java::cast ptolemy.actor.lib.MultiplyDivide [$muldiv clone]]
     # Success here is just not throwing an exception.
     list {}
 } {{}}
@@ -51,62 +51,54 @@ test MultiplyDivide-1.1 {test constructor and clone} {
 ######################################################################
 #### Test MultiplyDivide in an SDF model
 #
-test MultiplyDivide-2.1 {test add alone} {
+test MultiplyDivide-2.1 {test multiply alone} {
     set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
     set init [getParameter $ramp init]
     set step [getParameter $ramp step]
-    $init setExpression {0.0}
+    $init setExpression {1.0}
     $step setExpression {1.0}
     set const [java::new ptolemy.actor.lib.Const $e0 const]
     set value [getParameter $const value]
-    $value setExpression {-1.0}
+    $value setExpression {-2.0}
     set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
-    set plus [java::field $addsub plus]
+    set multiply [java::field $muldiv multiply]
     set r1 [$e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
-       $plus]
+       $multiply]
     set r2 [$e0 connect \
        [java::field [java::cast ptolemy.actor.lib.Source $const] output] \
-       [java::field $addsub plus]]
+       [java::field $muldiv multiply]]
     $e0 connect \
-       [java::field $addsub output] \
+       [java::field $muldiv output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-    [$e0 getManager] run
+    [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {-1.0 0.0 1.0}
+} {-2.0 -4.0}
 
-test MultiplyDivide-2.2 {test add and subtract} {
-    set minus [java::field $addsub minus]
-    $plus unlink $r2
-    $minus link $r2
-    [$e0 getManager] run
+test MultiplyDivide-2.2 {test multiply and divide} {
+    set divide [java::field $muldiv divide]
+    $multiply unlink $r2
+    $divide link $r2
+    [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {1.0 2.0 3.0}
+} {-0.5 -1.0}
 
-test MultiplyDivide-2.3 {test subtract only} {
-    $plus unlink $r1
-    $minus link $r1
-    [$e0 getManager] run
+test MultiplyDivide-2.3 {test divide only} {
+    $multiply unlink $r1
+    $divide link $r1
+    [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
-} {1.0 0.0 -1.0}
+} {-0.5 -0.25}
 
 ######################################################################
 #### Test with string type
 #
-test MultiplyDivide-3.1 {test with string type} {
+test MultiplyDivide-3.1 {test with run-time type error} {
     $init setExpression {"a"}
     $step setExpression {"b"}
-    $value setExpression {true}
-    $minus unlinkAll
-    $plus link $r1
-    $plus link $r2
-    [$e0 getManager] run
-    enumToTokenValues [$rec getRecord 0]
-} {atrue abtrue abbtrue}
-
-test MultiplyDivide-3.2 {test with run-time type error} {
-    $plus unlink $r2
-    $minus link $r2
-    [$e0 getManager] run
-    enumToTokenValues [$rec getRecord 0]
-} {ptolemy.kernel.util.IllegalActionException: subtract method not supported on ptolemy.data.StringToken objects.}
+    $divide unlinkAll
+    $multiply link $r1
+    $multiply link $r2
+    catch {[$e0 getManager] execute} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: multiply method not supported on ptolemy.data.StringToken objects.}}

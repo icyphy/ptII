@@ -593,11 +593,10 @@ public class ABPApplet extends Applet {
     }
 
     private class MyExecutionListener extends DefaultExecutionListener {
-        public void executionFinished(ExecutionEvent e) {
-            super.executionFinished(e);
+        public void executionFinished(Manager manager) {
+            super.executionFinished(manager);
             _isSimulationRunning = false;
         }
-
     }
 
     private class GoButtonListener implements ActionListener {

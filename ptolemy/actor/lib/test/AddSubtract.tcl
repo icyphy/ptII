@@ -71,7 +71,7 @@ test AddSubtract-2.1 {test add alone} {
     $e0 connect \
        [java::field $addsub output] \
        [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-    [$e0 getManager] run
+    [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {-1.0 0.0 1.0}
 
@@ -79,14 +79,14 @@ test AddSubtract-2.2 {test add and subtract} {
     set minus [java::field $addsub minus]
     $plus unlink $r2
     $minus link $r2
-    [$e0 getManager] run
+    [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {1.0 2.0 3.0}
 
 test AddSubtract-2.3 {test subtract only} {
     $plus unlink $r1
     $minus link $r1
-    [$e0 getManager] run
+    [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {1.0 0.0 -1.0}
 
@@ -100,13 +100,13 @@ test AddSubtract-3.1 {test with string type} {
     $minus unlinkAll
     $plus link $r1
     $plus link $r2
-    [$e0 getManager] run
+    [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {atrue abtrue abbtrue}
 
 test AddSubtract-3.2 {test with run-time type error} {
     $plus unlink $r2
     $minus link $r2
-    [$e0 getManager] run
-    enumToTokenValues [$rec getRecord 0]
-} {ptolemy.kernel.util.IllegalActionException: subtract method not supported on ptolemy.data.StringToken objects.}
+    catch {[$e0 getManager] execute} msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: subtract method not supported on ptolemy.data.StringToken objects.}}

@@ -65,7 +65,7 @@ test Pulse-2.1 {test with the default output values} {
     $e0 connect \
             [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
             [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
-    [$e0 getManager] run
+    [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {1 0 0 0 0}
 
@@ -78,7 +78,7 @@ test Pulse-2.2 {test with the non-default output values} {
     set indexesParam [getParameter $pulse indexes]
     $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
 
-    [$e0 getManager] run
+    [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {0.1 0.0 0.2 0.3 0.0}
 
@@ -92,7 +92,7 @@ test Pulse-2.3 {test with two-dimensional output values} {
     set indexesParam [getParameter $pulse indexes]
     $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
 
-    [$e0 getManager] run
+    [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {1.0 2.0 3.0 4.0 0.0}
 
@@ -122,7 +122,7 @@ test Pulse-3.3 {test values and indexes of different dimensions} {
     set indexesParam [getParameter $pulse indexes]
     $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
     catch {
-        [$e0 getManager] run
+        [$e0 getManager] execute
     } msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: .top.pulse: Parameters values and indexes must be arrays of the same dimension.}}

@@ -1,6 +1,6 @@
 # Tests for the Manager class
 #
-# @Author: Yuhong Xiong
+# @Author: Yuhong Xiong, Edward A. Lee
 #
 # @Version: $Id$
 #
@@ -237,3 +237,53 @@ test Manager-8.8 {Test type resolution} {
   .E0.E4.P4: ptolemy.data.IntToken
 }}
 
+######################################################################
+####
+#
+test Manager-10.0 {Test execution listener} {
+    # NOTE: The real results of this test go to stdout, which we can't
+    # test... So the test just makes sure an exception isn't thrown.
+    set e0 [sdfModel 2]
+    set manager [$e0 getManager]
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $ramp] output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    set listener [java::new ptolemy.actor.DefaultExecutionListener]
+    $manager addExecutionListener $listener
+    $manager run
+    puts "------- result: [enumToTokenValues [$rec getRecord 0]]"
+    $manager removeExecutionListener $listener
+    [$manager getState] getDescription
+} {Idle}
+
+######################################################################
+####
+#
+test Manager-11.0 {Test execution by execute method} {
+    $manager execute
+    enumToTokenValues [$rec getRecord 0]
+} {0 1}
+
+######################################################################
+####
+#
+test Manager-12.0 {Test execution by fine grain methods} {
+    $manager initialize
+    $manager iterate
+    $manager iterate
+    $manager wrapup
+    enumToTokenValues [$rec getRecord 0]
+} {0 1}
+
+######################################################################
+####
+#
+test Manager-13.0 {Test execution by in another thread} {
+    $manager startRun
+    sleep 1
+    enumToTokenValues [$rec getRecord 0]
+} {0 1}
+
+# FIXME: I have no idea how to test pause() and finish().

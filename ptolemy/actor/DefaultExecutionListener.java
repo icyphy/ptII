@@ -1,4 +1,4 @@
-/* A default implementation of the ExecutionListener interface
+/* A default implementation of the ExecutionListener interface.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -40,7 +40,7 @@ A default implementation of the ExecutionListener interface.
 This implementation prints information about each event to the standard
 output.
 
-@author Steve Neuendorffer, Lukito Muliadi
+@author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee
 @version $Id$
 */
 public class DefaultExecutionListener implements ExecutionListener {
@@ -53,50 +53,36 @@ public class DefaultExecutionListener implements ExecutionListener {
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /** Called to report an execution failure.
+    /** Report an execution failure.
      */
-    public void executionError(ExecutionEvent event) {
-        System.out.println("DefaultExecutionListener.executionError()");
-        Exception e = event.getException();
-
-	System.out.println(e.getMessage());
-        e.printStackTrace();
+    public void executionError(Manager manager, Exception ex) {
+        System.out.println("Execution error.");
+	System.out.println(ex.getMessage());
+        ex.printStackTrace();
     }
 
-    /** Called to report that the current iteration finished and
-     *  the wrapup sequence completed normally.
+    /** Report that the current execution finished.
+     *
+     *  @param manager The manager controlling the execution.
      */
-    public void executionFinished(ExecutionEvent event) {
-        System.out.println("DefaultExecutionListener.executionFinished()");
+    public void executionFinished(Manager manager) {
+        System.out.println("Completed execution with "
+        + manager.getIterationCount() + " iterations");
     }
 
-    /** Called to report that a toplevel iteration has begun.
+    /** Called to report that the manager has changed state.
+     *
+     *  @param manager The manager controlling the execution.
      */
-    public void executionIterationStarted(ExecutionEvent event) {
-        // This is printed every iteration.. way too much for now..
-    }
-
-    /** Called to report a successful pause of execution.
-     */
-    public void executionPaused(ExecutionEvent event) {
-        System.out.println("DefaultExecutionListener.executionPaused()");
-    }
-
-    /** Called to report a successful resumption of execution.
-     */
-    public void executionResumed(ExecutionEvent event) {
-        System.out.println("DefaultExecutionListener.executionResumed()");
-    }
-
-    /** Called to report a successful start of execution.
-     */
-    public void executionStarted(ExecutionEvent event) {
-        System.out.println("DefaultExecutionListener.executionStarted()");
-    }
-
-    /** Called to report a successful termination of execution.
-     */
-    public void executionTerminated(ExecutionEvent event) {
-        System.out.println("DefaultExecutionListener.executionTerminated()");
+    public void managerStateChanged(Manager manager) {
+        Manager.State state = manager.getState();
+        String msg;
+        if (state == manager.ITERATING) {
+            msg = state.getDescription() + " number "
+            + manager.getIterationCount();
+        } else {
+            msg = state.getDescription();
+        }
+        System.out.println(msg);
     }
 }

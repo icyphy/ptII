@@ -1,4 +1,4 @@
-/* A Manager governs the execution of an entire simulation.
+/* A Manager governs the execution of a model.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -45,41 +45,25 @@ import java.util.Date;			// For timing measurements
 //////////////////////////////////////////////////////////////////////////
 //// Manager
 /**
-A Manager is a domain-independent object that manages the execution of
-a model.   It provides several methods to control execution: run()
-startRun(), pause(), resume(), terminate(), and finish().
-Most often, methods in this object will be called by a
-graphical user interface.  However, it is possible to manually call
-these methods from a java object, a java applet, or an interactive
-prompt, such as Tcl Blend.
+A Manager governs the execution of a model in a domain-independent way.
+Its methods are designed to be called by a GUI, an applet, an command-line
+interface, or the top-level code of an application.  The manager can
+execute the model in the calling thread or in a separate thread.
+The latter is useful when the caller wishes to remain live during
+the execution of the model.
 <p>
-Because user interaction will likely be occurring asynchronously to the
-execution of the model, it is important that all the processing for the
-model occur in a separate thread.   The Manager has the ability to start 
-executing a model in the current model, or it can create
-and manage a separate Java thread in which execution begins.  Notice that 
-this does not preclude domains from spawning additional threads of their own.  
-<p>
-The Manager class implements the Runnable interface.   The run() method of 
-interface begins the the execution of a model. The run() method call is a
-blocking method call, in the sense that the flow of execution will be returned
-to the caller only after the run() method finishes. On the other hand, the
-startRun() method call is a non-blocking method call. It creates a separate
-thread running the execution and the flow of execution will be returned
-immediately to the caller.  Notice that because the Manager is a runnable
-object, execution can also be started in a separate thread using the 
-Thread(Runnable) constructor.
-<p>
-Manager also tries to optimize the simulation by making the workspace
-read-only during the iteration period when none of the 
-directors in the model require write access. It calls needWriteAccess() on 
-the director of the toplevel composite, and if this method returns false, 
-then the manager will set the workspace to be read-only during each iteration
-of the system.  Notice that although the workspace is read-only, mutations 
-may still occur, if they are queued with the manager.
+Manager optimizes improve the performance of an execution by making
+the workspace <i>write-protected</i> during an iteration, if all
+relevant directors permit this.  This removes some of the overhead
+of obtaining read and write permission on the workspace.
+By default, directors do not permit this.
+But in several domains, this behavior is overridden to permit it.
+Note that making the workspace write protected does not prevent
+mutations.  It only prevents mutations from occuring within an
+iteration (they can still occur between iterations).
 
-@author Steve Neuendorffer, Lukito Muliadi
-// Contributors: Mudit Goel, Edward A. Lee, John S. Davis II
+@author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee
+// Contributors: Mudit Goel, John S. Davis II
 @version $Id$
 */
 
@@ -91,7 +75,6 @@ public final class Manager extends NamedObj implements Runnable {
      */
     public Manager() {
         super();
-        _ExecutionListeners = new HashedSet();
     }
 
     /** Construct a manager in the default workspace with the given name.
@@ -102,7 +85,6 @@ public final class Manager extends NamedObj implements Runnable {
      */
     public Manager(String name) {
         super(name);
-        _ExecutionListeners = new HashedSet();
     }
 
     /** Construct a manager in the given workspace with the given name.
@@ -116,120 +98,298 @@ public final class Manager extends NamedObj implements Runnable {
      */
     public Manager(Workspace workspace, String name) {
         super(workspace, name);
-        _ExecutionListeners = new HashedSet();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** Indicator that the model may be corrupted.
+     */
+    public final State CORRUPTED = new State(
+        "Model terminated and may be corrupted");
+
+    /** Indicator that there is no currently active execution.
+     */
+    public final State IDLE = new State("Idle");
+
+    /** Indicator that the execution is in the initialize phase.
+     */
+    public final State INITIALIZING = new State("Initializing");
+
+    /** Indicator that the execution is in an interation.
+     */
+    public final State ITERATING = new State("Executing iteration");
+
+    /** Indicator that the execution is in the mutations phase.
+     */
+    public final State MUTATING = new State("Processing mutations");
+
+    /** Indicator that the execution is paused.
+     */
+    public final State PAUSED = new State("Execution paused");
+
+    /** Indicator that type resolution is being done.
+     */
+    public final State RESOLVING_TYPES = new State("Resolving types");
+
+    /** Indicator that the execution is in the wrapup phase.
+     */
+    public final State WRAPPING_UP = new State("Wrapping up");
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Add the execution listener to the set of execution listeners.
-     *  The execution listener will be notified when the appropriate
-     *  execution events occur.
-     *  @param el An execution listener.
+    /** Add a listener to be notified when the model execution changes state.
+     *  @param listener The listener.
      */
-    public void addExecutionListener(ExecutionListener el) {
-        if(el == null) return;
-        _ExecutionListeners.include((Object) el);
+    public void addExecutionListener(ExecutionListener listener) {
+        if(listener == null) return;
+        if(_executionListeners == null) {
+            _executionListeners = new HashedSet();
+        }
+        _executionListeners.include(listener);
     }
 
-    /** Set a flag to request that the thread in which execution is running
-     *  stop execution and exit gracefully. Call finish() on the top level
-     *  CompositeActor. This thread is synchronized so that it runs atomically 
-     *  with respect to other methods in Manager that control the simulation 
-     *  thread. This method is non-blocking.
+    /** Execute the model.  Begin with the initialization phase, followed
+     *  by a sequence of iterations, followed by a wrapup phase.
+     *  The sequence of iterations concludes when the postfire() method
+     *  of the container (the top-level composite actor) returns false,
+     *  or when the finish() method is called.
+     *  <p>
+     *  The execution is performed in the calling thread (the current thread).
+     *  So this method returns only after execution finishes.
+     *  If you wish to perform execution in a new thread, use startRun().
+     *  If you do not wish to deal with exceptions, but want to execute
+     *  within the calling thread, use run().
+     *  @exception KernelException If the model throws it.
+     *  @exception IllegalActionException If the model is already running, or
+     *   if there is no container.
+     */
+    public synchronized void execute()
+            throws KernelException, IllegalActionException {
+
+        // Make a record of the time execution starts.
+        long startTime = (new Date()).getTime();
+
+        try {            
+            initialize();
+            // Call iterate() until finish() is called or postfire()
+            // returns false.
+            while (!_finishRequested) {
+                if (!iterate()) break;
+                if (_pauseRequested) {
+                    _setState(PAUSED);
+                    while (_pauseRequested) {
+                        try {
+                            wait();
+                        } catch (InterruptedException e) {
+                            // ignore.
+                        }
+                    }
+                }
+            }
+            wrapup();
+            _notifyListenersOfCompletion();
+        } finally {
+            if (_state != IDLE) {
+                _setState(IDLE);
+            }
+        }
+        // Report the execution time.
+        long endTime = (new Date()).getTime();
+        System.out.println("ptolemy.actor.Manager run(): elapsed time: "
+                + (endTime - startTime) + " ms");
+    }
+
+    /** Set a flag to request that execution stop and exit gracefully.
+     *  This will result in finish() being called on the top level
+     *  CompositeActor, although not necessarily immediately.
+     *  This method sets the flag, then obtains a synchronization lock
+     *  on this manager and calls notifyAll() to wake up any threads
+     *  that may be waiting for such an event.  The flag is set before
+     *  obtaining the synchronization lock so that it is visible as
+     *  as soon as possible even if another method is holding a synchronization
+     *  lock in another thread.
      */
     public void finish() {
-        synchronized(this) {
-            _keepIterating = false;
-            _isPaused = false;
-            getToplevel().finish();
-            if(_simulationThread != null) {
-                synchronized(_simulationThread) {
-                    _simulationThread.notify();
-                }
+        _finishRequested = true;
+        if (_state == PAUSED) {
+            _pauseRequested = false;
+            synchronized(this) {
+                notifyAll();
             }
         }
     }
 
-    /** Encapsulate the exception within an execution event and issue an
-     *  executionError event to all the Execution listeners.   In 
-     *  addition, print the exception's stack trace on the console.
-     *
-     *  @param e The exception.
-     */
-    public void fireExecutionError(Exception e) {
-        // if any exceptions get up to this level, then we have to tell
-        // the gui by encapsulating in an event.
-        ExecutionEvent event = new ExecutionEvent(this, _iteration, e);
-        // dump the stack trace to the console;
-        e.printStackTrace();
-        // and issue the event to all the listeners.
-        _fireExecutionEvent(_ExecutionEventType.EXECUTIONERROR, event);
-    }
-
-
-    /** Return the toplevel composite actor for which this manager
-     *  controls execution.   This composite actor does not have a parent, and
-     *  contains the entire hierarchy for an execution.
+    /** Return the top-level composite actor for which this manager
+     *  controls execution.
      *  @return The composite actor that this manager is responsible for.
      */
-    public CompositeActor getToplevel() {
-        return _toplevel;
+    public Nameable getContainer() {
+        return _container;
+    }
+
+    /** Return the iteration count, which is the number of iterations
+     *  that have been started (but not necessarily completed).
+     *  @return The number of iterations started.
+     */
+    public int getIterationCount() {
+        return _iterationCount;
+    }
+
+    /** Return the current state of execution of the manager.
+     *  @return The state of execution.
+     */
+    public State getState() {
+        return _state;
+    }
+
+    /** Initialize the model.
+     *  @exception KernelException If the model throws it.
+     *  @exception IllegalActionException If the model is already running, or
+     *   if there is no container.
+     */
+    public synchronized void initialize()
+            throws KernelException, IllegalActionException {
+        if (_state != IDLE) {
+            throw new IllegalActionException(this,
+            "The model is already running.");
+        }
+        if (_container == null) {
+            throw new IllegalActionException(this,
+            "No model to run!");
+        }
+        _setState(INITIALIZING);
+
+        _pauseRequested = false;
+        _finishRequested = false;
+        _typesResolved = false;
+        _iterationCount = 0;
+
+        // Initialize the topology
+        _container.initialize();
     }
 
     /** Indicate that resolved types in the system may no longer be valid.
      *  This will force type resolution to be redone on the next iteration.
      */
     public void invalidateResolvedTypes() {
-        _typeResolved = false;
+        _typesResolved = false;
     }
 
-    /** If an execution is currently running, then set a flag requesting that
-     *  execution pause at the next available opportunity between toplevel
-     *  iterations.   When the pause flag is detected, the
-     *  simulation thread will suspend itself and issue the
-     *  executionPaused execution event to all execution listeners.
-     *  This thread is synchronized so that it runs atomically with respect to
-     *  the other methods in manager that control the simulation thread.
-     *  This call is non-blocking.
+    /** Invoke one iteration of the model.  An iteration consists of
+     *  first performing mutations and type resolution, if necessary, and then
+     *  invoking prefire(), fire(), and postfire(), in that
+     *  order. If prefire() returns false, then fire() and postfire() are not
+     *  invoked, and true is returned.
+     *  Otherwise, fire() will be called once, followed by
+     *  postfire(). The return value of postfire() is returned.
+     *  Note that this method ignores finish and pause requests.
+     *  If you wish to use finish() or pause() to control the execution,
+     *  then you should execute the model using execute(), run(), or
+     *  startRun().
+     *  This method is read synchronized on the workspace.
+     *
+     *  @return True if postfire() returns true.
+     *  @exception KernelException If the model throws it, or if there
+     *   is no container.
      */
-    public synchronized void pause() {
-        if(_keepIterating) _isPaused = true;
+    public boolean iterate() throws KernelException {
+        if (_container == null) {
+            throw new IllegalActionException(this,
+            "No model to execute!");
+        }
+        boolean result = true;
+        try {
+            workspace().getReadAccess();
+
+            // FIXME: _container mutations will occur here.
+
+            if (!_typesResolved) {
+                resolveTypes();
+                _typesResolved = true;
+            }
+
+            _iterationCount++;
+            _setState(ITERATING);
+
+            // Set the appropriate write access, because we're about to
+            // go into an iteration.
+            if (!_needWriteAccess()) {
+                workspace().setReadOnly(true);
+            }
+
+            if (_container.prefire()) {
+                _container.fire();
+                result = _container.postfire();
+            }
+        } finally {
+            workspace().doneReading();
+            workspace().setReadOnly(false);
+        }
+        return result;
     }
 
-    /** Remove the execution listener from the set of execution listeners.
-     *  The execution listener will be no longer be notified when
-     *  execution events occur.
-     *  @param el An execution listener
+    /** Notify all the execution listeners of an exception.
+     *  If there are no listeners, then print the exception information
+     *  to standard error stream. This is intended to be used by threads
+     *  that are involved an execution as a mechanism for reporting
+     *  errors.
+     *  @param ex The exeception.
      */
-    public void removeExecutionListener(ExecutionListener el) {
-        if(el == null) return;
-        _ExecutionListeners.exclude((Object) el);
+    public void notifyListenersOfException(Exception ex) {
+        _debug(ex.getMessage());
+        if (_executionListeners == null) {
+            System.err.println(ex.getMessage());
+        } else {
+            Enumeration listeners = _executionListeners.elements();
+            while(listeners.hasMoreElements()) {
+                ExecutionListener listener =
+                       (ExecutionListener) listeners.nextElement();
+                listener.executionError(this, ex);
+            }
+        }
+    }
+
+    /** Set a flag requesting that execution pause at the next opportunity
+     *  (between iterations).  The thread controlling the execution will be
+     *  suspended.  To resume execution, call resume() from another thread.
+     */
+    public void pause() {
+        _pauseRequested = true;
+    }
+
+    /** Remove a listener from the list of listeners that are notified
+     *  of execution events.  If the specified listener is not on the list,
+     *  do nothing.
+     *  @param listener The listener to remove.
+     */
+    public void removeExecutionListener(ExecutionListener listener) {
+        if(listener == null || _executionListeners == null) return;
+        _executionListeners.exclude(listener);
     }
 
     /** Check types on all the connections and resolve undeclared types.
      *  If the container is not an instance of TypedCompositeActor,
      *  do nothing.
-     *  This method requires write access on the workspace.
-     *  @exception TypeConflictException If there is a type conflict anywhere
-     *  in the model.
+     *  This method is write-synchronized on the workspace.
+     *  @exception TypeConflictException If type conflict is detected.
      */
-    public void resolveTypes()
-	    throws TypeConflictException {
+    public void resolveTypes() throws TypeConflictException {
+        if ( !(_container instanceof TypedCompositeActor)) {
+            return;
+        }
 	try {
 	    workspace().getWriteAccess();
-            CompositeActor toplevel = (CompositeActor)getToplevel();
-            if ( !(toplevel instanceof TypedCompositeActor)) {
-                return;
-            }
+
+            _setState(RESOLVING_TYPES);
 
 	    LinkedList conflicts = new LinkedList();
 	    conflicts.appendElements(
-                    ((TypedCompositeActor)toplevel).checkTypes());
+                    ((TypedCompositeActor)_container).checkTypes());
 
             Enumeration constraints =
-                ((TypedCompositeActor)toplevel).typeConstraints();
+                ((TypedCompositeActor)_container).typeConstraints();
 
 	    if (constraints.hasMoreElements()) {
                 InequalitySolver solver = new InequalitySolver(
@@ -275,7 +435,7 @@ public final class Manager extends NamedObj implements Runnable {
 
 	    if (conflicts.size() > 0) {
 		throw new TypeConflictException(conflicts.elements(),
-                        "Type conflicts occurred in " + toplevel.getFullName()
+                        "Type conflicts occurred in " + _container.getFullName()
 			+ " on the following Typeables:");
 	    }
 	} catch (IllegalActionException iae) {
@@ -286,235 +446,116 @@ public final class Manager extends NamedObj implements Runnable {
 	}
     }
 
-    /** If the model is running and paused, resume the
-     *  currently paused simulation by
-     *  turning off the paused flag and waking the simulation thread up.
-     *  This thread is synchronized so that it runs atomically with respect to
-     *  the other methods in manager that control the simulation thread.
+    /** If the model is paused, resume execution.  This method must be called
+     *  from a different thread than that controlling the execution, since
+     *  the thread controlling the execution is suspended.
      */
     public synchronized void resume() {
-        if(_simulationThread == null) return;
-        if(_keepIterating && _isPaused) {
-            _isPaused = false;
-            synchronized (_simulationThread) {
-                _simulationThread.notify();
-            }
+        if(_state == PAUSED) {
+            _pauseRequested = false;
+            notifyAll();
         }
     }
 
-    /**
-     * Run the sequence of execution.  This method executes the toplevel
-     * composite actor until it returns false in postfire.
-     * The execution begins by calling initialize() on the toplevel
-     * composite actor.   Each iteration of execution consists of calling
-     * prefire(), fire() and postfire() on the top-level composite actor.
-     * If postfire returns false, then execution is finished by calling
-     * wrapup() on the toplevel composite actor to clean up the execution.
-     * <p>
-     * The execution is performed by the current thread. In other words, 
-     * execution is performed in the foreground and
-     * the method returns only after the execution finishes.  However, it is
-     * possible for other threads to come in and pause(), resume(),
-     * terminate() or finish() the execution of the simulation.
-     * To start execution in the background, use the startRun() method.
-     * <p> 
-     * If execution of the model is already in progress, then this method 
-     * returns immediately.
-     * @see Manager#startRun()
+    /** Execute the model, catching all exceptions. Use this method to
+     *  execute the model within the calling thread, but to not throw
+     *  exceptions.  Instead, any registered listeners are notified of
+     *  the exceptions, or if there are no registered listeners, then
+     *  the exception is printed to standard output.  Except for its
+     *  exception handling, this method has exactly the same behavior
+     *  as execute().
      */
     public void run() {
-        // ensure that we only have one execution running.
-        synchronized(this) {
-            if (_simulationThread == null) {
-                // set the execution control variables.
-                 _simulationThread = Thread.currentThread();
-                 _keepIterating = true;
-                 _isPaused = false;
-                 _iteration = 0;
-                 _typeResolved = false;
-            } else {
-                System.out.println("The model is already executing. " + 
-                        "Either wait for it to end, or call " +
-                        "finish() or terminate().");
-                return;
-            }
-        }
-
-        // Used for profiling;
-        long startTime = (new Date()).getTime();
-
-        CompositeActor toplevel = ((CompositeActor)getToplevel());
-
-        // Notify all the listeners that execution has started.
-        ExecutionEvent event = new ExecutionEvent(this);
-        _fireExecutionEvent(_ExecutionEventType.EXECUTIONSTARTED, event);
-
         try {
-            try {
-                // Initialize the topology
-                toplevel.initialize();
-
-                // Figure out the appropriate write access.
-                _needWriteAccessDuringIteration =
-                    _needWriteAccess();
-
-                // Call _iterate() until:
-                // _keepIterating is set to false (presumably by stop())
-                // postfire() returns false.
-                while (_keepIterating && _iterate()) {
-                    try {
-                        // if a pause has been requested
-                        if(_isPaused) {
-                            // Notify listeners that we are paused.
-                            event =
-                                new ExecutionEvent(this, _iteration);
-                            _fireExecutionEvent(
-                                    _ExecutionEventType.EXECUTIONPAUSED, 
-                                    event);
-
-                            synchronized (_simulationThread) {
-                                // suspend this thread until
-                                // somebody wakes us up.
-                                while(_keepIterating && 
-                                        _isPaused)
-                                    _simulationThread.wait();
-                            }
-
-                            // Somebody woke us up, so notify all the
-                            // listeners that we are resuming.
-                            event =
-                                new ExecutionEvent(this, _iteration);
-                            _fireExecutionEvent(
-                                    _ExecutionEventType.EXECUTIONRESUMED,
-                                    event);
-                        }
-                    }
-                    catch (InterruptedException e) {
-                        // We don't care if we were interrupted..
-                        // Just ignore.
-                    }
-
-                } // while (_keepIterating && _iterate())
-            }
-            // catch errors that happen during an iteration before the finally
-            // clause.   Ensure that exception is reported before wrapup()
-            // tries to get called.
-            catch (Exception e) {
-                fireExecutionError(e);
-            }
-            finally {
-                // if we are done, then always be sure to reset the flags.
-                _keepIterating = false;
-                _isPaused = false;
-
-                // try to wrapup the topology.
-                toplevel.wrapup();
-
-                // notify all listeners that we have been stopped.
-                event =
-                    new ExecutionEvent(this, _iteration);
-                _fireExecutionEvent(_ExecutionEventType.EXECUTIONFINISHED,
-                        event);
-            }
-        } catch (Exception e) {
-            fireExecutionError(e);
+            execute();
+        } catch (Exception ex) {
+            // Notify listeners.
+            notifyListenersOfException(ex);
+        } finally {
+            _thread = null;
         }
-
-        long endTime = (new Date()).getTime();
-        System.out.println("ptolemy.actor.Manager run(): elapsed time: "
-                + (endTime - startTime) + " ms");
-
-        // The simulation is finished, the thread has finished its job.
-        _simulationThread = null;
-
     }
 
-    /** Start an execution that will run for an unspecified number of
-     *  toplevel iterations.   This will normally be stopped by
-     *  calling finish(), terminate(), or returning false in a postfire method.
-     *  This method is non-blocking.  In other words, the execution of the
-     *  model occurs in the background.  The effect of this method is call the
-     *  run method in a separate thread.
-     * <p> 
-     * If execution of the model is already in progress, then this method 
-     * returns immediately.
-     *  @see Manager#run()
+    /** Start an execution in another thread and return.  Any exceptions
+     *  that occur during the execution of the model are handled by
+     *  reporting them to any registered execution listeners.  If there
+     *  are no registered execution listeners, then the exceptions are
+     *  printed to standard output together with a stack trace.
+     *  @exception IllegalActionException If the model is already running.
      */
-    public synchronized void startRun() {
-
-     /*
-      *    I've commented this stuff out because it's bogus... I want
-      *    to see if anything breaks.
-      *  if(_keepIterating) return;
-      *
-      *  // If the previous run hasn't totally finished yet, then be sure
-      *  // it is good and dead before continuing.
-      *
-      *  if(_simulationThread != null) {
-      *      _simulationThread.stop();
-      *      try {
-      *          _simulationThread.join();
-      *      }
-      *      catch (InterruptedException e) {
-      *          // Well, if we bothered to kill it, then this should
-      *          // always get thrown, so just ignore it.
-      *      }
-      *      _simulationThread = null;
-      *  }
-      */
-        // This will execute Manager.run() in a separate thread.
-        Thread futureRunningThread = new PtolemyThread(this);
-        futureRunningThread.start();
+    public void startRun() throws IllegalActionException {
+        if (_state != IDLE) {
+            throw new IllegalActionException(this,
+            "Model is " + _state.getDescription());
+        }
+        _thread = new PtolemyThread(this);
+        _thread.start();
     }
 
-    /** Terminate any currently executing model with extreme prejudice.
+    /** Terminate the currently executing model with extreme prejudice.
+     *  This leaves the state of the manager in CORRUPTED, which means
+     *  that the model cannot be executed again.  A new model must be
+     *  created, with a new manager, to execute again.
      *  This method is not intended to be used as a normal route of 
      *  stopping execution. To normally stop exceution, call the finish() 
      *  method instead. This method should be called only 
      *  when execution fails to terminate by normal means due to certain
      *  kinds of programming errors (infinite loops, threading errors, etc.).
      *  <p>
-     *  After this method completes, all resources in use should be
-     *  released and any sub-threads should be killed.
-     *  However, a consistent state is not guaranteed.   The
-     *  topology should probably be recreated before attempting any
-     *  further operations.
-     *  <p>
-     *  In this class, we kill the main execution thread and call 
-     *  terminate on the toplevel compositeActor. Execution listeners are 
-     *  also notified of an executionTerminated event.
+     *  If the model execution was started in a separate thread (using
+     *  startRun()), then that thread is killed unceremoniously (using
+     *  a method that is now deprecated in Java, for obvious reasons).
+     *  This method also calls terminate on the toplevel composite actor.
      *  <p>
      *  This method is not synchronized because we want it to
      *  happen as soon as possible, no matter what.
+     *  @deprecated
      */
     public void terminate() {
-        try {
-            // kill the main thread and wait for it to die.
-            if(_simulationThread != null) {
-                _simulationThread.stop();
-                try {
-                    _simulationThread.join();
-                }
-                catch (InterruptedException e) {
-                    // This will usually get thrown, since we are
-                    // forcibly terminating
-                    // the thread.   We just ignore it.
-                }
+        // If the execution was started in a separate thread, kill that thread.
+        // NOTE: This uses the stop() method, which is now deprecated in Java.
+        // Indeed it should be, since it terminates a thread
+        // nondeterministically, and can leave any objects that the thread
+        // operating on in an inconsistent state.
+        if(_thread != null) {
+            _thread.stop();
+            try {
+                _thread.join();
             }
-            // Terminate the entire hierarchy as best we can.
-            CompositeActor toplevel = ((CompositeActor)getToplevel());
-            toplevel.terminate();
-            
-            // notify all execution listeners that execution was terminated.
-            ExecutionEvent event = new ExecutionEvent(this);
-            _fireExecutionEvent(_ExecutionEventType.EXECUTIONTERMINATED, 
-                    event);
+            catch (InterruptedException e) {
+                // This will usually get thrown, since we are
+                // forcibly terminating
+                // the thread.   We just ignore it.
+            }
+            _thread = null;
         }
-        finally {
-                _simulationThread = null;
-                _keepIterating = false;
-                _isPaused = false;
+        // Terminate the entire hierarchy as best we can.
+        _container.terminate();
+        _setState(CORRUPTED);
+    }
+
+    /** Wrap up the model.
+     *  @exception KernelException If the model throws it.
+     *  @exception IllegalActionException If the model is already running, or
+     *   if there is no container.
+     */
+    public synchronized void wrapup()
+            throws KernelException, IllegalActionException {
+        if (_state != ITERATING && _state != PAUSED && _state != INITIALIZING) {
+            throw new IllegalActionException(this,
+            "The model is not iterating.");
         }
+        if (_container == null) {
+            throw new IllegalActionException(this,
+            "No model to run!");
+        }
+        _setState(WRAPPING_UP);
+
+        // Wrap up the topology
+        _container.wrapup();
+
+        // Wrapup completed successfully
+        _setState(IDLE);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -532,183 +573,130 @@ public final class Manager extends NamedObj implements Runnable {
         if (ca != null) {
             workspace().remove(this);
         }
-        _toplevel = ca;
+        _container = ca;
+    }
+
+    /** Set the state of execution and notify listeners.
+     *  @param newstate The new state.
+     */
+    protected void _setState(State newstate) {
+        _state = newstate;
+        _notifyListenersOfStateChange();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Propagate the execution event to all the execution listeners.
+    /*  Notify listeners that execution has completed successfully.
      */
-    private void _fireExecutionEvent(_ExecutionEventType type,
-            ExecutionEvent event) {
-        Enumeration listeners = _ExecutionListeners.elements();
-        while(listeners.hasMoreElements()) {
-            ExecutionListener l =
-                (ExecutionListener) listeners.nextElement();
-            if(type == _ExecutionEventType.EXECUTIONSTARTED)
-                l.executionStarted(event);
-            else if(type == _ExecutionEventType.EXECUTIONPAUSED)
-                l.executionPaused(event);
-            else if(type == _ExecutionEventType.EXECUTIONRESUMED)
-                l.executionResumed(event);
-            else if(type == _ExecutionEventType.EXECUTIONERROR)
-                l.executionError(event);
-            else if(type == _ExecutionEventType.EXECUTIONFINISHED)
-                l.executionFinished(event);
-            else if(type == _ExecutionEventType.EXECUTIONTERMINATED)
-                l.executionTerminated(event);
-            else if(type == _ExecutionEventType.ITERATIONSTARTED)
-                l.executionIterationStarted(event);
+    private void _notifyListenersOfCompletion() {
+        _debug("Completed execution with " + _iterationCount + " iterations");
+        if (_executionListeners != null) {
+            Enumeration listeners = _executionListeners.elements();
+            while(listeners.hasMoreElements()) {
+                ExecutionListener listener =
+                       (ExecutionListener) listeners.nextElement();
+                listener.executionFinished(this);
+            }
         }
     }
 
-    /** Invoke one iteration.  An iteration consists of
-     *  invocations of prefire(), fire(), and postfire(), in that
-     *  order.  Prefire() will be called at the beginning of an iteration.
-     *  If prefire() returns false, then fire() and postfire() are not
-     *  invoked.   Otherwise, fire() will be called once, followed by
-     *  invocation of postfire(). If postfire()
-     *  returns false, then the execution will be terminated.
-     *  This method is read-synchronized on the workspace.
-     *
-     *  @return true, If postfire() returns true.
-     *  @exception IllegalActionException If any of the called methods
-     *   throws it.
+    /*  Propagate the state change event to all the execution listeners.
      */
-    private boolean _iterate() throws IllegalActionException {
-
-        _iteration++;
-
-        CompositeActor toplevel = (CompositeActor)getToplevel();
-        if (toplevel == null) {
-            throw new InvalidStateException("Manager "+ getName() +
-                    " attempted execution with no topology to execute!");
+    private void _notifyListenersOfStateChange() {
+        String msg;
+        if (_state == ITERATING) {
+            msg = _state.getDescription() + " number "
+            + _iterationCount;
+        } else {
+            msg = _state.getDescription();
         }
-
-        ExecutionEvent event = new ExecutionEvent(this, _iteration);
-        _fireExecutionEvent(_ExecutionEventType.ITERATIONSTARTED, event);
-
-        // Toplevel mutations will occur here.
-
-        try {
-            workspace().getReadAccess();
-
-	    try {
-		if (!_typeResolved) {
-                    resolveTypes();
-                    _typeResolved = true;
-                }
+        _debug(msg);
+        if (_executionListeners != null) {
+            Enumeration listeners = _executionListeners.elements();
+            while(listeners.hasMoreElements()) {
+                ExecutionListener listener =
+                       (ExecutionListener) listeners.nextElement();
+                listener.managerStateChanged(this);
             }
-            catch (TypeConflictException e) {
-                fireExecutionError(e);
-            }
-
-            // Set the appropriate write access, because we're about to
-            // go into an iteration.
-            try {
-                if (!_needWriteAccessDuringIteration) {
-                    workspace().setReadOnly(true);
-                }
-
-                if (toplevel.prefire()) {
-                    toplevel.fire();
-                    return toplevel.postfire();
-                }
-                return false;
-            } finally {
-                if (!_needWriteAccessDuringIteration) {
-                    workspace().setReadOnly(false);
-                }
-            }
-        } finally {
-            workspace().doneReading();
         }
     }
 
-    /** Check whether write access of the workspace is required during an
-     *  iteration. An iteration consists of invocations of the prefire(),
-     *  fire(), and postfire() methods of the top level composite actor in
-     *  that order.
-     *  <p>
-     *  This method recursively calls the needWriteAccess() method of 
-     *  the top level director. Intuitively, the workspace will only be made
-     *  read-only if all the directors permit it.
+    /*  Check whether write access is needed during an
+     *  iteration. This is done by asking the directors.
+     *  This method calls the needWriteAccess() method of 
+     *  the top level director, which will in turn query any inside
+     *  directors.
      */
     private boolean _needWriteAccess() {
-        // Get the top level composite actor.
-        CompositeActor toplevel = (CompositeActor)getToplevel();
-        if (toplevel == null) {
-            throw new InvalidStateException("Manager "+ getName() +
-                    " attempted execution with no topology to execute!");
+        if (_writeAccessVersion == workspace().getVersion()) {
+            return _writeAccessNeeded;
         }
-        // Call the needWriteAccess() method of the local director of the
-        // top level composite actor.
-        return toplevel.getDirector().needWriteAccess();
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         Inner Class                       ////
-
-    private static final class _ExecutionEventType {
-
-        private _ExecutionEventType(String name) {this._name = name;}
-
-        public static final _ExecutionEventType EXECUTIONSTARTED =
-        new _ExecutionEventType("Execution Started");
-        public static final _ExecutionEventType EXECUTIONPAUSED =
-        new _ExecutionEventType("Execution Paused");
-        public static final _ExecutionEventType EXECUTIONRESUMED =
-        new _ExecutionEventType("Execution Resumed");
-        public static final _ExecutionEventType EXECUTIONERROR =
-        new _ExecutionEventType("Execution Error");
-        public static final _ExecutionEventType EXECUTIONFINISHED =
-        new _ExecutionEventType("Execution Finished");
-        public static final _ExecutionEventType EXECUTIONTERMINATED =
-        new _ExecutionEventType("Execution Terminated");
-        public static final _ExecutionEventType ITERATIONSTARTED =
-        new _ExecutionEventType("Iteration Started");
-
-        public String toString() {return _name;}
-
-        private String _name;
+        _writeAccessNeeded = _container.getDirector().needWriteAccess();
+        _writeAccessVersion = workspace().getVersion();
+        return _writeAccessNeeded;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The toplevel composite actor that contains this manager, and
-    // that this manager is responsible for executing.
-    private CompositeActor _toplevel = null;
-
-    // Indicate whether the execution should keep iterating.
-    // This flag is set to false when finish is called.  If this flag is
-    // false at the end of an iteration, then execution will wrapup.
-    private boolean _keepIterating;
-
-    // A flag to request a pause in execution.  If this flag is true
-    // at the start of a toplevel iteration, then pause the execution thread
-    // until the flag becomes false again.
-    private boolean _isPaused;
-
-    // Count the number of toplevel iterations completed.
-    private int _iteration;
-
-    // A flag to indicate if the workspace should be set read-only during
-    // an iteration (i.e. during prefire(), fire() and postfire()).
-    private boolean _needWriteAccessDuringIteration;
-
-    // _simulationThread is the thread that's executing the run() method.
-    // It should be non-null whenever the model is executing (i.e.
-    // the run() method hasn't finished yet) and should be set to null after
-    // execution ends.
-    private Thread _simulationThread;
+    // The top-level CompositeActor that contains this Manager
+    private CompositeActor _container = null;
 
     // Listeners for execution events.
-    private HashedSet _ExecutionListeners;
+    private HashedSet _executionListeners;
 
-    // An indicator of whether type resolution is valid.  If the flag is 
-    // false at the start of a toplevel iteration, then type resolution will
-    // be executed again.
-    private boolean _typeResolved = false;
+    // Flag indicating that finish() has been called.
+    private boolean _finishRequested = false;
+
+    // Count the number of iterations completed.
+    private int _iterationCount;
+
+    // Flag indicating that pause() has been called.
+    private boolean _pauseRequested = false;
+
+    // The state of the execution.
+    private State _state = IDLE;
+
+    // If startRun() is used, then this points to the thread that was
+    // created.
+    private PtolemyThread _thread;
+
+    // An indicator of whether type resolution needs to be done.
+    private boolean _typesResolved = false;
+
+    // A flag to indicate whether write access is needed by any of of
+    // of the domains in the model during an iteration.
+    private boolean _writeAccessNeeded = true;
+    private long _writeAccessVersion;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner class                       ////
+
+    /** Instances of this class represent phases of execution, or the
+     *  state of the manager.
+     */
+    public class State {
+
+        // Constructor is private because only Manager instantiates this class.
+        private State(String description) {
+            _description = description;
+        }
+
+        /** Get a description of the state.
+         *  @return A description of the state.
+         */
+        public String getDescription() {
+            return _description;
+        }
+
+        /** Get the manager.
+         *  @return The manager that is in this state.
+         */
+        public Manager getManager() {
+            return Manager.this;
+        }
+
+        private String _description;
+    }
 }

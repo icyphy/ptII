@@ -1,4 +1,4 @@
-/* An ExecutionListener is able to receive ExecutionEvents from the Manager.
+/* A listener for events from a manager.
 
 Copyright (c) 1997-1999 The Regents of the University of California.
 All rights reserved.
@@ -33,85 +33,51 @@ package ptolemy.actor;
 //////////////////////////////////////////////////////////////////////////
 //// ExecutionListener
 /**
-An ExecutionListener is able to receive ExecutionEvents that are issued
+An ExecutionListener listens for events that are issued
 during the execution of a model by a Manager.   In general, an
 object that implements this interface will probably be a front end such
-as a GUI for
-the Ptolemy II system, or an object that is communicating with a front end.
-The events are issued only when the event actually occurs, not when it is
-requested.   For example: A Manager receives a call to pause(), corresponding
-to a request to pause execution after the current top-level iteration ends.
-The executionPaused() method will not be called until the iteration actually
-completes and the top-level thread is suspended.   These calls are synchronous
-to the model and will block further execution within the topology
-until they return.
+as an applet, a GUI, or a command-line interpreter,
+or an object that is communicating with a front end. Most of the
+events that are reported are state changes in the manager.
+<p>
+Events are issued only when they actually occurs, not when it is
+requested. For example, when the pause() method of a manager is called,
+no event is issued.  An event is issued when the request is actually
+processed and the execution thread has been suspended.  
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer, Edward A. Lee
 @version $Id$
+@see Manager
 */
 
 public interface ExecutionListener {
 
     /** Called to report an execution failure.   This method will be called
-     *  when an Exception is caught at the top level of execution.  Instead
-     *  of allowing the exception to propagate out the user interface,
-     *  it is caught
-     *  here and encapsulated within an event.   The event will also report
-     *  the toplevel iteration during which the exception was caught,
-     *  if possible.
+     *  when an exception is caught at the top level of execution.
+     *  Exceptions are reported this way when the run() or startRun()
+     *  methods of the manager are used to perform the execution.
+     *  If instead of the execute() method is used, then exceptions are
+     *  not caught, and are instead just passed up to the caller.
      *
-     *  @param event An ExecutionEvent that contains a valid exception.
+     *  @param manager The manager controlling the execution.
+     *  @param exception The exception that was caught.
      */
-    public void executionError(ExecutionEvent event);
+    public void executionError(Manager manager, Exception exception);
 
     /** Called to report that the current execution finished and
-     *  the wrapup sequence completed normally.   The execution event will
-     *  contain the number of the last successfully completed iteration.
+     *  the wrapup sequence completed normally. The number of successfully
+     *  completed iterations can be obtained by calling getIterationCount()
+     *  on the manager.
      *
-     *  @param event An ExecutionEvent with a valid iteration field.
+     *  @param manager The manager controlling the execution.
      */
-    public void executionFinished(ExecutionEvent event);
+    public void executionFinished(Manager manager);
 
-    /** Called to report that a top-level iteration has begun.   The execution
-     *  event will contain the number of the iteration that is starting.
+    /** Called to report that the manager has changed state.
+     *  To access the new state, use the getState() method of Manager.
      *
-     *  @param event An ExecutionEvent with valid iteration field.
+     *  @param manager The manager controlling the execution.
+     *  @see Manager#getState()
      */
-    public void executionIterationStarted(ExecutionEvent event);
-
-    /** Called to report a successful pause of execution.   The execution
-     *  event will contain the number of the last successfully completed
-     *  iteration.
-     *
-     *  @param event An ExecutionEvent with a valid iteration field.
-     */
-    public void executionPaused(ExecutionEvent event);
-
-    /** Called to report a successful resumption of execution.   The execution
-     *  event will contain the number of the last successfully completed
-     *  iteration.
-     *
-     *  @param event An ExecutionEvent with a valid iteration field.
-     */
-    public void executionResumed(ExecutionEvent event);
-
-    /** Called to report a successful start of execution.   This method
-     *  indicates that it was valid for execution to begin, and that any
-     *  initialization performed within the manager thread, such as
-     *  creating a thread for the simulation, has completed successfully.
-     *  It does not imply that the initialize method was successfully
-     *  called on all the actors, only that the manager thread is ready
-     *  begin execution of the model.
-     *
-     *  @param event an ExecutionEvent with iterations set equal to zero.
-     */
-    public void executionStarted(ExecutionEvent event);
-
-    /** Called to report termination of execution.   This method is called
-     *  when the Manager has completed terminating execution of a model
-     *  via the terminate() method.
-     *
-     *  @param event an ExecutionEvent.
-     */
-    public void executionTerminated(ExecutionEvent event);
+    public void managerStateChanged(Manager manager);
 }

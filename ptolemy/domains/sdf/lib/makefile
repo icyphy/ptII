@@ -62,8 +62,7 @@ JSRCS = \
 	Delay.java \
 	FIR.java \
 	LineCoder.java \
-	RaisedCosine.java \
-	testlistener.java
+	RaisedCosine.java
 
 EXTRA_SRCS =	$(JSRCS)
 

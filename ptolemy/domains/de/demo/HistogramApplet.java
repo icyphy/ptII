@@ -382,8 +382,8 @@ public class HistogramApplet extends Applet implements Runnable {
     }
 
     private class MyExecutionListener extends DefaultExecutionListener {
-        public void executionFinished(ExecutionEvent e) {
-            super.executionFinished(e);
+        public void executionFinished(Manager manager) {
+            super.executionFinished(manager);
             _isSimulationRunning = false;
         }
 
