@@ -64,9 +64,10 @@ import com.microstar.xml.XmlException;
 //////////////////////////////////////////////////////////////////////////
 //// GUIApplication
 /**
-An application that contains models and a frames for interacting
-with them.
-FIXME.
+An application that contains models and frames for interacting
+with them. Any number of models can be simultaneously running under
+the same application.  Each one is assigned an instance of ModelFrame,
+a class with which this class works very closely.
 
 @author Edward A. Lee
 @version $Id$

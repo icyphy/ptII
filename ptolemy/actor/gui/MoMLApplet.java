@@ -160,8 +160,8 @@ public class MoMLApplet extends PtolemyApplet {
             _manager = null;
             NamedObj toplevel = parser.parse(docBase, xmlFile);
             _workspace = toplevel.workspace();
-            if (toplevel instanceof CompositeActor) {
-                _toplevel = (CompositeActor)toplevel;
+            if (toplevel instanceof TypedCompositeActor) {
+                _toplevel = (TypedCompositeActor)toplevel;
                 _manager = new Manager(_workspace, "manager");
                 _toplevel.setManager(_manager);
                 _manager.addExecutionListener(this);
