@@ -118,6 +118,9 @@ public class Expression extends TypedAtomicActor {
 
         _time = new Variable(this, "time", new DoubleToken(0.0));
         _iteration = new Variable(this, "iteration", new IntToken(1));
+
+	_evaluateExpression = new Variable(this, "evaluateExpression",
+	                                   new IntToken(1));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -149,6 +152,8 @@ public class Expression extends TypedAtomicActor {
         newObject._iterationCount = 1;
         newObject._time = (Variable)newObject.getAttribute("time");
         newObject._iteration = (Variable)newObject.getAttribute("iteration");
+        newObject._evaluateExpression =
+	        (Variable)newObject.getAttribute("evaluateExpression");
         return newObject;
     }
 
@@ -176,7 +181,13 @@ public class Expression extends TypedAtomicActor {
                 }
             }
         }
-        Token result = expression.getToken();
+
+	// copy the expression string into _evaluateExpression and
+	// evaluate.
+	String expressionString = expression.getExpression();
+	_evaluateExpression.setExpression(expressionString);
+        Token result = _evaluateExpression.getToken();
+
         if (result == null) {
             throw new IllegalActionException(this,
                     "Expression yields a null result: " +
@@ -268,4 +279,7 @@ public class Expression extends TypedAtomicActor {
     private Variable _time;
     private Variable _iteration;
     private int _iterationCount = 1;
+
+    // internal variable used to evaluate the expression
+    private Variable _evaluateExpression;
 }
