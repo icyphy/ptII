@@ -8,9 +8,22 @@
 <body>
 <h1>Installing Ptplot</h1>
 <h2>How to install Ptplot</h2>
+
+Ptplot is shipped with the java files precompiled, so you need not
+recompile.  However, if you are using the standalone scripts such as
+<CODE>ptplot</CODE>, then you may want to go through the installation
+procedure so that the standalone scripts are properly localized.
+
+ <p> If you are using Windows and you want to rebuild Ptplot or
+localize the standalone scripts, then you will need to install the
+Cygwin toolkit from
+<a href="http://sourceware.cygnus.com/cygwin/"><CODE>http://sourceware.cygnus.com/cygwin/</CODE></a>
+so that you can run <CODE>/bin/sh</CODE> and <CODE>make</CODE>.
+
+ <p>Below are the installation instructions
 <ol>
 <li> Be sure that JDK1.2 is installed, and that <CODE>javac</CODE> 
-is in your path
+is in your path.
 
 <li> Set the <CODE>PTII</CODE> environment variable to point
 to the top of the Ptplot tree.  Under C-shell, one would do:
