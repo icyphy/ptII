@@ -8,6 +8,7 @@
         <doc>GR Domain</doc>
         <property name="GR Director" class="ptolemy.domains.gr.kernel.GRDirector"/>
         <input source="ptolemy/domains/gr/lib/grentities.xml"/>
+        <input source="ptolemy/domains/gr/lib/quicktime/grquicktimeentities.xml"/>
       </group>
     ?>
   </configure>
