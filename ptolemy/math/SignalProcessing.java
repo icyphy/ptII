@@ -38,22 +38,20 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
-import java.util.*;
-
 //////////////////////////////////////////////////////////////////////////
 //// SignalProcessing
 /**
- * This class provides signal processing functions.
- *
- * The algorithms for the FFT and DCT are based on the FFCT algorithm
- * described in:
- *
- * Martin Vetterli and Henri J. Nussbaumer."Simple FFT and DCT Algorithms with 
- * Reduced Number of Operations". Signal Processing 6 (1984) 267-278.
- *
- * @author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay, Elaine Cheong
- * @version $Id$
- */
+This class provides signal processing functions.
+
+The algorithms for the FFT and DCT are based on the FFCT algorithm
+described in:
+
+Martin Vetterli and Henri J. Nussbaumer."Simple FFT and DCT Algorithms with 
+Reduced Number of Operations". Signal Processing 6 (1984) 267-278.
+
+@author Albert Chen, William Wu, Edward A. Lee, Jeff Tsay, Elaine Cheong
+@version $Id$
+*/
 public class SignalProcessing {
 
     // The only constructor is private so that this class cannot
@@ -117,7 +115,8 @@ public class SignalProcessing {
      *  @param array2 The second array.
      *  @return A new array of complex numbers.
      */
-    public static final Complex[] convolve(Complex[] array1, Complex[] array2) {
+    public static final Complex[] convolve(
+            Complex[] array1, Complex[] array2) {
         Complex[] result;
         int resultsize = array1.length + array2.length - 1;
         if (resultsize < 0) {
@@ -259,17 +258,21 @@ public class SignalProcessing {
      int startIndex) {
         if (x.length <= 0) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.downsample() : array length must be greater than 0.");
+                    "ptolemy.math.SignalProcessing.downsample(): " +
+                    "array length must be greater than 0.");
         }
 
         if (n <= 0) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.downsample() : downsampling factor must be greater than 0.");
+                    "ptolemy.math.SignalProcessing.downsample(): " +
+                    "downsampling factor must be greater than 0.");
         } 
 
         if (startIndex < 0 || startIndex > x.length - 1) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.downsample() : startIndex must be between 0 and L - 1, where L is the size of the input array.");
+                    "ptolemy.math.SignalProcessing.downsample(): " +
+                    "startIndex must be between 0 and L - 1, where L is the " +
+                    "size of the input array.");
         }
 
         int length = (x.length - startIndex) / n;
@@ -344,7 +347,8 @@ public class SignalProcessing {
                 break;
             }
 
-            _IDCTfactors[type][order][0] = new Complex(oneOverE0 * factor, 0.0);
+            _IDCTfactors[type][order][0] =
+                new Complex(oneOverE0 * factor, 0.0);
 
             for (int k = 1; k < twoSize; k++) {
                 Complex c = new Complex(0, k * Math.PI * oneOverTwoSize);
@@ -890,8 +894,8 @@ public class SignalProcessing {
     public static final int nextPowerOfTwo(double x) {
         if (x <= 0.0) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.nextPowerOfTwo: argument (" + x +
-                    ") is not a positive number.");
+                    "ptolemy.math.SignalProcessing.nextPowerOfTwo(): " +
+                    "argument (" + x + ") is not a positive number.");
         }
         double m = Math.log(x)*_LOG2SCALE;
         int exp = (int)Math.ceil(m);
@@ -946,11 +950,12 @@ public class SignalProcessing {
      *  phase at the specified time.  The returned value is 1 or -1.
      *  A sample that falls on the rising edge of the square wave is
      *  assigned value +1.  A sample that falls on the falling edge is
-     *  assigned value -1.  The phase is given as a fraction of a cycle,
-     *  typically ranging from 0.0 to 1.0.  If the phase is 0.0 or 1.0,
-     *  the square wave begins at the start of the +1.0 phase.  If it is 0.5, it
-     *  begins at the start of the -1.0 phase. If it is 0.25, it begins halfway
-     *  through the +1.0 portion of the wave.
+     *  assigned value -1.  The phase is given as a fraction of a
+     *  cycle, typically ranging from 0.0 to 1.0.  If the phase is 0.0
+     *  or 1.0, the square wave begins at the start of the +1.0 phase.
+     *  If it is 0.5, it begins at the start of the -1.0 phase. If it
+     *  is 0.25, it begins halfway through the +1.0 portion of the
+     *  wave.
      *
      *  Throw an exception if the period is less than or equal to 0.
      *
@@ -1020,7 +1025,8 @@ public class SignalProcessing {
     public static final double[] upsample(double[] x, int n) {
         if (n < 0) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.upsample() : upsampling factor must be greater than or equal to 0.");
+                    "ptolemy.math.SignalProcessing.upsample(): " +
+                    "upsampling factor must be greater than or equal to 0.");
         } 
 
         int length = x.length * n;
@@ -1201,7 +1207,8 @@ public class SignalProcessing {
          */
         public GaussianSampleGenerator(double mean, double standardDeviation) {
             _mean = mean;
-            _oneOverTwoVariance = 1.0 / (2.0 * standardDeviation * standardDeviation);
+            _oneOverTwoVariance =
+                1.0 / (2.0 * standardDeviation * standardDeviation);
             _factor = ONE_OVER_SQRT_TWO_PI / standardDeviation;
         }
 
@@ -1230,19 +1237,27 @@ public class SignalProcessing {
      *  </pre>
      *  </p>
      */
-    public static class PolynomialSampleGenerator implements DoubleUnaryOperation {
+    public static class PolynomialSampleGenerator
+        implements DoubleUnaryOperation {
 
-        /** Construct a PolynomialSampleGenerator. The input argument is an array of
-         *  doubles a[0] = a<sub>0</sub> .. a[n-1] = a<sub>n-1</sub> used to compute the formula :
+
+        /** Construct a PolynomialSampleGenerator. The input argument is
+         *  an array of doubles 
+         *  a[0] = a<sub>0</sub> .. a[n-1] = a<sub>n-1</sub> used to compute
+         *  the formula :
          *  h(t) = a<sub>0</sub> + a<sub>1</sub>t + ... + a<sub>n-1</sub>t<sup>n-1</sup>
          *  The array of doubles must be of length 1 or greater.         
-         *  The array of doubles is copied, so the user is free to modify it after construction.
-         *  The exponents on t in the above equation will all be negated if the direction
-         *  parameter is -1; otherwise the direction parameter should be 1.
+         *  The array of doubles is copied, so the user is free to modify
+         *  it after construction.
+         *  The exponents on t in the above equation will all be negated if
+         *  the direction parameter is -1; otherwise the direction parameter
+         *  should be 1. 
          *  @param coefficients An array of double coefficients.
-         *  @param direction 1 for positive exponents, -1 for negative exponents.
+         *  @param direction 1 for positive exponents, -1 for negative
+         *  exponents.
          */
-        public PolynomialSampleGenerator(double[] coefficients, int direction) {
+        public PolynomialSampleGenerator(double[] coefficients,
+                int direction) {
             if ((direction != 1) && (direction != -1)) {
                throw new IllegalArgumentException(
                "ptolemy.math.SignalProcessing.LineSampleGenerator :  " +
@@ -1283,7 +1298,8 @@ public class SignalProcessing {
     /** This class generates samples of a sawtooth wave with the specified
      *  period and phase. The returned values range between -1.0 and 1.0.
      */
-    public static class SawtoothSampleGenerator implements DoubleUnaryOperation {
+    public static class SawtoothSampleGenerator
+        implements DoubleUnaryOperation {
 
         /** Construct a SawtoothSampleGenerator with the given period and
          *  phase.  The phase is given as a fraction of a cycle,
@@ -1319,7 +1335,8 @@ public class SignalProcessing {
      *  set the phase to -Math.PI*0.5 from the
      *  phase, since sin(t) = cos(t - PI/2).
      */
-    public static class SinusoidSampleGenerator implements DoubleUnaryOperation {
+    public static class SinusoidSampleGenerator
+        implements DoubleUnaryOperation {
 
         /**
          *  Construct a SinusoidSampleGenerator.
@@ -1365,7 +1382,8 @@ public class SignalProcessing {
      *  Kluwer Academic Publishers, Boston, 1994.</a>
      *
      */
-    public static class RaisedCosineSampleGenerator implements DoubleUnaryOperation {
+    public static class RaisedCosineSampleGenerator
+        implements DoubleUnaryOperation {
 
         /*  Construct a RaisedCosineSampleGenerator.
          *  @param firstZeroCrossing The time of the first zero crossing,
@@ -1499,7 +1517,8 @@ public class SignalProcessing {
             double onePlusTime  = _onePlus * time;
             // Check to see whether we will get divide by zero.
 
-            double denominator = time * time * _sixteenExcessSquared - _squareFZC;
+            double denominator =
+                time * time * _sixteenExcessSquared - _squareFZC;
 
             if (close(denominator, 0.0)) {
                 double oneOverTime = 1.0 / time;
@@ -1514,7 +1533,8 @@ public class SignalProcessing {
             }
             return _fourExcessOverPISqrtFZC *
                 (Math.cos(onePlusTime) + Math.sin(oneMinusTime) /
-                        (x * _fourExcess)) / (1.0 - _sixteenExcessSquared * x * x);
+                        (x * _fourExcess)) /
+                (1.0 - _sixteenExcessSquared * x * x);
         }
 
         private final double _oneOverFZC, _sqrtFZC, _squareFZC;
