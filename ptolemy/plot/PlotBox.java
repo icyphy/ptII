@@ -277,7 +277,7 @@ public class PlotBox extends Panel {
             {"black", "00000"}, {"white", "ffffff"},
             {"red", "ff0000"}, {"green", "00ff00"}, {"blue", "0000ff"}
         };
-        for(int i=0;i< names.length; i++) {
+        for(int i = 0;i< names.length; i++) {
             if(name.equals(names[i][0])) {
                 try {
                     Color col = new Color(Integer.parseInt(names[i][1], 16));
@@ -765,7 +765,7 @@ public class PlotBox extends Panel {
             int fheight = _labelFontMetrics.getHeight() + 2;
             int msgy = fheight;
             graphics.setColor(Color.black);
-            for(int i=0; i<_errorMsg.length;i++) {
+            for(int i = 0; i<_errorMsg.length;i++) {
                 graphics.drawString(_errorMsg[i], 10, msgy);
                 msgy += fheight;
                 System.err.println(_errorMsg[i]);
@@ -846,13 +846,13 @@ public class PlotBox extends Panel {
         // NOTE: subjective spacing factor.
         int ny = 2 + height/(labelheight+10);
         // Compute y increment.
-        double yStep=_roundUp((_ytickMax-_ytickMin)/(double)ny);
+        double yStep = _roundUp((_ytickMax-_ytickMin)/(double)ny);
 
         // Compute y starting point so it is a multiple of yStep.
-        double yStart=yStep*Math.ceil(_ytickMin/yStep);
+        double yStart = yStep*Math.ceil(_ytickMin/yStep);
 
         // NOTE: Following disables first tick.  Not a good idea?
-        // if (yStart == _ytickMin) yStart+=yStep;
+        // if (yStart == _ytickMin) yStart += yStep;
 
         // Define the strings that will label the y axis.
         // Meanwhile, find the width of the widest label.
@@ -968,7 +968,7 @@ public class PlotBox extends Panel {
             ind = 0;
             // Set to false if we don't need the exponent
             boolean needExponent = _ylog;
-            for (double ypos=yTmpStart; ypos <= _ytickMax;
+            for (double ypos = yTmpStart; ypos <= _ytickMax;
                  ypos = _gridStep(ygrid, ypos, yStep, _ylog)) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
@@ -1081,7 +1081,7 @@ public class PlotBox extends Panel {
                 // Limit to 10 iterations
                 int count = 0;
                 while (count++ <= 10) {
-                    xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
+                    xStep = _roundUp((_xtickMax-_xtickMin)/(double)nx);
                     // Compute the width of a label for this xStep
                     numfracdigits = _numFracDigits(xStep);
                     // Number of integer digits is the maximum of two endpoints
@@ -1101,14 +1101,14 @@ public class PlotBox extends Panel {
                     if (nx - savenx <= 1 || savenx - nx <= 1) break;
                 }
             }
-            xStep=_roundUp((_xtickMax-_xtickMin)/(double)nx);
+            xStep = _roundUp((_xtickMax-_xtickMin)/(double)nx);
             numfracdigits = _numFracDigits(xStep);
 
             // Compute x starting point so it is a multiple of xStep.
-            double xStart=xStep*Math.ceil(_xtickMin/xStep);
+            double xStart = xStep*Math.ceil(_xtickMin/xStep);
 
             // NOTE: Following disables first tick.  Not a good idea?
-            // if (xStart == _xMin) xStart+=xStep;
+            // if (xStart == _xMin) xStart += xStep;
 
             Vector xgrid = null;
             double xTmpStart = xStart;
@@ -1158,7 +1158,7 @@ public class PlotBox extends Panel {
                 double tmpStep = (xStep > 1.0)? 1.0 : xStep;
 
                 // Recalculate the start using the new step.
-                xTmpStart=tmpStep*Math.ceil(_xtickMin/tmpStep);
+                xTmpStart = tmpStep*Math.ceil(_xtickMin/tmpStep);
 
                 Vector unlabeledgrid  = _gridInit(xTmpStart, tmpStep,
                         false, xgrid);
@@ -1391,7 +1391,7 @@ public class PlotBox extends Panel {
         if (_xticks != null && _xticks.size() > 0) {
             output.print("XTicks: ");
             int last = _xticks.size() - 1;
-            for (int i=0; i < last; i++) {
+            for (int i = 0; i < last; i++) {
                 output.print("\"" + (String)_xticklabels.elementAt(i) + "\" "
                         + (Double)_xticks.elementAt(i) + ", ");
             }
@@ -1401,7 +1401,7 @@ public class PlotBox extends Panel {
         if (_yticks != null && _yticks.size() > 0) {
             output.print("YTicks: ");
             int last = _yticks.size() - 1;
-            for (int i=0; i < last; i++) {
+            for (int i = 0; i < last; i++) {
                 output.print("\"" + (String)_yticklabels.elementAt(i) + "\" "
                         + (Double)_yticks.elementAt(i) + ", ");
             }
@@ -1484,6 +1484,12 @@ public class PlotBox extends Panel {
 
     // Width and height of component in pixels.
     protected int _width = 400, _height = 400;
+
+    // The document base we use to find the _filespec.
+    // NOTE: Use of this variable is deprecated.  But it is made available
+    // to derived classes for backward compatibility.
+    protected URL _documentBase = null;
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -1757,7 +1763,7 @@ public class PlotBox extends Panel {
         if (logflag) {
             if (++_gridCurJuke >= grid.size()) {
                 _gridCurJuke = 0;
-                _gridBase+=Math.ceil(step);
+                _gridBase += Math.ceil(step);
             }
             if (_gridCurJuke >= grid.size())
                 return pos + step;
@@ -1972,10 +1978,10 @@ public class PlotBox extends Panel {
                 graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
                 graphics.setPaintMode();
                 // constrain to be in range
-                if (y > _lry) y=_lry;
-                if (y < _uly) y=_uly;
-                if (x > _lrx) x=_lrx;
-                if (x < _ulx) x=_ulx;
+                if (y > _lry) y = _lry;
+                if (y < _uly) y = _uly;
+                if (x > _lrx) x = _lrx;
+                if (x < _ulx) x = _ulx;
                 // NOTE: ignore if total drag less than 5 pixels.
                 if ((Math.abs(_zoomx-x) > 5) && (Math.abs(_zoomy-y) > 5)) {
                     double a = _xMin + (_zoomx - _ulx)/_xscale;
@@ -2044,10 +2050,10 @@ public class PlotBox extends Panel {
         Graphics graphics = getGraphics();
 
         // Bound the rectangle so it doesn't go outside the box.
-        if (y > _lry) y=_lry;
-        if (y < _uly) y=_uly;
-        if (x > _lrx) x=_lrx;
-        if (x < _ulx) x=_ulx;
+        if (y > _lry) y = _lry;
+        if (y < _uly) y = _uly;
+        if (x > _lrx) x = _lrx;
+        if (x < _ulx) x = _ulx;
         // erase previous rectangle, if there was one.
         if ((_zoomx != -1 || _zoomy != -1)) {
             // Ability to zoom out added by William Wu.
@@ -2123,21 +2129,13 @@ public class PlotBox extends Panel {
         // it is private!
 
         // constrain to be in range
-        if (y > _lry) y=_lry;
-        if (y < _uly) y=_uly;
-        if (x > _lrx) x=_lrx;
-        if (x < _ulx) x=_ulx;
+        if (y > _lry) y = _lry;
+        if (y < _uly) y = _uly;
+        if (x > _lrx) x = _lrx;
+        if (x < _ulx) x = _ulx;
         _zoomx = x;
         _zoomy = y;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    // The document base we use to find the _filespec.
-    // NOTE: Use of this variable is deprecated.  But it is made available
-    // to derived classes for backward compatibility.
-    protected URL _documentBase = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
