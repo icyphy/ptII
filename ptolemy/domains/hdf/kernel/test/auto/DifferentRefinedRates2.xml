@@ -99,12 +99,6 @@ to another. Then delete this annotation.</text>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
         </property>
-        <property name="_Director" class="ptolemy.domains.hdf.kernel.HDFFSMDirector">
-            <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
-            </property>
-        </property>
         <port name="in" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
