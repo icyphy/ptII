@@ -181,26 +181,34 @@ foreach i $configs {
 	    if [java::instanceof $entity ptolemy.actor.TypedAtomicActor] {
 		set actor [java::cast ptolemy.actor.TypedAtomicActor $entity]
 		set fullName [$actor getName $configuration]
+	
 		set clone [java::cast ptolemy.actor.TypedAtomicActor [$cloneConfiguration getEntity $fullName]]
 		if [java::isnull $clone] {
 		    lappend results "\n\tActor $fullName was not cloned!"
 		} {
 		    set constraints [$actor typeConstraintList]
+		    
 		    set cloneConstraints [$clone typeConstraintList]
-		    set size [$constraints size]
-		    set cloneSize [$cloneConstraints size]
-		    if {$size != $cloneSize} {
-			set msg "\n\n[$actor getFullName]\n\
+		    # Don't join the constraints, because some types have
+		    # braces in them.
+		    set c [jdkPrintArray \
+				     [$constraints toArray] "\n" ]
+		    set cc [jdkPrintArray \
+				      [$cloneConstraints toArray] "\n" ]
+		    if {$c != $cc} {
+			set size [$constraints size]
+			set cloneSize [$cloneConstraints size]
+		   	set msg "\n\n[$actor getFullName]\n\
 				\thas $size constraints, \
-				whereas its clone \
-				has $cloneSize constraints."
+				that differ from the $cloneSize \
+                                constraints its clone has."
 			
-			set c [join [jdkPrintArray \
-				[$constraints toArray] "\n" ] "\n"]
-			set cc [join [jdkPrintArray \
-				[$cloneConstraints toArray] "\n" ] "\n"]
+			#set c [join [jdkPrintArray 
+			#	[$constraints toArray] "\n" ] "\n"]
+			#set cc [join [jdkPrintArray 
+			#	[$cloneConstraints toArray] "\n" ] "\n"]
 			lappend results "$msg\n\tActor Constraints:\n$c\
-				\tClone constraints:\n$cc"
+					     \tClone constraints:\n$cc"
 		    }
 		}
 	    } 
