@@ -31,11 +31,14 @@ package ptolemy.plot;
 
 import java.awt.Graphics;
 import java.awt.EventQueue;
+import java.io.BufferedWriter;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Random;
 import java.util.Vector;
+
 import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -199,6 +202,64 @@ public class Histogram extends PlotBox {
         deferIfNecessary(doClear);
     }
 
+    /** Write plot data information to the specified output stream in PlotML,
+     *  but in such a way that the Plot class can read it and reproduce the
+     *  histogram.  The ordinary mechanism for saving the histogram
+     *  records the raw data and the configuration to be used by this class.
+     *  @param output A buffered print writer.
+     *  @param dtd The DTD, or null to reference the default.
+     */
+    public synchronized void exportToPlot(PrintWriter output, String dtd) {
+        if (dtd == null) {
+            output.println("<?xml version=\"1.0\" standalone=\"yes\"?>");
+            output.println(
+              "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"");
+            output.println(
+              "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">");
+        } else {
+            output.println("<?xml version=\"1.0\" standalone=\"no\"?>");
+            output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
+        }
+        output.println("<plot>");
+        output.println("<!-- Ptolemy plot, version " + PTPLOT_RELEASE
+                + " , PlotML format. Exported from Histogram. -->");
+
+        super.writeFormat(output);
+        output.println(
+                "<barGraph width=\""
+                + (_barwidth * _binWidth)
+                + "\" offset=\""
+                + (_baroffset * _binWidth)
+                + "\"/>");
+        for (int dataset = 0; dataset < _points.size(); dataset++) {
+            // Write the dataset directive
+            String legend = getLegend(dataset);
+            if (legend != null) {
+                output.println("<dataset name=\"" 
+                        + legend
+                        + "\" connected=\"no\">");
+            } else {
+                output.println("<dataset connected=\"no\">");
+            }
+            Hashtable data = (Hashtable)_histogram.elementAt(dataset);
+            Enumeration keys = data.keys();
+            while (keys.hasMoreElements()) {
+                Integer bin = (Integer)keys.nextElement();
+                Integer count = (Integer)data.get(bin);
+                // The X axis value is a bit complex to get.
+                int xValue = (int)(bin.intValue() * _binWidth + _binOffset);
+                output.println("<p x=\""
+                        + xValue
+                        + "\" y=\""
+                        + count.intValue()
+                        + "\"/>");
+            }
+            output.println("</dataset>");
+        }
+        output.println("</plot>");
+        output.flush();
+    }
+
     /** Rescale so that the data that is currently plotted just fits.
      *  This overrides the base class method to ensure that the
      *  fill is actually performed in the event dispatch thread.
@@ -273,6 +334,26 @@ public class Histogram extends PlotBox {
         _binWidth = width;
     }
 
+    /** Write the current data and plot configuration to the
+     *  specified stream in PlotML syntax.  This writes the histogram,
+     *  not the raw data, in such a way that the Plot class (not the
+     *  Histogram class) will correctly render it.
+     *  The URL (relative or absolute) for the DTD is
+     *  given as the second argument.  If that argument is null,
+     *  then the PlotML PUBLIC DTD is referenced, resulting in a file
+     *  that can be read by a PlotML parser without any external file
+     *  references, as long as that parser has local access to the DTD.
+     *  The output is buffered, and is flushed before exiting.
+     *  @param out An output writer.
+     *  @param dtd The reference (URL) for the DTD, or null to use the
+     *   PUBLIC DTD.
+     */
+    public synchronized void write(Writer out, String dtd) {
+        // Auto-flush is disabled.
+        PrintWriter output = new PrintWriter(new BufferedWriter(out), false);
+        exportToPlot(output, dtd);
+    }
+
     /** Write plot data information to the specified output stream in PlotML.
      *  @param output A buffered print writer.
      */
@@ -284,32 +365,15 @@ public class Histogram extends PlotBox {
             if (legend != null) {
                 output.println("<dataset name=\"" 
                         + legend
-                        + "\" connected=\"no\">");
+                        + "\">");
             } else {
-                output.println("<dataset connected=\"no\">");
+                output.println("<dataset>");
             }
             // Write the data
-            // NOTE: Used to write the raw data.
-            // Now we write the histogram data.
-            /*
             Vector pts = (Vector)_points.elementAt(dataset);
             for (int pointnum = 0; pointnum < pts.size(); pointnum++) {
                 Double pt = (Double)pts.elementAt(pointnum);
                 output.println("<p y=\"" + pt.doubleValue() + "\"/>");
-            }
-            */
-            Hashtable data = (Hashtable)_histogram.elementAt(dataset);
-            Enumeration keys = data.keys();
-            while (keys.hasMoreElements()) {
-                Integer bin = (Integer)keys.nextElement();
-                Integer count = (Integer)data.get(bin);
-                // The X axis value is a bit complex to get.
-                int xValue = (int)(bin.intValue() * _binWidth + _binOffset);
-                output.println("<p x=\""
-                        + xValue
-                        + "\" y=\""
-                        + count.intValue()
-                        + "\"/>");
             }
             output.println("</dataset>");
         }
@@ -320,17 +384,23 @@ public class Histogram extends PlotBox {
      */
     public synchronized void writeFormat(PrintWriter output) {
         super.writeFormat(output);
+        // NOTE: Regrettably, the meaning of the barGraph data is
+        // different for a histogram than for a normal plot.
+        // In a histogram, it is proportional to the bin width.
+        // Thus, this is not the same as the corresponding line
+        // in exportToPlot().
         output.println(
                 "<barGraph width=\""
-                + (_barwidth * _binWidth)
+                + _barwidth
                 + "\" offset=\""
-                + (_baroffset * _binWidth)
+                + _baroffset
                 + "\"/>");
 
-        // NOTE: This is probably irrelevant, since what is written
-        // is an ordinary plot, but it seems harmless to record it.
-        output.println("<bin width=\"" + _binWidth
-                + "\" offset=\"" + _binOffset + "\"/>");
+        output.println("<bin width=\""
+                + _binWidth
+                + "\" offset=\""
+                + _binOffset
+                + "\"/>");
     }
 
     ///////////////////////////////////////////////////////////////////

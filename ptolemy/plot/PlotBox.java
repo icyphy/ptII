@@ -1373,8 +1373,7 @@ public class PlotBox extends JPanel implements Printable {
      *  then the PlotML PUBLIC DTD is referenced, resulting in a file
      *  that can be read by a PlotML parser without any external file
      *  references, as long as that parser has local access to the DTD.
-     *  The output is buffered, and is flushed and
-     *  closed before exiting.
+     *  The output is buffered, and is flushed before exiting.
      *  @param out An output writer.
      *  @param dtd The reference (URL) for the DTD, or null to use the
      *   PUBLIC DTD.
