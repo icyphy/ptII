@@ -1,0 +1,433 @@
+#! /bin/sh
+# $Id$
+# insertcopyright [-d] [-p]
+
+# This script traverses a source directory (tree?) and adds a copywrite 
+# notice to all source files.
+# It first removes the existing copyright and then adds the copyright
+# located in copyright.txt.  For this to work, the copyright notice
+# must start with 'Copyright (c)', and the last line
+# of copyright.txt must have the keyword "COPYRIGHTENDKEY".
+# Backup copies of the files before modification are stored
+# in a subdirectory incase this program creams the source files somehow.
+# The copyright is inserted at the same place as the current copyright,
+# or the top if there is no current copyright.
+#
+# Steps to change copyright:
+# 1) edit ~ptdesign/adm/copyright/copyright.txt
+# 2) Each time copyright.txt is updated, bump up the PT_COPYRIGHT_VERSION #
+# 3) Run this program with the -p flag in a _copy_ of a directory, and make
+# sure everything is ok.
+# 4) edit allcopyrights and run it
+
+# Process the args
+printonly=no
+while getopts pfd-- opt
+do
+	case $opt in
+		d) 	set -x;;
+		p) 	printonly=yes;;
+	   \?)	echo "$0: Usage: $0 [-p] [-x] [filenames . . .]"
+			echo " -p  Print only, make no changes"
+			echo " -d  debug"
+			exit 3;;
+	esac
+done
+shift `expr $OPTIND - 1`
+
+echo "---------------------------------------------------------"
+echo `pwd`
+# Test to see if the copyright notice file is readable.
+NOTICE=copyright.txt
+if [ ! -r $NOTICE ] ; then
+    NOTICE=${PTII:-/users/ptdesign}/adm/copyright/copyright.txt
+    if [ ! -r $NOTICE ] ; then
+	echo Cant find copyright notice $NOTICE
+	exit 1
+    fi
+fi
+
+# Produce a shell style comment block containing the copyright
+SHNOTICE=/tmp/shnotice.$$
+awk '{printf("# %s\n",$0)}' $NOTICE | sed -e 's/[ 	]*$//g' > $SHNOTICE
+
+# Produce a C style comment block containing the copyright
+CNOTICE=/tmp/cnotice.$$
+awk 'BEGIN {print "/*"}
+	{print $0}
+	END {print "*/"}
+	' $NOTICE > $CNOTICE
+
+# Temporary file
+TMPF=/tmp/insertcopyright.$$
+
+CDIR=`pwd`
+if [ `basename $CDIR` = CVS ]; then
+	 echo "This is an CVS directory, skipping"
+	 exit
+fi
+
+# Without any command line arguments, do all .h, .c, .cc  and *ake* files
+if [ $1x = x ] ; then
+    echo Adding copyrights to all .h, .c, .cc, .mk, .tcl, .itcl and .java files.
+    #exec $0 *.h *.c *.cc makefile make.template Makefile
+	if [ "`ls *.H *.h *.cpp *.c *.cc makefile make.template Makefile *.mk *.tcl *.itcl *.java 2> /dev/null`" = "" ]; then
+		exit
+	fi
+	set `ls *.h *.c *.cc makefile make.template Makefile *.mk *.tcl *.itcl *.java 2> /dev/null` 
+fi
+
+# Directory to save files in.
+SAVE=\#save$$
+# mkdir $SAVE
+
+# We want to make this script idempotent so we can run it multiple
+# times with out repeatidly modifying a file that is ok, so we grab
+# the a version number from the copyright file.  Note that we cannot use 
+# a CVS version since that number will change each time the file we are
+# updating is checked out.
+#keystring=`grep PT_COPYRIGHT_VERSION $NOTICE | awk '{print $NF}' `
+keystring='_COPYRIGHT_VERSION_2'
+keystring2="Copyright \(c\) `date +%Y` The Regents of the University of California"
+
+while [ $1x != x ] ; do
+    F=$1
+    FP=$1.$$
+    shift
+    # we dont want to remove the existing file, or the perms&ownerships
+    # will get mixed up
+
+    # Ignore files named copyright.h.
+    if [ $F = copyright.h ] ; then
+		continue;
+    fi
+
+    # Ignore files named alljtests.tcl
+    if [ $F = alljtests.tcl ] ; then
+		continue;
+    fi
+
+    # Skip files that are not readable.
+    echo Processing $F
+    if [ ! -r "$F" ] ; then
+		echo $F: Doesnt exist: skipping...
+		continue
+    fi
+
+    # Check to see if we are processing a .h, .cc or .htm file, if so,
+    # then look for a .pl file, if we find a .pl, skip the .h, .cc or .htm
+    tmpbase=""
+    case $F in
+	*.cc) tmpbase=`basename $F .cc`;;
+	*.h) tmpbase=`basename $F .h`;;
+	*.htm) tmpbase=`basename $F .htm`;;
+    esac
+    if [ "x$tmpbase" != "x" ]; then
+	if [ -f $dirname/$tmpbase.pl ]; then
+		echo $F exists but so does $tmpbase.pl, skipping . . .
+		continue
+	fi
+    fi
+
+    # Keep track of CVS usage.
+    cvsflag=0
+
+#      # See if we've already modified the file.
+#      grep "$keystring" $F > /dev/null
+#      status=$?
+#      if [ $status = 0 ]; then
+#  	if egrep -s "Copyright.* 19[0-9][0-9]- " $F; then
+#  	    # Check that the file has %Q updated properly
+#  	    echo "$F needs percentQ updated"
+#  	    if [ $printonly = yes ]; then
+#  		echo "Would do sccs admin -fq`date +%Y` $F"
+#  	    else
+#  		# The line below works on solaris2
+#  		sccs admin -fq`date +%Y` $F
+#  		# but sunos does not support %Y
+#  		#sccs admin -fq19`date +%y` $F
+#  		sccs get $F
+#  	    fi
+#  	else
+#  	    echo "Skipping $F, as it already contains $keystring"
+#  	fi
+#  	continue
+#      fi
+
+    # If this file is a makefile, check to see that there is no make.template
+    if [ "`basename $F`" = makefile ]; then
+	if [ -f `dirname $F`/make.template ]; then
+	    echo "makefile and make.template in the same dir, skipping makefile"
+	    continue
+	fi
+    fi
+
+    # Skip files that are copyrighted this year
+    egrep "$keystring2" $F > /dev/null
+    status=$?
+    if [ $status = 0 ]; then 
+	echo "This file was created this year, skipping . . ."
+	continue
+    fi
+
+    # Skip files that are not ours
+    match=`grep Copyright $F`
+    case $match in
+	*Copyright*ALMA*)
+		    echo "$F has a ALMA Copyright, skipping . . ."
+		    continue;;
+	*Copyright*Seoul*)
+		    echo "$F has a Seoul Copyright, skipping . . ."
+		    continue;;
+	*Copyright*Spickelmier*)
+		    echo "$F has a Rick Spickelmier Copyright, skipping . . ."
+		    continue;;
+	*Copyright*Free\ Software*)
+		    echo "$F has a FSF Copyright, skipping . . ."
+		    continue;;
+	*Copyright*Sun\ Micro*)
+		    echo "$F has a Sun Copyright, skipping . . ."
+		    continue;;
+	*Copyright*The\ University\ of\ Texas*)
+		    echo "$F has a UT Copyright, skipping . . ."
+		    continue;;
+	*Copyright*Technical\ University\ of\ Ilmenau*)
+		    echo "$F has a Ilmenau Copyright, skipping . . ."
+		    continue;;
+    esac
+
+    # Copy the original to the SAVE directory (if it exists).
+    if [ -d $SAVE ] ; then
+        cp $F $SAVE/$F
+		if [ ! -s $SAVE/$F ] ; then
+			echo $F: Save file empty...disk may be full
+			continue
+		fi
+    fi
+
+    # Copy the original to a temporary file.
+    cp $F $FP
+    if [ ! -s $FP ] ; then
+		echo $F: Save file empty...disk may be full
+		rm $FP
+		continue
+    fi
+
+    # Find the beginning of the copyright notice.
+
+    # Look for the word copyright, ignore case, and get the line number.
+    # startline=`grep -n -i 'Copyright (c)' $FP | sed 's/:.*//'`
+
+    # If the line before the copyright contains /*,  but no */
+    # then that is the real start of the copyright
+    if [ "$commenthack" = yes ]; then
+		startline=`awk ' $0 ~ /\/\*/ { if ($0 !~ /\*\//)comment=NR }
+					 $0 ~ /Copyright \(c\)/ {
+						if (NR-1 == comment ) 
+							 print comment
+						else
+							 print NR
+						exit
+					  }' $FP `
+    else
+		# Preserve SoonHoi's copyright
+		startline=`awk ' $0 ~ /Copyright \(c\)/ {  
+					if ($0 ~ /Seoul National University/) {
+						print NR+1
+						exit	
+					} else
+					    print NR	
+					exit
+					}' $FP	 `
+	#	  startline=`grep -n -i 'Copyright (c)' $FP | sed 's/:.*//'`
+    fi
+    echo startline is $startline
+	
+    # Check for multiple copyright lines (spaces in $startline).
+    if echo $startline | grep -s ' ' ; then
+		echo "$F: Contains multiple copyrights.  Skipping..."
+		rm $FP
+		continue
+    fi
+
+    # Use shell style comments or C style comments?
+    case $F in
+	*Makefile|*makefile|*make.template|*.mk|*.tcl|*.itcl) \
+			shcomments=yes;;
+	*.c|*.h|*.cc|*.html|*.java )   shcomments=no;;
+	*) echo "Panic, cannot handle $F, skipping"; continue;;
+    esac
+
+    # Find the date when the file was first checked in
+    firstcheckin=`cvs log -r1.1 $F | egrep '^date:' | awk '{split($2,f,"/"); print f[1]}'`
+
+    thisyear=`date +%Y`
+    # Determine what date field to use
+    if [ $thisyear = $firstcheckin ]; then
+	newdate="$firstcheckin"
+    else
+	newdate="$firstcheckin-$thisyear"
+    fi
+
+    # If there was no copyright notice, then insert a comment
+    if [ "$startline" = "" ] ; then
+	echo "$F: No pre-existing copyright.  Inserting at top..."
+	echo "The newdate will be: $newdate"
+	if [ $shcomments = yes ]; then
+	    cat $SHNOTICE | sed "s/(c) 2003/(c) $newdate/" > $TMPF > $TMPF
+	    cat $FP		>> $TMPF
+	else
+	    cat $CNOTICE | sed "s/(c) 2003/(c) $newdate/" > $TMPF > $TMPF
+	    cat $FP		>> $TMPF
+	fi
+
+    else 
+	# Look for the end of the copyright notice, substitute in a new one.
+	# The block below is the bulk of the file
+
+	endline=""
+
+	# Look for the standard key.
+	if grep -s COPYRIGHTENDKEY $FP ; then
+	    if [ "$commenthack" = yes ]; then
+		# If the line COPYRIGHTEND has */, but no \*, then
+		# adjust endline
+		endline=`awk ' $0 ~ /COPYRIGHTENDKEY/ {	sawcopyrightendkey=NR+1 }
+				NR == sawcopyrightendkey {
+					  if ($0 ~ /\*\// && $0 !~ /\/\*/)
+						print NR
+					  else
+						print NR-1
+					  exit
+				    }' $FP `
+            else
+		endline='/COPYRIGHTENDKEY/'
+	    fi
+	    echo "$F: found COPYRIGHTENDKEY at $endline"
+	    # Look for matching last line.
+	elif grep -s "MODIFICATIONS." $FP ; then
+	    # Find the first line with the text fragment.
+	    # Deal with three lines that look like:
+	    # 			MODIFICATIONS
+	    # *
+	    # */
+	    if [ "$commenthack" = yes ]; then
+		line=`awk ' $0 ~ /MODIFICATIONS/ {sawmod=NR+1}
+		NR == sawmod {    if ($1 == "*") sawmod++
+				  else {
+				    if($0 ~ /\*\// && $0 !~ /\/\*/)
+					  print NR
+				    else
+					  print NR-1
+				    exit
+				  }
+			 }
+			' $FP `
+	    else
+		line=`grep -n "MODIFICATIONS." $FP \
+			| sed 's/:.*//' | head -1`
+	    fi
+	    echo "line = $line"
+	    # Check to see that it is close to the right line.
+	    span=`expr $line - $startline`
+	    if [ $span -ge 17 -a $span -le 25 ] ; then
+		endline=$line
+		echo "$F: found last line from standard notice"
+	    else
+		echo "$F: found suspicious notice.  Skipping..."
+		continue
+	    fi
+
+	    # Nothing yet, so look for old-style notices.
+	elif grep -s -i "All rights res" $FP; then
+	    # Find the first line with the text fragment.
+	    endline=`grep -n -i 'All rights res' $FP | sed 's/:.*//' | head -1`
+	    echo "$F: found old-style notice."
+	fi
+
+	# If no end was found, set it equal to the beginning.
+	if [ "$endline" = "" ] ; then
+		endline=$startline
+		echo "$F: found one-line notice."
+	fi
+
+	# Find the copyright dates in the current file, return
+	# the date we should use.
+	thisyear=`date +%Y`
+	newdate=`awk '$0 ~ /Copyright \(c\)/ { 
+		for(i=3;i<=NF;i++) {
+		    if (substr($i,1,3) == "199") {
+			date=$i
+		    }
+		}
+		if (substr(firstcheckin,1,3) != "199") {
+			firstcheckin=none
+		}
+		#print date
+#  		if ( date ~ /1990-/ ) {
+#  		    if (firstcheckin != "none") {
+#  			print firstcheckin"-%Q%"
+#  		    } else {
+#  			print "1990-%Q%"
+#  		    }
+#  		    exit
+#  		} 
+		if ( date == thisyear ) {
+		    if (firstcheckin != "none" && firstcheckin < date) {
+			print firstcheckin"-"thisyear
+		    } else {
+			print date
+		    }
+		    exit
+		} 
+		if ( length(date) == 4 ) {
+		    if (firstcheckin != "none" && firstcheckin < date) {
+			print firstcheckin"-"thisyear
+		    } else {
+			print date"-"thisyear
+		    }
+		    exit
+		} 
+		if ( length(date) == 9 ) {
+		    print substr(date,1,4)"-"thisyear
+		    exit
+		} 
+		if (firstcheckin != "none" && firstcheckin < date) {
+		    print firstcheckin"-"thisyear
+		} else {
+		    print thisyear
+		}
+		exit
+	    }' firstcheckin=$firstcheckin thisyear=$thisyear $FP `
+	echo "Actually, the newdate will be $newdate"
+	# Replace the existing copyright notice with the official one.
+	#	echo from $startline to $endline
+	if [ $shcomments = yes ]; then
+	    sed -e "$startline r $SHNOTICE" -e "$startline,$endline d" $FP | sed "s/(c) 2003/(c) $newdate/" > $TMPF
+	else 
+	    # Major dangerous hack here.  Dont stick in comments here,
+	    # assume we already have them.
+	    sed -e "$startline r $NOTICE" -e "$startline,$endline d" $FP | sed "s/(c) 2003/(c) $newdate/" > $TMPF
+	fi
+    fi
+
+    diff $F $TMPF
+    diffstatus=$?
+    if [ $printonly = no ]; then
+	cp $TMPF $F
+    fi			
+
+    # Check file back in
+    if [ "$diffstatus" = "1" ] ; then
+	if [ $printonly = yes ]; then
+	    echo "Would do check in"
+	else
+	    cvs commit -m "Added copyright" $F
+	fi
+    fi
+    # Remove the temporary file.
+    rm -f $FP $TMPF 
+
+done
+
+rm -f $SHNOTICE $CNOTICE
