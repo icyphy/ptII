@@ -227,11 +227,12 @@ public class PNDirector extends BasePNDirector {
      *
      *  @param request An object with commands to perform topology changes
      *  and to inform the topology listeners of the same.
+     *  @exception ChangeFailedException If the superclass throws it.
      *  @see ptolemy.kernel.event.ChangeRequest
      *  @see ptolemy.kernel.event.ChangeListener
      *  @see #fire
      */
-    public void requestChange(ChangeRequest request) {
+    public void requestChange(ChangeRequest request) throws ChangeFailedException {
 	synchronized(this) {
 	    // _mutationsRequested = true;
 	    _informOfMutationBlock();

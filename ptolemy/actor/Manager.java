@@ -542,12 +542,15 @@ public class Manager extends NamedObj implements Runnable {
      *  composite actor, requesting that directors in such domains
      *  return from their fire() method as soon as practical.
      *  When the model is idle (initialize() has not yet been
-     *  invoked), carry out the change request immediately. That is,
+     *  invoked), carry out the change request before returning. That is,
      *  this method will block until the change request has been
-     *  processed.
+     *  processed. An exception is thrown by this method if the change 
+     *  request fails, but this can only occur when the model is idle.
      *  @param change The requested change.
+     *  @exception ChangeFailedException If the model is idle and the
+     *  change request fails.
      */
-    public void requestChange(ChangeRequest change) {
+    public void requestChange(ChangeRequest change) throws ChangeFailedException {
         // Create the list of requests if it doesn't already exist
         if (_changeRequests == null) {
             _changeRequests = new LinkedList();
@@ -562,20 +565,8 @@ public class Manager extends NamedObj implements Runnable {
 		_processChangeRequests();
                 _setState(IDLE);
 	    } catch (IllegalActionException e) {
-		// FIXME: Don't catch. requestChange() should
-		// throw IllegalActionException. I am not making
-		// this change right now, since it might break
-		// a lot of code.
-		System.err.println("Manager: Error proccessing " +
-				   "change request" + e);
-	    } catch (ChangeFailedException e) {
-		// FIXME: Don't catch. requestChange() should
-		// throw IllegalActionException. I am not making
-		// this change right now, since it might break
-		// a lot of code.
-		System.err.println("Manager: Error proccessing " +
-				   "change request" + e);
-	    }
+		throw new ChangeFailedException(change, e);
+	    } 
 	}
     }
 

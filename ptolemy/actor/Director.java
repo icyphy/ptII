@@ -441,8 +441,9 @@ public class Director extends NamedObj implements Executable {
      *  typically between top-level iterations of the model.
      *  If there is no container, or if it has no manager, do nothing.
      *  @param change The requested change.
+     *  @exception ChangeFailedException If the manager throws it.
      */
-    public void requestChange(ChangeRequest change) {
+    public void requestChange(ChangeRequest change) throws ChangeFailedException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
             Manager manager = container.getManager();
