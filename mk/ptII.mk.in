@@ -83,6 +83,10 @@ JSCLASSPATH = 	/users/ptdesign/vendors/sun/JavaScope/JavaScope.zip
 # to run submakes in if we found sound.jar
 JAVASOUND_NEEDED_DIRS = @JAVASOUND_NEEDED_DIRS@
 
+# KVM is the JDK for PalmOS, see
+# http://java.sun.com/products/kvm
+KVM_CLASSES = @KVM_CLASSES@
+
 ########## You should not have to change anything below this line ######
 
 # The 'javac' compiler.
