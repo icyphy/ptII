@@ -318,13 +318,6 @@ public class TimeKeeper {
         return triple.getTime();
     }
 
-    /** Return the number of active channels associated with
-     *  this time keeper. 
-    public int getNumberOfActiveChannels() {
-    	_rcvrTimeList.size();
-    }
-     */
-    
     /** Return the current value of the output time associated with
      *  this time keeper and, after so doing, set the output time to
      *  a new value that is equivalent to this time keeper's current time.
@@ -410,10 +403,6 @@ public class TimeKeeper {
      */
     public void sendOutNullTokens(DDEReceiver rcvr) {
         String actorName = ((Nameable)_actor).getName();
-        /*
-        System.out.println("Actor: " + actorName + " called "
-        	+ "sendOutNullTokens.");
-        */
         if( rcvr.isInsideBoundary() ) {
             if( _actor.getExecutiveDirector() instanceof DDEDirector ){
                 IOPort port = (IOPort)rcvr.getContainer();
@@ -473,10 +462,6 @@ public class TimeKeeper {
 		    }
 		}
             }
-            /*
-            System.out.println("Actor: " + actorName + " called "
-        	    + "sendOutNullTokens.");
-            */
             return;
         }
     }
@@ -499,19 +484,6 @@ public class TimeKeeper {
 		    + "set current time in the past.");
 	}
             
-	String name = ((Nameable)_actor).getName();
-	if( name.equals("fBack") ) {
-	    /*
-	    if( time == 9.0 ) {
-		try {
-		    throw new IllegalActionException("fBack.setCurrentTime() at time = 9.0");
-		} catch(IllegalActionException e) {
-		    e.printStackTrace();
-		}
-	    }
-	    */
-	}
-
 	if( time != TimedQueueReceiver.IGNORE ) {
             _currentTime = time;
 	} else {
@@ -588,16 +560,6 @@ public class TimeKeeper {
 	}
     }
 
-    /** Return true if a search for receivers with a receiver
-     *  time of TimedQueueReceiver.IGNORE is taking place.
-     *  Return false otherwise.
-     * @return True if a search for ignored receivers is taking
-     *  place; otherwise return false.
-    public boolean searchingForIgnoredTokens() {
-	return _searchingForIgnoredTokens;
-    }
-     */
-
     /** Specify according to the parameter whether or not this
      *  TimeKeeper currently has receivers that contain IGNORE
      *  tokens at the head of their queues.
@@ -647,17 +609,6 @@ public class TimeKeeper {
     public synchronized void updateRcvrList(TimedQueueReceiver tqr) {
 	String calleeName = ((Nameable)_actor).getName();
 	double time = tqr.getRcvrTime();
-
-	/*
-	if( time == 15.0 && calleeName.equals("wormhole") ) {
-	    try {
-		throw new IllegalActionException(calleeName+": updateRcvrList() at time = "+time);
-	    } catch(IllegalActionException e) {
-		e.printStackTrace();
-	    }
-	}
-	*/
-
 	int priority = tqr.getPriority();
 	RcvrTimeTriple triple =
             new RcvrTimeTriple(tqr, time, priority);
@@ -708,14 +659,6 @@ public class TimeKeeper {
 	    System.out.println(msg);
         }
         System.out.println("###End of printRcvrList()\n");
-    }
-     */
-
-    /** Set a flag indicating whether a search for ignored
-     *  tokens is taking place as per the specified parameter.
-     * @param search The search flag.
-    synchronized void setSearchForIgnoredTokens(boolean search) {
-	_searchingForIgnoredTokens = search;
     }
      */
 
@@ -837,10 +780,6 @@ public class TimeKeeper {
     // Flag set to true if any of the receivers have time of
     // TimedQueueReceiver.IGNORE
     private boolean _ignoredReceivers = false;
-
-    // A flag to prevent infinite cycles while searching for
-    // receivers with receiver time = TimedQueueReceiver.IGNORE
-    // private boolean _searchingForIgnoredTokens = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
