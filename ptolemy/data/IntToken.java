@@ -1,4 +1,4 @@
-/* One line description of file.
+/* A Particle that contains an integer
 
  Copyright (c) 1997 The Regents of the University of California.
  All rights reserved.
@@ -28,80 +28,76 @@
 package pt.kernel;
 
 //////////////////////////////////////////////////////////////////////////
-//// NoName
+//// IntToken
 /** 
-Description of the class
-@author 
+A token that contains an integer, or more specifically a reference to an 
+instance of an integer. The reference is never null, the default being 0.
+
+@author Mudit Goel
 @version $Id$
-@see classname
-@see full-classname
 */
-public class NoName {
-    /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
+public class IntToken extends ObjectToken {
+
+    /** Construct a token with integer 0
      */	
-    public NoName() {
+    public IntToken() {
+	_value = new Integer(0);
+    }
+
+    /** Construct a token with the specified integer
+     */
+    public IntToken(int value) {
+        _value = new Integer(value);
+    }
+
+    /** Construct a token with the specified integer in the form of a string
+     */
+    public IntToken(String value) {
+        if (value != null) {
+            _value = new Integer(value);
+        } else {
+            _value = new Integer(0);
+        }
     }
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
+    /** Set the value of the token to the specified string which should refer
+     *  to a valid integer. If the value is null, then the value is set to 0, 
+     *  rather than null.
      */	
-    public int APublicMethod() {
-        return 1;
+    public void fromString(String value) {
+        if (value != null) {
+            _value = new Integer(value);
+        } else {
+            _value = new Integer(0);
+        }
     }
 
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    protected int _AProtectedMethod() {
-        return 1;
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected variables                      ////
-
-    /** Description */
-    protected int _aprotectedvariable;
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
-
-    /* Private methods should not have doc comments, they should
-     * have regular comments.
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    private int __APrivateMethod() {
-        return 1;
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
-
-    /* Private variables should not have doc comments, they should
-       have regular comments.
+    /** Return the value of the token.
+     * @returns A reference to an Integer
      */
-    private int __aprivatevariable;
+    public Object getvalue() {
+	return _value;
+    }
+
+    /** Set the value of the token to be a reference to the specified integer.
+     *  If the argument is null, then the value is set to 0 rather than null.
+     * @exceptions IllegalActionException Argument is not an integer.
+     */
+    public void setValue(Object value)
+            throws IllegalActionException {
+        if (value != null) {
+            if (!(value instanceof Integer)) {
+                throw new IllegalActionException(
+                        "IntToken value must be an integer, not a "
+                        + value.getClass().getName());
+            }
+            _value = value;
+        } else {
+            _value = new Integer(0);
+        }
+    }
+
 }
