@@ -117,7 +117,9 @@ test Array2DInt-1.1 {Generate all required files for Array2DInt.java} {
     }
 
    
-    exec make depend -s -f $makeFile
+    # -stderrok means that if make generates output on stderr, then
+    # exec will _not_ report this as an error. 
+    exec -stderrok make depend -s -f $makeFile
     #This creates the .mk file.
     exec make -s -f $mkFile
 
