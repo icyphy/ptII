@@ -129,10 +129,16 @@ public class RatingTaglet implements Taglet {
      * @param tagletMap  the map to register this tag to.
      */
     public static void register(Map tagletMap) {
-        _register(tagletMap,
-                new RatingTaglet("Pt.AcceptedRating", "Accepted Rating"));
-        _register(tagletMap,
-                new RatingTaglet("Pt.ProposedRating", "Proposed Rating"));
+        try {
+            _register(tagletMap,
+                    new RatingTaglet("Pt.AcceptedRating", "Accepted Rating"));
+            _register(tagletMap,
+                    new RatingTaglet("Pt.ProposedRating", "Proposed Rating"));
+        } catch (Throwable throwable) {
+            // Print the stack trace so the user has a clue.
+            throwable.printStackTrace();
+            throw new RuntimeException(throwable);
+        }
     }
 
     /**
@@ -197,8 +203,9 @@ public class RatingTaglet implements Taglet {
             tagletMap.remove(tagName);
         }
         String javaSpecificationVersion
-            = System.getProperty("java.Specification.version");
-        if (javaSpecificationVersion.equals("1.4")) {
+            = System.getProperty("java.specification.version");
+        if (javaSpecificationVersion != null 
+                && javaSpecificationVersion.equals("1.4")) {
             tagletMap.put(taglet.getName(), taglet);
         } else {
             String legacyTagletClassName =
@@ -218,8 +225,9 @@ public class RatingTaglet implements Taglet {
                             });
                 tagletMap.put(tagName, legacyTagletObject);
             } catch (Throwable throwable) {
+                throwable.printStackTrace();
                 throw new RuntimeException("Problem with the '"
-                        + legacyTagletClassName + "' class: " + throwable);
+                        + legacyTagletClassName + "' class: ", throwable);
 
             }
         }
