@@ -141,6 +141,7 @@ public class StringUtilities {
      *  < becomes &amp;lt;
      *  > becomes &amp;gt;
      *  newline becomes &amp;#10;
+     *  carriage return becomes $amp;#13;
      *  </pre>
      *  @see #unescapeForXML(String)
      *
@@ -699,6 +700,7 @@ public class StringUtilities {
      *  &amp;lt; becomes <
      *  &amp;gt; becomes >
      *  &amp;#10; becomes newline
+     *  &amp;#13; becomes carriage return
      *  </pre>
      *  @see #escapeForXML(String)
      *
