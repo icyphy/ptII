@@ -44,16 +44,13 @@ ROOT =		../../../../..
 
 ME =		java/pt/data/parser
 
-#JAVACC=java "-Dinstall.root/users/ptdesign/vendors/sun/JavaCC" COM.sun.labs.javacc.Main
-JAVAC=javac
-
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
 DIRS = 		test 
 
-#CLASSPATH = ../../..
+CLASSPATH = ../../..
 
 # Used to build zip files
 TYPACKAGE = 	pt.data.parser
@@ -78,7 +75,6 @@ JSRCS = \
 	TokenMgrError.java \
 	ParseException.java 
 
-
 EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -94,21 +90,19 @@ JCLASS = $(JSRCS:%.java=%.class)
 # Needed for compiling under Cygwin on NT
 LIB = dummylib
 
-all:   PtParser $(JCLASS) 
+all: PtParser $(JCLASS) 
 install: PTSimpleParser javadocs $(JARFILE)
 docs: javadocs
 
 depend:
 	@echo "no dependencies in this directory"
 
+PtParser : PtParser.jjt
+	rm -f PtParser.jj
+	CLASSPATH=$(CLASSPATH) $(JJTREE) PtParser.jjt
+	CLASSPATH=$(CLASSPATH) $(JAVACC) PtParser.jj
+	CLASSPATH=$(CLASSPATH) $(JAVAC) *.java
+
 # Get the rest of the rules
 include $(ROOT)/mk/tycommon.mk
 
-# Perhaps these definitions should be moved into tycho.mk?
-JJTREE = /users/ptdesign/vendors/sun/JavaCC/bin/jjtree
-JAVACC = /users/ptdesign/vendors/sun/JavaCC/bin/javacc
-
-PtParser : PtParser.jjt
-	$(JJTREE) PtParser.jjt
-	$(JAVACC) PtParser.jj
-	$(JAVAC) *.java
