@@ -40,9 +40,12 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-JSRCS = OrthogonalCom.java
+# OrthogonalCom.java is not included in JSRCS because we
+# want to read the xml file, not the .class file
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	OrthogonalCom.java \
 	OrthogonalCom.xml
 
 EXTRA_SRCS = \
