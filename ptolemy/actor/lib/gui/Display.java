@@ -175,6 +175,7 @@ public class Display extends Sink implements Placeable {
                 if (textArea != null) {
                     textArea.setRows(numRows);
                     if (_frame != null) {
+                        _frame.pack();
                         _frame.show();
                     }
                 }
@@ -261,17 +262,15 @@ public class Display extends Sink implements Placeable {
                 ((IntToken)columnsDisplayed.getToken()).intValue();
             textArea.setColumns(numColumns);
             _windowProperties.setProperties(_frame);
-            _frame.show();
+            _frame.pack();
         } else {
             // Erase previous text.
             textArea.setText(null);
         }
         if (_frame != null) {
-            // Do not use show() as it overrides manual placement.
-            // FIXME: So does setVisible()... But with neither one used,
-            // then if the user dismisses the window, it does not reappear
-            // on re-running!
-            // _frame.setVisible(true);
+            // show() used to override manual placement by calling pack.
+            // No more.
+            _frame.show();
             _frame.toFront();
         }
         /*

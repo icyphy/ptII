@@ -56,6 +56,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
 //////////////////////////////////////////////////////////////////////////
@@ -174,11 +175,17 @@ public abstract class Top extends JFrame {
     
     /** Close the window, prompting the user to save changes if there
      *  have been any.  Derived classes should override the protected
-     *  method _close(), not this one.
-     *  @return False if the user cancels on a save query.
+     *  method _close(), not this one. This method returns immediately
+     *  if it is called outside the swing UI thread, deferring the action
+     *  so that it is executed in the swing thread.
      */
-    public final boolean close() {
-        return _close();
+    public final void close() {
+        Runnable doClose = new Runnable() {
+            public void run() {
+                _close();
+            }
+        };
+        SwingUtilities.invokeLater(doClose);
     }
 
     /** Return true if the window is set to be centered when pack() is called.
@@ -365,11 +372,12 @@ public abstract class Top extends JFrame {
         super.setBounds(x, y, width, height);
     }
 
-    /** Override the base class to also call pack() and to deiconify
+    /** Override the base class to deiconify
      *  the window, if necessary.
      */
     public void show() {
-        pack();
+        // NOTE: We used to call pack() here, but this would override any manual
+        // changes in sizing that had been made.
         setState(Frame.NORMAL);
         super.show();
     }

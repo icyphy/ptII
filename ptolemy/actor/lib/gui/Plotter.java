@@ -36,6 +36,7 @@ import ptolemy.actor.gui.PlotEffigy;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.gui.Top;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -169,7 +170,7 @@ public class Plotter extends PlotterBase {
             if (_plotSize != null) {
                 _plotSize.setSize(plot);
             }
-            _frame.show();
+            _frame.pack();
         } else {
             if (plot instanceof Plot) {
                 int width = ((Plot)plot).getNumDataSets();
@@ -184,11 +185,9 @@ public class Plotter extends PlotterBase {
             }
         }
         if (_frame != null) {
-            // Do not use show() here as it overrides manual placement.
-            // FIXME: So does setVisible()... But with neither one used,
-            // then if the user dismisses the window, it does not reappear
-            // on re-running!
-            // _frame.setVisible(true);
+            // show() used to call pack, which would override any manual
+            // changes in placement. No more.
+            _frame.show();
             _frame.toFront();
         }
     }

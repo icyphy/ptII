@@ -254,16 +254,14 @@ public class InteractiveShell extends TypedAtomicActor
                         "Error creating effigy and tableau");
             }
             _windowProperties.setProperties(_frame);
-            _frame.show();
+            _frame.pack();
         } else {
             shell.clearJTextArea();
         }
         if (_frame != null) {
-            // Do not use show() as it overrides manual placement.
-            // FIXME: So does setVisible()... But with neither one used,
-            // then if the user dismisses the window, it does not reappear
-            // on re-running!
-            // _frame.setVisible(true);
+            // show() used to override manual placement by calling pack.
+            // No more.
+            _frame.show();
             _frame.toFront();
         }
         _firstTime = true;

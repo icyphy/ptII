@@ -287,18 +287,17 @@ public class HistogramPlotter extends PlotterBase
             if (_plotSize != null) {
                 _plotSize.setSize(plot);
             }
-            _frame.show();
+            _frame.pack();
         } else {
             // Clear the histogram without clearing the axes.
             plot.clear(false);
             plot.repaint();
         }
         if (_frame != null) {
-            // Do not use show() here as it overrides manual placement.
-            // FIXME: So does setVisible()... But with neither one used,
-            // then if the user dismisses the window, it does not reappear
-            // on re-running!
-           _frame.toFront();
+            // show() used to override manual placement by calling pack.
+            // No more.
+            _frame.show();
+            _frame.toFront();
         }
     }
 

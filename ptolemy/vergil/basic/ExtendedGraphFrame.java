@@ -116,6 +116,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         _splitPane.setRightComponent(_jgraph);
         // Restore association with the graph panner.
         _graphPanner.setCanvas(_jgraph);
+        pack();
         show();
         GraphicalMessageHandler.setContext(_previousDefaultContext);
         toFront();
