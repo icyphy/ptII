@@ -111,7 +111,7 @@ ISJAVA = /users/ptII/vendors/installshield/isjava25/bin/isjava
 # The fixtmpdist rule should be defined in the calling makefile
 dists: sources install distsfiles
 # We split up the dists rule to aid in debugging
-distsfiles: $(PTTMPDIST) fixtmpdist $(PTDISTS) isjavadists
+distsfiles: $(PTTMPDIST) fixtmpdist $(PTDISTS) #isjavadists
 
 # This name is a little too close to distclean
 distsclean:
@@ -202,3 +202,33 @@ updatewebsite: $(PTDISTS)
 		-zxf $(PTDIST)/$(ME)/$(PTDIST).tar.gz;\
 	 chmod g+ws $(PTDIST))
 	(cd $(JDESTDIR)/$(PTDIST)/$(ME); chmod g+w $(PTDISTS))
+
+
+#
+# Rules to run Installshield Professional Multiplatform Edition 
+#
+# Directory containing Installshield Professional Multiplatform Edition 
+ISPMP_DIR=/vol/maury/maury1/ptII/vendors/installshield/ispmp40
+ISPMP_LIB=$(ISPMP_DIR)/lib
+
+ISPMP_CLASSPATH=$(ISPMP_DIR):$(ISPMP_LIB)/help.jar:$(ISPMP_LIB)/icebrowserbean.jar:$(ISPMP_LIB)/icebrowserlitebean.jar:$(ISPMP_LIB)/ide.jar:$(ISPMP_LIB)/jhall.jar:$(ISPMP_LIB)/parser.jar:$(ISPMP_LIB)/product.jar:$(ISPMP_LIB)/swing.jar:$(ISPMP_LIB)/wizard.jar:$(ISPMP_LIB)/xt.jar:$(ISPMP_DIR)/ppk/win32ppk.jar:$(ISPMP_DIR)/ppk/solarisppk.jar:$(ISPMP_DIR)/ppk/webppk.jar:$(ISPMP_DIR)/ppk/linuxppk.jar
+
+ptiny.xml: ptII.xml ptiny.xsl
+	java -classpath $(ISPMP_CLASSPATH) \
+		com.installshield.isje.ISJE ptII.xml \
+		-xsl ptiny.xsl \
+		-saveas $@
+
+ISPMP_WINDOWS_SRC= [cC]:\\users\\cxh\\ptII\\adm\\gen-1.0\\installshield\\
+
+TRANSFORM_ISPMP_SEDSCRIPT = \
+	    -e 's@$(ISPMP_WINDOWS_SRC)@$(PTTMPDIR)/$(PTDIST)@' \
+	    -e 's@$(ISPMP_PROJECT_DIR)@$(PWD)@' \
+	    -e 's@designdoc\\doc\\design\\@designdoc/doc/design/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\win32\\@$(ISPMP_DIR)/jvms/win32/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\solaris\\@$(ISPMP_DIR)/jvms/solaris/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\linux\\@$(ISPMP_DIR)/jvms/linux/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\images\\InstallShield Images\\@$(ISPMP_DIR)/images/InstallShield Images/@' \
+	    -e 's@<property name="outputDirectory">default</property>@<property name="outputDirectory">$(GENDIR)/installshield</property>@' \
+	    -e 's@$(PTDIST)\\copyright@$(PTDIST)/copyright@'
+
