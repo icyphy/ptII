@@ -1,12 +1,8 @@
 
 To Do:
 
-rename Server to LookupTable
-rename NonStrictClient to InstantaneousDialogGenerator
-move sr.lib actors around
-search and replace for name changes
+fix tests to handle moved and renamed actors
 move sr tests around
-add SRDirector and srentities to vergil library
 cvs checkout
 talk to xiaojun - monday
 verify that sr tests are passing in the nightly build
@@ -24,22 +20,20 @@ run ptolemy classic SR
 
 find second reader
 
+Latch - actor.lib (moved)
+LookupTable - actor.lib (moved, renamed from Server)
+NonStrictActor - actor.lib (moved)
+NonStrictTest - actor.lib (moved, renamed from SequenceTest)
+SingleTokenDistributor - actor.lib (moved)
+
 Absent - sr.lib
 AbsentToken - sr.lib
-Latch - actor.lib*
-LookupTable - actor.lib*
-NonStrictActor - actor.lib*
+InstantaneousDialogGenerator - sr.lib (renamed from NonStrictClient)
 NonStrictDelay - sr.lib
 NonStrictDisplay - sr.lib
 NonStrictLogicFunction - sr.lib
 NonStrictThreeBitAdder - sr.lib
-SingleTokenDistributor - actor.lib*
 Undefined - sr.lib
-
-InstantaneousDialogGenerator - sr.lib
-SequenceTest - actor.lib*
-
-
 
 -------------------------------------------------------------------------------
 
