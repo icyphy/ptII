@@ -40,14 +40,16 @@ import ptolemy.actor.Mailbox;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.NoTokenException;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.ModelErrorHandler;
 import ptolemy.data.Token;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
@@ -98,7 +100,7 @@ the transition.
 @since Ptolemy II 0.4
 @see FSMActor
 */
-public class FSMDirector extends Director {
+public class FSMDirector extends Director implements ModelErrorHandler {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
@@ -385,6 +387,37 @@ public class FSMDirector extends Director {
         return super.getNextIterationTime();
     }
 
+
+    /** Handle a model error by checking if there is any enabled non-preemptive
+     *  transtions. If there is some one, the model error is ignored. Otherwise,
+     *  the model error (exception) will be passed to higher level in hierarchy.
+     *  @param context The context where the model error happens.
+     *  @param exception An exception that represents the model error.
+     *  @return True if the error has been handled, or nothing if the model error
+     *  is thrown to higher level.
+     *  @exception IllegalActionException The model error exception.
+     */
+    public boolean handleModelError(
+            NamedObj context,
+            IllegalActionException exception)
+            throws IllegalActionException {
+        
+        if (!exception.getMessage().trim().startsWith("AssertionModelError")) throw exception;
+        
+	FSMActor fsm = getController();
+        fsm._setInputsFromRefinement();  
+        State st = fsm.currentState();     
+        Transition tr = fsm._chooseTransition(st.nonpreemptiveTransitionList());        
+        
+        if (tr == null) {
+            //System.out.println("ModelError is not handled but reported to upper level.");
+	    throw exception;
+        }
+
+        //System.out.println("ModelError is discarded.");
+        return true;
+    }
+
     /** Initialize the mode controller and all the refinements. Set the
      *  current time to 0.0 or the time of the executive director.
      *  If the container is not an instance of CompositeActor, do nothing.
@@ -495,6 +528,26 @@ public class FSMDirector extends Director {
         super.prefire();
         _firstFire = true;
         return getController().prefire();
+    }
+
+    /** If the container is not null, register this director as the model
+     *  error handler.
+     *  @param container The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace, or
+     *   if the protected method _checkContainer() throws it, or if
+     *   a contained Settable becomes invalid and the error handler
+     *   throws it.
+     *  @exception NameDuplicationException If the name of this entity
+     *   collides with a name already in the container.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+	super.setContainer(container);
+	if (container !=null) {
+	    container.setModelErrorHandler(this);
+	}
     }
 
     /** Set the current time of the model under this director.
