@@ -677,6 +677,23 @@ public class StaticResolution implements JavaStaticSemanticConstants {
             }
         }
 
+        if (!possibles.hasNext() & ((categories & CG_CLASS) == 1)) { 
+	    // Use reflection
+	    ClassDeclNode classDeclNode =
+		ASTReflect.lookupClassDeclNode(name.getIdent());
+	    // FIXME: what if this is an interface
+            ClassDecl classDecl = new ClassDecl(name.getIdent(),
+				      CG_CLASS,
+				      new TypeNameNode(classDeclNode.getName()),
+				      classDeclNode.getModifiers(),
+				      classDeclNode, null);
+	    System.out.println("possibles.hasNext false, reflection: " + classDecl);
+	    Environ environ = new Environ();
+	    classDecl.setEnviron(environ);
+	    environ.add(classDecl);
+	    possibles = ((Environ) environ).lookupFirst(name.getIdent(), categories);
+	}
+
         if (!possibles.hasNext()) {
             String message = "";
             if ((categories & CG_PACKAGE) != 0) {
@@ -745,7 +762,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
 	    System.out.println("StaticResolution:_requireClass(): using refl");
 	    // Use reflection
 	    ClassDeclNode classDeclNode= ASTReflect.lookupClassDeclNode(name);
-	    // FIXME: what if this is an interface
+	    // FIXME: what if this is an interface??
             classDecl = new ClassDecl(name,
 				      CG_CLASS,
 				      new TypeNameNode(classDeclNode.getName()),
