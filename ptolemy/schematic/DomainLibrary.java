@@ -106,7 +106,6 @@ public class DomainLibrary extends XMLElement{
      */
     public void addDomain(Domain domain) {
         String name=domain.getName();
-        System.out.println(name + ": " + domain);
         _domains.putAt(name,domain);
     }
 
