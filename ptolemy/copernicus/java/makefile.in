@@ -397,13 +397,6 @@ $(TARGETPATH)/gcj: $(TARGETPATH)/treeshake_codegen.jar
 	mkdir $@
 	cd $@; jar -xf "$(TARGETPATH)/treeshake_codegen.jar"
 
-# Just copy over a few files
-gcj2_0: $(TARGETPATH)/gcj
-	cd $(PTII); tar -cf - ptolemy/util/StringUtilities.class \
-		ptolemy/data/TokenUtilities.class | \
-	(cd $(TARGETPATH)/gcj; tar -xvpf -) 
-
-
 # A list of directories that are required to compile the treeshaken directories
 # This is necessary because we treeshake by class, so the .class files
 # that the treeshaker includes may have methods that are not called
@@ -418,7 +411,7 @@ GCJ_TO_BE_REMOVED = ptolemy/util/XSLTUtilities.class \
 	ptolemy/actor/MobileFunction.class \
 	ptolemy/actor/MobileModel.class
 
-gcj2_0a: $(TARGETPATH)/gcj
+gcj2_0: $(TARGETPATH)/gcj
 	@echo "For each directory in the treeshaken output,"
 	@echo "Copy all the class files from corresponding directory"
 	@echo "in $PTII"
@@ -457,7 +450,7 @@ gcj2_1:
 					$(GCJ) -g -c \
 					$(GCJ_FLAGS) \
 					--CLASSPATH=$(TARGETPATH)/gcj \
-					--encoding=UTF-8 *.class); \
+					*.class); \
 			fi; \
 		done;
 
