@@ -32,7 +32,7 @@
 </rendition>
 </entity>
 
-        <input source="../../domains/sdf/lib/javasound/index.xml"/>
+        <input source="javasound/index.xml"/>
 
 	<!-- NOTE: This next one is labeled as image processing."-->
         <input source="../../domains/sdf/lib/vq/sdfvqentities.xml"/>
