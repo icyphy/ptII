@@ -295,6 +295,7 @@ public class Transition extends ComponentRelation {
     public void setGuardExpression(String expression) {
         try {
             guardExpression.setExpression(expression);
+            guardExpression.validate();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Error in setting the "
                     + "guard expression of a transition.");
@@ -308,6 +309,7 @@ public class Transition extends ComponentRelation {
     public void setTriggerExpression(String expression) {
         try {
             triggerExpression.setExpression(expression);
+            triggerExpression.validate();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Error in setting the "
                     + "trigger expression of a transition.");
