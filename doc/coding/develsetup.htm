@@ -109,14 +109,19 @@ cvs tag -b rel-0-4-beta
 </pre>
 Then check out the release branch  with
 <pre>
-cd ~/src
+cd ~/ptII/adm/trees
 cvs co -r rel-0-4-beta ptII
 mv ptII ptII0.4
 </pre>
 
 <li> The nightly build uses a makefile in ~ptII/adm (not shipped)
 to build the release.  Copy the most recent makefile and
-set up a new tree for the release tree.
+set up a new tree for the release tree by changing 
+MAJOR_VERSION, MINOR_VERSION and PTIIHOME:
+
+<pre>
+PTIIHOME =	/users/$(USER)/adm/trees/ptII$(VERSION)
+</pre>
 
 </ol>
 
