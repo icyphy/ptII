@@ -324,6 +324,7 @@ public class CorbaActorClient extends TypedAtomicActor {
             throw new InvalidStateException(this,
                     "Comminication Failiar."+ex.getMessage());
         }
+        // FIXME: Why don't we return the return value from the parent?
         return true;
     }
 
