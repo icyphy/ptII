@@ -31,6 +31,8 @@ package ptolemy.data;
 import ptolemy.kernel.util.*;
 import ptolemy.graph.CPO;
 import ptolemy.data.type.*;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.ASTPtRootNode;
 
 //////////////////////////////////////////////////////////////////////////
 //// BooleanMatrixToken
@@ -60,25 +62,21 @@ public class BooleanMatrixToken extends MatrixToken {
      *   is null.
      */
     public BooleanMatrixToken(boolean[][] value) {
-	_rowCount = value.length;
-	_columnCount = value[0].length;
-	_value = new boolean[_rowCount][_columnCount];
-	for (int i = 0; i < _rowCount; i++) {
-	    for (int j = 0; j < _columnCount; j++) {
-		_value[i][j] = value[i][j];
-	    }
-	}
+        _initialize(value);
     }
 
-    // FIXME: finish this method after array is added to the
-    // 	      expression language.
-    // Construct an BooleanMatrixToken from the specified string.
-    // @param init A string expression of a 2-D boolean array.
-    // @exception IllegalArgumentException If the string does
-    //  not contain a parsable 2-D int array.
-    //
-    // public BooleanMatrixToken(String init) {
-    // }
+    /** Construct a BooleanMatrixToken from the specified string.
+     *  @param init A string expression of a boolean matrix.
+     *  @exception IllegalActionException If the string does
+     *   not contain a parsable boolean matrix.
+     */
+    public BooleanMatrixToken(String init) throws IllegalActionException {
+        PtParser parser = new PtParser();
+        ASTPtRootNode tree = parser.generateParseTree(init);
+	BooleanMatrixToken token = (BooleanMatrixToken)tree.evaluateParseTree();
+        boolean[][] value = token.booleanMatrix();
+        _initialize(value);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -258,6 +256,22 @@ public class BooleanMatrixToken extends MatrixToken {
      */
     public int getRowCount() {
 	return _rowCount;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    // initialize the row and column count and copy the specified
+    // matrix. This method is used by the constructors.
+    private void _initialize(boolean[][] value) {
+	_rowCount = value.length;
+	_columnCount = value[0].length;
+	_value = new boolean[_rowCount][_columnCount];
+	for (int i = 0; i < _rowCount; i++) {
+	    for (int j = 0; j < _columnCount; j++) {
+		_value[i][j] = value[i][j];
+	    }
+	}
     }
 
     ///////////////////////////////////////////////////////////////////

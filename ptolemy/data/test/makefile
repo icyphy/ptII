@@ -51,6 +51,7 @@ JSRCS =
 JSIMPLE_TESTS = \
 	ArrayToken.tcl \
 	BooleanToken.tcl \
+	BooleanMatrixToken.tcl \
 	ComplexMatrixToken.tcl \
 	ComplexToken.tcl \
 	DoubleMatrixToken.tcl \
