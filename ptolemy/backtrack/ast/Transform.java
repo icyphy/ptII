@@ -181,6 +181,16 @@ public class Transform {
         new AssignmentRule()
     };
     
+    /** Call the <tt>afterTraverse</tt> of all the refactoring rules. For
+     *  each rule, the <tt>afterTraverse</tt> is called after the AST is
+     *  traversed. The rule may clean up states or finalize the
+     *  transformation.
+     */
+    protected void _afterTraverse() {
+        for (int i = 0; i < RULES.length; i++)
+            RULES[i].afterTraverse(_ast);
+    }
+    
     /** Call the <tt>beforeTraverse</tt> of all the refactoring rules. For
      *  each rule, the <tt>beforeTraverse</tt> is called before the AST is
      *  traversed. The rule may set up handlers for special events in the
@@ -215,20 +225,23 @@ public class Transform {
     }
     
     /** Start the transformation by first parsing the source with
-     *  {@link #_parse()}, then call {@link #_beforeTraverse()}, and
-     *  finally traverse the AST with {@link TypeAnalyzer} visitor.
+     *  {@link #_parse()}, then call {@link #_beforeTraverse()},
+     *  then traverse the AST with {@link TypeAnalyzer} visitor,
+     *  and finally call {@link #_afterTraverse()}.
      *   
      *  @exception IOException If a file name is given, but exception
      *   occurs when reading from the file.
      *  @exception ASTMalformedException If the source is illegal.
-     *  @see #_parse()
+     *  @see #_afterTraverse()
      *  @see #_beforeTraverse()
+     *  @see #_parse()
      */
     protected void _startTransform()
             throws IOException, ASTMalformedException {
         _parse();
         _beforeTraverse();
         _ast.accept(_visitor);
+        _afterTraverse();
     }
 
     /** Construct a transformer. This constructor should not be called from
