@@ -41,9 +41,15 @@ include $(CONFIG)
 EXTRA_SRCS = \
 	index.html
 
+# Files or directories that are present, but that 'make checkjunk' 
+# should not complain about
 MISC_FILES =	internals #usersGuides #codeDoc
 
-# 'make realclean' should remove tclIndex
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES =	codeDoc
+
+# 'make realclean' removes these files
 REALCLEAN_STUFF =
 
 # Sub directories to run make in.
@@ -63,14 +69,6 @@ codeDoc/tree.html: ../*.java
 			$$x > $$x.bak; \
 		mv $$x.bak $$x; \
 	done
-
-# Files or directories that are present, but that 'make checkjunk' 
-# should not complain about
-MISC_FILES =
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES =	codeDoc
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/no-compile.mk
