@@ -101,7 +101,7 @@ test CTSingleSolverDirector-2.2 {set Parameters} {
     #Note: Use above set up.
     set param [$dir getAttribute ODESolver]
     set token [java::new ptolemy.data.StringToken ptolemy.domains.ct.kernel.solver.BackwardEulerSolver]
-    $param setToken $token
+    _testSetToken $param $token
     $param parameterChanged [java::null]
     set param [$dir getAttribute InitialStepSize]
     $param setExpression 0.5
