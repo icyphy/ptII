@@ -52,11 +52,20 @@ non-decreasing values. At the conclusion of a simulation run the receiver
 time is set to INACTIVE.
 <P>
 A TimeKeeper object is assigned to each actor that operates according to
-an DDE model of computation. The TimeKeeper manages each of the receivers
+a DDE model of computation. The TimeKeeper manages each of the receivers
 that are contained by an actor by keeping track of the receiver times of
 each receiver. As information flows through a TimedQueueReceiver, the
 TimeKeeper must be kept up to date with respect to the receiver times.
-
+<P>
+If the oldest token in the queue has a time stamp of IGNORE, then the
+next oldest token from the other receivers contained by the actor in 
+question will be consumed and the token time stamped IGNORE will be
+dropped. The IGNORE time stamp is useful in feedback topologies in which
+an actor should ignore inputs from a feedback cycle when the model's
+execution is just beginning. FBDelay actors output a single IGNORE token 
+during their initialize() methods for just this reason. In general, 
+IGNORE tokens should not be handled unless fundamental changes to the
+DDE kernel are intended.
 
 @author John S. Davis II
 @version $Id$
@@ -72,6 +81,14 @@ public class TimedQueueReceiver {
         super();
     }
 
+    /** Construct an empty queue with the specified IOPort container.
+     * @param container The IOPort that contains this receiver.
+     */
+    public TimedQueueReceiver(IOPort container) {
+        super();
+	_container = container;
+    }
+
     /** Construct an empty queue with the specified IOPort container
      *  and priority.
      * @param container The IOPort that contains this receiver.
@@ -83,23 +100,11 @@ public class TimedQueueReceiver {
 	setPriority(priority);
     }
 
-    /** Construct an empty queue with the specified IOPort container.
-     * @param container The IOPort that contains this receiver.
-     */
-    public TimedQueueReceiver(IOPort container) {
-        super();
-	_container = container;
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
     // This time value indicates that the receiver is no longer active.
     public static final double INACTIVE = -2.0;
-
-    // This time value indicates that the receiver contents should
-    // be ignored.
-    public static final double IGNORE = -1.0;
 
     // This time value indicates that the receiver has not begun
     // activity.
@@ -267,6 +272,13 @@ public class TimedQueueReceiver {
     public void setContainer(IOPort port) {
         _container = port;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                  package friendly variables 		   ////
+
+    // This time value indicates that the receiver contents should
+    // be ignored.
+    static final double IGNORE = -1.0;
 
     ///////////////////////////////////////////////////////////////////
     ////                   package friendly methods                ////
