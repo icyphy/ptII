@@ -39,6 +39,7 @@ DIRS = \
 	MatlabWirelessSoundDetection \
 	PowerVariability \
 	SmallWorld \
+	TerrainModel \
 	WirelessSoundDetection
 
 # Directories we are not shipping yet
@@ -46,9 +47,8 @@ DIRS = \
 #       and add an entry to PTCLASSALLJARS below.
 OTHER_DIRS = \
 	MACProtocolModel \
-	Network \
-	PersonalAreaNetwork \
-	TerrainModel \
+	network \
+	PersonalAreaNetwork
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
@@ -71,6 +71,7 @@ PTCLASSALLJARS = \
 	MatlabWirelessSoundDetection/MatlabWirelessSoundDetection.jar \
 	PowerVariability/PowerVariability.jar \
 	SmallWorld/SmallWorld.jar \
+	TerrainModel/TerrainModel.jar \
 	WirelessSoundDetection/WirelessSoundDetection.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
