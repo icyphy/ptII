@@ -370,6 +370,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         List linkedPortList = relation.linkedPortList();
 	int allPortCount = linkedPortList.size();
 
+        //        System.out.println("updating links for relation " + relation.getFullName());
+        // System.out.println("linkedPorts = " + linkedPortList);
 	// Go through all the links that currently exist, and remove ports
 	// from the linkedPortList that already have a Link object.
         // Also remove links that link to ports which shouldn't be linked to.
@@ -378,14 +380,18 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	while (links.hasNext()) {
 	    Link link = (Link)links.next();
             // only consider links that are associated with this relation.
-	    if (link.getRelation() != relation) continue;
+	    if (link.getRelation() != relation) {
+                continue;
+            }
+            
       	    // remove any ports that this link is linked to.  We don't need
 	    // to manufacture those links.
 	    Object tail = link.getTail();
 	    Object tailObj = getSemanticObject(tail);
             if (tailObj != null && linkedPortList.contains(tailObj)) {
                 linkedPortList.remove(tailObj);
-	    } else {
+	    } else if(tailObj != relation) {
+                //  System.out.println("removing link = " + link);
                 link.setHead(null);
                 link.setTail(null);
                 _linkSet.remove(link);
@@ -395,7 +401,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
 	    Object headObj = getSemanticObject(head);
             if (headObj != null && linkedPortList.contains(headObj)) {
                 linkedPortList.remove(headObj);
-	    } else {
+	    } else if(headObj != relation) {
+                // System.out.println("removing link = " + link);
                 link.setHead(null);
                 link.setTail(null);
                 _linkSet.remove(link);
@@ -1350,7 +1357,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 (ComponentRelation)((Vertex)node).getContainer();
            
             NamedObj container = _getChangeRequestParent(getPtolemyModel());
-            System.out.println("container = " + container.getFullName());
+            //  System.out.println("container = " + container.getFullName());
             String moml = "<deleteRelation name=\""
                     + deleteObj.getName(container) + "\"/>\n";
             return moml;
