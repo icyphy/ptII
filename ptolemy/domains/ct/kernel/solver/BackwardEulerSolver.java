@@ -101,6 +101,11 @@ public class BackwardEulerSolver extends FixedStepSolver {
      * @see ptolemy.domains.ct.kernel.ODESolver#fireDynamicActors()
      */
     public void fireDynamicActors() throws IllegalActionException {
+        // First assume that the current step size is accurate.
+        // If any dynamic actor finds the current step size not accurate,
+        // the converged status is set to false. 
+        _setConverged(true);
+        
         _debug(getFullName() + ": fire dynamic actors.");
         CTDirector dir = (CTDirector)getContainer();
         if (dir == null) {
@@ -194,7 +199,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
         double error = Math.abs(tentativeState-integrator.getTentativeState());
         if ( !(error < dir.getValueResolution())) {
             _voteForConverged(false);
-        }
+        } 
         integrator.setTentativeState(tentativeState);
         integrator.setTentativeDerivative(f);
 
