@@ -42,6 +42,7 @@ include $(CONFIG)
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
+	FailedChangeListener.java \
 	PrintThreads.java
 
 TCL_SRCS = \
