@@ -1173,11 +1173,6 @@ public class DEDirector extends Director {
                             "put trigger event to",
                             receiver.getContainer().getFullName());
                     receiver._triggerEvent(currentEvent.token());
-                } else {
-                    // a pure event is detected, handle this event.
-                    // a pure event can not be handled with other 
-                    // trigger events together.
-                    break;
                 }
             } else {
                 // Already seen an event.
