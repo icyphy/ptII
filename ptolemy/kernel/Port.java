@@ -37,14 +37,11 @@ Description of the class
 @see full-classname
 */
 public class Port extends GenericPort {
-    /** Constructor
-     * @see full-classname/method-name
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
+    /** 
+     * @param name - The name of the Port.
      */	
-    public Port() {
+    public Port(String name) {
+	 super(name);
     }
 
     //////////////////////////////////////////////////////////////////////////
