@@ -529,23 +529,52 @@ public class MoMLParser extends HandlerBase {
 	    }
 	}
 
-        // FIXME: Instead of doing string comparisons, do a hash lookup.
-        if (elementName.equals("configure")) {
-            // Count configure tags so that they can nest.
-            _configureNesting--;
-        } else if (elementName.equals("doc")) {
-            // Count doc tags so that they can nest.
-            _docNesting--;
+        if (_skipElement <= 0) {
+            // If we are not skipping an element, then adjust the
+            // configuration nesting and doc nesting counts accordingly.
+            // This was illustrated by having the RemoveGraphicalClasses
+            // filter remove the SketchedSource from sources.xml,
+            // which resulted in _docNesting being decremented from 0 to -1,
+            // which caused problems with undo.
+            // See test 1.4 in filter/test/RemoveGraphicalClasses.tcl
+        
+            // FIXME: Instead of doing string comparisons, do a hash lookup.
+            if (elementName.equals("configure")) {
+                // Count configure tags so that they can nest.
+                _configureNesting--;
+                if (_configureNesting < 0) {
+                    throw new XmlException(
+                            "Internal Error: _configureNesting is "
+                            +  _configureNesting
+                            + " which is <0, which indicates a nesting bug",
+                            _currentExternalEntity(),
+                            _parser.getLineNumber(),
+                            _parser.getColumnNumber());
+                }
+            } else if (elementName.equals("doc")) {
+                // Count doc tags so that they can nest.
+                _docNesting--;
+                if (_docNesting < 0) {
+                    throw new XmlException(
+                            "Internal Error: _docNesting is " +  _docNesting
+                            + " which is <0, which indicates a nesting bug",
+                            _currentExternalEntity(),
+                            _parser.getLineNumber(),
+                            _parser.getColumnNumber());
+                }
+            }
+
+            if (_configureNesting > 0 || _docNesting > 0) {
+                // Inside a configure or doc tag.
+                // Simply replicate the element in the current
+                // character buffer.
+                _currentCharData.append("</");
+                _currentCharData.append(elementName);
+                _currentCharData.append(">");
+                return;
+            }
         }
-        if (_configureNesting > 0 || _docNesting > 0) {
-            // Inside a configure or doc tag.
-            // Simply replicate the element in the current
-            // character buffer.
-            _currentCharData.append("</");
-            _currentCharData.append(elementName);
-            _currentCharData.append(">");
-            return;
-        }
+
 	if ( _skipRendition ) {
             if (elementName.equals("rendition")) {
                 _skipRendition = false;
@@ -565,8 +594,7 @@ public class MoMLParser extends HandlerBase {
                 // is not in the classpath, then we may get"
                 // "java.lang.NoClassDefFoundError: diva/canvas/Figure"
             }
-        }
-        else {
+        } else {
             // The doc and group used to be part of "else if" above but had
             // to move into here to handle undo
             if (elementName.equals("doc")) {
@@ -642,7 +670,10 @@ public class MoMLParser extends HandlerBase {
             }
         }
 
-        // Handle the undoable aspect, skipping if undo is not enabled
+        // Handle the undoable aspect, if undo is enabled.
+        // FIXME: How should _skipElement and _undoEnable interact?
+        // If we are skipping an element, are we sure that we want
+        // to add it to the undoContext?
         if (_undoEnabled && _isUndoableElement(elementName)) {
             try {
                 // Get the result from this element, as we'll be pushing
@@ -1171,22 +1202,29 @@ public class MoMLParser extends HandlerBase {
      */
     public void startElement(String elementName) throws XmlException {
         try {
-            if (_configureNesting > 0 || _docNesting > 0) {
-                // Inside a configure or doc tag.  First, check to see
-                // whether this is another configure or doc tag.
-                // Then simply replicate the element in the current
-                // character buffer.
-                if (elementName.equals("configure")) {
-                    // Count configure tags so that they can nest.
-                    _configureNesting++;
-                } else if (elementName.equals("doc")) {
-                    // Count doc tags so that they can nest.
-                    _docNesting++;
+            if (_skipElement <= 0) {
+                // If we are not skipping an element, then adjust the
+                // configuration nesting and doc nesting counts accordingly.
+                // This was illustrated by having the RemoveGraphicalClasses
+                // filter remove the SketchedSource from sources.xml,
+                // See test 1.3 in filter/test/RemoveGraphicalClasses.tcl
+                if (_configureNesting > 0 || _docNesting > 0) {
+                    // Inside a configure or doc tag.  First, check to see
+                    // whether this is another configure or doc tag.
+                    // Then simply replicate the element in the current
+                    // character buffer.
+                    if (elementName.equals("configure")) {
+                        // Count configure tags so that they can nest.
+                        _configureNesting++;
+                    } else if (elementName.equals("doc")) {
+                        // Count doc tags so that they can nest.
+                        _docNesting++;
+                    }
+                    _currentCharData.append(_getCurrentElement(elementName));
+                    _attributes.clear();
+                    _attributeNameList.clear();
+                    return;
                 }
-                _currentCharData.append(_getCurrentElement(elementName));
-                _attributes.clear();
-                _attributeNameList.clear();
-                return;
             }
 	    if (_skipRendition) {
 		return;
