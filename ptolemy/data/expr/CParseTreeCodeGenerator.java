@@ -29,8 +29,6 @@
 */
 package ptolemy.data.expr;
 
-import ptolemy.copernicus.kernel.PtolemyUtilities;
-import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.data.expr.ASTPtArrayConstructNode;
 import ptolemy.data.expr.ASTPtBitwiseNode;
 import ptolemy.data.expr.ASTPtFunctionApplicationNode;
