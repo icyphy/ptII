@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE entitylibrary SYSTEM "ptolemyicon.dtd">
+<!DOCTYPE entitylibrary SYSTEM "../../lib/ptml.dtd">
 
 <entitylibrary name="root" version="1.0">
 <description>Entities for use in ptolemy</description>

@@ -74,11 +74,13 @@ test PTMLObjectFactory-2.1 {Constructor tests} {
             {content=}
             {coords=10 10 50 30 10 30 50 10}
             {fill=blue}
+            {color=black}
         }}
         {ptolemy.schematic.util.GraphicElement {ellipse} attributes {
             {content=}
             {fill=yellow}
             {coords=25 15 10 10}
+            {color=black}
         }}
         {ptolemy.schematic.util.GraphicElement {line} attributes {
             {content=}
@@ -97,11 +99,13 @@ test PTMLObjectFactory-2.1 {Constructor tests} {
             {content=}
             {coords=10 10 50 30 10 30 50 10}
             {fill=blue}
+            {color=black}
         }}
         {ptolemy.schematic.util.GraphicElement {ellipse} attributes {
             {content=}
             {fill=yellow}
             {coords=25 15 10 10}
+            {color=black}
         }}
         {ptolemy.schematic.util.GraphicElement {line} attributes {
             {content=}
@@ -156,11 +160,13 @@ test PTMLObjectFactory-2.2 {Constructor tests} {
                 {content=}
                 {coords=10 10 50 30 10 30 50 10}
                 {fill=blue}
+                {color=black}
             }}
             {ptolemy.schematic.util.GraphicElement {ellipse} attributes {
                 {content=}
                 {fill=yellow}
                 {coords=25 15 10 10}
+                {color=black}
             }}
             {ptolemy.schematic.util.GraphicElement {line} attributes {
                 {content=}
@@ -189,11 +195,13 @@ test PTMLObjectFactory-2.2 {Constructor tests} {
                 {content=}
                 {coords=10 10 50 30 10 30 50 10}
                 {fill=blue}
+                {color=black}
             }}
             {ptolemy.schematic.util.GraphicElement {ellipse} attributes {
                 {content=}
                 {fill=yellow}
                 {coords=25 15 10 10}
+                {color=black}
             }}
             {ptolemy.schematic.util.GraphicElement {line} attributes {
                 {content=}
@@ -249,11 +257,13 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
                     {content=}
                     {coords=10 10 50 30 10 30 50 10}
                     {fill=blue}
+                    {color=black}
                 }}
                 {ptolemy.schematic.util.GraphicElement {ellipse} attributes {
                     {content=}
                     {fill=yellow}
                     {coords=25 15 10 10}
+                    {color=black}
                 }}
                 {ptolemy.schematic.util.GraphicElement {line} attributes {
                     {content=}
@@ -298,11 +308,13 @@ test PTMLObjectFactory-2.3 {Constructor tests} {
                     {content=}
                     {coords=10 10 50 30 10 30 50 10}
                     {fill=blue}
+                    {color=black}
                 }}
                 {ptolemy.schematic.util.GraphicElement {ellipse} attributes {
                     {content=}
                     {fill=yellow}
                     {coords=25 15 10 10}
+                    {color=black}
                 }}
                 {ptolemy.schematic.util.GraphicElement {line} attributes {
                     {content=}

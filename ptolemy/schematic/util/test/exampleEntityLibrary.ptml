@@ -1,12 +1,12 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE entitylibrary SYSTEM "ptolemyicon.dtd">
+<!DOCTYPE entitylibrary SYSTEM "../../lib/ptml.dtd">
 
 <entitylibrary name="SDF" version="1.0">
 <description>Entities corresponding to SDF Actors</description>
 
 <entity name="LoadImage" icon=".SDF.LoadImage" terminalstyle=".SDF.1out">
 <description>Load an image from a file</description>
-<parameter name="filename" type="string"/>
+<parameter name="filename" value="test" type="string"/>
 <port name="image" output="true" type="doubleArray"/>
 </entity>
 

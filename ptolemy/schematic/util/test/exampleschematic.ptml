@@ -1,5 +1,5 @@
 <?xml version="1.0" standalone="no"?>
-<!DOCTYPE schematic SYSTEM "ptolemyicon.dtd">
+<!DOCTYPE schematic SYSTEM "../../lib/ptml.dtd">
 
 <schematic name="SDF" version="1.0">
 <description>Icons for use within SDF</description>
