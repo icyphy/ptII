@@ -41,19 +41,33 @@ import java.util.*;
  */
 public class Message extends Frame {
 
-    /** Pop up a text widget with a close button.
+    /** Pop up a text widget with no scroll bar and close button.
      */
     public Message(String msg) {
-        this(msg, null, null);
+        this(msg, null, null, 12, 40, TextArea.SCROLLBARS_NONE);
     }
 
     /** Pop up a text widget with a close button.
+     *  If the background parameter is null, then it is ignored.
+     *  If the foreground parameter is null, then it is ignored.
+     *
+     *  @param msg The message to display.
+     *  @param background The background Color.
+     *  @param foreground The foreground Color.
+     *  @param rows The number of rows to display.
+     *  @param columns The number of columns to display.
+     *  @param int Determines scrollbar visiblity, should be one
+     *  of TextArea.SCROLLBARS_BOTH, TextArea.SCROLLBARS_NONE,
+     *  TextArea.SCROLLBARS_HORIZONTAL_ONLY or
+     *  TextArea.SCROLLBARS_VERTICAL_ONLY.
      */
-    public Message(String msg, Color background, Color foreground) {
+    public Message(String msg, Color background, Color foreground,
+            int rows, int columns, int scrollbars) {
         if (background != null) setBackground(background);
         if (foreground != null) setForeground(foreground);
 
-        _txtarea = new TextArea(msg, 12, 40, TextArea.SCROLLBARS_NONE);
+        _txtarea = new TextArea(msg, rows, columns, scrollbars);
+        
         _txtarea.setEditable(false);
         add("Center", _txtarea);
 
