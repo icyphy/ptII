@@ -98,6 +98,8 @@ public class FiringEvent implements DebugEvent {
 	new FiringEventType("postfire");
     public static FiringEventType POSTPOSTFIRE = 
 	new FiringEventType("postpostfire");
+    public static FiringEventType ITERATE = 
+	new FiringEventType("iterate");
 
     private Actor _actor;
     private NamedObj _director;
