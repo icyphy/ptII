@@ -85,6 +85,9 @@ MISC_FILES =  xsl test data
 OPTIONAL_FILES = \
 	demo
 
+# AUXCLASSPATH
+AUXCLASSPATH = ;../../lib/saxon7.jar
+
 # Command to run the Saxon transformer.
 # Use AUXCLASSPATH in XSL_TRANSFORM so that the code coverage will work
 XSL_TRANSFORM = CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" "$(JAVA)" \
