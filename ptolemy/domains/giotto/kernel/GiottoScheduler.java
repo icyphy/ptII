@@ -174,6 +174,13 @@ public class GiottoScheduler extends Scheduler {
         List actorList = compositeActor.deepEntityList();
         int actorCount = actorList.size();
 
+        if (actorCount < 1) {
+            throw new NotSchedulableException("Could not get schedule, "
+                    + "the number of deeply contained entities for '"
+                    + compositeActor.getFullName() + "' is "
+                    + actorCount + ", which is less than 1");
+        }
+
         int[] frequencyArray = new int[actorCount];
         int[] intervalArray = new int[actorCount];
         int[] iterateArray = new int[actorCount];
@@ -284,6 +291,10 @@ public class GiottoScheduler extends Scheduler {
     private int _lcm(int[] array) {
 
         int count = array.length;
+        if (count < 1) {
+            throw new RuntimeException(
+                    "Length array passed to _lcm() is less than 1?");
+        } 
         int X = array[0];
         int i = 0;
 
