@@ -1,5 +1,5 @@
 #!/bin/sh
-# -[Fri Jan 23 16:18:56 2004 by cxh]-
+# -[Fri Jan 23 16:46:28 2004 by cxh]-
 # Color the coverage file with the appropriate accepted ratings
 
 
@@ -25,7 +25,7 @@ complexityfile=/tmp/coveragerating.complexity
 
 testing=no
 # Uncomment next line if testing
-testing=yes
+# testing=yes
 
 # Create a file that has three records on each line:
 #  1. The filename    
@@ -153,7 +153,16 @@ awk '{
 	    split($3,p,"<")
 	    # Remove the leading .
 	    package=substr(p[1], 2, length(p[1])) 
-	    printf("%s %s <a name=%c%s%c>%s</a></th></TR>\n", $1, $2, 34, package, 34, package)
+	    #printf("%s %s <a name=%c%s%c>%s</a></th></TR>\n", $1, $2, 34, package, 34, package)
+
+	    # Convert the dot separate package name to a / separated name
+	    packageAsDirectory=""
+	    npkg = split(package, pkg, ".") 
+	    for ( i=1; i<=npkg; i++) {
+		packageAsDirectory = packageAsDirectory "/" pkg[i]
+	    }
+
+	    printf("%s %s <a name=%c%s%c>%s</a> <a href=%chttp://chess.eecs.berkeley.edu/ptolemy/reviews%s/%c>Reviews</a></th></TR>\n", $1, $2, 34, package, 34, package, 34, packageAsDirectory, 34)
 	} else {
 	    if ( $0 ~ /<TR><th align="center">/) {
 		if ($0 !~ /TOTAL/) {
@@ -273,7 +282,7 @@ awk ' BEGIN {
 	print "<title> @tree@ Coverage Summary</title>"
 	print "</head><body>"
 	print "<h1>&nbsp;&nbsp;Package Coverage</h1>"
-	print "File names in <i>italic</i> are files that are ready for"
+	print "&nbsp;&nbsp;File names in <i>italic</i> are files that are ready for"
 	print "<href=\"http://chess.eecs.berkeley.edu/ptolemy/reviews/index.htm\" target=\"_top\">review</a>"
 	print "because the <code>@AcceptedRating</code> and the"
 	print "<code>@ProposedRating</code> are different."
