@@ -60,6 +60,7 @@ PTCLASSALLJARS = \
 	OrthogonalCom/OrthogonalCom.jar \
 	Sketch/Sketch.jar \
 	Spectrum/Spectrum.jar \
+	SoundSpectrum/SoundSpectrum.jar \
 	Type/Type.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
