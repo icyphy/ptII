@@ -58,6 +58,9 @@ JSRCS = \
 	BitsToInt.java \
 	Delay.java \
 	FIR.java \
+	FIRToken.java \
+	FFT.java \
+	ScaleXY.java \
 	IntToBits.java\
 	LineCoder.java \
 	RaisedCosine.java \
