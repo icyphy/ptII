@@ -53,7 +53,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-		event/event.jar \
 		util/util.jar
 
 PTCLASSALLJAR = kernel.jar
