@@ -49,7 +49,7 @@ MISC_FILES =	#usersGuides #codeDoc #internals
 REALCLEAN_STUFF =
 
 # Sub directories to run make in.
-DIRS =		#usersGuides #internals
+DIRS =		 internals #usersGuides
 
 ALLJSRCS = 	pn/*/*.java tcl/*.java tycho/*.java \
 			tycho/Cool_Beans/util/*.java \
