@@ -31,31 +31,68 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.math;
 
-import java.lang.*;
 import java.math.BigInteger;
 import java.math.BigDecimal;
-import ptolemy.math.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// Quantizer
+
 /**
- *
- * @author Bart Kienhuis
- * @version $Id$
- */
+   
+To create an instance of a FixPoint, one has to use a Quantizer. In
+this class, different quantization methods are provided. These methods
+convert for example a double value or integer value into a Fixpoint
+value.
+
+<p>
+
+Currently the following Quantizers exist:
+
+<ol> 
+
+<li> <b>Round</b>: Return a Fixvalue that is nearest to the value that
+can be presented with the given precision, possibly introducing
+quantization errors.
+
+<li> <b>Truncate</b>: Return a Fixvalue that is the nearest value
+towards zero that can be presented with the given precision, possibly
+introducing quantization errors.
+
+</ol>
+
+In case a value is given that falls outside the range of values that
+can be achieved with the given precision, the value is set to the
+maximum or depending on the sign of the value to the minimum value
+possible with the precision. Also, the Overflow flag is set to
+indicate that an overflow occured for the FixPoint value.
+   
+@author Bart Kienhuis
+@version $Id$
+@see FixPoint
+@see Precision
+*/
 
 public class Quantizer {
+
+    // The only constructor is private so that this class cannot
+    // be instantiated.
+    private Quantizer() {}
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-       Return a Fixvalue for the value and precision given. The value is
-       rounded to the nearest value that can be presented with the given
-       precision, possibly introducing quantization errors.
-       @param value The value for which to create a Fixpoint
-       @param precision The precision of the Fixpoint
-       @return A Fixvalue for the value with a given precision
+    /** Return a Fixvalue that is nearest to the value that can be
+        presented with the given precision, possibly introducing
+        quantization errors. If the value does not fix within the
+        range possible with the preciosn, and overflow error
+        occurs. In that case, the Fixpoint is set depending on the
+        sign of the value to either the maximum or minimum value
+        possible with the given precision. Also a flag is set for the
+        Fixpoint to indicate that an overflow error took place.
+
+        @param value The value for which to create a Fixpoint
+        @param precision The precision of the Fixpoint
+        @return A Fixvalue for the value with a given precision
     */
     public static FixPoint round(double value, Precision precision) {
 
@@ -109,13 +146,18 @@ public class Quantizer {
     }
 
 
-    /**
-       Return a Fixvalue for the value and precision given. The value is
-       rounded to the nearest value that can be presented with the given
-       precision, possibly introducing quantization errors.
-       @param value The value for which to create a Fixpoint
-       @param precision The precision of the Fixpoint
-       @return A Fixvalue for the value with a given precision
+    /** Return a Fixvalue that is the nearest value towards zero that
+        can be presented with the given precision, possibly
+        introducing quantization errors. If the value does not fix
+        within the range possible with the preciosn, and overflow
+        error occurs. In that case, the Fixpoint is set depending on
+        the sign of the value to either the maximum or minimum value
+        possible with the given precision. Also a flag is set for the
+        Fixpoint to indicate that an overflow error took place.
+
+        @param value The value for which to create a Fixpoint
+        @param precision The precision of the Fixpoint 
+        @return A Fixvalue for the value with a given precision
     */
     public static FixPoint truncate(double value, Precision precision) {
 
@@ -153,7 +195,7 @@ public class Quantizer {
             // number bringing the number closer
             // to the x = y line.
             for(i = 5; i < 10; i++) {
-             resolution += Math.pow(2, -(number+i));
+                resolution += Math.pow(2, -(number+i));
             }
             multiplier = new BigDecimal( x + resolution );
         } else {
@@ -175,7 +217,7 @@ public class Quantizer {
         FixPoint fxp = new FixPoint( precision, fxvalue );
 
         if ( overflow ) {
-            fxp.setError( OVERFLOW );
+            fxp.setError( FixPoint.OVERFLOW );
         }
         return fxp;
     }

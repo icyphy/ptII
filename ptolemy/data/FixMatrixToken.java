@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red
-@AcceptedRating Red
+@ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
+@AcceptedRating Red (kienhuis@eecs.berkeley.edu)
 */
 
 package ptolemy.data;
@@ -49,10 +49,13 @@ operations are added to the math package.
 @version $Id$
 @see ptolemy.math.FixPoint
 */
+
 public class FixMatrixToken extends MatrixToken {
 
-    /** Construct an FixMatrixToken with a one by one array. The only
-     *  element in the array has value 0.0
+    /** Construct a FixMatrixToken with a one by one array. The only
+     *  element present in the array has value 0.0 and a precision of
+     *  (32.0) which means 32 bits of which 0 bits are used for the
+     *  fractional part.
      */
     public FixMatrixToken() {
 	_rowCount = 1;
@@ -66,6 +69,7 @@ public class FixMatrixToken extends MatrixToken {
      *  This method makes a copy of the array and stores the copy,
      *  so changes on the specified array after this token is
      *  constructed will not affect the content of this token.
+     *  @param value the 2D array of FixPoint values.
      *  @exception NullPointerException If the specified array
      *   is null.
      */
@@ -323,9 +327,10 @@ public class FixMatrixToken extends MatrixToken {
     }
 
     /** Return a new Token representing the left multiplicative
-     *  identity. The returned token contains an identity matrix
-     *  whose dimension is the same as the number of rows of
-     *  the matrix contained in this token.
+     *  identity with the same precision as the current
+     *  FixMatrixToken. The returned token contains an identity matrix
+     *  whose dimension is the same as the number of rows of the
+     *  matrix contained in this token.  
      *  @return A new Token containing the left multiplicative identity.
      */
     public Token one() {
@@ -340,9 +345,10 @@ public class FixMatrixToken extends MatrixToken {
     }
 
     /** Return a new Token representing the right multiplicative
-     *  identity. The returned token contains an identity matrix
-     *  whose dimension is the same as the number of columns of
-     *  the matrix contained in this token.
+     *  identity with the same precision as the current
+     *  FixMatrixToken.. The returned token contains an identity
+     *  matrix whose dimension is the same as the number of columns of
+     *  the matrix contained in this token.  
      *  @return A new Token containing the right multiplicative identity.
      */
     public Token oneRight() {
@@ -356,10 +362,11 @@ public class FixMatrixToken extends MatrixToken {
 	return new FixMatrixToken(result);
     }
 
-    /** Return a new Token representing the additive identity.
-     *  The returned token contains a matrix whose elements are
-     *  all zero, and the size of the matrix is the same as the
-     *  matrix contained in this token.
+    /** Return a new Token representing the additive identity with the
+     *  same precision as the current FixMatrixToken.  The returned
+     *  token contains a matrix whose elements are all zero, and the
+     *  size of the matrix is the same as the matrix contained in this
+     *  token.  
      *  @return A new Token containing the additive identity.
      */
     public Token zero() {
@@ -375,8 +382,16 @@ public class FixMatrixToken extends MatrixToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** The 2D array of FixPoints */
     private FixPoint[][] _value = null;
+
+    /** The precision of all entries in the FixPoint array. */
     private Precision _precision = null;
+
+    /** The number of rows of the matrix. */
     private int _rowCount = 0;
+    
+    /** The number of column of the matrix. */
     private int _columnCount = 0;
 }

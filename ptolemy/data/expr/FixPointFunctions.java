@@ -1,5 +1,5 @@
-/* Class providing additional FixPoint functions to ptolemyII expression
-language.
+/* Class providing additional FixPoint functions for PtolemyII
+expression language.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -25,7 +25,7 @@ language.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (kienhuis@eecs.berkeley.edu)
+@ProposedRating Yellow (kienhuis@eecs.berkeley.edu)
 @AcceptedRating Red (kienhuis@eecs.berkeley.edu)
 
 */
@@ -41,11 +41,19 @@ import ptolemy.math.Quantizer;  // For javadoc
 //////////////////////////////////////////////////////////////////////////
 //// FixPointFunctions
 
-/** Class providing additional functions for fix point number to
-ptolemyII expression language. The added functionality is
-<ul>
-<li> Creating a fix point token
-        <p><pre>fix(5.34, 10, 2)</pre><p>
+/** 
+
+This class provides additional functions for operating on Fixpoint
+numbers in the PtolemyII expression language. This class provides
+functions that work on both FixTokens and FixMatrixTokens. 
+
+<p>
+
+The added functionality is
+
+<ul> 
+
+<li> Creating a fix point token <p><pre>fix(5.34, 10, 2)</pre><p>
 
 <li> Creating a matrix of fix point tokens
         <p><pre>fix([ -.040609, -.001628, .17853, .37665, .37665,
@@ -61,11 +69,13 @@ ptolemyII expression language. The added functionality is
 @see PtParser
 @see ptolemy.data.FixToken
 @see ptolemy.math.Quantizer
-
 */
 
 public class FixPointFunctions {
 
+    // The only constructor is private so that this class cannot
+    // be instantiated.
+    private FixPointFunctions() {}
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -92,7 +102,6 @@ public class FixPointFunctions {
 
 
     /**
-
         Create a Token with a fix point value of double with a given
         precision. This function is used by the expression parser to
         create a FixToken. A FixToken is created as
@@ -137,7 +146,8 @@ public class FixPointFunctions {
     }
 
     /** Create a matrix of double values that are quantized to a given
-        precision. This function is used by the expression parser to
+        precision using the <i>Round</i> quantizer of class
+        Quantizer. This function is used by the expression parser to
         create a matrix of quantized doubles. The matrix of quantized
         doubles is created as
 
@@ -150,6 +160,7 @@ public class FixPointFunctions {
         @param values The matrix with quantized double values.
         @param numberOfBits The total number of bits.
         @param integerBits The number of bits used for the integer part.
+        @see ptolemy.math.Quantizer
     */
     public static Token quantize(DoubleMatrixToken values, int numberOfBits,
             int integerBits) {
@@ -162,6 +173,5 @@ public class FixPointFunctions {
         }
         return new DoubleMatrixToken(fxa);
     }
-
 
 }

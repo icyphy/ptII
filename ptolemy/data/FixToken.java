@@ -14,7 +14,7 @@
  THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
  SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCL5AIMS ANY WARRANTIES,
  INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
  MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
@@ -49,8 +49,8 @@ A token that contains a FixPoint.
 @see ptolemy.math.Precision
 @see ptolemy.math.Quantizer
 @version $Id$
-
 */
+
 public class FixToken extends ScalarToken {
 
     /** Construct a FixToken with for the supplied FixPoint value
@@ -61,34 +61,47 @@ public class FixToken extends ScalarToken {
     }
 
     /** Construct a FixToken with a value given as a String and a
-     *  precision given as a String. Since FixToken has a finite
-     *  number uses a finite number of bits to represent a value the
-     *  supplied value is rounded to the nearest value possible given the
-     *  precision, thereby introducing quantization errors.
-     *  @param pre the precision of the FixToken.
-     *  @param value the value of the FixToken.
-     *  @exception IllegalArgumentException If the format of the precision
-     *  string is incorrect
+     *  precision given as a String. Since FixToken uses a finite
+     *  number of bits to represent a value, quantization errors may
+     *  occur. This constructor uses the <i>Round</i> quantization
+     *  method of class Quantizer, which means that a FixToken is
+     *  produced which value is nearest to the value that can be
+     *  presented with the given precision.
+     *
+     *  @param value the value that needs to be converted into a FixToken
+     *  @param precision the precision of the FixToken.  
+     *  @exception IllegalArgumentException If the format of the 
+     *  precision string is incorrect 
+     *  @see ptolemy.math.Quantizer
      */
-    public FixToken(double value, String pre)
+    public FixToken(double value, String precision)
             throws IllegalArgumentException {
         try {
-            Precision precision = new Precision( pre );
-            _value = Quantizer.round(value, precision);
+            Precision precisionObject = new Precision( precision );
+            _value = Quantizer.round(value, precisionObject);
         } catch (NumberFormatException e) {
             throw new IllegalArgumentException(e.getMessage());
         }
     }
 
-    /** Construct a FixToken with a value given as a String and a
-     *  precision given as a String. Since FixToken has a finite
-     *  number uses a finite number of bits to represent a value, the
-     *  supplied value is rounded to the nearest value possible given
-     *  the precision, thereby introducing quantization errors.
-     *  @param precision String giving the precision of the FixToken
-     *  @param value Double value of the FixToken
-     *  @exception IllegalArgumentException If the format of the
-     *  precision string is incorrect 
+    /** Construct a FixToken for a specific value with the precision
+     *  given in the total number of bits available and the number of
+     *  bits available for the integer part. Since FixToken uses a
+     *  finite number of bits to represent a value, quantization
+     *  errors may occur. This constructor uses the <i>Round</i>
+     *  quantization method of class Quantizer, which means that a
+     *  FixToken is produced which value is nearest to the value that
+     *  can be presented with the given precision.
+     *
+     *  @param value the value that needs to be converted into a
+     *  FixToken
+     *  @param numberOfBits total number of bits available for the
+     *  FixToken.
+     *  @param integerBits the number of integer bits available for
+     *  the FixToken.  
+     *  @exception IllegalArgumentException If the supplied precision
+     *  is incorrect.
+     *  @see ptolemy.math.Quantizer
      */
     public FixToken(double value, int numberOfBits, int integerBits)
             throws IllegalArgumentException {
@@ -106,7 +119,7 @@ public class FixToken extends ScalarToken {
 
     /** Return a FixToken containing the absolute value of the
      *  value of this token.
-     *  @return An FixToken.
+     *  @return a FixToken.
      */
     public ScalarToken absolute() {
 	return new FixToken(_value.absolute());
@@ -167,6 +180,15 @@ public class FixToken extends ScalarToken {
         return add(token);
     }
 
+    /** Return the fix point value of this token as a double. The
+     *  conversion from a fix point to a double is not lossless, and
+     *  the doubleValue() cannot be used. Therefore an explicit lossy
+     *  conversion method is provided,
+     *  @return A double.
+     */
+    public double convertToDouble() {
+        return _value.doubleValue();
+    }
 
     /** Return a new Token whose value is the value of this token
      *  divided by the value of the argument token. The type of the
@@ -228,18 +250,7 @@ public class FixToken extends ScalarToken {
      *  @return A Fixpoint
      */
     public FixPoint fixValue() {
-        // FixToken is immutable, so we can just return the value.
         return _value;
-    }
-
-    /** Return the fix point value of this token as a double. The
-     *  conversion from a fix point to a double is not lossless, and
-     *  the doubleValue() cannot be used. Therefore an explicit lossy
-     *  conversion method is provided,
-     *  @return A double.
-     */
-    public double convertToDouble() {
-        return _value.doubleValue();
     }
 
     /** Return the type of this token.
@@ -386,17 +397,20 @@ public class FixToken extends ScalarToken {
      *  mode selected. The following quantization modes are supported
      *  in case an overflow occurs.
      *
-     *  <ul>
-     *  <li> mode = 0, <b>Saturate</b>: The fix point value is set,
-     *  depending on its sign, equal to the Max or Min value possible
-     *  with the new given precision.
-     *  <li> mode = 1, <b>Zero Saturate</b>: The fix point value is
-     *  set equal to zero.
-     *  </ul>
+     *  <ul> 
      *
-     *  @param newprecision The new precision of the Fixpoint.
-     *  @param mode The mode of quantization.
-     *  @return A new Fixpoint with the given precision.
+     * <li> mode = 0, <b>Saturate</b>: The fix point value is set,
+     * depending on its sign, equal to the Maximum or Minimum value
+     * possible with the new given precision.  
+     *
+     * <li> mode = 1, <b>Zero Saturate</b>: The fix point value is set
+     * equal to zero.  
+     *
+     * </ul>
+     *
+     * @param newprecision The new precision of the Fixpoint.
+     * @param mode The oveflow mode.
+     * @return A new Fixpoint with the given precision.
      */
     public FixToken scaleToPrecision(Precision newprecision, int mode ) {
         return new FixToken( _value.scaleToPrecision(newprecision, mode) );
@@ -488,6 +502,8 @@ public class FixToken extends ScalarToken {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** The FixPoint value contained in this FixToken. */
     private FixPoint _value;
 
 }

@@ -35,13 +35,17 @@ import ptolemy.kernel.util.IllegalActionException;
 import java.text.NumberFormat;
 import java.util.StringTokenizer;
 
-/**
+/** 
+
 This class describes the precision of a Fixpoint. A Fixpoint consists
 of two finite bit strings; an integer part and a fractional part. The
 total length of the FixPoint is determined by the combined length of
-the integer part and the fractional part.  <p>
+the integer part and the fractional part. The precision determines the
+length of the integer and fractional part of a Fixpoint using either a
+particular string representation, or by supping a particular length
+for the integer and fractional part. <p>
 
-The precision of a Fixpoint can be noted in different ways
+The precision of a Fixpoint can be noted using different string formats
 
 <ul>
 
@@ -61,54 +65,53 @@ equivalent to saying that the the total number of bits available is
 </ul>
 
 In describing the precision, one can place optionally brackets around
-the precision description. Thus "(16/4)" and "16/4" are the same.
+the precision description. Thus "(16/4)" and "16/4" represent the same
+precision.
 
 
 @author Bart Kienhuis
-@version $Id$ */
+@version $Id$ 
+@see FixPoint
+*/
 
 public class Precision {
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
 
     /**
        Construct a Precision object based on the provided string. The
        string can described the precision in three different modes
        namely; (m/n), (m.n), or (m^e) as explained in the description
        of this class.
-       @param n The string representing the precision.
-       @exception IllegalArgumentException If the string supplied is
-       incorrect.  */
-    public Precision(String n) throws IllegalArgumentException
+       @param precision The string representing the precision.       
+       @exception IllegalArgumentException If the precision string
+       supplied does not match one of the known formats.  */
+    public Precision(String precision) throws IllegalArgumentException
     {
-
 	// Check which format is used
 	boolean done = false;
 	int type = 0;
-	StringTokenizer st = new StringTokenizer(n);
-	if ( n.indexOf('/', 0) != -1 ) {
+	StringTokenizer st = new StringTokenizer(precision);
+	if ( precision.indexOf('/', 0) != -1 ) {
 	    done = true;
 	    type = 1;
-	    st = new StringTokenizer(n,"/()\"");
+	    st = new StringTokenizer(precision,"/()\"");
 	}
-	if ( n.indexOf('.', 0) != -1 ) {
+	if ( precision.indexOf('.', 0) != -1 ) {
 	    done = true;
 	    type = 2;
-	    st = new StringTokenizer(n,".()\"");
+	    st = new StringTokenizer(precision,".()\"");
 	}
-	if ( n.indexOf('^', 0) != -1 ) {
+	if ( precision.indexOf('^', 0) != -1 ) {
 	    done = true;
 	    type = 3;
-	    st = new StringTokenizer(n,"^()\"");
+	    st = new StringTokenizer(precision,"^()\"");
 	}
 
 	// throw an exception
 	if (( done == false ) || ( st.countTokens() <1) ||
 	    (st.countTokens() > 2 )) {
-	    throw new IllegalArgumentException("The precision string " + n
-					     + " uses an incorrect " +
-					     "precision format" );
+	    throw new IllegalArgumentException("The precision string " + 
+                    precision + " uses an incorrect " +
+                    "precision format" );
 	}
 
         int  first = 0;
@@ -127,21 +130,21 @@ public class Precision {
 	// Depending on the type, interpret the two values
 	if ( type == 1 ) {
 	    _length = first;
-	    _intBits = second;
+	    _integerBits = second;
 	}
 
 	if ( type == 2 ) {
 	    _length = first + second;
-	    _intBits = first;
+	    _integerBits = first;
 	}
 
 	if ( type == 3 ) {
 	    _length = second;
-	    _intBits = first;
+	    _integerBits = first;
 	}
-	_fraction = _length - _intBits;
+	_fraction = _length - _integerBits;
 
-	if (_length <= 0 || _intBits < 0 || _intBits > _length) {
+	if (_length <= 0 || _integerBits < 0 || _integerBits > _length) {
 	    throw new IllegalArgumentException("Incorrect definition of " +
                     "Precision. Do not use negative values or have an " +
                     "integer part larger than the total length ");
@@ -150,26 +153,30 @@ public class Precision {
     }
 
     /** Construct a Precision object based on the provided
-        numbers. The number define the precision in the (m/n)
+        numbers. These number define the precision in the (m/n)
         format. Thus the precision is given by the total number of
         bits used (m) and the number of bits used to represent the
-        integer part (n).
+        integer part (n).  
         @param length The total number of bits.
-        @param intBits Total number of integer bits.
-        @exception IllegalArgumentException If the string supplied is
-        incorrect.
+        @param integerBits Total number of integer bits.          
+        @exception IllegalArgumentException If the given values are
+        negative or when the integer number of bits is larger than the
+        total number of bits.
     */
-    public Precision(int length, int intBits)
+    public Precision(int length, int integerBits)
             throws IllegalArgumentException {
-	if (length <= 0 || intBits < 0 || intBits > length) {
+	if (length <= 0 || integerBits < 0 || integerBits > length) {
 	    throw new IllegalArgumentException("Incorrect definition of " +
                     "Precision. Do not use negative values or have an " +
                     "integer part larger than the total length ");
 	}
 	_length   = length;
-	_intBits  = intBits;
-	_fraction = length - intBits;
+	_integerBits  = integerBits;
+	_fraction = length - integerBits;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the number of bit representing the
         fractional part of a Fixpoint
@@ -179,12 +186,12 @@ public class Precision {
 	return _fraction;
     }
 
-    /** Return the number of bit representing the
+    /** Return the number of bits representing the
         integer part of a Fixpoint
 	@return length of Integer part.
     */
     public int getIntegerBitLength() {
-	return _intBits;
+	return _integerBits;
     }
     /** Return the total number of bits representing a Fixpoint
 	@return Total number of bits.
@@ -201,11 +208,13 @@ public class Precision {
 	return this;
     }
 
-    /** Return the precision that is the maximum precision of the two
-        supplied precision in both the integer and fractional part.
-	@param precisionA a Precision
-	@param precisionB a Precision
-	@return Maximum Precision
+    /** Return the precision that is the maximum of the two supplied
+        precision in both the integer and fractional part. This method
+        is used to allign Fixpoints onto a single precision
+        representation.  
+        @param precisionA a Precision 
+        @param precisionB a Precision 
+        @return Maximum Precision
     */
     public Precision matchThePoint(Precision precisionA,
 				   Precision precisionB)
@@ -217,18 +226,22 @@ public class Precision {
 	int newLength  = newIntLength+bitright;
 	return new Precision(newLength, newIntLength);
     }
+
     /** Return a string representing the Precision. The string is
-	expressed using the <i>m/n</i> notation, where <i>m</i>
-	indicates the total number of bits used to represent a
-	Fixpoint and <i>n</i> the number of bits used to represent the
-	integer part of a Fixpoint.
-	@return string representing the Precision */
+	expressed using the <i>m.n</i> notation, where <i>m</i>
+	indicates the number of bits used to represent the integer
+	part and <i>n</i> represents the fractional part of a Fixpoint.
+        @return string representing the Precision
+    */
     public String toString() {
-	String x = "(" + _intBits + "." + (_length - _intBits) + ")";
+	String x = "(" + _integerBits + "." + (_length - _integerBits) + ")";
 	return x;
     }
 
-    /** Returns the maximal obtainable value for the given precision
+    /** Returns the maximal obtainable value for the given
+        precision. When <i>m</i> represents the total number of bits
+        and <i>n</i> the number of integer bits, this is equal to<p>
+        <pre> 2^(n-1) - 1/(2^(m-n) </pre> 
         @return The maximal value obtainable for the given precision
     */
     public double findMax() {
@@ -238,7 +251,10 @@ public class Precision {
         return tmp;
     }
 
-    /** Returns the minimal obtainable value for the given precision
+    /** Returns the minimal obtainable value for the given
+        precision. When <i>m</i> represents the total number of bits
+        and <i>n</i> the number of integer bits, this is equal to<p>
+        <pre> -2^(n-1) </pre> 
         @return The minimal value obtainable for the given precision
     */
     public double findMin() {
@@ -249,8 +265,14 @@ public class Precision {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /** total numer of bits. */
     private int _length   = 0;
-    private int _intBits  = 0;
+    
+    /** number of bits in the integer part. */
+    private int _integerBits  = 0;
+
+    /** number of bits in the fractional part. */
     private int _fraction = 0;
 
 }
