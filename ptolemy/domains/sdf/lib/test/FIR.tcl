@@ -110,13 +110,6 @@ test FIR-2.1 {Test FIR type exeception} {
     list $containsException $containsFIRclone $containsRecInput
 } {1 1 1}
 
-    list $msg
-} {{ptolemy.actor.TypeConflictException: Type conflicts occurred in .top on the following Typeables:
-  .top.FIRclone.output: scalar
-  .top.rec.input: scalar
-}}
-
-
 test FIR-3.1 {Test FIR for FIX datatype} {
     set e0 [sdfModel 10 ]
     set pulse [java::new ptolemy.actor.lib.Pulse $e0 pulse]
