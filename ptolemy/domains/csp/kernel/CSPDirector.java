@@ -35,6 +35,7 @@ import java.util.List;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TimedDirector;
 import ptolemy.actor.process.CompositeProcessDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -109,7 +110,8 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Green (kienhuis)
    @see ptolemy.actor.Director
 */
-public class CSPDirector extends CompositeProcessDirector {
+public class CSPDirector extends CompositeProcessDirector 
+    implements TimedDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in

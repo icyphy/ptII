@@ -374,6 +374,8 @@ public class Director extends Attribute implements Executable {
      *  @return The time resolution of the model.
      */
     public double getTimeResolution() {
+        // FIXME: should the different hierarchy levels have the same
+        // time resolution parameter, or that of the top level? 
         return _timeResolution;
     }
 

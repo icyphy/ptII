@@ -40,6 +40,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TimedDirector;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.sched.Firing;
 import ptolemy.actor.sched.Schedule;
@@ -86,7 +87,8 @@ import ptolemy.math.Utilities;
    @see GiottoScheduler
    @see GiottoReceiver
 */
-public class GiottoDirector extends StaticSchedulingDirector {
+public class GiottoDirector extends StaticSchedulingDirector 
+    implements TimedDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in

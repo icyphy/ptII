@@ -30,6 +30,7 @@
 package ptolemy.domains.pn.kernel;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.kernel.CompositeEntity;
@@ -99,7 +100,8 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Green (mudit)
    @Pt.AcceptedRating Green (davisj)
 */
-public class TimedPNDirector extends PNDirector {
+public class TimedPNDirector extends PNDirector 
+    implements TimedDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in

@@ -38,6 +38,7 @@ import java.util.LinkedList;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TimedDirector;
 import ptolemy.actor.process.CompositeProcessDirector;
 import ptolemy.actor.process.ProcessDirector;
 import ptolemy.actor.process.ProcessReceiver;
@@ -113,7 +114,8 @@ import ptolemy.kernel.util.Workspace;
    @see ptolemy.domains.dde.kernel.FeedBackDelay
    @see ptolemy.domains.dde.kernel.NullToken
 */
-public class DDEDirector extends CompositeProcessDirector {
+public class DDEDirector extends CompositeProcessDirector 
+    implements TimedDirector {
 
     /** Construct a DDEDirector in the default workspace with
      *  an empty string as its name. The director is added to

@@ -36,6 +36,7 @@ import java.util.Set;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TimedDirector;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -132,7 +133,8 @@ import ptolemy.math.Utilities;
    @Pt.AcceptedRating Green (chf)
    @see ptolemy.actor.Director
 */
-public abstract class CTDirector extends StaticSchedulingDirector {
+public abstract class CTDirector extends StaticSchedulingDirector 
+    implements TimedDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in

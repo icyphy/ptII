@@ -42,6 +42,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.FunctionDependency;
 import ptolemy.actor.util.FunctionDependencyOfCompositeActor;
 import ptolemy.data.BooleanToken;
@@ -199,7 +200,8 @@ import ptolemy.math.Utilities;
    @see DEReceiver
    @see ptolemy.actor.util.CalendarQueue
 */
-public class DEDirector extends Director {
+public class DEDirector extends Director 
+    implements TimedDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in

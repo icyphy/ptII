@@ -39,6 +39,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.TimedDirector;
 import ptolemy.actor.util.CalendarQueue;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -134,7 +135,8 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating Yellow (janneck)
    @see ptolemy.domains.de.kernel.DEEvent
 */
-public class TMDirector extends Director {
+public class TMDirector extends Director 
+    implements TimedDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
