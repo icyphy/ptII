@@ -61,7 +61,6 @@ import ptolemy.kernel.ComponentRelation;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.Prototype;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.undo.UndoStackAttribute;
@@ -70,8 +69,6 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Instantiable;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -130,7 +127,7 @@ import com.microstar.xml.XmlParser;
    <p>
    The parse() methods can be used for incremental parsing.  After
    creating an initial model using a call to parse(), further MoML
-   fragments without top-level entity or inherited objects can be evaluated
+   fragments without top-level entity or derived objects can be evaluated
    to modify the model.  You can specify the context in which the
    MoML to be interpreted by calling setContext().  However, the
    XML parser limits each fragment to one element.  So there always has
@@ -664,14 +661,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 Iterator depths
                     = depthList.iterator();
                 while (heritage.hasNext()) {
-                    Configurable inherited
+                    Configurable derived
                         = (Configurable)heritage.next();
                     int depth = ((Integer)depths.next()).intValue();
-                    inherited.configure(
+                    derived.configure(
                             _base, _configureSource, _currentCharData.toString());
                     // The above sets the modified field, which
                     // need to revise because we are propagating.
-                    ((NamedObj)inherited).setOverrideDepth(depth);
+                    ((NamedObj)derived).setOverrideDepth(depth);
                 }
 
             } catch (NoClassDefFoundError e) {
@@ -714,13 +711,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             = depthList.iterator();
                         while (heritage.hasNext()) {
                             int depth = ((Integer)depths.next()).intValue();
-                            Documentation inherited
+                            Documentation derived
                                 = (Documentation)heritage.next();
-                            inherited.setExpression(
+                            derived.setExpression(
                                     _currentCharData.toString());
                             // The above sets the modified field, which
                             // need to reverse because we are propagating.
-                            inherited.setOverrideDepth(depth);
+                            derived.setOverrideDepth(depth);
                         }
                     } else {
                         Documentation doc
@@ -736,9 +733,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             = depthList.iterator();
                         while (heritage.hasNext()) {
                             int depth = ((Integer)depths.next()).intValue();
-                            NamedObj inherited = (NamedObj)heritage.next();
+                            NamedObj derived = (NamedObj)heritage.next();
                             Documentation newDoc = new Documentation(
-                                    inherited, _currentDocName);
+                                    derived, _currentDocName);
                             newDoc.setValue(_currentCharData.toString());
                             // The above sets the modified field true, which
                             // need to reverse because we are propagating.
@@ -754,9 +751,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         Iterator heritage
                             = previous.getShadowedDerivedList(null).iterator();
                         while (heritage.hasNext()) {
-                            Documentation inherited
+                            Documentation derived
                                 = (Documentation)heritage.next();
-                            inherited.setContainer(null);
+                            derived.setContainer(null);
                         }
 
                         previous.setContainer(null);
@@ -2135,12 +2132,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     List heritageList = container.getDerivedList();
                     Iterator heritage = heritageList.iterator();
                     while (heritage.hasNext()) {
-                        Entity inherited = (Entity)heritage.next();
-                        if (inherited.getPort(portName) != null) {
+                        Entity derived = (Entity)heritage.next();
+                        if (derived.getPort(portName) != null) {
                             throw new IllegalActionException(container,
                                     "Cannot create port because a subclass or instance "
                                     + "contains a port with the same name: "
-                                    + inherited.getPort(portName).getFullName());
+                                    + derived.getPort(portName).getFullName());
                         }
                     }
 
@@ -2152,8 +2149,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // Propagate to instances and derived classes.
                         heritage = heritageList.iterator();
                         while (heritage.hasNext()) {
-                            Entity inherited = (Entity)heritage.next();
-                            Port newPort = inherited.newPort(portName);
+                            Entity derived = (Entity)heritage.next();
+                            Port newPort = derived.newPort(portName);
                             newPort.setDerived(true);
                         }
                     } else {
@@ -2166,9 +2163,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // Propagate to instances and derived classes.
                         heritage = heritageList.iterator();
                         while (heritage.hasNext()) {
-                            Entity inherited = (Entity)heritage.next();
+                            Entity derived = (Entity)heritage.next();
                             // Invoke the constructor.
-                            arguments[0] = inherited;
+                            arguments[0] = derived;
                             NamedObj propagatedPort
                                 = _createInstance(newClass, arguments);
                             propagatedPort.setDerived(true);
@@ -2208,9 +2205,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
 
                 // NOTE: The direction attribute is deprecated, but
-                // supported nonetheless. This is not propagated, but
-                // hopefully deprecated attributes are not used with
-                // the class mechanism.
+                // supported nonetheless.
                 if (port instanceof IOPort) {
                     String direction = (String)_attributes.get("direction");
                     if (direction != null) {
@@ -2219,7 +2214,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                             || direction.equals("both");
                         boolean isInput = direction.equals("input")
                             || direction.equals("both");
-                        // If this object is an inherited object, then its I/O status
+                        // If this object is a derived object, then its I/O status
                         // cannot be changed.  EAL 1/04.
                         if (alreadyExisted
                                 &&  ioport.isDerived()) {
@@ -2277,12 +2272,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     List heritageList = container.getDerivedList();
                     Iterator heritage = heritageList.iterator();
                     while (heritage.hasNext()) {
-                        CompositeEntity inherited = (CompositeEntity)heritage.next();
-                        if (inherited.getRelation(relationName) != null) {
+                        CompositeEntity derived = (CompositeEntity)heritage.next();
+                        if (derived.getRelation(relationName) != null) {
                             throw new IllegalActionException(container,
                                     "Cannot create relation because a subclass or instance "
                                     + "contains a relation with the same name: "
-                                    + inherited.getRelation(relationName).getFullName());
+                                    + derived.getRelation(relationName).getFullName());
                         }
                     }
 
@@ -2295,9 +2290,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // Propagate to instances and derived classes.
                         heritage = heritageList.iterator();
                         while (heritage.hasNext()) {
-                            CompositeEntity inherited = (CompositeEntity)heritage.next();
+                            CompositeEntity derived = (CompositeEntity)heritage.next();
                             Relation propagatedRelation
-                                = inherited.newRelation(relationName);
+                                = derived.newRelation(relationName);
                             propagatedRelation.setDerived(true);
                         }
                     } else {
@@ -2309,9 +2304,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // Propagate to instances and derived classes.
                         heritage = heritageList.iterator();
                         while (heritage.hasNext()) {
-                            CompositeEntity inherited = (CompositeEntity)heritage.next();
+                            CompositeEntity derived = (CompositeEntity)heritage.next();
                             // Invoke the constructor.
-                            arguments[0] = inherited;
+                            arguments[0] = derived;
                             NamedObj propagatedRelation
                                 = _createInstance(newClass, arguments);
                             propagatedRelation.setDerived(true);
@@ -2371,8 +2366,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 if (_current != null) {
                     String oldName = _current.getName();
 
-                    // NOTE: Added to ensure that inherited objects aren't changed.
-                    // EAL 1/04.
+                    // Ensure that derived objects aren't changed.
                     if (!oldName.equals(newName)
                             && _current.isDerived()) {
                         throw new IllegalActionException(_current,
@@ -2380,83 +2374,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                                 + newName
                                 + ". The name is fixed by the class definition.");
                     }
-                    // Propagate.  Note that a rename in a derived class
-                    // could cause a NameDuplicationException.  We have to
-                    // be able to unroll the changes if that occurs.
-                    Iterator heritage = _current.getDerivedList().iterator();
-                    Set changedName = new HashSet();
-                    HashMap changedClassName = new HashMap();
-                    NamedObj inherited = null;
-                    try {
-                        while (heritage.hasNext()) {
-                            inherited = (NamedObj)heritage.next();
-                            // If the inherited object has the same
-                            // name as the old name, then we assume it
-                            // should change.
-                            if (inherited.getName().equals(oldName)) {
-                                inherited.setName(newName);
-                                changedName.add(inherited);
-                            }
-                            // Also need to modify the class name of
-                            // the instance or derived class if the
-                            // class or base class changes its name.
-                            if (inherited instanceof Instantiable) {
-                                Instantiable parent = ((Instantiable)inherited)
-                                    .getParent();
-                                // This relies on the depth-first search
-                                // order of the getHeritageList() method
-                                // to be sure that the base class will
-                                // already be in the changedName set if
-                                // its name will change.
-                                if (parent != null
-                                        && (parent == _current
-                                                || changedName.contains(parent))) {
-                                    String previousClassName
-                                        = inherited.getClassName();
-                                    int last = previousClassName
-                                        .lastIndexOf(oldName);
-                                    if (last < 0) {
-                                        throw new InternalErrorException(
-                                                "Expected instance "
-                                                + inherited.getFullName()
-                                                + " to have class name ending with "
-                                                + oldName
-                                                + " but its class name is "
-                                                + previousClassName);
-                                    }
-                                    String newClassName = newName;
-                                    if (last > 0) {
-                                        newClassName
-                                            = previousClassName
-                                            .substring(0, last)
-                                            + newName;
-                                    }
-                                    inherited.setClassName(newClassName);
-                                    changedClassName.put(
-                                            inherited, previousClassName);
-                                }
-                            }
-                        }
-                    } catch (NameDuplicationException ex) {
-                        // Unravel the name changes before
-                        // rethrowing the exception.
-                        Iterator toUndo = changedName.iterator();
-                        while (toUndo.hasNext()) {
-                            NamedObj revert = (NamedObj)toUndo.next();
-                            revert.setName(oldName);
-                        }
-                        Iterator classNameFixes = changedClassName.entrySet().iterator();
-                        while (classNameFixes.hasNext()) {
-                            Map.Entry revert = (Map.Entry)classNameFixes.next();
-                            NamedObj toFix = (NamedObj)revert.getKey();
-                            String previousClassName = (String)revert.getValue();
-                            toFix.setClassName(previousClassName);
-                        }
-                        throw new IllegalActionException(_current, ex,
-                                "Propagation to instance and/or derived class causes" +
-                                "name duplication: " + inherited.getFullName());
-                    }
-
                     _current.setName(newName);
 
                     // Handle the undo aspect if needed
@@ -2475,34 +2392,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         // Do not need to continue generating undo MoML
                         // as rename does not have any child elements
                         _undoContext.setChildrenUndoable(false);
-                    }
-
-                    // If _current is a class definition, then find
-                    // subclasses and instances and propagate the
-                    // change to the name of the
-                    // object they refer to.
-                    if ((_current instanceof Instantiable)
-                            && ((Instantiable)_current).isClassDefinition()) {
-                        List deferredFrom
-                            = ((Instantiable)_current).getChildren();
-                        if (deferredFrom != null) {
-                            Iterator deferrers = deferredFrom.iterator();
-                            while (deferrers.hasNext()) {
-                                WeakReference reference
-                                    = (WeakReference)deferrers.next();
-                                Prototype deferrer = (Prototype)reference.get();
-                                if (deferrer != null) {
-                                    // Got a live one.
-                                    // Need to determine whether the name is
-                                    // absolute or relative.
-                                    String replacementName = newName;
-                                    if (deferrer.getClassName().startsWith(".")) {
-                                        replacementName = _current.getFullName();
-                                    }
-                                    deferrer.setClassName(replacementName);
-                                }
-                            }
-                        }
                     }
                 }
 
@@ -2575,9 +2464,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // Propagate to instances and derived classes.
                     Iterator heritage = _current.getDerivedList().iterator();
                     while (heritage.hasNext()) {
-                        Relation inherited = (Relation)heritage.next();
+                        Relation derived = (Relation)heritage.next();
                         Vertex propagatedVertex
-                            = new Vertex(inherited, vertexName);
+                            = new Vertex(derived, vertexName);
                         propagatedVertex.setDerived(true);
                     }
                 }
@@ -2599,12 +2488,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         = depthList.iterator();
                     while (heritage.hasNext()) {
                         int depth = ((Integer)depths.next()).intValue();
-                        Vertex inherited = (Vertex)heritage.next();
-                        inherited.setExpression(value);
+                        Vertex derived = (Vertex)heritage.next();
+                        derived.setExpression(value);
                         // The above sets the modified field true, which
                         // need to reverse because we are propagating.
-                        inherited.setOverrideDepth(depth);
-                        _paramsToParse.add(inherited);
+                        derived.setOverrideDepth(depth);
+                        _paramsToParse.add(derived);
                     }
                 }
 
@@ -2896,7 +2785,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  this is reasonable). If _current is not an instance
      *  of CompositeEntity, then an XML exception is thrown.
      *  If an object is created and we are propagating, then that
-     *  object is marked as an inherited object.
+     *  object is marked as a derived object.
      *  The third argument, if non-null, gives a URL to import
      *  to create a reference class from which to instantiate this
      *  entity.
@@ -3075,12 +2964,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 List heritageList = container.getDerivedList();
                 Iterator heritage = heritageList.iterator();
                 while (heritage.hasNext()) {
-                    CompositeEntity inherited = (CompositeEntity)heritage.next();
-                    if (inherited.getEntity(entityName) != null) {
+                    CompositeEntity derived = (CompositeEntity)heritage.next();
+                    if (derived.getEntity(entityName) != null) {
                         throw new IllegalActionException(container,
                                 "Cannot create entity because a subclass or instance "
                                 + "contains an entity with the same name: "
-                                + inherited.getEntity(entityName).getFullName());
+                                + derived.getEntity(entityName).getFullName());
                     }
                 }
 
@@ -3098,13 +2987,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // Propagate to instances and derived classes.
                 heritage = heritageList.iterator();
                 while (heritage.hasNext()) {
-                    CompositeEntity inherited = (CompositeEntity)heritage.next();
+                    CompositeEntity derived = (CompositeEntity)heritage.next();
                     // Invoke the constructor.
-                    arguments[0] = inherited;
+                    arguments[0] = derived;
                     NamedObj propagatedEntity = _createInstance(newClass, arguments);
                     _loadIconForClass(className, propagatedEntity);
                     propagatedEntity.setDerived(true);
-                    _markContentsInherited(propagatedEntity);
+                    _markContentsDerived(propagatedEntity);
                 }
 
                 return newEntity;
@@ -3140,12 +3029,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 heritageList = container.getDerivedList();
                 Iterator heritage = heritageList.iterator();
                 while (heritage.hasNext()) {
-                    CompositeEntity inherited = (CompositeEntity)heritage.next();
-                    if (inherited.getEntity(entityName) != null) {
+                    CompositeEntity derived = (CompositeEntity)heritage.next();
+                    if (derived.getEntity(entityName) != null) {
                         throw new IllegalActionException(container,
                                 "Cannot create entity because a subclass or instance "
                                 + "contains an entity with the same name: "
-                                + inherited.getEntity(entityName).getFullName());
+                                + derived.getEntity(entityName).getFullName());
                     }
                 }
             }
@@ -3168,10 +3057,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 modelURI.setContainer(null);
             }
 
-            // Mark contents as being inherited objects.  EAL 12/03
-            // FIXME: Probably this needs to indicate the level
-            // at which they are inherited... (depth)...
-            _markContentsInherited(newEntity);
+            // Mark contents as being derived objects.  EAL 12/03
+            _markContentsDerived(newEntity);
 
             // Set the class name as specified in this method call.
             // This overrides what Prototype does.  The reason we want to
@@ -3184,11 +3071,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (container != null) {
                 Iterator heritage = heritageList.iterator();
                 while (heritage.hasNext()) {
-                    CompositeEntity inherited = (CompositeEntity)heritage.next();
+                    CompositeEntity derived = (CompositeEntity)heritage.next();
                     ComponentEntity propagatedEntity
                         = (ComponentEntity)reference.instantiate(
-                                inherited, entityName);
-                    _markContentsInherited(propagatedEntity);
+                                derived, entityName);
+                    _markContentsDerived(propagatedEntity);
                     propagatedEntity.setDerived(true);
                     propagatedEntity.setClassName(className);
                     URIAttribute propagatedURI
@@ -3211,10 +3098,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  of inner classes, since those take an additional argument (the
      *  first argument), which is the enclosing class. Static inner
      *  classes, however, work fine.
-     *  This method marks the contents of what it creates as inherited objects,
+     *  This method marks the contents of what it creates as derived objects,
      *  since they are defined in the Java code of the constructor.
      *  If we are currently propagating, then it also marks the new
-     *  instance itself as an inherited object.
+     *  instance itself as an derived object.
      *  @param newClass The class.
      *  @param arguments The constructor arguments.
      *  @exception Exception If no matching constructor is found, or if
@@ -3236,8 +3123,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
             if (match) {
                 NamedObj newEntity = (NamedObj)constructor.newInstance(arguments);
-                // Mark the contents of the new entity as being inherited objects.
-                _markContentsInherited(newEntity);
+                // Mark the contents of the new entity as being derived objects.
+                _markContentsDerived(newEntity);
                 return newEntity;
             }
         }
@@ -3280,7 +3167,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             return null;
         }
 
-        // Ensure that inherited objects aren't changed.
+        // Ensure that derived objects aren't changed.
         if (toDelete.isDerived()) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This entity is part of the class definition.");
@@ -3315,10 +3202,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
             heritage = reverse.iterator();
             while (heritage.hasNext()) {
-                ComponentEntity inherited = (ComponentEntity)heritage.next();
+                ComponentEntity derived = (ComponentEntity)heritage.next();
                 // Have to get this _before_ deleting.
-                String toUndo = _getUndoForDeleteEntity(inherited);
-                inherited.setContainer(null);
+                String toUndo = _getUndoForDeleteEntity(derived);
+                derived.setContainer(null);
                 // Put at the _start_ of the undo MoML, to ensure
                 // reverse order from the deletion.
                 undoMoML.insert(0, toUndo);
@@ -3376,7 +3263,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     _parser.getColumnNumber());
         }
 
-        // Ensure that inherited objects aren't changed.
+        // Ensure that derived objects aren't changed.
         if (toDelete.isDerived()) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This port is part of the class definition.");
@@ -3412,19 +3299,19 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
             heritage = reverse.iterator();
             while (heritage.hasNext()) {
-                Port inherited = (Port)heritage.next();
+                Port derived = (Port)heritage.next();
                 // Create the undo MoML.
                 // Have to get this _before_ deleting.
                 // Put at the _start_ of the undo MoML, to ensure
                 // reverse order from the deletion.
                 // NOTE: This describes links to the
-                // inherited port.  Amazingly, the order
+                // derived port.  Amazingly, the order
                 // seems to be exactly right so that links
                 // that will propagate on undo are no longer
                 // present. So it seems to generate exactly
                 // the right undo to not end up with duplicate connections!
-                String toUndo = _getUndoForDeletePort(inherited);
-                inherited.setContainer(null);
+                String toUndo = _getUndoForDeletePort(derived);
+                derived.setContainer(null);
                 undoMoML.insert(0, toUndo);
             }
             // Have to get this _before_ deleting.
@@ -3457,7 +3344,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (toDelete == null) {
             return null;
         }
-        // Ensure that inherited objects aren't changed.
+        // Ensure that derived objects aren't changed.
         if (toDelete.isDerived()) {
             throw new IllegalActionException(toDelete,
                     "Cannot delete. This attribute is part of the class definition.");
@@ -3488,9 +3375,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             undoMoML.append(toUndo);
 
             while (heritage.hasNext()) {
-                Attribute inherited = (Attribute)heritage.next();
-                toUndo = _getUndoForDeleteAttribute(inherited);
-                inherited.setContainer(null);
+                Attribute derived = (Attribute)heritage.next();
+                toUndo = _getUndoForDeleteAttribute(derived);
+                derived.setContainer(null);
                 undoMoML.append(toUndo);
             }
         } finally {
@@ -3555,7 +3442,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             }
             heritage = reverse.iterator();
             while (heritage.hasNext()) {
-                ComponentRelation inherited
+                ComponentRelation derived
                     = (ComponentRelation)heritage.next();
                 // Since the Relation can't be a
                 // class itself (currently), it has derived objects
@@ -3568,7 +3455,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // relation may contain parameter values that are
                 // not in the original.  Need to carefully choose
                 // the level at which the exportMoML is done.
-                inherited.setContainer(null);
+                derived.setContainer(null);
             }
             // Have to get this _before_ deleting.
             String toUndo = _getUndoForDeleteRelation(toDelete);
@@ -3873,7 +3760,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (value != null && value.trim().toLowerCase().equals("false")) {
                 newValue = false;
             }
-            // If this object is an inherited object, then its I/O status
+            // If this object is a derived object, then its I/O status
             // cannot be changed.  EAL 1/04.
             if (_current.isDerived()
                     && ((IOPort)_current).isMultiport() != newValue) {
@@ -3882,14 +3769,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         "a multiport. That property is fixed by " +
                         "the class definition.");
             }
+            // Propagation is handled by setMultiport() below.
             ((IOPort)_current).setMultiport(newValue);
-
-            // Propagate.
-            Iterator heritage = _current.getDerivedList().iterator();
-            while (heritage.hasNext()) {
-                IOPort inherited = (IOPort)heritage.next();
-                inherited.setMultiport(newValue);
-            }
 
             _pushContext();
             _current =  (Attribute)_current.getAttribute(propertyName);
@@ -3925,7 +3806,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (value != null && value.trim().toLowerCase().equals("false")) {
                 newValue = false;
             }
-            // If this object is an inherited object, then its I/O status
+            // If this object is a derived object, then its I/O status
             // cannot be changed.  EAL 1/04.
             if (_current.isDerived()
                     && ((IOPort)_current).isOutput() != newValue) {
@@ -3935,14 +3816,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         "the class definition.");
             }
 
+            // Propagation is handled by setOutput() below.
             ((IOPort)_current).setOutput(newValue);
-
-            // Propagate.
-            Iterator heritage = _current.getDerivedList().iterator();
-            while (heritage.hasNext()) {
-                IOPort inherited = (IOPort)heritage.next();
-                inherited.setOutput(newValue);
-            }
 
             _pushContext();
             _current =  (Attribute)
@@ -3979,7 +3854,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (value != null && value.trim().toLowerCase().equals("false")) {
                 newValue = false;
             }
-            // If this object is an inherited object, then its I/O status
+            // If this object is a derived object, then its I/O status
             // cannot be changed.  EAL 1/04.
             if (_current.isDerived()
                     && ((IOPort)_current).isInput() != newValue) {
@@ -3989,14 +3864,8 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         "the class definition.");
             }
 
+            // Propagation is handled by setInput() below.
             ((IOPort)_current).setInput(newValue);
-
-            // Propagate.
-            Iterator heritage = _current.getDerivedList().iterator();
-            while (heritage.hasNext()) {
-                IOPort inherited = (IOPort)heritage.next();
-                inherited.setInput(newValue);
-            }
 
             _pushContext();
             _current =  (Attribute)
@@ -4094,12 +3963,12 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     List heritageList = _current.getDerivedList();
                     Iterator heritage = heritageList.iterator();
                     while (heritage.hasNext()) {
-                        NamedObj inherited = (NamedObj)heritage.next();
-                        if (inherited.getAttribute(propertyName) != null) {
+                        NamedObj derived = (NamedObj)heritage.next();
+                        if (derived.getAttribute(propertyName) != null) {
                             throw new IllegalActionException(_current,
                                     "Cannot create attribute because a subclass or instance "
                                     + "contains an attribute with the same name: "
-                                    + inherited.getAttribute(propertyName).getFullName());
+                                    + derived.getAttribute(propertyName).getFullName());
                         }
                     }
                     // Invoke the constructor.
@@ -4161,9 +4030,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // Propagate to instances and derived classes.
                     heritage = heritageList.iterator();
                     while (heritage.hasNext()) {
-                        NamedObj inherited = (NamedObj)heritage.next();
+                        NamedObj derived = (NamedObj)heritage.next();
                         // Invoke the constructor.
-                        arguments[0] = inherited;
+                        arguments[0] = derived;
                         NamedObj newAttribute = _createInstance(newClass, arguments);
                         // It would be redundant to perform the same checks as above.
                         if (value != null) {
@@ -4283,10 +4152,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     /** Return true if the link between the specified port and
      *  relation is part of the class definition. It is part of the
      *  class definition if either the port and the relation are
-     *  at the same level of hierarchy and are both inherited objects, or if
+     *  at the same level of hierarchy and are both derived objects, or if
      *  the relation and the container of the port are both class
      *  elements. If the relation is null, then this return true
-     *  if the port and its container are inherited objects.
+     *  if the port and its container are derived objects.
      *  NOTE: This is not perfect, since a link could have been
      *  created between these elements in a subclass.
      *  @param context The context containing the link.
@@ -4359,7 +4228,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         newParser.setContext(context);
         NamedObj result = newParser.parse(_base, input);
 
-        // Have to mark the contents inherited objects, so that
+        // Have to mark the contents derived objects, so that
         // the icon is not exported with the MoML export.
         // Unfortunately, we can't be sure what contents
         // were added to the context, so we just mark the
@@ -4367,10 +4236,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // FIXME: Instead of doing this, which only work for
         // attributes named "_icon", we could set a private
         // variable on the parser to indicate that any new
-        // objects it creates should be marked inherited objects.
+        // objects it creates should be marked derived objects.
         Attribute icon = context.getAttribute("_icon");
         if (icon != null) {
-            _markContentsInherited(icon);
+            _markContentsDerived(icon);
         }
 
         return true;
@@ -4396,7 +4265,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         return _loadFileInContext(fileName, context);
     }
 
-    /** Mark the contents as being inherited objects.
+    /** Mark the contents as being derived objects.
      *  This makes them not export MoML, and prohibits name and
      *  container changes. Normally, the argument is an Entity,
      *  but this method will accept any NamedObj.
@@ -4407,7 +4276,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @exception IllegalActionException If the specified object
      *   has settables that cannot be validated.
      */
-    private void _markContentsInherited(NamedObj object)
+    private void _markContentsDerived(NamedObj object)
             throws IllegalActionException {
         // NOTE: Added as part of big change in class handling. EAL 12/03.
         // NOTE: It is necessary to mark objects deeply contained
@@ -4421,7 +4290,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             if (containedObject instanceof Settable) {
                 _paramsToParse.add(containedObject);
             }
-            _markContentsInherited(containedObject);
+            _markContentsDerived(containedObject);
         }
     }
 
@@ -4531,7 +4400,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             relation = (ComponentRelation)tmpRelation;
         }
 
-        // NOTE: Added to ensure that inherited objects aren't changed.
+        // NOTE: Added to ensure that derived objects aren't changed.
         // EAL 1/04. We have to prohit adding links between class
         // elements because this operation cannot be undone, and
         // it will not be persistent.
@@ -4568,34 +4437,34 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (relation != null) {
             Iterator heritage = relation.getDerivedList().iterator();
             while (heritage.hasNext()) {
-                ComponentRelation inheritedRelation
+                ComponentRelation derivedRelation
                     = (ComponentRelation)heritage.next();
-                CompositeEntity inheritedContext
-                    = (CompositeEntity)inheritedRelation.getContainer();
-                ComponentPort inheritedPort
-                    = _getPort(portName, inheritedContext);
+                CompositeEntity derivedContext
+                    = (CompositeEntity)derivedRelation.getContainer();
+                ComponentPort derivedPort
+                    = _getPort(portName, derivedContext);
                 // NOTE: Duplicate the above logic exactly.
                 if (insertAtSpec != null) {
-                    inheritedPort.insertLink(insertAt, inheritedRelation);
+                    derivedPort.insertLink(insertAt, derivedRelation);
                 } else if (insertInsideAtSpec != null) {
-                    inheritedPort.insertInsideLink(insertInsideAt, inheritedRelation);
+                    derivedPort.insertInsideLink(insertInsideAt, derivedRelation);
                 } else {
-                    inheritedPort.link(inheritedRelation);
+                    derivedPort.link(derivedRelation);
                 }
             }
         } else {
             Iterator heritage = port.getDerivedList().iterator();
             while (heritage.hasNext()) {
-                ComponentPort inheritedPort
+                ComponentPort derivedPort
                     = (ComponentPort)heritage.next();
                 // NOTE: Duplicate the above logic exactly.
                 if (insertAtSpec != null) {
-                    inheritedPort.insertLink(insertAt, null);
+                    derivedPort.insertLink(insertAt, null);
                 } else if (insertInsideAtSpec != null) {
-                    inheritedPort.insertInsideLink(insertInsideAt, null);
+                    derivedPort.insertInsideLink(insertInsideAt, null);
                 } else {
                     // This one probably shouldn't occur.
-                    inheritedPort.link(null);
+                    derivedPort.link(null);
                 }
             }
         }
@@ -4701,7 +4570,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     relationName + "\" in " + context.getFullName());
             ComponentRelation relation = (ComponentRelation)tmpRelation;
 
-            // NOTE: Added to ensure that inherited objects aren't changed.
+            // NOTE: Added to ensure that derived objects aren't changed.
             // EAL 1/04.
             if (_isLinkInClass(context, port, relation)) {
                 throw new IllegalActionException(port,
@@ -4738,13 +4607,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // find the port.
             Iterator heritage = relation.getDerivedList().iterator();
             while (heritage.hasNext()) {
-                ComponentRelation inheritedRelation
+                ComponentRelation derivedRelation
                     = (ComponentRelation)heritage.next();
-                CompositeEntity inheritedContext
-                    = (CompositeEntity)inheritedRelation.getContainer();
-                ComponentPort inheritedPort
-                    = _getPort(portName, inheritedContext);
-                inheritedPort.unlink(inheritedRelation);
+                CompositeEntity derivedContext
+                    = (CompositeEntity)derivedRelation.getContainer();
+                ComponentPort derivedPort
+                    = _getPort(portName, derivedContext);
+                derivedPort.unlink(derivedRelation);
             }
 
             port.unlink(relation);
@@ -4753,7 +4622,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // index is given.
             int index = Integer.parseInt(indexSpec);
 
-            // NOTE: Added to ensure that inherited objects aren't changed.
+            // NOTE: Added to ensure that derived objects aren't changed.
             // EAL 1/04.  Unfortunately, getting the relation is fairly
             // expensive.
             List relationList = port.linkedRelationList();
@@ -4786,9 +4655,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Propagate.
             Iterator heritage = port.getDerivedList().iterator();
             while (heritage.hasNext()) {
-                ComponentPort inheritedPort
+                ComponentPort derivedPort
                     = (ComponentPort)heritage.next();
-                inheritedPort.unlink(index);
+                derivedPort.unlink(index);
             }
 
             port.unlink(index);
@@ -4797,7 +4666,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // insideIndex is given.
             int index = Integer.parseInt(insideIndexSpec);
 
-            // NOTE: Added to ensure that inherited objects aren't changed.
+            // NOTE: Added to ensure that derived objects aren't changed.
             // EAL 1/04.  Unfortunately, getting the relation is fairly
             // expensive.
             List relationList = port.insideRelationList();
@@ -4829,9 +4698,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // Propagate.
             Iterator heritage = port.getDerivedList().iterator();
             while (heritage.hasNext()) {
-                ComponentPort inheritedPort
+                ComponentPort derivedPort
                     = (ComponentPort)heritage.next();
-                inheritedPort.unlinkInside(index);
+                derivedPort.unlinkInside(index);
             }
 
             port.unlinkInside(index);
