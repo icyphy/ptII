@@ -34,11 +34,7 @@ package ptolemy.util;
 // other ptolemy packages.
 
 import java.io.File;
-import java.io.IOException;
-import java.io.StreamTokenizer;
-import java.io.StringReader;
-import java.net.URL;
-import java.util.LinkedList;
+import java.util.Iterator;
 import java.util.List;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -73,14 +69,14 @@ public class XSLTUtilities {
     ////                         public methods                    ////
 
     /** Parse a document.
-     * @param filename The file name of the xml file to be read in
+     * @param fileName The file name of the xml file to be read in
      * @return the parsed document.
      */
-    public static Document transform(String filename) throws Exception {
+    public static Document parse(String fileName) throws Exception {
         DocumentBuilderFactory factory
             = DocumentBuilderFactory.newInstance();
         DocumentBuilder builder = factory.newDocumentBuilder();
-        return builder.parse(new File(filename));
+        return builder.parse(new File(fileName));
 
     }
 
@@ -98,5 +94,21 @@ public class XSLTUtilities {
         DOMResult result = new DOMResult();
         transformer.transform(new DOMSource(inputDocument), result);
         return (Document)result.getNode();
+    }
+
+    /** Transform a document 
+     * @param inputDocument The Document to be transformed
+     * @param transformFileNames A list of Strings naming the
+     * xsl files to be applied sequentially
+     * @return a transformed document
+     */
+    public static Document transform(Document inputDocument,
+            List transformFileNames) throws Exception {
+        Iterator fileNames = transformFileNames.iterator();
+        while (fileNames.hasNext()) {
+            String fileName = (String) fileNames.next();
+            inputDocument = transform(inputDocument, fileName);
+        }
+        return inputDocument;
     }
 }
