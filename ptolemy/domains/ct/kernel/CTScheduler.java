@@ -34,6 +34,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -60,6 +61,7 @@ import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTScheduler
@@ -516,6 +518,9 @@ public class CTScheduler extends Scheduler {
             }
         }
 
+        // Save the resolved signal types in each port.
+        
+
         // Done with all actor classification and known port signal
         // type assignment.
 
@@ -600,6 +605,10 @@ public class CTScheduler extends Scheduler {
                 _signalTypeMap.propagateType(port);
             }
         }
+
+        // Set attributes in the model to display the signal types.
+        _setPortSignalTypes(_signalTypeMap);
+
         // Output the signal type resolution result to the debugger.
         if (_debugging) _debug("Resolved signal types: {\n"
                 + _signalTypeMap.toString() + "}");
@@ -763,6 +772,43 @@ public class CTScheduler extends Scheduler {
 
         setValid(true);
         return ctSchedule;
+    }
+
+    /** Create and set a parameter in each port according
+     *  to the resolved. continuous/discrete nature of the port.
+     *  @param typeMap A map from ports to
+     */
+    private void _setPortSignalTypes(SignalTypeMap typeMap) {
+        Director director = (Director) getContainer();
+        final CompositeActor container =
+            (CompositeActor)director.getContainer();
+        StringBuffer buffer = new StringBuffer();
+        buffer.append("<group>\n");
+
+        Iterator entities = container.deepEntityList().iterator();
+        while (entities.hasNext()) {
+            Entity entity = (Entity)entities.next();
+            for(Iterator ports = entity.portList().iterator();
+                ports.hasNext();) {
+                IOPort port = (IOPort)ports.next();
+                String typeString = 
+                    typeMap.getType(port).toString();
+                buffer.append("<port name=\"");
+                buffer.append(port.getName(container));
+                buffer.append("\">\n");
+                buffer.append("<property name=\"resolvedSignalType\" "
+                        + "class=\"ptolemy.data.expr.NotEditableParameter\" "
+                        +  "value=\"&quot;" + typeString + "&quot;\"/>\n");
+                buffer.append("</port>\n");
+            }
+        }
+        buffer.append("</group>");
+        MoMLChangeRequest request = new MoMLChangeRequest(
+                this, container, buffer.toString());
+        // Indicate that the change is non-persistent, so that
+        // the UI doesn't prompt to save.
+        request.setPersistent(false);
+        container.requestChange(request);
     }
 
     /** Convert the given list of actors to a directed acyclic graph.
