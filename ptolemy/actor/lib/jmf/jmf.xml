@@ -16,9 +16,6 @@
 	<entity name="GreenFinder" class="ptolemy.actor.lib.jmf.GreenFinder">
 	</entity>
 	
-	<entity name="ImageDisplay" class="ptolemy.actor.lib.jmf.ImageDisplay">
-	</entity>
-
 	<entity name="JAIIDCT" class="ptolemy.actor.lib.jmf.JAIIDCT">
 	</entity>
 	

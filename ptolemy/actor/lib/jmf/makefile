@@ -52,7 +52,6 @@ JSRCS = \
 	BufferToImageConversion.java\
 	ColorFinder.java\
 	GreenFinder.java\
-	ImageDisplay.java\
 	JAIIDCT.java\
 	JAIDCT.java\
 	JAIImageReader.java\
