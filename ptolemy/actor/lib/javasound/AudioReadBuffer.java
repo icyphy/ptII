@@ -67,7 +67,7 @@ address 0 corresponds to the first element and addres
 <i>bufferLength</i> -1 corresponds to the last element. The sample
 value at the specified buffer location is converted to a DoubleToken
 and sent to the output port.
-<p> 
+<p>
 If an element outside of the valid address range is specified, then
 a DoubleToken with value 0.0 is output. If the the specified address
 is greater than <i>bufferLength</i> -1, then this actor will return

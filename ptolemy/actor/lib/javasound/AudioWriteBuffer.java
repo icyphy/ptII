@@ -54,7 +54,7 @@ This actor writes audio samples to a buffer and saves the buffer
 to a sound file on wrapup. In each iteration, if there is a token
 available on the <i>data</i> and <i>address</i> ports, then the
 data DoubleToken is written to the buffere location specified by
-the address IntToken. The valid address range is 0 to 
+the address IntToken. The valid address range is 0 to
 <i>bufferLength</i> -1. If an invalid address is specified, then
 the data value will be ignored and no data will be written.
 The audio samples in the buffer will be written to the sound file
@@ -67,7 +67,7 @@ port represents one sample of the audio data and should be in
 the range [-1.0, 1.0]. Any samples that are outside of this range
 will be hard-clipped to fall within this range before they are
 written to the sound file. Single channel (mono) audio is supported
-but stereo is not supported. 
+but stereo is not supported.
 <p>
 The following parameters should be set to specify the format
 of the file to write. In all cases, an exception is thrown if
@@ -153,7 +153,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** The address port, which is a multiport.
      */
     public TypedIOPort address;
@@ -273,13 +273,13 @@ public class AudioWriteBuffer extends TypedAtomicActor {
 	_safeToInitialize = true;
     }
 
-    /** If there is a token available on the <i>data</i> and 
-     *  <i>address</i> ports, then the data DoubleToken is written 
-     *  to the buffere location specified by the address IntToken. 
-     *  The valid address range is 0 to <i>bufferLength</i> -1. If an 
-     *  invalid address is specified, then the data value will be 
-     *  ignored and no data will be written. The audio samples in the 
-     *  buffer will be written to the sound file specified by the 
+    /** If there is a token available on the <i>data</i> and
+     *  <i>address</i> ports, then the data DoubleToken is written
+     *  to the buffere location specified by the address IntToken.
+     *  The valid address range is 0 to <i>bufferLength</i> -1. If an
+     *  invalid address is specified, then the data value will be
+     *  ignored and no data will be written. The audio samples in the
+     *  buffer will be written to the sound file specified by the
      *  <i>pathName</i> parameter on wrapup.
      */
     public void fire () throws IllegalActionException {
@@ -297,9 +297,9 @@ public class AudioWriteBuffer extends TypedAtomicActor {
 	    } else {
 		// Read one token from the data port and write the
 		// token to the specified address in the buffer.
-		double sampleValue = 
+		double sampleValue =
 		    ((DoubleToken)data.get(0)).doubleValue();
-		boolean overwriteMode = 
+		boolean overwriteMode =
 		    ((BooleanToken)overwrite.getToken()).booleanValue();
 		if (overwriteMode == true) {
 		    // Overwrite the element at the specified
@@ -353,7 +353,7 @@ public class AudioWriteBuffer extends TypedAtomicActor {
 		for (int i = 0; i < _audioBuffer.length; i++) {
 		    _audioPutArray[0][0] = _audioBuffer[i];
 		    _soundWriter.putSamples(_audioPutArray);
-		    
+
 		    }
                 _soundWriter.closeFile();
             } catch (IOException ex) {
