@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Discrete Event domain demos
+# Makefile for Ptolemy II Discrete Event domain demo
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks,
 #
@@ -29,13 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/de/demo
+ME =		ptolemy/domains/de/demo/VariableDelay
 
 # Root of the Java directory
-ROOT =		../../../..
-
-DIRS =		HierarchicalModel Inspection ModalModel \
-		TimingParadox SmartSender VariableDelay
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -44,38 +41,45 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTPACKAGE = 	VariableDelay
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	HierarchicalModel/HierarchicalModel.jar \
-	Inspection/Inspection.jar \
-	ModalModel/ModalModel.jar \
-	SmartSender/SmartSender.jar \
-	TimingParadox/TimingParadox.jar \
-	VariableDelay/VariableDelay.jar
+JSRCS =
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
+	VariableDelay.xml
 
-# Files that are not compiled, such as .tcl and .itcl files.
-EXTRA_SRCS =	index.htm
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	VariableDelay.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = mems
+OPTIONAL_FILES =
 
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all jars
 
-demo: subdemo
+demo: demo_applet demo_ptolemy demo_vergil
+demo_applet: $(PTCLASSJAR)
+	CLASSPATH=$(CLASSPATH) appletviewer VariableDelay.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" VariableDelay.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" VariableDelay.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
