@@ -1063,7 +1063,7 @@ public class Plot extends PlotBox {
         // This method is similar to _parseLine() below, except it parses
         // an entire file at a time.
         int c;
-
+        float x, y;
         boolean connected = false;
         if (_connected) connected = true;
 
@@ -1072,55 +1072,87 @@ public class Plot extends PlotBox {
                     _connected);
         }
         try {
-            while (true) {
-                // Here, we read pxgraph binary format data.
-                // For speed reasons, the Ptolemy group extended 
-                // pxgraph to read binary format data.
-                // The format consists of a command character,
-                // followed by optional arguments
-                // d <4byte float> <4byte float> - Draw a X,Y point
-                // e                             - End of a data set
-                // n <chars> \n                  - New set name, ends in \n
-                // m                             - Move to a point
-                c = in.readByte();
-                switch (c) {
-                case 'd':
-                    {
-                        // Data point.
-                        float x = in.readFloat();
-                        float y = in.readFloat();
-                        connected = _addLegendIfNecessary(connected);
-                        addPoint(_currentdataset, x, y, connected);
-                        if (_connected) connected = true;
+            c = in.readByte();
+            if ( c != 'd') {
+                // Assume that the data is one data set, consisting
+                // of 4 byte floats.  None of the Ptolemy pxgraph
+                // binary format extensions apply.
+
+                // Read 3 more bytes, create the x float.
+                int bits = c;
+                bits = bits << 8;
+                bits += in.readByte();
+                bits = bits << 8;
+                bits += in.readByte();
+                bits = bits << 8;
+                bits += in.readByte();
+
+                x = Float.intBitsToFloat(bits);
+                y = in.readFloat();
+                connected = _addLegendIfNecessary(connected);
+                addPoint(_currentdataset, x, y, connected);
+                if (_connected) connected = true;
+
+                while (true) {
+                    x = in.readFloat();
+                    y = in.readFloat();
+                    connected = _addLegendIfNecessary(connected);
+                    addPoint(_currentdataset, x, y, connected);
+                    if (_connected) connected = true;
+                }
+            } else {
+                // Assume that the data is in the pxgraph binary format.
+                while (true) {
+                    // For speed reasons, the Ptolemy group extended 
+                    // pxgraph to read binary format data.
+                    // The format consists of a command character,
+                    // followed by optional arguments
+                    // d <4byte float> <4byte float> - Draw a X,Y point
+                    // e                             - End of a data set
+                    // n <chars> \n                  - New set name, ends in \n
+                    // m                             - Move to a point
+
+                    switch (c) {
+                    case 'd':
+                        {
+                            // Data point.
+                            x = in.readFloat();
+                            y = in.readFloat();
+                            connected = _addLegendIfNecessary(connected);
+                            addPoint(_currentdataset, x, y, connected);
+                            if (_connected) connected = true;
+                        }
+                        break;
+                    case 'e':
+                        // End of set name.
+                        connected = false;
+                        break;
+                    case 'n':
+                        {
+                            StringBuffer datasetname = new StringBuffer();
+                            _firstinset = true;
+                            _sawfirstdataset = true;
+                            _currentdataset++;
+                            if (_currentdataset >= _MAX_MARKS)
+                                _currentdataset = 0;
+                            // New set name, ends in \n.
+                            while (c != '\n')
+                                datasetname.append(in.readChar());
+                            addLegend(_currentdataset, datasetname.toString());
+                            setConnected(true);
+                        }
+                        break;
+                    case 'm':
+                        // a disconnected point
+                        connected = false;
+                        break;
+                    default:
+                        throw new PlotDataException("Don't understand `" + 
+                                (char)c + "' character " +
+                                "(decimal value = " + c +
+                                ") in binary file");
                     }
-                    break;
-                case 'e':
-                    // End of set name.
-                    connected = false;
-                    break;
-                case 'n':
-                    {
-                        StringBuffer datasetname = new StringBuffer();
-                        _firstinset = true;
-                        _sawfirstdataset = true;
-                        _currentdataset++;
-                        if (_currentdataset >= _MAX_MARKS) _currentdataset = 0;
-                        // New set name, ends in \n.
-                        while (c != '\n')
-                            datasetname.append(in.readChar());
-                        addLegend(_currentdataset, datasetname.toString());
-                        setConnected(true);
-                    }
-                    break;
-                case 'm':
-                    // a disconnected point
-                    connected = false;
-                    break;
-                default:
-                    throw new PlotDataException("Don't understand `" + 
-                            (char)c + "' character " +
-                            "(decimal value = " + c +
-                            ") in binary file");
+                    c = in.readByte();
                 }
             } 
         } catch (EOFException e) {}         
