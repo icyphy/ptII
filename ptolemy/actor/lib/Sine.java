@@ -57,7 +57,7 @@ the phase to pi/2.
 @version $Id$
 */
 
-public class Sine extends Transformer {
+public class Sine extends VectorizableTransformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -127,14 +127,32 @@ public class Sine extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        if (input.hasToken(0)) {
-            DoubleToken in = (DoubleToken)input.get(0);
+        if (input.hasToken(0, _vectorLength)) {
+            input.get(0, (DoubleToken[])_inArray);
             double A = ((DoubleToken)amplitude.getToken()).doubleValue();
             double w = ((DoubleToken)omega.getToken()).doubleValue();
             double p = ((DoubleToken)phase.getToken()).doubleValue();
-
-            double result = A*Math.sin(w*in.doubleValue()+p);
-            output.send(0, new DoubleToken(result));
+	    for (int i = 0; i < _inArray.length; i++) {
+		double result = A*Math.sin(w*_inArray[i].doubleValue()+p);
+		_resultArray[i] = new DoubleToken(result);
+	    }
+            output.send(0, _resultArray);
         }
     }
+
+    /**  Allocate DoubleToken arrays for use in the fire() method.
+      *  @exception IllegalActionException If the parent class throws it.
+      */
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _inArray = new DoubleToken[_vectorLength];
+	_resultArray = new DoubleToken[_vectorLength];
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private DoubleToken[] _inArray;
+    private DoubleToken[] _resultArray;
+
 }
