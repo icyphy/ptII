@@ -86,7 +86,7 @@
             <property name="_library" class="ptolemy.moml.LibraryAttribute">
                 <configure></configure>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-6, 46, 1036, 676}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-6, 42, 1036, 683}}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 567]">
             </property>
@@ -1101,7 +1101,7 @@
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 166, 815, 516}}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -1215,7 +1215,7 @@
                 </property>
                 <property name="lightLevel" class="ptolemy.data.expr.Parameter" value="70">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="395.0, 225.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 220.0">
                 </property>
                 <doc>Serial-port command dispatcher for x10 Lamp devices</doc>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
@@ -1243,20 +1243,6 @@
                     <property name="multiport"/>
                     <property name="_showName" class="ptolemy.kernel.util.SingletonAttribute">
                     </property>
-                </port>
-            </entity>
-            <entity name="EventFilter2" class="ptolemy.domains.de.lib.EventFilter">
-                <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 170.0">
-                </property>
-                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
-                </property>
-                <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                    <property name="input"/>
-                    <property name="multiport"/>
-                </port>
-                <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                    <property name="output"/>
-                    <property name="multiport"/>
                 </port>
             </entity>
             <entity name="EventFilter3" class="ptolemy.domains.de.lib.EventFilter">
@@ -1388,11 +1374,43 @@
                     </property>
                 </port>
             </entity>
+            <entity name="EventFilter2" class="ptolemy.domains.de.lib.EventFilter">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 170.0">
+                </property>
+                <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
+                </property>
+                <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+                <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
+                    <property name="output"/>
+                    <property name="multiport"/>
+                </port>
+            </entity>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="15">
+                </property>
+                <doc>Create a constant sequence</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 255.0">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+            </entity>
             <relation name="relation3" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="285.0, 170.0">
                 </vertex>
-            </relation>
-            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
             </relation>
             <relation name="relation6" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="265.0, 300.0">
@@ -1400,16 +1418,22 @@
             </relation>
             <relation name="relation7" class="ptolemy.actor.TypedIORelation">
             </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            </relation>
             <link port="off" relation="relation5"/>
             <link port="motion" relation="relation7"/>
-            <link port="Middle Spotlight.dim" relation="relation6"/>
+            <link port="Middle Spotlight.dim" relation="relation"/>
             <link port="Middle Spotlight.off" relation="relation3"/>
-            <link port="EventFilter2.input" relation="relation5"/>
-            <link port="EventFilter2.output" relation="relation3"/>
             <link port="EventFilter3.input" relation="relation7"/>
             <link port="EventFilter3.output" relation="relation6"/>
             <link port="Demo Lights.on" relation="relation6"/>
             <link port="Demo Lights.off" relation="relation3"/>
+            <link port="EventFilter2.input" relation="relation5"/>
+            <link port="EventFilter2.output" relation="relation3"/>
+            <link port="Const.output" relation="relation"/>
+            <link port="Const.trigger" relation="relation6"/>
         </entity>
         <entity name="running" class="ptolemy.vergil.fsm.modal.Refinement">
             <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -1432,7 +1456,7 @@
                 <property name="_location" class="ptolemy.kernel.util.Location" value="115.5, 35.0">
                 </property>
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 516}}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
             </property>
@@ -1549,7 +1573,7 @@
                 <doc>Serial-port command dispatcher for x10 Lamp devices</doc>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="368.0, 120.5">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 120.0">
                 </property>
                 <port name="bright" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1664,7 +1688,7 @@
                 <doc>Serial-port command dispatcher for x10 Lamp devices</doc>
                 <property name="_icon" class="ptolemy.vergil.icon.XMLIcon">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="390.0, 210.0">
+                <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 250.0">
                 </property>
                 <port name="bright" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
@@ -1807,6 +1831,26 @@
                     </property>
                 </entity>
             </entity>
+            <entity name="Const" class="ptolemy.actor.lib.Const">
+                <property name="value" class="ptolemy.data.expr.Parameter" value="15">
+                </property>
+                <doc>Create a constant sequence</doc>
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                    </property>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                    </property>
+                </property>
+                <property name="_location" class="ptolemy.kernel.util.Location" value="285.0, 75.0">
+                </property>
+                <port name="output" class="ptolemy.actor.TypedIOPort">
+                    <property name="output"/>
+                </port>
+                <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                    <property name="input"/>
+                    <property name="multiport"/>
+                </port>
+            </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
                 <vertex name="vertex1" value="218.0, 100.5">
                 </vertex>
@@ -1819,16 +1863,20 @@
             </relation>
             <relation name="relation4" class="ptolemy.actor.TypedIORelation">
             </relation>
+            <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            </relation>
             <link port="off" relation="relation"/>
             <link port="motion" relation="relation4"/>
             <link port="idle" relation="relation3"/>
-            <link port="MiddleSpotlight.bright" relation="relation"/>
+            <link port="MiddleSpotlight.bright" relation="relation5"/>
             <link port="MiddleSpotlight.off" relation="relation2"/>
             <link port="Demo Lights.off" relation="relation2"/>
             <link port="Demo Lights.off" relation="relation"/>
             <link port="EventFilter.input" relation="relation3"/>
             <link port="EventFilter.output" relation="relation2"/>
             <link port="RunDemos.trigger" relation="relation4"/>
+            <link port="Const.output" relation="relation5"/>
+            <link port="Const.trigger" relation="relation"/>
         </entity>
         <relation name="onRelation" class="ptolemy.actor.TypedIORelation">
         </relation>
