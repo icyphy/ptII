@@ -54,6 +54,7 @@ JSIMPLE_TESTS = \
 	ComplexArrayMath.tcl \
         DoubleArrayMath.tcl \
         DoubleArrayStat.tcl \
+        DoubleMatrixMath.tcl \
 	ExtendedMath.tcl \
 	FixPoint.tcl \
 	Fraction.tcl \
@@ -105,6 +106,9 @@ test_jdas: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) DoubleArrayStat.tcl
 
 test_jem:  $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) ExtendedMath.tcl
 	   $(JTCLSH) ExtendedMath.tcl
+
+test_jdmm:  $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) DoubleMatrixMath.tcl
+	    $(JTCLSH) DoubleMatrixMath.tcl
 
 test_jsp: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) SignalProcessing.tcl
 	  $(JTCLSH) SignalProcessing.tcl
