@@ -1,6 +1,7 @@
 #!/bin/sh
+# $Id$
+# This script starts the stock reader
 
-#######################################################################
-####  This is a script that starts the stock reader
-#
-java -Djava.security.policy=./policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -cp ${PTII}:${PTII}/vendors/sun/jini/jini1_0_1/lib/jini-jspaces.jar -Djava.rmi.server.codebase=file:${PTII}/ ptolemy.actor.gui.PtolemyApplication StockReader.xml
+$PTII/bin/ptjini StockReader.xml
+
+#java -Djava.security.policy=./policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -cp ${PTII}:${PTII}/vendors/sun/jini/jini1_0_1/lib/jini-jspaces.jar -Djava.rmi.server.codebase=file:${PTII}/ ptolemy.actor.gui.PtolemyApplication StockReader.xml

@@ -1,7 +1,7 @@
 #!/bin/sh
+# $Id$
+# This script starts the stock server
 
-#######################################################################
-####  This is a script that starts the stock quote server
-#
+$PTII/bin/ptjini StockServer.xml
 
-java -Djava.security.policy=./policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -cp ${PTII}:${PTII}/vendors/sun/jini/jini1_0_1/lib/jini-jspaces.jar -Djava.rmi.server.codebase=file:${PTII}/ ptolemy.actor.gui.PtolemyApplication StockServer.xml
+#java -Djava.security.policy=./policy.all -Doutrigger.spacename=JavaSpaces -Dcom.sun.jini.lookup.groups=public -cp ${PTII}:${PTII}/vendors/sun/jini/jini1_0_1/lib/jini-jspaces.jar -Djava.rmi.server.codebase=file:${PTII}/ ptolemy.actor.gui.PtolemyApplication StockServer.xml
