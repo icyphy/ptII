@@ -1,4 +1,5 @@
-/* The actor that distributes its input data cyclically to different output ports
+/* The actor that distributes its input data cyclically to different
+   output ports
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -115,7 +116,7 @@ public class Distributor extends AtomicActor {
      *  data from the input or writing data to the output.
      */
     public void fire() throws IllegalActionException {
-        for (int i=0; i < _output.getWidth(); i++) {
+        for (int i = 0; i < _output.getWidth(); i++) {
             _output.send(i, _input.get(0));
         }
     }

@@ -80,7 +80,7 @@ public class Commutator extends AtomicActor{
      *  @exception IllegalActionException If one of the
      *  called methods throws it.
      */
-    public Commutator (CompositeActor container, String name)
+    public Commutator(CompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         _input = new IOPort(this, "input", true, false);
@@ -111,7 +111,7 @@ public class Commutator extends AtomicActor{
      *  method
      */
     public void fire() throws IllegalActionException {
-        for (int i=0; i<_input.getWidth(); i++) {
+        for (int i = 0; i < _input.getWidth(); i++) {
             _output.broadcast(_input.get(i));
         }
     }

@@ -23,7 +23,10 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
+
 package ptolemy.actor.lib;
 
 import ptolemy.kernel.*;
@@ -43,7 +46,7 @@ public class TimePlot extends TypedAtomicActor implements Placeable {
 
     public TimePlot(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container,name);
+        super(container, name);
 
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
@@ -102,7 +105,7 @@ public class TimePlot extends TypedAtomicActor implements Placeable {
     public void fire() throws IllegalActionException {
         // FIXME: eliminate the above "throws".
         if (_useCurrentTime) {
-            _xvalue =((Director)getDirector()).getCurrentTime();
+            _xvalue = ((Director)getDirector()).getCurrentTime();
         } else {
             _xvalue += 1.0;
         }
