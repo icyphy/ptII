@@ -117,10 +117,6 @@ public abstract class ColtRandomSource extends RandomSource
      */
     public Parameter randomNumberGeneratorClass = null;
 
-    /** The seed for the RNG.
-     */
-    public Parameter seed = null;
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
