@@ -136,10 +136,10 @@
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
             </port>
-            <port name="real" class="ptolemy.actor.TypedIOPort">
+            <port name="x" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
-            <port name="imag" class="ptolemy.actor.TypedIOPort">
+            <port name="y" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
             </port>
         </entity>
@@ -198,8 +198,8 @@
         <link port="FFT.input" relation="_R2"/>
         <link port="FFT.output" relation="_R3"/>
         <link port="ComplexToCartesian.input" relation="_R3"/>
-        <link port="ComplexToCartesian.real" relation="_R4"/>
-        <link port="ComplexToCartesian.imag" relation="_R5"/>
+        <link port="ComplexToCartesian.x" relation="_R4"/>
+        <link port="ComplexToCartesian.y" relation="_R5"/>
         <link port="RecToPolar.x" relation="_R4"/>
         <link port="RecToPolar.y" relation="_R5"/>
         <link port="RecToPolar.magnitude" relation="_R6"/>
