@@ -915,7 +915,7 @@ public class PlotBox extends Panel {
             output.println("<!DOCTYPE plot SYSTEM \"" + dtd + "\">");
         }
         output.println("<plot>");
-        output.println("<!-- Ptolemy plot, version 3.0, PlotML format. -->");
+        output.println("<!-- Ptolemy plot, version 3.1, PlotML format. -->");
         _write(output);
         output.println("</plot>");
         output.flush();

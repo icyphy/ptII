@@ -121,7 +121,7 @@ public class PxgraphApplication extends PlotApplication {
                 "        A Java Plotting Tool\n\n" +
                 "By: Edward A. Lee, eal@eecs.berkeley.edu and\n" +
                 "    Christopher Hylands, cxh@eecs.berkeley.edu\n" +
-                "Version 3.0, Build: $Id$\n\n"+
+                "Version 3.1, Build: $Id$\n\n"+
                 "For help, type 'pxgraph -help', or see \n" +
                 "the class documentation in the plot.pxgraph package.\n" +
                 "For more information, see\n" +

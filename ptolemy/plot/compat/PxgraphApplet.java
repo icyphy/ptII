@@ -62,7 +62,7 @@ public class PxgraphApplet extends PlotApplet {
     /** Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "PxgraphApplet 3.0: A data plotter.\n" +
+        return "PxgraphApplet 3.1: A data plotter.\n" +
             "By: Edward A. Lee, eal@eecs.berkeley.edu and\n " +
             "Christopher Hylands, cxh@eecs.berkeley.edu\n" +
             "($Id$)";
