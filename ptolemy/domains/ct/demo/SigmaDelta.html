@@ -49,8 +49,9 @@ is a Sin wave. The TclBlend code is<A HREF="SigmaDelta.tcl"> here</A>
 To run the simulation (in the ptolemy cluster), invoke <B>tyjtclsh</B>
 <P>
 <pre>
-cd  ~ptII/ptolemy/domains/ct/demo
-tyjtclsh
+cd  $PTII/ptolemy/domains/ct/demo
+setenv CLASSPATH $PTII
+jtclsh
 source SigmaDelta.tcl
 </pre>
 
