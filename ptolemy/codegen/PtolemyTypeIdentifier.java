@@ -247,7 +247,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     // public static final int TYPE_KIND_ILLEGAL_ACTION_EXCEPTION
     // = TYPE_KIND_CHANGE_FAILED_EXCEPTION + 1;
     public static final int TYPE_KIND_ILLEGAL_ACTION_EXCEPTION
-     = TYPE_KIND_TYPED_IO_PORT + 1;
+    = TYPE_KIND_TYPED_IO_PORT + 1;
     public static final int TYPE_KIND_KERNEL_EXCEPTION
     = TYPE_KIND_ILLEGAL_ACTION_EXCEPTION + 1;
     public static final int TYPE_KIND_NAME_DUPLICATION_EXCEPTION
@@ -394,7 +394,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
     public static final TypeNameNode SEQUENCE_ACTOR_TYPE;
 
     public static final Integer PTOLEMY_TRANSFORMED_KEY =
-     new Integer(RESERVED_JAVA_PROPERTIES);
+    new Integer(RESERVED_JAVA_PROPERTIES);
 
     /** An array indexed by (kind - TYPE_KINDS) containing known declarations
      *  of types in Ptolemy.
@@ -512,7 +512,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
             StaticResolution.loadClassName("ptolemy.data.BooleanToken", 1);
         BOOLEAN_TOKEN_DECL =
             (ClassDecl) StaticResolution.findDecl(booleanTokenUnit,
-                "BooleanToken", CG_CLASS);
+                    "BooleanToken", CG_CLASS);
         BOOLEAN_TOKEN_TYPE = BOOLEAN_TOKEN_DECL.getDefType();
 
 
@@ -520,7 +520,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
             StaticResolution.loadClassName("ptolemy.data.ScalarToken", 1);
         SCALAR_TOKEN_DECL =
             (ClassDecl) StaticResolution.findDecl(scalarTokenUnit,
-                "ScalarToken", CG_CLASS);
+                    "ScalarToken", CG_CLASS);
         SCALAR_TOKEN_TYPE = SCALAR_TOKEN_DECL.getDefType();
 
 
@@ -535,7 +535,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
             StaticResolution.loadClassName("ptolemy.data.DoubleToken", 1);
         DOUBLE_TOKEN_DECL =
             (ClassDecl) StaticResolution.findDecl(doubleTokenUnit,
-                "DoubleToken", CG_CLASS);
+                    "DoubleToken", CG_CLASS);
         DOUBLE_TOKEN_TYPE = DOUBLE_TOKEN_DECL.getDefType();
 
 
@@ -581,7 +581,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
             StaticResolution.loadClassName("ptolemy.data.MatrixToken", 1);
         MATRIX_TOKEN_DECL =
             (ClassDecl) StaticResolution.findDecl(matrixTokenUnit,
-                "MatrixToken", CG_CLASS);
+                    "MatrixToken", CG_CLASS);
         MATRIX_TOKEN_TYPE = MATRIX_TOKEN_DECL.getDefType();
 
 
@@ -613,7 +613,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
             StaticResolution.loadClassName("ptolemy.data.LongMatrixToken", 1);
         LONG_MATRIX_TOKEN_DECL =
             (ClassDecl) StaticResolution.findDecl(longMatrixTokenUnit,
-                "LongMatrixToken", CG_CLASS);
+                    "LongMatrixToken", CG_CLASS);
         LONG_MATRIX_TOKEN_TYPE = LONG_MATRIX_TOKEN_DECL.getDefType();
 
 
@@ -650,7 +650,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
             StaticResolution.loadClassName("ptolemy.actor.TypedIOPort", 1);
         TYPED_IO_PORT_DECL =
             (ClassDecl) StaticResolution.findDecl(typedIOPortUnit,
-                "TypedIOPort", CG_CLASS);
+                    "TypedIOPort", CG_CLASS);
         TYPED_IO_PORT_TYPE = TYPED_IO_PORT_DECL.getDefType();
 
 
@@ -682,7 +682,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
             StaticResolution.loadClassName("ptolemy.kernel.util.NoSuchItemException", 1);
         NO_SUCH_ITEM_EXCEPTION_DECL =
             (ClassDecl) StaticResolution.findDecl(nosuchItemUnit,
-                "NoSuchItemException", CG_CLASS);
+                    "NoSuchItemException", CG_CLASS);
         NO_SUCH_ITEM_EXCEPTION_TYPE = NO_SUCH_ITEM_EXCEPTION_DECL.getDefType();
 
 
@@ -752,7 +752,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
 
 
         _KNOWN_CLASS_DECLS = new ClassDecl[] {
-                COMPLEX_DECL, FIX_POINT_DECL,
+            COMPLEX_DECL, FIX_POINT_DECL,
                 TYPED_ATOMIC_ACTOR_DECL,
                 TOKEN_DECL, BOOLEAN_TOKEN_DECL, SCALAR_TOKEN_DECL,
                 INT_TOKEN_DECL, DOUBLE_TOKEN_DECL, LONG_TOKEN_DECL,
@@ -776,7 +776,7 @@ public class PtolemyTypeIdentifier extends TypeIdentifier {
                 };
 
         _KNOWN_TYPENAMENODES = new TypeNameNode[] {
-                COMPLEX_TYPE, FIX_POINT_TYPE,
+            COMPLEX_TYPE, FIX_POINT_TYPE,
                 TYPED_ATOMIC_ACTOR_TYPE,
                 TOKEN_TYPE, BOOLEAN_TOKEN_TYPE, SCALAR_TOKEN_TYPE,
                 INT_TOKEN_TYPE, DOUBLE_TOKEN_TYPE, LONG_TOKEN_TYPE,

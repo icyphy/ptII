@@ -143,7 +143,7 @@ public final class IntMatrixToken extends MatrixToken {
         } else if (compare == CPO.LOWER) {
             return t.addReverse(this);
         } else {
-             // type of the specified token <= IntMatrixToken
+            // type of the specified token <= IntMatrixToken
             int[][] result = null;
 
             if (t instanceof ScalarToken) {
@@ -158,11 +158,11 @@ public final class IntMatrixToken extends MatrixToken {
             } else {
                 // the specified token is not a scalar.
                 IntMatrixToken tem = (IntMatrixToken)this.convert(t);
-                    if (tem.getRowCount() != _rowCount ||
+                if (tem.getRowCount() != _rowCount ||
                         tem.getColumnCount() != _columnCount) {
                     throw new IllegalActionException("Cannot add two " +
                             "matrices with different dimension.");
-                    }
+                }
 
                 result = tem.intMatrix();
                 for (int i = 0; i < _rowCount; i++) {
@@ -453,7 +453,7 @@ public final class IntMatrixToken extends MatrixToken {
         } else if (compare == CPO.LOWER) {
             return t.subtractReverse(this);
         } else {
-             // type of the specified token <= IntMatrixToken
+            // type of the specified token <= IntMatrixToken
             int[][] result = null;
 
             if (t instanceof ScalarToken) {
@@ -468,11 +468,11 @@ public final class IntMatrixToken extends MatrixToken {
             } else {
                 // the specified token is not a scalar.
                 IntMatrixToken tem = (IntMatrixToken)this.convert(t);
-                    if (tem.getRowCount() != _rowCount ||
+                if (tem.getRowCount() != _rowCount ||
                         tem.getColumnCount() != _columnCount) {
                     throw new IllegalActionException("Cannot subtract two " +
                             "matrices with different dimension.");
-                    }
+                }
 
                 result = tem.intMatrix();
                 for (int i = 0; i < _rowCount; i++) {
@@ -507,7 +507,7 @@ public final class IntMatrixToken extends MatrixToken {
         } else if (compare == CPO.LOWER) {
             return t.subtract(this);
         } else {
-             // type of the specified token <= IntMatrixToken
+            // type of the specified token <= IntMatrixToken
             int[][] result = null;
 
             if (t instanceof ScalarToken) {
@@ -523,9 +523,9 @@ public final class IntMatrixToken extends MatrixToken {
                 // the specified token is not a scalar.
                 IntMatrixToken tem = (IntMatrixToken)this.convert(t);
                 if (tem.getRowCount() != _rowCount ||
-                    tem.getColumnCount() != _columnCount) {
-                   throw new IllegalActionException("Cannot subtract two " +
-                    "matrices with different dimension.");
+                        tem.getColumnCount() != _columnCount) {
+                    throw new IllegalActionException("Cannot subtract two " +
+                            "matrices with different dimension.");
                 }
 
                 result = tem.intMatrix();

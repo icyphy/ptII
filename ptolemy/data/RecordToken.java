@@ -65,21 +65,21 @@ public class RecordToken extends Token {
      */
     public RecordToken(String[] labels, Token[] values) {
         if (labels == null || values == null ||
-            labels.length != values.length) {
+                labels.length != values.length) {
             throw new IllegalArgumentException("RecordToken: the labels or " +
-                "the values array do not have the same length, or is null.");
+                    "the values array do not have the same length, or is null.");
         }
 
         for (int i=0; i<labels.length; i++) {
             if (labels[i] == null || values[i] == null) {
                 throw new IllegalArgumentException("RecordToken: the " + i +
-                    "'th element of the labels or values array is null");
+                        "'th element of the labels or values array is null");
             }
             if ( !_fields.containsKey(labels[i])) {
                 _fields.put(labels[i], values[i]);
             } else {
                 throw new IllegalArgumentException("RecordToken: The " +
-                    "labels array contain duplicate element: " + labels[i]);
+                        "labels array contain duplicate element: " + labels[i]);
             }
         }
     }
@@ -173,7 +173,7 @@ public class RecordToken extends Token {
     public BooleanToken isEqualTo(Token t) throws IllegalActionException {
         if ( !(t instanceof RecordToken)) {
             throw new IllegalActionException("RecordToken.isEqualTo: The " +
-                "argument is not a RecordToken.");
+                    "argument is not a RecordToken.");
         }
 
         RecordToken argRecTok = (RecordToken)t;

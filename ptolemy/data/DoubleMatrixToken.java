@@ -80,9 +80,9 @@ public class DoubleMatrixToken extends MatrixToken {
         _columnCount = value[0].length;
 
         if (copy == DO_NOT_COPY) {
-           _value = value;
+            _value = value;
         } else {
-           _value = DoubleMatrixMath.allocCopy(value);
+            _value = DoubleMatrixMath.allocCopy(value);
         }
     }
 
@@ -136,13 +136,13 @@ public class DoubleMatrixToken extends MatrixToken {
                 // the specified token is not a scalar.
                 DoubleMatrixToken tem = (DoubleMatrixToken)this.convert(t);
                 if (tem.getRowCount() != _rowCount ||
-                    tem.getColumnCount() != _columnCount) {
-                   throw new IllegalActionException("Cannot add two " +
-                             "matrices with different dimensions.");
+                        tem.getColumnCount() != _columnCount) {
+                    throw new IllegalActionException("Cannot add two " +
+                            "matrices with different dimensions.");
                 }
 
                 result = DoubleMatrixMath.add(
-                 tem._getInternalDoubleMatrix(), _value);
+                        tem._getInternalDoubleMatrix(), _value);
             }
             return new DoubleMatrixToken(result);
         }
@@ -200,7 +200,7 @@ public class DoubleMatrixToken extends MatrixToken {
         }
 
         if (token instanceof DoubleMatrixToken) {
-           return token;
+            return token;
         }
 
         // try double
@@ -233,14 +233,14 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A 2-D double array.
      */
     public final double[][] doubleMatrix() {
-       return DoubleMatrixMath.allocCopy(_value);
+        return DoubleMatrixMath.allocCopy(_value);
     }
 
     /** Return the type of this token.
      *  @return BaseType.DOUBLE_MATRIX
      */
     public final Type getType() {
-       return BaseType.DOUBLE_MATRIX;
+        return BaseType.DOUBLE_MATRIX;
     }
 
     /** Test if the content of this token is equal to that of the specified
@@ -265,7 +265,7 @@ public class DoubleMatrixToken extends MatrixToken {
         }
 
         if (((MatrixToken)t).getRowCount() != _rowCount ||
-            ((MatrixToken)t).getColumnCount() != _columnCount) {
+                ((MatrixToken)t).getColumnCount() != _columnCount) {
             return new BooleanToken(false);
         }
 
@@ -276,7 +276,7 @@ public class DoubleMatrixToken extends MatrixToken {
             DoubleMatrixToken tem = (DoubleMatrixToken) convert(t);
 
             return new BooleanToken(DoubleMatrixMath.within(_value,
-             tem._getInternalDoubleMatrix(), 0.0));
+                    tem._getInternalDoubleMatrix(), 0.0));
         }
     }
 
@@ -365,7 +365,7 @@ public class DoubleMatrixToken extends MatrixToken {
                 }
 
                 result = DoubleMatrixMath.multiply(
-                          tem._getInternalDoubleMatrix(), _value);
+                        tem._getInternalDoubleMatrix(), _value);
             }
             return new DoubleMatrixToken(result, DO_NOT_COPY);
         }
@@ -381,25 +381,25 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     public final Token multiplyReverse(final Token t)
             throws IllegalActionException {
-       int compare = TypeLattice.compare(this, t);
-       if (! (compare == CPO.HIGHER)) {
-           throw new IllegalActionException("The type of the specified "
+        int compare = TypeLattice.compare(this, t);
+        if (! (compare == CPO.HIGHER)) {
+            throw new IllegalActionException("The type of the specified "
                     + "token " + t.getClass().getName() + " is not lower than "
                     + getClass().getName());
-       }
+        }
 
-       // Check if t is matrix. In that case we must convert t into a
-       // DoubleMatrixToken because matrix multiplication is not
-       // commutative.
-       if (t instanceof ScalarToken) {
-          // multiply is commutative on double matrices, for scalar types.
-          return multiply(t);
-       } else {
-          // the specified token is not a scalar
-          DoubleMatrixToken tem = (DoubleMatrixToken) this.convert(t);
-          return new DoubleMatrixToken(DoubleMatrixMath.multiply(
-                      tem._getInternalDoubleMatrix(), _value), DO_NOT_COPY);
-       }
+        // Check if t is matrix. In that case we must convert t into a
+        // DoubleMatrixToken because matrix multiplication is not
+        // commutative.
+        if (t instanceof ScalarToken) {
+            // multiply is commutative on double matrices, for scalar types.
+            return multiply(t);
+        } else {
+            // the specified token is not a scalar
+            DoubleMatrixToken tem = (DoubleMatrixToken) this.convert(t);
+            return new DoubleMatrixToken(DoubleMatrixMath.multiply(
+                    tem._getInternalDoubleMatrix(), _value), DO_NOT_COPY);
+        }
     }
 
     /** Return a new Token representing the left multiplicative
@@ -419,7 +419,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new Token containing the right multiplicative identity.
      */
     public final Token oneRight() {
-       return new DoubleMatrixToken(DoubleMatrixMath.identity(_columnCount), DO_NOT_COPY);
+        return new DoubleMatrixToken(DoubleMatrixMath.identity(_columnCount), DO_NOT_COPY);
     }
 
     /** Return a new Token whose value is the value of the argument Token
@@ -460,13 +460,13 @@ public class DoubleMatrixToken extends MatrixToken {
                 // the specified token is not a scalar.
                 DoubleMatrixToken tem = (DoubleMatrixToken)this.convert(t);
                 if (tem.getRowCount() != _rowCount ||
-                    tem.getColumnCount() != _columnCount) {
-                   throw new IllegalActionException("Cannot subtract two " +
-                    "matrices with different dimensions.");
+                        tem.getColumnCount() != _columnCount) {
+                    throw new IllegalActionException("Cannot subtract two " +
+                            "matrices with different dimensions.");
                 }
 
                 result = DoubleMatrixMath.subtract(_value,
-                 tem._getInternalDoubleMatrix());
+                        tem._getInternalDoubleMatrix());
             }
             return new DoubleMatrixToken(result, DO_NOT_COPY);
         }
@@ -490,7 +490,7 @@ public class DoubleMatrixToken extends MatrixToken {
         }
         // add the argument Token to the negative of this Token
         DoubleMatrixToken negativeToken =
-         new DoubleMatrixToken(DoubleMatrixMath.negative(_value), DO_NOT_COPY);
+            new DoubleMatrixToken(DoubleMatrixMath.negative(_value), DO_NOT_COPY);
         return negativeToken.add(t);
     }
 
@@ -501,7 +501,7 @@ public class DoubleMatrixToken extends MatrixToken {
      *  @return A new Token containing the additive identity.
      */
     public final Token zero() {
-       return new DoubleMatrixToken(new double[_rowCount][_columnCount], DO_NOT_COPY);
+        return new DoubleMatrixToken(new double[_rowCount][_columnCount], DO_NOT_COPY);
     }
 
     ///////////////////////////////////////////////////////////////////

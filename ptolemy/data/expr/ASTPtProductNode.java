@@ -88,8 +88,8 @@ public class ASTPtProductNode extends ASTPtRootNode {
                 int times = 1;
                 try {
                     times =
-                    ((ptolemy.data.ScalarToken)
-                            _numbers.get(index+1)).intValue();
+                        ((ptolemy.data.ScalarToken)
+                                _numbers.get(index+1)).intValue();
                 } catch (Exception e) {
                     throw new IllegalActionException(
                             "Only integral power numbers (e.g. 10^3) " +

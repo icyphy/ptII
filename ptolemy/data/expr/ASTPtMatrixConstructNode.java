@@ -83,7 +83,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                 for (i = 0; i < nChildren; ++i) {
                     tok = BooleanToken.convert(_childTokens[i]);
                     val[i/_nColumns][i%_nColumns] =
-                            ((BooleanToken)tok).booleanValue();
+                        ((BooleanToken)tok).booleanValue();
                 }
                 _ptToken = new BooleanMatrixToken(val);
             } else if (mtype == BaseType.INT) {
@@ -91,7 +91,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                 for (i = 0; i < nChildren; ++i) {
                     tok = IntToken.convert(_childTokens[i]);
                     val[i/_nColumns][i%_nColumns] =
-                            ((IntToken)tok).intValue();
+                        ((IntToken)tok).intValue();
                 }
                 _ptToken = new IntMatrixToken(val);
             } else if (mtype == BaseType.LONG) {
@@ -99,7 +99,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                 for (i = 0; i < nChildren; ++i) {
                     tok = LongToken.convert(_childTokens[i]);
                     val[i/_nColumns][i%_nColumns] =
-                            ((LongToken)tok).longValue();
+                        ((LongToken)tok).longValue();
                 }
                 _ptToken = new LongMatrixToken(val);
             } else if (mtype == BaseType.DOUBLE) {
@@ -107,7 +107,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                 for (i = 0; i < nChildren; ++i) {
                     tok = DoubleToken.convert(_childTokens[i]);
                     val[i/_nColumns][i%_nColumns] =
-                            ((DoubleToken)tok).doubleValue();
+                        ((DoubleToken)tok).doubleValue();
                 }
                 _ptToken = new DoubleMatrixToken(val);
             } else if (mtype == BaseType.COMPLEX) {
@@ -115,14 +115,14 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
                 for (i = 0; i < nChildren; ++i) {
                     tok = ComplexToken.convert(_childTokens[i]);
                     val[i/_nColumns][i%_nColumns] =
-                            ((ComplexToken)tok).complexValue();
+                        ((ComplexToken)tok).complexValue();
                 }
                 _ptToken = new ComplexMatrixToken(val);
             } else {
                 /* The resolved type does not have a corresponding
                    matrix type. */
                 throw new IllegalActionException("Cannot find a matrix type "
-		                   + "that matches the specified elements.");
+                        + "that matches the specified elements.");
             }
         } else if (_form == 2) {
             if (mtype == BaseType.INT) {
@@ -166,9 +166,9 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
             } else if (mtype == BaseType.DOUBLE) {
                 _nColumns = _numDoubleColumns(_childTokens[0], _childTokens[1],
                         _childTokens[2]);
-            // Make sure that all following rows have the same number
-            // of columns.
-            for (i = 1; i < _nRows; ++i) {
+                // Make sure that all following rows have the same number
+                // of columns.
+                for (i = 1; i < _nRows; ++i) {
                     if (_nColumns != _numDoubleColumns(_childTokens[3*i],
                             _childTokens[3*i+1], _childTokens[3*i+2])) {
                         throw new IllegalActionException("Matrix "
@@ -258,7 +258,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
         try {
             double lbv = ((DoubleToken)DoubleToken.convert(lb)).doubleValue();
             double incrv =
-                    ((DoubleToken)DoubleToken.convert(incr)).doubleValue();
+                ((DoubleToken)DoubleToken.convert(incr)).doubleValue();
 
             for (int i = 0; i < _nColumns; ++i) {
                 result[i] = lbv + i*incrv;
@@ -358,7 +358,7 @@ public class ASTPtMatrixConstructNode extends ASTPtRootNode {
         try {
             double lbv = ((DoubleToken)DoubleToken.convert(lb)).doubleValue();
             double incrv =
-                    ((DoubleToken)DoubleToken.convert(incr)).doubleValue();
+                ((DoubleToken)DoubleToken.convert(incr)).doubleValue();
             double ubv = ((DoubleToken)DoubleToken.convert(ub)).doubleValue();
             if (incrv == 0) {
                 result = 0;

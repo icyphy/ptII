@@ -155,7 +155,7 @@ public abstract class MatrixToken extends Token {
     public Token oneRight()
 	    throws IllegalActionException {
         throw new IllegalActionException("Right multiplicative identity " +
-		 "not supported on " + getClass().getName() + " objects.");
+                "not supported on " + getClass().getName() + " objects.");
     }
 
     /** Return the value of this token as a string that can be parsed

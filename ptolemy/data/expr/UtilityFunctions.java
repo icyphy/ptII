@@ -88,39 +88,39 @@ public class UtilityFunctions {
     public static StringToken readFile(String filename)
             throws IllegalActionException {
 
-                // temporary hack, need to work out way to obtain the path.
-                String curDir = System.getProperty("user.dir");
+        // temporary hack, need to work out way to obtain the path.
+        String curDir = System.getProperty("user.dir");
 
-                //System.out.println("Directory is " + curDir);
-                File fileT = new File(curDir, filename);
-                //System.out.println("Trying to open file: " + fileT.toString());
-                BufferedReader fin = null;
-                String line;
-                String result = "";
-                String newline = System.getProperty("line.separator");
-                try {
-                    if (fileT.exists()) {
-                        fin = new BufferedReader(new FileReader(fileT));
-                        while (true) {
-                            try {
-                                line = fin.readLine();
-                            } catch (IOException e) {
-                                break;
-                            }
-
-                            if (line == null) break;
-                            result += line + newline;
-                            //System.out.println("read in line: \"" +
-                            //   line + newline + "\"");
-                        }
+        //System.out.println("Directory is " + curDir);
+        File fileT = new File(curDir, filename);
+        //System.out.println("Trying to open file: " + fileT.toString());
+        BufferedReader fin = null;
+        String line;
+        String result = "";
+        String newline = System.getProperty("line.separator");
+        try {
+            if (fileT.exists()) {
+                fin = new BufferedReader(new FileReader(fileT));
+                while (true) {
+                    try {
+                        line = fin.readLine();
+                    } catch (IOException e) {
+                        break;
                     }
-                } catch (FileNotFoundException e) {
-                    // what should we do here?
-                    throw new IllegalActionException("File not found:\n" +
-                            e.toString() );
+
+                    if (line == null) break;
+                    result += line + newline;
+                    //System.out.println("read in line: \"" +
+                    //   line + newline + "\"");
                 }
-                //System.out.println("Contents of file are: " + result);
-                return new StringToken(result);
+            }
+        } catch (FileNotFoundException e) {
+            // what should we do here?
+            throw new IllegalActionException("File not found:\n" +
+                    e.toString() );
+        }
+        //System.out.println("Contents of file are: " + result);
+        return new StringToken(result);
     }
 
     /** Read a file that contains a Matrix in Matlab notation. The

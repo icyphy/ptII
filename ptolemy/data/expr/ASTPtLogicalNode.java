@@ -65,7 +65,7 @@ public class ASTPtLogicalNode extends ASTPtRootNode {
                         + "operation on " + _childTokens[i].getClass());
             }
             values[i] =
-                    ((ptolemy.data.BooleanToken)_childTokens[i]).booleanValue();
+                ((ptolemy.data.BooleanToken)_childTokens[i]).booleanValue();
         }
         boolean result = values[0];
         for (i = 0; i < _lexicalTokens.size(); i++) {

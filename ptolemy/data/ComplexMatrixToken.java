@@ -81,9 +81,9 @@ public class ComplexMatrixToken extends MatrixToken {
         _columnCount = value[0].length;
 
         if (copy == DO_NOT_COPY) {
-           _value = value;
+            _value = value;
         } else {
-           _value = ComplexMatrixMath.allocCopy(value);
+            _value = ComplexMatrixMath.allocCopy(value);
         }
     }
 
@@ -138,13 +138,13 @@ public class ComplexMatrixToken extends MatrixToken {
                 ComplexMatrixToken tem = (ComplexMatrixToken) convert(t);
 
                 if (tem.getRowCount() != _rowCount ||
-                    tem.getColumnCount() != _columnCount) {
-                   throw new IllegalActionException("Cannot add two " +
-                             "matrices with different dimension.");
+                        tem.getColumnCount() != _columnCount) {
+                    throw new IllegalActionException("Cannot add two " +
+                            "matrices with different dimension.");
                 }
 
                 result = ComplexMatrixMath.add(tem._getInternalComplexMatrix(),
-                                               _value);
+                        _value);
             }
             return new ComplexMatrixToken(result, DO_NOT_COPY);
         }
@@ -259,7 +259,7 @@ public class ComplexMatrixToken extends MatrixToken {
         }
 
         if ( ((MatrixToken)t).getRowCount() != _rowCount ||
-             ((MatrixToken)t).getColumnCount() != _columnCount) {
+                ((MatrixToken)t).getColumnCount() != _columnCount) {
             return new BooleanToken(false);
         }
 
@@ -269,8 +269,8 @@ public class ComplexMatrixToken extends MatrixToken {
             // type of specified token <= ComplexMatrixToken
             ComplexMatrixToken tem = (ComplexMatrixToken) convert(t);
             return new BooleanToken(
-             ComplexMatrixMath.arePartsWithin(_value,
-              tem._getInternalComplexMatrix(), 0.0));
+                    ComplexMatrixMath.arePartsWithin(_value,
+                            tem._getInternalComplexMatrix(), 0.0));
         }
     }
 
@@ -346,9 +346,9 @@ public class ComplexMatrixToken extends MatrixToken {
             Complex[][] result = null;
 
             if (t.getType() == BaseType.COMPLEX) {
-               // multiply by a complex number
-               Complex c = ((ComplexToken) t).complexValue();
-               result = ComplexMatrixMath.multiply(_value, c);
+                // multiply by a complex number
+                Complex c = ((ComplexToken) t).complexValue();
+                result = ComplexMatrixMath.multiply(_value, c);
             } else if (t instanceof ScalarToken) {
                 // multiply by a double
                 double scalar = ((ScalarToken)t).doubleValue();
@@ -364,7 +364,7 @@ public class ComplexMatrixToken extends MatrixToken {
                 }
 
                 result = ComplexMatrixMath.multiply(
-                          tem._getInternalComplexMatrix(), _value);
+                        tem._getInternalComplexMatrix(), _value);
             }
             return new ComplexMatrixToken(result, DO_NOT_COPY);
         }
@@ -380,25 +380,25 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     public final Token multiplyReverse(final Token t)
             throws IllegalActionException {
-       int compare = TypeLattice.compare(this, t);
-       if (! (compare == CPO.HIGHER)) {
-           throw new IllegalActionException("The type of the specified "
+        int compare = TypeLattice.compare(this, t);
+        if (! (compare == CPO.HIGHER)) {
+            throw new IllegalActionException("The type of the specified "
                     + "token " + t.getClass().getName() + " is not lower than "
                     + getClass().getName());
-       }
+        }
 
-       // Check if t is matrix. In that case we must convert t into a
-       // ComplexMatrixToken because matrix multiplication is not
-       // commutative.
-       if (t instanceof ScalarToken) {
-          // multiply is commutative on complex matrices, for scalar types.
-          return multiply(t);
-       } else {
-          // the specified token is not a scalar
-          ComplexMatrixToken tem = (ComplexMatrixToken) this.convert(t);
-          return new ComplexMatrixToken(ComplexMatrixMath.multiply(
-                      tem._getInternalComplexMatrix(), _value), DO_NOT_COPY);
-       }
+        // Check if t is matrix. In that case we must convert t into a
+        // ComplexMatrixToken because matrix multiplication is not
+        // commutative.
+        if (t instanceof ScalarToken) {
+            // multiply is commutative on complex matrices, for scalar types.
+            return multiply(t);
+        } else {
+            // the specified token is not a scalar
+            ComplexMatrixToken tem = (ComplexMatrixToken) this.convert(t);
+            return new ComplexMatrixToken(ComplexMatrixMath.multiply(
+                    tem._getInternalComplexMatrix(), _value), DO_NOT_COPY);
+        }
     }
 
     /** Return a new Token whose value is the value of the argument Token
@@ -439,13 +439,13 @@ public class ComplexMatrixToken extends MatrixToken {
                 // the specified token is not a scalar.
                 ComplexMatrixToken tem = (ComplexMatrixToken) this.convert(t);
                 if (tem.getRowCount() != _rowCount ||
-                    tem.getColumnCount() != _columnCount) {
-                   throw new IllegalActionException("Cannot subtract two " +
-                    "matrices with different dimensions.");
+                        tem.getColumnCount() != _columnCount) {
+                    throw new IllegalActionException("Cannot subtract two " +
+                            "matrices with different dimensions.");
                 }
 
                 result = ComplexMatrixMath.subtract(_value,
-                 tem._getInternalComplexMatrix());
+                        tem._getInternalComplexMatrix());
             }
             return new ComplexMatrixToken(result, DO_NOT_COPY);
         }
@@ -469,7 +469,7 @@ public class ComplexMatrixToken extends MatrixToken {
         }
         // add the argument Token to the negative of this Token
         ComplexMatrixToken negativeToken =
-         new ComplexMatrixToken(ComplexMatrixMath.negative(_value), DO_NOT_COPY);
+            new ComplexMatrixToken(ComplexMatrixMath.negative(_value), DO_NOT_COPY);
         return negativeToken.add(t);
     }
 
@@ -482,7 +482,7 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     public Token one() {
         return new ComplexMatrixToken(
-         ComplexMatrixMath.identity(_rowCount), DO_NOT_COPY);
+                ComplexMatrixMath.identity(_rowCount), DO_NOT_COPY);
     }
 
     /** Return a new Token representing the right multiplicative
@@ -493,7 +493,7 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     public Token oneRight() {
         return new ComplexMatrixToken(
-         ComplexMatrixMath.identity(_columnCount), DO_NOT_COPY);
+                ComplexMatrixMath.identity(_columnCount), DO_NOT_COPY);
     }
 
     /** Return a new Token representing the additive identity.
@@ -503,8 +503,8 @@ public class ComplexMatrixToken extends MatrixToken {
      *  @return A new Token containing the additive identity.
      */
     public Token zero() {
-       return new ComplexMatrixToken(
-        ComplexMatrixMath.zero(_rowCount, _columnCount), DO_NOT_COPY);
+        return new ComplexMatrixToken(
+                ComplexMatrixMath.zero(_rowCount, _columnCount), DO_NOT_COPY);
     }
 
     ///////////////////////////////////////////////////////////////////
