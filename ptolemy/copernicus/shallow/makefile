@@ -137,10 +137,10 @@ timeOrthoCommDemo:
 		-director.iterations $(TIMEORTHOCOMM_ITERATIONS) | tail 
 
 
-# The tests and the UI use the runShallowDemo rule, so if you
+# The tests and the UI use the runDemo rule, so if you
 # change this rule, be sure to run make tests
 SHALLOWTARGETCLASS = $(TARGETPACKAGE).CG$(MODEL)
-runShallowDemo:
+runDemo:
 	@echo "Run the model"
 	$(RUN_COMMAND) \
 		-class $(SHALLOWTARGETCLASS)
