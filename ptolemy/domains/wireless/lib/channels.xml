@@ -24,6 +24,10 @@
 <doc></doc>
 </entity>
 
+<entity name="PowerLossChannel" class="ptolemy.domains.wireless.lib.PowerLossChannel">
+<doc></doc>
+</entity>
+
 <entity name="RadioChannel" class="ptolemy.domains.wireless.lib.RadioChannel">
 <doc></doc>
 </entity>

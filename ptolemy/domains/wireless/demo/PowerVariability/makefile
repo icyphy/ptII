@@ -1,6 +1,6 @@
-# Makefile for Wireless domain actors library
+# Makefile for Ptolemy II PowerVariability demo
 #
-# @Authors: Christopher Hylands Brooks
+# @Authors: Christopher Hylands
 #
 # @Version: $Id$
 #
@@ -29,12 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/wireless/lib
-
-DIRS = 		test
+ME =		ptolemy/domains/sdf/demo/PowerVariability
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -43,50 +41,52 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
-PTCLASSJAR =	$(PTPACKAGE).jar
+PTPACKAGE = 	PowerVariability
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
-	AcousticChannel.java \
-	DelayChannel.java \
-	ErasureChannel.java \
-	GetProperties.java \
-	GraphicalLocator.java \
-	LimitedRangeChannel.java \
-	Locator.java \
-	PowerLossChannel.java \
-	RadioChannel.java \
-	Triangulator.java \
-	WiredToWireless.java \
-	WirelessToWired.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	actors.xml \
-	channels.xml
+	PowerVariability.xml
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	$(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-all: jclass
-install: jclass jars
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
+all: jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
 
+install: all
+
+# Run the demo in all its different formats
+# Run demo_application first so that we generate PowerVariability.xml
+demo: demo_ptolemy demo_vergil
+
+#demo_applet: $(PTCLASSJAR)
+#	CLASSPATH="$(CLASSPATH)" appletviewer PowerVariability.htm
+
+#demo_application: $(PTCLASSJAR)
+#	CLASSPATH="$(CLASSPATH)" \
+#	 "$(JAVA)" ptolemy.actor.gui.CompositeActorApplication \
+		-class ptolemy.domains.sdf.demo.PowerVariability.PowerVariability
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" PowerVariability.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" PowerVariability.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
-
-
-
-
-
-
-

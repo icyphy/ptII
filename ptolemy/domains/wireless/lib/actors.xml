@@ -8,6 +8,9 @@
     <?moml
       <group>
 
+<entity name="GetProperties" class="ptolemy.domains.wireless.lib.GetProperties">
+</entity>
+
 <entity name="GraphicalLocator" class="ptolemy.domains.wireless.lib.GraphicalLocator">
 </entity>
 

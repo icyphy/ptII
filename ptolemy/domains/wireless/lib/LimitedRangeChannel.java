@@ -30,11 +30,9 @@
 
 package ptolemy.domains.wireless.lib;
 
-import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
@@ -47,15 +45,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// LimitedRangeChannel
 
 /**
-Model of a wireless channel with a specified transmission range.
+This is a model of a wireless channel with a specified transmission range.
 The transmission range can be specified in one of two ways.
-Either it is the value of the <i>defaultRange</i> parameter of this
-channel, or it is provided by the tranmitter on each call to
+Either it is the value of the <i>range</i> field in the
+<i>defaultProperties</i> parameter (a record) of this
+channel, or it is provided by the transmitter on each call to
 transmit() as a property argument.  To use the latter mechanism,
 it is necessary that the property token be an instance of RecordToken
 with a field named "range" that can be converted to a double
 (i.e., it can be a double, an int, or a byte).
-The default value for <i>defaultRange</i> is Infinity, which
+The default value for <i>range</i> is Infinity, which
 indicates that by default, there is no range limit.
 <p>
 Any receiver that is within the specified range when transmit()

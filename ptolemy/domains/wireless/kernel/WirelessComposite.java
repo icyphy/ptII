@@ -40,7 +40,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// TypedCompositeActor
 /**
-FIXME
+This is a composite actor for use in the wireless domain. Unlike
+the base class, this composite creates instances of WirelessIOPort
+(vs. TypedIOPort) when newPort() is called. Thus, when you add ports
+to the composite, they will be instances of WirelessIOPort.
 
 @author Edward A. Lee
 @version $Id$
