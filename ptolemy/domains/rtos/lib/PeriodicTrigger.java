@@ -1,6 +1,6 @@
 /* A source that emit a trigger signal periodically.
 
- Copyright (c) 1999-2000 The Regents of the University of California.
+ Copyright (c) 2001 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
-@AcceptedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.rtos.lib;
@@ -50,6 +50,8 @@ import ptolemy.kernel.util.Attribute;
 
 /**
 This actor produces a ramp at 2Hz.
+@author: Edward A. Lee
+@version: $Id$
 */
 public class PeriodicTrigger extends TypedAtomicActor {
 
