@@ -258,7 +258,7 @@ class TablePanel extends Panel {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         inner classess                    ////
+    ////                         inner classes                     ////
 
     // Inner Classes implementing the coordinates
 
