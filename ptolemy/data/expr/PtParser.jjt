@@ -1039,13 +1039,23 @@ String tidied, x;
 void functionDefinition() #PtFunctionDefinitionNode :
 {}
 {
-  <FUNCTION>
-  "("
-  [
-    <ID> { jjtThis._argList.add(token.image); } optTypeSpecifier()
-    ("," <ID> { jjtThis._argList.add(token.image); } optTypeSpecifier())*
-  ]
-  ")" expression()
+    <FUNCTION>
+         "(" [
+                 <ID> { jjtThis._argList.add(token.image); } optTypeSpecifier()
+                 ("," <ID> { jjtThis._argList.add(token.image); } optTypeSpecifier())*
+         ] ")" expression()
+        {
+            // A hack for type specification, since we don't have types in
+            // the syntax.
+            ParseTreeTypeInference inference = new ParseTreeTypeInference();
+            int argCount = jjtThis.getArgumentNameList().size();
+            jjtThis._argTypes = new ptolemy.data.type.Type[argCount];
+            for(int i = 0; i < argCount; i++) {
+                ASTPtRootNode argChild = ((ASTPtRootNode)jjtThis.jjtGetChild(i));
+                ptolemy.data.type.Type type = inference.inferTypes(argChild);
+                jjtThis._argTypes[i] = type;
+            }   
+        }
 }
 
 void optTypeSpecifier() #void :

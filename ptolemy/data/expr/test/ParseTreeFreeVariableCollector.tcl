@@ -70,103 +70,103 @@ proc theTest {expression} {
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-2.2 {Construct a Parser, try simple integer expressions} {
+test ParseTreeFreeVariableCollector-2.2 {Construct a Parser, try simple integer expressions} {
     list [theTest "2 + 3 + 4"] [theTest "2 - 3 - 4"] [theTest "2 * 3 * 4"] [theTest "7 % 5"] [theTest "12 / 2 / 3"]
 } {{} {} {} {} {}}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-2.3 {Construct a Parser, try complex integer expressions} {
+test ParseTreeFreeVariableCollector-2.3 {Construct a Parser, try complex integer expressions} {
     list [theTest "-(2 + (3) + 4*(3- 4 % 3)*(12/12))\n"]
 } {{}}
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-2.4 {Construct a Parser, try simple double expressions} {
+test ParseTreeFreeVariableCollector-2.4 {Construct a Parser, try simple double expressions} {
     list [theTest "2.0 + 3.5 + 4.2"] [theTest "2.2 - 3.6 - 4.2"] [theTest "2.0 * 3.5 * 4.2"] [theTest "7.1 % 5.5"] [theTest "12.0 / 2.4 / 2.5"]
 } {{} {} {} {} {}}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-2.5 {Construct a Parser, try complex double expressions} {
+test ParseTreeFreeVariableCollector-2.5 {Construct a Parser, try complex double expressions} {
     list [theTest "-(2.2 + (3.7%1.5) + 4.0*(3.2- 4.2 % 3.0)*(12.0/2.4/2.5/2.0))"]
 } {{}}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-2.6 {Construct a Parser, try creating complex numbers} {
+test ParseTreeFreeVariableCollector-2.6 {Construct a Parser, try creating complex numbers} {
     list [theTest "2i"] [theTest "3 + 2i"]
 } {{} {}}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-2.7 {Construct a Parser, try integer format specifiers} {
+test ParseTreeFreeVariableCollector-2.7 {Construct a Parser, try integer format specifiers} {
     list [theTest "29"] [theTest "035"] [theTest "0x1D"] [theTest "0X1d"] [theTest "0xbub"]
 } {{} {} {} {} {}}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-2.8 {Construct a Parser, try long format specifiers} {
+test ParseTreeFreeVariableCollector-2.8 {Construct a Parser, try long format specifiers} {
     list [theTest "29l"] [theTest "035L"] [theTest "0x1Dl"] [theTest "0X1dL"]
 } {{} {} {} {}}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-2.9 {Construct a Parser, try floating point format specifiers} {
+test ParseTreeFreeVariableCollector-2.9 {Construct a Parser, try floating point format specifiers} {
     list [theTest "1.8e1"] [theTest ".18E2"] [theTest "18.0f"] [theTest "18.0D"]
 } {{} {} {} {}}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-3.0 {Construct a Parser,mixing doubles, strings and integers using arithmetic} {
+test ParseTreeFreeVariableCollector-3.0 {Construct a Parser,mixing doubles, strings and integers using arithmetic} {
     list [theTest "-(2*9.5 + (3.5/7) + 4/.5) +  \" hello \" + (3*5 -4)\n"]
 } {{}}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-4.0 {Construct a Parser, try basic relational operators} {
+test ParseTreeFreeVariableCollector-4.0 {Construct a Parser, try basic relational operators} {
     list [theTest "2<4"] [theTest "4<=4"] [theTest "4>=4"] [theTest "4>7"] [theTest "5==4"] [theTest "5!=4"]
 } {{} {} {} {} {} {}}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-4.1 {Construct a Parser, try  relational operators with arithetic operators} {
+test ParseTreeFreeVariableCollector-4.1 {Construct a Parser, try  relational operators with arithetic operators} {
     list [theTest "(2)<(4*5 -9)"] [theTest "4<=4*7"] [theTest "4-7>=4"]
 } {{} {} {}}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-4.2 {Construct a Parser,test use of equality operator on strings} {
+test ParseTreeFreeVariableCollector-4.2 {Construct a Parser,test use of equality operator on strings} {
     list [theTest "\"hello\" == \"hello\""] [theTest "\"hello\" != \"hello\""]
 } {{} {}}
 
 ######################################################################
 ####
-test ParseTreeFreeVariableAnalysis-4.3 {Construct a Parser,test shift operators} {
+test ParseTreeFreeVariableCollector-4.3 {Construct a Parser,test shift operators} {
     list [theTest "2 << 2"] [theTest "-4 >> 1"] [theTest "-4L >>> 1"] [theTest "4UB >> 2"]
 } {{} {} {} {}}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-5.0 {Construct a Parser, test use of logical operators} {
+test ParseTreeFreeVariableCollector-5.0 {Construct a Parser, test use of logical operators} {
     list [theTest "\"hello\" == \"hello\" && 5>=5"] [theTest "\"hello\" != \"hello\" || 3<3"] [theTest "(3<=5) && (56 == 56) || (\"foo\" != \"foo\")"]
 } {{} {} {}}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-5.1 {Construct a Parser, unary minus & unary logical not} {
+test ParseTreeFreeVariableCollector-5.1 {Construct a Parser, unary minus & unary logical not} {
     list [theTest "!true"] [theTest "-7"]
 } {{} {}}
 
@@ -174,21 +174,21 @@ test ParseTreeFreeVariableAnalysis-5.1 {Construct a Parser, unary minus & unary 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-7.0 {Construct a Parser, try simple functional if then else} {
+test ParseTreeFreeVariableCollector-7.0 {Construct a Parser, try simple functional if then else} {
     list [theTest "(true)?(7):(6)\n"] [theTest "(true)?(7):(6.0)\n"]
 } {{} {}}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-7.1 {Construct a Parser, try harder if then else} {
+test ParseTreeFreeVariableCollector-7.1 {Construct a Parser, try harder if then else} {
     list [theTest "(false) ? (3/.5*4) : (pow(3.0,2.0))"]
 } {pow}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-7.2 {Test complicated expression within boolean test condition} {
+test ParseTreeFreeVariableCollector-7.2 {Test complicated expression within boolean test condition} {
     list [theTest "((3<5) && (\"test\" == \"test\")) ? (3/.5*4) : (pow(3.0,2.0))"]
 
 } {pow}
@@ -196,14 +196,14 @@ test ParseTreeFreeVariableAnalysis-7.2 {Test complicated expression within boole
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-7.3 {Test nested if then elses} {
+test ParseTreeFreeVariableCollector-7.3 {Test nested if then elses} {
     list [theTest "(true ? false: true ) ? (3/.5*4) : (pow(3.0,2.0))"]
 } {pow}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-7.4 {Test many levels of parenthesis nesting} {
+test ParseTreeFreeVariableCollector-7.4 {Test many levels of parenthesis nesting} {
     list [theTest "(true ? false: true ) ? (((((3/.5*4))))) : ((((((pow(3.0,2.0)))))))"]
    
 } {pow}
@@ -211,21 +211,21 @@ test ParseTreeFreeVariableAnalysis-7.4 {Test many levels of parenthesis nesting}
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-8.1 {Test bitwise operators} {
+test ParseTreeFreeVariableCollector-8.1 {Test bitwise operators} {
     list [theTest "5&2"] [theTest "5|2"] [theTest "5\#4"] [theTest "~5"]
 } {{} {} {} {}}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-8.2 {Test more complicated bitwise operations, and bitwise ops on booleans} {
+test ParseTreeFreeVariableCollector-8.2 {Test more complicated bitwise operations, and bitwise ops on booleans} {
     list [theTest "~(5 & 2 | 4)"] [theTest "(5>4) & (2==2)"] [theTest "(false) | (2!=2)"]
 } {{} {} {}}
 
 ######################################################################
 ####
 # Need to test that the tree can be reevaluated an arbitrary number of times
-test ParseTreeFreeVariableAnalysis-9.0 {Check that evaluation of the parse tree does not change the parse tree} {
+test ParseTreeFreeVariableCollector-9.0 {Check that evaluation of the parse tree does not change the parse tree} {
     list [theTest "2+3"] [theTest "2-3"] [theTest "2*3"] [theTest "2/4"] [theTest "11 % 3"]
   
 } {{} {} {} {} {}}
@@ -233,7 +233,7 @@ test ParseTreeFreeVariableAnalysis-9.0 {Check that evaluation of the parse tree 
 ######################################################################
 ####
 # Need to test that constants can be registered and recognized by the parser.
-test ParseTreeFreeVariableAnalysis-10.0 {Test that constants can be registered and recognized by the parser} {
+test ParseTreeFreeVariableCollector-10.0 {Test that constants can be registered and recognized by the parser} {
     list [theTest "half + one + neil"] [theTest "boolean == true"] [theTest "long"]
 } {{} {} {}}
 
@@ -242,7 +242,7 @@ test ParseTreeFreeVariableAnalysis-10.0 {Test that constants can be registered a
 # Need to test that functions can access methods registered in the 
 # search path of the parser. can be registered and recognized by the parser.
 # FIXME: this test is not finished.
-test ParseTreeFreeVariableAnalysis-10.1 {Test that functions can access registered classes.
+test ParseTreeFreeVariableCollector-10.1 {Test that functions can access registered classes.
 } {
     list [theTest "min(1,3)"] [theTest "sin(30*PI/180)"]
 } {min {sin PI}}
@@ -252,42 +252,42 @@ test ParseTreeFreeVariableAnalysis-10.1 {Test that functions can access register
 ######################################################################
 ####
 # Test matrix construction, when term types are identical.
-test ParseTreeFreeVariableAnalysis-12.1 {Test basic matrix construction.} {
+test ParseTreeFreeVariableCollector-12.1 {Test basic matrix construction.} {
     list [theTest "\[1,2,3;4,5,6;7,8,9\]" ]
 } {{}}
 
 # Test matrix construction, when term types are heterogeneous.
-test ParseTreeFreeVariableAnalysis-12.2 {Test matrix construction.} {
+test ParseTreeFreeVariableCollector-12.2 {Test matrix construction.} {
     list [theTest "\[1.0;2;3j\]" ]
 } {{}}
 
 ######################################################################
 ####
 # Test array reference.
-test ParseTreeFreeVariableAnalysis-13.0 {Test array reference.} {
+test ParseTreeFreeVariableCollector-13.0 {Test array reference.} {
     list [theTest "v1(0+1,2)+v1(0, v2-1)"] [theTest "cast(complex,v1(0+1,2)+v1(0, v2-1).add(v2))"]
 } {{v1 v2} {v1 v2 cast}}
 
-test ParseTreeFreeVariableAnalysis-13.1 {Test array method calls.} {
+test ParseTreeFreeVariableCollector-13.1 {Test array method calls.} {
     list [theTest "cast(int, {1, 2, 3}.getElement(1))"]
 } {cast}
 
 # Test record construction,
-test ParseTreeFreeVariableAnalysis-13.2 {Test record construction.} {
+test ParseTreeFreeVariableCollector-13.2 {Test record construction.} {
     list [theTest "{a=1,b=2.4}" ]
 } {{}}
 
 ######################################################################
 ####
 # Test eval
-test ParseTreeFreeVariableAnalysis-14.0 {Test eval inference.} {
+test ParseTreeFreeVariableCollector-14.0 {Test eval inference.} {
     list [theTest "eval(\"1+1\")" ]
 } {eval}
 
 ######################################################################
 ####
 # 
-test ParseTreeFreeVariableAnalysis-16.0 {Test method calls on arrays, matrices, etc.} {
+test ParseTreeFreeVariableCollector-16.0 {Test method calls on arrays, matrices, etc.} {
     list [theTest "cast({int},{1,2,3}.add({3,4,5}))"] [theTest "cast({int},{{a=1,b=2},{a=3,b=4},{a=5,b=6}}.get(\"a\"))"] [theTest "cast(\[int\],create({1,2,3,4,5,6},2,3))"] [theTest "cast({int},{1,1,1,1}.leftShift({1,2,3,4}))"]
 } {cast cast {create cast} cast}
 

@@ -292,9 +292,9 @@ test ParseTreeWriter-16.3 {Test property} {
 
 test ParseTreeWriter-17.1 {Test correct scoping in function definitions.} {
     list [theTest "function(x) x + p3"] [theTest "4 + p1(6)"]
-} {{(function (x) (x+p3))} (4+p1(6))}
+} {{(function(x) (x+p3))} (4+p1(6))}
 
 test ParseTreeWriter-17.2 {Test nested function definitions.} {
     list [theTest "function (y) function(x) x + y + p3"] [theTest "p1(6)"] [theTest "p2(4)"]
-} {{(function (y) (function (x) (x+y+p3)))} p1(6) p2(4)}
+} {{(function(y) (function(x) (x+y+p3)))} p1(6) p2(4)}
 

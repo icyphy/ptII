@@ -1700,34 +1700,49 @@ void functionDefinition()                           :
   jjtree.openNodeScope(jjtn000);
 /*@egen*/}
 {/*@bgen(jjtree) PtFunctionDefinitionNode */
-  try {
+    try {
 /*@egen*/
-  <FUNCTION>
-  "("
-  [
-    <ID> { jjtn000._argList.add(token.image); } optTypeSpecifier()
-    ("," <ID> { jjtn000._argList.add(token.image); } optTypeSpecifier())*
-  ]
-  ")" expression()/*@bgen(jjtree)*/
-  } catch (Throwable jjte000) {
-    if (jjtc000) {
-      jjtree.clearNodeScope(jjtn000);
-      jjtc000 = false;
-    } else {
-      jjtree.popNode();
+    <FUNCTION>
+         "(" [
+                 <ID> { jjtn000._argList.add(token.image); } optTypeSpecifier()
+                 ("," <ID> { jjtn000._argList.add(token.image); } optTypeSpecifier())*
+         ] ")" expression()/*@bgen(jjtree)*/
+        {
+          jjtree.closeNodeScope(jjtn000, true);
+          jjtc000 = false;
+        }
+/*@egen*/
+        {
+            // A hack for type specification, since we don't have types in
+            // the syntax.
+            ParseTreeTypeInference inference = new ParseTreeTypeInference();
+            int argCount = jjtn000.getArgumentNameList().size();
+            jjtn000._argTypes = new ptolemy.data.type.Type[argCount];
+            for(int i = 0; i < argCount; i++) {
+                ASTPtRootNode argChild = ((ASTPtRootNode)jjtn000.jjtGetChild(i));
+                ptolemy.data.type.Type type = inference.inferTypes(argChild);
+                jjtn000._argTypes[i] = type;
+            }   
+        }/*@bgen(jjtree)*/
+    } catch (Throwable jjte000) {
+      if (jjtc000) {
+        jjtree.clearNodeScope(jjtn000);
+        jjtc000 = false;
+      } else {
+        jjtree.popNode();
+      }
+      if (jjte000 instanceof RuntimeException) {
+        throw (RuntimeException)jjte000;
+      }
+      if (jjte000 instanceof ParseException) {
+        throw (ParseException)jjte000;
+      }
+      throw (Error)jjte000;
+    } finally {
+      if (jjtc000) {
+        jjtree.closeNodeScope(jjtn000, true);
+      }
     }
-    if (jjte000 instanceof RuntimeException) {
-      throw (RuntimeException)jjte000;
-    }
-    if (jjte000 instanceof ParseException) {
-      throw (ParseException)jjte000;
-    }
-    throw (Error)jjte000;
-  } finally {
-    if (jjtc000) {
-      jjtree.closeNodeScope(jjtn000, true);
-    }
-  }
 /*@egen*/
 }
 
