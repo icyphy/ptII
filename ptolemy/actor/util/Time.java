@@ -209,7 +209,8 @@ public class Time implements Comparable {
      *  @param timeValue The amount of the time increment.
      *  @return A new time object with the incremented time value.
      *  @exception ArithmeticException If the result is not a valid
-     *  number (the argument is NaN or the sum would be).
+     *  number (the argument is NaN or the sum would be), or the given time
+     *  value does not match the time resolution.
      */
     public Time add(double timeValue) {
         
