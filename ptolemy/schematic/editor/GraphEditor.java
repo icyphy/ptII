@@ -51,6 +51,7 @@ import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.resource.DefaultBundle;
 import diva.resource.RelativeBundle;
+import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.event.*;
 import java.io.File;
@@ -97,6 +98,8 @@ public class GraphEditor extends MDIApplication {
      */
     private GlobalLayout _globalLayout;
 
+    /** The application specific resources
+     */
     private RelativeBundle _guiResources = 
     new RelativeBundle("ptolemy.schematic.editor.GUI", getClass(), null);;
 
@@ -164,7 +167,8 @@ public class GraphEditor extends MDIApplication {
         GraphController controller = 
 	    jgraph.getGraphPane().getGraphController();
         
-	CompositeEntity entity = (CompositeEntity) ((GraphDocument)d).getGraph();
+	CompositeEntity entity = 
+	    (CompositeEntity) ((GraphDocument)d).getGraph();
 	GraphImpl impl = controller.getGraphImpl();
 	Graph graph = impl.createGraph(entity);
 	
@@ -220,9 +224,11 @@ public class GraphEditor extends MDIApplication {
 	
         // FIXME This should be setDividerLocation(double), but this 
         // appears to be broken in jdk1.2.2.   
-	pane.setDividerLocation(150);
 	JSplitPane splitPane = frame.getSplitPane();
-	splitPane.setDividerLocation(150);
+	pane.setMinimumSize(new Dimension(150,150));
+	((JComponent)pane.getTopComponent()).
+	    setMinimumSize(new Dimension(100,100));
+	splitPane.validate();	
     }
     
     public void createTreeNodes(JTreePane pane,
@@ -245,6 +251,7 @@ public class GraphEditor extends MDIApplication {
                         (CompositeEntity)entity);
             }
         }	
+	palette.setMinimumSize(new Dimension(200, 200));
 	//palette.triggerLayout();
     }
 
