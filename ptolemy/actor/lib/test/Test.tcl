@@ -206,6 +206,8 @@ test Test-1.5 {Export} {
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
     </property>
     <property name="" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
         <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">

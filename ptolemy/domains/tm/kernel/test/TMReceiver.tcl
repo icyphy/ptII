@@ -134,11 +134,10 @@ test TMReceiver-4.4 {put port that has a container} {
     list $debugOutput
 
 } {{Updating TMDirector parameter _iconDescription
+Updating TMDirector parameter timePrecisionInDigits
 Updating TMDirector parameter startTime
 Updating TMDirector parameter stopTime
 Updating TMDirector parameter preemptive
-Updating TMDirector parameter timeScale
---- The timeScale is set to: 10
 Updating TMDirector parameter defaultTaskExecutionTime
 Updating TMDirector parameter synchronizeToRealTime
 Invoking preinitialize():  .top.A0

@@ -233,6 +233,7 @@ test CompositeActor-7.1 {Test clone and description} {
         {ptolemy.actor.Director {.E3.E5.WORMDIR} attributes {
             {ptolemy.kernel.util.SingletonConfigurableAttribute {.E3.E5.WORMDIR._iconDescription} attributes {
             }}
+            {ptolemy.data.expr.Parameter {.E3.E5.WORMDIR.timePrecisionInDigits} 10}
         }}
     } ports {
     } classes {
