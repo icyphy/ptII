@@ -1,6 +1,6 @@
 /* A Token that contains a scene graph.
 
- Copyright (c) 1997-2003 The Regents of the University of California.
+ Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -47,7 +47,7 @@ proper type checking across 2D GR actors.
 
 @author Steve Neuendorffer
 @version $Id$
-@since Ptolemy II 2.0
+@since Ptolemy II 3.1
 
 */
 public class Scene2DToken extends Token {
@@ -116,7 +116,7 @@ public class Scene2DToken extends Token {
 
         /** Convert the specified token to a token having the type
          *  represented by this object.
-         *  @param t A token.
+         *  @param token A token.
          *  @return A token.
          *  @exception IllegalActionException If lossless conversion cannot
          *   be done.
