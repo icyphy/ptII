@@ -8,7 +8,7 @@
      it will appear in the desktop icon
 -->
 <jnlp codebase="@PTII_LOCALURL@"
-      href="@PTII_LOCALURL@/vergilHybridSystems.jnlp"> 
+      href="@PTII_LOCALURL@/vergilHyVision.jnlp"> 
   <information>
 	  <title>HyVision @PTVERSION@ </title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
@@ -40,8 +40,8 @@
   <resources os="Windows">
   	<nativelib href="signed/lib/matlabWindows.jar"/>
   </resources>
-  <application-desc main-class="ptolemy.actor.gui.jnlp.HybridSystemsApplication">
-	<argument>ptolemy/configs/hybrid/configuration.xml</argument>
-	<argument>ptolemy/configs/hybrid/intro.htm</argument>
+  <application-desc main-class="ptolemy.actor.gui.jnlp.HyVisionApplication">
+	<argument>ptolemy/configs/hyvision/configuration.xml</argument>
+	<argument>ptolemy/configs/hyvision/intro.htm</argument>
   </application-desc>
 </jnlp>
