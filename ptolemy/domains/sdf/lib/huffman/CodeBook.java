@@ -40,14 +40,14 @@ import ptolemy.kernel.util.*;
 import ptolemy.math.Complex;
 import java.util.HashMap;
 import java.util.Vector;
-import ptolemy.domains.sdf.lib.huffman.*;
+
 
 ///////////////////////////////////////////////////////////////
 /// CodeBook  -- Create a code book to be use for huffman encoder and
 //               decoder according to the huffman encoding scheme. 
 //               Code book will be built according to the distribution
 //               of input tokens. This actor will take in arbitrary numbers of
-//               Token as the training sequence and output a huffman tree.
+//               Tokens as the training sequence and output a huffman tree.
 //
 /**
 
@@ -71,6 +71,14 @@ public class CodeBook extends TypedAtomicActor {
 
         new Parameter(this, "trainingSequenceSize", new IntToken("30"));
 
+        
+        input = new TypedIOPort(this, "input", true, false);
+        input.setTypeEquals(Token.class);
+
+        output = new TypedIOPort(this, "output", false, true);
+        output.setTypeEquals(ObjectToken.class);
+        
+        /*
         output = (TypedIOPort) newPort("output");
         output.setOutput(true);
         output.setTypeEquals(ObjectToken.class);
@@ -78,6 +86,7 @@ public class CodeBook extends TypedAtomicActor {
         input = (TypedIOPort) newPort("input");
         input.setInput(true);
         input.setTypeEquals(Token.class);
+        */
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -125,8 +134,8 @@ public class CodeBook extends TypedAtomicActor {
         _debug("fired");
         
         HashMap map = new HashMap ();
-        //codeVector stores string which is
-        //the stringValue of the value of input token.
+        //codeVector stores strings which are
+        //the stringValues of the value of input tokens.
         Vector codeVector = new Vector();
         int counter = 0;
 
@@ -221,7 +230,8 @@ public class CodeBook extends TypedAtomicActor {
          System.out.println(huffArray[0].printPreOrder());
 
          ObjectToken token = new ObjectToken(huffArray[0]);
-         output.broadcast(token);
+         output.send(0,token);
+         //output.broadcast(token);
     }
 
     /* Postfire method make sure that the fire method only
