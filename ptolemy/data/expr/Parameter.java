@@ -196,15 +196,6 @@ public class Parameter extends Attribute implements ParameterListener {
         return newobj;
     }
 
-    /** Return a description of the object.
-     *  @param verbosity The level of verbosity.
-     *  @return A String describing the Parameter.
-     *  FIXME: needs to be finished.
-     */
-    public String description(int verbosity) {
-        return toString();
-    }
-
     /** Evaluate the current expression to a Token. If this parameter
      *  was last set directly with a Token do nothing. This method is also
      *  called after a Parameter is cloned.
@@ -506,9 +497,32 @@ public class Parameter extends Attribute implements ParameterListener {
      *  @return A String representing the class and the current token.
      */
     public String toString() {
-        String s =  super.toString() + " " + getToken().toString();
-        return s;
+        return super.toString() + " " + getToken().toString();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return a description of this Parameter. 
+     *  @param detail The level of detail.
+     *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
+     *  @return A String describing the Parameter.
+     *  FIXME: needs to be finished, how/what is needed to
+     *   describe a Parameter.
+     */
+    protected String _description(int detail, int indent, int bracket) {
+        try {
+            workspace().getReadAccess();
+            String result = _getIndentPrefix(indent);
+            if (bracket == 1 || bracket == 2) result += "{";
+            result += toString();
+            if (bracket == 2) result += "}";
+            return result;
+        } finally {
+            workspace().doneReading();
+        }
+  }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
