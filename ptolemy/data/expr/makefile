@@ -68,7 +68,8 @@ JSRCS = \
 	ASTPtSumNode.java \
 	ASTPtUnaryNode.java \
 	Parameter.java \
-	ParameterListener.java
+	ParameterListener.java \
+	UtilityFunctions.java
 
 EXTRA_SRCS =	PtParser.jjt $(JSRCS)
 
