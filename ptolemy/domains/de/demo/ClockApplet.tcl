@@ -75,6 +75,7 @@ $waiter link $r2
 set r3 [$sys connect $waitout $plotIn R3]
 
 # Run it
+$dir setStopTime 10.0
 $exec run
 
 $dir setStopTime 12.0
