@@ -46,6 +46,7 @@ if {[string compare test [info procs test]] == 1} then {
 # It would be nice if the tests would work in a vanilla itkwish binary.
 # Check for necessary classes and adjust the auto_path accordingly.
 #
+set manager [java::new ptolemy.actor.Manager]
 
 
 ######################################################################
@@ -73,14 +74,14 @@ test Director-3.1 {Test clone} {
 ######################################################################
 ####
 #
-test Director-4.1 {Test _makeDirectorOf and _makeExecDirectorOf} {
+test Director-4.1 {Test _makeDirectorOf} {
     # NOTE: Uses the setup above
     set e0 [java::new ptolemy.actor.CompositeActor $w]
     $e0 setName E0
+    $e0 setManager $manager
     $e0 setDirector $d3
-    $e0 setExecutiveDirector $d4
     list [$d3 getFullName] [$d4 getFullName] [enumToFullNames [$w directory]]
-} {W.E0.D3 W.E0.D4 W.E0}
+} {W.E0.D3 W.D4 W.E0}
 
 ######################################################################
 ####
@@ -90,27 +91,15 @@ test Director-5.1 {Test action methods} {
     set a1 [java::new ptolemy.actor.test.TestActor $e0 A1]
     set a2 [java::new ptolemy.actor.test.TestActor $e0 A2]
     $a1 clear
-    $d4 go 3
+    $manager blockingGo
     $a1 getRecord
 } {W.E0.A1.initialize
 W.E0.A2.initialize
 W.E0.A1.prefire
-W.E0.A2.prefire
 W.E0.A1.fire
-W.E0.A2.fire
 W.E0.A1.postfire
-W.E0.A2.postfire
-W.E0.A1.prefire
 W.E0.A2.prefire
-W.E0.A1.fire
 W.E0.A2.fire
-W.E0.A1.postfire
-W.E0.A2.postfire
-W.E0.A1.prefire
-W.E0.A2.prefire
-W.E0.A1.fire
-W.E0.A2.fire
-W.E0.A1.postfire
 W.E0.A2.postfire
 W.E0.A1.wrapup
 W.E0.A2.wrapup
@@ -125,27 +114,15 @@ test Director-6.1 {Test wormhole activation} {
     $e1 setDirector $d5
     $a2 setContainer $e1
     $a1 clear
-    $d4 go 3
+    $manager blockingGo
     $a1 getRecord
 } {W.E0.A1.initialize
 W.E0.E1.A2.initialize
 W.E0.A1.prefire
-W.E0.E1.A2.prefire
 W.E0.A1.fire
-W.E0.E1.A2.fire
 W.E0.A1.postfire
-W.E0.E1.A2.postfire
-W.E0.A1.prefire
 W.E0.E1.A2.prefire
-W.E0.A1.fire
 W.E0.E1.A2.fire
-W.E0.A1.postfire
-W.E0.E1.A2.postfire
-W.E0.A1.prefire
-W.E0.E1.A2.prefire
-W.E0.A1.fire
-W.E0.E1.A2.fire
-W.E0.A1.postfire
 W.E0.E1.A2.postfire
 W.E0.A1.wrapup
 W.E0.E1.A2.wrapup
@@ -193,6 +170,7 @@ test Director-8.1 {Test type checking} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setDirector $director
     $e0 setName E0
+    $e0 setManager $manager
 
     #create e1
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
@@ -213,7 +191,7 @@ test Director-8.1 {Test type checking} {
     $p1 link $r1
     $p2 link $r1
 
-    $director resolveTypes
+    $manager resolveTypes
     set rt1 [[$p1 getResolvedType] getName]
     set rt2 [[$p2 getResolvedType] getName]
     list $rt1 $rt2
@@ -249,7 +227,7 @@ test Director-8.4 {Test type resolution} {
     # use the setup above
     $p1 setDeclaredType [java::null]
 
-    $director resolveTypes
+    $manager resolveTypes
     set rt1 [[$p1 getResolvedType] getName]
     set rt2 [[$p2 getResolvedType] getName]
     list $rt1 $rt2
@@ -263,7 +241,7 @@ test Director-8.5 {Test type resolution} {
     $p1 setDeclaredType $t1
     $p2 setDeclaredType [java::null]
 
-    $director resolveTypes
+    $manager resolveTypes
     set rt1 [[$p1 getResolvedType] getName]
     set rt2 [[$p2 getResolvedType] getName]
     list $rt1 $rt2
@@ -275,8 +253,9 @@ test Director-8.5 {Test type resolution} {
 test Director-8.6 {Test type resolution} {
     set director [java::new ptolemy.actor.Director]
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
-    $e0 setExecutiveDirector $director
+    $e0 setDirector $director
     $e0 setName E0
+    $e0 setManager $manager
 
     #create e1, a source actor
     set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
@@ -318,7 +297,7 @@ test Director-8.6 {Test type resolution} {
     $p23 link $r24
     $p4 link $r24
 
-    $director resolveTypes
+    $manager resolveTypes
     set rt1 [[$p1 getResolvedType] getName]
     set rt21 [[$p21 getResolvedType] getName]
     set rt22 [[$p22 getResolvedType] getName]
@@ -339,7 +318,7 @@ test Director-8.7 {Test type resolution} {
     $p1 setDeclaredType $tDouble
     $p4 setDeclaredType $tInt
 
-    catch {$director resolveTypes} msg
+    catch {$manager resolveTypes} msg
     list $msg
 } {{ptolemy.actor.TypeConflictException: .E0.E1.P1 and .E0.E2.P21: cannot satisfy constraint.}}
 
