@@ -14,21 +14,35 @@ to <CODE>$PTII/bin/ptinvoke.in</CODE> that use
 to provide source level debugging of Ptolemy II.
  <p>Christopher Hylands modified Zoltan's original notes. 
 
+<h2>Contents</h2>
 <menu>
-<li> <a href="Emacs">Emacs</a>
-<li> <a href="SettingUpEmacs">Setting up Emacs</a>
+<li> <a href="#Emacs">Emacs</a>
+<li> <a href="#SettingUpEmacs">Setting up Emacs</a>
+<li> <a href="#InvokingTheDebugger">Invoking the debugger</a>
+<li> <a href="#debuggerExample">Debugger Example</a>
 </menu>
 
 
 <h2><a name="Emacs">Emacs</a></h2>
 
-The <CODE>gud.el</CODE> file included in Ptolemy II
+This page includes documentation on how to use the Java Debugger 
+<code>jdb</code> and GNU Emacs to debug Java code.
+
+<p>GNU Emacs is a powerful and complex editing and development
+environment.  If you are unfamiliar with GNU Emacs, you should try
+running the GNU Emacs tutorial.  In theory, it should be possible
+to debug Ptolemy using other debuggers, but we have not tried them.
+
+<p>The <CODE>gud.el</CODE> file included in Ptolemy II
+requires a version of GNU emacs more recent than Emacs-20.7.1.
+
+<p>The <code>gud.el</code> file 
 will not work with Emacs-20.7.1 because <CODE>M-x jdb</CODE>
 results in:
 <pre>
 Symbol's function definition is void: easy-mmode-define-keymap
 </pre>
-We have tested the interface under Emacs-20.2.1
+We have tested the interface under Emacs-21.2.1.
 
 <pre>
 
@@ -37,7 +51,7 @@ Below are the steps necessary to install Emacs under Windows.
 <ol>
 <li> 
 Emacs for Windows can be found at
-<a href="ftp://ftp.gnu.org/gnu/windows/emacs/latest"><CODE>ftp://ftp.gnu.org/gnu/windows/emacs/latest</CODE></a>
+<a href="ftp://ftp.gnu.org/gnu/windows/emacs/latest" target="_top"><CODE>ftp://ftp.gnu.org/gnu/windows/emacs/latest</CODE></a>
  <p>The file to download is<CODE>emacs-<I>xx.x</I>-bin-i386.tar.gz</CODE>
 
 <li> Untar or unzip the file in <CODE>c:\Program Files</CODE> so
@@ -54,11 +68,12 @@ To install Emacs, simply unpack all the files into a directory of your
   Emacs where to find its support files, and put an icon for Emacs in
   the Start Menu under "Start -&gt; Programs -&gt; Gnu Emacs -&gt; Emacs".
 </BLOCKQUOTE>
-
+So, go ahead and click on the <code>addpm.exe</code> icon, which 
+will add an Emacs icon to the start menu.
 </ol>
 
- <p>The GNU Emacs FAQ For Windows 95/98/ME/NT/XP and 2000 can be found
-at<a href="http://www.gnu.org/software/emacs/windows/ntemacs.html"><CODE>http://www.gnu.org/software/emacs/windows/ntemacs.html</CODE></a>
+ <p>The GNU Emacs FAQ For Windows 95/98/ME/NT/XP and 2000 can be found at
+<a href="http://www.gnu.org/software/emacs/windows/ntemacs.html" target="_top"><CODE>http://www.gnu.org/software/emacs/windows/ntemacs.html</CODE></a>
 
 <h2><a name="SettingUpEmacs">Setting up Emacs</a></h2>
 Emacs reads the file <CODE>$HOME/.emacs</CODE> at start up time.
@@ -75,14 +90,15 @@ enter the value <CODE>c:\users\yourname</CODE>
 
  <p>While you are editing environment variables, be sure that
 <CODE>$PTII</CODE> is set.  For details, see
-<a href="install.htm#settingptII">Set the value of the <CODE>PTII</CODE> environment variable</a>
+<a href="../install.htm#settingptII">Set the value of the <CODE>PTII</CODE> environment variable</a>
 
  <p>The GNU Emacs FAQ For Windows 95/98/ME/NT/XP and 2000
-at <a href="http://www.gnu.org/software/emacs/windows/ntemacs.html"><CODE>http://www.gnu.org/software/emacs/windows/ntemacs.html</CODE></a> discusses
+at <a href="http://www.gnu.org/software/emacs/windows/ntemacs.html" target="_top"><CODE>http://www.gnu.org/software/emacs/windows/ntemacs.html</CODE></a> discusses
 the <CODE>.emacs</CODE> file further.
 
  <p>To debug Ptolemy II, Emacs needs to be told where to find the
-gud.el file.  Start up Emacs by using
+<code>gud.el</code>
+ file.  Start up Emacs by using
 Start -&gt; Programs -&gt; Gnu Emacs -&gt; Emacs
 and add the following to your <CODE>$HOME/.emacs</CODE> file.
 
@@ -95,22 +111,23 @@ and add the following to your <CODE>$HOME/.emacs</CODE> file.
                  ))
 </pre>
 A more complete example <CODE>.emacs</CODE> file can be found at
-<a href="../../util/lisp/ptemacs.el"><CODE>$PTII/util/lisp/emacs.el</CODE></a>
+<a href="../../util/lisp/ptemacs.el"><CODE>$PTII/util/lisp/ptemacs.el</CODE></a>
 If you wish, you can copy this file to your <CODE>$HOME/.emacs</CODE>
-file.  This file includes support for
+file. This file includes support for
 <dl>
 <dt> <CODE>M-x shell</CODE>
 <dd> Brings up a bash shell
 
 <dt> (TODO) Java indentation
 <dd> Java indentation that follows the
-<a href="style.htm">Ptolemy II Style guid</a>
+<a href="style.htm">Ptolemy II Style guide</a>
 
 </dl>
 
 <h2><a name="InvokingTheDebugger">Invoking the debugger</a></h2>
 
-
+The Ptolemy II start up scripts in <code>$PTII/bin</code>
+have the following options that interact with the debugger
 
 <dl>
 <dt> <CODE>-debug</CODE>
@@ -202,5 +219,96 @@ gud-style commands are supported (check out the "GUD" menu in the *gud-..*
 buffer)
 
 
+<h2><a name="debuggerExample">Debugger Example</a></h2>
+Below is an example of how to use the debugger
+<ol>
+<li>Install emacs as per the <a href="#Emacs">Emacs</a> step above.
+<li>Set the Emacs load path as per the
+    <a href="#SettingUpEmacs">Setting up Emacs</a> step above.
+<li>Type <code>M-x shell</code>.  In Emacs, <code>M-x</code> means
+    <br>"Hit the <code>Esc</code> key and then the <code>x</code> key."
+<li>You will now be in a buffer named <code>*shell*</code>.  In
+    this buffer, start up vergil with
+<pre>
+$PTII/bin/vergil -debug $PTII/ptolemy/domains/sdf/demo/Spectrum/Spectrum.xml
+</pre>
+<li>Run the simulation by doing 
+    <code>View</code> -&gt; <code>Run</code> -&gt; <code>Go</code>
+<li>Start up the debugger by typing <code>M-x jdb</code>.
+    If your <code>.emacs</code> file contains:
+<pre>
+(setq gud-jdb-command-name "jdb -attach javadebug")
+</pre>
+then after typing <code>M-x jdb</code>, the following lines should
+appear in the minibuffer at the bottom of the emacs window:
+<pre>
+Run jdb (like this): jdb -attach javadebug 
+</pre>
+If <code>jdb -attach javadebug</code> does not appear, then type it 
+in.
+After the minibuffer contains <code>jdb -attach javadebug</code>
+hit <code>Enter</code> and jdb starts up.
+
+
+<li>Now we will set a break point in the <code>iterate()</code> method
+of the Ramp actor.   To do this, type in the following in
+the <code>*gud-javadebug*</code> buffer
+<pre>
+stop in ptolemy.actor.lib.Ramp.iterate
+</pre>
+
+<li>Then rerun the model with
+<code>View</code> -&gt; <code>Run</code> -&gt; <code>Go</code>
+<li>The debugger will stop execution in the <code>iterate()</code>
+method
+<li>The Emacs debugger interface can bring up the source file
+where the break point is set, but the interface sometimes needs
+help finding the file.  The quickest way is to view the file
+by typing <code>C-x C-f</code>
+and then <code>$PTII/ptolemy/actor/lib/Ramp.java</code>
+In Emacs documentation, <code>C-x</code> means
+<br>"Hold the <code>Control</code> key down and then hit the <code>x</code> key"
+and then typing
+<pre>
+up
+down
+where
+</pre>
+in the <code>*gud-javadebug*</code> buffer
+<li> To step through the code, type <code>next</code>
+<li> To view the value of a variable, type <code>print <i>variable name</i></code>
+<br>In the example below, I typed <code>next</code> twice, and
+then viewed the value of the <code>i</code> variable:
+<pre>
+  [7] java.lang.Thread.run (Thread.java:536)
+Thread-5[1] next
+> 
+Step completed: "thread=Thread-5", ptolemy.actor.lib.Ramp.iterate(), line=186 bci=17
+186    	for (int i = 0; i < count; i++) {
+
+Thread-5[1] next
+> 
+Step completed: "thread=Thread-5", ptolemy.actor.lib.Ramp.iterate(), line=187 bci=22
+187    	    _resultArray[i] = _stateToken;
+
+Thread-5[1] print i
+ i = 0
+Thread-5[1] 
+</pre>
+</ol>
+<p>To get further help with <code>jdb</code>, type <code>help</code>
+while in the <code>*gud-javadebug*</code> buffer.
+<br>For further information about <code>jdb</code>, see
+<a href="http://java.sun.com/products/jpda/doc/jdb.html" target="_top">Java<SUP><FONT SIZE="-2">TM</FONT></SUP> Platform Debugger Architecture</a>.
+
+<p>For further information about the Emacs Grand Unified Debugger (GUD) Interface,
+use the GNU Emacs Info help system.
+<ol>
+<li>Click on the <code>Help</code> menu, or type <code>M-x info</code>
+<li>Move the cursor to the <code>Emacs</code> line and type a <code>m</code>
+followed by hitting the <code>Enter</code> key.
+<li>Move the cursor down to the <code>Starting GUD</code> line and
+type a <code>m</code> and hit return
+</ol>
 </body>
 </html>
