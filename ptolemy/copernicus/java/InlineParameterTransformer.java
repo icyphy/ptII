@@ -86,12 +86,19 @@ import soot.jimple.toolkits.invoke.SiteInliner;
 import soot.jimple.toolkits.scalar.Evaluator;
 import soot.jimple.toolkits.scalar.LocalNameStandardizer;
 import soot.jimple.toolkits.typing.TypeAssigner;
+import soot.jimple.toolkits.scalar.ConditionalBranchFolder;
+import soot.jimple.toolkits.scalar.ConstantPropagatorAndFolder;
+import soot.jimple.toolkits.scalar.CopyPropagator;
+import soot.jimple.toolkits.scalar.DeadAssignmentEliminator;
+import soot.jimple.toolkits.scalar.UnreachableCodeEliminator;
 import soot.toolkits.graph.CompleteUnitGraph;
 import soot.toolkits.scalar.LocalDefs;
 import soot.toolkits.scalar.LocalUses;
+import soot.toolkits.scalar.LocalSplitter;
 import soot.toolkits.scalar.SimpleLocalDefs;
 import soot.toolkits.scalar.SimpleLocalUses;
 import soot.toolkits.scalar.UnitValueBoxPair;
+import soot.toolkits.scalar.UnusedLocalEliminator;
 
 //////////////////////////////////////////////////////////////////////////
 //// InlineParameterTransformer
@@ -185,15 +192,41 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
 
                 if (debug) System.out.println("method = " + method);
-
                 boolean moreToDo = true;
                 while (moreToDo) {
                     TypeAssigner.v().transform(body,
                             _phaseName + ".ta");
+                    
                     moreToDo = _inlineMethodCalls(theClass, method, body,
                             attributeToValueFieldMap, debug);
+                    
+                    // After inlining the methods, simplify the
+                    // control flow to avoid infinite recursion...
                     LocalNameStandardizer.v().transform(body,
                             _phaseName + ".lns");
+                    NamedObjEqualityEliminator.eliminateNamedObjComparisons(
+                            method, debug);
+                    LocalSplitter.v().transform(
+                            body, _phaseName + ".ls");
+                    LocalNameStandardizer.v().transform(
+                            body, _phaseName + ".lns");
+                    TypeAssigner.v().transform(
+                            body, _phaseName + ".ta");
+                    UnreachableCodeEliminator.v().transform(
+                            body, _phaseName + ".uce");
+                    CopyPropagator.v().transform(
+                            body, _phaseName + ".cp");
+                    ConstantPropagatorAndFolder.v().transform(
+                            body, _phaseName + ".cpf");
+                    ConditionalBranchFolder.v().transform(
+                            body, _phaseName + ".cbf");
+                    DeadAssignmentEliminator.v().transform(
+                            body, _phaseName + ".dae");
+                    UnreachableCodeEliminator.v().transform(
+                            body, _phaseName + ".uce");
+                    UnusedLocalEliminator.v().transform(
+                            body, _phaseName + ".ule");
+                    
                 }
             }
         }
@@ -235,7 +268,9 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                         body.getUnits().remove(stmt);
                         continue;
                     } else {
-                        // Inline calls to attribute changed.
+                        // Inline calls to attribute changed that do
+                        // not occur from within another
+                        // attributeChanged method.
                         if (r.getMethod().getSubSignature().equals(
                                     PtolemyUtilities.attributeChangedMethod.getSubSignature())) {
                             // If we are calling attribute changed on
@@ -267,10 +302,16 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                     inlinee.getDeclaringClass().setLibraryClass();
                                 }
                                 inlinee.retrieveActiveBody();
-                                if (debug) System.out.println("Inlining method call: " + r);
-                                SiteInliner.inlineSite(inlinee, stmt, method);
-                                
-                                doneSomething = true;
+                                if(inlinee.equals(method)) {
+                                    System.out.println("Skipping inline at " + r 
+                                            + " because we can't inline methods into themselves.");
+                                } else {
+                                    if (debug) System.out.println("Inlining method call: " + r);
+                                    if (debug) System.out.println("Inlinee = " + inlinee);
+                                    SiteInliner.inlineSite(inlinee, stmt, method);
+                                    
+                                    doneSomething = true;
+                                }
                             } else {
                                 // FIXME: this is a bit of a hack, but
                                 // for right now it seems to work.
@@ -483,7 +524,8 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                                 Jimple.v().newInstanceFieldRef(containerLocal, tokenField),
                                                 tokenLocal),
                                         stmt);
-                                // Invoke attributeChanged on the container of the variable.
+                                // Invoke attributeChanged on the
+                                // container of the variable.
                                 PtolemyUtilities.callAttributeChanged(
                                         containerLocal, (Local)r.getBase(),
                                         theClass, method, body, stmt);
@@ -494,8 +536,10 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                             } else if (r.getMethod().getSubSignature().equals(
                                     PtolemyUtilities.getExpressionMethod.getSubSignature())) {
                                 if (debug) System.out.println("Replacing getExpression on Variable");
-                                // First get the token out of the field, and then insert a call
-                                // to its toString method to get the expression.
+                                // First get the token out of the
+                                // field, and then insert a call to
+                                // its toString method to get the
+                                // expression.
                                 SootField tokenField =
                                     (SootField)attributeToValueFieldMap.get(attribute);
                                 if (tokenField == null) {

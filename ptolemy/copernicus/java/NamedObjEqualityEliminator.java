@@ -130,7 +130,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements HasP
             for (Iterator methods = entityClass.getMethods().iterator();
                  methods.hasNext();) {
                 SootMethod method = (SootMethod)methods.next();
-                _eliminateComparisons(entityClass, method, entity);
+                eliminateNamedObjComparisons(method, _debug);
             }
 
             // Recurse
@@ -139,11 +139,13 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements HasP
             }
         }
     }
-
-    private boolean _eliminateComparisons(SootClass theClass,
-            SootMethod method, Entity entity) {
+    
+    /** Remove comparisons between equal objects in the given method.
+     */
+    public static boolean eliminateNamedObjComparisons(SootMethod method,
+            boolean debug) {
         boolean doneSomething = false;
-        if (_debug) System.out.println("Removing object comparisons in " +
+        if (debug) System.out.println("Removing object comparisons in " +
                 method);
 
         JimpleBody body = (JimpleBody) method.retrieveActiveBody();
