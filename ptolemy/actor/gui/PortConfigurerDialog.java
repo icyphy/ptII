@@ -129,10 +129,10 @@ public class PortConfigurerDialog extends ComponentDialog
                         String moml = "<deletePort name=\""
                             + port.getName(container) + "\"/>\n";
 
-                            ChangeRequest request =
-                                new MoMLChangeRequest(this, container, moml);
-                            container.addChangeListener(this);
-                            container.requestChange(request);
+                        ChangeRequest request =
+                            new MoMLChangeRequest(this, container, moml);
+                        container.addChangeListener(this);
+                        container.requestChange(request);
                     }
                 }
             }
@@ -239,11 +239,11 @@ public class PortConfigurerDialog extends ComponentDialog
             String moml = "<port name=\""
                 + newName
                 + "\""
-                    + classMoML
-                    + "/>";
-                    _target.addChangeListener(this);
-                    _target.requestChange(new MoMLChangeRequest(this,
-                            _target, moml));
+                + classMoML
+                + "/>";
+            _target.addChangeListener(this);
+            _target.requestChange(new MoMLChangeRequest(this,
+                    _target, moml));
         }
         return dialog;
     }

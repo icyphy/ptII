@@ -165,8 +165,8 @@ public class CompositeActorApplication {
     public void report(String message, Exception ex) {
         String msg = "Exception thrown.\n" + message + "\n"
             + ex.toString();
-            System.err.println(msg);
-            ex.printStackTrace();
+        System.err.println(msg);
+        ex.printStackTrace();
     }
 
     /** If the specified model has a manager and is not already running,
@@ -206,18 +206,18 @@ public class CompositeActorApplication {
                 ModelFrame frame = new ModelFrame(model);
                 _openCount++;
                 frame.addWindowListener(new WindowAdapter() {
-                    public void windowClosed(WindowEvent event) {
-                        synchronized(CompositeActorApplication.this) {
-                            _openCount--;
-                            CompositeActorApplication.this.notifyAll();
-			    // FIXME: is this right?  We need
-			    // to exit if all the windows are closed?
-			    if (_openCount == 0) {
-				System.exit(0);
-			    }
+                        public void windowClosed(WindowEvent event) {
+                            synchronized(CompositeActorApplication.this) {
+                                _openCount--;
+                                CompositeActorApplication.this.notifyAll();
+                                // FIXME: is this right?  We need
+                                // to exit if all the windows are closed?
+                                if (_openCount == 0) {
+                                    System.exit(0);
+                                }
+                            }
                         }
-                    }
-                });
+                    });
                 frame.setBackground(new Color(0xe5e5e5));
                 frame.pack();
                 frame.centerOnScreen();

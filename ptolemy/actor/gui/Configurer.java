@@ -152,23 +152,23 @@ public class Configurer extends JPanel implements CloseListener {
         // invoked before that notification occurs if the
         // "X" is used to close the window.  Swing bug?
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                Iterator entries = _originalValues.entrySet().iterator();
-                while (entries.hasNext()) {
-                    Map.Entry entry = (Map.Entry)entries.next();
-                    Settable parameter = (Settable)
-                        _object.getAttribute((String)entry.getKey());
-                    try {
-                        parameter.setExpression((String)entry.getValue());
-                        // Force notification of listeners, unless value is
-                        // erroneous.
-                        if (parameter instanceof Variable) {
-                            ((Variable)parameter).getToken();
-                        }
-                    } catch (IllegalActionException ex) {}
+                public void run() {
+                    Iterator entries = _originalValues.entrySet().iterator();
+                    while (entries.hasNext()) {
+                        Map.Entry entry = (Map.Entry)entries.next();
+                        Settable parameter = (Settable)
+                            _object.getAttribute((String)entry.getKey());
+                        try {
+                            parameter.setExpression((String)entry.getValue());
+                            // Force notification of listeners, unless value is
+                            // erroneous.
+                            if (parameter instanceof Variable) {
+                                ((Variable)parameter).getToken();
+                            }
+                        } catch (IllegalActionException ex) {}
+                    }
                 }
-            }
-        });
+            });
     }
 
     /** Notify any panels in this configurer that implement the

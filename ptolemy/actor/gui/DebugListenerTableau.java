@@ -82,10 +82,10 @@ public class DebugListenerTableau extends Tableau {
 	frame.setTableau(this);
 	// Listen for window closing events to unregister.
 	frame.addWindowListener(new WindowAdapter() {
-	    public void windowClosing(WindowEvent e) {
-                setDebuggable(null);
-	    }
-	});
+                public void windowClosing(WindowEvent e) {
+                    setDebuggable(null);
+                }
+            });
         if (container instanceof TextEffigy) {
             ((TextEffigy)container).setDocument(frame.text.getDocument());
         }

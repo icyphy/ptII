@@ -147,39 +147,39 @@ public class ModelPane extends JPanel implements CloseListener {
                 _buttonPanel.add(_goButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _goButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent event) {
-                        startRun();
-                    }
-                });
+                        public void actionPerformed(ActionEvent event) {
+                            startRun();
+                        }
+                    });
 
                 _pauseButton = new JButton("Pause");
                 _pauseButton.setToolTipText("Pause execution of the model");
                 _buttonPanel.add(_pauseButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _pauseButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent event) {
-                        pauseRun();
-                    }
-                });
+                        public void actionPerformed(ActionEvent event) {
+                            pauseRun();
+                        }
+                    });
 
                 _resumeButton = new JButton("Resume");
                 _resumeButton.setToolTipText("Resume executing the model");
                 _buttonPanel.add(_resumeButton);
                 _buttonPanel.add(Box.createRigidArea(new Dimension(10, 0)));
                 _resumeButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent event) {
-                        resumeRun();
-                    }
-                });
+                        public void actionPerformed(ActionEvent event) {
+                            resumeRun();
+                        }
+                    });
 
                 _stopButton = new JButton("Stop");
                 _stopButton.setToolTipText("Stop executing the model");
                 _buttonPanel.add(_stopButton);
                 _stopButton.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent event) {
-                        stopRun();
-                    }
-                });
+                        public void actionPerformed(ActionEvent event) {
+                            stopRun();
+                        }
+                    });
                 _controlPanel.add(_buttonPanel);
                 _buttonPanel.setBackground(null);
             }

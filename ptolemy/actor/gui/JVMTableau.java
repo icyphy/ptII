@@ -111,11 +111,11 @@ public class JVMTableau extends Tableau {
 	    // Button to request GC.
 	    JButton GCButton = new JButton("Request Garbage Collection");
 	    GCButton.addActionListener(new ActionListener() {
-                public void actionPerformed(ActionEvent event) {
-                    System.gc();
-                    updateMemoryStatistics(memoryArea);
-                }
-            });
+                    public void actionPerformed(ActionEvent event) {
+                        System.gc();
+                        updateMemoryStatistics(memoryArea);
+                    }
+                });
 	    component.add(GCButton);
 
 	    // Display system properties

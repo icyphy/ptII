@@ -276,17 +276,17 @@ public abstract class TableauFrame extends Top {
                     canCreateBlank = true;
                     String name = factory.getName();
                     ActionListener menuListener = new ActionListener() {
-                        public void actionPerformed(ActionEvent event) {
-                            Effigy effigy = null;
-                            try {
-                                effigy = factory.createEffigy(directory);
-                            } catch (Exception ex) {
-                                MessageHandler.error(
-                                        "Could not create new effigy", ex);
+                            public void actionPerformed(ActionEvent event) {
+                                Effigy effigy = null;
+                                try {
+                                    effigy = factory.createEffigy(directory);
+                                } catch (Exception ex) {
+                                    MessageHandler.error(
+                                            "Could not create new effigy", ex);
+                                }
+                                configuration.createPrimaryTableau(effigy);
                             }
-                            configuration.createPrimaryTableau(effigy);
-                        }
-                    };
+                        };
                     JMenuItem item = new JMenuItem(name);
                     item.setActionCommand(name);
                     item.setMnemonic(name.charAt(0));

@@ -252,32 +252,32 @@ public class PtolemyQuery extends Query
                 }
 		String moml = "<property name=\""
 		    + castAttribute.getName(parent)
-                        + "\" value=\""
-                        + StringUtilities.escapeForXML(stringValue(name))
-                            + "\"/>";
-                        request = new MoMLChangeRequest(
-                                this,         // originator
-                                parent,       // context
-                                moml,         // MoML code
-                                null);        // base
+                    + "\" value=\""
+                    + StringUtilities.escapeForXML(stringValue(name))
+                    + "\"/>";
+                request = new MoMLChangeRequest(
+                        this,         // originator
+                        parent,       // context
+                        moml,         // MoML code
+                        null);        // base
 	    } else {
 		// If the attribute is not a NamedObj, then we
 		// set its value directly.
 		request = new ChangeRequest(this, name) {
-		    protected void _execute() throws IllegalActionException {
-			attribute.setExpression(stringValue(name));
+                        protected void _execute() throws IllegalActionException {
+                            attribute.setExpression(stringValue(name));
 
-                        // Here, we need to handle instances of Variable
-			// specially.  This is too bad...
-			if (attribute instanceof Variable) {
-                            // FIXME: Will this ever happen?  A Variable that
-                            // is not a NamedObj???
-                            // Retrieve the token to force evaluation, so as to
-			    // check the validity of the new value.
-			    ((Variable)attribute).getToken();
-			}
-		    }
-		};
+                            // Here, we need to handle instances of Variable
+                            // specially.  This is too bad...
+                            if (attribute instanceof Variable) {
+                                // FIXME: Will this ever happen?  A Variable that
+                                // is not a NamedObj???
+                                // Retrieve the token to force evaluation, so as to
+                                // check the validity of the new value.
+                                ((Variable)attribute).getToken();
+                            }
+                        }
+                    };
 	    }
             // NOTE: This object is never removed as a listener from
             // the change request.  This is OK because this query will
@@ -378,42 +378,42 @@ public class PtolemyQuery extends Query
             // NOTE: Do this in the event thread, since this might be invoked
             // in whatever thread is processing mutations.
             SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
+                    public void run() {
 
-                    _dialog = new ComponentDialog(null, "Error", _query, null);
+                        _dialog = new ComponentDialog(null, "Error", _query, null);
 
-                    // The above returns only when the modal dialog is closing.
-                    // The following will force a new dialog to
-                    // be created if the value is not valid.
-                    _query._isOpenErrorWindow = false;
+                        // The above returns only when the modal dialog is closing.
+                        // The following will force a new dialog to
+                        // be created if the value is not valid.
+                        _query._isOpenErrorWindow = false;
 
-                    if (_dialog.buttonPressed().equals("Cancel")) {
-                        if (_revertValue.containsKey(entryName)) {
-                            String revertValue = (String)
-                                _revertValue.get(entryName);
-                            setAndNotify(((NamedObj)attribute).getName(),
-                                    revertValue);
-                        }
-                    } else {
-                        // Force evaluation to check validity of the entry.
-                        // NOTE: Normally, we would not need to force
-                        // evaluation because if the value has changed, then
-                        // listeners are automatically notified.  However,
-                        // if the value has not changed, then they are not
-                        // notified.  Since the original value was invalid,
-                        // it is not acceptable to skip notification in this
-                        // case.  So we force it. Too bad we have to treat
-                        // instances of Variable specially here...
-                        if (attribute instanceof Variable) {
-                            try {
-                                ((Variable)attribute).getToken();
-                            } catch (IllegalActionException ex) {
-                                changeFailed(change, ex);
+                        if (_dialog.buttonPressed().equals("Cancel")) {
+                            if (_revertValue.containsKey(entryName)) {
+                                String revertValue = (String)
+                                    _revertValue.get(entryName);
+                                setAndNotify(((NamedObj)attribute).getName(),
+                                        revertValue);
+                            }
+                        } else {
+                            // Force evaluation to check validity of the entry.
+                            // NOTE: Normally, we would not need to force
+                            // evaluation because if the value has changed, then
+                            // listeners are automatically notified.  However,
+                            // if the value has not changed, then they are not
+                            // notified.  Since the original value was invalid,
+                            // it is not acceptable to skip notification in this
+                            // case.  So we force it. Too bad we have to treat
+                            // instances of Variable specially here...
+                            if (attribute instanceof Variable) {
+                                try {
+                                    ((Variable)attribute).getToken();
+                                } catch (IllegalActionException ex) {
+                                    changeFailed(change, ex);
+                                }
                             }
                         }
                     }
-                }
-            });
+                });
         }
     }
 
@@ -430,33 +430,33 @@ public class PtolemyQuery extends Query
         // from another thread.  And this method is called whenever an
         // attribute change has occurred, which can happen in any thread.
         SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
+                public void run() {
 
-                // Check that the attribute is attached to at least one entry.
-                if (_attributes.containsValue(attribute)) {
+                    // Check that the attribute is attached to at least one entry.
+                    if (_attributes.containsValue(attribute)) {
 
-                    // Get the list of entry names that the attribute
-                    // is attached to.
-                    List entryNameList = (List)
-                        _varToListOfEntries.get(attribute);
+                        // Get the list of entry names that the attribute
+                        // is attached to.
+                        List entryNameList = (List)
+                            _varToListOfEntries.get(attribute);
 
-                    // For each entry name, call set() to update its
-                    // value with the value of attribute
-                    Iterator entryNames = entryNameList.iterator();
+                        // For each entry name, call set() to update its
+                        // value with the value of attribute
+                        Iterator entryNames = entryNameList.iterator();
 
-                    while (entryNames.hasNext()) {
-                        String name = (String)entryNames.next();
-                        String newValue = attribute.getExpression();
+                        while (entryNames.hasNext()) {
+                            String name = (String)entryNames.next();
+                            String newValue = attribute.getExpression();
 
-                        // Compare value against what is in already to avoid
-                        // changing it again.
-                        if (!stringValue(name).equals(newValue)) {
-                            set(name, attribute.getExpression());
+                            // Compare value against what is in already to avoid
+                            // changing it again.
+                            if (!stringValue(name).equals(newValue)) {
+                                set(name, attribute.getExpression());
+                            }
                         }
                     }
                 }
-            }
-        });
+            });
     }
 
     /** Unsubscribe as a listener to all objects that we have subscribed to.

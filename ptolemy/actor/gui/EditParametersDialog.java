@@ -141,9 +141,9 @@ public class EditParametersDialog extends ComponentDialog
                 String moml = "<deleteProperty name=\""
                     + deleteName
                     + "\"/>";
-                    _target.addChangeListener(this);
-                    _target.requestChange(
-                            new MoMLChangeRequest(this, _target, moml));
+                _target.addChangeListener(this);
+                _target.requestChange(
+                        new MoMLChangeRequest(this, _target, moml));
             }
         } else if (buttonPressed().equals("Edit Styles")) {
             // Create a dialog for setting parameter styles.
@@ -265,13 +265,13 @@ public class EditParametersDialog extends ComponentDialog
             String moml = "<property name=\""
                 + newName
                 + "\" value=\""
-                    + newDefValue.toString()
-                        + "\" class=\""
-                        + _query.stringValue("class")
-                            + "\"/>";
-                        _target.addChangeListener(this);
-                        _target.requestChange(
-                                new MoMLChangeRequest(this, _target, moml));
+                + newDefValue.toString()
+                + "\" class=\""
+                + _query.stringValue("class")
+                + "\"/>";
+            _target.addChangeListener(this);
+            _target.requestChange(
+                    new MoMLChangeRequest(this, _target, moml));
         }
         return dialog;
     }
@@ -281,7 +281,7 @@ public class EditParametersDialog extends ComponentDialog
 
     // Button labels.
     private static String[] _moreButtons
-            = {"Commit", "Add", "Remove", "Edit Styles", "Cancel"};
+    = {"Commit", "Add", "Remove", "Edit Styles", "Cancel"};
 
     // The owner window.
     private Frame _owner;
