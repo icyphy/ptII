@@ -188,8 +188,8 @@ public class Director extends NamedObj implements Executable {
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
-     *  @exception IllegalActionException If any called method of the
-     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If any called method of one
+     *  of the associated actors throws it.
      */
     public void fire() throws IllegalActionException {
         // Somewhere in here, constrained mutations should
@@ -267,8 +267,8 @@ public class Director extends NamedObj implements Executable {
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
-     *  @exception IllegalActionException If the initialize() method of the
-     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If the initialize() method of
+     *  one of the associated actors throws it.
      */
     public void initialize() throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
@@ -347,8 +347,7 @@ public class Director extends NamedObj implements Executable {
      *  @return True if the Director wishes to be scheduled for another
      *  iteration
      *  @exception IllegalActionException *Deprecate* If the postfire()
-     *  method of the container or one of the deeply contained actors
-     *  throws it.
+     *  method of one of the associated actors throws it.
      */
     public boolean postfire() throws IllegalActionException {
         return false;
@@ -364,8 +363,7 @@ public class Director extends NamedObj implements Executable {
      *  @return True if the Director wishes to be scheduled for another
      *  iteration
      *  @exception IllegalActionException *Deprecate* If the postfire()
-     *  method of the container or one of the deeply contained actors
-     *  throws it.
+     *  method of one of the associated actors throws it.
      */
     public boolean prefire() throws IllegalActionException {
         return true;
@@ -419,10 +417,10 @@ public class Director extends NamedObj implements Executable {
      *  Director. The default implementation of this method is a no op.
      *  Domains may override this method and in particular, process 
      *  domains should use this method to gracefully end the execution 
-     *  of threads that are operating in this model. This method is 
+     *  of threads that are operating in this model. This method is not
      *  synchronized.
      */
-    public synchronized void finish() {
+    public void finish() {
     }
 
     /** Recursively terminate all of our actors.   Domains may need to
@@ -510,15 +508,16 @@ public class Director extends NamedObj implements Executable {
     }
 
     /** Invoke the wrapup() method of all the actors contained in the
-     *  Director's container.
+     *  Director's container.   In this base class wrapup() is called on the
+     *  associated actors in the order of their creation.
      *  <p>
      *  This method should be invoked once per execution.  None of the other
      *  action methods should be invoked after it in the execution.
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
-     *  @exception IllegalActionException If the wrapup() method of the
-     *   container or one of the deeply contained actors throws it.
+     *  @exception IllegalActionException If the wrapup() method of
+     *   one of the associated actors throws it.
      */
     public void wrapup() throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
