@@ -462,7 +462,7 @@ public class Query extends JPanel {
      *  @param theValues The value of this text area
      */
     public void addTextArea(String name, String label, String theValue) {
-        addTextArea(name, label, theValue, Color.white);
+        addTextArea(name, label, theValue, Color.white, _height, _width);
     }
     
     /*  Create a text area.
@@ -476,9 +476,25 @@ public class Query extends JPanel {
             String label,
             String theValue,
             Color background) {
+        addTextArea(name, label, theValue, background, _height, _width);
+    }
+
+    /*  Create a text area with the specified height and width (in characters).
+     *  @param name The name used to identify the entry (when calling get).
+     *  @param label The label to attach to the entry.
+     *  @param theValues The value of this text area.
+     *  @param background The background color.
+     */
+    public void addTextArea(
+            String name,
+            String label,
+            String theValue,
+            Color background,
+            int height,
+            int width) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
-        JTextArea textArea = new JTextArea(theValue, _height, _width);
+        JTextArea textArea = new JTextArea(theValue, height, width);
         textArea.setEditable(true);
         textArea.setBackground(background);
         QueryScrollPane textPane = new QueryScrollPane(textArea);
