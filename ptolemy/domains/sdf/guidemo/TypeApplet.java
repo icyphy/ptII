@@ -48,22 +48,21 @@ import javax.swing.SwingConstants;
 import javax.swing.SwingUtilities;
 
 
-// import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
-//import ptolemy.data.expr.*;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.actor.util.*;
-// import ptolemy.domains.sdf.kernel.*;
-// import ptolemy.domains.sdf.lib.*;
 import ptolemy.plot.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// TypeApplet
 /**
-An applet that demonstrates the Ptolemy II type system.
+An applet that demonstrates the Ptolemy II type system.  This applet
+connects two ramps to two inputs of an expression actor, and connects
+the output of the expression actor to either a printer or a plotter.
+It displays a Diva animation of the type resolution process.
 
 @author Yuhong Xiong, John Reekie
 @version $Id$
@@ -98,7 +97,8 @@ public class TypeApplet extends SDFApplet {
         private TraceModel.Element _currentElement[];
 
 
-    /** Initialize the applet.
+    /** After invoking super.init(), create and connect the actors.
+     *  Also, create the on-screen Diva displays.
      */
     public void init() {
         super.init();
@@ -349,6 +349,13 @@ public class TypeApplet extends SDFApplet {
         return traceWidget;
     }
 
+    /** Override the base class to avoid executing the model automatically
+     *  when the applet starts.  This way, the initial types (NaT) are
+     *  displayed in the Diva animation.
+     */
+    public void start() {
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -357,8 +364,9 @@ public class TypeApplet extends SDFApplet {
      */
     protected void _go() {
 	try {
-	    // FIXME: Before parameter change is supported, totally
-	    // replace the parameters by new instances.
+	    // FIXME: None of this should be necessary.  These
+            // parameters should be connected to a listener attached to
+            // the query object.
 	    _ramp1.init.setContainer(null);
 	    Parameter init1 = new Parameter(_ramp1, "init");
 	    _ramp1.init = init1;
@@ -465,7 +473,8 @@ public class TypeApplet extends SDFApplet {
         TypedIOPort input2 = new TypedIOPort(_expr, "input2", true, false);
 
         // Create and configure plotter
-        _plotter = new TimePlot(_toplevel, "plot");
+        _plotter = new PlotActor(_toplevel, "plot");
+
         _plotter.setPanel(_ioPanel);
 //            _plotter.setPanel(this);
         _plotter.plot.setGrid(true);
@@ -576,7 +585,7 @@ public class TypeApplet extends SDFApplet {
     ////                         private variables                 ////
     private Expression _expr;
     private Ramp _ramp1, _ramp2;
-    private TimePlot _plotter;
+    private PlotActor _plotter;
     private Print _printer;
 
 //    private Query _ramp1InitQuery = new Query();
