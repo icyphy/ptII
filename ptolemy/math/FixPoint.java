@@ -139,12 +139,12 @@ public final class FixPoint implements Cloneable, Serializable {
      *  @param precision The precision of this Fixpoint.
      *  @param value The value that will be represented by
      *  the fixpoint given the finite precision.  */
-    public FixPoint(Precision precision, BigInteger value ) {
+    public FixPoint(Precision precision, BigInteger value) {
  	_initialize();
 	try {
 	    _precision = precision;
-	    _value     = new Fixvalue( value );
-	} catch (IllegalArgumentException e ) {
+	    _value     = new Fixvalue(value);
+	} catch (IllegalArgumentException e) {
 	    throw new IllegalArgumentException(e.getMessage());
 	}
     }
@@ -165,7 +165,7 @@ public final class FixPoint implements Cloneable, Serializable {
      *  @return A non-negative fix point.
      */
     public final FixPoint absolute() {
-        return new FixPoint( _precision, _value.fixvalue.abs());
+        return new FixPoint(_precision, _value.fixvalue.abs());
     }
 
 
@@ -176,14 +176,14 @@ public final class FixPoint implements Cloneable, Serializable {
      *  @param arg A Fixpoint number.
      *  @return A new Fixpoint number.
      */
-    public FixPoint add(FixPoint arg ) {
+    public FixPoint add(FixPoint arg) {
 	// Align the precision of the two Fixpoints
 	Precision  cp = _precision.matchThePoint(this._precision, arg.getPrecision());
 	Fixvalue argX = this._alignToPrecision(cp);
 	Fixvalue argY =  arg._alignToPrecision(cp);
 
 	// Determine the new Fixvalue
-	Fixvalue argZ =  argX.add( argY );
+	Fixvalue argZ =  argX.add(argY);
 
 	// return the FixPoint with the correct precision and result
         return new FixPoint(cp, argZ);
@@ -197,7 +197,7 @@ public final class FixPoint implements Cloneable, Serializable {
      *   the result is changed to accommodate the result.
      *   @param arg A Fixpoint number.
      *   @return A new Fixpoint number.  */
-    public FixPoint divide(FixPoint arg ) {
+    public FixPoint divide(FixPoint arg) {
 	// Align the precision of the two Fixpoints
 	Precision cp = _precision.matchThePoint(this._precision,
 						arg.getPrecision());
@@ -207,14 +207,14 @@ public final class FixPoint implements Cloneable, Serializable {
 	// To compute the division, we use a trick, we make a
 	// BigDecimal from the BigIntegers and use the division
 	// operator of BigDecimal
-	BigDecimal dx = new BigDecimal( argX.fixvalue );
-	BigDecimal dy = new BigDecimal( argY.fixvalue );
+	BigDecimal dx = new BigDecimal(argX.fixvalue);
+	BigDecimal dy = new BigDecimal(argY.fixvalue);
 
 	// FIXME: Should we use as scale factor (2^fractionBits)/log(10)?
-	BigDecimal dz = dx.divide( dy, 32, BigDecimal.ROUND_HALF_UP );
+	BigDecimal dz = dx.divide(dy, 32, BigDecimal.ROUND_HALF_UP);
 
 	// Create a Fixvalue with the additional bits set
-	FixPoint result = Quantizer.round( dz.doubleValue(), cp );
+	FixPoint result = Quantizer.round(dz.doubleValue(), cp);
 
         // return the new FixPoint
 	return result;
@@ -244,7 +244,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	Fixvalue argX = this._alignToPrecision(cp);
 	Fixvalue argY = arg._alignToPrecision(cp);
 
-        return ( argX.fixvalue.equals( argY.fixvalue) );
+        return (argX.fixvalue.equals(argY.fixvalue));
     }
 
 
@@ -269,7 +269,7 @@ public final class FixPoint implements Cloneable, Serializable {
      *  @param arg A Fixpoint number.
      *  @return A new Fixpoint number.
      */
-    public FixPoint multiply(FixPoint arg ) {
+    public FixPoint multiply(FixPoint arg) {
 	// Align the precision of the two Fixpoints
 	Precision  cp = _precision.matchThePoint(this._precision,
 						 arg.getPrecision());
@@ -277,12 +277,13 @@ public final class FixPoint implements Cloneable, Serializable {
 	Fixvalue argY = arg._alignToPrecision(cp);
 
 	// Determine the new Fixvalue
-	Fixvalue argZ =  argX.multiply( argY );
+	Fixvalue argZ =  argX.multiply(argY);
 
         // Determine the precision of the result
 	int intLa = (argX.getIntegerBits(cp)).fixvalue.bitLength();
 	int intLb = (argY.getIntegerBits(cp)).fixvalue.bitLength();
-	Precision np = new Precision( 2*cp.getFractionBitLength() + intLa+intLb, intLa+intLb);
+	Precision np = new Precision(2*cp.getFractionBitLength() +
+                intLa+intLb, intLa+intLb);
 
 	// return the FixPoint with the correct precision and result
         return new FixPoint(np, argZ);
@@ -299,20 +300,20 @@ public final class FixPoint implements Cloneable, Serializable {
         @return A bit string of the form "<i>integerbits . fractionbits</i>".
      */
     public String toBitString() {
-        Fixvalue fractionPart = _value.getFractionBits( _precision );
+        Fixvalue fractionPart = _value.getFractionBits(_precision);
         int num = fractionPart.fixvalue.bitLength();
         int delta = _precision.getFractionBitLength() - num;
         String ln = _value.getIntegerBits(_precision).toString();
-        //System.err.println(" Num: " + num );
-        //System.err.println(" REAL: " + _precision.getFractionBitLength() );
-        //System.err.println(" Delta: " + delta );
-        if ( _precision.getFractionBitLength() > 0 ) {
+        //System.err.println(" Num: " + num);
+        //System.err.println(" REAL: " + _precision.getFractionBitLength());
+        //System.err.println(" Delta: " + delta);
+        if (_precision.getFractionBitLength() > 0) {
             ln +=  ".";
             // Append the zeros
-            for(int i=0; i<delta; i++ ) {
+            for(int i = 0; i < delta; i++) {
                 ln += "0";
             }
-            if ( num > 0 ) {
+            if (num > 0) {
                 ln += _value.getFractionBits(_precision).toString();
             }
         }
@@ -343,36 +344,36 @@ public final class FixPoint implements Cloneable, Serializable {
      *  @param mode The mode of quantization.
      *  @return A new Fixpoint with the given precision.
      */
-    public FixPoint scaleToPrecision(Precision newprecision, int mode ) {
+    public FixPoint scaleToPrecision(Precision newprecision, int mode) {
 
         double maxValue = newprecision.findMax();
         double minValue = newprecision.findMin();
 
         double value = this.doubleValue();
 
-        if ( minValue < value && value < maxValue ) {
+        if (minValue < value && value < maxValue) {
             Fixvalue newvalue =
-                _scaleBits(_value, _precision, newprecision, mode );
+                _scaleBits(_value, _precision, newprecision, mode);
             return new FixPoint(newprecision, newvalue);
         } else {
 
             FixPoint result;
 
 	    // Check how to resolve the rounding of the fractional part
-	    switch( mode ) {
+	    switch(mode) {
 	    case 0: //SATURATE
 
-                if ( _value.fixvalue.signum() >= 0 ) {
-                    result = Quantizer.round( maxValue, newprecision);
+                if (_value.fixvalue.signum() >= 0) {
+                    result = Quantizer.round(maxValue, newprecision);
                 } else {
-                    result = Quantizer.round( minValue, newprecision);
+                    result = Quantizer.round(minValue, newprecision);
                 }
-                result.setError( OVERFLOW );
+                result.setError(OVERFLOW);
                 return result;
 
 	    case 1: //ZERO_SATURATE:
-                result = new FixPoint( newprecision, BigInteger.ZERO );
-                result.setError( OVERFLOW );
+                result = new FixPoint(newprecision, BigInteger.ZERO);
+                result.setError(OVERFLOW);
                 return result;
 
             default:
@@ -386,7 +387,7 @@ public final class FixPoint implements Cloneable, Serializable {
         @param error The error condition of the FixPoint
     */
     public void setError(Error error) {
-        _value.setError( error );
+        _value.setError(error);
     }
 
     /** Return a new Fixpoint number with value equal to the subtraction
@@ -396,14 +397,14 @@ public final class FixPoint implements Cloneable, Serializable {
      *  @param arg A Fixpoint number.
      *  @return A new Fixpoint number.
      */
-    public FixPoint subtract(FixPoint arg ) {
+    public FixPoint subtract(FixPoint arg) {
 	// Align the precision of the two Fixpoints
 	Precision  cp = _precision.matchThePoint(this._precision, arg.getPrecision());
 	Fixvalue argX = this._alignToPrecision(cp);
 	Fixvalue argY =  arg._alignToPrecision(cp);
 
 	// Determine the new Fixvalue
-	Fixvalue argZ =  argX.add( argY.negate() );
+	Fixvalue argZ =  argX.add(argY.negate());
 
 	// return the FixPoint with the correct precision and result
         return new FixPoint(cp, argZ);
@@ -417,12 +418,12 @@ public final class FixPoint implements Cloneable, Serializable {
 	System.out.println (" unscaled Value (10) " +
 			    _value.fixvalue.toString(10));
 	System.out.println (" scale Value (10) " + doubleValue()
-			    + " Precision: " + _precision.toString() );
+			    + " Precision: " + _precision.toString());
 	System.out.println (" Errors:     " + _value.getErrorDescription());
 	System.out.println (" BitCount:   " + _value.fixvalue.bitCount());
 	System.out.println (" BitLength   " + _value.fixvalue.bitLength());
         BigInteger j = _value.fixvalue.abs();
-	System.out.println (" ABS value   " + j.toString(2) );
+	System.out.println (" ABS value   " + j.toString(2));
 	System.out.println (" ABS bit count:  " + j.bitCount());
 	System.out.println (" ABD bitLength:  " + j.bitLength());
         System.out.println (" Max value:  " + _precision.findMax());
@@ -451,7 +452,7 @@ public final class FixPoint implements Cloneable, Serializable {
      *  padding the fractional part with zeros
      *  @param The precision with which to align
      *  @return A Fixvalue with aligned precision */
-    private Fixvalue _alignToPrecision( Precision p) {
+    private Fixvalue _alignToPrecision(Precision p) {
 
 	// Delta is always positive
 	int delta = p.getFractionBitLength() -
@@ -462,7 +463,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	BigInteger arg = (_value.fixvalue).shiftLeft(delta);
 
 	// return the Fixvalue with aligned value
-	return new Fixvalue( arg, _value.getError() );
+	return new Fixvalue(arg, _value.getError());
     }
 
     /** Initialize the Fixpoint */
@@ -483,7 +484,7 @@ public final class FixPoint implements Cloneable, Serializable {
 	@return Fixvalue with the desired new precision
     */
     private Fixvalue _scaleBits(Fixvalue x, Precision oldprecision,
-            Precision newprecision, int mode ) {
+            Precision newprecision, int mode) {
 
 	int delta, a, b = 0;
 
@@ -497,8 +498,8 @@ public final class FixPoint implements Cloneable, Serializable {
         int sign = x.fixvalue.signum();
         Fixvalue absValue = x.abs();
 
-	Fixvalue integerPart  = absValue.getIntegerBits( oldprecision );
-	Fixvalue fractionPart = absValue.getFractionBits( oldprecision );
+	Fixvalue integerPart  = absValue.getIntegerBits(oldprecision);
+	Fixvalue fractionPart = absValue.getFractionBits(oldprecision);
 
         // The FixPoint should fit between the min/max of the
         // new supplied precision. Only the fractional part can
@@ -517,15 +518,15 @@ public final class FixPoint implements Cloneable, Serializable {
 	BigInteger total =
 	    integerPart.fixvalue.shiftLeft(
                     newprecision.getFractionBitLength());
-	total = total.add( fractionResult.fixvalue );
+	total = total.add(fractionResult.fixvalue);
 
 	// Return the Fixvalue cast to the new precision
-        if ( sign >= 0 ) {
+        if (sign >= 0) {
             //System.out.println(" -- RETURN a positive Fixvalue -- ");
-            return new Fixvalue( total, fractionResult.getError());
+            return new Fixvalue(total, fractionResult.getError());
         } else {
             //System.out.println(" -- RETURN a negative Fixvalue -- ");
-            return new Fixvalue( total.negate(), fractionResult.getError());
+            return new Fixvalue(total.negate(), fractionResult.getError());
         }
     }
 
@@ -583,8 +584,8 @@ public final class FixPoint implements Cloneable, Serializable {
 	 *  @param arg A Fixvalue number.
 	 *  @return A new Fixvalue number.
 	 */
-        public Fixvalue add(Fixvalue aValue ) {
-	    BigInteger result = fixvalue.add( aValue.fixvalue );
+        public Fixvalue add(Fixvalue aValue) {
+	    BigInteger result = fixvalue.add(aValue.fixvalue);
 	    return new Fixvalue(result, _error);
 	}
 
@@ -596,8 +597,8 @@ public final class FixPoint implements Cloneable, Serializable {
 	 *  @param arg A Fixvalue number.
 	 *  @return A new Fixvalue.
 	 */
-	public Fixvalue multiply(Fixvalue aValue ) {
-	    BigInteger result = fixvalue.multiply( aValue.fixvalue );
+	public Fixvalue multiply(Fixvalue aValue) {
+	    BigInteger result = fixvalue.multiply(aValue.fixvalue);
 	    return new Fixvalue(result, _error);
 	}
 
@@ -637,8 +638,9 @@ public final class FixPoint implements Cloneable, Serializable {
 	 *  @param precision Precision of the fixvalue.
 	 *  @return fractional part of the Fixvalue.  */
 	public Fixvalue getFractionBits(Precision precision) {
-	    BigInteger tmp = (_twoRaisedTo[precision.getFractionBitLength()]).toBigInteger();
-	    BigInteger mask = tmp.subtract( BigInteger.ONE );
+	    BigInteger tmp = (_twoRaisedTo[
+                    precision.getFractionBitLength()]).toBigInteger();
+	    BigInteger mask = tmp.subtract(BigInteger.ONE);
 	    BigInteger result = fixvalue.and(mask);
 	    return new Fixvalue(result, _error);
 	}
@@ -682,14 +684,14 @@ public final class FixPoint implements Cloneable, Serializable {
                 // Create the MASK for truncating the fixvalue
                 BigInteger mask =
                     _twoRaisedTo[length-delta].toBigInteger().
-                    subtract( BigInteger.ONE );
+                    subtract(BigInteger.ONE);
                 // AND the fixvalue with the MASK.
                 result.fixvalue = work.fixvalue.and(mask);
             } else {
                 result.fixvalue = work.fixvalue;
             }
             // Keep the error status of this fixvalue.
-            result.setError( work.getError() );
+            result.setError(work.getError());
             return result;
         }
 
@@ -710,20 +712,20 @@ public final class FixPoint implements Cloneable, Serializable {
 
             // Delta >0, shift Left
             // Delta <0, shift Right
-            if ( delta < 0) {
+            if (delta < 0) {
 
                 // Check if last delta bits are zero
                 // Because then no rounding takes place
-                for(int i=0;i<-delta;i++){
-                    if ( work.fixvalue.testBit( i ) == true ) {
+                for(int i = 0; i < -delta; i++){
+                    if (work.fixvalue.testBit(i) == true) {
                         work.setError(ROUNDING);
                     }
                 }
-                result.fixvalue = work.fixvalue.shiftLeft( delta );
+                result.fixvalue = work.fixvalue.shiftLeft(delta);
             } else {
-                result.fixvalue = work.fixvalue.shiftLeft( delta );
+                result.fixvalue = work.fixvalue.shiftLeft(delta);
             }
-            result.setError( work.getError() );
+            result.setError(work.getError());
             return result;
         }
 
@@ -775,15 +777,11 @@ public final class FixPoint implements Cloneable, Serializable {
 
     // Static Class Constructor
     static {
-	BigDecimal two = new BigDecimal( "2" );
-	BigDecimal p2  = new BigDecimal( "1" );
+	BigDecimal two = new BigDecimal("2");
+	BigDecimal p2  = new BigDecimal("1");
 	for (int i = 0; i <= 64; i++) {
 	    _twoRaisedTo[i] = p2;
-	    p2 = p2.multiply( two );
+	    p2 = p2.multiply(two);
 	}
     }
-
-
 }
-
-
