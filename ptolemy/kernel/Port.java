@@ -112,6 +112,7 @@ public class Port extends NamedObj {
     public void link(Relation relation) 
             throws IllegalActionException {
         if (relation != null) {
+            _checkRelation(relation);
             if (_container != null) {
                 if (_container.getContainer() != relation.getContainer()) {
                     throw new IllegalActionException(this, relation,
@@ -122,7 +123,6 @@ public class Port extends NamedObj {
                        "Port must have a container to establish a link.");
             }
             _relationsList.link( relation._getPortList(this) );
-            return;
         }
     }
 
@@ -205,6 +205,19 @@ public class Port extends NamedObj {
 	_relationsList.unlinkAll();
 	_relationsList = null;
 	return;
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                        ////
+
+    /** Do nothing if the specified relation is compatible with this port.
+     *  In derived classes, this method will throw an exception if the
+     *  relation is incompatible with the port.
+     *  @param relation
+     *  @exception IllegalActionException Incompatible relation.
+     */	
+    public void _checkRelation(Relation relation) 
+            throws IllegalActionException {
     }
 
     //////////////////////////////////////////////////////////////////////////
