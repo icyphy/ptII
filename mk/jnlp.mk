@@ -112,6 +112,7 @@ HYBRID_SYSTEMS_ONLY_JNLP_JARS = \
 	ptolemy/domains/fsm/fsm.jar \
 	ptolemy/domains/sdf/lib/lib.jar \
 	ptolemy/domains/sdf/kernel/kernel.jar \
+	ptolemy/hsif/hsif.jar \
 	ptolemy/hsif/demo/demo.jar
 
 HYBRID_SYSTEMS_MAIN_JAR = \
@@ -484,7 +485,8 @@ OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif
 KEYSTORE2=/users/ptII/adm/certs/ptkeystore
 KEYALIAS2=ptolemy
 # make jnlp_dist STOREPASSWORD="-storepass xxx"
-# make DIST_BASE=~cxh/tmp/ptII2.0-beta DIST_DIR=/home/eecs/cxh/public_html/tmp/ptII2.0-beta jnlp_dist KEYSTORE2=ptKeystore KEYALIAS2=claudius
+# make DIST_DIR=c:/cxh/hyv DIST_URL=file:///c:/cxh/hyv jnlp_dist KEYSTORE2=ptKeystore KEYALIAS2=claudius
+
 
 jnlp_dist: jnlp_dist_1 jnlp_dist_update
 jnlp_dist_1:
