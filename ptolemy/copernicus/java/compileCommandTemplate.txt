@@ -32,7 +32,7 @@
  -p wjtp.snapshot4 "outDir:@ptIIUserDirectory@/@targetPath@/jimple4"
  -p wjtp.snapshot5 "outDir:@ptIIUserDirectory@/@targetPath@/jimple5"
  -p wjtp.snapshot6 "outDir:@ptIIUserDirectory@/@targetPath@/jimple6"
- -p wjtp.finalSnapshot "outDir:@ptIIUserDirectory@/@targetPath@"
+ -p wjtp.finalSnapshot "outDir:@ptIIUserDirectory@/@targetPath@,targetPackage:@targetPackage@"
  -p wjtp.iee enabled
  -p wjtp.makefileWriter 
  "_generatorAttributeFileName:@_generatorAttributeFileName@,targetPackage:@targetPackage@,outDir:@ptIIUserDirectory@/@targetPath@,templateDirectory:ptolemy/copernicus/java"

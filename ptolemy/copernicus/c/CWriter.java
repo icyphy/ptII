@@ -64,7 +64,7 @@ public class CWriter extends SceneTransformer {
         // The debug option suppresses exceptions, which in turn forces
         // repeated attempts to generate class files.
         System.out.println("Options: " + super.getDeclaredOptions());
-        return super.getDeclaredOptions() + " outDir";
+        return super.getDeclaredOptions() + " outDir targetPackage";
     }
 
 
@@ -91,6 +91,7 @@ public class CWriter extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         String outDir = Options.getString(options, "outDir");
+        String mainFile = Options.getString(options, "targetPackage") + ".Main";
 
         // Initialize generation of overridden methods.
         OverriddenMethodGenerator.init();
