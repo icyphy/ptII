@@ -594,7 +594,7 @@ else
     AC_ARG_WITH(tini, [  --with-tini=DIR       use TINI from DIR,
                           defaults to \$PTII/vendors/dalsemi/tini],
 	TINI_DIR=$withval,
-	TINI_DIR=$PTII/vendors/dalesemi/tini)
+	TINI_DIR=$PTII/vendors/dalsemi/tini)
 
     if test -d "$TINI_DIR"; then
 	AC_MSG_RESULT([$TINI_DIR])
