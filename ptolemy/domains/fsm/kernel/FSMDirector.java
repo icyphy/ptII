@@ -373,11 +373,24 @@ public class FSMDirector extends Director {
             if (getCurrentTime() < outTime) {
                 setCurrentTime(outTime);
             }
+            // Transfer inputs.
+            // liuj: Transfer input does not consume tokens
+            // Tokens will be consumed in fire() by the container of
+            // this director. FIXME: I am not sure this is the right
+            // way of doing it.
+            /*if (container instanceof CompositeActor) {
+                Iterator inputPorts = ((CompositeActor)container).
+                    inputPortList().iterator();
+                while(inputPorts.hasNext()) {
+                    IOPort p = (IOPort)inputPorts.next();
+                    transferInputs(p);
+                }
+                }*/
         }
         // Otherwise there's no notion of time.
         _fireRefinement = false;
         if (ref != null) {
-            _fireRefinement = ref.prefire();
+            _fireRefinement = true; // ref.prefire();
         }
         return getController().prefire();
     }
@@ -433,13 +446,14 @@ public class FSMDirector extends Director {
                 if (port.hasToken(i)) {
                     Token t = port.get(i);
                     if (insiderecs != null && insiderecs[i] != null) {
-                        if(_debugging) _debug(getName(),
-                                "transfering input from " + port.getName());
                         for (int j = 0; j < insiderecs[i].length; j++) {
                             if (insiderecs[i][j].hasToken()) {
                                 insiderecs[i][j].get();
                             }
                             insiderecs[i][j].put(t);
+                            if(_debugging) _debug(getName(),
+                                "transfering input from " + port.getName()
+                                + " to " + (insiderecs[i][j]).getContainer().getName());
                         }
                         trans = true;
                     }
