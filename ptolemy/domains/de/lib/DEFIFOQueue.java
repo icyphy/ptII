@@ -1,6 +1,6 @@
-/* My first 'big' DE star.
+/* Ptolemy II DE FIFO Queue Star
 
- Copyright (c) 1997- The Regents of the University of California.
+ Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,7 +37,7 @@ import ptolemy.actor.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEFIFOQueue
-/** Describe me!
+/** FIXME: Describe me!
 
 @author Lukito Muliadi
 @version $Id$
@@ -146,12 +146,7 @@ public class DEFIFOQueue extends AtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private FIFOQueue _queue = new FIFOQueue();
-    private int _numDemandsPending = 0;
-    private int _capacity;
-    private boolean _consolidateDemands = true;
+    ////                         public variables                  ////
 
     // the ports.
     public IOPort outData;
@@ -159,6 +154,14 @@ public class DEFIFOQueue extends AtomicActor {
     public IOPort overflow;
     public IOPort demand;
     public IOPort queueSize;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private FIFOQueue _queue = new FIFOQueue();
+    private int _numDemandsPending = 0;
+    private int _capacity;
+    private boolean _consolidateDemands = true;
 }
 
 
