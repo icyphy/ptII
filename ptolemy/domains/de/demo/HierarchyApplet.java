@@ -130,10 +130,10 @@ public class HierarchyApplet extends Applet {
             DEPoisson poisson = new DEPoisson(blockA, "Poisson", 1.0, 0.5);
 
             DEIOPort A1 = new DEIOPort(blockA, "A1", false, true);
-            A1.setDeclaredType(DoubleToken.class);
+            //A1.setDeclaredType(DoubleToken.class);
             A1.makeMultiport(true);
             DEIOPort A2 = new DEIOPort(blockA, "A2", false, true);
-            A2.setDeclaredType(DoubleToken.class);
+            //A2.setDeclaredType(DoubleToken.class);
 
             Relation r1 = blockA.connect(clock.output, ramp1.input);
             Relation r2 = blockA.connect(ramp1.output, A1);
@@ -149,11 +149,11 @@ public class HierarchyApplet extends Applet {
             DESampler sampler2 = new DESampler(blockB, "Sampler2");
 
             DEIOPort B1 = new DEIOPort(blockB, "B1", true, false);
-            B1.setDeclaredType(DoubleToken.class);
+            //B1.setDeclaredType(DoubleToken.class);
             DEIOPort B2 = new DEIOPort(blockB, "B2", true, false);
-            B2.setDeclaredType(DoubleToken.class);
+            //B2.setDeclaredType(DoubleToken.class);
             DEIOPort B3 = new DEIOPort(blockB, "B3", false, true);
-            B3.setDeclaredType(DoubleToken.class);
+            //B3.setDeclaredType(DoubleToken.class);
 
             Relation r6 = blockB.connect(B1, ramp2.input);
             Relation r7 = blockB.connect(ramp2.output, sampler2.input);
@@ -168,11 +168,11 @@ public class HierarchyApplet extends Applet {
             DEPlot plot = new DEPlot(blockC, "Plot", plotPanel);
             
             DEIOPort C1 = new DEIOPort(blockC, "C1", true, false);
-            C1.setDeclaredType(DoubleToken.class);
+            //C1.setDeclaredType(DoubleToken.class);
             DEIOPort C2 = new DEIOPort(blockC, "C2", true, false);
-            C2.setDeclaredType(DoubleToken.class);
+            //C2.setDeclaredType(DoubleToken.class);
             DEIOPort C3 = new DEIOPort(blockC, "C3", true, false);
-            C3.setDeclaredType(DoubleToken.class);
+            //C3.setDeclaredType(DoubleToken.class);
 
             Relation r13 = blockC.connect(C1, plot.input);
             Relation r14 = blockC.connect(C2, plot.input);
