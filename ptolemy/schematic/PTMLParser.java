@@ -236,8 +236,8 @@ public class PTMLParser extends HandlerBase{
 
         if(name.equals("domain")) {
             e=new Domain(attributes);
-        }
-        if(name.equals("domainlibrary")) {
+        } 
+        else if(name.equals("domainlibrary")) {
             e=new DomainLibrary(attributes);
         }
         else if(name.equals("entitytype")) {
