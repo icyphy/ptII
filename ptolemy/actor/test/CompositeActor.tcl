@@ -143,15 +143,40 @@ test CompositeActor-5.1 {Test newPort} {
 ####
 #
 test CompositeActor-6.1 {Invoke all the action methods} {
-     # NOTE: Uses the setup above
-     $e5 preinitialize
-     $e5 initialize
-     $e5 prefire
-     $e5 fire
-     $e5 postfire
-     $e5 wrapup
-     $e5 terminate
-} {}
+    # NOTE: Uses the setup above
+
+    set stream [java::new java.io.ByteArrayOutputStream]
+    set printStream [java::new \
+            {java.io.PrintStream java.io.OutputStream} $stream]
+    set listener [java::new ptolemy.kernel.util.StreamListener $printStream]
+    $e5 addDebugListener $listener
+
+    $e5 preinitialize
+    $e5 initialize
+    $e5 prefire
+    $e5 fire
+    $e5 postfire
+    $e5 wrapup
+    $e5 terminate
+    $e5 stop
+
+    $printStream flush
+    $e5 removeDebugListener $listener
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+	        [$stream toString] "\n" output
+    list $output
+} {{Invoking preinitialize
+Invoking initialize
+Invoking prefire
+Prefire returns (from director) true
+Invoking fire
+Invoking postfire
+Postfire returns (from director) true
+Invoking wrapup
+Terminate
+Requesting stop
+}}
 
 ######################################################################
 ####
