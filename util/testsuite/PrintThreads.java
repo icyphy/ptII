@@ -80,7 +80,7 @@ public class PrintThreads {
     }
 
     /** Return a String containing all the ThreadGroups in the JVM
-     *  that are decendents of the root ThreadGroup.
+     *  that are descendents of the root ThreadGroup.
      */
     public static void allThreadGroups() {
 	ThreadGroup rootGroup = rootThreadGroup();
