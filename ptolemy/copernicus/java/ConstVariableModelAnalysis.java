@@ -269,7 +269,12 @@ public class ConstVariableModelAnalysis {
                             Variable scopeVariable =
                                 ModelScope.getScopedVariable(
                                         variable, variable, name);
-                            // Free variables are assumed to be constants.
+                            // Free variables (i.e. methods) are
+                            // assumed to be static.  FIXME: these
+                            // should probably be dynamic, since
+                            // methods may not always return the same
+                            // values.  However, this breaks other
+                            // things currently.
                             if (scopeVariable != null &&
                                     _notConstantVariableSet.contains(scopeVariable)) {
                                 isNotConstant = true;

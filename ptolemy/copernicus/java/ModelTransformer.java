@@ -1270,6 +1270,9 @@ public class ModelTransformer extends SceneTransformer {
                                             typeLocal)));
                 }
                 portLocal = local;
+                // Create attributes for the port.
+                createAttributes(body, container, containerLocal,
+                        port, portLocal, modelClass, createdSet);
             }
 
             _portLocalMap.put(port, portLocal);

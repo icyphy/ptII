@@ -148,14 +148,14 @@ public class Main extends KernelMain {
                         new TransformerAdapter(
                                 CastAndInstanceofEliminator.v())));
         _addStandardOptimizations(Scene.v().getPack("wjtp"));
-        
+       
         // In each actor and composite actor, ensure that there
         // is a field for every attribute, and replace calls
         // to getAttribute with references to those fields.
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ffat",
                         FieldsForAttributesTransformer.v(toplevel)));
-
+        
         // In each actor and composite actor, ensure that there
         // is a field for every port, and replace calls
         // to getPort with references to those fields.
@@ -374,7 +374,7 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ttn",
                         TokenToNativeTransformer.v(toplevel)));
-       
+        
         Scene.v().getPack("wjtp").add(
                 new Transform("wjtp.ufr",
                         UnusedFieldRemover.v()));

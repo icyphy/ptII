@@ -199,7 +199,12 @@ public class TypeSpecializerAnalysis {
     public Type getSpecializedSootType(Local local) {
         try {
             Type type = local.getType();
-            return _getUpdateType(local, type);
+            Type type2 = _getUpdateType(local, type);
+            if(type2 == null) {
+                return type;
+            } else {
+                return type2;
+            }
         } catch (IllegalActionException ex) {
             throw new RuntimeException(ex.getMessage());
         }
@@ -208,16 +213,25 @@ public class TypeSpecializerAnalysis {
     public Type getSpecializedSootType(NewArrayExpr expr) {
         try {
             Type type = expr.getBaseType();
-            return _getUpdateType(expr, type);
+            Type type2 = _getUpdateType(expr, type);
+            if(type2 == null) {
+                return type;
+            } else {
+                return type2;
+            }
         } catch (IllegalActionException ex) {
             throw new RuntimeException(ex.getMessage());
         }
     }
-
     public Type getSpecializedSootType(SootField field) {
         try {
             Type type = field.getType();
-            return _getUpdateType(field, type);
+            Type type2 = _getUpdateType(field, type);
+            if(type2 == null) {
+                return type;
+            } else {
+                return type2;
+            }
         } catch (IllegalActionException ex) {
             throw new RuntimeException(ex.getMessage());
         }
