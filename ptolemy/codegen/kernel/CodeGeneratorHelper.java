@@ -187,19 +187,19 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @return The offset in the buffer of a given channel to which a token
      *   should be put.
      */
-    public int getOffset(IOPort port, int channelNumber) {
+    public Object getOffset(IOPort port, int channelNumber) {
         Channel channel = getChannel(port, channelNumber);
         if (channel == null) {
             System.out.println("can't find channel " + port.getFullName() + 
                     "," + channelNumber);
-            return 0;
+            return new Integer(0);
         }
         if (_offsets.get(channel) == null) {
             System.out.println("can't find channel in the _offsets map"
                     + port.getFullName() + "," + channelNumber);
-            return 0;
+            return new Integer(0);
         }
-        return ((Integer) _offsets.get(channel)).intValue();
+        return _offsets.get(channel);
     }
 
     /** Return the value of the specified parameter of the associated actor.
@@ -271,14 +271,34 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                     //int temp = _firingCount * DFUtilities.getRate(port);
                     //String offset = channelAndOffset[1] + " + " + temp;
                     //String temp = getOffset(port) + " + " + channelAndOffset[1];
-                    int temp = getOffset(port, channelNumber)
-                            + (new Integer(channelAndOffset[1])).intValue();
-                    temp = temp % getBufferSize(port);
+                    String temp = "";
+                    if (getOffset(port, channelNumber) instanceof Integer) {
+                        int offset = ((Integer) getOffset(port, channelNumber))
+                                .intValue();
+                        offset = offset
+                                + (new Integer(channelAndOffset[1])).intValue();
+                        offset = offset % getBufferSize(port);
+                        temp = new Integer(offset).toString();
+                    } else {
+                        temp = (String) getOffset(port, channelNumber);
+                        temp = "(" + temp
+                            + (new Integer(channelAndOffset[1])).intValue()
+                            + ")%" + getBufferSize(port); 
+                    }
                     result.append("[" + temp + "]");
                 } else if (getBufferSize(port) > 1) {
                     // Did not specify offset, so the receiver buffer size is 1.
                     // This is multiple firing.
-                    int temp = getOffset(port, channelNumber) % getBufferSize(port);
+                    String temp = "";
+                    if (getOffset(port, channelNumber) instanceof Integer) {
+                        int offset = ((Integer) getOffset(port, channelNumber))
+                                .intValue();
+                        offset = offset % getBufferSize(port);
+                        temp = new Integer(offset).toString();
+                    } else {
+                        temp = (String) getOffset(port, channelNumber);
+                        temp = temp + "%" + getBufferSize(port);
+                    }
                     result.append("[" + temp + "]");
                 }
                 return result.toString();
@@ -305,7 +325,8 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                 if (channelAndOffset[0].equals("")) {
                     sinkChannels = getSinkChannels(port, 0);
                 } else {
-                    int channelNumber = (new Integer(channelAndOffset[0])).intValue();
+                    int channelNumber
+                            = (new Integer(channelAndOffset[0])).intValue();
                     sinkChannels = getSinkChannels(port, channelNumber);
                 }
                 for (int i = 0; i < sinkChannels.size(); i ++) {
@@ -325,14 +346,31 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
                         // output port (channel 0) to substitute the offsets of
                         // its downstream input ports.
                         //String temp = getOffset(port) + " + " + channelAndOffset[1];
-                        int temp = getOffset(port, 0) 
+                        // Specified offset.
+                        String temp = "";
+                        if (getOffset(port, 0) instanceof Integer) {
+                            int offset = ((Integer)(getOffset(port, 0))).intValue() 
                                 + (new Integer(channelAndOffset[1])).intValue();
-                        temp = temp % getBufferSize(port);
+                            offset = offset % getBufferSize(port);
+                            temp = new Integer(offset).toString();
+                        } else {
+                            temp = "(" + (String) getOffset(port, 0)
+                                + (new Integer(channelAndOffset[1])).intValue()
+                                + ")%" + getBufferSize(port);
+                        }
                         result.append("[" + temp + "]");
                     } else if (getBufferSize(port) > 1) {
                         // Did not specify offset, so the receiver buffer size is 1.
                         // This is multiple firing.
-                        int temp = getOffset(port, 0) % getBufferSize(port);
+                        String temp = "";
+                        if (getOffset(port, 0) instanceof Integer) {
+                            int offset = ((Integer) getOffset(port, 0)).intValue();
+                            offset = offset % getBufferSize(port);
+                            temp = new Integer(offset).toString();
+                        } else {
+                            temp = (String) getOffset(port, 0) + "%"
+                                    + getBufferSize(port);
+                        }
                         result.append("[" + temp + "]");
                     }
                 }
@@ -570,7 +608,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
         while (inputAndOutputPorts.hasNext()) {
             IOPort port = (IOPort) inputAndOutputPorts.next();
             for (int i = 0; i < port.getWidth(); i ++) {
-                setOffset(port, i, 0);
+                setOffset(port, i, new Integer(0));
             }
         }
     }
@@ -588,9 +626,9 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
      *  @param channel The given channel.
      *  @param offset The offset to be set to the buffer of that channel.
      */
-    public void setOffset(IOPort port, int channelNumber, int offset) {
+    public void setOffset(IOPort port, int channelNumber, Object offset) {
         Channel channel = getChannel(port, channelNumber);
-        _offsets.put(channel, new Integer(offset));
+        _offsets.put(channel, offset);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -640,7 +678,7 @@ public class CodeGeneratorHelper implements ActorCodeGenerator {
     private HashMap _bufferSizes = new HashMap();
     
     // FIXME
-    /** A hashmap that keeps track of the buuferSizes of each channel of
+    /** A hashmap that keeps track of the bufferSizes of each channel of
      *  the actor. This info is used in fire method. 
      */
     private HashMap _bufferSizesPerChannel  = new HashMap();

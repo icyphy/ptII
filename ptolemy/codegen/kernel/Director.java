@@ -116,7 +116,7 @@ public class Director implements ActorCodeGenerator {
                 ((CodeGeneratorHelper) helperObject)
                         .setBufferSize(port, bufferSize);
             }
-            
+
             //((CodeGeneratorHelper)helperObject).resetOffsets();
             code.append(helperObject.generateInitializeCode());
         }
