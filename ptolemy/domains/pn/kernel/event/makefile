@@ -50,6 +50,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =	PNProcessEvent.java \
         PNProcessListener.java
 
+# 10/02 Removed 
+#	DefaultPNListener, PNProcessMulticaster 
+#       ReceiverListener, ReceiverActionEvent
+
 EXTRA_SRCS =	$(JSRCS)
 
 # Files or directories that are present, but that 'make checkjunk'
