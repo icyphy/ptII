@@ -48,6 +48,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 
 OTHER_FILES_TO_BE_JARED = \
+	fullscreen.gif \
 	zoomfit.gif \
 	zoomin.gif \
 	zoomout.gif \
