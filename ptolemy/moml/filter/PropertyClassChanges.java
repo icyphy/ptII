@@ -102,7 +102,7 @@ public class PropertyClassChanges implements MoMLFilter {
         // is:
         // $PTII/bin/ptolemy -test $PTII/ptolemy/domains/ct/demo/CarTracking/CarTracking.xml
         // which will open up a large xml file and then close after 2 seconds.
-        // System.out.println("filterAttributeValue: " + container + "\t"
+        //System.out.println("filterAttributeValue: " + container + "\t"
         //  +  attributeName + "\t" + attributeValue);
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
@@ -342,7 +342,11 @@ public class PropertyClassChanges implements MoMLFilter {
         modelReferenceClassChanges.put("modelFileOrURL",
                 "ptolemy.actor.parameters.FilePortParameter");
 
-        _actorsWithPropertyClassChanges.put("ptolemy.actor.lib.hoc.ModelReference",
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.actor.lib.hoc.ModelReference",
+                modelReferenceClassChanges);
+        _actorsWithPropertyClassChanges.put(
+                "ptolemy.vergil.actor.lib.VisualModelReference",
                 modelReferenceClassChanges);
 
         // SRDirector
