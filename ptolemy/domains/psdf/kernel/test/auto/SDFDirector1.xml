@@ -38,30 +38,31 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 1, 1}">
         </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 195.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="160.0, 185.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="multiport"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Const.output" relation="relation"/>
-    <link port="Display.input" relation="relation"/>
+    <link port="NonStrictTest.input" relation="relation"/>
 </entity>
