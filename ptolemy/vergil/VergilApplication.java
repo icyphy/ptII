@@ -519,8 +519,12 @@ public class VergilApplication extends MoMLApplication {
     // Print out an error message and stack trace on stderr and then
     // display a dialog box.  This method is used as a fail safe
     // in case there are problems with the configuration
+    // We use a Throwable here instead of an Exception because
+    // we might get an Error or and Exception. For example, if we
+    // are using JNI, then we might get a java.lang.UnsatistifiedLineError,
+    // which is an Error, not and Exception. 
     private static void _errorAndExit(String message,
-				      String [] args, Throwable ex) {
+				      String [] args, Throwable throwable) {
 	StringBuffer argsBuffer =
 	    new StringBuffer("Command failed");
 
@@ -536,7 +540,7 @@ public class VergilApplication extends MoMLApplication {
 	// if the next step fails the user has
 	// a chance of seeing the message.
 	System.out.println(argsBuffer.toString());
-	ex.printStackTrace();
+	throwable.printStackTrace();
 
 	// Display the error message in a stack trace
 	// If there are problems with the configuration,
@@ -547,11 +551,9 @@ public class VergilApplication extends MoMLApplication {
 	// One way to test this is to run vergil -conf foo
 
 	MessageHandler.setMessageHandler(new GraphicalMessageHandler());
-	if (!(ex instanceof Exception)) {
-	    MessageHandler.error(argsBuffer.toString() + " " + ex.toString());
-	} else {
-	    MessageHandler.error(argsBuffer.toString(), (Exception)ex);
-	}
+
+	MessageHandler.error(argsBuffer.toString(), throwable);
+
 	System.exit(0);
     }
 
