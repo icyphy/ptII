@@ -55,8 +55,14 @@ all: codeDoc/tree.html
 
 codeDoc/tree.html: ../pn/*/*.java ../tcl/*.java ../tycho/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
-	(cd codeDoc; rm -f images; ln -s ../$(ROOT)/lib/java/images .)
 	(cd ..; CLASSPATH=$(CLASSPATH):$(JAVAHOME)/lib/classes.zip $(JAVADOC) $(JDOCFLAGS) -d doc/codeDoc $(ALLJSRCS) )
+	@for x in codeDoc/*.html; do \
+		echo "Fixing paths in $$x"; \
+		sed -e 's|<a href="java|<a href="$(JAVAHTMLDIR)/java|g' \
+		-e 's|<img src="images/|<img src="$(JAVAHTMLDIR)/images/|g' \
+			$$x > $$x.bak; \
+		mv $$x.bak $$x; \
+	done
 
 # We don't include common.mk since we don't use the compiler here
 include $(ROOT)/mk/no-compile.mk
