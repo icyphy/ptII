@@ -67,16 +67,21 @@ KRUFT = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+# Under Windows, this would be HelloWorld.dll
+# Under Solaris, this would be libHelloWorld.so
+SHARED_LIBRARY = $(PTJNI_SHAREDLIBRARY_PREFIX)$(PTPACKAGE).$(PTJNI_SHAREDLIBRARY_SUFFIX)
+
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass HelloWorld.dll $(PTCLASSJAR)
+all: jclass $(SHARED_LIBRARY) $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
 install: all
 
 # Run the demo in all its different formats
-demo: HelloWorld.dll
+demo: $(SHARED_LIBRARY)
 	PATH="$(PTII)/$(ME)$(CLASSPATHSEPARATOR)$(PATH)" \
+		LD_LIBRARY_PATH="$(PTII)/$(ME):/usr/local/lib:$(PATH)" \
 		CLASSPATH="$(CLASSPATH)$(AUXCLASSPATH)" \
 		"$(JAVA)" \
 		jni.demo.HelloWorld.HelloWorld
@@ -88,19 +93,12 @@ demo: HelloWorld.dll
 HelloWorld.h: HelloWorld.class
 	javah -classpath $(ROOT) -o HelloWorld.h jni.demo.HelloWorld.HelloWorld
 
-# FIXME: win32 only, need to add PTJAVA_PLATFORM to configure 
-PTJAVA_PLATFORM=win32
-JNI_PLATFORM_INCLUDES= \
-	-I$(PTJAVA_DIR)/include \
-	-I$(PTJAVA_DIR)/include/$(PTJAVA_PLATFORM)
-
 # PTCC is set in $PTII/mk/ptII.mk
 # See also ptolemy/matlab/makefile
-HelloWorld.dll: HelloWorld.h HelloWorld.c
-	$(PTCC) -mno-cygwin \
-		$(JNI_PLATFORM_INCLUDES) \
-		-Wl,--add-stdcall-alias -shared \
-		-o HelloWorld.dll HelloWorld.c
+$(SHARED_LIBRARY): HelloWorld.h HelloWorld.c
+	$(PTCC) -shared $(PTJNI_SHAREDLIBRARY_CFLAG) \
+		-o $@ \
+		HelloWorld.c
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
