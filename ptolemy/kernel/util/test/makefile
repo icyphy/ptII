@@ -47,7 +47,6 @@ TCL_SRCS = \
 
 JSRCS = \
 	PtestWorkspace.java \
-	TestDebugNamedObj.java \
 	TestInvalidStateException.java \
 	TestNullNamedObj.java \
 	TestWorkspace.java \
@@ -66,8 +65,6 @@ JSIMPLE_TESTS = \
 	NamedObj.tcl \
 	NoSuchItemException.tcl \
 	PtolemyThread.tcl \
-	RecorderListener.tcl \
-	StreamListener.tcl \
 	Workspace.tcl
 
 # Graphical Java tests that use Tcl.
