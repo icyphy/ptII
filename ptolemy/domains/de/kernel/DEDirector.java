@@ -893,7 +893,7 @@ public class DEDirector extends Director {
                     // Transfer the event to the receiver.
                     if(_debugging) _debug(getName(),
                             "put trigger event to",
-                            receiver.getContainer().getName());
+                            receiver.getContainer().getFullName());
                     receiver._triggerEvent(currentEvent.token());
                 }
             } else {
@@ -1009,7 +1009,8 @@ public class DEDirector extends Director {
         Actor destination = (Actor)(receiver.getContainer()).getContainer();
         int depth = _getDepth(destination);
         if(_debugging) _debug("enqueue event: to",
-                receiver.getContainer().getName()+ " ("+token.toString()+") ",
+                receiver.getContainer().getFullName()
+                + " ("+token.toString()+") ",
                 "time = "+ time + " microstep = "+ microstep + " depth = "
                 + depth);
         _eventQueue.put(new DEEvent(receiver, token, time, microstep, depth));

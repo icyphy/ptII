@@ -243,22 +243,22 @@ public class RTOSDirector extends DEDirector {
     public void fireAt(Actor actor, double time)
             throws IllegalActionException {
         // ignore requests that are later than the stop time.
+        if (_debugging) {
+            _debug("+ requesting firing of "
+                   + ((Nameable)actor).getFullName()
+                   + " at time "
+                   + time);
+        }
         if (time <= ((DoubleToken)stopTime.getToken()).doubleValue()) {
             long requestTime = (long)(time*1000.0) + _startingTime;
             
-            long currentTime = System.currentTimeMillis();
-            if (requestTime < currentTime) {
-                throw new IllegalActionException((Nameable)actor,
-                        "Requested fire time: " + time + " is earlier than" +
-                        " the current time." + 
-                        ((double)getCurrentTime())/1000.0);
-            }
             ActorTask actorTask = new ActorTask(actor);
             Timer timer = new Timer();
             _actorTimers.put(actor, timer);
             try {
                 timer.schedule(actorTask, requestTime - 
                         System.currentTimeMillis());
+                if (_debugging) _debug("Started timer.");
             } catch (IllegalArgumentException ex) {
                 _debug("Missed the real time deadline. Execute the task.");
                 actorTask.run();
@@ -328,7 +328,10 @@ public class RTOSDirector extends DEDirector {
         Actor destination = (Actor)(receiver.getContainer()).getContainer();
         int depth = _getDepth(destination);
         if(_debugging) _debug("enqueue event: to",
-                receiver.getContainer().getName()+ " ("+token.toString()+") ",
+                receiver.getContainer().getFullName()
+                + " ("
+                + token.toString()
+                + ") ",
                 "time = "+ time + " microstep = "+ microstep + " depth = "
                 + depth);
         _eventQueue.put(new DEEvent(receiver, token, time, microstep, depth));
@@ -352,9 +355,13 @@ public class RTOSDirector extends DEDirector {
     ////////////////////////////////////////////////////////////////////////
     ////                    private methods                           ////
     
-    // Remove useless parameters inherited from DEDirector.
+    // Remove useless parameters inherited from DEDirector, and set
+    // different defaults.
     private void _initParameters() {
         try {
+
+            stopWhenQueueIsEmpty.setToken(new BooleanToken(false));
+
             getAttribute("startTime").setContainer(null);
             getAttribute("synchronizeToRealTime").setContainer(null);
             getAttribute("isCQAdaptive").setContainer(null);
@@ -406,6 +413,10 @@ public class RTOSDirector extends DEDirector {
                 try {
                     // remove the time from the map first.
                     _actorTimers.remove(_actor);
+                    if (_debugging) {
+                        _debug("Timer expired.  Invoking "
+                                + ((Nameable)_actor).getFullName());
+                    }
                     _actor.iterate(1);
                 } catch (IllegalActionException ex) {
                     throw new InvalidStateException((NamedObj)_actor,

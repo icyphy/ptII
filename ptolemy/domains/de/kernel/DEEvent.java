@@ -212,7 +212,7 @@ public final class DEEvent implements Comparable {
      *  @return The token as a string with the time stamp.
      */
     public String toString() {
-        return "DEEvent(" + _token + ", " + _timeStamp + ", "
+        return "DEEvent(token=" + _token + ", time=" + _timeStamp + ", dest="
             + ((NamedObj)_actor).getFullName() + ")";
     }
 
