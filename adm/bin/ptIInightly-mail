@@ -81,7 +81,7 @@ fi
 # Print out the Entering directory line that precedes the *** line as well
 $AWK ' $0 ~ /Entering directory/ { indir=$0 }
       $0 ~ /^Error/ {
-			if ( $0 !~ /Encountered \"/ && $0 !~ /no files matched glob patterns \"compat/*.xml compat2/*.xml\"/) {
+			if ( $0 !~ /Encountered \"/ && $0 !~ /no files matched glob patterns \"compat\/*.xml compat2\/*.xml\"/) {
 			    print "WARNING: in", indir, ", there was a problem"
 			    print "         with the test harness:" 
 			    print $0
