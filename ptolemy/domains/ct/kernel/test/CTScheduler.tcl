@@ -109,7 +109,7 @@ test CTScheduler-2.1 {schedule a chain of actors} {
 	 [enumToFullNames [$sch outputSchedule]]
 } {{.CA.A1 .CA.A2 .CA.A3} {} {} {} {} {} {} {} {.CA.A1 .CA.A2 .CA.A3}}
 
-test CTScheduler-2.1 {has one dynamic actor} { 
+test CTScheduler-2.2 {has one dynamic actor} { 
     #Note: use above setup.
     set d1 [java::new ptolemy.domains.ct.kernel.test.CTDummyDynamicActor \
 	    $ca Dyn]
@@ -129,7 +129,7 @@ test CTScheduler-2.1 {has one dynamic actor} {
 	 [enumToFullNames [$sch outputSchedule]]
 } {{.CA.A1 .CA.A2 .CA.A3} .CA.Dyn {} {} {} {} .CA.Dyn {.CA.A1 .CA.A2} .CA.A3}
 
-test CTScheduler-2.1 {with one actor in a feedback} { 
+test CTScheduler-2.3 {with one actor in a feedback} { 
     #Note: use above setup.
     set a4 [java::new ptolemy.domains.ct.kernel.test.CTDummySISOActor \
 	    $ca A4]
@@ -148,6 +148,137 @@ test CTScheduler-2.1 {with one actor in a feedback} {
 	 [enumToFullNames [$sch outputSchedule]]
 } {{.CA.A1 .CA.A2 .CA.A3 .CA.A4} .CA.Dyn {} {} {} {} .CA.Dyn\
 	{.CA.A1 .CA.A4 .CA.A2} .CA.A3}
+
+test CTScheduler-2.4 {chain of dynamic actors with feedback} { 
+    #Note: use above setup.
+    $pd1o unlink $r3
+    set d2 [java::new ptolemy.domains.ct.kernel.test.CTDummyDynamicActor \
+	    $ca D2]
+    set pd2i [$d2 getPort input]
+    set pd2o [$d2 getPort output]
+    set rd [$ca connect $pd1o $pd2i RD]
+    $pd2o link $r3
+    list [enumToFullNames [$sch arithmaticActors]] \
+	 [enumToFullNames [$sch dynamicActors]] \
+	 [enumToFullNames [$sch eventGenerators]] \
+	 [enumToFullNames [$sch eventInterpreters]] \
+	 [enumToFullNames [$sch statefulActors]] \
+	 [enumToFullNames [$sch stepSizeControlActors]] \
+	 [enumToFullNames [$sch dynamicActorSchedule]] \
+	 [enumToFullNames [$sch stateTransitionSchedule]] \
+	 [enumToFullNames [$sch outputSchedule]]
+} {{.CA.A1 .CA.A2 .CA.A3 .CA.A4} {.CA.Dyn .CA.D2} {} {} {} {}\
+ {.CA.D2 .CA.Dyn} {.CA.A1 .CA.A4 .CA.A2} .CA.A3}
+
+test CTScheduler-2.5 {event generators and event interpreters} { 
+    #Note: use above setup.
+    set eg [java::new ptolemy.domains.ct.kernel.test.CTDummyEventGenerator \
+	    $ca EG]
+    set ei [java::new ptolemy.domains.ct.kernel.test.CTDummyEventInterpreter \
+	    $ca EI]
+    set sc [java::new ptolemy.domains.ct.kernel.test.CTDummySSControlActor \
+	    $ca SSC] 
+    set a5 [java::new ptolemy.domains.ct.kernel.test.CTDummySink \
+	    $ca A5] 
+    #set ed [java::new ptolemy.domains.ct.kernel.test.CTDummyEventGenerator \
+	#    $ca ED]
+    set pegi [$eg getPort input]
+    set pego [$eg getPort output]
+    set peii [$ei getPort input]
+    set peio [$ei getPort output]
+    set psci [$sc getPort input]
+    set psco [$sc getPort output]
+    set p5i [$a5 getPort input]
+    $pegi link $r3
+    set rg [$ca connect $pego $psci RG]
+    set ri [$ca connect $peii $psco RI]
+    set r5 [$ca connect $peio $p5i R5]
+    list [enumToFullNames [$sch arithmaticActors]] \
+	 [enumToFullNames [$sch dynamicActors]] \
+	 [enumToFullNames [$sch eventGenerators]] \
+	 [enumToFullNames [$sch eventInterpreters]] \
+	 [enumToFullNames [$sch statefulActors]] \
+	 [enumToFullNames [$sch stepSizeControlActors]] \
+	 [enumToFullNames [$sch dynamicActorSchedule]] \
+	 [enumToFullNames [$sch stateTransitionSchedule]] \
+	 [enumToFullNames [$sch outputSchedule]]
+} {{.CA.A1 .CA.A2 .CA.A3 .CA.A4 .CA.EG .CA.EI .CA.SSC .CA.A5}\
+	{.CA.Dyn .CA.D2} .CA.EG .CA.EI {} .CA.SSC {.CA.D2 .CA.Dyn}\
+	{.CA.A1 .CA.A4 .CA.A2} {.CA.EG .CA.SSC .CA.EI .CA.A3 .CA.A5}}
+
+test CTScheduler-2.5 {contained in a composite actor} { 
+    #Note: use above setup.
+    set pci1 [java::new ptolemy.actor.TypedIOPort $ca PCI1]
+    set pci2 [java::new ptolemy.actor.TypedIOPort $ca PCI2]
+    set pco1 [java::new ptolemy.actor.TypedIOPort $ca PCO1]
+    set pco2 [java::new ptolemy.actor.TypedIOPort $ca PCO2]
+    
+    set a6 [java::new ptolemy.domains.ct.kernel.test.CTDummyStatefulActor \
+	    $ca A6S]
+    set a7 [java::new ptolemy.domains.ct.kernel.test.CTDummyStatefulActor \
+	    $ca A7S]
+    set ed [java::new ptolemy.domains.ct.kernel.test.CTDummyEventGenerator \
+	    $ca ED]
+    set p6i [$a6 getPort input]
+    set p6o [$a6 getPort output]
+    set p7i [$a7 getPort input]
+    set p7o [$a7 getPort output]
+    set pedi [$ed getPort input]
+    set pedo [$ed getPort output]
+    $p6i link $rd
+    $pedi link $r3
+    set r6c [java::new ptolemy.actor.TypedIORelation $ca R6C]
+    $p6o link $r6c
+    $pco1 link $r6c
+    set r7 [$ca connect $p7o $p2i R7]
+    set r7c [java::new ptolemy.actor.TypedIORelation $ca R7C]
+    $p7i link $r7c
+    $pci1 link $r7c
+    set r2c [java::new ptolemy.actor.TypedIORelation $ca R2C]
+    $p2i link $r2c
+    $pci2 link $r2c
+    set rdc [java::new ptolemy.actor.TypedIORelation $ca RDC]
+    $pedo link $rdc
+    $pco2 link $rdc
+    list [enumToFullNames [$sch arithmaticActors]] \
+	 [enumToFullNames [$sch dynamicActors]] \
+	 [enumToFullNames [$sch eventGenerators]] \
+	 [enumToFullNames [$sch eventInterpreters]] \
+	 [enumToFullNames [$sch statefulActors]] \
+	 [enumToFullNames [$sch stepSizeControlActors]] \
+	 [enumToFullNames [$sch dynamicActorSchedule]] \
+	 [enumToFullNames [$sch stateTransitionSchedule]] \
+	 [enumToFullNames [$sch outputSchedule]]
+} {{.CA.A1 .CA.A2 .CA.A3 .CA.A4 .CA.EG .CA.EI .CA.SSC .CA.A5 .CA.A6S\
+	.CA.A7S .CA.ED} {.CA.Dyn .CA.D2} {.CA.EG .CA.ED} .CA.EI\
+	{.CA.A6S .CA.A6S .CA.A7S .CA.A7S} .CA.SSC {.CA.D2 .CA.Dyn}\
+	{.CA.A1 .CA.A4 .CA.A7S .CA.A2}\
+	{.CA.EG .CA.SSC .CA.EI .CA.A3 .CA.A5 .CA.A6S .CA.ED}}
+
+test CTScheduler-2.6 {transparent arithmetic actor} { 
+    #Note: use above setup.
+    set pci3 [java::new ptolemy.actor.TypedIOPort $ca PCI3]
+    set pco3 [java::new ptolemy.actor.TypedIOPort $ca PCO3]
+    set a8 [java::new ptolemy.domains.ct.kernel.test.CTDummySISOActor \
+	    $ca A8]
+    set p8i [$a8 getPort input]
+    set p8o [$a8 getPort output]
+    set r8ic [java::new ptolemy.actor.TypedIORelation $ca R8IC]
+    $p8i link $r8ic
+    $pci3 link $r8ic
+    set r8oc [java::new ptolemy.actor.TypedIORelation $ca R8OC]
+    $p8o link $r8oc
+    $pco3 link $r8oc
+    list [enumToFullNames [$sch arithmaticActors]] \
+	 [enumToFullNames [$sch dynamicActors]] \
+	 [enumToFullNames [$sch eventGenerators]] \
+	 [enumToFullNames [$sch eventInterpreters]] \
+	 [enumToFullNames [$sch statefulActors]] \
+	 [enumToFullNames [$sch stepSizeControlActors]] \
+	 [enumToFullNames [$sch dynamicActorSchedule]] \
+	 [enumToFullNames [$sch stateTransitionSchedule]] \
+	 [enumToFullNames [$sch outputSchedule]]
+} {{.CA.A1 .CA.A2 .CA.A3 .CA.A4 .CA.EG .CA.EI .CA.SSC .CA.A5 .CA.A6S .CA.A7S .CA.ED .CA.A8} {.CA.Dyn .CA.D2} {.CA.EG .CA.ED} .CA.EI {.CA.A6S .CA.A6S .CA.A7S .CA.A7S} .CA.SSC {.CA.D2 .CA.Dyn} {.CA.A1 .CA.A4 .CA.A7S .CA.A2} {.CA.EG .CA.SSC .CA.EI .CA.A3 .CA.A5 .CA.A6S .CA.ED .CA.A8}}
 
 ######################################################################
 ####
