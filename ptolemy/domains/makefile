@@ -74,7 +74,7 @@ PTAUXALLJARS = \
                 dt/dt.jar \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
-		hdf/hdf.jar ]
+		hdf/hdf.jar \
 		petrinet/petrinet.jar \
 		tm/tm.jar \
 		sr/sr.jar \
