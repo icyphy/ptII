@@ -202,8 +202,8 @@ public class SigmaDeltaApplet extends Applet {
             String[] ctLegends = {"Position","Input","Control"};
             ctPlot.setLegend(ctLegends);
 
-            CTPeriodicalSampler sampler =
-                new CTPeriodicalSampler(ctsub, "Sample");
+            CTPeriodicSampler sampler =
+                new CTPeriodicSampler(ctsub, "Sample");
 
             // CTPorts
             IOPort sineout = (IOPort)sine.getPort("output");
