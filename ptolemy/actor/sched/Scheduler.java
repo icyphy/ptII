@@ -147,6 +147,12 @@ public class Scheduler extends NamedObj implements MutationListener{
         return newobj;
     }
 
+    /** Return the description of the scheduler. In this base class,
+     *  it returns the name and schedule (an Enumeration of the actors
+     *  returned by deepGetEntites()). 
+     *  FIXME: Implementation needed.
+     */
+    
     /** Notify the scheduler that mutation is complete. Do nothing in the
      *  base class.
      */	
@@ -281,7 +287,7 @@ public class Scheduler extends NamedObj implements MutationListener{
      *  scheduleable. Not thrown in this base class, but may be needed
      *  by the derived scheduler.
      */	
-    public Enumeration _schedule() throws NotScheduleableException {
+    protected Enumeration _schedule() throws NotScheduleableException {
         try {
             workspace().getReadAccess();
             StaticSchedulingDirector dir =
@@ -307,4 +313,5 @@ public class Scheduler extends NamedObj implements MutationListener{
     private StaticSchedulingDirector _container = null;
     private boolean _valid = false;
     private Enumeration _cachedschedule;
+    private static String _name = "Basic Scheduler";
 }
