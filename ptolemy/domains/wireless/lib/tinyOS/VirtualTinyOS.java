@@ -44,6 +44,8 @@ import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.vergil.icon.EditorIcon;
+import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 
 //////////////////////////////////////////////////////////////////////////
 //// VirtualTinyOS
@@ -69,14 +71,26 @@ public class VirtualTinyOS extends TypedAtomicActor {
             java.lang.Exception  {
         super(container, name);
         //timer = new TypedIOPort(this, "timer", true, false);
-        toLED = new TypedIOPort(this, "toLED", false, true);
+        //toLED = new TypedIOPort(this, "toLED", false, true);
+        
+        //create the node icon.
+        EditorIcon node_icon = new EditorIcon(this, "_icon");
+        
+        // The icon has two parts: a circle and an antenna.
+        // Create a circle that indicates the signal radius.
+        _circle = new EllipseAttribute(node_icon, "_circle");
+        _circle.centered.setToken("true");
+        _circle.width.setToken("50");
+        _circle.height.setToken("50");
+        _circle.fillColor.setToken("{0.0, 0.0, 1.0, 0.08}");
+        _circle.lineColor.setToken("{0.0, 0.5, 0.5, 1.0}");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** The output port. */
-    public TypedIOPort toLED;
+    //public TypedIOPort toLED;
 
     /** The input port for timer interupt. */
     //public TypedIOPort timer;
@@ -99,8 +113,8 @@ public class VirtualTinyOS extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
         //tos = new TosSystem(this);
-        UtilityFunctions.loadLibrary("ptolemy/domains/wireless/lib/TOS");
-        _outputToLED = -1;
+        UtilityFunctions.loadLibrary("ptolemy/domains/wireless/lib/tinyOS/TOS");
+        _hasLed = false;
         _hasTimer = false;
         _timerPeriod = 0.0;
         _scheduledTime = 0.0;
@@ -128,25 +142,31 @@ public class VirtualTinyOS extends TypedAtomicActor {
                triggerTimerEvent();
                _scheduledTime = _scheduledTime + _timerPeriod;
                director.fireAt(this, _scheduledTime);           
-        } 
-        
-        if (_outputToLED >= 0) {
+        } else if (_hasLed) {
             if (_debugging) {
-                _debug("output to LED");
+                _debug("LED Blinking");
             }
-            toLED.send(0, new IntToken(_outputToLED));
-            _outputToLED = -1;
+            //toLED.send(0, new IntToken(_outputToLED));
+            // Change the color of the icon to red.
+            _circle.fillColor.setToken("{1.0, 0.0, 0.1, 0.7}");
+            _hasLed = false;
+            director.fireAt(this, director.getCurrentTime() + 0.5);
+        } else {
+            // Set color back to blue.
+            _circle.fillColor.setToken("{0.0, 0.0, 1.0, 0.05}");
         }
+        
     }
 
     // a callback method for the native code. Potentially, the mote code can
     // call this method to render the led toggle animation.
-    public void outputToLED(int s) {
+    public void ledBlink(int x) {
         Director director = getDirector();
         if (director != null) {
             try {
-                _outputToLED = s;
-                director.fireAtCurrentTime(this);
+                _hasLed = true;
+                double currentTime = director.getCurrentTime();
+                director.fireAt(this, currentTime);
                 //then change the color of the node in fire();
             } catch (IllegalActionException e) {
                 // TODO Auto-generated catch block
@@ -193,5 +213,8 @@ public class VirtualTinyOS extends TypedAtomicActor {
     private boolean _hasTimer = false;
     private double _timerPeriod;
     private double _scheduledTime;
-    private int _outputToLED;
+    private boolean _hasLed;
+    
+    /** Icon indicating the led blinking. */
+    private EllipseAttribute _circle;
 }

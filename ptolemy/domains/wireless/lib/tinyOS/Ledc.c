@@ -24,4 +24,6 @@ void Ledc_StdControl_stop() {
 
 void Ledc_Led_blink() {
     printf("Led Blink Blink! \n");
+    printf("call the java method to animate blink. \n");
+    ledBlink(1);
 }

@@ -16,7 +16,7 @@ void Blink_StdControl_init() {
 
 void Blink_StdControl_start() {
     Ledc_StdControl_start();
-    int period = 1;
+    int period = 2;
     Blink_Timer_start(period);
 }
 

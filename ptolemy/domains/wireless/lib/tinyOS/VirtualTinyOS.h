@@ -38,9 +38,11 @@ JNIEXPORT jint JNICALL Java_ptolemy_domains_wireless_lib_tinyOS_VirtualTinyOS_si
  */
 JNIEXPORT void JNICALL Java_ptolemy_domains_wireless_lib_tinyOS_VirtualTinyOS_initMote
   (JNIEnv *, jobject);
-
+  
 /* this method is manually added by Yang.*/  
 void setupTimer(int);
+
+void ledBlink(int);
 
 #ifdef __cplusplus
 }
