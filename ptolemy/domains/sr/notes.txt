@@ -1,11 +1,8 @@
 
 To Do:
 
-1 outline
-1 find second reader
-
 5 FIXMEs
-3 NonStrict actors add an attribute instead of implementing an interface?
+2 NonStrict actors add an attribute instead of implementing an interface?
 9 write NonStrictSelect (prefire monotonicity, only needs known selected input)
 5 code review
 
@@ -16,6 +13,8 @@ To Do:
 
 7 stopwatch, global resets, UI activity, reflex game, examples by sedwards
 7 run ptolemy classic SR
+
+5 write
 
 -------------------------------------------------------------------------------
 
