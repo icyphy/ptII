@@ -1,4 +1,4 @@
-/* The base class of communication channels in the sensor domain.
+/* The base class of communication channels in the wireless domain.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -58,22 +58,25 @@ import ptolemy.kernel.util.ValueListener;
 
 The base class for communication channels in the wireless domain.
 
-<p>To use this class, place it in a model that contains wireless actors
-(actors whose ports are instances of WirelessIOPort).  Then set the
-<i>outsideChannel</i> parameter of those ports to match the name of
-this channel.  The model can also itself contain ports that are
-instances of WirelessIOPort, in which case their <i>insideChannel</i>
-parameter should contain the name of this channel.
+<p>To use this class, place it in a wireless model that contains
+a wireless director and wireless actors (actors whose ports are 
+instances of WirelessIOPort).  Then set the <i>outsideChannel</i>
+parameter of those ports to match the name of this channel.  The 
+model can also itself contain ports that are instances of 
+WirelessIOPort, in which case their <i>insideChannel</i> parameter 
+should contain the name of this channel if they should use this 
+channel.
 
 <p>
-In this base class, transmission on a channel reaches all ports at the
-same level of the hierarchy that are instances of WirelessIOPort and
-that specify that they use this channel. These ports include those
-contained by entities that have the container as this channel and
-that have their <i>outsideChannel</i> parameter set to the name
-of this channel.  They also include those ports whose containers
-are the same as the container of this channel and whose
-<i>insideChannel</i> parameter matches this channel name.
+In this base class, transmission on a channel reaches all ports
+at the same level of the hierarchy that are instances of 
+WirelessIOPort and that specify that they use this channel. These
+ports include those contained by entities that have the container
+as this channel and that have their <i>outsideChannel</i> 
+parameter set to the name of this channel.  They also include 
+those ports whose containers are the same as the container of 
+this channel and whose <i>insideChannel</i> parameter matches 
+this channel name.
 <p>
 Derived classes will typically limit the range of the transmission,
 using for example location information from the ports. They
@@ -81,7 +84,7 @@ may also introduce random losses or corruption of data.  To do this,
 derived classes can override the _isInRange() protected method,
 or the transmit() public method.
 
-@author Xiaojun Liu and Edward A. Lee
+@author Xiaojun Liu, Edward A. Lee and Yang Zhao
 @version $Id$
 @since Ptolemy II 2.1
 */
@@ -130,6 +133,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *  determine what properties are seen by the receiver.  Any
      *  fields that are not in this parameter value will be discarded
      *  before properties are delivered to the receiver.
+     *  FIXME: need a mechanism to deal with empty record tokens.
      */
     public Parameter defaultProperties;
 
@@ -157,18 +161,22 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     }
 
     /** Return a channel port that can be used to set type constraints
-     *  between senders and receivers.
+     *  between senders and receivers. An channel contains a single port,
+     *  which is an instance of ChannelPort. The port is merely used to
+     *  set up n type constrains instead of n*n, where n is the number of
+     *  ports using the channel.
+     *  @return The channel port.
      */
     public ChannelPort getChannelPort() {
         return _channelPort;
     }
 
     /** Return a list of input ports that can potentially receive data
-     *  from this channel.  This includes input ports contained by
+     *  from this channel.  This must include input ports contained by
      *  entities contained by the container of this channel that
      *  have their <i>outsideChannel</i> parameter set to the name
-     *  of this channel. This method gets read access on the workspace.
-     *  @return A new list of input ports of class WirelessIOPort
+     *  of this channel. Transparent hierarchy is not supported. 
+     *  @return The list of input ports of class WirelessIOPort
      *   using this channel.
      *  @exception IllegalActionException If a port is encountered
      *   whose <i>outsideChannel</i> parameter cannot be evaluated.
@@ -211,7 +219,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     }
 
     /** Return a list of output ports that can potentially receive data
-     *  from this channel.  This includes output ports contained by
+     *  from this channel.  This must include output ports contained by
      *  the container of this channel that
      *  have their <i>insideChannel</i> parameter set to the name
      *  of this channel. This method gets read access on the workspace.
@@ -291,11 +299,11 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     }
 
     /** Return a list of input ports that can potentially send data
-     *  to this channel.  This includes input ports contained by
+     *  to this channel.  This must include input ports contained by
      *  the container of this channel that
      *  have their <i>insideChannel</i> parameter set to the name
      *  of this channel. This method gets read access on the workspace.
-     *  @return The list of output ports of class WirelessIOPort
+     *  @return The list of input ports of class WirelessIOPort
      *   using this channel.
      *  @exception IllegalActionException If a port is encountered
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
@@ -334,11 +342,11 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     }
 
     /** Return a list of output ports that can potentially send data
-     *  to this channel.  This includes output ports contained by
+     *  to this channel.  This must include output ports contained by
      *  entities contained by the container of this channel that
      *  have their <i>outsideChannel</i> parameter set to the name
      *  of this channel. This method gets read access on the workspace.
-     *  @return A new list of input ports of class WirelessIOPort
+     *  @return The list of output ports of class WirelessIOPort
      *   using this channel.
      *  @exception IllegalActionException If a port is encountered
      *   whose <i>outsideChannel</i> parameter cannot be evaluated.
@@ -380,14 +388,14 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         }
     }
 
-    /** Transform the properties to take into account channel losses,
-     *  noise, etc., for transmission between the specified source
-     *  and the specified destination.  In this base class, the
-     *  specified properties are merged with the defaultProperties
-     *  so that the resulting properties contain at least all the
-     *  fields of the defaultProperties. In addition, any property
-     *  transformers that have been registered are applied.
-     *  @param properties The transmit properties.
+    /** Transform the transmission property to take into account 
+     *  channel losses, noise, etc., for transmission between the 
+     *  specified source and the specified destination.  In this 
+     *  base class, the specified properties are merged with the 
+     *  defaultProperties so that the resulting properties contain 
+     *  at least all the fields of the defaultProperties. In addition,
+     *  any property transformers that have been registered are applied.
+     *  @param properties The transmission properties.
      *  @param source The sending port.
      *  @param destination The receiving port.
      *  @return The transformed properties.
@@ -420,6 +428,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                 }
             }
         }
+        
         if(_propertyTransformers != null) {
             Iterator iterator = _propertyTransformers.iterator();
             while (iterator.hasNext()) {
@@ -432,11 +441,11 @@ public class AtomicWirelessChannel extends TypedAtomicActor
 
         if (_debugging) {
             if (result != null) {
-                _debug(" * transmit properties: \""
+                _debug(" * transmission properties: \""
                         + result.toString()
                         + "\".");
             } else {
-                _debug(" * no transmit properties.\"");
+                _debug(" * no transmission properties.\"");
             }
         }
 
@@ -454,10 +463,9 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *  @param token The token to transmit, or null to clear all
      *   receivers that are in range.
      *  @param port The port from which this is being transmitted.
-     *  @param properties The transmit properties (ignored in this base class).
-     *  @exception IllegalActionException If a location cannot be evaluated
-     *   for a port, or if a type conflict occurs, or the director is not
-     *   a WirelessDirector.
+     *  @param properties The transmission properties (ignored in this base class).
+     *  @exception IllegalActionException If a type conflict occurs, or the 
+     *   director is not a WirelessDirector.
      */
     public void transmit(Token token, WirelessIOPort port,
             RecordToken properties)
@@ -493,11 +501,11 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     }
 
     /** Unregister a property transformer for transmissions from the specified
-     *  port (or null for a generic property transformer). If the transformer
+     *  port (or from null for a generic property transformer). If the transformer
      *  has not been registered, then do nothing.
-     *  @param transformer The property transformer to unregister.
+     *  @param transformer The property transformer to be unregistered.
      *  @param port The port whose transmissions should be subject to the
-     *   property transformer, or null to for a generic transformer.
+     *   property transformer, or null for a generic transformer.
      *  @see #registerPropertyTransformer(PropertyTransformer, WirelessIOPort)
      */
     public void unregisterPropertyTransformer(
@@ -516,7 +524,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
         }
     }
 
-    /** React to the fact that the specified Settable has changed.
+    /** React to changes of the specified Settable.
      *  This base class registers as a listener to attributes that
      *  specify the location of objects (and implement the Locatable
      *  interface) so that it is notified by a call to this method
@@ -538,7 +546,10 @@ public class AtomicWirelessChannel extends TypedAtomicActor
 
     /** Return the distance between two ports.  This is a convenience
      *  method provided to make it easier to write subclasses that
-     *  limit transmission range using position information.
+     *  limit transmission range using position information. In this
+     *  base class. locations are specified in 2 dimensions. Subclass
+     *  might overwrite this method to deal with 3 dimensions.
+     *  FIXME: We may also want this method to be dimension independent.
      *  @param port1 The first port.
      *  @param port2 The second port.
      *  @return The distance between the two ports.
@@ -554,7 +565,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
                 + (p1[1] - p2[1])*(p1[1] - p2[1]));
     }
 
-    /** Return true if the specified port is in range of the
+    /** Return true if the specified destination port is in range of the
      *  specified source port, assuming the source port transmits with
      *  the specified properties.  In this base class, this method returns
      *  true always.  The method assumes that the two ports are
@@ -565,7 +576,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *  are in range.
      *  @param source The source port.
      *  @param destination The destination port.
-     *  @param properties The transmit properties (ignored in this base class).
+     *  @param properties The transmission properties (ignored in this base class).
      *  @return True if the destination is in range of the source.
      *  @exception IllegalActionException If it cannot be determined
      *   whether the destination is in range (not thrown in this base
@@ -584,7 +595,9 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *  "_location" attribute of the port.  Otherwise, use the
      *  "_location" attribute of its container. In either case,
      *  register a listener to the location attribute so that valueChanged()
-     *  will be called if and when that location changes.
+     *  will be called if and when that location changes. 
+     *  Note that transparent hierarchy is not supported in getting the 
+     *  location. 
      *  The calling method is expected to have read access on the workspace.
      *  Subclasses may override this method to provide some other way of
      *  obtaining location information.
@@ -617,7 +630,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
     }
 
     /** Return the list of receivers that can receive from the specified
-     *  port with the specified transmit properties. Ports that are contained
+     *  port with the specified transmission properties. Ports that are contained
      *  by the same container as the specified <i>sourcePort</i> are
      *  not included.  Note that this method does
      *  not guarantee that those receivers will receive.  That is determined
@@ -625,7 +638,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *  example, introduce probabilistic message losses.
      *  The calling method is expected to have read access on the workspace.
      *  @param sourcePort The sending port.
-     *  @param properties The transmit properties (ignored in this base class).
+     *  @param properties The transmission properties (ignored in this base class).
      *  @return A list of instances of WirelessReceiver.
      *  @exception IllegalActionException If a location of a port cannot be
      *   evaluated.
@@ -706,7 +719,7 @@ public class AtomicWirelessChannel extends TypedAtomicActor
      *   the specified receiver.
      *  @param sender The sending port.
      *  @param receiver The receiver to which to transmit.
-     *  @param properties The transmit properties (ignored in this base class).
+     *  @param properties The transmission properties (ignored in this base class).
      *  @exception IllegalActionException If the token cannot be converted
      *   or if the token argument is null and the destination receiver
      *   does not support clear.

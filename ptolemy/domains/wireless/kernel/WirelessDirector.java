@@ -30,26 +30,10 @@
 
 package ptolemy.domains.wireless.kernel;
 
-import java.util.Iterator;
-import java.util.Random;
-
-import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.LongToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////

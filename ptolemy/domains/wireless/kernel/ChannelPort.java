@@ -1,4 +1,4 @@
-/* A port for sending and receiving in the channel.
+/* A port for mediate type constraints between senders and receivers.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -43,11 +43,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// ChannelPort
 /**
 This port is used in a channel to mediate type constraints between
-senders and receivers on a wireless channel. It does not actually
-get involved in the transmission of data (that is handled by the
-transmit() method of the channel).  This port is always both an
-input and an output.  This port is not persistent and is always
-hidden in a user interface.
+senders and receivers on a wireless channel. The way it works is by
+pretending that it receives data from the sender and sends data to 
+the recerver. It does not actually get involved in the transmission
+of data (that is handled by the transmit() method of the channel).  
+This port is always both an input and an output.  This port is not 
+persistent and is always hidden in a user interface.
 <p>
 NOTE: Someday, perhaps
 this port will be augmented to mediate the communication and
@@ -90,7 +91,7 @@ public class ChannelPort extends WirelessIOPort {
 
     /** Return the number of source ports that can potentially send data
      *  to the containing channel.
-     *  @return The number of ports that can receive data from this one.
+     *  @return The number of ports that can send data to this one.
      */
     public int numberOfSources() {
         return sourcePortList().size();
@@ -100,9 +101,8 @@ public class ChannelPort extends WirelessIOPort {
      *  implements the WirelessChannel interface.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the proposed container is not a
-     *   ComponentEntity, doesn't implement Actor, or has no name,
-     *   or the port and container are not in the same workspace, or
-     *   it doesn't implement WirelessChannel.
+     *   ComponentEntity, doesn't implement WirelessChannel, or has no name,
+     *   or the port and container are not in the same workspace.
      *  @exception NameDuplicationException If the container already has
      *   a port with the name of this port.
      */
@@ -121,7 +121,7 @@ public class ChannelPort extends WirelessIOPort {
      *  the containing channel.  This includes all input ports that use that
      *  channel on the outside and all output ports that use the channel
      *  on the inside.
-     *  @return A list of IOPort objects.
+     *  @return A list of WirelessIOPort objects.
      */
     public List sinkPortList() {
         if (_sinkPortListVersion == workspace().getVersion()) {

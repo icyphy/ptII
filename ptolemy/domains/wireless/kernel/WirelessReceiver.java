@@ -45,9 +45,12 @@ import ptolemy.kernel.util.InternalErrorException;
 /**
 A receiver for use in the wireless domain.
 
-<p>This receiver overrides the base class to handle transmit properties.
-This receiver works by bundling the token and its properties into a
-record token, and then unbundling at the corresponding get() methods.
+<p>This receiver overrides the base class to handle transmission properties.
+This receiver works by bundling the token and its transmission properties 
+into a record token, and then unbundling at the corresponding get() methods.
+
+FIXME: properties should be a RecordToken instead of Token. But I couldn't 
+fix this until we can create an empty record token. yang
 
 @author Edward A. Lee
 @version $Id$
@@ -55,13 +58,7 @@ record token, and then unbundling at the corresponding get() methods.
 
 public class WirelessReceiver extends DEReceiver {
 
-    /** Construct an empty WirelessReceiver with no container.
-     */
-    public WirelessReceiver() {
-        super();
-    }
-
-    /** Construct an empty DEReceiver with the specified container.
+    /** Construct an empty WirelessReceiver with the specified container.
      *  @param container The container.
      *  @exception IllegalActionException If the container does
      *   not accept this receiver.

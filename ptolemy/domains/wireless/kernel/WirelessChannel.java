@@ -41,7 +41,20 @@ import ptolemy.kernel.util.Nameable;
 //////////////////////////////////////////////////////////////////////////
 //// WirelessChannel
 /**
-Interface for wireless channels.
+Interface for wireless channels in the wireless domain. 
+Wireless channels are special components in a wireless model. 
+They are used to determine the conectivity and deliver
+tokens from the transmiter to receiver(s). This interface 
+defines a set of methods for the wireless channel components.
+<p>
+The transmiter can call the channel's transmit() method to 
+deliver data to its correspoding receivers. It can specify
+the transmission properties by a record token including the
+transimission range, transmission power. The transmit 
+properties may be modified by the channel model or by some
+property transformers(@see PropertyTransformer) during the 
+transmission to take into account channel losses, antenna 
+gain, noise, etc.
 
 @author Yang Zhao and Edward A. Lee
 @version $Id$
@@ -53,7 +66,10 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
     ////                         public methods                    ////
 
     /** Return a channel port that can be used to set type constraints
-     *  between senders and receivers.
+     *  between senders and receivers. An channel contains a single port,
+     *  which is an instance of ChannelPort. The port is merely used to
+     *  set up n type constrains instead of n*n, where n is the number of
+     *  ports using the channel.
      *  @return The channel port.
      */
     public ChannelPort getChannelPort();
@@ -62,8 +78,8 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *  from this channel.  This must include input ports contained by
      *  entities contained by the container of this channel that
      *  have their <i>outsideChannel</i> parameter set to the name
-     *  of this channel.
-     *  @return A new list of input ports of class WirelessIOPort
+     *  of this channel. Transparent hierarchy is not supported. 
+     *  @return The list of input ports of class WirelessIOPort
      *   using this channel.
      *  @exception IllegalActionException If a port is encountered
      *   whose <i>outsideChannel</i> parameter cannot be evaluated.
@@ -81,19 +97,21 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
      */
     public List listeningOutputPorts() throws IllegalActionException;
-
-    /** Register a property transformer for transmissions from the specified
-     *  port.  If null is given for the port, then the property transformer
-     *  will be used for all transmissions through this channel. Note that
-     *  if multiple property transformers are registered that can operate
+    
+    /** Register a property transformer for transmissions from the
+     *  specified port. A PropertyTransformer modifies the transmission
+     *  property and returns the modified property. If null is
+     *  given for the port, then the property transformer will
+     *  be used for all transmissions through this channel.
+     *  If multiple property transformers are registered that can operate
      *  on a given transmission, then the order in which they are applied
      *  is arbitrary.  Thus, property transformers should implement
      *  commutative operations on the properties (such as multiplying
      *  a field by a value).
      *  If the property transformer is already registered with a particular
-     *  port, then an implementer of this method not register it again with
+     *  port, then an implementer of this method must not register it again with
      *  that port.  Similarly, if a property transformer is registered with
-     *  no port, then an implementer of this method should not register
+     *  no port, then an implementer of this method must not register
      *  it again with no port.
      *  @param transformer The property transformer to be registered.
      *  @param port The port whose transmissions should be subject to the
@@ -108,7 +126,7 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *  the container of this channel that
      *  have their <i>insideChannel</i> parameter set to the name
      *  of this channel. This method gets read access on the workspace.
-     *  @return The list of output ports of class WirelessIOPort
+     *  @return The list of input ports of class WirelessIOPort
      *   using this channel.
      *  @exception IllegalActionException If a port is encountered
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
@@ -120,7 +138,7 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *  entities contained by the container of this channel that
      *  have their <i>outsideChannel</i> parameter set to the name
      *  of this channel. This method gets read access on the workspace.
-     *  @return A new list of input ports of class WirelessIOPort
+     *  @return The list of output ports of class WirelessIOPort
      *   using this channel.
      *  @exception IllegalActionException If a port is encountered
      *   whose <i>outsideChannel</i> parameter cannot be evaluated.
@@ -133,21 +151,20 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *  @param token The token to transmit, or null to clear all
      *   receivers that are in range.
      *  @param port The port from which this is being transmitted.
-     *  @param properties The transmit properties.
-     *  @exception IllegalActionException If a location cannot be evaluated
-     *   for a port, or if a type conflict occurs, or the director is not
-     *   a WirelessDirector.
+     *  @param properties The transmission properties.
+     *  @exception IllegalActionException If something goes wrong during
+     *   the transmission.
      */
     public void transmit(Token token, WirelessIOPort port,
             RecordToken properties)
             throws IllegalActionException;
-
+            
     /** Unregister a property transformer for transmissions from the specified
-     *  port (or null for a generic property transformer). If the transformer
+     *  port (or from null for a generic property transformer). If the transformer
      *  has not been registered, then do nothing.
-     *  @param transformer The property transformer to unregister.
+     *  @param transformer The property transformer to be unregistered.
      *  @param port The port whose transmissions should be subject to the
-     *   property transformer, or null to for a generic transformer.
+     *   property transformer, or null for a generic transformer.
      *  @see #registerPropertyTransformer(PropertyTransformer, WirelessIOPort)
      */
     public void unregisterPropertyTransformer(
