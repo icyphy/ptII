@@ -406,6 +406,11 @@ test ParseTreeEvaluator-12.2 {Test matrix construction.} {
     list [evaluate "\[1.0;2;3j\]" ]
 } {{[1.0 + 0.0i; 2.0 + 0.0i; 0.0 + 3.0i]}}
 
+# Test matrix construction with ranges.
+test ParseTreeEvaluator-12.3 {Test matrix construction.} {
+    list [evaluate {[1:2:9; 2:2:10]} ]
+} {{[1, 3, 5, 7, 9; 2, 4, 6, 8, 10]}}
+
 ######################################################################
 ####
 
