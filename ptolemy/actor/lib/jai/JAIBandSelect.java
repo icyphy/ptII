@@ -1,4 +1,4 @@
-/* An actor that copys bands from an image into another.
+/* An actor that copyies bands from an image into another.
 
 @Copyright (c) 2002-2004 The Regents of the University of California.
 All rights reserved.
