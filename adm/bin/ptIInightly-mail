@@ -94,6 +94,7 @@ $AWK ' $0 ~ /Entering directory/ { indir=$0 }
 			}
 		      }' $ptbuildlog | head -100 >> $mailmsg
 
+echo "" >> $mailmsg
 # Note that in JDK1.4, the warning message format from javadoc changed
 echo "javadoc had the following `grep ': warning -' $ptbuildlog | wc -l` warnings" >> $mailmsg
 
