@@ -87,23 +87,24 @@ Created : May 1998
  * @author Neil Smyth
  * @version $Id$
  
- * @see pt.data.parser.ASTPtFunctionNode
- * @see pt.data.parser.ASTPtLeafNode
- * @see pt.data.parser.ASTPtLogicalNode
- * @see pt.data.parser.ASTPtMiscNode
- * @see pt.data.parser.ASTPtProductNodeI
- * @see pt.data.parser.ASTPtRelationalNode
- * @see pt.data.parser.ASTPtRootNode
- * @see pt.data.parser.ASTPtSumNode
- * @see pt.data.parser.ASTPtUnaryNode
+ * @see pt.data.expr.ASTPtFunctionNode
+ * @see pt.data.expr.ASTPtLeafNode
+ * @see pt.data.expr.ASTPtLogicalNode
+ * @see pt.data.expr.ASTPtMiscNode
+ * @see pt.data.expr.ASTPtProductNodeI
+ * @see pt.data.expr.ASTPtRelationalNode
+ * @see pt.data.expr.ASTPtRootNode
+ * @see pt.data.expr.ASTPtSumNode
+ * @see pt.data.expr.ASTPtUnaryNode
  * @see pt.data.Token 
 */
 
 
 
-package pt.data.parser;
+package pt.data.expr;
 
 import pt.kernel.*;
+import pt.kernel.util.*;
 import pt.data.*;
 
 import java.io.*;

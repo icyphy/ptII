@@ -45,13 +45,13 @@ Created : May 1998
  * 
  * @author Neil Smyth
  * @version$Id$
- * @see pt.data.parser.ASTPTRootNode
- * @see pt.data.parser.PtParser 
+ * @see pt.data.expr.ASTPTRootNode
+ * @see pt.data.expr.PtParser 
  * @see pt.data.Token 
 */
 
 
-package pt.data.parser;
+package pt.data.expr;
 
 import collections.LinkedList;
 

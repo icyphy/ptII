@@ -31,7 +31,8 @@
 package pt.data;
 
 import pt.kernel.*;
-import pt.data.parser.*;
+import pt.kernel.util.*;
+import pt.data.expr.*;
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -55,7 +56,7 @@ import java.util.*;
  * 
  * @author Neil Smyth
  * @version $Id$
- * @see pt.data.parser.PtParser 
+ * @see pt.data.expr.PtParser 
  * @see pt.data.Token 
 */
 public class Parameter extends NamedObj implements Observer, Cloneable {

@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy Parser classes
+# Makefile for Java Ptolemy Expression Parser classes
 #
 # @Authors: Christopher Hylands, Neil Smyth, based on a file by Thomas M. Parks
 #
@@ -37,7 +37,7 @@
 # Root of the Java directory
 ROOT =		../../../..
 
-ME =		java/pt/data/parser
+ME =		java/pt/data/expr
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -48,9 +48,9 @@ DIRS = 		test
 CLASSPATH = ../../..:/users/ptdesign/vendors/sun/JavaCC/JavaCC.zip
 
 # Used to build zip files
-TYPACKAGE = 	pt.data.parser
+TYPACKAGE = 	pt.data.expr
 TYPACKAGE_ROOTDIR = $(CLASSPATH)
-TYPACKAGE_DIR = pt/data/parser
+TYPACKAGE_DIR = pt/data/expr
 TYVERSION =	1.0
 TYDIST =	$(TYPACKAGE)$(TYVERSION)
 TYZIP =		$(TYPACKAGE_DIR)/$(TYPACKAGE).zip

@@ -45,12 +45,12 @@ Created : May 1998
  * 
  * @author Neil Smyth
  * @version $Id$
- * @see pt.data.parser.ASTPtRootNode
- * @see pt.data.parser.PtParser 
+ * @see pt.data.expr.ASTPtRootNode
+ * @see pt.data.expr.PtParser 
  * @see pt.data.Token 
 */
 
-package pt.data.parser;
+package pt.data.expr;
 
 public class ASTPtRelationalNode extends ASTPtRootNode {
     
