@@ -110,4 +110,3 @@ public final class Node {
     private Object _weight;
 
 }
-

@@ -112,5 +112,3 @@ public class Inequality {
     private InequalityTerm _lesserTerm = null;
     private InequalityTerm _greaterTerm = null;
 }
-
-

@@ -208,5 +208,3 @@ public interface CPO {
      */
     public static final int SAME = 0;
 }
-
-

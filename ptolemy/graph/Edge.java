@@ -183,4 +183,3 @@ public final class Edge {
     // The weight of the edge
     private Object _weight;
 }
-
