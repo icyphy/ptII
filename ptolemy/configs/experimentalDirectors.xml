@@ -6,13 +6,13 @@
     <?moml
       <group>
       <doc>experimental director library</doc>
-      <property name="DT" class="ptolemy.domains.dt.kernel.DTDirector"/>
-      <property name="PN" class="ptolemy.domains.pn.kernel.PNDirector"/>
-      <property name="Giotto" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
-      <property name="TM" class="ptolemy.domains.tm.kernel.TMDirector"/>
-      <property name="PetriNet" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
-      <property name="RTP" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
-      <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
+      <property name="DT Director" class="ptolemy.domains.dt.kernel.DTDirector"/>
+      <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector"/>
+      <property name="Giotto Director" class="ptolemy.domains.giotto.kernel.GiottoDirector"/>
+      <property name="TM Director" class="ptolemy.domains.tm.kernel.TMDirector"/>
+      <property name="PetriNet Director" class="ptolemy.domains.petrinet.kernel.PetriNetDirector"/>
+      <property name="RTP Director" class="ptolemy.domains.rtp.kernel.RTPDirector"/>
+      <property name="SR Director" class="ptolemy.domains.sr.kernel.SRDirector">
          <property name="scheduler">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.sr.kernel.SROptimizedScheduler&quot;"/>
@@ -20,7 +20,7 @@
 	    </property>
          </property>
       </property>
-      <property name="DDE" class="ptolemy.domains.dde.kernel.DDEDirector"/>
+      <property name="DDE Director" class="ptolemy.domains.dde.kernel.DDEDirector"/>
 
       </group>
     ?>

@@ -3,16 +3,16 @@
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
       <group>
       <doc>default director library</doc>
-      <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
-      <property name="DE" class="ptolemy.domains.de.kernel.DEDirector"/>
+      <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
+      <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector"/>
       <!-- No DT -->
       <!-- No PN -->
-      <property name="FSM" class="ptolemy.domains.fsm.kernel.FSMDirector"/>
+      <property name="FSM Director" class="ptolemy.domains.fsm.kernel.FSMDirector"/>
       <!-- No Giotto -->
       <!-- No TM -->
-      <property name="CSP" class="ptolemy.domains.csp.kernel.CSPDirector"/>
+      <property name="CSP Director" class="ptolemy.domains.csp.kernel.CSPDirector"/>
       <!-- No DDE -->
-      <property name="CT" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+      <property name="CT Director" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
          <property name="ODESolver">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;"/>
@@ -28,7 +28,7 @@
 	  </property>
          </property>
       </property>
-      <property name="CTEmbedded" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
+      <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
          <property name="ODESolver">
             <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;"/>

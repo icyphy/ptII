@@ -22,13 +22,6 @@ For hybrid system models, use the CTEmbeddedDirector.</text></svg></configure></
          </property>
        </entity>
     </entity>
-    <entity name="continuous time composite actor" class="ptolemy.domains.ct.kernel.CTCompositeActor"/>
-    <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor">
-      <input source="ptolemy/configs/fsmLibrary.xml"/>
-    </entity>
-    <entity name="interface automaton" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
-      <input source="ptolemy/configs/fsmLibrary.xml"/>
-    </entity>
           </group>
         ?>
       </configure>

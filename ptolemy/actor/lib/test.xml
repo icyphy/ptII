@@ -1,13 +1,12 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="graphics" class="ptolemy.moml.EntityLibrary">
+<entity name="test actors" class="ptolemy.moml.EntityLibrary">
   <configure>
     <?moml
       <group>
-        <doc>GR Domain</doc>
-        <property name="GR Director" class="ptolemy.domains.gr.kernel.GRDirector"/>
-        <input source="ptolemy/domains/gr/lib/grentities.xml"/>
+<entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest"/>
+<entity name="Test" class="ptolemy.actor.lib.Test"/>
       </group>
     ?>
   </configure>
