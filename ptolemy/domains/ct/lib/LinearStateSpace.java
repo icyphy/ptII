@@ -274,6 +274,15 @@ public class LinearStateSpace extends TypedCompositeActor {
         return _opaque;
     }
 
+    /** Request the reinitialization.
+     *  @return True if the super class returns true.
+     *  @exception IllegalActionException If thrown by super class.
+     */
+    public boolean postfire() throws IllegalActionException {
+        if (_requestInitialization) _requestInitialization();
+        return super.postfire();
+    }
+
     /** Sanity check the parameters; if the parameters are legal
      *  create a continuous-time subsystem that implement the model,
      *  preinitialize all the actors in the subsystem,
@@ -281,7 +290,6 @@ public class LinearStateSpace extends TypedCompositeActor {
      *  This method needs the write access on the workspace.
      *  @exception IllegalActionException If there is no CTDirector,
      *  or any contained actors throw it in its preinitialize() method.
-     *
      */
     public void preinitialize() throws IllegalActionException {
         // Check parameters.
@@ -308,7 +316,8 @@ public class LinearStateSpace extends TypedCompositeActor {
             // Integrators
             for (int i = 0; i < n; i++) {
                 integrators[i] = new Integrator(this, "state_" + i);
-                integrators[i].initialState.setExpression("initialStates(0," + i + ")");
+                integrators[i].initialState
+                    .setExpression("initialStates(0," + i + ")");
                 states[i] = new TypedIORelation(this, "relation_state_" + i);
                 integrators[i].output.link(states[i]);
                 // One adder per integrator.
@@ -324,7 +333,8 @@ public class LinearStateSpace extends TypedCompositeActor {
                     // in the A matrix is 0.
                     feedback[i][j] = new Scale(this,
                             "feedback_" + i + "_" +j);
-                    feedback[i][j].factor.setExpression("A(" + i + ", " + j + ")");
+                    feedback[i][j].factor
+                        .setExpression("A(" + i + ", " + j + ")");
                     feedback[i][j].input.link(states[j]);
                     connect(feedback[i][j].output, stateAdders[i].plus);
                 }
@@ -342,7 +352,8 @@ public class LinearStateSpace extends TypedCompositeActor {
                     // if the elements of A's in this row are also zero,
                     // then we will have an illegal topology.
                     inputScales[i][j] = new Scale(this, "b_" + i + "_" + j);
-                    inputScales[i][j].factor.setExpression("B(" + i + ", " + j + ")");
+                    inputScales[i][j].factor
+                        .setExpression("B(" + i + ", " + j + ")");
                     inputScales[i][j].input.link(inputs[j]);
                     connect(inputScales[i][j].output, stateAdders[i].plus);
                 }
@@ -358,7 +369,8 @@ public class LinearStateSpace extends TypedCompositeActor {
                 for (int i = 0; i < n; i++) {
                     outputScales[l][i] = new Scale(this,
                             "outputScale_" + l + "_" + i);
-                    outputScales[l][i].factor.setExpression("C(" + l + ", " + i + ")");
+                    outputScales[l][i].factor
+                        .setExpression("C(" + l + ", " + i + ")");
                     outputScales[l][i].input.link(states[i]);
                     connect(outputScales[l][i].output,
                             outputAdders[l].plus);
@@ -371,7 +383,8 @@ public class LinearStateSpace extends TypedCompositeActor {
                     // Create the scale only if the element is not 0.
                     feedThrough[l][j] = new Scale(this,
                             "feedThrough_" + l + "_" + j);
-                    feedThrough[l][j].factor.setExpression("D(" + l + ", " + j + ")");
+                    feedThrough[l][j].factor
+                        .setExpression("D(" + l + ", " + j + ")");
                     feedThrough[l][j].input.link(inputs[j]);
                     connect(feedThrough[l][j].output,
                             outputAdders[l].plus);
@@ -391,15 +404,6 @@ public class LinearStateSpace extends TypedCompositeActor {
             Actor actor = (Actor)i.next();
             actor.preinitialize();
         }
-    }
-
-    /** Request the reinitialization.
-     *  @return True if the super class returns true.
-     *  @exception IllegalActionException If thrown by super class.
-     */
-    public boolean postfire() throws IllegalActionException {
-        if (_requestInitialization) _requestInitialization();
-        return super.postfire();
     }
 
     /** Stop the current firing. This method overrides the stopFire()
