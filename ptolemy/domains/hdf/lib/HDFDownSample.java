@@ -30,6 +30,7 @@
 
 package ptolemy.domains.hdf.lib;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.lib.Transformer;
 import ptolemy.actor.parameters.PortParameter;
@@ -43,7 +44,9 @@ import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
@@ -139,9 +142,9 @@ public class HDFDownSample extends Transformer {
         Director director = getDirector();
         Scheduler scheduler =
             ((SDFDirector)director).getScheduler();
-        _firingCount =
-            ((HDFDirector)director).getDirectorFiringsPerIteration()
-                * ((SDFScheduler)scheduler).getFiringCount(this);
+        //_firingCount =
+          //  ((HDFDirector)director).getDirectorFiringsPerIteration()
+            //    * ((SDFScheduler)scheduler).getFiringCount(this);
 
         Token[] inputToken = (Token[])input.get(0, _rateValue);
         int phaseValue = ((IntToken)phase.getToken()).intValue();
@@ -159,10 +162,11 @@ public class HDFDownSample extends Transformer {
      *  @exception IllegalActionException If the base class throws it
      */
     public boolean postfire() throws IllegalActionException {
-        _firingSoFar ++ ;
+        //_firingSoFar ++ ;
         rate.update();
         int rateValue = ((IntToken)rate.getToken()).intValue();
         Director director = getDirector();
+        CompositeActor container = (CompositeActor)getContainer();
         if (director instanceof HDFDirector) {
             Scheduler scheduler =
                 ((SDFDirector)director).getScheduler();
@@ -170,12 +174,24 @@ public class HDFDownSample extends Transformer {
             //_firingCount =
                 //((SDFScheduler)scheduler).getFiringCount(this);
               //  ((HDFDirector)director).getDirectorFiringsPerIteration();
-            if (_firingSoFar == _firingCount){
-                ((HDFDirector)director).invalidateSchedule();
-                _rateValue = rateValue;
-
-                _inputRate.setToken(new IntToken(_rateValue));
-                _firingSoFar = 0;
+              
+            if (_requestChange){
+                _requestChange = false;
+                ChangeRequest request =
+                    new ChangeRequest(this, "change sampling rate") {
+                        protected void _execute() throws KernelException {
+                            Director director = getDirector(); 
+                            ((HDFDirector)director).invalidateSchedule();
+                            int rateValue =
+                                ((IntToken)rate.getToken()).intValue();
+                            _rateValue = rateValue;
+  
+                            _inputRate.setToken(new IntToken(_rateValue));
+                            _requestChange = true;
+                        }
+                    };
+                request.setPersistent(false);
+                container.requestChange(request);    
             } else {
                 _inputRate.setToken(new IntToken(_rateValue));
             }
@@ -192,7 +208,7 @@ public class HDFDownSample extends Transformer {
 
         _rateValue = ((IntToken)rate.getToken()).intValue();
         _inputRate.setToken(new IntToken(_rateValue));
-        _firingSoFar = 0;
+        _requestChange = true;
         Director director = getDirector();
         director.invalidateSchedule();
         //if (director instanceof HDFDirector) {
@@ -218,8 +234,8 @@ public class HDFDownSample extends Transformer {
     private int _rateValue;
 
     // Number of firings so far in one iteration.
-    private int _firingSoFar;
+    private boolean _requestChange = true;
 
     // Number of firings of this actor per iteration.
-    private int _firingCount;
+    //private int _firingCount;
 }

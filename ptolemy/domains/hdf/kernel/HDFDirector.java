@@ -173,9 +173,9 @@ public class HDFDirector extends SDFDirector {
      *  @return The number of firings of current director per global
      *  iteration.
      */
-    public int getDirectorFiringsPerIteration() {
+    /*public int getDirectorFiringsPerIteration() {
         return _directorFiringsPerIteration;
-    }
+    }*/
 
     /** Return the scheduling sequence as an instance of Schedule.
      *  For efficiency, this method maintains a schedule cache and
