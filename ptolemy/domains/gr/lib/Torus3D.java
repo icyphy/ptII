@@ -141,7 +141,7 @@ public class Torus3D extends GRShadedShape {
         }
 
 
-        k = l = m = 0;
+        k = m = 0;
         for (i = 0; i < numberOfSweepVertices - 1;i++) {
             for (j = 0; j<numberOfSlices; j++) {
                 float cosFactor1 = (float) Math.cos(span*j/numberOfSlices);
