@@ -54,41 +54,51 @@ package pt.data.parser;
 
 public class ASTPtRelationalNode extends ASTPtSimpleNode {
     
-    protected pt.data.Token  _resolveNode() throws Exception {
+    protected pt.data.Token  _resolveNode() throws IllegalArgumentException {
         int num =  jjtGetNumChildren();
         if (num ==1) {
             return childTokens[0];
         }
         if ( _tokenList.size() != 1 ) {
-            throw new Exception("need an operator if have two children");
+            String str = "need an operator if have two children ";
+            throw new IllegalArgumentException(str + "of a relational node");
         }
         pt.data.Token result = childTokens[0];
         Token x = (Token)_tokenList.take();
-        if (x.image.compareTo("==") == 0) {
-            result = result.equality(childTokens[1]);
-            return result;
-        } else  if (x.image.compareTo("!=") == 0) {
-            result = result.equality(childTokens[1]);
-            ((pt.data.BooleanToken)result).negate();
-            return result;
-        } else  {
-            // relational operators only make sense on types below double
-            double a = ((pt.data.ScalarToken)childTokens[0]).doubleValue();
-            double b = ((pt.data.ScalarToken)childTokens[1]).doubleValue();
-            boolean res = false;
-            if (x.image.compareTo(">=") == 0) {
-                if (a>=b) res = true;
-            } else if  (x.image.compareTo(">") == 0) {
-                if (a>b) res = true;
-            } else if (x.image.compareTo("<=") == 0) {
-                if (a<=b) res = true;
-            } else if (x.image.compareTo("<") == 0) {
-                if (a<b) res = true;
-            } else {
-                String str = "invalid operator " + x.image + " in relational";
-                throw new Exception(str + "node");
+        // need to insert at end if want to reparse tree
+        _tokenList.insertLast(x);  
+        try {
+            if (x.image.compareTo("==") == 0) {
+                result = result.equality(childTokens[1]);
+                return result;
+            } else  if (x.image.compareTo("!=") == 0) {
+                result = result.equality(childTokens[1]);
+                ((pt.data.BooleanToken)result).negate();
+                return result;
+            } else  {
+                // relational operators only make sense on types below double
+                double a = ((pt.data.ScalarToken)childTokens[0]).doubleValue();
+                double b = ((pt.data.ScalarToken)childTokens[1]).doubleValue();
+                boolean res = false;
+                if (x.image.compareTo(">=") == 0) {
+                    if (a>=b) res = true;
+                } else if  (x.image.compareTo(">") == 0) {
+                    if (a>b) res = true;
+                } else if (x.image.compareTo("<=") == 0) {
+                    if (a<=b) res = true;
+                } else if (x.image.compareTo("<") == 0) {
+                    if (a<b) res = true;
+                } else {
+                    String str = "invalid operator " + x.image + " in relational";
+                    throw new IllegalArgumentException(str + "node");
+                }
+                return new pt.data.BooleanToken(res);
             }
-            return new pt.data.BooleanToken(res);
+        } catch (Exception ex) {
+            String str = "Invalid operation " + x.image + " between ";
+            str = str + childTokens[0].getClass().getName() + " and ";
+            str = str + childTokens[1].getClass().getName();
+            throw new IllegalArgumentException(str);
         }
     }
         

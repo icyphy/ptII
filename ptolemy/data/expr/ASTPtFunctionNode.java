@@ -60,42 +60,38 @@ public class ASTPtFunctionNode extends ASTPtSimpleNode {
         int args = jjtGetNumChildren();
         Class[] argTypes = new Class[args];
         Object[] argValues = new Object[args];
+        // Note: Java makes a dintinction between the class objects
+        // for double & Double...
         try {
             for (int i = 0; i<args; i++) {
-                // argValues[i] = new Double(((pt.data.ScalarToken)childTokens[i]).doubleValue()); 
-
-                 if (childTokens[i] instanceof DoubleToken) {
+                if (childTokens[i] instanceof DoubleToken) {
                     argValues[i] = new Double(((ScalarToken)childTokens[i]).doubleValue());
                     argTypes[i] = Double.TYPE;
                 } else if (childTokens[i] instanceof IntToken) {
                     argValues[i] = new Integer(((ScalarToken)childTokens[i]).intValue());
                     argTypes[i] = Integer.TYPE;
-    
-                    /* } else if (childTokens[i] instanceof FloatToken) {
-                    argValues[i] = new Float(((ScalarToken)childTokens[i]).floatValue());
-                    argTypes[i] = Float.TYPE; */
+                } else if (childTokens[i] instanceof LongToken) {
+                    argValues[i] = new Long(((ScalarToken)childTokens[i]).longValue());
+                    argTypes[i] = Long.TYPE;
                 } else {
-                    try {
-                        argValues[i] = new Double(((pt.data.ScalarToken)childTokens[i]).doubleValue());
-                        argTypes[i] = Double.TYPE;
-                    } catch (Exception ex) {
-                        throw new IllegalArgumentException("argument to function not of a supported type, ie float, int, double, or something that can be converted");
-                    }
+                    String str = "invalid argument type, valid types are: ";
+                    str = str + "int, long, double, complex and String";
+                    throw new IllegalArgumentException(str);
                 }
             }
-            // Note: Java makes a dintinction between the class objects
-            // for double & Double...
-            Class tmp = Class.forName("java.lang.Math");
-            Method m = tmp.getMethod(funcName, argTypes);
-            Object result = m.invoke(tmp, argValues);
+            // Currently this method only looks in java.lang.Math for 
+            // the invoked function, but this will be exttended
+            Class destClass = Class.forName("java.lang.Math");
+            Method m = destClass.getMethod(funcName, argTypes);
+            Object result = m.invoke(destClass, argValues);
             if (result instanceof Double) {
-                return new pt.data.DoubleToken(((Double)result).doubleValue());
+                return new DoubleToken(((Double)result).doubleValue());
             } else if (result instanceof Integer) {
-                return new pt.data.IntToken(((Integer)result).intValue());
+                return new IntToken(((Integer)result).intValue());
                 /*  } else if (result instanceof Float) {
                 return new pt.data.FloatToken(((Float)result).floatValue()); */
             } else if (result instanceof Long) { 
-                return new pt.data.LongToken(((Long)result).longValue());
+                return new LongToken(((Long)result).longValue());
             } else  {
                 String str = "result of  function not of a supported type, ";
                 str = str + "ie float, int, double, or long";

@@ -50,27 +50,40 @@ package pt.data.parser;
 
 public class ASTPtSumNode extends ASTPtSimpleNode {
     
-    protected pt.data.Token _resolveNode() throws Exception {
+    protected pt.data.Token _resolveNode() throws IllegalArgumentException {
         int num =  jjtGetNumChildren();
         if (num ==1) {
             return childTokens[0];
         }
         if (jjtGetNumChildren() != ( _tokenList.size() +1) ) {
             String str = "Invalid state in sum node, number of children is";
-            throw new Exception(str + "equal to number of operators +1");
+            str = str + "not equal to number of oprators plus one";
+            throw new IllegalArgumentException(str);
         }
         pt.data.Token result = childTokens[0];
-        for (int i=1; i<num; i++) {
-            // When start using 1.2 will change this
-            Token x = (Token)_tokenList.take();
-            if (x.image.compareTo("+") == 0) {
-                result = result.add(childTokens[i]);
-            } else if (x.image.compareTo("-") == 0) {
-                result = result.subtract(childTokens[i]);
-            } else {
-                String str = "Invlid concatenator in sum() production, ";
-                throw new Exception(str + "check parser");
+        String op = "";
+        int i = 1;
+        try {
+            for (i=1; i<num; i++) {
+                // When start using 1.2 will change this
+                // take from the front, put back at the end
+                Token x = (Token)_tokenList.take();
+                _tokenList.insertLast(x); // here so that tree can be reparsed
+                op = x.image;
+                if (op.compareTo("+") == 0) {
+                    result = result.add(childTokens[i]);
+                } else if (op.compareTo("-") == 0) {
+                    result = result.subtract(childTokens[i]);
+                } else {
+                    String str = "Invlid concatenator in sum() production, ";
+                    throw new IllegalArgumentException(str + "check parser");
+                }
             }
+        } catch (Exception ex) {
+            String str = "Invalid operation " + op + " between ";
+            str = str + result.getClass().getName() + " and ";
+            str = str + childTokens[i].getClass().getName();
+            throw new IllegalArgumentException(str);
         }
         return result;
     }
