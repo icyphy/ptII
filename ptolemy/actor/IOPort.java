@@ -1352,7 +1352,7 @@ public class IOPort extends ComponentPort {
                     "the Actor interface.");
         }
         // Invalidate schedule and type resolution of the old container.
-        CompositeActor oldContainer = (CompositeActor)getContainer();
+        Actor oldContainer = (Actor)getContainer();
         if (oldContainer != null) {
             Director director = oldContainer.getDirector();
             if (director != null) {
