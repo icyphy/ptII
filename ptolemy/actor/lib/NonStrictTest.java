@@ -310,37 +310,12 @@ public class NonStrictTest extends Sink {
                     + ((ArrayToken)(correctValues.getToken())).length()
                     + " tokens.";
 
-//                 if (isRunningNightlyBuild()) {
-                     System.err.println("Warning: '" + getFullName() + "' "
+                    System.err.println("Warning: '" + getFullName() + "' "
                              + errorMessage
-//                             + "\nNote that the nightly build is running"
-//                             + " so we are not throwing an exception here"
 					);		
-//                 } else {
-//                     throw new IllegalActionException(this, errorMessage);
-//                 }
             }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         }
         _initialized = false;
-
 
         // Note that wrapup() might get called by the manager before
         // we have any data...
@@ -365,7 +340,6 @@ public class NonStrictTest extends Sink {
                     }
                     newTokens[i] = new ArrayToken(newEntry);
                 }
-
             }
             correctValues.setToken(new ArrayToken(newTokens));
             correctValues.setPersistent(true);
