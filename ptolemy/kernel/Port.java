@@ -74,12 +74,12 @@ public class Port extends GenericPort {
 	 Port outerPort = (Port)innerPort.getUpAlias();
 	 Port middlePort = this;
 
-	 juxtaposeOuterWithInner_( middlePort, innerPort );
-	 if( outerPort != null ) {
-	      juxtaposeOuterWithInner_( outerPort, middlePort );
-	 }
+	 juxtaposeOuterWithInner_( middlePort, innerPort ); 
+	 juxtaposeOuterWithInner_( outerPort, middlePort );
 
-	 outerPort.aliasSet();
+	 if( outerPort != null ) {
+	      outerPort.aliasSet();
+	 }
 	 innerPort.aliasSet();
     }
 
@@ -248,20 +248,25 @@ public class Port extends GenericPort {
         }
     }
 
-    /** Juxtapose two Ports in the alias chain.
+    /** Juxtapose two Ports in the alias chain. 
      * @param outerPort The Port which will be outermost in the pair.
      * @param innerPort The Port which will be innermost in the pair.
      */
     private void juxtaposeOuterWithInner_(Port outerPort, Port innerPort) {
 
-	 String innerName = innerPort.getName();
-	 String outerName = outerPort.getName();
+	 if( innerPort != null ) {
+	      String innerName = innerPort.getName(); 
+	      AliasPair innerAliasPair 
+		= (AliasPair)aliasPairList_.get( innerName );
+	      innerAliasPair.setOuterAlias( outerPort );
+	 } 
 
-	 AliasPair innerAliasPair = (AliasPair)aliasPairList_.get( innerName );
-	 AliasPair outerAliasPair = (AliasPair)aliasPairList_.get( outerName );
-
-	 innerAliasPair.setOuterAlias( outerPort );
-	 outerAliasPair.setInnerAlias( innerPort );
+	 if( outerPort != null ) {
+	      String outerName = outerPort.getName(); 
+	      AliasPair outerAliasPair 
+		= (AliasPair)aliasPairList_.get( outerName ); 
+	      outerAliasPair.setInnerAlias( innerPort );
+	 }
     }
 
     //////////////////////////////////////////////////////////////////////////
