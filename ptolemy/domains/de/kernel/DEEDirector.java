@@ -503,7 +503,9 @@ public class DEEDirector extends DEDirector {
 
         // Get the functionDependency attribute of the container of this
         // director. If there is no such attribute, construct one.
-        FunctionDependency functionDependency = castContainer.getFunctionDependencies();
+        FunctionDependencyOfCompositeActor functionDependency = 
+            (FunctionDependencyOfCompositeActor) 
+            castContainer.getFunctionDependencies();
 
         //        Since the functionDependency is synchronized to workspace,
         //        there is no need to invalidate functionDependency here.
@@ -517,9 +519,7 @@ public class DEEDirector extends DEDirector {
         // If the port based data flow graph contains directed
         // loops, the model is invalid. An IllegalActionException
         // is thrown with the names of the actors in the loop.
-        Object[] cycleNodes = 
-            ((FunctionDependencyOfCompositeActor)functionDependency)
-                .getCycleNodes();
+        Object[] cycleNodes = functionDependency.getCycleNodes();
         if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
             for (int i = 0; i < cycleNodes.length; i++) {
@@ -533,7 +533,7 @@ public class DEEDirector extends DEDirector {
                     "Found zero delay loop including: " + names.toString());
         }
 
-        portsGraph = functionDependency.getDetailedPortGraph().
+        portsGraph = functionDependency.getDetailedDependencyGraph().
             toDirectedAcyclicGraph();
 
         return portsGraph;

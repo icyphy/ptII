@@ -141,7 +141,8 @@ public class SROptimizedScheduler extends Scheduler {
                     + "cannot schedule graph with no container.");
         }
 
-        FunctionDependency functionDependency =
+        FunctionDependencyOfCompositeActor functionDependency =
+            (FunctionDependencyOfCompositeActor)
             compositeActor.getFunctionDependencies();
 
         Object[] cycleNodes = 
@@ -164,7 +165,7 @@ public class SROptimizedScheduler extends Scheduler {
         }
 
         DirectedAcyclicGraph dependencyGraph =
-            functionDependency.getDetailedPortGraph().toDirectedAcyclicGraph();
+            functionDependency.getDetailedDependencyGraph().toDirectedAcyclicGraph();
 
         if (_debugging) {
             _debug("## dependency graph is:" + dependencyGraph.toString());
