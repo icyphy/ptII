@@ -53,7 +53,8 @@ JSRCS = \
 	SDFDirector.java \
 	SDFIOPort.java \
 	SDFReceiver.java \
-	SDFScheduler.java
+	SDFScheduler.java \
+	SDFUtilities.java
 
 EXTRA_SRCS =	$(JSRCS)
 

@@ -217,10 +217,10 @@ test SDFIOPort-5.1 {test consumption rate methods} {
     $p1 setInput 1
     $p1 setTokenConsumptionRate 5
     set rate1 [$p1 getTokenConsumptionRate]
-    set actualRate1 [$scheduler getTokenConsumptionRate $p1]
+    set actualRate1 [java::call ptolemy.domains.sdf.kernel.SDFUtilities getTokenConsumptionRate $p1]
     $p1 setTokenConsumptionRate 1
     set rate2 [$p1 getTokenConsumptionRate]
-    set actualRate2 [$scheduler getTokenConsumptionRate $p1]
+    set actualRate2 [java::call ptolemy.domains.sdf.kernel.SDFUtilities getTokenConsumptionRate $p1]
     list $rate1 $actualRate1 $rate2 $actualRate2
 } {5 5 1 1}
 
@@ -229,10 +229,10 @@ test SDFIOPort-5.2 {test production methods} {
     $p1 setOutput 1
     $p1 setTokenProductionRate 4
     set rate1 [$p1 getTokenProductionRate]
-    set actualRate1 [$scheduler getTokenProductionRate $p1]
+    set actualRate1 [java::call ptolemy.domains.sdf.kernel.SDFUtilities getTokenProductionRate $p1]
     $p1 setTokenProductionRate 1
     set rate2 [$p1 getTokenProductionRate]
-    set actualRate2 [$scheduler getTokenProductionRate $p1]
+    set actualRate2 [java::call ptolemy.domains.sdf.kernel.SDFUtilities getTokenProductionRate $p1]
     list $rate1 $actualRate1 $rate2 $actualRate2
 } {4 4 1 1}
 
@@ -241,9 +241,9 @@ test SDFIOPort-5.3 {test init production methods} {
     $p1 setOutput 1
     $p1 setTokenInitProduction 3
     set rate1 [$p1 getTokenInitProduction]
-    set actualRate1 [$scheduler getTokenInitProduction $p1]
+    set actualRate1 [java::call ptolemy.domains.sdf.kernel.SDFUtilities getTokenInitProduction $p1]
     $p1 setTokenInitProduction 1
     set rate2 [$p1 getTokenInitProduction]
-    set actualRate2 [$scheduler getTokenInitProduction $p1]
+    set actualRate2 [java::call ptolemy.domains.sdf.kernel.SDFUtilities getTokenInitProduction $p1]
     list $rate1 $actualRate1 $rate2 $actualRate2
 } {3 3 1 1}

@@ -38,10 +38,13 @@ import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.sched.Schedule;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.actor.util.ConstVariableModelAnalysis;
+import ptolemy.actor.util.DependencyDeclaration;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -262,7 +265,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             IOPort port = (IOPort)ports.next();
 
             // Create external initial production.
-            int rate = SDFScheduler.getTokenInitProduction(port);
+            int rate = SDFUtilities.getTokenInitProduction(port);
             boolean wasTransferred = false;
             for (int i = 0; i < port.getWidthInside(); i++) {
                 try {
@@ -319,7 +322,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             // insist on there being an input.
             if (inputPort instanceof ParameterPort) continue;
 
-            int threshold = SDFScheduler.getTokenConsumptionRate(inputPort);
+            int threshold = SDFUtilities.getTokenConsumptionRate(inputPort);
             if (_debugging) {
                 _debug("checking input " + inputPort.getFullName());
                 _debug("Threshold = " + threshold);
@@ -355,8 +358,8 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-               
-        Scheduler scheduler = getScheduler();
+              
+        SDFScheduler scheduler = (SDFScheduler)getScheduler();
         if (scheduler == null)
             throw new IllegalActionException("Attempted to initialize " +
                     "SDF system with no scheduler");
@@ -367,6 +370,29 @@ public class SDFDirector extends StaticSchedulingDirector {
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to compute schedule:");
+        }
+
+        // Declare the dependencies of rate parameters of external
+        // ports.  Note that this must occurs after scheduling, since
+        // rate parameters are assumed to exist.
+        ConstVariableModelAnalysis analysis =
+            ConstVariableModelAnalysis.getAnalysis(this);
+        for(Iterator ports = 
+                ((CompositeActor)getContainer()).portList().iterator();
+            ports.hasNext();) {
+            IOPort port = (IOPort) ports.next();
+            if(!(port instanceof ParameterPort)) {
+                if(port.isInput()) {
+                    _declareDependency(analysis, port, "tokenConsumptionRate",
+                            scheduler._rateVariables);
+                } 
+                if(port.isOutput()) {
+                    _declareDependency(analysis, port, "tokenProductionRate",
+                            scheduler._rateVariables);
+                    _declareDependency(analysis, port, "tokenInitProduction",
+                            scheduler._rateVariables);
+                }
+            }
         }
     }
 
@@ -413,7 +439,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                     "Attempted to transferInputs on a port is not an opaque" +
                     "input port.");
         }
-        int rate = SDFScheduler.getTokenConsumptionRate(port);
+        int rate = SDFUtilities.getTokenConsumptionRate(port);
         boolean wasTransferred = false;
         for (int i = 0; i < port.getWidth(); i++) {
             try {
@@ -469,7 +495,7 @@ public class SDFDirector extends StaticSchedulingDirector {
                     "Attempted to transferOutputs on a port that "
                     + "is not an opaque input port.");
         }
-        int rate = SDFScheduler.getTokenProductionRate(port);
+        int rate = SDFUtilities.getTokenProductionRate(port);
         boolean wasTransferred = false;
         for (int i = 0; i < port.getWidthInside(); i++) {
             try {
@@ -509,6 +535,34 @@ public class SDFDirector extends StaticSchedulingDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Add a DependencyDeclaration (with the name
+     * "_SDFRateDependencyDeclaration") to the variable with the given
+     * name in the given port that declares the variable is dependent
+     * on the given list of variables.  If a dependency declaration
+     * with that name already exists, then simply set its dependents
+     * list to the given list.
+     */
+    protected void _declareDependency(ConstVariableModelAnalysis analysis,
+            Port port, String name, List dependents) 
+            throws IllegalActionException {
+        Variable variable = 
+            (Variable)SDFUtilities._getRateVariable(port, name);
+        DependencyDeclaration declaration = (DependencyDeclaration)
+            variable.getAttribute(
+                    "_SDFRateDependencyDeclaration", 
+                    DependencyDeclaration.class);
+        if(declaration == null) {
+            try {
+                declaration = new DependencyDeclaration(variable, 
+                        "_SDFRateDependencyDeclaration");
+            } catch (NameDuplicationException ex) {
+                // Ignore... should not happen.
+            }
+        }
+        declaration.setDependents(dependents);
+        analysis.addDependencyDeclaration(declaration);
+    }
 
     /** Initialize the object.   In this case, we give the SDFDirector a
      *  default scheduler of the class SDFScheduler, an iterations

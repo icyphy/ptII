@@ -219,7 +219,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 //             variable.removeValueListener(this);
 //         }
 //        System.out.println("rate value changed: " + settable.getFullName());
-        _rateVariables.clear();
+        //   _rateVariables.clear();
         setValid(false);
     }
 
@@ -252,85 +252,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             (SDFDirector)getContainer();
         CompositeActor model = (CompositeActor)director.getContainer();
         
-        List schedulingParameters = new LinkedList();
-        // Collect scheduling dependencies.
-        for(Iterator entities = model.deepEntityList().iterator();
-            entities.hasNext();) {
-            Entity entity = (Entity)entities.next();
-            for(Iterator ports = entity.portList().iterator();
-                ports.hasNext();) {
-                Port port = (Port) ports.next();
-                Variable variable;
-                variable = (Variable)_getRateVariable(port, 
-                        "tokenProductionRate");
-                if(variable != null) {
-                    schedulingParameters.add(variable);
-                }
-                variable = (Variable)_getRateVariable(port, 
-                        "tokenConsumptionRate");
-                if(variable != null) {
-                    schedulingParameters.add(variable);
-                }
-                variable = (Variable)_getRateVariable(port,
-                        "tokenInitProduction");
-                if(variable != null) {
-                    schedulingParameters.add(variable);
-                }
-            }
-        }
-
-        boolean allowRateChanges = ((BooleanToken)
-                director.allowRateChanges.getToken()).booleanValue();
-        
-        // Check for rate parameters which are dynamic.
-        ConstVariableModelAnalysis analysis =
-            ConstVariableModelAnalysis.getAnalysis(director);
-        Entity scheduleChangeContext = (Entity)toplevel();
-        for(Iterator entities = model.deepEntityList().iterator();
-            entities.hasNext();) {
-            Entity entity = (Entity)entities.next();
-            for(Iterator ports = entity.portList().iterator();
-                ports.hasNext();) {
-                Port port = (Port) ports.next();
-                for(Iterator variables =
-                        analysis.getNotConstVariables(port).iterator();
-                    variables.hasNext();) {
-                    Variable variable = (Variable)variables.next();
-                    String name = variable.getName();
-                    if(name.equals("tokenInitProduction") ||
-                            name.equals("tokenProductionRate") ||
-                            name.equals("tokenConsumptionRate")) {
-                        if(allowRateChanges) {
-                            // The schedule depends on the rate parameter.
-                            if(!_rateVariables.contains(variable)) {
-                                variable.addValueListener(this);
-                                _rateVariables.add(variable);
-                            }
-                        } else {
-                            throw new IllegalActionException(director,
-                                    "Port " + port.getFullName() + 
-                                    " has a rate parameter that may change." + 
-                                    " This is not allowed in SDF models " +
-                                    "that will be run through the code " +
-                                    "generator.  If you don't care about " +
-                                    "code generation, then you might " +
-                                    "consider setting the allowRateChanges " +
-                                    "parameter of the SDF director to false.");
-                        }
-                    }
-                    Entity changeContext = 
-                        analysis.getChangeContext(variable);
-                    if(!model.getFullName().startsWith(
-                               changeContext.getFullName())) {
-                        throw new IllegalActionException(
-                                "Rate parameter of port "
-                                + port.getFullName() 
-                                + " might change during iteration " 
-                                + "of the containing model.");
-                    }
-                }
-            }
-        }
+        _checkDynamicRateVariables(model, _rateVariables);
         
         int vectorizationFactor = 1;
         if (director instanceof SDFDirector) {
@@ -366,7 +288,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // It gets populated with the fractional production ratios
         // and is used in the end to set final rates on external ports.
         // This map is initialized to zero.
-        Map externalRates = new TreeMap(new NamedObjComparator());
+        Map externalRates = new TreeMap(new SDFUtilities.NamedObjComparator());
 
         // Initialize externalRates to zero.
         for (Iterator ports = container.portList().iterator();
@@ -378,7 +300,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // An association between all the relations in a simulation and
         // and array of the maximum number of tokens that are ever
         // waiting on that relation.
-        Map minimumBufferSize = new TreeMap(new NamedObjComparator());
+        Map minimumBufferSize = 
+            new TreeMap(new SDFUtilities.NamedObjComparator());
 
         // Initialize the buffer size of each relation to zero.
         for (Iterator relations = container.relationList().iterator();
@@ -455,25 +378,6 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // Set the rate parameters of any external ports.
         _saveContainerRates(externalRates);
 
-        // Declare the dependencies of rate parameters of external
-        // ports.
-        for(Iterator ports = model.portList().iterator();
-            ports.hasNext();) {
-            IOPort port = (IOPort) ports.next();
-            if(!(port instanceof ParameterPort)) {
-                if(port.isInput()) {
-                    _declareDependency(analysis, port, "tokenConsumptionRate",
-                            schedulingParameters);
-                } 
-                if(port.isOutput()) {
-                    _declareDependency(analysis, port, "tokenProductionRate",
-                            schedulingParameters);
-                    _declareDependency(analysis, port, "tokenInitProduction",
-                            schedulingParameters);
-                }
-            }
-        }
-                        
         // Set the schedule to be valid.
         setValid(true);
         _externalRates = externalRates;
@@ -483,7 +387,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     /** Initialize the local data members of this object.
      */
     protected void _localMemberInitialize() {
-        _firingVector = new TreeMap(new NamedObjComparator());
+        _firingVector = 
+            new TreeMap(new SDFUtilities.NamedObjComparator());
         _firingVectorValid = true;
     }
 
@@ -512,7 +417,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // This will be populated with the fraction firing ratios for
         // each actor.
         Map entityToFiringsPerIteration = 
-            new TreeMap(new NamedObjComparator());
+            new TreeMap(new SDFUtilities.NamedObjComparator());
 
         // The pool of Actors that have not been touched
         // yet. (i.e. all their firingsPerIteration are still set to
@@ -661,6 +566,78 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
+    private void _assertDynamicRateVariable(CompositeActor model,
+            Variable variable,
+            List rateVariables, 
+            ConstVariableModelAnalysis analysis) 
+            throws IllegalActionException {
+        boolean allowRateChanges = ((BooleanToken)
+                ((SDFDirector)getContainer()).allowRateChanges.getToken()).booleanValue();
+        if(allowRateChanges) {
+            // The schedule depends on the rate parameter.
+            if(!rateVariables.contains(variable)) {
+                variable.addValueListener(this);
+                rateVariables.add(variable);
+            }
+        } else {
+            throw new IllegalActionException(variable,
+                    "The SDF rate parameter may change." + 
+                    " This is not allowed in SDF models " +
+                    "that will be run through the code " +
+                    "generator.  If you don't care about " +
+                    "code generation, then you might " +
+                    "consider setting the allowRateChanges " +
+                    "parameter of the SDF director to false.");
+        }
+        Entity changeContext = 
+            analysis.getChangeContext(variable);
+        if(!(changeContext == model || 
+                   changeContext.deepContains(model))) {
+            throw new IllegalActionException(variable, 
+                    "The SDF rate parameter changes during " +
+                    "execution of the schedule!");
+        }
+    }
+
+    // Populate the given set with the dynamic rate variables in the model.
+    protected void _checkDynamicRateVariables(
+            CompositeActor model, List rateVariables) 
+            throws IllegalActionException {
+        // Check for rate parameters which are dynamic.
+        ConstVariableModelAnalysis analysis =
+            ConstVariableModelAnalysis.getAnalysis(
+                    (SDFDirector)getContainer());
+        Entity scheduleChangeContext = (Entity)toplevel();
+        for(Iterator entities = model.deepEntityList().iterator();
+            entities.hasNext();) {
+            Entity entity = (Entity)entities.next();
+            for(Iterator ports = entity.portList().iterator();
+                ports.hasNext();) {
+                Port port = (Port) ports.next();
+                Set set = analysis.getNotConstVariables(port);
+                Variable variable;
+                variable = SDFUtilities._getRateVariable(
+                        port, "tokenInitProduction");
+                if(set.contains(variable)) {
+                    _assertDynamicRateVariable(
+                            model, variable, rateVariables, analysis);
+                } 
+                variable = SDFUtilities._getRateVariable(
+                        port, "tokenConsumptionRate");
+                if(set.contains(variable)) {
+                    _assertDynamicRateVariable( 
+                            model, variable, rateVariables, analysis);
+                } 
+                variable = SDFUtilities._getRateVariable(
+                        port, "tokenProductionRate");
+                if(set.contains(variable)) {
+                    _assertDynamicRateVariable(
+                            model, variable, rateVariables, analysis);
+                } 
+            }
+        }
+    }
+
     /** Determine the number of times the given actor can fire, based on
      *  the number of tokens that are present on its inputs according to
      *  the given map.
@@ -681,7 +658,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
             int[] tokens = (int []) waitingTokens.get(inputPort);
-            int tokenRate = getTokenConsumptionRate(inputPort);
+            int tokenRate = SDFUtilities.getTokenConsumptionRate(inputPort);
             // Ignore zero rate ports.. they don't limit the number of times
             // we can fire their actors.
             if (tokenRate == 0) {
@@ -732,7 +709,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                         inputPort.getFullName());
             }
 
-            int threshold = getTokenConsumptionRate(inputPort);
+            int threshold = SDFUtilities.getTokenConsumptionRate(inputPort);
             if (_debugging && VERBOSE) {
                 _debug("Threshold = " + threshold);
             }
@@ -872,7 +849,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             for (Iterator ports = actor.portList().iterator();
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
-                if (_getRate(port) == 0) {
+                if (SDFUtilities._getRate(port) == 0) {
                     return actor;
                 }
             }
@@ -994,7 +971,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         }
 
         // Get the rate of this port.
-        int currentRate = _getRate(currentPort);
+        int currentRate = SDFUtilities._getRate(currentPort);
 
         // Port rates of less than zero are not valid.
         if (currentRate < 0) {
@@ -1035,7 +1012,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                         + " to " + connectedActor.getName());
             }
 
-            int connectedRate = _getRate(connectedPort);
+            int connectedRate = SDFUtilities._getRate(connectedPort);
 
             // currentFiring is the firing ratio that we've already
             // calculated for currentActor
@@ -1183,7 +1160,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
         // An association between each actor and the number of firings
         // for that actor that remain to be simulated.
-        Map firingsRemainingVector = new TreeMap(new NamedObjComparator());
+        Map firingsRemainingVector = 
+            new TreeMap(new SDFUtilities.NamedObjComparator());
 
         // Initialized the firingsRemainingVector to the current
         // firing vector.
@@ -1195,7 +1173,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
         // An association between all the input ports in a simulation and an
         // array of the number of tokens waiting on each relation of that port.
-        Map waitingTokens = new TreeMap(new NamedObjComparator());
+        Map waitingTokens = 
+            new TreeMap(new SDFUtilities.NamedObjComparator());
         try {
             // Initialize waitingTokens
             // at all the input ports to zero
@@ -1250,7 +1229,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 Iterator outputPorts = actor.outputPortList().iterator();
                 while (outputPorts.hasNext()) {
                     IOPort outputPort = (IOPort) outputPorts.next();
-                    int count = getTokenInitProduction(outputPort);
+                    int count = 
+                        SDFUtilities.getTokenInitProduction(outputPort);
                     if (_debugging && VERBOSE) {
                         _debug("Simulating " + count
                                 + " tokens created on " + outputPort);
@@ -1386,7 +1366,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                      outputPorts.hasNext();) {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
-                    int count = getTokenProductionRate(outputPort);
+                    int count = 
+                        SDFUtilities.getTokenProductionRate(outputPort);
 
                     _simulateTokensCreated(outputPort,
                             count * numberOfFirings,
@@ -1627,7 +1608,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
             int[] tokens = (int []) waitingTokens.get(inputPort);
-            int tokenRate = getTokenConsumptionRate(inputPort);
+            int tokenRate = 
+                SDFUtilities.getTokenConsumptionRate(inputPort);
             for (int channel = 0;
                  channel < inputPort.getWidth();
                  channel++) {
@@ -1790,7 +1772,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     // fire.
     private Fraction _minusOne = new Fraction(-1);
     
-    private Map _externalRates = new TreeMap(new NamedObjComparator());
+    private Map _externalRates = 
+    new TreeMap(new SDFUtilities.NamedObjComparator());
 
-    private Set _rateVariables = new HashSet();
+    List _rateVariables = new LinkedList();
 }
