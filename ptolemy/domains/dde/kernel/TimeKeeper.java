@@ -101,7 +101,6 @@ public class TimeKeeper {
         _rcvrList = new LinkedList();
 	_rcvrComparator = new RcvrComparator(this);
 
-        String name = ((Nameable)_actor).getName();
         setRcvrPriorities();
     }
 
@@ -197,16 +196,6 @@ public class TimeKeeper {
      * @params rcvr The receiver that is causing this method to be invoked.
      */
     public void sendOutNullTokens(DDEReceiver rcvr) {
-	String name = ((Nameable)_actor).getName();
-	/*
-          if( name.equals("fBack") ) {
-          try {
-          throw new IllegalArgumentException();
-          } catch( IllegalArgumentException e ) {
-          e.printStackTrace();
-          }
-          }
-	*/
 	Iterator ports = _actor.outputPortList().iterator();
 	double time = getCurrentTime();
 	while( ports.hasNext() ) {
@@ -332,13 +321,6 @@ public class TimeKeeper {
             	    + "to set the time keeper's output time "
                     + "in the past");
         }
-        /*
-          if( _outputTime > _currentTime ) {
-          if( _outputTime > outputTime ) {
-          return;
-          }
-          }
-        */
 	if( outputTime != PrioritizedTimedQueue.IGNORE ) {
             _outputTime = outputTime;
 	}
@@ -397,9 +379,6 @@ public class TimeKeeper {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods		   ////
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The actor that is managed by this time keeper.
@@ -425,8 +404,5 @@ public class TimeKeeper {
     // this time keeper. The receivers are ordered
     // according to the rcvr comparator.
     private LinkedList _rcvrList;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         inner class                       ////
 
 }

@@ -52,7 +52,8 @@ if {[string compare test [info procs test]] == 1} then {
 # Global Variables 
 set globalIgnoreTime -1
 set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
-set globalInactiveTime [java::field $globalEndTimeRcvr INACTIVE]
+#set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
+set globalEndTime -2.0
 
 ######################################################################
 ####
@@ -123,7 +124,7 @@ test TimeKeeper-3.3 {getNextTime()} {
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 20]
     $rcvr1 put $tok $globalIgnoreTime
     set rcvr2 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
-    $rcvr2 put $tok $globalInactiveTime
+    $rcvr2 put $tok $globalEndTime
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
@@ -141,9 +142,9 @@ test TimeKeeper-3.3 {getNextTime()} {
 # Continued from above
 test TimeKeeper-3.4 {getNextTime()} {
     set rcvr1 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 2]
-    $rcvr1 put $tok $globalInactiveTime
+    $rcvr1 put $tok $globalEndTime
     set rcvr2 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 5]
-    $rcvr2 put $tok $globalInactiveTime
+    $rcvr2 put $tok $globalEndTime
 
     set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 

@@ -51,7 +51,8 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # Global Variables 
 set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
-set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
+#set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
+set globalEndTime -2.0
 
 
 ######################################################################

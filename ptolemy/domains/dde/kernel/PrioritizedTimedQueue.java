@@ -86,15 +86,15 @@ next oldest token from the other receivers contained by the actor in
 question will be consumed and the token time stamped IGNORE will be
 dropped. The IGNORE time stamp is useful in feedback topologies in which
 an actor should ignore inputs from a feedback cycle when the model's
-execution is just beginning. FeedBackDelay actors output a single IGNORE token
-during their initialize() methods for just this reason. In general,
+execution is just beginning. FeedBackDelay actors output a single IGNORE 
+token during their initialize() methods for just this reason. In general,
 IGNORE tokens should not be handled unless fundamental changes to the
 DDE kernel are intended.
 <P>
-The values of the variables IGNORE, INACTIVE and ETERNITY are arbitrary
-as long as they have unique, negative values. ETERNITY is used in
-conjunction with the completionTime to indicate that an actor should
-continue executing indefinitely.
+The values of the package friendly variables IGNORE, INACTIVE and ETERNITY 
+are arbitrary as long as they have unique, negative values. ETERNITY is 
+used in conjunction with the completionTime to indicate that an actor 
+should continue executing indefinitely.
 <P>
 Note that a PrioritizedTimedQueue is intended for use within a
 multi-threaded environment. PrioritizedTimedQueue does not
@@ -135,13 +135,6 @@ public class PrioritizedTimedQueue {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-
-    // This time value indicates that the receiver is no longer active.
-    public static final double INACTIVE = -2.0;
-
-    // This time value is used in conjunction with completionTime to
-    // indicate that a receiver will continue operating indefinitely.
-    public static final double ETERNITY = -5.0;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -361,9 +354,17 @@ public class PrioritizedTimedQueue {
     ///////////////////////////////////////////////////////////////////
     ////                  package friendly variables 		   ////
 
+    // This time value is used in conjunction with completionTime to
+    // indicate that a receiver will continue operating indefinitely.
+    static final double ETERNITY = -5.0;
+
     // This time value indicates that the receiver contents should
     // be ignored.
     static final double IGNORE = -1.0;
+
+    // This time value indicates that the receiver is no longer 
+    // active.
+    static final double INACTIVE = -2.0;
 
     // The time stamp of the newest token to be placed in the queue.
     double _lastTime = 0.0;

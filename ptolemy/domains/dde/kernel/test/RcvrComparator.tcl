@@ -51,7 +51,8 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # Global Variables 
 set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
-set globalInactiveTime [java::field $globalEndTimeRcvr INACTIVE]
+#set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
+set globalEndTime -2.0
 set globalIgnoreTime -1
 
 ######################################################################
@@ -82,7 +83,7 @@ test RcvrComparator-2.1 {compareTo() on times, same priorities} {
     $rcvr4 put $tok $globalIgnoreTime
 
     set rcvr5 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
-    $rcvr5 put $tok $globalInactiveTime
+    $rcvr5 put $tok $globalEndTime
 
     set rcvr6 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
     $rcvr6 put $tok 0.5
@@ -119,10 +120,10 @@ test RcvrComparator-2.2 {compareTo() on times and priorities} {
     $rcvr4 put $tok $globalIgnoreTime
 
     set rcvr5 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 5]
-    $rcvr5 put $tok $globalInactiveTime
+    $rcvr5 put $tok $globalEndTime
 
     set rcvr6 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 6]
-    $rcvr6 put $tok $globalInactiveTime
+    $rcvr6 put $tok $globalEndTime
 
     set rcvr7 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 1]
     $rcvr7 put $tok 0.0
@@ -131,7 +132,7 @@ test RcvrComparator-2.2 {compareTo() on times and priorities} {
     $rcvr8 put $tok $globalIgnoreTime
 
     set rcvr9 [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue $iop 5]
-    $rcvr9 put $tok $globalInactiveTime
+    $rcvr9 put $tok $globalEndTime
 
     set testA [$cmp compare $rcvr1 $rcvr2]
     set testB [$cmp compare $rcvr3 $rcvr4]

@@ -51,7 +51,8 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 # Global Variables 
 set globalEndTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
-set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
+#set globalEndTime [java::field $globalEndTimeRcvr INACTIVE]
+set globalEndTime -2.0
 set globalIgnoreTimeRcvr [java::new ptolemy.domains.dde.kernel.PrioritizedTimedQueue]
 set globalIgnoreTime -1.0
 # set globalIgnoreTime [java::field $globalIgnoreTimeRcvr IGNORE]
@@ -210,3 +211,21 @@ test DDEReceiver-2.4 {Send Ignore and Real through multiport.} {
 
     list $time0 $time1 $time2 $time3 $time4 
 } {4.0 5.0 6.0 7.0 8.0}    
+
+######################################################################
+####
+#
+test DDEReceiver-2.5 {Check hasToken() cache.} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set actor [java::new ptolemy.actor.TypedCompositeActor $toplevel "actor"]
+    set port [java::new ptolemy.actor.TypedIOPort $actor "port"]
+    set rcvr [java::new ptolemy.domains.dde.kernel.DDEReceiver $port]
+
+    $toplevel setName "toplevel"
+
+    catch {$rcvr get} msg
+
+    list $msg
+} {{ptolemy.actor.NoTokenException: .toplevel.actor.port: Attempt to get token that does not have have the earliest time stamp.}};
+

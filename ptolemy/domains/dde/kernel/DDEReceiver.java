@@ -144,6 +144,11 @@ public class DDEReceiver extends PrioritizedTimedQueue
      * @see #hasToken()
      */
     public Token get() throws NoTokenException {
+	if( !_hasToken ) {
+            throw new NoTokenException( getContainer(),
+                    "Attempt to get token that does not have "
+		    + "have the earliest time stamp.");
+	}
         DDEDirector director = (DDEDirector)
             ((Actor)getContainer().getContainer()).getDirector();
 	synchronized( this ) {
@@ -163,6 +168,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
                     ((DDEThread)thread).getTimeKeeper();
 		timeKeeper.sendOutNullTokens(this);
 	    }
+	    _hasToken = false;
 	    return token;
 	}
     }
@@ -197,7 +203,6 @@ public class DDEReceiver extends PrioritizedTimedQueue
 
 	synchronized(this) {
 
-
 	    //////////////////////
 	    // Update the RcvrList
 	    //////////////////////
@@ -231,10 +236,12 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    ///////////////////////////
             if( super.hasToken() && !_terminate && !sendNullTokens ) {
 	        if ( !hasNullToken() ) {
+		    _hasToken = true;
 	            return true;
 	        } else {
 		    // Treat Null Tokens Normally For Feedback
 		    if( !_hideNullTokens ) {
+			_hasToken = true;
 		        return true;
 		    }
 
@@ -394,6 +401,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	_terminate = false;
     	_readPending = false;
     	_writePending = false;
+	_hasToken = false;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -428,4 +436,6 @@ public class DDEReceiver extends PrioritizedTimedQueue
     private boolean _readPending = false;
     private boolean _writePending = false;
     private boolean _hideNullTokens = true;
-    }
+    private boolean _hasToken = false;
+
+}
