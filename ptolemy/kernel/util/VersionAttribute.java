@@ -75,7 +75,7 @@ public class VersionAttribute
      *   using setExpression().
      *  @exception IllegalActionException If the value is of the
      *   incorrect format.
-     *  @see #setExpression(string)
+     *  @see #setExpression(String)
      */
     public VersionAttribute(String expression) throws IllegalActionException {
 	super();
@@ -195,7 +195,7 @@ public class VersionAttribute
     /** Return true if this version is less than the specified version.
      *  This method uses compareTo(), but may yield more readable code
      *  in certain circumstances.
-     *  @see #compareTo(VersionAttribute)
+     *  @see #compareTo(Object)
      *  @return True if this version is less than the specified version.
      */
     public boolean isLessThan(VersionAttribute version) {
@@ -255,7 +255,8 @@ public class VersionAttribute
      *  functionality depending on the version number:
      *  <p>
      *  <pre>
-     *  if (VersionAttribute.CURRENT_VERSION.compareTo("2.0") >= 0 ) {
+     *  if (VersionAttribute.CURRENT_VERSION.compareTo(
+     *         new VersionAttribute("2.0")) >= 0 ) {
      *      // Perform some operation if the current version is
      *      // Ptolemy II 2.0 or later.
      *  }
