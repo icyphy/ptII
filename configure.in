@@ -1013,7 +1013,7 @@ else
 	    # $PTII/ptolemy/make if Eclipse jar files were found
 	    PTBACKTRACK_DIR=backtrack
    	    # PTBACKTRACK_PACKAGES is used in ptII/doc/makefile
-	    PTBACKTRACK_PACKAGES=ptolemy.backtrack.ast
+	    PTBACKTRACK_PACKAGES="ptolemy.backtrack.ast ptolemy.backtrack.ast.transform ptolemy.backtrack.util ptolemy.backtrack.xmlparser"
 	    PTBACKTRACK_JARS=$eclipsejarpath
         fi
     fi	
