@@ -311,7 +311,7 @@ public class PortParameter extends Parameter {
      *  associated port, and if so, update the current value of
      *  parameter with that token.  If there is no associated port,
      *  do nothing.
-     *  @throws IllegalActionException If reading from the associated
+     *  @exception IllegalActionException If reading from the associated
      *   port throws it.
      */
     public void update() throws IllegalActionException {
