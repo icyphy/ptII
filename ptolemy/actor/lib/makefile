@@ -198,6 +198,7 @@ JSRCS = \
 	Writer.java
 
 OTHER_FILES_TO_BE_JARED = \
+	BooleanSwithIcon.xml \
 	PowerEstimate.xml \
 	Sinewave.xml \
 	TimedSine.xml \
