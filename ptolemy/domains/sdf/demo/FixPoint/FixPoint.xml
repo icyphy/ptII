@@ -1,0 +1,93 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="topLevel" class="ptolemy.actor.TypedCompositeActor">
+    <property name="SDFDirector" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="40">
+        </property>
+        <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+    </property>
+    <entity name="ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="tofix" class="ptolemy.actor.lib.conversions.DoubleToFix">
+        <property name="precision" class="ptolemy.data.expr.Parameter" value="&quot;(2.1)&quot;">
+        </property>
+        <property name="quantizer" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="todouble" class="ptolemy.actor.lib.conversions.FixToDouble">
+        <property name="precision" class="ptolemy.data.expr.Parameter" value="&quot;(2.16)&quot;">
+        </property>
+        <property name="overflow" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="plot" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute">
+        </property>
+        <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="-1.1">
+        </property>
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <configure><?plotml
+<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Ramp Diagram</title>
+<xLabel>input value</xLabel>
+<yLabel>FixPoint value</yLabel>
+<xRange min="-1.0" max="2.9"/>
+<yRange min="-1.0" max="2.9000000000000012"/>
+<noGrid/>
+<wrap/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
+    <relation name="_R0" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R1" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="_R2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ramp.output" relation="_R0"/>
+    <link port="tofix.input" relation="_R0"/>
+    <link port="tofix.output" relation="_R1"/>
+    <link port="todouble.input" relation="_R1"/>
+    <link port="todouble.output" relation="_R2"/>
+    <link port="plot.input" relation="_R2"/>
+    <link port="plot.input" relation="_R0"/>
+</entity>
