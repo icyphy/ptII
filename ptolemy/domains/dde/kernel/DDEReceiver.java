@@ -217,18 +217,18 @@ public class DDEReceiver extends TimedQueueReceiver
                 return;
             }
 
-            director.addWriteBlock();
+            director.addWriteBlock(this);
             while( !super.hasRoom() && !_terminate ) {
                 notifyAll();
                 workspace.wait( this );
             }
             if( _terminate ) {
-                director.removeWriteBlock();
+                director.removeWriteBlock(this);
                 throw new TerminateProcessException( getContainer(),
                         "This receiver has been terminated "
                         + "during put()");
             } else {
-                director.removeWriteBlock();
+                director.removeWriteBlock(this);
                 put(token, time);
             }
         }
