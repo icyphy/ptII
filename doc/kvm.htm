@@ -374,6 +374,32 @@ to the top of <code>verifier.c</code>.
 <a href="#kvm_executable">kvm executable</a> instructions
 above.
 
+<h2>Waba</h2>
+<menu>
+<li><a href="http://www.wabasoft.com"><code>http://www.wabasoft.com</code>
+</menu>
+Waba is an open source Java Virtual Machine for the Palm.
 
+<h3>Installing Waba SDK for Ptolemy II</h3>
+
+<ol>
+<li>Download and Install the Waba VM on your Palm OS machine or emulator
+<li>Download <code>wabasdk.10.part1of2.zip</code> and
+<code>wabasdk.10.part2of2.zip</code>
+<li><code>mkdir $PTII/vendors/misc/waba</code>
+<li>Extract the two zip files into </code>$PTII/vendors/misc/waba</code>
+<li> Rename the wabasdk directory and rerun configure
+<pre>
+mv wabasdk.10 wabasdk
+cd $PTII
+rm config.status config.cache; ./configure
+</pre>
+<li>Build a simple Scribble app
+<pre>
+cd $PTII/ptolemy/apps/waba/demo/Scribble
+make
+</pre>
+<li> Install <code>Scribble.prc</code> and <code>Scribble.prd</code>
+on your Palm OS machine and run them
 </body>
 </html>
