@@ -55,11 +55,15 @@ Is the synchronization below provable? Or is it just reasoned?
 
 public class CSPReceiver implements Receiver {
   
-  /** FIXME: look at CTReceiver, PNReceiver for choisceof constructors
+  /** FIXME: look at CTReceiver, PNReceiver for choice of constructors
    * @param name The name of this receiver.
    */
   public CSPReceiver(String name) {
     _name = name;
+  }
+  
+  public CSPReceiver() {
+    _name = "";
   }
 
   ////////////////////////////////////////////////////////////////////////
@@ -87,13 +91,13 @@ public class CSPReceiver implements Receiver {
 	_setPutWaiting(false);  //needs to be done here
 	tmp = _token;
 	notifyAll(); //wake up the waiting put
-	wait();
+	_checkAndWait();
       } else { // get got there first, so have to wait for a put
 	//System.out.println(getName() + ": get got here before put");
 	_setGetWaiting(true);
 	notifyAll();
 	while(isGetWaiting()) {
-	  wait();
+	  _checkAndWait();
 	}
 	tmp = _token;
 	notifyAll();
@@ -119,14 +123,14 @@ public class CSPReceiver implements Receiver {
       if (isGetWaiting()) {
 	_setGetWaiting(false);  //needs to be done here
 	notifyAll(); //wake up the waiting get
-	wait();
+	_checkAndWait();
 	return;
       } else { // put got there first, so have to wait for a get
 	//System.out.println(getName() + ": put got here before get");
 	_setPutWaiting(true);
 	notifyAll();
 	while(isPutWaiting()) {
-	  wait();  
+	  _checkAndWait();  
 	}
 	if (isGetWaiting()) {
 	  System.out.println("Error:getWaiting is true!");
@@ -204,53 +208,75 @@ public class CSPReceiver implements Receiver {
     _otherParent = par;
   }
 
-  
-  ////////////////////////////////////////////////////////////////////////
-  ////                         private methods                        ////
-  
-  /* Called only by the get and put methods of this class to indicate
-   * that a get is waiting(value is true) or that the corresponding
-   * put has arrived(value is false).
-   * @param value boolean indicating whether a get is waiting or not.
-   */
-  private void _setGetWaiting(boolean value) {
-    _getWaiting = value;
-  }
+    /** The simulation has terminated, so set a flag so that the 
+     *  next time an actor tries to get or put it gets a 
+     *  TerminateProcessException which will cause it to finish.
+     */
+    public void setSimulationTerminated() {
+        _simulationTerminated = true;
+    }
 
-  /* Called only by the get and put methods of this class to indicate
-   * that a put is waiting(value is true) or that the corresponding
-   * get has arrived(value is false).
-   * @param value boolean indicating whether a put is waiting or not.
-   */
-  private void _setPutWaiting(boolean value) {
-    _putWaiting = value;
-  }
-  
-  ////////////////////////////////////////////////////////////////////////
-  ////                         private variables                      ////
-  
-  // Flag indicating whather or not a get is waiting at this receiver.  
-  private boolean _getWaiting = false;
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private methods                        ////
+    
+    /** This method wraps the wait() call on the CSPReceiver object 
+     *  so that if the simulation has terminated, then a 
+     *  TerminateProcessException should be thrown.
+     */
+    protected synchronized void _checkAndWait() throws InterruptedException {
+        if (_simulationTerminated) {
+            throw new TerminateProcessException(getName() + ": simulation terminated");
+        }
+        wait();
+    }
 
-  // Flag indicating whather or not a get is waiting at this receiver.
-  private boolean _putWaiting = false;
-
-  // obsolete when implement containment
-  private CSPActor _otherParent; 
- 
-  // Flag indicating whether or not a conditional receive is waiting 
-  // to rendezvous.
-  private boolean _conditionalReceiveWaiting = false;
-
-  // Flag indicating whether or not a conditional send is waiting 
-  // to rendezvous.
-  private boolean _conditionalSendWaiting = false;
-
-  // The token being transfered during the rendezvous.
-  private Token _token;
-
-  // The name of this receiver.
-  private String _name;
+    /* Called only by the get and put methods of this class to indicate
+     * that a get is waiting(value is true) or that the corresponding
+     * put has arrived(value is false).
+     * @param value boolean indicating whether a get is waiting or not.
+     */
+    private void _setGetWaiting(boolean value) {
+        _getWaiting = value;
+    }
+    
+    /* Called only by the get and put methods of this class to indicate
+     * that a put is waiting(value is true) or that the corresponding
+     * get has arrived(value is false).
+     * @param value boolean indicating whether a put is waiting or not.
+     */
+    private void _setPutWaiting(boolean value) {
+        _putWaiting = value;
+    }
+    
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private variables                      ////
+    
+    // Flag indicating whather or not a get is waiting at this receiver.  
+    private boolean _getWaiting = false;
+    
+    // Flag indicating whather or not a get is waiting at this receiver.
+    private boolean _putWaiting = false;
+    
+    // obsolete when implement containment
+    private CSPActor _otherParent; 
+    
+    // Flag indicating whether or not a conditional receive is waiting 
+    // to rendezvous.
+    private boolean _conditionalReceiveWaiting = false;
+    
+    // Flag indicating whether or not a conditional send is waiting 
+    // to rendezvous.
+    private boolean _conditionalSendWaiting = false;
+    
+    // Flag indicating that the director controlling the actor this 
+    //receiver is contained by has terminated the simulation.
+    private boolean _simulationTerminated = false;
+    
+    // The token being transfered during the rendezvous.
+    private Token _token;
+    
+    // The name of this receiver.
+    private String _name;
 }  
 
   

@@ -32,7 +32,9 @@ package ptolemy.domains.csp.kernel;
 
 import ptolemy.data.Token;
 import ptolemy.actor.*;
+import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
+import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPActor
@@ -232,12 +234,57 @@ public class CSPActor extends AtomicActor implements Runnable {
     return _successfulBranch;
   }
   
+  /** Clone this actor into the specified workspace. The new actor is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is a new actor with the same ports as the original, but
+     *  no connections and no container.  A container must be set before
+     *  much can be done with the actor.
+     *
+     *  @param ws The workspace for the cloned object.
+     *  @exception CloneNotSupportedException If cloned ports cannot have
+     *   as their container the cloned entity (this should not occur), or
+     *   if one of the attributes cannot be cloned.
+     *  @return A new CSPActor.
+     */
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        CSPActor newobj = (CSPActor)super.clone(ws);
+        newobj._branchesActive = 0;
+	newobj._branchTrying = -1;
+	newobj._branchSucceededLock = new Object();
+	newobj._branchFailedLock = new Object();
+	newobj._internalLock = new Object();
+	newobj._myThread = null;
+        newobj._successfulBranch = -1;
+	newobj._token = null;
+	return newobj;
+    }
+
+  /** Start the thread this actor is to be run is.
+   */
+  public void fire() 
+         throws CloneNotSupportedException, IllegalActionException {
+	   _myThread.start();
+	   System.out.println("Started thread for actor: " + getName());
+  }
+
   /** The token returned by a sucssful ConditionalReceive is stored in 
    * the CSPActor.
    * @return The Token from the last successful conditional receive.
    */
   public Token getToken() {
     return _token;
+  }
+
+
+  /** In CSP, the initilaize method creates the thread to run the actor in.
+   *  The thread is started in the fire method.
+   */
+  public void initialize() 
+       throws CloneNotSupportedException, IllegalActionException {
+           CSPDirector director = (CSPDirector)getDirector();
+	 _myThread = new Thread( director.getProcessGroup(), this);
+	 director.actorStarted();
   }
 
   /** Release the calling branches status as the first branch to
@@ -259,9 +306,73 @@ public class CSPActor extends AtomicActor implements Runnable {
     System.out.println("Error: branch releaseing first without possessing it! :" + _branchTrying + " & " + branchNumber);
   }
   
-  /** Does nothing is this base class.
+  /** Wrap the code form derived actors so that do not have to duplicate 
+   *  the code to catch the TerminatedException and to notify the 
+   *  director that the process has stopped.
+   *  It calls the protected method _run in the derived class.
    */
-  public void run() {}
+  public void run() {
+    try {
+      _run(); //what would be a better name for this method?
+    } catch (TerminateProcessException ex) {
+      // return with appropriate message
+      System.out.println("Actor terminated by exception: " + getName());
+    } finally {
+      // put this here so that always gets called as thread finishes
+      // NICE, as do not have to rely on programmer!! 
+      ((CSPDirector)getDirector()).actorStopped();
+    }
+  }
+
+  /** Override the base class to ensure that the proposed container
+     *  is an instance of CSPCompositeActor or null. If it is, call the
+     *  base class setContainer() method. A null argument will remove
+     *  the actor from its container.
+     *
+     *  @param entity The proposed container.
+     *  @exception IllegalActionException If the action would result in a
+     *   recursive containment structure, or if
+     *   this entity and container are not in the same workspace, or
+     *   if the argument is not a CSPCompositeActor or null.
+     *  @exception NameDuplicationException If the container already has
+     *   an entity with the name of this entity.
+     */
+    public void setContainer(CompositeEntity container)
+            throws IllegalActionException, NameDuplicationException {
+        if (!(container instanceof CSPCompositeActor) && (container != null)) {
+            throw new IllegalActionException(container, this,
+                    "CSPActor can only be contained by instances of " +
+                    "CSPCompositeActor.");
+        }
+        super.setContainer(container);
+    }
+
+  /** Called by CSPDirector when the simulation is terminated. This method 
+   *  sets a flag in all receivers that the simulation has terminated. It
+   *  then issues a notifyAll on each receiver so that a TerminatedException 
+   *  can be thrown to any processes waiting to rendezvous.
+   */
+  public void terminate() throws IllegalActionException {
+    Enumeration inports = inputPorts();
+    while (inports.hasMoreElements()) {
+      IOPort port = (IOPort)inports.nextElement();
+      Receiver[][] receivers = port.getReceivers();
+      for (int i=0; i < receivers.length; i++) {
+	if (receivers[i].length > 1) {
+	  System.out.println("Error: more than one receiver on CSP input channel");
+	}
+	((CSPReceiver)receivers[i][0]).setSimulationTerminated();
+      }
+    }
+  }
+
+  ////////////////////////////////////////////////////////////////////////
+  ////                         protected methods                      ////
+
+  /** in this base class this does nothing. It should be overridden by 
+   *  derived classes to do the actor specific work.
+   */
+  protected void _run() {}
 
   ////////////////////////////////////////////////////////////////////////
   ////                         private methods                        ////
@@ -325,5 +436,8 @@ public class CSPActor extends AtomicActor implements Runnable {
 
   // Stores the result of a successful conditional receive.
   private Token _token; 
+
+  // Thread this actor is to be run in.
+  private Thread _myThread;
 }
   

@@ -1,4 +1,4 @@
-/* A Director governs the execution of a CompositeActor.
+/* A CSPDirector governs the execution of a CSPCompositeActor.
 
  Copyright (c) 1997-1998 The Regents of the University of California.
  All rights reserved.
@@ -35,7 +35,6 @@ import ptolemy.kernel.util.*;
 import ptolemy.kernel.mutation.*;
 import ptolemy.data.*;
 
-import collections.LinkedList;
 import java.util.Enumeration;
 
 
@@ -220,11 +219,15 @@ public class CSPDirector extends Director {
       Enumeration allMyActors = cont.deepGetEntities(); 
               
       while (allMyActors.hasMoreElements()) {
-	CSPActor actor = (CSPActor)allMyActors.nextElement(); 
-	// the method in the CSPActor should set a flag in each receiver 
-	// & notifyAll thread waiting on the lock for that receiver.
-	actor.terminate();
-	System.out.println("CSPDirector: terminating simulation");
+          try {
+              CSPActor actor = (CSPActor)allMyActors.nextElement(); 
+              // the method in the CSPActor should set a flag in each receiver 
+              // & notifyAll thread waiting on the lock for that receiver.
+              actor.terminate();
+              System.out.println("CSPDirector: terminating simulation");
+          } catch (IllegalActionException ex) {
+              System.out.println("CSPDirector: unable to terminate all actors");
+          }
       }
       workspace().notifyAll();
       // now wake up fire
