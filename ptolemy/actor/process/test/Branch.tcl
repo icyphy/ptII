@@ -146,7 +146,7 @@ test Branch-2.2 {Test Branch constructors, reset() and pre-activation state} {
     $branch reset
    
     if { [$branch isActive] != 1 } {
-    	$val = 0
+    	set val 0
     }
     if { [$branch isIterationOver] != 1 } {
      	set val 0
@@ -163,28 +163,114 @@ test Branch-3.1 {Check blocking methods} {
     set val 1
     
     if { [$cntlrIn isBlocked] != 0 } {
-    	$val = 0
+    	set val 0
     }
     
     set rcvr [java::new ptolemy.actor.process.MailboxBoundaryReceiver]
     
     $branch registerRcvrBlocked $rcvr
     if { [$cntlrIn isBlocked] != 1 } {
-    	$val = 0
+    	set val 0
     }
     
     $branch registerRcvrUnBlocked $rcvr
     if { [$cntlrIn isBlocked] != 0 } {
-    	$val = 0
+    	set val 0
     }
     
     list $val
 
 } {1}
    
+######################################################################
+#### Continued from above
+#
+test Branch-4.1 {isEngagementEnabled(), isIterationOver()} {
 
+    set val 1
+    
+    if { [$cntlrIn isEngagementEnabled $branch] != 0 } {
+    	set val 0
+    }
 
+    $cntlrIn setActive true
+    $cntlrIn restart
 
+    if { [$cntlrIn isEngagementEnabled $branch] != 1 } {
+    	set val 0
+    }
+    if { [$cntlrIn isEngagementEnabled $branch] != 1 } {
+    	set val 0
+    }
+    
+    $cntlrIn setMaximumEngagers 0
+    $cntlrIn restart
+
+    if { [$cntlrIn isEngagementEnabled $branch] != 0 } {
+    	set val 0
+    }
+    
+    $cntlrIn setMaximumEngagers 1
+    $cntlrIn setMaximumEngagements 0
+    $cntlrIn restart
+
+    if { [$cntlrIn isEngagementEnabled $branch] != 0 } {
+    	set val 0
+    }
+    
+    catch { $cntlrIn engagementSucceeded $branch } msg1
+    
+    $cntlrIn setMaximumEngagers 1
+    $cntlrIn setMaximumEngagements 2
+    $cntlrIn restart
+
+    if { [$cntlrIn isEngagementEnabled $branch] != 1 } {
+    	set val 0
+    }
+    $cntlrIn engagementSucceeded $branch 
+    if { [$cntlrIn isEngagementEnabled $branch] != 1 } {
+     	set val 0
+    }
+    $cntlrIn engagementSucceeded $branch 
+    catch { $cntlrIn engagementSucceeded $branch } msg2
+    
+    $cntlrIn setMaximumEngagers 1
+    $cntlrIn setMaximumEngagements 2
+    $cntlrIn restart
+    
+    set newBranch [java::new ptolemy.actor.process.Branch $cntlrIn]
+    
+    if { [$cntlrIn isEngagementEnabled $branch] != 1 } {
+    	set val 0
+    }
+    if { [$cntlrIn isEngagementEnabled $newBranch] != 0 } {
+    	set val 0
+    }
+    
+    $cntlrIn disengageBranch $branch 
+    
+    if { [$cntlrIn isEngagementEnabled $newBranch] != 1 } {
+    	set val 0
+    }
+    $cntlrIn engagementSucceeded $newBranch 
+    
+    if { [$cntlrIn isEngagementEnabled $newBranch] != 1 } {
+    	set val 0
+    }
+
+    if { [$cntlrIn isEngagementEnabled $branch] != 0 } {
+    	set val 0
+    }
+    
+    $cntlrIn disengageBranch $newBranch 
+    
+    if { [$cntlrIn isEngagementEnabled $branch] != 0 } {
+    	set val 0
+    }
+    
+    list $val $msg1 $msg2
+
+} {1 {ptolemy.actor.process.TerminateBranchException: Branch can not succeed if not previously engaged to controller.} {ptolemy.actor.process.TerminateBranchException: Branch can not succeed if it already has more successful engagements than permitted.}}
 
 
 
