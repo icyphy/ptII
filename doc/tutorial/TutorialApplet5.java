@@ -23,7 +23,7 @@ public class TutorialApplet5 extends PtolemyApplet implements QueryListener {
 	director.stopTime.setExpression("30.0");
 
 	// Create two actors.
-	Clock _clock = new Clock(toplevel,"clock");
+	_clock = new Clock(toplevel,"clock");
 	TimedPlotter plotter = new TimedPlotter(toplevel,"plotter");
 
 	// Configure the plotter.
@@ -49,12 +49,7 @@ public class TutorialApplet5 extends PtolemyApplet implements QueryListener {
     }
 
     public void changed(String name) {
-        System.out.println("changed: " + name);
-        System.out.println("changed2: " + _query.stringValue("period"));
-        System.out.println("changed2.5: " + _clock);
-        System.out.println("changed2.7: " + _clock.period);
         _clock.period.setExpression(_query.stringValue("period"));
-        System.out.println("changed3: " + _clock.period);
         try {
             _go();
         } catch (Exception ex) {

@@ -23,7 +23,7 @@ public class TutorialApplet4 extends PtolemyApplet implements QueryListener {
 	director.stopTime.setExpression("30.0");
 
 	// Create two actors.
-	Clock _clock = new Clock(toplevel,"clock");
+	_clock = new Clock(toplevel,"clock");
 	TimedPlotter plotter = new TimedPlotter(toplevel,"plotter");
 
 	// Connect them.
