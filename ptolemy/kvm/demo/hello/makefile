@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/kvm/hello
+ME =		ptolemy/kvm/demo/hello
 
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		../../../..
 
 CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(KVM_CLASSES)
 
@@ -82,7 +82,7 @@ Hello.prc: Hello.class \
 	-version "1.0" \
 	-bootclasspath $(KVM_CLASSES)/bin/api/classes  \
 	-classpath "$(CLASSPATH)" \
-	ptolemy.kvm.hello.Hello
+	ptolemy.kvm.demo.hello.Hello
 
 # Build the MakePalmApp tool if necessary
 $(KVM_DIR)/tools/palm/src/palm/database/MakePalmApp.class: \

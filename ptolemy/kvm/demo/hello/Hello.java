@@ -27,7 +27,7 @@
 @AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 */
 
-package ptolemy.kvm.hello;
+package ptolemy.kvm.demo.hello;
 
 import com.sun.kjava.*;
 
@@ -35,7 +35,10 @@ import com.sun.kjava.*;
 //////////////////////////////////////////////////////////////////////////
 //// Hello
 /**
-Simple PalmOS Java program
+Simple PalmOS Java program that prints out "Hello, PalmOS".
+Note that this demo only uses the Ptolemy makefile and configuration
+infrastructure, it does not actually use and Ptolemy II Java classes.
+
 @author Christopher Hylands
 @version $Id$
 */
