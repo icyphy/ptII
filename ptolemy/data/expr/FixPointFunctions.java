@@ -32,11 +32,6 @@ that operate exclusively on the fixed point data type.
 
 package ptolemy.data.expr;
 
-import ptolemy.data.DoubleMatrixToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.FixMatrixToken;
-import ptolemy.data.FixToken;
-import ptolemy.data.Token;
 import ptolemy.kernel.util.*;
 import ptolemy.math.FixPoint;
 import ptolemy.math.Precision;
@@ -49,8 +44,8 @@ import ptolemy.math.Quantizer;
 This class provides static functions for operating on Fixpoint numbers
 in the Ptolemy II expression language. The added functionality is
 <ul>
-<li> Create a FixToken for a double value with a particular
-precision. The result is an instance of <i>FixToken</i>.
+<li> Create a FixPoint for a double value with a particular
+precision. The result is an instance of <i>FixPoint</i>.
 For example:
 <pre>
     fix(5.34, 10, 4)
@@ -58,8 +53,8 @@ For example:
 creates a fixed point number with a total of 10 bits, 4 of which are
 integer bits, representing the number 5.34.
 <p>
-<li> Create a FixTokenMatrix with entries that consist of instances of
-FixToken. Each entry in the fixed point matrix has
+<li> Create a FixPointMatrix with entries that consist of instances of
+FixPoint. Each entry in the fixed point matrix has
 the same precision. For example,
 <pre>
     fix([ -.040609, -.001628, .17853, .37665, .37665, .17853,
@@ -99,7 +94,7 @@ and saturation is used when overflow occurs.
 @contributor Edward A. Lee
 @version $Id$
 @see PtParser
-@see ptolemy.data.FixToken
+@see ptolemy.data.FixPoint
 @see ptolemy.math.Quantizer
 */
 
@@ -112,7 +107,7 @@ public class FixPointFunctions {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Create a FixToken representing the specified integer.
+    /** Create a FixPoint representing the specified integer.
      *  For example,
      *  <pre>
      *      fix(5, 10, 4)
@@ -125,11 +120,12 @@ public class FixPointFunctions {
      *  @param integerBits The number of bits used for the integer part.
      *  @return A fixed point representation of the value.
      */
-    public static Token fix(int value, int numberOfBits, int integerBits) {
-        return new FixToken(value, numberOfBits, integerBits);
+    public static FixPoint fix(int value, int numberOfBits, int integerBits) {
+        Precision precision = new Precision( numberOfBits, integerBits);
+        return Quantizer.round(value, precision);
     }
 
-    /** Create a FixToken representing the specified double.
+    /** Create a FixPoint representing the specified double.
      *  For example,
      *  <pre>
      *      fix(5.34, 10, 4)
@@ -142,44 +138,12 @@ public class FixPointFunctions {
      *  @param integerBits The number of bits used for the integer part.
      *  @return A fixed point representation of the value.
      */
-    public static Token fix(double value, int numberOfBits, int integerBits) {
-        return new FixToken(value, numberOfBits, integerBits);
+    public static FixPoint fix(double value, int numberOfBits, int integerBits) {
+        Precision precision = new Precision( numberOfBits, integerBits);
+        return Quantizer.round(value, precision);
     }
 
-    /** Create a FixTokenMatrix with entries consisting of instances of
-     *  FixToken. Each entry has the same precision.  For example,
-     *  <pre>
-     *      fix([ -.040609, -.001628, .17853, .37665, .37665,
-     *          .17853, -.001628, -.040609 ], 10,  2)
-     *  </pre>
-     *  generates a 1 by 8 FixMatrixToken. Each fixed-point
-     *  value has 10 bits, of which 2 are used for the integer
-     *  part and 8 for the fraction part.
-     *
-     *  @param values The matrix value to represent.
-     *  @param numberOfBits The total number of bits for each entry.
-     *  @param integerBits The number of bits used for the integer part.
-     */
-    public static Token fix(DoubleMatrixToken values,
-            int numberOfBits, int integerBits) {
-        FixPoint [][] fxa =
-            new FixPoint[values.getRowCount()][values.getColumnCount()];
-        Precision precision = new Precision(numberOfBits, integerBits);
-        for(int i = 0; i < values.getColumnCount(); i++) {
-            for(int j = 0; j < values.getRowCount(); j++) {
-                fxa[j][i] = Quantizer.round(
-                        values.getElementAt(j,i), precision);
-            }
-        }
-        try {
-            return new FixMatrixToken(fxa);
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because precisions are all the same.
-            throw new InternalErrorException("Unequal precisions!");
-        }
-    }
-
-    /** Create a DoubleToken whose value is the quantized version of
+    /** Create a double whose value is the quantized version of
      *  the given double value. The value is quantized by converting
      *  it into a fixed point value with a particular precision and
      *  then back again into a double value. For example,
@@ -194,53 +158,12 @@ public class FixPointFunctions {
      *  @param value The value to quantize.
      *  @param numberOfBits The total number of bits.
      *  @param integerBits The number of bits used for the integer part.
-     *  @return a new DoubleToken with value that is quantized.
+     *  @return a double with value that is quantized.
      */
-    public static Token quantize(double value, int numberOfBits,
+    public static double quantize(double value, int numberOfBits,
             int integerBits) {
         FixPoint fixValue = Quantizer.round(value,
                 new Precision(numberOfBits, integerBits));
-        return new DoubleToken( fixValue.doubleValue());
-    }
-
-    /** Create a matrix whose entries are a quantized version of the
-     *  values of the given matrix. The values are quantized by
-     *  converting them into a fixed point value with a particular
-     *  precision and then back again into a double value. Each entry
-     *  is quantized using the same precision.  For example,
-     *  <pre>
-     *      quantize([ -.040609, -.001628, .17853, .37665, .37665,
-     *              .17853, -.001628, -.040609 ], 10, 2)
-     *  </pre>
-     *  quantizes the matrix entries to 10 bits of precision, where
-     *  2 bits are used for the integer part and 8
-     *  bits are used for the fractional part. These values are then
-     *  converted back into doubles. The result is an instance of
-     *  DoubleTokenMatrix.
-     *
-     *  @param values The matrix to quantize.
-     *  @param numberOfBits The total number of bits.
-     *  @param integerBits The number of bits to use for the integer part.
-     *  @return A new DoubleMatrixToken with quantized values.
-     */
-    public static Token quantize(DoubleMatrixToken values, int numberOfBits,
-            int integerBits) {
-        double [][] fxa = new
-            double[values.getRowCount()][values.getColumnCount()];
-        Precision precision = new Precision(numberOfBits, integerBits);
-        for(int i = 0; i < values.getColumnCount(); i++) {
-            for(int j = 0; j < values.getRowCount(); j++) {
-                fxa[j][i] = (Quantizer.round(
-                        values.getElementAt(j, i), precision)).doubleValue();;
-            }
-        }
-	try {
-            return new DoubleMatrixToken(fxa);
-	} catch (IllegalActionException illegalAction) {
-            // This should not happen since fxa should not be null.
-	    throw new InternalErrorException("FixPointFunction.quantize: "
-		    + "Cannot create the DoubleMatrixToken that contains "
-		    + "the quantized values.");
-	}
+        return fixValue.doubleValue();
     }
 }
