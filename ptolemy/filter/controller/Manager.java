@@ -54,7 +54,7 @@ public class Manager {
      * @param mode mode of operation, either Frame mode, or Applet mode.
      */
     public Manager(int mode){
-       _opMode = mode;
+        _opMode = mode;
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -71,42 +71,42 @@ public class Manager {
      */
     public void newFilter(int type, String name){
 
-       if (_fobj!= null){
-          deletefilter();
-       }
-       _fobj = new FilterObj();
-       _fobj.init(name, type);
-       if (type == Filter.IIR){ // IIR
-          if (_opMode == FilterView.FRAMEMODE){ // frame mode, it is ok to start
-                                     // filter design now since all the
-                                     // graphics is taken care internally
-              _fobj.setIIRParameter(Filter.BUTTERWORTH, Filter.BILINEAR,
-                                    Filter.LOWPASS, 1.0);
-          }
-          _addView("IIRFilterParameterView");
-       }
+        if (_fobj!= null){
+            deletefilter();
+        }
+        _fobj = new FilterObj();
+        _fobj.init(name, type);
+        if (type == Filter.IIR){ // IIR
+            if (_opMode == FilterView.FRAMEMODE){ // frame mode, it is ok to start
+                // filter design now since all the
+                // graphics is taken care internally
+                _fobj.setIIRParameter(Filter.BUTTERWORTH, Filter.BILINEAR,
+                        Filter.LOWPASS, 1.0);
+            }
+            _addView("IIRFilterParameterView");
+        }
 
-       _addView("PoleZeroView");
-       _addView("FreqView");
-       _addView("ImpulseView");
-       _addView("TransferFunctionView");
+        _addView("PoleZeroView");
+        _addView("FreqView");
+        _addView("ImpulseView");
+        _addView("TransferFunctionView");
 
-       // setup view controller
-       Enumeration viewkey = _views.keys();
-       String [] viewnames = new String[_views.size()];
-       int i=0;
-       while (viewkey.hasMoreElements()){
+        // setup view controller
+        Enumeration viewkey = _views.keys();
+        String [] viewnames = new String[_views.size()];
+        int i=0;
+        while (viewkey.hasMoreElements()){
             viewnames[i++] = new String((String) viewkey.nextElement());
-       }
-       _viewcontroller = new ViewController(name, viewnames, this);
+        }
+        _viewcontroller = new ViewController(name, viewnames, this);
 
-       // send the view controller reference to the view
-       viewkey = _views.keys();
-       i = 0;
-       while (viewkey.hasMoreElements()){
+        // send the view controller reference to the view
+        viewkey = _views.keys();
+        i = 0;
+        while (viewkey.hasMoreElements()){
             FilterView view = (FilterView) _views.get(viewkey.nextElement());
             view.setViewController(_viewcontroller);
-       }
+        }
     }
 
 
@@ -117,28 +117,28 @@ public class Manager {
      * @param name name of the view to obtain.
      */
     public FilterView getView(String name){
-       Enumeration viewkeys = _views.keys();
-       FilterView view = null;
-       while (viewkeys.hasMoreElements()){
-           String viewname = (String) viewkeys.nextElement();
-           if (viewname.equals(name)){
+        Enumeration viewkeys = _views.keys();
+        FilterView view = null;
+        while (viewkeys.hasMoreElements()){
+            String viewname = (String) viewkeys.nextElement();
+            if (viewname.equals(name)){
                 view = (FilterView) _views.get(viewname);
                 break;
-           }
-       }
-       return view;
+            }
+        }
+        return view;
     }
 
     public FilterObj getFilterObject(){
-       return _fobj;
+        return _fobj;
     }
 
 
-   /**
-    * Delete the filter object.  It check if the view objects
-    * exists or not, delete them if they do exist.
-    */
-   public void deletefilter() {
+    /**
+     * Delete the filter object.  It check if the view objects
+     * exists or not, delete them if they do exist.
+     */
+    public void deletefilter() {
         if (_fobj != null){
             Enumeration viewkey = _views.keys();
             while (viewkey.hasMoreElements()){
@@ -152,75 +152,75 @@ public class Manager {
             _viewcontroller.setVisible(false);
             _viewcontroller = null;
         }
-   }
+    }
 
-   public void toggleViewControllerVisibility(){
+    public void toggleViewControllerVisibility(){
         if (_viewcontroller != null){
-             if (_viewcontroller.isVisible()){
-                   _viewcontroller.setVisible(false);
-             } else {
-                   _viewcontroller.setVisible(true);
-             }
+            if (_viewcontroller.isVisible()){
+                _viewcontroller.setVisible(false);
+            } else {
+                _viewcontroller.setVisible(true);
+            }
         }
-   }
+    }
 
-   public void toggleView(String toggleviewname, boolean show){
-       Enumeration viewkeys = _views.keys();
-       FilterView view = null;
-       while (viewkeys.hasMoreElements()){
-           String viewname = (String) viewkeys.nextElement();
-           if (viewname.equals(toggleviewname)){
+    public void toggleView(String toggleviewname, boolean show){
+        Enumeration viewkeys = _views.keys();
+        FilterView view = null;
+        while (viewkeys.hasMoreElements()){
+            String viewname = (String) viewkeys.nextElement();
+            if (viewname.equals(toggleviewname)){
                 view = (FilterView) _views.get(viewname);
                 view.setVisible(show);
                 break;
-           }
-       }
-   }
+            }
+        }
+    }
 
-   //////////////////////////////////////////////////////////////////////////
-   ////                         public variables                        ////
+    //////////////////////////////////////////////////////////////////////////
+    ////                         public variables                        ////
 
-   //////////////////////////////////////////////////////////////////////////
-   ////                         private methods                         ////
+    //////////////////////////////////////////////////////////////////////////
+    ////                         private methods                         ////
 
     //
     // Add a view according to the given name.
     // It calls filter object's <code> addObserver() </code>
     // to add the observer to the observer list.
     //
-   private void _addView(String name){
+    private void _addView(String name){
         if (name.equals("PoleZeroView")){
-             PoleZeroView pzv = new PoleZeroView(_fobj, _opMode,
-                                new String("PoleZeroView"));
-             _fobj.addObserver(pzv);
-             _views.put(new String(name), pzv);
+            PoleZeroView pzv = new PoleZeroView(_fobj, _opMode,
+                    new String("PoleZeroView"));
+            _fobj.addObserver(pzv);
+            _views.put(new String(name), pzv);
         } else if (name.equals("FreqView")){
-             FreqView fv = new FreqView(_fobj, _opMode, new String("FreqView"));
-             _fobj.addObserver(fv);
-             _views.put(new String(name), fv);
+            FreqView fv = new FreqView(_fobj, _opMode, new String("FreqView"));
+            _fobj.addObserver(fv);
+            _views.put(new String(name), fv);
         } else if (name.equals("ImpulseView")){
-             ImpulseView iv = new ImpulseView(_fobj, _opMode,
-                              new String("ImpulseView"));
-             _fobj.addObserver(iv);
-             _views.put(new String(name), iv);
+            ImpulseView iv = new ImpulseView(_fobj, _opMode,
+                    new String("ImpulseView"));
+            _fobj.addObserver(iv);
+            _views.put(new String(name), iv);
         } else if (name.equals("IIRFilterParameterView")){
-             IIRFiltSetView iirv = new IIRFiltSetView(_fobj, _opMode,
-                                   new String("IIRFilterParameterView"));
-             _fobj.addObserver(iirv);
-             _views.put(new String(name), iirv);
+            IIRFiltSetView iirv = new IIRFiltSetView(_fobj, _opMode,
+                    new String("IIRFilterParameterView"));
+            _fobj.addObserver(iirv);
+            _views.put(new String(name), iirv);
         } else if (name.equals("TransferFunctionView")){
-             TransFunctView tfv = new TransFunctView(_fobj, _opMode,
-                                  new String("TransferFunctionView"));
-             _fobj.addObserver(tfv);
-             _views.put(new String(name), tfv);
+            TransFunctView tfv = new TransFunctView(_fobj, _opMode,
+                    new String("TransferFunctionView"));
+            _fobj.addObserver(tfv);
+            _views.put(new String(name), tfv);
         }
-   }
+    }
 
-   //////////////////////////////////////////////////////////////////////////
-   ////                         private variables                        ////
+    //////////////////////////////////////////////////////////////////////////
+    ////                         private variables                        ////
 
-   private int _opMode;
-   private Hashtable _views = new Hashtable();
-   private FilterObj _fobj;
-   private ViewController _viewcontroller;
+    private int _opMode;
+    private Hashtable _views = new Hashtable();
+    private FilterObj _fobj;
+    private ViewController _viewcontroller;
 }
