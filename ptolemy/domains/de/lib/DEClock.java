@@ -101,14 +101,14 @@ public class DEClock extends AtomicActor {
      * @exception IllegalActionException Not thrown in this class.
      */	
     public void fire() throws CloneNotSupportedException, IllegalActionException{
-        System.out.println("Firing DEClock");
-        // get the input token from the self loop input port.
+	// get the input token from the self loop input port.
         DoubleToken inputToken;
         try {
             inputToken = (DoubleToken)(_loopIn.get(0));
         } catch (NoSuchItemException e) {
             // this can't happen
-            throw new InvalidStateException("Bug in DEClock.fire()");
+            throw new InvalidStateException("In DEClock.fire() the receiver" +
+                    " is empty.");
         }
         
         // obtain the time stamp of the input token.

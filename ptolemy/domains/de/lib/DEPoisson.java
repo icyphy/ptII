@@ -63,12 +63,14 @@ public class DEPoisson extends AtomicActor {
         // create an output port
         output = new DEIOPort(this, "output", false, true);
         // create a self loop
-        _loopIn = new IOPort(this, "loop input" , true , false);
+        _loopIn = new DEIOPort(this, "loop input" , true , false);
         _loopOut = new DEIOPort(this, "loop output", false, true );
         // now connect loopIn and loopOut
         _loopRelation = new IORelation(container, name+" loop relation");
         _loopIn.link(_loopRelation);
         _loopOut.link(_loopRelation);
+	// no before or trigger relation
+
         // set the interval between events.
         _lambda = lambda;
         _magnitude = magnitude;
@@ -100,7 +102,6 @@ public class DEPoisson extends AtomicActor {
      * @exception IllegalActionException Not thrown in this class.
      */	
     public void fire() throws CloneNotSupportedException, IllegalActionException{
-        System.out.println("Firing DEPoisson");
         // get the input token from the self loop input port.
         DoubleToken inputToken;
         try {
@@ -144,7 +145,7 @@ public class DEPoisson extends AtomicActor {
     
     // the ports.
     public DEIOPort output;
-    private IOPort _loopIn;
+    private DEIOPort _loopIn;
     private DEIOPort _loopOut;
     private IORelation _loopRelation;
 }

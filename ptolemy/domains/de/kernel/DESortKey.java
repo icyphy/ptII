@@ -1,4 +1,4 @@
-/* The sort keys for sorting events in the global sorted queue.
+/* Define the sort key for events in the DE domain.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -30,11 +30,15 @@ package ptolemy.domains.de.kernel;
 
 //////////////////////////////////////////////////////////////////////////
 //// DESortKey
-/**
-An event in Discrete Event domain is modeled as an instance of Token and
-an instance of DESortKey. A sort key is a wrapper for an instance of 
-double and an instance of integer. The sort keys are used by the global 
-event queue to sort incoming events according to their time stamps.
+/** An event in Discrete Event domain is modeled as an instance of Token and
+ *  an instance of DESortKey. DESortKey is an aggregation of time stamp 
+ *  (double)and depth (long)
+ *  <p>
+ *  In a particular implementation of the global event queue, namely
+ *  the CalendarQueue class, methods of the DECQComparator class are used to
+ *  perform the sorting and arranging in the CalendarQueue.
+ *  <p>
+ *  FIXME: Support for other type of time stamp (e.g. long).
 
 @author Lukito Muliadi
 @version $Id$
@@ -42,33 +46,39 @@ event queue to sort incoming events according to their time stamps.
 */
 public class DESortKey {
 
-    /** Construct a DESortKey object with the given time stamp and fine level.
-     *  Time stamp is a double quantity indicating the time when the event
-     *  takes place. Fine level is an integer quantity indicating the depth 
-     *  in the topology useful for scheduling simultaneous events.
+    /** Construct a DESortKey object with the given time stamp and receiver
+     *  depth. Time stamp is a double quantity indicating the time when 
+     *  the event takes place. Receiver depth is a long quantity 
+     *  indicating the 'topological' depth of the IOport containing the 
+     *  receiver of the event. Receiver depths are useful for scheduling 
+     *  simultaneous events.
      * 
      * @param timeStamp the time when the event occurs.
-     * @param fineLevel depth in the topology useful for scheduling.
+     * @param receiverDepth 'topological' depth of the receiving receiver.
      * 
      */	
-    public DESortKey(double timeStamp, int fineLevel) {
+    public DESortKey(double timeStamp, long receiverDepth) {
         _timeStamp = timeStamp;
-        _fineLevel = fineLevel;
+        _receiverDepth = receiverDepth;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return the time stamp field of the sort key.
+     *
+     * @return The time stamp field.
+     */
     public double timeStamp() {
         return _timeStamp;
-        
-    }
-    public int fineLevel() {
-        return _fineLevel;
     }
 
-    public DESortKey increment(double timeStamp, int fineLevel) {
-        return new DESortKey(_timeStamp+timeStamp, _fineLevel+fineLevel);
+    /** Return the receiver-depth field of the sort key.
+     *
+     * @return The receiver-depth field.
+     */
+    public long receiverDepth() {
+        return _receiverDepth;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -78,8 +88,8 @@ public class DESortKey {
     // FIXME: change double to Number ?
     // _timeStamp 
     private double _timeStamp;
-    // _fineLevel
-    private int _fineLevel;
+    // _receiverDepth
+    private long _receiverDepth;
 
 }
 

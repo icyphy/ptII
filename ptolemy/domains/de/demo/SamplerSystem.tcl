@@ -58,7 +58,7 @@ $sys setExecutiveDirector $exec
 $dir setStopTime 20.0
 
 # Build the system
-set poisson [java::new ptolemy.domains.de.lib.DEPoisson 1.0 1.0 $sys Poisson]
+set poisson [java::new ptolemy.domains.de.lib.DEPoisson 1.0 0.5 $sys Poisson]
 set sampler1 [java::new ptolemy.domains.de.lib.DESampler $sys Sampler1]
 set sampler2 [java::new ptolemy.domains.de.lib.DESampler $sys Sampler2]
 set ramp1 [java::new ptolemy.domains.de.lib.DERamp 0 2 $sys Ramp1]

@@ -57,12 +57,10 @@ JARFILE = 	$(TYPACKAGE).jar
 JSRCS = \
 	DECQComparator.java \
 	DECQDirector.java \
+	DEDelta.java \
 	DEIOPort.java \
 	DEReceiver.java \
-	#DECQReceiver.java \
 	DESortKey.java
-	#DETag.java \
-	#DEToken.java
 
 EXTRA_SRCS =	$(JSRCS)
 

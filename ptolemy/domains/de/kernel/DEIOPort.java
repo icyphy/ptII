@@ -36,6 +36,7 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import java.util.*;
+import collections.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DEIOPort
@@ -195,8 +196,8 @@ public class DEIOPort extends IOPort {
     
     // FIXME: public ?
     public DEIOPort beforePort = null;
-    // use addElement() and elements() methods to access it.
-    public Vector triggerList = new Vector();
+    // use insertLast() and take() methods to access it.
+    public LinkedList triggerList = new LinkedList();
 
 
 }

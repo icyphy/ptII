@@ -67,8 +67,7 @@ public class DESampler extends AtomicActor {
         // create input ports
         input = new DEIOPort(this, "data input", true, false);
         clock = new DEIOPort(this, "clock input", true, false);
-        input.beforePort = clock;
-        clock.triggerList.addElement(output);
+        clock.triggerList.insertLast(output);
         
     }
 
@@ -85,8 +84,6 @@ public class DESampler extends AtomicActor {
      */	
     public void fire() 
             throws CloneNotSupportedException, IllegalActionException{
-        System.out.println("Firing "+
-                           description(CLASSNAME|FULLNAME));
 
         // Get the receivers.
         DEReceiver clockR = (DEReceiver)(clock.getReceivers())[0][0];
@@ -100,7 +97,7 @@ public class DESampler extends AtomicActor {
             } catch (NoSuchItemException e) {
                 // Can't occur
                 throw new InvalidStateException("Check DESampler.fire()"+
-                        " for bug.");
+                        " for bug." + e.getMessage());
             }
             // If the input also has token then update _lastToken.
             if (inputR.hasToken()) {
@@ -109,7 +106,7 @@ public class DESampler extends AtomicActor {
                 } catch (NoSuchItemException e) {
                     // Can't occur
                     throw new InvalidStateException("Check DESampler.fire()"+
-                            " for bug (2)");
+                            " for bug (2)" + e.getMessage());
                 }
             }
                         
@@ -122,7 +119,7 @@ public class DESampler extends AtomicActor {
             } catch (NoSuchItemException e) {
                 // Can't occur.
                 throw new IllegalStateException("Check DESampler.fire() "+
-                        "for bug (3)");
+                        "for bug (3)" + e.getMessage());
              
             }
         } else {

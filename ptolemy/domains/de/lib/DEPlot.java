@@ -65,7 +65,6 @@ public class DEPlot extends AtomicActor{
      */
     public void initialize() 
             throws CloneNotSupportedException, IllegalActionException {
-        System.out.println("Initializing "+description(CLASSNAME|FULLNAME));
    
         _exe = (DECQDirector) getDirector();
         if (_exe == null) {
@@ -92,9 +91,7 @@ public class DEPlot extends AtomicActor{
     public void fire() 
             throws CloneNotSupportedException, IllegalActionException{
         
-        System.out.println("Firing " + description(CLASSNAME|FULLNAME));
-        
-        if (_frame == null) {
+	if (_frame == null) {
             _frame = new DEPlotFrame(); 
             _frame.resize(800, 400);
             _frame.setXRange(_exe.startTime(), _exe.stopTime());
@@ -202,7 +199,10 @@ public class DEPlot extends AtomicActor{
         }
 
         public void setNumSets(int numSet) {
-            _plotter.setNumSets(numSet) ;
+            _plotter.setNumSets(numSet);
+	    for (int i=0; i<numSet; i++) {
+		_plotter.addLegend(i, "Data " + i);
+	    } 
         }
 
         public boolean handleEvent(java.awt.Event event) {
