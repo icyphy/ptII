@@ -66,6 +66,7 @@ JSIMPLE_TESTS = \
 	NamedObj.tcl \
 	NoSuchItemException.tcl \
 	PtolemyThread.tcl \
+	RecorderListener.tcl \
 	StreamListener.tcl \
 	Workspace.tcl
 
