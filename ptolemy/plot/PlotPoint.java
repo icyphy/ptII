@@ -43,8 +43,16 @@ public class PlotPoint {
     ////                         public variables                         ////
    
     public double x,y;
-    // Used for error bars.
-    public double yLowEB, yHighEB;
+
+    /** Error bar Y low value. */
+    public double yLowEB;
+
+    /** Error bar Y low value. */
+    public double yHighEB;
+
+    /** True if this point is connected to the previous point by a line. */
     public boolean connected = false;
+
+    /** True if the yLowEB and yHighEB fields are valid. */
     public boolean errorBar = false;
 }
