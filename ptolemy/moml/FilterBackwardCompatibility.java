@@ -218,11 +218,11 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 			     .equals(_currentActorFullName)
 			     && !container.getFullName()
 			     .startsWith(_currentActorFullName))
-			    ) 
+			    )
 			   && attributeValue
-			   .equals("ptolemy.data.expr.Parameter")){ 
+			   .equals("ptolemy.data.expr.Parameter")){
 		    // This test should be last in case we are currently
-		    // processing an attribute that needs a different 
+		    // processing an attribute that needs a different
 		    // sort of change
 		    _currentlyProcessingActorThatRequiresUpdating = true;
 		    _currentlyProcessingActorThatMayNeedAnEditorFactory =
@@ -315,7 +315,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     ////                         private methods                   ////
 
     // Parse the moml in the container context.
-    private void _parse(NamedObj container, String moml) 
+    private void _parse(NamedObj container, String moml)
 	throws IllegalActionException {
 	_reset();
 	if (_parser == null) {
