@@ -39,6 +39,20 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
+MODEL =			@modelName@
+MODELPATH =		@modelPath@
+
+# Location where we create code that we are generating
+TARGETPACKAGE = 	@targetPackage@
+TARGETPATH =		@outDir@
+
+TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
+
+# Package that the decompiler creates classes in
+DECOMPILERTARGETPACKAGE =	$(TARGETPACKAGE)
+# Directory that the decompiler creates classes in
+DECOMPILERTARGETPATH =		$(TARGETPATH)
+
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
 all: jclass
@@ -49,7 +63,52 @@ install: all $(PTCLASSJAR)
 # Testsuite uses runDemo
 runDemo: demo
 demo:
-	"$(JAVA)" -Xfuture -classpath "@ptIIUserDirectory@$(CLASSPATHSEPARATOR)$(CLASSPATH)" "-Dptolemy.ptII.dir=@ptII@" ptolemy.actor.gui.CompositeActorApplication -class @targetPackage@.CG@modelName@
+	"$(JAVA)" -Xfuture -classpath "@ptIIUserDirectory@$(CLASSPATHSEPARATOR)$(CLASSPATH)" "-Dptolemy.ptII.dir=@ptII@" ptolemy.actor.gui.CompositeActorApplication -class $(TARGETPACKAGE).CG$(MODEL)
+
+
+
+############################################################################
+# Rules to run the jode as a decompiler
+# Jode is a java decompiler.  It is useful for looking at the contents of 
+# class files.  It can be downloaded from 
+# http://jode.sourceforge.net/download.php
+#
+# Jode is full GPL, so we can't distribute it without making Ptolemy GPL'd
+#
+# Jode can be downloaded from
+# http://jode.sourceforge.net/download.php
+JODE=$(ROOT)/bin/jode
+# Class to disassemble
+DECOMPILERTARGETCLASS =		CG$(MODEL)
+
+# Generate a .java file from a class file and recompile it.
+# Jode
+jodeDecompile: jodeDecompileDemo jodeRecompileDemo jodeRunRecompiledDemo
+jodeDecompileDemo:
+	@echo "Convert .class file back to .java file, compile it, run it"
+	classes=`cd $(DECOMPILERTARGETPATH); ls -1 *.class | sed 's/.class//g'`; \
+	for class in $$classes; \
+	do \
+		echo "--- Decompiling $(DECOMPILERTARGETPACKAGE).$$class"; \
+		"$(JODE)" -d $(DECOMPILERTARGETPATH) $(DECOMPILERTARGETPACKAGE).$$class; \
+		relativetargetpath=`echo $(TARGETPACKAGE) | sed 's@\.@/@g'`; \
+		sh $(ROOT)/ptolemy/copernicus/shallow/test/jode2java \
+			$$relativetargetpath/$$class.java \
+				> jodeDecompile.java; \
+		mv jodeDecompile.java $$relativetargetpath/$$class.java; \
+	done
+
+jodeRecompileDemo:
+	relativetargetpath=`echo $(TARGETPACKAGE) | sed 's@\.@/@g'`; \
+	$(JAVAC) -classpath \
+		"$(DECOMPILERTARGETPATH)$(CLASSPATHSEPARATOR)$(ROOT)" \
+		-d $(DECOMPILERTARGETPATH)$$relativetargetpath \
+		$(DECOMPILERTARGETPATH)$$relativetargetpath/$(DECOMPILERTARGETCLASS).java
+
+jodeRunRecompiledDemo:
+	$(JAVA) -Xfuture -classpath "$(DECOMPILERTARGETPATH)$(CLASSPATHSEPARATOR)$(ROOT)" \
+		ptolemy.actor.gui.CompositeActorApplication \
+		-class $(TARGETPACKAGE).CG$(MODEL)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
