@@ -56,6 +56,7 @@ PTCLASSJAR =
 UI_FILES_TO_BE_JARED = \
 	acks.htm \
 	authors.htm \
+	codegen.htm \
 	webStartHelp.htm
 
 EXTRA_SRCS = \
@@ -63,7 +64,6 @@ EXTRA_SRCS = \
 	banner.htm \
 	body.htm \
 	buttons.htm \
-	codegen.htm \
 	contents.css \
 	contentsheader.htm \
 	default.css \
