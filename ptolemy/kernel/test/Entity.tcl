@@ -79,7 +79,7 @@ test Entity-2.1 {Construct Entities} {
 test Entity-2.2 {Construct Entities, call getPortList} {
     set e1 [java::new pt.kernel.Entity]
     set e2 [java::new pt.kernel.Entity "My Entity"]
-    list [expr [java::instanceof [$e1 getPortList] pt.kernel.PortList] ] 
+    list [java::instanceof [$e1 getPortList] pt.kernel.PortList]
 } {1}
 
 ######################################################################
