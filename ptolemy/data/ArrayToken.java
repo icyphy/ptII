@@ -358,10 +358,8 @@ public class ArrayToken extends AbstractNotConvertibleToken {
           throw new IllegalActionException(
               "The argument must be {boolean} or {int}."); 
       }
-      // FIXME: I'm not sure how to do the array cast, Object[] --> Token[].
-      // return new ArrayToken((Token[])(result.toArray()));
       Token[] resultArray = new Token[result.size()];
-      System.arraycopy(result.toArray(), 0, resultArray, 0, result.size());
+      resultArray = (Token[])(result.toArray(resultArray));
       return new ArrayToken(resultArray);
     }
 

@@ -218,10 +218,8 @@ public class UtilityFunctions {
                 result.add(element);
             }
         }
-        // FIXME: Not sure how to do the array cast.
-        // return new ArrayToken((Token[])(result.toArray()));
         Token[] resultArray = new Token[result.size()];
-        System.arraycopy(result.toArray(), 0, resultArray, 0, result.size());
+        resultArray = (Token[])(result.toArray(resultArray));
         return new ArrayToken(resultArray);
     }
 
