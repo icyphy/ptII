@@ -86,26 +86,45 @@ public class Link extends Attribute {
         super(container, name);
     }
 
+    /** Return the head of this link.   This may be a port, or a vertex
+     *  in a relation.
+     */
     public Object getHead() {
 	return _head;
     }
 
+    /** Return the relation that this link represents.  If the link goes
+     *  from a port to a port, then this is the only way to get at the 
+     *  relation.  If the link goes from a vertex to a port, then the
+     *  relation will be the container of the vertex.
+     */
     public ComponentRelation getRelation() {
 	return _relation;
     }
 
+   /** Return the tail of this link.   This may be a port, or a vertex
+     *  in a relation.
+     */
     public Object getTail() {
 	return _tail;
     } 
 
+    /** Set the head of this link.   This may be a port, or a vertex
+     *  in a relation.
+     */
     public void setHead(Object head) {
 	_head = head;
     }
 
+    /** Set the relation for this link.  
+     */
     public void setRelation(ComponentRelation relation) {
 	_relation = relation;
     }
 
+   /** Set the tail of this link.   This may be a port, or a vertex
+     *  in a relation.
+     */
     public void setTail(Object tail) {
 	_tail = tail;
     } 
@@ -124,11 +143,11 @@ public class Link extends Attribute {
            
 	    port = (ComponentPort)_head;
             port.link(relation);
-	    _checkReceivers(port);
+	    _checkReceivers(container, port);
 
 	    port = (ComponentPort)_tail;
             port.link(relation);
-	    _checkReceivers(port);
+	    _checkReceivers(container, port);
 	    _checkSchedule(container);
 	    
 	    setRelation(relation);
@@ -150,7 +169,7 @@ public class Link extends Attribute {
 	}
         setRelation(relation);
         port.link(relation);
-	_checkReceivers(port);
+	_checkReceivers(container, port);
 	_checkSchedule(container);
     }
 
@@ -166,11 +185,11 @@ public class Link extends Attribute {
             relation = (ComponentRelation)getRelation();
             port = (ComponentPort)_head;
             port.unlink(relation);
-	    _checkReceivers(port);
+	    _checkReceivers(container, port);
 	    
 	    port = (ComponentPort)_tail;
 	    port.unlink(relation);
-	    _checkReceivers(port);
+	    _checkReceivers(container, port);
 	    
 	    // blow the relation away.
             relation.setContainer(null);
@@ -186,22 +205,27 @@ public class Link extends Attribute {
 	    port = (ComponentPort)_head;
 	    relation = getRelation();
 	} else {
-	    throw new RuntimeException("Trying to unlink port from relation, " +
+	    throw new RuntimeException(
+		    "Trying to unlink port from relation, " +
                     "but head is " + _head +
                     " and tail is " + _tail);
 	}
 	port.unlink(relation);
 	setRelation(null);
-	_checkReceivers(port);
+	_checkReceivers(container, port);
 	_checkSchedule(container);
     }
 
+    /** Don't write anything for links.
+     */
     public void exportMoML(Writer output, int depth) 
 	throws IOException {
 	return;
     }
 
-    public void _checkSchedule(CompositeEntity container) {
+    // If the container has a director, then invalidate its schedule and
+    // rerun type resolution
+    private void _checkSchedule(CompositeEntity container) {
 	if (container instanceof Actor) {
 	    Director director = ((Actor)container).getDirector();
 	    if (director != null) {
@@ -211,11 +235,18 @@ public class Link extends Attribute {
 	}
     }
 
-    public void _checkReceivers(Port port) throws IllegalActionException {
-	if (port instanceof IOPort) {
-	    IOPort ioPort = (IOPort) port;
-	    if(ioPort.isInput())
-		ioPort.createReceivers();
+    // If receivers need to be created for the port, then create them.
+    // If the container has a director, and the port is an IOPort, then
+    //  we create receivers, even if the model is not executing
+    private void _checkReceivers(CompositeEntity container, Port port) 
+	throws IllegalActionException {
+	if (container instanceof Actor) {
+	    Director director = ((Actor)container).getDirector();
+	    if (director != null && port instanceof IOPort) {
+		IOPort ioPort = (IOPort) port;
+		if(ioPort.isInput())
+		    ioPort.createReceivers();
+	    }
 	}
     }
 
