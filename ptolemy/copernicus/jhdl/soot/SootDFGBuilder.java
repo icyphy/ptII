@@ -129,8 +129,8 @@ public class SootDFGBuilder extends SootASTVisitor {
 	InstanceFieldRef dupIfr = null;
 	for (Iterator i = _graph.nodes().iterator();i.hasNext();) {
 	    Node n = (Node) i.next();
-	    if (n.weight() instanceof InstanceFieldRef) {
-		InstanceFieldRef t_ifr = (InstanceFieldRef) n.weight();
+	    if (n.getWeight() instanceof InstanceFieldRef) {
+		InstanceFieldRef t_ifr = (InstanceFieldRef) n.getWeight();
 		if (SootBlockDirectedGraph.equal(t_ifr, ifr) &&
 		    ifr != t_ifr) {
 		    dupIfr = t_ifr;
