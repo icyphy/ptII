@@ -63,8 +63,12 @@ public abstract class Entity extends NamedObj {
      *  contain this Entity.
      */	
     public Enumeration enumEntities() {
-	 Enumeration thisEntitiesPorts = _portList.enumPorts(); 
 	 LinkedList storedEntities = new LinkedList();
+
+	 if( _portList == null ) { 
+	     return storedEntities.elements();
+	 }
+	 Enumeration thisEntitiesPorts = _portList.enumPorts(); 
 
 	 while( thisEntitiesPorts.hasMoreElements() ) {
 	     Port thisPort = (Port)thisEntitiesPorts.nextElement();
@@ -92,8 +96,12 @@ public abstract class Entity extends NamedObj {
      * Suppose no such Port is owned.
      */	
     public Enumeration enumEntities(String portName) {
-	 Enumeration thisEntitiesPorts = _portList.enumPorts(); 
 	 LinkedList storedEntities = new LinkedList();
+
+	 if( _portList == null ) { 
+	     return storedEntities.elements();
+	 }
+	 Enumeration thisEntitiesPorts = _portList.enumPorts(); 
 
 	 while( thisEntitiesPorts.hasMoreElements() ) {
 	     Port thisPort = (Port)thisEntitiesPorts.nextElement();
@@ -121,9 +129,13 @@ public abstract class Entity extends NamedObj {
      * Entity is connected through.
      */	
     public Enumeration enumRelations() {
+	 LinkedList storedRelations = new LinkedList();
+
+	 if( _portList == null ) { 
+	     return storedRelations.elements();
+	 }
 	 Enumeration ports = _portList.enumPorts(); 
 
-	 LinkedList storedRelations = new LinkedList();
 	 while( ports.hasMoreElements() ) {
 	     Port newPort = (Port)ports.nextElement(); 
 	     Enumeration relations = newPort.enumRelations(); 
@@ -139,8 +151,13 @@ public abstract class Entity extends NamedObj {
      * Suppose no such Port is owned.
      */	
     public Enumeration enumRelations(String portName) {
-	 Enumeration ports = _portList.enumPorts(); 
 	 LinkedList storedRelations = new LinkedList();
+
+	 if( _portList == null ) { 
+	     return storedRelations.elements();
+	 }
+	 Enumeration ports = _portList.enumPorts(); 
+
 	 while( ports.hasMoreElements() ) {
 	     Port newPort = (Port)ports.nextElement();
 	     if( newPort.getName().equals(portName) ) { 
@@ -154,6 +171,9 @@ public abstract class Entity extends NamedObj {
 
     /** Return this Entity's PortList. */	
     public PortList getPortList() {
+	 if( _portList == null ) {
+	     _portList = new PortList();
+	 }
 	 return _portList;
     }
 
@@ -172,6 +192,7 @@ public abstract class Entity extends NamedObj {
     /** Return the number of Entities connected to this Entity
      * through the specified Port.
      * @param portName The name of the specified Port.
+     *  FIXME: Throw an exception if portName does not exist.
      */	
     public int numberOfConnectedEntities(String portName) {
 	 int count = 0;
