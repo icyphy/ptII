@@ -84,10 +84,26 @@ public class XYPlotter extends Plotter {
 
 	_attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" "
-                + "width=\"42\" height=\"42\" "
+                + "width=\"40\" height=\"40\" "
+                + "style=\"fill:lightGrey\"/>\n"
+                + "<rect x=\"8\" y=\"8\" "
+                + "width=\"24\" height=\"24\" "
                 + "style=\"fill:white\"/>\n"
-                + "<image x=\"1\" y=\"1\" width=\"40\" height=\"40\""
-                + "xlink:href=\"ptolemy/actor/lib/gui/XYPlotter.gif\"/>\n"
+                + "<rect x=\"22\" y=\"2\" "
+                + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n"
+                + "<rect x=\"28\" y=\"2\" "
+                + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n"
+                + "<rect x=\"34\" y=\"2\" "
+                + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n"
+                + "<ellipse cx=\"16\" cy=\"20\" "
+                + "rx=\"4\" ry=\"8\" "
+                + "style=\"stroke:red\"/>\n"
+                + "<ellipse cx=\"24\" cy=\"20\" "
+                + "rx=\"4\" ry=\"8\" "
+                + "style=\"stroke:red\"/>\n"
                 + "</svg>\n");
     }
 

@@ -107,6 +107,33 @@ public class HistogramPlotter extends Sink implements Configurable, Placeable {
         binOffset = new Parameter(this, "binOffset",
                 new DoubleToken(0.5));
         legend = new StringAttribute(this, "legend");
+
+	_attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"0\" y=\"0\" "
+                + "width=\"40\" height=\"40\" "
+                + "style=\"fill:lightGrey\"/>\n"
+                + "<rect x=\"8\" y=\"8\" "
+                + "width=\"24\" height=\"24\" "
+                + "style=\"fill:white\"/>\n"
+                + "<rect x=\"22\" y=\"2\" "
+                + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n"
+                + "<rect x=\"28\" y=\"2\" "
+                + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n"
+                + "<rect x=\"34\" y=\"2\" "
+                + "width=\"4\" height=\"4\" "
+                + "style=\"fill:grey\"/>\n"
+                + "<rect x=\"12\" y=\"22\" "
+                + "width=\"4\" height=\"10\" "
+                + "style=\"fill:red\"/>\n"
+                + "<rect x=\"18\" y=\"12\" "
+                + "width=\"4\" height=\"20\" "
+                + "style=\"fill:red\"/>\n"
+                + "<rect x=\"24\" y=\"15\" "
+                + "width=\"4\" height=\"17\" "
+                + "style=\"fill:red\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

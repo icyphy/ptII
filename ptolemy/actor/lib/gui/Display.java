@@ -95,6 +95,23 @@ public class Display extends Sink implements Placeable {
 
         title = new StringAttribute(this, "title");
         title.setExpression("");
+
+	_attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"0\" y=\"0\" "
+                + "width=\"40\" height=\"30\" "
+                + "style=\"fill:lightGrey\"/>\n"
+                + "<rect x=\"5\" y=\"5\" "
+                + "width=\"30\" height=\"20\" "
+                + "style=\"fill:white\"/>\n"
+                + "<line x1=\"7\" y1=\"9\" x2=\"16\" y2=\"9\" "
+                + "style=\"stroke:grey\"/>\n"
+                + "<line x1=\"7\" y1=\"13\" x2=\"20\" y2=\"13\" "
+                + "style=\"stroke:grey\"/>\n"
+                + "<line x1=\"7\" y1=\"17\" x2=\"12\" y2=\"17\" "
+                + "style=\"stroke:grey\"/>\n"
+                + "<line x1=\"7\" y1=\"21\" x2=\"24\" y2=\"21\" "
+                + "style=\"stroke:grey\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
