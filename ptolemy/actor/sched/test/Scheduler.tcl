@@ -359,6 +359,11 @@ test Scheduler-6.4.3 {Test Firing.ActorIterator.remove()} {
 
     # remove() is unsupported
     set firingIterator [$firing8 firingIterator]
+    $firingIterator hasNext
+    $firingIterator next
+    # This should throw an UnsupportedOperationException, but
+    # it does not because we do not have our own inner class implementation
+    # of this method.
     catch {$firingIterator remove} errMsg1
 
     set actorIterator [$firing8 actorIterator]
@@ -366,7 +371,7 @@ test Scheduler-6.4.3 {Test Firing.ActorIterator.remove()} {
 
 
     list $errMsg1 $errMsg2
-} {java.util.NoSuchElementException java.lang.UnsupportedOperationException}
+} {java.lang.UnsupportedOperationException java.lang.UnsupportedOperationException} {KNOWN_ERROR  This should throw an UnsupportedOperationException, but it does not because we do not have our own inner class implementation of this method.}
 
 ######################################################################
 ####
@@ -377,11 +382,12 @@ test Scheduler-6.4.4 {Test Firing.next(), hasNext()} {
     set firingIterator [$firing8 firingIterator]
     $firing8 setActor $a
 
+    # This should throw a ConcurrentModificationException
     catch {$firingIterator hasNext} errMsg1
     catch {$firingIterator next} errMsg2
 
     list $errMsg1 $errMsg2
-} {}
+} {java.util.ConcurrentModificationException java.util.ConcurrentModificationException} {KNOWN_FAILURE, firingIterator.hasNext() should throw ConcurrentModificationException}
 
 ######################################################################
 ####
