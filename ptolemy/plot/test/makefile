@@ -54,6 +54,7 @@ JSIMPLE_TESTS = \
 
 # Graphical Java tests that use Tcl.
 JGRAPHICAL_TESTS = \
+	PlotBox.tcl \
 	Pxgraph.tcl
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JGRAPHICAL_TESTS) #$(JSIMPLE_TESTS) 
