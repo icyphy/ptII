@@ -513,7 +513,7 @@ public class ProcessDirector extends Director {
     private int _blockedActorCount = 0;
 
     // The threads started by this director.
-    public LinkedList _actorThreadList;
+    private LinkedList _actorThreadList;
 
     //A copy of threads started since the last invocation of prefire().
     private LinkedList _newActorThreadList;
