@@ -325,7 +325,7 @@ fixtmpdist:
 		$(PTII)/doc/toc.css \
 		 $(PTTMPDIR)/$(PTDIST)/doc
 	cp -r $(PTII)/doc/img/ptIIplanetIcon.gif \
-		$(PTII)/doc/img/ptIIbanner2.gif \
+		$(PTII)/doc/img/ptIIbanner3.gif \
 		$(PTII)/doc/img/prev.gif \
 		$(PTTMPDIR)/$(PTDIST)/doc/img
 	# Create a file in the top level doc directory that points to
