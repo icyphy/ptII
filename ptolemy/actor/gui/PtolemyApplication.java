@@ -83,7 +83,7 @@ public class PtolemyApplication implements ExecutionListener {
 
     /** Report that execution of the model has finished by printing a
      *  message to stdout. This is method is called by the manager.
-     * @param
+     *  @param manager The manager in charge of the execution.
      */
     public void executionFinished(Manager manager) {
         System.out.println("Execution finished.");
