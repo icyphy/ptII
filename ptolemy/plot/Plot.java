@@ -278,34 +278,21 @@ public class Plot extends PlotBox {
                 yLowEB, yHighEB, connected, true);
     }
 
-    /** Clear the plot of all data points.  This resets all parameters
-     *  to their initial conditions, including the persistence and plotting
-     *  format.  If the argument is false, then
-     *  the axes display is kept the same.  Otherwise, all parameters
-     *  controlling the axis displays are set to their initial condition.
+    /** Clear the plot of all data points.  If the argument is true, then
+     *  reset all parameters to their initial conditions, including
+     *  the persistence, plotting format, and axes formats.
      *  For the change to take effect, you must call repaint().
-     *  @param axes If true, clear the axes too.
+     *  @param format If true, clear the format controls as well.
      */
-    public synchronized void clear (boolean axes) {
-        super.clear(axes);
+    public synchronized void clear (boolean format) {
+        super.clear(format);
         _currentdataset = -1;
         int size = _points.size();
         _points = new Vector();
         _prevx = new Vector();
         _prevy = new Vector();
-        _marks = 0;
         _painted = false;
-
-        // Reset the private variables to their initial state.
-        _pointsPersistence = 0;
-        _sweepsPersistence = 0;
-        _bars = false;
-        _barwidth = 0.5;
-        _baroffset = 0.05;
-        _connected = true;
-        _impulses = false;
         _maxdataset = -1;
-        _reusedatasets = false;
         _firstinset = true;
         _sawfirstdataset = false;
         _pxgraphBlankLineMode = true;
@@ -313,6 +300,19 @@ public class Plot extends PlotBox {
         _xyInvalid = false;
         _filename = null;
         _showing = false;
+
+        if (format) {
+            // Reset format controls
+            _marks = 0;
+            _pointsPersistence = 0;
+            _sweepsPersistence = 0;
+            _bars = false;
+            _barwidth = 0.5;
+            _baroffset = 0.05;
+            _connected = true;
+            _impulses = false;
+            _reusedatasets = false;
+        }
     }
 
     /** Erase the point at the given index in the given dataset.  If
