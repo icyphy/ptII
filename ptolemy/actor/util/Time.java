@@ -32,7 +32,6 @@ import java.math.BigDecimal;
 
 import ptolemy.actor.Director;
 import ptolemy.kernel.util.InternalErrorException;
-;
 
 
 //////////////////////////////////////////////////////////////////////////
