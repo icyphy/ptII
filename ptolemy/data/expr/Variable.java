@@ -639,6 +639,9 @@ public class Variable extends Attribute
      *  @param expr The expression for this variable.
      */
     public void setExpression(String expr) {
+        if (_debugging) {
+            _debug("setExpression: " + expr);
+        }
         if (expr == null || expr.trim().equals("")) {
             _token = null;
             _needsEvaluation = false;
@@ -685,6 +688,9 @@ public class Variable extends Attribute
      *  @see NamedObj#attributeTypeChanged(Attribute)
      */
     public void setLazy(boolean lazy) {
+        if (_debugging) {
+            _debug("setLazy: " + lazy);
+        }
         _isLazy = lazy;
     }
 
@@ -707,6 +713,9 @@ public class Variable extends Attribute
      */
     public void setToken(ptolemy.data.Token token)
             throws IllegalActionException {
+        if (_debugging) {
+            _debug("setToken: " + token);
+        }
         _setTokenAndNotify(token);
 
         // Override any expression that may have been previously given.
@@ -726,6 +735,13 @@ public class Variable extends Attribute
      *  @param lesser A Typeable object.
      */
     public void setTypeAtLeast(Typeable lesser) {
+        if (_debugging) {
+            String name = "not named";
+            if (lesser instanceof Nameable) {
+                name = ((Nameable)lesser).getFullName();
+            }
+            _debug("setTypeAtLeast: " + name);
+        }
         Inequality ineq = new Inequality(lesser.getTypeTerm(),
                 this.getTypeTerm());
         _constraints.add(ineq);
@@ -738,6 +754,13 @@ public class Variable extends Attribute
      *  @param typeTerm An InequalityTerm object.
      */
     public void setTypeAtLeast(InequalityTerm typeTerm) {
+        if (_debugging) {
+            String name = "not named";
+            if (typeTerm.getAssociatedObject() instanceof Nameable) {
+                name = ((Nameable)typeTerm.getAssociatedObject()).getFullName();
+            }
+            _debug("setTypeAtLeast: " + name);
+        }
         Inequality ineq = new Inequality(typeTerm, this.getTypeTerm());
         _constraints.add(ineq);
     }
@@ -760,6 +783,9 @@ public class Variable extends Attribute
      *   an instantiable type in the type lattice.
      */
     public void setTypeAtMost(Type type) throws IllegalActionException {
+        if (_debugging) {
+            _debug("setTypeAtMost: " + type);
+        }
         if (type == BaseType.UNKNOWN) {
             _typeAtMost = BaseType.UNKNOWN;
             return;
@@ -796,6 +822,9 @@ public class Variable extends Attribute
      *   token cannot be converted losslessly to the specified type.
      */
     public void setTypeEquals(Type type) throws IllegalActionException {
+        if (_debugging) {
+            _debug("setTypeEquals: " + type);
+        }
         if (_token != null) {
             if (type.isCompatible(_token.getType())) {
                 _token = type.convert(_token);
@@ -834,6 +863,9 @@ public class Variable extends Attribute
      *  @param value A boolean value.
      */
     public void setUnknown(boolean value) {
+        if (_debugging) {
+            _debug("setUnknown: " + value);
+        }
         _isTokenUnknown = value;
     }
 
@@ -842,6 +874,9 @@ public class Variable extends Attribute
      *  @param visibility The visibility of this variable.
      */
     public void setVisibility(Settable.Visibility visibility) {
+        if (_debugging) {
+            _debug("setVisibility: " + visibility);
+        }
         _visibility = visibility;
     }
 
@@ -852,6 +887,13 @@ public class Variable extends Attribute
      *  @param equal A Typeable object.
      */
     public void setTypeSameAs(Typeable equal) {
+        if (_debugging) {
+            String name = "not named";
+            if (equal instanceof Nameable) {
+                name = ((Nameable)equal).getFullName();
+            }
+            _debug("setTypeSameAs: " + name);
+        }
         Inequality ineq = new Inequality(this.getTypeTerm(),
                 equal.getTypeTerm());
         _constraints.add(ineq);
@@ -966,6 +1008,9 @@ public class Variable extends Attribute
      *   Also thrown if the change is not acceptable to the container.
      */
     public void validate() throws IllegalActionException {
+        if (_debugging) {
+            _debug("validate");
+        }
         invalidate();
         List errors = _propagate();
         if (errors != null && errors.size() > 0) {
