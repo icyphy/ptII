@@ -1,5 +1,5 @@
-/* An instance of IODependencyOfCompositeActor describes the input-output 
-dependency information of a composite actor. 
+/* An instance of FunctionDependencyOfCompositeActor describes the 
+function dependency information of a composite actor. 
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -37,23 +37,23 @@ import java.util.Iterator;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
-//// IODependence
-/** An instance of IODependencyOfCompositeActor describes the input-output 
+//// FunctionDependence
+/** An instance of FunctionDependencyOfCompositeActor describes the function 
 dependency information of a composite actor. The construction of the ports
-graph is in a bottom-up way by composition from the IODependencies of the 
+graph is in a bottom-up way by composing the FunctionDependencies of the 
 contained actors, which may be either atomic or composite. 
 
-@see IODependency
+@see FunctionDependency
 @author Haiyang Zheng
-@version $Id$
+@version $Id $
 @since Ptolemy II 3.1
 */
-public class IODependencyOfCompositeActor extends IODependency {
+public class FunctionDependencyOfCompositeActor extends FunctionDependency {
 
-    /** Construct an IODependency in the given container. 
-     *  @param container The container has this IODependency object.
+    /** Construct a FunctionDependency in the given container. 
+     *  @param container The container has this FunctionDependency object.
      */
-    public IODependencyOfCompositeActor(Actor container) {
+    public FunctionDependencyOfCompositeActor(Actor container) {
         super(container);
     }
 
@@ -87,20 +87,19 @@ public class IODependencyOfCompositeActor extends IODependency {
 
         // Here we may add constraints on which actors to be used to
         // construct graph. For example, in a modal model, we only include
-        // the controller, but not the refinements?
-        // FIXME:
+        // the controller, but not the refinements. The controller
+        // will provide a function dependency of the refinement of 
+        // current state.
         List embeddedActors = _getEntities();
         
         // merge the contained actors' graph into current one
         Iterator embeddedActorsIterator = embeddedActors.iterator();
         while (embeddedActorsIterator.hasNext()) {
             Actor embeddedActor = (Actor)embeddedActorsIterator.next();
-            IODependency ioDependency = embeddedActor.getIODependencies();
+            FunctionDependency functionDependency = 
+                embeddedActor.getFunctionDependencies();
             // merge the ports graph of the embedded actor into current one
-            _directedGraph.addGraph(ioDependency.getAbstractPortsGraph());
-            // FIXME: we need a way to differ the internal connections of an actor
-            // from the external connections between actors.
-            // Maybe we need a different weight...
+            _directedGraph.addGraph(functionDependency.getAbstractPortsGraph());
         }
            
         // Next, create the directed edges according to the connections at 

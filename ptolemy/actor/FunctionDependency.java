@@ -1,5 +1,5 @@
-/* An IODependency is an abstract class to describe the input-output 
-dependence relation of an entity.
+/* A FunctionDependency is an abstract class that describes the function
+dependency relation between the inputs and outputs of an actor.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -40,11 +40,12 @@ import java.util.Iterator;
 import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
-//// IODependency
-/** An IODependency is an abstract class to describe the input-output 
-dependence relation of an actor. It contains a ports graph including both
-the container ports and those of the contained actors (if any). The detailed
-implementation of how to contruct the graph is undefined and left to sub classes.
+//// FunctionDependency
+/** A FunctionDependency is an abstract class that describes the function 
+dependence relation between the inputs and outputs of an actor. 
+<p> It contains a ports-graph including the ports of both
+the container and the contained actors (if any). The detailed
+implementation of how to contruct the graph is undefined but left to sub classes.
 <p>
 A pair of ports, input and output, are declared dependent if the current value 
 of output depends on the current value of the input. Otherwise, it is independent.
@@ -57,31 +58,31 @@ To check if the ports graph has cycles, use the <i>getCycleNodes</i> method. The
 method returns an array of IOPorts in cycles. If there is no cycle, the returned
 array is empty.
 
-@see IODependencyOfAtomicActor
-@see IODependencyOfCompositeActor
-@see ptolemy.domains.de.kernel.DEDirector
+@see FunctionDependencyOfAtomicActor
+@see FunctionDependencyOfCompositeActor
+@see ptolemy.domains.de.kernel.DEEDirector
 @author Haiyang Zheng
 @version $Id$
 @since Ptolemy II 3.1
 */
-public abstract class IODependency {
+public abstract class FunctionDependency {
 
-    /** Construct an IODependency object for the given container.
-     *  @param container The container has this IODependency object.
+    /** Construct a FunctionDependency object for the given container.
+     *  @param container The container has this FunctionDependency object.
      */
-    public IODependency (Actor container) {
+    public FunctionDependency (Actor container) {
         _container = container;
     }
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If there is a cycle loop in the ports graph of this IODependency
+    /** If there is a cycle loop in the ports graph of this FunctionDependency
      *  object, return the nodes (ports) in the cycle loop. If there are 
      *  multiple cycles, all the nodes will be returned. If there is no 
-     *  cycle, return an empty array. The type of the returned nodes is IOPort. 
+     *  cycle, an empty array is returned. The type of the returned nodes is IOPort. 
      *  <p>
-     *  The validity of the IODependency object is checked at the beginning
+     *  The validity of the FunctionDependency object is checked at the beginning
      *  of this method.
      *  @return An array contains the IOPorts in the cycles.
      *  @see #validate()
@@ -91,16 +92,16 @@ public abstract class IODependency {
         return _directedGraph.cycleNodes();
     } 
     
-    /** Return an abstract ports graph reflecting the input-output dependency
+    /** Return an abstract ports graph reflecting the function dependency
      *  information. The ports graph includes only the container ports but not 
-     *  those of contained actors (if any). This information is usually used by 
+     *  those of contained actors. This information is usually used by 
      *  the director of the container, which contains the container of this 
-     *  IODependency object. For atomic actors, there is no difference between
+     *  FunctionDependency object. For atomic actors, there is no difference between
      *  this method and the <i>getDetailedPortsGraph</i> method.
      *  <p>
-     *  The validity of the IODependency object is checked at the beginning
+     *  The validity of the FunctionDependency object is checked at the beginning
      *  of this method.
-     *  @return a detailed ports graph reflecting the input output dependency
+     *  @return a detailed ports graph reflecting the function dependency
      *  information that includes the internal ports.
      *  @see #getDetailedPortsGraph
      */
@@ -108,6 +109,7 @@ public abstract class IODependency {
         // There is no difference between the getAbstractPortsGraph
         // and getDetailedPortsGraph methods.
         if (_container instanceof AtomicActor) {
+            _abstractPortsGraph = _directedGraph;
             return getDetailedPortsGraph();
         }
         validate();
@@ -144,13 +146,12 @@ public abstract class IODependency {
         return _abstractPortsGraph;
     }
 
-    /** Return a detailed ports graph reflecting the input-output dependency
+    /** Return a detailed ports graph reflecting the function dependency
      *  information. The ports graph includes both the container ports and those 
      *  of contained actors (if any). This information is usually used by the 
-     *  local director of the container of this IODependency object. Otherwise, 
-     *  use the <i>getAbstractPortsGraph</i> method.
+     *  local director of the container of this FunctionDependency object. 
      *  <p>
-     *  The validity of the IODependency object is checked at the beginning
+     *  The validity of the FunctionDependency object is checked at the beginning
      *  of this method.
      *  @return a detailed ports graph reflecting the input output dependency
      *  information that includes the internal ports.
@@ -162,9 +163,12 @@ public abstract class IODependency {
     }
     
     /** Get the independent outputs of the given input port.
-     *  //FIXME: Will be removed when the DEDirector redesign finishes.
+     *  @param inputPort The given input port.
+     *  @return a set of output ports that are independent of the input.
      */
+    //  FIXME: This will be removed when the DEDirector redesign finishes.
     public Set getIndependentOutputPorts(IOPort inputPort) {
+        validate();
         Set independentOutputPorts = new HashSet();
         Collection reachableOutputs = 
             _directedGraph.reachableNodes(_directedGraph.node(inputPort));
@@ -178,10 +182,32 @@ public abstract class IODependency {
         return independentOutputPorts;
     }
  
-     /** Make the IODependency object invalid. Note that the IODependency
+    /** Get the input ports on which the given output port is dependent.
+     *  @param outputPort The given output port.
+     *  @return a set of input ports.
+     */
+    public Set getDependentInputPorts(IOPort outputPort) {
+        validate();
+        Set dependentInputs = new HashSet();
+        if (_abstractPortsGraph == null) {
+            // force to construct an abstractPotrsGraph
+            getAbstractPortsGraph();
+        }
+        Object[] backReachableInputs = 
+            _abstractPortsGraph.backwardReachableNodes(outputPort);
+        int arrayLength = backReachableInputs.length;
+        for (int i = 0; i < arrayLength; i++) {
+            dependentInputs.add(backReachableInputs[i]);
+        }
+        return dependentInputs;
+    }
+
+    /** Make the FunctionDependency object invalid. Note that the 
+     *  FunctionDependency
      *  object is used to help a director to construct a valid schedule. 
      *  When a model changes, e.g. the topology change, the director has
-     *  to reconstruct the IODependency object and schedule, and this method 
+     *  to reconstruct the FunctionDependency object and schedule. So 
+     *  this method 
      *  is so called to force a reconstruction.
      *  @see ptolemy.domains.de.kernel.DEDirector
      */        
@@ -189,7 +215,7 @@ public abstract class IODependency {
         _directedGraphValid = -1;
     }
 
-    /** Check the validity of the IODependency object. If it is invalid,
+    /** Check the validity of the FunctionDependency object. If it is invalid,
      *  reconstruct it. Otherwise, do nothing.
      */        
     public void validate() {

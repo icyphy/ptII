@@ -1,5 +1,5 @@
-/* An interface provides access to the IODependency object associated with 
-entities.
+/* An interface provides access to the FunctionDependency object 
+associated with an entitiy.
 
  Copyright (c) 2003 The Regents of the University of California.
  All rights reserved.
@@ -32,9 +32,9 @@ entities.
 package ptolemy.actor;
 
 //////////////////////////////////////////////////////////////////////////
-//// HasIODependencies
-/** An interface provides access to the IODependency object associated with 
-entities. This interface is implemented by Actor interface. 
+//// HasFunctionDependencies
+/** An interface provides access to the FunctoinDependency object 
+ssociated with an entity. This interface is extended by Actor interface. 
 
 @see Actor
 @see IODependency
@@ -42,14 +42,14 @@ entities. This interface is implemented by Actor interface.
 @version $Id$
 @since Ptolemy II 3.1
 */
-public interface HasIODependencies {
+public interface HasFunctionDependencies {
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return an instance of IODependency. 
-     *  @return the IODependency object.
+    /** Return an instance of FunctionDependency. 
+     *  @return the FunctionDependency object.
      */
-    public IODependency getIODependencies();
+    public FunctionDependency getFunctionDependencies();
     
 }

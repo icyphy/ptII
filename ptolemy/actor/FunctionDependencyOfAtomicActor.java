@@ -1,4 +1,4 @@
-/* An instance of IODependencyOfAtomicActor describes the input-output 
+/* An instance of FunctionDependencyOfAtomicActor describes the function 
 dependency information of an atomic actor. 
 
  Copyright (c) 2003 The Regents of the University of California.
@@ -38,16 +38,16 @@ import ptolemy.graph.Node;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
-//// IODependencyOfAtomicActor
-/** An instance of IODependencyOfAtomicActor describes the input-output 
-dependence relation of an atomic actor. It contains a ports graph including both
-the container ports. 
+//// FunctionDependencyOfAtomicActor
+/** An instance of FunctionDependencyOfAtomicActor describes the function 
+dependence relation of an atomic actor. It contains a ports graph 
+including the container ports only.
 <p>
 For most atomic actors, usually, all the input ports and output ports are
 dependent. E.g, the AddSubtract actor. (For definition of <i>dependent</i>, see
-IODependency.) If some atomic actors, such as TimedDelay actor, its input 
-and output ports are not dependent. For the first case, the input and out ports 
-in the ports graph are fully connected. For the second case, we use the 
+FunctionDependency.) Thus, the input and out ports in the ports graph are 
+fully connected. for some atomic actors, such as TimedDelay actor, its input 
+and output ports are not dependent, we use the 
 <i>removeDependence(input, output)</i> method to declare that there is no
 dependency between the input and output port, thus they are not connected.
 See the {@link ptolemy.domains.de.lib.TimedDelay} for usage pattern.
@@ -55,18 +55,18 @@ See the {@link ptolemy.domains.de.lib.TimedDelay} for usage pattern.
 Note, for Multiplexer, Demultiplexer actors, the boolean control input and output
 are dependent.
 
-@see IODependency
+@see FunctionDependency
 @see ptolemy.domains.de.lib.TimedDelay
 @author Haiyang Zheng
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class IODependencyOfAtomicActor extends IODependency {
+public class FunctionDependencyOfAtomicActor extends FunctionDependency {
 
-    /** Construct an IODependencyOfAtomicActor in the given container. 
-     *  @param container The container has this IODependency object.
+    /** Construct a FunctionDependencyOfAtomicActor in the given container. 
+     *  @param container The container has this FunctionDependency object.
      */
-    public IODependencyOfAtomicActor(Actor container) {
+    public FunctionDependencyOfAtomicActor(Actor container) {
         super(container);
     }
 
@@ -79,7 +79,8 @@ public class IODependencyOfAtomicActor extends IODependency {
      *  @param outputPort An output Port.
      */
     public void removeDependency(IOPort inputPort, IOPort outputPort) {
-        // FIXME: do we need to check the validity of the IODependence here? 
+        // FIXME: do we need to check the validity of the 
+        // FunctionDependence here? 
         // Since this method is called from the _constructDirectedGraph 
         // method, where the validity is checked, we may not need this check.
         // validate();
@@ -144,6 +145,5 @@ public class IODependencyOfAtomicActor extends IODependency {
         // Note: the following method calls the removeDependence(input, output)
         // method defined above.
         ((AtomicActor)_container).removeDependencies(); 
-        //System.out.println("after removing edges:\n " + _directedGraph.toString());
     }
 }

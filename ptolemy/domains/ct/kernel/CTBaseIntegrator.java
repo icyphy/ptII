@@ -30,8 +30,8 @@
 
 package ptolemy.domains.ct.kernel;
 
-import ptolemy.actor.IODependency;
-import ptolemy.actor.IODependencyOfAtomicActor;
+import ptolemy.actor.FunctionDependency;
+import ptolemy.actor.FunctionDependencyOfAtomicActor;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.TimedActor;

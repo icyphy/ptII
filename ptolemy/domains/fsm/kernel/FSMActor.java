@@ -43,7 +43,7 @@ import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.Executable;
-import ptolemy.actor.IODependency;
+import ptolemy.actor.FunctionDependency;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IORelation;
 import ptolemy.actor.Manager;
@@ -335,30 +335,30 @@ public class FSMActor extends CompositeEntity
      *  a path between a pair, input and output, they are dependent. 
      *  Otherwise, they are independent.
      */
-    public IODependency getIODependencies() {
-        if (_ioDependency == null) {
+    public FunctionDependency getFunctionDependencies() {
+        if (_functionDependency == null) {
             try{
                 TypedActor[] refinements = _currentState.getRefinement();
                 //FIXME: we assume there is only one refinement.
                 // If there are many refinements, we choose the first one.
                 if (refinements.length > 0) {
-                    _ioDependency = refinements[0].getIODependencies();
+                    _functionDependency = refinements[0].getFunctionDependencies();
                 } else {
                     //FIXME: what to do if no refinement?
                     //The dependency relation between the actions associated
                     //with transitions and downstream receivers is too complicated,
                     //and I want to exclude the output actions. 
-                    _ioDependency = null;
+                    _functionDependency = null;
                 }
             } catch (IllegalActionException e) {
                // dealing with the exception 
                // FIXME: how? make this method throw the exception?
                // Similar things happen in the _getEntities method 
-               // in IODependencyOfModalModel
+               // in FunctionDependencyOfModalModel
             }
        }
-        //_ioDependency.validate();
-        return _ioDependency;
+        //_functionDependency.validate();
+        return _functionDependency;
     }
 
     /** Return the Manager responsible for execution of this actor,
@@ -450,7 +450,6 @@ public class FSMActor extends CompositeEntity
         // From Edward, if a reset transition is taken, only
         // the initialize method is called. So, reset must be
         // called here. 
-        //System.out.println(this.getName() + "reset to initial state");
         reset();
     }
 
@@ -660,7 +659,7 @@ public class FSMActor extends CompositeEntity
         // Note: reset() (gotoInitialState()) is called from
         // initialize() now (zk 2002/09/11)`
         // FIXME: why this is necessary?
-        // I moved reset() here because the IODependency analysis
+        // I moved reset() here because the FunctionDependency analysis
         // needs to catch the currentState. 
         // In DE/ModalModel, reset() happening in the initialize method
         // is too late. hyzheng 1/7/2004
@@ -1419,7 +1418,7 @@ public class FSMActor extends CompositeEntity
     // by the FSMActor in one iteration.
     private Hashtable _hdfArrays;
     
-    // The IODependence attribute of this actor.
-    private IODependency _ioDependency;
+    // The FunctionDependence attribute of this actor.
+    private FunctionDependency _functionDependency;
 
 }

@@ -1,4 +1,4 @@
-/* An instance of IODependencyOfModalModel describes the input-output 
+/* An instance of FunctionDependencyOfModalModel describes the function 
 dependence information of a modal model.
 
  Copyright (c) 2003 The Regents of the University of California.
@@ -35,25 +35,25 @@ import java.util.LinkedList;
 import java.util.List;
 
 import ptolemy.actor.Actor;
-import ptolemy.actor.IODependencyOfCompositeActor;
+import ptolemy.actor.FunctionDependencyOfCompositeActor;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
-//// IODependencyOfModalModel
-/** An instance of IODependencyOfModalModel describes the input-output 
+//// FunctionDependencyOfModalModel
+/** An instance of FunctionDependencyOfModalModel describes the function 
 dependence information of a modal model.
 
-@see ptolemy.actor.IODependencyOfCompositeActor
+@see ptolemy.actor.FunctionDependencyOfCompositeActor
 @author Haiyang Zheng
 @version $Id $
 @since Ptolemy II 3.1
 */
-public class IODependencyOfModalModel extends IODependencyOfCompositeActor {
+public class FunctionDependencyOfModalModel extends FunctionDependencyOfCompositeActor {
 
-    /** Construct an IODependency in the given container. 
-     *  @param container The container has this IODependency object.
+    /** Construct a FunctionDependency in the given container. 
+     *  @param container The container has this FunctionDependency object.
      */
-    public IODependencyOfModalModel(Actor container) {
+    public FunctionDependencyOfModalModel(Actor container) {
         super(container);
     }
 
@@ -73,7 +73,8 @@ public class IODependencyOfModalModel extends IODependencyOfCompositeActor {
         } catch (IllegalActionException e) {
            // dealing with the exception 
            // FIXME: how? make this method throw the exception?
-           // Similiar things happen in FSMActor getIODependencies method.
+           // Similiar things happen in FSMActor 
+           // getFunctionDependencies method.
         }
         return entities;
     }

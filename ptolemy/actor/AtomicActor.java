@@ -178,22 +178,21 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return getDirector();
     }
 
-    /** Return the IODependency object associated with this 
+    /** Return the FunctionDependency object associated with this 
      *  atomic actor.
-     *  @return the IODependency object.
-     *  @see IODependency
+     *  @return the FunctionDependency object.
+     *  @see FunctionDependency
      */
-    public IODependency getIODependencies() {
-        // If the _ioDependency object is not constructed, 
-        // construct an IODependencyOfAtomicActor object.
-        if (_ioDependency == null) {
-            _ioDependency = new IODependencyOfAtomicActor(this);
+    public FunctionDependency getFunctionDependencies() {
+        // If the _functionDependency object is not constructed, 
+        // construct a FunctionDependencyOfAtomicActor object.
+        if (_functionDependency == null) {
+            _functionDependency = new FunctionDependencyOfAtomicActor(this);
         }
         // Note, we don't guarantee the validity of this 
-        // _ioDependency in this method. Any further access of
-        // the details of the _ioDependency will check the 
-        // validity.
-        return _ioDependency;
+        // _functionDependency in this method. Any further access of
+        // the _functionDependency will check the validity.
+        return _functionDependency;
     }
 
     /** Return the Manager responsible for execution of this actor,
@@ -440,7 +439,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @param output the output port
      */
     public void removeDependency(IOPort input, IOPort output) {
-        _ioDependency.removeDependency(input, output);
+        _functionDependency.removeDependency(input, output);
     }
 
     /** Override the base class to invalidate the schedule and
@@ -579,6 +578,6 @@ public class AtomicActor extends ComponentEntity implements Actor {
     private transient long _outputPortsVersion = -1;
     private transient List _cachedOutputPorts;
     
-    // Cached ioDependency object.
-    private IODependencyOfAtomicActor _ioDependency;
+    // Cached FunctionDependency object.
+    private FunctionDependencyOfAtomicActor _functionDependency;
 }

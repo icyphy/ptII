@@ -33,7 +33,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Iterator;
 
-import ptolemy.actor.IODependency;
+import ptolemy.actor.FunctionDependency;
 import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -215,13 +215,12 @@ public class ModalModel extends CTCompositeActor {
      *  a path between a pair, input and output, they are dependent. 
      *  Otherwise, they are independent.
      */
-    public IODependency getIODependencies() {
-        if (_ioDependency == null) {
-            _ioDependency = 
-                new IODependencyOfModalModel(this);
+    public FunctionDependency getFunctionDependencies() {
+        if (_functionDependency == null) {
+            _functionDependency = 
+                new FunctionDependencyOfModalModel(this);
         }
-        //_ioDependency.validate();
-        return _ioDependency;
+        return _functionDependency;
     }
 
     /** Get the FSM controller.
@@ -423,6 +422,6 @@ public class ModalModel extends CTCompositeActor {
     // the FSMActor is created.
     private boolean _directorChanged = false;
     
-    private IODependencyOfModalModel _ioDependency;
+    private FunctionDependencyOfModalModel _functionDependency;
     
 }

@@ -38,7 +38,9 @@ import java.util.List;
 //// Actor
 /**
 An Actor is an executable entity. This interface defines the common
-functionality in AtomicActor and CompositeActor.
+functionality in AtomicActor and CompositeActor. It also extends
+the HasFunctionDependencies interface.
+
 
 @author Edward A. Lee
 @version $Id$
@@ -46,7 +48,7 @@ functionality in AtomicActor and CompositeActor.
 @see ptolemy.actor.CompositeActor
 @see ptolemy.actor.AtomicActor
 */
-public interface Actor extends Executable, HasIODependencies {
+public interface Actor extends Executable, HasFunctionDependencies {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

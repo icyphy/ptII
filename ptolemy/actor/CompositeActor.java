@@ -117,7 +117,7 @@ newRelation(), _addRelation(), and _addEntity().
 @see ptolemy.actor.Manager
 */
 public class CompositeActor extends CompositeEntity 
-    implements Actor, HasIODependencies {
+    implements Actor, HasFunctionDependencies {
 
     /** Construct a CompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
@@ -367,17 +367,16 @@ public class CompositeActor extends CompositeEntity
      *  @return the IODependency object.
      *  @see IODependency
      */
-    public IODependency getIODependencies() {
-        // If the _ioDependency object is not constructed, 
-        // construct an IODependencyOfCompositeActor object.
-        if (_ioDependency == null) {
-            _ioDependency = new IODependencyOfCompositeActor(this);
+    public FunctionDependency getFunctionDependencies() {
+        // If the _functionDependency object is not constructed, 
+        // construct a FunctionDependencyOfAtomicActor object.
+        if (_functionDependency == null) {
+            _functionDependency = new FunctionDependencyOfCompositeActor(this);
         }
         // Note, we don't guarantee the validity of this 
-        // _ioDependency in this method. Any further access of
-        // the details of the _ioDependency will check the 
-        // validity.
-        return _ioDependency;
+        // _functionDependency in this method. Any further access of
+        // the _functionDependency will check the validity.
+        return _functionDependency;
     }
     
     /** Get the manager responsible for execution of this composite actor.
@@ -1124,6 +1123,6 @@ public class CompositeActor extends CompositeEntity
     private transient long _outputPortsVersion = -1;
     private transient List _cachedOutputPorts;
     
-    // Cached IODependency object.
-    private IODependencyOfCompositeActor _ioDependency;
+    // Cached FunctionDependency object.
+    private FunctionDependencyOfCompositeActor _functionDependency;
 }
