@@ -150,18 +150,18 @@ public class Attribute extends NamedObj {
                         "of attributes.");
             }
 
-            NamedObj prevcontainer = (NamedObj)getContainer();
-            if (prevcontainer == container) return;
+            NamedObj previousContainer = (NamedObj)getContainer();
+            if (previousContainer == container) return;
             // Do this first, because it may throw an exception.
             if (container != null) {
                 container._addAttribute(this);
-                if (prevcontainer == null) {
+                if (previousContainer == null) {
                     _workspace.remove(this);
                 }
             }
             _container = container;
-            if (prevcontainer != null) {
-                prevcontainer._removeAttribute(this);
+            if (previousContainer != null) {
+                previousContainer._removeAttribute(this);
             }
         } finally {
             _workspace.doneWriting();
