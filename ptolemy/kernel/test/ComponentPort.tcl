@@ -39,11 +39,11 @@ if {[string compare test [info procs test]] == 1} then {
 
 # Load up Tcl procs to print out enums
 if {[info procs _testEnums] == "" } then { 
-    source testEnums.tcl
+    source ../util/test/testEnums.tcl
 }
 
 if {[info procs enumToFullNames] == "" } then { 
-    source enums.tcl
+    source ../util/test/enums.tcl
 }
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
@@ -66,23 +66,24 @@ test ComponentPort-1.1 {Get information about an instance of ComponentPort} {
 } {{
   class:         pt.kernel.ComponentPort
   fields:        
-  methods:       {addParameter pt.kernel.Nameable} clone {clone pt.kerne
-    l.Workspace} connectedPorts deepConnectedPorts deepInsi
-    dePorts {description int} {equals java.lang.Object} get
-    Class getContainer getFullName getName {getParameter ja
-    va.lang.String} getParameters hashCode insidePorts insi
-    deRelations {isDeeplyConnected pt.kernel.ComponentPort}
-     {isInsideLinked pt.kernel.Relation} {isLinked pt.kerne
-    l.Relation} isOpaque {liberalLink pt.kernel.ComponentRe
-    lation} {link pt.kernel.Relation} linkedRelations notif
-    y notifyAll numInsideLinks numLinks {removeParameter ja
-    va.lang.String} {setContainer pt.kernel.Entity} {setNam
-    e java.lang.String} toString {unlink pt.kernel.Relation
-    } unlinkAll wait {wait long} {wait long int} workspace
+  methods:       {addParameter pt.kernel.util.Nameable} clone {clone pt.
+    kernel.util.Workspace} connectedPorts deepConnectedPort
+    s deepInsidePorts {description int} {equals java.lang.O
+    bject} getClass getContainer getFullName getName {getPa
+    rameter java.lang.String} getParameters hashCode inside
+    Ports insideRelations {isDeeplyConnected pt.kernel.Comp
+    onentPort} {isInsideLinked pt.kernel.Relation} {isLinke
+    d pt.kernel.Relation} isOpaque {liberalLink pt.kernel.C
+    omponentRelation} {link pt.kernel.Relation} linkedRelat
+    ions notify notifyAll numInsideLinks numLinks {removePa
+    rameter java.lang.String} {setContainer pt.kernel.Entit
+    y} {setName java.lang.String} toString {unlink pt.kerne
+    l.Relation} unlinkAll wait {wait long} {wait long int} 
+    workspace
     
   constructors:  pt.kernel.ComponentPort {pt.kernel.ComponentPort pt.ker
     nel.ComponentEntity java.lang.String} {pt.kernel.Compon
-    entPort pt.kernel.Workspace}
+    entPort pt.kernel.util.Workspace}
     
   properties:    class container fullName name opaque parameters
     
@@ -195,7 +196,7 @@ test ComponentPort-3.4 {Level-crossing link error} {
     set a1 [java::new pt.kernel.ComponentRelation $e2 A1]
     catch {$p1 link $a1} msg
     list $msg
-} {{pt.kernel.IllegalActionException: .E1.P1 and .E1.E2.A1: Link crosses levels of the hierarchy}}
+} {{pt.kernel.util.IllegalActionException: .E1.P1 and .E1.E2.A1: Link crosses levels of the hierarchy}}
 
 ######################################################################
 ####

@@ -34,12 +34,12 @@
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source testDefs.tcl
+    source ../util/test/testDefs.tcl
 } {}
 
 # Load up Tcl procs to print out enums
 if {[info procs _testRelationEnumPorts] == "" } then { 
-    source testEnums.tcl
+    source ../util/test/testEnums.tcl
 }
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
@@ -62,22 +62,22 @@ test Relation-1.1 {Get information about an instance of Relation} {
 } {{
   class:         pt.kernel.Relation
   fields:        
-  methods:       {addParameter pt.kernel.Nameable} clone {clone pt.kerne
-    l.Workspace} {description int} {equals java.lang.Object
-    } getClass getContainer getFullName getName {getParamet
-    er java.lang.String} getParameters hashCode linkedPorts
-     {linkedPorts pt.kernel.Port} notify notifyAll numLinks
-     {removeParameter java.lang.String} {setName java.lang.
-    String} toString unlinkAll wait {wait long} {wait long 
-    int} workspace
+  methods:       {addParameter pt.kernel.util.Nameable} clone {clone pt.
+    kernel.util.Workspace} {description int} {equals java.l
+    ang.Object} getClass getContainer getFullName getName {
+    getParameter java.lang.String} getParameters hashCode l
+    inkedPorts {linkedPorts pt.kernel.Port} notify notifyAl
+    l numLinks {removeParameter java.lang.String} {setName 
+    java.lang.String} toString unlinkAll wait {wait long} {
+    wait long int} workspace
     
   constructors:  pt.kernel.Relation {pt.kernel.Relation java.lang.String
-    } {pt.kernel.Relation pt.kernel.Workspace java.lang.Str
-    ing}
+    } {pt.kernel.Relation pt.kernel.util.Workspace java.lan
+    g.String}
     
   properties:    class container fullName name parameters
     
-  superclass:    pt.kernel.NamedObj
+  superclass:    pt.kernel.util.NamedObj
     
 }}
 
@@ -185,7 +185,7 @@ test Relation-12.1 {unlinkAll ports} {
 ####
 # 
 test Port-13.1 {Test description} {
-    set w [java::new pt.kernel.Workspace]
+    set w [java::new pt.kernel.util.Workspace]
     set e1 [java::new pt.kernel.Entity $w E1]
     set p1 [java::new pt.kernel.Port $e1 P1]
     set r1 [java::new pt.kernel.Relation $w R1]
@@ -214,7 +214,7 @@ test Port-13.3 {Test description} {
 test Port-13.3 {Test description on workspace} {
     # NOTE: Builds on previous example.
     $w description 15
-} {pt.kernel.Workspace {} elements {
+} {pt.kernel.util.Workspace {} elements {
 pt.kernel.Entity {.E1}
 pt.kernel.Relation {.R1} links {
 pt.kernel.Port {.E1.P1}
@@ -228,7 +228,7 @@ pt.kernel.Port {.E1.P1}
 ####
 # 
 test Port-14.1 {Test clone} {
-    set w [java::new pt.kernel.Workspace]
+    set w [java::new pt.kernel.util.Workspace]
     set e1 [java::new pt.kernel.Entity $w E1]
     set p1 [java::new pt.kernel.Port $e1 P1]
     set r1 [java::new pt.kernel.Relation $w R1]

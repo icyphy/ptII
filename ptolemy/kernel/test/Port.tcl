@@ -39,12 +39,12 @@ if {[string compare test [info procs test]] == 1} then {
 
 # Load up Tcl procs to print out enums
 if {[info procs _testPortEnumRelations] == "" } then { 
-    source testEnums.tcl
+    source ../util/test/testEnums.tcl
 }
 
 # Load up Tcl procs to print out enums
 if {[info procs enumToNames] == "" } then { 
-    source enums.tcl
+    source ../util/test/enums.tcl
 }
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
@@ -67,23 +67,23 @@ test Port-1.1 {Get information about an instance of Port} {
 } {{
   class:         pt.kernel.Port
   fields:        
-  methods:       {addParameter pt.kernel.Nameable} clone {clone pt.kerne
-    l.Workspace} connectedPorts {description int} {equals j
-    ava.lang.Object} getClass getContainer getFullName getN
-    ame {getParameter java.lang.String} getParameters hashC
-    ode {isLinked pt.kernel.Relation} isOpaque {link pt.ker
-    nel.Relation} linkedRelations notify notifyAll numLinks
-     {removeParameter java.lang.String} {setContainer pt.ke
-    rnel.Entity} {setName java.lang.String} toString {unlin
-    k pt.kernel.Relation} unlinkAll wait {wait long} {wait 
-    long int} workspace
+  methods:       {addParameter pt.kernel.util.Nameable} clone {clone pt.
+    kernel.util.Workspace} connectedPorts {description int}
+     {equals java.lang.Object} getClass getContainer getFul
+    lName getName {getParameter java.lang.String} getParame
+    ters hashCode {isLinked pt.kernel.Relation} isOpaque {l
+    ink pt.kernel.Relation} linkedRelations notify notifyAl
+    l numLinks {removeParameter java.lang.String} {setConta
+    iner pt.kernel.Entity} {setName java.lang.String} toStr
+    ing {unlink pt.kernel.Relation} unlinkAll wait {wait lo
+    ng} {wait long int} workspace
     
   constructors:  pt.kernel.Port {pt.kernel.Port pt.kernel.Entity java.la
-    ng.String} {pt.kernel.Port pt.kernel.Workspace}
+    ng.String} {pt.kernel.Port pt.kernel.util.Workspace}
     
   properties:    class container fullName name opaque parameters
     
-  superclass:    pt.kernel.NamedObj
+  superclass:    pt.kernel.util.NamedObj
     
 }}
 
@@ -366,7 +366,7 @@ test Port-10.1 {Reassign a port to a new container} {
 ####
 # 
 test Port-11.1 {Move Port in and out of the workspace} {
-    set w [java::new pt.kernel.Workspace]
+    set w [java::new pt.kernel.util.Workspace]
     set e1 [java::new pt.kernel.Entity $w E1]
     set p1 [java::new pt.kernel.Port $w]
     $p1 setName P1
@@ -385,7 +385,7 @@ test Port-11.1 {Move Port in and out of the workspace} {
 ####
 # 
 test Port-12.1 {Test description} {
-    set w [java::new pt.kernel.Workspace]
+    set w [java::new pt.kernel.util.Workspace]
     set e1 [java::new pt.kernel.Entity $w E1]
     set p1 [java::new pt.kernel.Port $e1 P1]
     set r1 [java::new pt.kernel.Relation $w R1]
@@ -415,7 +415,7 @@ test Port-12.3 {Test description} {
 test Port-12.4 {Test description on workspace} {
     # NOTE: Builds on previous example.
     $w description 15
-} {pt.kernel.Workspace {} elements {
+} {pt.kernel.util.Workspace {} elements {
 pt.kernel.Entity {.E1}
 pt.kernel.Relation {.R1} links {
 pt.kernel.Port {.E1.P1}
@@ -429,7 +429,7 @@ pt.kernel.Port {.E1.P1}
 ####
 # 
 test Port-13.1 {Test clone} {
-    set w [java::new pt.kernel.Workspace]
+    set w [java::new pt.kernel.util.Workspace]
     set e1 [java::new pt.kernel.Entity $w E1]
     set p1 [java::new pt.kernel.Port $e1 P1]
     set r1 [java::new pt.kernel.Relation $w R1]

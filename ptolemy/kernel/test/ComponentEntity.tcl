@@ -34,12 +34,12 @@
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
-    source testDefs.tcl
+    source ../util/test/testDefs.tcl
 } {}
 
 # Load up Tcl procs to print out enums
 if {[info procs _testEntityGetPorts] == "" } then { 
-    source testEnums.tcl
+    source ../util/test/testEnums.tcl
 }
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
@@ -62,20 +62,20 @@ test ComponentEntity-1.1 {Get information about an instance of ComponentEntity} 
 } {{
   class:         pt.kernel.ComponentEntity
   fields:        
-  methods:       {addParameter pt.kernel.Nameable} clone {clone pt.kerne
-    l.Workspace} connectedPorts {description int} {equals j
-    ava.lang.Object} getClass getContainer getFullName getN
-    ame {getParameter java.lang.String} getParameters {getP
-    ort java.lang.String} getPorts hashCode isAtomic linked
-    Relations {newPort java.lang.String} notify notifyAll r
-    emoveAllPorts {removeParameter java.lang.String} {setCo
-    ntainer pt.kernel.CompositeEntity} {setName java.lang.S
-    tring} toString wait {wait long} {wait long int} worksp
-    ace
+  methods:       {addParameter pt.kernel.util.Nameable} clone {clone pt.
+    kernel.util.Workspace} connectedPorts {description int}
+     {equals java.lang.Object} getClass getContainer getFul
+    lName getName {getParameter java.lang.String} getParame
+    ters {getPort java.lang.String} getPorts hashCode isAto
+    mic linkedRelations {newPort java.lang.String} notify n
+    otifyAll removeAllPorts {removeParameter java.lang.Stri
+    ng} {setContainer pt.kernel.CompositeEntity} {setName j
+    ava.lang.String} toString wait {wait long} {wait long i
+    nt} workspace
     
   constructors:  pt.kernel.ComponentEntity {pt.kernel.ComponentEntity pt
     .kernel.CompositeEntity java.lang.String} {pt.kernel.Co
-    mponentEntity pt.kernel.Workspace}
+    mponentEntity pt.kernel.util.Workspace}
     
   properties:    atomic class container fullName name parameters ports
     
@@ -90,7 +90,7 @@ test ComponentEntity-2.1 {Construct entities} {
     set e1 [java::new pt.kernel.ComponentEntity]
     set e2 [java::new pt.kernel.ComponentEntity]
     $e2 setName A
-    set w [java::new pt.kernel.Workspace]
+    set w [java::new pt.kernel.util.Workspace]
     set e3 [java::new pt.kernel.CompositeEntity $w]
     $e3 setName B
     set e4 [java::new pt.kernel.ComponentEntity $e3 B]
@@ -120,7 +120,7 @@ test ComponentEntity-4.1 {is atomic test} {
 ####
 # 
 test ComponentEntity-5.1 {Create new ports} {
-    set w [java::new pt.kernel.Workspace X]
+    set w [java::new pt.kernel.util.Workspace X]
     set e1 [java::new pt.kernel.ComponentEntity $w]
     $e1 setName Y
     set p1 [$e1 newPort A]
@@ -144,7 +144,7 @@ pt.kernel.ComponentPort {X.Y.B} links {
 ####
 # 
 test ComponentEntity-6.1 {Reparent entities} {
-    set e1 [java::new pt.kernel.Workspace A]
+    set e1 [java::new pt.kernel.util.Workspace A]
     set e2 [java::new pt.kernel.CompositeEntity $e1]
     $e2 setName B
     set e3 [java::new pt.kernel.CompositeEntity $e2 C]
@@ -164,10 +164,10 @@ test ComponentEntity-6.1 {Reparent entities} {
 ####
 # 
 test ComponentEntity-7.1 {Reparent entities, attempting a circular structure} {
-    set e1 [java::new pt.kernel.Workspace A]
+    set e1 [java::new pt.kernel.util.Workspace A]
     set e2 [java::new pt.kernel.CompositeEntity $e1]
     $e2 setName B
     set e3 [java::new pt.kernel.CompositeEntity $e2 C]
     catch {$e2 setContainer $e3} msg
     list $msg
-} {{pt.kernel.IllegalActionException: A.B and A.B.C: Attempt to construct recursive containment.}}
+} {{pt.kernel.util.IllegalActionException: A.B and A.B.C: Attempt to construct recursive containment.}}

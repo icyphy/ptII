@@ -39,11 +39,11 @@ if {[string compare test [info procs test]] == 1} then {
 
 # Load up Tcl procs to print out enums
 if {[info procs _testEntityLinkedRelations] == "" } then { 
-    source testEnums.tcl
+    source ../util/test/testEnums.tcl
 }
 
 if {[info procs enumToFullNames] == "" } then { 
-    source enums.tcl
+    source ../util/test/enums.tcl
 }
 
 
@@ -67,22 +67,23 @@ test Entity-1.1 {Get information about an instance of Entity} {
 } {{
   class:         pt.kernel.Entity
   fields:        
-  methods:       {addParameter pt.kernel.Nameable} clone {clone pt.kerne
-    l.Workspace} connectedPorts {description int} {equals j
-    ava.lang.Object} getClass getContainer getFullName getN
-    ame {getParameter java.lang.String} getParameters {getP
-    ort java.lang.String} getPorts hashCode linkedRelations
-     {newPort java.lang.String} notify notifyAll removeAllP
-    orts {removeParameter java.lang.String} {setName java.l
-    ang.String} toString wait {wait long} {wait long int} w
-    orkspace
+  methods:       {addParameter pt.kernel.util.Nameable} clone {clone pt.
+    kernel.util.Workspace} connectedPorts {description int}
+     {equals java.lang.Object} getClass getContainer getFul
+    lName getName {getParameter java.lang.String} getParame
+    ters {getPort java.lang.String} getPorts hashCode linke
+    dRelations {newPort java.lang.String} notify notifyAll 
+    removeAllPorts {removeParameter java.lang.String} {setN
+    ame java.lang.String} toString wait {wait long} {wait l
+    ong int} workspace
     
   constructors:  pt.kernel.Entity {pt.kernel.Entity java.lang.String} {p
-    t.kernel.Entity pt.kernel.Workspace java.lang.String}
+    t.kernel.Entity pt.kernel.util.Workspace java.lang.Stri
+    ng}
     
   properties:    class container fullName name parameters ports
     
-  superclass:    pt.kernel.NamedObj
+  superclass:    pt.kernel.util.NamedObj
     
 }}
 
@@ -127,7 +128,7 @@ test Entity-4.0 {Connect Entities} {
 # 
 test Entity-5.0 {move port from one entity to another} {
     # Workspace
-    set w [java::new pt.kernel.Workspace]
+    set w [java::new pt.kernel.util.Workspace]
     set old [java::new pt.kernel.Entity $w "Old"]
     set ramp [java::new pt.kernel.Entity $w "Ramp"]
     set a [java::new pt.kernel.Port $old foo]
@@ -144,7 +145,7 @@ test Entity-5.0 {move port from one entity to another} {
 ####
 # 
 test Entity-5.1 {move port without a name from one entity to another} {
-    set w [java::new pt.kernel.Workspace]
+    set w [java::new pt.kernel.util.Workspace]
     set ramp [java::new pt.kernel.Entity $w "Ramp"]
     set old [java::new pt.kernel.Entity $w "Old"]
     set a [java::new pt.kernel.Port $old {}]
@@ -157,7 +158,7 @@ test Entity-5.1 {move port without a name from one entity to another} {
 ####
 # 
 test Entity-5.2 {move port twice} {
-    set w [java::new pt.kernel.Workspace]
+    set w [java::new pt.kernel.util.Workspace]
     set ramp [java::new pt.kernel.Entity $w "Ramp"]
     set old [java::new pt.kernel.Entity $w "Old"]
     set a [java::new pt.kernel.Port $old "Port"]
@@ -294,7 +295,7 @@ test Entity-8.0 {Create new ports} {
 ####
 # 
 test Entity-9.0 {Test description} {
-    set w [java::new pt.kernel.Workspace W]
+    set w [java::new pt.kernel.util.Workspace W]
     set e1 [java::new pt.kernel.Entity $w E1]
     set p1 [$e1 newPort P1]
     set p2 [$e1 newPort P2]
@@ -302,7 +303,7 @@ test Entity-9.0 {Test description} {
     $p1 link $r1
     $p2 link $r1
     $w description 31
-} {pt.kernel.Workspace {W} elements {
+} {pt.kernel.util.Workspace {W} elements {
 pt.kernel.Entity {W.E1} ports {
 pt.kernel.Port {W.E1.P1} links {
 pt.kernel.Relation {W.R1}

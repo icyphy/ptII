@@ -38,11 +38,11 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 if {[info procs enumToObjects] == "" } then { 
-     source enums.tcl
+     source ../util/test/enums.tcl
 }
 
 if {[info procs description2TclBlend] == "" } then { 
-     source description.tcl
+     source ../util/test/description.tcl
 }
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
@@ -66,27 +66,27 @@ test CompositeEntity-1.1 {Get information about an instance \
 } {{
   class:         pt.kernel.CompositeEntity
   fields:        
-  methods:       {addParameter pt.kernel.Nameable} {allowLevelCrossingCo
-    nnect boolean} clone {clone pt.kernel.Workspace} {conne
-    ct pt.kernel.ComponentPort pt.kernel.ComponentPort} {co
-    nnect pt.kernel.ComponentPort pt.kernel.ComponentPort j
-    ava.lang.String} connectedPorts {deepContains pt.kernel
-    .ComponentEntity} deepGetEntities {description int} {eq
-    uals java.lang.Object} getClass getContainer getEntitie
-    s {getEntity java.lang.String} getFullName getName {get
-    Parameter java.lang.String} getParameters {getPort java
-    .lang.String} getPorts {getRelation java.lang.String} g
-    etRelations hashCode isAtomic linkedRelations {newPort 
-    java.lang.String} {newRelation java.lang.String} notify
-     notifyAll numEntities numRelations removeAllEntities r
-    emoveAllPorts removeAllRelations {removeParameter java.
-    lang.String} {setContainer pt.kernel.CompositeEntity} {
-    setName java.lang.String} toString wait {wait long} {wa
-    it long int} workspace
+  methods:       {addParameter pt.kernel.util.Nameable} {allowLevelCross
+    ingConnect boolean} clone {clone pt.kernel.util.Workspa
+    ce} {connect pt.kernel.ComponentPort pt.kernel.Componen
+    tPort} {connect pt.kernel.ComponentPort pt.kernel.Compo
+    nentPort java.lang.String} connectedPorts {deepContains
+     pt.kernel.ComponentEntity} deepGetEntities {descriptio
+    n int} {equals java.lang.Object} getClass getContainer 
+    getEntities {getEntity java.lang.String} getFullName ge
+    tName {getParameter java.lang.String} getParameters {ge
+    tPort java.lang.String} getPorts {getRelation java.lang
+    .String} getRelations hashCode isAtomic linkedRelations
+     {newPort java.lang.String} {newRelation java.lang.Stri
+    ng} notify notifyAll numEntities numRelations removeAll
+    Entities removeAllPorts removeAllRelations {removeParam
+    eter java.lang.String} {setContainer pt.kernel.Composit
+    eEntity} {setName java.lang.String} toString wait {wait
+     long} {wait long int} workspace
     
   constructors:  pt.kernel.CompositeEntity {pt.kernel.CompositeEntity pt
     .kernel.CompositeEntity java.lang.String} {pt.kernel.Co
-    mpositeEntity pt.kernel.Workspace}
+    mpositeEntity pt.kernel.util.Workspace}
     
   properties:    atomic class container entities fullName name parameter
     s ports relations
@@ -219,7 +219,7 @@ test CompositeEntity-5.2 {Test reparenting with an error} {
     set d [java::new pt.kernel.CompositeEntity $c D]
     catch {$c setContainer $d} msg
     list $msg
-} {{pt.kernel.IllegalActionException: .A.C and .A.C.D: Attempt to construct recursive containment.}}
+} {{pt.kernel.util.IllegalActionException: .A.C and .A.C.D: Attempt to construct recursive containment.}}
 
 ######################################################################
 ####

@@ -44,13 +44,7 @@ include $(CONFIG)
 CLASSPATH = ../../..
 
 TCL_SRCS = \
-	ExampleSystem.tcl \
-	description.tcl \
-	enums.tcl \
-	init.tcl \
-	tclshrc.tcl \
-	testDefs.tcl \
-	testEnums.tcl
+	ExampleSystem.tcl
 
 JSRCS = 
 
@@ -59,15 +53,7 @@ JSIMPLE_TESTS = \
 	ComponentEntity.tcl \
 	ComponentPort.tcl \
 	CompositeEntity.tcl \
-	CrossRefList.tcl \
 	Entity.tcl \
-	IllegalActionException.tcl \
-	InvalidStateException.tcl \
-	KernelException.tcl \
-	NameDuplicationException.tcl \
-	NamedList.tcl \
-	NamedObj.tcl \
-	NoSuchItemException.tcl \
 	Port.tcl \
 	Relation.tcl
 
