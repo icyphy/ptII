@@ -85,8 +85,7 @@
         <?moml
           <group>
             <input source="ptolemy/domains/nc/lib/lib.xml"/>
-            <input source="contrib/momllib/output/Counters.xml"/>
-            <input source="contrib/momllib/output/Queue.xml"/>
+            <input source="TOSIndex.xml"/>
           </group>
         ?>
       </configure>
