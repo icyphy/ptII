@@ -61,6 +61,7 @@ JSRCS = \
 	CompositeEntity.java \
 	CrossRefList.java \
 	Entity.java \
+	FIFOQueue.java \
 	KernelException.java \
 	IllegalActionException.java \
  	IntParam.java \
