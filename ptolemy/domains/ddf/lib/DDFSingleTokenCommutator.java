@@ -1,4 +1,4 @@
-/* A commutator  that processes a single token per iteration.
+/* A commutator that processes a single token per iteration.
 
 Copyright (c) 1997-2004 The Regents of the University of California.
 All rights reserved.
@@ -69,18 +69,25 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         
-        _inputTokenConsumptionRate = 
-        	new Parameter(input, "tokenConsumptionRate");
-        _inputTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
-        _inputTokenConsumptionRate.setTypeEquals(new ArrayType(BaseType.INT));
-        _inputTokenConsumptionRate.setPersistent(false);
+        inputTokenConsumptionRate = 
+        	    new Parameter(input, "tokenConsumptionRate");
+        inputTokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
+        inputTokenConsumptionRate.setTypeEquals(new ArrayType(BaseType.INT));
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                          parameters                       ////
+    
+    /** This parameter provides token consumption rate for each input
+     *  channel.
+     */
+    public Parameter inputTokenConsumptionRate;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Begin execution by setting the ArrayToken indicating it will read
-     *  the zeroth input channel. 
+    /** Begin execution by setting rate parameter indicating it will 
+     *  read the zeroth input channel. 
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
@@ -91,13 +98,13 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
         for (int i=1; i < input.getWidth(); i++) {
             rates[i] = new IntToken(0);
         }
-        _inputTokenConsumptionRate.setToken(new ArrayToken(rates));
+        inputTokenConsumptionRate.setToken(new ArrayToken(rates));
     }
 
-    /** Update the ArrayToken indicating the next input position from 
-     *  which the next input will be read.
+    /** Update rate parameter indicating the next input channel.
      *  @return True if execution can continue into the next iteration. 
-     *  @exception IllegalActionException If there is no director.
+     *  @exception IllegalActionException If any called method throws 
+     *   IllegalActionException. 
      */
     public boolean postfire() throws IllegalActionException {
         
@@ -111,16 +118,9 @@ public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
             if ( i != currentInputPosition)
                 rates[i] = new IntToken(0);
         }
-        _inputTokenConsumptionRate.setToken(new ArrayToken(rates));
+        inputTokenConsumptionRate.setToken(new ArrayToken(rates));
         
         return postfireReturn;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
-    
-    /** This parameter provides token consumption rate for each input
-     *  channel.
-     */
-    protected Parameter _inputTokenConsumptionRate;
 }
