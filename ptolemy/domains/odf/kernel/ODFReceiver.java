@@ -173,7 +173,7 @@ public class ODFReceiver extends TimedQueueReceiver
     public void put(Token token) {
 	Thread thread = Thread.currentThread(); 
 	if( thread instanceof ODFThread ) {
-	    double time = ((ODFThread)thread).getOutputTime();
+	    double time = ((ODFThread)thread).getCurrentTime();
             put( token, time );
 	} else {
             put( token, getLastTime() );
