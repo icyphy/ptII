@@ -105,7 +105,13 @@ public class SizeAttribute extends Parameter implements ComponentListener {
      *  @param event The component event.
      */
     public void componentResized(ComponentEvent event) {
-        recordSize(_listeningTo);
+        // FIXME: Due to Swing's lame approach to sizes,
+        // the size that is reported by this event is actually,
+        // apparently, a random number, the off by just enough
+        // from the actual size to cause scroll bars to be
+        // squished and the progress bar to not be shown.
+        // So we don't record the size.
+        // recordSize(_listeningTo);
     }
 
     /** Do nothing. This method is
