@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = kernel stars demo
+DIRS = kernel actors demo
 
 # Root of Tycho directory
 ROOT =		../../../..
