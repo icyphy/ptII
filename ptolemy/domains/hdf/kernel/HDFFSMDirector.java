@@ -234,8 +234,8 @@ public class HDFFSMDirector extends FSMDirector {
         _readInputs();
         Transition transition;
         State state = controller.currentState();
-        _previousIntransientState =state;
-        Actor[] actors = controller.currentState().getRefinement();
+        _lastIntransientState =state;
+        Actor[] actors = state.getRefinement();
         _fireRefinement = false;
 
         if (actors != null) {
@@ -495,10 +495,10 @@ public class HDFFSMDirector extends FSMDirector {
     public boolean postfire() throws IllegalActionException {
         FSMActor controller = getController();
         //State currentState = controller.currentState();
-        State currentState = _previousIntransientState;
+        //State currentState = _previousIntransientState;
         //System.out.println("Postfire: current state: " + currentState.getName());
         CompositeActor container = (CompositeActor)getContainer();
-        TypedActor[] currentRefinement = currentState.getRefinement();
+        TypedActor[] currentRefinement = _lastIntransientState.getRefinement();
         
         if (currentRefinement == null) {
             throw new IllegalActionException(this,
@@ -1118,5 +1118,7 @@ public class HDFFSMDirector extends FSMDirector {
     // from transient states.
     private State _nextIntransientState;
     
-    private State _previousIntransientState;
+    // The last intransient state reached. This referes to the
+    // current state if it is intransient.
+    private State _lastIntransientState;
 }
