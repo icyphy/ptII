@@ -442,16 +442,19 @@ public class Director extends NamedObj implements Executable {
         }
     }
 
-    /** Set the current time of the simulation under this director.
+    /** Set the current time of the model under this director.
      *  Derived classes will likely override this method to ensure that
      *  the time is valid.
      *
-     *  @exception IllegalActionException If time cannot be changed
-     *   due to the state of the simulation. Not thrown in this base class.
+     *  @exception IllegalActionException If the new time is less than
+     *   the current time returned by getCurrentTime().
      *  @param newTime The new current simulation time.
      */
-    public void setCurrentTime(double newTime)
-            throws IllegalActionException {
+    public void setCurrentTime(double newTime) throws IllegalActionException {
+        if (newTime < getCurrentTime()) {
+            throw new IllegalActionException(this,
+            "Attempt to move current time backwards.");
+        }
         _currentTime = newTime;
     }
 
@@ -657,11 +660,14 @@ public class Director extends NamedObj implements Executable {
 
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables                 ////
+
+    // The current time of the model.
+    protected double _currentTime = 0.0;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The composite of which this is the local director.
     private CompositeActor _container = null;
-
-    // The current time of the model.
-    private double _currentTime = 0.0;
 }
