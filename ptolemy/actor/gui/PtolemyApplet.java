@@ -37,9 +37,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintWriter;
+import javax.swing.JOptionPane;
 
 // Ptolemy imports
-import ptolemy.gui.*;
+// import ptolemy.gui.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 
@@ -152,7 +153,8 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
     }
 
     /** Report an exception.  This prints a message to the standard error
-     *  stream, followed by the stack trace.
+     *  stream, followed by the stack trace, but displays on the screen
+     *  only the error message associated with the exception.
      */
     public void report(Exception ex) {
         String msg = "Exception thrown by applet.";
@@ -160,19 +162,24 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
         ex.printStackTrace();
         showStatus("Exception occurred.");
 
-        new Message(msg + "\n" + _getStackTrace(ex));
+        JOptionPane.showMessageDialog(this, ex.getMessage(),
+                "Ptolemy II Error Message", JOptionPane.ERROR_MESSAGE);
     }
 
-    /** Report an exception with an additional message.  Currently
-     *  this prints a message to standard error, followed by the stack trace,
-     *  although soon it will pop up a message window instead.
+    /** Report an exception with an additional message.
+     *  This prints a message to standard error, followed by the stack trace,
+     *  and pops up a window with the message and the message of the
+     *  exception.
      */
     public void report(String message, Exception ex) {
         String msg = "Exception thrown by applet.\n" + message;
-            System.err.println(msg);
-            ex.printStackTrace();
-            showStatus("Exception occurred.");
-            new Message(msg + "\n" + _getStackTrace(ex));
+        System.err.println(msg);
+        ex.printStackTrace();
+        showStatus("Exception occurred.");
+        JOptionPane.showMessageDialog(this,
+               message + "\n" + ex.getMessage(),
+               "Ptolemy II Error Message",
+               JOptionPane.ERROR_MESSAGE);
     }
 
     /** Start execution of the model. This method is called by the
