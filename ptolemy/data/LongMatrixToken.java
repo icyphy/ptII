@@ -37,7 +37,11 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.math.ComplexMatrixMath;
+import ptolemy.math.DoubleMatrixMath;
+import ptolemy.math.LongArrayMath;
 import ptolemy.math.LongMatrixMath;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// LongMatrixToken
@@ -54,10 +58,48 @@ public class LongMatrixToken extends MatrixToken {
      *  only element in the matrix has value 0
      */
     public LongMatrixToken() {
+        _value = new long[1];
+        _value[0] = 0;
         _rowCount = 1;
         _columnCount = 1;
-        _value = new long[1][1];
-        _value[0][0] = 0;
+    }
+
+    /** Construct a LongMatrixToken with the specified 1-D matrix.
+     *  Make a copy of the matrix and store the copy,
+     *  so that changes on the specified matrix after this token is
+     *  constructed will not affect the content of this token.
+     *  @exception IllegalActionException If the specified matrix
+     *   is null.
+     */
+    public LongMatrixToken(long[] value, int rows, int columns)
+            throws IllegalActionException {
+        this(value, rows, columns, DO_COPY);
+    }
+
+    /** Construct a LongMatrixToken with the specified 1-D matrix.
+     *  If copy is DO_COPY, make a copy of the matrix and store the copy,
+     *  so that changes on the specified matrix after this token is
+     *  constructed will not affect the content of this token.
+     *  If copy is DO_NOT_COPY, just reference the matrix (do not copy
+     *  its contents). This saves some time and memory.
+     *  The argument matrix should NOT be modified after this constructor
+     *  is called to preserve immutability.
+     *  @exception IllegalActionException If the specified matrix
+     *   is null.
+     */
+    public LongMatrixToken(long[] value, int rows, int columns, int copy)
+            throws IllegalActionException {
+        if (value == null) {
+            throw new IllegalActionException("LongMatrixToken: The specified "
+                    + "matrix is null.");
+        }
+        _rowCount = rows;
+        _columnCount = columns;
+        if (copy == DO_COPY) {
+            _value = LongArrayMath.allocCopy(value);
+        } else {
+            _value = value;
+        }
     }
 
     /** Construct a LongMatrixToken with the specified 2-D matrix.
@@ -85,7 +127,7 @@ public class LongMatrixToken extends MatrixToken {
      *  @exception IllegalActionException If the specified matrix
      *   is null.
      */
-    public LongMatrixToken(final long[][] value, final int copy)
+    public LongMatrixToken(long[][] value, int copy)
             throws IllegalActionException {
         if (value == null) {
             throw new IllegalActionException("LongMatrixToken: The "
@@ -107,7 +149,7 @@ public class LongMatrixToken extends MatrixToken {
             long[][] value = ((LongMatrixToken)token).longMatrix();
             _initialize(value, DO_COPY);
         } else {
-            throw new IllegalActionException("A LongMatrixToken cannot be"
+            throw new IllegalActionException("A matrix token cannot be"
                     + " created from the expression '" + init + "'");
         }
     }
@@ -127,22 +169,22 @@ public class LongMatrixToken extends MatrixToken {
      */
     public LongMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
+        int elements = rows * columns;
         if (tokens == null) {
             throw new IllegalActionException("LongMatrixToken: The specified"
                     + " array is null.");
         }
-        if (tokens.length != rows * columns) {
+        if (tokens.length != elements) {
             throw new IllegalActionException("LongMatrixToken: The specified"
                     + " array is not of the correct length");
         }
         _rowCount = rows;
         _columnCount = columns;
-        _value = new long[rows][columns];
-        for (int i = 0; i < tokens.length; i++) {
+        _value = new long[elements];
+        for (int i = 0; i < elements; i++) {
             Token token = tokens[i];
             if (token instanceof ScalarToken) {
-                _value[i / columns][i % columns] =
-                    ((ScalarToken)token).longValue();
+                _value[i] = ((ScalarToken)token).longValue();
             } else {
                 throw new IllegalActionException("LongMatrixToken: Element "
                         + i + " in the array with value " + token +
@@ -203,6 +245,33 @@ public class LongMatrixToken extends MatrixToken {
                 notSupportedConversionMessage(token, "[long]"));
     }
 
+    /** Convert the specified scalar token into an instance of
+     *  LongMatrixToken.  The resulting matrix will be square, with
+     *  the number of rows and columns equal to the given size.
+     *  This method does lossless conversion.
+     *  @param token The token to be converted to a LongMatrixToken.
+     *  @return A LongMatrixToken
+     *  @exception IllegalActionException If the conversion cannot
+     *  be carried out.
+     */
+    public static Token convert(ScalarToken token, int size)
+            throws IllegalActionException {
+
+        // Check to make sure that the token is convertible to LONG.
+        int compare = TypeLattice.compare(BaseType.LONG, token);
+        if (compare == CPO.SAME || compare == CPO.HIGHER) {
+            LongToken longToken = LongToken.convert(token);
+            long longValue = longToken.longValue();
+            long[] result = new long[size * size];
+            for (int i = 0; i < size; i++)
+                result[i] = longValue;
+            return new LongMatrixToken(result, size, size, DO_NOT_COPY);
+        }
+
+        throw new IllegalActionException(
+                notSupportedConversionMessage(token, "[long]"));
+    }
+
     /** Return true if the argument is an instance of LongMatrixToken
      *  of the same dimensions and the corresponding elements of the matrices
      *  are equal.
@@ -225,12 +294,11 @@ public class LongMatrixToken extends MatrixToken {
             return false;
         }
 
-        long[][] matrix = matrixArgument.longMatrix();
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                if (_value[i][j] != matrix[i][j]) {
-                    return false;
-                }
+        long[] value = matrixArgument._value;
+        int elements = _rowCount * _columnCount;
+        for (int i = 0; i < elements; i++) {
+            if (_value[i] != value[i]) {
+                return false;
             }
         }
 
@@ -254,7 +322,7 @@ public class LongMatrixToken extends MatrixToken {
      */
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
-        return new LongToken(_value[row][column]);
+        return new LongToken(_value[row * _columnCount + column]);
     }
 
     /** Return the element of the contained matrix at the specified
@@ -266,7 +334,7 @@ public class LongMatrixToken extends MatrixToken {
      *   row or column number is outside the range of the matrix.
      */
     public long getElementAt(int row, int column) {
-        return _value[row][column];
+        return _value[row * _columnCount + column];
     }
 
     /** Return the Type of the tokens contained in this matrix token.
@@ -297,10 +365,9 @@ public class LongMatrixToken extends MatrixToken {
      */
     public int hashCode() {
         long code = 0;
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                code += _value[i][j];
-            }
+        int elements = _rowCount * _columnCount;
+        for (int i = 0; i < elements; i++) {
+            code += _value[i];
         }
 
         return (int)code;
@@ -312,13 +379,8 @@ public class LongMatrixToken extends MatrixToken {
      *  @return A 2-D long matrix.
      */
     public long[][] longMatrix() {
-        long[][] matrix = new long[_rowCount][_columnCount];
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                matrix[i][j] = _value[i][j];
-            }
-        }
-        return matrix;
+        return LongMatrixMath.toMatrixFromArray(
+                _value, _rowCount, _columnCount); 
     }
 
     /** Return a new Token representing the left multiplicative
@@ -329,15 +391,9 @@ public class LongMatrixToken extends MatrixToken {
      *   identity.
      */
     public Token one() {
-        long[][] result = new long[_rowCount][_rowCount];
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _rowCount; j++) {
-                result[i][j] = 0;
-            }
-            result[i][i] = 1;
-        }
         try {
-            return new LongMatrixToken(result);
+            return new LongMatrixToken(LongMatrixMath.identity(_rowCount),
+                    DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("LongMatrixToken.one: "
@@ -353,16 +409,9 @@ public class LongMatrixToken extends MatrixToken {
      *   identity.
      */
     public Token oneRight() {
-        long[][] result = new long[_columnCount][_columnCount];
-        for (int i = 0; i < _columnCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                result[i][j] = 0;
-            }
-            result[i][i] = 1;
-        }
-
         try {
-            return new LongMatrixToken(result);
+            return new LongMatrixToken(LongMatrixMath.identity(_columnCount),
+                    DO_NOT_COPY);  
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("LongMatrixToken.oneRight: "
@@ -377,15 +426,9 @@ public class LongMatrixToken extends MatrixToken {
      *  @return A new LongMatrixToken containing the additive identity.
      */
     public Token zero() {
-        long[][] result = new long[_rowCount][_columnCount];
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                result[i][j] = 0;
-            }
-        }
-
         try {
-            return new LongMatrixToken(result);
+            return new LongMatrixToken(new long[_rowCount * _columnCount],
+                    _rowCount, _columnCount, DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("LongMatrixToken.zero: "
@@ -408,9 +451,9 @@ public class LongMatrixToken extends MatrixToken {
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         LongMatrixToken convertedArgument = (LongMatrixToken)rightArgument;
-        long[][] result = LongMatrixMath.add(
-                convertedArgument._getInternalLongMatrix(), _value);
-        return new LongMatrixToken(result);
+        long[] result = LongArrayMath.add(
+                convertedArgument._getInternalLongArray(), _value);
+        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -425,8 +468,8 @@ public class LongMatrixToken extends MatrixToken {
     protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
         long scalar = ((LongToken)rightArgument).longValue();
-        long[][] result = LongMatrixMath.add(_value, scalar);
-        return new LongMatrixToken(result);
+        long[] result = LongArrayMath.add(_value, scalar);
+        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     /** Return a new token whose elements are the result of dividing
@@ -441,8 +484,8 @@ public class LongMatrixToken extends MatrixToken {
     protected MatrixToken _divideElement(Token rightArgument)
             throws IllegalActionException {
         long scalar = ((LongToken)rightArgument).longValue();
-        long[][] result = LongMatrixMath.divide(_value, scalar);
-        return new LongMatrixToken(result);
+        long[] result = LongArrayMath.divide(_value, scalar);
+        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     /** Return a reference to the internal 2-D matrix of longs that
@@ -450,7 +493,7 @@ public class LongMatrixToken extends MatrixToken {
      *  must NOT be modified to preserve the immutability of Token.
      *  @return A 2-D long matrix.
      */
-    protected long[][] _getInternalLongMatrix() {
+    protected long[] _getInternalLongArray() {
         return _value;
     }
 
@@ -467,8 +510,8 @@ public class LongMatrixToken extends MatrixToken {
     protected MatrixToken _moduloElement(Token rightArgument)
             throws IllegalActionException {
         long scalar = ((LongToken)rightArgument).longValue();
-        long[][] result = LongMatrixMath.modulo(_value, scalar);
-        return new LongMatrixToken(result);
+        long[] result = LongArrayMath.modulo(_value, scalar);
+        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of this token
@@ -483,9 +526,26 @@ public class LongMatrixToken extends MatrixToken {
     protected MatrixToken _multiply(MatrixToken rightArgument)
             throws IllegalActionException {
         LongMatrixToken convertedArgument = (LongMatrixToken)rightArgument;
-        long[][] result = LongMatrixMath.multiply(
-                _value, convertedArgument._getInternalLongMatrix());
-        return new LongMatrixToken(result);
+        long[] A = _value;
+        long[] B = convertedArgument._getInternalLongArray();
+        int m = _rowCount;
+        int n = _columnCount;
+        int p = convertedArgument.getColumnCount();
+        long[] newMatrix = new long[m * p];
+        int in = 0;
+        int ta = 0;
+        for (int i = 0; i < m; i++) {
+            ta += n;
+            for (int j = 0; j < p; j++) {
+                long sum = 0;
+                int ib = j;
+                for (int ia = i * n; ia < ta; ia++, ib += p) {
+                    sum += A[ia] * B[ib];
+                }
+                newMatrix[in++] = sum;
+            }
+        }
+        return new LongMatrixToken(newMatrix, m, p, DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of this token
@@ -500,8 +560,8 @@ public class LongMatrixToken extends MatrixToken {
     protected MatrixToken _multiplyElement(Token rightArgument)
             throws IllegalActionException {
         long scalar = ((LongToken)rightArgument).longValue();
-        long[][] result = LongMatrixMath.multiply(_value, scalar);
-        return new LongMatrixToken(result);
+        long[] result = LongArrayMath.multiply(_value, scalar);
+        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -516,9 +576,9 @@ public class LongMatrixToken extends MatrixToken {
     protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         LongMatrixToken convertedArgument = (LongMatrixToken)rightArgument;
-        long[][] result = LongMatrixMath.subtract(_value,
-                convertedArgument._getInternalLongMatrix());
-        return new LongMatrixToken(result);
+        long[] result = LongArrayMath.subtract(_value,
+                convertedArgument._getInternalLongArray());
+        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -533,8 +593,8 @@ public class LongMatrixToken extends MatrixToken {
     protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
         long scalar = ((LongToken)rightArgument).longValue();
-        long[][] result = LongMatrixMath.add(_value, -scalar);
-        return new LongMatrixToken(result);
+        long[] result = LongArrayMath.add(_value, -scalar);
+        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -549,9 +609,9 @@ public class LongMatrixToken extends MatrixToken {
     protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
         long scalar = ((LongToken)rightArgument).longValue();
-        long[][] result = LongMatrixMath.negative(
-                LongMatrixMath.add(_value, -scalar));
-        return new LongMatrixToken(result);
+        long[] result = LongArrayMath.negative(
+                LongArrayMath.add(_value, -scalar));
+        return new LongMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -562,16 +622,12 @@ public class LongMatrixToken extends MatrixToken {
     private void _initialize(long[][] value, int copy) {
         _rowCount = value.length;
         _columnCount = value[0].length;
-        if (copy == DO_NOT_COPY) {
-            _value = value;
-        } else {
-            _value = LongMatrixMath.allocCopy(value);
-        }
+        _value = LongMatrixMath.fromMatrixToArray(value);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private long[][] _value = null;
-    private int _rowCount = 0;
-    private int _columnCount = 0;
+    private long[] _value;
+    private int _rowCount;
+    private int _columnCount;
 }

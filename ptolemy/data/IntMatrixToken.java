@@ -40,8 +40,11 @@ import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
+import ptolemy.math.ComplexMatrixMath;
 import ptolemy.math.DoubleMatrixMath;
+import ptolemy.math.IntegerArrayMath;
 import ptolemy.math.IntegerMatrixMath;
+import ptolemy.math.LongMatrixMath;
 
 //////////////////////////////////////////////////////////////////////////
 //// IntMatrixToken
@@ -58,9 +61,10 @@ public class IntMatrixToken extends MatrixToken {
      *  only element in the matrix has value 0.0
      */
     public IntMatrixToken() {
-        int[][] value = new int[1][1];
-        value[0][0] = 0;
-        _initialize(value, DO_NOT_COPY);
+        _value = new int[1];
+        _value[0] = 0;
+        _rowCount = 1;
+        _columnCount = 1;
     }
 
     /** Construct a IntMatrixToken with the specified 1-D matrix.
@@ -72,13 +76,33 @@ public class IntMatrixToken extends MatrixToken {
      */
     public IntMatrixToken(int[] value, int rows, int columns)
             throws IllegalActionException {
+        this(value, rows, columns, DO_COPY);
+    }
+
+    /** Construct a IntMatrixToken with the specified 1-D matrix.
+     *  If copy is DO_COPY, make a copy of the matrix and store the copy,
+     *  so that changes on the specified matrix after this token is
+     *  constructed will not affect the content of this token.
+     *  If copy is DO_NOT_COPY, just reference the matrix (do not copy
+     *  its contents). This saves some time and memory.
+     *  The argument matrix should NOT be modified after this constructor
+     *  is called to preserve immutability.
+     *  @exception IllegalActionException If the specified matrix
+     *   is null.
+     */
+    public IntMatrixToken(int[] value, int rows, int columns, int copy)
+            throws IllegalActionException {
         if (value == null) {
             throw new IllegalActionException("IntMatrixToken: The specified "
                     + "matrix is null.");
         }
         _rowCount = rows;
         _columnCount = columns;
-        _value = IntegerMatrixMath.toMatrixFromArray(value, rows, columns);
+        if (copy == DO_COPY) {
+            _value = IntegerArrayMath.allocCopy(value);
+        } else {
+            _value = value;
+        }
     }
 
     /** Construct a IntMatrixToken with the specified 2-D matrix.
@@ -112,7 +136,7 @@ public class IntMatrixToken extends MatrixToken {
             throw new IllegalActionException("IntMatrixToken: The specified "
                     + "matrix is null.");
         }
-        _initialize(value, copy);
+        _initialize(value);
     }
 
     /** Construct an IntMatrixToken from the specified string.
@@ -126,9 +150,9 @@ public class IntMatrixToken extends MatrixToken {
         Token token = (new ParseTreeEvaluator()).evaluateParseTree(tree);
         if (token instanceof IntMatrixToken) {
             int[][] value = ((IntMatrixToken)token).intMatrix();
-            _initialize(value, DO_COPY);
+            _initialize(value);
         } else {
-            throw new IllegalActionException("A record token cannot be"
+            throw new IllegalActionException("A matrix token cannot be"
                     + " created from the expression '" + init + "'");
         }
     }
@@ -137,7 +161,7 @@ public class IntMatrixToken extends MatrixToken {
      *  tokens.  The tokens in the array must be scalar tokens
      *  convertible into integers.
      *  @param tokens The array of tokens, which must contains
-     *  rows*columns ScalarTokens.
+     *  rows * columns ScalarTokens.
      *  @param rows The number of rows in the matrix to be created.
      *  @param columns The number of columns in the matrix to be
      *  created.
@@ -148,31 +172,29 @@ public class IntMatrixToken extends MatrixToken {
      */
     public IntMatrixToken(Token[] tokens, int rows, int columns)
             throws IllegalActionException {
+        int elements = rows * columns;
         if (tokens == null) {
             throw new IllegalActionException("IntMatrixToken: The specified"
                     + " array is null.");
         }
-        if (tokens.length != rows * columns) {
+        if (tokens.length != elements) {
             throw new IllegalActionException("IntMatrixToken: The specified"
                     + " array is not of the correct length");
         }
+
         _rowCount = rows;
         _columnCount = columns;
-        _value = new int[rows][columns];
-        for (int i = 0; i < tokens.length; i++) {
+        _value = new int[elements];
+        for (int i = 0; i < elements; i++) {
             Token token = tokens[i];
             if (token instanceof ScalarToken) {
-                _value[i / columns][i % columns] =
-                    ((ScalarToken)token).intValue();
+                _value[i] = ((ScalarToken)token).intValue();
             } else {
                 throw new IllegalActionException("IntMatrixToken: Element "
                         + i + " in the array with value " + token +
                         " is not a ScalarToken");
             }
         }
-    }
-
-    public IntMatrixToken(Token[] starts, Token[] increments, Token[] ends) {
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -182,7 +204,9 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A 2-D Complex matrix
      */
     public Complex[][] complexMatrix() {
-        return DoubleMatrixMath.toComplexMatrix(doubleMatrix());
+        return ComplexMatrixMath.toMatrixFromArray(
+                IntegerArrayMath.toComplexArray(_value), 
+                _rowCount, _columnCount);
     }
 
     /** Convert the specified token into an instance of IntMatrixToken.
@@ -249,12 +273,12 @@ public class IntMatrixToken extends MatrixToken {
         // Check to make sure that the token is convertible to INT.
         int compare = TypeLattice.compare(BaseType.INT, token);
         if (compare == CPO.SAME || compare == CPO.HIGHER) {
-            IntToken tem = IntToken.convert(token);
-            int[][] result = new int[size][size];
+            IntToken intToken = IntToken.convert(token);
+            int intValue = intToken.intValue();
+            int[] result = new int[size * size];
             for (int i = 0; i < size; i++)
-                for (int j = 0; j < size; j++)
-                    result[i][j] = tem.intValue();
-            return new IntMatrixToken(result);
+                result[i] = intValue;
+            return new IntMatrixToken(result, size, size, DO_NOT_COPY);
         }
 
         throw new IllegalActionException(
@@ -265,7 +289,9 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A 2-D double matrix.
      */
     public double[][] doubleMatrix() {
-        return IntegerMatrixMath.toDoubleMatrix(_value);
+        return DoubleMatrixMath.toMatrixFromArray(
+                IntegerArrayMath.toDoubleArray(_value), 
+                _rowCount, _columnCount);
     }
 
     /** Return true if the argument is an instance of IntMatrixToken
@@ -290,12 +316,11 @@ public class IntMatrixToken extends MatrixToken {
             return false;
         }
 
-        int[][] matrix = matrixArgument.intMatrix();
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                if (_value[i][j] != matrix[i][j]) {
-                    return false;
-                }
+        int[] value = matrixArgument._value;
+        int elements = _rowCount * _columnCount;
+        for (int i = 0; i < elements; i++) {
+            if (_value[i] != value[i]) {
+                return false;
             }
         }
 
@@ -319,7 +344,7 @@ public class IntMatrixToken extends MatrixToken {
      */
     public Token getElementAsToken(int row, int column)
             throws ArrayIndexOutOfBoundsException {
-        return new IntToken(_value[row][column]);
+        return new IntToken(_value[row * _columnCount + column]);
     }
 
     /** Return the element of the contained matrix at the specified
@@ -331,7 +356,7 @@ public class IntMatrixToken extends MatrixToken {
      *   row or column number is outside the range of the matrix.
      */
     public int getElementAt(int row, int column) {
-        return _value[row][column];
+        return _value[row * _columnCount + column];
     }
 
     /** Return the Type of the tokens contained in this matrix token.
@@ -362,10 +387,9 @@ public class IntMatrixToken extends MatrixToken {
      */
     public int hashCode() {
         int code = 0;
-        for (int i = 0; i < _rowCount; i++) {
-            for (int j = 0; j < _columnCount; j++) {
-                code += _value[i][j];
-            }
+        int elements = _rowCount * _columnCount;
+        for (int i = 0; i < elements; i++) {
+            code += _value[i];
         }
 
         return code;
@@ -377,14 +401,17 @@ public class IntMatrixToken extends MatrixToken {
      *  @return A 2-D int matrix.
      */
     public int[][] intMatrix() {
-        return IntegerMatrixMath.allocCopy(_value);
+        return IntegerMatrixMath.toMatrixFromArray(
+                _value, _rowCount, _columnCount);
     }
 
     /** Return the content of this token as a 2-D long matrix.
      *  @return A 2-D long matrix.
      */
     public long[][] longMatrix() {
-        return IntegerMatrixMath.toLongMatrix(_value);
+        return LongMatrixMath.toMatrixFromArray(
+                IntegerArrayMath.toLongArray(_value),
+                _rowCount, _columnCount);
     }
 
     /** Return a new Token representing the left multiplicative
@@ -431,8 +458,8 @@ public class IntMatrixToken extends MatrixToken {
      */
     public Token zero() {
         try {
-            return new IntMatrixToken(new int[_rowCount][_columnCount],
-                    DO_NOT_COPY);
+            return new IntMatrixToken(new int[_rowCount * _columnCount],
+                    _rowCount, _columnCount, DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("IntMatrixToken.zero: "
@@ -455,9 +482,9 @@ public class IntMatrixToken extends MatrixToken {
     protected MatrixToken _add(MatrixToken rightArgument)
             throws IllegalActionException {
         IntMatrixToken convertedArgument = (IntMatrixToken)rightArgument;
-        int[][] result = IntegerMatrixMath.add(
-                convertedArgument._getInternalIntMatrix(), _value);
-        return new IntMatrixToken(result);
+        int[] result = IntegerArrayMath.add(
+                convertedArgument._getInternalIntArray(), _value);
+        return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -472,8 +499,8 @@ public class IntMatrixToken extends MatrixToken {
     protected MatrixToken _addElement(Token rightArgument)
             throws IllegalActionException {
         int scalar = ((IntToken)rightArgument).intValue();
-        int[][] result = IntegerMatrixMath.add(_value, scalar);
-        return new IntMatrixToken(result);
+        int[] result = IntegerArrayMath.add(_value, scalar);
+        return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     /** Return a new token whose elements are the result of dividing
@@ -488,17 +515,16 @@ public class IntMatrixToken extends MatrixToken {
     protected MatrixToken _divideElement(Token rightArgument)
             throws IllegalActionException {
         int scalar = ((IntToken)rightArgument).intValue();
-        int[][] result = IntegerMatrixMath.divide(_value, scalar);
-        return new IntMatrixToken(result);
+        int[] result = IntegerArrayMath.divide(_value, scalar);
+        return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
-
 
     /** Return a reference to the internal 2-D matrix of ints that represents
      *  this Token. Because no copying is done, the contents must NOT be
      *  modified to preserve the immutability of Token.
-     *  @return A 2-D int matrix.
+     *  @return An int matrix.
      */
-    protected int[][] _getInternalIntMatrix() {
+    protected int[] _getInternalIntArray() {
         return _value;
     }
 
@@ -515,8 +541,8 @@ public class IntMatrixToken extends MatrixToken {
     protected MatrixToken _moduloElement(Token rightArgument)
             throws IllegalActionException {
         int scalar = ((IntToken)rightArgument).intValue();
-        int[][] result = IntegerMatrixMath.modulo(_value, scalar);
-        return new IntMatrixToken(result);
+        int[] result = IntegerArrayMath.modulo(_value, scalar);
+        return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of this token
@@ -531,9 +557,26 @@ public class IntMatrixToken extends MatrixToken {
     protected MatrixToken _multiply(MatrixToken rightArgument)
             throws IllegalActionException {
         IntMatrixToken convertedArgument = (IntMatrixToken)rightArgument;
-        int[][] result = IntegerMatrixMath.multiply(
-                _value, convertedArgument._getInternalIntMatrix());
-        return new IntMatrixToken(result);
+        int[] A = _value;
+        int[] B = convertedArgument._getInternalIntArray();
+        int m = _rowCount;
+        int n = _columnCount;
+        int p = convertedArgument.getColumnCount();
+        int[] newMatrix = new int[m * p];
+        int in = 0;
+        int ta = 0;
+        for (int i = 0; i < m; i++) {
+            ta += n;
+            for (int j = 0; j < p; j++) {
+                int sum = 0;
+                int ib = j;
+                for (int ia = i * n; ia < ta; ia++, ib += p) {
+                    sum += A[ia] * B[ib];
+                }
+                newMatrix[in++] = sum;
+            }
+        }
+        return new IntMatrixToken(newMatrix, m, p, DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of this token
@@ -548,8 +591,8 @@ public class IntMatrixToken extends MatrixToken {
     protected MatrixToken _multiplyElement(Token rightArgument)
             throws IllegalActionException {
         int scalar = ((IntToken)rightArgument).intValue();
-        int[][] result = IntegerMatrixMath.multiply(_value, scalar);
-        return new IntMatrixToken(result);
+        int[] result = IntegerArrayMath.multiply(_value, scalar);
+        return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument token
@@ -564,9 +607,9 @@ public class IntMatrixToken extends MatrixToken {
     protected MatrixToken _subtract(MatrixToken rightArgument)
             throws IllegalActionException {
         IntMatrixToken convertedArgument = (IntMatrixToken)rightArgument;
-        int[][] result = IntegerMatrixMath.subtract(_value,
-                convertedArgument._getInternalIntMatrix());
-        return new IntMatrixToken(result);
+        int[] result = IntegerArrayMath.subtract(_value,
+                convertedArgument._getInternalIntArray());
+        return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -581,8 +624,8 @@ public class IntMatrixToken extends MatrixToken {
     protected MatrixToken _subtractElement(Token rightArgument)
             throws IllegalActionException {
         int scalar = ((IntToken)rightArgument).intValue();
-        int[][] result = IntegerMatrixMath.add(_value, -scalar);
-        return new IntMatrixToken(result);
+        int[] result = IntegerArrayMath.add(_value, -scalar);
+        return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     /** Return a new token whose value is the value of the argument
@@ -597,9 +640,9 @@ public class IntMatrixToken extends MatrixToken {
     protected MatrixToken _subtractElementReverse(Token rightArgument)
             throws IllegalActionException {
         int scalar = ((IntToken)rightArgument).intValue();
-        int[][] result = IntegerMatrixMath.negative(
-                IntegerMatrixMath.add(_value, -scalar));
-        return new IntMatrixToken(result);
+        int[] result = IntegerArrayMath.negative(
+                IntegerArrayMath.add(_value, -scalar));
+        return new IntMatrixToken(result, _rowCount, _columnCount, DO_NOT_COPY);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -607,20 +650,15 @@ public class IntMatrixToken extends MatrixToken {
 
     // Initialize the row and column count and copy the specified
     // matrix.  This method is used by the constructors.
-    private void _initialize(int[][] value, int copy) {
+    private void _initialize(int[][] value) {
         _rowCount = value.length;
         _columnCount = value[0].length;
-
-        if (copy == DO_NOT_COPY) {
-            _value = value;
-        } else {
-            _value = IntegerMatrixMath.allocCopy(value);
-        }
+        _value = IntegerMatrixMath.fromMatrixToArray(value);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    private int[][] _value;
+    private int[] _value;
     private int _rowCount;
     private int _columnCount;
 }
