@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (wbwu@eecs.berkeley.edu)
 
 NOTE: This class has been promoted to green.  To restore green
@@ -33,6 +33,8 @@ status, we need to review:
   insertLink(int, CrossRefList)
   unlink(int)
   CrossRef(int)  - constructor
+
+These were added on 7/13/00 by EAL.
 
 */
 
