@@ -129,7 +129,7 @@ public final class ASCII_CharStream
         }
 
     // This was 4096;
-    private static final int INIT_BUFFER_SIZE = 2;
+    private static final int INIT_BUFFER_SIZE = 32;
 
     public ASCII_CharStream(java.io.Reader dstream, int startline,
             int startcolumn)
