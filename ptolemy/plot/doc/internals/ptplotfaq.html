@@ -83,6 +83,14 @@ with the word <CODE>subscribe</CODE> in the body, not the header.
 <DD> The introduction contains a <A HREF="../../index.html#xgraph">description</A> of the relationship between <CODE>xgraph</CODE> and ptplot.
  <br> Note that you can download sources and binaries for <CODE>pxgraph</CODE>, an extension to <CODE>xgraph</CODE> from
 <A HREF="ftp://ptolemy.eecs.berkeley.edu/pub/misc/pxgraph/index.html"><CODE>ftp://ptolemy.eecs.berkeley.edu/pub/misc/pxgraph/index.html</CODE></A>
+ <br> Note that if you type a <CODE>x</CODE> while the mouse is
+over the Java <CODE>pxgraph</CODE> application window, and 
+the X11 version of <CODE>pxgraph</CODE> is installed
+as <CODE>pxgraph.x11</CODE>, then <CODE>pxgraph.x11</CODE> will
+be started up with the same command line arguments that you called
+the Java <CODE>pxgraph</CODE> with.  This is one way of using 
+the Java version most of the time, but still having access to the
+MIF output facilities in the X11 version.
 
 </DL>
  <HR>
@@ -259,6 +267,10 @@ an output file for the PostScript.  Below is an example:
 pxgraph -print -o /tmp/data.ps demo/data.plt
 ptplot2mif.tcl /tmp/data.ps &gt; /tmp/data.mif
 </PRE>
+Note that you can also bring up the X11 pxgraph version from
+after starting the Java version by typing an <CODE>x</CODE>.
+For more information, see 
+<A HREF="#xgraph"><B>1.6 What is the relationship between xgraph and ptplot?</B></A>.
 
 <DT>  <A NAME="twofiles"><B>3.5 How do I plot two datafiles in an applet? </B></A>
 <DD>The <CODE>pxgraphargs</CODE> applet parameter can be used to pass
