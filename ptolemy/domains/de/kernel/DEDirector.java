@@ -172,7 +172,6 @@ public abstract class DEDirector extends Director {
         } else {
             return true;
         }
-        
     }
 
 
@@ -201,7 +200,16 @@ public abstract class DEDirector extends Director {
 	this._stopTime = stopTime;
     }
 
-
+    /** Decide whether the simulation should be stopped when there's no more
+     *  events in the global event queue.
+     *  By default, its value is 'true', meaning that the simulation will stop
+     *  under that circumstances. Setting it to 'false', instruct the director
+     *  to wait on the queue while some other threads might enqueue events in
+     *  it.
+     */
+    public void stopWhenQueueIsEmpty(boolean flag) {
+        _stopWhenQueueIsEmpty = flag;
+    }
 
     /** Transfer data from an input port of the container to the
      *  ports it is connected to on the inside.  The port argument must
@@ -259,7 +267,7 @@ public abstract class DEDirector extends Director {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
     
     
     // Defines the stopping condition
@@ -277,5 +285,14 @@ public abstract class DEDirector extends Director {
     // the stop time.
     // FIXME: This is a hack :(
     protected boolean _shouldPostfireReturnFalse = false;
+    
+    // Decide whether the simulation should be stopped when there's no more
+    // events in the global event queue.
+    // By default, its value is 'true', meaning that the simulation will stop
+    // under that circumstances. Setting it to 'false', instruct the director
+    // to wait on the queue while some other threads might enqueue events in
+    // it.
+    protected boolean _stopWhenQueueIsEmpty = true;
+    
 
 }

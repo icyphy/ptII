@@ -84,7 +84,8 @@ public class DEABRO extends DEThreadActor {
 
     public void run() {
         try {
-        outer:
+            
+
             while (true) {
                 if (DEBUG) {
                     System.out.println("In initial state..");
@@ -94,65 +95,52 @@ public class DEABRO extends DEThreadActor {
                     if (DEBUG) {
                         System.out.println("Resetting..");
                     }
-                    R.get(0);
-                    continue outer;
+                    continue;
                 }
                 if (A.hasToken(0)) {
                     if (DEBUG) {
                         System.out.println("Seen A..");
                     }
-                    A.get(0);
 
-                    while (true) {
-
-                        waitForNewInputs();
-                        if (R.hasToken(0)) {
-                            if (DEBUG) {
-                                System.out.println("Resetting..");
-                            }
-                            R.get(0);
-                            continue outer;
-                        } else if (B.hasToken(0)) {
-                            if (DEBUG) {
-                                System.out.println("Seen A then B..");
-                            }
-                            B.get(0);
-                            break;
-                        } else {
-                            continue;
+                    IOPort[] ports = {B,R};
+                    waitForNewInputs(ports);
+                    if (!R.hasToken(0)) {
+                        if (DEBUG) {
+                            System.out.println("Seen A then B..");
                         }
+                        O.broadcast(new DoubleToken(1.0));
+                        IOPort[] ports2 = {R};
+                        waitForNewInputs(ports2);
+                    } else {
+                        if (DEBUG) {
+                            System.out.println("Resetting");
+                        }
+                        continue;
                     }
-                    
                 } else if (B.hasToken(0)) {
                     if (DEBUG) {
                         System.out.println("Seen B..");
                     }
-                    B.get(0);
-
-                    while (true) {
-
-                        waitForNewInputs();
-                        if (R.hasToken(0)) {
-                            if (DEBUG) {
-                                System.out.println("Resetting..");
-                            }
-                            R.get(0);
-                            continue outer;
-                        } else if (A.hasToken(0)) {
-                            if (DEBUG) {
-                                System.out.println("Seen B then A..");
-                            }
-                            A.get(0);
-                            break;
-                        } else {
-                            continue;
+                    
+                    IOPort[] ports = {A,R};
+                    waitForNewInputs(ports);
+                    if (!R.hasToken(0)) {
+                        if (DEBUG) {
+                            System.out.println("Seen B then A..");
                         }
+                        O.broadcast(new DoubleToken(1.0));
+                        IOPort[] ports2 = {R};
+                        waitForNewInputs(ports2);
+                    } else {
+                        if (DEBUG) {
+                            System.out.println("Resetting");
+                        }
+                        continue;
                     }
-                } else {
-                    throw new InternalErrorException("This can't happen!");
                 }
-                O.broadcast(new DoubleToken(1.0));
-            }
+            } // while (true)
+        
+
         } catch (IllegalActionException e) {
             e.printStackTrace();
             throw new InternalErrorException(e.getMessage());

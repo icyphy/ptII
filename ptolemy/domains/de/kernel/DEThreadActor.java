@@ -123,6 +123,35 @@ public abstract class DEThreadActor extends DEActor implements Runnable {
         }
     }
 
+    /** Wait for new inputs on the specified array of ports.
+     *  @param ports The array of ports whose inputs we're interested in.
+     *  @exception IllegalActionException The specified array of ports is not
+     *  all input ports.
+     */
+    public void waitForNewInputs(IOPort[] ports) 
+            throws IllegalActionException {
+        
+        _emptyPorts();
+        
+        while (true) {
+
+            waitForNewInputs();
+            // check for availability of tokens in the list of ports.
+            // If any of the listed ports has at least a token, then return
+            // Otherwise, wait for more new inputs.
+            
+            for (int i = 0; i < ports.length; i++) {
+                IOPort port = ports[i];
+                for (int j = 0; j < port.getWidth(); j++) {
+                    if ( port.hasToken(j) ) {
+                        return;
+                    }
+                }
+            }
+        } // while (true)
+
+    }
+
 
     // Empty all receivers of all input ports.
     private void _emptyPorts() {

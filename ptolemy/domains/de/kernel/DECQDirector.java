@@ -238,79 +238,109 @@ public class DECQDirector extends DEDirector {
      *  @exception IllegalActionException If the firing actor throws it.
      */
     public void fire() throws IllegalActionException {
+
+        boolean _timeHasNotAdvanced = true;
+
+        while (true) {
         
-        if (!_prepareActorToFire()) {
-            return;
-        }
-
-        if (_actorToFire == getContainer()) {
-            // The actor to be fired is it's container.. so it must be that
-            // this director is a local director of an OCA.
-            if (!isEmbedded()) {
-                throw new InternalErrorException("The director of this " + 
-                        "composite actor doesn't " + 
-                        "realize that it's embedded.");
+            if (!_prepareActorToFire()) {
+                return;
             }
-            // Since the tokens is already in the right place, we just return.
-            return;
-        }
 
-
-        if (DEBUG) {
-            System.out.print(getFullName() + ":");
-            System.out.println("Prefiring actor: " + 
-                    ((Entity)_actorToFire).description(FULLNAME)+
-                    " at time: " +
-                    _currentTime + 
-                    " and returns ....");
-            System.out.println("<<<");
-        }
-
-
-        if (_actorToFire.prefire()) {
+            if (_actorToFire == getContainer()) {
+                // The actor to be fired is it's container.. so it must be that
+                // this director is a local director of an OCA.
+                if (!isEmbedded()) {
+                    throw new InternalErrorException("The director of this " + 
+                            "composite actor doesn't " + 
+                            "realize that it's embedded.");
+                }
+                // Since the tokens is already in the right place, 
+                // we just return.
+                return;
+            }
+            
             
             if (DEBUG) {
-                System.out.println(">>>");
-                System.out.println("Well... it returned true.");
+                System.out.print(getFullName() + ":");
+                System.out.println("Prefiring actor: " + 
+                        ((Entity)_actorToFire).description(FULLNAME)+
+                        " at time: " +
+                        _currentTime + 
+                        " and returns ....");
+                System.out.println("<<<");
             }
-
-            // Repeatedly fire the actor until it doesn't have any more filled 
-            // receivers. In the case of 'pure event' the actor is fired once.
-            // 
-            boolean refire = false;
             
-            do {
+            
+            if (_actorToFire.prefire()) {
+                
                 if (DEBUG) {
-                    System.out.print(getFullName() + ":");
-                    System.out.println("Firing actor: " +
-                    ((Entity)_actorToFire).description(FULLNAME)+
-                    " at time: " +
-                    _currentTime);
+                    System.out.println(">>>");
+                    System.out.println("Well... it returned true.");
                 }
-                _actorToFire.fire();
-                // check _filledReceivers to see if there's any receivers left
-                // that's not emptied.
-                refire = false;
-                Enumeration enum = _filledReceivers.elements();
-                while (enum.hasMoreElements()) {
-                    DEReceiver r = (DEReceiver)enum.nextElement();
-                    if (!r._isPendingTokenAllowed() && r.hasToken()) {
-                        refire = true;
-                        break;
+                
+                // Repeatedly fire the actor until it doesn't have any 
+                // more filled receivers. In the case of 'pure event' the 
+                // actor is fired once.
+                // 
+                boolean refire = false;
+                
+                do {
+                    if (DEBUG) {
+                        System.out.print(getFullName() + ":");
+                        System.out.println("Firing actor: " +
+                                ((Entity)_actorToFire).description(FULLNAME)+
+                                " at time: " +
+                                _currentTime);
                     }
+                    _actorToFire.fire();
+                    // check _filledReceivers to see if there's any receivers left
+                    // that's not emptied.
+                    refire = false;
+                    Enumeration enum = _filledReceivers.elements();
+                    while (enum.hasMoreElements()) {
+                        DEReceiver r = (DEReceiver)enum.nextElement();
+                        if (!r._isPendingTokenAllowed() && r.hasToken()) {
+                            refire = true;
+                            break;
+                        }
+                    }
+                } while (refire);
+                if (!_actorToFire.postfire()) {
+                    // If one actor is dead, then stop the simulation.
+                    _shouldPostfireReturnFalse = true;
                 }
-            } while (refire);
-            if (!_actorToFire.postfire()) {
-                // If one actor is dead, then stop the simulation.
-                _shouldPostfireReturnFalse = true;
+            } else {
+                if (DEBUG) {
+                    System.out.println(">>>");
+                    System.out.println("Well... it returned false.");
+                }
+                //_shouldPostfireReturnFalse = true;
             }
-        } else {
-            if (DEBUG) {
-                System.out.println(">>>");
-                System.out.println("Well... it returned false.");
+
+            // Check if the next time stamp is equal to current time.
+            DESortKey nextKey = null;
+            try {
+                nextKey = (DESortKey)_cQueue.getNextKey();
+            } catch (IllegalAccessException e) {
+                // the queue is empty.
+                // So, just get on with the current iteration.
+                break;
             }
-            //_shouldPostfireReturnFalse = true;
-        }
+            if (nextKey.timeStamp() > getCurrentTime()) {
+                // if the next event is in the future then proceed to the
+                // next iteration.
+                break;
+            } else if (nextKey.timeStamp() == getCurrentTime()) {
+                // otherwise, the next event is at the same time, so keep
+                // going.
+            } else {
+                throw new InternalErrorException("Bug in DECQDirector."+
+                        "fire(), the next event has smaller time stamp than" +
+                        " the current time.");
+            }
+            
+        } // while (true)
     
     }
 
@@ -448,15 +478,17 @@ public class DECQDirector extends DEDirector {
 	// Initialize the _filledReceivers field.
 	_filledReceivers.clear();
         // FIXME: This is just temporary, to see if it works.
-	if (true) {
-
-            DEEvent currentEvent = null;
-            // Keep taking events out until there are no more simultaneous
-            // events or until the queue is empty. Some events get put back
-            // into the queue.  We collect those in the following fifo
-            // to put them back outside the loop.
-            FIFOQueue fifo = new FIFOQueue();
-            while (true) {
+	
+        DEEvent currentEvent = null;
+        // Keep taking events out until there are no more simultaneous
+        // events or until the queue is empty. Some events get put back
+        // into the queue.  We collect those in the following fifo
+        // to put them back outside the loop.
+        FIFOQueue fifo = new FIFOQueue();
+        
+        while (true) {
+            
+            if (_stopWhenQueueIsEmpty) {
                 try {
                     currentEvent = (DEEvent)_cQueue.take();
                 } catch (IllegalAccessException ex) {
@@ -465,118 +497,143 @@ public class DECQDirector extends DEDirector {
                     _nextIterationTime = _stopTime;
                     break;
                 }
-                if (_actorToFire == null) {
-                    // This is first time we're in the loop, therefore always
-		    // accept the event.
-                    _actorToFire = currentEvent.actor;
+            } else {
+                // In this case, effectively, we want to do a blocking
+                // take(). So, keep invoking take() until an exception
+                // is not thrown.
+                while (true) {
+                    try {
+                        currentEvent = (DEEvent)_cQueue.take();
+                    } catch (IllegalAccessException ex) {
+                        synchronized(_cQueue) {
+                            try {
+                                _cQueue.wait();
+                            } catch (InterruptedException e) {
+                                // this shouldn't happen.
+                                throw new InternalErrorException(
+                                        "In DECQDirector._prepareActor"+
+                                        "ToFire(), a thread got " + 
+                                        "interrupted.");
+                            }
+                        }
+                        continue;
+                    }
+                    break;
+                }
+            }
+            
+            if (_actorToFire == null) {
+                // This is first time we're in the loop, therefore always
+                // accept the event.
+                _actorToFire = currentEvent.actor;
+                
+                // Advance current time.
+                _currentTime = currentEvent.key.timeStamp();
+                
+                // FIXME: The following line should happen only during the 
+                // first prefire(), because subsequent enqueue is 
+                // restricted to be ahead of _currentTime.
+                // FIXME: debug structure here...
+                if (_currentTime < _startTime) {
+                    if (_startTimeInitialized) {
+                        throw new InternalErrorException("DECQDirector "+
+                                "_prepareActorToFire() bug.. trying " + 
+                                "to initialize " +
+                                "start time twice.");
+                    }
                     
-                    // Advance current time.
-                    _currentTime = currentEvent.key.timeStamp();
-
-		    // FIXME: The following line should happen only during the 
-		    // first prefire(), because subsequent enqueue is 
-		    // restricted to be ahead of _currentTime.
-		    // FIXME: debug structure here...
-		    if (_currentTime < _startTime) {
-			if (_startTimeInitialized) {
-			    throw new InternalErrorException("DECQDirector "+
-				    "_prepareActorToFire() bug.. trying " + 
-                                    "to initialize " +
-				    "start time twice.");
-			}
-
-			_startTime = _currentTime;
-			_startTimeInitialized = true;
-		    }
-
-                    if (_currentTime > _stopTime && !isEmbedded()) {
-			// The stopping condition is met.
-                        // Note that, if this director is embedded then
-                        // he doesn't determine the stopping condition, rather
-                        // outer director should do that...
-                        // FIXME: might be wrong approach
-                        _shouldPostfireReturnFalse = true;
-                        if (DEBUG) {
-                            System.out.println("Stopping time is met " + 
-                                    "in DECQDirector.prefire() of " + 
-                                    getFullName() + ".");
-                        }
-			return false;
-		    }
-
-                    // Transfer the event to the receiver and keep track
-		    // of which receiver is filled.
-                    DEReceiver rec = currentEvent.receiver;
-		    // If rec is null, then it's a 'pure event', and there's
-		    // no need to put event into receiver.
-                    if (rec != null) {
-			// Adds the receiver to the _filledreceivers list.
-			if (!_filledReceivers.includes(rec)) {
-			    _filledReceivers.insertFirst(rec);
-			}
-			// Transfer the event to the receiver.
-                        rec._triggerEvent(currentEvent.token);
-                    } 
+                    _startTime = _currentTime;
+                    _startTimeInitialized = true;
+                }
+                
+                if (_currentTime > _stopTime && !isEmbedded()) {
+                    // The stopping condition is met.
+                    // Note that, if this director is embedded then
+                    // he doesn't determine the stopping condition, rather
+                    // outer director should do that...
+                    // FIXME: might be wrong approach
+                    _shouldPostfireReturnFalse = true;
+                    if (DEBUG) {
+                        System.out.println("Stopping time is met " + 
+                                "in DECQDirector.prefire() of " + 
+                                getFullName() + ".");
+                    }
+                    return false;
+                }
+                
+                // Transfer the event to the receiver and keep track
+                // of which receiver is filled.
+                DEReceiver rec = currentEvent.receiver;
+                // If rec is null, then it's a 'pure event', and there's
+                // no need to put event into receiver.
+                if (rec != null) {
+                    // Adds the receiver to the _filledreceivers list.
+                    if (!_filledReceivers.includes(rec)) {
+                        _filledReceivers.insertFirst(rec);
+                    }
+                    // Transfer the event to the receiver.
+                    rec._triggerEvent(currentEvent.token);
+                } 
+            } else {
+                // Not the first time through the loop; check if the event
+                // has time stamp equal to previously obtained current
+                // time. Then check if it's for the same actor.
+                
+                // Check whether the event occurred at current time.
+                if (currentEvent.key.timeStamp() < _currentTime) {
+                    throw new InternalErrorException("Event that was "+
+                            "dequeued later has smaller time stamp. " +
+                            "Check DECQDirector for bug.");
+                }
+                if (currentEvent.key.timeStamp() > _currentTime) {
+                    // The event has a later time stamp, so we put it back
+                    fifo.put(currentEvent);
+                    // Save the next iteration time, because some inner
+                    // domains might require this information.
+                    _nextIterationTime = currentEvent.key.timeStamp();
+                    // Break the loop, since all events after this will
+                    // all have time stamp later or equal to this one.
+                    break;
                 } else {
-		    // Not the first time through the loop; check if the event
-		    // has time stamp equal to previously obtained current
-		    // time. Then check if it's for the same actor.
-
-                    // Check whether the event occurred at current time.
-		    if (currentEvent.key.timeStamp() < _currentTime) {
-			throw new InternalErrorException("Event that was "+
-				"dequeued later has smaller time stamp. " +
-				"Check DECQDirector for bug.");
-		    }
-                    if (currentEvent.key.timeStamp() > _currentTime) {
-                        // The event has a later time stamp, so we put it back
-                        fifo.put(currentEvent);
-                        // Save the next iteration time, because some inner
-                        // domains might require this information.
-                        _nextIterationTime = currentEvent.key.timeStamp();
-			// Break the loop, since all events after this will
-			// all have time stamp later or equal to this one.
-                        break;
+                    // The event has the same time stamp as the first
+                    // event seen.  Check whether it is for the same actor.
+                    if (currentEvent.actor == _actorToFire) {
+                        // FIXME: Currently, this might put the event
+                        // into a receiver that already has an event.
+                        // The actors may not be written to look for
+                        // multiple events in the same receiver.
+                        // Perhaps this should check to see whether there
+                        // is an event in the receiver and save this
+                        // one if so.  That's still not quite right though
+                        // because the event in the receiver may be an
+                        // old one...
+                        DEReceiver rec = currentEvent.receiver;
+                        // if rec is null, then it's a 'pure event' and
+                        // there's no need to put event into receiver.
+                        if (rec != null) {
+                            // Adds the receiver to the _filledreceivers 
+			    // list.
+                            if (!_filledReceivers.includes(rec)) {
+                                _filledReceivers.insertFirst(rec);
+                            }
+			    // Transfer the event to the receiver.
+                            rec._triggerEvent(currentEvent.token);
+                        } 
                     } else {
-                        // The event has the same time stamp as the first
-                        // event seen.  Check whether it is for the same actor.
-                        if (currentEvent.actor == _actorToFire) {
-                            // FIXME: Currently, this might put the event
-                            // into a receiver that already has an event.
-                            // The actors may not be written to look for
-                            // multiple events in the same receiver.
-                            // Perhaps this should check to see whether there
-                            // is an event in the receiver and save this
-                            // one if so.  That's still not quite right though
-                            // because the event in the receiver may be an
-                            // old one...
-                            DEReceiver rec = currentEvent.receiver;
-			    // if rec is null, then it's a 'pure event' and
-			    // there's no need to put event into receiver.
-                            if (rec != null) {
-				// Adds the receiver to the _filledreceivers 
-				// list.
-				if (!_filledReceivers.includes(rec)) {
-				    _filledReceivers.insertFirst(rec);
-				}
-				// Transfer the event to the receiver.
-                                rec._triggerEvent(currentEvent.token);
-                            } 
-                        } else {
-                            // Put it back in the queue.
-                            fifo.put(currentEvent);
-                        }
+                        // Put it back in the queue.
+                        fifo.put(currentEvent);
                     }
                 }
             }
-            // Transfer back the events from the fifo queue into the calendar
-            // queue.
-            while (fifo.size() > 0) {
-                DEEvent event = (DEEvent)fifo.take();
-
-                _cQueue.put(event.key,event);
-            }
         }
+        // Transfer back the events from the fifo queue into the calendar
+        // queue.
+        while (fifo.size() > 0) {
+            DEEvent event = (DEEvent)fifo.take();
+            
+            _cQueue.put(event.key,event);
+        }
+        
         if (_actorToFire == null) {
             System.out.println("No actor to fire anymore");
             _shouldPostfireReturnFalse = true;
@@ -840,7 +897,8 @@ public class DECQDirector extends DEDirector {
 	 *  @exception ClassCastException Arguments need to be instances of
 	 *          DESortKey.
 	 */
-	public long getBinIndex(Object key, Object zeroReference, Object binWidth) {
+	public long getBinIndex(Object key, 
+                Object zeroReference, Object binWidth) {
 	    DESortKey a = (DESortKey) key;
 	    DESortKey w = (DESortKey) binWidth;
 	    DESortKey zero = (DESortKey) zeroReference;
@@ -850,7 +908,8 @@ public class DECQDirector extends DEDirector {
 	
 	
 	/** Given an array of DESortKey objects, find the appropriate bin
-	 *  width. By 'appropriate', the bin width is chosen such that on average
+	 *  width. By 'appropriate', the bin width is chosen such that 
+         *  on average
 	 *  the number of entry in all non-empty bins is equal to one.
 	 *  If the argument is null, return the default bin width which is 1.0
 	 *  for this implementation.

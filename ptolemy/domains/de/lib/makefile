@@ -56,6 +56,7 @@ JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
 	DEABRO.java \
+	DEABROalt.java \
 	DEANDGate.java \
 	DEBus.java \
 	DEClock.java \
