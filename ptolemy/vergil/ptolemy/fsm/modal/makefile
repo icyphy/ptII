@@ -33,7 +33,7 @@
 
 ME =		ptolemy/vergil/ptolemy/fsm/modal
 
-DIRS =
+DIRS =		test
 
 # Root of the Java directory
 ROOT =		$(PTII)
@@ -60,8 +60,11 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS = \
 	HierarchicalStateController.java \
 	HierarchicalStateControllerFactory.java \
+	ModalController.java \
 	ModalModel.java \
-	ModalPort.java
+	ModalPort.java \
+	Refinement.java \
+	RefinementPort.java
 
 # Files to be included in the jar file
 OTHER_FILES_TO_BE_JARED =

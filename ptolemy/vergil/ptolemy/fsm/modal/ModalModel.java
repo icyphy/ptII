@@ -50,9 +50,21 @@ import ptolemy.moml.MoMLChangeRequest;
 //////////////////////////////////////////////////////////////////////////
 //// ModalModel
 /**
-Modal models.
-FIXME
+This is a typed composite actor designed to be a modal model.
+Inside the modal model is a finite-state machine controller, and
+inside each state in the FSM is a refinement model. Adding or
+removing ports in this actor results in the same ports appearing
+or disappearing in the FSM controller and in each of the refinements.
+Similarly, adding or removing ports in the controller or in the
+refinements results in this actor and the other refinements
+reflecting the same change to the ports.  That is, this actor,
+the controller, and the refinments all contain the same ports.
+This class is designed to work closely with ModalController and
+Refinement, since changes to ports can be initiated in this class
+or in those.
 
+@see ModalController
+@see Refinement
 @author Edward A. Lee
 @version $Id$
 */
@@ -60,13 +72,7 @@ public class ModalModel extends TypedCompositeActor {
 
     /** Construct a modal model with a name and a container.
      *  The container argument must not be null, or a
-     *  NullPointerException will be thrown.  This actor will use the
-     *  workspace of the container for synchronization and version counts.
-     *  If the name argument is null, then the name is set to the empty string.
-     *  Increment the version of the workspace.  This actor will have no
-     *  local director initially, and its executive director will be simply
-     *  the director of the container.
-     *
+     *  NullPointerException will be thrown.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the container is incompatible
@@ -78,23 +84,24 @@ public class ModalModel extends TypedCompositeActor {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // By default, when exporting MoML, the class name is whatever
-        // the Java class is, which in this case is ModalModel.
-        // In derived classes, however, we usually do not want to identify
-        // the class name as that of the derived class, but rather want
-        // to identify it as ModalModel.  This way, the MoML
-        // that is exported does not depend on the presence of the
-        // derived class Java definition. Thus, we force the class name
-        // here to be TypedCompositeActor.
+        // The base class identifies the class name as TypedCompositeActor
+        // irrespective of the actual class name.  We override that here.
         getMoMLInfo().className = "ptolemy.vergil.ptolemy.fsm.modal.ModalModel";
 
         // This actor contains an FSMDirector and an FSMActor.
         // The names are preceded with underscore to minimize the
         // likelihood of a conflict with a user-desired name.
-        new FSMDirector(this, "_Director");
+        // NOTE This director will be described in the exported MoML
+        // file, so when that is encountered, it will match this director.
+        FSMDirector director = new FSMDirector(this, "_Director");
+        // NOTE This controller will be described in the exported MoML
+        // file, so when that is encountered, it will match this.
+        _controller = new ModalController(this, "_Controller");
 
-        _controller = new FSMActor(this, "_Controller");
+        director.controllerName.setExpression("_Controller");
 
+        // NOTE This library will be described in the exported MoML
+        // file, so when that is encountered, it will match this.
         // Configure the controller so it has the appropriate library.
         LibraryAttribute attribute = new LibraryAttribute(
                 _controller, "_library");
@@ -147,8 +154,24 @@ public class ModalModel extends TypedCompositeActor {
             Iterator entities = entityList().iterator();
             while (entities.hasNext()) {
                 Entity entity = (Entity)entities.next();
-                if (entity.getPort(name) == null) {
-                    entity.newPort(name);
+                if (entity instanceof ModalController) {
+                    if (entity.getPort(name) == null) {
+                        try {
+                            ((ModalController)entity)._mirrorDisable = true;
+                            entity.newPort(name);
+                        } finally {
+                            ((ModalController)entity)._mirrorDisable = false;
+                        }
+                    }
+                } else if (entity instanceof Refinement) {
+                    if (entity.getPort(name) == null) {
+                        try {
+                            ((Refinement)entity)._mirrorDisable = true;
+                            entity.newPort(name);
+                        } finally {
+                            ((Refinement)entity)._mirrorDisable = false;
+                        }
+                    }
                 }
             }
             return port;
@@ -164,69 +187,6 @@ public class ModalModel extends TypedCompositeActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-    /** Add a port to this entity. This overrides the base class to
-     *  add a port with the same name to the controller and to each of the
-     *  refinements, unless they already contain a port with the same
-     *  name.  When a port is added to the controller or a refinement,
-     *  then it is linked to this port via a relation that bears the
-     *  name of the port followed by the word "relation". The newPort()
-     *  and newRelation() methods are used to create new ports and
-     *  relations.
-     *  @param port The port to add to this entity.
-     *  @exception IllegalActionException If the port has no name.
-     *  @exception NameDuplicationException If the port name collides with a
-     *   name already in the entity.
-     */
-    protected void _addPort(Port port)
-            throws IllegalActionException, NameDuplicationException {
-        super._addPort(port);
-        String portName = port.getName();
-
-        Relation relation = getRelation(portName + "relation");
-        if (relation == null) {
-            relation = newRelation(portName + "relation");
-        }
-        // FIXME: Can't do this because the port is apparently not
-        // fully constructed.  In particular, its _relationsList is null.
-        // If I fix that, then I get the port doesn't have a container
-        // when attempting to establish the link.
-        // Fixing that just leads to another problem.
-        // So how can we establish this link?
-        port.link(relation);
-        Iterator entities = entityList().iterator();
-        while (entities.hasNext()) {
-            Entity entity = (Entity)entities.next();
-            if (entity.getPort(portName) == null) {
-                // Add the port.
-                // FIXME: We have no idea now whether this is
-                // an input or output or multiport!
-                Port newPort = entity.newPort(portName);
-                newPort.link(relation);
-            }
-        }
-    }
-
-    /** Remove the specified port. This overrides the base class to
-     *  remove the ports with this name and their linked relations
-     *  from any of the refinements and from the controller.
-     *  @param port The port being removed from this entity.
-     */
-    protected void _removePort(Port port) {
-        super._removePort(port);
-        // FIXME
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     /** The FSM controller. */
@@ -234,7 +194,6 @@ public class ModalModel extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-
 
     ///////////////////////////////////////////////////////////////////
     //// ModalTableauFactory

@@ -333,7 +333,7 @@ public class FSMGraphController extends FSMViewerController {
 	    // Standard toolbar icons are 25x25 pixels.
 	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
 	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
-	    putValue("tooltip", "New State.");
+	    putValue("tooltip", "New State");
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_W));
 	}

@@ -1,4 +1,4 @@
-/* An IOPort for modal models.
+/* An IOPort for controllers and refinements in modal models.
 
  Copyright (c) 1997-2001 The Regents of the University of California.
  All rights reserved.
@@ -40,19 +40,20 @@ import ptolemy.kernel.util.*;
 import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
-//// ModalPort
+//// RefinementPort
 /**
-A port for modal models.  This port mirrors certain changes to it in the
-ports of the controller and refinements of the modal model. It is designed
-to work closely with RefinementPort, since changes to the ports can be initiated
-in either class.
+A port for controllers and refinements in modal models.  This port
+mirrors certain changes to it in the ports of the container of the container.
+That container in turn mirrors those changes in other refinements and/or
+controllers.  This class is designed to work closely with ModalPort,
+since changes to the ports can be initiated from either class.
 
-@see RefinementPort
+@see ModalPort
 @author Edward A. Lee
 @version $Id$
 */
 
-public class ModalPort extends TypedIOPort {
+public class RefinementPort extends TypedIOPort {
 
     /** Construct a port with a containing actor and a name
      *  that is neither an input nor an output.  The specified container
@@ -66,7 +67,7 @@ public class ModalPort extends TypedIOPort {
      *  @exception NameDuplicationException If the name coincides with
      *   a port already in the container.
      */
-    public ModalPort(ComponentEntity container, String name)
+    public RefinementPort(ComponentEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -76,8 +77,7 @@ public class ModalPort extends TypedIOPort {
 
     /** Override the base class so that if the port is being removed
      *  from the current container, then it is also removed from the
-     *  controller and from each of the refinements.  This method is
-     *  write-synchronized on the workspace.
+     *  controller and from each of the refinements.
      *  @param container The proposed container.
      *  @exception IllegalActionException If the proposed container is not a
      *   ComponentEntity, doesn't implement Actor, or has no name,
@@ -88,30 +88,34 @@ public class ModalPort extends TypedIOPort {
      */
     public void setContainer(Entity container)
             throws IllegalActionException, NameDuplicationException {
+        NamedObj oldContainer = (NamedObj)getContainer();
+        if (container == oldContainer) {
+            // Nothing to do.
+            return;
+        }
         try {
             _workspace.getWriteAccess();
-            ModalModel model = (ModalModel)getContainer();
-            if (model != null && container != model) {
-                // The port is being removed from the current container.
-                // Remove it from the mirrored ports.
-                Iterator entities = model.entityList().iterator();
-                while (entities.hasNext()) {
-                    Entity entity = (Entity)entities.next();
-                    Port mirrorPort = entity.getPort(getName());
-                    if (mirrorPort instanceof RefinementPort) {
-                        try {
-                            ((RefinementPort)mirrorPort)
-                                     ._mirrorDisable = true;
-                            mirrorPort.setContainer(null);
-                        } finally {
-                            ((RefinementPort)mirrorPort)
-                                     ._mirrorDisable = false;
+            if (_mirrorDisable || getContainer() == null) {
+                // Have already called the super class.
+                // This time, process the request.
+                super.setContainer(container);
+            } else {
+                _mirrorDisable = true;
+                boolean success = false;
+                if (oldContainer != null) {
+                    Nameable modal = oldContainer.getContainer();
+                    if (modal instanceof ModalModel) {
+                        Port port = ((ModalModel)modal).getPort(getName());
+                        if (port != null) {
+                            port.setContainer(null);
+                            success = true;
                         }
                     }
                 }
+                if (!success) super.setContainer(container);
             }
-            super.setContainer(container);
         } finally {
+            _mirrorDisable = false;
             _workspace.doneWriting();
         }
     }
@@ -129,26 +133,28 @@ public class ModalPort extends TypedIOPort {
     public void setInput(boolean isInput) {
         try {
             _workspace.getWriteAccess();
-
-            super.setInput(isInput);
-            // Mirror the change in mirror ports.
-            ModalModel container = (ModalModel)getContainer();
-            Iterator entities = container.entityList().iterator();
-            while (entities.hasNext()) {
-                Entity entity = (Entity)entities.next();
-                Port mirrorPort = entity.getPort(getName());
-                if (mirrorPort instanceof RefinementPort) {
-                    try {
-                        ((RefinementPort)mirrorPort)
-                                 ._mirrorDisable = true;
-                        ((IOPort)mirrorPort).setInput(isInput);
-                    } finally {
-                        ((RefinementPort)mirrorPort)
-                                 ._mirrorDisable = false;
+            if (_mirrorDisable || getContainer() == null) {
+                // Have already called the super class.
+                // This time, process the request.
+                super.setInput(isInput);
+            } else {
+                _mirrorDisable = true;
+                boolean success = false;
+                Nameable container = getContainer();
+                if (container != null) {
+                    Nameable modal = container.getContainer();
+                    if (modal instanceof ModalModel) {
+                        Port port = ((ModalModel)modal).getPort(getName());
+                        if (port instanceof IOPort) {
+                            ((IOPort)port).setInput(isInput);
+                            success = true;
+                        }
                     }
                 }
+                if (!success) super.setInput(isInput);
             }
         } finally {
+            _mirrorDisable = false;
             _workspace.doneWriting();
         }
     }
@@ -166,26 +172,28 @@ public class ModalPort extends TypedIOPort {
     public void setMultiport(boolean isMultiport) {
         try {
             _workspace.getWriteAccess();
-
-            super.setMultiport(isMultiport);
-            // Mirror the change in mirror ports.
-            ModalModel container = (ModalModel)getContainer();
-            Iterator entities = container.entityList().iterator();
-            while (entities.hasNext()) {
-                Entity entity = (Entity)entities.next();
-                Port mirrorPort = entity.getPort(getName());
-                if (mirrorPort instanceof RefinementPort) {
-                    try {
-                        ((RefinementPort)mirrorPort)
-                                 ._mirrorDisable = true;
-                        ((IOPort)mirrorPort).setMultiport(isMultiport);
-                    } finally {
-                        ((RefinementPort)mirrorPort)
-                                 ._mirrorDisable = false;
+            if (_mirrorDisable || getContainer() == null) {
+                // Have already called the super class.
+                // This time, process the request.
+                super.setMultiport(isMultiport);
+            } else {
+                _mirrorDisable = true;
+                boolean success = false;
+                Nameable container = getContainer();
+                if (container != null) {
+                    Nameable modal = container.getContainer();
+                    if (modal instanceof ModalModel) {
+                        Port port = ((ModalModel)modal).getPort(getName());
+                        if (port instanceof IOPort) {
+                            ((IOPort)port).setMultiport(isMultiport);
+                            success = true;
+                        }
                     }
                 }
+                if (!success) super.setMultiport(isMultiport);
             }
         } finally {
+            _mirrorDisable = false;
             _workspace.doneWriting();
         }
     }
@@ -202,30 +210,28 @@ public class ModalPort extends TypedIOPort {
             throws IllegalActionException, NameDuplicationException {
         try {
             _workspace.getWriteAccess();
-            String oldName = getName();
-            super.setName(name);
-            // Mirror the change in mirror ports.
-            ModalModel container = (ModalModel)getContainer();
-            // NOTE: This is called before there is even a container
-            // to originally set the name.
-            if (container != null) {
-                Iterator entities = container.entityList().iterator();
-                while (entities.hasNext()) {
-                    Entity entity = (Entity)entities.next();
-                    Port mirrorPort = entity.getPort(oldName);
-                    if (mirrorPort instanceof RefinementPort) {
-                        try {
-                            ((RefinementPort)mirrorPort)
-                                     ._mirrorDisable = true;
-                            mirrorPort.setName(name);
-                        } finally {
-                            ((RefinementPort)mirrorPort)
-                                     ._mirrorDisable = false;
+            if (_mirrorDisable || getContainer() == null) {
+                // Have already called the super class.
+                // This time, process the request.
+                super.setName(name);
+            } else {
+                _mirrorDisable = true;
+                boolean success = false;
+                Nameable container = getContainer();
+                if (container != null) {
+                    Nameable modal = container.getContainer();
+                    if (modal instanceof ModalModel) {
+                        Port port = ((ModalModel)modal).getPort(getName());
+                        if (port != null) {
+                            port.setName(name);
+                            success = true;
                         }
                     }
                 }
+                if (!success) super.setName(name);
             }
         } finally {
+            _mirrorDisable = false;
             _workspace.doneWriting();
         }
     }
@@ -243,44 +249,37 @@ public class ModalPort extends TypedIOPort {
     public void setOutput(boolean isOutput) {
         try {
             _workspace.getWriteAccess();
-
-            super.setOutput(isOutput);
-            // Mirror the change in mirror ports.
-            ModalModel container = (ModalModel)getContainer();
-            Iterator entities = container.entityList().iterator();
-            while (entities.hasNext()) {
-                Entity entity = (Entity)entities.next();
-                Port mirrorPort = entity.getPort(getName());
-                if (mirrorPort instanceof RefinementPort) {
-                    try {
-                        ((RefinementPort)mirrorPort)
-                                 ._mirrorDisable = true;
-                        ((IOPort)mirrorPort).setOutput(isOutput);
-                    } finally {
-                        ((RefinementPort)mirrorPort)
-                                 ._mirrorDisable = false;
+            if (_mirrorDisable || getContainer() == null) {
+                // Have already called the super class.
+                // This time, process the request.
+                super.setOutput(isOutput);
+            } else {
+                _mirrorDisable = true;
+                boolean success = false;
+                Nameable container = getContainer();
+                if (container != null) {
+                    Nameable modal = container.getContainer();
+                    if (modal instanceof ModalModel) {
+                        Port port = ((ModalModel)modal).getPort(getName());
+                        if (port instanceof IOPort) {
+                            ((IOPort)port).setOutput(isOutput);
+                            success = true;
+                        }
                     }
                 }
+                if (!success) super.setOutput(isOutput);
             }
         } finally {
+            _mirrorDisable = false;
             _workspace.doneWriting();
         }
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         protected variables               ////
 
-    /** Override the base class to ensure that the proposed container
-     *  is a ModalModel or null.
-     *  @param container The proposed container.
-     *  @exception IllegalActionException If the proposed container is not a
-     *   TypedActor, or if the base class throws it.
-     */
-    protected void _checkContainer(Entity container)
-            throws IllegalActionException {
-        if (!(container instanceof ModalModel) && (container != null)) {
-            throw new IllegalActionException(container, this,
-                    "ModalPort can only be contained by ModalModel objects.");
-        }
-    }
+    // This is protected to be accessible to ModalPort.
+
+    /** Indicator that we are processing a setInput request. */
+    protected boolean _mirrorDisable = false;
 }

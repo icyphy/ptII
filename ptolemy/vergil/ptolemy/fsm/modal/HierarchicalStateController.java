@@ -41,6 +41,7 @@ import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.MoMLChangeRequest;
@@ -124,10 +125,10 @@ public class HierarchicalStateController extends FSMStateController {
             Query query = new Query();
             String defaultName = container.uniqueName(state.getName());
             query.addLine("Name", "Name", defaultName);
-            String[] choices = {"ptolemy.actor.TypedCompositeActor",
-                    "ptolemy.domains.fsm.kernel.FSMActor"};
+            String[] choices = {"ptolemy.vergil.ptolemy.fsm.modal.Refinement",
+                    "ptolemy.vergil.ptolemy.fsm.modal.ModalController"};
             query.addChoice("Class", "Class", choices,
-                    "ptolemy.actor.TypedCompositeActor", true);
+                    "ptolemy.vergil.ptolemy.fsm.modal.Refinement", true);
             // FIXME: Need a frame owner for first arg.
             // Perhaps calling getController(), which returns a GraphController
             // will be a good start.
@@ -146,40 +147,6 @@ public class HierarchicalStateController extends FSMStateController {
 
             String newClass = query.stringValue("Class");
 
-            // Get the initial port configuration from the container.
-            StringBuffer portSpec = new StringBuffer("");
-            StringBuffer linkSpec = new StringBuffer("");
-            Iterator ports = container.portList().iterator();
-            while (ports.hasNext()) {
-                Port port = (Port)ports.next();
-                // Do not specify a class... rely on the newPort()
-                // method instead.
-                portSpec.append("<port name=\"" + port.getName() + "\">");
-                if (port instanceof IOPort) {
-                    if (((IOPort)port).isInput()) {
-                        portSpec.append("<property name=\"input\"/>");
-                    }
-                    if (((IOPort)port).isOutput()) {
-                        portSpec.append("<property name=\"output\"/>");
-                    }
-                    if (((IOPort)port).isMultiport()) {
-                        portSpec.append("<property name=\"multiport\"/>");
-                    }
-                }
-                portSpec.append("</port>");
-                String relationName = port.getName() + "relation";
-                linkSpec.append("<relation name=\""
-                        + relationName
-                        + "\"/>");
-                linkSpec.append("<link relation=\""
-                        + relationName
-                        + "\" port=\""
-                        + newName
-                        + "."
-                        + port.getName()
-                        + "\"/>");
-            }
-
             String currentRefinements
                     = state.refinementName.getExpression();
             if (currentRefinements == null || currentRefinements.equals("")) {
@@ -191,24 +158,71 @@ public class HierarchicalStateController extends FSMStateController {
                     + newName
                     + "\" class=\""
                     + newClass
-                    + "\">"
-                    + portSpec.toString()
-                    + "</entity>"
-                    + linkSpec.toString()
+                    + "\"/>"
                     + "<entity name=\""
                     + state.getName(container)
                     + "\"><property name=\"refinementName\" value=\""
                     + currentRefinements
                     + "\"/></entity></group>";
-// FIXME
-System.out.println("-------------------------\n" + moml);
             MoMLChangeRequest change = new MoMLChangeRequest(
                     this, container, moml)  {
                 protected void _execute() throws Exception {
                     super._execute();
+
+                    // Mirror the ports of the container in the refinement.
+                    // Note that this is done here rather than as part of
+                    // the MoML because we have set protected variables
+                    // in the refinement to prevent it from trying to again
+                    // mirror the changes in the container.
+                    Entity entity = container.getEntity(newName);
+
+                    // Get the initial port configuration from the container.
+                    Iterator ports = container.portList().iterator();
+                    while (ports.hasNext()) {
+                        Port port = (Port)ports.next();
+                        try {
+                            // NOTE: This is awkward.
+                            if (entity instanceof Refinement) {
+                                ((Refinement)entity)._mirrorDisable = true;
+                            } else if (entity instanceof ModalController) {
+                                ((ModalController)entity)._mirrorDisable = true;
+                            }
+                            Port newPort = entity.newPort(port.getName());
+                            if (newPort instanceof RefinementPort
+                                     && port instanceof IOPort) {
+                                 try {
+                                     ((RefinementPort)newPort)
+                                             ._mirrorDisable = true;
+                                     if (((IOPort)port).isInput()) {
+                                         ((RefinementPort)newPort)
+                                                  .setInput(true);
+                                     }
+                                     if (((IOPort)port).isOutput()) {
+                                         ((RefinementPort)newPort)
+                                                  .setOutput(true);
+                                     }
+                                     if (((IOPort)port).isMultiport()) {
+                                         ((RefinementPort)newPort)
+                                                  .setMultiport(true);
+                                     }
+                                 } finally {
+                                     ((RefinementPort)newPort)
+                                             ._mirrorDisable = false;
+                                 }
+                            }
+                        } finally {
+                            // NOTE: This is awkward.
+                            if (entity instanceof Refinement) {
+                                ((Refinement)entity)._mirrorDisable = false;
+                            } else if (entity instanceof ModalController) {
+                                ((ModalController)entity)
+                                         ._mirrorDisable = false;
+                            }
+                        }
+                    }
                     if (_configuration != null) {
                         // Look inside.
-                        _configuration.openModel(container.getEntity(newName));
+                        _configuration.openModel(entity);
                     }
                 }
             };
