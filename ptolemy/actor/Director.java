@@ -379,10 +379,13 @@ public class Director extends Attribute implements Executable {
     /** Get the start time of the model. This base class returns 
      *  0.0 as the value of the start time. 
      *  Subclasses need to override this method to get a different 
-     *  start time.
+     *  start time. 
+     *  For example, CT director and DE director use the value of 
+     *  the startTime parameter to specify the real start time. 
      *  @return The start time of the model.
      */
     public double getStartTime() {
+        // FIXME: Which one to choose? 0.0, or -1* Double.MAX_VALUE? 
         return 0.0;
     }
 
@@ -390,6 +393,8 @@ public class Director extends Attribute implements Executable {
      *  Double.MAX_VALUE as the value of the stop time. 
      *  Subclasses need to override this method to get a different 
      *  stop time.
+     *  For example, CT director and DE director use the value of 
+     *  the stopTime parameter to specify the real stop time. 
      *  @return The stop time of the model.
      */
     public double getStopTime() {
@@ -1048,5 +1053,7 @@ public class Director extends Attribute implements Executable {
     }
 
     /** The time resolution of the model. */
+    // FIXME: this variable will be only used by CT domain. 
+    // It will be moved into CT director.
     private double _timeResolution = 1.0e-10;
 }
