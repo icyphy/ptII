@@ -66,6 +66,7 @@ JSRCS = \
 	MemberDecl.java \
 	MethodDecl.java \
 	Modifier.java \
+	NodeUtil.java \
 	NumberDeclVisitor.java \
 	NumberNodeVisitor.java \
 	PackageDecl.java \
