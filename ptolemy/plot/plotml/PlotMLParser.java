@@ -129,9 +129,9 @@ public class PlotMLParser extends PlotBoxMLParser {
                 String connected = (String)_attributes.get("connected");
                 if (connected != null) {
                     if (connected.equals("no")) {
-                        ((Plot)_plot).setConnected(false);
+                        ((Plot)_plot).setConnected(false, _currentDataset);
                     } else {
-                        ((Plot)_plot).setConnected(true);
+                        ((Plot)_plot).setConnected(true, _currentDataset);
                     }
                 }
 
