@@ -41,6 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 EXTRA_SRCS = \
+	addinganactor.htm \
 	applets.htm \
 	body.htm \
 	buttons.htm \
