@@ -48,7 +48,7 @@ set manager [java::new ptolemy.actor.Manager]
 ######################################################################
 ####
 #
-test TypedIORelation-1.2 {Construct Relations} {
+test TypedIORelation-1.1 {Construct Relations} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     $e0 setDirector $director
     $e0 setManager $manager
@@ -58,30 +58,31 @@ test TypedIORelation-1.2 {Construct Relations} {
 
     #link up p1, p2
     set r0 [java::new ptolemy.actor.TypedIORelation ]
-    $p1 link $r0
-    $p2 link $r0
+    catch {$p1 link $r0} msg1
 
-    set r1 [java::new ptolemy.actor.TypedIORelation [$e0 workspace]]
-    $p1 link $r1
-    $p2 link $r1
+    set r1 [java::new ptolemy.actor.TypedIORelation [$e1 workspace]]
+    catch {$p1 link $r1} msg2
 
     set r2 [java::new ptolemy.actor.TypedIORelation $e0 R1]
     $p1 link $r2
     $p2 link $r2
 
-    list [$r0 getFullName] [$r1 getFullName] [$r2 getFullName]
-} {. ..E1.P2}
+    list [$r0 getFullName] [$r1 getFullName] [$r2 getFullName] \
+	    $msg1 \
+	    $msg2
+} {. . ..R1 {ptolemy.kernel.util.IllegalActionException: ..E1.P1 and .:
+Link crosses levels of the hierarchy} {ptolemy.kernel.util.IllegalActionException: ..E1.P1 and .:
+Link crosses levels of the hierarchy}}
 
-test TypedIOPort-1.3 {Attempt to set erroneous container} {
+test TypedIOPort-1.2 {Attempt to set erroneous container} {
     set e0 [java::new ptolemy.actor.CompositeActor]
     $e0 setDirector $director
     $e0 setManager $manager
     set e1 [java::new ptolemy.actor.CompositeActor]
-    set p1 [java::new ptolemy.actor.TypedIOPort]
-    catch {$p1 setContainer $e1} msg
+    set r1 [java::new ptolemy.actor.TypedIORelation]
+    catch {$r1 setContainer $e1} msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: . and .:
-TypedIOPort can only be contained by objects implementing the TypedActor interface.}}
-
+TypedIORelation can only be contained by TypedCompositeActor.}}
 
 
