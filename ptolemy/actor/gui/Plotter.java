@@ -171,8 +171,8 @@ public class Plotter extends TypedAtomicActor
     }
 
     /** Specify the container into which this plot should be placed.
-     *  This method needs to be called before the first call to initialize().
-     *  Otherwise, the plot will be placed in its own frame.
+     *  This method needs to be called before the first call to initialize()
+     *  or configure(). Otherwise, the plot will be placed in its own frame.
      *  The plot is also placed in its own frame if this method
      *  is called with a null argument.  The size of the plot,
      *  unfortunately, cannot be effectively determined from the size
@@ -195,9 +195,11 @@ public class Plotter extends TypedAtomicActor
             if (_container instanceof Plot) {
                 plot = (Plot)_container;
             } else {
-                plot = new Plot();
+                if (plot == null) {
+                    plot = new Plot();
+                    plot.setButtons(true);
+                }
                 _container.add(plot);
-                plot.setButtons(true);
                 plot.setBackground(_container.getBackground());
             }
         }
