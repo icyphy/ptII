@@ -47,7 +47,7 @@ import java.net.URL;
 import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
-//// Reader
+//// DoubleReader
 /**
 This actor reads tokens from an URL, and output them. Each entry in
 the file corresponds to one iteration. If there are multiple fires in
@@ -79,7 +79,7 @@ called "test.txt", then <i>sourceURL</i> should be set to
 <p>FIXME: Reader should read in expressions and serialized tokens
 
 @see ptolemy.actor.lib.javasound.AudioReader
-@author  Jie Liu
+@author  Jie Liu, Christopher Hylands
 @version $Id$
  */
 public class DoubleReader extends URLReader {
