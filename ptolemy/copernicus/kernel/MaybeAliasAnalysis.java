@@ -418,7 +418,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
                 // Only things that have a compatible type can be pointed to..
                 Type constructorType = constructor.getType();
                 Type fieldType = field.getType();
-                if (!_isCompatibileAliasAssignment(constructorType,
+                if (!_isCompatibleAliasAssignment(constructorType,
                         fieldType)) {
                     continue;
                 }
@@ -486,7 +486,7 @@ public class MaybeAliasAnalysis extends FastForwardFlowAnalysis {
 
     // Return true if a reference object with the given type could
     // possibly point to an aliasable object of the given type.
-    private boolean _isCompatibileAliasAssignment(Type objectType,
+    private boolean _isCompatibleAliasAssignment(Type objectType,
             Type referenceType) {
         // System.out.println("objectType = " + objectType);
         //System.out.println("referenceType = " + objectType);
