@@ -303,8 +303,11 @@ public class CSPDirector extends ProcessDirector {
      *  <p>
      *  @param delta The length of time to delay the actor.
      *  @param actor The actor being delayed.
+     *  @exception InvalidStateException If an actor is delayed for 
+     *   negative time.
      */
-    protected synchronized void _actorDelayed(double delta, CSPActor actor) {
+    protected synchronized void _actorDelayed(double delta, CSPActor actor) 
+        throws InvalidStateException {
         if (delta < 0.0) {
 	    throw new InvalidStateException(((Nameable)actor).getName() +
 		       ": delayed for negative time.");
