@@ -36,9 +36,9 @@ ME =		ptolemy/vergil/ptolemy/fsm/modal
 DIRS =
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		$(PTII)
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
