@@ -223,6 +223,7 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTJACL_JARS) \
 	ptolemy/actor/lib/hoc/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
+	ptolemy/actor/lib/io/comm/demo/demo.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
 	ptolemy/actor/lib/joystick/joystick.jar \
@@ -619,6 +620,22 @@ $(JAR_DIST_DIR):
 		fi; \
 	done;
 
+# Jarfiles used by applet code generation
+CODEGEN_DOMAIN_JARS = \
+	ptolemy/domains/ci/ci.jar \
+	ptolemy/domains/ct/ct.jar \
+	ptolemy/domains/de/de.jar \
+	ptolemy/domains/fsm/fsm.jar \
+	ptolemy/domains/gr/gr.jar \
+	ptolemy/domains/pn/pn.jar \
+	ptolemy/domains/sdf/sdf.jar \
+	ptolemy/domains/wireless/wireless.jar
+
+UNJAR_JARS = \
+	$(CODEGEN_DOMAIN_JARS) \
+	$(ALL_NON_APPLICATION_JNLP_JARS)
+
+
 UNJAR_DIST_DIR = unjar_dist
 
 $(UNJAR_DIST_DIR):
@@ -627,7 +644,9 @@ $(UNJAR_DIST_DIR):
 		mkdir -p $(UNJAR_DIST_DIR)/lib; \
 		mkdir -p $(UNJAR_DIST_DIR)/doc; \
 	fi
-	set $(ALL_NON_APPLICATION_JNLP_JARS); \
+	mkdir -p $(UNJAR_DIST_DIR)/ptolemy/vergil
+	cp ptolemy/vergil/vergilApplet.jar $(UNJAR_DIST_DIR)/ptolemy/vergil
+	set $(UNJAR_JARS); \
 	for x do \
 		echo $$x; \
 		case "$$x" in \
@@ -637,14 +656,19 @@ $(UNJAR_DIST_DIR):
 			doc/codeDoc*) \
 			   echo "  Copying to doc"; \
 			   cp $$x $(UNJAR_DIST_DIR)/doc;; \
+			ptolemy/ptsupport.jar) \
+			   echo "  Copying to ptolemy"; \
+			   cp $$x $(UNJAR_DIST_DIR)/ptolemy;; \
 			ptolemy/domains/*/*.jar) \
 			   echo "Copying to domains specific jars for cg "; \
 			   mkdir -p $(UNJAR_DIST_DIR)/`dirname $$x`; \
-			   cp $$x `dirname $(UNJAR_DIST_DIR)/$$x`;; \
+			   cp $$x `dirname $(UNJAR_DIST_DIR)/$$x`; \
+			  (cd $(UNJAR_DIST_DIR); $(JAR) -xf ../$$x);; \
 			*)(cd $(UNJAR_DIST_DIR); $(JAR) -xf ../$$x);; \
 	        esac; \
 	done;
-
+	# Remove jars lie pn/demo/demo.jar, but leave pn/pn.jar
+	rm $(UNJAR_DIST_DIR)/ptolemy/domains/*/*/*.jar
 
 # Verify the jar files.  This is useful for debugging if you are
 # getting errors about unsigned applications
