@@ -41,8 +41,40 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
+test XSLTUtilities-1.1 {Call main} {
+    file delete -force out.xml
+    set args [java::new {String[]} {3} {test.xml addMarkers.xsl out.xml}]
+    java::call ptolemy.util.XSLTUtilities main $args
 
-test XSLTUtilities-1.1 {test parse and toString} {
+    set file [open out.xml r]
+    set results [read $file]
+    file delete -force out.xml
+    list $results
+} {{<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<WMBasicEdit>
+    <Attributes>
+        <WMENC_STRING Name="Title"/>
+    </Attributes>
+
+    <RemoveAllMarkers/>
+    <RemoveAllScripts/>
+    <Scripts>
+        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
+        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+    </Scripts>
+
+<Markers>
+        <Marker Time="341830000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif"/>
+        <Marker Time="816310000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif"/>
+    </Markers>
+</WMBasicEdit>
+}}
+
+
+######################################################################
+####
+#
+test XSLTUtilities-2.1 {test parse and toString} {
     set inputDocument [java::call ptolemy.util.XSLTUtilities \
 			   parse test.xml]
     set inputString [java::call ptolemy.util.XSLTUtilities toString \
@@ -64,7 +96,10 @@ test XSLTUtilities-1.1 {test parse and toString} {
 </WMBasicEdit>
 }
 
-test XSLTUtilities-1.2 {copy transform} {
+######################################################################
+####
+#
+test XSLTUtilities-3.1 {transform(Document, String) using a copy} {
     # Uses inputString from 1.1 above
     set outputDocument [java::call ptolemy.util.XSLTUtilities \
 			    transform $inputDocument copy.xsl]
@@ -76,7 +111,10 @@ test XSLTUtilities-1.2 {copy transform} {
 } {}
 
 
-test XSLTUtilities-2.1 {Call transform(Document, List) using local files} {
+######################################################################
+####
+#
+test XSLTUtilities-3.2 {Call transform(Document, List) using local files} {
     set transformList [java::new java.util.LinkedList]
     $transformList add copy.xsl
     $transformList add addMarkers.xsl
@@ -104,7 +142,10 @@ test XSLTUtilities-2.1 {Call transform(Document, List) using local files} {
 </WMBasicEdit>
 }
 
-test XSLTUtilities-2.2 {Call transform(Document, List) using files found in the classpath} {
+######################################################################
+####
+#
+test XSLTUtilities-3.3 {Call transform(Document, List) using files found in the classpath} {
     set transformList [java::new java.util.LinkedList]
     $transformList add ptolemy/util/test/copy.xsl
     $transformList add ptolemy/util/test/addMarkers.xsl
@@ -131,3 +172,37 @@ test XSLTUtilities-2.2 {Call transform(Document, List) using files found in the 
     </Markers>
 </WMBasicEdit>
 }
+
+
+######################################################################
+####
+#
+test XSLTUtilities-3.4 {Call transform(String, String, String)} {
+    file delete -force out.xml
+
+    # Note that this operates on pathnames, not files in the classpath
+    java::call ptolemy.util.XSLTUtilities \
+        transform  addMarkers.xsl test.xml out.xml
+    set file [open out.xml r]
+    set results [read $file]
+    file delete -force out.xml
+    list $results
+} {{<?xml version="1.0" encoding="UTF-8"?>
+<WMBasicEdit>
+    <Attributes>
+        <WMENC_STRING Name="Title"/>
+    </Attributes>
+
+    <RemoveAllMarkers/>
+    <RemoveAllScripts/>
+    <Scripts>
+        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif" Time="341830000"/>
+        <Script Type="URL" Command="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif" Time="816310000"/>
+    </Scripts>
+
+<Markers>
+        <Marker Time="341830000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide2.gif"/>
+        <Marker Time="816310000" Name="http://10.0.0.1/gsrc/talks/2002/berkeley/01/01/slide3.gif"/>
+    </Markers>
+</WMBasicEdit>
+}}
