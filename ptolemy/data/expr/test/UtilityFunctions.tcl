@@ -59,9 +59,11 @@ test UtilityFunctions-1.0 {Check readFile method} {
     #$tree displayParseTree " "
     set res [$tree evaluateParseTree]
 
-    set value [$res toString]
+    # This hack is necessary because of problems with crnl under windows
+    regsub -all [java::call System getProperty "line.separator"] \
+                [$res toString] "\n" output
 
-    list $value
+    list $output
 } {{Greetings...
 }}
 
