@@ -74,6 +74,30 @@ then reads it back in.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="125.0, 10.0">
         </property>
     </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">The KeyWriter and the SecretKeyReader are 
+connected because we want to be sure that
+the Key gets written before we try to read it.
+In reality, these two actors could be on
+separate machines.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 260.0">
+        </property>
+    </property>
     <entity name="KeyWriter" class="ptolemy.actor.lib.security.KeyWriter">
         <property name="alias" class="ptolemy.data.expr.StringParameter" value="$aliasName">
         </property>
