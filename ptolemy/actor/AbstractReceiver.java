@@ -205,7 +205,9 @@ public abstract class AbstractReceiver implements Receiver {
      *  @param token The token to put into the receiver.
      *  @exception NoRoomException If there is no room in the receiver.
      */
-    public abstract void put(Token token) throws NoRoomException;
+    public void put(Token token) throws NoRoomException {
+        // token.setTime(_director.getCurrentTime());
+    }
 
     /** Put a portion of the specified token array into this receiver.
      *  The first <i>numberOfTokens</i> elements of the token array are put
