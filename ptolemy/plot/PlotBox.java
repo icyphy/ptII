@@ -113,7 +113,7 @@ import java.lang.*;
  * All of the above commands can also be invoked directly by calling the
  * the corresponding public methods from some Java procedure.
  *
- * @author Edward A. Lee
+ * @author Edward A. Lee, Christopher Hylands
  * @version $Id$
  */
 public class PlotBox extends Applet {
@@ -126,7 +126,7 @@ public class PlotBox extends Applet {
      * the data that is currently plotted just fits.
      */
     public boolean action (Event evt, Object arg) {
-        if (evt.target == _fillButton) {
+        if (evt.target == __fillButton) {
             fillPlot();
             return true;
         } else {
@@ -140,8 +140,8 @@ public class PlotBox extends Applet {
      * fit better than long strings.
      */
     public void addLegend(int dataset, String legend) {
-        _legendStrings.addElement(legend);
-        _legendDatasets.addElement(new Integer(dataset));
+        __legendStrings.addElement(legend);
+        __legendDatasets.addElement(new Integer(dataset));
     }
     
     /** 
@@ -152,12 +152,12 @@ public class PlotBox extends Applet {
      * range.
      */
     public void addXTick (String label, double position) {
-        if (_xticks == null) {
-            _xticks = new Vector();
-            _xticklabels = new Vector();
+        if (__xticks == null) {
+            __xticks = new Vector();
+            __xticklabels = new Vector();
         }
-       	_xticks.addElement(new Double(position));
-        _xticklabels.addElement(label);
+       	__xticks.addElement(new Double(position));
+        __xticklabels.addElement(label);
     }
     
     /** 
@@ -168,12 +168,12 @@ public class PlotBox extends Applet {
      * range.
      */
     public void addYTick (String label, double position) {
-       	if (_yticks == null) {
-            _yticks = new Vector();
-     	    _yticklabels = new Vector();
+       	if (__yticks == null) {
+            __yticks = new Vector();
+     	    __yticklabels = new Vector();
         }
-       	_yticks.addElement(new Double(position));
-        _yticklabels.addElement(label);
+       	__yticks.addElement(new Double(position));
+        __yticklabels.addElement(label);
     }
     
     /**
@@ -200,40 +200,40 @@ public class PlotBox extends Applet {
         
 	// For use by all text displays below.
 	// FIXME - consolidate for efficiency.
-        graphics.setFont(_titlefont);
+        graphics.setFont(__titlefont);
         FontMetrics tfm = graphics.getFontMetrics();
-        graphics.setFont(_superscriptfont);
+        graphics.setFont(__superscriptfont);
         FontMetrics sfm = graphics.getFontMetrics();
-        graphics.setFont(_labelfont);
+        graphics.setFont(__labelfont);
         FontMetrics lfm = graphics.getFontMetrics();
 
 	// If an error message has been set, display it and return.
-        if (_errorMsg != null) {
+        if (__errorMsg != null) {
             int fheight = lfm.getHeight() + 2;
             int msgy = fheight;
             graphics.setColor(Color.black);
-            for(int i=0; i<_errorMsg.length;i++) {
-                graphics.drawString(_errorMsg[i],10, msgy);
+            for(int i=0; i<__errorMsg.length;i++) {
+                graphics.drawString(__errorMsg[i],10, msgy);
                 msgy += fheight;
             }
             return;
          }
 
          // Make sure we have an x and y range
-         if (!xRangeGiven) {
-             if (xBottom > xTop) {
+         if (!_xRangeGiven) {
+             if (_xBottom > _xTop) {
                  // have nothing to go on.
-                 _setXRange(0,0);
+                 __setXRange(0,0);
              } else {
-                 _setXRange(xBottom, xTop);
+                 __setXRange(_xBottom, _xTop);
              }
          }
-         if (!yRangeGiven) {
-             if (yBottom > yTop) {
+         if (!_yRangeGiven) {
+             if (_yBottom > _yTop) {
                  // have nothing to go on.
-                 _setYRange(0,0);
+                 __setYRange(0,0);
              } else {
-                 _setYRange(yBottom, yTop);
+                 __setYRange(_yBottom, _yTop);
              }
          }
          
@@ -241,45 +241,45 @@ public class PlotBox extends Applet {
          // NOTE: We assume a one-line title.
          int titley = 0;
          int titlefontheight = tfm.getHeight();
-         if (_title != null || _yExp != 0) {
-             titley = titlefontheight + topPadding;
+         if (__title != null || __yExp != 0) {
+             titley = titlefontheight + _topPadding;
          }
         
         // Number of vertical tick marks depends on the height of the font
         // for labeling ticks and the height of the window.
-        graphics.setFont(_labelfont);
+        graphics.setFont(__labelfont);
         int labelheight = lfm.getHeight();
         int halflabelheight = labelheight/2;
 
         // Draw scaling annotation for x axis.
         // NOTE: 5 pixel padding on bottom.
         int ySPos = drawRect.y + drawRect.height - 5; 
-        if (_xExp != 0 && _xticks == null) {
-            int xSPos = drawRect.x + drawRect.width - rightPadding;
-            String superscript = Integer.toString(_xExp);
+        if (__xExp != 0 && __xticks == null) {
+            int xSPos = drawRect.x + drawRect.width - _rightPadding;
+            String superscript = Integer.toString(__xExp);
             xSPos -= sfm.stringWidth(superscript);
-            graphics.setFont(_superscriptfont);
+            graphics.setFont(__superscriptfont);
             graphics.drawString(superscript, xSPos, ySPos - halflabelheight);
             xSPos -= lfm.stringWidth("x10");
-            graphics.setFont(_labelfont);
+            graphics.setFont(__labelfont);
             graphics.drawString("x10", xSPos, ySPos);
             // NOTE: 5 pixel padding on bottom
-            bottomPadding = (3 * labelheight)/2 + 5;
+            _bottomPadding = (3 * labelheight)/2 + 5;
         }
         
         // NOTE: 5 pixel padding on the bottom.
-        if (_xlabel != null && bottomPadding < labelheight + 5) {
-            bottomPadding = titlefontheight + 5;
+        if (__xlabel != null && _bottomPadding < labelheight + 5) {
+            _bottomPadding = titlefontheight + 5;
         }
         
         // Compute the space needed around the plot, starting with vertical.
         // NOTE: padding of 5 pixels below title.
-        uly = drawRect.y + titley + 5;
+        _uly = drawRect.y + titley + 5;
         // NOTE: 3 pixels above bottom labels.
-        lry = drawRect.height-labelheight-bottomPadding-3; 
-        int height = lry-uly;
-        yscale = height/(yMax - yMin);
+        _lry = drawRect.height-labelheight-_bottomPadding-3; 
+        int height = _lry-_uly;
         _yscale = height/(_yMax - _yMin);
+        __yscale = height/(__yMax - __yMin);
 
         ///////////////////// vertical axis
 
@@ -287,13 +287,13 @@ public class PlotBox extends Applet {
         // NOTE: subjective spacing factor.
         int ny = 2 + height/(labelheight+10);
         // Compute y increment.
-        double yStep=_roundUp((_yMax-_yMin)/(double)ny);
+        double yStep=__roundUp((__yMax-__yMin)/(double)ny);
         
         // Compute y starting point so it is a multiple of yStep.
-        double yStart=yStep*Math.ceil(_yMin/yStep);
+        double yStart=yStep*Math.ceil(__yMin/yStep);
         
         // NOTE: Following disables first tick.  Not a good idea?
-        // if (yStart == _yMin) yStart+=yStep;
+        // if (yStart == __yMin) yStart+=yStep;
         
         // Define the strings that will label the y axis.
         // Meanwhile, find the width of the widest label.
@@ -306,13 +306,14 @@ public class PlotBox extends Applet {
         String ylabels[] = new String[ny];
         int ylabwidth[] = new int[ny];
         int ind = 0;
-        if (_yticks == null) {
+        if (__yticks == null) {
             // automatic ticks
-            for (double ypos=yStart; ypos <= _yMax; ypos += yStep) {
+            for (double ypos=yStart; ypos <= __yMax; ypos += yStep) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
                 // NOTE: The following clever solution doesn't always work:
-                String yfull = Double.toString(Math.floor(ypos*1000.0+0.5)*0.001);
+                String yfull = Double.toString(Math.floor(ypos*1000.0+0.5) *
+					       0.001);
                 // ... so we have to patch up the solution...
                 // This method just copies digits up to the third
                 // after the decimal point.  However, for numbers near
@@ -339,7 +340,7 @@ public class PlotBox extends Applet {
             }
         } else {
             // explictly specified ticks
-            Enumeration nl = _yticklabels.elements();
+            Enumeration nl = __yticklabels.elements();
             while (nl.hasMoreElements()) {
                 String label = (String) nl.nextElement();
                 int lw = lfm.stringWidth(label);
@@ -348,90 +349,90 @@ public class PlotBox extends Applet {
         }
 
         // Next we do the horizontal spacing.
-        if (_ylabel != null) {
-            ulx = drawRect.x + widesty + lfm.stringWidth("W") + leftPadding;
+        if (__ylabel != null) {
+            _ulx = drawRect.x + widesty + lfm.stringWidth("W") + _leftPadding;
         } else {     
-            ulx = drawRect.x + widesty + leftPadding;
+            _ulx = drawRect.x + widesty + _leftPadding;
         }
-        int legendwidth = _drawLegend(drawRect.width-rightPadding, uly);
-        lrx = drawRect.width-legendwidth-rightPadding;
-        int width = lrx-ulx;
-        xscale = width/(xMax - xMin);
+        int legendwidth = __drawLegend(drawRect.width-_rightPadding, _uly);
+        _lrx = drawRect.width-legendwidth-_rightPadding;
+        int width = _lrx-_ulx;
         _xscale = width/(_xMax - _xMin);
+        __xscale = width/(__xMax - __xMin);
         
         // White background for the plotting rectangle
         graphics.setColor(Color.white);
-        graphics.fillRect(ulx,uly,width,height);
+        graphics.fillRect(_ulx,_uly,width,height);
 
         graphics.setColor(Color.black);
-        graphics.drawRect(ulx,uly,width,height);
+        graphics.drawRect(_ulx,_uly,width,height);
         
         // NOTE: subjective tick length.
         int tickLength = 5;
-        int xCoord1 = ulx+tickLength;
-        int xCoord2 = lrx-tickLength;
+        int xCoord1 = _ulx+tickLength;
+        int xCoord2 = _lrx-tickLength;
         
-        if (_yticks == null) {
+        if (__yticks == null) {
             // auto-ticks
             ind = 0;
-            for (double ypos=yStart; ypos <= _yMax; ypos += yStep) {
+            for (double ypos=yStart; ypos <= __yMax; ypos += yStep) {
                 // Prevent out of bounds exceptions
                 if (ind >= ny) break;
-                int yCoord1 = lry - (int)((ypos-_yMin)*_yscale);
+                int yCoord1 = _lry - (int)((ypos-__yMin)*__yscale);
                 // The lowest label is shifted up slightly to avoid
                 // colliding with x labels.
                 int offset = 0;
                 if (ind > 0) offset = halflabelheight;
-                graphics.drawLine(ulx,yCoord1,xCoord1,yCoord1);
-                graphics.drawLine(lrx,yCoord1,xCoord2,yCoord1);
-                if (grid && yCoord1 != uly && yCoord1 != lry) {
+                graphics.drawLine(_ulx,yCoord1,xCoord1,yCoord1);
+                graphics.drawLine(_lrx,yCoord1,xCoord2,yCoord1);
+                if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
                     graphics.setColor(Color.lightGray);
                     graphics.drawLine(xCoord1,yCoord1,xCoord2,yCoord1);
                     graphics.setColor(Color.black);
                 }
                 // NOTE: 3 pixel spacing between axis and labels.
                 graphics.drawString(ylabels[ind],
-				    ulx-ylabwidth[ind++]-3, yCoord1+offset);
+				    _ulx-ylabwidth[ind++]-3, yCoord1+offset);
             }
         
             // Draw scaling annotation for y axis.
-            if (_yExp != 0) {
+            if (__yExp != 0) {
                 graphics.drawString("x10", 2, titley);
-                graphics.setFont(_superscriptfont);
-                graphics.drawString(Integer.toString(_yExp),
+                graphics.setFont(__superscriptfont);
+                graphics.drawString(Integer.toString(__yExp),
 				    lfm.stringWidth("x10") + 2, 
 				    titley-halflabelheight);
-                graphics.setFont(_labelfont);
+                graphics.setFont(__labelfont);
             }
         } else {
             // ticks have been explicitly specified
-            Enumeration nt = _yticks.elements();
-            Enumeration nl = _yticklabels.elements();
+            Enumeration nt = __yticks.elements();
+            Enumeration nl = __yticklabels.elements();
             while (nl.hasMoreElements()) {
                 String label = (String) nl.nextElement();
                 double ypos = ((Double)(nt.nextElement())).doubleValue();
-                if (ypos > yMax || ypos < yMin) continue;
-                int yCoord1 = lry - (int)((ypos-yMin)*_yscale);
+                if (ypos > _yMax || ypos < _yMin) continue;
+                int yCoord1 = _lry - (int)((ypos-_yMin)*__yscale);
                 int offset = 0;
-                if (ypos < lry - labelheight) offset = halflabelheight;
-                graphics.drawLine(ulx,yCoord1,xCoord1,yCoord1);
-                graphics.drawLine(lrx,yCoord1,xCoord2,yCoord1);
-                if (grid && yCoord1 != uly && yCoord1 != lry) {
+                if (ypos < _lry - labelheight) offset = halflabelheight;
+                graphics.drawLine(_ulx,yCoord1,xCoord1,yCoord1);
+                graphics.drawLine(_lrx,yCoord1,xCoord2,yCoord1);
+                if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
                     graphics.setColor(Color.lightGray);
                     graphics.drawLine(xCoord1,yCoord1,xCoord2,yCoord1);
                     graphics.setColor(Color.black);
                 }
                 // NOTE: 3 pixel spacing between axis and labels.
-                graphics.drawString(label, ulx - lfm.stringWidth(label) - 3,
+                graphics.drawString(label, _ulx - lfm.stringWidth(label) - 3,
 				    yCoord1+offset);
             }
         }
         
         ///////////////////// horizontal axis
 
-        int yCoord1 = uly+tickLength;
-        int yCoord2 = lry-tickLength;
-        if (_xticks == null) {
+        int yCoord1 = _uly+tickLength;
+        int yCoord2 = _lry-tickLength;
+        if (__xticks == null) {
             // auto-ticks
             // Number of x tick marks.
             // Assume a worst case of 4 characters and a period for each label.
@@ -440,50 +441,50 @@ public class PlotBox extends Applet {
             // NOTE: 5 additional pixels between labels.
             int nx = 2 + width/(maxlabelwidth+5);
             // Compute x increment.
-            double xStep=_roundUp((_xMax-_xMin)/(double)nx);
+            double xStep=__roundUp((__xMax-__xMin)/(double)nx);
         
-            // Compute x starting point so it is a multiple of xStep.
-            double xStart=xStep*Math.ceil(_xMin/xStep);
+            // Compute x starting point so it is a m_ultiple of xStep.
+            double xStart=xStep*Math.ceil(__xMin/xStep);
         
             // NOTE: Following disables first tick.  Not a good idea?
-            // if (xStart == xMin) xStart+=xStep;
+            // if (xStart == _xMin) xStart+=xStep;
         
             // Label the x axis.  The labels are quantized so that
             // they don't have excess resolution.
-            for (double xpos=xStart; xpos <= _xMax; xpos += xStep) {
-                String _xlabel = Double.toString(Math.floor(xpos*1000.0+0.5)
+            for (double xpos=xStart; xpos <= __xMax; xpos += xStep) {
+                String __xlabel = Double.toString(Math.floor(xpos*1000.0+0.5)
 						 * 0.001);
-                xCoord1 = ulx + (int)((xpos-_xMin)*_xscale);
-                graphics.drawLine(xCoord1,uly,xCoord1,yCoord1);
-                graphics.drawLine(xCoord1,lry,xCoord1,yCoord2);
-                if (grid && xCoord1 != ulx && xCoord1 != lrx) {
+                xCoord1 = _ulx + (int)((xpos-__xMin)*__xscale);
+                graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
+                graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
+                if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
                     graphics.setColor(Color.lightGray);
                     graphics.drawLine(xCoord1,yCoord1,xCoord1,yCoord2);
                     graphics.setColor(Color.black);
                 }
-                int labxpos = xCoord1 - lfm.stringWidth(_xlabel)/2;
+                int labxpos = xCoord1 - lfm.stringWidth(__xlabel)/2;
                 // NOTE: 3 pixel spacing between axis and labels.
-                graphics.drawString(_xlabel, labxpos, lry + 3 + labelheight);
+                graphics.drawString(__xlabel, labxpos, _lry + 3 + labelheight);
             }
         } else {
             // ticks have been explicitly specified
-            Enumeration nt = _xticks.elements();
-            Enumeration nl = _xticklabels.elements();
+            Enumeration nt = __xticks.elements();
+            Enumeration nl = __xticklabels.elements();
             while (nl.hasMoreElements()) {
                 String label = (String) nl.nextElement();
                 double xpos = ((Double)(nt.nextElement())).doubleValue();
-                if (xpos > xMax || xpos < xMin) continue;
-                xCoord1 = ulx + (int)((xpos-_xMin)*_xscale);
-                graphics.drawLine(xCoord1,uly,xCoord1,yCoord1);
-                graphics.drawLine(xCoord1,lry,xCoord1,yCoord2);
-                if (grid && xCoord1 != ulx && xCoord1 != lrx) {
+                if (xpos > _xMax || xpos < _xMin) continue;
+                xCoord1 = _ulx + (int)((xpos-__xMin)*__xscale);
+                graphics.drawLine(xCoord1,_uly,xCoord1,yCoord1);
+                graphics.drawLine(xCoord1,_lry,xCoord1,yCoord2);
+                if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
                     graphics.setColor(Color.lightGray);
                     graphics.drawLine(xCoord1,yCoord1,xCoord1,yCoord2);
                     graphics.setColor(Color.black);
                 }
                 int labxpos = xCoord1 - lfm.stringWidth(label)/2;
                 // NOTE: 3 pixel spacing between axis and labels.
-                graphics.drawString(label, labxpos, lry + 3 + labelheight);
+                graphics.drawString(label, labxpos, _lry + 3 + labelheight);
             }
         }
         
@@ -493,26 +494,26 @@ public class PlotBox extends Applet {
     	// the window.
         graphics.setColor(Color.black);
         
-        if (_title != null) {
-         	graphics.setFont(_titlefont);
-            int titlex = ulx + (width - tfm.stringWidth(_title))/2;
-            graphics.drawString(_title,titlex,titley);
+        if (__title != null) {
+         	graphics.setFont(__titlefont);
+            int titlex = _ulx + (width - tfm.stringWidth(__title))/2;
+            graphics.drawString(__title,titlex,titley);
         }
         
-        graphics.setFont(_labelfont);
-        if (_xlabel != null) {
-            int labelx = ulx + (width - lfm.stringWidth(_xlabel))/2;
-            graphics.drawString(_xlabel,labelx,ySPos);
+        graphics.setFont(__labelfont);
+        if (__xlabel != null) {
+            int labelx = _ulx + (width - lfm.stringWidth(__xlabel))/2;
+            graphics.drawString(__xlabel,labelx,ySPos);
         }
         
         int charcenter = 2 + lfm.stringWidth("W")/2;
         int charheight = labelheight;
-        if (_ylabel != null) {
+        if (__ylabel != null) {
             // Vertical label is fairly complex to draw.
-            int yl = _ylabel.length();
-            int starty = uly + (lry-uly)/2 - yl*charheight/2 + charheight;
+            int yl = __ylabel.length();
+            int starty = _uly + (_lry-_uly)/2 - yl*charheight/2 + charheight;
             for (int i = 0; i < yl; i++) {
-                String nchar = _ylabel.substring(i,i+1);
+                String nchar = __ylabel.substring(i,i+1);
                 int cwidth = lfm.stringWidth(nchar);
                 graphics.drawString(nchar,charcenter - cwidth/2, starty);
                 starty += charheight;
@@ -524,8 +525,8 @@ public class PlotBox extends Applet {
      * Rescales so that the data that is currently plotted just fits.
      */
     public synchronized void fillPlot () {
-        setXRange(xBottom, xTop);
-        setYRange(yBottom, yTop);
+        setXRange(_xBottom, _xTop);
+        setYRange(_yBottom, _yTop);
         paint(graphics);
     }
 
@@ -533,7 +534,9 @@ public class PlotBox extends Applet {
      * Return a string describing this applet.
      */
     public String getAppletInfo() {
-        return "PlotBox 1.0: Base class for plots. By: Edward A. Lee, eal@eecs.berkeley.edu";
+        return "PlotBox 1.0: Base class for plots. " +
+	    "By: Edward A. Lee, eal@eecs.berkeley.edu and " +
+	    "Christopher Hylands, cxh@eecs.berkeley.edu" ;
     }
        
     /**
@@ -553,17 +556,17 @@ public class PlotBox extends Applet {
     public void init() {
         super.init();
 		
-        _labelfont = new Font("Helvetica", Font.PLAIN, 12);
-        _superscriptfont = new Font("Helvetica", Font.PLAIN, 9);
-        _titlefont = new Font("Helvetica", Font.BOLD, 14);
+        __labelfont = new Font("Helvetica", Font.PLAIN, 12);
+        __superscriptfont = new Font("Helvetica", Font.PLAIN, 9);
+        __titlefont = new Font("Helvetica", Font.BOLD, 14);
         
-        _legendStrings = new Vector();
-        _legendDatasets = new Vector();
+        __legendStrings = new Vector();
+        __legendDatasets = new Vector();
         
-        _xticks = null;
-        _xticklabels = null;
-        _yticks = null;
-        _yticklabels = null;
+        __xticks = null;
+        __xticklabels = null;
+        __yticks = null;
+        __yticklabels = null;
 
         graphics = this.getGraphics();
 
@@ -580,7 +583,7 @@ public class PlotBox extends Applet {
         try {
             dataurl = getParameter("dataurl");
         } catch (NullPointerException e) {
-	    dataurl = _dataurl;
+	    dataurl = __dataurl;
 	}
 
 	// Open up the input file, which could be stdin, a URL or a file.
@@ -598,7 +601,7 @@ public class PlotBox extends Applet {
 	       } catch (NullPointerException e) {
 		   // If we got a NullPointerException, then perhaps
 		   // we are calling this as an application, not as an applet.
-		   url = new URL(_dataurl);
+		   url = new URL(__dataurl);
 	       }
 	       in = new DataInputStream(url.openStream());
 	   } catch (MalformedURLException e) {
@@ -620,8 +623,8 @@ public class PlotBox extends Applet {
 
 	// At this point, we've opened the data source, now read it in
 	try {
-	    if (_binary) {
-		convertBinaryStream(in);
+	    if (__binary) {
+		_convertBinaryStream(in);
 	    } else {
 		String line = in.readLine();
 		while (line != null) {
@@ -646,8 +649,8 @@ public class PlotBox extends Applet {
         // If more buttons are added, we may have to find some other place
         // for them, like below the legend, stacked vertically.
         setLayout(new FlowLayout(FlowLayout.RIGHT));
-        _fillButton = new Button("fill");
-        add(_fillButton);
+        __fillButton = new Button("fill");
+        add(__fillButton);
     }
 	
     /**
@@ -655,9 +658,9 @@ public class PlotBox extends Applet {
      */
     public boolean mouseDown(Event evt, int x, int y) {
         // ignore if out of range
-        if (y <= lry && y >= uly && x <= lrx && x >= ulx) {
-            _zoomx = x;
-            _zoomy = y;
+        if (y <= _lry && y >= _uly && x <= _lrx && x >= _ulx) {
+            __zoomx = x;
+            __zoomy = y;
             return true;
         }
         return false;
@@ -669,59 +672,60 @@ public class PlotBox extends Applet {
      * the event.
      */
     public boolean mouseDrag(Event evt, int x, int y) {
-        boolean pointinside = y <= lry && y >= uly && x <= lrx && x >= ulx;
+        boolean pointinside = y <= _lry && y >= _uly &&
+	    x <= _lrx && x >= _ulx;
         // erase previous rectangle, if there was one.
-        if ((_zoomx != -1 || _zoomy != -1) && pointinside) {
+        if ((__zoomx != -1 || __zoomy != -1) && pointinside) {
             // Ability to zoom out added by William Wu.
             // If we are not already zooming, figure out whether we
             // are zooming in or out.
-            if (_zoomin == false && _zoomout == false){
-                if (y < _zoomy) {
-                    _zoomout = true;
+            if (__zoomin == false && __zoomout == false){
+                if (y < __zoomy) {
+                    __zoomout = true;
                     // Draw reference box.
-                    graphics.drawRect(_zoomx-15, _zoomy-15, 30, 30);
-                } else if (y > _zoomy) {
-                    _zoomin = true; 
+                    graphics.drawRect(__zoomx-15, __zoomy-15, 30, 30);
+                } else if (y > __zoomy) {
+                    __zoomin = true; 
                 }
             }
 
-            if (_zoomin == true){   
+            if (__zoomin == true){   
                 graphics.setXORMode(Color.white);
                 // Erase the previous box if necessary.
-                if (_zoomxn != -1 || _zoomyn != -1) {
-                    int minx = Math.min(_zoomx, _zoomxn);
-                    int maxx = Math.max(_zoomx, _zoomxn);
-                    int miny = Math.min(_zoomy, _zoomyn);
-                    int maxy = Math.max(_zoomy, _zoomyn);
+                if (__zoomxn != -1 || __zoomyn != -1) {
+                    int minx = Math.min(__zoomx, __zoomxn);
+                    int maxx = Math.max(__zoomx, __zoomxn);
+                    int miny = Math.min(__zoomy, __zoomyn);
+                    int maxy = Math.max(__zoomy, __zoomyn);
                     graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
                 }
                 // Draw a new box if necessary.
-                if (y > _zoomy) {
-                    _zoomxn = x;
-                    _zoomyn = y;
-                    int minx = Math.min(_zoomx, _zoomxn);
-                    int maxx = Math.max(_zoomx, _zoomxn);
-                    int miny = Math.min(_zoomy, _zoomyn);
-                    int maxy = Math.max(_zoomy, _zoomyn);
+                if (y > __zoomy) {
+                    __zoomxn = x;
+                    __zoomyn = y;
+                    int minx = Math.min(__zoomx, __zoomxn);
+                    int maxx = Math.max(__zoomx, __zoomxn);
+                    int miny = Math.min(__zoomy, __zoomyn);
+                    int maxy = Math.max(__zoomy, __zoomyn);
                     graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
                     graphics.setPaintMode();
                     return true;
                 }
-            } else if (_zoomout == true){
+            } else if (__zoomout == true){
                 graphics.setXORMode(Color.white);
                 // Erase previous box if necessary.
-                if (_zoomxn != -1 || _zoomyn != -1) {
-                    int x_diff = Math.abs(_zoomx-_zoomxn);
-                    int y_diff = Math.abs(_zoomy-_zoomyn);
-                    graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
+                if (__zoomxn != -1 || __zoomyn != -1) {
+                    int x_diff = Math.abs(__zoomx-__zoomxn);
+                    int y_diff = Math.abs(__zoomy-__zoomyn);
+                    graphics.drawRect(__zoomx-15-x_diff, __zoomy-15-y_diff,
                            30+x_diff*2, 30+y_diff*2);
                 }
-                if (y < _zoomy){
-                    _zoomxn = x;
-                    _zoomyn = y;     
-                    int x_diff = Math.abs(_zoomx-_zoomxn);
-                    int y_diff = Math.abs(_zoomy-_zoomyn);
-                    graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
+                if (y < __zoomy){
+                    __zoomxn = x;
+                    __zoomyn = y;     
+                    int x_diff = Math.abs(__zoomx-__zoomxn);
+                    int y_diff = Math.abs(__zoomy-__zoomyn);
+                    graphics.drawRect(__zoomx-15-x_diff, __zoomy-15-y_diff,
                             30+x_diff*2, 30+y_diff*2);
                     graphics.setPaintMode();
                     return true;
@@ -737,60 +741,61 @@ public class PlotBox extends Applet {
      */
     public boolean mouseUp(Event evt, int x, int y) {
         // ignore if there hasn't been a drag, or if x,y is out of range
-        boolean pointinside = y <= lry && y >= uly && x <= lrx && x >= ulx;
+        boolean pointinside = y <= _lry && y >= _uly &&
+	    x <= _lrx && x >= _ulx;
         boolean handled = false;
-        if (_zoomin == true){  
-            if (_zoomxn != -1 || _zoomyn != -1) {
+        if (__zoomin == true){  
+            if (__zoomxn != -1 || __zoomyn != -1) {
                 // erase previous rectangle.
-                int minx = Math.min(_zoomx, _zoomxn);
-                int maxx = Math.max(_zoomx, _zoomxn);
-                int miny = Math.min(_zoomy, _zoomyn);
-                int maxy = Math.max(_zoomy, _zoomyn);
+                int minx = Math.min(__zoomx, __zoomxn);
+                int maxx = Math.max(__zoomx, __zoomxn);
+                int miny = Math.min(__zoomy, __zoomyn);
+                int maxy = Math.max(__zoomy, __zoomyn);
                 graphics.setXORMode(Color.white);
                 graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
                 graphics.setPaintMode();
                 // if in range, zoom
                 if (pointinside) {
-                    double a = xMin + (_zoomx - ulx)/xscale;
-                    double b = xMin + (x - ulx)/xscale;
+                    double a = _xMin + (__zoomx - _ulx)/_xscale;
+                    double b = _xMin + (x - _ulx)/_xscale;
                     if (a < b) setXRange(a, b);
                     else setXRange(b, a);
-                    a = yMax - (_zoomy - uly)/yscale;
-                    b = yMax - (y - uly)/yscale;
+                    a = _yMax - (__zoomy - _uly)/_yscale;
+                    b = _yMax - (y - _uly)/_yscale;
                     if (a < b) setYRange(a, b);
                     else setYRange(b, a);
                     drawPlot(true);
                 }
                 handled = true;
             }
-        } else if (_zoomout == true){
+        } else if (__zoomout == true){
             // Erase previous rectangle.
             graphics.setXORMode(Color.white);
-            int x_diff = Math.abs(_zoomx-_zoomxn);
-            int y_diff = Math.abs(_zoomy-_zoomyn);
-            graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
+            int x_diff = Math.abs(__zoomx-__zoomxn);
+            int y_diff = Math.abs(__zoomy-__zoomyn);
+            graphics.drawRect(__zoomx-15-x_diff, __zoomy-15-y_diff,
                     30+x_diff*2, 30+y_diff*2);
             graphics.setPaintMode();
             if (pointinside) {
                 // Calculate zoom factor.
-                double a = (double)(Math.abs(_zoomx - x)) / 30.0;
-                double b = (double)(Math.abs(_zoomy - y)) / 30.0;
-                double newx1 = xMax + (xMax - xMin) * a;
-                double newx2 = xMin - (xMax - xMin) * a;
-                if (newx1 > xTop) newx1 = xTop; 
-                if (newx2 < xBottom) newx2 = xBottom; 
-                double newy1 = yMax + (yMax - yMin) * b;
-                double newy2 = yMin - (yMax - yMin) * b;
-                if (newy1 > yTop) newy1 = yTop; 
-                if (newy2 < yBottom) newy2 = yBottom; 
+                double a = (double)(Math.abs(__zoomx - x)) / 30.0;
+                double b = (double)(Math.abs(__zoomy - y)) / 30.0;
+                double newx1 = _xMax + (_xMax - _xMin) * a;
+                double newx2 = _xMin - (_xMax - _xMin) * a;
+                if (newx1 > _xTop) newx1 = _xTop; 
+                if (newx2 < _xBottom) newx2 = _xBottom; 
+                double newy1 = _yMax + (_yMax - _yMin) * b;
+                double newy2 = _yMin - (_yMax - _yMin) * b;
+                if (newy1 > _yTop) newy1 = _yTop; 
+                if (newy2 < _yBottom) newy2 = _yBottom; 
                 setXRange(newx2, newx1);
                 setYRange(newy2, newy1);
                 drawPlot(true);
             } 
             handled = true;
         }
-        _zoomin = _zoomout = false;
-        _zoomxn = _zoomyn = _zoomx = _zoomy = -1;
+        __zoomin = __zoomout = false;
+        __zoomxn = __zoomyn = __zoomx = __zoomy = -1;
         return handled;
     }
 
@@ -803,121 +808,6 @@ public class PlotBox extends Applet {
 	drawPlot(true);
     }
     
-    /** Set the binary flag to true if we are reading pxgraph format binar
-     * data.
-     */
-    public void setBinary (boolean binary) {
-	this._binary = binary;
-    }
-
-    /** Set the dataurl.  This method is used by Applications, applets
-     * should just set the dataurl parameter with:
-     * &lt;param name="dataurl" value="data.plt"&gt;
-     */
-    public void setDataurl (String dataurl) {
-	this._dataurl = dataurl;
-    }
-
-
-    /**
-     * Control whether the grid is drawn.
-     */
-    public void setGrid (boolean grid) {
-        this.grid = grid;
-    }
-    
-    /**
-     * Set the title of the graph.  The title will appear on the subsequent
-     * call to <code>paint()</code> or <code>drawPlot()</code>.
-     */
-    public void setTitle (String title) {
-        this._title = title;
-    }
-    
-
-    /** 
-     * Set the label for the X (horizontal) axis.  The label will
-     * appear on the subsequent call to <code>paint()</code> or
-     * <code>drawPlot()</code>.
-     */
-    public void setXLabel (String label) {
-        this._xlabel = label;
-    }
-
-    /** 
-     * Set the label for the Y (vertical) axis.  The label will
-     * appear on the subsequent call to <code>paint()</code> or
-     * <code>drawPlot()</code>.
-     */
-    public void setYLabel (String label) {
-        this._ylabel = label;
-    }
-
-    /** 
-     * Set the X (horizontal) range of the plot.  If this is not done
-     * explicitly, then the range is computed automatically from data
-     * available when <code>paint()</code> or <code>drawPlot()</code>
-     * are called.  If min and max are identical, then the range is
-     * arbitrarily spread by 1.
-     */
-    public void setXRange (double min, double max) {
-        _setXRange(min,max);
-        xRangeGiven = true;
-    }
-
-    /**
-     * Set the Y (vertical) range of the plot.  If this is not done
-     * explicitly, then the range is computed automatically from data
-     * available when <code>paint()</code> or <code>drawPlot()</code>
-     * are called.  If min and max are identical, then the range is
-     * arbitrarily spread by 0.1.
-     */
-    public void setYRange (double min, double max) {
-        _setYRange(min,max);
-        yRangeGiven = true;
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
-    /**
-     * Abstract method - convert a Binary Stream
-     * @exception PlotDataException if there is a serious data format problem.
-     * @exception java.io.IOException if an I/O error occurs.
-     */
-    protected void convertBinaryStream(DataInputStream in) throws
-	PlotDataException, IOException {
-	    throw new PlotDataException("Binary data not supported in the" +
-					"baseclass");
-    }
-
-    /**
-     * Put a mark corresponding to the specified dataset at the
-     * specified x and y position.  In this base class, a point is a
-     * filled circle 6 pixels across.  Note that marks greater than
-     * about 6 pixels in size will not look very good since they will
-     * overlap axis labels and may not fit well in the legend.  The
-     * <i>connected</i> argument is ignored, but in derived classes,
-     * it specifies whether the point should be connected by a line to
-     * previously drawn points.  The <i>clip</i> argument, if
-     * <code>true</code>, states that the point should not be drawn if
-     * it is out of range.  The return value indicates whether the
-     * point is drawn.
-     */
-    protected boolean drawPoint(int dataset, int xpos, int ypos,
-				boolean connected, boolean clip) {
-        boolean pointinside = ypos <= lry && ypos >= uly && xpos <= lrx && xpos >= ulx;
-        if (!pointinside && clip) {return false;}
-        // Points are only distinguished up to 10 data sets.
-        dataset %= 10;
-        if (usecolor) {
-            graphics.setColor(colors[dataset]);
-        }
-        graphics.fillOval(xpos-1, ypos-1, 3, 3);
-        graphics.setColor(Color.black);
-        return true;
-    }
-
     /**
      * Parse a line that gives plotting information.  In this base
      * class, only lines pertaining to the title and labels are processed.
@@ -976,75 +866,189 @@ public class PlotBox extends Applet {
             // example:
             // XTicks "label" 0, "label" 1, "label" 3
             boolean cont = true;
-            _parsePairs(line.substring(7), true);
+            __parsePairs(line.substring(7), true);
         	return true;
         }
         if (line.startsWith("YTicks:")) {
             // example:
             // YTicks "label" 0, "label" 1, "label" 3
             boolean cont = true;
-            _parsePairs(line.substring(7), false);
+            __parsePairs(line.substring(7), false);
         	return true;
         }
         
         if (line.startsWith("Grid:")) {
             if (line.indexOf("off",5) >= 0) {
-                grid = false;
+                _grid = false;
             } else {
-                grid = true;
+                _grid = true;
             }
             return true;
         }
         if (line.startsWith("Color:")) {
             if (line.indexOf("off",6) >= 0) {
-                usecolor = false;
+                _usecolor = false;
             } else {
-                usecolor = true;
+                _usecolor = true;
             }
             return true;
         }
         return false;
     }
+
+    /** Set the binary flag to true if we are reading pxgraph format binar
+     * data.
+     */
+    public void setBinary (boolean binary) {
+	this.__binary = binary;
+    }
+
+    /** Set the dataurl.  This method is used by Applications, applets
+     * should just set the dataurl parameter with:
+     * &lt;param name="dataurl" value="data.plt"&gt;
+     */
+    public void setDataurl (String dataurl) {
+	this.__dataurl = dataurl;
+    }
+
+    /**
+     * Control whether the grid is drawn.
+     */
+    public void setGrid (boolean grid) {
+        this._grid = grid;
+    }
     
+    /**
+     * Set the title of the graph.  The title will appear on the subsequent
+     * call to <code>paint()</code> or <code>drawPlot()</code>.
+     */
+    public void setTitle (String title) {
+        this.__title = title;
+    }
+    
+    /** 
+     * Set the label for the X (horizontal) axis.  The label will
+     * appear on the subsequent call to <code>paint()</code> or
+     * <code>drawPlot()</code>.
+     */
+    public void setXLabel (String label) {
+        this.__xlabel = label;
+    }
+
+    /** 
+     * Set the label for the Y (vertical) axis.  The label will
+     * appear on the subsequent call to <code>paint()</code> or
+     * <code>drawPlot()</code>.
+     */
+    public void setYLabel (String label) {
+        this.__ylabel = label;
+    }
+
+    /** 
+     * Set the X (horizontal) range of the plot.  If this is not done
+     * explicitly, then the range is computed automatically from data
+     * available when <code>paint()</code> or <code>drawPlot()</code>
+     * are called.  If min and max are identical, then the range is
+     * arbitrarily spread by 1.
+     */
+    public void setXRange (double min, double max) {
+        __setXRange(min,max);
+        _xRangeGiven = true;
+    }
+
+    /**
+     * Set the Y (vertical) range of the plot.  If this is not done
+     * explicitly, then the range is computed automatically from data
+     * available when <code>paint()</code> or <code>drawPlot()</code>
+     * are called.  If min and max are identical, then the range is
+     * arbitrarily spread by 0.1.
+     */
+    public void setYRange (double min, double max) {
+        __setYRange(min,max);
+        _yRangeGiven = true;
+    }
+
+    //////////////////////////////////////////////////////////////////////////
+    ////                         protected methods                        ////
+
+    /**
+     * Abstract method - convert a Binary Stream
+     * @exception PlotDataException if there is a serious data format problem.
+     * @exception java.io.IOException if an I/O error occurs.
+     */
+    protected void _convertBinaryStream(DataInputStream in) throws
+	PlotDataException, IOException {
+	    throw new PlotDataException("Binary data not supported in the" +
+					"baseclass");
+    }
+
+    /**
+     * Put a mark corresponding to the specified dataset at the
+     * specified x and y position.  In this base class, a point is a
+     * filled circle 6 pixels across.  Note that marks greater than
+     * about 6 pixels in size will not look very good since they will
+     * overlap axis labels and may not fit well in the legend.  The
+     * <i>connected</i> argument is ignored, but in derived classes,
+     * it specifies whether the point should be connected by a line to
+     * previously drawn points.  The <i>clip</i> argument, if
+     * <code>true</code>, states that the point should not be drawn if
+     * it is out of range.  The return value indicates whether the
+     * point is drawn.
+     */
+    protected boolean _drawPoint(int dataset, int xpos, int ypos,
+				boolean connected, boolean clip) {
+        boolean pointinside = ypos <= _lry && ypos >= _uly && 
+	    xpos <= _lrx && xpos >= _ulx;
+        if (!pointinside && clip) {return false;}
+        // Points are only distinguished up to 10 data sets.
+        dataset %= 10;
+        if (_usecolor) {
+            graphics.setColor(_colors[dataset]);
+        }
+        graphics.fillOval(xpos-1, ypos-1, 3, 3);
+        graphics.setColor(Color.black);
+        return true;
+    }
+
     //////////////////////////////////////////////////////////////////////////
     ////                           protected variables                    ////
     
     Graphics graphics;
 
 	// The range of the plot.
-    protected double yMax, yMin, xMax, xMin;
+    protected double _yMax, _yMin, _xMax, _xMin;
 
     // Whether the ranges have been given.
-    protected boolean xRangeGiven = false;
-    protected boolean yRangeGiven = false;
+    protected boolean _xRangeGiven = false;
+    protected boolean _yRangeGiven = false;
     // The minimum and maximum values registered so far, for auto ranging.
-    protected double xBottom = Double.MAX_VALUE;
-    protected double xTop = Double.MIN_VALUE;
-    protected double yBottom = Double.MAX_VALUE;
-    protected double yTop = Double.MIN_VALUE;
+    protected double _xBottom = Double.MAX_VALUE;
+    protected double _xTop = Double.MIN_VALUE;
+    protected double _yBottom = Double.MAX_VALUE;
+    protected double _yTop = Double.MIN_VALUE;
     
     // Whether to draw a background grid.
-    protected boolean grid = true;
+    protected boolean _grid = true;
     
     // Derived classes can increment these to make space around the plot.
-    protected int topPadding = 10;
-    protected int bottomPadding = 5;
-    protected int rightPadding = 10;
-    protected int leftPadding = 10;
+    protected int _topPadding = 10;
+    protected int _bottomPadding = 5;
+    protected int _rightPadding = 10;
+    protected int _leftPadding = 10;
 
     // The plot rectangle in pixels.
-    // The naming convention is: "ulx" = "upper left x", where "x" is
+    // The naming convention is: "_ulx" = "upper left x", where "x" is
     // the horizontal dimension.
-    protected int ulx, uly, lrx, lry;
+    protected int _ulx, _uly, _lrx, _lry;
 
     // Scaling used in plotting points.
-    protected double yscale, xscale;
+    protected double _yscale, _xscale;
     
-    // Indicator whether to use colors
-    protected boolean usecolor = true;
+    // Indicator whether to use _colors
+    protected boolean _usecolor = true;
 
-    // Default colors, by data set.
-    static protected Color[] colors = {
+    // Default _colors, by data set.
+    static protected Color[] _colors = {
         new Color(0xcd0000),   // red3
         new Color(0x4a708b),   // skyblue4
         new Color(0x6b1063),   // violet-ish
@@ -1065,26 +1069,26 @@ public class PlotBox extends Applet {
      * (in pixels)  used up.  The arguments give the upper right corner
      * of the region where the legend should be placed.
      */
-    private int _drawLegend(int urx, int ury) {
+    private int __drawLegend(int urx, int ury) {
         // FIXME: consolidate all these for efficiency
-        graphics.setFont(_labelfont);
+        graphics.setFont(__labelfont);
         FontMetrics lfm = graphics.getFontMetrics();
         int spacing = lfm.getHeight();
 
-        Enumeration v = _legendStrings.elements();
-        Enumeration i = _legendDatasets.elements();
+        Enumeration v = __legendStrings.elements();
+        Enumeration i = __legendDatasets.elements();
         int ypos = ury + spacing;
         int maxwidth = 0;
         while (v.hasMoreElements()) {
             String legend = (String) v.nextElement();
-            // NOTE: relies on _legendDatasets having the same num. of entries.
+            // NOTE: relies on __legendDatasets having the same num. of entries.
             int dataset = ((Integer) i.nextElement()).intValue();
             // NOTE: 6 pixel width of point assumed.
-            if (!drawPoint(dataset, urx-3, ypos-3, false, false)) {
+            if (!_drawPoint(dataset, urx-3, ypos-3, false, false)) {
                 // Point was not drawn, perhaps because there is no mark.
                 // Draw a colored rectangle.
-                if (usecolor) {
-                    graphics.setColor(colors[dataset]);
+                if (_usecolor) {
+                    graphics.setColor(_colors[dataset]);
                 }
                 graphics.fillRect(urx-6, ypos-6, 6, 6);
                 graphics.setColor(Color.black);
@@ -1104,7 +1108,7 @@ public class PlotBox extends Applet {
      * any incorrectly formatted fields.  Append the words in order to the
      * vector wordved and the numbers (as Doubles) to the vector numvec.
      */
-    private void _parsePairs (String line, boolean xtick) {    
+    private void __parsePairs (String line, boolean xtick) {    
         int start = 0;
         boolean cont = true;
         while (cont) {
@@ -1146,9 +1150,9 @@ public class PlotBox extends Applet {
      *
      * Note: The argument must be strictly positive.
      */
-     private double _roundUp(double val) {
+     private double __roundUp(double val) {
          int exponent, idx;
-         exponent = (int) Math.floor(Math.log(val)*_log10scale);
+         exponent = (int) Math.floor(Math.log(val)*__log10scale);
          val *= Math.pow(10, -exponent);
          if (val > 5.0) val = 10.0;
          else if (val > 2.0) val = 5.0;
@@ -1161,7 +1165,7 @@ public class PlotBox extends Applet {
      * Internal implementation of setXRange, so that it can be called when
      * autoranging. 
      */
-    private void _setXRange (double min, double max) {
+    private void __setXRange (double min, double max) {
         // If values are invalid, try for something reasonable.
         if (min > max) {
             min = -1.0;
@@ -1172,26 +1176,26 @@ public class PlotBox extends Applet {
         }
         // Find the exponent.
         double largest = Math.max(Math.abs(min),Math.abs(max));
-        _xExp = (int) Math.floor(Math.log(largest)*_log10scale);
+        __xExp = (int) Math.floor(Math.log(largest)*__log10scale);
         // Use the exponent only if it's larger than 1 in magnitude.
-        if (_xExp > 1 || _xExp < -1) {
-            double xs = 1.0/Math.pow(10.0,(double)_xExp);
-            _xMin = min*xs;
-            _xMax = max*xs;
+        if (__xExp > 1 || __xExp < -1) {
+            double xs = 1.0/Math.pow(10.0,(double)__xExp);
+            __xMin = min*xs;
+            __xMax = max*xs;
         } else {
-            _xMin = min;
-            _xMax = max;
-            _xExp = 0;
+            __xMin = min;
+            __xMax = max;
+            __xExp = 0;
         }
-        xMin = min;
-        xMax = max;
+        _xMin = min;
+        _xMax = max;
     }
 
     /*
      * Internal implementation of setYRange, so that it can be called when
      * autoranging.
      */
-    private void _setYRange (double min, double max) {
+    private void __setYRange (double min, double max) {
         // If values are invalid, try for something reasonable.
         if (min > max) {
             min = -1.0;
@@ -1202,19 +1206,19 @@ public class PlotBox extends Applet {
         }
         // Find the exponent.
         double largest = Math.max(Math.abs(min),Math.abs(max));
-        _yExp = (int) Math.floor(Math.log(largest)*_log10scale);
+        __yExp = (int) Math.floor(Math.log(largest)*__log10scale);
         // Use the exponent only if it's larger than 1 in magnitude.
-        if (_yExp > 1 || _yExp < -1) {
-            double ys = 1.0/Math.pow(10.0,(double)_yExp);
-            _yMin = min*ys;
-            _yMax = max*ys;
+        if (__yExp > 1 || __yExp < -1) {
+            double ys = 1.0/Math.pow(10.0,(double)__yExp);
+            __yMin = min*ys;
+            __yMax = max*ys;
         } else {
-            _yMin = min;
-            _yMax = max;
-            _yExp = 0;
+            __yMin = min;
+            __yMax = max;
+            __yExp = 0;
         }
-        yMin = min;
-        yMax = max;
+        _yMin = min;
+        _yMax = max;
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -1222,48 +1226,48 @@ public class PlotBox extends Applet {
     
     // The URL to be opened.  This variable is not used if we are running
     // as an applet, but applications should call setDataurl().
-    private String _dataurl = null;
+    private String __dataurl = null;
 
     // Set to true if we are reading in pxgraph format binary data.
-    private boolean _binary = false;
+    private boolean __binary = false;
 
     // The range of the plot as labeled (multiply by 10^exp for actual range.
-    private double _yMax, _yMin, _xMax, _xMin;
+    private double __yMax, __yMin, __xMax, __xMin;
     // The power of ten by which the range numbers should be multiplied.
-    private int _yExp, _xExp;
+    private int __yExp, __xExp;
 
     // Scaling used in making tick marks
-    private double _yscale, _xscale;
+    private double __yscale, __xscale;
 
-    private Font _labelfont, _superscriptfont, _titlefont;
+    private Font __labelfont, __superscriptfont, __titlefont;
     
     // For use in calculating log base 10.  A log times this is a log base 10.
-    private static final double _log10scale = 1/Math.log(10);
+    private static final double __log10scale = 1/Math.log(10);
     
     // An array of strings for reporting errors.
-    private String _errorMsg[];
+    private String __errorMsg[];
     
     // The title and label strings.
-    private String _xlabel, _ylabel, _title;
+    private String __xlabel, __ylabel, __title;
     
     // Legend information.
-    private Vector _legendStrings;
-    private Vector _legendDatasets;
+    private Vector __legendStrings;
+    private Vector __legendDatasets;
     
     // If XTicks or YTicks are given
-    private Vector _xticks, _xticklabels, _yticks, _yticklabels;
+    private Vector __xticks, __xticklabels, __yticks, __yticklabels;
 
     // A button for filling the plot
-    private Button _fillButton;
+    private Button __fillButton;
     
     // Variables keeping track of the interactive zoom box.
     // Initialize to impossible values.
-    private int _zoomx = -1;
-    private int _zoomy = -1;
-    private int _zoomxn = -1;
-    private int _zoomyn = -1;
+    private int __zoomx = -1;
+    private int __zoomy = -1;
+    private int __zoomxn = -1;
+    private int __zoomyn = -1;
 
     // Control whether we are zooming in or out.
-    private boolean _zoomin = false;
-    private boolean _zoomout = false;
+    private boolean __zoomin = false;
+    private boolean __zoomout = false;
 }
