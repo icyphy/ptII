@@ -66,7 +66,7 @@ public class Average extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         output.setTypeSameAs(input);
-        reset = new TypedIOPort(container, "reset", true, false);
+        reset = new TypedIOPort(this, "reset", true, false);
         reset.setTypeEquals(BooleanToken.class);
     }
 
@@ -92,7 +92,10 @@ public class Average extends Transformer {
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Average newobj = (Average)super.clone(ws);
         newobj.output.setTypeSameAs(newobj.input);
+        System.out.println(newobj.output.getName());
         newobj.reset = (TypedIOPort)newobj.getPort("reset");
+        System.out.println(newobj.reset.getName());
+        newobj.reset.setInput(true);
         newobj.reset.setTypeEquals(BooleanToken.class);
         return newobj;
     }
@@ -115,12 +118,15 @@ public class Average extends Transformer {
      */
     public void fire() throws IllegalActionException {
         try {
-            if (reset.hasToken(0)) {
-                BooleanToken r = (BooleanToken)reset.get(0);
-                if(r.booleanValue()) {
-                    // Being reset at this firing.
-                    _accum = null;
-                    _count = 1;
+            // First test if it is dangling... then if it has token.
+            if (reset.getWidth() > 0) {
+                if (reset.hasToken(0)) {
+                    BooleanToken r = (BooleanToken)reset.get(0);
+                    if(r.booleanValue()) {
+                        // Being reset at this firing.
+                        _accum = null;
+                        _count = 1;
+                    }
                 }
             }
             Token in = input.get(0);
