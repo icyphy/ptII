@@ -90,10 +90,10 @@ public class DEInterruptibleServer extends DEActor {
 
         // set the parameters.
         _minimumServiceTime = new Parameter(this, 
-                "Minimum Service Time", 
+                "MinimumServiceTime", 
                 new DoubleToken(minServiceTime));
         _interruptServiceTime = new Parameter(this,
-                "Interrupt Service Time", 
+                "InterruptServiceTime", 
                 new DoubleToken(interruptServiceTime));
         
     }
