@@ -128,12 +128,19 @@ public abstract class PtolemyFrame extends TableauFrame {
 
     /** Query the user for a filename, save the model to that file,
      *  and open a new window to view the model.
-     *  This overrides the base class to set the initial filename to
+     *  If setModel() has been called, then the initial filename
+     *  is set to the name of the model.  If setModel() has not yet
+     *  been called, then the initial filename to
      *  <code>model.xml</code>.
      *  @return True if the save succeeds.
      */
     protected boolean _saveAs() {
-	_initialSaveAsFileName = "model.xml";
+	if (_model == null || _model.getName().length() == 0) {
+	    _initialSaveAsFileName = "model.xml";
+	} else {
+	    // We are not sanitizing the name here . . .
+	    _initialSaveAsFileName = _model.getName() + ".xml";
+	}
 	return super._saveAs();
     }
 
