@@ -25,83 +25,126 @@
                                         COPYRIGHTENDKEY
 */
 
-package pt.kernel;
+package pt.actors;
+import pt.kernel.*;
+import collections.LinkedList;
+import java.util.Enumeration;
+//import java.util.*;
+
 
 //////////////////////////////////////////////////////////////////////////
-//// NoName
+//// Director
 /** 
 Description of the class
-@author 
+@author Mudit Goel
 @version $Id$
 @see classname
 @see full-classname
 */
-public class NoName {
+public class Director extends NamedObj implements Executable {
     /** Constructor
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
-    public NoName() {
+    public Director(CompositeActor container, String name) {
+        super(name);
+        _container = container;
     }
-
+    
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
+    
+    public Nameable getContainer() {
+        return _container;
+    }
 
+    public void invalidateSchedule() {
+    }
+    
+    public void initialize() {
+    }
+
+    public boolean iterate() throws IllegalActionException {
+	System.out.println("Iterate beeing called");
+        if (prefire()) {
+            fire();
+            postfire();
+        } 
+        return _complete;
+    }
+    
     /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
      */	
-    public int APublicMethod() {
-        return 1;
+    public void fire() throws IllegalActionException {
+        
+    }
+
+    public void postfire() {
+    }
+
+    //FIXME:
+    public boolean prefire() {
+        return true;
+    }
+    
+    public void registerNewActor(Actor actor) {
+        if (_listOfNewActors == null) {
+            _listOfNewActors = new LinkedList();
+        }
+        _listOfNewActors.insertLast(actor);
+    }
+
+    public Enumeration getNewActors() {
+        return _listOfNewActors.elements();
+    }
+    
+    public void clearNewActors() {
+        _listOfNewActors = null;
+    }
+    
+    public void run() throws IllegalActionException {
+        initialize();
+        while (!iterate());
+        wrapup();
+        return;
+    }
+
+    //FIXME::
+    public boolean scheduleValid() {
+        return false;
+    }
+
+    public boolean getComplete() {
+        return _complete;
+    }
+
+    public void setComplete(boolean complete) {
+        _complete = complete;
+    }
+
+    public void wrapup() {
+        Enumeration allactors = ((CompositeActor)getContainer()).deepGetEntities();
+        while (allactors.hasMoreElements()) {
+            Actor actor = (Actor)allactors.nextElement();
+            actor.wrapup();
+        }
     }
 
 
     //////////////////////////////////////////////////////////////////////////
     ////                         protected methods                        ////
 
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    protected int _AProtectedMethod() {
-        return 1;
-    }
-
     //////////////////////////////////////////////////////////////////////////
     ////                         protected variables                      ////
-
-    /** Description */
-    protected int _aprotectedvariable;
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private methods                          ////
 
-    /* Private methods should not have doc comments, they should
-     * have regular comments.
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
-     */	
-    private int __APrivateMethod() {
-        return 1;
-    }
-
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    /* Private variables should not have doc comments, they should
-       have regular comments.
-     */
-    private int __aprivatevariable;
+    private CompositeActor _container = null;
+    private boolean _complete = true;
+    private boolean _schedulevalid;
+    private CompositeActor _subsystem;
+    private LinkedList _listOfNewActors = null;
+    
 }
