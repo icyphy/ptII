@@ -61,18 +61,20 @@ This actor sends its input as a Datagram over the network using the
 UDP protocol.  Before being sent, the data is optionally encoded as a
 text string representing the value being sent.  When this option is
 selected, any Ptolemy data type may be represented.
-See the <i>encoding</i> parameter.<p>
+See the <i>encoding</i> parameter.
 
-The address and socket number towards which the datagram is sent are
+<p>The address and socket number towards which the datagram is sent are
 given by optional inputs <i>remoteAddress</i> and <i>remoteSocketNumber</i>.
 Each optional input has an associated parameter giving its default value.
 The default values are used unless/until replaced by a token arriving at
-that optional input. <p>
+that optional input.  Note that some IP addresses are special broadcast
+addresses.  An address such as 128.32.239.255 broadcasts to any IP
+addresses on the 128.23.239.xxx subnet.  This only works on your own subnet.
 
-Each instance of this actor needs to allocate a local socket from
+<p>Each instance of this actor needs to allocate a local socket from
 which to transmit datagrams.  Initially, the local socket number is
 set to 4003, just to pick a number.  The socket is not allocated
-until the model is run.<p>
+until the model is run.
 
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
 (Based on TiltSensor actor written by

@@ -205,6 +205,7 @@ Reference:  http://192.168.1.1/Forward.htm
 DOS prompt and also in the UNIX-like Bash shell.  In either shell, 
 enter 'netstat -an'.  This command shows current port allocations!  Ports 
 allocated to Ptolemy models are shown along with other port allocations.
+Other useful network commands include 'ping' and 'tracert'.
 Both TCP and UDP (datagram) ports are shown by netstat.
 FIXME: Find out whether a TCP port using a specific number blocks a 
 UDP port from using that same number.
@@ -479,8 +480,8 @@ public class DatagramReader extends TypedAtomicActor {
         // Don't track _evalVar because it gets called every time
         // a datagram is parsed with the Ptolemy parser.
         if (attribute != _evalVar) {
-            //if (_debugging) _debug("AtCh"
-            System.out.println("AtCh"
+            if (_debugging) _debug("AtCh"
+            //System.out.println("AtCh"
                     + attribute.toString().substring(28));
         }
 
@@ -705,8 +706,8 @@ public class DatagramReader extends TypedAtomicActor {
 
         if (attribute != _evalVar) {
             if (_debugging) _debug(this + "attributeChanged() done");
-            //if (_debugging) _debug("---"
-            System.out.println("---"
+            if (_debugging) _debug("---"
+	    //System.out.println("---"
                     + attribute.toString().substring(28));
         }
 
@@ -874,8 +875,8 @@ public class DatagramReader extends TypedAtomicActor {
             //  of outputting the default, provided
             //  there is a previous output to repeat.)
 
-	    // _defaultOutputToken==null when eser enters blank parameter!
-	    // Thus this cool and useful test works!
+	    // _defaultOutputToken==null when user has entered blank parameter.
+	    // Take this as a directive to not broadcast a token in this case.
 	    if (_defaultOutputToken == null) {
 		if (_debugging) _debug(
                         "DO NOT Broadcast ANY output (blank default)");
@@ -934,6 +935,8 @@ public class DatagramReader extends TypedAtomicActor {
 
         // This is a key fix!  Programs in DE (such as 1plusFxC.xml)
         // Used to only run the first time after opening the XML!
+	// This is because private variables retain their values from
+	// run to run of a model.
         _packetsAlreadyAwaitingFire = 0;
 
         Variable var = (Variable)getAttribute("_evalVar");
@@ -995,14 +998,14 @@ public class DatagramReader extends TypedAtomicActor {
 	super.setContainer(container);
     }
 
-    /** Stop fire.  Stop the fire() method, but only if it is blocked.
+    /** Stop the fire() method, but only if it is blocked.
      *  The actor returns from fire() with its state the same as
      *  before fire() was called.  Thus, when the (director? manager?)
      *  is ready, it may call fire() again and the actor will pick up
      *  where it left off.  If fire() not blocked, it is permitted to
      *  complete.  NOTE: When pausing or stopping execution, it will
      *  on rare occasion be necessary to press 'pause' or 'stop' a
-     *  second time.  This is because the director/manager insists in
+     *  second time.  This is because the director/manager insists on
      *  calling fire() after every call of prefire().  Even when it
      *  has issued a stopFire() during prefire(), it persists,
      *  executing the very fire() it is trying to stop!  This behavior
@@ -1011,7 +1014,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  Fortunately, multiple presses of the 'pause' and 'stop'
      *  buttons result in multiple stopFire() calls.  By the time a
      *  user can click the mouse a second time, fire() will have blocked
-     *  if it is going to.  It can then be stopped as expected.
+     *  if it is going to do so.  It can then be stopped as expected.
 
      *  FIXME: There exists a circumstance where stopFire() could fail
      *  to stop the fire() method, and the fire() method could block
@@ -1033,7 +1036,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  that, upon resuming execution, prefire() is repeated before
      *  fire() is reentered.-[Tested; assumption holds.]  It also
      *  assumes that superfluous calls to stopFire() do not occur
-     *  during prefire() or between prefire() and fire().-{Tested;
+     *  during prefire() or between prefire() and fire().-[Tested;
      *  assumption holds with only known superfluous call, the one
      *  when the user presses 'Go'] Additionally, this assumes that
      *  intentional calls to stopFire(), if they occur before or
@@ -1068,8 +1071,6 @@ public class DatagramReader extends TypedAtomicActor {
 
     /** Wrapup execution of this actor.  Interrupt the thread that was
      *  created to read from the socket and close the socket.
-     *  @exception IllegalActionException If the thread or the socket
-     *  was not created.
      */
     public void wrapup() throws IllegalActionException {
 
@@ -1162,14 +1163,14 @@ public class DatagramReader extends TypedAtomicActor {
     private int _returnSocketNumber;
     private Token _outputToken;
 
-    // Used when changing the port number (a.k.a. socket number) of
+    // Flag used when changing the port number (a.k.a. socket number) of
     // this actor's datagram socket.  Serves both to remind thread to
     // loop back when it has been disrupted by AttributeChanged() and
     // to tell AttributeChanged() how to behave to minimize disruption
     // of the thread.
     private boolean _inReceive = false;
 
-    // Used for stopFire() capability.
+    // Flags used for stopFire() capability.
     private boolean _fireIsWaiting = false;
     private boolean _stopFire = false;
 
@@ -1216,8 +1217,8 @@ public class DatagramReader extends TypedAtomicActor {
 			    // Doing so avoids an infinite sequence of calls.
 			    platformBufferLength.setToken(new IntToken(
                                     _socket.getReceiveBufferSize()));
-			} catch (SocketException sex) {
-			    System.out.println("sex4" + sex.toString());
+			} catch (SocketException ex) {
+			    System.out.println("Socket Ex." + ex.toString());
 			    //throw new IllegalActionException(this,sex.toString());
 			} catch (IllegalActionException ex) {
 			    System.out.println("getToken or setToken failed" 
