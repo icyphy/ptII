@@ -279,7 +279,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
      */
     public void setContainer(CompositeEntity container)
             throws IllegalActionException, NameDuplicationException {
-        if (!(container instanceof CompositeActor)) {
+        if (!(container instanceof CompositeActor) && (container != null)) {
             throw new IllegalActionException(container, this,
                     "AtomicActor can only be contained by instances of " +
                     "CompositeActor.");
