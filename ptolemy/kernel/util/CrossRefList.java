@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Red (wbwu@eecs.berkeley.edu)
 
 NOTE: This class has been promoted to green.  To restore green
@@ -69,8 +69,8 @@ back-references in O(N) time, independent of the sizes of the
 cross-reference lists.
 <p>
 It is possible to create links at specified points in the list (called
-the <i>channel number</i>).  This may result in gaps in the list at
-lower channel numbers.  Gaps are representing by null in an enumeration
+the <i>index number</i>).  This may result in gaps in the list at
+lower index numbers.  Gaps are representing by null in an enumeration
 of the list.
 
 @author Geroncio Galicia
@@ -145,7 +145,7 @@ public final class CrossRefList implements Serializable  {
      *  contains.  Note that an object may be enumerated more than
      *  once if more than one link to it has been established.
      *  Also, there may be elements in the list that are null,
-     *  indicating that nothing is linked at that channel position.
+     *  indicating that nothing is linked at that index position.
      *  Time complexity: O(1).
      *  NOTE: This method is not well named, since it returns the
      *  containers of other instances of CrossRefList that are linked
@@ -353,12 +353,12 @@ public final class CrossRefList implements Serializable  {
             ++_size;
         }
 
-        // Insert an empty link at the specified channel number, which
+        // Insert an empty link at the specified index number, which
         // can be any non-negative integer.
         // This may result in empty links being created at lower
-        // channel numbers, if there are not already links present.
-        private CrossRef(int channel) {
-            if (channel == 0) {
+        // index numbers, if there are not already links present.
+        private CrossRef(int index) {
+            if (index == 0) {
                 if (_size == 0) {
                     // list is empty
                     _lastNode = this;
@@ -369,19 +369,19 @@ public final class CrossRefList implements Serializable  {
                     _headNode = this;
                 }
             } else {
-                // Channel is not the first.
+                // Index is not the first.
                 
                 // Chain down the list, creating empty links if necessary.
                 // First chaining step is special, setting "previous" to
                 // get us started.
                 CrossRef previous = _headNode;
-                if (previous == null && channel > 0) previous = new CrossRef();
+                if (previous == null && index > 0) previous = new CrossRef();
                 int index = 1;
-                while (index++ < channel) {
+                while (index++ < index) {
                     if (previous == null) previous = new CrossRef();
                     else previous = previous._next;
                 }
-                // Now we are assured that there are at least channel-1 entries
+                // Now we are assured that there are at least index-1 entries
                 // in the list.
                 if(previous != null) {
                     // There is at least one entry.

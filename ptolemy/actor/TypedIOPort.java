@@ -451,6 +451,51 @@ public class TypedIOPort extends IOPort implements Typeable {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Override parent method to ensure compatibility of the relation.
+     *  <p>
+     *  This method is <i>not</i> synchronized on the
+     *  workspace, so the caller should be.
+     *
+     *  @param relation The relation to link to on the inside.
+     *  @exception IllegalActionException If this port has no container or
+     *   the relation is not an TypedIORelation, or the port already linked
+     *   to a relation and is not a multiport, or the relation has width
+     *   not exactly one and the port is not a multiport, or the
+     *   relation is incompatible with this port, or the port is not
+     *   in the same workspace as the relation.
+     */
+    protected void _checkInsideLink(ComponentRelation relation)
+            throws IllegalActionException {
+        if (!(relation instanceof TypedIORelation)) {
+            throw new IllegalActionException(this, relation,
+                    "Attempt to link to an incompatible relation." +
+                    " TypedIOPort requires TypedIORelation.");
+        }
+        super._checkInsideLink((TypedIORelation)relation);
+    }
+
+    /** Override parent method to ensure compatibility of the relation.
+     *  <p>
+     *  This method is <i>not</i> synchronized on the
+     *  workspace, so the caller should be.
+     *
+     *  @param relation The relation to link to.
+     *  @exception IllegalActionException If this port has no container or
+     *   the relation is not an TypedIORelation, or the port already linked
+     *   to a relation and is not a multiport, or if the relation has width
+     *   not exactly one and the port is not a multiport, or the port is
+     *   not in the same workspace as the relation.
+     */
+    protected void _checkLink(Relation relation)
+            throws IllegalActionException {
+        if (!(relation instanceof TypedIORelation)) {
+            throw new IllegalActionException(this, relation,
+                    "Attempt to link to an incompatible relation." +
+                    " TypedIOPort requires TypedIORelation.");
+        }
+        super._checkLink((TypedIORelation)relation);
+    }
+
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
      *  defined in the NamedObj class and in this class.
@@ -502,53 +547,6 @@ public class TypedIOPort extends IOPort implements Typeable {
         } finally {
             _workspace.doneReading();
         }
-    }
-
-    /** Override parent method to ensure compatibility of the relation.
-     *  <p>
-     *  This method should not be used directly.  Use the public version
-     *  instead. It is <i>not</i> synchronized on the
-     *  workspace, so the caller should be.
-     *
-     *  @param relation The relation to link to.
-     *  @exception IllegalActionException If this port has no container or
-     *   the relation is not an TypedIORelation, or the port already linked
-     *   to a relation and is not a multiport, or if the relation has width
-     *   not exactly one and the port is not a multiport, or the port is
-     *   not in the same workspace as the relation.
-     */
-    protected void _link(Relation relation)
-            throws IllegalActionException {
-        if (!(relation instanceof TypedIORelation)) {
-            throw new IllegalActionException(this, relation,
-                    "Attempt to link to an incompatible relation." +
-                    " TypedIOPort requires TypedIORelation.");
-        }
-        super._link((TypedIORelation)relation);
-    }
-
-    /** Override parent method to ensure compatibility of the relation.
-     *  <p>
-     *  This method should not be used directly.  Use the public version
-     *  instead. It is <i>not</i> synchronized on the
-     *  workspace, so the caller should be.
-     *
-     *  @param relation The relation to link to on the inside.
-     *  @exception IllegalActionException If this port has no container or
-     *   the relation is not an TypedIORelation, or the port already linked
-     *   to a relation and is not a multiport, or the relation has width
-     *   not exactly one and the port is not a multiport, or the
-     *   relation is incompatible with this port, or the port is not
-     *   in the same workspace as the relation.
-     */
-    protected void _linkInside(ComponentRelation relation)
-            throws IllegalActionException {
-        if (!(relation instanceof TypedIORelation)) {
-            throw new IllegalActionException(this, relation,
-                    "Attempt to link to an incompatible relation." +
-                    " TypedIOPort requires TypedIORelation.");
-        }
-        super._linkInside((TypedIORelation)relation);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -25,7 +25,14 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (johnr@eecs.berkeley.edu)
+@AcceptedRating Red (eal@eecs.berkeley.edu)
+
+NOTE: This was green, but on 7/13/00 I added the following methods,
+which need to be reviewed (EAL):
+
+  - insertLink(int, Relation)
+  - _checkLink() (replacing _link(), using strategy pattern).
+
 */
 
 package ptolemy.kernel;
@@ -52,7 +59,7 @@ representing each subset.
 <p>
 A Port can link to any instance of Relation.  Derived classes may
 wish to constrain links to a subclass of Relation.  To do this,
-subclasses should override the protected method _link() to throw
+subclasses should override the protected method _checkLink() to throw
 an exception if its argument is a relation that is not of the appropriate
 subclass.  Similarly, if a subclass wishes to constrain the containers
 of the port to be of a subclass of Entity, they should override
@@ -204,6 +211,62 @@ public class Port extends NamedObj {
         return _container;
     }
 
+    /** Insert a link to the specified relation at the specified index,
+     *  and notify the container by calling its connectionsChanged() method.
+     *  The relation is required to be at the same level of the hierarchy
+     *  as the entity that contains this port, meaning that the container
+     *  of the relation is the same as the container of the container of
+     *  the port. That is, level-crossing links are not allowed.
+     *  <p>
+     *  The specified index can be any non-negative integer.
+     *  Any links with indices larger than or equal to the one specified
+     *  here will henceforth have indices that are larger by one.
+     *  If the index is larger than the number of existing
+     *  links (as returned by numLinks()), then empty links are
+     *  are inserted (these will be null elements in the list returned
+     *  by linkedRelationsList() or in the enumeration returned by
+     *  linkedRelations()). If the specified relation is null, then
+     *  an empty link is inserted at the specified index.
+     *  <p>
+     *  Note that a port may be linked to the same relation more than
+     *  once, in which case the link will be reported more than once
+     *  by the linkedRelations() method.
+     *  <p>
+     *  In derived classes, the relation may be required to be an
+     *  instance of a particular subclass of Relation (this is checked
+     *  by the _checkLink() protected method).
+     *  <p>
+     *  This method is write-synchronized on the workspace and increments
+     *  its version number.
+     *  @param index The index at which to insert the link.
+     *  @param relation The relation to link to this port.
+     *  @exception IllegalActionException If the link would cross levels of
+     *   the hierarchy, or the relation is incompatible,
+     *   or the port has no container, or the port is not in the
+     *   same workspace as the relation.
+     */
+    public void insertLink(int index, Relation relation)
+            throws IllegalActionException {
+        if (_workspace != relation.workspace()) {
+            throw new IllegalActionException(this, relation,
+                    "Cannot link because workspaces are different.");
+        }
+        try {
+            _workspace.getWriteAccess();
+            if (_container != null) {
+                if (_container.getContainer() != relation.getContainer()) {
+                    throw new IllegalActionException(this, relation,
+                            "Link crosses levels of the hierarchy");
+                }
+            }
+            _checkLink(relation);
+            _relationsList.insertLink(index, relation._getPortList());
+            _container.connectionsChanged(this);
+        } finally {
+            _workspace.doneWriting();
+        }
+    }
+
     /** Return true if the given Relation is linked to this port.
      *  This method is read-synchronized on the workspace.
      *  @return True if the given relation is linked to this port.
@@ -227,6 +290,7 @@ public class Port extends NamedObj {
             _workspace.getReadAccess();
             // Unfortunately, CrossRefList returns an enumeration only.
             // Use it to construct a list.
+            // NOTE: This list should be cached.
             LinkedList result = new LinkedList();
             Enumeration relations = _relationsList.getContainers();
             while (relations.hasMoreElements()) {
@@ -255,16 +319,19 @@ public class Port extends NamedObj {
         }
     }
 
-    /** Link this port with a relation.  The relation is required to be
-     *  at the same level of the hierarchy as the entity that contains
+    /** Link this port with a relation, and notify the container by
+     *  calling its connectionsChanged() method.  The relation is required
+     *  to be at the same level of the hierarchy as the entity that contains
      *  this port, meaning that the container of the relation
      *  is the same as the container of the container of the port.
+     *  That is, level-crossing links are not allowed.
+     *  <p>
      *  If the argument is null, do nothing.  Note that a port may
      *  be linked to the same relation more than once, in which case
      *  the link will be reported more than once by the linkedRelations()
      *  method. In derived classes, the relation may be required to be an
      *  instance of a particular subclass of Relation (this is checked
-     *  by the _link() protected method).
+     *  by the _checkLink() protected method).
      *  This method is write-synchronized on the workspace and increments
      *  its version number.
      *  @param relation The relation to link to this port.
@@ -282,14 +349,15 @@ public class Port extends NamedObj {
         }
         try {
             _workspace.getWriteAccess();
-            Nameable container = getContainer();
-            if (container != null) {
-                if (container.getContainer() != relation.getContainer()) {
+            if (_container != null) {
+                if (_container.getContainer() != relation.getContainer()) {
                     throw new IllegalActionException(this, relation,
                             "Link crosses levels of the hierarchy");
                 }
             }
-            _link(relation);
+            _checkLink(relation);
+            _relationsList.link( relation._getPortList() );
+            _container.connectionsChanged(this);
         } finally {
             _workspace.doneWriting();
         }
@@ -425,6 +493,32 @@ public class Port extends NamedObj {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Check that this port is compatible with the specified relation.
+     *  If the argument is null, do nothing.
+     *  If this port has no container, throw an exception.
+     *  Derived classes may constrain the argument to be a subclass of
+     *  Relation. Level-crossing links are allowed.
+     *  This port and the relation are assumed to be in the same workspace,
+     *  but this not checked here.  The caller should check.
+     *  This method <i>not</i> synchronized on the
+     *  workspace, so the caller should be.
+     *  @param relation The relation to link to.
+     *  @exception IllegalActionException If this port has no container.
+     */
+    protected void _checkLink(Relation relation)
+            throws IllegalActionException {
+        if (relation != null) {
+            Entity container = (Entity)getContainer();
+            if (container == null) {
+                throw new IllegalActionException(this, relation,
+                        "Port must have a container to establish a link.");
+            }
+            // Throw an exception if this port is not of an acceptable
+            // class for the relation.
+            relation._checkPort(this);
+        }
+    }
+
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
      *  defined in the NamedObj class.  Lines are indented according to
@@ -471,41 +565,14 @@ public class Port extends NamedObj {
         }
     }
 
-    /** Link this port with a relation. This method should not be used
-     *  directly.  Use the public version instead.
-     *  If the argument is null, do nothing.
-     *  If this port has no container, throw an exception.
-     *  The container is notified by calling connectionsChanged().
-     *  Derived classes may constrain the argument to be a subclass of
-     *  Relation. Level-crossing links are allowed.
-     *  This port and the relation are assumed to be in the same workspace,
-     *  but this not checked here.  The caller should check.
-     *  This method <i>not</i> synchronized on the
-     *  workspace, so the caller should be.
-     *  @param relation The relation to link to.
-     *  @exception IllegalActionException If this port has no container.
-     */
-    protected void _link(Relation relation)
-            throws IllegalActionException {
-        if (relation != null) {
-            Entity container = (Entity)getContainer();
-            if (container == null) {
-                throw new IllegalActionException(this, relation,
-                        "Port must have a container to establish a link.");
-            }
-            // Throw an exception if this port is not of an acceptable
-            // class for the relation.
-            relation._checkPort(this);
-            _relationsList.link( relation._getPortList() );
-            container.connectionsChanged(this);
-        }
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** @serial The list of relations for this port. */
+    protected CrossRefList _relationsList;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    /** @serial The list of relations for this port. */
-    private CrossRefList _relationsList;
 
     /** @serial The entity that contains this port. */
     private Entity _container;

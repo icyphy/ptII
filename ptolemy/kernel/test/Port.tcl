@@ -451,7 +451,7 @@ test Port-13.1 {Test clone} {
 ######################################################################
 ####
 #
-test Port-14.1 {Test double link with one port, one relations} {
+test Port-14.1 {Test double link with one port, one relation} {
     set e1 [java::new ptolemy.kernel.Entity]
     set p1 [java::new ptolemy.kernel.Port]
     $p1 setContainer $e1
@@ -469,6 +469,7 @@ test Port-14.1 {Test double link with one port, one relations} {
         }}
     }}
 }}
+
 ######################################################################
 ####
 #
@@ -479,6 +480,7 @@ test Port-15.1 {Test for NameDuplicationException on constructor} {
     catch {[java::new ptolemy.kernel.Port $a B]} msg
     list $msg
 } {{ptolemy.kernel.util.NameDuplicationException: Attempt to insert object named "B" into container named ".A", which already contains an object with that name.}}
+
 ######################################################################
 ####
 #
@@ -519,3 +521,5 @@ test Port-16.0 {Test exportMoML} {
     </port>
 </model>
 }
+
+

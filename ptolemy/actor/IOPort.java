@@ -95,7 +95,7 @@ excess outside relations will be treated as if they are unconnected.
 <p>
 An IOPort can only link to instances of IORelation. Derived classes
 may further constrain links to a subclass of IORelation.  To do this,
-they should override the protected methods _link() and _linkInside()
+they should override the protected methods _checkLink() and _checkInsideLink()
 to throw an exception if their arguments are not of the appropriate
 type.  Similarly, an IOPort can only be contained by a class
 derived from ComponentEntity and implementing the Actor interface.
@@ -983,7 +983,8 @@ public class IOPort extends ComponentPort {
      *   if the port is not an input port, or if the channel index is out
      *   of range.
      */
-    public boolean hasToken(int channelIndex, int tokens) throws IllegalActionException {
+    public boolean hasToken(int channelIndex, int tokens)
+             throws IllegalActionException {
         try {
             // The getReceivers() method throws an IllegalActionException if
             // there's no director.
@@ -1131,8 +1132,8 @@ public class IOPort extends ComponentPort {
      *  range, or the port is not an output port,
      *  then just silently return.  This behavior makes it
      *  easy to leave output ports unconnected when you are not interested
-     *  in the output.  The transfer is
-     *  accomplished by calling the vectorized put() method of the remote receivers.
+     *  in the output.  The transfer is accomplished
+     *  by calling the vectorized put() method of the remote receivers.
      *  If the port is not connected to anything, or receivers have not been
      *  created in the remote port, then just return.
      *  <p>
@@ -1313,6 +1314,117 @@ public class IOPort extends ComponentPort {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Override parent method to ensure compatibility of the relation
+     *  and validity of the width of the port.
+     *  If this port is not a multiport, then the width of the
+     *  relation is required to be specified to be one.  This method assumes
+     *  that the relation is inside the port, so this is an inside link.
+     *  <p>
+     *  This method is <i>not</i> synchronized on the
+     *  workspace, so the caller should be.
+     *
+     *  @param relation The relation to link to on the inside.
+     *  @exception IllegalActionException If this port has no container or
+     *   the relation is not an IORelation, or the port already linked to a
+     *   relation and is not a multiport, or the relation has width
+     *   not exactly one and the port is not a multiport, or the
+     *   relation is incompatible with this port, or the port is not
+     *   in the same workspace as the relation.
+     */
+    protected void _checkInsideLink(ComponentRelation relation)
+            throws IllegalActionException {
+        if (!(relation instanceof IORelation)) {
+            throw new IllegalActionException(this, relation,
+                    "Attempt to link to an incompatible relation." +
+                    " IOPort requires IORelation.");
+        }
+        IORelation rel = (IORelation) relation;
+        if(!isInsideLinked(rel)) {
+            // Check for existing inside links
+            if(!isMultiport() && numInsideLinks() >= 1) {
+                throw new IllegalActionException(this, relation,
+                        "Attempt to link more than one relation " +
+                        "to a single port.");
+            }
+            if ((rel.getWidth() != 1) || !rel.isWidthFixed()) {
+                // Relation is a bus.
+                if(!isMultiport()) {
+                    throw new IllegalActionException(this,  rel,
+                            "Attempt to link a bus relation " +
+                            "to a single port.");
+                }
+                if (!rel.isWidthFixed()) {
+                    // Make sure there are no other busses already
+                    // connected with unspecified widths.
+                    try {
+                        _getInsideWidth(null);
+                    } catch (InvalidStateException ex) {
+                        throw new IllegalActionException(this, rel,
+                                "Attempt to link a second bus relation " +
+                                "with unspecified width to the inside " +
+                                "of a port.");
+                    }
+                }
+            }
+            super._checkInsideLink(rel);
+        }
+    }
+
+    /** Override parent method to ensure compatibility of the relation
+     *  and validity of the width of the port.
+     *  If this port is not a multiport, then the width of the
+     *  relation is required to be specified to be one. This method assumes
+     *  that the relation is outside the port, so this is an outside link.
+     *  <p>
+     *  This method should not be used directly.  Use the public version
+     *  instead. It is <i>not</i> synchronized on the
+     *  workspace, so the caller should be.
+     *
+     *  @param relation The relation to link to.
+     *  @exception IllegalActionException If this port has no container or
+     *   the relation is not an IORelation, or the port already linked to a
+     *   relation and is not a multiport, or if the relation has width
+     *   not exactly one and the port is not a multiport, or the port is
+     *   not in the same workspace as the relation.
+     */
+    protected void _checkLink(Relation relation)
+            throws IllegalActionException {
+        if (!(relation instanceof IORelation)) {
+            throw new IllegalActionException(this, relation,
+                    "Attempt to link to an incompatible relation." +
+                    " IOPort requires IORelation.");
+        }
+        IORelation rel = (IORelation) relation;
+        if(!isLinked(rel)) {
+            // Check for existing outside links
+            if(!isMultiport() && numLinks() >= 1) {
+                throw new IllegalActionException(this, relation,
+                        "Attempt to link more than one relation " +
+                        "to a single port.");
+            }
+            if (rel.getWidth() != 1 || !rel.isWidthFixed()) {
+                // Relation is a bus.
+                if(!isMultiport()) {
+                    throw new IllegalActionException(this,  rel,
+                            "Attempt to link a bus relation " +
+                            "to a single port.");
+                }
+                Iterator relations = linkedRelationList().iterator();
+                while (relations.hasNext()) {
+                    IORelation theRelation =
+                        (IORelation)relations.next();
+                    if (!theRelation.isWidthFixed()) {
+                        throw new IllegalActionException(this, rel,
+                                "Attempt to link a second bus relation " +
+                                "with unspecified width to the outside " +
+                                "of a port.");
+                    }
+                }
+            }
+            super._checkLink(rel);
+        }
+    }
 
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
@@ -1503,122 +1615,6 @@ public class IOPort extends ComponentPort {
             }
         }
         return result;
-    }
-
-    /** Override parent method to ensure compatibility of the relation
-     *  and validity of the width of the port.
-     *  If the given relation is already linked to this port, do nothing.
-     *  Otherwise, create a new link or throw an exception if the link is
-     *  invalid.  If this port is not a multiport, then the width of the
-     *  relation is required to be specified to be one. This method assumes
-     *  that the relation is outside the port, so this is an outside link.
-     *  <p>
-     *  This method should not be used directly.  Use the public version
-     *  instead. It is <i>not</i> synchronized on the
-     *  workspace, so the caller should be.
-     *
-     *  @param relation The relation to link to.
-     *  @exception IllegalActionException If this port has no container or
-     *   the relation is not an IORelation, or the port already linked to a
-     *   relation and is not a multiport, or if the relation has width
-     *   not exactly one and the port is not a multiport, or the port is
-     *   not in the same workspace as the relation.
-     */
-    protected void _link(Relation relation)
-            throws IllegalActionException {
-        if (!(relation instanceof IORelation)) {
-            throw new IllegalActionException(this, relation,
-                    "Attempt to link to an incompatible relation." +
-                    " IOPort requires IORelation.");
-        }
-        IORelation rel = (IORelation) relation;
-        if(!isLinked(rel)) {
-            // Check for existing outside links
-            if(!isMultiport() && numLinks() >= 1) {
-                throw new IllegalActionException(this, relation,
-                        "Attempt to link more than one relation " +
-                        "to a single port.");
-            }
-            if (rel.getWidth() != 1 || !rel.isWidthFixed()) {
-                // Relation is a bus.
-                if(!isMultiport()) {
-                    throw new IllegalActionException(this,  rel,
-                            "Attempt to link a bus relation " +
-                            "to a single port.");
-                }
-                Iterator relations = linkedRelationList().iterator();
-                while (relations.hasNext()) {
-                    IORelation theRelation =
-                        (IORelation)relations.next();
-                    if (!theRelation.isWidthFixed()) {
-                        throw new IllegalActionException(this, rel,
-                                "Attempt to link a second bus relation " +
-                                "with unspecified width to the outside " +
-                                "of a port.");
-                    }
-                }
-            }
-            super._link(rel);
-        }
-    }
-
-    /** Override parent method to ensure compatibility of the relation
-     *  and validity of the width of the port.
-     *  If the given relation is already linked to this port, do nothing.
-     *  Otherwise, create a new link or throw an exception if the link is
-     *  invalid.  If this port is not a multiport, then the width of the
-     *  relation is required to be specified to be one.  This method assumes
-     *  that the relation is inside the port, so this is an inside link.
-     *  <p>
-     *  This method should not be used directly.  Use the public version
-     *  instead. It is <i>not</i> synchronized on the
-     *  workspace, so the caller should be.
-     *
-     *  @param relation The relation to link to on the inside.
-     *  @exception IllegalActionException If this port has no container or
-     *   the relation is not an IORelation, or the port already linked to a
-     *   relation and is not a multiport, or the relation has width
-     *   not exactly one and the port is not a multiport, or the
-     *   relation is incompatible with this port, or the port is not
-     *   in the same workspace as the relation.
-     */
-    protected void _linkInside(ComponentRelation relation)
-            throws IllegalActionException {
-        if (!(relation instanceof IORelation)) {
-            throw new IllegalActionException(this, relation,
-                    "Attempt to link to an incompatible relation." +
-                    " IOPort requires IORelation.");
-        }
-        IORelation rel = (IORelation) relation;
-        if(!isInsideLinked(rel)) {
-            // Check for existing inside links
-            if(!isMultiport() && numInsideLinks() >= 1) {
-                throw new IllegalActionException(this, relation,
-                        "Attempt to link more than one relation " +
-                        "to a single port.");
-            }
-            if ((rel.getWidth() != 1) || !rel.isWidthFixed()) {
-                // Relation is a bus.
-                if(!isMultiport()) {
-                    throw new IllegalActionException(this,  rel,
-                            "Attempt to link a bus relation " +
-                            "to a single port.");
-                }
-                if (!rel.isWidthFixed()) {
-                    // Make sure there are no other busses already
-                    // connected with unspecified widths.
-                    try {
-                        _getInsideWidth(null);
-                    } catch (InvalidStateException ex) {
-                        throw new IllegalActionException(this, rel,
-                                "Attempt to link a second bus relation " +
-                                "with unspecified width to the inside " +
-                                "of a port.");
-                    }
-                }
-            }
-            super._linkInside(rel);
-        }
     }
 
     /** Create a new receiver compatible with the local director.

@@ -25,7 +25,11 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Green (johnr@eecs.berkeley.edu)
+@AcceptedRating Red (eal@eecs.berkeley.edu)
+
+NOTE: On 7/13/00 I removed the method _linkInside() replacing it
+instead with the same strategy patter used in Port, using _checkLink().
+This change needs to be reviewed to restore the Green status.
 */
 
 package ptolemy.kernel;
@@ -72,7 +76,7 @@ A ComponentPort can link to any instance of ComponentRelation.
 An attempt to link to an instance of Relation will trigger an exception.
 Derived classes may wish to further constrain links to a subclass
 of ComponentRelation.  To do this, subclasses should override the
-protected methods _link() and _linkInside() to throw an exception
+protected method _checkLink() to throw an exception
 if their arguments are relations that are not of the appropriate
 subclass.  Similarly, a ComponentPort can be contained by a
 ComponentEntity, and an attempt to set the container to an instance
@@ -375,11 +379,16 @@ public class ComponentPort extends Port {
             _workspace.getWriteAccess();
             if (_outside(relation.getContainer())) {
                 // An inside link
-                _linkInside(relation);
+                _checkInsideLink(relation);
+                _insideLinks.link( relation._getPortList() );
             } else {
                 // An outside link
-                _link(relation);
+                _checkLink(relation);
+                _relationsList.link( relation._getPortList() );
             }
+            // NOTE: _checkLink() ensures that the container is not null,
+            // and the class ensures that it is an Entity.
+            ((Entity)getContainer()).connectionsChanged(this);
         } finally {
             _workspace.doneWriting();
         }
@@ -492,6 +501,40 @@ public class ComponentPort extends Port {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Check the validity of an inside link.  In this base class, this
+     *  method just checks to see that the relation is a ComponentRelation,
+     *  that the port has a container, and that the port is acceptable
+     *  to the relation.
+     *  @param relation The relation to link to.
+     *  @exception IllegalActionException If this port has no container or
+     *   the relation is not a ComponentRelation.
+     */
+    protected void _checkInsideLink(Relation relation)
+            throws IllegalActionException {
+        if (!(relation instanceof ComponentRelation)) {
+            throw new IllegalActionException(this,
+                    "Attempt to link to an incompatible relation.");
+        }
+        super._checkLink(relation);
+    }
+
+    /** Override the base class to throw an exception if the relation is
+     *  not a ComponentRelation.  If it is, then invoke the base class method.
+     *  This method <i>not</i> synchronized on the
+     *  workspace, so the caller should be.
+     *  @param relation The relation to link to.
+     *  @exception IllegalActionException If this port has no container or
+     *   the relation is not a ComponentRelation.
+     */
+    protected void _checkLink(Relation relation)
+            throws IllegalActionException {
+        if (!(relation instanceof ComponentRelation)) {
+            throw new IllegalActionException(this,
+                    "Attempt to link to an incompatible relation.");
+        }
+        super._checkLink(relation);
+    }
 
     /** Deeply list the ports connected to this port on the outside.
      *  Begin by listing the ports that are connected to this port.
@@ -718,58 +761,6 @@ public class ComponentPort extends Port {
         } finally {
             _workspace.doneReading();
         }
-    }
-
-    /** Override the base class to throw an exception if the relation is
-     *  not a ComponentRelation.  If it is, then invoke the base class method.
-     *  This method should not be used
-     *  directly.  Use the public version instead.
-     *  This method <i>not</i> synchronized on the
-     *  workspace, so the caller should be.
-     *  @param relation The relation to link to.
-     *  @exception IllegalActionException If this port has no container or
-     *   the relation is not a ComponentRelation.
-     */
-    protected void _link(Relation relation)
-            throws IllegalActionException {
-        if (!(relation instanceof ComponentRelation)) {
-            throw new IllegalActionException(this,
-                    "Attempt to link to an incompatible relation.");
-        }
-        super._link(relation);
-    }
-
-    /** Link this port on the inside with a relation. This method should
-     *  not be used directly.  Use the public version instead.
-     *  The argument is a
-     *  ComponentRelation, but derived classes may constrain the relation
-     *  further. If this port has no container, throw an exception.
-     *  Level-crossing links are allowed.
-     *  This port and the relation are assumed to be in the same workspace,
-     *  but this not checked here.  The caller should check.
-     *  This method <i>not</i> synchronized on the
-     *  workspace, so the caller should be.
-     *  @param relation The relation to link to.
-     *  @exception IllegalActionException If this port has no container or
-     *   is not a ComponentPort.
-     */
-    protected void _linkInside(ComponentRelation relation)
-            throws IllegalActionException {
-        if (!(relation instanceof ComponentRelation)) {
-            throw new IllegalActionException(this,
-                    "Attempt to link to an incompatible relation.");
-        }
-        Entity container = (Entity)getContainer();
-        if (container == null) {
-            throw new IllegalActionException(this, relation,
-                    "Port must have a container to establish a link.");
-        }
-        // Throw an exception if this port is not of an acceptable
-        // class for the relation.
-        relation._checkPort(this);
-        // It is acceptable.
-        _insideLinks.link( relation._getPortList() );
-        container.connectionsChanged(this);
     }
 
     /** Return true if the port is either a port of the specified entity,
