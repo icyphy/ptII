@@ -71,6 +71,7 @@ public class GRScheduler extends Scheduler {
      *  @param workspace Object for synchronization and version tracking.
      */
     public GRScheduler(Workspace workspace) {
+        super(workspace);
         try {
             setName(_STATIC_NAME);
         } catch (KernelException ex) {
