@@ -160,7 +160,7 @@ clean:
 	rm -rf $(PTII_SRC_JAR) src_jar
 	rm -rf $(PTIIDIST) src installshield/*
 
-FINDCLEAN = -find . \( -name "#*" -o -name alljtests.tcl -o -name alljsimpletests.tcl -o -name codeDoc -o -name CVS -o -name .cvsignore -o -name "*~" -o -name core \)  -exec rm -rf {} \;
+FINDCLEAN = $(GENDIR)/findclean
 
 # First we create a directory containing the distribution,
 # then we modify the distribution slightly,
@@ -272,7 +272,7 @@ $(PTII_SRC): $(PTII_FULL)
 		find doc -name "*.jar" -ls -exec rm {} \; ;\
 		rm -rf doc/codeDoc*; \
 		rm -rf `cat $(GENDIR)/src.ex`; \
-		$(FINDCLEAN);
+		$(FINDCLEAN); \
 		cd ..; \
 		echo "#  Starting tar of $@"; \
 		$(TAR) -c -X $(GENDIR)/src.ex -f $(PTII_SRC) ptII$(VERSION); \
