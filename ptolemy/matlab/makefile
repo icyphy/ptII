@@ -107,7 +107,7 @@ $(PTMATLAB_LIB): ptmatlab.cc Engine.class
 
 
 # Jar file for Web Start that contains the dll
-$(PTPACKAGE)Windows.jar: $(PTLIB)
+$(PTPACKAGE)Windows.jar: $(PTMATLAB_LIB)
 	rm -rf $(PTJAR_TMPDIR) $@
 	mkdir $(PTJAR_TMPDIR)
 	-cp $< $(PTJAR_TMPDIR)
