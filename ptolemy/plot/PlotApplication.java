@@ -305,6 +305,10 @@ public class PlotApplication extends PlotFrame {
                 continue;
             } else if (arg.equals("")) {
                 // Ignore blank argument.
+            } else if (arg.equals("-")) {
+                // read from standard input
+                URL base = new URL("file", null,"standard input");
+                _read(base, System.in);
             } else if (!arg.startsWith("-")) {
                 // Have a filename.  First attempt to open it as a URL.
                 InputStream instream;
