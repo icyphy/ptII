@@ -38,7 +38,6 @@ Description of the class
 public final class CrossRefList {
 
     // FIXME: add "final" modifiers noted below when JDK 1.2 is released.
-    // FIXME: add clone method(s).
 
     /** Constructor
      * CrossRefList requires owner to prevent null pointer accesses below.
@@ -49,6 +48,14 @@ public final class CrossRefList {
         _headNode = null;
         _lastNode = null;
     }
+
+    /** Copy constructor. */
+    public CrossRefList(Object owner, CrossRefList originalList) {
+        this(owner);
+        copyList(originalList);
+    }
+
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
@@ -125,6 +132,22 @@ public final class CrossRefList {
 
     /** Return size of this list. */
     public synchronized int size() { return _dimen; }
+
+    /** Make an independent copy.  Does not clone elements. */
+    public synchronized void copyList(CrossRefList originalList) {
+        synchronized(originalList) {
+            if(originalList.isEmpty()) return; // List to copy is empty.
+            for(CrossRef p = originalList._headNode; p != null; p = p._next) {
+                if(p._far != null) {
+                    if(p._far._nearList() != null) {
+                        associate(p._far._nearList());
+                    }
+                }
+            }
+        }
+    }
+
+
 
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
