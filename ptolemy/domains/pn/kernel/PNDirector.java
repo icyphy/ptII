@@ -60,20 +60,25 @@ public class PNDirector extends Director {
      * @exception IllegalActionException is thrown by submethods 
      */
     public boolean prefire() { //throws IllegalActionException {        
-        if (_debug > 5 ) System.out.println("PNExecutive: execute()");
-	//Creating threads for new actors created and starting them
-        Enumeration allMyStars = getNewActors();
-        while (allMyStars.hasMoreElements()) {
-            PNActor star = (PNActor)allMyStars.nextElement();     
-            Thread temp = new Thread(_processGroup, star);
-            star.setThread(temp);
-            temp.start();
+        synchronized(workspace()) {
+            if (_debug > 5 ) System.out.println("PNExecutive: execute()");
+            //Creating threads for new actors created and starting them
+            Enumeration allMyStars = getNewActors();
+            clearNewActors();
+            while (allMyStars.hasMoreElements()) {
+                PNActor star = (PNActor)allMyStars.nextElement();     
+                Thread temp = new Thread(_processGroup, star);
+                System.out.println("Starting star "+star.getName());
+                star.setThread(temp);
+                temp.start();
+                System.out.println("Started star "+star.getName());
+            }
+            //clearNewActors();
+            _mutate = false;
+            if (_debug > 5) System.out.println(
+                    "PNExecutive: execute(): after while ");
+            return true;
         }
-	clearNewActors();
-	_mutate = false;
-        if (_debug > 5) System.out.println(
-                "PNExecutive: execute(): after while ");
-        return true;
     }
 
     public void fire() throws IllegalActionException {
