@@ -56,6 +56,7 @@ JSRCS = \
 	ConstructorSpecializer.java \
 	DataUtilities.java \
 	DeadObjectEliminator.java \
+	DirectorInliner.java \
 	ExceptionEliminator.java \
 	ExpressionCreator.java \
 	FieldsForAttributesTransformer.java \
@@ -66,7 +67,9 @@ JSRCS = \
 	FSMCreator.java \
 	GenericAtomicActorCreator.java \
 	GiottoPortInliner.java \
+	GiottoDirectorInliner.java \
 	HSPortInliner.java \
+	HSDirectorInliner.java \
 	InlineDirectorTransformer.java \
 	InlineParameterTransformer.java \
 	InlinePortTransformer.java \
@@ -80,6 +83,7 @@ JSRCS = \
 	PortInliner.java \
 	ReplaceComplexParameters.java \
 	SDFPortInliner.java \
+	SDFDirectorInliner.java \
 	TestApplication.java \
 	TokenConstructorAnalysis.java \
 	TokenInstanceofEliminator.java \

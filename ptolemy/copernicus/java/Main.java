@@ -84,7 +84,7 @@ public class Main extends KernelMain {
         // atomic) used by the model.
         addTransform(pack, "wjtp.mt", ModelTransformer.v(toplevel),
                 "targetPackage:" + _targetPackage);
-
+        
         // Inline the director into the composite actor.
         addTransform(pack, "wjtp.idt",
                 InlineDirectorTransformer.v(toplevel),
@@ -99,8 +99,7 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.ta1",
                 new TransformerAdapter(TypeAssigner.v()));
         addStandardOptimizations(pack, 1);
-
-
+        
         if (_snapshots) {
             addTransform(pack, "wjtp.snapshot1jimple", JimpleWriter.v(),
                     "outDir:" + _outputDirectory + "/jimple1");

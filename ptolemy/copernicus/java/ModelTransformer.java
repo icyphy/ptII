@@ -102,6 +102,8 @@ import soot.jimple.SpecialInvokeExpr;
 import soot.jimple.Stmt;
 import soot.jimple.StringConstant;
 import soot.jimple.toolkits.invoke.SiteInliner;
+import soot.jimple.toolkits.scalar.LocalNameStandardizer;
+import soot.toolkits.scalar.LocalSplitter;
 import soot.util.Chain;
 
 
@@ -128,7 +130,8 @@ import soot.util.Chain;
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */
-public class ModelTransformer extends SceneTransformer implements HasPhaseOptions {
+public class ModelTransformer extends SceneTransformer 
+    implements HasPhaseOptions {
     /** Construct a new transformer
      */
     private ModelTransformer(CompositeActor model) {
@@ -1169,7 +1172,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
         for (Iterator entities = composite.deepEntityList().iterator();
              entities.hasNext();) {
             Entity entity = (Entity)entities.next();
-            //            System.out.println("ModelTransformer: entity: " + entity);
+            // System.out.println("ModelTransformer: entity: " + entity);
 
             // If we are doing deep codegen, then use the actor
             // classes we created earlier.
@@ -1806,6 +1809,30 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
         // Reinitialize the hierarchy, since we've added classes.
         Scene.v().setActiveHierarchy(new Hierarchy());
         Scene.v().setFastHierarchy(new FastHierarchy());
+        
+//         {
+//             LinkedList notConstantAttributeList = new LinkedList(
+//                     entity.attributeList(Variable.class));
+//             notConstantAttributeList.removeAll(
+//                     _constAnalysis.getConstVariables(entity));
+//             // Sort according to dependencies.
+
+//             System.out.println("notConstantAttributeList of " + entity 
+//                     + " = " + notConstantAttributeList);
+//             // Add code to the beginning of the prefire method that
+//             // computes the attribute values of anything that is not a
+//             // constant.
+//             SootMethod method = entityInstanceClass.getMethodByName("prefire");
+//             JimpleBody body = (JimpleBody)method.getActiveBody();
+//             Stmt insertPoint = body.getFirstNonIdentityStmt();
+//             ModelTransformer.computeAttributesBefore(body, insertPoint,
+//                     entity, body.getThisLocal(),
+//                     entity, body.getThisLocal(),
+//                     entityInstanceClass,
+//                     notConstantAttributeList);
+//             LocalNameStandardizer.v().transform(body, "at.lns");
+//             LocalSplitter.v().transform(body, "at.ls");
+//         }
 
         // Inline all methods in the class that are called from
         // within the class.

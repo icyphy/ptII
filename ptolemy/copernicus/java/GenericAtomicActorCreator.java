@@ -194,8 +194,10 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
                     entity.attributeList(Variable.class));
             notConstantAttributeList.removeAll(
                     constAnalysis.getConstVariables(entity));
-            // Sort according to dependancies.
+            // Sort according to dependencies.
 
+            System.out.println("notConstantAttributeList of " + entity 
+                    + " = " + notConstantAttributeList);
             // Add code to the beginning of the prefire method that
             // computes the attribute values of anything that is not a
             // constant.
