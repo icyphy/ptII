@@ -29,7 +29,7 @@ import ptolemy.graph.Graph;
 //////////////////////////////////////////////////////////////////////////
 //// Analysis
 /** A base class for analyses on graphs. To faciliate demand-driven
-and incremental recomputation (e.g., see [1]) of analyses, analysis results 
+and incremental recomputation (e.g., see [1]) of analyses, analysis results
 are cached
 internally (see {@link #_cachedResult()}), and are recomputed only
 when the graph has changed since the last request (via {@link #result()})
@@ -49,7 +49,7 @@ non-topology information render the cached result obsolete.  For this reason,
 some caution is generally required when using analyses whose results depend on
 more than just the graph topology.
 
-<p> [1] G. Ramalingam. <em>Bounded Incremental Computation</em>. PhD thesis, 
+<p> [1] G. Ramalingam. <em>Bounded Incremental Computation</em>. PhD thesis,
 University of Wisconsin at Madison, August 1993.
 
 @author Shuvra S. Bhattacharyya and Mingyung Ko
@@ -79,7 +79,7 @@ abstract public class Analysis {
      *  options) to operate on a given graph. This method first checks
      *  for compatibility between this analysis and the given graph, and
      *  throws an IllegalArgumentException on incompatibility. Otherwise,
-     *  the method returns 
+     *  the method returns
      *  a new analysis with the same run-time type as this analysis,
      *  and associates the given graph with the new analysis. The method
      *  should be overridden in derived classes to copy options and
@@ -113,7 +113,7 @@ abstract public class Analysis {
      *  graph. Compatibility may depend on the a variety of graph- and
      *  analysis-specific factors, such as the implementation of certain
      *  interfaces, the satisfaction of certain graph properties, etc.
-     *  This method always returns true since there is no issue of 
+     *  This method always returns true since there is no issue of
      *  incompatibility with an abstract analysis. It should be overridden in
      *  derived classes in which issues of incompatibility may arise.
      *
@@ -125,10 +125,10 @@ abstract public class Analysis {
     }
 
     /** Return a description of the configuration of the Analysis.
-     *  The configuration can include any analysis-specific options. 
+     *  The configuration can include any analysis-specific options.
      *  For example, a scheduler might have the unfolding factor as one option.
-     *  This method in this base class returns an empty string since there is 
-     *  no configuration information 
+     *  This method in this base class returns an empty string since there is
+     *  no configuration information
      *  to report for an abstract analysis. It should be overridden in
      *  derived classes that have configuration information to report.
      *
@@ -149,11 +149,11 @@ abstract public class Analysis {
 
     /** Return a string that explains any incompatibilities that the graph
      *  has with respect to the Analysis. Return an empty string if the
-     *  graph is compatible. This method in this base class returns an empty 
-     *  string since there is no issue of incompatibility with an abstract 
+     *  graph is compatible. This method in this base class returns an empty
+     *  string since there is no issue of incompatibility with an abstract
      *  analysis. The
      *  method should be overridden in derived classes that may have
-     *  issues of incompatibility to report. 
+     *  issues of incompatibility to report.
      *
      *  @param graph The given graph.
      *  @return A description of any incompatibilities.
@@ -162,15 +162,15 @@ abstract public class Analysis {
          return "";
     }
 
-    /** Test whether or not the cached result of the analysis is 
-     *  obsolete relative to the associated graph. In other words, test if the 
-     *  graph has changed 
+    /** Test whether or not the cached result of the analysis is
+     *  obsolete relative to the associated graph. In other words, test if the
+     *  graph has changed
      *  since the last time the analysis was performed (i.e., since
      *  the most recent invocation of {@link #result()}). If the cached
      *  result is obsolete, then a subsequent invocation of {@link #result}
      *  will trigger recomputation of the analysis.
      *  @return True if the cached result is obsolete relative to the
-     *  associated graph. 
+     *  associated graph.
      */
     public boolean obsolete() {
         return _lastComputation < graph().changeCount();
@@ -226,6 +226,14 @@ abstract public class Analysis {
      */
     abstract protected Object _compute();
 
+    /** The result of the most recent computation of the analysis,
+     *  as determined by {@link #_compute()}, and without
+     *  conversion by {@link #_convertResult()}.
+     */
+    protected final Object _cachedResult() {
+        return _cachedResult;
+    }
+
     /** Convert the cached result ({@link #_cachedResult()}) to a form that is
      *  suitable for the client to access (via {@link #result()}).
      *  This base class method just returns a reference to the cached result.
@@ -241,14 +249,6 @@ abstract public class Analysis {
      */
     protected Object _convertResult() {
         return _cachedResult();
-    }
-
-    /** The result of the most recent computation of the analysis,
-     *  as determined by {@link #_compute()}, and without
-     *  conversion by {@link #_convertResult()}.
-     */
-    protected final Object _cachedResult() {
-        return _cachedResult;
     }
 
     ///////////////////////////////////////////////////////////////////
