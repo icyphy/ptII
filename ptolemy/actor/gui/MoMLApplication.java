@@ -111,13 +111,27 @@ welcome window, or a blank editor.
 */
 public class MoMLApplication {
 
+
     /** Parse the specified command-line arguments, instanting classes
      *  and reading files that are specified.
      *  @param args The command-line arguments.
      *  @exception Exception If command line arguments have problems.
      */
     public MoMLApplication(String args[]) throws Exception {
-        super();
+        this("ptolemy/configs", args);
+    }
+
+    /** Parse the specified command-line arguments, instanting classes
+     *  and reading files that are specified.
+     *  @param basePath The basePath to look for configurations
+     *  in, usually "ptolemy/configs", but other tools might
+     *  have other configurations in other directories
+     *  @param args The command-line arguments.
+     *  @exception Exception If command line arguments have problems.
+     */
+    public MoMLApplication(String basePath, String args[]) throws Exception {
+        
+        _basePath = basePath;
 
         // The Java look & feel is pretty lame, so we use the native
         // look and feel of the platform we are running on.
@@ -319,7 +333,8 @@ public class MoMLApplication {
     ////                         protected methods                 ////
 
     /** Return a string summarizing the command-line arguments,
-     *  including an configuration directories in ptolemy/configs.
+     *  including an configuration directories in a base path,
+     *  typically "ptolemy/configs".
      *  Some subclasses of this class use configuations from ptolemy/configs.
      *  For example, if ptolemy/configs/full/configuration.xml exists
      *  then -full is a legitmate argument.
@@ -358,11 +373,11 @@ public class MoMLApplication {
         }
 
         try {
-            // Look for configuration directories in ptolemy/configs
+            // Look for configuration directories in _basePath
             // This will likely fail if ptolemy/configs is in a jar file
             // We use a URI here so that we cause call File(URI).
             URI configurationURI =
-                new URI(specToURL("ptolemy/configs").toExternalForm());
+                new URI(specToURL(_basePath).toExternalForm());
             File configurationDirectory = new File(configurationURI);
             ConfigurationFilenameFilter filter =
                 new ConfigurationFilenameFilter();
@@ -416,8 +431,8 @@ public class MoMLApplication {
                 }
             }
         } catch (Exception ex) {
-            result += "Warning: Failed to find configuration(s) in "
-                + "ptolemy/configs" + ex;
+            result += "Warning: Failed to find configuration(s) in '"
+                + _basePath + "'" + ex;
         }
         return result;
     }
@@ -726,6 +741,13 @@ public class MoMLApplication {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** The base path of the configuration directory, usually
+     *  "ptolemy/configs" for Ptolemy II, but subclasses might
+     *  have configurations in a different directory
+     */
+    protected String _basePath = "ptolemy/configs";
+
 
     /** The command-line options that are either present or not. */
     protected String _commandFlags[] = {
