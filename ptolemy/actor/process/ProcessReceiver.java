@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (nsmyth@eecs.berkeley.edu)
-@AcceptedRating Red
+@ProposedRating Green (mudit@eecs.berkeley.edu)
+@AcceptedRating Yellow
 
 */
 
@@ -39,12 +39,47 @@ import ptolemy.data.*;
 //////////////////////////////////////////////////////////////////////////
 //// ProcessReceiver
 /**
-Interface for receivers in process domains.
+Interface for receivers in the process oriented domains. 
+It adds methods to the Receiver interface for setting flags that 
+indicate whether a pause, resume or termination of the simulation has 
+been requested.
 
-It extends adds methods to the Receiver interface for setting flags
-that the simulation has been paused or is finished.
+In process oriented domains, simulations are normally ended on the
+detection of a deadlock. During a deadlock, processes or the 
+corresponding threads are normally waiting on a call to some 
+methods (for reading or writing) on a receiver. 
+To terminate or end the simulation, these methods should
+either return or throw an exception to inform the processes that they 
+should terminate themselves. For this a method setFinish() is defined.
+This method would set a local flag in the receivers and wake up all the 
+processes waiting on some call to the receiver. On waking up these 
+processes would see that the termination flag set and behave accordingly. 
+A sample implentation is
+public synchronized void setFinish() {
+    _terminate = true;
+    notifyAll();
+}
 
-@author Neil Smyth
+Similarly, in process oriented domains, a simulation can be paused, 
+safely, only when the processes try to communicate with some other 
+process by calling methods on the receiver. For this, a setPause() 
+method is defined. This method will set a local flag in the receiver 
+which indicates that a pause has been requested. When a process next 
+calls any of the methods in the receiver to read or write a token, 
+it will be paused. To resume the simulation, the method will be called 
+with false as an argument. This method will then reset the local flag 
+and resume the paused processes.
+A sample implementation is:
+public synchronized void setPause(boolean pause) {
+    if (pause) {
+        _pause = true;
+    } else {
+        _pause = false;
+	notifyAll();
+    }
+}
+
+@author Neil Smyth, Mudit Goel
 @version $Id$
 
 */
@@ -53,14 +88,14 @@ public interface ProcessReceiver extends Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set the local flag that the simulation has been paused.
-     *  @param value The new value of the paused flag.
+    /** Set a local flag that requests that the simulation be paused 
+     *  or resumed.
+     *  @param value The flag indicating a requested pause or resume.
      */
     public void setPause(boolean value);
 
-    /** Set the local flag that the simulation has been finished.
-     *  @param value The new value of the finished flag.
-     */
+    /** Set a local flag requesting that the simulation be finished.
+      */
     public void setFinish();
 }
 
