@@ -53,7 +53,7 @@ method.
 @version $Id$
 @see ptolemy.actor.AtomicActor
 */
-public class CTActor extends AtomicActor implements ParameterListener{
+public class CTActor extends TypedAtomicActor implements ParameterListener{
     /** Construct a CTActor in the default workspace with an empty string
      *  as its name.
      *  The object is added to the workspace directory.
@@ -88,7 +88,7 @@ public class CTActor extends AtomicActor implements ParameterListener{
      *  @exception NameDuplicationException Name coincides with
      *   an entity already in the container.
      */	
-    public CTActor(CompositeActor container, String name) 
+    public CTActor(TypedCompositeActor container, String name) 
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -165,8 +165,11 @@ public class CTActor extends AtomicActor implements ParameterListener{
     
 
     /** Update the parameter values.
+     *  @exception IllegalActionException If the parameter is not
+     *      in the actor, or the new value is an illegal value of
+     *      the parameter.
      */
-    public void updateParameters() {}
+    public void updateParameters() throws IllegalActionException{}
 
     /** Default implementation of the wrapup() method in a execution.
      *  This is called at the end of every execution of the actor.

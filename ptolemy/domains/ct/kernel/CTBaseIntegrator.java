@@ -86,10 +86,14 @@ public class CTBaseIntegrator extends CTActor
     public CTBaseIntegrator()
             throws NameDuplicationException, IllegalActionException {
 	super();
-        input = new IOPort(this, "input");
+        input = new TypedIOPort(this, "input");
         input.makeInput(true);
-        output = new IOPort(this, "output");
+        input.makeOutput(false);
+        input.makeMultiport(false);
+        input.setDeclaredType(DoubleToken.class);
+        output = new TypedIOPort(this, "output");
         output.makeOutput(true);
+        output.setDeclaredType(DoubleToken.class);
         _initState = 0.0;
         _paramInitState = new Parameter(this, "InitialState", 
             new DoubleToken(_initState));
@@ -110,10 +114,14 @@ public class CTBaseIntegrator extends CTActor
     public CTBaseIntegrator(Workspace workspace) 
             throws NameDuplicationException, IllegalActionException {
         super(workspace);
-        input = new IOPort(this, "input");
+        input = new TypedIOPort(this, "input");
         input.makeInput(true);
-        output = new IOPort(this, "output");
+        input.makeOutput(false);
+        input.makeMultiport(false);
+        input.setDeclaredType(DoubleToken.class);
+        output = new TypedIOPort(this, "output");
         output.makeOutput(true);
+        output.setDeclaredType(DoubleToken.class);
         _paramInitState = new Parameter(this, "InitialState", 
             new DoubleToken(_initState));
     }
@@ -131,13 +139,17 @@ public class CTBaseIntegrator extends CTActor
      * @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container. FIXME: never happens?
      */	
-    public CTBaseIntegrator(CompositeActor container, String name) 
+    public CTBaseIntegrator(TypedCompositeActor container, String name) 
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        input = new IOPort(this, "input");
+        input = new TypedIOPort(this, "input");
         input.makeInput(true);
-        output = new IOPort(this, "output");
+        input.makeOutput(false);
+        input.makeMultiport(false);
+        input.setDeclaredType(DoubleToken.class);
+        output = new TypedIOPort(this, "output");
         output.makeOutput(true);
+        output.setDeclaredType(DoubleToken.class);
         _paramInitState = new Parameter(this, "InitialState", 
             new DoubleToken(_initState));
     }
@@ -384,11 +396,11 @@ public class CTBaseIntegrator extends CTActor
     ////                        public variables                   ////
     /** Input port. Finals means they are not changeable once created.
      */
-    public final IOPort input;
+    public final TypedIOPort input;
 
     /** Input port. Finals means they are not changeable once created.
      */
-    public final IOPort output;
+    public final TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
