@@ -14,9 +14,9 @@
 <entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter"/>
 <entity name="Monitor" class="ptolemy.actor.lib.Monitor">
 <doc>Monitor and display values</doc>
-   <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+   <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
       <property name="attributeName" value="value"/>
-      <property name="displayWidth" value="40"/>
+      <property name="displayWidth" value="10"/>
    </property>
 </entity>
 <entity name="RealTimePlotter" class="ptolemy.actor.lib.gui.RealTimePlotter"/>
