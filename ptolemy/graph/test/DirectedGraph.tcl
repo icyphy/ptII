@@ -62,7 +62,7 @@ test DirectedGraph-2.1 {Create an empty instance} {
 test DirectedGraph-2.2 {test reachableNodes on empty graph above} {
     catch {$p {reachableNodes Object} null} msg
     list $msg
-} {{java.lang.IllegalArgumentException: Graph._getNodeId: the object "null" is not a node in this graph.}}
+} {{java.lang.IllegalArgumentException: Graph.getNode(): the weight "null" is not associated with a node in this graph.}}
 
 ######################################################################
 ####
