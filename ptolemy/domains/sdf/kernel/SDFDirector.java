@@ -348,38 +348,6 @@ public class SDFDirector extends StaticSchedulingDirector {
 	    wasTransferred |= super.transferInputs(port);
 	}
 	return wasTransferred;
-
-    /*
-        if (!port.isInput() || !port.isOpaque()) {
-            throw new IllegalActionException(this, port,
-                    "transferInputs: port argument is not an opaque" +
-                    "input port.");
-        }
-        boolean trans = false;
-        Receiver[][] insiderecs = port.deepGetReceivers();
-        for (int i = 0; i < port.getWidth(); i++) {
-	    int rate = SDFScheduler.getTokenConsumptionRate(port);
-	    for(int k = 0; k < rate; k++) {
-                try {
-                    ptolemy.data.Token t = port.get(i);
-                    if (insiderecs != null && insiderecs[i] != null) {
-                        if(_debugging) _debug(getName(),
-                                "transferring input from " + port.getName());
-                        for (int j = 0; j < insiderecs[i].length; j++) {
-                            insiderecs[i][j].put(t);
-                        }
-                        trans = true;
-                    }
-                } catch (NoTokenException ex) {
-                    // this shouldn't happen.
-                    throw new InternalErrorException(
-                            "SDFDirector.transferInputs: Not enough tokens " +
-                            ex.getMessage());
-                }
-            }
-        }
-        return trans;
-    */
     }
 
     /** Return true if transfers data from an output port of the
