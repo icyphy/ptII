@@ -752,7 +752,7 @@ public class PlotBox extends Panel {
      */
     public boolean mouseDown(Event evt, int x, int y) { // deprecated
         // constrain to be in range
-        if (_debug > 7) System.out.println("PlotBox: mouseDown");
+        if (_debug > 9) System.out.println("PlotBox: mouseDown "+x+" "+y);
         if (y > _lry) y=_lry;
         if (y < _uly) y=_uly;
         if (x > _lrx) x=_lrx;
@@ -770,6 +770,7 @@ public class PlotBox extends Panel {
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean mouseDrag(Event evt, int x, int y) {
+        if (_debug > 9) System.out.println("PlotBox: mouseDrag "+x+" "+y);
         // Bound the rectangle so it doesn't go outside the box.
         if (y > _lry) y=_lry;
         if (y < _uly) y=_uly;
@@ -785,6 +786,7 @@ public class PlotBox extends Panel {
                     _zoomout = true;
                     // Draw reference box.
                     _graphics.drawRect(_zoomx-15, _zoomy-15, 30, 30);
+
                 } else if (y > _zoomy) {
                     _zoomin = true; 
                 }
@@ -803,7 +805,7 @@ public class PlotBox extends Panel {
                 // Draw a new box if necessary.
                 if (y > _zoomy) {
                     _zoomxn = x;
-                    _zoomyn = y;
+                      _zoomyn = y;
                     int minx = Math.min(_zoomx, _zoomxn);
                     int maxx = Math.max(_zoomx, _zoomxn);
                     int miny = Math.min(_zoomy, _zoomyn);
@@ -845,6 +847,7 @@ public class PlotBox extends Panel {
      * but we need to compile under 1.0.2 for netscape3.x compatibility.
      */
     public boolean mouseUp(Event evt, int x, int y) { // deprecated
+        if (_debug > 9) System.out.println("PlotBox: mouseUp");
         boolean handled = false;
         if ((_zoomin == true) && (_drawn == true)){  
             if (_zoomxn != -1 || _zoomyn != -1) {
@@ -1273,7 +1276,7 @@ public class PlotBox extends Panel {
     ////                           protected variables                    ////
     
     // If non-zero, print out debugging messages.
-    protected int _debug = 9;
+    protected int _debug = 0;
     
     // The graphics context to operate in.  Note that printing will call
     // paint with a different graphics object, so we have to pass this
