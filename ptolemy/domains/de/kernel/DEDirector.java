@@ -296,15 +296,6 @@ public class DEDirector extends Director implements TimedDirector {
      */
     public Parameter synchronizeToRealTime;
 
-    /** The number of digits of the fractional part of the model time 
-     *  (in decimal format). This parameter defines the time resolution 
-     *  used by this director, which is 10<sup>-timeScale.
-     *  The default value of this parameter is 10, and the corresponding 
-     *  time resolution is 10<sup>-10. 
-     *  The data type for this parameter is int.
-     */
-    public Parameter timeScale;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -347,9 +338,6 @@ public class DEDirector extends Director implements TimedDirector {
             _synchronizeToRealTime =
                 ((BooleanToken)synchronizeToRealTime.getToken())
                 .booleanValue();
-        } else if (attribute == timeScale) {
-            int value = ((IntToken)timeScale.getToken()).intValue();
-            setTimeScale(value);
         } else {
             super.attributeChanged(attribute);
         }
@@ -716,6 +704,13 @@ public class DEDirector extends Director implements TimedDirector {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
+        Actor container = (Actor)getContainer();
+        
+        // Register two pure events, one for starting time and the other
+        // for ending time.
+//        fireAt(container, getModelTime());
+//        fireAt(container, getModelStopTime());
+        
         _exceedStopTime = false;
         _realStartTime = System.currentTimeMillis();
         if (_isEmbedded() && !_eventQueue.isEmpty()) {
@@ -1818,9 +1813,6 @@ public class DEDirector extends Director implements TimedDirector {
             stopTime = new Parameter(this, "stopTime");
             stopTime.setExpression("Infinity");
             stopTime.setTypeEquals(BaseType.DOUBLE);
-
-            timeScale = new Parameter(this, "timeScale", new IntToken("10"));
-            timeScale.setTypeEquals(BaseType.INT);
 
             stopWhenQueueIsEmpty = new Parameter(this, "stopWhenQueueIsEmpty",
                     new BooleanToken(true));

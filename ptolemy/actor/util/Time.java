@@ -45,7 +45,7 @@ import ptolemy.kernel.util.InternalErrorException;
    POSITIVE_INFINITY.
    
    <p> The time value contained by a time object is quantized according to
-   the time resolution specified by the <i>timeScale</i> parameter. The reason 
+   the time resolution specified by the <i>timePrecisionInDigits</i> parameter. The reason 
    for this is that without quantization, it is extremely difficult to compare 
    two time values with bit-to-bit accuracy because of the unpredictable 
    numerical errors introduced during computation. 
@@ -93,15 +93,13 @@ import ptolemy.kernel.util.InternalErrorException;
    
    <p> All time objects share the same time resolution, which is provided by
    the top-level director. In some domains, such as CT and DE, users can 
-   change the time resolution by configuring the <i>timeScale</i> parameter. In 
-   decimal arithmetics, a scale is the number of the digits to the right of
-   the decimal point (the fractional part). The default value for time scale
-   is 10. The corresponding time resolution is 10^(-1*scale). Suppose a time 
-   object with a time value 1.636, if scale is 3, the fractional part is 0.636; 
-   if scale is 1, the fraction part is 0.6. Note that only the change of 
-   timeScale at the top-level director takes effect. What is more, to preserve 
-   the consistency of time values, scale can not be changed when a model 
-   is running. See {@link ptolemy.actor.Director#setTimeScale}.
+   change the time resolution by configuring the <i>timePrecisionInDigits</i> 
+   parameter. This parameter reprents the number of the digits to the right of 
+   the decimal point (the fractional part). The default value for this parameter
+   is 10. The corresponding time resolution is 10^(-1*timePrecisionInDigits). 
+   Note that the only change of timePrecisionInDigits at the top-level director 
+   takes effect. What is more, to preserve the consistency of time values, 
+   timePrecisionInDigits can not be changed when a model is running. 
    
    @author Haiyang Zheng
    @version $Id$
@@ -345,7 +343,7 @@ public class Time implements Comparable {
         } else {
             // NOTE: A simple computation may help to warn users that
             // the returned double value loses the specified precisoin.
-            // One example: if timeScale = 12, and time resolution is 1E-12,
+            // One example: if timePrecisionInDigits = 12, and time resolution is 1E-12,
             // any double that is bigger than 8192.0 can distinguish from itself
             // from a value slighter bigger (with the difference as time 
             // resolution). 8192 is the LUB of the set of double values have
@@ -468,15 +466,15 @@ public class Time implements Comparable {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Get the scale of the container director. 
+    // Get the timePrecisionInDigits of the container director. 
     // This method is only called when quantization happens.
-    private int _getTimeScale() {
+    private int _getTimePrecisionInDigits() {
         if (_director == null) {
             throw new InternalErrorException("Director is null. Cannot " +
                 "quantize the time value of a Time object without having " +
-                "a director providing a time scale value (a time resolution).");
+                "a director providing a time resolution.");
         } else {
-            return _director.getTimeScale();
+            return _director.getTimePrecisionInDigits();
         }
     }
 
@@ -492,7 +490,7 @@ public class Time implements Comparable {
                     "values.");
         } else {
             return originalTimeValue.setScale(
-                _getTimeScale(), BigDecimal.ROUND_HALF_EVEN);
+                _getTimePrecisionInDigits(), BigDecimal.ROUND_HALF_EVEN);
         }
     }
 

@@ -105,11 +105,6 @@ import ptolemy.kernel.util.Workspace;
    is less than this resolution, then the fixed point is considered to have
    reached.
    Default value is 1e-6.
-   <LI> <code>timeScale</code>: The number of the digits to the right of
-   the decimal point (the fractional part) of values of the model time. 
-   its default value for time scale is 10. The corresponding time resolution 
-   is 10^(-10). If two time values differ less than this value,
-   they are considered equivalent.
    <P>
    This director also maintains a breakpoint table to record all
    predictable breakpoints that are greater than or equal to the current time.
@@ -240,11 +235,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
      */
     public Parameter synchronizeToRealTime;
 
-    /** The number of digits of the fractional part of the model time.
-     *  The default value is 10, and the type is int.
-     */
-    public Parameter timeScale;
-
     /** Value resolution in looking for a fixed-point.
      *  The default value is 1e-6, and the type is double.
      */
@@ -309,9 +299,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
                         "Cannot set a negative value resolution.");
             }
             _valueResolution = value;
-        } else if (attribute == timeScale) {
-            int value = ((IntToken)timeScale.getToken()).intValue();
-            setTimeScale(value);
         } else if (attribute == maxIterations) {
             int value = ((IntToken)maxIterations.getToken()).intValue();
             if (value < 1) {
@@ -784,9 +771,6 @@ public abstract class CTDirector extends StaticSchedulingDirector
             valueResolution = new Parameter(this, "valueResolution");
             valueResolution.setExpression("1e-6");
             valueResolution.setTypeEquals(BaseType.DOUBLE);
-            
-            timeScale = new Parameter(this, "timeScale", new IntToken(10));
-            timeScale.setTypeEquals(BaseType.INT);
             
             synchronizeToRealTime = new Parameter(this,
                     "synchronizeToRealTime");

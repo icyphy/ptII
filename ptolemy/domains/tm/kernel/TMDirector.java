@@ -44,7 +44,6 @@ import ptolemy.actor.util.CalendarQueue;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DECQEventQueue;
@@ -214,11 +213,6 @@ public class TMDirector extends Director implements TimedDirector {
      */
     public Parameter synchronizeToRealTime;
 
-    /** The number of digits of the fractional part of the model time.
-     *  The default value is 10, and the type is int.
-     */
-    public Parameter timeScale;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -267,9 +261,6 @@ public class TMDirector extends Director implements TimedDirector {
                 throw new IllegalActionException(this,
                         " task execution time cannot be less than 0.");
             }
-        } else if (attribute == timeScale) {
-            int value = ((IntToken)timeScale.getToken()).intValue();
-            setTimeScale(value);
         } else if (attribute == preemptive) {
             _preemptive = ((BooleanToken)preemptive.getToken()).booleanValue();
         } else if (attribute == synchronizeToRealTime) {
@@ -812,8 +803,6 @@ public class TMDirector extends Director implements TimedDirector {
             stopTime.setTypeEquals(BaseType.DOUBLE);
             preemptive = new Parameter(this, "preemptive",
                     new BooleanToken(false));
-            timeScale = new Parameter(this, "timeScale", new IntToken("10"));
-            timeScale.setTypeEquals(BaseType.INT);
 
             preemptive.setTypeEquals(BaseType.BOOLEAN);
             defaultTaskExecutionTime = new Parameter(this,

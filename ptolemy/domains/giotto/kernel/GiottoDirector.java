@@ -52,7 +52,6 @@ import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -88,13 +87,6 @@ import ptolemy.kernel.util.Workspace;
 */
 public class GiottoDirector extends StaticSchedulingDirector 
     implements TimedDirector {
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The static default Giotto period is 100ms.
-     */
-    protected static double _DEFAULT_GIOTTO_PERIOD = 0.1;
-
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -150,9 +142,6 @@ public class GiottoDirector extends StaticSchedulingDirector
             throws IllegalActionException {
         if (attribute == period) {
             _periodValue = ((DoubleToken)period.getToken()).doubleValue();
-        } else if (attribute == timeScale) {
-            int value = ((IntToken)timeScale.getToken()).intValue();
-            setTimeScale(value);
         } else if (attribute == synchronizeToRealTime) {
             _synchronizeToRealTime =
                 ((BooleanToken)synchronizeToRealTime.getToken())
@@ -638,11 +627,6 @@ public class GiottoDirector extends StaticSchedulingDirector
      */
     public Parameter synchronizeToRealTime;
 
-    /** The number of digits of the fractional part of the model time.
-     *  The default value is 10, and the type is int.
-     */
-    public Parameter timeScale;
-
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -655,6 +639,13 @@ public class GiottoDirector extends StaticSchedulingDirector
     }
     
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The static default Giotto period is 100ms.
+     */
+    protected static double _DEFAULT_GIOTTO_PERIOD = 0.1;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     // Initialize the director by creating a scheduler and parameters.
@@ -666,9 +657,6 @@ public class GiottoDirector extends StaticSchedulingDirector
             period = new Parameter(this, "period");
             period.setToken(new DoubleToken(_DEFAULT_GIOTTO_PERIOD));
             iterations = new Parameter(this, "iterations", new IntToken(0));
-
-            timeScale = new Parameter(this, "timeScale", new IntToken("10"));
-            timeScale.setTypeEquals(BaseType.INT);
 
             synchronizeToRealTime = new Parameter(this,
                     "synchronizeToRealTime",

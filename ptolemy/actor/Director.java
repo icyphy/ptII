@@ -36,7 +36,9 @@ package ptolemy.actor;
 import java.util.Iterator;
 
 import ptolemy.actor.util.Time;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -91,6 +93,15 @@ import ptolemy.kernel.util.Workspace;
    that write access is not required. If none of the directors in a simulation
    require write access, then it is safe to set the workspace to be read-only,
    which will result in faster execution.
+   <p>
+   This class also specifies a parameter <code>timePrecisionInDigits</code>: The
+   number of the digits to the right of the decimal point (the fractional part) 
+   of values of the model time. Its default value is 10. The corresponding time 
+   resolution is 10^(-10). If two time values differ less than this value, they 
+   are considered equivalent. This parameter can only be changed when a model is 
+   not running in order to keep consitency of the time objects. A model only has
+   one time resolution, which is decided by the timePrecisionInDigits parameter
+   of the top-level director.
 
    @author Mudit Goel, Edward A. Lee, Lukito Muliadi, Steve Neuendorffer, John Reekie
    @version $Id$
@@ -107,9 +118,10 @@ public class Director extends Attribute implements Executable {
     public Director() {
         super();
         _addIcon();
+        _initializeParameters();
     }
 
-    /** Construct a director in the  workspace with an empty name.
+    /** Construct a director in the workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
      *  @param workspace The workspace of this object.
@@ -117,6 +129,8 @@ public class Director extends Attribute implements Executable {
     public Director(Workspace workspace) {
         super(workspace);
         _addIcon();
+        _initializeParameters();
+        
     }
 
     /** Construct a director in the given container with the given name.
@@ -124,6 +138,7 @@ public class Director extends Attribute implements Executable {
      *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
+     *  Create the timePrecisionInDigits parameter.
      *
      *  @param container The container.
      *  @param name The name of this director.
@@ -136,11 +151,47 @@ public class Director extends Attribute implements Executable {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _addIcon();
+        _initializeParameters();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public parameters                 ////
+
+    /** The number of digits of the fractional part of the model time 
+     *  (in decimal format). This parameter defines the time resolution 
+     *  used by this director, which is 10<sup>-timePrecisionInDigits.
+     *  The default value of this parameter is 10, and the corresponding 
+     *  time resolution is 10<sup>-10. 
+     *  The data type for this parameter is int.
+     */
+    public Parameter timePrecisionInDigits;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+//    /** Check the status of the manager before update the timePrecisionInDigits 
+//     *  parameter. If the status of the manager is running, 
+//     *  throws an illegalActionException. 
+//     *  @param attribute The changed parameter.
+//     *  @exception IllegalActionException If the status of manager is running.
+//     */
+//    public void attributeChanged(Attribute attribute)
+//            throws IllegalActionException {
+//        if (attribute == timePrecisionInDigits) {
+//            Nameable container = getContainer();
+//            if (container instanceof CompositeActor) {
+//                Manager manager = ((CompositeActor)container).getManager();
+//                if (manager != null 
+//                        && manager.getState() != Manager.ITERATING) {
+//                    throw new IllegalActionException("Can not change the " + 
+//                        "timePrecisionInDigits parameter when model runs.");
+//                }
+//            }
+//        } else {
+//            super.attributeChanged(attribute);
+//        }
+//    }
+//
     /** Transfer at most one data token from the given input port of
      *  the container to the ports it is connected to on the inside.
      *  This method delegates the operation to the IOPort, so that the
@@ -425,29 +476,38 @@ public class Director extends Attribute implements Executable {
     }
 
     /** Get the time resolution of the model. The time resoultion is
-     *  double with a value of 10^(-1*timeScale), where the scale is the number
-     *  of the digits for the fractional part. See {@link #getTimeScale()}.
+     *  double with a value of 10^(-1*timePrecisionInDigits), which is the
+     *  smallest time unit for the model. 
      *  @return The time resolution of the model.
      */
     public final double getTimeResolution() {
-        return Math.pow(10, -1*getTimeScale());
+        return Math.pow(10, -1*getTimePrecisionInDigits());
     }
 
-    /** Get the scale, the number of digits of the fractional part of the
-     *  time value used in this model.
-     *  @return The scale value.
+    /** Get the time precision in digits, the number of digits of the fractional 
+     *  part of the time value used in this model.
+     *  @return The number of digits.
      */
-    public final int getTimeScale() {
-        // NOTE: The current design enforces that there is only one
-        // level (that of the top level director) associated with a model.
+    public final int getTimePrecisionInDigits() {
+        // NOTE: The current design enforces that there is only one time 
+        // precision (that of the top level director) associated with a model.
         if (_isEmbedded()) {
             NamedObj container = getContainer();
             if (container instanceof CompositeActor) {
                 return ((CompositeActor)container).getExecutiveDirector()
-                    .getTimeScale();
+                    .getTimePrecisionInDigits();
             }
         }
-        return _timeScale;
+        int numberOfDigits = 10;
+        try {
+            numberOfDigits = 
+                ((IntToken)timePrecisionInDigits.getToken()).intValue();
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException("Can not evaluate the " +
+                    "timePrecisionInDigits parameter into a valid integer: " 
+                    + e.toString());
+        }
+        return numberOfDigits;
     }
     
     /** Get the start time of the model. This base class returns 
@@ -790,8 +850,7 @@ public class Director extends Attribute implements Executable {
         // FIXME: a duplicate operation also appears in the initialize method.
         _currentTime = getModelStartTime();
         _stopRequested = false;
-        _timeScale = 10;
-                
+        
         // validate all settable attributes.
         Iterator attributes = attributeList(Settable.class).iterator();
         while (attributes.hasNext()) {
@@ -945,34 +1004,6 @@ public class Director extends Attribute implements Executable {
             _currentTime = newTime;
         } else {
             // the new time is equal to the current time, do nothing.
-        }
-    }
-
-    /** Set the scale, the number of digits of the fractional part of a decimal
-     *  value, to specify the time resolution of the model. The default value 
-     *  of scale is 10. 
-     * 
-     *  <p> The value of scale can not be changed when the model is running 
-     *  for the purose of preserving the consistence of time values. This 
-     *  method is final and can not be overridden.
-     * 
-     *  <p> If there is no container, or the container is not an 
-     *  instance of CompositeActor, or if it has no manager, do nothing.
-     *  @param timeScale The number of digits of the fractional part of time value.
-     *  @throws IllegalActionException If the model is running when this 
-     *  method is called.
-     */
-    public final void setTimeScale(int timeScale) throws IllegalActionException {
-        Nameable container = getContainer();
-        if (container instanceof CompositeActor) {
-            Manager manager = ((CompositeActor)container).getManager();
-            if (manager != null && manager.getState() == Manager.ITERATING) {
-                throw new IllegalActionException("Can not change the " +                    "timeScale parameter when the model is running.");
-            }
-            _timeScale = timeScale;
-            if (_debugging) {
-                _debug("--- The timeScale is set to: " + timeScale);
-            }
         }
     }
 
@@ -1220,12 +1251,21 @@ public class Director extends Attribute implements Executable {
                 + "style=\"fill:green\"/>\n" +
                 "</svg>\n");
     }
+    
+    // Initialize parameters.
+    private void _initializeParameters() {
+        // This must happen first before any time objects get created.
+        try {
+            // create parameters
+            timePrecisionInDigits = new Parameter(this, 
+                "timePrecisionInDigits", new IntToken(10));
+        } catch (Exception e) {
+            // This is the only place to create 
+            // the timePrecisionInDigits parameter, no exception should ever
+            // be thrown.
+            throw new InternalErrorException(
+                "Cannot set parameter:\n" + e.getMessage());
+        }
+    }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // The scale, the number of digits of the fractional part of a decimal
-    // value, specifies the time resolution of the model. By default, 
-    // its value is 10. 
-    private int _timeScale = 10;
 }

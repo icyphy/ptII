@@ -29,7 +29,6 @@ COPYRIGHTENDKEY
 package ptolemy.actor;
 
 import ptolemy.actor.util.Time;
-import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// TimedDirector
@@ -53,25 +52,19 @@ public interface TimedDirector {
      */
     public Time getModelTime();
     
-    /** Get the scale, the number of digits of the fractional part of the
+    /** Get the number of digits of the fractional part of the
      *  time value used in this model.
-     *  @return The scale value.
+     *  @return The number of digits.
      */
-    public int getTimeScale();
+    public int getTimePrecisionInDigits();
 
     /** Get the time resolution of the model. The time resoultion is
-     *  double with a value of 10^(-1*timeScale), where the scale is the number
-     *  of the digits for the fractional part. See {@link #getTimeScale()}.
+     *  double with a value of 10^(-1*timePrecisionInDigits), where the 
+     *  timePrecisionInDigits is the number of the digits for the fractional 
+     *  part. See {@link #getTimePrecisionInDigits()}.
      *  @return The time resolution of the model.
      */
     public double getTimeResolution();
-
-    /** Set the scale, the number of digits of the fractional part of the
-     *  time value used in this model.
-     *  @param timeScale The value of time scale.
-     */
-    public void setTimeScale(int timeScale) throws IllegalActionException;
-
 }
 
 
