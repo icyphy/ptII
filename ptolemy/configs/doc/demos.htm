@@ -121,11 +121,15 @@ models a packet in a packet-switched network, where variable
 delays may result in out-of-order arrival of packets.
 </li>
 
-<li><a href="../../data/unit/demo/Units/Units.xml">Units</a>.<br>
+<li>
+<a href="../../data/unit/demo/Units/Units.xml">Units</a>(New in Ptolemy II 2.0)
+.
+<br>
 This model illustrates the unit sytem.
 
 <br>A major source of errors in embedded software is incorrect application
-of units. In Ptolemy II, a suite of constants are defined, with
+of units. Yuhong Xiong and Xiaojun Liu have created a unit system for
+Ptolemy II that is quite clever. A suite of constants are defined, with
 names such as "meter", "cm", "feet", "miles", "seconds", "hours", and
 "days". In each unit category ("length" or "time" for example), there
 is a primary unit with respect to which all the others are specified.
@@ -142,6 +146,9 @@ overloaded in the base classes for numeric valued tokens.
 <!--/vergilDocs-->
 <!-- codegen does not get shipped with ptiny -->
 <li> <a href="../../../doc/codegen.htm">Code Generation</a>
+(New in Ptolemy II 2.0)
+.
+<br>
 This release includes a limited prototype of our code generation facility
 that will generate .class files for non-hierarchical SDF models
 </li>
@@ -162,11 +169,10 @@ The list below is organized by domains and includes the demonstrations above.
 <!--/vergilDocs-->
 
 <!-- BouncingBall uses GR, and we don't ship GR in ptiny -->
-<li> <a href="../../domains/ct/demo/BouncingBall/BouncingBall.xml">Bouncing Ball</a> 
-(Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>)
+<li> <a href="../../domains/ct/demo/BouncingBall/BouncingBall.xml">Bouncing Ball</a>  (Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>) (New in Ptolemy II 2.0)
 <!--vergilDocs-->
 
-<li> <a href="../../domains/ct/demo/CarTracking/CarTracking.xml">Car Tracking</a>
+<li> <a href="../../domains/ct/demo/CarTracking/CarTracking.xml">Car Tracking</a> (New in Ptolemy II 2.0)
 <!-- Corba -->
 <li> <a href="../../domains/ct/demo/Helicopter/Helicopter.xml">Helicopter Control</a>
 <li> <a href="../../domains/ct/demo/Lorenz/Lorenz.xml">Lorenz Attractors</a>
@@ -174,9 +180,10 @@ The list below is organized by domains and includes the demonstrations above.
 <li> <a href="../../domains/ct/demo/SigmaDelta/SigmaDelta.xml">Sigma-Delta A/D Conversion</a>
 <li> <a href="../../domains/ct/demo/SquareWave/SquareWave.xml">Square Wave Response</a>
 <li> <a href="../../domains/ct/demo/StickyMasses/StickyMasses.xml">Sticky Point Masses</a>
-<li> <a href="../../domains/ct/demo/Switch/Switch.xml">Switching Continuous Signals</a>
-<li> <a href="../../domains/ct/demo/Thermostat/ModalThermostat.xml">Modal Thermostat</a>
-<li> <a href="../../data/unit/demo/Units/Units.xml">Units</a> (New in PtolemyII 2.0)
+<li> <a href="../../domains/ct/demo/Switch/Switch.xml">Switching Continuous Signals</a> (New in Ptolemy II 2.0)
+<li> <a href="../../domains/ct/demo/Thermostat/ModalThermostat.xml">Modal Thermostat</a> (New in Ptolemy II 2.0)
+<li>
+<a href="../../data/unit/demo/Units/Units.xml">Units</a> (New in PtolemyII 2.0)
 <!-- jspaces -->
 </ul>
 
@@ -201,8 +208,8 @@ The list below is organized by domains and includes the demonstrations above.
 <h3>Finite State Machine</h3>
 <ul>
 <li> <a href="../../domains/fsm/demo/ABP/ABP.xml">Alternating&nbsp;Bit</a>
-<li> <a href="../../domains/fsm/demo/Blending/Blending.xml">Blending</a>
-<li> <a href="../../domains/fsm/demo/MultipleRuns/MultipleRuns.xml">Multiple&nbsp;Runs</a>
+<li> <a href="../../domains/fsm/demo/Blending/Blending.xml">Blending</a> (New in Ptolemy II 2.0)
+<li> <a href="../../domains/fsm/demo/MultipleRuns/MultipleRuns.xml">Multiple&nbsp;Runs</a> (New in Ptolemy II 2.0)
 <!-- systemLevelTypes-->
 </ul>
 
@@ -220,7 +227,7 @@ The list below is organized by domains and includes the demonstrations above.
 <h3>Graphics</h3>
 Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>
 <ul>
-<li> <a href="../../domains/gr/demo/FurutaPendulum/FurutaPendulum.xml">FurutaPendulum</a>  (New in Ptolemy II 2.0)
+<li> <a href="../../domains/gr/demo/FurutaPendulum/FurutaPendulum.xml">FurutaPendulum</a> (New in Ptolemy II 2.0)
 <li> <a href="../../domains/gr/demo/Pendulum/Pendulum.xml">Pendulum</a>
 <li> <a href="../../domains/gr/demo/Universe/Universe.xml">Universe</a>
 </ul>
@@ -252,8 +259,9 @@ Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>
 <li><a href="../../domains/sdf/demo/HTVQ/HTVQ.xml">Image&nbsp;coding</a>
 <!--vergilDocs-->
 <li><a href="../../actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml">Karplus-Strong</a>
-<li><a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMSAdaptive</a>
-<li><a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a>
+<li><a href="../../domains/sdf/demo/LMSAdaptive/LMSAdaptive.xml">LMSAdaptive</a> (New in Ptolemy II 2.0)
+<li><a href="../../domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml">OrthogonalCom</a> (New in Ptolemy II 2.0)
+<li><a href="../../domains/sdf/demo/MaximumEntropySpectrum/MaximumEntropySpectrum.xml">MaximumEntropySpectrum</a> (New in Ptolemy II 2.0)
 
 <li><a href="../../matlab/demo/MatlabExpression/MatlabExpression.xml">Matlab</a>
 (Windows only, requires that Matlab be installed locally)
@@ -276,20 +284,19 @@ Requires Java 3D, see the <a href="../../domains/gr/doc/main.htm">GR domain</a>
 <!--/vergilDocs-->
 <h3>Synchronous Reactive</h3>
 <ul>
-<!--  Not shipped 
-  ../../domains/sr/demo/ReflexGame/ReflexGame.xml ReflexGame -->
-<li><a href="../../domains/sr/demo/TokenRing/TokenRing.xml">TokenRing</a>  (New in Ptolemy II 2.0)
+<li><a href="../../domains/sr/demo/ReflexGame/ReflexGame.xml">ReflexGame</a>
+<li><a href="../../domains/sr/demo/TokenRing/TokenRing.xml">TokenRing</a> (New in Ptolemy II 2.0)
 </ul>
 
 <!--/vergilDocs-->
 <!--Ptiny does not include TM-->
 <h3>Priority driven multi-tasking (TM)</h3>
 <ul>
-<li> <a href="../../domains/tm/demo/SimpleTasks/SimpleTasks.xml">Two simple tasks</a>  (New in Ptolemy II 2.0)
-<li> <a href="../../domains/tm/demo/Controllers/Controllers.xml">Two control loops</a>  (New in Ptolemy II 2.0)
-<li> <a href="../../domains/tm/demo/MergedEvents/MergedEvents.xml">Merged Events</a>  (New in Ptolemy II 2.0)
-<li> <a href="../../domains/tm/demo/FFT/FFT.xml">FFT Background Process</a>
-</ul>  (New in Ptolemy II 2.0)
+<li> <a href="../../domains/tm/demo/SimpleTasks/SimpleTasks.xml">Two simple tasks</a> (New in Ptolemy II 2.0)
+<li> <a href="../../domains/tm/demo/Controllers/Controllers.xml">Two control loops</a> (New in Ptolemy II 2.0)
+<li> <a href="../../domains/tm/demo/MergedEvents/MergedEvents.xml">Merged Events</a> (New in Ptolemy II 2.0)
+<li> <a href="../../domains/tm/demo/FFT/FFT.xml">FFT Background Process</a> (New in Ptolemy II 2.0)
+</ul>
 
 <!--vergilDocs-->
 </body>
