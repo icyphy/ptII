@@ -41,7 +41,11 @@ import ptolemy.kernel.util.Settable;
 /** Read in a keystore file, look up a certificate by alias name and
 output the PrivateKey.
 
+<p>This class is a wrapper class for {@link KeyReader} that always
+returns a private key.
+
 @see PublicKeyReader
+@see SignatureVerifier
 @author  Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1

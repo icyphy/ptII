@@ -48,35 +48,31 @@ import java.security.PrivateKey;
 
 <p>In cryptography, digital signatures can be used to verify that the
 data was not modified in transit.  However, the data itself is passed
-in cleartext.
+in clear text.
 
-<p>The <i>provider</i> and <i>signatureAlgorithm</i>
-parameters should be set to the values used to generate the privateKey.
-See {@link PrivateKeyReader} and {@link SignatureActor}
-for possible values.
+<p>The <i>provider</i> and <i>signatureAlgorithm</i> parameters should
+be set to the values used to generate the privateKey.  See {@link
+PrivateKeyReader} and {@link SignatureActor} for possible values.
 
-<p>The <i>provider</i> and <i>signatureAlgorithm</i>
-parameters should be set to the same
-value as the corresponding parameters in the SignatureVerifier actor.
+<p>The <i>provider</i> and <i>signatureAlgorithm</i> parameters should
+be set to the same value as the corresponding parameters in the
+SignatureVerifier actor.
 
 <p>Each time fire() is called, the <i>privateKey</i> is used to create a
 signature for each block of unsigned byte array data read from the
 <i>input</i> port.  The signed data is passed to a SignatureVerifier
 actor on the <i>signature</i> port as an unsigned byte array.
 
-<p>The <i>input</i> data itself is passed to in <b>cleartext</b>
+<p>The <i>input</i> data itself is passed to in <b>clear text</b>
 on the <i>output</i> port.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
-Cryptography Extension (JCE).
-
-<br>Information about JCA can be found at
-<a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html" target="_top">http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html">.
-<br>Information about JCE can be found at
-<a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/">.
+Cryptography Extension (JCE).  See the
+{@link ptolemy.actor.lib.security.CryptographyActor} documentation for
+resources about JCA and JCE.
 
 @see PrivateKeyReader
-@author Rakesh Reddy, Christopher Hylands Brooks
+@author Christopher Hylands Brooks, Contributor: Rakesh Reddy 
 @version $Id$
 @since Ptolemy II 3.1
 */
@@ -107,24 +103,26 @@ public class SignatureSigner extends SignatureActor {
     /** The private key to be used by the SignatureVerifier actor
      *  to verify the data on the <i>output</i> port.
      *  The type of this input port is an ObjectToken containing
-     *  a java.security.Key.
+     *  a java.security.PrivateKey.
      */
     public TypedIOPort privateKey;
 
-    /** The signature of the data.  The type of this input port
-     *  is unsigned byte array.
+    /** The signature of the data.  The type of this output port
+     *  is unsigned byte array.  The data is read in on the <i>input</i>
+     *  port and the signature is generated on this port.  The
+     *  <i>output</i> port contains the data in clear text.
      */
     public TypedIOPort signature;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Created a signature for the input data and the signature to the
-     *  output.
-     *  @exception IllegalActionException If calling send() or super.fire()
-     *  throws it.
+    /** Create a signature for the input data and send the signature
+     *  to the signature port.  The <i>output</i> port contains the data
+     *  in clear text.
      *
-     *  @exception IllegalActionException If thrown by base class.
+     *  @exception IllegalActionException If calling send(), super.fire()
+     *  throws it, or if there is a problem cryptographic configuration.
      */
     public void fire() throws IllegalActionException {
         if (privateKey.hasToken(0)) {
@@ -159,8 +157,7 @@ public class SignatureSigner extends SignatureActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /* The private key to be used for asymmetric decryption.  This key is null
-     *  for symmetric decryption.
+    /* The private key to be used for the signature.
      */
     private PrivateKey _privateKey = null;
 }

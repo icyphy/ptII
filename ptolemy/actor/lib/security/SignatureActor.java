@@ -63,21 +63,26 @@ also be specified in the <i>provider</i> parameter.
 
 <p>The input and output are both arrays of unsigned bytes.
 
+<p>In initialize(), this actor sets the value of the _signature member
+to the results of calling java.security.Signature.getInstance() with
+the values of the <i>signatureAlgorithm</i> and <i>provider</i>
+parameters.  Derived classes should have a fire() method that uses the
+_signature member to process data appropriately.
+
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
-Cryptography Extension (JCE).
+Cryptography Extension (JCE).  See the
+{@link ptolemy.actor.lib.security.CryptographyActor} documentation for
+resources about JCA and JCE.
 
-<br>Information about JCA can be found at
-<a href="http://java.sun.com/products/jca/" target="_top">http://java.sun.com/products/jca/">.
-Information about JCE can be found at
-<a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/">.
-
-@author Rakesh Reddy, Christopher Hylands Brooks
+@author Christopher Hylands Brooks, Contributor: Rakesh Reddy 
 @version $Id$
 @since Ptolemy II 3.1
 */
 public class SignatureActor extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
+     *  The Java virtual machine is queried for algorithm and provider
+     *  choices and these choices are added to the appropriate parameters.
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the actor cannot be contained
@@ -119,12 +124,12 @@ public class SignatureActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** This port takes in an UnsignedByteArray and processes the data.
+    /** This port takes in an unsigned byte array and processes the data.
      */
     public TypedIOPort input;
 
     /** This port sends out the processed data received from <i>input</i> in
-     *  the form of an UnsignedByteArray.
+     *  the form of an unsigned byte array.
      */
     public TypedIOPort output;
 
@@ -167,9 +172,10 @@ public class SignatureActor extends TypedAtomicActor {
     }
 
     /** Use the values of the <i>signatureAlgorithm</i> and
-     *  <i>provider</i> parameters to initialize the Signature object.
+     *  <i>provider</i> parameters to initialize the
+     *  java.security.Signature object.
      *
-     *  If provider is left as "SystemDefault" the system chooses the
+     *  If provider is "SystemDefault" then the system chooses the
      *  provider based on the JCE.
      *
      * @exception IllegalActionException If the base class throws it,
@@ -192,8 +198,6 @@ public class SignatureActor extends TypedAtomicActor {
                     + _provider + "'");
         }
     }
-
-
 
     ///////////////////////////////////////////////////////////////////
     ////                         Protected Methods                 ////

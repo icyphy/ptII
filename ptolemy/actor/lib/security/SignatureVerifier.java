@@ -45,15 +45,14 @@ import java.security.PublicKey;
 //// SignatureVerifier
 /**
 Verify the signature of the input data.
-<p>
+
 <p>In cryptography, digital signatures can be used to verify that the
 data was not modified in transit.  However, the data itself is passed
-in cleartext.
+in clear text.
 
-<p>The <i>provider</i> and <i>signatureAlgorithm</i>
-parameters should be set to the values used to generate the publicKey.
-See {@link PublicKeyReader} and {@link SignatureActor}
-for possible values.
+<p>The <i>provider</i> and <i>signatureAlgorithm</i> parameters should
+be set to the values used to generate the publicKey.  See {@link
+PublicKeyReader} and {@link SignatureActor} for possible values.
 
 <p>The <i>provider</i> and <i>signatureAlgorithm</i> parameters should
 be set to the same value as the corresponding parameter in the
@@ -68,15 +67,12 @@ data on the <i>input</i> port is passed to the <i>output</i> port.
 If the signature is not valid, then an exception is thrown.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
-Cryptography Extension (JCE).
-
-<br>Information about JCA can be found at
-<a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html" target="_top">http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html">.
-<br>Information about JCE can be found at
-<a href="http://java.sun.com/products/jce/" target="_top">http://java.sun.com/products/jce/">.
+Cryptography Extension (JCE).  See the
+{@link ptolemy.actor.lib.security.CryptographyActor} documentation for
+resources about JCA and JCE.
 
 @see PublicKeyReader
-@author Rakesh Reddy, Christopher Hylands Brooks
+@author Christopher Hylands Brooks, Contributor: Rakesh Reddy 
 @version $Id$
 @since Ptolemy II 3.1
 */
@@ -109,9 +105,10 @@ public class SignatureVerifier extends SignatureActor {
      */
     public TypedIOPort signature;
 
-    /** This port receives the public key to be used from the
+    /** The public key that is used to verify the signature.
+     *  This port receives the public key to be used from the
      *  The type of this input port is an ObjectToken containing
-     *  a java.security.Key.
+     *  a java.security.PublicKey.
      */
     public TypedIOPort publicKey;
 
@@ -121,8 +118,9 @@ public class SignatureVerifier extends SignatureActor {
     /** Read in the publicKey, input and signature tokens, verify
      *  the signature and write the input data on the output port.
      *
-     *  @exception IllegalActionException If thrown by base class
-     *  or if the signature does not properly verify.
+     *  @exception IllegalActionException If thrown by a base class,
+     *  if there is a problem with the cryptographic configuration or
+     *  if the signature does not properly verify.
      */
     public void fire() throws IllegalActionException {
         if (publicKey.hasToken(0)) {
@@ -152,9 +150,8 @@ public class SignatureVerifier extends SignatureActor {
             // If we got to here, then the signature verified, so
             // output the data
             output.send(0, inputToken);
-
-            super.fire();
         }
+        super.fire();
     }
 
     ///////////////////////////////////////////////////////////////////

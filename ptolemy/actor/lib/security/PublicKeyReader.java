@@ -1,5 +1,4 @@
-/* An actor that reads a Keystore from a FileParameter and reads
-a PublicKey
+/* Open a Keystore from a FileParameter and output a PublicKey.
 
 @Copyright (c) 2003 The Regents of the University of California.
 All rights reserved.
@@ -38,10 +37,13 @@ import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// PublicKeyReader
-/** Read in a keystore file, look up a certificate by alias name and
-output the PublicKey.
+/** Open a Keystore from a FileParameter and output a PublicKey.
+
+<p>This class is a wrapper class for {@link KeyReader} that always
+returns a public key.
 
 @see PrivateKeyReader
+@see SignatureSigner
 @author  Christopher Brooks
 @version $Id$
 @since Ptolemy II 3.1

@@ -1,5 +1,5 @@
-/* An actor that reads a Keystore from a FileParameter, looks up
-a Certificate and outputs a public or private key.
+/* Read in a Keystore from a FileParameter, look up
+a Certificate and output a public or private key.
 
 @Copyright (c) 2003 The Regents of the University of California.
 All rights reserved.
@@ -56,8 +56,8 @@ import java.util.Enumeration;
 
 //////////////////////////////////////////////////////////////////////////
 //// KeyReader
-/** Read in a keystore file, look up a certificate by alias name and
-outputs a public or private key.
+/**  Read in a Keystore from a FileParameter, look up
+a Certificate and output a public or private key.
 
 <p>Keystores are ways to manage keys and certificates.  A keystore file can
 be created by using the keytool binary that comes with Java.
@@ -75,7 +75,7 @@ which will create a keystore store password and key password is
 <br><a href="http://java.sun.com/j2se/1.4.2/docs/tooldocs/windows/keytool.html">Keytool</a.
 @see PrivateKeyReader
 @see PublicKeyReader
-@author  Christopher Brooks
+@author  Christopher Hylands Brooks
 @version $Id$
 @since Ptolemy II 3.1
 */
@@ -208,7 +208,9 @@ public class KeyReader extends Source {
         output.broadcast(new ObjectToken(_key));
     }
 
-    /** Open the KeyStore, look up the Certificate and the PublicKey
+    /** Open the KeyStore, look up the Certificate and the PublicKey.
+     *  @exception IllegalActionException If the parent class throws it
+     *  or if there is a problem with the cryptographic configuration.
      */
     public void initialize() throws IllegalActionException {
         attributeChanged(fileOrURL);
@@ -216,7 +218,7 @@ public class KeyReader extends Source {
         InputStream keyStoreStream;
         try {
             // FIXME: this will not work if the input is stdin.
-            // FileParameter needs to have a way of getting the
+            // FIXME: FileParameter needs to have a way of getting the
             // unbuffered stream.
             keyStoreStream = _url.openStream();
         } catch (IOException ex) {
@@ -242,6 +244,7 @@ public class KeyReader extends Source {
             }
 
             PublicKey publicKey = certificate.getPublicKey();
+            // FIXME: The testsuite needs to test this with an invalid cert.
             certificate.verify(publicKey);
 
             if (certificate instanceof X509Certificate) {
