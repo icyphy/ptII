@@ -75,7 +75,7 @@ public class LinkController extends EdgeController {
 	// This is wierd...  we want 2 targets, one for head and port,
 	// one for tail and vertex.
 	ConnectorTarget ct = new LinkTarget();
-
+	setConnectorTarget(ct);
 	setEdgeRenderer(new LinkRenderer());
 
 	// Create and set up the manipulator for connectors
@@ -110,13 +110,14 @@ public class LinkController extends EdgeController {
         }
 
         public Site getHeadSite(Figure f, double x, double y) {
-            if(f instanceof StraightTerminal) {
-		return ((Terminal)f).getConnectSite();
+            System.out.println("getting headsite for " + f);
+	    if(f instanceof Terminal) {
+		Site site = ((Terminal)f).getConnectSite();
+		return site;
             } else {
                 return super.getHeadSite(f, x, y);
             }
         }
-        ConnectorTarget _vertexTarget;
     }
 
     public class LinkRenderer implements EdgeRenderer {
@@ -124,7 +125,7 @@ public class LinkController extends EdgeController {
          * Render a visual representation of the given edge.
          */
         public Connector render(Edge edge, Site tailSite, Site headSite) {
-            StraightConnector c = new StraightConnector(tailSite, headSite);
+            AbstractConnector c = new ManhattanConnector(tailSite, headSite);
             c.setLineWidth((float)2.0);
             c.setUserObject(edge);
             return c;

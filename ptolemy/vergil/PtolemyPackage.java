@@ -56,10 +56,16 @@ import java.io.DataOutputStream;
 import java.io.FileWriter;
 import java.net.URL;
 
-import java.awt.*;
+import java.awt.Component;
+import java.awt.BorderLayout;
+import java.awt.Container;
+import java.awt.Color;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
+
+import ptolemy.domains.sdf.kernel.*;
+import ptolemy.domains.pn.kernel.*;
 
 /**
  * A modular package that can be plugged into Vergil that adds support for 
@@ -74,7 +80,7 @@ public class PtolemyPackage implements Package {
 	Action action;
 
         // Create the Devel menu
-        JMenu menuDevel = new JMenu("Devel");
+        JMenu menuDevel = new JMenu("Ptolemy II");
         menuDevel.setMnemonic('D');
         _application.addMenu(menuDevel);
 
@@ -82,7 +88,7 @@ public class PtolemyPackage implements Package {
             public void actionPerformed(ActionEvent e) {
                 Document d = _application.getCurrentDocument();
                 if (d == null) {
-                    System.out.println("Graph document is null");
+                    System.out.println("Document is null");
                 } else {
                     System.out.println(d.toString());
                 }
@@ -205,21 +211,90 @@ public class PtolemyPackage implements Package {
         });
 	
 	tb.add(_layoutComboBox);
-
+	
+	_directorModel = new DefaultComboBoxModel();
+	_directorModel.addElement(new SDFDirector());
+	_directorModel.addElement(new PNDirector());
 	//FIXME find these names somehow.
-	_directorComboBox = new JComboBox();
-	dflt = "sdf.director";
-        _directorComboBox.addItem(dflt);
-        _directorComboBox.setSelectedItem(dflt);
-        _directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
+	_directorComboBox = new JComboBox(_directorModel);
+	_directorComboBox.setRenderer(new DirectorCellRenderer());
+	_directorComboBox.setMaximumSize(_directorComboBox.getMinimumSize());
         _directorComboBox.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 if (e.getStateChange() == ItemEvent.SELECTED) {
-                    // FIXME do something.
+		    System.out.println("test");
+		    Director director = (Director) e.getItem();
+		    PtolemyDocument d = (PtolemyDocument)
+			_application.getCurrentDocument();
+		    CompositeEntity entity = 
+			d.getModel();
+		    if(entity instanceof Actor) {
+			CompositeActor actor = 
+			    (CompositeActor) entity;
+			try {
+			    Director clone = 
+				(Director)director.clone(actor.workspace());
+			    actor.setDirector(clone);
+			} catch (Exception ex) {
+			    System.out.println(ex.getMessage());
+			    ex.printStackTrace();
+			}
+		    }
                 }
             }
         });
         tb.add(_directorComboBox);
+	
+    }
+
+    /**
+     * Add a visual notation to the list of visual notations.
+     */
+    public void addNotation(VisualNotation notation) {
+	_notationModel.addElement(notation);
+    }
+
+    /**
+     * Add a director to the list of possible directors.
+     */
+    public void addDirector(Director director) {
+	_directorModel.addElement(director);
+    }
+
+    /** 
+     * Return a list of the directors in the director list.
+     */
+    public List directorList() {
+	List list = new LinkedList();
+	for(int i = 0; i < _directorModel.getSize(); i++) {
+	    list.add(_directorModel.getElementAt(i));
+	}
+	return list;
+    }
+
+    /**
+     * Return a list of the notations in the notatin list.
+     */
+    public List notationList() {
+	List list = new LinkedList();
+	for(int i = 0; i < _notationModel.getSize(); i++) {
+	    list.add(_notationModel.getElementAt(i));
+	}
+	return list;
+    }
+
+    /**
+     * Remove a director from the list of directors.
+     */
+    public void removeDirector(Director director) {
+	_directorModel.removeElement(director);
+    }
+   
+    /**
+     * Remove a notation from the list of notations
+     */
+    public void removeNotation(VisualNotation notation) {
+	_notationModel.removeElement(notation);
     }
 
     /**
@@ -241,6 +316,21 @@ public class PtolemyPackage implements Package {
 	}
     }
 
+    class DirectorCellRenderer extends JLabel implements ListCellRenderer {
+	public DirectorCellRenderer() {
+	    setOpaque(true);
+	}
+	public Component getListCellRendererComponent(
+	    JList list, Object value, int index,
+	    boolean isSelected, boolean cellHasFocus)
+	{
+	    setText(((NamedObj)value).getClass().getName());
+	    setBackground(isSelected ? Color.red : Color.white);
+	    setForeground(isSelected ? Color.white : Color.black);
+	    return this;
+	}
+    }
+ 
     /** The application that this package is associated with.
      */
     private VergilApplication _application;
@@ -258,4 +348,12 @@ public class PtolemyPackage implements Package {
     /** The layout selection combobox
      */
     private JComboBox _layoutComboBox;
+
+    /** The list of directors.
+     */
+    private DefaultComboBoxModel _directorModel;
+
+    /** The list of notations.
+     */
+    private DefaultComboBoxModel _notationModel;
 }

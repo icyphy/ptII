@@ -172,8 +172,7 @@ public class PtolemyDocument extends AbstractDocument
          */
         public Document createDocument(Application app) {
             PtolemyDocument d = new PtolemyDocument(app);
-            //
-            TypedCompositeActor toplevel = new TypedCompositeActor();
+	    TypedCompositeActor toplevel = new TypedCompositeActor();
 
             d.setModel(toplevel);
             return d;

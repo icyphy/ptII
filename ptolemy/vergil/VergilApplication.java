@@ -55,6 +55,7 @@ import diva.resource.RelativeBundle;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.BorderLayout;
 import java.awt.event.*;
@@ -123,7 +124,9 @@ public class VergilApplication extends MDIApplication {
         // Initialize the menubar, toolbar, and palettes
         initializeMenuBar(frame.getJMenuBar());
         initializeToolBar(frame.getJToolBar());
-        initializePalette();
+	JPanel toolBarPane = frame.getToolBarPane();
+	toolBarPane.setLayout(new FlowLayout(FlowLayout.LEFT, 0, 0));
+	SwingUtilities.invokeLater(new PaletteInitializer());
 
         Icon icon = getResources().getImageIcon("GraphIconImage");
         Image iconImage = getResources().getImage("GraphIconImage");
@@ -224,21 +227,6 @@ public class VergilApplication extends MDIApplication {
 	}
     }
 
-    /** Grab the keyboard focus when the component that this listener is
-     *  attached to is clicked on.
-     */
-    public class MouseFocusMover extends MouseAdapter {
-        public void mouseClicked(
-                MouseEvent mouseEvent) {
-	    Component component =
-                mouseEvent.getComponent();
-
-            if (!component.hasFocus()) {
-                component.requestFocus();
-            }
-        }
-    }
-
     /** Return the entity library for this application.
      */
     public CompositeEntity getEntityLibrary() {
@@ -265,33 +253,41 @@ public class VergilApplication extends MDIApplication {
 
     /** Initialize the palette in the.
      */
-    public void initializePalette() {
-        DesktopFrame frame = ((DesktopFrame) getApplicationFrame());
-        JTreePane pane = (JTreePane)frame.getPalettePane();
+    public class PaletteInitializer implements Runnable {
+	public void run() {
+	    DesktopFrame frame = ((DesktopFrame) getApplicationFrame());
+	    JTreePane pane = (JTreePane)frame.getPalettePane();
+	    
+	    JSplitPane splitPane = frame.getSplitPane();
+	    
+	    // There are differences in the way swing acts in JDK1.2 and 1.3
+	    // The way to get it to work with both is to set
+	    // the preferred size along with the minimum size.   JDK1.2 has a
+	    // bug where the preferred size may be inferred to be less than the
+	    // minimum size when the pane is first created.
+	    pane.setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
+		setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
+		setPreferredSize(new Dimension(150, 150));
+    
+	    parseLibraries();
+	    //System.out.println("Icons = " + _iconLibrary.description());
 
-        parseLibraries();
-	//System.out.println("Icons = " + _iconLibrary.description());
-
-        CompositeEntity lib = getEntityLibrary();
-
-	// We have "" because that is the name that was given in the
-	// treepane constructor.
-	//System.out.println("lib = " + lib.description());
-        createTreeNodes(pane, lib.getFullName(), lib);
-
-	JSplitPane splitPane = frame.getSplitPane();
-
-	// There are differences in the way swing acts in JDK1.2 and 1.3
-	// The way to get it to work with both is to set
-	// the preferred size along with the minimum size.   JDK1.2 has a
-	// bug where the preferred size may be inferred to be less than the
-	// minimum size when the pane is first created.
-	pane.setMinimumSize(new Dimension(150, 150));
-	((JComponent)pane.getTopComponent()).
+	    CompositeEntity lib = getEntityLibrary();
+	    
+	    // We have "" because that is the name that was given in the
+	    // treepane constructor.
+	    //System.out.println("lib = " + lib.description());
+	    createTreeNodes(pane, lib.getFullName(), lib);
+	
+	    pane.setMinimumSize(new Dimension(150, 150));
+	    ((JComponent)pane.getTopComponent()).
 	    setMinimumSize(new Dimension(150, 150));
-	((JComponent)pane.getTopComponent()).
-	    setPreferredSize(new Dimension(150, 150));
-	splitPane.validate();
+	    ((JComponent)pane.getTopComponent()).
+		setPreferredSize(new Dimension(150, 150));
+	    splitPane.validate();
+	}
     }
 
     public void createTreeNodes(JTreePane pane,
@@ -311,10 +307,11 @@ public class VergilApplication extends MDIApplication {
 
             if(entity instanceof CompositeEntity) {
                 GraphPalette palette = new GraphPalette();
+		//		palette.setMinimumSize(new Dimension(200, 200));
+		//palette.setPreferredSize(new Dimension(600, 250));
 		pane.addEntry(parent, entity.getFullName(), palette);
 		createTreeNodes(pane, entity.getFullName(),
                         (CompositeEntity)entity);
-		palette.setMinimumSize(new Dimension(200, 200));
             }
         }
     }
@@ -372,7 +369,7 @@ public class VergilApplication extends MDIApplication {
         Action action;
         RelativeBundle resources = getResources();
 
-        // Conventional new/open/save buttons
+	// Conventional new/open/save buttons
         action = getAction(DefaultActions.NEW);
         addToolBarButton(tb, action, null, resources.getImageIcon("NewImage"));
 
@@ -488,6 +485,7 @@ public class VergilApplication extends MDIApplication {
      */
     public class Focuser implements ListDataListener {
 	public void contentsChanged(ListDataEvent e) {
+	    System.out.println("Focusing");
 	    VergilDocument document = (VergilDocument)getCurrentDocument();
 	    if(document == null) return;
 	    JComponent component = getView(document);
