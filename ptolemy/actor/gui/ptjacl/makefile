@@ -54,6 +54,7 @@ JSRCS = \
 
 # Files to be included in the jar file
 OTHER_FILES_TO_BE_JARED = \
+	configuration.xml \
 	help.htm \
 	init.tcl
 
@@ -77,6 +78,8 @@ all: jclass
 
 install: jclass jars
 
+demo:
+	$(ROOT)/bin/moml configuration.xml init.tcl
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
