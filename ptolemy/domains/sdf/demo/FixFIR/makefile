@@ -65,12 +65,15 @@ all: jclass
 
 install: all
 
-demo: demo_applet demo_vergil
+demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
 	CLASSPATH="$(CLASSPATH)" appletviewer FixFIR.htm
 
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" FixFIR.xml
+
 demo_vergil:
-	$(PTII)/bin/vergil FixFIR.xml
+	"$(PTII)/bin/vergil" FixFIR.xml
 
 depend:
 	@echo "no dependencies in this directory"

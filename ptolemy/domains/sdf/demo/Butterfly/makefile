@@ -84,10 +84,10 @@ demo_application: $(PTCLASSJAR)
 		-class ptolemy.domains.sdf.demo.Butterfly.Butterfly 
 
 demo_ptolemy:
-	$(PTII)/bin/ptolemy Butterfly.xml
+	"$(PTII)/bin/ptolemy" Butterfly.xml
 
 demo_vergil:
-	$(PTII)/bin/vergil Butterfly.xml
+	"$(PTII)/bin/vergil" Butterfly.xml
 
 depend:
 	@echo "no dependencies in this directory"

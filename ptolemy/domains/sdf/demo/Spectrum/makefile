@@ -45,6 +45,7 @@ JSRCS =
 EXTRA_SRCS =	$(JSRCS) \
 	Spectrum.htm \
 	SpectrumVergil.htm \
+	SpectrumWebVersion.xml \
 	Spectrum.xml
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -65,12 +66,15 @@ all: jclass
 
 install: all
 
-demo: demo_applet demo_vergil
+demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
-	CLASSPATH="$(CLASSPATH)" appletviewer FixFIR.htm
+	CLASSPATH="$(CLASSPATH)" appletviewer Spectrum.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Spectrum.xml
 
 demo_vergil:
-	$(PTII)/bin/vergil FixFIR.xml
+	"$(PTII)/bin/vergil" Spectrum.xml
 
 depend:
 	@echo "no dependencies in this directory"

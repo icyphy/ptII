@@ -78,12 +78,15 @@ all: jclass $(PTCLASSJAR)
 
 install: all
 
-demo: demo_applet demo_vergil
+demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
 	CLASSPATH="$(CLASSPATH)" appletviewer Type.htm
 
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy Type.xml
+
 demo_vergil:
-	$(PTII)/bin/vergil Type.xml
+	"$(PTII)/bin/vergil" Type.xml
 
 depend:
 	@echo "no dependencies in this directory"

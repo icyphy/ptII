@@ -66,12 +66,15 @@ all: jclass
 
 install: all
 
-demo: demo_applet demo_vergil
+demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
 	CLASSPATH="$(CLASSPATH)" appletviewer HTVQ.htm
 
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" HTVQ.xml
+
 demo_vergil:
-	$(PTII)/bin/vergil HTVQ.xml
+	"$(PTII)/bin/vergil" HTVQ.xml
 
 depend:
 	@echo "no dependencies in this directory"

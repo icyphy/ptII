@@ -65,12 +65,15 @@ all: $(JCLASS)
 
 install: all
 
-demo: demo_applet demo_vergil
+demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
 	CLASSPATH="$(CLASSPATH)" appletviewer Expression.htm
 
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" Expression.xml
+
 demo_vergil:
-	$(PTII)/bin/vergil Expression.xml
+	"$(PTII)/bin/vergil" Expression.xml
 
 depend:
 	@echo "no dependencies in this directory"

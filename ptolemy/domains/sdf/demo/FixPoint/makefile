@@ -64,12 +64,15 @@ all: jclass
 
 install: all
 
-demo: demo_applet demo_vergil
+demo: demo_applet demo_ptolemy demo_vergil
 demo_applet:
 	CLASSPATH="$(CLASSPATH)" appletviewer FixPoint.htm
 
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" FixPoint.xml
+
 demo_vergil:
-	$(PTII)/bin/vergil FixPoint.xml
+	"$(PTII)/bin/vergil" FixPoint.xml
 
 depend:
 	@echo "no dependencies in this directory"
