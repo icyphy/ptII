@@ -310,10 +310,7 @@ public class Main extends KernelMain {
     }
 
 
-    /** Read in a MoML model, generate java files
-     *  @exception IllegalActionException If the model cannot be parsed.
-     *  @exception NameDuplicationException If the name of the
-     *  model cannot be changed to a Java identifier String.
+    /** Read in a MoML model, generate java files.
      */ 
     public static void main(String[] args) {
         try {
