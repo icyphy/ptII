@@ -83,8 +83,9 @@ test_java: jclass
 
 # These tests do not require a graphics terminal, but do use TclBlend and Java
 test_jsimple: $(TCL_SRCS) $(ITCL_SRCS)
-	echo "foreach i [list $(JSIMPLE_TESTS)] {puts \$$i; source \$$i}" | \
-		$(JTCLSH)
+	rm -f alljtests.tcl
+	echo "set TYCHO \$$env(TYCHO); foreach i [list $(JSIMPLE_TESTS)] {puts \$$i; source \$$i}" > alljtests.tcl
+	CLASSPATH=$(TYCHO)/java $(JTCLSH) alljtests.tcl
 
 docs: javadocs
 
