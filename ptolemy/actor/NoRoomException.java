@@ -1,5 +1,6 @@
-/* Exception thrown on an attempt to put Token when the hasRoom() method
-   returns false.
+/* Exception thrown on an attempt to put a token (via the put() method) 
+   into a receiver that doesn't have room to accomodate one (i.e. 
+   hasRoom() returns false).
 
  Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
@@ -35,8 +36,9 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// NoRoomException
 /**
-This exception should be thrown on an attempt to put Token when the 
-hasRoom() method returns false.
+This exception is thrown on an attempt to put a token (via the 
+put() method) into a receiver that doesn't have room to accomodate one 
+(i.e. hasRoom() returns false).
 @author Lukito Muliadi
 @version $Id$
 @see Receiver

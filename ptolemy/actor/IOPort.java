@@ -62,9 +62,9 @@ In general, an input port might have more than one receiver for
 each channel.  This occurs particularly for transparent input ports,
 which treat the receivers of the ports linked on the inside as its own.
 But might also occur for opaque ports in some derived classes.
-Each receiver in the group is sent a clone of the same data.
-Thus, an input port in general will have <i>w</i> distinct groups
-of receivers, and can receive <i>w</i> distinct channels.
+Each receiver in the group is sent the same data. Thus, an input port in 
+general will have <i>w</i> distinct groups of receivers, and can receive 
+<i>w</i> distinct channels.
 <p>
 By default, the maximum width of the port is one, so only one
 channel is handled. A port that allows a width greater than one
@@ -142,8 +142,7 @@ public class IOPort extends ComponentPort {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Send a token to all connected receivers.  The first receiver gets
-     *  the token passed as an argument, and subsequent receivers get clones.
+    /** Send a token to all connected receivers.
      *  The transfer is accomplished by calling the put()
      *  method of the destination receivers.  The destination receivers
      *  are obtained by calling getRemoteReceivers().
@@ -151,8 +150,6 @@ public class IOPort extends ComponentPort {
      *  This method is read-synchronized on the workspace.
      *
      *  @param token The token to send
-     *  @exception CloneNotSupportedException If there is more than one
-     *   destination and the token cannot be cloned.
      *  @exception IllegalActionException If the port is not an output.
      *  @exception NoRoomException If a send to one of the channels throws
      *     it.
@@ -428,10 +425,10 @@ public class IOPort extends ComponentPort {
      *  read access on the workspace before calling get.
      *
      *
-     *  @exception NoTokenException If there is no token, or the 
-     *   channel index is out of range.
+     *  @exception NoTokenException If there is no token.
      *  @exception IllegalActionException If there is no director, and hence
-     *   no receivers have been created, or if the port is not an input port.
+     *   no receivers have been created, if the port is not an input port, or
+     *   if the channel index is out of range.
      */
     public Token get(int channelindex)
             throws NoTokenException, IllegalActionException {
@@ -444,7 +441,7 @@ public class IOPort extends ComponentPort {
                         "an input port.");
             }
             if (channelindex >= getWidth() || channelindex < 0) {
-                throw new NoTokenException(this,
+                throw new IllegalActionException(this,
                         "get: channel index is out of range.");
             }
             // Note that the getReceivers() method might throw an
@@ -842,21 +839,25 @@ public class IOPort extends ComponentPort {
 
     /** Return true if the specified channel can accept a token via the
      *  put() method.  If this port is not an output, or the channel index
-     *  is out of range, then always return false.  If there are multiple
-     *  receivers in the group associated with the channel, then return
-     *  true only if all the receivers can accept a token.
+     *  is out of range, then throws IllegalActionException.  If there 
+     *  are multiple receivers in the group associated with the channel, 
+     *  then return true only if all the receivers can accept a token.
      *
      *  @return True if there is room for a token in the channel.
      *  @exception IllegalActionException If the receivers do not support
-     *   this query, or if this is not an output port.
+     *   this query, if this is not an output port, or if the channel index
+     *   is out of range.
      */
     public boolean hasRoom(int channelindex) throws IllegalActionException {
         if (!isOutput()) {
             throw new IllegalActionException(this,
-                    "broadcast: Tokens can only be sent from an " +
+                    "hasRoom: Tokens can only be sent from an " +
                     "output port.");
         }
-        if (channelindex >= getWidth() || channelindex < 0) return false;
+        if (channelindex >= getWidth() || channelindex < 0) {
+            throw new IllegalActionException(this,
+                    "hasRoom: Channel index out of range.");
+        }
         Receiver[][] fr = getRemoteReceivers();
         if (fr == null || fr[channelindex] == null) return false;
         for (int j = 0; j < fr[channelindex].length; j++) {
@@ -865,24 +866,29 @@ public class IOPort extends ComponentPort {
         return true;
     }
 
-    /** Return true if the specified channel has a token to deliver via
+    /** Return true if the specified channel has a token to deliver
      *  via the get() method.  If this port is not an input, or if the
-     *  channel index is out of range, always return false. Note that this
-     *  does not report any tokens in inside receivers of a t output
-     *  port. Those are accessible only through getInsideReceivers().
+     *  channel index is out of range, then throws IllegalActionException. 
+     *  Note that this does not report any tokens in inside receivers 
+     *  of an output port. Those are accessible only through 
+     *  getInsideReceivers().
      *
      *  @return True if there is a token in the channel.
      *  @exception IllegalActionException If the receivers do not support
      *   this query, if there is no director, and hence no receivers,
-     *   or if the port is not an input port.
+     *   if the port is not an input port, or if the channel index is out
+     *   of range.
      */
     public boolean hasToken(int channelindex) throws IllegalActionException {
         if (!isInput()) {                
             throw new IllegalActionException(this, 
-                    "get: Tokens can only be retrieved from " +
+                    "hasToken: Tokens can only be retrieved from " +
                     "an input port.");
         }
-        if (channelindex >= getWidth() || channelindex < 0) return false;
+        if (channelindex >= getWidth() || channelindex < 0) {
+            throw new IllegalActionException(this,
+                    "hasToken: Channel index out of range.");
+        }
         // The getReceivers() method throws an IllegalActionException if
         // there's no director.
         Receiver[][] fr = getReceivers();
@@ -1040,9 +1046,9 @@ public class IOPort extends ComponentPort {
      *
      *  @param channelindex The index of the channel, from 0 to width-1
      *  @param token The token to send
-     *  @exception NoRoomException If there is no room in the receiver, 
-     *   or if the index is out of range.
-     *  @exception IllegalActionException If the port is not an output.
+     *  @exception NoRoomException If there is no room in the receiver.
+     *  @exception IllegalActionException If the port is not an output or if
+     *   the index is out of range.
      */
     public void send(int channelindex, Token token) 
             throws IllegalActionException, NoRoomException {
@@ -1055,7 +1061,7 @@ public class IOPort extends ComponentPort {
                         "output port.");
             }
             if (channelindex >= getWidth() || channelindex < 0) {
-                throw new NoRoomException(this,
+                throw new IllegalActionException(this,
                         "send: channel index is out of range.");
             }
             // Note that the getRemoteReceivers() method doesn't throw

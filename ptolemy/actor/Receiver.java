@@ -63,8 +63,7 @@ public interface Receiver {
     ////                         public methods                    ////
 
     /** Get a token from this receiver. Note that the thrown exception
-     *  is a runtime exception, therefore the caller is not required to
-     *  catch it.
+     *  is a runtime exception.
      *  @exception NoTokenException If there is no token.
      */
     public Token get() throws NoTokenException;
@@ -72,7 +71,8 @@ public interface Receiver {
     /** Return the container. */
     public Nameable getContainer();
 
-    /** Return true if put() will succeed in accepting a token. 
+    /** Return true if the receiver has room for putting a token into 
+     *  (via the put() method).
      *  Returning true in this method should also guarantee that calling
      *  the put() method will not result in an exception.
      *
@@ -81,7 +81,8 @@ public interface Receiver {
      */
     public boolean hasRoom() throws IllegalActionException;
 
-    /** Return true if get() will succeed in returning a token. 
+    /** Return true if the receiver contains a token that can be obtained
+     *  by calilng the get() method. 
      *  Returning true in this method should also guarantee that calling
      *  the get() method will not result in an exception.
      *
