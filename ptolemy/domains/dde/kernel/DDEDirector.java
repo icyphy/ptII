@@ -149,7 +149,7 @@ public class DDEDirector extends ProcessDirector {
     public void fire() throws IllegalActionException {
         Workspace wkSpace = workspace();
         synchronized( this ) {
-	    while( !_checkForDeadlock() ) {
+	    while( !_isDeadlocked() ) {
 	        wkSpace.wait(this);
 	    }
 	    _notdone = !_handleDeadlock();
@@ -292,7 +292,7 @@ public class DDEDirector extends ProcessDirector {
      * @return True if the actors governed by this director are
      *  deadlocked; return false otherwise.
      */
-    protected synchronized boolean _checkForDeadlock() {
+    protected synchronized boolean _isDeadlocked() {
         if( _getActiveActorsCount() == _readBlocks + _writeBlocks ) {
             return true;
         }

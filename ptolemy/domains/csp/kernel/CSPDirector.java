@@ -280,7 +280,7 @@ public class CSPDirector extends ProcessDirector {
      */
     protected synchronized void _actorBlocked() {
         _actorsBlocked++;
-        if (_checkForDeadlock()) {
+        if (_isDeadlocked()) {
 	    notifyAll();
 	}
     }
@@ -309,7 +309,7 @@ public class CSPDirector extends ProcessDirector {
 	    // Enter the actor and the time to wake it up into the
 	    // LinkedList of delayed actors.
 	    _registerDelayedActor( (getCurrentTime() + delta), actor);
-	    if (_checkForDeadlock()) {
+	    if (_isDeadlocked()) {
 	        notifyAll();
 	    }
 	    return;
@@ -320,29 +320,6 @@ public class CSPDirector extends ProcessDirector {
      */
     protected synchronized void _actorUnblocked() {
         _actorsBlocked--;
-    }
-
-    /** Returns true if all active processes are either blocked or
-     *  delayed, false otherwise.
-     */
-    protected synchronized boolean _checkForDeadlock() {
-        if (_getActiveActorsCount() == (_actorsBlocked + _actorsDelayed)) {
-            return true;
-        }
-        return false;
-    }
-
-    /** Returns true if all active processes are either blocked, delayed or
-     *  paused. If so, then all of the processes cannot make any progress
-     *  and the model has been paused. It returns false otherwise.
-     */
-    protected synchronized boolean _checkForPause() {
-        if (_actorsBlocked + _getPausedActorsCount() + _actorsDelayed ==
-                _getActiveActorsCount()) {
-            System.out.println("CSPDirector: model successfully paused!");
-	    return true;
-        }
-        return false;
     }
 
     /** Determines how the director responds when a deadlock is
@@ -436,6 +413,29 @@ public class CSPDirector extends ProcessDirector {
                     "create new receivers following a topology " +
                     "change request.");
         }
+    }
+
+    /** Returns true if all active processes are either blocked or
+     *  delayed, false otherwise.
+     */
+    protected synchronized boolean _isDeadlocked() {
+        if (_getActiveActorsCount() == (_actorsBlocked + _actorsDelayed)) {
+            return true;
+        }
+        return false;
+    }
+
+    /** Returns true if all active processes are either blocked, delayed or
+     *  paused. If so, then all of the processes cannot make any progress
+     *  and the model has been paused. It returns false otherwise.
+     */
+    protected synchronized boolean _isPaused() {
+        if (_actorsBlocked + _getPausedActorsCount() + _actorsDelayed ==
+                _getActiveActorsCount()) {
+            System.out.println("CSPDirector: model successfully paused!");
+	    return true;
+        }
+        return false;
     }
 
     ///////////////////////////////////////////////////////////////////
