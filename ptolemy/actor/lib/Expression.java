@@ -53,6 +53,7 @@ To use this class, instantiate it, then add ports (instances of TypedIOPort).
 In vergil, you can add ports by right clicking on the icon and selecting
 "Configure Ports".  In MoML you can add ports by just including ports
 of class TypedIOPort, set to be inputs, as in the following example:
+<p>
 <pre>
    &lt;entity name="exp" class="ptolemy.actor.lib.Expression"&gt;
       &lt;port name="in" class="ptolemy.actor.TypedIOPort"&gt;
@@ -72,10 +73,12 @@ refer to the inputs by name.  By default, the expression
 is empty, and attempting
 to execute the actor without setting it triggers an exception.
 <p>
-The expression language understood by this actor is documented
-in the Data chapter of the Ptolemy II design document.
-The expressions evaluated by this actor can refer to the current
-time by the variable name "time" and to the current iteration count
+The expression language understood by this actor is the same as
+<a href="../../../../expression.htm">that used to set any parameter value</a>,
+with the exception that
+the expressions evaluated by this actor can refer to the values
+of inputs, and to the current
+time by the variable name "time", and to the current iteration count
 by the variable named "iteration."
 <p>
 This actor can be used instead of many of the arithmetic actors,
