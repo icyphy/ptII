@@ -587,33 +587,25 @@ help it make decisions.</text></svg></configure>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="270.0, 265.0">
         </property>
-        <port name="q1_len" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="push" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </port>
-        <port name="pkt_in" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="push" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
-        </port>
-        <port name="q2_len" class="ptolemy.actor.TypedIOPort">
+        <port name="q1Length" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="q1_out" class="ptolemy.actor.TypedIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="q2Length" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="queue1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="push" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
         </port>
         <port name="dropped" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="push" class="ptolemy.data.expr.Parameter" value="true">
             </property>
         </port>
-        <port name="q2_out" class="ptolemy.actor.TypedIOPort">
+        <port name="queue2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="push" class="ptolemy.data.expr.Parameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="Interface - fast" class="ptolemy.actor.TypedCompositeActor">
@@ -776,17 +768,9 @@ help it make decisions.</text></svg></configure>
         <vertex name="vertex1" value="220.0, 395.0">
         </vertex>
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="push" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -798,18 +782,24 @@ help it make decisions.</text></svg></configure>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="channel1.in" relation="relation"/>
     <link port="channel2.in" relation="relation13"/>
-    <link port="DataReceived.output" relation="relation2"/>
+    <link port="DataReceived.output" relation="relation3"/>
     <link port="MonitorValue - q1 length.input" relation="relation14"/>
     <link port="MonitorValue - q2 length.input" relation="relation10"/>
     <link port="dropped.input" relation="relation5"/>
-    <link port="Distributor.q1_len" relation="relation14"/>
-    <link port="Distributor.pkt_in" relation="relation2"/>
-    <link port="Distributor.q2_len" relation="relation10"/>
-    <link port="Distributor.q1_out" relation="relation4"/>
+    <link port="Distributor.q1Length" relation="relation14"/>
+    <link port="Distributor.input" relation="relation3"/>
+    <link port="Distributor.q2Length" relation="relation10"/>
+    <link port="Distributor.queue1" relation="relation4"/>
     <link port="Distributor.dropped" relation="relation5"/>
-    <link port="Distributor.q2_out" relation="relation11"/>
+    <link port="Distributor.queue2" relation="relation2"/>
     <link port="Interface - fast.in" relation="relation6"/>
     <link port="Interface - fast.out" relation="relation"/>
     <link port="Interface - slow.in" relation="relation12"/>
@@ -817,7 +807,7 @@ help it make decisions.</text></svg></configure>
     <link port="Queue1.input" relation="relation4"/>
     <link port="Queue1.output" relation="relation6"/>
     <link port="Queue1.length" relation="relation14"/>
-    <link port="Queue2.input" relation="relation11"/>
+    <link port="Queue2.input" relation="relation2"/>
     <link port="Queue2.output" relation="relation12"/>
     <link port="Queue2.length" relation="relation10"/>
 </entity>
