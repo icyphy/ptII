@@ -78,9 +78,9 @@ test ComplexMatrixToken-1.1 {Create a non-empty instance from an Complex} {
 ####
 # 
 test ComplexMatrixToken-1.2 {Create a non-empty instance from an String} {
-    set p [java::new {ptolemy.data.ComplexMatrixToken String} "\[\[5 4\]\[3 2\]\]"]
+    set p [java::new {ptolemy.data.ComplexMatrixToken String} "\[5.0+0.0i, 4.0+0.0i; 3.0+0.0i, 2.0+0.0i\]"]
     $p toString
-} {ptolemy.data.ComplexMatrixToken([5, 4; 3, 2])} {Expression language doesn't support this yet}
+} {[5.0 + 0.0i, 4.0 + 0.0i; 3.0 + 0.0i, 2.0 + 0.0i]}
 
 ######################################################################
 ####

@@ -32,6 +32,8 @@ import ptolemy.kernel.util.*;
 import ptolemy.graph.CPO;
 import ptolemy.math.*;
 import ptolemy.data.type.*;
+import ptolemy.data.expr.PtParser;
+import ptolemy.data.expr.ASTPtRootNode;
 
 //////////////////////////////////////////////////////////////////////////
 //// ComplexMatrixToken
@@ -54,18 +56,18 @@ public class ComplexMatrixToken extends MatrixToken {
         _value[0][0] = Complex.ZERO;
     }
 
-    /** Construct a ComplexMatrixToken with the specified 2-D array.
+    /** Construct a ComplexMatrixToken with the specified 2-D matrix.
      *  Make a copy of the array and store the copy,
      *  so that changes on the specified array after this token is
      *  constructed will not affect the content of this token.
-     *  @exception NullPointerException If the specified array
+     *  @exception NullPointerException If the specified matrix
      *   is null.
      */
     public ComplexMatrixToken(final Complex[][] value) {
-        this(value, DO_COPY);
+        _initialize(value, DO_COPY);
     }
 
-    /** Construct a DoubleMatrixToken with the specified 2-D array.
+    /** Construct a ComplexMatrixToken with the specified 2-D array.
      *  If copy is DO_COPY, make a copy of the array and store the copy,
      *  so that changes on the specified array after this token is
      *  constructed will not affect the content of this token.
@@ -73,29 +75,26 @@ public class ComplexMatrixToken extends MatrixToken {
      *  its contents). This saves some time and memory.
      *  The argument array should NOT be modified after this constructor
      *  is called to preserve immutability.
-     *  @exception NullPointerException If the specified array
+     *  @exception NullPointerException If the specified matrix
      *   is null.
      */
     protected ComplexMatrixToken(final Complex[][] value, int copy) {
-        _rowCount = value.length;
-        _columnCount = value[0].length;
-
-        if (copy == DO_NOT_COPY) {
-            _value = value;
-        } else {
-            _value = ComplexMatrixMath.allocCopy(value);
-        }
+        _initialize(value, copy);
     }
 
-    // FIXME: finish this method after array is added to the
-    //               expression language.
-    // Construct an ComplexMatrixToken from the specified string.
-    // @param init A string expression of a 2-D double array.
-    // @exception IllegalArgumentException If the string does
-    //  not contain a parsable 2-D int array.
-    //
-    // public ComplexMatrixToken(String init) {
-    // }
+    /** Construct an ComplexMatrixToken from the specified string.
+     *  @param init A string expression of a 2-D complex matrix.
+     *  @exception IllegalActionException If the string does
+     *   not contain a parsable 2-D complex matrix.
+     */
+    public ComplexMatrixToken(String init) throws IllegalActionException {
+        PtParser parser = new PtParser();
+        ASTPtRootNode tree = parser.generateParseTree(init);
+	ComplexMatrixToken token =
+	                        (ComplexMatrixToken)tree.evaluateParseTree();
+        Complex[][] value = token.complexMatrix();
+        _initialize(value, DO_COPY);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -472,7 +471,8 @@ public class ComplexMatrixToken extends MatrixToken {
         }
         // add the argument Token to the negative of this Token
         ComplexMatrixToken negativeToken =
-            new ComplexMatrixToken(ComplexMatrixMath.negative(_value), DO_NOT_COPY);
+            new ComplexMatrixToken(
+	                     ComplexMatrixMath.negative(_value), DO_NOT_COPY);
         return negativeToken.add(t);
     }
 
@@ -520,6 +520,22 @@ public class ComplexMatrixToken extends MatrixToken {
      */
     protected Complex[][] _getInternalComplexMatrix() {
         return _value;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          private methods                  ////
+
+    // initialize the row and column count and copy the specified
+    // matrix. This method is used by the constructors.
+    private void _initialize(Complex[][] value, int copy) {
+        _rowCount = value.length;
+        _columnCount = value[0].length;
+
+        if (copy == DO_NOT_COPY) {
+            _value = value;
+        } else {
+            _value = ComplexMatrixMath.allocCopy(value);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
