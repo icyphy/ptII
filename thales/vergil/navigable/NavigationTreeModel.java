@@ -86,7 +86,7 @@ public class NavigationTreeModel extends EntityTreeModel {
 
     /**
      * set all listening PTree to the same path
-     * @param obj
+     * @param path
      */
     public void setSelectedItem(TreePath path) {
         for (Iterator it = listeners.iterator(); it.hasNext();) {

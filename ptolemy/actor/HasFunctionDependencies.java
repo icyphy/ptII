@@ -33,11 +33,11 @@ package ptolemy.actor;
 
 //////////////////////////////////////////////////////////////////////////
 //// HasFunctionDependencies
-/** An interface provides access to the FunctoinDependency object 
+/** An interface provides access to the FunctionDependency object 
 ssociated with an entity. This interface is extended by Actor interface. 
 
 @see Actor
-@see IODependency
+@see FunctionDependency
 @author Haiyang Zheng
 @version $Id$
 @since Ptolemy II 3.1
