@@ -88,6 +88,7 @@ This actor is a timed source; the untimed version is Pulse.
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
+@deprecated Use Clock instead.
 */
 
 public class SequentialClock extends TypedAtomicActor implements SequenceActor {

@@ -21,10 +21,6 @@
 <doc>Create a sequence of tokens with increasing value</doc>
 </entity>
 
-<entity name="SequentialClock" class="ptolemy.actor.lib.SequentialClock">
-<doc>A clock producing exactly one output per clock tick</doc>
-</entity>
-
 <entity name="Sinewave" class="ptolemy.actor.lib.Sinewave"/>
 
 <entity name="SketchedSource" class="ptolemy.actor.lib.gui.SketchedSource">
