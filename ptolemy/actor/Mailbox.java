@@ -1,4 +1,4 @@
-/* A Token holder with capacity one.
+/* A Token holder with a capacity of one token.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 
 */
 
@@ -98,7 +98,7 @@ public class Mailbox implements Receiver {
      *  @exception NoRoomException If the Mailbox already contains
      *   a previously put token that has not been gotten.
      */
-    public void put(Token token) throws NoRoomException{
+    public void put(Token token) throws NoRoomException {
         if(_token != null) {
             throw new NoRoomException(getContainer(),
                     "Cannot put a token in a full mailbox.");
@@ -114,7 +114,7 @@ public class Mailbox implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Container is not changeable.
+    // The container of this object.
     private IOPort _container = null;
 
     // The token held.

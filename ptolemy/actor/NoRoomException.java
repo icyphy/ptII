@@ -1,6 +1,4 @@
-/* Exception thrown on an attempt to put a token (via the put() method)
-   into a receiver that doesn't have room to accommodate one (i.e.
-   hasRoom() returns false).
+/* A class for indicating that a receiver failed to accept a token.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -26,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
-@AcceptedRating Red
+@ProposedRating Yellow (lmuliadi@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -37,29 +35,33 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// NoRoomException
 /**
-This exception is thrown on an attempt to put a token (via the
-put() method) into a receiver that doesn't have room to accommodate one
-(i.e. hasRoom() returns false).
+This exception is thrown when an attempt is made to put a token
+into a receiver that doesn't have room to accommodate one.
+To avoid this exception, code should use the hasRoom() method in the
+Receiver interface to determine if there is room for a token.
+
 @author Lukito Muliadi
 @version $Id$
 @see Receiver
 */
 public class NoRoomException extends RuntimeException {
 
-    /** Constructs an Exception with a detail message.
-     *  @param detail The message.
+    /** Construct a NoRoomException with the given error message.
+     *  @param message The message.
      */
-    public NoRoomException(String detail) {
-        _setMessage(detail);
+    public NoRoomException(String message) {
+        _setMessage(message);
     }
 
-    /** Constructs an Exception with a detail message and an object
-     *  that originated the exception.
+    /** Construct a NoRoomException originating from the given object, 
+     *  with the given error message.
+     *  @param obj The originating object.
+     *  @param message The message.
      */
-    public NoRoomException(Nameable obj, String detail) {
+    public NoRoomException(Nameable obj, String message) {
         String name;
         if (obj == null) {
-            name=new String("");;
+            name = new String("");;
         } else {
             try {
                 name = obj.getFullName();
@@ -67,13 +69,13 @@ public class NoRoomException extends RuntimeException {
                 name = obj.getName();
             }
         }
-        _setMessage(name + ": " + detail);
+        _setMessage(name + ": " + message);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the detail message. */
+    /** Return the error message. */
     public String getMessage() {
         return _message;
     }
@@ -81,17 +83,17 @@ public class NoRoomException extends RuntimeException {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Sets the error message to the specified string.
+    /** Set the error message to the given string.
      *  @param msg The message.
      */
-    protected void _setMessage(String msg) {
-        _message = msg;
+    protected void _setMessage(String message) {
+        _message = message;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The detail message.
+    // The error message.
     private String _message ;
 }
 

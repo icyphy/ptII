@@ -1,5 +1,4 @@
-/* Exception thrown on an attempt to get a token (via the get() method)
-   from a receiver that doesn't have a token (i.e. hasToken() returns false).
+/* A class indicating that a receiver failed to contain a token to return.
 
  Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
@@ -25,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (lmuliadi@eecs.berkeley.edu)
-@AcceptedRating Red
+@ProposedRating Yellow (lmuliadi@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -36,8 +35,10 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// NoTokenException
 /**
-This exception is thrown on an attempt to get a token (via the get() method)
-from a receiver that doesn't have a token (i.e. hasToken() returns false).
+This exception is thrown when an attempt is made to get a token
+from a receiver that doesn't contain one.
+To avoid this exception, code should use the hasToken() method in the
+Receiver interface to determine if there is a token waiting.
 
 @author Lukito Muliadi
 @version $Id$
@@ -45,20 +46,22 @@ from a receiver that doesn't have a token (i.e. hasToken() returns false).
 */
 public class NoTokenException extends RuntimeException {
 
-    /** Constructs an Exception with a detail message.
-     *  @param detail The message.
+    /** Construct a NoTokenException with the given message.
+     *  @param message The message.
      */
-    public NoTokenException(String detail) {
-        _setMessage(detail);
+    public NoTokenException(String message) {
+        _setMessage(message);
     }
 
-    /** Constructs an Exception with a detail message and an object
-     *  that originated the exception.
+    /** Construct a NoTokenException originating from the given object, 
+     *  with the given error message.
+     *  @param obj The originating object.
+     *  @param message The message.
      */
     public NoTokenException(Nameable obj, String detail) {
         String name;
         if (obj == null) {
-            name=new String("");;
+            name = new String("");;
         } else {
             try {
                 name = obj.getFullName();
@@ -72,7 +75,7 @@ public class NoTokenException extends RuntimeException {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the detail message. */
+    /** Return the error message. */
     public String getMessage() {
         return _message;
     }
@@ -80,16 +83,16 @@ public class NoTokenException extends RuntimeException {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Sets the error message to the specified string.
-     *  @param msg The message.
+    /** Set the error message to the given string.
+     *  @param message The message.
      */
-    protected void _setMessage(String msg) {
-        _message = msg;
+    protected void _setMessage(String message) {
+        _message = message;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The detail message.
+    // The error message.
     private String _message ;
 }

@@ -57,16 +57,7 @@ public interface Executable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * This method is called to request the return of execution control
-     * to the . When this method is called, control should be 
-     * returned to the executive director or manager that is controlling
-     * this object. This method is
-     * intended to ensure that actors with unbounded execution in the
-     * fire method
-     * can be made to relenquish execution control back to the manager.
-     */
-    // public void endfire(); 
+ 
     
     /** This fires an actor and may be invoked several times between
      *  invocations of prefire() and postfire(). Output data may
@@ -94,7 +85,7 @@ public interface Executable {
      *  It returns true if the execution can proceed into the next iteration.
      *  This method typically wraps up an iteration, which may involve
      *  updating local state. In an opaque, non-atomic entity, it may also
-     *  transfer output data. The execution of this method should be bounded.
+     *  transfer output data. The execution of this method is bounded.
      *
      *  @return True if the execution can continue.
      *  @exception IllegalActionException If postfiring is not permitted.
@@ -107,13 +98,24 @@ public interface Executable {
      *  this method will typically check preconditions for an iteration, if
      *  there are any. In an opaque, non-atomic entity,
      *  it may move data into an inner subsystem.
-     *  The execution of this method should be bounded.
+     *  The execution of this method is bounded.
      *
      *  @return True if the iteration can proceed.
      *  @exception IllegalActionException If prefiring is not permitted.
      */
     public boolean prefire() throws IllegalActionException;
 
+    /**
+     * This method is called to request the return of execution control
+     * to the manager. When this method is called, control should be 
+     * returned to the executive director or manager that is controlling
+     * this object. This method is
+     * intended to ensure that actors with unbounded execution in the
+     * fire method
+     * can be made to relenquish execution control back to the manager.     
+     */
+    public void stopfire(); 
+    
     /** Terminate any currently executing model with extreme prejudice.
      *  This method is not intended to be used as a normal route of 
      *  stopping execution. To normally stop exceution, call the finish() 

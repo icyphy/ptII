@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -177,16 +177,6 @@ public class Director extends NamedObj implements Executable {
         return newobj;
     }
 
-    /** Initiate the end of execution of the model controlled by this
-     *  director. In this base class, do nothing.
-     *  Domains may override this method and in particular, process 
-     *  domains should use this method to gracefully end the execution 
-     *  of threads that are operating in this model. This method is not
-     *  synchronized.
-     */
-    public void finish() {
-    }
-
     /** Invoke an iteration on all of the deeply contained actors of the
      *  container of this director.  In general, this may be called more
      *  than once in the same iteration of the director's container.
@@ -261,15 +251,22 @@ public class Director extends NamedObj implements Executable {
         return _currentTime;
     }
 
-    /** Get the next iteration time. It returns 0.0 in this base class;
-     *  derived class should override this method.
+    /** Return the next time of interest in the model being executed by
+     *  this director. This method is useful for domains that perform 
+     *  speculative execution (such as CT).  Such a domain in a hierarchical
+     *  model (i.e. CT inside DE) uses this method to determine how far
+     *  into the future to execute. 
+     *  <p>
+     *  In this base class, we return the current time.
+     *  Derived classes should override this method to provide an appropriate
+     *  value, if possible.
      *  <p>
      *  Note that this method is not made abstract to facilitate the use
      *  of the test suite.
      *  @return The time of the next iteration.
      */
     public double getNextIterationTime() {
-        return 0.0;
+        return _currentTime;
     }
 
     /** Create receivers and then invoke the initialize()
@@ -386,7 +383,7 @@ public class Director extends NamedObj implements Executable {
      *  to override this method.   
      *  
      *  @return false
-     *  @exception IllegalActionException *Deprecate* If the postfire()
+     *  @exception IllegalActionException If the postfire()
      *  method of one of the associated actors throws it.
      */
     public boolean postfire() throws IllegalActionException {
@@ -404,7 +401,7 @@ public class Director extends NamedObj implements Executable {
      *  override this method.   
      *
      *  @return true
-     *  @exception IllegalActionException *Deprecate* If the postfire()
+     *  @exception IllegalActionException If the postfire()
      *  method of one of the associated actors throws it.
      */
     public boolean prefire() throws IllegalActionException {
@@ -438,6 +435,29 @@ public class Director extends NamedObj implements Executable {
      */
     public void removeTopologyListener(TopologyListener listener) {
         _topologyListeners.removeTopologyListener(listener);
+    }
+
+    /**
+     * Place a bound on the execution of the fire method of this director.
+     * Execution should stop at the earliest available opportunity.  The 
+     * next time the fire method is called, execution should resume at the
+     * point where it was suspended.  If the Director is not currently
+     * executing, then this method can be safely ignored.
+     * <p>
+     * In this base class, we recursively call stopfire on all directly 
+     * contained actors.  Process based domains should override this
+     * method to pause all of their currently executing threads, and 
+     * then return fire.  
+     */
+    public void stopfire() {
+        CompositeActor container = ((CompositeActor)getContainer());
+        if (container!= null) {
+            Enumeration allactors = container.deepGetEntities();
+            while (allactors.hasMoreElements()) {
+                Actor actor = (Actor)allactors.nextElement();
+                actor.stopfire();
+            }
+        }
     }
 
     /** Set the current time of the simulation under this director.

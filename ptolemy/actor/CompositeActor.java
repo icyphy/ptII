@@ -190,18 +190,19 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
-    /** Initiate the end of execution of the model contained in this
-     *  CompositeActor. If this actor is opaque, then invoke the finish() 
-     *  method of the local director. Otherwise, return. This method is 
-     *  read-synchronized on the workspace.
+    /**  
+     * Place a bound on the execution of the fire method of this 
+     * composite actor. If this actor is opaque, then invoke the stopfire() 
+     * method of the local director. Otherwise, return. This method is 
+     * read-synchronized on the workspace. 
      */
-    public synchronized void finish() {
+    public void stopfire() {
         try {
             workspace().getReadAccess();
             if (!isOpaque()) {
 		return;
             }
-            getDirector().finish();
+            getDirector().stopfire();
         } finally {
             workspace().doneReading();
         }

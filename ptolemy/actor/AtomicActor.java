@@ -127,6 +127,14 @@ public class AtomicActor extends ComponentEntity implements Actor {
         }
     }
 
+    /** Do nothing.  Derived classes override this method to define their
+     *  their primary run-time action.
+     *
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void fire() throws IllegalActionException {
+    }
+
     /** Return the director responsible for the execution of this actor.
      *  In this class, this is always the executive director.
      *  Return null if either there is no container or the container has no
@@ -163,14 +171,6 @@ public class AtomicActor extends ComponentEntity implements Actor {
 	} finally {
 	    workspace().doneReading();
 	}
-    }
-
-    /** Do nothing.  Derived classes override this method to define their
-     *  their primary run-time action.
-     *
-     *  @exception IllegalActionException Not thrown in this base class.
-     */
-    public void fire() throws IllegalActionException {
     }
 
     /** Do nothing.  Derived classes override this method to define their
@@ -326,6 +326,19 @@ public class AtomicActor extends ComponentEntity implements Actor {
                     "CompositeActor.");
         }
         super.setContainer(container);
+    }
+
+    /**  
+     * Place a bound on the execution of the fire method of this 
+     * atomic actor. Most atomic actors have bounded fire methods 
+     * and can simply ignore this.  Atomic actors with unbounded fire
+     * methods should override this method to save their state at
+     * an appropriate time, to allow the fire method to resume execution
+     * if fire() is called again.
+     * <p>
+     * In this base class, do nothing.
+     */
+    public void stopfire() {
     }
 
     /** By default, an AtomicActor does nothing incredible in its

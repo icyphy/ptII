@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red
+@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor;
@@ -52,15 +52,16 @@ execute the model in the calling thread or in a separate thread.
 The latter is useful when the caller wishes to remain live during
 the execution of the model.
 <p>
-Manager optimizes improve the performance of an execution by making
-the workspace <i>write-protected</i> during an iteration, if all
+Manager can optimize the performance of an execution by making
+the workspace <i>write protected</i> during an iteration, if all
 relevant directors permit this.  This removes some of the overhead
 of obtaining read and write permission on the workspace.
-By default, directors do not permit this.
-But in several domains, this behavior is overridden to permit it.
-Note that making the workspace write protected does not prevent
-mutations.  It only prevents mutations from occuring within an
-iteration (they can still occur between iterations).
+By default, directors always require write access on the work space, but
+many directors explicitly relenquish write access to allow faster execution.
+Note that making the workspace write protected in this manner does not prevent
+mutations.  Mutations cannot be performed directly by directors, 
+since they cannot acquire write access on the workspace, but mutations can
+still be performed by the manager between toplevel iterations.
 
 @author Steve Neuendorffer, Lukito Muliadi, Edward A. Lee
 // Contributors: Mudit Goel, John S. Davis II
@@ -156,9 +157,10 @@ public final class Manager extends NamedObj implements Runnable {
      *  of the container (the top-level composite actor) returns false,
      *  or when the finish() method is called.
      *  <p>
-     *  The execution is performed in the calling thread (the current thread).
-     *  So this method returns only after execution finishes.
-     *  If you wish to perform execution in a new thread, use startRun().
+     *  The execution is performed in the calling thread (the current thread),
+     *  so this method returns only after execution finishes.
+     *  If you wish to perform execution in a new thread, use startRun() 
+     *  instead.
      *  If you do not wish to deal with exceptions, but want to execute
      *  within the calling thread, use run().
      *  @exception KernelException If the model throws it.
@@ -204,21 +206,24 @@ public final class Manager extends NamedObj implements Runnable {
     /** Set a flag to request that execution stop and exit gracefully.
      *  This will result in finish() being called on the top level
      *  CompositeActor, although not necessarily immediately.
-     *  This method sets the flag, then obtains a synchronization lock
-     *  on this manager and calls notifyAll() to wake up any threads
-     *  that may be waiting for such an event.  The flag is set before
-     *  obtaining the synchronization lock so that it is visible as
-     *  as soon as possible even if another method is holding a synchronization
-     *  lock in another thread.
+     *  This method sets the flag, then calls stopfire() on the 
+     *  toplevel composite actor to ensure that the flag will actually get
+     *  seen.  Finally, resume() is called to ensure that the model is not
+     *  currently paused.  Note that the flag is set before
+     *  calling resume so that it is visible as
+     *  as soon as possible.  This is important since another thread may
+     *  be holding a synchronization lock on the manager, preventing 
+     *  resume from running.
      */
     public void finish() {
+        if(_state == IDLE) return;
         _finishRequested = true;
-        if (_state == PAUSED) {
-            _pauseRequested = false;
-            synchronized(this) {
-                notifyAll();
-            }
-        }
+        CompositeActor container = (CompositeActor) getContainer();
+        if(container == null) throw new InternalErrorException(
+                "Attempted to call finish on an executing manager with no" +
+                " associated model");
+        container.stopfire();
+        resume();
     }
 
     /** Return the top-level composite actor for which this manager
@@ -352,11 +357,19 @@ public final class Manager extends NamedObj implements Runnable {
     }
 
     /** Set a flag requesting that execution pause at the next opportunity
-     *  (between iterations).  The thread controlling the execution will be
-     *  suspended.  To resume execution, call resume() from another thread.
+     *  (between iterations).  Call stopfire() on the toplevel composite 
+     *  actor to ensure that the manager's execution thread becomes active 
+     *  again.   The thread controlling the execution will be
+     *  suspended the next time through the iteration loop.  To resume 
+     *  execution, call resume() from another thread.
      */
     public void pause() {
         _pauseRequested = true;
+        CompositeActor container = (CompositeActor) getContainer();
+        if(container == null) throw new InternalErrorException(
+                "Attempted to call finish on an executing manager with no" +
+                " associated model");
+        container.stopfire();
     }
 
     /** Remove a listener from the list of listeners that are notified

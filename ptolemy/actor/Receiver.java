@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 
 */
 
@@ -55,7 +55,7 @@ NoRoomException being thrown.
 In general, this means that threaded domains will provide a higher level of 
 synchronization for receivers.  
 <p>
-In addition, objects that implement this interface can only be contained
+Objects that implement this interface can only be contained
 by an instance of IOPort.
 
 @author Jie Liu, Edward A. Lee, Lukito Muliadi
