@@ -28,7 +28,7 @@
 @AcceptedRating Red (cxheecs.berkeley.edu)
 */
 
-package ptolemy.kernel.util;
+package ptolemy.kernel.util.test;
 
 import java.util.ArrayList;
 import java.util.Iterator;
