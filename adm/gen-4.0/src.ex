@@ -115,7 +115,7 @@ ptolemy/domains/sdf/lib/huffman
 ptolemy/domains/sdf/lib/javasound
 ptolemy/domains/sdf/test/pitchshift
 ptolemy/domains/tm/runtime
-ptolemy/domains/wireless/lib/networked
+ptolemy/domains/wireless/lib/network
 ptolemy/domains/wireless/lib/tinyOS
 ptolemy/domains/wireless/demo/MACProtocolModel
 ptolemy/domains/wireless/demo/Network
