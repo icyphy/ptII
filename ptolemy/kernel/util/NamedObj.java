@@ -392,7 +392,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
     }
 
     /** Get the workspace. This method never returns null, since there
-     *  is always a workpace.
+     *  is always a workspace.
      *  @return The workspace responsible for this object.
      */
     public final Workspace workspace() {
