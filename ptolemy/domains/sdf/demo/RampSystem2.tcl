@@ -85,12 +85,12 @@ set r2 [$sys connect $wrapperOut $printIn R2]
 set r1w [$wrapper connect $wrapperIn $delayIn R1w]
 set r2w [$wrapper connect $delayOut $wrapperOut R2w]
 
-set debug ptolemy.debug.Debug
-set debugger [java::new ptolemy.debug.DebugListener]
+set debug ptolemy.domains.sdf.kernel.Debug
+set debugger [java::new ptolemy.domains.sdf.kernel.DebugListener]
 java::call $debug register $debugger
 
 # Run it
-$manager go 5ls
+$manager go 5
 
 
 
