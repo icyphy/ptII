@@ -126,6 +126,10 @@ public class VergilApplication extends MoMLApplication {
 	// weird things happens at the user interface level.  This
         // seems to prevent occasional errors rending HTML under Web Start.
 	try {
+            // NOTE: This is truly unfortunate... It would be nice
+            // if this could be run inside a PtolemyThread, since
+            // getting read access the workspace is much more efficient
+            // in PtolemyThread.
 	    SwingUtilities.invokeLater(new Runnable() {
 		    public void run() {
 			try {
@@ -326,21 +330,6 @@ public class VergilApplication extends MoMLApplication {
      */
     protected void _parseArgs(final String args[]) throws Exception {
         _commandTemplate = "vergil [ options ] [file ...]";
-
-//         // FIXME: Java superstition dictates that if you want something
-//         // to work, you should invoke it in event thread.  Otherwise,
-//         // weird things happens at the user interface level.  This
-//         // seems to prevent occasional errors rending HTML.
-//         SwingUtilities.invokeLater(new Runnable() {
-//                 public void run() {
-//                     try {
-//                         VergilApplication.super._parseArgs(args);
-//                     } catch (Exception ex) {
-//                         MessageHandler.error("Command failed", ex);
-//                         System.exit(0);
-//                     }
-//                 }
-//            });
 
         // VergilApplication.super._parseArgs(args)
         // calls _createDefaultConfiguration() asap,
