@@ -112,19 +112,19 @@ public class DEEvent {
         return _receiver;
     }
 
+    /** Return the event tag associated with this event.
+     *  @return The event tag
+     */
+    public final DEEventTag getEventTag() {
+        return _tag;
+    }
+
     /** Return the token transferred by this event. If the event is a pure
      *  one, then it returns null.
      *  @return The transferred token
      */
     public final Token getTransferredToken() {
         return _token;
-    }
-
-    /** Return the event tag associated with this event.
-     *  @return The event tag
-     */
-    public final DEEventTag getEventTag() {
-        return _tag;
     }
 
     ///////////////////////////////////////////////////////////////////

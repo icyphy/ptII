@@ -63,20 +63,20 @@ public class DEEventTag {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the time stamp field of this sort key.
-     *
-     * @return The time stamp field.
-     */
-    public double timeStamp() {
-        return _timeStamp;
-    }
-
     /** Return the receiver depth field of this sort key.
      *
      * @return The receiver depth field.
      */
     public long receiverDepth() {
         return _receiverDepth;
+    }
+
+    /** Return the time stamp field of this sort key.
+     *
+     * @return The time stamp field.
+     */
+    public double timeStamp() {
+        return _timeStamp;
     }
 
     ///////////////////////////////////////////////////////////////////
