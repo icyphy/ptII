@@ -227,7 +227,9 @@ public class SoundPlayback {
      *  to the sound file specified in the constructor. Note that
      *  underflow cannot occur for this case.
      *  <p>
-     *  The samples should be in the range (-1,1).
+     *  The samples should be in the range (-1,1). Samples that are
+     *  outside ths range will be hard-clipped so that they fall
+     *  within this range.
      *  @param putSamplesArray A two dimensional array containing
      *  the samples to play or write to a file. The first index
      *  represents the channel number (0 for first channel, 1 for
@@ -571,7 +573,8 @@ public class SoundPlayback {
     /* Convert a double array of audio samples into a byte array of 
      * audio samples in linear signed pcm big endian format. The
      * samples contained in <i>doubleArray</i> should be in the
-     * range (-1,1).
+     * range (-1,1). Samples outside this range will be hard clipped
+     * to the range (-1,1).
      * @param doubleArray Two dimensional array holding audio samples.
      * For each channel, m, doubleArray[m] is a single dimensional
      * array containing samples for channel m.
@@ -609,12 +612,22 @@ public class SoundPlayback {
 	byte[] b = new byte[bytesPerSample];
 	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
 
+	    int l;
 	    // For each channel,
 	    for (int currChannel = 0; currChannel < channels; currChannel++) {
-		// signed integer representation of current sample of the
-		// current channel.
-		int l =
-		    (int)(doubleArray[currChannel][currSamp] * maxSample);
+		// Perform clipping, if necessary.
+		if (doubleArray[currChannel][currSamp] > 1) {
+		    l = (int)maxSample;
+		} else if (doubleArray[currChannel][currSamp] < -1) {
+		    l = (int)(-maxSample);
+		} else {
+		    // signed integer representation of current sample of the
+		    // current channel.
+		    l =
+			(int)(doubleArray[currChannel][currSamp] * maxSample);
+		}
+
+		
 		// Create byte representation of current sample.
 		for (int i = 0; i < bytesPerSample; i += 1, l >>= 8)
 		    b[bytesPerSample - i - 1] = (byte) l;
@@ -632,7 +645,9 @@ public class SoundPlayback {
     /* Convert a integer array of audio samples into a byte array of 
      * audio samples in linear signed pcm big endian format.
      * The samples contained by <i>intArray</i> should be in the range
-     * (-2^(bits_per_sample/2), 2^(bits_per_sample/2)).
+     * (-2^(bits_per_sample/2), 2^(bits_per_sample/2)). Samples that
+     * are outside this range will be hard-clipped to fall within this
+     * range.
      * @param intArray Two dimensional array holding audio samples.
      * For each channel, m, doubleArray[m] is a single dimensional
      * array containing samples for channel m.
@@ -656,6 +671,8 @@ public class SoundPlayback {
 
 	    // For each channel,
 	    for (int currChannel = 0; currChannel < channels; currChannel++) {
+		// FIXME: Perform hard-clipping, if necessary.
+
 		// signed integer representation of current sample of the
 		// current channel.
 		int l =
