@@ -1,9 +1,20 @@
-<!-- Questions: Global variables + Observable variables
-                Deterministic semantics
-                Channel implementations
-                update actions entry/exit actions update the inputs or outputs
-                events triggers?
-     Export to HSIF .... NO...
+<!-- 	This file deals with the global variables and channels associated with DNHA in HSIF.
+	
+	This file checks the role of each global variable in Hybrid Automata (HA) to decide
+        if it works as input or output or both. Then the global variables are localized
+	into the local variables in the HA based on their roles. 
+	
+	Instead of using 'input', 'controlled', 'observable', the roles of ports have
+	only two types: input and output.
+
+	Also, the channels are localized as input or output ports into different HA 
+	according their roles in transitions.
+	
+	Two things need discussions:
+	1. Several HA may have the same global variable as output.
+	   Then, multi input ports may be necessary for the HA as receivers.
+	2. If HA has a global variable as both input and output, it should be regarded as
+	   output only.   
 -->
 
 
@@ -61,7 +72,7 @@
         </xsl:copy>
     </xsl:template>
 
-    <!-- General Copy -->
+    <!-- General Copy copies everything -->
     <xsl:template match="*" mode="general">
         <xsl:copy>
             <xsl:for-each select="@*">
@@ -173,3 +184,6 @@
     </xsl:template>
 
 </xsl:transform>	
+
+
+

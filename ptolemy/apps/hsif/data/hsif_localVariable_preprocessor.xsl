@@ -1,9 +1,13 @@
-<!-- Questions: Global variables + Observable variables
-                Deterministic semantics
-                Channel implementations
-                update actions entry/exit actions update the inputs or outputs
-                events triggers?
-     Export to HSIF .... NO...
+<!-- 	This file deals with the local variables associated with Hybrid Automata (HA).
+	
+	There are local parameters and local variables in syntax of HSIF. However,
+	the usage of local variables sometimes is more like use of local parameter.
+	
+	This file checks the role of the local variables. If the local variables are
+	controlled by the integrators, they are regarded as local variables in Ptolemy.
+	Otherwise, for example, the local variables are used only by the expressions
+	to be integrated, they are regarded as local parameters.
+
 -->
 
 
@@ -51,15 +55,10 @@
             
             <xsl:apply-templates select="*"/>
 
-            <!--xsl:comment>Variables</xsl:comment>
-            <xsl:apply-templates select="IntegerVariable|RealVariable|BooleanVariable" mode="general"/>
-    
-            <xsl:comment>Parameters</xsl:comment>
-            <xsl:apply-templates select="IntegerParameter|RealParameter|BooleanParameter" mode="general"/-->
         </xsl:copy>
     </xsl:template>
 
-    <!-- General Copy -->
+    <!-- General Copy copies everything -->
     <xsl:template match="*">
         <xsl:copy>
             <xsl:for-each select="@*">
@@ -168,3 +167,5 @@
     </xsl:template>
 
 </xsl:transform>	
+
+

@@ -1,9 +1,18 @@
-<!-- Questions: Global variables + Observable variables
-                Deterministic semantics
-                Channel implementations
-                update actions entry/exit actions update the inputs or outputs
-                events triggers?
-     Export to HSIF
+<!-- 	This file transforms preprocessed HSIF files into Ptolemy MoML files.
+	Four major things:
+	1. Variables are mapped into Input/Outputs.
+	2. HybridAutomata are mapped into Modal models.
+	3. DiscreteStates are mapped into States and Refinements in Modal models.
+	4. Expressions are mapped into invarians (assertions) in Refinements.
+		
+	Hierarchical structure is preserved with CT-Modal-CT Embedded structure.
+
+     Discussions: 1. Global variables + Observable variables
+                  2. Deterministic semantics
+                  3. Channel implementations
+                  4. locallize the modal parameters into refinement parameters
+     Questions:   1. events triggers as loop?
+     		  2. Export to HSIF
 -->
 
 
@@ -19,15 +28,15 @@
 <!-- features of the XSLT 2.0 language -->
 <xsl:decimal-format name="comma" decimal-separator="," grouping-separator="."/>
 
-<!-- index every node -->
+<!-- index every node via attribute _id -->
 <xsl:key name="nid" match="*" use="@_id"/>
 
-<!-- time function -->
+<!-- time function to record the date of generation -->
 <xsl:variable name="now" xmlns:Date="/java.util.Date">
     <xsl:value-of select="Date:toString(Date:new())"/>
 </xsl:variable>
 
-<!-- configuration -->
+<!-- configuration to author -->
 <xsl:param name="author">Ptolemy II</xsl:param>
 <xsl:preserve-space elements="*"/>
 
@@ -36,7 +45,7 @@
 <!-- ========================================================== -->
 
 <xsl:template match="/">
-    <xsl:comment><xsl:value-of select="$author"/> Generated at <xsl:value-of select="$now"/></xsl:comment>
+    <xsl:comment><xsl:value-of select="$author"/> generated at <xsl:value-of select="$now"/></xsl:comment>
     <xsl:apply-templates/>
 </xsl:template>
 
@@ -47,24 +56,25 @@
 <xsl:template match="DNHA">
     <xsl:element name="entity">
         
-        <!-- director -->
+        <!-- At DNHA level, the CT domain is chosen as top level -->
+        <!-- The director is CT director. -->
         <xsl:call-template name="composite">
             <xsl:with-param name="name" select="@name"/>
             <xsl:with-param name="class" select="'ptolemy.actor.TypedCompositeActor'"/>
             <xsl:with-param name="type" select="'CT'"/>
         </xsl:call-template>
 
-        <!-- Modal Models -->
+        <!-- Hybrid Automata are mapped into Modal Models -->
         <xsl:apply-templates select="HybridAutomaton">
         </xsl:apply-templates>
 
-        <!-- parameters -->
+        <!-- Global parameters are associated with top level: CT domain-->
         <xsl:for-each select="IntegerParameter|RealParameter|BooleanParameter|Parameter">
             <xsl:call-template name="parameter">
             </xsl:call-template>
         </xsl:for-each>
 
-        <!-- I/O ports -->
+        <!-- Global varaibles are mapped into I/O ports -->
         <xsl:for-each select="IntegerVariable">
             <xsl:call-template name="variable">
                 <xsl:with-param name="portType" select="'ptolemy.actor.TypedIOPort'"/>
@@ -89,7 +99,7 @@
             </xsl:call-template>
         </xsl:for-each>
 
-        <!-- Make and link the relations based on I/O ports -->
+        <!-- Construct and link the relations based on I/O ports -->
         <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable">
             <xsl:element name="relation">
                 <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
@@ -101,7 +111,7 @@
             </xsl:element>
         </xsl:for-each>
 
-        <!-- Make the relations based on I/O ports block diagram of network of Hybrid Automata-->
+        <!-- Consturct the relations based on I/O ports of Hybrid Automata -->
         <xsl:for-each select="HybridAutomaton">
             <xsl:variable name="prefix"><xsl:value-of select="@name"/></xsl:variable>
             <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable|triggerInput|triggerOutput">
@@ -112,7 +122,7 @@
             </xsl:for-each>
         </xsl:for-each>
 
-        <!-- Link the relations and the I/O ports of block diagram of network of Hybrid Automata -->
+        <!-- Link the relations and the I/O ports of Hybrid Automata -->
         <xsl:for-each select="HybridAutomaton">
             <xsl:variable name="prefix"><xsl:value-of select="@name"/></xsl:variable>
             <xsl:for-each select="IntegerVariable|RealVariable|BooleanVariable|triggerInput|triggerOutput">
@@ -134,7 +144,8 @@
 
     <xsl:element name="entity">
 
-        <!-- director -->
+        <!-- At HybridAutomaton level, an Modal model is chosen. -->
+        <!-- Construct the Modal model director. -->
         <xsl:call-template name="composite">
             <xsl:with-param name="name" select="@name"/>
             <xsl:with-param name="class" select="'ptolemy.vergil.fsm.modal.ModalModel'"/>
@@ -198,7 +209,7 @@
             </xsl:element>
         </xsl:for-each>
 
-        <!-- _Controller -->
+        <!-- _Controller associated with the Modal Model -->
         <xsl:element name="entity">
             <!-- attributes of entity -->
             <xsl:attribute name="name">_Controller</xsl:attribute>
@@ -217,11 +228,9 @@
             </xsl:call-template>
         </xsl:for-each>
 
-    <!--
-        The local constraints are embedded inside the Refinements.
-        <xsl:apply-templates select="LocalConstraint">
-        </xsl:apply-templates>
-    -->
+	<!--
+            The local constraints are embedded inside the Refinements.
+        -->
     </xsl:element>    
 
 </xsl:template>
@@ -242,7 +251,6 @@
         <xsl:when test="$type='CT'"><xsl:call-template name="CTDirector"/></xsl:when>
         <xsl:when test="$type='CTEmbedded'"><xsl:call-template name="CTEmbeddedDirector"/></xsl:when>
         <xsl:when test="$type='Modal'"><xsl:call-template name="ModalDirector"/></xsl:when>
-        <xsl:when test="$type='PN'"><xsl:call-template name="PNDirector"/></xsl:when>
     </xsl:choose>
 </xsl:template>
 
@@ -282,15 +290,6 @@
     </xsl:element>
 </xsl:template>
 
-<!-- PN Director -->
-<xsl:template name="PNDirector">
-    <xsl:element name="property">
-        <!-- attributes of entity -->
-        <xsl:attribute name="name">PN Director</xsl:attribute>
-        <xsl:attribute name="class">ptolemy.domains.pn.kernel.PNDirector</xsl:attribute>
-    </xsl:element>
-</xsl:template>
-
 <!-- ========================================================== -->
 <!-- Controller in Modal Model incluidng States and Transitions -->
 <!-- ========================================================== -->
@@ -310,7 +309,7 @@
          </xsl:attribute>
     </xsl:element>
 
-    <!-- I/O ports (RefinementPort in _Controller) -->
+    <!-- I/O ports (RefinementPorts in _Controller) -->
     <xsl:for-each select="IntegerVariable">
         <xsl:call-template name="variable">
             <xsl:with-param name="portType" select="'ptolemy.vergil.fsm.modal.RefinementPort'"/>
@@ -394,7 +393,8 @@
 
 <!-- Transition information -->
 <xsl:template match="Transition" mode="info">
-    <xsl:variable name="nextStateID" select="dst_end"/>
+    <xsl:variable name="stateID" select="@src_end"/>
+    <xsl:variable name="nextStateID" select="@dst_end_"/>
     <xsl:variable name="nextState" select="key('nid',$nextStateID)/@name"/>
     <xsl:element name="relation">
         <!-- attributes of relation -->
@@ -426,6 +426,15 @@
             <xsl:attribute name="class">ptolemy.domains.fsm.kernel.CommitActionsAttribute</xsl:attribute>
             <xsl:attribute name="value">
                 <xsl:apply-templates select="UpdateAction"/>
+		<!-- FIXME: the state names returned from Key function have '.' prefix. -->
+		<!-- also include the entry actions of destination state -->
+		<!-- and the exit actions of source state -->
+		<xsl:variable name="srcState" select="key('nid', $stateID)/@name"/>
+		<!--xsl:value-of select="substring(concat($srcState, '.'), 2)"/-->
+		<xsl:apply-templates select="key('nid', $stateID)/UpdateAction[@__child_as='exitAction']"/> 
+		<xsl:variable name="dstState" select="key('nid', $nextStateID)/@name"/>
+		<!--xsl:value-of select="substring(concat($dstState, '.'), 2)"/-->
+		<xsl:apply-templates select="key('nid', $nextStateID)/UpdateAction[@__child_as='entryAction']"/> 
             </xsl:attribute>
         </xsl:element>
         <xsl:element name="property">
@@ -488,6 +497,11 @@
             <xsl:attribute name="class">ptolemy.kernel.util.Attribute</xsl:attribute>
         </xsl:element>
 
+        <!-- localize the modal parameters-->
+        <xsl:for-each select="../IntegerParameter|../RealParameter|../BooleanParameter|../Parameter">
+            <xsl:call-template name="parameter"/>
+        </xsl:for-each>
+
         <!-- I/O port (RefinementPort) -->
         <xsl:for-each select="../IntegerVariable">
             <xsl:call-template name="variable">
@@ -542,7 +556,7 @@
             <xsl:call-template name="DiffEquation"/>
         </xsl:for-each>
 
-        <!-- Make and link the relations based on I/O ports -->
+        <!-- Construct and link the relations based on I/O ports -->
         <xsl:for-each select="../IntegerVariable|../RealVariable|../BooleanVariable|../triggerInput|../triggerOutput">
             <xsl:element name="relation">
                 <xsl:attribute name="name"><xsl:value-of select="@name"/></xsl:attribute>
