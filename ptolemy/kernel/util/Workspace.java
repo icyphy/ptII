@@ -199,7 +199,6 @@ public class Workspace implements Nameable, Serializable {
      *  name is set to an empty string.
      *  Increment the version number.
      *  @param name The new name.
-     *  @exception IllegalActionException The argument null.
      */
     public synchronized void setName(String name) {
         if (name == null) {
