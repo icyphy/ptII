@@ -28,10 +28,13 @@
 @AcceptedRating Red
 */
 
+/** Simple class used by configure to test whether the javac
+    compiler is working.
+@author Christopher Hylands
+@version $Id$
+ */
 public class confTest {
-    /** Simple class used by configure to test whether the javac
-     *  compiler is working.
-     */
+
     public static void main(String args[]) {
         System.out.print(System.getProperty("java.version"));
     }
