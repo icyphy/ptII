@@ -811,17 +811,22 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         super._writeFile(file);
     }
 
-    /** Remove the listeners we have created when the frame closes.
-     *  Remove our panner-updating listener from the entity.
+    /** Override the base class to remove the listeners we have
+     *  created when the frame closes.  Specifically,
+     *  remove our panner-updating listener from the entity.
      *  Also remove the listeners our graph model has created.
+     *  @return True if the close completes, and false otherwise.
      */
     protected boolean _close() {
-        getModel().removeChangeListener(this);
-        GraphModel gm = _jgraph.getGraphPane().getGraphModel();
-        if (gm instanceof AbstractBasicGraphModel) {
-            ((AbstractBasicGraphModel)gm).removeListeners();
+        boolean result = super._close();
+        if (result) {
+            getModel().removeChangeListener(this);
+            GraphModel gm = _jgraph.getGraphPane().getGraphModel();
+            if (gm instanceof AbstractBasicGraphModel) {
+                ((AbstractBasicGraphModel)gm).removeListeners();
+            }
         }
-        return super._close();
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
