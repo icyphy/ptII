@@ -252,6 +252,7 @@ public class PlotBox extends Panel {
             for(int i=0; i<_errorMsg.length;i++) {
                 graphics.drawString(_errorMsg[i],10, msgy);
                 msgy += fheight;
+                System.err.println(_errorMsg[i]);
             }
             return;
         }
@@ -1168,14 +1169,14 @@ public class PlotBox extends Panel {
                     documentBase = _documentBase;
                 }
                 if (documentBase == null) {
-                    url = new URL(_dataurl);
+                    url = new URL(dataurl);
                 } else {
                     try {
                         url = new URL(documentBase, dataurl);
                     } catch (NullPointerException e) {
                         // If we got a NullPointerException, then perhaps we
                         // are calling this as an application, not as an applet
-                        url = new URL(_dataurl);
+                        url = new URL(dataurl);
                     }
                 }
                 in = new DataInputStream(url.openStream());
@@ -1195,9 +1196,10 @@ public class PlotBox extends Panel {
                     return;
                 }
             } catch (IOException ioe) {
-                _errorMsg = new String [2];
-                _errorMsg[0] = "Failure opening URL: " + dataurl;
-                _errorMsg[1] = ioe.getMessage();
+                _errorMsg = new String [3];
+                _errorMsg[0] = "Failure opening URL: ";
+                _errorMsg[1] = " " + dataurl;
+                _errorMsg[2] = ioe.getMessage();
                 return;
             }
         }
