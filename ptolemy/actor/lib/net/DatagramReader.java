@@ -443,7 +443,7 @@ public class DatagramReader extends TypedAtomicActor {
     /** Encoding to expect of received datagrams.  This is a
      *  string-valued attribute that defaults to "for_Ptolemy_parser".
      *  This is a ChoiceStyle (i.e. drop-menu-select) parameter.
-     *  @see ptolemy.actor.gui.style.ChoiceStyle
+     *  {@link ptolemy.actor.gui.style.ChoiceStyle}
      *  The three options currently implemented are: "for_Ptolemy_parser",
      *  "raw_low_bytes_of_integers", and "raw_integers_little_endian".
      *  The first option allows reconstruction of any data type upon
