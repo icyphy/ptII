@@ -38,23 +38,6 @@
             </property>
         </port>
     </entity>
-    <entity name="DiscreteRandomSource" class="ptolemy.actor.lib.DiscreteRandomSource">
-        <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
-        </property>
-        <property name="pmf" class="ptolemy.data.expr.Parameter" value="{0.5, 0.5}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{0, 1}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 145.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <entity name="HammingDecoder" class="ptolemy.actor.lib.comm.HammingDecoder">
         <property name="uncodeBlockSize" class="ptolemy.data.expr.Parameter" value="4">
         </property>
@@ -100,6 +83,22 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
+        <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
+        </property>
+        <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <doc>Create a sequence of bernoulli random variables</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 145.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="150.0, 295.0">
         </vertex>
@@ -130,11 +129,11 @@
     </relation>
     <link port="HammingCoder.input" relation="relation2"/>
     <link port="HammingCoder.output" relation="relation"/>
-    <link port="DiscreteRandomSource.output" relation="relation2"/>
     <link port="HammingDecoder.input" relation="relation"/>
     <link port="HammingDecoder.output" relation="relation3"/>
     <link port="Equals.input" relation="relation3"/>
     <link port="Equals.input" relation="relation2"/>
     <link port="Equals.output" relation="relation4"/>
     <link port="NonStrictTest.input" relation="relation4"/>
+    <link port="Bernoulli.output" relation="relation2"/>
 </entity>

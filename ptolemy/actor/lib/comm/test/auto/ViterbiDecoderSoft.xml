@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="ViterbiDecoder" class="ptolemy.actor.TypedCompositeActor">
+<entity name="ViterbiDecoderSoft" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
@@ -13,12 +13,12 @@
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="115.0, 55.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 85.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1032, 748}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, 0, 1031, 748}}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 637]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[816, 637]">
     </property>
     <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="{05, 07, 011}">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -32,7 +32,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 65.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 100.0">
         </property>
     </property>
     <property name="delay" class="ptolemy.data.expr.Parameter" value="10">
@@ -47,7 +47,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="470.0, 95.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 100.0">
         </property>
     </property>
     <property name="initial" class="ptolemy.data.expr.Parameter" value="0">
@@ -62,7 +62,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 100.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 135.0">
         </property>
     </property>
     <property name="noisePower" class="ptolemy.data.expr.Parameter" value="0.1">
@@ -77,7 +77,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="220.0, 130.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 165.0">
         </property>
     </property>
     <property name="uncodeBlockSize" class="ptolemy.data.expr.Parameter" value="2">
@@ -92,10 +92,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 35.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="260.0, 65.0">
         </property>
     </property>
-    <property name="trueAmp" class="ptolemy.data.expr.Parameter" value="1.0">
+    <property name="trueAmp" class="ptolemy.data.expr.Parameter" value="0.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -109,10 +109,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 120.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 120.0">
         </property>
     </property>
-    <property name="falseAmp" class="ptolemy.data.expr.Parameter" value="0.0">
+    <property name="falseAmp" class="ptolemy.data.expr.Parameter" value="1.0">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -126,11 +126,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="475.0, 145.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="480.0, 145.0">
         </property>
     </property>
     <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="485.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 335.0">
         </property>
         <port name="plus" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -152,7 +152,7 @@
         <property name="standardDeviation" class="ptolemy.data.expr.Parameter" value="noisePower">
         </property>
         <doc>Create a sequence of gaussian random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="405.0, 200.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="290.0, 245.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -160,6 +160,78 @@
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="repeat(uncodeBlockSize*delay, false)">
+        </property>
+        <doc>The sdf delay actor, which behaves as an initial token on an arc.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="255.0, 415.0">
+        </property>
+        <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.domains.sdf.kernel.SDFIOPort">
+            <property name="output"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="20">
+            </property>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+    </entity>
+    <entity name="Equals" class="ptolemy.actor.lib.logic.Equals">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="635.0, 415.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true, true}">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="760.0, 415.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
+        <property name="uncodeBlockSize" class="ptolemy.data.expr.Parameter" value="uncodeBlockSize">
+        </property>
+        <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="polynomialArray">
+        </property>
+        <property name="initial" class="ptolemy.data.expr.Parameter" value="initial">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 325.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
+            </property>
         </port>
     </entity>
     <entity name="ViterbiDecoder" class="ptolemy.actor.lib.comm.ViterbiDecoder">
@@ -173,7 +245,7 @@
         </property>
         <property name="amplitude" class="ptolemy.data.expr.Parameter" value="{trueAmp, falseAmp}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="570.0, 290.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 335.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -188,95 +260,13 @@
             </property>
         </port>
     </entity>
-    <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
-        <property name="uncodeBlockSize" class="ptolemy.data.expr.Parameter" value="uncodeBlockSize">
-        </property>
-        <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="polynomialArray">
-        </property>
-        <property name="initial" class="ptolemy.data.expr.Parameter" value="initial">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 280.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="3">
-            </property>
-        </port>
-    </entity>
-    <entity name="uncodeBits" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="uncodeBits">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="205.0, 385.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="encodedBits" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute" value="encodedBits">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 390.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
-        <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-        </property>
-        <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-        </property>
-        <property name="title" class="ptolemy.kernel.util.StringAttribute">
-        </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="715.0, 290.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
-        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="falseAmp">
-        </property>
-        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="trueAmp">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="355.0, 280.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
         <property name="trueProbability" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
         <doc>Create a sequence of bernoulli random variables</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="75.0, 280.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 325.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -286,16 +276,22 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="160.0, 280.0">
-        </vertex>
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="2">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
+    <entity name="BooleanToAnything2" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="falseAmp">
         </property>
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="630.0, 290.0">
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="trueAmp">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 325.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="145.0, 325.0">
         </vertex>
         <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="2">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
@@ -309,9 +305,23 @@
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="425.0, 280.0">
+        <vertex name="vertex1" value="360.0, 325.0">
         </vertex>
         <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="590.0, 335.0">
+        </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="2">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
         </property>
@@ -322,9 +332,13 @@
             </property>
         </property>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="310.0, 280.0">
-        </vertex>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="22">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="3">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
             </property>
@@ -334,14 +348,17 @@
     <link port="AddSubtract.plus" relation="relation6"/>
     <link port="AddSubtract.output" relation="relation2"/>
     <link port="Gaussian.output" relation="relation"/>
-    <link port="ViterbiDecoder.input" relation="relation2"/>
-    <link port="ViterbiDecoder.output" relation="relation3"/>
+    <link port="SampleDelay.input" relation="relation4"/>
+    <link port="SampleDelay.output" relation="relation3"/>
+    <link port="Equals.input" relation="relation7"/>
+    <link port="Equals.input" relation="relation3"/>
+    <link port="Equals.output" relation="relation5"/>
+    <link port="NonStrictTest.input" relation="relation5"/>
     <link port="ConvolutionalCoder.input" relation="relation4"/>
-    <link port="ConvolutionalCoder.output" relation="relation7"/>
-    <link port="uncodeBits.input" relation="relation4"/>
-    <link port="encodedBits.input" relation="relation7"/>
-    <link port="Display3.input" relation="relation3"/>
-    <link port="BooleanToAnything.input" relation="relation7"/>
-    <link port="BooleanToAnything.output" relation="relation6"/>
+    <link port="ConvolutionalCoder.output" relation="relation9"/>
+    <link port="ViterbiDecoder.input" relation="relation2"/>
+    <link port="ViterbiDecoder.output" relation="relation7"/>
     <link port="Bernoulli.output" relation="relation4"/>
+    <link port="BooleanToAnything2.input" relation="relation9"/>
+    <link port="BooleanToAnything2.output" relation="relation6"/>
 </entity>

@@ -2,6 +2,8 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HadamardCode1" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
+    </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
@@ -53,7 +55,7 @@
         </property>
         <property name="log2Length" class="ptolemy.data.expr.Parameter" value="order">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 175.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 175.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -74,7 +76,7 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="50.0, 185.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -96,7 +98,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 215.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="600.0, 175.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -114,9 +116,9 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="690.0, 215.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="760.0, 175.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -126,11 +128,11 @@
         </port>
     </entity>
     <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
-        <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="16">
+        <property name="numberOfTimes" class="ptolemy.data.expr.Parameter" value="codeLength">
         </property>
         <property name="blockSize" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="200.0, 185.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="140.0, 185.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -156,7 +158,7 @@
         </property>
         <property name="columns" class="ptolemy.data.expr.Parameter" value="codeLength">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="380.0, 175.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="440.0, 175.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -177,26 +179,70 @@
             </property>
         </port>
     </entity>
+    <entity name="BooleanToAnything" class="ptolemy.actor.lib.conversions.BooleanToAnything">
+        <property name="falseValue" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <property name="trueValue" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="315.0, 175.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="590.0, 215.0">
+        <vertex name="vertex1" value="695.0, 175.0">
         </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="16">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="256">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="256">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="256">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="490.0, 175.0">
+        </vertex>
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="1">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
     </relation>
     <link port="HadamardCode.output" relation="relation"/>
     <link port="HadamardCode.index" relation="relation5"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Expression2.output" relation="relation4"/>
-    <link port="Expression2.in" relation="relation3"/>
+    <link port="Expression2.in" relation="relation7"/>
     <link port="NonStrictTest.input" relation="relation4"/>
     <link port="Repeat.input" relation="relation2"/>
     <link port="Repeat.output" relation="relation5"/>
-    <link port="SequenceToMatrix.input" relation="relation"/>
-    <link port="SequenceToMatrix.output" relation="relation3"/>
+    <link port="SequenceToMatrix.input" relation="relation6"/>
+    <link port="SequenceToMatrix.output" relation="relation7"/>
+    <link port="BooleanToAnything.input" relation="relation"/>
+    <link port="BooleanToAnything.output" relation="relation6"/>
 </entity>
