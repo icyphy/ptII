@@ -571,8 +571,9 @@ NONJSALLCOREDIRS = \
 	ptolemy/copernicus/java \
 
 # Directories to run tests in outside of JavaScope
-NONJSALLDIRS = \
-	ptolemy/copernicus/c
+NONJSALLDIRS =
+# 10/16/02 - don't run copernicus/c, it generates too many messages -cxh
+#	ptolemy/copernicus/c
 
 #	ptolemy/copernicus/java
 #	ptolemy/copernicus/shallow
