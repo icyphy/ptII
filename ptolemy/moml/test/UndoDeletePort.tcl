@@ -144,7 +144,7 @@ test UndoDeletePort-1.1 {Test deleting a port is undoable: without entity attrib
 
 test UndoDeletePort-1.1b {Test deleting a port is undoable: without entity attribute, simple name} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -230,7 +230,7 @@ test UndoDeletePort-1.2a {Test deleting a port is undoable: without entity attri
 
 test UndoDeletePort-1.2b {Test deleting a port is undoable: without entity attribute, complex name} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -322,7 +322,7 @@ test UndoDeletePort-1.3a {Test deleting a port is undoable: with entity attribut
 
 test UndoDeletePort-1.3b {Test deleting a port is undoable: with entity attribute, simple name, no inside links} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -415,7 +415,7 @@ test UndoDeletePort-1.4a {Test deleting a port is undoable: with entity attribut
 
 test UndoDeletePort-1.4b {Test deleting a port is undoable: with entity attribute, complex name, no inside links} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -507,7 +507,7 @@ test UndoDeletePort-1.5a {Test deleting a port is undoable: with entity
 
 test UndoDeletePort-1.5b {Test deleting a port is undoable: with entity attribute, with inside links} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange

@@ -113,7 +113,7 @@ test UndoDoc-1.1a {Test a new document addition} {
 
 test UndoDoc-1.1b {Test a new document addition} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -165,7 +165,7 @@ test UndoDoc-1.2a {Test removing a previous documentation attribute} {
 
 test UndoDoc-1.2b {Test removing a previous documentation attribute} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -218,7 +218,7 @@ test UndoDoc-1.3a {Test modifying a previous documentation attribute} {
 
 test UndoDoc-1.3b {Test modifying a previous documentation attribute} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange

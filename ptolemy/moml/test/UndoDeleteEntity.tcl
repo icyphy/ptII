@@ -127,7 +127,7 @@ test UndoDeleteEntity-1.1a {Test undoing an entity deletion: simple name} {
 
 test UndoDeleteEntity-1.1b {Test undoing an entity deletion: simple name} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -196,7 +196,7 @@ test UndoDeleteEntity-1.2a {Test undoing an entity deletion: complex name} {
 
 test UndoDeleteEntity-1.2b {Test undoing an entity deletion: complex name} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -230,14 +230,14 @@ test UndoDeleteEntity-1.2b {Test undoing an entity deletion: complex name} {
 
 test UndoDeleteEntity-1.2c {Call undo again, which should do nothing} {
     # Create another undo
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
 
 
     # Create another undo
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -342,7 +342,7 @@ test UndoDeleteEntity-1.3a {Delete an entity in a composite actor} {
 
 test UndoDeleteEntity-1.3b {Delete an entity in a composite actor: Now call undo} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -429,7 +429,7 @@ test UndoDeleteEntity-1.4a {Call undo on a TypedCompositeActor that has not yet 
     $toplevel setManager $manager
 
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # For some reason the stack trace is dumped to stderr for us,
     # perhaps because of the cancel facility

@@ -66,7 +66,6 @@ JSIMPLE_TESTS = \
 	UndoDeleteRelation.tcl \
 	UndoDoc.tcl \
 	UndoEntity.tcl \
-	UndoInfoAttribute.tcl \
 	UndoLink.tcl \
 	UndoPort.tcl \
 	UndoProperty.tcl \

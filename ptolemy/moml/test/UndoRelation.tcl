@@ -126,7 +126,7 @@ test UndoRelation-1.1a {Test undoing a relation creation} {
 
 test UndoRelation-1.1b {Test undoing a relation creation} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -199,7 +199,7 @@ test UndoRelation-1.2a {Test undoing a relation transition} {
 
 test UndoRelation-1.2b {Test undoing a relation transition} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange

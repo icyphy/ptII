@@ -1,4 +1,5 @@
-# Tests for the MoMLUndoChangeRequest class
+# Tests for the UndoChangeRequest and RedoChangeRequest classes,
+# which are in kernel.util, but the tests use MoML.
 #
 # @Author: Christopher Hylands, based on MoMLChangeRequest.tcl by Edward A. Lee
 #
@@ -111,7 +112,7 @@ test MoMLUndoChangeRequest-1.1 {Test adding an entity} {
 test MoMLUndoChangeRequest-1.2 {Undo} {
     set originalMoML [$toplevel exportMoML]
     set originator [java::new ptolemy.kernel.util.NamedObj "originator"]
-    set undoChange [java::new ptolemy.moml.MoMLUndoChangeRequest \
+    set undoChange [java::new ptolemy.kernel.util.UndoChangeRequest \
 	$originator $toplevel] 
     $toplevel requestChange $undoChange 
     set undoneMoML [$toplevel exportMoML]
@@ -133,7 +134,7 @@ test MoMLUndoChangeRequest-1.2 {Undo} {
 test MoMLUndoChangeRequest-1.2a {Undo again, with nothing to undo} {
     # Uses $undoneMoML from 1.2 above
     set originator [java::new ptolemy.kernel.util.NamedObj "originator"]
-    set undoChange [java::new ptolemy.moml.MoMLUndoChangeRequest \
+    set undoChange [java::new ptolemy.kernel.util.UndoChangeRequest \
 	$originator $toplevel] 
     $toplevel requestChange $undoChange 
     set undoneAgainMoML [$toplevel exportMoML]
@@ -146,9 +147,8 @@ test MoMLUndoChangeRequest-1.2a {Undo again, with nothing to undo} {
 test MoMLUndoChangeRequest-1.3 {Redo} {
     # Uses $originalMoML from 1.2 above
     set originator [java::new ptolemy.kernel.util.NamedObj "originator"]
-    set redoChange [java::new ptolemy.moml.MoMLUndoChangeRequest \
-	$originator $toplevel] 
-    $redoChange setRedoable
+    set redoChange [java::new ptolemy.kernel.util.RedoChangeRequest \
+		$originator $toplevel]
     $toplevel requestChange $redoChange 
     set redoneMoML [$toplevel exportMoML]
     diffText $originalMoML $redoneMoML
@@ -161,9 +161,8 @@ test MoMLUndoChangeRequest-1.3 {Redo} {
 test MoMLUndoChangeRequest-1.4 {Redo again, with nothing to redo } {
     # Uses $originalMoML from 1.2 above
     set originator [java::new ptolemy.kernel.util.NamedObj "originator"]
-    set redoChange [java::new ptolemy.moml.MoMLUndoChangeRequest \
+    set redoChange [java::new ptolemy.kernel.util.RedoChangeRequest \
 	$originator $toplevel] 
-    $redoChange setRedoable
     $toplevel requestChange $redoChange 
     set redoneMoML [$toplevel exportMoML]
     diffText $originalMoML $redoneMoML
@@ -212,7 +211,7 @@ test MoMLUndoChangeRequest-2.1 {Make three changes, merge the first and the last
     set threeChangeMoML [$toplevel exportMoML]
 
     set originator [java::new ptolemy.kernel.util.NamedObj "originator"]
-    set undoChange [java::new ptolemy.moml.MoMLUndoChangeRequest \
+    set undoChange [java::new ptolemy.kernel.util.UndoChangeRequest \
 	$originator $toplevel] 
     $toplevel requestChange $undoChange 
     set undoneThreeChangeMoML [$toplevel exportMoML]
@@ -234,21 +233,22 @@ test MoMLUndoChangeRequest-2.1 {Make three changes, merge the first and the last
 ####
 #
 test MoMLUndoChangeRequest-5.1 {getDeferredToParent} {
+    # FIXME: This is not a real test for getDeferredToParent.
     set e3 [java::new ptolemy.actor.TypedCompositeActor $toplevel E3]
 
     # FIXME: not sure if this is right?	
     $e3 setDeferMoMLDefinitionTo $toplevel
 
     set r1 [expr {[java::call \
-	    ptolemy.moml.MoMLUndoChangeRequest getDeferredToParent [java::null]] \
+	    ptolemy.moml.MoMLChangeRequest getDeferredToParent [java::null]] \
 	    == [java::null]}] 
     set r2 [expr {[java::call \
-	    ptolemy.moml.MoMLUndoChangeRequest getDeferredToParent $toplevel] \
+	    ptolemy.moml.MoMLChangeRequest getDeferredToParent $toplevel] \
 	    == [java::null]}] 
 
-    set a [java::call ptolemy.moml.MoMLUndoChangeRequest getDeferredToParent $e3]
+    set a [java::call ptolemy.moml.MoMLChangeRequest getDeferredToParent $e3]
     set r3 [$a getName]	
 
     list $r1 $r2 $r3
-} {1 0 top} {FIXME: This is not a real test for getDeferredToParent}
+} {1 0 top}
 

@@ -124,7 +124,7 @@ test UndoPort-1.1a {Test undoing a port creation} {
 
 test UndoPort-1.1b {Test undoing a port creation} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -195,7 +195,7 @@ test UndoPort-1.2a {Test undoing a port transition: simple name} {
 
 test UndoPort-1.2b {Test undoing a port transition: simple name} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
@@ -264,7 +264,7 @@ test UndoPort-1.3a {Test undoing a port transition: complex name} {
 
 test UndoPort-1.3b {Test undoing a port transition: complex name} {
     # Now create the MoMLUndoChangeRequest which will undo the change
-    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+    set undochange [java::new ptolemy.kernel.util.UndoChangeRequest $toplevel $toplevel]
 
     # NOTE: Request is filled immediately because the model is not running.
     $manager requestChange $undochange
