@@ -136,18 +136,30 @@ public class DEChannel extends DEActor {
         _nextOutTime = -1.0;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** @serial The input port. */
     public DEIOPort input;
+
+    /** @serial The output port. */
     public DEIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** @serial Messages. */
     private LinkedList _msgs = new LinkedList();
 
+    /** @serial Next Out Time. */
     private double _nextOutTime = -1.0;
 
+    /** @serial Drop Rate. */
     private Parameter _dropRate;
+    /** @serial Maximum Delay. */
     private Parameter _maxDelay;
+
+    /** @serial Minimum Delay. */
     private Parameter _minDelay;
 
 }

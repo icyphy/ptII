@@ -109,15 +109,22 @@ public class DETimer extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** @serial Set port. */
     public DEIOPort set;
+    /** @serial Expired port. */
     public DEIOPort expired;
+
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // So we don't need to create the token every time the timer expires.
+    /** @serial So we don't need to create the token every time the
+     *  timer expires.
+     */
     private static final Token _outToken = new Token();
 
+    /** @serial The time to expire.*/
     private double _expireTime = -1.0;
 
 }

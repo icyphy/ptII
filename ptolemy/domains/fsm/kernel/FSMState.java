@@ -335,8 +335,10 @@ public class FSMState extends ComponentEntity {
             }
             if (_refinement != null) {
                 // create new variable lists
-                _localStatusVars = new VariableList(this, LOCAL_INPUT_STATUS_VAR_LIST);
-                _localValueVars = new VariableList(this, LOCAL_INPUT_VALUE_VAR_LIST);
+                _localStatusVars = new VariableList(this,
+                        LOCAL_INPUT_STATUS_VAR_LIST);
+                _localValueVars = new VariableList(this,
+                        LOCAL_INPUT_VALUE_VAR_LIST);
                 _localStatusVars.createVariables(_refinement.outputPorts());
                 _localValueVars.createVariables(_refinement.outputPorts());
             } else {
@@ -379,63 +381,51 @@ public class FSMState extends ComponentEntity {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The name of the outgoing port.
-     */
+    /** The name of the outgoing port. */
     public static final String OUTGOING_PORT = "Outgoing";
 
-    /** The name of the incoming port.
-     */
+    /** The name of the incoming port. */
     public static final String INCOMING_PORT = "Incoming";
 
-    /** The name of the local status variable list.
-     */
+    /** The name of the local status variable list. */
     public static final String LOCAL_INPUT_STATUS_VAR_LIST = "LocalStatusVars";
 
-    /** The name of the local value variable list.
-     */
+    /** The name of the local value variable list. */
     public static final String LOCAL_INPUT_VALUE_VAR_LIST = "LocalValueVars";
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The actor refining this state.
+    /** @serial The actor refining this state. */
     Actor _refinement = null;
 
-    // The list of variables corresponding to the status of output
-    // of refinement.
+    /** @serial The list of variables corresponding to the status of output
+     *  of refinement.
+     */
     VariableList _localStatusVars = null;
 
-    // The list of variables corresponding to the value of output
-    // of refinement.
+    /** @serial The list of variables corresponding to the value of output
+     *  of refinement.
+     */
     VariableList _localValueVars = null;
 
-    // The list of outgoing preemptive transitions.
+    /** @serial The list of outgoing preemptive transitions. */
     LinkedList _preTrans = null;
 
-    // The list of outgoing non-preemptive transitions.
+    /** @serial The list of outgoing non-preemptive transitions. */
     LinkedList _nonPreTrans = null;
 
-    // The version of the transitions lists.
+    /** @serial The version of the transitions lists. */
     long _transVersion = -1;
 
-    // If true, the subsystem refining this state is initialized each
-    // time entering this state.
+    /** @serial If true, the subsystem refining this state is initialized
+     *  each time entering this state.
+     */
     boolean _initEntry = false;
 
-    // The port connects to all incoming transitions.
+    /** @serial The port connects to all incoming transitions. */
     ComponentPort _incoming = null;
 
-    // The port connects to all outgoing transitions.
+    /** @serial The port connects to all outgoing transitions. */
     ComponentPort _outgoing = null;
-
 }
-
-
-
-
-
-
-
-
-
-

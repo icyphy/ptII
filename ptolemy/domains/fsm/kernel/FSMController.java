@@ -819,25 +819,25 @@ public class FSMController extends CompositeEntity implements TypedActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The initial state.
-    FSMState _initialState = null;
-
-    // The list of initial transitions.
-    LinkedList _initialTransitions = null;
-
-    // The current state.
+    /** @serial The current state. */
     protected FSMState _currentState = null;
 
-    // The input status variable list.
+    /** @serial The initial state. */
+    FSMState _initialState = null;
+
+    /** @serial The list of initial transitions. */
+    LinkedList _initialTransitions = null;
+
+    /** @serial The input status variable list. */
     VariableList _inputStatusVars = null;
 
-    // The input value variable list.
+    /** @serial The input value variable list. */
     VariableList _inputValueVars = null;
 
-    // The local variable list.
+    /** @serial The local variable list. */
     VariableList _localVariables = null;
 
-    // The transition to be taken when change state.
+    /** @serial The transition to be taken when change state. */
     protected FSMTransition _takenTransition = null;
 
     // From AtomicActor, should keep consistent.

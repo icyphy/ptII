@@ -47,8 +47,6 @@ A plotter for discrete-event signals.
 */
 public class ABPPlot extends DEActor {
 
-    private static final boolean DEBUG = false;
-
     /** Construct a plot actor with a new plot window. The default Y-range is
      *  [-1, 1]. The default X-range is the start time to the stop time.
      *
@@ -333,17 +331,30 @@ public class ABPPlot extends DEActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public members                    ////
 
+    /** @serial The input port. */
     public TypedIOPort input;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    private static final boolean DEBUG = false;
+
+    /** @serial array of legends. */
     private String[] _legends;
+
+    /** @serial Legend*/
     private Parameter _paramLegends;
 
+    /** @serial Minimum Y value. */
     private double _yMin;
+
+    /** @serial Minimum Y Parameter value. */
     private Parameter _paramYMin;
+
+    /** @serial Maximum Y value. */
     private double _yMax;
+
+    /** @serial Maximum Y Parameter value. */
     private Parameter _paramYMax;
 
     //private double _xMin;
@@ -351,10 +362,13 @@ public class ABPPlot extends DEActor {
     //private double _xMax;
     //private Parameter _paramXMax;
 
+    /** @serial The plot*/
     private Plot _plot;
 
+    /** @serial True if this is the first point for this dataset. */
     private boolean[] _firstPoint;
 
+    /** @serial True if the range has been initialized. */
     private boolean _rangeInitialized = false;
 
 }

@@ -131,8 +131,6 @@ public class HSDirector extends FSMDirector implements CTEmbeddedDirector {
         }
     }
 
-    private boolean _first = true;
-
     public void initialize() throws IllegalActionException {
         _first = true;
         super.initialize();
@@ -159,6 +157,11 @@ public class HSDirector extends FSMDirector implements CTEmbeddedDirector {
         }
         return _controller.postfire();
     }
+
+    /** @serial True if this is the first time through postfire(). */
+    private boolean _first = true;
+
+
 }
 
 

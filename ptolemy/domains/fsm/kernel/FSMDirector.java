@@ -441,6 +441,7 @@ public class FSMDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** @serial Controller of this director. */ 
     protected FSMController _controller = null;
 
 }

@@ -128,28 +128,30 @@ public class DEMessageSource extends DEActor {
 
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** @serial The next port. */
     public DEIOPort next;
+
+    /** @serial The output port. */
     public DEIOPort output;
+
+    /** @serial The request port. */
     public DEIOPort request;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // the mean inter-arrival time and value
+    /** @serial the mean inter-arrival time and value */
     private Parameter _maxDelay;
 
+    /** @serial True if this is the first firing. */
     private boolean _firstFire = true;
+
+    /** @serial The message number*/
     private int _msgNum = 0;
+
+    /** @serial The next time to generate a message. */
     private double _nextMsgTime = -1;
 }
-
-
-
-
-
-
-
-
-
-
-

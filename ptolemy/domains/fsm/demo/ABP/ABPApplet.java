@@ -55,8 +55,6 @@ An applet that uses Ptolemy II DE domain.
 */
 public class ABPApplet extends Applet {
 
-    public static final boolean DEBUG = true;
-
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
@@ -526,37 +524,55 @@ public class ABPApplet extends Applet {
     }
 
     ////////////////////////////////////////////////////////////////////////
+    ////                         public variables                       ////
+
+    public static final boolean DEBUG = true;
+    public static final String TIME_OUT = "2.5";
+    public static final String RESET = "-1.0";
+
+    ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
 
-    // The thread that runs the simulation.
+
+    /** @serial The thread that runs the simulation. */
     private boolean _isSimulationRunning;
 
     // FIXME: Under jdk 1.2, the following can (and should) be private
+    /** @serial The director for these applets. */
     private DEDirector _localDirector;
+    /** @serial The manager for this applet. */
     private Manager _manager;
 
-    private TextField _stopTimeBox;
-    private TextField _fdrBox;
-    private TextField _bdrBox;
-    private double _stopTime = 100.0;
-    private Button _goButton;
-    private Button _pauseButton;
-    private Button _finishButton;
-    private Button _terminateButton;
-    
+    private transient TextField _stopTimeBox;
+    private transient TextField _fdrBox;
+    private transient TextField _bdrBox;
 
-    private Label _currentTimeLabel;
+    /** @serial Time to stop at. */
+    private  double _stopTime = 100.0;
+
+    private transient Button _goButton;
+    private transient Button _pauseButton;
+    private transient Button _finishButton;
+    private transient Button _terminateButton;
+    private transient Label _currentTimeLabel;
+
+    /** @serial True if the simulation has been paused. */
     private boolean _isSimulationPaused = false;
 
     // Parameters of DEProcessor that we want to change.
+
+    /** @serial Forward Drop Rate (minimum service time). */
     private String _fdr;
+
+    /** @serial Backward Drop Rate (interrupt service time. */
     private String _bdr;
+
+
+    /** @serial Forward Drop Rate (minimum service time). */
     private Parameter _fdRate;
+
+    /** @serial Backward Drop Rate (interrupt service time. */
     private Parameter _bdRate;
-    public static final String TIME_OUT = "2.5";
-    public static final String RESET = "-1.0";
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
 
 
     //////////////////////////////////////////////////////////////////////////

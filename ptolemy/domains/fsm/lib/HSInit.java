@@ -155,9 +155,15 @@ public class HSInit extends NamedObj implements TransitionAction {
         return _container;
     }
 
+    /** @serial Name of the integrator. */
     private String _integratorName;
-    private String _expression;
-    private FSMTransition _container;
-    private Variable _valueVar;
 
+    /** @serial Expression to process. */
+    private String _expression;
+
+    /** @serial Container. */
+    private FSMTransition _container;
+
+    /** @serial Value of the variable. */
+    private Variable _valueVar;
 }

@@ -54,44 +54,45 @@ public class FSMTransition extends ComponentRelation {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // List trigger event and trigger condition.
+    /** @serial List trigger event and trigger condition. */
     VariableList _trigger = null;
 
-    // Trigger event variable.
+    /** @serial Trigger event variable. */
     Variable _te;
 
-    // Trigger condition variable.
+    /** @serial Trigger condition variable. */
     Variable _tc;
 
-    // List trigger actions.
+    /** @serial List trigger actions. */
     VariableList _actions = null;
 
-    // List local variable updates.
+    /** @serial List local variable updates. */
     VariableList _localVarUpdates = null;
 
-    // If true, this transition is preemptive.
+    /** @serial If true, this transition is preemptive. */
     boolean _preemptive = false;
 
-    // If true, the destination state's subsystem will be initialized
-    // each time this transition is taken.
+    /** @serial If true, the destination state's subsystem will be initialized
+     * each time this transition is taken.
+     */
     boolean _initEntry = false;
 
-    // Source state.
+    /** @serial Source state. */
     FSMState _source = null;
 
-    // Destination state.
+    /** @serial Destination state. */
     FSMState _dest = null;
 
-    // Version of source/dest states.
+    /** @serial Version of source/dest states. */
     long _stateVersion = -1;
 
-    // Trigger event set.
+    /** @serial Trigger event set. */
     boolean _teSet = false;
 
-    // Trigger condition set.
+    /** @serial Trigger condition set. */
     boolean _tcSet = false;
 
-    // List of transition actions.
+    /** @serial List of transition actions. */
     LinkedList _transActions = null;
 
     public void addTransitionAction(TransitionAction act) {
@@ -469,19 +470,4 @@ public class FSMTransition extends ComponentRelation {
         }
         return;
     }
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
