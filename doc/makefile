@@ -302,14 +302,14 @@ codeDoc/tree.html:	$(CODEGENJSRCS) \
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)" "$(JAVADOC)" $(JDOCFLAGS) $(JDOCSIZE) -d doc/codeDoc $(ALLPACKAGES) )
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
 
 
 codeDocPtiny/tree.html:
 	if [ ! -d codeDocPtiny ]; then mkdir -p codeDocPtiny; fi
 	@echo "If this fails because of memory problems, try"
 	@echo 'make JDOCFLAGS="-author -version -J-Xmx132m"'
-	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) $(JDOCSIZE) -d doc/codeDocPtiny $(PTINYPACKAGES) )
+	-(cd ..; CLASSPATH=".$(CLASSPATHSEPARATOR)$(DIVA_JAR)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(PTINYPACKAGES) )
 
 
 # We don't include common.mk since we don't use the compiler here
