@@ -131,12 +131,23 @@ public class ProcessThread extends PtolemyThread {
             _manager.fireExecutionError(e);
         } finally {
             try {
-                _actor.wrapup();
+		wrapup();
             } catch (IllegalActionException e) {
                 _manager.fireExecutionError(e);
             }
             _director._decreaseActiveCount();
         }
+    }
+
+    /** End the execution of the actor under the control of this
+     *  thread. Subclasses are encouraged to override this method
+     *  as necessary for domain specific functionality.
+     * @exception IllegalActionException if an error occurs while
+     *  ending execution of the actor under the control of this
+     *  thread.
+     */
+    public void wrapup() throws IllegalActionException {
+	_actor.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////
