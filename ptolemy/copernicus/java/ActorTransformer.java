@@ -59,6 +59,7 @@ import soot.Value;
 import soot.ValueBox;
 import soot.VoidType;
 import soot.util.Chain;
+import soot.jimple.AssignStmt;
 import soot.jimple.IntConstant;
 import soot.jimple.InvokeExpr;
 import soot.jimple.Jimple;
@@ -409,8 +410,10 @@ public class ActorTransformer extends SceneTransformer {
                         SpecialInvokeExpr r = (SpecialInvokeExpr)value;
                         if(PtolemyUtilities.executableInterface.declaresMethod(
                                 r.getMethod().getSubSignature())) {
-                            if(r.getMethod().getName().equals("prefire") ||
-                               r.getMethod().getName().equals("postfire")) {
+                            boolean isNonVoidMethod = 
+                                r.getMethod().getName().equals("prefire") ||
+                                r.getMethod().getName().equals("postfire");
+                            if(isNonVoidMethod && unit instanceof AssignStmt) {
                                 box.setValue(IntConstant.v(1));
                             } else {
                                 body.getUnits().remove(unit);

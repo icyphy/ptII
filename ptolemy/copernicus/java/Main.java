@@ -123,7 +123,8 @@ public class Main extends KernelMain {
 
         // Inline the director into the composite actor.
         Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.idt", InlineDirectorTransformer.v(_toplevel)));
+                new Transform("wjtp.idt", 
+                        InlineDirectorTransformer.v(_toplevel)));
                 
         // Add a command line interface (i.e. Main)
         Scene.v().getPack("wjtp").add(
@@ -303,9 +304,10 @@ public class Main extends KernelMain {
                                 AliasAssignmentEliminator.v())));
         
         // Remove other useless getFoo() methods.
-        Scene.v().getPack("wjtp").add(
-                new Transform("wjtp.smr",
-                        SideEffectFreeInvocationRemover.v()));
+        // FIXME: This has bugs...
+        // Scene.v().getPack("wjtp").add(
+        //         new Transform("wjtp.smr",
+        //                SideEffectFreeInvocationRemover.v()));
         
         // Run the standard soot optimizations.  We explicitly specify
         // this instead of using soot's -O flag so that we can

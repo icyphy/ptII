@@ -99,6 +99,8 @@ public class NamedObjEliminator extends SceneTransformer {
         System.out.println("NamedObjEliminator.internalTransform("
                 + phaseName + ", " + options + ")");
 
+        List modifiedConstructorClassList = new LinkedList();
+
         // Loop over all the classes
         for(Iterator i = Scene.v().getApplicationClasses().iterator(); 
             i.hasNext();) {
@@ -119,6 +121,7 @@ public class NamedObjEliminator extends SceneTransformer {
                 // this code.
                 SootMethod method = theClass.getMethodByName("<init>");
                 method.setParameterTypes(new LinkedList());
+                modifiedConstructorClassList.add(theClass);
                 
                 // Dance so that indexes in the Scene are properly updated.
                 theClass.removeMethod(method);
@@ -168,8 +171,10 @@ public class NamedObjEliminator extends SceneTransformer {
                 }
             }
         }
+
         // Reset the hierarchy, since we've changed superclasses and such.
         Scene.v().setActiveHierarchy(new Hierarchy());
+
         for(Iterator i = Scene.v().getApplicationClasses().iterator(); 
             i.hasNext();) {
             
@@ -200,8 +205,7 @@ public class NamedObjEliminator extends SceneTransformer {
                             SpecialInvokeExpr expr = (SpecialInvokeExpr)value;
                             SootClass declaringClass =
                                 expr.getMethod().getDeclaringClass();
-                            if(Scene.v().getApplicationClasses().contains(
-                                       declaringClass)) {
+                            if(modifiedConstructorClassList.contains(declaringClass)) {
                                 System.out.println("replacing constructor = " 
                                         + unit + " in method " + method);
                                 

@@ -1456,7 +1456,7 @@ public class SootUtilities {
             String name) {
         while(theClass != null) {
             if(theClass.declaresMethodByName(name)) {
-                System.out.println("found method " + name + " in " + theClass);
+                //System.out.println("found method " + name + " in " + theClass);
                 return theClass.getMethodByName(name);
             }
             theClass = theClass.getSuperclass();

@@ -180,42 +180,6 @@ public class Main extends KernelMain {
         Scene.v().getPack("wjtp").add(new Transform("wjtp.circuit",
                 ptolemy.copernicus.jhdl.CircuitTransformer.v(_toplevel)));
 
-
-        /*      
-                Old Stuff
-                // Create instance classes for actors.
-	// This transformer takes no input as far as soot is concerned
-	// (i.e. no application classes) and creates application
-	// classes from the model.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.at",
-                ActorTransformer.v(_toplevel)));
-
-        // Add a transformer to convert each actor class to JHDL.
-        // "wjtp" means "whole java tranformation package"
-        // This transformer is required to be a scene transformer,
-        // and it is applied before body transformers.
-        // "jhdl" is Michael Wirthlin's hardware design language.
-        // "wjtp.jhdl" is the name of the phase.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.jhdl",
-                JHDLTransformer.v(_toplevel)));
-
-        // Add transformers to do other passes.
-        // "jtp" mean "java tranformation package.
-        // These transformers are required to be a body transformer,
-        // and are applied after scene transformers.
-
-        // First pass: "cpaf" = "constant propagator and folder"
-        Scene.v().getPack("jtp").add(new Transform("jtp.cpaf",
-                ConstantPropagatorAndFolder.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.cbf",
-                ConditionalBranchFolder.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.uce",
-                UnreachableCodeEliminator.v()));
-	Scene.v().getPack("jtp").add(new Transform("jtp.cp",
-                CopyPropagator.v()));
-        Scene.v().getPack("jtp").add(new Transform("jtp.dae",
-                DeadAssignmentEliminator.v()));
-        */
     }
 
     /** Read in a MoML model, generate .class files for use with JHDL.
