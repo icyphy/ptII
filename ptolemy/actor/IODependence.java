@@ -79,6 +79,7 @@ public class IODependence extends Attribute {
      */
     public IODependence() {
         super();
+        setPersistent(false);
     }
 
     /** Construct an IODependence in the workspace with an empty name.
@@ -88,6 +89,7 @@ public class IODependence extends Attribute {
      */
     public IODependence(Workspace workspace) {
         super(workspace);
+        setPersistent(false);
     }
 
     /** Construct an IODependence in the given container with the
@@ -106,6 +108,7 @@ public class IODependence extends Attribute {
     public IODependence(Entity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        setPersistent(false);
     }
 
     ///////////////////////////////////////////////////////////////////

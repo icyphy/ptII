@@ -594,11 +594,16 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  three-argument version of this method.  It is final to ensure that
      *  derived classes only override that method to change
      *  the MoML description.
+     *  If the ojbect is not persistent, output null.
      *  @return A MoML description, or null if there is none.
      *  @see #exportMoML(Writer, int, String)
      */
     public final String exportMoML(String name) {
         try {
+            // If the object is not persistent, return null.
+            if (!isPersistent()) {
+                return null;
+            }
             StringWriter buffer = new StringWriter();
             exportMoML(buffer, 0, name);
             return buffer.toString();
@@ -618,11 +623,16 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  version of this method.  It is final to ensure that
      *  derived classes only need to override that method to change
      *  the MoML description.
+     *  If the ojbect is not persistent, output nothing.
      *  @exception IOException If an I/O error occurs.
      *  @param output The stream to write to.
      *  @see #exportMoML(Writer, int, String)
      */
     public final void exportMoML(Writer output) throws IOException {
+        // If the object is not persistent, do nothing.
+        if (!isPersistent()) {
+            return;
+        }
         exportMoML(output, 0);
     }
 
@@ -632,12 +642,17 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  This method is final to ensure that
      *  derived classes only override the three-argument method to change
      *  the MoML description.
+     *  If the ojbect is not persistent, output nothing.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @exception IOException If an I/O error occurs.
      *  @see #exportMoML(Writer, int, String)
      */
     public final void exportMoML(Writer output, int depth) throws IOException {
+        // If the object is not persistent, do nothing.
+        if (!isPersistent()) {
+            return;
+        }
         exportMoML(output, depth, getName());
     }
 
@@ -694,6 +709,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      *  description of an object.  They can override the protected
      *  method _exportMoMLContents() if they need to only change which
      *  contents are described.
+     *  If the ojbect is not persistent, output nothing.
      *  @param output The output stream to write to.
      *  @param depth The depth in the hierarchy, to determine indenting.
      *  @param name The name to use in the exported MoML.
@@ -703,6 +719,10 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
      */
     public void exportMoML(Writer output, int depth, String name)
             throws IOException {
+        // If the object is not persistent, do nothing.
+        if (!isPersistent()) {
+            return;
+        }
         String momlElement = getMoMLInfo().elementName;
         String className = getMoMLInfo().className;
         String superclass = getMoMLInfo().superclass;
@@ -1019,6 +1039,13 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         return false;
     }
 
+    /** Return true if the object is persistent.
+     *  @return True if the object is persistent.
+     */
+    public boolean isPersistent() {
+        return _isPersistent;
+    }
+
     /** React to a debug message by relaying it to any registered
      *  debug listeners.
      *  @param message The debug message.
@@ -1168,6 +1195,16 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         if (_debugging) {
             _debug("Changed name from", oldName, "to", getFullName());
         }
+    }
+
+    /** Set the persistence of the instance of NamedObj.
+     *  By default, the instances of NamedObj are persistent.
+     *  Subclasses may change their persistence using this 
+     *  method with a <i>false</i> parameter. 
+     *  @param persistent The persistence of the object. 
+     */
+    public void setPersistent(boolean persistent) {
+        _isPersistent = persistent;
     }
 
     /** Return the class name and the full name of the object,
@@ -1651,6 +1688,10 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     // Version of the workspace when cache last updated.
     private long _fullNameVersion = -1;
 
+    // Boolean variable to indicate the persistence of the object.
+    // By default, all instances of NamedObj are persistent.
+    private boolean _isPersistent = true;
+    
     // The model error handler, if there is one.
     private ModelErrorHandler _modelErrorHandler = null;
 
