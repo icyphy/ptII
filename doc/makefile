@@ -117,7 +117,6 @@ ALLJSRCS =		$(PTINYJSRCS) \
 			ptolemy.domains.dde.kernel \
 			ptolemy.domains.dde.lib \
 			ptolemy.domains.de.kernel \
-			ptolemy.domains.de.lib \
 			ptolemy.domains.fsm.kernel \
 			ptolemy.domains.pn.kernel \
 			ptolemy.domains.sdf.kernel \
