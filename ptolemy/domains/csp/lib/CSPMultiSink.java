@@ -119,8 +119,9 @@ public class CSPMultiSink extends CSPActor {
     public void wrapup() {
         System.out.println(Thread.currentThread().getName() + ":Invoking wrapup of CSPMultiSink...\n");
         for (int i=0; i<input.getWidth(); i++) {
-            String str = "MultiSink: Branch " + i +  " successfully  rendez";
-            System.out.println(str + "voused " + _branchCount[i] + " times.");
+            System.out.println("MultiSink: Branch " + i +
+                    " successfully  rendezvoused " + _branchCount[i] +
+                    " times.");
         }
     }
 
