@@ -36,7 +36,7 @@ import java.net.*;
 import java.util.*;
 import javax.sound.sampled.*;
 
-//////////////////////////////////////////////////////////////////////////
+/////////////////////////////////////////////////////////////
 //// SoundPlayback
 /**
 <h2>Overview</h2>
@@ -297,7 +297,7 @@ public class SoundPlayback {
 	    _data = _doubleArrayToByteArray(putSamplesArray,
 					    _bytesPerSample,
 					    _channels);
-
+            
 	    // Now write the array to output device.
 	    _sourceLine.write(_data, 0, _putSamplesSize*_frameSizeInBytes);
 	    // Add new audio data to the file buffer array.
@@ -311,7 +311,7 @@ public class SoundPlayback {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methodes                  ////
+    ////                         private methods                   ////
 
     private void _startPlaybackRealTime() {
         boolean signed = true;
@@ -404,7 +404,8 @@ public class SoundPlayback {
 
 	    // Do error checking:
 	    if (st.countTokens() != 2) {
-		System.err.println("Error: Incorrect file name format. Format: filname.extension");
+		System.err.println("Error: Incorrect file name format. " +
+                        "Format: filname.extension");
 	    }
 
 	    st.nextToken(); // Advance to the file extension.
@@ -455,7 +456,7 @@ public class SoundPlayback {
      */
     private byte[] _doubleArrayToByteArray(double[][] doubleArray,
             int bytesPerSample, int channels) {
-	// All channels had better have the same number
+        // All channels had better have the same number
 	// of samples! This is not checked!
 	int lengthInSamples = doubleArray[0].length;
 	//double  maxSample = Math.pow(2, 8 * bytesPerSample - 1);
@@ -492,7 +493,8 @@ public class SoundPlayback {
 		// Copy the byte representation of current sample to
 		// the linear signed pcm big endian formated byte array.
 		for (int i = 0; i < bytesPerSample; i += 1) {
-		    byteArray[currSamp*bytesPerSample*channels + bytesPerSample*currChannel + i] = b[i];
+                        byteArray[currSamp*bytesPerSample*channels + 
+                                bytesPerSample*currChannel + i] = b[i];
 		}
 	    }
 	}
