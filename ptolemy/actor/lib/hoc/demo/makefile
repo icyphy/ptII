@@ -31,7 +31,8 @@
 ME =		ptolemy/actor/lib/hoc/demo
 
 # Keep these alphabetical please.
-DIRS = 		DFTSubSet \
+DIRS = 		ApplyFFT \
+		DFTSubSet \
 		HocDE \
 		IterateOverArray \
 		MobileFunction \
@@ -50,6 +51,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	ApplyFFT/ApplyFFT.jar \
 	DFTSubSet/DFTSubSet.jar \
 	HocDE/HocDE.jar \
 	IterateOverArray/IterateOverArray.jar \
