@@ -872,9 +872,9 @@ else
     if test $PTCYGWIN = "yes"; then
        AC_MSG_CHECKING([for win32com.dll ])
        if test -f "$PTJAVA_HOME/bin/win32com.dll"; then
-           AC_MSG_RESULT([$PTJAVA_HOME/jre/bin/win32com.dll])
+           AC_MSG_RESULT([$PTJAVA_HOME/bin/win32com.dll])
        else   
-           AC_MSG_WARN([$PTJAVA_HOME/jre/bin/win32com.dll
+           AC_MSG_WARN([$PTJAVA_HOME/bin/win32com.dll
     not found.
     Download the Java Comm API from http://java.sun.com/products/javacomm/
     and place win32com.dll in $PTJAVA_HOME/jre/bin])
@@ -1854,11 +1854,11 @@ else
     AC_MSG_RESULT(['$PTJNI_ARCHITECTURE'])
 
     AC_MSG_CHECKING([for the proper JNI architecture include directory])
-    if test ! -d "$PTJAVA_HOME/include/$PTJNI_ARCHITECTURE"; then 
-	AC_MSG_WARN(["$PTJAVA_HOME/include/$PTJNI_ARCHITECTURE" was not found.
+    if test ! -d "$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE"; then 
+	AC_MSG_WARN(["$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE" was not found.
     As a result, compilation of JNI actors will fail.])
     else 
-	AC_MSG_RESULT([$PTJAVA_HOME/include/$PTJNI_ARCHITECTURE])
+	AC_MSG_RESULT([$PTJAVA_HOME/../include/$PTJNI_ARCHITECTURE])
     fi
 
     AC_MSG_CHECKING([for if the -mno-cygwin flag is available])
@@ -2326,7 +2326,7 @@ SOOT_DIR='${PTII}/lib'
 # Soot needs to find java.lang.Object	
 # Use {} here instead of () because bin/ptinvoke uses JAVA_SYSTEM_JAR
 # and under /bin/sh $(FOO) does not work, but ${FOO} does
-JAVA_SYSTEM_JAR='${PTJAVA_HOME}jre/lib/rt.jar'
+JAVA_SYSTEM_JAR='${PTJAVA_HOME}/lib/rt.jar'
 
 # We don't bother overriding this below so that something close
 # to the right default is in ptII.mk and the user can just change
@@ -2380,7 +2380,7 @@ else
     AC_ARG_WITH(javasystemjar, [  --with-javasystemjar=DIR       use rt.lib from DIR,
                           defaults to JRE java.home property with lib/rt.jar appended ],
 	JAVA_SYSTEM_JAR=$withval,
-	JAVA_SYSTEM_JAR='$(PTJAVA_HOME)/jre/lib/rt.jar')
+	JAVA_SYSTEM_JAR='$(PTJAVA_HOME)/lib/rt.jar')
 
     startdir=`pwd`
     cd "$srcdir/config"
@@ -2751,7 +2751,7 @@ AC_SUBST(JAI_JARS)
 # Usually it looks like '"$(JAR)" -i $@'
 AC_SUBST(JAR_INDEX)
 
-# Location of rt.jar, usually $(PTJAVA_HOME)/jre/lib/rt.jar
+# Location of rt.jar, usually $(PTJAVA_HOME)/lib/rt.jar
 # However, we have to be careful of backslashes and /cygwin
 # Soot uses this variable to find java.lang.Object
 AC_SUBST(JAVA_SYSTEM_JAR)
