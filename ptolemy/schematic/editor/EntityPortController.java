@@ -48,6 +48,7 @@ import diva.canvas.interactor.*;
 import diva.canvas.toolbox.*;
 import java.awt.geom.Rectangle2D;
 import diva.util.Filter;
+import diva.util.java2d.Polygon2D;
 import java.awt.*;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
@@ -103,8 +104,13 @@ public class EntityPortController extends NodeController {
 	    figure.setEnd(end);
 	    */
 	   
-	    Figure figure = new BasicRectangle(-2, -2, 4, 4, Color.black);
-	    
+	    //	    Figure figure = new BasicRectangle(-2, -2, 4, 4, Color.black);
+	    Polygon2D.Double polygon = new Polygon2D.Double();
+	    polygon.moveTo(-4, 4);
+	    polygon.lineTo(4, 0);
+	    polygon.lineTo(-4, -4);
+	    polygon.closePath();
+	    Figure figure = new BasicFigure(polygon, Color.black);
 	    return figure;
 	}
     }    

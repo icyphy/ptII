@@ -87,10 +87,10 @@ public class EditorGraphImpl extends BasicGraphImpl {
 	    while(relations.hasMoreElements()) {
 		Relation relation = (Relation)relations.nextElement();
 		// Create a node for each vertex.
-		Enumeration attributes = relation.getAttributes();
+		Iterator attributes = relation.attributeList().iterator();
 		Node rootVertex = null;
-		while(attributes.hasMoreElements()) {
-		    Attribute a = (Attribute)attributes.nextElement();
+		while(attributes.hasNext()) {
+		    Attribute a = (Attribute)attributes.next();
 		    if(a instanceof Vertex) {
 			Node n = createNode(a);
 			if(((Vertex)a).getLinkedVertex() == null) {

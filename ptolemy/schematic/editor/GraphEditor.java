@@ -157,7 +157,15 @@ public class GraphEditor extends MDIApplication {
         
         // Swing is stupid and adds components with the cross-platform UI and
         // not the system UI.
-        SwingUtilities.updateComponentTreeUI(frame);
+        SwingUtilities.updateComponentTreeUI(treepane);
+
+	// Start with a new document.
+	// This is kindof
+	// bogus, but it is not easy to fire the action manually.
+	Action action = getAction(DefaultActions.NEW);
+	javax.swing.Timer timer = new javax.swing.Timer(0, action);
+	timer.setRepeats(false);
+	timer.start();
     }
 
     /** Given a document, create a new view which displays that
