@@ -101,12 +101,12 @@ Note: Requires Java 2 v1.3.0 or later.
 public class SoundReader {
 
     /** Construct a sound reader object that reads audio samples
-     *  from a sound file specified as a URL and open the file at
-     *  the specified URL. For example, to capture samples from the
+     *  from a sound file specified as a string describing a
+     *  URL and open the file at the specified URL.
+     *  For example, to capture samples from the
      *  URL http://localhost/soundfile.wav, sourceURL should be set
      *  to the string "http://localhost/soundfile.wav" Note that the
-     *  "http://" is required. The supported sound file formats are
-     *  WAVE (.wav), AIFF (.aif, .aiff), and AU (.au).
+     *  "http://" is required.
      *  Note that it is still possible to capture audio from a file on
      *  the local file system. For example, to capture from a sound
      *  file located at "C:\someDir\someFile.wave", <i>sourceURL</i>
@@ -115,28 +115,33 @@ public class SoundReader {
      *  be specified, using the prefix "file:" It is safe
      *  to call getSamples() immediately after this constructor returns.
      *
-     *  @param sourceURL The name of the file as a URL. Valid sound file
-     *   formats are WAVE (.wav), AIFF (.aif, .aiff), AU (.au). The file
-     *   format is automatically determined from the file extension.
-     *   If there is a problem reading the sound file, an IOException
-     *   will be thrown in openFile().
+     *  @param sourceURL A string describing a URL.
      *  @param getSamplesArraySize The number of samples per channel
      *   returned by getSamples().
      */
     public SoundReader(String sourceURL,
             int getSamplesArraySize) throws IOException  {
-	if (_debug) {
-	    System.out.println("SoundReader: constructor : invoked");
-	    System.out.println("SoundReader: constructor : sourceURL = " +
-                    sourceURL);
-	    System.out.println("SoundReader: constructor : " +
-                    " getSamplesArraySize = " +
-                    getSamplesArraySize);
-	}
-	this._sourceURL = sourceURL;
-	this._productionRate = getSamplesArraySize;
+	_productionRate = getSamplesArraySize;
+	// Create a URL corresponding to the sound file location.
+	URL soundURL = new URL(sourceURL);
 	// Open the specified sound file.
-	_openFileFromURL();
+	_openFileFromURL(soundURL);
+	_isAudioCaptureActive = true;
+    }
+
+    /** Construct a sound reader object that reads audio samples
+     *  from a sound file specified as a URL and open the file at
+     *  the specified URL. It is safe
+     *  to call getSamples() immediately after this constructor returns.
+     *  @param sourceURL The URL of a sound file.
+     *  @param getSamplesArraySize The number of samples per channel
+     *   returned by getSamples().
+     */
+    public SoundReader(URL soundURL,
+            int getSamplesArraySize) throws IOException  {
+	_productionRate = getSamplesArraySize;
+	// Open the specified sound file.
+	_openFileFromURL(soundURL);
 	_isAudioCaptureActive = true;
     }
 
@@ -312,13 +317,7 @@ public class SoundReader {
      * private variables to the sample rate, bits per samples, and
      * number of audio channels of the file.
      */
-    private void _openFileFromURL() throws IOException {
-	if (_debug) {
-	    System.out.println("SoundReader: _startReadFromURL() invoked");
-	}
-	// Create a URL corresponding to the sound file location.
-	URL soundURL =
-	    new URL(_sourceURL);
+    private void _openFileFromURL(URL soundURL) throws IOException {
 	if (soundURL != null) {
 	    try {
 		_audioInputStream =
@@ -451,7 +450,6 @@ public class SoundReader {
     private byte[] _data;
     private int _index;
     private int _frameSizeInBytes;
-    private String _sourceURL;
     private int _sampleSizeInBits;
     private float _sampleRate;
     private int _channels;
