@@ -87,25 +87,26 @@ public class PlotTableauFrame extends TableauFrame {
         this(null);
     }
 
-    /** Construct a plot frame with the specified title and by default
-     *  contains an instance of Plot. After constructing this, it is necessary
+    /** Construct a plot frame in the corresponding Tableau with the
+     *  specified instance of PlotBox.
+     *  After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
-     *  @param title The title to put on the window.
+     *  @param tableau The tableau where the window is placed
      */
     public PlotTableauFrame(Tableau tableau) {
         this(tableau, new Plot());
     }
 
-    /** Construct a plot frame with the specified title and the specified
-     *  instance of PlotBox.  After constructing this, it is necessary
+    /** Construct a plot frame with the specified title and by default
+     *  contains an instance of Plot. After constructing this, it is necessary
      *  to call setVisible(true) to make the plot appear.
-     *  @param title The title to put on the window.
+     *  @param tableau The tableau where the window is placed.
      *  @param plotArg the plot object to put in the frame, or null to create
      *   an instance of Plot.
      */
-    public PlotTableauFrame(Tableau tableau, PlotBox plotArg) {
+    public PlotTableauFrame(Tableau tableau, PlotBox plotBox) {
         super(tableau, null);
-        plot = plotArg;
+        plot = plotBox;
 
         // Create a file filter that accepts .xml and .moml files.
         LinkedList extensions = new LinkedList();
