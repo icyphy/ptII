@@ -35,6 +35,9 @@
 # Alternate lines look like
 # 719 ms. Memory: 3520K Free: 2212K (63%)
 # GCStats: static: 160K staticRT: 3K totalStatic: 163K dynamicRT: 18532K
+#
+# The GCStats lines are produced by running java -Xloggc and then
+# running $PTII/util/testsuite/gcstats
 
 
 awk 'BEGIN {min=99999999}
