@@ -819,7 +819,7 @@ public class DEDirector extends Director {
                     _startTimeInitialized = true;
                 }
 
-                if (_currentTime > getStopTime() && !isEmbedded()) {
+                if (_currentTime >= getStopTime() && !isEmbedded()) {
                     // The stopping condition is met.
                     // Note that, if this director is embedded then
                     // he doesn't determine the stopping condition, rather
