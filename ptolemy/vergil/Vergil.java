@@ -55,6 +55,7 @@ import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.GridLayout;
+import java.awt.BorderLayout;
 import java.awt.event.*;
 import java.io.File;
 import java.io.PrintWriter;
@@ -186,6 +187,8 @@ public class Vergil extends MDIApplication {
             GraphImpl impl = controller.getGraphImpl();
             SelectionModel model = controller.getSelectionModel();
             Object selection[] = model.getSelectionAsArray();
+            // Remove all the edges first, since if we remove the nodes first,
+            // then removing the nodes might remove some of the edges.
             for(int i = 0; i < selection.length; i++) {
 		if(selection[i] instanceof Figure) {
 		    Object userObject = 
@@ -419,6 +422,9 @@ public class Vergil extends MDIApplication {
 		    CompositeActor toplevel = 
 		    (CompositeActor) d.getGraph();
 
+                    // FIXME there is alot of code in here that is similar
+                    // to code in MoMLApplet and MoMLApplication.  I think 
+                    // this should all be in ModelPane.
                     // FIXME set the Director.  This is a hack, but it's the 
                     // Simplest hack.
                     if(toplevel.getDirector() == null) {
@@ -430,31 +436,7 @@ public class Vergil extends MDIApplication {
                         director.iterations.setExpression("25");
                     }
 
-		    // If anything it placeable put it someplace reasonable.
-		    int count = 0;
-		    if(_executionFrame != null) {
-			_executionFrame.getContentPane().removeAll();
-		    }
-		    for(Iterator i = toplevel.deepEntityList().iterator(); 
-			i.hasNext();) {
-			    Object o = i.next();
-			    if(o instanceof Placeable) {
-				if(_executionFrame == null) {
-				    _executionFrame = new JFrame();
-				    _executionFrame.setVisible(true);
-				} 				    
-				count++;
-				((Placeable) o).place(
-				     _executionFrame.getContentPane());
-			    }
-			}
-		    if(_executionFrame != null) {
-			GridLayout layout = new GridLayout(1, count);
-			_executionFrame.getContentPane().setLayout(layout);
-			_executionFrame.setVisible(true);
-		    }
-		    
-		    // Fire up the manager.
+                    // Create a manager.
                     Manager manager = toplevel.getManager();
                     if(manager == null) {
                         manager = 
@@ -463,7 +445,37 @@ public class Vergil extends MDIApplication {
                         // manager.addDebugListener(new StreamListener());
 			manager.addExecutionListener(new VergilExecutionListener());
                     }
-                    manager.startRun();
+
+                    if(_executionFrame != null) {
+			_executionFrame.getContentPane().removeAll();
+                    } else {
+                        _executionFrame = new JFrame();
+                    }
+
+                    ModelPane modelPane = new ModelPane(toplevel);
+                    _executionFrame.getContentPane().add(modelPane, 
+                            BorderLayout.NORTH);
+                    // Create a panel to place placeable objects.
+                    JPanel displayPanel = new JPanel();
+                    displayPanel.setLayout(new BoxLayout(displayPanel,
+                            BoxLayout.Y_AXIS));
+                    modelPane.setDisplayPane(displayPanel);
+
+                    // Put placeable objects in a reasonable place
+                    for(Iterator i = toplevel.deepEntityList().iterator(); 
+                        i.hasNext();) {
+                        Object o = i.next();
+                        if(o instanceof Placeable) {
+                            ((Placeable) o).place(
+                                    displayPanel);
+                        }
+                    }
+                    
+                    if(_executionFrame != null) {
+                        _executionFrame.setVisible(true);
+                    }
+		    
+                    //                    manager.startRun();
                     
 		    final JFrame packframe = _executionFrame;
 		    Action packer = new AbstractAction() {

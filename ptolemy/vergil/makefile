@@ -72,6 +72,9 @@ all: jclass
 install: jclass $(PTCLASSJAR)
 
 vergil:
+	$(JAVA) -classpath "$(CLASSPATH)" ptolemy.vergil.Vergil
+
+vergildebug:
 	$(JAVA) -classpath "$(CLASSPATH)" -Djava.compiler=NONE ptolemy.vergil.Vergil
 
 depend:
