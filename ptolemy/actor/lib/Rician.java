@@ -49,14 +49,14 @@ import ptolemy.math.Complex;
 /**
 Produce a random sequence with a Rician distribution.
 A Rician random variable is defined as follows:
-Let Z = sqrt(X<sup>2</sup> + Y<sup>2</sup>), where X and Y are statically
+Let Z = sqrt(X<sup>2</sup> + Y<sup>2</sup>), where X and Y are statistically
 independent Gaussian random variables with means given by parameters
 <i>xMean</i> and <i>yMean</i> respectively, and common variance given by
 parameter <i>standardDeviation</i>.
 <p>
-When <i>xMean</i> and <i>yMean</i> are both set to be zero, the Rician
-distribution is also called a Rayleigh distribution. So this actor can
-also be used as a Rayleigh random generator.
+The default values of <i>xMean</i> and <i>yMean</i> are both set to be zero,
+in which the distribution is also called a Rayleigh distribution. Hence,
+the actor is by default a Rayleigh random generator. 
 <p>
 On each iteration, a new random number is produced. The output port
 is of type DoubleToken. The values that are generated are independent
@@ -99,18 +99,18 @@ public class Rician extends RandomSource {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The mean of the random number along X-axis.
-     *  This parameter contains a DoubleToken, initially with value 0.
+    /** The mean of the random number along the X-axis.
+     *  This parameter contains a DoubleToken, initially with value 0.0.
      */
     public Parameter xMean;
 
-     /** The mean of the random number along X-axis.
-     *  This parameter contains a DoubleToken, initially with value 0.
+     /** The mean of the random number along the Y-axis.
+     *  This parameter contains a DoubleToken, initially with value 0.0.
      */
     public Parameter yMean;
 
     /** The standard deviation of the random number.
-     *  This parameter contains a DoubleToken, initially with value 1.
+     *  This parameter contains a DoubleToken, initially with value 1.0.
      */
     public Parameter standardDeviation;
 
@@ -138,13 +138,6 @@ public class Rician extends RandomSource {
             ((DoubleToken)(standardDeviation.getToken())).doubleValue();
         double xRawNum = _random.nextGaussian();
         double yRawNum = _random.nextGaussian();
-        //_current = ptolemy.math.complex.sqrt(
-        //  ptolemy.math.complex.pow(
-        //  rawNum*standardDeviationValue + meanValue, 2)
-        //  + ptolemy.math.complex.pow(
-        //  raw2Num*standardDeviationValue + mean2Value, 2);
-        //_current = ptolemy.math.Complex.sqrt(2);
-        //_current = ptolemy.math.Complex.pow(2, 2);
         _current = java.lang.Math.sqrt(
              java.lang.Math.pow(
              xRawNum*standardDeviationValue + xMeanValue, 2)
