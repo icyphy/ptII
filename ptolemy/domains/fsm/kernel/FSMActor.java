@@ -130,13 +130,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     public FSMActor() {
         super();
-        try {
-            initialStateName = new StringAttribute(this, "initialStateName");
-        } catch (KernelException ex) {
-            // This should never happen.
-            throw new InternalErrorException("Constructor error "
-                    + ex.getMessage());
-        }
+        _init();
     }
 
     /** Construct an FSMActor in the specified workspace with an empty
@@ -148,13 +142,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      */
     public FSMActor(Workspace workspace) {
 	super(workspace);
-        try {
-            initialStateName = new StringAttribute(this, "initialStateName");
-        } catch (KernelException ex) {
-            // This should never happen.
-            throw new InternalErrorException("Constructor error "
-                    + ex.getMessage());
-        }
+        _init();
     }
 
     /** Create an FSMActor in the specified container with the specified
@@ -171,7 +159,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     public FSMActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        initialStateName = new StringAttribute(this, "initialStateName");
+        _init();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -956,19 +944,24 @@ public class FSMActor extends CompositeEntity implements TypedActor {
                     + "Cannot find input variables for port "
                     + port.getName() + ".\n");
         }
-        boolean t = port.hasToken(channel);
-        if (_debugging) {
-            _debug(port.getName(), "has token: " + t);
-        }
-        Token tok = t ? BooleanToken.TRUE : BooleanToken.FALSE;
-        pVars[channel][0].setToken(tok);
-        // Update the value variable if there is a token in the channel.
-        if (t == true) {
-            tok = port.get(channel);
+        if (port.isKnown(channel)) {
+            boolean t = port.hasToken(channel);
             if (_debugging) {
-                _debug(port.getName(), "token value:", tok.toString());
+                _debug(port.getName(), "has token: " + t);
             }
-            pVars[channel][1].setToken(tok);
+            Token tok = t ? BooleanToken.TRUE : BooleanToken.FALSE;
+            pVars[channel][0].setToken(tok);
+            // Update the value variable if there is a token in the channel.
+            if (t == true) {
+                tok = port.get(channel);
+                if (_debugging) {
+                    _debug(port.getName(), "token value:", tok.toString());
+                }
+                pVars[channel][1].setToken(tok);
+            }
+        } else {
+            pVars[channel][0].setUnknown(true);
+            pVars[channel][1].setUnknown(true);
         }
     }
 
@@ -1083,6 +1076,20 @@ public class FSMActor extends CompositeEntity implements TypedActor {
     private void _gotoInitialState() throws IllegalActionException {
         _currentState = getInitialState();
         _setCurrentConnectionMap();
+    }
+
+    /*  Initialize the actor.
+     *  @exception IllegalActionException If any port throws it.
+     */
+    private void _init() {
+        try {
+            initialStateName = new StringAttribute(this, "initialStateName");
+            new Attribute(this, "_nonStrictMarker");
+        } catch (KernelException ex) {
+            // This should never happen.
+            throw new InternalErrorException("Constructor error "
+                    + ex.getMessage());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -32,6 +32,7 @@ package ptolemy.domains.fsm.kernel;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.UnknownResultException;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
 
@@ -148,6 +149,8 @@ public class OutputActionsAttribute
                 } catch (NoRoomException ex) {
                     throw new IllegalActionException(this,
                     "Cannot complete action: " + ex.getMessage());
+                } catch (UnknownResultException ex) {
+                    // Produce no output.
                 }
             }
         }

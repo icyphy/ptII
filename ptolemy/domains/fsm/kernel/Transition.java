@@ -46,6 +46,7 @@ import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.UnknownResultException;
 import ptolemy.data.type.BaseType;
 
 import java.util.List;
@@ -353,8 +354,12 @@ public class Transition extends ComponentRelation {
      *  @exception IllegalActionException If thrown when evaluating the guard.
      */
     public boolean isEnabled() throws IllegalActionException {
-        Token tok = _guard.getToken();
-        return ((BooleanToken)tok).booleanValue();
+        try {
+            Token tok = _guard.getToken();
+            return ((BooleanToken)tok).booleanValue();
+        } catch (UnknownResultException ex) {
+            return false;
+        }
     }
 
     /** Return true if this transition is preemptive. Whether this transition

@@ -32,6 +32,7 @@ package ptolemy.domains.fsm.kernel;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.data.expr.Variable;
+import ptolemy.data.expr.UnknownResultException;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.*;
@@ -158,9 +159,16 @@ public class CommitActionsAttribute
                     } catch (NoRoomException ex) {
                         throw new IllegalActionException(this,
                         "Cannot complete action: " + ex.getMessage());
+                    } catch (UnknownResultException ex) {
+                        // Produce no output.
                     }
                 } else if (nextDestination instanceof Variable) {
-                    ((Variable)nextDestination).setToken(variable.getToken());
+                    Variable destination = (Variable)nextDestination;
+                    try {
+                        destination.setToken(variable.getToken());
+                    } catch (UnknownResultException ex) {
+                        destination.setUnknown(true);
+                    }
                 } else {
                     throw new IllegalActionException(this,
                     "Destination is neither an IOPort nor a Variable: "
