@@ -82,6 +82,10 @@ be specified in the <i>provider</i> parameter.  This class takes care
 of basic initialization of the subclasses. The <i>keySize</i> also
 allows implementations of algorithms using various key sizes.
 
+<p>Actors derived from this baseclass usually have a 
+process(byte[] dataBytes) method that processes the data appropriately.
+This method is called by CryptographyActor.fire().
+
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
 
@@ -211,7 +215,6 @@ public class CryptographyActor extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        System.out.println("CryptographyActor.fire()");
         try {
             if (input.hasToken(0)) {
                 byte[] dataBytes =
@@ -286,7 +289,6 @@ public class CryptographyActor extends TypedAtomicActor {
      *
      * @exception IllegalActionException If the algorithm or provider is
      * not found.
-     *
      */
     protected KeyPair _createAsymmetricKeys() throws IllegalActionException{
         try {
