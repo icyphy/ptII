@@ -66,13 +66,14 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	ContinuousSinewave.xml \
-	LevelCrossingDetectorIcon.xml \
-	ZeroCrossingDetectorIcon.xml \
 	ctentities.xml \
 	dynamics.xml \
 	eventgenerators.xml \
 	integral.gif \
+	IntegratorIcon.xml \
+	LevelCrossingDetectorIcon.xml \
 	wavegenerators.xml
+	ZeroCrossingDetectorIcon.xml \
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

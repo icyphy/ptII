@@ -114,15 +114,7 @@ public class Integrator extends CTBaseIntegrator {
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
         new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
-
-        //        new Parameter(discreteInput, "signalType",
-        //                new StringToken("DISCRETE"));
+//        new Parameter(discreteInput, "signalType", new StringToken("DISCRETE"));
         new Parameter(output, "signalType", new StringToken("CONTINUOUS"));
-        _attachText("_iconDescription",
-                "<svg>\n" + "<rect x=\"-15\" y=\"-20\" "
-                + "width=\"30\" height=\"40\" " + "style=\"fill:white\"/>\n"
-                + "<image x=\"-4\" y=\"-20\" width=\"8\" height=\"40\""
-                + "xlink:href=\"ptolemy/domains/ct/lib/integral.gif\"/>\n"
-                + "</svg>\n");
     }
 }
