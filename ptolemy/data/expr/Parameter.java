@@ -1,4 +1,4 @@
-/* A Parameter is a container for a token.
+/* A Parameter is an Attribute that is also a container for a token.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -39,7 +39,8 @@ import java.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// Parameter
 /**
- * A Parameter is a container for a token. The type of a Parameter is
+ * A Parameter is an Attribute that is also
+ * a container for a token. The type of a Parameter is
  * set by the first Token placed in it. A Parameters type can be changed
  * later via a method call.
  * It can be given a Token or a String as its value. 
@@ -60,19 +61,17 @@ import java.util.*;
  * @see pt.data.expr.PtParser 
  * @see pt.data.Token 
 */
-public class Parameter extends NamedObj implements Observer {
+public class Parameter extends pt.kernel.util.Attribute implements Observer {
     
-    /** Construct a Parameter with the given Token in the workspace of its 
-     *  container with the given name. 
+    /** Construct a Parameter with the given container, name, and Token.
      *  If the name argument is null, then the name is set to the empty 
      *  string.
-     *  @param container The NamedObj which contains this parameter
-     *  @param name The name of this object, given to the superclass
+     *  @param container The container.
+     *  @param name The name.
      *  @param token The Token contained by this Parameter.
      */
      public Parameter(NamedObj container, String name, pt.data.Token token) {
-         super(container.workspace(), name);
-         _container = container;
+         super(container, name);
          try {
              _origToken = (pt.data.Token)token.clone();
          } catch (CloneNotSupportedException c) {
@@ -89,8 +88,7 @@ public class Parameter extends NamedObj implements Observer {
      *   @param value The String to be parsed to a Token.
      */
     public Parameter(NamedObj container, String name, String value) {
-       super(container.workspace(), name);
-       _container = container;
+       super(container, name);
        _initialValue = value;
        _parser = new PtParser(this);
        
@@ -135,15 +133,6 @@ public class Parameter extends NamedObj implements Observer {
     public String description(int verbosity) {
         return toString();
     }
-
-
-    /** Get the Nameable this Parameter is attached to. It should be cast
-     *  to a Namedobj as Parameters can only be attached to NamedObj objects
-     *  @return The container of this parameter.
-     */
-    public Nameable getContainer() {
-        return _container;
-    }
     
     /** Obtain a NamedList of the parameters that the value of this 
      *  Parameter can depend on. The scope is limited to the params in the 
@@ -161,7 +150,8 @@ public class Parameter extends NamedObj implements Observer {
         } else {
             _scope = new NamedList();       
             NamedObj paramContainer = (NamedObj)getContainer();
-            NamedObj paramContainerContainer = ((NamedObj)paramContainer.getContainer());
+            NamedObj paramContainerContainer =
+                    ((NamedObj)paramContainer.getContainer());
             Enumeration level = paramContainer.getParameters();       
             Parameter p;
             while (level.hasMoreElements() ) {
@@ -220,57 +210,6 @@ public class Parameter extends NamedObj implements Observer {
                 _token.setPublisher(publisher);
             }
             _token.notifySubscribers();
-        }
-    }
-
-    /** Specify the container NamedObj, adding this parameter to the 
-     *  list of parameters in the container.  If the container already 
-     *  contains a parameter with the same name, then throw an exception 
-     *  and do not make any changes.  Similarly, if the container is 
-     *  not in the same workspace as this parameter, throw an exception.
-     *  If the parameter already has a container, remove
-     *  this parameter from its parameter list first.  Otherwise, remove 
-     *  it from the list of objects in the workspace. If the argument 
-     *  is null, then remove it from its container,
-     *  and add it to the list of objects in the workspace.
-     *  If the parameter is already contained by the entity, do nothing.
-     *  This method is synchronized on the
-     *  workspace and increments its version number.
-     *  @param namedobj The container to attach this parameter to..
-     *  @exception IllegalActionException If this parameter is not of the
-     *   expected class for the container, or it has no name,
-     *   or the parameter and container are not in the same workspace.
-     *  @exception NameDuplicationException If the container already has
-     *   a parameter with the name of this parameter.
-     */
-    public void setContainer(NamedObj namedobj)
-            throws IllegalActionException, NameDuplicationException {
-        if (namedobj != null && workspace() != namedobj.workspace()) {
-            throw new IllegalActionException(this, namedobj,
-                "Cannot set container because workspaces are different.");
-        }
-        synchronized(workspace()) {
-            NamedObj prevcontainer = (NamedObj)getContainer();
-            if (prevcontainer == namedobj) return;
-            // Do this first, because it may throw an exception.
-            if (namedobj != null) {
-                namedobj.addParameter(this);
-                if (prevcontainer == null) {
-                    workspace().remove(this);
-                }
-            }
-            _container = namedobj;
-            if (namedobj == null) {
-                // Ignore exceptions, which mean the object is already
-                // on the workspace list.
-                try {
-                    workspace().add(this);
-                } catch (IllegalActionException ex) {}
-            }
-            if (prevcontainer != null) {
-                prevcontainer.removeParameter(this);
-            }
-            workspace().incrVersion();
         }
     }
 
@@ -371,9 +310,8 @@ public class Parameter extends NamedObj implements Observer {
      *  In this class, this method reinitializes the private members.
      *  @param ws The workspace the cloned object is to be placed in.
      */
-    protected void _clear(Workspace ws) {
+    protected void _clearAndSetWorkspace(Workspace ws) {
         super._clear(ws);
-        _container = null;
         _token = null;
         _origToken = null;
         _initialValue = null;
@@ -395,7 +333,6 @@ public class Parameter extends NamedObj implements Observer {
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
 
-    private NamedObj _container;
     private pt.data.Token _token;
     private pt.data.Token _origToken;
     private String _initialValue;
