@@ -46,7 +46,7 @@ proc removeGraphicalClasses {parser} {
 
 
     set filter [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
-    $filter put "caltrop.ptolemy.actors.CalInterpreter" [java::null]
+    $filter put "ptolemy.caltrop.actors.CalInterpreter" [java::null]
     $filter put "ptolemy.actor.lib.gui.PlotterBase" [java::null]
     $filter put "ptolemy.actor.lib.gui.Plotter" [java::null]
     $filter put "ptolemy.actor.lib.gui.BarGraph" [java::null]
