@@ -2,7 +2,7 @@
 Dummy C code for overridden method 
 <java.io.PrintStream: void print(java.lang.Object)>
 
-Copyright (c) 2001-2003 The University of Maryland.
+Copyright (c) 2001-2004 The University of Maryland.
 
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this

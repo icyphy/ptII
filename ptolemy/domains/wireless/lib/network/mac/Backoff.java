@@ -1,7 +1,7 @@
 /* An actor that maintains the channel state based on both the result of carrier sense
  * and the reservation (NAV).
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 1998-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -53,7 +53,7 @@ import ptolemy.kernel.util.Workspace;
 
 
 @author Yang Zhao
-@version $Id$
+@version Backoff.java,v 1.3 2004/04/12 15:30:35 cxh Exp
 @since Ptolemy II 2.1
 */
 public class Backoff extends MACActorBase {

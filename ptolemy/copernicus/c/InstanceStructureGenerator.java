@@ -1,7 +1,7 @@
 /*  A class that generates code for the C structure corresponding to
    an instance of a class (an Object).
 
- Copyright (c) 2003 The University of Maryland.
+ Copyright (c) 2003-2004 The University of Maryland.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

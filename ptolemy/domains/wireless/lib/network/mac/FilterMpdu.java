@@ -3,7 +3,7 @@
  * make reservation. In addition, if a data packet is received, it informs
  * the ProtocolControl block that an Ack is needed.
  
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 1998-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -52,7 +52,7 @@ Filter the received MPDU (MAC Protocol Data Unit) packets.
 The code is based on a OMNET model created by Charlie Zhong.
 
 @author Xiaojun Liu
-@version $Id$
+@version FilterMpdu.java,v 1.6 2004/04/12 15:30:36 cxh Exp
 */
 public class FilterMpdu extends MACActorBase {
 

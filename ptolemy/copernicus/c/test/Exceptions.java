@@ -1,7 +1,7 @@
 /*
 A class that runs multiple exception tests.
 
-Copyright (c) 2001-2003 The University of Maryland
+Copyright (c) 2001-2004 The University of Maryland
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

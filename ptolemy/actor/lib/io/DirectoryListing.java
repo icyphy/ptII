@@ -1,6 +1,6 @@
 /* An actor that produces an array that lists the contents of a directory.
 
-@Copyright (c) 1998-2003 The Regents of the University of California.
+@Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

@@ -2,9 +2,9 @@
 #
 # @Authors: Christopher Hylands (makefile only)
 #
-# @Version: $Id$
+# @Version: makefile,v 1.3 2003/09/08 15:33:35 cxh Exp
 #
-# @Copyright (c) 2003 The Regents of the University of California.
+# @Copyright (c) 2003-2004 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without

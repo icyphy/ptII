@@ -1,6 +1,6 @@
 /* An actor that writes input tokens as expressiong to the specified file.
 
-@Copyright (c) 2002-2003 The Regents of the University of California.
+@Copyright (c) 2002-2004 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
