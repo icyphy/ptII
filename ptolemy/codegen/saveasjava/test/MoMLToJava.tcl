@@ -43,6 +43,6 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test MoMLToJava-1.1 {} {
     set MoMLToJava [java::new ptolemy.codegen.saveasjava.MoMLToJava]
-    $MoMLToJava convert test.xml
-    exec javac -classpath ../../../.. test.java
+    $MoMLToJava convert rampFileWriter.xml
+    exec javac -classpath ../../../.. rampFileWriter.java
 } {}
