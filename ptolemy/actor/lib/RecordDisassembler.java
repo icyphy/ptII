@@ -41,6 +41,8 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.graph.Inequality;
+import ptolemy.graph.CPO;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
@@ -64,7 +66,7 @@ of TypedIOPort).  This actor is polymorphic. The type constraint is that
 the type of each output port is no less than the type of the corresponding
 record field.
 
-@author Yuhong Xiong
+@author Yuhong Xiong, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 @see RecordAssembler
@@ -139,33 +141,142 @@ public class RecordDisassembler extends TypedAtomicActor {
         int size = portArray.length;
         String[] labels = new String[size];
         Type[] types = new Type[size];
-
+  
         // form the declared type for the output port
         for (int i = 0; i < size; i++) {
             labels[i] = ((Port)portArray[i]).getName();
-            types[i] = BaseType.UNKNOWN;
+            types[i] = BaseType.GENERAL;
         }
         RecordType declaredType = new RecordType(labels, types);
 
-        input.setTypeEquals(declaredType);
+        input.setTypeAtMost(declaredType);
 
         // set the constraints between record fields and output ports
         List constraints = new LinkedList();
         // since the input port has a clone of the above RecordType, need to
         // get the type from the input port.
-        RecordType inputTypes = (RecordType)input.getType();
+        //   RecordType inputTypes = (RecordType)input.getType();
 
         Iterator outputPorts = outputPortList().iterator();
         while (outputPorts.hasNext()) {
             TypedIOPort outputPort = (TypedIOPort)outputPorts.next();
             String label = outputPort.getName();
             Inequality inequality =
-                new Inequality(inputTypes.getTypeTerm(label),
+                new Inequality(new PortFunction(label),
                         outputPort.getTypeTerm());
             constraints.add(inequality);
         }
 
         return constraints;
     }
-}
 
+    // This class implements a monotonic function of the type of a
+    // port and a parameter.
+    // The function value is determined by:
+    // f(input.getType(), name) =
+    //     UNKNOWN,                  if input.getType() = UNKNOWN
+    //     input.getType()[name] if input.getType() instanceof RecordToken.
+    //
+    private class PortFunction implements InequalityTerm {
+
+        private PortFunction(String name) {
+            _name = name;
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                       public inner methods            ////
+
+        /** Return null.
+         *  @return null.
+         */
+        public Object getAssociatedObject() {
+            return null;
+        }
+
+        /** Return the function result.
+         *  @return A Type.
+         */
+        public Object getValue() throws IllegalActionException {
+            if(input.getType() == BaseType.UNKNOWN) {
+                return BaseType.UNKNOWN;
+            } else if(input.getType() instanceof RecordType) {
+                RecordType type = (RecordType)input.getType();
+                Type fieldType = type.get(_name);
+                if(fieldType == null) {
+                    return BaseType.UNKNOWN;
+                } else {
+                    return fieldType;
+                }
+            } else {
+                throw new IllegalActionException(RecordDisassembler.this, 
+                        "Invalid type for input port");
+            }
+        }
+
+        /** Return the type variable in this inequality term. If the type
+         *  of the input port is not declarad, return an one element array
+         *  containing the inequality term representing the type of the port;
+         *  otherwise, return an empty array.
+         *  @return An array of InequalityTerm.
+         */
+        public InequalityTerm[] getVariables() {
+            InequalityTerm portTerm = input.getTypeTerm();
+            if (portTerm.isSettable()) {
+                InequalityTerm[] variable = new InequalityTerm[1];
+                variable[0] = portTerm;
+                return variable;
+            }
+            return (new InequalityTerm[0]);
+        }
+
+        /** Throw an Exception. This method cannot be called on a function
+         *  term.
+         *  @exception IllegalActionException Always thrown.
+         */
+        public void initialize(Object e)
+                throws IllegalActionException {
+            throw new IllegalActionException(getClass().getName()
+                    + ": Cannot initialize a function term.");
+        }
+
+        /** Return false.
+         *  @return false.
+         */
+        public boolean isSettable() {
+            return false;
+        }
+
+        /** Return true.
+         *  @return True.
+         */
+        public boolean isValueAcceptable() {
+            return true;
+        }
+
+        /** Throw an Exception. The value of a function term cannot be set.
+         *  @exception IllegalActionException Always thrown.
+         */
+        public void setValue(Object e) throws IllegalActionException {
+            throw new IllegalActionException(getClass().getName()
+                    + ": The type is not settable.");
+        }
+
+        /** Override the base class to give a description of this term.
+         *  @return A description of this term.
+         */
+        public String toString() {
+            try {
+                return "(" + getClass().getName() + ":" + _name + 
+                    ", " + getValue() + ")";
+            } catch (IllegalActionException ex) {
+                return "(" + getClass().getName() + ":" + _name + 
+                    ", INVALID)";
+            }
+        }
+
+        ///////////////////////////////////////////////////////////////
+        ////                       private inner variable          ////
+
+        private String _name;
+    }
+}
