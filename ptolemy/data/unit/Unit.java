@@ -107,6 +107,21 @@ public class Unit implements UnitPresentation {
             if (xx != null && xx != UnitLibrary.Identity)
                 return factor.getName() + " " + xx.getName();
         }
+        if (_scaleToBaseUnit == 1.0) {
+            int numCats = _type.length;
+            String desc = "";
+            for (int i = 0; i < numCats; i++) {
+                if (_type[i] != 0) {
+                    Unit baseUnit = UnitLibrary.getBaseUnit(i);
+                    if (_type[i] == 1) {
+                        desc += " " + baseUnit.getName();
+                    } else {
+                        desc += " " + baseUnit.getName() + "^" + _type[i];
+                    }
+                }
+            }
+            return desc.substring(1);
+        }
         // End up here if nothing works, so just return the formal description
         System.out.println("Unit.commonDesc had to use " + toString());
         return toString();

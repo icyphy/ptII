@@ -29,7 +29,6 @@
 package ptolemy.data.unit;
 
 import java.io.FileNotFoundException;
-import java.net.URL;
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -37,7 +36,6 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLParser;
-import ptolemy.util.StringUtilities;
 
 /** A Library containing definitions of commonly used units.
 @author Rowland R Johnson
@@ -62,6 +60,29 @@ public class UnitLibrary {
      */
     public static void addToLibrary(Unit unit) {
         _unitsLibrary.add(unit);
+    }
+
+    /** Find the Unit in the library that is basic (scale equal to 1)
+     * singular (all but one dimensions equal to 0)
+     * @param catNum
+     * @return The basic, singular unit.
+     */
+    public static Unit getBaseUnit(int catNum) {
+        Vector library = UnitLibrary.getLibrary();
+        for (int i = 0; i < library.size(); i++) {
+            Unit lUnit = (Unit) (library.elementAt(i));
+            if (lUnit.getScale() != 1.0)
+                continue;
+            int ltype[] = lUnit.getType();
+            if (ltype[catNum] != 1.0)
+                continue;
+            for (int j = 0; j < UnitLibrary.getNumCategories(); j++) {
+                if (j != catNum && ltype[j] != 0)
+                    continue;
+            }
+            return lUnit;
+        }
+        return null;
     }
 
     /** Search Library to find Unit that has the same type and is the closest to
@@ -218,6 +239,7 @@ public class UnitLibrary {
                 String expr = pair.getUExpr();
                 try {
                     UnitExpr uExpr = _parser.parseUnitExpr(expr);
+                    uExpr.reduce();
                     Unit unit = uExpr.eval(null);
                     if (unit != null) {
                         unit.setName(pair.getName());
