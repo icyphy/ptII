@@ -61,13 +61,15 @@ an integer vector of form [1, 0].
 The default indexes matrix is [0, 1].
 Thus, the default output sequence will be 1, 0, 0, ...
 <p>
+However, the Pulse actor has a <I>repeat</i> parameter. When set to
+true, the defined sequence is repeated indefinitely. Otherwise, the
+default sequence of zero values result.
+<p>
 The type of the output can be any token type. This type is inferred
 from the element type of the <i>values</i> parameter.
 <p>
 NOTE: A reset input for this actor would be useful.  This would reset
-the iterations count, to cause the pulse to emerge again.  Also,
-perhaps it should have a periodicity parameter.
-
+the iterations count, to cause the pulse to emerge again. 
 @author Edward A. Lee
 @version $Id$
 */
@@ -98,6 +100,10 @@ public class Pulse extends SequenceSource {
 	ArrayToken defaultValueToken = new ArrayToken(defaultValues);
         values = new Parameter(this, "values", defaultValueToken);
 	values.setTypeEquals(new ArrayType(BaseType.NAT));
+                
+        // Set the Repeat Flag.
+        repeat = new Parameter(this, "repeat", new BooleanToken(false));
+        attributeChanged(repeat);
 
 	// set type constraint
 	ArrayType valuesArrayType = (ArrayType)values.getType();
@@ -121,6 +127,11 @@ public class Pulse extends SequenceSource {
      *  This parameter must contain a MatrixToken with one row.
      */
     public Parameter values;
+
+    /** The flag that indicates whether the pulse sequence needs to be
+     *  repeated. 
+     */
+    public Parameter repeat;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -150,7 +161,11 @@ public class Pulse extends SequenceSource {
                 previous = idx[0][j];
             }
         } else {
-            super.attributeChanged(attribute);
+            if (attribute == repeat) {
+                _repeatFlag = ((BooleanToken)repeat.getToken()).booleanValue();
+            } else {
+                super.attributeChanged(attribute);
+            }
         }
     }
 
@@ -224,7 +239,7 @@ public class Pulse extends SequenceSource {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-
+        int currentIndex = 0;
         ArrayToken val = (ArrayToken)values.getToken();
         int[][] idx = ((IntMatrixToken)indexes.getToken()).intMatrix();
         if (_indexColCount < idx[0].length) {
@@ -233,16 +248,31 @@ public class Pulse extends SequenceSource {
                         "Parameters values and indexes have " +
                         "different lengths.");
             }
-            int currentIndex = idx[0][_indexColCount];
+            currentIndex = idx[0][_indexColCount];
             if (_iterationCount == currentIndex) {
                 // Got a match with an index.
                 output.send(0, val.getElement(_indexColCount));
                 _match = true;
                 return;
             }
+        } else {           
+            if ( _repeatFlag ) { 
+
+                // Repeat the pulse sequence again.
+                _iterationCount = 0;
+                _indexColCount = 0; 
+                
+                currentIndex = idx[0][_indexColCount];
+                if (_iterationCount == currentIndex) {
+                    output.send(0, val.getElement(_indexColCount));
+                    _match = true;
+                }
+                return;
+            }
         }
         output.send(0, _zero);
         _match = false;
+        
     }
 
     /** Set the iteration count to zero.
@@ -304,5 +334,9 @@ public class Pulse extends SequenceSource {
     // Default value of the indexes parameter.
     private IntMatrixToken _defaultIndexToken =
     new IntMatrixToken(_defaultIndexes);
+
+    // Flag to indicate whether or not to repeat the sequence.
+    private boolean _repeatFlag;
+
 }
 

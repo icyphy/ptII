@@ -43,6 +43,7 @@ if {[string compare test [info procs test]] == 1} then {
 test Pulse-1.1 {test constructor and clone with default values} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set pulse [java::new ptolemy.actor.lib.Pulse $e0 pulse]
+
     set values [getParameter $pulse values]
     set indexes [getParameter $pulse indexes]
 
@@ -159,3 +160,57 @@ test Pulse-3.3 {test values and indexes of different dimensions} {
 } {{ptolemy.kernel.util.IllegalActionException: .top.pulse:
 Parameters values and indexes have different lengths.}}
 
+######################################################################
+#### Test repeat function
+
+test Pulse-4.1 {test with the default output values} {
+    set e0 [sdfModel 15]
+    set pulse [java::new ptolemy.actor.lib.Pulse $e0 pulse]
+
+    set repeatParam [getParameter $pulse repeat]
+    $repeatParam setToken [java::new ptolemy.data.BooleanToken true]
+
+    set rec [java::new ptolemy.actor.lib.Recorder $e0 rec]
+    $e0 connect \
+            [java::field [java::cast ptolemy.actor.lib.Source $pulse] output] \
+            [java::field [java::cast ptolemy.actor.lib.Sink $rec] input]
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {1 0 1 0 1 0 1 0 1 0 1 0 1 0 1}
+
+test Pulse-4.2 {test with the non-default output values} {
+    set val0 [java::new {ptolemy.data.DoubleToken double} 0.1]
+    set val1 [java::new {ptolemy.data.DoubleToken double} 0.2]
+    set val2 [java::new {ptolemy.data.DoubleToken double} 0.3]
+    set valArray [java::new {ptolemy.data.Token[]} 3 [list $val0 $val1 $val2]]
+    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    set valuesParam [getParameter $pulse values]
+    $valuesParam setToken $valToken
+ 
+    set indexes [java::new {int[][]} {1 3} [list [list 0 2 3]]]
+    set indexesParam [getParameter $pulse indexes]
+    $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
+
+    set repeatParam [getParameter $pulse repeat]
+    $repeatParam setToken [java::new ptolemy.data.BooleanToken true]
+
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {0.1 0.0 0.2 0.3 0.1 0.0 0.2 0.3 0.1 0.0 0.2 0.3 0.1 0.0 0.2}
+
+test Pulse-4.3 {test string output} {
+    set val0 [java::new ptolemy.data.StringToken AB]
+    set val1 [java::new ptolemy.data.StringToken CD]
+    set val2 [java::new ptolemy.data.StringToken EF]
+    set valArray [java::new {ptolemy.data.Token[]} 3 [list $val0 $val1 $val2]]
+    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    set repeatParam [getParameter $pulse repeat]
+    $repeatParam setToken [java::new ptolemy.data.BooleanToken true]
+
+    set valuesParam [getParameter $pulse values]
+    $valuesParam setToken $valToken
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {AB {} CD EF AB {} CD EF AB {} CD EF AB {} CD} 
