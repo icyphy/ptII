@@ -72,6 +72,14 @@ public interface Receiver {
      */
     public Token get();
 
+    /** Get an array of tokens from this receiver. Note that the thrown exception
+     *  is a runtime exception.
+     *  @param tokenArray A Token array that will contain the requested
+     *   tokens when this method returns.
+     *  @exception NoTokenException If there is no token.
+     */
+    public void get(Token[] tokenArray);
+
     /** Return the container of this receiver, or null if there is none.
      *  @return The IOPort containing this receiver.
      */
@@ -125,6 +133,14 @@ public interface Receiver {
      *  @exception NoRoomException If the token cannot be put.
      */
     public void put(Token t);
+
+    /** Put an array of tokens into this receiver. Note that the thrown 
+     *  exception is a runtime exception, therefore the caller is not 
+     *  required to catch it.
+     *  @param tokenArray The token array to put into this receiver.
+     *  @exception NoRoomException If the token cannot be put.
+     */
+    public void put(Token[] tokenArray);
 
     /** Set the container.
      *  @exception IllegalActionException If the container is not of
