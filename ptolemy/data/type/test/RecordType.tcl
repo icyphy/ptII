@@ -1,6 +1,6 @@
 # Tests for the RecordType class
 #
-# @Author: Yuhong Xiong
+# @Author: Yuhong Xiong, Elaine Cheong and Steve Neuendorffer
 #
 # @Version $Id$
 #
