@@ -77,7 +77,7 @@ public class Time {
     }
 
     /** Return true if the argument has the same time value.
-     *  @param object An instance of Time.
+     *  @param time An instance of Time.
      *  @return True if the argument has the same time value.
      */
     public boolean equals(Time time) {
