@@ -124,7 +124,7 @@ public class FileReader extends TypedAtomicActor{
      *  @exception IllegalActionException.
      */
     public void fire() throws IllegalActionException  {
-         if (_debugging) {
+        if (_debugging) {
             _debug("Invoking fire");
         }
         //just consumme the token.

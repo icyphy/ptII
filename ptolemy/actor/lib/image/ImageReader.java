@@ -152,10 +152,10 @@ public class ImageReader extends Source {
         _fileRoot = _url.getFile();		
         _image = new ImageIcon(_fileRoot).getImage();
 	if (_image.getWidth(null) == -1
-	    && _image.getHeight(null) == -1) {
+                && _image.getHeight(null) == -1) {
 	    throw new IllegalActionException(this,
-		"Image size is -1 x -1.  Failed to open '"
-                + _fileRoot + "'");
+                    "Image size is -1 x -1.  Failed to open '"
+                    + _fileRoot + "'");
 	}
         return super.prefire();
     }

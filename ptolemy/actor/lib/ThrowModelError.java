@@ -93,8 +93,8 @@ public class ThrowModelError extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         boolean result = false;
-		// NOTE: We need to consume data on all channels that have data.
-		// If we don't then DE will go into an infinite loop.
+        // NOTE: We need to consume data on all channels that have data.
+        // If we don't then DE will go into an infinite loop.
         for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 if (((BooleanToken)input.get(i)).booleanValue()) {

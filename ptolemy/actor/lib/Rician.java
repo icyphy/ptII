@@ -92,7 +92,7 @@ public class Rician extends RandomSource {
         yMean.setTypeEquals(BaseType.DOUBLE);
 
         standardDeviation = new Parameter(this, "standardDeviation",
-              new DoubleToken(1.0));
+                new DoubleToken(1.0));
         standardDeviation.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -104,7 +104,7 @@ public class Rician extends RandomSource {
      */
     public Parameter xMean;
 
-     /** The mean of the random number along the Y-axis.
+    /** The mean of the random number along the Y-axis.
      *  This parameter contains a DoubleToken, initially with value 0.0.
      */
     public Parameter yMean;
@@ -139,10 +139,10 @@ public class Rician extends RandomSource {
         double xRawNum = _random.nextGaussian();
         double yRawNum = _random.nextGaussian();
         _current = java.lang.Math.sqrt(
-             java.lang.Math.pow(
-             xRawNum*standardDeviationValue + xMeanValue, 2)
-             + java.lang.Math.pow(
-             yRawNum*standardDeviationValue + yMeanValue, 2));
+                java.lang.Math.pow(
+                        xRawNum*standardDeviationValue + xMeanValue, 2)
+                + java.lang.Math.pow(
+                        yRawNum*standardDeviationValue + yMeanValue, 2));
         return super.prefire();
 
     }

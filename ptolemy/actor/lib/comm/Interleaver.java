@@ -84,18 +84,18 @@ public class Interleaver extends Transformer {
         // Declare data types.
         input.setTypeEquals(BaseType.INT);
         _inputRate = new Parameter(input, "tokenConsumptionRate",
-            new IntToken(1));
+                new IntToken(1));
         output.setTypeEquals(BaseType.INT);
         _outputRate = new Parameter(output, "tokenProductionRate",
-            new IntToken(1));
+                new IntToken(1));
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-     /** The number of rows. It is of type integer and has a
-      *  default value of 2. It must be greater than zero.
-      */
+    /** The number of rows. It is of type integer and has a
+     *  default value of 2. It must be greater than zero.
+     */
     public Parameter rows;
 
     /** The number of columns. It is of type integer and has a
@@ -135,12 +135,12 @@ public class Interleaver extends Transformer {
         IntToken[] result = new IntToken[_matrixSize];
         for (int i = 0; i < _rowsValue; i++) {
             for (int j = 0; j< _columnsValue; j++) {
-                 IntToken out = (IntToken)inputToken[i * _columnsValue + j];
-                 if (out.intValue() != 0 && out.intValue() != 1) {
-                     throw new IllegalActionException(this,
-                         "Input must be either 0 or 1.");
-                 }
-                 result[j * _rowsValue + i] = out;
+                IntToken out = (IntToken)inputToken[i * _columnsValue + j];
+                if (out.intValue() != 0 && out.intValue() != 1) {
+                    throw new IllegalActionException(this,
+                            "Input must be either 0 or 1.");
+                }
+                result[j * _rowsValue + i] = out;
             }
         }
         output.broadcast(result, result.length);

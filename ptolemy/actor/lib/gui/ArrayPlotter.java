@@ -96,15 +96,15 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
         iterationsPerUpdate = new Parameter(this, "iterationsPerUpdate");
         iterationsPerUpdate.setExpression("1");
         
-		// set the parameters
-		xInit = new Parameter(this, "xInit", new DoubleToken(0.0));
-		xInit.setTypeEquals(BaseType.DOUBLE);
-		xUnit = new Parameter(this, "xUnit", new DoubleToken(1.0));
-		xUnit.setTypeEquals(BaseType.DOUBLE);
+        // set the parameters
+        xInit = new Parameter(this, "xInit", new DoubleToken(0.0));
+        xInit.setTypeEquals(BaseType.DOUBLE);
+        xUnit = new Parameter(this, "xUnit", new DoubleToken(1.0));
+        xUnit.setTypeEquals(BaseType.DOUBLE);
 
-		// initialize the parameters
-		attributeChanged(xInit);
-		attributeChanged(xUnit);
+        // initialize the parameters
+        attributeChanged(xInit);
+        attributeChanged(xUnit);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,31 +120,31 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
      */
     public Parameter iterationsPerUpdate;
     
-	/** The increment of the X axis. */
-	public Parameter xUnit;
+    /** The increment of the X axis. */
+    public Parameter xUnit;
 
-	/** The start point of the X axis. */
-	public Parameter xInit;
+    /** The start point of the X axis. */
+    public Parameter xInit;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-	/** Notification that an attribute has changed.
-	 *  @exception IllegalActionException If the expression of the
-	 *   attribute cannot be parsed or cannot be evaluated.
-	 */
-	public void attributeChanged(Attribute attribute)
-			throws IllegalActionException {
-		if (attribute == xInit) {
-			_xInit = ((DoubleToken)xInit.getToken()).doubleValue();
-		} else {
-			if (attribute == xUnit) {
-				_xUnit = ((DoubleToken)xUnit.getToken()).doubleValue();
-			} else {
-				super.attributeChanged(attribute);
-			}
-		}
-	}
+    /** Notification that an attribute has changed.
+     *  @exception IllegalActionException If the expression of the
+     *   attribute cannot be parsed or cannot be evaluated.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == xInit) {
+            _xInit = ((DoubleToken)xInit.getToken()).doubleValue();
+        } else {
+            if (attribute == xUnit) {
+                _xUnit = ((DoubleToken)xUnit.getToken()).doubleValue();
+            } else {
+                super.attributeChanged(attribute);
+            }
+        }
+    }
 	
     /** If the plot has not already been created, create it.
      *  If configurations specified by a call to configure() have not yet
@@ -175,7 +175,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
             _tokens = new ArrayToken[width];
         }
         for (int i = width - 1; i >= 0; i--) {
-        	double xValue = _xInit;
+            double xValue = _xInit;
             if (input.hasToken(i)) {
                 _tokens[i] = (ArrayToken)input.get(i);
                 if (_iteration == 0) {
@@ -187,7 +187,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
                             ((DoubleToken)currentArray[j]).doubleValue();
                         ((Plot)plot).addPoint(
                                 i + _offset, xValue, currentValue, true);
-						xValue += _xUnit;
+                        xValue += _xUnit;
                     }
                 }
             }
@@ -218,7 +218,7 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
                             ((DoubleToken)currentArray[j]).doubleValue();
                         ((Plot)plot).addPoint(
                                 i + _offset, xValue, currentValue, true);
-						xValue += _xUnit;
+                        xValue += _xUnit;
                     }
                 }
             }
@@ -226,16 +226,16 @@ public class ArrayPlotter extends Plotter implements SequenceActor {
         super.wrapup();
     }
 
-	///////////////////////////////////////////////////////////////////
-	////                         protected members                 ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected members                 ////
 
-	/** Start of the X axis counter. */
-	protected double _xInit;
+    /** Start of the X axis counter. */
+    protected double _xInit;
 
-	/** Increment of the X axis counter. */
-	protected double _xUnit;
+    /** Increment of the X axis counter. */
+    protected double _xUnit;
 	
-	///////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // Iteration count, modulo the iterationsPerUpdate.
