@@ -33,11 +33,16 @@ package ptolemy.actor.lib;
 //////////////////////////////////////////////////////////////////////////
 //// NonStrictActor
 /**
-This is a marker interface for actors that are nonstrict. That is, the actor
+This is a marker interface for actors that are nonstrict.  That is, the actor
 does not require that all its inputs are known before it is fired.  Actors
 that implement this interface should produce outputs only if those outputs
 can be determined from the given inputs.  Outputs that cannot be determined 
 from the given inputs should not be produced.
+<p>
+Since this execution methods of an actor that implements this interface may be
+called when some or all of the inputs are unknown, the actor should never call
+the hasToken() method on a channel without first verifying that the isKnown() 
+method of that channel returns true.
 <p>
 If an actor implements this interface, the director should assume that it may
 intentionally output undefined values.  The director should not assume that
