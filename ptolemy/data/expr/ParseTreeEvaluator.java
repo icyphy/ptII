@@ -271,7 +271,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
      *  specially in this method, allowing the evaluation of
      *  expressions in matlab if matlab is installed.  The format
      *  of the function is covered in 
-     *  {@link ptolemy.data.expr.MatlabUtilities#evaluate(String, ParserScope)}
+     *  {@link ptolemy.data.expr.MatlabUtilities#evaluate(String, Set, ParserScope)}
      *  .
      *  @param node The specified node.
      *  @exception IllegalActionException If an evaluation error occurs.
