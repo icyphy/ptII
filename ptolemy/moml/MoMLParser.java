@@ -464,7 +464,7 @@ public class MoMLParser extends HandlerBase {
         // Use the current working directory as a base.
 	String cwd = System.getProperty("user.dir");
 	if (cwd != null) {
-	    base = new URL("file", null, cwd);
+	    base = new URL("file", null, cwd + "/");
 	}
 
 	return parse(base, new StringReader(text));
@@ -501,7 +501,7 @@ public class MoMLParser extends HandlerBase {
         // Use the current working directory as a base.
 	String cwd = System.getProperty("user.dir");
 	if (cwd != null) {
-	    base = new URL("file", null, cwd);
+	    base = new URL("file", null, cwd + "/");
 	}
 		
         // Java's I/O is so lame that it can't find files in the current
@@ -1660,31 +1660,41 @@ public class MoMLParser extends HandlerBase {
             throws Exception {
         URL xmlFile = new URL(base, source);
         InputStream input = null;
+        StringBuffer errorMessage = new StringBuffer();
         try {
             input = xmlFile.openStream();
-        } catch (IOException ex) {
+        } catch (IOException ioException) {
             // Cannot open the file. Try to open it relative
             // to the current working directory.
+            errorMessage.append("1. Failed to open '" + xmlFile + "':\n" + 
+                    ioException + "\n");
             try {
                 String cwd = System.getProperty("user.dir");
                 if (cwd != null) {
-                    base = new URL("file", null, cwd);
+                    base = new URL("file", null, cwd + "/");
                     xmlFile = new URL(base, source);
                     input = xmlFile.openStream();
                 }
             } catch (Exception exception) {
+                errorMessage.append("2. Failed to open '" + xmlFile + 
+                        "':\n" + exception + "\n");
                 // That failed.  Try opening it relative to the classpath.
                 try {
                     xmlFile = _classLoader.getResource(source);
                     if (xmlFile != null) {
                         input = xmlFile.openStream();
                     }
-                } catch (Exception anotherException) {}
+                } catch (Exception anotherException) {
+                    errorMessage.append("3. Failed to open '" + xmlFile + 
+                            "':\n" + anotherException + "\n");
+                }
             }
         }
         if (input == null) {
-            throw new XmlException("Cannot open import file: "
-                   + source + "\nUsing base: " + base,
+            throw new XmlException("Cannot open import file: " + source + 
+                    "\nUsing base: " + base + 
+                    "\nTried the following files:\n" +
+                    errorMessage,
                    _currentExternalEntity(),
                    _parser.getLineNumber(),
                    _parser.getColumnNumber());
