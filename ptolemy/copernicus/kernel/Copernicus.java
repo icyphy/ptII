@@ -560,12 +560,11 @@ public class Copernicus {
         CompositeActor toplevel = null;
         try {
             toplevel = (CompositeActor)_parser.parse(modelURL, modelURL);
-        } catch (Exception exception) {
-            StringBuffer errorMessage = new StringBuffer();
-            errorMessage.append("Failed to parse '" + modelPathOrURL
+        } catch (Exception ex) {
+            throw new IllegalActionException(null, ex,
+                    "Failed to parse '" + modelPathOrURL
                     + "' as a top level model in \n"
                     + modelURL + "!");
-            throw new IllegalActionException(errorMessage.toString());
         }
         
         // If the name of the toplevel is the empty string, change it to
