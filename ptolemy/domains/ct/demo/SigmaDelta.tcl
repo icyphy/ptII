@@ -66,7 +66,7 @@ set gain1 [java::new ptolemy.domains.ct.lib.CTGain $ctsub Gain1]
 set gain2 [java::new ptolemy.domains.ct.lib.CTGain $ctsub Gain2]
 set gain3 [java::new ptolemy.domains.ct.lib.CTGain $ctsub Gain3]
 #set const [java::new ptolemy.domains.ct.lib.CTConst $ctsub Bias]
-set plot [java::new ptolemy.domains.ct.lib.CTPlot $ctsub Plot]
+set plot [java::new ptolemy.domains.ct.lib.CTPlot $ctsub CTPlot]
 set sampler [java::new ptolemy.domains.ct.lib.CTPeriodicalSampler \
 	$ctsub Sample]
 
