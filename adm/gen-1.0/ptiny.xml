@@ -197,7 +197,7 @@ Berkeley, CA 94706</property>
                         <property name="iconFileType">1</property>
                         <property name="folderContext">$AllUsersPrograms$</property>
                     </extendedProperty>
-                    <property name="folder">Ptolemy/$P(productBean1.displayName) $P(productBean1.productNumber)</property>
+                    <property name="folder">Ptolemy/$P(productBean1.displayName)</property>
                     <property name="name">Vergil</property>
                     <property name="target">vergil.exe</property>
                     <property name="args"/>
@@ -234,7 +234,7 @@ Berkeley, CA 94706</property>
                         <property name="iconFileType">1</property>
                         <property name="folderContext">$UserPrograms$</property>
                     </extendedProperty>
-                    <property name="folder">Ptolemy/$P(productBean1.displayName) $P(productNumber)</property>
+                    <property name="folder">Ptolemy/$P(productBean1.displayName)</property>
                     <property name="name">Ptplot</property>
                     <property name="target"/>
                     <property name="args"/>
