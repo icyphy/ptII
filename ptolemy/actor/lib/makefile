@@ -35,7 +35,7 @@ ME =		ptolemy/actor/lib
 
 # $PTII/configure looks for Jini and sets PTJSPACES_DIR in
 # $PTII/mk/ptII.mk if was found.  Otherwise, PTJSPACES_DIR is empty
-DIRS = 		conversions test logic $(PTJSPACES_DIR)
+DIRS = 		conversions gui logic test $(PTJSPACES_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
@@ -54,6 +54,7 @@ PTCLASSJAR =
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 	conversions/conversions.jar \
+	gui/gui.jar \
 	logic/logic.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
