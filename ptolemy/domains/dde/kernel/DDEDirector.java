@@ -36,6 +36,8 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.process.*;
+import java.util.Enumeration;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// DDEDirector
@@ -143,6 +145,47 @@ public class DDEDirector extends ProcessDirector {
         }
     }
 
+    /** Schedule an actor to be fired at the specified time.
+     *  If the thread that calls this method is a DDEThread,
+     *  then the specified actor must be contained by this 
+     *  thread. It the thread that calls this method is not
+     *  an instance of DDEThread, then this method returns
+     *  without performing any actions.
+     * @param actor The actor scheduled to fire.
+     * @param time The scheduled time to fire.
+     * @exception IllegalActionException If the specified 
+     *  time is in the past or if the thread calling this
+     *  method is a DDEThread but the specified actor is 
+     *  not contained by the DDEThread.
+     */
+    public void fireAt(Actor actor, double time) 
+            throws IllegalActionException {
+        
+        DDEThread ddeThread;
+        Thread thread = Thread.currentThread();
+        if( thread instanceof DDEThread ) {
+            ddeThread = (DDEThread)thread;
+        } else {
+            return;
+        }
+        
+        Actor threadActor = ddeThread.getActor();
+        if( threadActor != actor ) {
+            throw new IllegalActionException("Actor argument of " 
+                    + "must DDEDirector.fireAt() must be contained "
+                    + "by the DDEThread that calls fireAt()");
+        }
+        
+        TimeKeeper timeKeeper = ddeThread.getTimeKeeper();
+        try {
+            timeKeeper.setCurrentTime(time);
+        } catch( IllegalArgumentException e ) {
+	    throw new IllegalActionException(
+		    ((NamedObj)actor).getName() + " - Attempt to "
+		    + "set current time in the past.");
+        }
+    }
+    
     /** Return true if one of the actors governed by this director
      *  has a pending mutation; return false otherwise.
      * @return True if a pending mutation exists; return false otherwise.
