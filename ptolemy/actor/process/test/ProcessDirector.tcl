@@ -97,3 +97,100 @@ test TestProcessDirector-5.1 {Test action methods} {
     lsort [$a1 getRecord]
 
 } {.E0.A1.fire .E0.A1.initialize .E0.A1.postfire .E0.A1.prefire .E0.A1.wrapup .E0.A2.fire .E0.A2.initialize .E0.A2.postfire .E0.A2.prefire .E0.A2.wrapup}
+
+######################################################################
+####
+#
+test TestProcessDirector-6.1 {Test action methods} {
+    # Instantiate Manager and Workspace
+    set wkSpace [java::new ptolemy.kernel.util.Workspace W]
+    set manager [java::new ptolemy.actor.Manager $wkSpace M]
+    
+    # Instantiate Directors and Composite Actors
+    set tL [java::new ptolemy.actor.TypedCompositeActor $wkSpace]
+    $tL setName "tL"
+    $tL setManager $manager
+    set compAct [java::new ptolemy.actor.TypedCompositeActor $tL "compAct"]
+    set outDir [java::new ptolemy.actor.process.test.TestProcessDirector $tL "outDir"]
+    set inDir [java::new ptolemy.actor.process.test.TestProcessDirector $compAct "inDir"]
+    
+    # Debug Listeners
+    $manager addDebugListener [java::new ptolemy.kernel.util.StreamListener]
+    $compAct addDebugListener [java::new ptolemy.kernel.util.StreamListener]
+    $outDir addDebugListener [java::new ptolemy.kernel.util.StreamListener]
+    $inDir addDebugListener [java::new ptolemy.kernel.util.StreamListener]
+    
+    # Instantiate Atomic Actors
+    set act1 [java::new ptolemy.actor.lib.Ramp $tL "act1"] 
+    set act2 [java::new ptolemy.actor.lib.Ramp $tL "act2"] 
+    set act3 [java::new ptolemy.actor.lib.Ramp $tL "act3"] 
+    set act4 [java::new ptolemy.actor.process.test.ProcessSink $compAct "act4"] 
+    set act5 [java::new ptolemy.actor.process.test.ProcessSink $compAct "act5"] 
+    set act6 [java::new ptolemy.actor.process.test.ProcessSink $compAct "act6"] 
+    
+    # Set Parameters
+    set act1Limit [java::cast ptolemy.data.expr.Parameter [$act1 getAttribute firingCountLimit]]
+    $act1Limit setToken [java::new ptolemy.data.IntToken 1]
+    set act2Limit [java::cast ptolemy.data.expr.Parameter [$act2 getAttribute firingCountLimit]]
+    $act2Limit setToken [java::new ptolemy.data.IntToken 1]
+    set act3Limit [java::cast ptolemy.data.expr.Parameter [$act3 getAttribute firingCountLimit]]
+    $act3Limit setToken [java::new ptolemy.data.IntToken 1]
+    
+    # Instantiate Ports
+    set act1OutPort [$act1 getPort "output"]
+    set act2OutPort [$act2 getPort "output"]
+    set act3OutPort [$act3 getPort "output"]
+    set act4InPort [$act4 getPort "input"]
+    set act5InPort [$act5 getPort "input"]
+    set act6InPort [$act6 getPort "input"]
+    set compIn1Port [java::new ptolemy.actor.TypedIOPort $compAct "compIn1Port" true false]
+    set compIn2Port [java::new ptolemy.actor.TypedIOPort $compAct "compIn2Port" true false]
+    set compIn3Port [java::new ptolemy.actor.TypedIOPort $compAct "compIn3Port" true false]
+    
+    # Make Connections 
+    $tL connect $compIn1Port $act1OutPort
+    $tL connect $compIn2Port $act2OutPort
+    $tL connect $compIn3Port $act3OutPort
+    $compAct connect $compIn1Port $act4InPort
+    $compAct connect $compIn2Port $act5InPort
+    $compAct connect $compIn3Port $act6InPort
+    
+    $manager run
+    
+#     # Create Receivers
+#     $tL preinitialize
+#     $tL initialize
+    
+    set cntlr [$inDir getInputController]
+    set branchList [$cntlr getBranchList]
+    set size [$branchList size]
+    
+    # Get Branches
+    set brch1 [java::cast ptolemy.actor.process.Branch [$branchList get 0]]
+    set brch2 [java::cast ptolemy.actor.process.Branch [$branchList get 1]]
+    set brch3 [java::cast ptolemy.actor.process.Branch [$branchList get 2]]
+    
+    # Get Receivers
+    set pRcvr1 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch1 getProdReceiver]]
+    set pRcvr2 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch2 getProdReceiver]]
+    set pRcvr3 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch3 getProdReceiver]]
+    
+    set cRcvr1 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch1 getConsReceiver]]
+    set cRcvr2 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch2 getConsReceiver]]
+    set cRcvr3 [java::cast ptolemy.actor.process.MailboxBoundaryReceiver [$brch3 getConsReceiver]]
+    
+    set val 1
+    
+    if { [$cRcvr1 hasToken] != 1 } {
+        set val 0
+    }
+    if { [$cRcvr2 hasToken] != 1 } {
+        set val 0
+    }
+    if { [$cRcvr3 hasToken] != 1 } {
+    	set val 0
+    }
+    
+    list $val 
+
+} {1}
