@@ -73,13 +73,15 @@ MISC_FILES =	$(DIRS) \
 	testDeux.c \
 	testDeux.h \
 	testDeux.xml \
-	testQuatre.c \
-	testQuatre.h \
 	testQuatre.xml \
 	testTrois.c \
 	testTrois.h \
 	testTrois.xml 
 
+
+# These files don't exist because testQuatre uses testDeux and testTrois
+#	testQuatre.c
+#	testQuatre.h
 
 EXTRA_SRCS =	testDefs.tcl $(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
