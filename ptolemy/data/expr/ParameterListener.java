@@ -1,4 +1,5 @@
-/* Interface for all classes that want to be notified when a Parameter changes.
+/* Interface for all classes that want to be notified when a Parameter changes
+or is removed.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +34,8 @@ package ptolemy.data.expr;
 //////////////////////////////////////////////////////////////////////////
 //// ParameterListener
 /**
-Interface for all classes that want to be notified when a Parameter changes.
+Interface for all classes that want to be notified when the Token 
+stored in a Parameter changes or when a Parameter is removed(deleted).
 
 @author  Neil Smyth
 @version $Id$
@@ -45,9 +47,13 @@ public interface ParameterListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** When a Parameter changes value, this method is invoked on
-     *  all ParameterListeners registered with it.
-     **/
-    public void evaluate();
+    /** Called to report that the Token stored in the Parameter has
+     *  changed.
+    **/
+    public void parameterChanged(ParameterEvent event);
+
+    /** Called  to report that a Parameter has been removed(deleted).
+    **/
+    public void parameterRemoved(ParameterEvent event);
 
 }
