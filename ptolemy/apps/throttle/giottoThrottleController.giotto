@@ -1,43 +1,54 @@
 sensor
-  unknown theta uses theta_device_driver_fire;
-  unknown theta_desired uses theta_desired_device_driver_fire;
-  unknown external mode uses external mode_device_driver_fire;
+  COMPOSITE_SENSOR composite_sensor uses composite_sensor_device_driver;
 actuator
-  unknown port uses port_device_driver_fire;
+  THROTTLE_MOTOR throttle_motor uses throttle_motor_device_driver;
 output
-  unknown manager_mode := init_function_name_manager_mode;
-  unknown servo_controller_output := init_function_name_servo_controller_output;
-  unknown monitor_isValid := init_function_name_monitor_isValid;
-task manager (isValid, 1:driver mode) output (manager_mode) {
-  schedule manager_fire( isValid, 1:driver mode, manager_mode)
+  MANAGER_OUTPUT manager_output := init_manager_output;
+  SERVO_CONTROL_OUTPUT servo_control_output := init_servo_control_output;
+  MONITOR_OUTPUT monitor_output := init_monitor_output;
+task manager_task (MANAGER_INPUT input)
+        output (manager_output)
+        state (MANAGER_PARAM param := init_manager_param)
+{
+        schedule manager_task(input, manager_output, param)
 }
-task servo_controller (theta, theta_desired, mode) output (servo_controller_output) {
-  schedule servo_controller_fire( theta, theta_desired, mode, servo_controller_output)
+task servo_control_task (SERVO_CONTROL_INPUT input)
+        output (servo_control_output)
+        state (SERVO_CONTROL_PARAM param := init_servo_control_param)
+{
+        schedule servo_control_task(input, servo_control_output, param)
 }
-task monitor (mode, output) output (monitor_isValid) {
-  schedule monitor_fire( mode, output, monitor_isValid)
+task monitor_task (MONITOR_INPUT input)
+        output (monitor_output)
+        state (MONITOR_PARAM param := init_monitor_param)
+{
+        schedule monitor_task(input, monitor_output, param)
 }
-driver manager_driver (monitor_1_Equals_output, external_mode) output (unknown isValid, unknown 1:driver mode) {
-  if manager_guard (monitor_1_Equals_output, external_mode) then
-    manager_transferInputs(monitor_1_Equals_output, external_mode, isValid, 1:driver mode)
+driver manager_driver (monitor_output, composite_sensor)
+        output (MANAGER_INPUT input)
+{
+  if c_true() then manager_input_driver( monitor_output, composite_sensor, input)
 }
-driver servo_controller_driver (theta, theta_desired, manager_Equals_output) output (unknown theta, unknown theta_desired, unknown mode) {
-  if servo_controller_guard (theta, theta_desired, manager_Equals_output) then
-    servo_controller_transferInputs(theta, theta_desired, manager_Equals_output, theta, theta_desired, mode)
+driver servo_control_driver (manager_output, composite_sensor)
+        output (SERVO_CONTROL_INPUT input)
+{
+  if c_true() then servo_control_input_driver( manager_output, composite_sensor, input)
 }
-driver monitor_driver (manager_Equals_output, servo_controller_Multiplexor_output) output (unknown mode, unknown output) {
-  if monitor_guard (manager_Equals_output, servo_controller_Multiplexor_output) then
-    monitor_transferInputs(manager_Equals_output, servo_controller_Multiplexor_output, mode, output)
+driver monitor_driver (servo_control_output, manager_output, composite_sensor)
+        output (MONITOR_INPUT input)
+{
+  if c_true() then monitor_input_driver( servo_control_output, manager_output, composite_sensor, input)
 }
-driver port_driver (servo_controller_output) output (unknown port) {
-  if port_guard (servo_controller_output) then
-    port_transferInputs(servo_controller_output, port)
+driver throttle_motor_driver (servo_control_output)
+        output (THROTTLE_MOTOR throttle_motor_output)
+{
+  if c_true() then throttle_motor_input_driver( servo_control_output, throttle_motor_output)
 }
-start giottoThrottleController_name {
-  mode giottoThrottleController_name () period 60.0 {
-    actfreq 1 do port (port_driver);
-    taskfreq 1 do manager(manager_driver);
-    taskfreq 1 do servo_controller(servo_controller_driver);
-    taskfreq 1 do monitor(monitor_driver);
+start real_time_controller {
+  mode real_time_controller () period 30 {
+    actfreq 10 do throttle_motor (throttle_motor_driver);
+    taskfreq 2 do manager_task(manager_driver);
+    taskfreq 10 do servo_control_task(servo_control_driver);
+    taskfreq 1 do monitor_task(monitor_driver);
   }
 }
