@@ -54,22 +54,33 @@ seamlessly used with Ptolemy II-generated function objects.
 */
 public class PtCalFunction implements FunctionToken.Function {
 
+    public PtCalFunction(Function function) {
+        _function = function;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** FIXME: what does this do?  What are the types of the elements of
+     *  the list
+     */
     public Token apply(List list) throws IllegalActionException {
         // TODO: should we allow non-token returns and tokenize them?
-        return (Token) f.apply(list.toArray());
+        return (Token) _function.apply(list.toArray());
     }
 
+    /** Return the number of arguments */
     public int getNumberOfArguments() {
-        return f.arity();
+        return _function.arity();
     }
 
+    /** Always return false, because the Function token is not congruent */
     public boolean isCongruent(FunctionToken.Function function) {
         return false;
     }
 
-    public PtCalFunction(Function f) {
-        this.f = f;
-    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
-    private Function f;
+    private Function _function;
 }
