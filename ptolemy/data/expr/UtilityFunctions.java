@@ -44,7 +44,7 @@ import ptolemy.data.DoubleMatrixToken;
 /**
 Class providing additional functions to ptolemyII expression language.
 <p>
-Currently this class only contains two methods, env() and readFile(),
+Currently this class only contains two methods, property() and readFile(),
 and even for these there are only trivial implementations.
 <p>
 FIXME: finish this class.
@@ -58,14 +58,18 @@ public class UtilityFunctions {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the referred environment variable. An empty string
+    /** Get the referred property from the environment. An empty string
      *  is returned if the argument environment variable does not exist.
-     * @param envName String representing the name of environment
-     *   variable we want to obtain.
-     * @return StringToken containing the string referred to by the
-     *   environment variable.
+     *  See the javadoc page for java.util.System.getProperties() for
+     *  a list of system properties.  An example property is 
+     *  "java.version", which returns the version of the JDK.
+     *
+     *  @param propertyName String representing the name of property
+     *  variable we want to obtain.
+     *  @return StringToken containing the string referred to by the
+     *  environment variable.
      */
-    public static StringToken env(String envName) {
+    public static StringToken property(String envName) {
         return new StringToken(System.getProperty(envName));
     }
 
@@ -79,12 +83,13 @@ public class UtilityFunctions {
      *  spread over many lines should we remove the newlines
      *  and make one long one line string? Also this currently
      *  only looks in the working directory.
-     * @param filename The file we want to read the text from.
-     * @return StringToken containing the text contained in
-     *   the specified file.
-     * @exception IllegalActionException If for the given filename
-     *   a file cannot be opened.
-     * */
+     *
+     *  @param filename The file we want to read the text from.
+     *  @return StringToken containing the text contained in
+     *  the specified file.
+     *  @exception IllegalActionException If for the given filename
+     *  a file cannot be opened.
+     */
     public static StringToken readFile(String filename)
             throws IllegalActionException {
 
@@ -128,9 +133,10 @@ public class UtilityFunctions {
      *  vectors. On the basis of these vectors, a new double array
      *  element is created and filled with the entries of the
      *  Matrix. The matrix is returned as a DoubleMatrixToken.
-     * @param filename The filename.
-     * @return A Token contained the matrix as a DoubleMatrixToken.
-     * @exception IllegalActionException If for the given filename
+     *
+     *  @param filename The filename.
+     *  @return A Token contained the matrix as a DoubleMatrixToken.
+     *  @exception IllegalActionException If for the given filename
      *   a file cannot be opened.
      */
     public static MatrixToken readMatrix(String filename)
@@ -210,6 +216,7 @@ public class UtilityFunctions {
         }
 
     /** The Matrix Parser. The Matrix parser is recreated for the standard
-        in. However, we use ReInit for the specific matrix files. */
+     *  in. However, we use ReInit for the specific matrix files.
+     */
     static MatrixParser mp = new MatrixParser( System.in );
 }

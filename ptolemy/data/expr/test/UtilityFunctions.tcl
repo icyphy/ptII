@@ -99,9 +99,9 @@ test UtilityFunctions-3.0 {Check recurive calls to the parser with eval method} 
 
 ######################################################################
 ####
-test UtilityFunctions-4.0 {Test env} {
+test UtilityFunctions-4.0 {Test property} {
     set p1 [java::new ptolemy.data.expr.PtParser]
-    set root [ $p1 {generateParseTree String} "env(\"file.separator\")"]
+    set root [ $p1 {generateParseTree String} "property(\"file.separator\")"]
     set res  [ $root evaluateParseTree ]
     set fileSeparator [$res toString]
     set results "not ok"
@@ -112,9 +112,9 @@ test UtilityFunctions-4.0 {Test env} {
 } {ok}
 
 ######################################################################
-test UtilityFunctions-4.1 {Test env on a parameter that does not exist} {
+test UtilityFunctions-4.1 {Test property on a parameter that does not exist} {
     set p1 [java::new ptolemy.data.expr.PtParser]
-    set root [ $p1 {generateParseTree String} "env(\"not a parameter\")"]
+    set root [ $p1 {generateParseTree String} "property(\"not a parameter\")"]
     set res  [ $root evaluateParseTree ]
     $res toString
 } {""}
