@@ -1,4 +1,4 @@
-/* A Variable is an Attribute that contains a token and can be referenced
+/* A variable is an attribute that contains a token and can be referenced
 in expressions.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
@@ -25,7 +25,7 @@ in expressions.
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 
 */
@@ -51,7 +51,7 @@ import java.io.IOException;
 //////////////////////////////////////////////////////////////////////////
 //// Variable
 /**
-A Variable is an Attribute that contains a token, and can be set by an
+A variable is an attribute that contains a token, and can be set by an
 expression that can refer to other variables.
 <p>
 A variable can be given a token or an expression as its value. To create
@@ -78,13 +78,15 @@ yet have values.  But there is no problem because the expression
 is not evaluated until getToken() is called.
 <p>
 The expression can only reference variables that are
-added to the scope of this variable before the expression is evaluated
+added to the scope of this variable using addToScope()
+before the expression is evaluated
 (i.e., before getToken() is called). Otherwise, getToken() will throw
 an exception.  By default, all variables
 contained by the same container, and those contained by the container's
 container, are in the scope of this variable. Thus, in the above,
 all three variables are in each other's scope because they belong
-to the same container.
+to the same container. If there are variables in the scope with the
+same name, then those lower in the hierarchy shadow those that are higher.
 <p>
 If a variable is referred
 to by expressions of other variables, then the name of the variable must be a
@@ -172,7 +174,7 @@ public class Variable extends Attribute implements Typeable {
         super(workspace);
     }
 
-    /** Construct a variable with the given name as an Attribute of the
+    /** Construct a variable with the given name as an attribute of the
      *  given container. The container argument must not be null, otherwise
      *  a NullPointerException will be thrown. This variable will use the
      *  workspace of the container for synchronization and version counts.
@@ -219,8 +221,9 @@ public class Variable extends Attribute implements Typeable {
      *  variable. If any of the variables bears the same name as one
      *  already in the scope, then it will shadow the one in the scope.
      *  Items in the list that are not instances of the class Variable (or a
-     *  derived class) are ignored.
-     *  @param variables An enumeration of variables to be added to scope.
+     *  derived class) are ignored.  By default, variable of the container
+     *  and of the container's container are in scope.
+     *  @param variables An enumeration of variables to be added to the scope.
      */
     public void addToScope(Enumeration variables) {
         while (variables.hasMoreElements()) {
@@ -234,7 +237,7 @@ public class Variable extends Attribute implements Typeable {
     /** Add the variable specified by the argument to the scope of this
      *  variable. If the variable bears the same name as one already in
      *  the scope, then it will shadow the one in the scope.
-     *  @param var The variable to be added to scope.
+     *  @param var The variable to be added to the scope.
      */
     public void addToScope(Variable var) {
         if ((var == null) || !_isLegalInScope(var)) {
@@ -285,13 +288,13 @@ public class Variable extends Attribute implements Typeable {
      *  The clone has the same static type constraints (those given by
      *  setTypeEquals() and setTypeAtMost()), but none of the dynamic
      *  type constraints (those relative to other variables).
-     *  @param The workspace in which to place the cloned variable.
+     *  @param workspace The workspace in which to place the cloned variable.
      *  @exception CloneNotSupportedException Thrown only in derived classes.
      *  @see java.lang.Object#clone()
      *  @return The cloned variable.
      */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        Variable newvar = (Variable)super.clone(ws);
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        Variable newvar = (Variable)super.clone(workspace);
         newvar._scopeVariables = null;
         // _currentExpression and _initialExpression are preserved in clone
         if (_currentExpression != null) {
@@ -339,11 +342,11 @@ public class Variable extends Attribute implements Typeable {
         return _currentExpression;
     }
 
-    /** Obtain a NamedList of the variables that the value of this
+    /** Return a NamedList of the variables that the value of this
      *  variable can depend on. These include the variables added to
      *  the scope of this variable by the addToScope()
-     *  methods, and the variables in the same
-     *  NamedObj and those one level up in the hierarchy.
+     *  methods, and the variables in the container (if any) and in the
+     *  container's container (if any).
      *  If there are variables with the same name in these various
      *  places, then they are shadowed as follows.  The most recently
      *  added variable using addToScope() is given priority, followed by
@@ -479,7 +482,7 @@ public class Variable extends Attribute implements Typeable {
     }
 
     /** Remove the items in the enumeration from the scope of this variable.
-     *  Any item in the enumeration that is not an instance of Variable
+     *  Any item in the enumeration that is not an instance of variable
      *  is ignored.  Also, variables that are in the scope because they
      *  are contained by the container of this variables (or its container)
      *  cannot be removed.  An attempt to do so will be ignored.
@@ -501,7 +504,7 @@ public class Variable extends Attribute implements Typeable {
      *  Also, variables that are in the scope because they
      *  are contained by the container of this variables (or its container)
      *  cannot be removed.  An attempt to do so will be ignored.
-     *  Note also that if the removed variables is shadowing
+     *  Note also that if the removed variable is shadowing
      *  another variable with the same name, the shadowed variable <i>does
      *  not</i> reappear in the scope.  It has to be specifically added again.
      *  @param The variable to be removed from scope.
@@ -889,8 +892,8 @@ public class Variable extends Attribute implements Typeable {
     }
 
     /** Return the type constraints of this variable.
-     *  The constraints include the ones explicitly set to this Variable,
-     *  plus the constraint that the type of this Variable must be no less
+     *  The constraints include the ones explicitly set to this variable,
+     *  plus the constraint that the type of this variable must be no less
      *  than its current type, if it has one.
      *  The constraints are a list of inequalities.
      *  @return a list of Inequality objects.
@@ -931,8 +934,8 @@ public class Variable extends Attribute implements Typeable {
     }
 
     /** Return the type constraints of this variable.
-     *  The constraints include the ones explicitly set to this Variable,
-     *  plus the constraint that the type of this Variable must be no less
+     *  The constraints include the ones explicitly set to this variable,
+     *  plus the constraint that the type of this variable must be no less
      *  than its current type, if it has one.
      *  The constraints are an enumeration of inequalities.
      *  @return an enumeration of Inequality objects.
@@ -1425,8 +1428,8 @@ public class Variable extends Attribute implements Typeable {
 
         /** Return this TypeTerm in an array if this term represent
 	 *  a type variable. This term represents a type variable
-	 *  if the type of this Variable is not set through setTypeEquals().
-         *  If the type of this Variable is set, return an array of size zero.
+	 *  if the type of this variable is not set through setTypeEquals().
+         *  If the type of this variable is set, return an array of size zero.
 	 *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
@@ -1463,11 +1466,11 @@ public class Variable extends Attribute implements Typeable {
 	    }
 	}
 
-        /** Test if the type of this Variable is fixed. The type is fixed if
+        /** Test if the type of this variable is fixed. The type is fixed if
 	 *  setTypeEquals() is called with an argument that is not
 	 *  BaseType.NAT, or the user has set a non-null expression or token
 	 *  into this variable.
-         *  @return True if the type of this Variable is set;
+         *  @return True if the type of this variable is set;
 	 *   false otherwise.
          */
         public boolean isSettable() {
