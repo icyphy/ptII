@@ -127,10 +127,10 @@ public abstract class Top extends JFrame {
         // has been modified.
         setDefaultCloseOperation(DO_NOTHING_ON_CLOSE);
         addWindowListener(new WindowAdapter() {
-	    public void windowClosing(WindowEvent e) {
-                _close();
-	    }
-	});
+                public void windowClosing(WindowEvent e) {
+                    _close();
+                }
+            });
 
         getContentPane().setLayout(new BorderLayout());
 

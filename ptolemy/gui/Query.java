@@ -170,7 +170,7 @@ public class Query extends JPanel {
      *  @param currentDirectory The directory to open up the file chooser in.
      */
     public void addFileChooser(String name, String label,
-			       String currentDirectory) {
+            String currentDirectory) {
         JLabel lbl = new JLabel(label + ": ");
         lbl.setBackground(_background);
 	JFileChooser fileChooser =
@@ -733,7 +733,7 @@ public class Query extends JPanel {
 
 	    JScrollPane messageScrollPane = new JScrollPane(_messageArea);
 	    messageScrollPane.setVerticalScrollBarPolicy(
-                          JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
+                    JScrollPane.VERTICAL_SCROLLBAR_AS_NEEDED);
 	    // Get rid of the border.
 	    messageScrollPane.setBorder(BorderFactory.createEmptyBorder());
 
