@@ -136,7 +136,7 @@ public class Type extends SDFApplet implements ChangeListener {
 
             // The control panel has run control and parameter control,
             JPanel controlPanel = new JPanel();
-            controlPanel.setBackground(_getBackground());
+            controlPanel.setBackground(getBackground());
             controlPanel.setAlignmentY(0);
             controlPanel.setLayout(new BorderLayout());
             controlPanel.add(_query, BorderLayout.CENTER);
@@ -147,12 +147,12 @@ public class Type extends SDFApplet implements ChangeListener {
             _query.addLine("ramp2init", "Ramp2 Init Value", "0");
             _query.addLine("ramp2step", "Ramp2 Step Size", "1");
             _query.addLine("expr", "Expression", "input1 + input2");
-            _query.setBackground(_getBackground());
+            _query.setBackground(getBackground());
 
             // The IO panel has the control panel and the output display.
             _ioPanel.setLayout(new BoxLayout(_ioPanel, BoxLayout.X_AXIS));
             _ioPanel.setOpaque(true);
-            _ioPanel.setBackground(_getBackground());
+            _ioPanel.setBackground(getBackground());
             _ioPanel.add(controlPanel);
 
             // Build the PtII model, placing a plotter in the IO panel.
@@ -162,8 +162,8 @@ public class Type extends SDFApplet implements ChangeListener {
             // animation of type resolution progress (trace model).
             JPanel visPanel = new JPanel();
             visPanel.setLayout(new BorderLayout());
-            visPanel.setBackground(_getBackground());
-            _jgraph.setBackground(_getBackground());
+            visPanel.setBackground(getBackground());
+            _jgraph.setBackground(getBackground());
             // FIXME: title borders don't work in diva...
             // _jgraph.setBorder(new TitledBorder(new LineBorder(Color.black),
             //        "Type Lattice"));
@@ -176,7 +176,7 @@ public class Type extends SDFApplet implements ChangeListener {
 	    getContentPane().add(_schemPanel, BorderLayout.CENTER);
             getContentPane().add(visPanel, BorderLayout.SOUTH);
 
-            getContentPane().setBackground(_getBackground());
+            getContentPane().setBackground(getBackground());
 
             // Define the tabbed pane for the plotter and printer.
             _plotPrint.setAlignmentY(0);
@@ -186,9 +186,9 @@ public class Type extends SDFApplet implements ChangeListener {
             _plotPrint.addTab("Printer", null, _printPanel,
                    "Display is printer");
             _plotPrint.addChangeListener(this);
-            _plotPanel.setBackground(_getBackground());
+            _plotPanel.setBackground(getBackground());
             _plotPanel.setBorder(new LineBorder(Color.black));
-            _printPanel.setBackground(_getBackground());
+            _printPanel.setBackground(getBackground());
             _printPanel.setBorder(new LineBorder(Color.black));
             _ioPanel.add(_plotPrint);
 
@@ -289,7 +289,7 @@ public class Type extends SDFApplet implements ChangeListener {
 
         _plotter.place(_plotPanel);
         _plotter.plot.setSize(390, 200);
-        _plotter.plot.setBackground(_getBackground());
+        _plotter.plot.setBackground(getBackground());
         _plotter.plot.setGrid(true);
         _plotter.plot.setXRange(0.0, 10.0);
         _plotter.plot.setYRange(0.0, 20.0);
@@ -388,7 +388,6 @@ public class Type extends SDFApplet implements ChangeListener {
         final GraphModel m = model;
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-System.out.println("doing layout");
                 // Layout is a bit stupid
                 gv.setLayoutPercentage(0.7);
                 LevelLayout staticLayout = new LevelLayout();
@@ -539,7 +538,7 @@ System.out.println("doing layout");
 
         public SchematicPanel() {
             setOpaque(false);
-            setBackground(_getBackground());
+            setBackground(getBackground());
             setPreferredSize(new Dimension(700, 200));
             // As usual, the above is ignored.  Try this...
             setSize(new Dimension(700, 200));
