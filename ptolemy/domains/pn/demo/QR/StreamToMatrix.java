@@ -95,20 +95,6 @@ public class StreamToMatrix extends Transformer {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameters of the new actor.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        StreamToMatrix newobj = (StreamToMatrix)super.clone(ws);
-        newobj.dimension = (Parameter)newobj.getAttribute("dimension");
-        return newobj;
-    }
-
     /** Reads a stream of DoubleTokens and places these tokens in a
      *  Matrix. The Matrix produced is an Upper Triangular Matrix.
      *  @exception IllegalActionException If there is no director.

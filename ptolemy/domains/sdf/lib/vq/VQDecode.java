@@ -117,26 +117,6 @@ public final class VQDecode extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        VQDecode newobj = (VQDecode)(super.clone(ws));
-        newobj.input = (SDFIOPort)newobj.getPort("input");
-        newobj.output = (SDFIOPort)newobj.getPort("output");
-        newobj.codeBook = (Parameter)newobj.getAttribute("codeBook");
-        newobj.blockCount = (Parameter)newobj.getAttribute("blockCount");
-        newobj.blockWidth = (Parameter)newobj.getAttribute("blockWidth");
-        newobj.blockHeight = (Parameter)newobj.getAttribute("blockHeight");
-        return newobj;
-    }
-
     /**
      * Fire this actor.
      * Consume a number of tokens on the input port, each representing a

@@ -137,25 +137,6 @@ public class SequenceToDoubleMatrix extends SDFAtomicActor {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-        throws CloneNotSupportedException {
-        SequenceToDoubleMatrix newobj =
-            (SequenceToDoubleMatrix) super.clone(ws);
-        newobj.input = (SDFIOPort) newobj.getPort("input");
-        newobj.output = (SDFIOPort) newobj.getPort("output");
-
-        newobj.rows = (Parameter) newobj.getAttribute("rows");
-        newobj.columns = (Parameter) newobj.getAttribute("columns");
-        return newobj;
-    }
-
     /** Consume the inputs and produce the output DoubleMatrixToken.
      *  @exception IllegalActionException Not thrown in this base class
      */

@@ -75,7 +75,6 @@ public class SDFTestConsumer extends SDFAtomicActor {
     public Object clone(Workspace ws)
             throws CloneNotSupportedException {
         SDFTestConsumer newobj = (SDFTestConsumer)(super.clone(ws));
-        newobj.input = (SDFIOPort)newobj.getPort("input");
         newobj._history = new StringBuffer(_history.toString());
         return newobj;
     }

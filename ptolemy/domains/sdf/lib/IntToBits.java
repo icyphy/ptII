@@ -88,20 +88,6 @@ public class IntToBits extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        IntToBits newobj = (IntToBits)(super.clone(ws));
-        newobj.input = (SDFIOPort)newobj.getPort("input");
-        newobj.output = (SDFIOPort)newobj.getPort("output");
-        return newobj;
-    }
-
-
     /** Consume a single IntToken on the input. Produce 32 consecutive
      *  BooleanTokens on the output port which is the bitwise
      *  representation of the input IntToken.

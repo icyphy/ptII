@@ -74,23 +74,6 @@ public class SDFTestSplit extends SDFAtomicActor {
     public SDFIOPort output1;
     public SDFIOPort output2;
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-            throws CloneNotSupportedException {
-        SDFTestSplit newobj = (SDFTestSplit)(super.clone(ws));
-        newobj.input = (SDFIOPort)newobj.getPort("input");
-        newobj.output1 = (SDFIOPort)newobj.getPort("output1");
-        newobj.output2 = (SDFIOPort)newobj.getPort("output2");
-        return newobj;
-    }
-
     /**
      * Consume two tokens from the input.  Copy the first one to the port
      * output1, and the second to the port output2

@@ -111,22 +111,6 @@ public class SDFTestDelay extends SDFAtomicActor {
     public SDFIOPort input;
     public SDFIOPort output;
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If one of the attributes
-     *   cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-            throws CloneNotSupportedException {
-        SDFTestDelay newobj = (SDFTestDelay)(super.clone(ws));
-        newobj.input = (SDFIOPort)newobj.getPort("input");
-        newobj.output = (SDFIOPort)newobj.getPort("output");
-        return newobj;
-    }
-
     /* Notice that constructors start the file.  Public methods should follow,
      * in alphabetical order, followed by protected and private methods.
      * Instance variables come at the end of the class.

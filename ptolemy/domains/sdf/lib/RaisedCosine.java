@@ -159,25 +159,6 @@ public class RaisedCosine extends FIR {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        RaisedCosine newobj = (RaisedCosine)(super.clone(ws));
-        newobj.length = (Parameter)(newobj.getAttribute("length"));
-        newobj.excessBW = (Parameter)(newobj.getAttribute("excessBW"));
-        newobj.root = (Parameter)(newobj.getAttribute("root"));
-        newobj.symbolInterval = (Parameter)
-            (newobj.getAttribute("symbolInterval"));
-        return newobj;
-    }
-
     /** Set up the taps and consumption and production constants.
      *  @exception IllegalActionException If the parameters are out of range.
      */

@@ -20,14 +20,14 @@ if {"" != ""} {foreach i [list ] {puts $i; cd "$savedir"; if [ file exists $i ] 
 puts stderr BinaryTree.tcl
 cd "$savedir"
 if [ file exists BinaryTree.tcl ] {source BinaryTree.tcl}
-puts stderr CodeBook.tcl
-cd "$savedir"
-if [ file exists CodeBook.tcl ] {source CodeBook.tcl}
 puts stderr HuffLeaf.tcl
 cd "$savedir"
 if [ file exists HuffLeaf.tcl ] {source HuffLeaf.tcl}
 puts stderr HuffTree.tcl
 cd "$savedir"
 if [ file exists HuffTree.tcl ] {source HuffTree.tcl}
+puts stderr CodeBook.tcl
+cd "$savedir"
+if [ file exists CodeBook.tcl ] {source CodeBook.tcl}
 catch {doneTests}
 exit

@@ -98,22 +98,6 @@ public class Multiplexor extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables to point to the new ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        Multiplexor newobj = (Multiplexor) super.clone(ws);
-        newobj.input = (SDFIOPort) newobj.getPort("input");
-        newobj.output = (SDFIOPort) newobj.getPort("output");
-        newobj.select = (SDFIOPort) newobj.getPort("select");
-        return newobj;
-    }
-
     /** Read a token from the select port and each channel of the input port,
      *  and output the token on the selected channel.
      *

@@ -123,27 +123,6 @@ public final class ImageSequence extends Source {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     */
-    public Object clone(Workspace ws) throws CloneNotSupportedException {
-        ImageSequence newobj = (ImageSequence)(super.clone(ws));
-        newobj.imageURLTemplate =
-            (Parameter)newobj.getAttribute("imageURLTemplate");
-        newobj.imageColumns =
-            (Parameter)newobj.getAttribute("imageColumns");
-        newobj.imageRows =
-            (Parameter)newobj.getAttribute("imageRows");
-        newobj.startFrame =
-            (Parameter)newobj.getAttribute("startFrame");
-        newobj.endFrame =
-            (Parameter)newobj.getAttribute("endFrame");
-        return newobj;
-    }
-
     /** Initialize this actor.
      *  Read in the image files.
      *  @exception IllegalActionException If any of the input files could not

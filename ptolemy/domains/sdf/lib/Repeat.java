@@ -106,23 +106,6 @@ public class Repeat extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables to point to the new ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-	Repeat newobj = (Repeat) super.clone(ws);
-	newobj.input = (SDFIOPort)newobj.getPort("input");
-        newobj.output = (SDFIOPort)newobj.getPort("output");
-	newobj.numberOfTimes = (Parameter) newobj.getAttribute("numberOfTimes");
-	newobj.blockSize = (Parameter) newobj.getAttribute("blockSize");
-	return newobj;
-    }
-
     /** Repeat a block of <i>blockSize</i> input tokens <i>numberOfTimes</i>
      *  times on the output. For example, if <i>blockSize</i> = 3 and
      *  <i>numberOfTimes</i> = 2, then on the following input:<br>

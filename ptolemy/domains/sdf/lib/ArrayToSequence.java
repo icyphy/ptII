@@ -114,8 +114,6 @@ public class ArrayToSequence extends SDFAtomicActor {
     public Object clone(Workspace ws)
 	    throws CloneNotSupportedException {
         ArrayToSequence newobj = (ArrayToSequence)(super.clone(ws));
-        newobj.input = (SDFIOPort)newobj.getPort("input");
-        newobj.output = (SDFIOPort)newobj.getPort("output");
 
         // set the type constraints
         ArrayType inputType = (ArrayType)newobj.input.getType();

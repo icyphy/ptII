@@ -179,27 +179,6 @@ public class FIR extends SDFAtomicActor {
         }
     }
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.  The new
-     *  actor will have the same parameter values as the old.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     */
-    public Object clone(Workspace ws)
-            throws CloneNotSupportedException {
-        FIR newobj = (FIR)(super.clone(ws));
-        newobj.input = (SDFIOPort)newobj.getPort("input");
-        newobj.output = (SDFIOPort)newobj.getPort("output");
-        newobj.decimation =
-            (Parameter)newobj.getAttribute("decimation");
-        newobj.decimationPhase =
-            (Parameter)newobj.getAttribute("decimationPhase");
-        newobj.interpolation =
-            (Parameter)newobj.getAttribute("interpolation");
-        newobj.taps = (Parameter)newobj.getAttribute("taps");
-        return newobj;
-    }
-
     /** Consume the inputs and produce the outputs of the FIR filter.
      *  @exception IllegalActionException Not thrown in this base class.
      */

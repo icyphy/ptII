@@ -102,8 +102,6 @@ public class Delay extends Transformer {
      */
     public Object clone(Workspace ws) throws CloneNotSupportedException {
         Delay newobj = (Delay)(super.clone(ws));
-        newobj.initialOutputs =
-            (Parameter)newobj.getAttribute("initialOutputs");
         newobj._dummy =
             (Variable)newobj.getAttribute("_dummy");
 	newobj.output.setTypeAtLeast(newobj._dummy);

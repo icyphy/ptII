@@ -98,22 +98,6 @@ public class DotProduct extends SDFAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Clone the actor into the specified workspace. This calls the
-     *  base class and sets the public variables to point to the new ports.
-     *  @param ws The workspace for the new object.
-     *  @return A new actor.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    public Object clone(Workspace ws)
-	    throws CloneNotSupportedException {
-        DotProduct newobj = (DotProduct) super.clone(ws);
-        newobj.input1 = (SDFIOPort) newobj.getPort("input1");
-        newobj.input2 = (SDFIOPort) newobj.getPort("input2");
-        newobj.output = (SDFIOPort) newobj.getPort("output");
-        return newobj;
-    }
-
     /** Read a token each of the input ports, converting them into
      *  DoubleMatrixTokens, and output a DoubleToken representing the
      *  dot product. The input matrix tokens are assumed to have only one
