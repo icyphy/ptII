@@ -59,16 +59,39 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// SRDirector
 /**
-
-FIXMENOW: update.
+A director for the Synchronous-Reactive (SR) model of computation.  In SR,
+both computation and communication are considered to happen instantaneously.
+In models with cycles, this introduces interesting issues involving 
+instantaneous feedback.
+<p>
+Time in SR is defined as a series of instants.  An instant is one iteration 
+of the director.  The <i>period</i> method of the director determines the 
+amount of time between instants, in which no activity occurs.
+<p>
+In SR, each iteration begins with the values on all channels being unknown.  
+To ensure that an iteration converges to final values in finite time, it is 
+required that values change only from unknown to known, and never the other 
+way around.  Once a value is known (or known to be absent), it must not 
+change.
 <p>
 An actor is considered <i>ready to fire</i> if sufficient known inputs are 
-available.  An actor <i>has completed firing</i> if it has defined all of 
-its outputs.
+available.  Unless an actor implements the NonStrictActor interface, it is
+assumed to be a strict actor, meaning that it requires all of its inputs
+to be known before it is fired.  This is very important since once an actor
+defines a particular output, it is not allowed to change that value in a 
+subsequent firing in the course of the iteration.  An actor <i>has completed 
+firing</i> if it has defined all of its outputs.
 <p>
 An actor is considered <i>allowed to fire</i> if its prefire()
 method has returned true.  An actor is considered <i>allowed to iterate</i>
 if its postfire() method has not returned false.
+<p>
+The SRScheduler returns an ordering of the actors.  SR semantics do not
+require any particular ordering of actor firings, so the ordering exists only
+to attempt to reduce the computation time required for a given iteration to
+converge.  In the course of an iteration, the director cycles through the 
+schedule repeatedly, firing those actors that are allowed to fire and ready 
+to fire.
 <p>
 An iteration <i>has converged</i> if both the total number of receivers and
 the number of actors that are allowed to fire have converged.
