@@ -126,7 +126,7 @@ public class KeyWriter extends KeyStoreActor {
             // by the password.
             try {
                 _keyStore.setKeyEntry(_alias, key,
-                        _storePassword.toCharArray(),
+                        _keyPassword.toCharArray(),
                         null /* No certificate */);
             } catch (Exception ex) {
                 throw new IllegalActionException(this, ex,

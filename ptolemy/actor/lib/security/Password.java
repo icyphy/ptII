@@ -49,7 +49,7 @@ Produce a password output.
 
 The value of the output is that of the token contained by the
 <i>password</i> parameter, which by default is an StringToken with
-value "this.is.not.secure,it.is.for.testing.only".
+value "this.is.the.defaultPassword,change.it"
 
 <p>The <i>isPersistent</i> parameter determines whether the password
 itself is written out to a file when the model is saved.  The initial
@@ -85,7 +85,7 @@ public class Password extends Source {
     /** Construct a password source with the given container and name.
      *  Create the <i>password</i> parameter, initialize its value to
      *  the default value of StringToken with the value
-     *  "this.is.not.secure,it.is.for.testing.only".
+     *  "this.is.the.defaultPassword,change.it".
      *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
@@ -102,7 +102,7 @@ public class Password extends Source {
         isPersistent.setTypeEquals(BaseType.BOOLEAN);
 
         password = new StringParameter(this, "password");
-        password.setExpression("this.is.not.secure,it.is.for.testing.only");
+        password.setExpression("this.is.the.defaultPassword,change.it");
         password.setPersistent(false);
         new PasswordStyle(password, "style");
 
@@ -122,7 +122,7 @@ public class Password extends Source {
 
     /** The value produced by this password source.
      *  By default, it contains a String  with value
-     *  "this.is.not.secure,it.is.for.testing.only".
+     *  "this.is.the.defaultPassword,change.it".
      */
     public StringParameter password;
 

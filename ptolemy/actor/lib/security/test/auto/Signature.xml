@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 35.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={66, 64, 815, 517}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {66, 64, 815, 517}, maximized = false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 408]">
     </property>
@@ -45,7 +45,7 @@
 This test illustrates how we can use KeyStores to manage public and private keys. 
 The KeyStore itself and each private key in the KeyStore can have a separate 
 password. 
-Both passwords are the string "this.is.not.secure,it.is.for.testing.only".</text></svg></configure>
+</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -58,7 +58,7 @@ Both passwords are the string "this.is.not.secure,it.is.for.testing.only".</text
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 270.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="40.0, 270.0">
         </property>
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -83,6 +83,10 @@ to something else</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="345.0, 0.0">
         </property>
     </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0506730874466">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{325.53125, 201.28625}">
+    </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.data.expr.Parameter" value="1ub">
         </property>
@@ -99,17 +103,38 @@ to something else</text></svg></configure>
         </property>
     </entity>
     <entity name="PrivateKeyReader" class="ptolemy.actor.lib.security.PrivateKeyReader">
-        <property name="keyPassword" class="ptolemy.actor.parameters.PortParameter" value="this.is.not.secure,it.is.for.testing.only">
+        <property name="keyPassword" class="ptolemy.actor.parameters.PortParameter" value="this.is.the.keyPassword,change.it">
         </property>
-        <property name="storePassword" class="ptolemy.actor.parameters.PortParameter" value="this.is.not.secure,it.is.for.testing.only">
+        <property name="storePassword" class="ptolemy.actor.parameters.PortParameter" value="this.is.the.storePassword,change.it">
         </property>
         <doc>Read a key public or private key from a key store
 	   and output it.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="120.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 210.0">
         </property>
+        <port name="keyPassword" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+        <port name="storePassword" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="EAST">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+            </property>
+        </port>
     </entity>
     <entity name="PublicKeyReader" class="ptolemy.actor.lib.security.PublicKeyReader">
-        <property name="storePassword" class="ptolemy.actor.parameters.PortParameter" value="this.is.not.secure,it.is.for.testing.only">
+        <property name="storePassword" class="ptolemy.actor.parameters.PortParameter" value="this.is.the.storePassword,change.it">
         </property>
         <doc>Read a key public or private key from a key store
 	   and output it.</doc>
@@ -167,24 +192,6 @@ to something else</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 210.0">
         </property>
     </entity>
-    <entity name="Password" class="ptolemy.actor.lib.security.Password">
-        <property name="isPersistent" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="password" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
-        </property>
-        <doc>Produce passwords</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="45.0, 160.0">
-        </property>
-    </entity>
-    <entity name="Password2" class="ptolemy.actor.lib.security.Password">
-        <property name="isPersistent" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="password" class="ptolemy.data.expr.StringParameter" value="this.is.not.secure,it.is.for.testing.only">
-        </property>
-        <doc>Produce passwords</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="540.0, 310.0">
-        </property>
-    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -211,22 +218,10 @@ to something else</text></svg></configure>
         <vertex name="vertex1" value="335.0, 190.0">
         </vertex>
     </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="60.0, 220.0">
-        </vertex>
-    </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="310.0, 275.0">
-        </vertex>
-    </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="SequenceToArray.input" relation="relation"/>
     <link port="SequenceToArray.output" relation="relation3"/>
-    <link port="PrivateKeyReader.keyPassword" relation="relation12"/>
-    <link port="PrivateKeyReader.storePassword" relation="relation12"/>
     <link port="PrivateKeyReader.output" relation="relation6"/>
-    <link port="PublicKeyReader.keyPassword" relation="relation13"/>
-    <link port="PublicKeyReader.storePassword" relation="relation13"/>
     <link port="PublicKeyReader.output" relation="relation2"/>
     <link port="Scale.input" relation="relation7"/>
     <link port="Scale.output" relation="relation8"/>
@@ -245,6 +240,4 @@ to something else</text></svg></configure>
     <link port="SignatureVerifier.output" relation="relation11"/>
     <link port="SignatureVerifier.signature" relation="relation4"/>
     <link port="SignatureVerifier.publicKey" relation="relation2"/>
-    <link port="Password.output" relation="relation12"/>
-    <link port="Password2.output" relation="relation13"/>
 </entity>

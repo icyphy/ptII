@@ -100,7 +100,7 @@ initialize_key:
 		ptolemy.actor.gui.MoMLSimpleApplication auto/KeyWriter.xml 
 	@echo "Note that the key is of type JCEKS, which is not the default"
 	keytool -list -keystore auto/foo.keystore \
-		-storepass this.is.the.storePassword,change.it \
+                -storepass  this.is.the.storePassword,change.it \
 		-storetype JCEKS
 	ls -l auto/foo.keystore
 
