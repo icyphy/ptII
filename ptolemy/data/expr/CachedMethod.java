@@ -791,8 +791,6 @@ public class CachedMethod {
             return ARRAYTOKEN;
         try {
             // Tokens can be converted to native types.
-            Class typeClass = ASTPtFunctionNode.convertTokenTypeToJavaType(
-                    actual);
             if(formal.isAssignableFrom(
                        ASTPtFunctionNode.convertTokenTypeToJavaType(actual))) {
                 return NATIVE;

@@ -484,9 +484,9 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 } else if (elementType.equals(BaseType.INT)) {
                     return Class.forName("[I");
                 } else if (elementType.equals(BaseType.LONG)) {
-                    return Class.forName("[[J");
+                    return Class.forName("[J");
                 } else if (elementType.equals(BaseType.BOOLEAN)) {
-                    return Class.forName("[[Z");
+                    return Class.forName("[Z");
                 } else {
                     return java.lang.reflect.Array.newInstance(
                             convertTokenTypeToJavaType(
@@ -576,7 +576,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         } else if (object instanceof Double) {
             retval = new DoubleToken(((Double)object).doubleValue());
         } else if (object instanceof Byte) {
-            // FIXME: not quite right?
+            // FIXME: not quite right? Sign?
             retval = new UnsignedByteToken(((Byte)object).byteValue());
         } else if (object instanceof Integer) {
             retval = new IntToken(((Integer)object).intValue());
@@ -651,11 +651,5 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         }
         return retval;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-	//FIXME
-    //protected String _funcName;
 }
 
