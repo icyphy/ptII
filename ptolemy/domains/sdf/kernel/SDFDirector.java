@@ -21,7 +21,6 @@
  PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
  CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
-[A
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
@@ -39,8 +38,6 @@ import ptolemy.data.*;
 
 import collections.LinkedList;
 import java.util.Enumeration;
-import ptolemy.debug.*;
-
 
 //////////////////////////////////////////////////////////////////////////
 //// SDFDirector
@@ -125,37 +122,13 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  @exception IllegalActionException If the prefire() method of the
      *   container or one of the deeply contained actors throws it, or a
      *   pending mutation throws it.
-     *  @exception NameDuplicationException If a pending mutation throws it.
      */
-    public boolean prefire()
-            throws IllegalActionException,
-            NameDuplicationException {
-        CompositeActor container = ((CompositeActor)getContainer());
-        if (container!= null) {
-            // Perform mutations and initializations until there are no
-            // more to perform.
-            while (_performMutations()) {
-                // NOTE: Should type resolution be done here?
-                // Initialize any new actors
-                _actorListener.initializeNewActors();
-            }
-            if (!_executivedirector) {
-                // This is the local director.
-                // Invoke the prefire() method of deeply contained entities.
-                Enumeration allactors = container.deepGetEntities();
-                boolean allready = true;
-                while (allactors.hasMoreElements()) {
-                    Actor actor = (Actor)allactors.nextElement();
-                    allready = actor.prefire() && allready;
-                }
-                return allready;
-            } else {
-                // This is the executive director.
-                // Invoke the prefire() method of the container.
-                return container.prefire();
-            }
-        }
-        return false;
+    public boolean prefire() throws IllegalActionException {
+        return true;
+    }
+
+    public boolean postfire() throws IllegalActionException {
+        return true;
     }
 
     /** If this is the local director of the container, then invoke the fire
@@ -176,82 +149,25 @@ public class SDFDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container != null) {
-            if (!_executivedirector) {
-                // This is the local director.
-                Scheduler s = getScheduler();
-                if (s == null) 
-                    throw new IllegalActionException("Attempted to fire " +
-                            "SDF system with no scheduler");
-                Enumeration allactors = s.schedule();
-                while (allactors.hasMoreElements()) {
-                    Actor actor = (Actor)allactors.nextElement();
-                    actor.fire();
+            Scheduler s = getScheduler();
+            if (s == null) 
+                throw new IllegalActionException("Attempted to fire " +
+                        "SDF system with no scheduler");
+            Enumeration allactors = s.schedule();
+            while (allactors.hasMoreElements()) {
+                Actor actor = (Actor)allactors.nextElement();
+                if(!actor.prefire()) {
+                    throw new IllegalActionException("SDF Schedule " +
+                            "invalid.   Actor " + 
+                            "is not ready to fire.");
                 }
-            } else {
-                // This is the executive director.
-                container.fire();
+                actor.fire();
+                actor.postfire();
             }
         }
     }
 
-    /** Invoke initialize(), then invoke iterate() until it returns false,
-     *  and then invoke wrapup().  This method acquires read permission
-     *  on the workspace several times, releasing it between iterations
-     *  and then re-acquiring it.
-     *
-     *  @exception CloneNotSupportedException If thrown by any of the
-     *   called methods.
-     *  @exception IllegalActionException If thrown by any of the
-     *   called methods.
-     *  @exception NameDuplicationException If the iterate() method throws
-     *   it (while performing mutations).
-     */
-    /*    public void run()
-            throws IllegalActionException,
-            NameDuplicationException {
-        run(-1);
-    }
-    */
-    /** Invoke initialize(), then invoke iterate() the specified number
-     *  of times, and then invoke wrapup().   If the argument is negative,
-     *  then run until the iterate() method returns false.
-     *  This method acquires read
-     *  permission on the workspace several times, releasing it between
-     *  iterations and then re-acquiring it.
-     *
-     *  @param iterations The number of iterations to run.
-     *  @exception CloneNotSupportedException If thrown by any of the
-     *   called methods.
-     *  @exception IllegalActionException If thrown by any of the
-     *   called methods.
-     *  @exception NameDuplicationException If the iterate() method throws
-     *   it (while performing mutations).
-     */
-    /*    public void run(int iterations)
-            throws IllegalActionException,
-            NameDuplicationException {
-        try {
-            workspace().getReadAccess();
-            initialize();
-        } finally {
-            workspace().doneReading();
-        }
-        if (iterations < 0) {
-            while (iterate());
-        } else {
-            int count = 0;
-            while (count++ < iterations) {
-                iterate();
-            }
-        }
-        try {
-            workspace().getReadAccess();
-            wrapup();
-        } finally {
-            workspace().doneReading();
-        }
-    }
-    */
+
     /** If this is the local director of its container, invoke the wrapup()
      *  methods of all its deeply contained actors.  If this is the executive
      *  director of the container, then invoke the wrapup() method of the
@@ -268,16 +184,10 @@ public class SDFDirector extends StaticSchedulingDirector {
     public void wrapup() throws IllegalActionException {
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
-            if (!_executivedirector) {
-                // This is the local director.
-                Enumeration allactors = container.deepGetEntities();
-                while (allactors.hasMoreElements()) {
-                    Actor actor = (Actor)allactors.nextElement();
-                    actor.wrapup();
-                }
-            } else {
-                // This is the executive director.
-                container.wrapup();
+            Enumeration allactors = container.deepGetEntities();
+            while (allactors.hasMoreElements()) {
+                Actor actor = (Actor)allactors.nextElement();
+                actor.wrapup();
             }
         }
     }
@@ -299,7 +209,7 @@ public class SDFDirector extends StaticSchedulingDirector {
             // this should never happen because we don't override 
             // setScheduler() to do sanity checks.  
             Debug.println("Illegal schedule caught, " +
-                    "which should never happen!");
+                "which should never happen!");
         }
     }
     ///////////////////////////////////////////////////////////////////
