@@ -133,8 +133,8 @@ import java.applet.Applet;
  * being drawn between points. The numbers <i>x</i> and <i>y</i> are
  * arbitrary numbers as supported by the Double parser in Java.
  *
- * @author: Edward A. Lee
- * @version: @(#)Plot.java	1.11 09/11/97
+ * @author: Edward A. Lee, Christopher Hylands
+ * @version: $Id$
  */
 public class Plot extends PlotBox {
 
