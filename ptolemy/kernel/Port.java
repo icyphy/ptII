@@ -28,8 +28,6 @@
 package pt.kernel;
 
 import java.util.Enumeration;
-import pt.kernel.CrossRefList;
-import pt.kernel.NullReferenceException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Port
@@ -60,15 +58,15 @@ public class Port extends NamedObj {
 
     /** Connect this Port to a Relation.
      * @param relation The Relation to which this Port will be connected.
-     * @exception pt.kernel.NullReferenceException Signals an attempt
-     *  to pass null object references as arguments.
+     * @exception java.lang.NullPointerException Signals an attempt
+     *  to a pass null object as an argument.
      * @exception pt.kernel.GraphException Attempt to connect this 
      *  port to a relation to which it's already connected.
      */	
     public void connectToRelation(Relation relation)
-    	    throws NullReferenceException {
+    	    throws NullPointerException {
         if( relation == null ) {
-	    throw new NullReferenceException( 
+	    throw new NullPointerException( 
 	            "Null Relation passed to Port.connectToRelation()" );
 
 	//FIXME: Out here assuming that we can never have a case that
