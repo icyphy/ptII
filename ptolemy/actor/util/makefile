@@ -64,7 +64,6 @@ JSRCS = \
 	CQComparator.java \
 	DoubleCQComparator.java \
 	FIFOQueue.java \
-	PtolemyApplet.java \
 	Query.java \
 	QueryListener.java \
 	Table.java
