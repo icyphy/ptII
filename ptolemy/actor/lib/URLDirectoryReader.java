@@ -64,16 +64,17 @@ If the <i>refresh</i> flag is true, and the <i>repeat</i> flag is
 true, then the directory is re-read before repeating the sequence of
 files and subdirectories.
 
+<p>If the <i>endsWith</i> String parameter is non-null and non-empty,
+then only file names or subdirectories that end with the value
+of the <i>endsWith</i> parameter are ouput.
 
 <p>One alternative implementation would be that if the URL named a file,
 then the actor would output the names of the files and subdirectories
-in the adjacent file.
+in the directory that contains the file.
 <br>Another alternative implementation would output the names of the
 files and subdirectories in an array.
 <br>An extension would be to include a filter parameter that could be
 a regular expression that would allow us to filter the file names.
-<br> Another extension would be to include an actor that would filter
-file names.
 <br> Should this actor extend URLReader or SequenceActor?
 
 @author  Christopher Hylands
@@ -104,8 +105,14 @@ public class URLDirectoryReader extends URLReader {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** If non-null and non-empty, then only output file names and sub
+     *  directories that end with this String value.
+     *	The default value of this parameter is the empty String "".
+     */
+    public Parameter endsWith;
+
     /** Repeat after outputting all elements of the directory.
-     *	Default is false.
+     *	The default value of this parameter is a false BooleanToken.
      */
     public Parameter repeat;
 
@@ -122,7 +129,14 @@ public class URLDirectoryReader extends URLReader {
             throws IllegalActionException {
         if (attribute == repeat) {
             _repeatFlag = ((BooleanToken)repeat.getToken()).booleanValue();
-        }
+        } else if (attribute == endsWith) {
+	    StringToken endsWithToken = (StringToken)endsWith.getToken();
+	    if (endsWithToken == null) {
+		_endsWithValue = null;
+	    } else {
+		_endsWithValue = endsWithToken.stringValue();
+	    }
+	}
         super.attributeChanged(attribute);
     }
 
@@ -159,7 +173,7 @@ public class URLDirectoryReader extends URLReader {
 	    } else {
 		_iterationCount = 0;
 		if (_refreshFlag) {
-		    _data = _list(_source);
+		    _data = _list(_source, _endsWithValue);
 		}
 	    }
 	}
@@ -171,7 +185,7 @@ public class URLDirectoryReader extends URLReader {
      */
     public boolean prefire() throws IllegalActionException {
         try {
-	    _data = _list(_source);
+	    _data = _list(_source, _endsWithValue);
             return super.prefire();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex.getMessage());
@@ -188,17 +202,20 @@ public class URLDirectoryReader extends URLReader {
      *  names neither a file or directory, return null.
      *
      *  @param source The filename or URL to open
+     *  @param endsWith If non-null, then only files or subdirectories
+     *  that end with this string are reported.
      *  @return An array of Strings where each element of the array
      *  names a file or subdirectory.
      *  @exception IllegalActionException If the source is a malformed
      *  URL
      */
-    private String [] _list(String source) throws IllegalActionException {
+    private String [] _list(String source, String endsWith)
+	throws IllegalActionException {
 	if (source.startsWith("file:")) {
-	    return _listFile(source);
+	    return _listFile(source, endsWith);
 	} else {
 	    try {
-		return _listFileOrURL(source);
+		return _listFileOrURL(source, endsWith);
 	    } catch (Exception ex) {
 		throw new IllegalActionException("Could not open '" + source
 						 + ": "
@@ -209,14 +226,19 @@ public class URLDirectoryReader extends URLReader {
     }
 
     /** Return files and directories contained in the source url.
+     *  @param source The source URL to query for files and subdirectories.
      *  The source url must be a String using the "file:" protocol.
+     *  @param endsWith If non-null and of length greater than 0,
+     *  then only files or subdirectories that end with this string
+     *  are reported.
      *  @return An array containing the files and subdirectories in
      *  the source URL.
      *  @exception IllegalActionException If the source does not have
      *  the file: protocol, or if the source is neither a file
      *  nor a directory, or if there is some other problem.
      */
-    private String [] _listFile(String source) throws IllegalActionException {
+    private String [] _listFile(String source, String endsWith)
+	throws IllegalActionException {
 	try {
 	    URL sourceURL = new URL(source);
 
@@ -224,16 +246,19 @@ public class URLDirectoryReader extends URLReader {
 		// First, try opening the source as a file.
 		File file = new File(sourceURL.getFile());
 		if (file.isDirectory()) {
-		    String [] shortFiles = file.list();
-		    String [] longFiles = new String[shortFiles.length];
-		    if (!source.endsWith("/")) {
-			// FIXME: is this platform dependent?
-			source += "/";
+		    // Note: we could use listFiles(FileFilter) here.
+		    // but since the filter is fairly simple, we don't
+		    File [] files = file.listFiles();
+		    List resultsList = new LinkedList();
+		    for (int i = 0; i < files.length; i++) {
+			String filename = files[i].getAbsolutePath();
+			if (endsWith == null || endsWith.length() == 0 
+			    || filename.endsWith(endsWith)) {
+			    resultsList.add(filename);
+			}
 		    }
-		    for (int i = 0; i < shortFiles.length; i++) {
-			longFiles[i] = source + shortFiles[i];
-		    }
-		    return longFiles;
+		    String [] results = new String[resultsList.size()];
+		    return (String [])(resultsList.toArray(results));
 		} else if (file.isFile()) {
 		    return new String[] {file.toString()};
 		} else {
@@ -261,12 +286,17 @@ public class URLDirectoryReader extends URLReader {
      *  directory listing enabled, and the default html file
      *  (index.htm, index.html, default.htm etc. ) must not be present.
      *
+     *  @param source The source URL to query for files and subdirectories.
+     *  The source url must be a String using the "file:" protocol.
+     *  @param endsWith If non-null and of length greater than 0,
+     *  then only files or subdirectories that end with this string
+     *  are reported.
      *  @return An array containing the files and subdirectories in
      *  the source URL.
      *  @exception IllegalActionException If the source does not have
      *  the file: protocol, or if the source is neither a file
      *  nor a directory, or if there is some other problem.  */
-    private static String [] _listFileOrURL(String source)
+    private static String [] _listFileOrURL(String source, String endsWith)
 	throws MalformedURLException, IOException {
 	URL url = new URL(source);
 	URLConnection urlConnection = url.openConnection();
@@ -336,8 +366,12 @@ public class URLDirectoryReader extends URLReader {
 					// could try opening a connection
 					// here to verify that the target
 					// exists.
-					resultsList.add(source
-							+ target);
+					if (endsWith == null
+					    || endsWith.length() == 0 
+					    || target.endsWith(endsWith)) {
+					    resultsList.add(source
+							    + target);
+					}
 					sawHREF = false;
 				    }
 				}
@@ -354,6 +388,10 @@ public class URLDirectoryReader extends URLReader {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
+
+    // If non-null and non-empty, then we only output file names and
+    // subdirectories that match this String.
+    private String _endsWithValue;
 
     // Count of the iterations.
     private int _iterationCount = 0;
