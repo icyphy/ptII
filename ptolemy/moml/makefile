@@ -57,7 +57,6 @@ JSRCS =	Documentation.java \
 	ErrorHandler.java \
 	ImportAttribute.java \
 	LibraryAttribute.java \
-	Location.java \
 	MoMLAttribute.java \
 	MoMLChangeRequest.java \
 	MoMLFilter.java \
