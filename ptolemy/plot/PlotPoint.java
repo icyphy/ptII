@@ -34,6 +34,8 @@ package ptplot;
 //// PlotPoint
 /** 
  * A simple structure for storing a plot point.
+ * @author Edward A. Lee
+ * @version $Id$
  */
 public class PlotPoint {
 
