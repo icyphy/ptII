@@ -30,8 +30,7 @@
 
 package ptolemy.domains.hdf.kernel;
 
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -41,8 +40,13 @@ import ptolemy.actor.NoTokenException;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.parameters.ParameterPort;
+import ptolemy.actor.util.ConstVariableModelAnalysis;
+import ptolemy.actor.util.DependencyDeclaration;
 import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
+import ptolemy.data.Token;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.fsm.kernel.Action;
 import ptolemy.domains.fsm.kernel.FSMActor;
@@ -254,6 +258,27 @@ public class HDFFSMDirector extends FSMDirector {
         return;
     }
 
+    /**
+     * Return the change context being made explicit.  This class
+     * overrides the implementation in the FSMDirector base class to
+     * report that HDF models only make state transitions between
+     * toplevel iterations.
+     */
+    public Entity getContext() {
+        // Set the flag indicating whether we're in an SDF model or
+        // not.
+        try {
+            _getHighestFSM();
+        } catch (IllegalActionException ex) {
+            // Ignore.
+        }
+        if(_embeddedInSDF) {
+            return super.getContext();
+        } else {
+            return (Entity)toplevel();
+        }
+    }
+
     /** If this method is called immediately after preinitialize(),
      *  initialize the mode controller and all the refinements.
      *  If this is a reinitialization, it typically means this
@@ -314,45 +339,6 @@ public class HDFFSMDirector extends FSMDirector {
                         "current refinement is null.");
             }
         }
-    }
-
-    /**
-     * Return the change context being made explicit.  In this case,
-     * the change context returned is the context in which HDF makes
-     * state transitions.
-     */
-    public Entity getContext() {
-        return (Entity)toplevel();  // FIXME!
-    }
-
-    /** Return a list of variables that are modified in a modal model.
-     * The variables are assumed to have a change context of the
-     * container of this director.  This class returns all variables
-     * that are assigned in the actions of transitions, and all rate
-     * variables of the container.
-     * @return A list of variables.
-     */
-    public List getModifiedVariables() throws IllegalActionException {
-        List list = super.getModifiedVariables();
-
-        if (!_allRefinementsHaveSameRate()) {
-            CompositeActor container = (CompositeActor)getContainer();
-            for (Iterator ports = container.inputPortList().iterator();
-                 ports.hasNext();) {
-                IOPort port = (IOPort)ports.next();
-                Parameter param = (Parameter)
-                    SDFUtilities.getRateVariable(port, "tokenConsumptionRate");
-                list.add(param);
-            }
-            for (Iterator ports = container.outputPortList().iterator();
-                 ports.hasNext();) {
-                IOPort port = (IOPort)ports.next();
-                Parameter param = (Parameter)
-                    SDFUtilities.getRateVariable(port, "tokenProductionRate");
-                list.add(param);
-            }
-        }
-        return list;
     }
 
     /** Set up new state and connection map if exactly
@@ -532,6 +518,36 @@ public class HDFFSMDirector extends FSMDirector {
             throw new IllegalActionException(this,
                     "current refinement is null.");
         }
+           
+        // Declare reconfiguration constraints on the ports of the
+        // actor.  The constraints indicate that the ports are
+        // reconfigured whenever any refinement rate parameter of
+        // a corresponding port is reconfigured.  Additionally,
+        // all rate parameters are reconfigured every time the
+        // controller makes a state transition, unless the
+        // corresponding refinement rate parameters are constant,
+        // and have the same value.  (Note that the controller
+        // itself makes transitions less often if it is contained
+        // in an HDF model, rather than in an SDF model.)
+        ConstVariableModelAnalysis analysis =
+            ConstVariableModelAnalysis.getAnalysis(this);
+        CompositeActor model = (CompositeActor)getContainer();
+        for (Iterator ports = model.portList().iterator();
+             ports.hasNext();) {
+            IOPort port = (IOPort) ports.next();
+            if (!(port instanceof ParameterPort)) {
+                if (port.isInput()) {
+                    _declareReconfigurationDependencyForRefinementRateVariables(
+                            analysis, port, "tokenConsumptionRate");                   
+                }
+                if (port.isOutput()) {
+                    _declareReconfigurationDependencyForRefinementRateVariables(
+                            analysis, port, "tokenProductionRate"); 
+                    _declareReconfigurationDependencyForRefinementRateVariables(
+                            analysis, port, "tokenInitProduction"); 
+                }
+            }
+        }
     }
 
     /** Return true if data are transferred from the input port of
@@ -645,56 +661,86 @@ public class HDFFSMDirector extends FSMDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Return true if every state of the finite state machine has a
-     * refinement and every refinement has ports with the same name
-     * and direction and each port of each refinement with the same
-     * name has the same rate parameter.
+    
+    /** Add a DependencyDeclaration (with the name
+     * "_HDFFSMRateDependencyDeclaration") to the variable with the given
+     * name in the given port that declares the variable is dependent
+     * on the given list of variables.  If a dependency declaration
+     * with that name already exists, then simply set its dependents
+     * list to the given list.
      */
-    private boolean _allRefinementsHaveSameRate()
+    protected void _declareDependency(ConstVariableModelAnalysis analysis,
+            IOPort port, String name, List dependents)
             throws IllegalActionException {
-        CompositeActor container = (CompositeActor)getContainer();
-        FSMActor controller = getController();
-        for (Iterator ports = container.portList().iterator();
-             ports.hasNext();) {
-            IOPort port = (IOPort)ports.next();
-            String name = port.getName();
-            int previousTokenProductionRate = 0;
-            int previousTokenConsumptionRate = 0;
-            boolean firstTime = true;
-            for (Iterator states = controller.entityList().iterator();
-                 states.hasNext();) {
-                State state = (State)states.next();
-                // FIXME
-                CompositeActor refinement =
-                    (CompositeActor)state.getRefinement()[0];
-                IOPort refinementPort = (IOPort)refinement.getPort(name);
-                int tokenProductionRate = 0;
-                int tokenConsumptionRate = 0;
-                if (refinementPort == null) {
-                    // Check directionality
-                    if (port.isInput() != refinementPort.isInput()) {
-                        return false;
-                    }
-                    if (port.isOutput() != refinementPort.isOutput()) {
-                        return false;
-                    }
-                    tokenConsumptionRate =
-                        SDFUtilities._getRateVariableValue(
-                                refinementPort, "tokenConsumptionRate", 0);
-                    tokenProductionRate =
-                        SDFUtilities._getRateVariableValue(
-                                refinementPort, "tokenProductionRate", 0);
-                }
-                if (previousTokenConsumptionRate != tokenConsumptionRate) {
-                    return false;
-                }
-                if (previousTokenProductionRate != tokenProductionRate) {
-                    return false;
+        Variable variable =
+            (Variable)SDFUtilities.getRateVariable(port, name);
+        DependencyDeclaration declaration = (DependencyDeclaration)
+            variable.getAttribute(
+                    "_HDFFSMRateDependencyDeclaration",
+                    DependencyDeclaration.class);
+        if (declaration == null) {
+            try {
+                declaration = new DependencyDeclaration(variable,
+                        "_HDFFSMRateDependencyDeclaration");
+            } catch (NameDuplicationException ex) {
+                // Ignore... should not happen.
+            }
+        }
+        declaration.setDependents(dependents);
+        analysis.addDependencyDeclaration(declaration);
+    }
+
+    // Declare the reconfiguration dependency in the given analysis
+    // associated wiht the parameter name of the given port.
+    private void _declareReconfigurationDependencyForRefinementRateVariables(
+            ConstVariableModelAnalysis analysis,
+            IOPort port, 
+            String parameterName) throws IllegalActionException {
+        List refinementRateVariables = 
+            _getRefinementRateVariables(port, parameterName);
+        _declareDependency(
+                analysis, port, parameterName,
+                refinementRateVariables);
+        boolean isConstantAndIdentical = true;
+        Token value = null;
+        for(Iterator variables = refinementRateVariables.iterator();
+            variables.hasNext() && isConstantAndIdentical;) {
+            Variable rateVariable = (Variable)variables.next();
+            isConstantAndIdentical = isConstantAndIdentical &&
+                (analysis.getChangeContext(rateVariable) == null);
+            if(isConstantAndIdentical) {
+                Token newValue = analysis.getConstantValue(rateVariable);
+                if(value == null) {
+                    value = newValue;
+                } else {
+                    isConstantAndIdentical = isConstantAndIdentical &&
+                        (newValue.equals(value));
                 }
             }
         }
-        return true;
+        if(!isConstantAndIdentical) {
+            // Has this as ChangeContext.
+            System.out.println("Found rate parameter " + parameterName + " of port " + port.getFullName() + " that changes.");
+        }
+    }        
+
+    /** Return the set of variables with the given name that are
+     * contained by ports connected to the given port on the inside.
+     */
+    private List _getRefinementRateVariables(
+            IOPort port, String parameterName)
+            throws IllegalActionException {
+        List list = new LinkedList();
+        for(Iterator insidePorts = port.deepInsidePortList().iterator();
+            insidePorts.hasNext();) {
+            IOPort insidePort = (IOPort)insidePorts.next();
+            Variable variable = (Variable)
+                SDFUtilities.getRateVariable(insidePort, parameterName);
+            if(variable != null) {
+                list.add(variable);
+            }
+        }
+        return list;
     }
 
     /** If the container of this director does not have an
@@ -768,12 +814,12 @@ public class HDFFSMDirector extends FSMDirector {
         while (refineInPorts.hasNext()) {
             IOPort refineInPort =
                 (IOPort)refineInPorts.next();
-            // Get all of the input ports this port is
-            // linked to on the outside (should only consist
-            // of 1 port).
+            // Get all of the input ports this port is linked to on
+            // the outside (should only consist of 1 port).
+
             // Iterator inPorts = inputPortList().iterator();
             // while (inPorts.hasNext()) {
-            //     TypedIOPort inPort = (TypedIOPort)inPorts.next();
+            //     IOPort inPort = (IOPort)inPorts.next();
             Iterator inPortsOutside =
                 refineInPort.deepConnectedInPortList().iterator();
             if (!inPortsOutside.hasNext()) {
