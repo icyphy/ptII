@@ -36,15 +36,19 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 ///CIActor
 
-/*
+/**
+    A base class for actors specific to the CI domain. This class extends
+    Transformer and provides two methods: enableActor() and isPulled(), for
+    its subclasses (in a different package) to access the related protected
+    methods in the CIDirector. 
 
-
-@author Yang Zhao
-@version $Id$
-@since Ptolemy II 2.2
-@Pt.ProposedRating Yellow (cxh)
-@Pt.AcceptedRating Yellow (cxh)
+    @author Yang Zhao
+    @version $Id$
+    @since Ptolemy II 3.0
+    @Pt.ProposedRating Yellow (cxh)
+    @Pt.AcceptedRating Yellow (cxh)
 */
+
 public class CIActor extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -62,14 +66,18 @@ public class CIActor extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+    
+    /** Ask the dirctor to schedule this actor to fire.
+     */
     public void enableActor() {
         _director = (CIDirector) getDirector();
         _director._actorEnabled(this);
     }
 
+    /** Return true if the given actor has a pending pull request.
+     * @return True if the given actor has been pulled for data.
+     */
     public boolean isPulled() {
         _director = (CIDirector) getDirector();
         return _director._isPulled(this);
