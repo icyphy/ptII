@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- This script was automatically generated using Zero G's InstallAnywhere 5 Enterprise, Build 1534
      STATUS: Fully-Functional UNLICENSED Trial Edition
-     DATE:   Sun Jun 30 15:20:10 PDT 2002 -->
-<InstallAnywhere_Deployment_Project increments="5676">
+     DATE:   Sun Jun 30 16:53:36 PDT 2002 -->
+<InstallAnywhere_Deployment_Project increments="5706">
 	<!-- ** DO NOT EDIT ** Essential authorization and configuration data ** DO NOT EDIT ** -->
 	<essentialScriptInfo>
 		<versionID major="5" minor="-1" revision="-1"/>
@@ -10,9 +10,9 @@
 		<scriptID>12,42,11,85,78,76,73,67,69,78,83,69,68</scriptID>
 		<buildID>3,13,71,87,105,110,100,111,119,115,32,50,48,48,48,44,32,53,46,48,44,32,120,56,54,59,32,74,97,118,97,32,49,46,51,46,49,95,48,51,44,32,83,117,110,32,77,105,99,114,111,115,121,115,116,101,109,115,32,73,110,99,46,44,32,104,116,116,112,58,47,47,106,97,118,97,46,115,117,110,46,99,111,109,47,59,32,101,110,44,32,85,83,59,32,67,112,49,50,53,50</buildID>
 		<!-- The authorizationID may change between project saves and builds.  This does not effect the integrity of the project, nor do changes in this value represent changes in the actual InstallAnywhere project. -->
-		<authorizationID>1,0,0,-32,-61,20,1,-128,64,99,70,101,125,121,100,96,105,48,48,49,56,52,67,98,113,112,124,44,81,100,99,62,57,15,14,9,7,76,99,14,0,0,0</authorizationID>
+		<authorizationID>1,0,0,-32,-61,116,-111,16,64,99,70,101,125,121,100,96,105,48,48,49,56,52,67,98,113,112,124,44,81,100,99,62,57,15,14,9,0,65,99,14,0,0,0</authorizationID>
 	</essentialScriptInfo>
-	<installationObjects uniqueObjects="314">
+	<installationObjects uniqueObjects="315">
 		<object class="com.zerog.ia.installer.Installer" objectID="92a08b599096">
 			<property name="wizardME">
 				<object class="com.zerog.ia.installer.actions.MakeExecutable" objectID="92a0b1b990aa">
@@ -166,7 +166,7 @@ it will search for ones in this list]]></string>
 								</object>
 							</method>
 							<method name="addElement">
-								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="d69792568b66">
+								<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="d6db7cf08b66">
 									<property name="propertyValue">
 										<string><![CDATA[ptolemy.plot.plotml.EditablePlotMLApplication]]></string>
 									</property>
@@ -272,7 +272,7 @@ and any path to a file to read from that file]]></string>
 								<string><![CDATA[plotapplication.jar]]></string>
 							</property>
 							<property name="fileSize">
-								<long>179894</long>
+								<long>180446</long>
 							</property>
 							<property name="macBinary">
 								<boolean>false</boolean>
@@ -293,19 +293,19 @@ and any path to a file to read from that file]]></string>
 										<object refID="92a029979096"/>
 									</property>
 									<property name="win32MagicFolder">
-										<object class="com.zerog.ia.installer.util.magicfolders.SystemDriveRootMF" factoryID="157" objectID="a4346c439098"/>
+										<object class="com.zerog.ia.installer.util.magicfolders.UserMagicFolder2MF" factoryID="991" objectID="d69791158b5e"/>
 									</property>
 									<property name="solarisMagicFolderPath">
-										<string><![CDATA[Ptplot5_2]]></string>
+										<string><![CDATA[]]></string>
 									</property>
 									<property name="macMagicFolderPath">
-										<string><![CDATA[Ptplot5_2]]></string>
+										<string><![CDATA[]]></string>
 									</property>
 									<property name="macXMagicFolderPath">
-										<string><![CDATA[Ptplot5_2]]></string>
+										<string><![CDATA[]]></string>
 									</property>
 									<property name="win32MagicFolderPath">
-										<string><![CDATA[$USER_MAGIC_FOLDER_1$]]></string>
+										<string><![CDATA[]]></string>
 									</property>
 								</object>
 							</property>
@@ -1312,7 +1312,7 @@ and any path to a file to read from that file]]></string>
 										<string><![CDATA[configure]]></string>
 									</property>
 									<property name="fileSize">
-										<long>95443</long>
+										<long>95496</long>
 									</property>
 									<property name="macBinary">
 										<boolean>false</boolean>
@@ -1338,7 +1338,7 @@ and any path to a file to read from that file]]></string>
 										<string><![CDATA[configure.in]]></string>
 									</property>
 									<property name="fileSize">
-										<long>53562</long>
+										<long>53634</long>
 									</property>
 									<property name="macBinary">
 										<boolean>false</boolean>
@@ -4637,7 +4637,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[install.htm]]></string>
 															</property>
 															<property name="fileSize">
-																<long>10231</long>
+																<long>11657</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -4741,7 +4741,7 @@ and any path to a file to read from that file]]></string>
 																<string><![CDATA[ptplotfaq.htm]]></string>
 															</property>
 															<property name="fileSize">
-																<long>22203</long>
+																<long>22211</long>
 															</property>
 															<property name="macBinary">
 																<boolean>false</boolean>
@@ -5055,7 +5055,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[makefile]]></string>
 													</property>
 													<property name="fileSize">
-														<long>20433</long>
+														<long>20924</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5734,7 +5734,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[plotmlapplet.jar]]></string>
 													</property>
 													<property name="fileSize">
-														<long>133080</long>
+														<long>137538</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -5786,7 +5786,7 @@ and any path to a file to read from that file]]></string>
 														<string><![CDATA[ptplot.iap_xml]]></string>
 													</property>
 													<property name="fileSize">
-														<long>343335</long>
+														<long>333740</long>
 													</property>
 													<property name="macBinary">
 														<boolean>false</boolean>
@@ -6156,7 +6156,7 @@ it will search for ones in this list]]></string>
 												</object>
 											</method>
 											<method name="addElement">
-												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="d697951d8bb9">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="d6db7fdf8bb9">
 													<property name="propertyValue">
 														<string><![CDATA[ptolemy.plot.compat.PxgraphApplication]]></string>
 													</property>
@@ -6361,7 +6361,7 @@ it will search for ones in this list]]></string>
 												</object>
 											</method>
 											<method name="addElement">
-												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="d697953b8bc0">
+												<object class="com.zerog.ia.installer.util.LAXPropertyData" objectID="d6db80078bbf">
 													<property name="propertyValue">
 														<string><![CDATA[ptolemy.plot.plotml.HistogramMLApplication]]></string>
 													</property>
@@ -6486,10 +6486,10 @@ and any path to a file to read from that file]]></string>
 				<boolean>true</boolean>
 			</property>
 			<property name="supportsConsoleUI">
-				<boolean>false</boolean>
+				<boolean>true</boolean>
 			</property>
 			<property name="supportsSilentUI">
-				<boolean>false</boolean>
+				<boolean>true</boolean>
 			</property>
 			<property name="panelImagePath">
 				<string><![CDATA[com/zerog/ia/installer/images/]]></string>
@@ -6566,7 +6566,17 @@ You may cancel this installation at any time by clicking the 'Cancel' button.]]>
 								<string><![CDATA[USER_MAGIC_FOLDER_1]]></string>
 							</property>
 							<property name="value">
-								<string><![CDATA[Ptolemy$/$Ptplot52]]></string>
+								<string><![CDATA[$WIN_COMMON_PROGRAMS_MENU$$/$Ptolemy$/$Ptplot 5.2]]></string>
+							</property>
+						</object>
+					</method>
+					<method name="addElement">
+						<object class="com.zerog.ia.installer.actions.EditVariableTable" objectID="d6b5a12f8e8a">
+							<property name="name">
+								<string><![CDATA[USER_MAGIC_FOLDER_2]]></string>
+							</property>
+							<property name="value">
+								<string><![CDATA[$SYSTEM_DRIVE_ROOT$$/$Ptolemy$/$Ptplot5.2]]></string>
 							</property>
 						</object>
 					</method>
@@ -6842,7 +6852,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 						<object refID="92a08bbd9097"/>
 					</property>
 					<property name="win32MagicFolder">
-						<object class="com.zerog.ia.installer.util.magicfolders.CommonProgramsMenuMF" factoryID="23" objectID="a4346c4d909a"/>
+						<object class="com.zerog.ia.installer.util.magicfolders.UserMagicFolder1MF" factoryID="992" objectID="98189e26bcd7"/>
 					</property>
 					<property name="solarisMagicFolderPath">
 						<string><![CDATA[]]></string>
@@ -6854,7 +6864,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 						<string><![CDATA[]]></string>
 					</property>
 					<property name="win32MagicFolderPath">
-						<string><![CDATA[$USER_MAGIC_FOLDER_1$]]></string>
+						<string><![CDATA[]]></string>
 					</property>
 				</object>
 			</property>
@@ -6874,7 +6884,7 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 				<object class="java.util.Properties">
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.save.last.date]]></string>
-						<string><![CDATA[Sun Jun 30 15:20:09 PDT 2002]]></string>
+						<string><![CDATA[Sun Jun 30 16:53:35 PDT 2002]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.optimization.platform.merge]]></string>
@@ -6902,11 +6912,11 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.named_unix.novm]]></string>
-						<string><![CDATA[true]]></string>
+						<string><![CDATA[false]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.project.build.last.date]]></string>
-						<string><![CDATA[Sun Jun 30 15:20:09 PDT 2002]]></string>
+						<string><![CDATA[Sun Jun 30 16:53:35 PDT 2002]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.installer.options.stderr.redirect]]></string>
@@ -6975,6 +6985,10 @@ Please see the installation log for details.  Press ""Done"" to quit the install
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.platform.macosx.novm]]></string>
 						<string><![CDATA[false]]></string>
+					</method>
+					<method name="put">
+						<string><![CDATA[com.zerog.ia.build.options.output.location]]></string>
+						<string><![CDATA[$IA_PROJECT_DIR$\adm\ptplot_Build_Output]]></string>
 					</method>
 					<method name="put">
 						<string><![CDATA[com.zerog.ia.build.options.output.cdrom]]></string>

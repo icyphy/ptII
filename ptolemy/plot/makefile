@@ -470,7 +470,7 @@ fixtmpdist:
 	cp -r "$(PTII)/ptolemy/gui" $(PTTMPDIR)/$(PTDIST)/ptolemy
 	# Get rid of CVS directories in com and gui
 	-(cd $(PTTMPDIR)/$(PTDIST); \
-		find . \( -name CVS -o -name "META-INF" -o -name "#*" -o -name "ptplot*locales" \) -print -exec rm -rf {} \; )
+		find . \( -name CVS -o -name "META-INF" -o -name ".#*" -o -name "#*" -o -name "ptplot*locales" \) -print -exec rm -rf {} \; )
 	#
 	# Setting up top level doc directory
 	#
