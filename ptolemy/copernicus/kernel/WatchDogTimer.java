@@ -90,7 +90,7 @@ public class WatchDogTimer extends SceneTransformer {
 
         boolean isCancelling = Options.getBoolean(options, "cancel");
         if (isCancelling) {
-            _cancel();
+            cancel();
             return;
         }
 
