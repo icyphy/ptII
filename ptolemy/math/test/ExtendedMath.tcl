@@ -30,11 +30,6 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
-# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
-
-# NOTE: there is way too much resolution in these numeric tests.
-#  The results are unlikely to be the same on all platforms.
-
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then { 
     source testDefs.tcl
@@ -107,6 +102,10 @@ test ExtendedMath-6.0 {log10} {
     ExtendedMathApply log10  {1.0 0.54406804435028 4.46160656172981 -2.44369749923271} {10.0 3.5 28947.2 0.0036}
 } {}
 
+####################################################################
+test ExtendedMath-6.8 {roundToInt} {
+    ExtendedMathApply roundToInt {-1 0 0 1 1 1 3}
+} {}
 ####################################################################
 test ExtendedMath-7.0 {sinh} {
     ExtendedMathApply sinh {-1.19069101772 -0.521095305494 0.0 0.521095305494 1.15982889066 1.50946135541 11.5487393573}
