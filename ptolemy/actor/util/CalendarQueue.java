@@ -648,7 +648,7 @@ public class CalendarQueue {
         _bucket = new CQLinkedList[_nBuckets];
 
         for (int i = 0; i < _nBuckets; ++i) {
-            // intialize each bucket with an empty CQLinkedList
+            // initialize each bucket with an empty CQLinkedList
             // that uses _cqComparator for sorting.
             _bucket[i] = new CQLinkedList();
         }
