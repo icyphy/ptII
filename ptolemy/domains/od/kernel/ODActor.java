@@ -300,7 +300,7 @@ public class ODActor extends AtomicActor {
 	    // Prepare to terminate.
 	    // System.out.println("All receivers have completed."); 
 	    // printRcvrTable();
-	    // noticeOfTermination();
+	    noticeOfTermination();
 	    lowestRcvr.setFinish();
 	    lowestRcvr.get();
 	    // Should never get to this point
@@ -310,13 +310,13 @@ public class ODActor extends AtomicActor {
 	// END OF NEW STUFF
 
         
-        /*
-        if( _currentTime > 9.0 && name.equals("printer") ) {
+        if( _currentTime > 2.0 && name.equals("printer") ) {
 	    // System.out.println("preparing to call get");
-	    System.out.println("getNextToken() time = " + _currentTime);
-	    System.out.println("getNextToken() counter = "+_cntr);
+	    // System.out.println("getNextToken() time = " + _currentTime);
+	    // System.out.println("getNextToken() counter = "+_cntr);
             // printRcvrTable();
         }
+        /*
         */
         Token token = lowestRcvr.get();
         /*
@@ -426,7 +426,8 @@ public class ODActor extends AtomicActor {
      */
     public void printRcvrTable() {
         System.out.println("\n***Print "+getName()+"'s RcvrTable.");
-        System.out.println("   RcvrTable size = " + _rcvrTimeTable.size() );
+        System.out.println("   Number of Receivers in RcvrTable = " 
+                + _rcvrTimeTable.size() );
         if( _rcvrTimeTable.size() == 0 ) {
             System.out.println("\tTable is empty");
         }
@@ -454,10 +455,16 @@ public class ODActor extends AtomicActor {
 		    +" and string: ");
 		    */
 		}
-                Event testEvent = ((Event)((ODReceiver)testRcvr)._queue.get(0));
-                StringToken testToken = (StringToken)testEvent.getToken();
-		if( testToken != null ) {
-                    testString = testToken.stringValue();
+		if( ((ODReceiver)testRcvr)._queue.size() > 0 ) {
+                    Event testEvent = 
+                            ((Event)((ODReceiver)testRcvr)._queue.get(0));
+                    StringToken testToken = (StringToken)testEvent.getToken();
+		    if( testToken != null ) {
+                        testString = testToken.stringValue();
+		    }
+		}
+		else {
+                    testString = "null";
 		}
 	    /*
             }
@@ -556,7 +563,7 @@ public class ODActor extends AtomicActor {
     /** 
      FIXME: Write tests for this.
      */
-  public void noticeOfTermination() { 
+    public void noticeOfTermination() { 
         // Inform all downstream actors that no new tokens 
         // will be forthcoming.
 	Enumeration outputPorts = outputPorts();
@@ -575,6 +582,11 @@ public class ODActor extends AtomicActor {
 		}
             }
 	}
+	/*
+	String myName = getName();
+	System.out.println(myName+" has notified downstream actors of "
+                +"termination.");
+	*/
     }
 
     /** 
