@@ -49,7 +49,7 @@ test ArrayStringFormat-1.0 {boolean} {
     set a [java::field ptolemy.math.ArrayStringFormat javaASFormat]
     list [$a booleanString 0] [$a booleanString false] \
 	    [$a booleanString 1] [$a booleanString true] \
-} {0}
+} {false false true true}
 
 test ArrayStringFormat-1.0 {short} {
     set a [java::field ptolemy.math.ArrayStringFormat javaASFormat]
