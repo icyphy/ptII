@@ -235,7 +235,7 @@ public class CalendarQueue implements Debuggable {
      *   be compared by the associated comparator.
      */
     public boolean put(Object entry) {
-        if (_debugging) _debug("+ putting in queue: " + entry);
+        if (_debugging) _debug("+++ putting in queue: " + entry);
 
         // If this is the first put since the queue creation,
         // then do initialization.
@@ -403,7 +403,7 @@ public class CalendarQueue implements Debuggable {
             }
         }
         _collect(result);
-        if (_debugging) _debug("- taking from queue: " + result);
+        if (_debugging) _debug("--- taking from queue: " + result);
         return result;
     }
 

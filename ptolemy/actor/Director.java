@@ -789,14 +789,18 @@ public class Director extends Attribute implements Executable {
      *  @param newTime The new current simulation time.
      */
     public void setCurrentTime(double newTime) throws IllegalActionException {
-        if (newTime < getCurrentTime()) {
+        double currentTime = getCurrentTime();
+        if (newTime < currentTime) {
             throw new IllegalActionException(this, "Attempt to move current "
                     + "time backwards. (newTime = " + newTime
                     + ") < (getCurrentTime() = " + getCurrentTime() + ")");
-        }
-        _currentTime = newTime;
-        if (_debugging) {
-            _debug("--- Set current time to: " + newTime);
+        } else if (newTime > currentTime) {
+            _currentTime = newTime;
+            if (_debugging) {
+                _debug("==== Set current time to: " + newTime);
+            }
+        } else {
+            // the new time is the current time, do nothing.
         }
     }
 
