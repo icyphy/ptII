@@ -91,7 +91,9 @@ JSRCS = \
 	PlotFrame.java \
 	PlotLive.java \
 	PlotLiveApplet.java \
-	PlotPoint.java
+	PlotPoint.java \
+	Render.java \
+	RenderApplication.java
 
 # Used to build distributions with InstallShield's isjava tool
 ISJAVA_SRC = ptplot.isj
