@@ -1,4 +1,4 @@
-/* Class for representing solutions.
+/* Class for representing a solution.
 
  Copyright (c) 1999-2003 The Regents of the University of California.
  All rights reserved.
@@ -40,29 +40,95 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 
 //////////////////////////////////////////////////////////////////////////
-//// Solver
-/**
+//// Solution
+/** An instance of this class contains a "solution" of Unit constraints.
+In essence, the solution represents the constraints between a set of Unit
+variables, and a set of Units.
+The table below illustrates this.
+<TABLE BORDER = "1">
+ <TR>
+  <TH></TH>
+  <TH>V1</TH>
+  <TH>V2</TH>
+  <TH>...</TH>
+  <TH>Vl</TH>
+  <TH></TH>
+</TR>
+
+ <TR>
+  <TD>C1</TD>
+  <TD>P11</TD>
+  <TD>P12</TD>
+  <TD>...</TD>
+  <TD>P1l</TD>
+  <TD>U1</TD>
+</TR>
+
+ <TR>
+   <TD>C2</TD>
+  <TD>P21</TD>
+  <TD>P22</TD>
+  <TD>...</TD>
+  <TD>P2l</TD>
+  <TD>U2</TD>
+</TR>
+
+ <TR>
+   <TD>:</TD>
+  <TD>:</TD>
+  <TD>:</TD>
+  <TD>...</TD>
+  <TD>:</TD>
+  <TD>:</TD>
+</TR>
+
+ <TR>
+   <TD>Ck</TD>
+  <TD>Pk1</TD>
+  <TD>Pk2</TD>
+  <TD>...</TD>
+  <TD>Pkl</TD>
+  <TD>Uk</TD>
+</TR>
+</TABLE>
+Here, the columns V1, V2, ..., Vl represent l variables.
+The columns C1, C2, ..., Ck represent k constraints.
+The U1, U2, ..., Uk on the right represent Units.
+The meaning of the ith row is that V1^Pi1 + V2^pi2 + .. +Vk^pik = Uk.
+<p>
+Generally, this class is used by creating an instance that is derived from the
+Units specifications of a model.
+Then, a method is invoked that results in other instances being created that are
+a transformations of the original instance. These transformed instances are
+equivalent, in a sense, to the original instance. The difference is that they
+provide a different perspective than that of the original instance. In
+particular, some of the transformed instances can be used to highlight
+inconsistencies not apparent in the original instance.
 @author Rowland R Johnson
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class Solver {
+public class Solution {
 
-    /**
+    /** Construct an empty solution.
+     * This constructor is used only by the copy() method, and, can therefore,
+     * be made private.
      *
      */
-    public Solver() {
+    private Solution() {
     }
 
     /**
-     * Construct a Solver
+     * Construct a Solution from a set of variables, and a set of constraints.
      *
-     * @param model
-     * @param vLabels
-     * @param constraints
-     * @exception IllegalActionException If there is an exception
+     * @param model The model that is the source of the variables and
+     * constraints.
+     * @param vLabels The variables.
+     * @param constraints The constraints.
+     * @exception IllegalActionException If there are problems with transforming
+     * a constraint to canonical form.
      */
-    public Solver(
+    public Solution(
         TypedCompositeActor model,
         String[] vLabels,
         Vector constraints)
@@ -104,7 +170,7 @@ public class Solver {
             Vector leftUTerms = canonicalEquation.getLhs().getUTerms();
             for (int i = 0; i < leftUTerms.size(); i++) {
                 UnitTerm leftUTerm = (UnitTerm) (leftUTerms.elementAt(i));
-                if (!leftUTerm.isVariable()) {
+                if (leftUTerm == null) {
                     throw new IllegalActionException(
                         "canonicalEquation "
                             + canonicalEquation
@@ -112,7 +178,13 @@ public class Solver {
                 }
                 String variableLabel = leftUTerm.getVariable();
                 double exponent = leftUTerm.getExponent();
-                int varIndex = _getVarIndex(variableLabel);
+                int varIndex = -1;
+                for (int j = 0; j < _variables.length; j++) {
+                    if (_variables[j].equals(variableLabel)) {
+                        varIndex = j;
+                        break;
+                    }
+                }
                 _arrayP[constraintNum][varIndex] = exponent;
             }
         }
@@ -212,13 +284,11 @@ public class Solver {
         }
     }
 
-    /**
-     * Search for a solution. The algorithm used is described in XXX. When the
-     * done the state of the solver will be in one of three states - SOLVED,
-     * NONUNIQUESOLUTION, and NOSOLUTION.
+    /** Search for a complete solution.
+     * @return The solution.
      */
-    public Solver completeSolve() {
-        _debug("Solver.solve " + header() + " initial\n" + state());
+    public Solution completeSolution() {
+        _debug("Solver.solve " + _header() + " initial\n" + _state());
         Index g;
         while ((g = _findG()) != null) {
             int k = g.getK();
@@ -238,8 +308,11 @@ public class Solver {
         return this;
     }
 
-    public Solver copy() {
-        Solver retv = new Solver();
+    /** Make a copy of this solution.
+     * @return The copy.
+     */
+    public Solution copy() {
+        Solution retv = new Solution();
         retv._numConstraints = _numConstraints;
         retv._variables = _variables;
         retv._model = _model;
@@ -261,102 +334,59 @@ public class Solver {
         return retv;
     }
 
-    /** Create a short description of the state of the solution.
+    /** Create a short description of the state of the solution. In the case
+     * that the solution is inconsistent a short description of the
+     * inconsistency is included.
      * @return The short description.
      */
     public String getShortDescription() {
         return _stateDescription;
     }
 
-    /**
+    /** Get the state of the solution.
      * @return The state of the solution.
      */
     public String getStateDesc() {
         switch (_solveState) {
-            case NOTRUN :
+            case _NOTRUN :
                 {
                     return "NotRun";
                 }
-            case NONUNIQUESOLUTION :
+            case _NONUNIQUE :
                 {
                     return "No Unique Solution";
                 }
-            case NOSOLUTION :
+            case _INCONSISTENT :
                 {
-                    return "No Solution";
+                    return "Inconsistent";
                 }
-            case SOLVED :
+            case _CONSISTENT :
                 {
-                    return "Unique Solution";
+                    return "Consistent";
                 }
         }
         return null;
     }
 
-    /**
-     * The current state of the solver. A StringBuffer is produced that shows
-     * the variables, done vector, P array, and A vector in a human readable
-     * arrangement.
-     *
-     * @return A StringBuffer with the state of the solver.
-     */
-    public StringBuffer header() {
-        StringBuffer retv = new StringBuffer();
-        retv.append("Header\nVariables\n");
-        for (int j = 0; j < _numVariables; j++) {
-            retv.append(
-                "   " + _vNumFormat.format(j) + " " + _variables[j] + "\n");
-        }
-        retv.append("\n");
-        retv.append("ConstrNum  Source\n");
-        for (int i = 0; i < _numConstraints; i++) {
-            NamedObj source = _source[i];
-            retv.append(
-                ""
-                    + _vNumFormat.format(i)
-                    + "         "
-                    + source.toString()
-                    + "\n");
-        }
-        retv.append("\\Header\n");
-        return retv;
-    }
-    /**
-     * Return true if solution has been found. Solution can be unique or
-     * non-unique.
-     *
-     * @return True if a solution has been found, false otherwise.
-     */
-    public boolean isSolved() {
-        return (_solveState == SOLVED || _solveState == NONUNIQUESOLUTION);
-    }
-
-    /**
-     * Return true if a unique solution has been found.
-     *
-     * @return True if a unique solution has been found, false otherwise.
-     */
-    public boolean isUnique() {
-        return (_solveState == SOLVED);
-    }
-
-    /**
-     * @return The vector of minimal solutions.
+    /** Produce all of the minimal span solutions that can be generated from
+     * this instance. A minimal span solution is one in which a minimal number
+     * of constraints that are connected yield an inconsistency.
+     * @return The vector of minimal span solutions.
      */
     public Vector minimalSpanSolutions() {
-        _debug("Solver.solve " + header() + " initial\n" + state());
+        _debug("Solver.solve " + _header() + " initial\n" + _state());
         // Eliminate the singletons (due to Ports)
         Iterator allG = _findAllG().iterator();
         while (allG.hasNext()) {
             Index g = (Index) (allG.next());
             _eliminate(g);
         }
-        _debug("Solver.solve initialized\n" + state());
+        _debug("Solver.solve initialized\n" + _state());
         Vector branchPoints = _findAllG();
         Vector solutions = new Vector();
         if (branchPoints.size() > 0) {
             for (int i = 0; i < branchPoints.size(); i++) {
-                Solver s = copy();
+                Solution s = copy();
                 Vector results =
                     s._partialSolveRecursively(
                         1,
@@ -369,17 +399,15 @@ public class Solver {
         }
         if (_debug) {
             for (int i = 0; i < solutions.size(); i++) {
-                Solver solution = (Solver) (solutions.elementAt(i));
-                System.out.println("A Solution\n" + solution.state());
+                Solution solution = (Solution) (solutions.elementAt(i));
+                System.out.println("A Solution\n" + solution._state());
             }
         }
         return solutions;
 
     }
 
-    /**
-     * Specify whether or not to have debugging information produced.
-     *
+    /** Specify whether or not to have debugging information produced.
      * @param debug True to see debugging information in standard output, false
      *            otherwise
      */
@@ -387,73 +415,11 @@ public class Solver {
         this._debug = debug;
     }
 
-    /**
-     * The current state of the solver. A StringBuffer is produced that shows
-     * the variables, done vector, P array, and A vector in a human readable
-     * arrangement.
-     *
-     * @return A StringBuffer with the state of the solver.
-     */
-    public StringBuffer state() {
-        StringBuffer retv = new StringBuffer();
-        retv.append("State\n    ");
-        for (int j = 0; j < _numVariables; j++) {
-            retv.append(" " + _vNumFormat.format(j));
-        }
-        retv.append("\n");
-        for (int i = 0; i < _numConstraints; i++) {
-            if (_done[i]) {
-                retv.append("T ");
-            } else {
-                retv.append("F ");
-            }
-            retv.append("" + _vNumFormat.format(i) + " ");
-            for (int j = 0; j < _numVariables; j++) {
-                retv.append("" + _pFormat.format(_arrayP[i][j]) + " ");
-            }
-            retv.append(
-                "" + _vectorA[i] + " " + _vectorA[i].descriptiveForm() + "\n");
-        }
-        if (_branchPoint == null) {
-            retv.append("BranchPoint = null\n");
-        } else {
-            retv.append("BranchPoint = " + _branchPoint.toString() + "\n");
-        }
-        retv.append("Solution: ");
-        switch (_solveState) {
-            case NOTRUN :
-                {
-                    retv.append("NotRun");
-                    break;
-                }
-            case NONUNIQUESOLUTION :
-                {
-                    retv.append("No Unique Solution");
-                    break;
-                }
-            case NOSOLUTION :
-                {
-                    retv.append("No Solution");
-                    break;
-                }
-            case SOLVED :
-                {
-                    retv.append("Solved");
-                    break;
-                }
-        }
-        retv.append("\n\\State\n");
-        return retv;
-    }
-
     ///////////////////////////////////////////////////////////////////
     /////                        private methods                 //////
 
-    /**
-     *
-     */
     private void _analyzeState() {
-        _solveState = SOLVED;
+        _solveState = _CONSISTENT;
         _stateDescription = "Unique";
         for (int i = 0; i < _numConstraints; i++) {
             if (!_done[i]) {
@@ -464,7 +430,7 @@ public class Solver {
                 }
                 if (numNonZeroP == 0
                     && !_vectorA[i].equals(UnitLibrary.Identity)) {
-                    _solveState = NOSOLUTION;
+                    _solveState = _INCONSISTENT;
                     Unit factor = _vectorA[i].invert();
                     String uString = factor.descriptiveForm();
                     NamedObj source = _source[i];
@@ -480,7 +446,7 @@ public class Solver {
                 }
                 if (numNonZeroP > 1
                     && _vectorA[i].equals(UnitLibrary.Identity)) {
-                    _solveState = NONUNIQUESOLUTION;
+                    _solveState = _NONUNIQUE;
                     _stateDescription = "NonUnique";
                     return;
                 }
@@ -493,12 +459,12 @@ public class Solver {
                     numNonZeroP++;
             }
             if (numNonZeroP == 0) {
-                _solveState = NOSOLUTION;
+                _solveState = _INCONSISTENT;
                 _stateDescription = _variables[j] + " is unbound";
                 return;
             }
             if (numNonZeroP > 1) {
-                _solveState = NOSOLUTION;
+                _solveState = _INCONSISTENT;
                 _stateDescription = _variables[j] + " is ambiguous";
                 return;
             }
@@ -615,7 +581,7 @@ public class Solver {
                 _arrayP[i][l] = 0;
             }
         }
-        _setBranchPoint(g);
+        _branchPoint = g;
         _done[k] = true;
     }
 
@@ -697,10 +663,6 @@ public class Solver {
         return null;
     }
 
-    /**
-     * @param k
-     * @return
-     */
     private Index _findGInRow(int k) {
         Index retv = null;
         int l = -1;
@@ -718,55 +680,33 @@ public class Solver {
         return (new Index(k, l));
     }
 
-    private boolean _gUnique(Vector G) {
-        for (int h = 0; h < G.size(); h++) {
-            Index x = (Index) (G.elementAt(h));
-            int k = x.getK();
-            int l = x.getL();
-            for (int h1 = h; h1 < G.size(); h1++) {
-                Index x1 = (Index) (G.elementAt(h1));
-                int k1 = x1.getK();
-                int l1 = x1.getL();
-                if ((l == l1) && (!_vectorA[k].equals(_vectorA[k1]))) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
-
     /**
-     * @param variableLabel
-     * @return The index of the variable.
+     * Create a human readable presentation of the parts of the solution that
+     * won't change as a result of
+     * the operations necessary to carry out the Gaussian elimination.
+     * I.e. the variable names, and the constraints.
+     * @return A StringBuffer with a human readable presentation of the
+     * invariant parts of the solution.
      */
-    private int _getVarIndex(String variableLabel) {
-        for (int i = 0; i < _variables.length; i++) {
-            if (_variables[i].equals(variableLabel)) {
-                return i;
-            }
+    private StringBuffer _header() {
+        StringBuffer retv = new StringBuffer();
+        retv.append("Header\nVariables\n");
+        for (int j = 0; j < _numVariables; j++) {
+            retv.append(
+                "   " + _vNumFormat.format(j) + " " + _variables[j] + "\n");
         }
-        return -1;
-    }
-
-    /** Make a set of bindings from the contents of the solution
-     * @return The bindings.
-     */
-    private Bindings _makeBindings() {
-        Bindings retv = new Bindings();
-        for (int variableNum = 0; variableNum < _numVariables; variableNum++) {
-            int numNonZero = 0;
-            int row = -1;
-            for (int i = 0; i < _numConstraints; i++) {
-                if (_arrayP[i][variableNum] != 0.0) {
-                    numNonZero++;
-                    row = i;
-                }
-            }
-            if (numNonZero == 1) {
-                Unit U = _vectorA[row].pow(1.0 / _arrayP[row][variableNum]);
-                retv.put(_variables[variableNum], U);
-            }
+        retv.append("\n");
+        retv.append("ConstrNum  Source\n");
+        for (int i = 0; i < _numConstraints; i++) {
+            NamedObj source = _source[i];
+            retv.append(
+                ""
+                    + _vNumFormat.format(i)
+                    + "         "
+                    + source.toString()
+                    + "\n");
         }
+        retv.append("\\Header\n");
         return retv;
     }
 
@@ -778,7 +718,7 @@ public class Solver {
                 + " BrancPoint "
                 + g
                 + "\n"
-                + state());
+                + _state());
 
         int rows[] = _branchesFrom(g);
         _eliminate(g);
@@ -796,7 +736,7 @@ public class Solver {
         }
         if (branchPoints.size() > 0) {
             for (int gi = 0; gi < branchPoints.size(); gi++) {
-                Solver s = copy();
+                Solution s = copy();
                 Vector results =
                     s._partialSolveRecursively(
                         level + 1,
@@ -809,12 +749,12 @@ public class Solver {
             _analyzeState();
             if (_debug) {
                 System.out.println(
-                    "Solver.solve final level " + level + state());
-                Solver s = this;
+                    "Solver.solve final level " + level + _state());
+                Solution s = this;
                 int ll = level;
                 while (s != null) {
                     System.out.print(
-                        "Solver.backtrace level " + ll-- +"\n" + s.state());
+                        "Solver.backtrace level " + ll-- +"\n" + s._state());
                     s = s._upper;
                 }
             }
@@ -824,18 +764,49 @@ public class Solver {
     }
 
     /**
-     * @param g
+     * The current state of the solver. A StringBuffer is produced that shows
+     * the variables, done vector, P array, and A vector in a human readable
+     * arrangement.
+     *
+     * @return A StringBuffer with the state of the solver.
      */
-    private void _setBranchPoint(Index g) {
-        _branchPoint = g;
+    private StringBuffer _state() {
+        StringBuffer retv = new StringBuffer();
+        retv.append("State\n    ");
+        for (int j = 0; j < _numVariables; j++) {
+            retv.append(" " + _vNumFormat.format(j));
+        }
+        retv.append("\n");
+        for (int i = 0; i < _numConstraints; i++) {
+            if (_done[i]) {
+                retv.append("T ");
+            } else {
+                retv.append("F ");
+            }
+            retv.append("" + _vNumFormat.format(i) + " ");
+            for (int j = 0; j < _numVariables; j++) {
+                retv.append("" + _pFormat.format(_arrayP[i][j]) + " ");
+            }
+            retv.append(
+                "" + _vectorA[i] + " " + _vectorA[i].descriptiveForm() + "\n");
+        }
+        if (_branchPoint == null) {
+            retv.append("BranchPoint = null\n");
+        } else {
+            retv.append("BranchPoint = " + _branchPoint.toString() + "\n");
+        }
+        retv.append("Solution: ");
+        retv.append(getStateDesc());
+        retv.append("\n\\State\n");
+        return retv;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
-    private static final int NOTRUN = -1;
-    private static final int SOLVED = 0;
-    private static final int NOSOLUTION = 1;
-    private static final int NONUNIQUESOLUTION = 2;
+    private static final int _NOTRUN = -1;
+    private static final int _CONSISTENT = 0;
+    private static final int _INCONSISTENT = 1;
+    private static final int _NONUNIQUE = 2;
     double _arrayP[][];
     String _varBindings[] = null;
     String _constraintExplanations[] = null;
@@ -849,9 +820,9 @@ public class Solver {
     int _numVariables = 0;
     private static final DecimalFormat _pFormat = new DecimalFormat(" 0;-0");
     String _stateDescription = "No description";
-    private int _solveState = NOTRUN;
+    private int _solveState = _NOTRUN;
     NamedObj _source[];
-    Solver _upper = null;
+    Solution _upper = null;
     String _variables[];
     Unit _vectorA[];
     private static final DecimalFormat _vNumFormat = new DecimalFormat("00");
