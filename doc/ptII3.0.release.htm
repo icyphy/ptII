@@ -235,14 +235,17 @@ and C code by using the Java Native Interface (JNI).
 <br> This example shows a simple thermostat modeled as a hybrid system.
 The purpose of the example is to demonstrate the ability that HyVisual has
 to import models defined in HSIF, the <i>Hybrid System Interchange Format</i>.
-See the <a href="../ptolemy/hsif/demo/index.htm">HSIF/MoML documentation</a> for details.
+To run HSIF models, you must invoke Ptolemy II with the <CODE>-hyvisual</CODE>
+command line argument or else run the HyVisual Web Edition.  These
+models will not work in a standard Ptolemy II vergil or Web Edition
+because to support HSIF, we need to check xml each file to see
+if it is an HSIF file of a MoML file.  This check slows Ptolemy II
+down slightly.
+ <br>See the <a href="../ptolemy/hsif/demo/index.htm">HSIF/MoML documentation</a> for details.
 
-<li><a href="../ptolemy/hsif/demo/SwimmingPool/SwimmingPool.xml">HSIF Swimming Pool</a>.
+<br><a href="../ptolemy/hsif/demo/SwimmingPool/SwimmingPool.xml">HSIF Swimming Pool</a>.
 <br> This example shows a simple hybrid system model of a pool.
-The purpose of the example is to demonstrate the ability that HyVisual has
-to import models defined in HSIF, the <i>Hybrid System Interchange Format</i>.
-See the <a href="../ptolemyhsif/demo/index.htm">HSIF/MoML documentation</a> for details.
-</li>
+
 </menu>
 
 <li> <a href="../ptolemy/domains/de/doc/body.htm" target="body">DE</a>:
