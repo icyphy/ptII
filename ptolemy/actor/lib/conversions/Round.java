@@ -1,4 +1,4 @@
-/* An actor that outputs a specified rounding function of the input.
+/* An actor that computes a specified rounded value of the input.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -45,8 +45,8 @@ import ptolemy.data.expr.Parameter;
 //// Round
 /**
 Produce an output token on each firing with a value that is
-equal to the specified rounding function of the input.
-The input type is DoubleToken. The output types is IntToken.
+equal to the specified rounded value of the input.
+The input type is DoubleToken. The output type is IntToken.
 The functions are a subset of those in the java.lang.Math class.
 They are:
 <ul>
@@ -70,10 +70,10 @@ public class Round extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @exception IllegalActionException If the actor cannot be contained
-     *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
      */
     public Round(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
@@ -109,26 +109,26 @@ public class Round extends Transformer {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == function) {
-            String spec = function.getExpression();
-            if (spec.equals("ceil")) {
+            String functionName = function.getExpression();
+            if (functionName.equals("ceil")) {
                 _function = _CEIL;
-            } else if (spec.equals("floor")) {
+            } else if (functionName.equals("floor")) {
                 _function = _FLOOR;
-            } else if (spec.equals("round")) {
+            } else if (functionName.equals("round")) {
                 _function = _ROUND;
-            } else if (spec.equals("truncate")) {
+            } else if (functionName.equals("truncate")) {
                 _function = _TRUNCATE;
             } else {
                 throw new IllegalActionException(this,
-                        "Unrecognized rounding function: " + spec);
+                        "Unrecognized rounding function: " + functionName);
             }
         } else {
             super.attributeChanged(attribute);
         }
     }
 
-    /** Compute the specified rounding function of the input. 
-     *  Consumes and produces at most one input for each firing.
+    /** This computes the specified rounded value of the input. 
+     *  This consumes and produces at most one token for each firing.
      *  If there is no input, then produce no output.
      *  @exception IllegalActionException If there is no director.
      */
@@ -157,18 +157,18 @@ public class Round extends Transformer {
      */
     public int iterate(int count) throws IllegalActionException {
 	// Check whether we need to reallocate the output token array.
-	    if (count > _resultArray.length) {
+        if (count > _resultArray.length) {
 	        _resultArray = new IntToken[count];
-	    }
+        }
 
         if (input.hasToken(0, count)) {
 	    // NOTE: inArray.length may be > count, in which case
 	    // only the first count tokens are valid.
             Token[] inArray = input.get(0, count);
 	        for (int i = 0; i < count; i++) {
-		        double in = ((DoubleToken)(inArray[i])).doubleValue();
-		        _resultArray[i] = new IntToken(_doFunction(in));
-	         }
+		        double value = ((DoubleToken)(inArray[i])).doubleValue();
+		        _resultArray[i] = new IntToken(_doFunction(value));
+            }
             output.send(0, _resultArray, count);
             return COMPLETED;
         } else {
@@ -206,7 +206,8 @@ public class Round extends Transformer {
             throw new InternalErrorException(
                     "Invalid value for _function private variable. "
                     + "Round actor (" + getFullName()
-                    + ")");
+                    + ")"
+                    + " on function type " + _function);
         }
         return result;
     }
@@ -216,9 +217,10 @@ public class Round extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private IntToken[] _resultArray = new IntToken[1];
+    private IntToken[] _resultArray = new IntToken[0];
 
     // An indicator for the function to compute.
+    // This variable has values specified in the constants below
     private int _function;
 
     // Constants used for more efficient execution.
