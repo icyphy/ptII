@@ -152,7 +152,8 @@ public class DDFDirector extends Director {
     /** A Parameter representing the number of times that postfire may be
      *  called before it returns false.  If the value is less than or
      *  equal to zero, then the execution will never return false in
-     *  postfire, and thus the execution can continue forever.
+     *  postfire, and thus the execution can continue forever or until
+     *  there are no more active actors or until the model is deadlocked.
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
