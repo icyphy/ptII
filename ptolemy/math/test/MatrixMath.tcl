@@ -1101,7 +1101,7 @@ testMatrixScalar multiply $types
 
 ######################################################################
 ####
-#  *MatrixMath Test out: xxx[][] multiply(xxx[][], xxx)
+#  *MatrixMath Test out: xxx[][] multiply(xxx[][], double)
 
 set types [list \
 	[list Complex ptolemy.math.Complex complex \
