@@ -64,7 +64,7 @@ public class PNRamp extends PNActor{
     public void run() {
         int i;
         IntToken data;
-        setCycles(((PNUniverse)getContainer()).getCycles());
+        setCycles(((PNCompositeActor)getContainer()).getCycles());
         try {
             for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
                 data = new IntToken(_seed);

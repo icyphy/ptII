@@ -68,7 +68,7 @@ public class PNInterleave extends PNActor{
     public void run() {
         Token data;
         int i;
-        setCycles(((PNUniverse)getContainer()).getCycles());
+        setCycles(((PNCompositeActor)getContainer()).getCycles());
         try {
             for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
                 Enumeration ports = getPorts();
