@@ -39,17 +39,17 @@
 # 4. Adjust the log message for the sccs delget command
 # Then try out fix-files with the -p option, which only prints, but  
 # does not actually make the change
-# Usage: fix-files [-p] [-d]
+# Usage: rmtrailinspace [-n] [-d]
 
 printonly=no
 
-while getopts pd-- opt
+while getopts nd-- opt
 do
 	case $opt in
 		d) 	set -x;;
-		p) 	printonly=yes;;
+		n) 	printonly=yes;;
 	   \?)	echo "$0: Usage: $0 [-p] [-x] [filenames . . .]"
-			echo " -p  Print only"
+			echo " -n  Print only, don't modify files"
 			echo " -d  debug"
 			exit 3;;
 	esac
