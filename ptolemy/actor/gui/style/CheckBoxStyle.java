@@ -38,7 +38,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.UserSettable;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// CheckBoxStyle
@@ -88,7 +88,7 @@ public class CheckBoxStyle extends ParameterEditorStyle {
      *  @return True if the argument is a parameter that contains a
      *  boolean token.
      */
-    public boolean acceptable(UserSettable param) {
+    public boolean acceptable(Settable param) {
         if (!(param instanceof Parameter)) return false;
 	try {
 	    Token current = ((Parameter)param).getToken();

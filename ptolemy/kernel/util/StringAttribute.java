@@ -43,11 +43,14 @@ Use setExpression() to define the value, as in for example
 <pre>
     attribute.setExpression("xxx");
 </pre>
+By default, an instance of this class is fully visible in a user interface.
+This is indicated to the user interface by returning FULL to the
+getVisibility() method.
 
 @author Edward A. Lee
 @version $Id$
 */
-public class StringAttribute extends Attribute implements UserSettable {
+public class StringAttribute extends Attribute implements Settable {
 
     /** Construct an attribute with the given name contained by the specified
      *  container. The container argument must not be null, or a
@@ -134,6 +137,14 @@ public class StringAttribute extends Attribute implements UserSettable {
         return _value;
     }
 
+    /** Get the visibility of this attribute, as set by setVisibility().
+     *  The visibility is set by default to FULL.
+     *  @return The visibility of this attribute.
+     */
+    public Visibility getVisibility() {
+        return _visibility;
+    }
+
     /** Remove a listener from the list of listeners that is
      *  notified when the value of this attribute changes.  If no such listener
      *  exists, do nothing.
@@ -167,6 +178,14 @@ public class StringAttribute extends Attribute implements UserSettable {
         }
     }
 
+    /** Set the visibility of this attribute.  The argument should be one
+     *  of the public static instances in Settable.
+     *  @param visibility The visibility of this attribute.
+     */
+    public void setVisibility(Visibility visibility) {
+        _visibility = visibility;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -175,4 +194,7 @@ public class StringAttribute extends Attribute implements UserSettable {
 
     // Listeners for changes in value.
     private List _valueListeners;
+
+    // The visibility of this attribute, which defaults to FULL.
+    private Settable.Visibility _visibility = Settable.FULL;
 }

@@ -35,7 +35,7 @@ import java.util.LinkedList;
 
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj; // for javadoc
 import ptolemy.kernel.util.NameDuplicationException;
@@ -59,11 +59,16 @@ it can be thought of as a basic implementation of the Locatable interface.
 It is usually used to specify the location of objects that need
 a graphical location, and have no other way of specifying it (such as
 an external port).
+</pre>
+By default, an instance of this class is not visible in a user interface.
+This is indicated to the user interface by returning NONE to the
+getVisibility() method.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
-public class Location extends Attribute implements Locatable, Settable {
+public class Location extends SingletonAttribute
+        implements Locatable, Settable {
 
     /** Construct an attribute with the given name and position.
      *  @param container The container.
@@ -159,6 +164,14 @@ public class Location extends Attribute implements Locatable, Settable {
         return _location;
     }
 
+    /** Get the visibility of this attribute, as set by setVisibility().
+     *  The visibility is set by default to NONE.
+     *  @return The visibility of this attribute.
+     */
+    public Visibility getVisibility() {
+        return _visibility;
+    }
+
     /** Remove a listener from the list of listeners that is
      *  notified when the value of this variable changes.  If no such listener
      *  exists, do nothing.
@@ -221,6 +234,14 @@ public class Location extends Attribute implements Locatable, Settable {
         }
     }
 
+    /** Set the visibility of this attribute.  The argument should be one
+     *  of the public static instances in Settable.
+     *  @param visibility The visibility of this attribute.
+     */
+    public void setVisibility(Visibility visibility) {
+        _visibility = visibility;
+    }
+
     /** Get a description of the class, which is the class name and
      *  the location in parentheses.
      *  @return A string describing the object.
@@ -241,4 +262,7 @@ public class Location extends Attribute implements Locatable, Settable {
 
     // Listeners for changes in value.
     private List _valueListeners;
+
+    // The visibility of this attribute, which defaults to NONE.
+    private Settable.Visibility _visibility = Settable.NONE;
 }

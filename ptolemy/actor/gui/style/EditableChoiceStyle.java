@@ -35,7 +35,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.UserSettable;
+import ptolemy.kernel.util.Settable;
 
 import java.util.Iterator;
 import java.util.List;
@@ -49,7 +49,7 @@ An editable combobox allows an arbitrary value to be entered in the
 combobox.
 For an uneditable combobox, use ChoiceStyle instead.
 The choices that are presented in the combobox
-are given by a set of attributes implementing the UserSettable interface,
+are given by a set of attributes implementing the Settable interface,
 such as StringAttribute, contained by this style.
 <p>
 This class extends ChoiceStyle only for the purpose of eliminating code
@@ -79,7 +79,7 @@ public class EditableChoiceStyle extends ChoiceStyle {
      *  @param name The name of the attribute.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable attribute for the container, or if the container
-     *   is not an instance of UserSettable.
+     *   is not an instance of Settable.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */

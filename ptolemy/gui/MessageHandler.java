@@ -132,7 +132,7 @@ public class MessageHandler {
      */
     public static void warning(String info, Exception exception)
             throws CancelException {
-        _handler._warning(info, exception);
+        _handler._warning(info + ": " + exception.getMessage(), exception);
     }
 
     ///////////////////////////////////////////////////////////////////

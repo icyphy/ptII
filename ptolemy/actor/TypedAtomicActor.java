@@ -39,7 +39,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.UserSettable;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 import java.lang.reflect.Field;
@@ -151,7 +151,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
                     fields[i].set(newObject,
                             newObject.getPort(fields[i].getName()));
                 } else {
-                    if (fields[i].get(newObject) instanceof UserSettable) {
+                    if (fields[i].get(newObject) instanceof Settable) {
                         fields[i].set(newObject,
                                 newObject.getAttribute(fields[i].getName()));
                     }

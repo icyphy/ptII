@@ -35,7 +35,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.UserSettable;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringUtilities;
 import ptolemy.moml.MoMLChangeRequest;
 
@@ -48,8 +48,8 @@ import java.util.List;
 /**
 This class is a modal dialog box for editing the parameters of a target
 object, which is an instance of NamedObj. All attributes that implement
-the UserSettable interface are included in the dialog. An instance of this
-class contains an instance of
+the Settable interface and have visibility FULL are included in the
+dialog. An instance of this class contains an instance of
 Configurer, which examines the target for attributes of type
 EditorPaneFactory.  Those attributes, if they are present, define
 the panels that are used to edit the parameters of the target.
@@ -96,13 +96,24 @@ public class EditParametersDialog extends ComponentDialog
             // EditParametersDialog.
             // First, create a string array with the names of all the
             // parameters.
-            List attList = _target.attributeList(UserSettable.class);
-            String[] attNames = new String[attList.size()];
+            List attList = _target.attributeList(Settable.class);
+
+            // Count visible attributes
+            Iterator parameters = attList.iterator();
+            int count = 0;
+            while (parameters.hasNext()) {
+                Settable param = (Settable)parameters.next();
+                if (param.getVisibility() == Settable.FULL) count++;
+            }
+
+            String[] attNames = new String[count];
             Iterator params = attList.iterator();
             int index = 0;
             while (params.hasNext()) {
-                Attribute param = (Attribute)params.next();
-                attNames[index++] = param.getName();
+                Settable param = (Settable)params.next();
+                if (param.getVisibility() == Settable.FULL) {
+                    attNames[index++] = ((Attribute)param).getName();
+                }
             }
             Query query = new Query();
             query.addChoice("delete", "Parameter to delete",

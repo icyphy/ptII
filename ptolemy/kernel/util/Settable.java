@@ -53,6 +53,16 @@ is valid MoML:
 <pre>
   &lt;property name="xxx" class="XXX" value="yyy"/&gt;
 </pre>
+<p>
+This interface also supports annotations that hint to a user
+interface the level of visibility that an instance should have.
+The visibility is specified as one of the static instances of
+the inner class Visibility, currently NONE, EXPERT and FULL.
+NONE indicates that the user should never see the instance,
+and should not be able to set its value through the user interface.
+EXPERT means that only expert users should see the instance.
+FULL means that the instance is always visible, and a user interface
+should always allow it to be set.
 
 @author Edward A. Lee
 @version $Id$
@@ -78,6 +88,15 @@ public interface Settable extends Nameable {
      */
     public String getExpression();
 
+    /** Get the visibility of this Settable, as set by setVisibility().
+     *  If setVisibility() has not been called, then implementations of
+     *  this interface should return some default, not null, indicating
+     *  user-level visibility. The returned value is one of the static
+     *  instances of the Visibility inner class.
+     *  @return The visibility of this Settable.
+     */
+    public Visibility getVisibility();
+
     /** Remove a listener from the list of listeners that are
      *  notified when the value of this variable changes.  If no such listener
      *  exists, do nothing.
@@ -90,4 +109,43 @@ public interface Settable extends Nameable {
      *  @exception IllegalActionException If the expression is invalid.
      */
     public void setExpression(String expression) throws IllegalActionException;
+
+    /** Set the visibility of this Settable.  The argument should be one
+     *  of the static public instances of the inner class Visibility.
+     *  This is enforced by making it impossible to construct instances
+     *  of this inner class outside this interface definition.
+     *  If this method is not called, then implementations of
+     *  this interface should return some default, not null.
+     *  @param visibility The visibility of this Settable.
+     */
+    public void setVisibility(Visibility visibility);
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public members                    ////
+
+    /** Indicator that a user interface should not make an instance visible.
+     */
+    public static Visibility NONE = new Visibility();
+
+    /** Indicator that a user interface should make an instance visible
+     *  only to experts.
+     */
+    public static Visibility EXPERT = new Visibility();
+
+    /** Indicator that a user interface should make an instance visible.
+     */
+    public static Visibility FULL = new Visibility();
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Inner class used for the static enumeration of indicators of
+     *  visibility.  Instances of this class cannot be constructed outside
+     *  the enclosing interface because its constructor is private.
+     */
+    public static class Visibility {
+
+        // Private constructor prevents construction outside.
+        private Visibility() {}
+    }
 }

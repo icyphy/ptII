@@ -35,14 +35,14 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.UserSettable;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// LineStyle
 /**
 This attribute annotates user settable attributes to specify
 an arbitrary type-in line style for configuring the containing attribute.
-This style can be used with any UserSettable attribute.
+This style can be used with any Settable attribute.
 
 @see EditorPaneFactory
 @see ParameterEditorStyle
@@ -66,7 +66,7 @@ public class LineStyle extends ParameterEditorStyle {
      *  @param name The name of the attribute.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable attribute for the container, or if the container
-     *   is not an instance of UserSettable.
+     *   is not an instance of Settable.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
@@ -82,7 +82,7 @@ public class LineStyle extends ParameterEditorStyle {
      *  @param param The attribute that this annotates.
      C     *  @return True.
     */
-    public boolean acceptable(UserSettable param) {
+    public boolean acceptable(Settable param) {
 	return true;
     }
 
@@ -94,7 +94,7 @@ public class LineStyle extends ParameterEditorStyle {
      *  @param query The query into which to add the entry.
      */
     public void addEntry(PtolemyQuery query) {
-        UserSettable container = (UserSettable)getContainer();
+        Settable container = (Settable)getContainer();
         String name = container.getName();
         String defaultValue = "";
         defaultValue = container.getExpression();

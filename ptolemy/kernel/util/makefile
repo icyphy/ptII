@@ -79,7 +79,6 @@ JSRCS = \
 	StringAttribute.java \
 	StringUtilities.java \
 	TransientSingletonConfigurableAttribute.java \
-	UserSettable.java \
 	ValueListener.java \
 	Workspace.java
 

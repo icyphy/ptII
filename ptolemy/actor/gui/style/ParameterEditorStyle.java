@@ -35,7 +35,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.UserSettable;
+import ptolemy.kernel.util.Settable;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParameterEditorStyle
@@ -45,10 +45,10 @@ used for configuring the containing attribute.
 The EditorPaneFactory class uses concrete subclasses
 of this base class as a strategy pattern for creating entries in
 an interactive parameter editor.  This class expects that the container
-will implement the UserSettable interface.
+will implement the Settable interface.
 
 @see EditorPaneFactory
-@see UserSettable
+@see Settable
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
@@ -69,7 +69,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *  @param name The name of the attribute.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable attribute for the container, or if the container
-     *   is not an instance of UserSettable.
+     *   is not an instance of Settable.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
@@ -86,7 +86,7 @@ public abstract class ParameterEditorStyle extends Attribute {
      *  argument was a Parameter that contained a boolean token.
      *  @param param The attribute that this annotates.
      */
-    public abstract boolean acceptable(UserSettable param);
+    public abstract boolean acceptable(Settable param);
 
     /** Create a new entry in the given query associated with the
      *  attribute containing this style.  The name of the entry should be
@@ -102,21 +102,21 @@ public abstract class ParameterEditorStyle extends Attribute {
             throws IllegalActionException;
 
     /** Override the base class to first check that the container is
-     *  an instance of UserSettable.
+     *  an instance of Settable.
      *  @param container The container to attach this attribute to.
      *  @exception IllegalActionException If this attribute is not of the
      *   expected class for the container, or it has no name,
      *   or the attribute and container are not in the same workspace, or
      *   the proposed container would result in recursive containment, or
-     *   the proposed container is not an instance of UserSettable.
+     *   the proposed container is not an instance of Settable.
      *  @exception NameDuplicationException If the container already has
      *   an attribute with the name of this attribute.
      */
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
-        if (container != null && !(container instanceof UserSettable)) {
+        if (container != null && !(container instanceof Settable)) {
             throw new IllegalActionException(this, container,
-                    "ParameterEditorStyle can only be contained by UserSettable.");
+                    "ParameterEditorStyle can only be contained by Settable.");
         }
         super.setContainer(container);
     }

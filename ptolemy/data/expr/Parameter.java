@@ -39,17 +39,19 @@ import java.io.IOException;
 //// Parameter
 /**
 Parameter is almost identical to Variable, its base class, with the
-only difference being the MoML representation, and the fact that implements
-the marker interface UserSettable.  The base class has no MoML representation,
-and therefore is not a persistent object.  This class has one.
-The UserSettable interface is an indicator to a user interface that, unlike
-a Variable, an instance of Parameter is meant to be settable by the user.
-By convention, an instance
-of NamedObj has a set of attributes, some of which implement
-UserSettable.  When a user interface presents these attributes
-for editing, it presents only those that implement UserSettable.
-And the parameters, but not any variables, are exported to MoML when
+only difference being the MoML representation, and the fact that it
+is fully visible in a user interface.  The base class has no MoML
+representation, and therefore is not a persistent object.  This class
+has one. Thus, parameters, but not variables, are exported to MoML when
 the container object is exported.
+<p>
+By convention, an instance of NamedObj has a set of attributes,
+some of which are visible to users and some of which are not.
+When a user interface presents these attributes
+for editing, it presents only those that are visible.
+By default, an instance of Parameter is visible, as indicated by the fact
+that it returns FULL in its getVisibility() method.  This can be overridden
+by calling setVisibility().
 
 @author Neil Smyth, Edward A. Lee, Xiaojun Liu
 @version $Id$
@@ -59,7 +61,7 @@ the container object is exported.
 
 */
 
-public class Parameter extends Variable implements UserSettable {
+public class Parameter extends Variable {
 
     /** Construct a parameter in the default workspace with an empty
      *  string as its name. The parameter is added to the list of
@@ -68,6 +70,7 @@ public class Parameter extends Variable implements UserSettable {
      */
     public Parameter() {
         super();
+        setVisibility(Settable.FULL);
     }
 
     /** Construct a parameter in the specified workspace with an empty
@@ -79,6 +82,7 @@ public class Parameter extends Variable implements UserSettable {
      */
     public Parameter(Workspace workspace) {
         super(workspace);
+        setVisibility(Settable.FULL);
     }
 
     /** Construct a parameter with the given name contained by the specified
@@ -99,6 +103,7 @@ public class Parameter extends Variable implements UserSettable {
     public Parameter(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        setVisibility(Settable.FULL);
     }
 
     /** Construct a Parameter with the given container, name, and Token.
@@ -122,6 +127,7 @@ public class Parameter extends Variable implements UserSettable {
     public Parameter(NamedObj container, String name, ptolemy.data.Token token)
             throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
+        setVisibility(Settable.FULL);
     }
 
     ///////////////////////////////////////////////////////////////////

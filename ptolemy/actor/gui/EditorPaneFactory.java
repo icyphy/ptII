@@ -96,12 +96,16 @@ public class EditorPaneFactory extends Attribute {
         PtolemyQuery query = new PtolemyQuery(object);
         query.setTextWidth(25);
 
-        Iterator params = object.attributeList(UserSettable.class).iterator();
+        Iterator params = object.attributeList(Settable.class).iterator();
         boolean foundOne = false;
         while (params.hasNext()) {
-            foundOne = true;
-            UserSettable param = (UserSettable)params.next();
-	    query.addStyledEntry(param);
+            Settable param = (Settable)params.next();
+// FIXME
+System.out.println("**** checking " + ((NamedObj)param).getFullName() + ": " + param.getClass().getName());
+            if (param.getVisibility() == Settable.FULL) {
+                foundOne = true;
+                query.addStyledEntry(param);
+            }
         }
         if (!foundOne) {
             return new JLabel(object.getName() + " has no parameters.");

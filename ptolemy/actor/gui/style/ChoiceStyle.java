@@ -35,7 +35,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.UserSettable;
+import ptolemy.kernel.util.Settable;
 
 import java.util.Iterator;
 import java.util.List;
@@ -49,7 +49,7 @@ An uneditable combobox is restricted to only the values specified as the
 combobox options.  No arbitrary value can be entered.
 For an editable combobox, use EditableChoiceStyle instead.
 The choices that are presented in the combobox
-are given by a set of attributes implementing the UserSettable interface,
+are given by a set of attributes implementing the Settable interface,
 such as StringAttribute, contained by this style.
 
 @see EditableChoiceStyle
@@ -76,7 +76,7 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *  @param name The name of the attribute.
      *  @exception IllegalActionException If the attribute is not of an
      *   acceptable attribute for the container, or if the container
-     *   is not an instance of UserSettable.
+     *   is not an instance of Settable.
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
@@ -93,8 +93,8 @@ public class ChoiceStyle extends ParameterEditorStyle {
      *  @return True if the style contains some attributes representing the
      *   choices.
      */
-    public boolean acceptable(UserSettable param) {
-	return !attributeList(UserSettable.class).isEmpty();
+    public boolean acceptable(Settable param) {
+	return !attributeList(Settable.class).isEmpty();
     }
 
     /** Create a new uneditable
@@ -108,15 +108,15 @@ public class ChoiceStyle extends ParameterEditorStyle {
      */
     public void addEntry(PtolemyQuery query) throws IllegalActionException {
         String name = getContainer().getName();
-	List paramList = attributeList(UserSettable.class);
-        UserSettable choices[]
-            = (UserSettable [])paramList.toArray(
-                    new UserSettable[paramList.size()]);
+	List paramList = attributeList(Settable.class);
+        Settable choices[]
+            = (Settable [])paramList.toArray(
+                    new Settable[paramList.size()]);
 	String values[] = new String[choices.length];
 	for(int i = 0; i < choices.length; i++) {
 	    values[i] = choices[i].getExpression();
 	}
-        UserSettable container = (UserSettable)getContainer();
+        Settable container = (Settable)getContainer();
        	String defaultChoice = container.getExpression();
         query.addChoice(name, name, values, defaultChoice, _isEditable);
         query.attachParameter(container, name);

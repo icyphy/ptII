@@ -35,7 +35,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.UserSettable;
+import ptolemy.kernel.util.Settable;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
 
@@ -109,9 +109,9 @@ public class StyleConfigurer extends Query implements QueryListener {
 	}
 
 	Iterator params
-            = object.attributeList(UserSettable.class).iterator();
+            = object.attributeList(Settable.class).iterator();
         while (params.hasNext()) {
-            UserSettable param = (UserSettable)params.next();
+            Settable param = (Settable)params.next();
 
 	    // Get the current style.
 	    boolean foundOne = false;
@@ -201,7 +201,7 @@ public class StyleConfigurer extends Query implements QueryListener {
                 Iterator entries = _originalValues.entrySet().iterator();
                 while (entries.hasNext()) {
                     Map.Entry entry = (Map.Entry)entries.next();
-                    UserSettable param = (UserSettable)
+                    Settable param = (Settable)
                         _object.getAttribute((String)entry.getKey());
                     try {
                         param.setExpression((String)entry.getValue());

@@ -53,17 +53,16 @@ test State-1.1 {test creating a state} {
     list [$s0 getName] [$s0 getFullName] [$p0 getFullName] [$p1 getFullName]
 } {s0 .e0.fsm.s0 .e0.fsm.s0.incomingPort .e0.fsm.s0.outgoingPort}
 
-test State-1.2 {container of a state must be instance of FSMActor or null} {
-    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+test State-1.2 {container of a state need not be an FSMActor} {
+    set e0 [java::new ptolemy.kernel.CompositeEntity]
     $e0 setName e0
     set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
     set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
     $s0 setContainer [java::null]
     set msg0 [$s0 getFullName]
-    catch {$s0 setContainer $e0} msg1
-    list $msg0 $msg1
-} {.s0 {ptolemy.kernel.util.IllegalActionException: .e0 and .s0:
-State can only be contained by instances of FSMActor.}}
+    $s0 setContainer $e0
+    list {}
+} {{}}
 
 ######################################################################
 ####

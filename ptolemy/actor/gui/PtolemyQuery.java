@@ -59,8 +59,8 @@ import javax.swing.SwingUtilities;
 //// PtolemyQuery
 /**
 This class is a query dialog box with various entries for setting
-the values of Ptolemy II attributes that implement the UserSettable
-interface.  One or more entries are
+the values of Ptolemy II attributes that implement the Settable
+interface and have visibility FULL.  One or more entries are
 associated with an attribute so that if the entry is changed, the
 attribute value is updated, and if the attribute value changes,
 the entry is updated. To change an attribute, this class queues
@@ -113,7 +113,7 @@ public class PtolemyQuery extends Query
      *  create the entry, otherwise just create a new line entry.
      *  @param attribute The attribute for which to create an entry.
      */
-    public void addStyledEntry(UserSettable attribute) {
+    public void addStyledEntry(Settable attribute) {
 	// Look for a ParameterEditorStyle.
         boolean foundStyle = false;
         if (attribute instanceof NamedObj) {
@@ -151,7 +151,7 @@ public class PtolemyQuery extends Query
      *  @param attribute The attribute to attach to an entry.
      *  @param entryName The entry to attach the attribute to.
      */
-    public void attachParameter(UserSettable attribute, String entryName) {
+    public void attachParameter(Settable attribute, String entryName) {
 	// Put the attribute in a Map from entryName -> attribute
 	_attributes.put(entryName, attribute);
 
@@ -217,8 +217,8 @@ public class PtolemyQuery extends Query
 
 	// Check if the entry that changed is in the mapping.
 	if (_attributes.containsKey(name)) {
-	    final UserSettable attribute
-                = (UserSettable)(_attributes.get(name));
+	    final Settable attribute
+                = (Settable)(_attributes.get(name));
             if ( attribute == null ) {
                 // No associated attribute.
                 return;
@@ -286,8 +286,8 @@ public class PtolemyQuery extends Query
 
         String name = change.getDescription();
 	if (_attributes.containsKey(name)) {
-	    final UserSettable attribute
-                = (UserSettable)(_attributes.get(name));
+	    final Settable attribute
+                = (Settable)(_attributes.get(name));
 
             // Make a record of the successful attribute value change
             // in case some future change fails and the user chooses to revert.
@@ -335,8 +335,8 @@ public class PtolemyQuery extends Query
                 }
             }
             final String entryName = tmpEntryName;
-            final UserSettable attribute
-                = (UserSettable)_attributes.get(entryName);
+            final Settable attribute
+                = (Settable)_attributes.get(entryName);
             if (attribute != null) {
                 _query.addStyledEntry(attribute);
             } else {
@@ -453,7 +453,7 @@ public class PtolemyQuery extends Query
 
         Iterator attributes = _attributes.values().iterator();
         while(attributes.hasNext()) {
-            UserSettable attribute = (UserSettable)attributes.next();
+            Settable attribute = (Settable)attributes.next();
             attribute.removeValueListener(this);
         }
     }

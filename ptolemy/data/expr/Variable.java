@@ -143,6 +143,10 @@ language).  Thus, a variable contained by a named object is not
 persistent, in that if the object is exported to a MoML file, the
 variable will not be represented.  If you prefer that the variable
 be represented, then you should use the derived class Parameter instead.
+<p>
+A variable is also normally not settable by users from the user
+interface.  This is because, by default, getVisibility() returns NULL.
+The derived class Parameter is fully visible by default.
 
 @author Neil Smyth, Xiaojun Liu, Edward A. Lee, Yuhong Xiong
 @version $Id$
@@ -495,6 +499,14 @@ public class Variable extends Attribute implements Typeable, Settable {
         return _typeTerm;
     }
 
+    /** Get the visibility of this variable, as set by setVisibility().
+     *  The visibility is set by default to NONE.
+     *  @return The visibility of this variable.
+     */
+    public Visibility getVisibility() {
+        return _visibility;
+    }
+
     /** Remove the items in the enumeration from the scope of this variable.
      *  Any item in the enumeration that is not an instance of variable
      *  is ignored.  Also, variables that are in the scope because they
@@ -798,6 +810,14 @@ public class Variable extends Attribute implements Typeable, Settable {
 	    ((StructuredType)_varType).updateType(
                     (StructuredType)_token.getType());
         }
+    }
+
+    /** Set the visibility of this variable.  The argument should be one
+     *  of the public static instances in Settable.
+     *  @param visibility The visibility of this variable.
+     */
+    public void setVisibility(Visibility visibility) {
+        _visibility = visibility;
     }
 
     /** Constrain the type of this variable to be the same as the
@@ -1340,6 +1360,9 @@ public class Variable extends Attribute implements Typeable, Settable {
 
     // Listeners for changes in value.
     private List _valueListeners;
+
+    // The visibility of this variable.
+    private Settable.Visibility _visibility = Settable.NONE;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

@@ -56,7 +56,7 @@ set moml_1 {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <class name="generic" extends="ptolemy.actor.TypedCompositeActor">
-<property name="iconDescription" class="ptolemy.kernel.util.SingletonAttribute">
+<property name="_iconDescription" class="ptolemy.kernel.util.TransientSingletonConfigurableAttribute">
 <configure>
 <svg>
   <rect x="0" y="0" width="20" height="20" style="fill:blue;stroke:green;stroke-width:30"/>

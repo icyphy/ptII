@@ -79,10 +79,12 @@ public class Configurer extends JPanel implements CloseListener {
 
         _object = object;
         Iterator params
-            = object.attributeList(UserSettable.class).iterator();
+            = object.attributeList(Settable.class).iterator();
         while (params.hasNext()) {
-            UserSettable param = (UserSettable)params.next();
-            _originalValues.put(param.getName(), param.getExpression());
+            Settable param = (Settable)params.next();
+            if (param.getVisibility() == Settable.FULL) {
+                _originalValues.put(param.getName(), param.getExpression());
+            }
         }
 
         boolean foundOne = false;
@@ -141,7 +143,7 @@ public class Configurer extends JPanel implements CloseListener {
                 Iterator entries = _originalValues.entrySet().iterator();
                 while (entries.hasNext()) {
                     Map.Entry entry = (Map.Entry)entries.next();
-                    UserSettable param = (UserSettable)
+                    Settable param = (Settable)
                         _object.getAttribute((String)entry.getKey());
                     try {
                         param.setExpression((String)entry.getValue());
