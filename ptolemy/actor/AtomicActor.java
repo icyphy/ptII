@@ -220,12 +220,12 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Invoke a specified number of iterations of this actor. An
      *  iteration has the effect of invoking prefire(), fire(), and 
-     *  postfire(), in that order. If prefire() returns true, then
-     *  fire() will be called once, followed by postfire(). Otherwise,
-     *  fire() and postfire() are not invoked, and this method will
-     *  return a value of false. This method will return true if 
-     *  the actor was successfully iterated the specified number of 
-     *  times. Otherwise, a value of false will be returned.
+     *  postfire(), in that order. In an iteration, if prefire() 
+     *  returns true, then fire() will be called once, followed by 
+     *  an invocation of postfire(). Otherwise, if prefire() returns 
+     *  false, fire() and postfire() are not invoked, and an exception 
+     *  will be thrown. This method will return the value returned by the 
+     *  last invocation postfire(). 
      *  <p>
      *  This base class method actually invokes prefire(), fire(), 
      *  and postfire(), as described above. 
@@ -234,22 +234,23 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @return True if the actor was successfully iterated the
      *   specified number of times. Otherwise, return false.
      *  @exception IllegalActionException If one of the Executable
-     *   methods throws it.
+     *   methods throws it, or if prefire() returns false.
      */
     public boolean iterate(int count) throws IllegalActionException {
 	int n = 0;
+	boolean returnVal = false;
 	while (n < count) {
 	    if (prefire()) {
 		fire();
-		postfire();
-	    } else break;
-	    count++;
+		returnVal = postfire();
+	    } else {
+		throw new IllegalActionException("Prefire returned false. " +
+					 "Cannot complete the the " + count +
+						  " specified iterations.");
+	    }
+	    n++;
 	}
-	if (count == n) {
-	    return (true);
-	} else {
-	    return (false);
-	}
+	return returnVal;
     }
 
 
