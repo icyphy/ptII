@@ -174,7 +174,10 @@ public class IODependencyOfCompositeActor extends IODependency {
                 for (int j = 0; j < receivers[i].length; j++) {
                     IOPort ioPort = 
                         receivers[i][j].getContainer();
-                    if (embeddedActors.contains(ioPort.getContainer())) {
+                    // The receivers may belong to either the inputs of contained
+                    // actors, or the outputs of the containter.
+                    if (embeddedActors.contains(ioPort.getContainer()) ||
+                        _container.equals(ioPort.getContainer())) {
                         _directedGraph.addEdge(inputPort, 
                             receivers[i][j].getContainer());
     //                    _directedGraph.addEdge(inputPort, 
