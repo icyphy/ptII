@@ -333,7 +333,7 @@ public class TypedIOPort extends IOPort implements Typeable {
      *  @param c A Class.
      *  @exception IllegalArgumentException If the specified Class does not
      *   corresponds to a BaseType.
-     *  @deprecated
+     *  @deprecated Use the method with a Type argument instead.
      */
     public void setTypeEquals(Class c) throws IllegalArgumentException {
 	BaseType type = BaseType.classToBaseType(c);
