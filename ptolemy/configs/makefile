@@ -31,7 +31,7 @@
 
 ME =		ptolemy/configs
 
-DIRS =		doc
+DIRS =		doc test
 
 # Root of the Java directory
 ROOT =		../..
