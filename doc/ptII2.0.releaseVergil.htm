@@ -26,23 +26,21 @@ in:
 
 <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm#in_browser">Ptolemy Web Site</a>
 
-<li> The Vergil HTML Viewer does not correctly handle internal hyperlinks.
-The codegen page is especially difficult to use because of this.
 
 </menu>
 
 
+
+<li> Applet issues:
+	<menu>
+	<li>   Look inside on a composite actor fails :
+	"Cannot look inside with a configuration"
+	</menu>
+
 <li> Webstart issues:
 	<menu>
 	<li> Applet generation still does not work in the Web Edition
-	</menu>
-
-<li> Other bugs:
-	<menu>
-
-	<li> Potential bug with Unit systems because Unit systems
-	are global not local.
-
+	<li> Integrator Icon in web start is missing
 	</menu>
 
 
@@ -90,10 +88,16 @@ User Interface.
 mechanism should disallow port name changes on ports that are
 named in Java.  The UI could recognize this.  The UI should
 not allow the user to remove built in Java defined ports.
-	<li> Query needs to be put into a scroll pane
+<li> Query needs to be put into a scroll pane
 
 <li> Manually setting of the types of actors like ArrayToSequence that
 have constraints on their element types can cause problems.
+
+<li> HTVQ demo is badly laid out when run under vergil
+	
+<li> The Vergil HTML Viewer does not correctly handle internal hyperlinks.
+The codegen page is especially difficult to use because of this.
+
 <li>No undo mechanism.
 <li>Weak support for multiports in the graph editor.
 <li>It is difficult to control wire routing.
