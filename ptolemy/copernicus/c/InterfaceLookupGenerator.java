@@ -179,24 +179,6 @@ public class InterfaceLookupGenerator {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         public fields                     ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                       protected fields                    ////
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-
-
-
     // Wraps a given string in comment delimiters.
     private String _comment(String code) {
         return Utilities.comment(code);
