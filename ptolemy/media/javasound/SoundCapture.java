@@ -39,21 +39,36 @@ import javax.sound.sampled.*;
 //////////////////////////////////////////////////////////////////////////
 //// SoundCapture
 /**
+<h2>Overview</h2>
 A library supporting the capturing of audio. This class supports the
 real-time capture of audio from the audio input port (mic or line-in)
-as well as the capture of audio from a sound file.
+as well as the capture of audio from a sound file. Valid sound file
+formats are WAVE (.wav), AIFF (.aif,.aiff), AU (.au). Single channel
+(mono) and multichannel audio (stereo) are supported.
 <p>
  Depending on available
-system resorces, it may be possible to run multiple instances of this
-class and an instance of SoundPlayback concurrently. It should
-at least be possible to run one instance of this class and one
-instance of SoundPlayback concurrently, thus enabling the real-time
-capturing, processing, and playback of audio.
+system resorces, it may be possible to run an instance of this
+class and an instance of SoundPlayback concurrently. This allows
+for the concurrent capture, processing, and playback of audio data.
 <p>
-<i>Security issues</i>: Applications have no restrictions on the
+<h2>Usage</h2>
+Two constructors are provided. One constructor creates a sound capture
+object that captures from the line-in or microphone port. The
+other constructor creates a sound capture object that captures
+from a sound file.
+<p>
+After calling the appropriate constructor, <i>startCapture()</i>
+must be called to initialize the audio system for capture.
+The <i>getSamples()</i> method should then be repeatedly
+called to obtain audio data in the form of sample values.
+Finally, after no more audio data is desired, <i>stopCapture()</i>
+should be called to free up audio system resources.
+<p>
+<i>Security issues</i>Applications have no restrictions on the
 capturing or playback of audio. Applets, however, may only capture
 audio from a file specified as a URL on the same machine as the
-one the applet was loaded from. The .java.policy file must be
+one the applet was loaded from. Applet code is not allowed to
+read or write native files. The .java.policy file must be
 modified to grant applets more privliiges.
 <p>
 Note: Requires Java 2 v1.3.0 RC1 or later.
@@ -74,8 +89,8 @@ public class SoundCapture {
      *  to 48000).
      *  @param sampleSizeInBits Number of bits per sample (choices are
      *  8 or 16).
-     *  @param channels Number of audio channels. FIXME: must be 1
-     *   for now.
+     *  @param channels Number of audio channels. 1 for mono, 2 for
+     *  stereo.
      *  @param bufferSize Requested size of the internal audio input
      *   buffer in samples. This controls the latency. Ideally, the
      *   smallest value that gives acceptable performance (no overflow)
@@ -85,7 +100,6 @@ public class SoundCapture {
      *   be chosen smaller than <i>bufferSize</i>. Typical values
      *   might be 1/2 to 1/16th of <i>bufferSize</i>.
      */
-    // FIXME: channels must be set = 1.
     public SoundCapture(float sampleRate, int sampleSizeInBits,
 			int channels, int bufferSize,
 			int getSamplesSize) {
@@ -180,32 +194,26 @@ public class SoundCapture {
      *  method should be called often enough to prevent overflow
      *  of the internal audio buffer, the size of which is set
      *  in the constructor.
-     *  @return Array of captured audio samples. Return null
-     *  if end of audio file is reached (only applicable when
-     *  capturing from a sound file).
+     *  @return Two dimensional array of captured audio samples.
+     *   Return null
+     *  if end of audio file is reached A null return value is
+     *  only possible when capturing from a sound file.
+     *  The first index
+     *  represents the channel number (0 for first channel, 1 for
+     *  second channel, etc.). The second index represents the
+     *  sample index within a channel. For example, 
+     *  <i>returned array</i>[n][m] contains the (m+1)th sample
+     *  of the (n+1)th channel. For each channel, n, the length of
+     *  <i>returned array</i>[n] is equal to <i>getSamplesSize</i>.
      */
-    // FIXME: Should return multidimensional array (For > 1 channel
-    // case).
-    // FIXME: What if < productionRate samples in sound file?
-    public double[] getSamples() {
+    public double[][] getSamples() {
 	//System.out.println("SoundCapture: getSamples(): invoked");
 	try {
 	    int numBytesRead;
 	    if (_isRealTime == true) {
-		//System.out.println("SoundCapture: getSamples(): _data.length "
-		//		   + _data.length);
-		//System.out.println("SoundCapture: getSamples(): _productionRate "
-		//		   + _productionRate);
-		//System.out.println("SoundCapture: getSamples(): _frameSizeInBytes "
-		//		   + _frameSizeInBytes);
-		
-
 		// Real-time capture.
 		numBytesRead = _targetLine.read(_data, 0,
 				    _productionRate*_frameSizeInBytes);
-
-		//System.out.println("SoundCapture: getSamples(): numBytesRead "
-		//		   + numBytesRead);
 		    
 	    } else {
 		// Capture audio from file.
@@ -222,12 +230,13 @@ public class SoundCapture {
                 // Read fewer samples than productionRate many samples.
 
                 // FIXME: Output the samples that were read + zeros?
-		//System.out.println("SoundCapture: getSamples(): returning null 2");
                 return null;
             } else {
 		// Convert byte array to double array.
 		_audioInDoubleArray =
-		    _byteArrayToDoubleArray(_data, _frameSizeInBytes);
+		    _byteArrayToDoubleArray(_data, 
+					    _bytesPerSample, 
+					    _channels);
 		//System.out.println("SoundCapture: getSamples(): returning some data");
 		return _audioInDoubleArray;
 	    }
@@ -235,8 +244,6 @@ public class SoundCapture {
             System.out.println("Could not capture audio: " + ex);
 	    ex.printStackTrace();
         }
-	// FIXME
-	//System.out.println("SoundCapture: getSamples(): returning null 3");
 	return null;
     }
 
@@ -279,14 +286,13 @@ public class SoundCapture {
             return;
         }
 
-        System.out.println("JavaSound target (microphone/line in)" +
-                "line buffer size in bytes = " +
-                _targetLine.getBufferSize());
+        System.out.println("JavaSound (microphone/line in)" +
+                "line buffer size in samples = " +
+                _targetLine.getBufferSize()/_frameSizeInBytes);
 
         int targetBufferLengthInBytes = _productionRate *
             _frameSizeInBytes;
 	System.out.println("frameSizeInBytes = " + _frameSizeInBytes);
-        byte[] targetData = new byte[targetBufferLengthInBytes];
 
 	DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
                 format,
@@ -301,6 +307,8 @@ public class SoundCapture {
 
 	// Array of audio samples in byte format.
 	_data = new byte[_productionRate*_frameSizeInBytes];
+
+	_bytesPerSample = _sampleSizeInBits/8;
 
 	// Start the target data line
 	_targetLine.start();
@@ -364,15 +372,16 @@ public class SoundCapture {
 	    System.out.println("AudioSource: sampling rate = " +
 			       sampleRate);
 	    
-	    int sampleSizeInBits = origFormat.getSampleSizeInBits();
+	    _sampleSizeInBits = origFormat.getSampleSizeInBits();
+	    _bytesPerSample = _sampleSizeInBits/8;
 	    System.out.println("AudioSource: sample size in bits = " +
-			       sampleSizeInBits);
+			       _sampleSizeInBits);
 	    
-	    int channels = origFormat.getChannels();
+	    _channels = origFormat.getChannels();
 	    boolean signed = true;
 	    boolean bigEndian = true;
 	    AudioFormat format = new AudioFormat(sampleRate,
-						 sampleSizeInBits, channels,
+						 _sampleSizeInBits, _channels,
 						 signed, bigEndian);
 	    System.out.println("Converted format: " + format.toString());
 	    
@@ -395,32 +404,64 @@ public class SoundCapture {
 
     /* Convert a byte array of audio samples in linear signed pcm big endian
      * format into a double array of audio samples (-1,1) range.
-     * FIXME: This method only works for mono (single channel) audio.
+     * @param byteArray  The linear signed pcm big endian byte array 
+     * formated array representation of audio data.
+     * @param bytesPerSample Number of bytes per sample. Supported 
+     * bytes per sample by this method are 8, 16, 24, 32.
+     * @param channels Number of audio channels. 1 for mono, 2 for
+     * stereo.
+     * @return Two dimensional array holding audio samples.
+     * For each channel, m, doubleArray[m] is a single dimensional
+     * array containing samples for channel m.
      */
-    private double[] _byteArrayToDoubleArray(byte[] byteArray, 
-					     int _bytesPerSample) {
-
-	//System.out.println("_bytesPerSample = " + _bytesPerSample);
-	//System.out.println("byteArray length = " + byteArray.length);
-	int lengthInSamples = byteArray.length / _bytesPerSample;
-	double[] doubleArray = new double[lengthInSamples];
-	double mathDotPow = Math.pow(2, 8 * _bytesPerSample - 1);
+    private double[][] _byteArrayToDoubleArray(byte[] byteArray, 
+					       int bytesPerSample,
+					       int channels) {
+	int lengthInSamples = byteArray.length / (bytesPerSample*channels);
+	double[][] doubleArray = new double[channels][lengthInSamples];
+	double mathDotPow = Math.pow(2, 8 * bytesPerSample - 1);
+	byte[] b = new byte[bytesPerSample];
 
 	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
 
-	    byte[] b = new byte[_bytesPerSample];
-	    for (int i = 0; i < _bytesPerSample; i += 1) {
+	    // For each channel,
+	    for (int currChannel = 0; currChannel < channels; currChannel++) {
+
+		for (int i = 0; i < bytesPerSample; i += 1) {
+		    // Assume we are dealing with big endian.
+		    b[i] = byteArray[currSamp*bytesPerSample*channels + bytesPerSample*currChannel + i];
+		}
+		long result = (b[0] >> 7) ;
+		for (int i = 0; i < bytesPerSample; i += 1)
+		    result = (result << 8) + (b[i] & 0xff);
+		doubleArray[currChannel][currSamp] = ((double) result/
+					    (mathDotPow));
+	    }
+        }
+
+	return doubleArray;
+	/*
+	int lengthInSamples = byteArray.length / bytesPerSample;
+	double[][] doubleArray = new double[channels][lengthInSamples];
+	double mathDotPow = Math.pow(2, 8 * bytesPerSample - 1);
+	byte[] b = new byte[bytesPerSample];
+
+	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
+
+	    
+	    for (int i = 0; i < bytesPerSample; i += 1) {
 		// Assume we are dealing with big endian.
-		b[i] = byteArray[currSamp*_bytesPerSample + i];
+		b[i] = byteArray[currSamp*bytesPerSample + i];
 	    }
 	    long result = (b[0] >> 7) ;
-	    for (int i = 0; i < _bytesPerSample; i += 1)
+	    for (int i = 0; i < bytesPerSample; i += 1)
 		result = (result << 8) + (b[i] & 0xff);
-	    doubleArray[currSamp] = ((double) result/
+	    doubleArray[0][currSamp] = ((double) result/
                     (mathDotPow));
         }
-	//System.out.println("a value " + doubleArray[34]);
+
 	return doubleArray;
+	*/
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -433,7 +474,7 @@ public class SoundCapture {
     private int _productionRate;
 
     // Array of audio samples in double format.
-    private double[] _audioInDoubleArray;
+    private double[][] _audioInDoubleArray;
 
     // Array of audio samples in byte format.
     private byte[] _data;
@@ -458,4 +499,6 @@ public class SoundCapture {
     private int _bufferSize;
 
     private TargetDataLine _targetLine;
+
+    private int _bytesPerSample;
 }

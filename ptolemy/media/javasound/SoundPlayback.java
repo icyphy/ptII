@@ -39,25 +39,41 @@ import javax.sound.sampled.*;
 //////////////////////////////////////////////////////////////////////////
 //// SoundPlayback
 /**
+<h2>Overview</h2>
 A library supporting the playback of audio. This class supports the
-real-time capture of audio from the audio input port (mic or line-in)
-as well as the capture of audio from a sound file.
+real-time playback of audio to the speaker
+as well as the writing of audio to a sound file. Valid sound file
+formats are WAVE (.wav), AIFF (.aif,.aiff), AU (.au). Single channel
+(mono) and multichannel audio (stereo) are supported.
 <p>
- Depending on available
-system resorces, it may be possible to run multiple instances of this
-class and an instance of SoundPlayback concurrently. It should
-at least be possible to run one instance of this class and one
-instance of SoundPlayback concurrently, thus enabling the real-time
-capturing, processing, and playback of audio.
+Depending on available
+system resorces, it may be possible to run an instance of this
+class and an instance of SoundPlayback concurrently. This allows
+for the concurrent capture, processing, and playback of audio data.
+<p>
+<h2>Usage</h2>
+Two constructors are provided. One constructor creates a sound playback
+object that sends audio data to the speaker. The other constructor
+creates a sound playback object the sends audio data to a sound
+file.
+<p>
+After calling the appropriate constructor, <i>startPlayback()</i>
+must be called to initialize the audio system.
+The <i>putSamples()</i> method should then be repeatedly
+called to deliver the audio data to the audio output device 
+(speaker or file).
+Finally, after no more audio playback is desired, <i>stopPlayback()</i>
+should be called to free up audio system resources. 
 <p>
 <i>Security issues</i>: Applications have no restrictions on the
 capturing or playback of audio. Applets, however, may only capture
 audio from a file specified as a URL on the same machine as the
-one the applet was loaded from. The .java.policy file must be
+one the applet was loaded from. Applet code is not allowed to
+read or write native files. The .java.policy file must be
 modified to grant applets more privliiges.
 <p>
 Note: Requires Java 2 v1.3.0 RC1 or later.
-
+// FIXME: FILE FORMATS SUPPORTED?
 @author Brian K. Vogel
 @version $Id$
 @see ptolemy.media.javasound.SoundCapture
@@ -179,6 +195,7 @@ public class SoundPlayback {
 	    _startPlaybackRealTime();
 	    _startPlaybackToFile();
 	}
+	_bytesPerSample = _sampleSizeInBits/8;
     }
 
     /** Stop playing/writing audio. This method should be called when
@@ -198,6 +215,14 @@ public class SoundPlayback {
 	} else if (_playbackMode == "file") {
 	    // Record data to sound file.
 	    _stopPlaybackToFile();   
+	} else if (_playbackMode == "both") {
+	    // Stop real-time playback to speaker.
+	    _sourceLine.stop();
+	    _sourceLine.close();
+	    _sourceLine = null;
+	    // **AND**
+	    // Record data to sound file.
+	    _stopPlaybackToFile();   
 	}
     }
 
@@ -214,15 +239,26 @@ public class SoundPlayback {
      *  If the "play audio to file" constructor was used,
      *  then append the audio data contained in <i>putSamplesArray</i>
      *  to the soundfile specified in the constructor.
+     *  @param putSamplesArray A two dimensional array containing
+     *  the samples to play or write to a file. The first index
+     *  represents the channel number (0 for first channel, 1 for
+     *  second channel, etc.). The second index represents the
+     *  sample index within a channel. For example, 
+     *  putSamplesArray[n][m] contains the (m+1)th sample
+     *  of the (n+1)th channel. putSamplesArray should be a
+     *  rectangular array such that putSamplesArray.length() gives
+     *  the number of channels and putSamplesArray[n].length() is
+     *  equal to <i>putSamplesSize</i>, for all channels n.
      */
-    public void putSamples(double[] putSamplesArray) {
-	System.out.println("SoundPlayback: putSamples(): invoked");
+    public void putSamples(double[][] putSamplesArray) {
+	//System.out.println("SoundPlayback: putSamples(): invoked");
 	if (_playbackMode == "speaker") {
 	    
 	    // Convert array of double valued samples into
 	    // the proper byte array format.
 	    _data = _doubleArrayToByteArray(putSamplesArray,
-					    _frameSizeInBytes);
+					    _bytesPerSample,
+					    _channels);
 
 	    // Note: _data is a byte array containing data to
 	    // be written to the output device.
@@ -231,25 +267,34 @@ public class SoundPlayback {
 	    // Now write the array to output device.
 	    _sourceLine.write(_data, 0, _putSamplesSize*_frameSizeInBytes);
 	} else if (_playbackMode == "file") {
-	    System.out.println("SoundPlayback: putSamples(): file");
+	    //System.out.println("SoundPlayback: putSamples(): file");
 
 	    // Convert array of double valued samples into
 	    // the proper byte array format.
 	    _data = _doubleArrayToByteArray(putSamplesArray,
-					    _frameSizeInBytes);
-	    System.out.println("SoundPlayback: putSamples(): _data.length = " + _data.length);
-	    System.out.println("SoundPlayback: putSamples(): putSamplesArray.length = " + putSamplesArray.length);
-	    System.out.println("SoundPlayback: putSamples(): _frameSizeInBytes = " + _frameSizeInBytes);
+					    _bytesPerSample,
+					    _channels);
 	    // Add new audio data to the file buffer array.
 	    for (int i = 0; i < _data.length; i++) {
 		_toFileBuffer.add(new Byte(_data[i]));
 	    }
 	} else if (_playbackMode == "both") {
+	    // Convert array of double valued samples into
+	    // the proper byte array format.
+	    _data = _doubleArrayToByteArray(putSamplesArray,
+					    _bytesPerSample,
+					    _channels);
 
+	    // Now write the array to output device.
+	    _sourceLine.write(_data, 0, _putSamplesSize*_frameSizeInBytes);
+	    // Add new audio data to the file buffer array.
+	    for (int i = 0; i < _data.length; i++) {
+		_toFileBuffer.add(new Byte(_data[i]));
+	    }
 	} else {
 	    // Should not happen since caught by constructor.
+	    // FIXME: throw exception anyway?            
 	}
-	//System.out.println("SoundPlayback: putSamples(): return");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -262,6 +307,7 @@ public class SoundPlayback {
         AudioFormat format = new AudioFormat((float)_sampleRate,
                 _sampleSizeInBits,
                 _channels, signed, bigEndian);
+
         _frameSizeInBytes = format.getFrameSize();
 
 	System.out.println("SoundPLayback: _startPlaybackRealTime(): sampling rate = " + _sampleRate);
@@ -293,8 +339,8 @@ public class SoundPlayback {
 	}
 
 	// Array of audio samples in byte format.
-	_data = new byte[_productionRate*_frameSizeInBytes];
-
+	_data = new byte[_productionRate*_frameSizeInBytes*_channels];
+	
         // Start the source data line
 	_sourceLine.start();
     }
@@ -311,6 +357,7 @@ public class SoundPlayback {
         _playToFileFormat = new AudioFormat((float)_sampleRate,
                 _sampleSizeInBits,
                 _channels, signed, bigEndian);
+
         _frameSizeInBytes = _playToFileFormat.getFrameSize();
     }
 
@@ -378,27 +425,60 @@ public class SoundPlayback {
 
     /* Convert a double array of audio samples in linear signed pcm big endian
      * format into a byte array of audio samples (-1,1) range.
-     * FIXME: This method only works for mono (single channel) audio.
+     * @param doubleArray Two dimensional array holding audio samples.
+     * For each channel, m, doubleArray[m] is a single dimensional
+     * array containing samples for channel m.
+     * @param bytesPerSample Number of bytes per sample. Supported 
+     * bytes per sample by this method are 8, 16, 24, 32.
+     * @param channels Number of audio channels.
+     * @return The linear signed pcm big endian byte array formated
+     * array representation of <i>doubleArray</i>. The length of
+     * the returned array is (doubleArray.length*bytesPerSample*channels).
      */
-    private byte[] _doubleArrayToByteArray(double[] doubleArray,
-            int _bytesPerSample) {
-
-	//System.out.println("_bytesPerSample = " + _bytesPerSample);
-	int lengthInSamples = doubleArray.length;
-	double mathDotPow = Math.pow(2, 8 * _bytesPerSample - 1);
-	byte[] byteArray = new byte[lengthInSamples * _bytesPerSample];
+    private byte[] _doubleArrayToByteArray(double[][] doubleArray,
+            int bytesPerSample, int channels) {
+	// All channels had better have the same number
+	// of samples! This is not checked!
+	int lengthInSamples = doubleArray[0].length;
+	double mathDotPow = Math.pow(2, 8 * bytesPerSample - 1);
+	byte[] byteArray = 
+	    new byte[lengthInSamples * bytesPerSample * channels];
+	byte[] b = new byte[bytesPerSample];
 	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
-	    long l = Math.round((doubleArray[currSamp] * mathDotPow));
-	    byte[] b = new byte[_bytesPerSample];
-	    for (int i = 0; i < _bytesPerSample; i += 1, l >>= 8)
-		b[_bytesPerSample - i - 1] = (byte) l;
-	    for (int i = 0; i < _bytesPerSample; i += 1) {
-		//if (_isBigEndian)
-                byteArray[currSamp*_bytesPerSample + i] = b[i];
-                //else put(b[_bytesPerSample - i - 1]);
+	    
+	    
+	    // For each channel,
+	    for (int currChannel = 0; currChannel < channels; currChannel++) {
+		// signed long representation of current sample of the
+		// current channel.
+		long l = Math.round((doubleArray[currChannel][currSamp] * mathDotPow));
+		// Create byte representation of current sample.
+		for (int i = 0; i < bytesPerSample; i += 1, l >>= 8)
+		    b[bytesPerSample - i - 1] = (byte) l;
+		// Copy the byte representation of current sample to
+		// the linear signed pcm big endian formated byte array.
+		for (int i = 0; i < bytesPerSample; i += 1) {
+		    byteArray[currSamp*bytesPerSample*channels + bytesPerSample*currChannel + i] = b[i];
+		}
 	    }
 	}
 	return byteArray;
+	/*
+	int lengthInSamples = doubleArray[0].length;
+	double mathDotPow = Math.pow(2, 8 * bytesPerSample - 1);
+	byte[] byteArray = 
+	    new byte[lengthInSamples * bytesPerSample * channels];
+	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
+	    long l = Math.round((doubleArray[0][currSamp] * mathDotPow));
+	    byte[] b = new byte[bytesPerSample];
+	    for (int i = 0; i < bytesPerSample; i += 1, l >>= 8)
+		b[bytesPerSample - i - 1] = (byte) l;
+	    for (int i = 0; i < bytesPerSample; i += 1) {
+                byteArray[currSamp*bytesPerSample + i] = b[i];
+	    }
+	}
+	return byteArray;
+	*/
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -434,4 +514,6 @@ public class SoundPlayback {
 
     // This is the format of _toFileBuffer.
     private AudioFormat _playToFileFormat;
+
+    private int _bytesPerSample;
 }
