@@ -53,7 +53,9 @@ PTCLASSALLJARS =
 
 PTCLASSALLJAR =
 
-JSRCS =
+JSRCS = \
+	ParseTreeEvaluatorForGuardExpression.java \
+	RelationList.java
 
 OTHER_FILES_TO_BE_JARED = \
 	fsmentities.xml
