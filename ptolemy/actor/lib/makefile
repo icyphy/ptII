@@ -79,6 +79,7 @@ JSRCS = \
 	Accumulator.java \
 	ArrayAppend.java \
 	ArrayElement.java \
+        ArrayElementI.java\
 	ArrayExtract.java \
 	ArrayLength.java \
 	Average.java \
@@ -136,6 +137,7 @@ JSRCS = \
 	SequentialClock.java \
 	Sink.java \
 	Sleep.java \
+        Sobel.java\
 	Source.java \
 	Switch.java \
 	Synchronizer.java \
@@ -144,6 +146,7 @@ JSRCS = \
 	TimedSource.java \
 	Transformer.java \
 	TrigFunction.java \
+        TriggeredClock.java\
 	Uniform.java \
 	URLReader.java \
 	URLDirectoryReader.java \
