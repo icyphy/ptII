@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (ssachs@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu) Factored out _checkTokenAgainstReference for use with NonStrictTest (10/30/01)
 */
 
 package ptolemy.actor.lib;
@@ -88,7 +88,7 @@ be, within the specified <i>tolerance</i> (which defaults to
 resolve to anything.
 
 @see NonStrictTest
-@author Edward A. Lee
+@author Edward A. Lee, Christopher Hylands
 @version $Id$
 */
 
@@ -192,67 +192,90 @@ public class Test extends Sink {
                         + "Empty input on channel " + i);
             }
             Token token = input.get(i);
-            if (token instanceof DoubleToken) {
-                // Check using tolerance.
-                Token correctValue = reference[i];
-                try {
-                    double correct = ((DoubleToken)correctValue).doubleValue();
-                    double seen = ((DoubleToken)token).doubleValue();
-                    double ok
-                        = ((DoubleToken)(tolerance.getToken())).doubleValue();
-                    if (Math.abs(correct - seen) > ok) {
-                        throw new IllegalActionException(this,
-                                "Test fails in iteration " + _count + ".\n"
-                                + "Value was: " + seen
-                                + ". Should have been: " + correct);
-                    }
-                } catch (ClassCastException ex) {
-                    throw new IllegalActionException(this,
-                            "Test fails in iteration " + _count + ".\n"
-                            + "Input is a double but correct value is not: "
-                            + correctValue.toString());
-                }
-            } else if (token instanceof ComplexToken) {
-                // Check using tolerance.
-                Token correctValue = reference[i];
-                try {
-                    Complex correct
-                        = ((ComplexToken)correctValue).complexValue();
-                    Complex seen
-                        = ((ComplexToken)token).complexValue();
-                    double ok
-                        = ((DoubleToken)(tolerance.getToken())).doubleValue();
-                    if (Math.abs(correct.real - seen.real) > ok ||
-                            Math.abs(correct.imag - seen.imag) > ok) {
-                        throw new IllegalActionException(this,
-                                "Test fails in iteration " + _count + ".\n"
-                                + "Value was: " + seen
-                                + ". Should have been: " + correct);
-                    }
-                } catch (ClassCastException ex) {
-                    throw new IllegalActionException(this,
-                            "Test fails in iteration " + _count + ".\n"
-                            + "Input is complex but correct value is not: "
-                            + correctValue.toString());
-                }
-            } else {
-                Token correctValue = reference[i];
-                BooleanToken result = token.isEqualTo(correctValue);
-                if (!result.booleanValue()) {
-                    throw new IllegalActionException(this,
-                            "Test fails in iteration " + _count + ".\n"
-                            + "Value was: " + token
-                            + ". Should have been: " + correctValue);
-                }
-            }
+            _checkTokenAgainstReference(token, reference[i],
+                    tolerance, _count);
         }
         _count++;
         return true;
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected methods                 ////
+
+    /** Compare a token against the correctValue and throw an
+     *  IllegalActionException if the values of the tokens are not
+     *  the same or within a specified tolerance.
+     *  @param token The token to check.
+     *  @param correctValue The known good result to check against
+     *  @param tolerance A Parameter that contains a tolerance that
+     *  is used if the token is a DoubleToken or ComplexToken.
+     *  @param count The iteration that we are checking.
+     *  @exception IllegalActionException If the token and the correctValue
+     *  are not equal or within the tolerance.
+     */   
+    protected void _checkTokenAgainstReference(
+            Token token, Token correctValue, Parameter tolerance,
+            int count) 
+            throws IllegalActionException {
+
+        // This method is protected so that we can use it in
+        // derived classes like NonStrictTest.
+
+        if (token instanceof DoubleToken) {
+            // Check using tolerance.
+            try {
+                double correct = ((DoubleToken)correctValue).doubleValue();
+                double seen = ((DoubleToken)token).doubleValue();
+                double ok
+                    = ((DoubleToken)(tolerance.getToken())).doubleValue();
+                if (Math.abs(correct - seen) > ok) {
+                    throw new IllegalActionException(this,
+                            "Test fails in iteration " + count + ".\n"
+                            + "Value was: " + seen
+                            + ". Should have been: " + correct);
+                }
+            } catch (ClassCastException ex) {
+                throw new IllegalActionException(this,
+                        "Test fails in iteration " + count + ".\n"
+                        + "Input is a double but correct value is not: "
+                        + correctValue.toString());
+            }
+        } else if (token instanceof ComplexToken) {
+            // Check using tolerance.
+            try {
+                Complex correct
+                    = ((ComplexToken)correctValue).complexValue();
+                Complex seen
+                    = ((ComplexToken)token).complexValue();
+                double ok
+                    = ((DoubleToken)(tolerance.getToken())).doubleValue();
+                if (Math.abs(correct.real - seen.real) > ok ||
+                        Math.abs(correct.imag - seen.imag) > ok) {
+                    throw new IllegalActionException(this,
+                            "Test fails in iteration " + count + ".\n"
+                            + "Value was: " + seen
+                            + ". Should have been: " + correct);
+                }
+            } catch (ClassCastException ex) {
+                throw new IllegalActionException(this,
+                        "Test fails in iteration " + count + ".\n"
+                        + "Input is complex but correct value is not: "
+                        + correctValue.toString());
+            }
+        } else {
+            BooleanToken result = token.isEqualTo(correctValue);
+            if (!result.booleanValue()) {
+                throw new IllegalActionException(this,
+                        "Test fails in iteration " + count + ".\n"
+                        + "Value was: " + token
+                        + ". Should have been: " + correctValue);
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     // Count of iterations.
-    private int _count = 0;
+    protected int _count = 0;
 }
