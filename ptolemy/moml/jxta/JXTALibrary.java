@@ -114,7 +114,7 @@ remote peers.
 via  remote publish its  advertisement, and  it discovers  other peers
 through getRemoteAdvertisement().
 
-<p>The DiscoveryListener listens to the discorverd events. One can
+<p>The DiscoveryListener listens to the discovered events. One can
 implements the discoveryEvent method to do what he/she want. In this
 class, it sends out a query message to peers that have been
 discovered.
@@ -135,7 +135,7 @@ advertisement to the peer that has the actor.  The current JXTA java
 binding implementation dosen't support publish an advertisement to a
 specific peer, however we probably wouldn't like to publish an
 inputPipe to the whole group. So in this class, we use the
-resolverServise to wrap the pipeAdvertisement in a query message to
+resolverService to wrap the pipeAdvertisement in a query message to
 send it to the speicific peer.
 
 <p>The pipeMsgListener listens to input pipe messages. One can
