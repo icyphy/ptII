@@ -180,7 +180,10 @@ public class ProcessDirector extends Director {
                 actor.initialize();
             }
         }
-	setCurrentTime(0.0);
+        // NOTE: Used to do this with a method call, but fails
+        // with an exception on the second run.
+	// setCurrentTime(0.0);
+        _currentTime = 0.0;
     }
 
     /** Perform domain-specific initialization on the specified actor, if any.
