@@ -50,13 +50,15 @@ import ptolemy.kernel.util.NamedObj;
 //// SDFDirector
 
 /**
-Code generator helper associated with the SDFDirector class. This class
-is also associated with a code generator.
-FIXME: Should associated with a static scheduling code generator.
-FIXME: Should maintain a table of buffer size and index position (offset)
-to which a token should be put for each input port.
+   Code generator helper associated with the SDFDirector class. This class
+   is also associated with a code generator.
+   FIXME: Should associated with a static scheduling code generator.
 
-@author Ye Zhou
+   @author Ye Zhou, Edward A. Lee
+   @version $Id: SDFDirector.java
+   @since Ptolemy II 5.0
+   @Pt.ProposedRating Red (zhouye)
+   @Pt.AcceptedRating Red (eal)
 */
 
 public class SDFDirector extends Director {

@@ -42,9 +42,14 @@ import ptolemy.kernel.util.NamedObj;
 /**
    Code generator helper associated with the Director class. This class
    is also associated with a code generator.
-   @author Ye Zhou
+   
    @see CodeGenerator
- 
+   @author Ye Zhou
+   @version $Id: Director.java
+   @since Ptolemy II 5.0
+   @Pt.ProsedRating Red (zhouye)
+   @Pt.AcceptedRating Red (zhouye)
+   
  */
 
 public class Director implements ActorCodeGenerator {

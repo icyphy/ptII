@@ -56,7 +56,7 @@ import ptolemy.util.MessageHandler;
 
 /** Base class for code generator.
  *
- *  @author Christopher Brooks, Edward Lee, Jackie Leung, Gang Zhou, Ye Zhou
+ *  @author Gang Zhou, Ye Zhou, Edward A. Lee, Contributors: Christopher Brooks, Jackie Leung
  *  @version $Id$
  *  @since Ptolemy II 5.0
  *  @Pt.ProposedRating Red (eal)
