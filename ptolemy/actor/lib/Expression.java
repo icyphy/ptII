@@ -56,10 +56,12 @@ setExpression() method.  By default, it is empty, and attempting
 to execute the actor without setting it triggers an exception.
 <p>
 NOTE: There are a number of limitations in the current implementation.
-First, multiports are not supported.  Second, the type constraints
-have nothing to do with the expression being evaluated.  Overcoming
-either of limitations requires extending the expression language.
-Such extensions are in progress.  Also, if name duplications occur,
+First, the type constaints on the ports are the default, that input
+ports must have type that be losslessly converted to the type of the
+output.  The type constraints have nothing to do with the expression.
+This is a severe limitation, but removing it depends on certain
+extensions to the Ptolemy II type system which are in progress.
+Second, multiports are not supported. Also, if name duplications occur,
 for example if a parameter and a port have the same name, then
 the results are unpredictable.  They will depend on the order
 in which things are defined, which may not be the same in the
@@ -88,7 +90,9 @@ public class Expression extends TypedAtomicActor {
         expression = new Parameter(this, "expression");
         _time = new Variable(this, "time", new DoubleToken(0.0));
         _firing = new Variable(this, "firing", new IntToken(1));
-        _expression = new Variable(this, "_expression");
+        // FIXME: This has to be initialized with a token or type resolution
+        // fails.
+        _expression = new Variable(this, "_expression", new IntToken(1));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -195,19 +199,27 @@ public class Expression extends TypedAtomicActor {
      *  the variable contains the most recently transmitted token.
      *  @param port The port being added.
      *  @exception IllegalActionException If the port has no name, or
-     *   if the variable is rejected for some reason.
+     *   if the variable is rejected for some reason, or if the port
+     *   is not a TypedIOPort.
      *  @exception NameDuplicationException If the port name collides with a
      *   name already in the entity.
      */
     protected void _addPort(Port port)
             throws IllegalActionException, NameDuplicationException {
+        if (!(port instanceof TypedIOPort)) {
+            throw new IllegalActionException(this,
+            "Cannot add an input port that is not a TypedIOPort: "
+            + port.getName());
+        }
         super._addPort(port);
         String portName = port.getName();
         // The new variable goes on the list of attributes, unless it is
         // already there.
         Attribute there = getAttribute(portName);
         if (there == null) {
-            new Variable(this, portName);
+            // FIXME: Have to initialize with a token or type
+            // resolution failse.
+            new Variable(this, portName, new IntToken(1));
         } else if ((there instanceof Parameter)
                 || !(there instanceof Variable)) {
             throw new IllegalActionException(this, "Port name collides with"
