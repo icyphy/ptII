@@ -132,8 +132,7 @@ test Pulse-3.1 {test indexes that are out of order} {
     } msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: .top.pulse.indexes:
-Error evaluating expression "{0, 3, 2}":
-ptolemy.kernel.util.IllegalActionException: .top.pulse:
+.top.pulse:
 Value of indexes is not nondecreasing and nonnegative.}}
 
 test Pulse-3.2 {test negative indexes} {
@@ -144,8 +143,7 @@ test Pulse-3.2 {test negative indexes} {
     } msg
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: .top.pulse.indexes:
-Error evaluating expression "{-1, 0, 1}":
-ptolemy.kernel.util.IllegalActionException: .top.pulse:
+.top.pulse:
 Value of indexes is not nondecreasing and nonnegative.}}
 
 test Pulse-3.3 {test values and indexes of different dimensions} {
