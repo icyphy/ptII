@@ -55,9 +55,9 @@ import java.awt.event.ActionListener;
 public class BusContentionGraphic extends Frame {
 
     /*
-    public BusContentionGraphic() throws IllegalActionException, NameDuplicationException {
-        _demo = new BusContentionDemo(this);
-    }
+      public BusContentionGraphic() throws IllegalActionException, NameDuplicationException {
+      _demo = new BusContentionDemo(this);
+      }
     */
 
     /**
@@ -168,9 +168,9 @@ public class BusContentionGraphic extends Frame {
 		_blocks[i][j] = new DisplayBlock();
 		_blocks[i][j].setVisible(false);
                 /*
-		if( i != _rows/2 || j != _columns/2 ) {
-		    _blocks[i][j].setVisible(false);
-		}
+                  if( i != _rows/2 || j != _columns/2 ) {
+                  _blocks[i][j].setVisible(false);
+                  }
                 */
 	        bottom.add( _blocks[i][j] );
 	    }
@@ -198,40 +198,40 @@ public class BusContentionGraphic extends Frame {
     }
     
     /*
-    public void resetMark( int i, int j ) {
-	if( _random == null ) {
-	    _random = new Random();
-	}
+      public void resetMark( int i, int j ) {
+      if( _random == null ) {
+      _random = new Random();
+      }
 
-	double newi = _random.nextDouble();
-	while( newi == 0.0 || newi == 1.0 ) {
-	    newi = _random.nextDouble();
-	}
-	int newI = (int)(_rows * newi) + i;
-	newI = newI%_rows;
+      double newi = _random.nextDouble();
+      while( newi == 0.0 || newi == 1.0 ) {
+      newi = _random.nextDouble();
+      }
+      int newI = (int)(_rows * newi) + i;
+      newI = newI%_rows;
 
-	double newj = _random.nextDouble();
-	while( newj == 0.0 || newj == 1.0 ) {
-	    newj = _random.nextDouble();
-	}
-	int newJ = (int)(_columns * newj) + j;
-	newJ = newJ%_columns;
+      double newj = _random.nextDouble();
+      while( newj == 0.0 || newj == 1.0 ) {
+      newj = _random.nextDouble();
+      }
+      int newJ = (int)(_columns * newj) + j;
+      newJ = newJ%_columns;
 
-	_blocks[newI][newJ].setVisible(true);
-	_currI = newI;
-	_currJ = newJ;
-    }
+      _blocks[newI][newJ].setVisible(true);
+      _currI = newI;
+      _currJ = newJ;
+      }
     */
 
     /*
-    public void actionPerformed( ActionEvent event ) {
-	Point myLocation = getLocationOnScreen();
-	if( _infoMessage == null ) {
-	    _infoMessage = new InfoMessage(this);
-	}
-	_infoMessage.setLocation(myLocation);
-	_infoMessage.setVisible(true);
-    }
+      public void actionPerformed( ActionEvent event ) {
+      Point myLocation = getLocationOnScreen();
+      if( _infoMessage == null ) {
+      _infoMessage = new InfoMessage(this);
+      }
+      _infoMessage.setLocation(myLocation);
+      _infoMessage.setVisible(true);
+      }
     */
 
 
@@ -239,9 +239,9 @@ public class BusContentionGraphic extends Frame {
     ////                        private variables                  ////
 
     /*
-    // The help message window that is popped up
-    // when the help button is depressed.
-    private InfoMessage _infoMessage;
+      // The help message window that is popped up
+      // when the help button is depressed.
+      private InfoMessage _infoMessage;
     */
 
     // The size of the outer frame of this application
@@ -252,8 +252,8 @@ public class BusContentionGraphic extends Frame {
     private DisplayBlock[][] _blocks;
 
     /*
-    // The random number generator used to reset positioning
-    private Random _random;
+      // The random number generator used to reset positioning
+      private Random _random;
     */
 
     // The number of rows and columns used for positioning
@@ -261,9 +261,9 @@ public class BusContentionGraphic extends Frame {
     private int _columns = 6;
 
     /*
-    // The current position within the grid of rows and columns
-    private int _currI;
-    private int _currJ;
+      // The current position within the grid of rows and columns
+      private int _currI;
+      private int _currJ;
     */
     
     private BusContentionDemo _demo;
