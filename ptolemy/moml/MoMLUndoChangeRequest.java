@@ -44,7 +44,7 @@ import java.util.List;
 A mutation request specified in MoML to undo/redo the most recent MoML
 change request. To request that the last operation is undone, simply
 simply create. To request that the last undo change is redone,
-create an instnace of this class, and invoke the method setRedoable().
+create an instance of this class, and invoke the method setRedoable().
 <p>
 This class provides the preferred mechanism for undoing/redoing mutations
 on a model while it is executing. It is primarily intended for use with
