@@ -32,10 +32,10 @@
 # Note that the Java classes contained in this directory were written
 # by Sun.  These classes came from tcljava, see license.terms for more info.
 
-# Root of the Java directory
-ROOT =		../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../..
 
-ME =		java/pt/kernel/util
+ME =		pt/kernel/util
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk

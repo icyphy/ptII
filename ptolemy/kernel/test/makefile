@@ -32,10 +32,10 @@
 # Note that the Java classes contained in this directory were written
 # by Sun.  These classes came from tcljava, see license.terms for more info.
 
-# Root of the Java directory
-ROOT =		../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../..
 
-ME =		java/pt/kernel/test
+ME =		pt/kernel/test
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -84,7 +84,7 @@ tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 test_java: jclass
 
 # Tycho-wide test definitions.
-KERNEL_TESTDEFS = $(ROOT)/kernel/test/testDefs.tcl
+KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 
 # These tests do not require a graphics terminal, but do use TclBlend and Java
 test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl

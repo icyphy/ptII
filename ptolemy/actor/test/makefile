@@ -29,13 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# Note that the Java classes contained in this directory were written
-# by Sun.  These classes came from tcljava, see license.terms for more info.
+# Root of the Ptolemy II directory
+ROOT =		../../..
 
-# Root of the Java directory
-ROOT =		../../../..
-
-ME =		java/pt/kernel/test
+ME =		pt/kernel/test
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
@@ -52,8 +49,7 @@ JSRCS =
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	IOPort.tcl \
-	IORelation.tcl \
-	SortedQueue.tcl
+	IORelation.tcl
 
 # Graphical Java tests that use Tcl.
 # Since there are no tests, we use a dummy file so that the script that builds
