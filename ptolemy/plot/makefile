@@ -63,6 +63,7 @@ MISC_FILES = demo doc #test
 
 JCLASS = \
 	CmdLineArgException.class \
+	Message.class \
 	PlotBox.class \
 	Plot.class \
 	PlotDataException.class \
