@@ -100,6 +100,8 @@ OPTIONAL_FILES = \
 	'TestWorkspace2$$Notification.class' \
 	'ChangeRequestTest$$1.class' \
 	'ChangeRequestTest$$2.class' \
+	'ChangeRequestTest$$3.class' \
+	'ChangeRequestTest$$4.class' \
 	'TestDE$$1.class' \
 	'TestDE$$2.class'
 
