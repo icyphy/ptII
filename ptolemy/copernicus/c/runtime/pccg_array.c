@@ -33,6 +33,8 @@ Run-time C code generation functionality for translation of arrays.
 #include <stdlib.h>
 #include "pccg_array.h"
 
+PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS;
+
 /* Allocate storage for a Java array. */
 PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate(
         PCCG_CLASS_PTR element_class, int element_size,
@@ -44,7 +46,7 @@ PCCG_ARRAY_INSTANCE_PTR pccg_array_allocate(
     void *new_array;
     va_list next_argument;
     PCCG_ARRAY_INSTANCE *result;
-    extern PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS;
+    //extern PCCG_ARRAY_CLASS GENERIC_ARRAY_CLASS;
     
     //FIXME: Initialize generic array class
     
