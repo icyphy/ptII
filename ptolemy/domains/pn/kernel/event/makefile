@@ -49,7 +49,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =	PNProcessEvent.java \
         PNProcessListener.java \
-	PNProcessMulticaster.java \
 	ReceiverActionEvent.java \
 	ReceiverListener.java
 
