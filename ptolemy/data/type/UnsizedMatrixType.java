@@ -114,20 +114,20 @@ public abstract class UnsizedMatrixType extends StructuredType
     public static UnsizedMatrixType getMatrixTypeForElementType(
             Type elementType) throws IllegalActionException {
         UnsizedMatrixType matrixType;
-        if (elementType == BaseType.UNKNOWN) {
+        if (elementType.equals(BaseType.UNKNOWN)) {
             throw new IllegalActionException("Cannot resolve type for "
                     + "matrix construction.");
-        } else if (elementType == BaseType.BOOLEAN) {
+        } else if (elementType.equals(BaseType.BOOLEAN)) {
             matrixType = BaseType.BOOLEAN_MATRIX;
-        } else if (elementType == BaseType.INT) {
+        } else if (elementType.equals(BaseType.INT)) {
             matrixType = BaseType.INT_MATRIX;
-        } else if (elementType == BaseType.LONG) {
+        } else if (elementType.equals(BaseType.LONG)) {
             matrixType = BaseType.LONG_MATRIX;
-        } else if (elementType == BaseType.DOUBLE) {
+        } else if (elementType.equals(BaseType.DOUBLE)) {
             matrixType = BaseType.DOUBLE_MATRIX;
-        } else if (elementType == BaseType.COMPLEX) {
+        } else if (elementType.equals(BaseType.COMPLEX)) {
             matrixType = BaseType.COMPLEX_MATRIX;
-        } else if (elementType == BaseType.FIX) {
+        } else if (elementType.equals(BaseType.FIX)) {
             matrixType = BaseType.FIX_MATRIX;
         } else {
             throw new IllegalActionException("Type " +
