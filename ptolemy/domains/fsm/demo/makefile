@@ -62,13 +62,12 @@ OPTIONAL_FILES = \
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
 all: jclass
-install: jclass $(PTCLASSJAR)
+	@echo "To run all the demos, run 'make demo'"
 
+install: jclass jars
 
-depend:
-	@echo "no dependencies in this directory"
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

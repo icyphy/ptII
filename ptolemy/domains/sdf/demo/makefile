@@ -49,8 +49,11 @@ PTCLASSJAR =
 PTCLASSALLJARS = 
 
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
 install: jclass jars
 
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

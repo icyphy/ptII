@@ -54,5 +54,12 @@ MISC_FILES =	img
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
+all: jclass
+	@echo "To run all the demos, run 'make demo'"
+
+install: jclass jars
+
+demo: subdemo
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
