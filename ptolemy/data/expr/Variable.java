@@ -1200,19 +1200,30 @@ public class Variable extends Attribute implements Typeable, Settable {
 		((StructuredType)_varType).initialize(BaseType.ANY);
 	    }
         } else {
-	    if (_declaredType.isCompatible(newToken)) {
-	        if (_declaredType instanceof StructuredType) {
-	            // set the resolved type to be the same as the declared
-		    // type so the convert() method will convert the newToken
-		    // to the declared type.
-		    ((StructuredType)_declaredType).initialize(BaseType.ANY);
-		}
-		newToken = _declaredType.convert(newToken);
+	    // newToken is not null, check if it is compatible with
+	    // _declaredType. For structured types, _declaredType and _varType
+	    // are the same reference, need to initialize this type
+	    // before checking compatibility. But if the new token is not
+	    // compatible with the declared type, the current resolved type
+	    // need to be preserved, so make a clone.
+	    Type declaredType;
+	    try {
+	        declaredType = (Type)_declaredType.clone();
+	    } catch (CloneNotSupportedException cnse) {
+	        throw new InternalErrorException("Variable._setToken: " +
+		        "Cannot clone the declared type of this Variable.");
+	    }
+	    if (declaredType instanceof StructuredType) {
+		((StructuredType)declaredType).initialize(BaseType.ANY);
+	    }
+	    if (declaredType.isCompatible(newToken)) {
+		newToken = declaredType.convert(newToken);
 	    } else {
-                throw new IllegalActionException(this, "Variable._setToken: " +
-                    "Cannot store a token of type " +
-                    newToken.getType().toString() + ", which is incompatible" +
-                    " with type " + _varType.toString());
+                throw new IllegalActionException(this,
+			"Variable._setToken: Cannot store a token of type " +
+                    	newToken.getType().toString() +
+			", which is incompatible with type " +
+			declaredType.toString());
 	    }
 
 	    // update _varType to the type of the new token.
