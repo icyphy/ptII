@@ -421,6 +421,9 @@ public class DEDirector extends Director {
                     }
                 }
 
+                // FIXME: The following is the actual part that DE director handles
+                // multiple events. Think about what it means in the SR semantics.
+                
                 // Check the input ports of the actor see whether there
                 // is additional input data available.
                 Iterator inputPorts = actorToFire.inputPortList().iterator();
