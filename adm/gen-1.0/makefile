@@ -879,11 +879,17 @@ INSTALLSHIELD_DOC=$(INSTALLSHIELD_SRC)/doc
 INSTALLSHIELD_EXPERIMENTAL=$(INSTALLSHIELD_SRC)/experimental
 
 # Ptiny is last so we don't get the kruft from the doc dir
-installshield_app: $(INSTALLSHIELD_APP) \
+installshield_app: installshield $(INSTALLSHIELD_APP) \
 	$(INSTALLSHIELD_DESIGNDOC) \
 	$(INSTALLSHIELD_DOC) \
 	$(INSTALLSHIELD_EXPERIMENTAL) \
 	$(INSTALLSHIELD_PTINY) \
+
+installshield:
+	if [ ! -d $@ ]; then 
+		echo "Making $@ directory"; \
+		mkdir -p $@; \
+	fi
 
 clean_installshield:
 	rm -rf $(INSTALLSHIELD_APP) \
@@ -977,3 +983,32 @@ $(INSTALLSHIELD_EXPERIMENTAL):
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/giotto $@/ptolemy/domains
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/gr $@/ptolemy/domains
 
+ISPMP_LIB=/users/ptII/vendors/installshield/ispmp40/lib/
+
+ISPMP_DEBUG_CLASSPATH=/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/classes/src: 
+
+ISPMP_CLASSPATH=/vol/maury/maury1/ptII/vendors/installshield/ispmp40:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/help.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/icebrowserbean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/icebrowserlitebean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/ide.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/jhall.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/parser.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/product.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/swing.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/wizard.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/xt.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/win32ppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/solarisppk.jar
+
+ptiny.xml: ptII.xml ptiny.xsl
+	java -classpath $(ISPMP_CLASSPATH) \
+		com.installshield.isje.ISJE ptII.xml \
+		-xsl ptiny.xsl \
+		-saveas $@
+
+# Run this with:
+# rm unixPtiny.xml; make PTIIHOME=/home/eecs/cxh/ptII build_unixPtiny
+unixPtiny.xml: ptiny.xml
+	sed -e 's@[cC]:\\users\\cxh\\ptII\\adm\\gen-1.0\\installshield\\@$(GENDIR)/installshield/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\win32\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/win32/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\solaris\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/solaris/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\images\\InstallShield Images\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/images/InstallShield Images/@' \
+	    -e 's@<property name="outputDirectory">default</property>@<property name="outputDirectory">$(GENDIR)/installshield</property>@' \
+	    -e 's@ptiny\\copyright@ptiny/copyright@' \
+		 $< > $@
+	echo "</isjeProject>" >> $@
+
+build_unixPtiny: unixPtiny.xml
+	java -classpath $(ISPMP_CLASSPATH) \
+		-Dis.debug=12 \
+		com.installshield.isje.ISJE $< \
+		-build
