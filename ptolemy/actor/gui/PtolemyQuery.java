@@ -40,7 +40,7 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyQuery
 /**
-This class provides a method to create mapping from a Query entry to
+This class provides a method to create a mapping from a Query entry to
 a Variable. The Variable will be automatically set each time the 
 corresponding Query enty changes.
 
@@ -49,8 +49,10 @@ corresponding Query enty changes.
 */
 public class PtolemyQuery extends Query implements QueryListener {
 
-    
+    /** Construct a panel with no queries in it.
+     */
     public PtolemyQuery() {
+	super();
 	this.addQueryListener(this);
 	_parameters = new HashMap();
     }
