@@ -114,10 +114,19 @@ public class CommandLineTemplate {
             // start the models.
             Iterator models = _models.iterator();
             while(models.hasNext()) {
+                System.gc();
+                Thread.sleep(1000);
                 long startTime = System.currentTimeMillis();
+                System.out.println("Stats before execution:");
+                System.out.println(timeAndMemory(startTime));
+                
                 startRun((CompositeActor)models.next());
                 
                 System.out.println("Execution stats:");
+                System.out.println(timeAndMemory(startTime));
+                System.gc();
+                Thread.sleep(1000);
+                System.out.println("After Garbage Collection:");
                 System.out.println(timeAndMemory(startTime));
             }
         }
