@@ -238,10 +238,6 @@ PTLEJOS_DIR =	@PTLEJOS_DIR@
 # matlab was found.
 PTMATLAB_DIR =	@PTMATLAB_DIR@
 
-# Set to rtos and used in
-# $PTII/ptolemy/domains/makefile if java.util.Timer was found
-PTRTOS_DIR = @PTRTOS_DIR@
-
 # Set to tini and used in $PTII/ptolemy/apps/makefile if the Dallas Semi
 # TINI was found
 PTTINI_DIR =	@PTINI_DIR@
