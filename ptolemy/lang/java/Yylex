@@ -93,7 +93,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
 "while"        {  return JavaParser.WHILE; }
 "strictfp"     {  return JavaParser.STRICTFP; }
 
-"const"|"goto"	{ ApplicationUtility.error("reserved keyword " +
+"const"|"goto"	{ throw new RuntimeException("reserved keyword " +
                   yytext() + " ignored"); }
 
 "true"	 {  return JavaParser.TRUE; }
@@ -222,7 +222,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
 "--"		{  return JavaParser.MINUSMINUS; }
 
 .	{
-      ApplicationUtility.error("Lexical error : Line " + (1 + yyline) +
+      throw new RuntimeException("Lexical error : Line " + (1 + yyline) +
 "Unmatched input : " + yytext());
 		}
 
