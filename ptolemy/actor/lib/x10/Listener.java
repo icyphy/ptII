@@ -76,9 +76,12 @@ public class Listener extends Receiver {
 	///////////////////////////////////////////////////////////////////
 	////                         public methods                    ////
     
-    /** Output any received command as a string.
-	 * @exception IllegalActionException If super class throws and exception.
-	 * @exception InterruptedException If the thread is interupted by another.
+    /** Output any received command as a string. If no command has been
+     *  received, then output an empty string. If there are additional
+     *  commands pending, then request another firing at the current
+     *  time before returning.
+	 *  @exception IllegalActionException If super class throws and exception.
+	 *  @exception InterruptedException If the thread is interupted by another.
 	 */
 	public void fire() throws IllegalActionException {
 		super.fire();
@@ -87,6 +90,8 @@ public class Listener extends Receiver {
         if(_commandReady()){
             Command command = _getCommand();
             receivedCommand.send(0, new StringToken(_commandToString(command)));
+        } else {
+            receivedCommand.send(0, _EMPTY_STRING);
         }
         
         // Check the command queue for more commands to send.
@@ -98,5 +103,11 @@ public class Listener extends Receiver {
                         + "threw an exception", ex);
             } 
         }
-	}	
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+
+    // Empty string token.
+    private StringToken _EMPTY_STRING = new StringToken("");
 }

@@ -120,7 +120,8 @@ public class LevelListener extends Receiver {
     
     /** Output an integer between 0 and 100 if the specified command
      *  is sensed with the specified house and unit codes, and output
-     *  -1 otherwise.
+     *  -1 otherwise. If there are additional commands pending, then
+     *  request another firing at the current time before returning.
      *  @exception IllegalActionException If the super class throws it.
      */
     public void fire() throws IllegalActionException {
@@ -141,13 +142,21 @@ public class LevelListener extends Receiver {
                     & (function == functionOfInterest)){
                 level.send(0, new IntToken(sensedCommand.getLevel()));
             } else {
-                level.send(0, new IntToken(-1));
+                level.send(0, _NO_COMMAND_TOKEN);
             }
-        } 
+        } else {
+            level.send(0, _NO_COMMAND_TOKEN);
+        }
         
         // Check the command queue for more commands to send.
         if(_commandReady()){
             getDirector().fireAtCurrentTime(LevelListener.this); 
         }
-    }   
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         private members                   ////
+    
+    // Token to produce when no command is detected.
+    private IntToken _NO_COMMAND_TOKEN = new IntToken(-1);
 }

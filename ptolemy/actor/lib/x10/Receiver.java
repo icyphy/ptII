@@ -32,6 +32,7 @@ package ptolemy.actor.lib.x10;
 
 import java.util.LinkedList;
 
+import ptolemy.actor.TypedIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -45,7 +46,9 @@ import x10.UnitListener;
  * Listen for X10 commands propagating through an X10 network. When a
  * command is detected, this actor requests a firing by calling
  * fireAtCurrentTime() on its director. On the next firing, it produces
- * a string description of the command.
+ * a string description of the command. Alternatively, it can be
+ * triggered via the trigger port, or fired by the scheduler when
+ * it chooses.
  * @author Colin Cochran and Edward A. Lee
  * @version $Id$
  */
@@ -63,6 +66,37 @@ public class Receiver extends X10Interface {
     public Receiver(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+        
+        trigger = new TypedIOPort(this, "trigger", true, false);
+        trigger.setMultiport(true);
+    }
+    
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The trigger port.  The type of this port is undeclared, meaning
+     *  that it will resolve to any data type.
+     */
+    public TypedIOPort trigger = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Read at most one input token from each channel of the trigger
+     *  input and discard it.  If the trigger input is not connected,
+     *  then this method does nothing.  Derived classes should be
+     *  sure to call super.fire(), or to consume the trigger input
+     *  tokens themselves, so that they aren't left unconsumed.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void fire() throws IllegalActionException {
+        super.fire();
+        for (int i = 0; i < trigger.getWidth(); i++) {
+            if (trigger.hasToken(i)) {
+                trigger.get(i);
+            }
+        }
     }
     
     ///////////////////////////////////////////////////////////////////

@@ -158,11 +158,13 @@ public class CommandListener extends Receiver {
             String code = "" + sensedCommand.getHouseCode() + sensedCommand.getUnitCode();
             if((houseCode.getExpression() + unitCode.getExpression()).equals(code)
                     & (function == functionOfInterest)){
-                detected.send(0, new BooleanToken(true));
+                detected.send(0, BooleanToken.TRUE);
             } else {
-                detected.send(0, new BooleanToken(false));
+                detected.send(0, BooleanToken.FALSE);
             }
-        } 
+        } else {
+            detected.send(0, BooleanToken.FALSE);
+        }
         
         // Check the command queue for more commands to send.
         if(_commandReady()){
