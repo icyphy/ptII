@@ -72,18 +72,12 @@ public class SkeletonVisitor extends JavaVisitor {
 
         int modifiers = node.getModifiers();
 
-        if ((modifiers & Modifier.PRIVATE_MOD) != 0) {
-           return null;
-        }
-
         LinkedList retList =
          TNLManip.traverseList(this, null, null, node.getMembers());
 
         Iterator retItr = retList.iterator();
 
         LinkedList newMemberList = new LinkedList();
-
-        boolean foundDefConstruct = false;
 
         while (retItr.hasNext()) {
           Object o = retItr.next();
@@ -96,20 +90,11 @@ public class SkeletonVisitor extends JavaVisitor {
 
                 if (cDeclNode.getParams().size() == 0) {
                    // found default constructor, make it public
-                   foundDefConstruct = true;
-
                    cDeclNode.setModifiers(Modifier.PUBLIC_MOD);
                 }
 
              }
           }
-        }
-
-        if (!foundDefConstruct) {
-           newMemberList.addFirst(new ConstructorDeclNode(Modifier.PUBLIC_MOD,
-            node.getName(), new LinkedList(), new LinkedList(),
-            new BlockNode(new LinkedList()),
-            new SuperConstructorCallNode(new LinkedList())));
         }
 
         node.setMembers(newMemberList);

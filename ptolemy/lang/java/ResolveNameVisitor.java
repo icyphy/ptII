@@ -68,7 +68,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor {
         _currentPackage = (PackageDecl) node.getDefinedProperty("thePackage");
 
         NameContext c = new NameContext();
-        c.environ = (Environ) node.getDefinedProperty("environ");
+        c.environ = (Environ) node.getDefinedProperty(StaticResolution.ENVIRON_KEY);
 
         LinkedList childArgs = TNLManip.cons(c);
         
@@ -118,7 +118,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor {
         subCtx.encLoop = null;
         subCtx.breakTarget = null;
          
-        Environ env = (Environ) node.getDefinedProperty("environ");
+        Environ env = (Environ) node.getDefinedProperty(StaticResolution.ENVIRON_KEY);
         subCtx.environ = env;
          
         LinkedList childArgs = TNLManip.cons(subCtx);
@@ -142,7 +142,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor {
         subCtx.encLoop = null;
         subCtx.breakTarget = null;
          
-        Environ env = (Environ) node.getDefinedProperty("environ");
+        Environ env = (Environ) node.getDefinedProperty(StaticResolution.ENVIRON_KEY);
         subCtx.environ = env;
          
         LinkedList childArgs = TNLManip.cons(subCtx);
@@ -190,7 +190,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor {
     public Object visitBlockNode(BlockNode node, LinkedList args) {
         NameContext subctx = new NameContext((NameContext) args.get(0));
 
-        subctx.environ = (Environ) node.getDefinedProperty("environ");
+        subctx.environ = (Environ) node.getDefinedProperty(StaticResolution.ENVIRON_KEY);
 
         LinkedList childArgs = TNLManip.cons(subctx);
 
@@ -203,7 +203,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor {
     public Object visitLabeledStmtNode(LabeledStmtNode node, LinkedList args) {
         NameContext ctx = (NameContext) args.get(0);
 
-        Environ env = (Environ) node.getDefinedProperty("environ");
+        Environ env = (Environ) node.getDefinedProperty(StaticResolution.ENVIRON_KEY);
 
         NameNode label = node.getName();
         String labelString = label.getIdent();
@@ -260,7 +260,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor {
     public Object visitForNode(ForNode node, LinkedList args) {
         NameContext subCtx = new NameContext((NameContext) args.get(0));
 
-        Environ env = (Environ) node.getDefinedProperty("environ");
+        Environ env = (Environ) node.getDefinedProperty(StaticResolution.ENVIRON_KEY);
         subCtx.environ = env;
         
         LinkedList childArgs = TNLManip.cons(subCtx);
@@ -314,7 +314,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor {
         NameContext ctx = (NameContext) args.get(0);
         NameContext subCtx = new NameContext(ctx);
 
-        Environ env = (Environ) node.getDefinedProperty("environ");
+        Environ env = (Environ) node.getDefinedProperty(StaticResolution.ENVIRON_KEY);
         subCtx.environ = env;
          
         LinkedList childArgs = TNLManip.cons(subCtx);
@@ -403,7 +403,7 @@ public class ResolveNameVisitor extends ReplacementJavaVisitor {
      LinkedList args) {
         NameContext  ctx = new NameContext();
 
-        ctx.environ = (Environ) node.getDefinedProperty("environ");
+        ctx.environ = (Environ) node.getDefinedProperty(StaticResolution.ENVIRON_KEY);
 
         ClassDecl decl = (ClassDecl) JavaDecl.getDecl((NamedNode) node);
 

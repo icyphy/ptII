@@ -41,20 +41,21 @@ import ptolemy.lang.ApplicationUtility;
 public class SearchPath extends Vector {
 
   public SearchPath(String envar, String fallbacks) {
-    if (envar != null) {
+         
+      if (envar != null) {
+ 
+         String envalue = System.getProperty(envar, ".");
 
-       //String envalue = System.getProperty(envar, fallbacks);
-       String envalue = ".;c:\\users\\ctsay\\ptII;c:\\users\\ctsay\\javasrc";
-       //String envalue = System.getenv(envar);
+         ApplicationUtility.trace("envalue = " + envalue);
 
-       ApplicationUtility.trace("envalue = " + envalue);
-
-       if (envalue != null) {
-          _addPaths(envalue);
-       } else {
-          _addPaths(fallbacks);
-       }
-    }
+         if (envalue != null) {
+            _addPaths(envalue);
+         } else {
+            _addPaths(fallbacks);
+         }
+      } else {
+         _addPaths(fallbacks);        
+      }
   }
 
   public File openDirectory(String target) {
@@ -95,7 +96,6 @@ public class SearchPath extends Vector {
     File file = new File(fullname);
 
     if (file.isFile()) {
-       // target = fullname
        return file;
     } else {
        return null;
@@ -121,11 +121,13 @@ public class SearchPath extends Vector {
     if (path.length() > 0) {
        ApplicationUtility.trace("adding path " + path);
        add(path + File.separatorChar);
+    } else {
+       throw new RuntimeException("_addPath() called with empty path string");
     }
   }
 
   public static final SearchPath NAMED_PATH =
-   new SearchPath("CLASSPATH", ".");
+   new SearchPath("java.class.path", ".");
 
   public static final SearchPath UNNAMED_PATH =
    new SearchPath(null, ".");

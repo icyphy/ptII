@@ -38,7 +38,19 @@ import java.util.ListIterator;
 import java.lang.reflect.Method;
 import java.lang.reflect.InvocationTargetException;
 
-public abstract class TreeNode extends PropertyMap {
+public abstract class TreeNode extends PropertyMap implements Cloneable {
+
+    public Object clone() {
+        return super.clone();
+    }
+
+    /** Re-override equals() from Decl so that equality is defined as being the
+     *  same object. This is necessary to ensure that a Decl named z for x.y.z
+     *  does not equal another Decl named z for x.z.
+     */
+    public boolean equals(Object obj) {
+        return (this == obj);   
+    }
 
   public String toString(String indent) {
 
@@ -48,6 +60,11 @@ public abstract class TreeNode extends PropertyMap {
       String className = _unqualifiedNameString(c.getName());
 
       sb.append(className);
+      
+      // If property "n" is defined, print the number.
+      if (hasProperty(NUMBER_KEY)) {
+         sb.append(" (" + getDefinedProperty(NUMBER_KEY) + ")");
+      }
            
       Method[] methodArr = c.getMethods();
           
@@ -100,9 +117,9 @@ public abstract class TreeNode extends PropertyMap {
       if (matchingMethods < 1) {
          sb.append(" (leaf)"); // Node has no children
       } else {
-        sb.append(indent);
-        sb.append("END ");
-        sb.append(className);           
+         sb.append(indent);
+         sb.append("END ");
+         sb.append(className);           
       }      
       
       sb.append('\n');
@@ -111,152 +128,159 @@ public abstract class TreeNode extends PropertyMap {
   }
 
   public String toString() {
-    return toString("");
+      return toString("");
   }
 
-  public Object accept(IVisitor v) {
-    return accept(v, new LinkedList());
-  }
-
-  public Object accept(IVisitor v, LinkedList visitorArgs) {
-
-    Object retval;
-
-    switch (v.traversalMethod()) {
-
-    case IVisitor.TM_CHILDREN_FIRST:
-    {
-      // Traverse the children first
-      traverseChildren(v, visitorArgs);
-      retval = acceptHere(v, visitorArgs);
-
-      // remove the children return values to prevent exponential usage
-      // of memory
-      removeProperty("childReturnValues");
-    }
-    break;
-
-    case IVisitor.TM_SELF_FIRST:
-    {
-      // Visit myself first
-      retval = acceptHere(v, visitorArgs);
-      traverseChildren(v, visitorArgs);
-    }
-    break;
-
-    case IVisitor.TM_CUSTOM:
-    {
-       // Let visitor do custom traversal
-       retval = acceptHere(v, visitorArgs);
-    }
-    break;
-
-    default:
-    {
-       throw new RuntimeException("Unknown traversal method for visitor");
-    }
-    } // end switch
-    return retval;
-  }
-
-  public void traverseChildren(IVisitor v, LinkedList args) {
-    LinkedList retList = TNLManip.traverseList(v, this, args, _childList);
-
-    setProperty("childReturnValues", retList);
-  }
-
-  public Object getChild(int index) {
-    return _childList.get(0);
-  }
-
-  public void setChild(int index, Object child) {
-    _childList.set(index, child);
-  }
-
-  public LinkedList children() { return _childList; } // change this name
-
-  public void setChildren(LinkedList childList) {
-    _childList = childList;
-  }
-
-  protected Object acceptHere(IVisitor v, LinkedList visitArgs) {
-    if (_myClass == null) {
-       _myClass = getClass();
-
-       String myClassName = StringManip.unqualifiedPart(_myClass.getName());
-       _visitMethodName = "visit" + myClassName;
-
-       _visitParamTypes[0] = _myClass;
-       _visitParamTypes[1] = _linkedListClass;
-
-       _visitArgs[0] = (Object) this;
+    public Object accept(IVisitor v) {
+        return accept(v, new LinkedList());
     }
 
-    Method method;
-    Class visitorClass = v.getClass();
+    public Object accept(IVisitor v, LinkedList visitorArgs) {
 
-    try {
-      method = visitorClass.getMethod(_visitMethodName, _visitParamTypes);
-    } catch (NoSuchMethodException e) {
-      throw new RuntimeException(e.toString());
-    }
+      Object retval;
 
-    _visitArgs[1] = (Object) visitArgs;
+      switch (v.traversalMethod()) {
 
-    try {
-      return method.invoke(v, _visitArgs);
-    } catch (IllegalAccessException iae) {
-      ApplicationUtility.error("Illegal access exception invoking method "
-       + _visitMethodName);
-    } catch (InvocationTargetException ite) {
-      ApplicationUtility.error("Invocation target exception invoking method "
-       + _visitMethodName + " : target = " +
-       ite.getTargetException().toString());
-    }
-    return null;
-  }
+      case IVisitor.TM_CHILDREN_FIRST:
+      {
+        // Traverse the children first
+        traverseChildren(v, visitorArgs);
+        retval = acceptHere(v, visitorArgs);
 
-  public Object childReturnValueAt(int index) {
-    LinkedList retList = (LinkedList) getDefinedProperty("childReturnValues");
-    return retList.get(index);
-  }
-
-  public Object childReturnValueFor(Object child) {
-    ListIterator itr = _childList.listIterator();
-    int index = 0;
-
-    while (itr.hasNext()) {
-      if (child == itr.next()) {
-         return childReturnValueAt(index);
+        // remove the children return values to prevent exponential usage
+        // of memory
+        removeProperty("childReturnValues");
       }
-      index++;
-    }
-    ApplicationUtility.error("Child not found");
-    return null;
-  }
+      break;
 
-  protected static String _unqualifiedNameString(String s) {
-    return s.substring(s.lastIndexOf('.') + 1);
+      case IVisitor.TM_SELF_FIRST:
+      {
+        // Visit myself first
+        retval = acceptHere(v, visitorArgs);
+        traverseChildren(v, visitorArgs);
+      }
+      break;
+
+      case IVisitor.TM_CUSTOM:
+      {
+         // Let visitor do custom traversal
+         retval = acceptHere(v, visitorArgs);
+      }
+      break;
+
+      default:
+      {
+         throw new RuntimeException("Unknown traversal method for visitor");
+      }
+      } // end switch
+      return retval;
+    }
+
+    public void traverseChildren(IVisitor v, LinkedList args) {
+      LinkedList retList = TNLManip.traverseList(v, this, args, _childList);
+
+      setProperty("childReturnValues", retList);
+    }
+
+    public Object getChild(int index) {
+        return _childList.get(0);
+    }
+
+    public void setChild(int index, Object child) {
+        _childList.set(index, child);
+    }
+
+    public LinkedList children() { return _childList; } // change this name
+
+    public void setChildren(LinkedList childList) {
+        _childList = childList;
+    }
+
+    protected Object acceptHere(IVisitor v, LinkedList visitArgs) {
+      
+        if (_myClass == null) {
+           _myClass = getClass();
+
+           String myClassName = StringManip.unqualifiedPart(_myClass.getName());
+           _visitMethodName = "visit" + myClassName;
+
+           _visitParamTypes[0] = _myClass;
+           _visitParamTypes[1] = _linkedListClass;
+
+           _visitArgs[0] = this;
+        } 
+
+        Method method;
+        Class visitorClass = v.getClass();
+
+        try {
+          method = visitorClass.getMethod(_visitMethodName, _visitParamTypes);
+        } catch (NoSuchMethodException e) {
+          throw new RuntimeException(e.toString());
+        }
+
+        _visitArgs[1] = (Object) visitArgs;
+
+        try {
+          return method.invoke(v, _visitArgs);
+        } catch (IllegalAccessException iae) {
+          ApplicationUtility.error("Illegal access exception invoking method "
+           + _visitMethodName);
+        } catch (InvocationTargetException ite) {
+          ApplicationUtility.error("Invocation target exception invoking method "
+           + _visitMethodName + " : target = " +
+           ite.getTargetException().toString());
+        }
+        return null;
+    }
+
+    public Object childReturnValueAt(int index) {
+        LinkedList retList = (LinkedList) getDefinedProperty("childReturnValues");
+        return retList.get(index);
+    }
+
+    public Object childReturnValueFor(Object child) {
+      ListIterator itr = _childList.listIterator();
+      int index = 0;
+
+      while (itr.hasNext()) {
+        if (child == itr.next()) {
+           return childReturnValueAt(index);
+        }
+        index++;
+      }
+      ApplicationUtility.error("Child not found");
+      return null;
+    }
+
+    protected static String _unqualifiedNameString(String s) {
+      return s.substring(s.lastIndexOf('.') + 1);  
+    }
   
-  }
+    // protected methods
   
-  // fixme
-  public static String _makeSpaceString(int spaces) {
-    StringBuffer sb = new StringBuffer();
+    protected static String _makeSpaceString(int spaces) {
+      StringBuffer sb = new StringBuffer();
     
-    for (int i = 0; i < spaces; i++) {
-        sb.append(' ');
-    }
+      for (int i = 0; i < spaces; i++) {
+          sb.append(' ');
+      }
   
-    return sb.toString();
-  }
+      return sb.toString();
+    }
 
-  protected LinkedList _childList = new LinkedList();
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected variables                ////
 
-  protected Class _myClass = null;
-  protected String _visitMethodName = null;
-  protected final Class[] _visitParamTypes = new Class[2];
-  protected final Object[] _visitArgs = new Object[2];
+    protected LinkedList _childList = new LinkedList();
 
-  protected static final Class _linkedListClass = (new LinkedList()).getClass();
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    private Class  _myClass = null;
+    private String _visitMethodName = null;
+    private final Class[] _visitParamTypes = new Class[2];
+    private final Object[] _visitArgs = new Object[2];
+
+    private static final Class _linkedListClass = (new LinkedList()).getClass();
 }

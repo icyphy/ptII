@@ -52,7 +52,7 @@ public class ApplicationUtility {
 
   public static final void warn(String msg) {
     if (enableWarnings) {
-       System.out.println("Warning: " + msg);
+       System.err.println("Warning: " + msg);
        warnings++;
 
        if (errorOnWarning) {
@@ -63,13 +63,13 @@ public class ApplicationUtility {
 
   public static final void trace(String msg, String separator) {
     if (enableTrace) {
-       System.out.print(msg + separator);
+       System.err.print(msg + separator);
     }
   }
 
   public static final void trace(String msg) {
     if (enableTrace) {
-       System.out.println("Trace: " + msg);
+       System.err.println("Trace: " + msg);
     }
   }
 
@@ -79,13 +79,18 @@ public class ApplicationUtility {
        throw new RuntimeException(msg);
     } else {
        System.err.println("Error: " + msg);
+       
+       if (exitOnError) {
+          System.exit(-1);
+       }
     }
   }
 
   public static boolean enableAsserts  = false;
   public static boolean enableWarnings = true;
   public static boolean enableTrace  = false;
-  public static boolean exceptionOnError = true;
+  public static boolean exceptionOnError = false;
+  public static boolean exitOnError = true;
   public static boolean errorOnWarning = false;
 
   public static int errors   = 0;

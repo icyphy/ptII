@@ -256,38 +256,36 @@ public class TypeUtility {
          case TYPE_KIND_CLASS:
          switch (kind2) {
    	       case TYPE_KIND_NULL: 
-	       return true;
+           return true;
 
-	       case TYPE_KIND_INTERFACE: 
-	       {
-              JavaDecl decl = JavaDecl.getDecl((NamedNode) type1);	       
+	         case TYPE_KIND_INTERFACE: 
+	         {
+             JavaDecl decl = JavaDecl.getDecl((NamedNode) type1);	       
 
-	          return (decl == StaticResolution.OBJECT_DECL);
+	            return (decl == StaticResolution.OBJECT_DECL);
+  	       }
+
+	         case TYPE_KIND_CLASS:
+	         if (isSubClass((ClassDecl) JavaDecl.getDecl((NamedNode) type2), 
+	                        (ClassDecl) JavaDecl.getDecl((NamedNode) type1))) {
+	            return true;
+  	       }
+
+	         if (isArrayType(type1) && isArrayType(type2)) {
+	            ArrayTypeNode arrType1 = (ArrayTypeNode) type1;
+	            ArrayTypeNode arrType2 = (ArrayTypeNode) type2;
+
+  	          TypeNode elementType1 = arrType1.getBaseType();     
+	            TypeNode elementType2 = arrType2.getBaseType();     
+
+  	          return isAssignableFromType(elementType1, elementType2);
+	         }  
+	         return false;
+
+	         case TYPE_KIND_ARRAYINIT: 
+  	       return isArrayType(type1);
 	       }
-
-	       case TYPE_KIND_CLASS:
-	       if (isSubClass((ClassDecl) JavaDecl.getDecl((NamedNode) type2), 
-	                      (ClassDecl) JavaDecl.getDecl((NamedNode) type1))) {
-	          return true;
-	       }
-
-	       if (isArrayType(type1) && isArrayType(type2)) {
-	          ArrayTypeNode arrType1 = (ArrayTypeNode) type1;
-	          ArrayTypeNode arrType2 = (ArrayTypeNode) type2;
-
-	          TypeNode elementType1 = arrType1.getBaseType();     
-	          TypeNode elementType2 = arrType2.getBaseType();     
-
-	          return isAssignableFromType(elementType1, elementType2);
-	       }  
 	       return false;
-
-	       case TYPE_KIND_ARRAYINIT: 
-	       return isArrayType(type1);
-
-	       default: 
-	       return false;
-	     }
 
          case TYPE_KIND_INTERFACE:
          switch (kind2) {
@@ -322,6 +320,9 @@ public class TypeUtility {
 
     public static int kind(TypeNode type) {
 
+       // null type
+       if (type == NullTypeNode.instance)   return TYPE_KIND_NULL;
+
        // primitive types
        if (type == BoolTypeNode.instance)   return TYPE_KIND_BOOL; 
        if (type == CharTypeNode.instance)   return TYPE_KIND_CHAR; 
@@ -341,7 +342,7 @@ public class TypeUtility {
           return TYPE_KIND_CLASS; // arrays derive from Object     
        }
 
-       ApplicationUtility.error("unknown type encountered");
+       ApplicationUtility.error("unknown type encountered : " + type);
        return TYPE_KIND_UNKNOWN;
     }
 

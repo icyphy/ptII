@@ -50,7 +50,7 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         ApplicationUtility.trace("resolveClass for " +
-         node.getDefinedProperty("ident"));
+         node.getDefinedProperty(StaticResolution.IDENT_KEY));
 
         _pkgDecl = (PackageDecl) node.getDefinedProperty("thePackage");
 
@@ -114,18 +114,6 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
         childArgs.addLast(myEnviron);
 
         TNLManip.traverseList(this, node, childArgs, node.getMembers());
-
-        // add a default constructor if necessary
-
-        if (myEnviron.lookupProper(me.getName(), JavaDecl.CG_CONSTRUCTOR) ==
-            null) {
-           ConstructorDeclNode defConstructor =
-            _makeDefaultConstructor(node);
-
-           node.getMembers().addFirst(defConstructor);
-
-           defConstructor.accept(this, childArgs);
-        }
 
         return null;
     }
@@ -423,18 +411,6 @@ public class ResolveClassVisitor extends ResolveVisitorBase {
            Environ encClassEnviron = (Environ) encClassEnvironObject;
            encClassEnviron.add(decl);
         }
-    }
-
-    /** Return a default constructor for the class declared by ClassDeclNode,
-     *  as it would be produced by the parser, had it been written
-     *  explicitly:  [public] Foo() { super(); }
-     */
-    protected static ConstructorDeclNode _makeDefaultConstructor(ClassDeclNode cl) {
-        return new ConstructorDeclNode(cl.getModifiers() & Modifier.PUBLIC_MOD,
-         new NameNode(AbsentTreeNode.instance, cl.getName().getIdent()),
-         new LinkedList(), new LinkedList(),
-         new BlockNode(new LinkedList()),
-         new SuperConstructorCallNode(new LinkedList()));
     }
 
     /** Given a list of ParameterNodes, return a new list of TypeNodes

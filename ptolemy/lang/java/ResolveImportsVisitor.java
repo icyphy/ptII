@@ -43,18 +43,17 @@ public class ResolveImportsVisitor extends JavaVisitor {
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         _compileUnit = node; 
-        _fileEnv = (Environ) node.getDefinedProperty("environ"); // file environment
+        _fileEnv = (Environ) node.getDefinedProperty(StaticResolution.ENVIRON_KEY); // file environment
 
         TNLManip.traverseList(this, node, null, node.getImports());
 
         return null;
     }
 
-
     public Object visitImportNode(ImportNode node, LinkedList args) {
 
         NameNode name = node.getName();
-
+       
         StaticResolution.resolveAName(name,
          (Environ) StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, null, 
          JavaDecl.CG_USERTYPE);
@@ -67,16 +66,18 @@ public class ResolveImportsVisitor extends JavaVisitor {
  	           throw new RuntimeException("attempt to import conflicting name: " +
                old.getName());
            }
-	     }
-        _fileEnv.add((ClassDecl) name.getDefinedProperty("decl"));
+  	    }
+	     
+	      // add to the import environment, which is 2 levels above the file environment
+        _fileEnv.parent().parent().add((ClassDecl) name.getDefinedProperty("decl"));
 
         return null;
     }
 
     public Object visitImportOnDemandNode(ImportOnDemandNode node, LinkedList args) {
-
+        
         NameNode name = node.getName();
-
+        
         StaticResolution.resolveAName(name,
          StaticResolution.SYSTEM_PACKAGE.getEnviron(), null,  null, 
          JavaDecl.CG_PACKAGE);

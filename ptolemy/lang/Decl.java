@@ -67,11 +67,26 @@ package ptolemy.lang;
  */
 public class Decl extends TrackedPropertyMap {
 
-  protected Decl(String name, int category0) {
+  public Decl(String name, int category0) {
     _name = name;
     category = category0;
   }
+  
+  /** Re-override equals() from HashMap so that equality is defined as having the
+   *  same name and category. 
+   */
+  public boolean equals(Object o) {
+    if (o == this) {
+       return true;
+    }
 
+    if (o instanceof Decl) {
+      Decl d = (Decl) o;
+      return matches(d.getName(), d.category);           
+    }
+    return false;    
+  }
+  
   public final boolean matches(String name, int mask) {
     if ((category & mask) != 0) {
        return (name.equals(ANY_NAME) || name.equals(_name));
@@ -82,20 +97,6 @@ public class Decl extends TrackedPropertyMap {
   public final String getName() { return _name; }
 
   public final void setName(String name) { _name = name; }
-
-  public boolean equals(Object o) {
-    if (o == this) {
-       return true;
-    }
-
-    if (!(o instanceof Decl)) {
-       return false;
-    }
-
-    Decl d = (Decl) o;
-
-    return ((category == d.category) && _name.equals(d.getName()));
-  }
 
   public String toString() {
     return "{" + _name + ", " + category + "}";

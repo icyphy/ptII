@@ -34,7 +34,6 @@ import java.io.File;
 import java.util.LinkedList;
 
 import ptolemy.lang.*;
-import ptolemy.lang.TreeNode;
 
 public class ClassDecl extends TypeDecl {
 
@@ -117,8 +116,8 @@ public class ClassDecl extends TypeDecl {
            String fileName = fullName(File.separatorChar);
            File file = _pickLibrary(_container).openSource(fileName);
 
-           //ApplicationUtility.trace(">Reading in user type : " + fullName() +
-           // " from " + fileName);
+           ApplicationUtility.trace(">Reading in user type : " + fullName() +
+            " from " + fileName);
 
            StaticResolution.load(fileName, file, false);
 

@@ -41,6 +41,14 @@ public class PackageDecl extends JavaDecl {
         _container = container;
     }
 
+    /** Re-override equals() from Decl so that equality is defined as being the
+     *  same object. This is necessary to ensure that a Decl named z for x.y.z
+     *  does not equal another Decl named z for x.z.
+     */
+    public boolean equals(Object obj) {
+      return (this == obj);   
+    }
+
     public final boolean hasContainer() {
         return true;
     }

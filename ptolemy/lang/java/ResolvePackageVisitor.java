@@ -35,6 +35,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.lang.java;
 
 import ptolemy.lang.*;
+
+import java.util.Iterator;
+import java.util.List;
 import java.util.LinkedList;
 
 public class ResolvePackageVisitor extends ResolveVisitorBase {
@@ -44,9 +47,12 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
     }
 
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
+        //System.out.println("resolve package visitor (CUN)" + 
+        // node.getDefinedProperty(StaticResolution.IDENT_KEY));
+    
         _pkgDecl = (PackageDecl) node.getDefinedProperty("thePackage");
 
-        Environ environ = (Environ) node.getDefinedProperty("environ");
+        Environ environ = (Environ) node.getDefinedProperty(StaticResolution.ENVIRON_KEY);
 
         _pkgEnv  = (Environ) environ.parent();
 
@@ -64,6 +70,8 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
     }
 
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
+        //System.out.println("resolve package visitor (ClassDeclNode)");
+                
         return _visitUserTypeDeclNode(node, args, true);
     }
 
@@ -75,6 +83,8 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
     }
 
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
+        //System.out.println("resolve package visitor (ConstructorDeclNode)");
+    
         Environ env = _makeEnviron(node, args);
 
         _visitNode(node.getBody(), env);
@@ -159,7 +169,14 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
            " as a class");
         }
 
-        ClassDecl ocl = (ClassDecl) _pkgEnv.lookupProper(className);
+        ClassDecl ocl;
+        
+        if (isInner) {
+           ocl = null;
+        } else {
+           // lookup in package
+           ocl = (ClassDecl) _pkgEnv.lookupProper(className);                      
+        }
 
         if ((ocl != null) &&
             ((ocl.getSource() == null) ||
@@ -168,16 +185,27 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
            ocl.setSource(node);
            ocl.setModifiers(node.getModifiers());
 
+           // fix category if this is an interface
+           if (!isClass) {
+              ocl.category = JavaDecl.CG_INTERFACE;
+           }           
+
         } else {
            int modifiers = node.getModifiers();
            JavaDecl encDecl;
            // boolean topLevel = !isInner || (modifiers & Modifier.STATIC_MOD);
 
            //if (topLevel) {
+           
+           // Set the enclosing declaration
            if (!isInner) {
+              // For a top-level class, it's the package declaration
               encDecl = _pkgDecl;
            } else {
+              // For an inner class, it's the enclosing class declaration
               Object encDeclObject = args.get(2);
+              
+              // CHECKME
               if (encDeclObject == NullValue.instance) {
                  encDecl = null;
               } else {
@@ -194,7 +222,7 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
                " conflicts with " + ocl.getName() + " in same package");
            }
 
-           //if (topLevel) {
+           // add to the package environment if it's an top-level class
            if (!isInner) {
               _pkgEnv.add(cl);
            }
@@ -202,13 +230,8 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
            ocl = cl;
         }
 
-        // fix category if this is an interface
-        if (!isClass) {
-           ocl.category = JavaDecl.CG_INTERFACE;
-        }
-
         Environ env = new Environ(encEnv);
-        node.setProperty("environ", env);
+        node.setProperty(StaticResolution.ENVIRON_KEY, env);
 
         ocl.setEnviron(env);
         encEnv.add(ocl);
@@ -224,11 +247,11 @@ public class ResolvePackageVisitor extends ResolveVisitorBase {
         return null;
     }
 
-    protected Environ _makeEnviron(TreeNode node, LinkedList args) {
+    protected static Environ _makeEnviron(TreeNode node, LinkedList args) {
         Environ encEnv = (Environ) args.get(0);
 
         Environ env = new Environ(encEnv);
-        node.setProperty("environ", env);
+        node.setProperty(StaticResolution.ENVIRON_KEY, env);
 
         return env;
     }

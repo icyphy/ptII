@@ -335,10 +335,36 @@ TypeImportOnDemandStatement :
 
 ClassDeclaration :
 	  FieldModifiersOpt CLASS SimpleName SuperOpt InterfacesOpt ClassBody
-		{ $$ = new ClassDeclNode($1, (NameNode) $3, (LinkedList) $5,
-           (LinkedList) $6, (TreeNode) $4); }
+		{ 
+      // add a default constructor if none is found
+      NameNode name = (NameNode) $3;
+      LinkedList body = (LinkedList) $6;
+       
+      Iterator bodyItr = body.iterator();
+             
+      boolean constructorFound = false;
+        
+      while (!constructorFound && bodyItr.hasNext()) {
+          Object member = bodyItr.next();
+           
+          if (member instanceof ConstructorDeclNode) {
+             constructorFound = true;           
+          }
+      }
+        
+      if (!constructorFound) {
+         body.add(new ConstructorDeclNode(Modifier.PUBLIC_MOD,         
+                  (NameNode) name.clone(), 
+                  new LinkedList(),                // params
+                  new LinkedList(),                // throws 
+                  new BlockNode(new LinkedList()), // body
+                  new SuperConstructorCallNode(new LinkedList())));  
+      }
+              		   		
+		  $$ = new ClassDeclNode($1, name, (LinkedList) $5,
+           (LinkedList) body, (TypeNameNode) $4);
+    }
  ;
-
 
 /* Section 6.1.1 */
 
@@ -352,7 +378,10 @@ SuperOpt :
 	  EXTENDS ClassOrInterfaceType
 		{ $$ = $2; }
 	| empty
-		{ $$ = AbsentTreeNode.instance; }
+		{ 
+		  // add the implicit subclass Object. Note this is wrong for Object itself.
+		  $$ = new TypeNameNode(new NameNode(AbsentTreeNode.instance, "Object")); 
+		}
 	;
 
 
@@ -385,20 +414,20 @@ FieldDeclarationsOpt :
 FieldDeclarations :
 	  FieldDeclaration
 	| FieldDeclaration FieldDeclarations
- { $$ = appendLists((LinkedList) $1, (LinkedList) $2); }
+    { $$ = appendLists((LinkedList) $1, (LinkedList) $2); }
 	;
 
 
 /* Section 6.2 */
 
 FieldDeclaration :
-	   FieldVariableDeclaration
+    FieldVariableDeclaration
   | MethodDeclaration
     { $$ = cons($1); }
-	 | ConstructorDeclaration
-		 { $$ = cons($1); }
+  | ConstructorDeclaration
+    { $$ = cons($1); }
   | StaticInitializer
-	  	{ $$ = cons($1); }
+    { $$ = cons($1); }
     /* NEW : Java 1.1 : D.1.3 : Instance initializers */
   | InstanceInitializer
     { $$ = cons($1); }

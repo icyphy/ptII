@@ -66,7 +66,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
         _currentPackage = (PackageDecl) node.getDefinedProperty("thePackage");
 
         LinkedList childArgs = new LinkedList();
-        childArgs.add(node.getDefinedProperty("environ")); // file environment
+        childArgs.add(node.getDefinedProperty(StaticResolution.ENVIRON_KEY)); // file environment
 
         TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
 
@@ -97,7 +97,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
 
            // get the environment of this node
            LinkedList childArgs = new LinkedList();
-           childArgs.addLast(node.getDefinedProperty("environ"));
+           childArgs.addLast(node.getDefinedProperty(StaticResolution.ENVIRON_KEY));
 
            // resolve only the return type, parameters and exceptions thrown
            node.getReturnType().accept(this, childArgs);
@@ -116,7 +116,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
            }
 
            // the environment of this node is the argument for the children
-           LinkedList childArgs = TNLManip.cons(node.getDefinedProperty("environ"));
+           LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(StaticResolution.ENVIRON_KEY));
            
            // resolve only the parameters and exceptions thrown
            TNLManip.traverseList(this, node, childArgs, node.getParams());
@@ -153,7 +153,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
     protected Object _visitNodeWithEnviron(TreeNode node) {
 
         // environment for this class is argument for children
-        LinkedList childArgs = TNLManip.cons(node.getDefinedProperty("environ"));
+        LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(StaticResolution.ENVIRON_KEY));
         
         TNLManip.traverseList(this, node, childArgs, node.children());
 
@@ -168,7 +168,7 @@ public class ResolveTypesVisitor extends ResolveVisitorBase {
         }
 
         // environment for this class is argument for children
-        LinkedList childArgs = TNLManip.cons(node.getDefinedProperty("environ"));
+        LinkedList childArgs = TNLManip.cons(node.getDefinedProperty(StaticResolution.ENVIRON_KEY));
         
         TNLManip.traverseList(this, node, childArgs, node.getInterfaces());
         TNLManip.traverseList(this, node, childArgs, node.getMembers());

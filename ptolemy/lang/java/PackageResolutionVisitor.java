@@ -40,7 +40,7 @@ public class PackageResolutionVisitor extends JavaVisitor {
 
         Environ environ = new Environ(pkgEnv); // the file level environment
 
-        node.setProperty("environ", environ);
+        node.setProperty(StaticResolution.ENVIRON_KEY, environ);
 
         StaticResolution.importOnDemand(node, new String[] { "java", "lang" });
 
