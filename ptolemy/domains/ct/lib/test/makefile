@@ -43,25 +43,26 @@ include $(CONFIG)
 
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = \
-	#testDefs.tcl
+	testDefs.tcl
 
 JSRCS =
 
 # Non-graphical Java tests written in Tcl
-JSIMPLE_TESTS =
+JSIMPLE_TESTS = 
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
 # alljtests.tcl works.  If you add a test, be sure to add
 # $(JGRAPHICAL_TESTS) to EXTRA_SRCS
-JGRAPHICAL_TESTS = \
-	dummy.tcl
+JGRAPHICAL_TESTS = 
 
 EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	alljtests.tcl
+MISC_FILES =	\
+	auto \
+	alljtests.tcl
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -72,7 +73,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # Don't include all or install rules here, we want the user
 # to run 'make tests' to run the tests.
 
-tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
+tests:: $(EXTRA_SRCS) jclass test_java test_jsimple test_auto 
 
 test_java: jclass
 

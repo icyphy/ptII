@@ -1,0 +1,113 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="junk" class="ptolemy.actor.TypedCompositeActor">
+    <property name="CT0" class="ptolemy.domains.ct.kernel.CTMixedSignalDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="initStepSize" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="minStepSize" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        </property>
+        <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1.0">
+        </property>
+        <property name="maxIterations" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="valueResolution" class="ptolemy.data.expr.Parameter" value="1.0E-6">
+        </property>
+        <property name="timeResolution" class="ptolemy.data.expr.Parameter" value="1.0E-10">
+        </property>
+        <property name="ODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ExplicitRK23Solver&quot;">
+                </property>
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                </property>
+                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ForwardEulerSolver&quot;">
+                </property>
+            </property>
+        </property>
+        <property name="breakpointODESolver" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+            <property name="style" class="ptolemy.actor.gui.style.EditableChoiceStyle">
+                <property name="choice0" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.DerivativeResolver&quot;">
+                </property>
+                <property name="choice1" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.BackwardEulerSolver&quot;">
+                </property>
+                <property name="choice2" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.domains.ct.kernel.solver.ImpulseBESolver&quot;">
+                </property>
+            </property>
+        </property>
+        <property name="runAheadLength" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="96.0, 43.0">
+        </property>
+    </property>
+    <entity name="DifferentialSystem0" class="ptolemy.domains.ct.lib.DifferentialSystem">
+        <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="[&quot;x1&quot;, &quot;x2&quot;]">
+        </property>
+        <property name="inputVariableNames" class="ptolemy.data.expr.Parameter" value="[&quot;u&quot;]">
+        </property>
+        <property name="outputVariableNames" class="ptolemy.data.expr.Parameter" value="[&quot;y&quot;]">
+        </property>
+        <property name="initialStates" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="256.0, 168.0">
+        </property>
+        <property name="d_x1" class="ptolemy.data.expr.Parameter" value="&quot;sin(x2+x1)+u&quot;">
+        </property>
+        <property name="d_x2" class="ptolemy.data.expr.Parameter" value="&quot;u-1.0&quot;">
+        </property>
+        <property name="y" class="ptolemy.data.expr.Parameter" value="&quot;x1&quot;">
+        </property>
+        <port name="u" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="y" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Clock1" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[1, 0]">
+        </property>
+        <doc>Create a generalized square wave</doc>
+        <property name="_location" class="ptolemy.moml.Location" value="88.0, 138.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[0.0, 0.1051623, 0.2627819, 0.4478448, 0.6923497, 0.9180126, 1.148626, 1.3429355, 1.5216084, 1.5461637, 1.5584447, 1.5645855, 1.567656, 1.5691913, 1.5707265]">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-5">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="431.0, 155.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DifferentialSystem0.u" relation="relation2"/>
+    <link port="DifferentialSystem0.y" relation="relation3"/>
+    <link port="Clock1.output" relation="relation2"/>
+    <link port="Test2.input" relation="relation3"/>
+</entity>

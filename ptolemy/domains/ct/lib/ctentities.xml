@@ -8,20 +8,20 @@
       <group>
 <doc>Continuous-time actors</doc>
 
-<entity name="CTPeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
-</entity>
-<entity name="CTTriggeredSampler" class="ptolemy.domains.ct.lib.CTTriggeredSampler">
+<entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
 </entity>
 <entity name="ContinuousFransferFunction" class="ptolemy.domains.ct.lib.ContinuousTransferFunction">
 </entity>
 <entity name="LinearStateSpace" class="ptolemy.domains.ct.lib.LinearStateSpace">
 </entity>
-<entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
+<entity name="DifferentialSystem" class="ptolemy.domains.ct.lib.DifferentialSystem">
 </entity>
-
+<entity name="CTPeriodicSampler" class="ptolemy.domains.ct.lib.CTPeriodicSampler">
+</entity>
+<entity name="CTTriggeredSampler" class="ptolemy.domains.ct.lib.CTTriggeredSampler">
+</entity>
 <entity name="ThresholdMonitor" class="ptolemy.domains.ct.lib.ThresholdMonitor">
 </entity>
-
 <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
 </entity>
 

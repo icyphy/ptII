@@ -164,7 +164,8 @@ public class LinearStateSpace extends TypedCompositeActor {
     public Parameter D;
 
     /** The initial condition for the state variables. This must be
-     *  a vector (double matrix with only one row) whose
+     *  a vector (double matrix with only one row) whose length equals
+     *  to the number of state variables.
      *  The default value is [0.0].
      */
     public Parameter initialStates;
