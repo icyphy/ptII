@@ -140,7 +140,7 @@ public class Image3D extends GRPickActor {
 
       if (image == null) {
             System.out.println("load failed for texture: "+filename);
-     
+      }
 
       // can't use parameterless constuctor
       Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA,
@@ -157,7 +157,6 @@ public class Image3D extends GRPickActor {
       top.addChild(_containedNode);
         //_containedNode = new Shape3D(cube);
       }
-    }
     BranchGroup top = new BranchGroup();
     
     
