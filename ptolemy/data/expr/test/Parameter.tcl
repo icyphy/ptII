@@ -427,3 +427,33 @@ test Parameter-15.0 {Test for a known bug - insert a new parameter does not shad
     list [$r1 toString] [$r2 toString]
 } {5 10} {KNOWN_FAILED}
 
+######################################################################
+####
+#
+test Parameter-16.0 {Test array and matrix references} {
+    set e1 [java::new ptolemy.kernel.CompositeEntity]
+    set e2 [java::new ptolemy.kernel.ComponentEntity $e1 "e2"]
+    set p1 [java::new ptolemy.data.expr.Parameter $e1 "p1"]
+    set p2 [java::new ptolemy.data.expr.Parameter $e2 "p2"]
+    $p1 setExpression "\{1, 2, 3\}"
+    $p2 setExpression "p1(0)"
+    set r1 [[$p2 getToken] toString]
+    $p2 setExpression "p1(10)"
+    catch {$p2 getToken} msg1
+
+    $p1 setExpression "\[1, 2; 3, 4\]"
+    $p2 setExpression "p1(0, 0)"
+    set r2 [[$p2 getToken] toString]
+    $p2 setExpression "p1(4, 5)"
+    catch {$p2 getToken} msg2
+    list $r1 $r2 $msg1 $msg2
+} {1 1 {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.e2.p2:
+Error evaluating expression: "p1(10)"
+In variable: ..e2.p2
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The index to array p1 is out of bounds: 10.} {ptolemy.kernel.util.IllegalActionException: Object name: .<Unnamed Object>.e2.p2:
+Error evaluating expression: "p1(4, 5)"
+In variable: ..e2.p2
+Caused by:
+ ptolemy.kernel.util.IllegalActionException: The index to matrix p1 is out of bounds: 4, 5.}}
+

@@ -989,6 +989,9 @@ void function() #PtFunctionNode :
       	  jjtThis._ptToken = Constants.get(x.image);
 	  jjtThis._isConstant = true;
 	  isArrayRef = true;
+        } else {
+          if (_undefined != null)
+              _undefined.add(token.image);
         }
       }
     ) #PtLeafNode(_isKnownID(x.image))
