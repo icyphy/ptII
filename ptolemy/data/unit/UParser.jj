@@ -52,7 +52,7 @@ This file implements a Unit parser for Ptolemy II using the
 JavaCC parser generator.
 
 @author Rowland R Johnson
-@version $Id: UParser.jj,v 1.5 2004-04-08 01:14:41 rowland Exp $
+@version $Id: UParser.jj,v 1.6 2004-04-12 15:27:09 cxh Exp $
 @since Ptolemy II 3.1
 */
 
