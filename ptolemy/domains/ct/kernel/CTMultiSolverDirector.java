@@ -31,6 +31,7 @@
 package ptolemy.domains.ct.kernel;
 
 import java.util.Iterator;
+import java.util.List;
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
 import ptolemy.actor.sched.Schedule;
@@ -129,6 +130,7 @@ public class CTMultiSolverDirector extends CTDirector {
     public CTMultiSolverDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        //addDebugListener(new ptolemy.kernel.util.StreamListener());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -244,57 +246,35 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @exception IllegalActionException If thrown by the ODE solver.
      */
     public void fire() throws IllegalActionException {
-        /*
-        if (_first) {
-
-            CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-            Iterator integrators =
-                schedule.get(CTSchedule.DYNAMIC_ACTORS).actorIterator();
-            while(integrators.hasNext()) {
-                CTDynamicActor dynamic = (CTDynamicActor)integrators.next();
-                if(_debugging) _debug("Emit tentative state: "+
-                        ((Nameable)dynamic).getName());
-                dynamic.emitTentativeOutputs();
-            }
-            Iterator outputActors = schedule.get(
-                    CTSchedule.OUTPUT_ACTORS).actorIterator();
-            while(outputActors.hasNext()) {
-                Actor actor = (Actor)outputActors.next();
-                if (_debugging) _debug("Prefire, fire, and postfire ",
-                        " output actor: ", ((Nameable)actor).getName());
-                if (actor.prefire()) {
+        // If the _refireActors list is not empty, then 
+        // prefire, fire, and post fire these actors immediately.
+        // This may happen when there are discrete event composite
+        // actors that produces initial tokens. So, cloning the list,
+        // which is necessary to avoid ConcurrentModificationException,
+        // is not very wasteful.
+        // Clear the list after that.
+        if (_refireActors != null && !_refireActors.isEmpty()) {
+            Iterator iterator = ((List)_refireActors.clone()).iterator();
+            while (iterator.hasNext()) {
+                Actor actor = (Actor)iterator.next();
+                if(actor.prefire()) {
                     actor.fire();
                     actor.postfire();
                 }
             }
-
-            _first = false;
-        } else {
-        */
-            // Allow waveform generators to consume events if there is any.
-            // FIXME: Since this director will always be at the top-level
-            // we don't need to consume events.
-            //_setDiscretePhase(true);
-            //Iterator waveGenerators = getScheduler().getSchedule().get(
-            //        CTSchedule.WAVEFORM_GENERATORS).actorIterator();
-            //while(waveGenerators.hasNext()) {
-            //    CTWaveformGenerator generator =
-            //        (CTWaveformGenerator) waveGenerators.next();
-            //    generator.fire();
-            //}
-            //_setDiscretePhase(false);
-            // continuous phase;
-            _setIterationBeginTime(getCurrentTime());
-            setCurrentStepSize(getSuggestedNextStepSize());
-            _processBreakpoints();
-            if(_debugging) _debug("execute the system from "+
-                    getCurrentTime() + " step size" + getCurrentStepSize()
-                    + " using solver " + getCurrentODESolver().getName());
-            _fireOneIteration();
-
-            // Process discrete events.
-            _discretePhaseExecution();
-            //}
+            _refireActors.clear();
+        }
+        // continuous phase;
+        _setIterationBeginTime(getCurrentTime());
+        setCurrentStepSize(getSuggestedNextStepSize());
+        _processBreakpoints();
+        if(_debugging) _debug("execute the system from "+
+                getCurrentTime() + " step size" + getCurrentStepSize()
+                + " using solver " + getCurrentODESolver().getName());
+        _fireOneIteration();
+        
+        // Process discrete events.
+        _discretePhaseExecution();
     }
 
     /** Return the ODE solver.
@@ -326,14 +306,15 @@ public class CTMultiSolverDirector extends CTDirector {
      */
     public void initialize() throws IllegalActionException {
         if(_debugging) _debug(getFullName(), " initializing:");
-        // synchronized on time and initialize all actors
-        if(_debugging) _debug(getFullName(), " initialize directed actors: ");
-        _setDiscretePhase(true);
+        if(_debugging) _debug(getFullName(), " compute the schedule");
+        // Schedule has to be computed before calling initialize() on
+        // actors since some actors may call fireAt() in their initialize().
+        getScheduler().getSchedule();
         super.initialize();
         // Display schedule
         if(_debugging) _debug(getScheduler().getSchedule().toString());
         _setDiscretePhase(false);
-        _first = true;
+        //_first = true;
         // set step sizes
         setCurrentStepSize(getInitialStepSize());
         if(_debugging) _debug(getFullName(), " set current step size to "
@@ -351,7 +332,6 @@ public class CTMultiSolverDirector extends CTDirector {
             _debug(getFullName(), " set the stop time as a break point: " +
                     getStopTime());
         fireAt(null, getStopTime());
-        if(_debugging) _debug(getScheduler().toString());
         if(_debugging) _debug(getFullName() + " End of Initialization.");
 
 
@@ -379,17 +359,14 @@ public class CTMultiSolverDirector extends CTDirector {
     }
 
    /**  Return true always, indicating that the system is always ready
-     *  for one iteration. Increase the count of integration step for
-     *  statistics. Note that the actors are not prefired in this method.
+     *  for one iteration. 
+     *  Note that no actors are prefired in this method.
      *
      *  @return True Always.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
-        if(_debugging) _debug(this.getFullName(), "prefire.");
-        if(STAT) {
-            NSTEP++;
-        }
+        if(_debugging) _debug(this.getFullName(), "prefire returns true.");
         return true;
     }
 
@@ -458,6 +435,19 @@ public class CTMultiSolverDirector extends CTDirector {
                     actor.fire();
                     actor.postfire();
                 }
+                // If the actor requires for refire at the current time,
+                // then we fire it immediately. 
+                // NOTE: We use the _refireActors list to check 
+                // for whether a refire at current time is requested.
+                // 
+                
+                if(_refireActors != null && !_refireActors.isEmpty()) {
+                    if(actor.prefire()) {
+                        actor.fire();
+                        actor.postfire();
+                    }
+                    _refireActors.clear();
+                }
             }
             _setDiscretePhase(false);
         }
@@ -489,9 +479,6 @@ public class CTMultiSolverDirector extends CTDirector {
                             if(_debugging) _debug("execute the system from "+
                                     getCurrentTime() +" step size" +
                                     getCurrentStepSize());
-                            if(STAT) {
-                                NFAIL++;
-                            }
                         } else {
                             break;
                         }
@@ -512,9 +499,6 @@ public class CTMultiSolverDirector extends CTDirector {
                     if(_debugging) _debug(getName(), "output not accurate.");
                     setCurrentTime(getIterationBeginTime());
                     setCurrentStepSize(_refinedStepWRTOutput());
-                    if(STAT) {
-                        NFAIL++;
-                    }
                 }else {
                     break;
                 }
@@ -762,7 +746,7 @@ public class CTMultiSolverDirector extends CTDirector {
     ////                         protected variables               ////
 
     /** Indicate whether this is the first iteration.*/
-    protected boolean _first = true;
+    // protected boolean _first = true;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
