@@ -55,8 +55,9 @@ waveforms that cycle through a set of values.
 At the beginning of each time interval of length given by <i>period</i>,
 it initiates a sequence of output events with values given by
 <i>values</i> and offset into the period given by <i>offsets</i>.
-These latter two parameters must both contain row vectors
-(1 by <i>N</i> matrices) of the same length (<i>N</i>), or an
+The <i>values</i> parameter must contain an ArrayToken, and the
+<i>offsets</i> must contain a row vector (1 by <i>N</i> matrices) with
+the same length (<i>N</i>) as the <i>values</i>, or an
 exception will be thrown by the fire() method.
 The <i>offsets</i> array must be nondecreasing and nonnegative,
 or an exception will be thrown when it is set.
@@ -64,9 +65,8 @@ Moreover, its largest entry must be smaller than <i>period</i>
 or an exception will be thrown by the fire() method.
 <p>
 The <i>values</i> parameter by default
-contains an IntMatrix with value [1, 0] (one row,
-two columns, with values 1 and 0).  The default <i>offsets</i>
-vector is [0.0, 1.0].  Thus, the default output will be
+contains an array of IntTokens with values 1 and 0.  The default
+<i>offsets</i> vector is [0.0, 1.0].  Thus, the default output will be
 alternating 1 and 0 with 50% duty cycle.  The default period
 is 2.0.
 <p>
@@ -97,9 +97,9 @@ parameter.  Changes between levels occur at times
 <i>P</i> is the period, and <i>o<sub>i </sub></i> is an entry
 in the <i>offsets</i> vector.
 <p>
-The type of the output can be any token type that has a corresponding
-matrix token type.  The type is inferred from the type of the
-<i>values</i> parameter.
+The type of the output is the same as the element type of the ArrayToken
+contained in the <i>values</i> parameter. This type is inferred from the
+type of the <i>values</i> parameter.
 <p>
 This actor is a timed source, the untimed version is Pulse.
 
@@ -131,9 +131,19 @@ public class Clock extends TimedSource {
         // Call this so that we don't have to copy its code here...
         attributeChanged(offsets);
 
-        int defaultValues[][] = {{1, 0}};
-        IntMatrixToken defaultValueToken = new IntMatrixToken(defaultValues);
-        values = new Parameter(this, "values", defaultValueToken);
+	// set the values parameter
+	IntToken[] defaultValues = new IntToken[2];
+	defaultValues[0] = new IntToken(1);
+	defaultValues[1] = new IntToken(0);
+	ArrayToken defaultValueToken = new ArrayToken(defaultValues);
+	values = new Parameter(this, "values", defaultValueToken);
+	values.setTypeEquals(new ArrayType(BaseType.NAT));
+
+	// set type constraint
+	ArrayType valuesArrayType = (ArrayType)values.getType();
+	InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
+	output.setTypeAtLeast(elemTerm);
+
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
     }
@@ -152,7 +162,7 @@ public class Clock extends TimedSource {
     public Parameter period;
 
     /** The values that will be produced at the specified offsets.
-     *  This parameter can contain any MatrixToken.
+     *  This parameter must contain an ArrayToken.
      */
     public Parameter values;
 
@@ -207,7 +217,7 @@ public class Clock extends TimedSource {
      *  when it is safe to redo type resolution.
      *  If there is no director, then do nothing.
      *  @exception IllegalActionException If the new values array has no
-     *   elements in it, or if it is not a MatrixToken.
+     *   elements in it.
      */
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -238,6 +248,11 @@ public class Clock extends TimedSource {
             newobj.values = (Parameter)newobj.getAttribute("values");
             newobj.attributeChanged(values);
             newobj.period = (Parameter)newobj.getAttribute("period");
+
+	    // set the type constraints.
+	    ArrayType valuesArrayType = (ArrayType)newobj.values.getType();
+	    InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
+	    newobj.output.setTypeAtLeast(elemTerm);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
@@ -277,8 +292,8 @@ public class Clock extends TimedSource {
         }
         double[][] offsts =
             ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
-        MatrixToken val = (MatrixToken)(values.getToken());
-        if (offsts[0].length != val.getColumnCount()) {
+        ArrayToken val = (ArrayToken)(values.getToken());
+        if (offsts[0].length != val.length()) {
             throw new IllegalActionException(this,
             "Values and offsets vectors do not have the same length.");
         }
@@ -344,46 +359,18 @@ public class Clock extends TimedSource {
         return super.postfire();
     }
 
-    /** Return the type constraints of this actor. The constraints are the
-     *  ones imposed by the super class, plus the constraint that the type
-     *  of the output port must be no less than the element type of the
-     *  values parameter.
-     *  @return an Enumeration of Inequality.
-     */
-    public Enumeration typeConstraints() {
-
-	try {
-	    // Set up the constraint that the output type must be no less than
-	    // the element type of the values parameter. This constraint is
-	    // regenerated every time since the element type may change.
-            Type elemType = _getValue(0).getType();
-	    TypeConstant elemTerm = new TypeConstant(elemType);
-	    Inequality ineq = new Inequality(elemTerm, output.getTypeTerm());
-
-	    LinkedList result = new LinkedList();
-	    result.insertLast(ineq);
-	    result.appendElements(super.typeConstraints());
-
-	    return result.elements();
-	} catch (IllegalActionException ex) {
-	    throw new InternalErrorException("Clock.typeConstraints(): " +
-		"Cannot get element of the values parameter.");
-	}
-    }
-
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
     /* Get the specified value, checking the form of the values parameter.
      */
     private Token _getValue(int index) throws IllegalActionException {
-        MatrixToken val = (MatrixToken)(values.getToken());
-        if (val == null || val.getRowCount() != 1 ||
-                val.getColumnCount() <= index) {
+        ArrayToken val = (ArrayToken)(values.getToken());
+        if (val == null || val.length() <= index) {
             throw new IllegalActionException(this,
                     "Index out of range of the values parameter.");
         }
-        return val.getElementAsToken(0, index);
+        return val.getElement(index);
     }
 
     ///////////////////////////////////////////////////////////////////

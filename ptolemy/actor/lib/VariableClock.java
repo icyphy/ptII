@@ -84,9 +84,7 @@ public class VariableClock extends Clock {
         // Change default values from the base class.
         double defaultOffsets[][] = {{0.0}};
         offsets.setToken(new DoubleMatrixToken(defaultOffsets));
-        int defaultValues[][] = {{1}};
-        IntMatrixToken defaultValueToken = new IntMatrixToken(defaultValues);
-        values.setToken(defaultValueToken);
+        values.setExpression("[1]");
         period.setToken(new DoubleToken(1.0));
     }
 

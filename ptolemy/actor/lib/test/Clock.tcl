@@ -45,14 +45,14 @@ test Clock-1.0 {test constructor and initial value} {
     set e0 [deModel 4.0]
     set clockmaster [java::new ptolemy.actor.lib.Clock $e0 clock]
     [$clockmaster getAttribute values] toString
-} {ptolemy.data.expr.Parameter {.top.clock.values} [1, 0]}
+} {ptolemy.data.expr.Parameter {.top.clock.values} array[1, 0]}
 
 test Clock-1.1 {test clone and initial value} {
     set clock [java::cast ptolemy.actor.lib.Clock [$clockmaster clone]]
     $clockmaster setContainer [java::null]
     $clock setContainer $e0
     [$clock getAttribute values] toString
-} {ptolemy.data.expr.Parameter {.top.clock.values} [1, 0]}
+} {ptolemy.data.expr.Parameter {.top.clock.values} array[1, 0]}
 
 ######################################################################
 #### Test Clock in a DE model
@@ -76,10 +76,22 @@ test Clock-2.2 {check times} {
 test Clock-2.3 {change output value and type and rerun} {
     set p [getParameter $clock values]
     $p setExpression {[0.5, -0.5]}
-    set mt [java::cast ptolemy.data.DoubleMatrixToken [$p getToken]]
-    $mt getRowCount
-    $mt getColumnCount
-    $mt stringValue
+    set mt [java::cast ptolemy.data.ArrayToken [$p getToken]]
+    $mt length
+    $mt toString
     [$e0 getManager] execute
     enumToTokenValues [$rec getRecord 0]
 } {0.5 -0.5 0.5 -0.5 0.5}
+
+test Clock-2.4 {test string output} {
+    set val0 [java::new ptolemy.data.StringToken AB]
+    set val1 [java::new ptolemy.data.StringToken CD]
+    set valArray [java::new {ptolemy.data.Token[]} 2 [list $val0 $val1]]
+    set valToken [java::new {ptolemy.data.ArrayToken} $valArray]
+
+    set valuesParam [getParameter $clock values]
+    $valuesParam setToken $valToken
+    [$e0 getManager] execute
+    enumToTokenValues [$rec getRecord 0]
+} {AB CD AB CD AB} 
+
