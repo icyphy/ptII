@@ -107,7 +107,7 @@ public class TimedPNDirector extends PNDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     *  Create a director parameter "Initial_queue_capacity" with the default
+     *  Create a director parameter "initialQueueCapacity" with the default
      *  value 1. This sets the initial capacities of the FIFO queues in all
      *  the receivers created in the PN domain.
      */
@@ -119,7 +119,7 @@ public class TimedPNDirector extends PNDirector {
     /**Construct a director in the  workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  Create a director parameter "Initial_queue_capacity" with the default
+     *  Create a director parameter "initialQueueCapacity" with the default
      *  value 1. This sets the initial capacities of the queues in all
      *  the receivers created in the PN domain.
      *  @param workspace The workspace of this object.
@@ -134,7 +134,7 @@ public class TimedPNDirector extends PNDirector {
      *  NullPointerException will be thrown.
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
-     *  Create a director parameter "Initial_queue_capacity" with the default
+     *  Create a director parameter "initialQueueCapacity" with the default
      *  value 1. This sets the initial capacities of the queues in all
      *  the receivers created in the PN domain.
      *  @param container Container of the director.
@@ -156,7 +156,7 @@ public class TimedPNDirector extends PNDirector {
      *  <i>not</i> added to the directory of that workspace (It must be added
      *  by the user if he wants it to be there). The result is a new director
      *  with no container and no topology listeners. The count of active
-     *  processes is zero. The parameter "Initial_queue_capacity" has the
+     *  processes is zero. The parameter "initialQueueCapacity" has the
      *  same value as the director being cloned.
      *
      *  @param workspace The workspace for the cloned object.

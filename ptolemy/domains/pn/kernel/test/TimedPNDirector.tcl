@@ -106,7 +106,7 @@ test TimedPNDirector-5.2 {Test creation of a receiver} {
     set r1 [java::cast ptolemy.domains.pn.kernel.PNQueueReceiver \
 	    [$d3 newReceiver]]
     #FIXME: Check if this is correct!
-    set p1 [$d4 getAttribute "Initial_queue_capacity"]
+    set p1 [$d4 getAttribute "initialQueueCapacity"]
 
     # _testSetToken is defined in $PTII/util/testsuite/testParams.tcl
     _testSetToken $p1 [java::new {ptolemy.data.IntToken int} 5]

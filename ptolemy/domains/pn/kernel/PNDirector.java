@@ -105,22 +105,22 @@ public class PNDirector extends CompositeProcessDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
-     *  Create a director parameter "Initial_queue_capacity" with the default
+     *  Create a director parameter "initialQueueCapacity" with the default
      *  value 1. This sets the initial capacities of the queues in all
      *  the receivers created in the PN domain.
      */
     public PNDirector()
             throws IllegalActionException, NameDuplicationException {
         super();
-        Initial_queue_capacity = new Parameter(this, "Initial_queue_capacity",
+        initialQueueCapacity = new Parameter(this, "initialQueueCapacity",
                     new IntToken(1));
-        Initial_queue_capacity.setTypeEquals(BaseType.INT);
+        initialQueueCapacity.setTypeEquals(BaseType.INT);
     }
 
     /** Construct a director in the  workspace with an empty name.
      *  The director is added to the list of objects in the workspace.
      *  Increment the version number of the workspace.
-     *  Create a director parameter "Initial_queue_capacity" with the default
+     *  Create a director parameter "initialQueueCapacity" with the default
      *  value 1. This sets the initial capacities of the queues in all
      *  the receivers created in the PN domain.
      *  @param workspace The workspace of this object.
@@ -128,9 +128,9 @@ public class PNDirector extends CompositeProcessDirector {
     public PNDirector(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
-        Initial_queue_capacity = new Parameter(this, "Initial_queue_capacity",
+        initialQueueCapacity = new Parameter(this, "initialQueueCapacity",
                     new IntToken(1));
-        Initial_queue_capacity.setTypeEquals(BaseType.INT);
+        initialQueueCapacity.setTypeEquals(BaseType.INT);
     }
 
     /** Construct a director in the given container with the given name.
@@ -139,7 +139,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  If the name argument is null, then the name is set to the
      *  empty string. Increment the version number of the workspace.
      *
-     *  Create a director parameter "Initial_queue_capacity" with the default
+     *  Create a director parameter "initialQueueCapacity" with the default
      *  value 1. This sets the initial capacities of the queues in all
      *  the receivers created in the PN domain.
      *  @param container Container of the director.
@@ -152,9 +152,9 @@ public class PNDirector extends CompositeProcessDirector {
     public PNDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        Initial_queue_capacity = new Parameter(this, "Initial_queue_capacity",
+        initialQueueCapacity = new Parameter(this, "initialQueueCapacity",
                 new IntToken(1));
-        Initial_queue_capacity.setTypeEquals(BaseType.INT);
+        initialQueueCapacity.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -163,7 +163,7 @@ public class PNDirector extends CompositeProcessDirector {
     /** The initial size of the queues for each communication channel.  The
      *  type must be integer
      */
-    public Parameter Initial_queue_capacity;
+    public Parameter initialQueueCapacity;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -181,7 +181,7 @@ public class PNDirector extends CompositeProcessDirector {
      *  by the user if he wants it to be there).
      *  The result is a new director with no container, no pending mutations,
      *  and no topology listeners. The count of active processes is zero.
-     *  The parameter "Initial_queue_capacity" has the
+     *  The parameter "initialQueueCapacity" has the
      *  same value as the director being cloned.
      *
      *  @param workspace The workspace for the cloned object.
@@ -218,7 +218,7 @@ public class PNDirector extends CompositeProcessDirector {
     /** Return a new receiver compatible with this director. The receiver
      *  is an instance of PNQueueReceiver. Set the initial capacity
      *  of the FIFO queue in the receiver to the value specified by the
-     *  director parameter "Initial_queue_capacity". The default value
+     *  director parameter "initialQueueCapacity". The default value
      *  of the parameter is 1.
      *  @return A new PNQueueReceiver.
      */
@@ -226,7 +226,7 @@ public class PNDirector extends CompositeProcessDirector {
         PNQueueReceiver receiver =  new PNQueueReceiver();
         try {
 	    Parameter parameter =
-                (Parameter)getAttribute("Initial_queue_capacity");
+                (Parameter)getAttribute("initialQueueCapacity");
 	    int capacity = ((IntToken)parameter.getToken()).intValue();
 	    receiver.setCapacity(capacity);
         } catch (IllegalActionException ex) {

@@ -130,7 +130,7 @@ test PNDirector-5.2 {Test creation of a receiver} {
     set r1 [java::cast ptolemy.domains.pn.kernel.PNQueueReceiver \
 	    [$d3 newReceiver]]
     #FIXME: Check if this is correct!
-    set p1 [$d4 getAttribute "Initial_queue_capacity"]
+    set p1 [$d4 getAttribute "initialQueueCapacity"]
     _testSetToken $p1 [java::new {ptolemy.data.IntToken int} 5]
     set r2 [java::cast ptolemy.domains.pn.kernel.PNQueueReceiver \
 	    [$d4 newReceiver]]
@@ -148,7 +148,7 @@ test PNDirector-7.1 {Test finishing methods} {
     set d71 [java::new ptolemy.domains.pn.kernel.PNDirector]
     $d71 setName D71    
     $e71 setDirector $d71
-    set p1 [$d71 getAttribute "Initial_queue_capacity"]
+    set p1 [$d71 getAttribute "initialQueueCapacity"]
     _testSetToken $p1 [java::new {ptolemy.data.IntToken int} 5]
     set t1 [java::new ptolemy.domains.pn.kernel.test.TestDirector $e71 t1]
     set p1 [$t1 getPort input]
