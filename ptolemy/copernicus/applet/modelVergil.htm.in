@@ -10,8 +10,8 @@
 <BODY>
 <H1>@sanitizedModelName@</H1>
 <P>
-The @sanitizedModelName@ diagram model can be created in the Ptolemy II schematic editor
-called Vergil, as shown below:
+The @sanitizedModelName@ shown using Vergil, Ptolemy II schematic editor:
+
 <CENTER>
 <P>
 <!-- The HTML below is for the Java Plugin.  The first
