@@ -350,6 +350,7 @@ hyvisual_src_jar: ptII$(VERSION).src.jar
 		lib/synthesis.jar \
 		ptolemy/actor/gui/python \
 		ptolemy/actor/lib/comm \
+		ptolemy/actor/lib/conversions/test/auto/Round.xml \
 		ptolemy/actor/lib/io/comm \
 		ptolemy/actor/lib/jai \
 		ptolemy/actor/lib/javasound \
@@ -357,6 +358,7 @@ hyvisual_src_jar: ptII$(VERSION).src.jar
 		ptolemy/actor/lib/joystick \
 		ptolemy/actor/lib/python \
 		ptolemy/actor/lib/security \
+		ptolemy/actor/lib/test/auto/MathFunction.xml \
 		ptolemy/actor/lib/x10 \
 		ptolemy/actor/lib/xslt \
 		ptolemy/caltrop \
@@ -380,6 +382,7 @@ hyvisual_src_jar: ptII$(VERSION).src.jar
 		ptolemy/domains/hde \
 		ptolemy/domains/petrinet \
 		ptolemy/domains/psdf \
+		ptolemy/domains/pn \
 		ptolemy/domains/ptinyDomains.xml \
 		ptolemy/domains/sr \
 		ptolemy/domains/tm \
