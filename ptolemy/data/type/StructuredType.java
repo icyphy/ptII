@@ -72,7 +72,7 @@ public abstract class StructuredType implements Type, Cloneable {
 
     /** If this type is a variable, disallow it to be changed by the
      *  type resolution procedure. Calling unfixType() will reverse the
-     *  effect of this mehtod. This method does nothing if this type
+     *  effect of this method. This method does nothing if this type
      *  is a constant.
      */
     public abstract void fixType();
