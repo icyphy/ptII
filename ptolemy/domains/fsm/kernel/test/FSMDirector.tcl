@@ -111,8 +111,7 @@ test FSMDirector-4.1 {test action methods} {
     set r0 [java::new ptolemy.actor.TypedIORelation $e0 r0]
     [java::field [java::cast ptolemy.actor.lib.Source $clk] output] link $r0
     [java::field [java::cast ptolemy.actor.lib.Source $src] trigger] link $r0
-    set tok [java::new {ptolemy.data.IntToken int} 3]
-    [java::field $src step] setToken $tok
+    [java::field $src step] setExpression "3"
     set e1 [java::new ptolemy.actor.TypedCompositeActor $e0 e1]
     set dir [java::new ptolemy.domains.fsm.kernel.FSMDirector $e1 dir]
     set e2 [java::new ptolemy.actor.lib.Const $e1 e2]
@@ -295,8 +294,7 @@ test FSMDirector-7.1 {test clone a modal model} {
     set r0 [java::new ptolemy.actor.TypedIORelation $e0 r0]
     [java::field [java::cast ptolemy.actor.lib.Source $clk] output] link $r0
     [java::field [java::cast ptolemy.actor.lib.Source $src] trigger] link $r0
-    set tok [java::new {ptolemy.data.IntToken int} 3]
-    [java::field $src step] setToken $tok
+    [java::field $src step] setExpression "3"
 
     set e1 [java::new ptolemy.actor.TypedCompositeActor]
     $e1 setName e1
