@@ -770,7 +770,8 @@ public class CalendarQueue {
                     // Debugging stuff.. ignore...
                     if (DEBUG) {
                         if (targetLL.head != null) {
-                            System.out.println("Tail equal to null, but head's not ???");
+                            System.out.println("Tail equal to null, " +
+                                    but head's not ???");
                         }
                     }
                     // targedLL is an empty list, so after updating it will
