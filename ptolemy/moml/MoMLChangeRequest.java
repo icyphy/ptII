@@ -223,7 +223,7 @@ public class MoMLChangeRequest extends ChangeRequest {
                     // executed now that the propagated one is safe to
                     // execute.
                     MoMLChangeRequest newChange = new MoMLChangeRequest(
-                            getOriginator(),
+                            getSource(),
                             other,              // context
                             getDescription(),   // MoML code
                             _base);
