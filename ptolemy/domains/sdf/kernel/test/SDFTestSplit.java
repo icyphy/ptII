@@ -46,26 +46,19 @@ public class SDFTestSplit extends TypedAtomicActor {
     public SDFTestSplit(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        try{
-            input = (SDFIOPort)newPort("input");
-            input.setInput(true);
-            input.setTokenConsumptionRate(2);
-            input.setTypeEquals(BaseType.INT);
-
-            output1 = (SDFIOPort)newPort("output1");
-            output1.setOutput(true);
-            output1.setTokenProductionRate(1);
-            output1.setTypeEquals(BaseType.INT);
-
-            output2 = (SDFIOPort)newPort("output2");
-            output2.setOutput(true);
-            output2.setTokenProductionRate(1);
-            output2.setTypeEquals(BaseType.INT);
-        }
-        catch (IllegalActionException e1) {
-            System.out.println("SDFTestSplit: constructor error");
-        }
+        input = new SDFIOPort(this, "input", true, false);
+        input.setTokenConsumptionRate(2);
+        input.setTypeEquals(BaseType.INT);
+        
+        output1 = new SDFIOPort(this, "output1", false, true);
+        output1.setTokenProductionRate(1);
+        output1.setTypeEquals(BaseType.INT);
+        
+        output2 = new SDFIOPort(this, "output2", false, true);
+        output2.setTokenProductionRate(1);
+        output2.setTypeEquals(BaseType.INT);
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -89,3 +82,13 @@ public class SDFTestSplit extends TypedAtomicActor {
     }
 
 }
+
+
+
+
+
+
+
+
+
+

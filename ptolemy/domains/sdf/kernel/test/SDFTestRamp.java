@@ -48,18 +48,11 @@ import ptolemy.domains.sdf.kernel.*;
  */
 public class SDFTestRamp extends TypedAtomicActor {
     public SDFTestRamp(TypedCompositeActor container, String name)
-            throws IllegalActionException,
-            NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        try{
-            output = (SDFIOPort) newPort("output");
-            output.setOutput(true);
-            output.setTokenProductionRate(1);
-            output.setTypeEquals(BaseType.INT);
-        }
-        catch (IllegalActionException e1) {
-            System.out.println("SDFTestRamp: constructor error");
-        }
+        output = new SDFIOPort(this, "output", false, true);
+        output.setTokenProductionRate(1);
+        output.setTypeEquals(BaseType.INT);
         _value = 0;
 
     }

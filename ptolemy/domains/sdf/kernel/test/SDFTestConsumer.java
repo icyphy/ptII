@@ -51,14 +51,8 @@ public class SDFTestConsumer extends TypedAtomicActor {
     public SDFTestConsumer(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        try{
-            input = (SDFIOPort)newPort("input");
-            input.setInput(true);
-            input.setTokenConsumptionRate(1);
-        }
-        catch (IllegalActionException e1) {
-            System.out.println("SDFTestConsumer: Constructor error");
-        }
+        input = new SDFIOPort(this, "input", true, false);
+        input.setTokenConsumptionRate(1);
         _history = new StringBuffer("");
     }
 

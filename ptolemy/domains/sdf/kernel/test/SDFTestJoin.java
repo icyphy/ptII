@@ -50,25 +50,17 @@ public class SDFTestJoin extends TypedAtomicActor {
     public SDFTestJoin(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        try{
-            input1 = (SDFIOPort)newPort("input1");
-            input1.setInput(true);
-            input1.setTokenConsumptionRate(1);
-            input1.setTypeEquals(BaseType.GENERAL);
-
-            input2 = (SDFIOPort)newPort("input2");
-            input2.setInput(true);
-            input2.setTokenConsumptionRate(1);
-            input2.setTypeEquals(BaseType.GENERAL);
-
-            output = (SDFIOPort)newPort("output");
-            output.setOutput(true);
-            output.setTokenProductionRate(2);
-            output.setTypeEquals(BaseType.GENERAL);
-        }
-        catch (IllegalActionException e1) {
-            System.out.println("SDFTestJoin: constructor error");
-        }
+        input1 = new SDFIOPort(this,"input1", true, false);
+        input1.setTokenConsumptionRate(1);
+        input1.setTypeEquals(BaseType.GENERAL);
+        
+        input2 = new SDFIOPort(this,"input2", true, false);
+        input2.setTokenConsumptionRate(1);
+        input2.setTypeEquals(BaseType.GENERAL);
+        
+        output = new SDFIOPort(this,"output", false, true);
+        output.setTokenProductionRate(2);
+        output.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,3 +85,11 @@ public class SDFTestJoin extends TypedAtomicActor {
 
     }
 }
+
+
+
+
+
+
+
+

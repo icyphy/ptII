@@ -73,39 +73,29 @@ public class SDFTestDelay extends TypedAtomicActor {
          * some environments which can destroy the debugging information from
          * java
          */
-        try{
-            /* Create a new port */
-	    input = (SDFIOPort)newPort("input");
-            /* Make it an input port */
-            input.setInput(true);
-            /* Set the Consumption rate on the port.  A good way to think of
-             * this is that you are making a contract with the Ptolemy system.
-             * If you always consume one token from this port when fired,
-             * then Ptolemy will always guarantee that there will be a token
-             * ready when you are fired.
-             */
-	    input.setTokenConsumptionRate(1);
-	    /* The getPort method (in ptolemy.kernel.Entity) finds a port by
-	     * name.  It returns a Port object, but all the ports in the
-	     * actor package are of type SDFIOPort,
-	     * which extends Port.   So, we
-	     * have to upcast the return value to the appropriate type.
-	     * The setDeclaredType calls use the type system to define what
-	     * types of tokens are valid for this actor.
-	     */
-	    input.setTypeEquals(BaseType.INT);
-
-	    /* Similarly for the output port */
-	    output = (SDFIOPort)newPort("output");
-            output.setOutput(true);
-            output.setTokenProductionRate(1);
-	    output.setTypeEquals(BaseType.INT);
-        }
-        catch (IllegalActionException e1) {
-            System.out.println("SDFTestDelay: constructor error");
-            e1.printStackTrace();
-            throw e1;
-        }
+        /* Create a new input port */
+        input = new SDFIOPort(this,"input", true, false);
+        /* Set the Consumption rate on the port.  A good way to think of
+         * this is that you are making a contract with the Ptolemy system.
+         * If you always consume one token from this port when fired,
+         * then Ptolemy will always guarantee that there will be a token
+         * ready when you are fired.
+         */
+        input.setTokenConsumptionRate(1);
+        /* The getPort method (in ptolemy.kernel.Entity) finds a port by
+         * name.  It returns a Port object, but all the ports in the
+         * actor package are of type SDFIOPort,
+         * which extends Port.   So, we
+         * have to upcast the return value to the appropriate type.
+         * The setDeclaredType calls use the type system to define what
+         * types of tokens are valid for this actor.
+         */
+        input.setTypeEquals(BaseType.INT);
+        
+        /* Similarly for the output port */
+        output = new SDFIOPort(this,"output", false, true);
+        output.setTokenProductionRate(1);
+        output.setTypeEquals(BaseType.INT);
     }
 
     public SDFIOPort input;
@@ -232,3 +222,4 @@ public class SDFTestDelay extends TypedAtomicActor {
         return;
     }
 }
+
