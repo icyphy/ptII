@@ -30,22 +30,14 @@
 
 package ptolemy.vergil.fsm;
 
-import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
-import diva.canvas.Site;
-import diva.canvas.connector.AutonomousSite;
-import diva.canvas.connector.Connector;
-import diva.canvas.connector.ConnectorManipulator;
-import diva.canvas.event.LayerEvent;
-import diva.canvas.event.MouseFilter;
-import diva.canvas.interactor.AbstractInteractor;
-import diva.canvas.interactor.CompositeInteractor;
-import diva.canvas.interactor.GrabHandle;
-import diva.canvas.interactor.Interactor;
-import diva.graph.GraphException;
-import diva.graph.GraphPane;
-import diva.graph.NodeRenderer;
-import diva.gui.toolbox.FigureIcon;
+import java.awt.event.ActionEvent;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.geom.Point2D;
+
+import javax.swing.Action;
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.fsm.kernel.State;
@@ -67,15 +59,22 @@ import ptolemy.vergil.fsm.modal.ModalTransitionController;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.PortDialogFactory;
 import ptolemy.vergil.toolbox.FigureAction;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.InputEvent;
-import java.awt.event.KeyEvent;
-import java.awt.geom.Point2D;
-
-import javax.swing.Action;
-import javax.swing.JMenu;
-import javax.swing.JToolBar;
+import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.canvas.Site;
+import diva.canvas.connector.AutonomousSite;
+import diva.canvas.connector.Connector;
+import diva.canvas.connector.ConnectorManipulator;
+import diva.canvas.event.LayerEvent;
+import diva.canvas.event.MouseFilter;
+import diva.canvas.interactor.AbstractInteractor;
+import diva.canvas.interactor.CompositeInteractor;
+import diva.canvas.interactor.GrabHandle;
+import diva.canvas.interactor.Interactor;
+import diva.graph.GraphException;
+import diva.graph.GraphPane;
+import diva.graph.NodeRenderer;
+import diva.gui.toolbox.FigureIcon;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphController

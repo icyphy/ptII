@@ -27,15 +27,7 @@
 
 package ptolemy.graph.analysis.analyzer;
 
-import ptolemy.graph.analysis.strategy.CachedStrategy;
-
-import ptolemy.graph.Edge;
-import ptolemy.graph.Graph;
-
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Collections;
 
 //////////////////////////////////////////////////////////////////////////
 //// SelfLoopAnalyzer

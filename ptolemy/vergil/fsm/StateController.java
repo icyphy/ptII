@@ -30,10 +30,11 @@
 
 package ptolemy.vergil.fsm;
 
-import diva.canvas.Figure;
-import diva.graph.GraphController;
-import diva.graph.NodeRenderer;
-import diva.gui.GUIUtilities;
+import java.awt.Event;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.KeyStroke;
 
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
@@ -48,12 +49,10 @@ import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-
-import java.awt.Event;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.KeyStroke;
+import diva.canvas.Figure;
+import diva.graph.GraphController;
+import diva.graph.NodeRenderer;
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// StateController

@@ -28,17 +28,13 @@ Floyd-Warshall algorithm.
 
 package ptolemy.graph.analysis.strategy;
 
+import java.util.Iterator;
+
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
-import ptolemy.graph.analysis.Analysis;
 import ptolemy.graph.analysis.analyzer.TransitiveClosureAnalyzer;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Collections;
 
 //////////////////////////////////////////////////////////////////////////
 //// FloydWarshallTransitiveClosureStrategy

@@ -28,22 +28,13 @@ cyclic graph.
 
 package ptolemy.graph.analysis;
 
+import java.util.List;
+
+import ptolemy.graph.Graph;
 import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.CycleMeanAnalyzer;
 import ptolemy.graph.analysis.strategy.KarpCycleMeanStrategy;
-
 import ptolemy.graph.mapping.ToDoubleMapping;
-
-import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Edge;
-import ptolemy.graph.Graph;
-import ptolemy.graph.Node;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.Collection;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// CycleMeanAnalysis

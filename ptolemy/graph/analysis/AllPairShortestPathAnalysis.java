@@ -27,22 +27,14 @@
 
 package ptolemy.graph.analysis;
 
-import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Edge;
+import java.util.List;
+
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
-
-
 import ptolemy.graph.analysis.analyzer.AllPairShortestPathAnalyzer;
 import ptolemy.graph.analysis.analyzer.Analyzer;
-import ptolemy.graph.analysis.strategy
-        .FloydWarshallAllPairShortestPathStrategy;
-
+import ptolemy.graph.analysis.strategy.FloydWarshallAllPairShortestPathStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
-
-import java.util.List;
-import java.util.ArrayList;
-import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// AllPairShortestPathAnalysis

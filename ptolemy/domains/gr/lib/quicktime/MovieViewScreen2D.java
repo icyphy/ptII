@@ -29,58 +29,40 @@
 */
 package ptolemy.domains.gr.lib.quicktime;
 
-import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
-import diva.canvas.GraphicsPane;
-import diva.canvas.JCanvas;
+import java.awt.Dimension;
+import java.awt.Frame;
+import java.awt.Graphics;
+import java.awt.Rectangle;
 
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.gui.Placeable;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.gr.kernel.GRActor2D;
-import ptolemy.domains.gr.kernel.GRUtilities2D;
-import ptolemy.domains.gr.kernel.Scene2DToken;
-import ptolemy.domains.gr.kernel.ViewScreenInterface;
 import ptolemy.domains.gr.lib.ViewScreen2D;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.Graphics2D;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
-import java.awt.geom.Rectangle2D;
-import java.awt.geom.RectangularShape;
-import java.util.Iterator;
-import java.util.List;
-import java.util.LinkedList;
-
-import javax.swing.JFrame;
-
-import quicktime.qd.*;
-import quicktime.*;
-import quicktime.std.*;
-import quicktime.io.*;
-import quicktime.sound.*;
-import quicktime.std.image.*;
-import quicktime.std.movies.*;
-import quicktime.std.movies.media.*;
-import quicktime.util.*;
-
-import quicktime.app.display.*;
-import quicktime.app.image.*;
-import quicktime.app.QTFactory;
-import java.awt.*;
-
-import java.io.*;
+import quicktime.Errors;
+import quicktime.QTSession;
+import quicktime.app.display.QTCanvas;
+import quicktime.app.image.Paintable;
+import quicktime.app.image.QTImageDrawer;
+import quicktime.app.image.Redrawable;
+import quicktime.io.OpenMovieFile;
+import quicktime.io.QTFile;
+import quicktime.qd.QDGraphics;
+import quicktime.qd.QDRect;
+import quicktime.std.StdQTConstants;
+import quicktime.std.image.CSequence;
+import quicktime.std.image.CodecComponent;
+import quicktime.std.image.CompressedFrameInfo;
+import quicktime.std.image.ImageDescription;
+import quicktime.std.image.QTImage;
+import quicktime.std.movies.Movie;
+import quicktime.std.movies.Track;
+import quicktime.std.movies.media.VideoMedia;
+import quicktime.util.QTHandle;
+import quicktime.util.RawEncodedImage;
 //////////////////////////////////////////////////////////////////////////
 //// MovieViewScreen2D
 /** 

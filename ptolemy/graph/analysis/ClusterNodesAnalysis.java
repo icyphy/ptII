@@ -27,14 +27,13 @@
 
 package ptolemy.graph.analysis;
 
-import ptolemy.graph.analysis.analyzer.Analyzer;
-import ptolemy.graph.analysis.analyzer.ClusterNodesTransformer;
-import ptolemy.graph.analysis.strategy.ClusterNodesTransformerStrategy;
+import java.util.Collection;
 
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
-
-import java.util.Collection;
+import ptolemy.graph.analysis.analyzer.Analyzer;
+import ptolemy.graph.analysis.analyzer.ClusterNodesTransformer;
+import ptolemy.graph.analysis.strategy.ClusterNodesTransformerStrategy;
 
 //////////////////////////////////////////////////////////////////////////
 //// ClusterNodesAnalysis

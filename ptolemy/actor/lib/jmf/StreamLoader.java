@@ -1,11 +1,8 @@
 package ptolemy.actor.lib.jmf;
 
-import java.io.IOException;
 import java.net.URL;
 
 import javax.media.Manager;
-import javax.media.Player;
-import javax.media.Processor;
 import javax.media.protocol.DataSource;
 
 import ptolemy.actor.Director;
@@ -14,7 +11,8 @@ import ptolemy.data.ObjectToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 public class StreamLoader extends Source {
 

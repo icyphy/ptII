@@ -27,16 +27,15 @@
 
 package ptolemy.graph.analysis.strategy;
 
-import ptolemy.graph.analysis.analyzer.SinkNodeAnalyzer;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Collections;
+import ptolemy.graph.analysis.analyzer.SinkNodeAnalyzer;
 
 //////////////////////////////////////////////////////////////////////////
 //// SinkNodeStrategy

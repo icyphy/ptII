@@ -27,15 +27,11 @@
 
 package ptolemy.graph.analysis;
 
-import ptolemy.graph.analysis.analyzer.Transformer;
+import ptolemy.graph.Graph;
 import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.MirrorTransformer;
+import ptolemy.graph.analysis.analyzer.Transformer;
 import ptolemy.graph.analysis.strategy.MirrorTransformerStrategy;
-
-import ptolemy.graph.Graph;
-import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Node;
-import ptolemy.graph.Edge;
 
 //////////////////////////////////////////////////////////////////////////
 //// MirrorTransformation

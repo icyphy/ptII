@@ -33,7 +33,10 @@
 
 package ptolemy.vergil.fsm.modal;
 
-import diva.graph.GraphController;
+import java.awt.event.ActionEvent;
+import java.util.Iterator;
+import java.util.List;
+import java.util.StringTokenizer;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedActor;
@@ -53,11 +56,7 @@ import ptolemy.vergil.fsm.FSMGraphController;
 import ptolemy.vergil.fsm.TransitionController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-
-import java.awt.event.ActionEvent;
-import java.util.Iterator;
-import java.util.List;
-import java.util.StringTokenizer;
+import diva.graph.GraphController;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModalTransitionController

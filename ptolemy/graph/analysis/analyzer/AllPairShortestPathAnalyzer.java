@@ -28,9 +28,9 @@ of a directed graph.
 
 package ptolemy.graph.analysis.analyzer;
 
-import ptolemy.graph.Node;
-
 import java.util.List;
+
+import ptolemy.graph.Node;
 
 //////////////////////////////////////////////////////////////////////////
 //// AllPairShortestPathAnalyzer

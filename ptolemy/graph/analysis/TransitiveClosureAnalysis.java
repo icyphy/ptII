@@ -27,19 +27,11 @@
 
 package ptolemy.graph.analysis;
 
+import ptolemy.graph.Graph;
+import ptolemy.graph.Node;
 import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.TransitiveClosureAnalyzer;
 import ptolemy.graph.analysis.strategy.FloydWarshallTransitiveClosureStrategy;
-
-import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Edge;
-import ptolemy.graph.Graph;
-import ptolemy.graph.Node;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Collections;
 
 //////////////////////////////////////////////////////////////////////////
 //// TransitiveClosureAnalysis

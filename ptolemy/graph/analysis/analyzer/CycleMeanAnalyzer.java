@@ -28,7 +28,6 @@
 package ptolemy.graph.analysis.analyzer;
 
 import java.util.List;
-import ptolemy.graph.mapping.ToDoubleMapping;
 
 //////////////////////////////////////////////////////////////////////////
 //// CycleMeanAnalyzer

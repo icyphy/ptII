@@ -31,20 +31,12 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jmf;
 
-import ptolemy.actor.lib.Source;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.FileAttribute;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-
 import java.net.URL;
 
 import javax.media.Buffer;
+import javax.media.ConfigureCompleteEvent;
 import javax.media.ControllerEvent;
 import javax.media.ControllerListener;
-import javax.media.ConfigureCompleteEvent;
 import javax.media.EndOfMediaEvent;
 import javax.media.Manager;
 import javax.media.Player;
@@ -54,6 +46,14 @@ import javax.media.ResourceUnavailableEvent;
 import javax.media.control.FrameGrabbingControl;
 import javax.media.control.FramePositioningControl;
 import javax.media.protocol.DataSource;
+
+import ptolemy.actor.lib.Source;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.attributes.FileAttribute;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// blahblah

@@ -28,16 +28,6 @@
 package ptolemy.graph.analysis.analyzer;
 
 import ptolemy.graph.Graph;
-import ptolemy.graph.Node;
-import ptolemy.graph.Edge;
-
-import ptolemy.graph.analysis.AnalysisException;
-import ptolemy.graph.analysis.strategy.CachedStrategy;
-
-import java.util.HashMap;
-import java.util.Iterator;
-
-import java.lang.reflect.Method;
 
 //////////////////////////////////////////////////////////////////////////
 //// MirrorTransformerAnalyzer

@@ -27,18 +27,12 @@
 
 package ptolemy.graph.analysis;
 
+import java.util.List;
+
+import ptolemy.graph.Graph;
 import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.SourceNodeAnalyzer;
 import ptolemy.graph.analysis.strategy.SourceNodeStrategy;
-
-import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Graph;
-import ptolemy.graph.Node;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Collections;
 
 //////////////////////////////////////////////////////////////////////////
 //// SourceNodeAnalysis

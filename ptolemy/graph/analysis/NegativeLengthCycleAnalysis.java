@@ -27,17 +27,11 @@
 
 package ptolemy.graph.analysis;
 
+import ptolemy.graph.Graph;
 import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.NegativeLengthCycleAnalyzer;
-import ptolemy.graph.analysis.strategy
-        .FloydWarshallNegativeLengthCycleStrategy;
-
+import ptolemy.graph.analysis.strategy.FloydWarshallNegativeLengthCycleStrategy;
 import ptolemy.graph.mapping.ToDoubleMapping;
-
-import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Edge;
-import ptolemy.graph.Graph;
-import ptolemy.graph.Node;
 
 //////////////////////////////////////////////////////////////////////////
 //// NegativeLengthCycleAnalysis

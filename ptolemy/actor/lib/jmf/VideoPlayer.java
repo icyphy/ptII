@@ -3,30 +3,24 @@ package ptolemy.actor.lib.jmf;
 import java.awt.Component;
 import java.awt.Container;
 import java.awt.GridLayout;
-
 import java.io.IOException;
 
-
-import javax.media.Controller;
 import javax.media.ControllerEvent;
 import javax.media.ControllerListener;
-import javax.media.protocol.DataSource;
-import javax.media.GainControl;
 import javax.media.Manager;
 import javax.media.MediaException;
 import javax.media.Player;
 import javax.media.Time;
+import javax.media.protocol.DataSource;
 import javax.swing.JFrame;
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 
 public class VideoPlayer extends TypedAtomicActor implements ControllerListener {
 

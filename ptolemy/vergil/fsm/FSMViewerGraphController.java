@@ -30,14 +30,8 @@
 
 package ptolemy.vergil.fsm;
 
-import diva.canvas.Figure;
-import diva.canvas.interactor.Interactor;
-import diva.canvas.interactor.SelectionDragger;
-import diva.canvas.interactor.SelectionInteractor;
-import diva.graph.EdgeController;
-import diva.graph.GraphPane;
-import diva.graph.NodeController;
-import diva.gui.GUIUtilities;
+import javax.swing.JMenu;
+import javax.swing.JToolBar;
 
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.fsm.kernel.State;
@@ -53,9 +47,14 @@ import ptolemy.vergil.fsm.modal.ModalController;
 import ptolemy.vergil.fsm.modal.ModalTransitionController;
 import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.kernel.AttributeController;
-
-import javax.swing.JMenu;
-import javax.swing.JToolBar;
+import diva.canvas.Figure;
+import diva.canvas.interactor.Interactor;
+import diva.canvas.interactor.SelectionDragger;
+import diva.canvas.interactor.SelectionInteractor;
+import diva.graph.EdgeController;
+import diva.graph.GraphPane;
+import diva.graph.NodeController;
+import diva.gui.GUIUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMViewerGraphController

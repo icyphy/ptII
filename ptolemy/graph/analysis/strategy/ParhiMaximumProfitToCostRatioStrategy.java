@@ -28,30 +28,22 @@ iteration bound.
 
 package ptolemy.graph.analysis.strategy;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
-
-import ptolemy.graph.mapping.ToDoubleMapMapping;
-
 import ptolemy.graph.analysis.SingleSourceLongestPathAnalysis;
-
-import ptolemy.graph.mapping.ToDoubleMapping;
-import ptolemy.graph.mapping.ToIntMapping;
-
-import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
-import ptolemy.graph.analysis.analyzer.SingleSourceLongestPathAnalyzer;
 import ptolemy.graph.analysis.analyzer.CycleMeanAnalyzer;
 import ptolemy.graph.analysis.analyzer.MaximumProfitToCostRatioAnalyzer;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.Collections;
-import java.util.Collection;
-import java.util.List;
+import ptolemy.graph.mapping.ToDoubleMapMapping;
+import ptolemy.graph.mapping.ToDoubleMapping;
+import ptolemy.graph.mapping.ToIntMapping;
 
 
 //////////////////////////////////////////////////////////////////////////

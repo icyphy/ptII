@@ -28,24 +28,14 @@ nodes in a directed graph.
 
 package ptolemy.graph.analysis;
 
-import ptolemy.graph.analysis.analyzer.Analyzer;
-import ptolemy.graph.analysis.analyzer.SingleSourceLongestPathAnalyzer;
+import java.util.List;
 
-import ptolemy.graph.mapping.ToDoubleMapping;
-
-import ptolemy.graph.analysis.strategy.CachedStrategy;
-import ptolemy.graph.analysis.strategy.AllEdgeSingleSourceLongestPathStrategy;
-
-import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Edge;
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.Collection;
-import java.util.List;
+import ptolemy.graph.analysis.analyzer.Analyzer;
+import ptolemy.graph.analysis.analyzer.SingleSourceLongestPathAnalyzer;
+import ptolemy.graph.analysis.strategy.AllEdgeSingleSourceLongestPathStrategy;
+import ptolemy.graph.mapping.ToDoubleMapping;
 
 //////////////////////////////////////////////////////////////////////////
 //// SingleSourceLongestPathAnalysis

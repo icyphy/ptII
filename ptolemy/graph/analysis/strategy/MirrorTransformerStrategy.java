@@ -27,17 +27,15 @@
 
 package ptolemy.graph.analysis.strategy;
 
-import ptolemy.graph.Graph;
-import ptolemy.graph.Node;
-import ptolemy.graph.Edge;
-
-import ptolemy.graph.analysis.AnalysisException;
-import ptolemy.graph.analysis.analyzer.MirrorTransformer;
-
+import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import java.lang.reflect.Method;
+import ptolemy.graph.Edge;
+import ptolemy.graph.Graph;
+import ptolemy.graph.Node;
+import ptolemy.graph.analysis.AnalysisException;
+import ptolemy.graph.analysis.analyzer.MirrorTransformer;
 
 //////////////////////////////////////////////////////////////////////////
 //// MirrorTransformerStrategy

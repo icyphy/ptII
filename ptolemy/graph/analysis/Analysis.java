@@ -28,7 +28,6 @@
 package ptolemy.graph.analysis;
 
 import ptolemy.graph.Graph;
-
 import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.GraphAnalyzer;
 import ptolemy.graph.analysis.strategy.CachedStrategy;

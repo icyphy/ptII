@@ -30,7 +30,12 @@
 
 package ptolemy.vergil.fsm;
 
-import diva.graph.GraphPane;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
 
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
@@ -46,13 +51,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyEvent;
-
-import javax.swing.JMenu;
-import javax.swing.JMenuItem;
+import diva.graph.GraphPane;
 
 //////////////////////////////////////////////////////////////////////////
 //// FSMGraphFrame

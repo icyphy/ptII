@@ -30,6 +30,29 @@
 
 package ptolemy.vergil.fsm;
 
+import java.awt.Color;
+import java.awt.Event;
+import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
+
+import javax.swing.KeyStroke;
+
+import ptolemy.actor.TypedActor;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.data.DoubleToken;
+import ptolemy.domains.fsm.kernel.State;
+import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.gui.MessageHandler;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.toolbox.ConfigureAction;
+import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.ArcConnector;
@@ -51,30 +74,6 @@ import diva.graph.EdgeRenderer;
 import diva.graph.GraphController;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.MenuCreator;
-
-import ptolemy.actor.TypedActor;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.data.DoubleToken;
-import ptolemy.domains.fsm.kernel.State;
-import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.vergil.toolbox.ConfigureAction;
-import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.PtolemyMenuFactory;
-
-import java.awt.Color;
-import java.awt.Event;
-import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.KeyEvent;
-
-import javax.swing.KeyStroke;
 
 //////////////////////////////////////////////////////////////////////////
 //// TransitionController

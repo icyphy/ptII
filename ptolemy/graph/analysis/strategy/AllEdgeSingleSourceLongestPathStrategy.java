@@ -27,21 +27,18 @@
 
 package ptolemy.graph.analysis.strategy;
 
-import ptolemy.graph.analysis.analyzer.SingleSourceLongestPathAnalyzer;
-import ptolemy.graph.mapping.ToDoubleMapping;
-
-import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
+import java.util.List;
 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Edge;
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
-
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.HashMap;
-import java.util.Collection;
-import java.util.List;
+import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
+import ptolemy.graph.analysis.analyzer.SingleSourceLongestPathAnalyzer;
+import ptolemy.graph.mapping.ToDoubleMapping;
 
 //////////////////////////////////////////////////////////////////////////
 //// AllEdgeSingleSourceLongestPathStrategy

@@ -27,11 +27,7 @@
 
 package ptolemy.graph.analysis.strategy;
 
-import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Graph;
-import ptolemy.graph.Node;
-
-import ptolemy.graph.analysis.Analysis;
 
 //////////////////////////////////////////////////////////////////////////
 //// FloydWarshallAnalysis

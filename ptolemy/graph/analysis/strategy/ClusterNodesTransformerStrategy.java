@@ -27,16 +27,15 @@
 
 package ptolemy.graph.analysis.strategy;
 
-import ptolemy.graph.Graph;
-import ptolemy.graph.Node;
-import ptolemy.graph.Edge;
-
-import ptolemy.graph.analysis.analyzer.ClusterNodesTransformer;
-
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.Collection;
-import java.util.ArrayList;
+
+import ptolemy.graph.Edge;
+import ptolemy.graph.Graph;
+import ptolemy.graph.Node;
+import ptolemy.graph.analysis.analyzer.ClusterNodesTransformer;
 
 //////////////////////////////////////////////////////////////////////////
 ////  ClusterNodesTransformerStrategy

@@ -29,9 +29,10 @@
 
 package ptolemy.vergil.fsm.modal;
 
-import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedCompositeActor;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Iterator;
+
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -39,10 +40,6 @@ import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.style.ChoiceStyle;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
-import ptolemy.domains.ct.kernel.CTDirector;
-import ptolemy.domains.ct.kernel.CTEventGenerator;
-import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
-import ptolemy.domains.ct.kernel.CTTransparentDirector;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.HSDirector;
@@ -59,13 +56,6 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
-
-import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// ModalModel

@@ -25,7 +25,6 @@
 package ptolemy.graph.analysis.strategy;
 
 import ptolemy.graph.Graph;
-
 import ptolemy.graph.analysis.analyzer.GraphAnalyzer;
 
 //////////////////////////////////////////////////////////////////////////

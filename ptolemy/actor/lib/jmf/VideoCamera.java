@@ -62,15 +62,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jmf;
 
-import ptolemy.actor.lib.Source;
-import ptolemy.data.IntToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
-
 import java.util.Iterator;
 import java.util.Vector;
 
@@ -91,9 +82,18 @@ import javax.media.RealizeCompleteEvent;
 import javax.media.ResourceUnavailableEvent;
 import javax.media.UnsupportedPlugInException;
 import javax.media.control.TrackControl;
-import javax.media.format.VideoFormat;
 import javax.media.format.RGBFormat;
+import javax.media.format.VideoFormat;
 import javax.media.format.YUVFormat;
+
+import ptolemy.actor.lib.Source;
+import ptolemy.data.IntToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 
 //////////////////////////////////////////////////////////////////////////

@@ -30,8 +30,6 @@ package ptolemy.graph.analysis.strategy;
 
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Graph;
-import ptolemy.graph.Edge;
-
 import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
 
 //////////////////////////////////////////////////////////////////////////

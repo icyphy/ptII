@@ -29,13 +29,7 @@
 
 package ptolemy.vergil.fsm.modal;
 
-import ptolemy.actor.Director;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.domains.ct.kernel.CTCompositeActor;
-import ptolemy.domains.ct.kernel.CTDirector;
-import ptolemy.domains.ct.kernel.CTEventGenerator;
-import ptolemy.domains.ct.kernel.CTStepSizeControlActor;
-import ptolemy.domains.ct.kernel.CTTransparentDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;

@@ -27,13 +27,10 @@
 
 package ptolemy.graph.analysis;
 
+import ptolemy.graph.Graph;
 import ptolemy.graph.analysis.analyzer.Analyzer;
 import ptolemy.graph.analysis.analyzer.CycleExistenceAnalyzer;
 import ptolemy.graph.analysis.strategy.FloydWarshallCycleExistenceStrategy;
-
-import ptolemy.graph.DirectedGraph;
-import ptolemy.graph.Graph;
-import ptolemy.graph.Edge;
 
 //////////////////////////////////////////////////////////////////////////
 //// CycleExistenceAnalysis
