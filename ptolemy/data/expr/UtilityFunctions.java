@@ -44,6 +44,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
@@ -126,6 +127,77 @@ public class UtilityFunctions {
     }
 
     /** Get the specified property from the environment. An empty string
+     *  is returned if the argument environment variable does not exist,
+     *  though if certain properties are not defined, then we
+     *  make various attempts to determine them and then set them.
+     *  See the javadoc page for java.util.System.getProperties() for
+     *  a list of system properties.  
+     *  <p>The following properties are handled specially
+     *  <dl>
+     *  <dt> "ptolemy.ptII.dir"
+     *  <dd> vergil usually sets the ptolemy.ptII.dir property to the
+     *  value of $PTII.  However, if we are running under Web Start,
+     *  then this property might not be set, in which case we look
+     *  for "ptolemy/kernel/util/NamedObj.class" and set the
+     *  property accordingly.
+     *  </dl>
+     *  @param propertyName The name of property.
+     *  @return A String containing the string value of the property.
+     */ 
+    public static String getProperty(String propertyName) {
+	// NOTE: getProperty() will probably fail in applets, which
+	// is why this is in a try block.
+	String property = null;
+	try {
+	    property = System.getProperty(propertyName);
+        } catch (SecurityException security) {
+	    if (!propertyName.equals("ptolemy.ptII.dir")) {
+		throw new InternalErrorException(null, security,
+						 "Could not find '"
+						 + propertyName
+						 + "' System property");
+	    }
+	}
+	if (property != null) {
+	    return property;
+	}
+	if (propertyName.equals("ptolemy.ptII.dir")) {
+
+	    String namedObjPath = "ptolemy/kernel/util/NamedObj.class";
+	    String home = null;
+	    // PTII variable was not set
+	    URL namedObjURL =
+		Thread.currentThread().getContextClassLoader()
+		.getResource(namedObjPath);
+							
+	    if (namedObjURL != null) {
+		String namedObjFileName = namedObjURL.getFile().toString();
+		String abnormalHome = namedObjFileName.substring(0,
+						  namedObjFileName.length()
+						  - namedObjPath.length());
+		// abnormalHome will have values like: "/C:/ptII/"
+		// which cause no end of trouble, so we construct a File
+		// and call toString().
+		home = (new File(abnormalHome)).toString();
+	    }
+
+	    if (home == null) {
+		throw new InternalErrorException(null, null,
+ 		    "Could not find "
+		    + "'ptolemy.ptII.dir'"
+		    + " property.  Also tried loading '"
+		    + namedObjPath + "' as a resource and working from that. "
+		    + "Vergil should be "
+	            + "invoked with -Dptolemy.ptII.dir"
+		    + "=\"$PTII\"");
+	    }
+	    System.setProperty("ptolemy.ptII.dir", home);
+	    return home;
+        }
+	return property;
+    }
+
+    /** Get the specified property from the environment. An empty string
      *  is returned if the argument environment variable does not exist.
      *  See the javadoc page for java.util.System.getProperties() for
      *  a list of system properties.  Example properties include:
@@ -141,7 +213,7 @@ public class UtilityFunctions {
      *  @return A token containing the string value of the property.
      */
     public static StringToken property(String propertyName) {
-        return new StringToken(System.getProperty(propertyName));
+        return new StringToken(getProperty(propertyName));
     }
 
     /** Get the string text contained in the specified file. For
