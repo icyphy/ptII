@@ -83,13 +83,14 @@ public class FixFIR extends SDFApplet implements QueryListener {
                 _fir.taps.setExpression(_query.stringValue("taps_1"));
             } else {
                 if ( name == "taps_2" ) {
-                    _fir_quantize.taps.setExpression(_query.stringValue("taps_2"));
+                    _fir_quantize.taps.setExpression(
+                            _query.stringValue("taps_2"));
                 } else {
                     if ( name == "taps_3" ) {
-                        _fir_fix.taps.setExpression(_query.stringValue("taps_3"));
+                        _fir_fix.taps.setExpression(
+                                _query.stringValue("taps_3"));
                     }
                 }
-
             }
             _go();
         } catch (IllegalActionException ex) {
@@ -112,9 +113,15 @@ public class FixFIR extends SDFApplet implements QueryListener {
 
             _query = new Query();
             _query.setBackground(getBackground());
-            _query.addLine("taps_1", "Regular double Taps", "[ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ]");
-            _query.addLine("taps_2", "Quantized Taps", "quantize([ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ],6,2)");
-            _query.addLine("taps_3", "FixPoint Taps", "fix([ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ],8,2)");
+            _query.addLine("taps_1", "Regular double Taps",
+                    "[ -.040609, -.001628, .17853, .37665, .37665, " +
+                    ".17853, -.001628, -.040609 ]");
+            _query.addLine("taps_2", "Quantized Taps",
+                    "quantize([ -.040609, -.001628, .17853, .37665, " +
+                    ".37665, .17853, -.001628, -.040609 ], 6, 2)");
+            _query.addLine("taps_3", "FixPoint Taps",
+                    "fix([ -.040609, -.001628, .17853, .37665, .37665, " +
+                    ".17853, -.001628, -.040609 ], 8, 2)");
             _query.addQueryListener(this);
             getContentPane().add( _query );
 
@@ -126,7 +133,8 @@ public class FixFIR extends SDFApplet implements QueryListener {
             _pulse.values.setToken(new IntMatrixToken(pvalues));
 
             // FIR Filter Double
-            double taps[][] = {{-.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609}};
+            double taps[][] = {{-.040609, -.001628, .17853, .37665,
+                                .37665, .17853, -.001628, -.040609}};
             _fir = new FIRDouble(_toplevel, "FIR_double");
             _fir.interpolation.setToken(new IntToken(1));
             _fir.taps.setToken(new DoubleMatrixToken(taps));
@@ -134,12 +142,16 @@ public class FixFIR extends SDFApplet implements QueryListener {
             // FIR Filter Quantize
             _fir_quantize = new FIR(_toplevel, "FIR_quantize");
             _fir_quantize.interpolation.setToken(new IntToken(1));
-            _fir_quantize.taps.setExpression("quantize( [ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ], 8, 2)");
+            _fir_quantize.taps.setExpression(
+                    "quantize( [ -.040609, -.001628, .17853, .37665, " +
+                    ".37665, .17853, -.001628, -.040609 ], 8, 2)");
 
             // FIR Filter Fixed
             _fir_fix = new FIR(_toplevel, "FIR_fix");
             _fir_fix.interpolation.setToken(new IntToken(1));
-            _fir_fix.taps.setExpression("fix( [ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 ], 6, 2)");
+            _fir_fix.taps.setExpression(
+                    "fix( [ -.040609, -.001628, .17853, .37665, .37665, " +
+                    ".17853, -.001628, -.040609 ], 6, 2)");
 
             // Convert explicitly the stream of doubles into fixpoint
             // numbers
@@ -183,8 +195,8 @@ public class FixFIR extends SDFApplet implements QueryListener {
             // Multiply the incoming stream with alternating
             // 1, -1.
             _waveform = new Pulse(_transform, "Waveform");
-            int values[][] = {{1,-1}};
-            int indexes[][] = {{0,1}};
+            int values[][] = {{1, -1}};
+            int indexes[][] = {{0, 1}};
             _waveform.indexes.setToken(new IntMatrixToken(indexes));
             _waveform.values.setToken(new IntMatrixToken(values));
             _waveform.repeat.setToken(new BooleanToken(true));
@@ -324,10 +336,4 @@ public class FixFIR extends SDFApplet implements QueryListener {
     // Flag to prevent spurious exception being thrown by _go() method.
     // If this flag is not true, the _go() method will not execute the model.
     private boolean _initCompleted = false;
-
 }
-
-
-
-
-
