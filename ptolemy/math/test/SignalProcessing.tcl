@@ -214,14 +214,14 @@ test SignalProcessing-3.2 {convolve Complex} {
 } {}
 
 ####################################################################
-test SignalProcessing-4.1 {decibel} {
+test SignalProcessing-4.1 {toDecibels} {
     epsilonDiff \
 	    [list \
-	    [java::call ptolemy.math.SignalProcessing {decibel double} -10.0] \
-	    [java::call ptolemy.math.SignalProcessing {decibel double} 0.0] \
-	    [java::call ptolemy.math.SignalProcessing {decibel double} 0.1] \
-	    [java::call ptolemy.math.SignalProcessing {decibel double} 1.0] \
-	    [java::call ptolemy.math.SignalProcessing {decibel double} 10.0] \
+	    [java::call ptolemy.math.SignalProcessing {toDecibels double} -10.0] \
+	    [java::call ptolemy.math.SignalProcessing {toDecibels double} 0.0] \
+	    [java::call ptolemy.math.SignalProcessing {toDecibels double} 0.1] \
+	    [java::call ptolemy.math.SignalProcessing {toDecibels double} 1.0] \
+	    [java::call ptolemy.math.SignalProcessing {toDecibels double} 10.0] \
 	    ] {NaN -Infinity -20 0.0 20 }
 } {}
 

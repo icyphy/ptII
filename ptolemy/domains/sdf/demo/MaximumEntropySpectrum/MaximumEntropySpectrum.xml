@@ -4,12 +4,14 @@
 <entity name="MaximumEntropySpectrum" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[625, 346]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[645, 394]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
     </property>
     <property name="SDF" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+        </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -45,7 +47,27 @@ by three different techniques.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 10.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 87, 840, 462}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1, -2, 860, 503}}">
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Edward A. Lee</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 355.0">
+        </property>
     </property>
     <entity name="MaximumEntropySpectrum" class="ptolemy.domains.sdf.lib.MaximumEntropySpectrum">
         <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
@@ -198,6 +220,8 @@ the output is a periodogram spectral estimate.</text>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
             </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
             <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
@@ -255,6 +279,8 @@ the output is a periodogram spectral estimate.</text>
             </property>
             <doc>The phase, in radians.</doc>
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
+        </property>
         <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="122.0, 136.0">
         </property>
@@ -291,6 +317,8 @@ the output is a periodogram spectral estimate.</text>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -349,6 +377,8 @@ the output is a periodogram spectral estimate.</text>
             </property>
             <doc>The phase, in radians.</doc>
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
+        </property>
         <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="122.0, 196.0">
         </property>
@@ -385,6 +415,8 @@ the output is a periodogram spectral estimate.</text>
         </property>
         <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
             <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
+            </property>
+            <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
@@ -443,6 +475,8 @@ the output is a periodogram spectral estimate.</text>
             </property>
             <doc>The phase, in radians.</doc>
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 103, 811, 561}}">
+        </property>
         <doc>This composite actor generates a sine wave.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="121.0, 256.0">
         </property>
@@ -467,15 +501,15 @@ the output is a periodogram spectral estimate.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="periodogram, smoothed, max entropy">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 206, 508, 355}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={142, 269, 654, 495}}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[646, 447]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="xInit" class="ptolemy.data.expr.Parameter" value="-4000.0">
         </property>
-        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="xUnit" class="ptolemy.data.expr.Parameter" value="8000.0/(2^log2numInputs)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="550.0, 205.0">
         </property>
@@ -487,11 +521,11 @@ the output is a periodogram spectral estimate.</text>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Spectral Estimates (in dB)</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="255.0"/>
-<yRange min="-30.246618556605195" max="20.319276838516686"/>
+<title>Spectral Estimates</title>
+<xLabel>Frequency (in Hz)</xLabel>
+<yLabel>Decibels</yLabel>
+<xRange min="-4000.0" max="3968.75"/>
+<yRange min="-32.727896997697776" max="20.759239780211203"/>
 </plot>?>
         </configure>
     </entity>

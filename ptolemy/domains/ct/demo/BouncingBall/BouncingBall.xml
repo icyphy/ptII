@@ -4,7 +4,7 @@
 <entity name="BouncingBall" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 350]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
@@ -81,16 +81,36 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="145.0, 10.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={102, 102, 819, 563}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 1, 819, 459}}">
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Jie Liu</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 310.0">
+        </property>
     </property>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={457, 30, 508, 348}}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -99,6 +119,10 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -107,7 +131,7 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
 <title>Position</title>
 <xLabel>time (sec)</xLabel>
 <yLabel>height meters</yLabel>
-<xRange min="0.0" max="26.264020509825656"/>
+<xRange min="0.0" max="25.048516470995473"/>
 <yRange min="9.027550412032514E-8" max="10.0"/>
 </plot>?>
         </configure>
@@ -124,6 +148,8 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             </property>
             <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
             </property>
+            <property name="iterationTimeLowerBound" class="ptolemy.data.expr.Parameter" value="33">
+            </property>
             <property name="iteration time lower bound" class="ptolemy.data.expr.Parameter" value="33">
             </property>
             <property name="Scheduler" class="ptolemy.domains.gr.kernel.GRScheduler">
@@ -134,6 +160,10 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         <port name="position" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="65.5, 159.0">
+            </property>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
             </property>
         </port>
         <entity name="ViewScreen" class="ptolemy.domains.gr.lib.ViewScreen">
@@ -150,6 +180,8 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             <property name="showAxes" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="iterationSynchronized" class="ptolemy.data.expr.Parameter" value="false">
+            </property>
+            <property name="backgroundColor" class="ptolemy.data.expr.Parameter" value="[0.0, 0.0, 0.0]">
             </property>
             <property name="horizontal resolution" class="ptolemy.data.expr.Parameter" value="400">
             </property>
@@ -372,11 +404,19 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             <property name="multiport"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
             </property>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
             <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+            </property>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
             </property>
         </port>
     </entity>
@@ -395,9 +435,17 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
     </entity>
     <entity name="Ball Model" class="ptolemy.vergil.fsm.modal.ModalModel">
@@ -409,25 +457,39 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 </property>
             </property>
         </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
+        </property>
         <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="55.0, 140.0">
         </property>
         <port name="position" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="bump" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="velocity" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
+            </property>
+            <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
@@ -513,6 +575,8 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
@@ -532,6 +596,8 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
@@ -553,6 +619,8 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
@@ -568,9 +636,9 @@ and the GR domain to simulate a bouncing ball.</text></svg></configure>
             </property>
             <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
             </property>
-            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="2.0797731163611E-5">
+            <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="2.3067353975121E-5">
             </property>
-            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.3184938024781">
+            <property name="initialVelocity" class="ptolemy.data.expr.Parameter" value="0.9138455690204">
             </property>
             <property name="CTEmbedded Director" class="ptolemy.domains.ct.kernel.CTEmbeddedDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -659,6 +727,8 @@ falling in a gravitational field.</text></svg></configure>
             <entity name="ZeroCrossingDetector" class="ptolemy.domains.ct.lib.ZeroCrossingDetector">
                 <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
+                <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
+                </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1e-4">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 125.0">
@@ -667,15 +737,27 @@ falling in a gravitational field.</text></svg></configure>
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                     </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
                     </property>
                 </port>
             </entity>
@@ -688,10 +770,18 @@ falling in a gravitational field.</text></svg></configure>
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
                     </property>
                 </port>
             </entity>
@@ -704,10 +794,18 @@ falling in a gravitational field.</text></svg></configure>
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
                     </property>
                 </port>
             </entity>
@@ -725,10 +823,18 @@ falling in a gravitational field.</text></svg></configure>
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">

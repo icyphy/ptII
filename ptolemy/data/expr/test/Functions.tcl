@@ -1174,21 +1174,24 @@ test Function-iterate {Test iterate} {
 # convolve
 
 test Function-convolve {Test convolve} {
-    list [evaluate {convolve({0.0F}, {0.0F})}] \
-    } {{{0.0}}}
+    list [evaluate {convolve({1.0}, {0.0, 1.0, 0.0})}] \
+    } {{{0.0, 1.0, 0.0}}}
 
 ####################################################################
-# decibel
+# DCT
 
-test Function-decibel {Test decibel} {
-    list [evaluate {decibel({10.0F})}] \
-    } {{{20.0}}}
+test Function-DCT {Test DCT} {
+    list [evaluate {DCT({1.0, 1.0}).isCloseTo({1.4142135623731, 0.0})}] \
+         [evaluate {DCT({1.0, 1.0}, 1).isCloseTo({1.4142135623731, 0.0})}] \
+         [evaluate {DCT({1.0, 1.0}, 1, 0).isCloseTo({1.4142135623731, 0.0})}] \
+         [evaluate {DCT({1.0, 1.0}, 2).isCloseTo({1.4142135623731, 1.3065629648764, 0.0, -0.5411961001462})}]
+        } {true true true true}
 
 ####################################################################
 # downsample
 
 test Function-downsample {Test downsample} {
-    list [evaluate {downsample({1.0F, 2.0F, 3.0F, 4.0F}, 2)}] \
+    list [evaluate {downsample({1.0, 2.0, 3.0, 4.0}, 2)}] \
     } {{{1.0, 3.0}}}
 
 ####################################################################
@@ -1241,6 +1244,16 @@ test Function-generateWindow {Test generateWindow} {
     } {{{NaN}}}
 
 ####################################################################
+# IDCT
+
+test Function-IDCT {Test IDCT} {
+    list [evaluate {IDCT(DCT({1.0, 1.0})).isCloseTo({1.0, 1.0})}] \
+         [evaluate {IDCT(DCT({1.0, 1.0}, 2), 2).isCloseTo({1.0, 1.0, 0.0, 0.0})}] \
+         [evaluate {IDCT(DCT({1.0, 1.0}), 2).isCloseTo({0.5, 0.5, 0.5, 0.5})}] \
+         [evaluate {IDCT(DCT({1.0, 1.0}), 2, 0).isCloseTo({0.5, 0.5, 0.5, 0.5})}] \
+        } {true true true true}
+
+####################################################################
 # nextPowerOfTwo
 
 test Function-nextPowerOfTwo {Test nextPowerOfTwo} {
@@ -1255,7 +1268,11 @@ test Function-order {Test order} {
     } {3}
 
 ####################################################################
-# FIXME: Got to here.
+# toDecibels
+
+test Function-toDecibels {Test toDecibels} {
+    list [evaluate {toDecibels({10.0})}] \
+    } {{{20.0}}}
 
 
 ####################################################################

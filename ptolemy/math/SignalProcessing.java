@@ -149,10 +149,12 @@ public class SignalProcessing {
     /** Return a new array of doubles that is the forward, normalized
      *  DCT of the input array of doubles.
      *  This method automatically computes the order of the transform
-     *  based on the length of the input array, and returns :
-     *  DCT(x, order, DCT_TYPE_NORMALIZED)
+     *  based on the length of the input array. It is equivalent to
+     *  DCT(x, order, DCT_TYPE_NORMALIZED), where 2^order is the smallest
+     *  power of two greater than or equal to the length of the specified
+     *  array.  The length of the result is 2^order.
      *  @param x An array of doubles.
-     *  @return A new array of doubles.
+     *  @return A new array of doubles, with length 2^order.
      */
     public static final double[] DCT(double[] x) {
         return DCT(x, order(x.length), DCT_TYPE_NORMALIZED);
@@ -160,10 +162,11 @@ public class SignalProcessing {
 
     /** Return a new array of doubles that is the forward, normalized
      *  DCT of the input array of doubles.
-     *  This method simply returns :
-     *  DCT(x, order, DCT_TYPE_NORMALIZED)
+     *  This method is equivalent to
+     *  DCT(x, order, DCT_TYPE_NORMALIZED).
      *  @param x An array of doubles.
-     *  @return A new array of doubles.
+     *  @param order Log base 2 of the size of the transform.
+     *  @return A new array of doubles, with length 2^order.
      */
     public static final double[] DCT(double[] x, int order) {
         return DCT(x, order, DCT_TYPE_NORMALIZED);
@@ -174,9 +177,13 @@ public class SignalProcessing {
      *  See the DCT_TYPE_XXX constants for documentation of the
      *  exact formula, which depends on the type.
      *  @param x An array of doubles.
-     *  @param order The base-2 logarithm of the size of the transform.
-     *  @param type An integer specifying which type of DCT.
-     *  @return A new array of doubles.
+     *  @param order Log base 2 of the size of the transform.
+     *  @param type The type of DCT, which is one of DCT_TYPE_NORMALIZED,
+     *   DCT_TYPE_UNNORMALIZED, or DCT_TYPE_ORTHONORMAL.
+     *  @see #DCT_TYPE_NORMALIZED
+     *  @see #DCT_TYPE_UNNORMALIZED
+     *  @see #DCT_TYPE_ORTHONORMAL
+     *  @return A new array of doubles, with length 2^order.
      */
     public static final double[] DCT(double[] x, int order, int type) {
 
@@ -184,7 +191,7 @@ public class SignalProcessing {
 
         if (type >= DCT_TYPES) {
             throw new IllegalArgumentException(
-                    "ptolemy.math.SignalProcessing.DCT() : Bad DCT type");
+                    "ptolemy.math.SignalProcessing.DCT(): Unrecognized DCT type");
         }
 
         int size = 1 << order;
@@ -210,24 +217,29 @@ public class SignalProcessing {
         return returnValue;
     }
 
-    /** Return the value of the argument <em>z</em>
-     *  in decibels, which is defined to be 20*log<sub>10</sub>(<em>z</em>).
+    /** Return the value of the argument
+     *  in decibels, which is defined to be 20*log<sub>10</sub>(<em>z</em>),
+     *  where <em>z</em> is the argument.
      *  Note that if the input represents power, which is proportional to a
      *  magnitude squared, then this should be divided
      *  by two to get 10*log<sub>10</sub>(<em>z</em>).
+     *  @param value The value to convert to decibels.
+     *  @deprecated Use toDecibels() instead.
+     *  @see #toDecibels(double)
      */
     public static final double decibel(double value) {
-        return 20.0 * Math.log(value) * _LOG10SCALE;
+        return toDecibels(value);
     }
-
+    
     /** Return a new array the value of the argument array
      *  in decibels, using the previous decibel() method.
-     *  You may wish to combine this with DoubleArrayMath.limit()
+     *  You may wish to combine this with DoubleArrayMath.limit().
+     *  @deprecated Use toDecibles() instead.
      */
     public static final double[] decibel(double[] values) {
         double[] result = new double[values.length];
         for (int i = values.length-1; i >= 0; i--) {
-            result[i] = decibel(values[i]);
+            result[i] = toDecibels(values[i]);
         }
         return result;
     }
@@ -294,23 +306,40 @@ public class SignalProcessing {
     /** Return a new array of doubles that is the inverse, normalized
      *  DCT of the input array of doubles.
      *  This method automatically computes the order of the transform
-     *  based on the length of the input array, and calls :
-     *  IDCT(x, order, DCT_TYPE_NORMALIZED)
+     *  based on the length of the input array. It is equivalent to
+     *  IDCT(x, order, DCT_TYPE_NORMALIZED), where 2^order is the
+     *  next power of two larger than or equal to the length of the
+     *  specified array.  The returned array has length 2^order.
      *  @param x An array of doubles.
-     *  @return A new array of doubles.
+     *  @return A new array of doubles with length 2^order.
      */
     public static final double[] IDCT(double[] x) {
         return IDCT(x, order(x.length), DCT_TYPE_NORMALIZED);
     }
 
+    /** Return a new array of doubles that is the inverse, normalized
+     *  DCT of the input array of doubles, using the specified order.
+     *  The length of the DCT is 2^<i>order</i>.  This is equivalent to
+     *  IDCT(x, order, DCT_TYPE_NORMALIZED).
+     *  @param x An array of doubles.
+     *  @return A new array of doubles with length 2^order.
+     */
+    public static final double[] IDCT(double[] x, int order) {
+        return IDCT(x, order, DCT_TYPE_NORMALIZED);
+    }
+    
     /** Return a new array of doubles that is the inverse DCT of the
      *  input array of doubles.
      *  See the DCT_TYPE_XXX constants for documentation of the
      *  exact formula, which depends on the type.
      *  @param x An array of doubles.
      *  @param order The base-2 logarithm of the size of the transform.
-     *  @param type An integer specifying which type of IDCT.
-     *  @return A new array of doubles.
+     *  @param type The type of IDCT, which is one of DCT_TYPE_NORMALIZED,
+     *   DCT_TYPE_UNNORMALIZED, or DCT_TYPE_ORTHONORMAL.
+     *  @see #DCT_TYPE_NORMALIZED
+     *  @see #DCT_TYPE_UNNORMALIZED
+     *  @see #DCT_TYPE_ORTHONORMAL
+     *  @return A new array of doubles with length 2^order.
      */
     public static final double[] IDCT(double[] x, int order, int type) {
         // check if order > 31
@@ -365,8 +394,14 @@ public class SignalProcessing {
 
         evenX[0] = myFactors[0].scale(x[0]);
         for (int k = 1; k < size; k++) {
-            evenX[k] = myFactors[k].scale(x[k]);
-            evenX[twoSize - k] = myFactors[twoSize - k].scale(-x[k]);
+            // Do zero-padding here
+            if (k >= x.length) {
+                evenX[k] = new Complex(0.0);
+                evenX[twoSize - k] = new Complex(0.0);
+            } else {
+                evenX[k] = myFactors[k].scale(x[k]);
+                evenX[twoSize - k] = myFactors[twoSize - k].scale(-x[k]);
+            }
         }
         evenX[size] = new Complex(0.0, 0.0);
 
@@ -1142,6 +1177,18 @@ public class SignalProcessing {
         return point;
     }
 
+    /** Return the value of the argument
+     *  in decibels, which is defined to be 20*log<sub>10</sub>(<em>z</em>),
+     *  where <em>z</em> is the argument.
+     *  Note that if the input represents power, which is proportional to a
+     *  magnitude squared, then this should be divided
+     *  by two to get 10*log<sub>10</sub>(<em>z</em>).
+     *  @param value The value to convert to decibels.
+     */
+    public static final double toDecibels(double value) {
+        return 20.0 * Math.log(value) * _LOG10SCALE;
+    }
+
     /** Modify the specified array to unwrap the angles.  That is, if
      *  the difference between successive values is greater than *
      *  <em>PI</em> in magnitude, then the second value is modified by
@@ -1873,8 +1920,17 @@ public class SignalProcessing {
 
         for (int n = 0; n < halfN; n++) {
             int twoN = n << 1;
-            x4[n] = x[twoN];
-            x4[size - n - 1] = x[twoN + 1];
+            // Do zero padding here
+            if (twoN >= x.length) {
+                x4[n] = 0.0;
+            } else {
+                x4[n] = x[twoN];
+            }
+            if (twoN + 1 >= x.length) {
+                x4[size - n - 1] = 0.0;
+            } else {
+                x4[size - n - 1] = x[twoN + 1];
+            }
         }
 
         double[] cosDFTarray = _cosDFT(x4, size, order);

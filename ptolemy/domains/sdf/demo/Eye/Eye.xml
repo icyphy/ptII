@@ -43,7 +43,7 @@ controls execution.</text>
         </property>
     </property>
     <property name="0:0:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 335.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="5.0, 330.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -82,11 +82,35 @@ linger over the port.</text>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="Scheduler" class="ptolemy.domains.sdf.kernel.SDFScheduler">
         </property>
+        <property name="allowDisconnectedGraphs" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 31.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 2, 819, 563}}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Edward A. Lee</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 420.0">
         </property>
     </property>
     <entity name="Random Symbol Source" class="ptolemy.actor.lib.DiscreteRandomSource">
@@ -96,7 +120,7 @@ linger over the port.</text>
         </property>
         <property name="values" class="ptolemy.data.expr.Parameter" value="{-1, 1}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="70.0, 225.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -220,6 +244,10 @@ linger over the port.</text>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={153, 407, 508, 348}}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <property name="xInit" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -244,7 +272,7 @@ linger over the port.</text>
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="32.0"/>
-<yRange min="-1.2046697748154416" max="1.2586709634515874"/>
+<yRange min="-1.251669398004832" max="1.240220533195951"/>
 <noGrid/>
 <wrap/>
 <default marks="pixels"/>

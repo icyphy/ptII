@@ -4,7 +4,7 @@
 <entity name="CarTracking" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 663]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 585]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -2]">
     </property>
@@ -88,13 +88,56 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="25.0, 225.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 275.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -5, 1032, 779}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -2, 815, 694}}">
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">NOTE: This model needs to be run using the View:Run Window
+option, not the run button on the toolbar, so that you can
+change the value of the "fault" parameter easily while the
+model is running.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="135.0, 15.0">
+        </property>
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Jie Liu</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 550.0">
+        </property>
     </property>
     <entity name="leading car" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="95.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="80.0, 195.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 662]">
         </property>
@@ -519,7 +562,7 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
         <link port="TimedSinewave.output" relation="relation10"/>
     </entity>
     <entity name="following car" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="365.0, 110.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="350.0, 165.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[948, 450]">
         </property>
@@ -1021,6 +1064,8 @@ minded) control law results in a rather jerky ride.</text></svg></configure>
             <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
                 <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="regular">
                 </property>
+                <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
+                </property>
                 <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
                 </property>
                 <property name="_library" class="ptolemy.moml.LibraryAttribute">
@@ -1223,6 +1268,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
             </entity>
             <entity name="faulty" class="ptolemy.vergil.fsm.modal.ModalController">
                 <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
+                </property>
+                <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
                 </property>
                 <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
                 </property>
@@ -1550,8 +1597,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
-<xRange min="0.0" max="75.29999999999878"/>
-<yRange min="0.0" max="1.999996117880768"/>
+<xRange min="0.0" max="31.59999999999963"/>
+<yRange min="0.0" max="1.9999758356903072"/>
 </plot>?>
             </configure>
         </entity>
@@ -1610,7 +1657,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <link port="TimedPlotter.input" relation="relation5"/>
     </entity>
     <entity name="communication channel" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 100.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 155.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[929, 406]">
         </property>
@@ -1878,7 +1925,7 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
         <link port="Const22.trigger" relation="relation23"/>
     </entity>
     <entity name="distance monitor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="450.0, 140.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 195.0">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
         </property>
@@ -1930,8 +1977,8 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
-<xRange min="0.0" max="75.29999999999878"/>
-<yRange min="0.0" max="156.59999999999823"/>
+<xRange min="0.0" max="31.59999999999963"/>
+<yRange min="0.0" max="69.20000054975577"/>
 </plot>?>
             </configure>
         </entity>
@@ -2215,11 +2262,11 @@ For continuous-time models, use the CTEmbeddedDirector.</text></svg></configure>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="310.0, 190.0">
+        <vertex name="vertex1" value="295.0, 245.0">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="325.0, 180.0">
+        <vertex name="vertex1" value="310.0, 235.0">
         </vertex>
     </relation>
     <link port="leading car.package" relation="relation"/>

@@ -187,8 +187,13 @@ public class ShellTextArea extends JPanel {
                     // evaluation code, so we make the stack trace available.
                     MessageHandler.error("Failed to evaluate expression", e);
                     result = "Internal error evaluating expression.";
+                    throw e;
                 } catch (Exception e) {
                     result = e.getMessage();
+                    // NOTE: Not ideal here to print the stack trace, but
+                    // if we don't, it will be invisible, which makes
+                    // debugging hard.
+                    // e.printStackTrace();
                 }
                 if (result != null && result.length() > 0) {
                     appendJTextArea(result + "\n" + mainPrompt);

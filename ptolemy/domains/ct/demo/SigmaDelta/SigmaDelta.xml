@@ -48,7 +48,27 @@ to produce a countering electrostatic force.</text></svg></configure>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={56, 124, 819, 563}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 819, 563}}">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Jie Liu</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 415.0">
+        </property>
     </property>
     <entity name="CTSubsystem" class="ptolemy.actor.TypedCompositeActor">
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="samplePeriod">
@@ -112,10 +132,18 @@ to produce a countering electrostatic force.</text></svg></configure>
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
         </entity>
         <entity name="Sin" class="ptolemy.actor.lib.TrigFunction">
@@ -131,9 +159,17 @@ to produce a countering electrostatic force.</text></svg></configure>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
         </entity>
         <entity name="ZeroOrderHold" class="ptolemy.domains.ct.lib.ZeroOrderHold">
@@ -145,10 +181,18 @@ to produce a countering electrostatic force.</text></svg></configure>
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                 </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
                 </property>
             </port>
         </entity>
@@ -158,13 +202,25 @@ to produce a countering electrostatic force.</text></svg></configure>
             <port name="plus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="minus" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;UNKNOWN&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
         </entity>
         <entity name="Integrator1" class="ptolemy.domains.ct.lib.Integrator">
@@ -176,10 +232,18 @@ to produce a countering electrostatic force.</text></svg></configure>
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
                 </property>
             </port>
         </entity>
@@ -192,10 +256,18 @@ to produce a countering electrostatic force.</text></svg></configure>
                 <property name="input"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
                 </property>
             </port>
         </entity>
@@ -214,9 +286,17 @@ to produce a countering electrostatic force.</text></svg></configure>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
         </entity>
         <entity name="Scale1" class="ptolemy.actor.lib.Scale">
@@ -234,9 +314,17 @@ to produce a countering electrostatic force.</text></svg></configure>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
         </entity>
         <entity name="Scale2" class="ptolemy.actor.lib.Scale">
@@ -254,9 +342,17 @@ to produce a countering electrostatic force.</text></svg></configure>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
         </entity>
         <entity name="Scale3" class="ptolemy.actor.lib.Scale">
@@ -274,9 +370,17 @@ to produce a countering electrostatic force.</text></svg></configure>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
         </entity>
         <entity name="Scale4" class="ptolemy.actor.lib.Scale">
@@ -294,9 +398,17 @@ to produce a countering electrostatic force.</text></svg></configure>
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
         </entity>
         <entity name="CTPlot" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -315,13 +427,17 @@ to produce a countering electrostatic force.</text></svg></configure>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
                 <property name="multiport"/>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
-<xRange min="0.0" max="15.01999999989977"/>
+<xRange min="0.0" max="15.019999999999769"/>
 <yRange min="-1.0" max="1.0"/>
 </plot>?>
             </configure>
@@ -336,11 +452,19 @@ to produce a countering electrostatic force.</text></svg></configure>
                 <property name="multiport"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                 </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
+                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
                 <property name="multiport"/>
                 <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
+                </property>
+                <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                    <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                    </property>
                 </property>
             </port>
         </entity>
@@ -537,7 +661,7 @@ to produce a countering electrostatic force.</text></svg></configure>
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title></title>
-<xRange min="0.0399999999" max="15.0"/>
+<xRange min="0.02" max="15.0"/>
 <yRange min="-1.0" max="1.0"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>

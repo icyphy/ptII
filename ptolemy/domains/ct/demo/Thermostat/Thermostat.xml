@@ -4,7 +4,7 @@
 <entity name="Thermostat" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 450]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[554, 313]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 102]">
     </property>
@@ -80,7 +80,7 @@ taken.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="195.0, 5.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={188, 104, 815, 559}}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 0, 769, 422}}">
     </property>
     <property name="annotation2" class="ptolemy.kernel.util.Attribute">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -104,6 +104,26 @@ see the modal behavior.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="15.0, 190.0">
         </property>
     </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Jie Liu</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 280.0">
+        </property>
+    </property>
     <entity name="Thermostat" class="ptolemy.vergil.fsm.modal.ModalModel">
         <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -123,12 +143,22 @@ see the modal behavior.</text></svg></configure>
         </property>
         <port name="output" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <port name="event" class="ptolemy.vergil.fsm.modal.ModalPort">
             <property name="output"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <entity name="_Controller" class="ptolemy.vergil.fsm.modal.ModalController">
             <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="init">
+            </property>
+            <property name="finalStateNames" class="ptolemy.kernel.util.StringAttribute">
             </property>
             <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
             </property>
@@ -256,6 +286,8 @@ and "cooling" states have the same refinement.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
@@ -276,6 +308,8 @@ and "cooling" states have the same refinement.</text></svg></configure>
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
                 </property>
+                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
+                </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
             </relation>
@@ -295,6 +329,8 @@ and "cooling" states have the same refinement.</text></svg></configure>
                 <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
+                </property>
+                <property name="relationList" class="ptolemy.domains.fsm.lib.RelationList">
                 </property>
                 <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
                 </property>
@@ -395,13 +431,25 @@ event that triggers a transition out of this mode.</text></svg></configure>
                 <port name="plus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="minus" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
             </entity>
             <entity name="Integrator" class="ptolemy.domains.ct.lib.Integrator">
@@ -413,10 +461,18 @@ event that triggers a transition out of this mode.</text></svg></configure>
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
                     </property>
                 </port>
             </entity>
@@ -424,6 +480,8 @@ event that triggers a transition out of this mode.</text></svg></configure>
                 <property name="level" class="ptolemy.data.expr.Parameter" value="70.0">
                 </property>
                 <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="0.0">
+                </property>
+                <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
                 </property>
                 <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
                 </property>
@@ -433,15 +491,27 @@ event that triggers a transition out of this mode.</text></svg></configure>
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
                     </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;DISCRETE&quot;">
                     </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;DISCRETE&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="signalType" class="ptolemy.data.expr.Parameter" value="&quot;CONTINUOUS&quot;">
+                    </property>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
                     </property>
                 </port>
             </entity>
@@ -460,9 +530,17 @@ event that triggers a transition out of this mode.</text></svg></configure>
                 </property>
                 <port name="input" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
             </entity>
             <entity name="HeatSource" class="ptolemy.actor.lib.Const">
@@ -479,10 +557,18 @@ event that triggers a transition out of this mode.</text></svg></configure>
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
                 <port name="trigger" class="ptolemy.actor.TypedIOPort">
                     <property name="input"/>
                     <property name="multiport"/>
+                    <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                        <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                        </property>
+                    </property>
                 </port>
             </entity>
             <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -528,7 +614,7 @@ event that triggers a transition out of this mode.</text></svg></configure>
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 210, 508, 348}}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={460, 380, 508, 348}}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -539,6 +625,10 @@ event that triggers a transition out of this mode.</text></svg></configure>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
+            <property name="resolvedSignalType" class="ptolemy.data.expr.NotEditableParameter" value="&quot;CONTINUOUS&quot;">
+                <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+                </property>
+            </property>
         </port>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"

@@ -168,7 +168,7 @@ public class DB extends Transformer {
         if ( number <= 0.0 ) {
             outNumber = minValue;
         } else {
-            outNumber = ptolemy.math.SignalProcessing.decibel( number );
+            outNumber = ptolemy.math.SignalProcessing.toDecibels( number );
             if (((BooleanToken)inputIsPower.getToken()).booleanValue()) {
                 outNumber /= 2.0;
             }

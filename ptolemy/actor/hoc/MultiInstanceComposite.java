@@ -35,15 +35,12 @@ package ptolemy.actor.hoc;
 
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.data.expr.ScopeExtendingAttribute;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.data.IntToken;
@@ -410,11 +407,11 @@ public class MultiInstanceComposite extends TypedCompositeActor {
                 "<rect x=\"-28\" y=\"-18\" width=\"56\" " +
                 "height=\"36\" style=\"fill:lightgrey\"/>\n" +
                 "<rect x=\"-18\" y=\"-14\" width=\"40\" " +
-                "height=\"24\" style=\"fill:lightgrey\"/>\n" +
+                "height=\"24\" style=\"fill:white\"/>\n" +
                 "<rect x=\"-20\" y=\"-12\" width=\"40\" " +
-                "height=\"24\" style=\"fill:lightgrey\"/>\n" +
+                "height=\"24\" style=\"fill:white\"/>\n" +
                 "<rect x=\"-22\" y=\"-10\" width=\"40\" " +
-                "height=\"24\" style=\"fill:lightgrey\"/>\n" +
+                "height=\"24\" style=\"fill:white\"/>\n" +
                 "</svg>\n");
     }
 

@@ -24,7 +24,8 @@
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Run the model.  Edit the time-domain plot x(n),
 and see the magnitude of its Fourier series
-coefficients plotted in response.</text></svg></configure>
+coefficients plotted in response. To edit the
+plot, right click and drag.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -38,6 +39,26 @@ coefficients plotted in response.</text></svg></configure>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 25.0">
+        </property>
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:darkgray">Author: Edward A. Lee</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="-5.0, 310.0">
         </property>
     </property>
     <entity name="SketchedSource" class="ptolemy.actor.lib.gui.SketchedSource">
@@ -57,7 +78,7 @@ coefficients plotted in response.</text></svg></configure>
         </property>
         <property name="length" class="ptolemy.data.expr.Parameter" value="32">
         </property>
-        <property name="initialTrace" class="ptolemy.data.expr.Parameter" value="{0.0, 0.1704225352113, 0.3718309859155, 0.5267605633803, 0.6042253521127, 0.6507042253521, 0.712676056338, 0.7901408450704, 0.8211267605634, 0.8676056338028, 0.8676056338028, 0.8676056338028, 0.8521126760563, 0.7901408450704, 0.6816901408451, 0.5267605633803, 0.3253521126761, 0.1239436619718, -0.0619718309859, -0.3253521126761, -0.5267605633803, -0.712676056338, -0.8521126760563, -0.9450704225352, -0.9760563380282, -0.9760563380282, -0.9605633802817, -0.9450704225352, -0.9140845070423, -0.8676056338028, -0.8056338028169, -0.4338028169014}">
+        <property name="initialTrace" class="ptolemy.data.expr.Parameter" value="{-0.0154929577465, 0.1704225352113, 0.3253521126761, 0.4802816901408, 0.6197183098592, 0.7591549295775, 0.8521126760563, 0.9450704225352, 1.0070422535211, 1.0845070422535, 1.1, 1.1, 1.1, 1.1, 1.0535211267606, 0.9915492957746, 0.8366197183099, 0.6197183098592, 0.356338028169, 0.1084507042254, -0.0774647887324, -0.2478873239437, -0.4028169014085, -0.5577464788732, -0.6197183098592, -0.6971830985915, -0.7591549295775, -0.8211267605634, -0.8830985915493, -0.8830985915493, -0.7901408450704, -0.6507042253521}">
         </property>
         <property name="periodic" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -83,7 +104,7 @@ coefficients plotted in response.</text></svg></configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>One Period of Periodic x(n)</title>
+<title>Sketch One Period of x(n) Here</title>
 <xLabel>n</xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="32.0"/>
@@ -121,7 +142,7 @@ coefficients plotted in response.</text></svg></configure>
 <xLabel>k</xLabel>
 <yLabel></yLabel>
 <xRange min="-16.0" max="15.0"/>
-<yRange min="8.909956949504209E-4" max="0.4965873318796881"/>
+<yRange min="0.006294014084507027" max="0.5069347107820362"/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
         </configure>
