@@ -71,6 +71,57 @@ public interface ProcessReceiver extends Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Return true if this receiver is connected to the inside of a 
+     *  boundary port. A boundary port is an opaque port that is
+     *  contained by a composite actor. If this receiver is connected
+     *  to the inside of a boundary port, then return true; otherwise
+     *  return false. 
+     *  <P>
+     *  It is suggested that this method be implemented using
+     *  the BoundaryDetector class although such an implementation 
+     *  is not necessary.
+     *  <P>
+     *  This method is not synchronized so the caller
+     *  @return True if this receiver is contained on the inside of
+     *   a boundary port; return false otherwise.
+     *  @see BoundaryDetector
+     */
+    public boolean isConnectedToBoundary();
+
+    /** Return true if this receiver is contained on the inside of a
+     *  boundary port. A boundary port is an opaque port that is
+     *  contained by a composite actor. If this receiver is contained
+     *  on the inside of a boundary port then return true; otherwise
+     *  return false. 
+     *  <P>
+     *  It is suggested that this method be implemented using
+     *  the BoundaryDetector class although such an implementation 
+     *  is not necessary.
+     *  <P>
+     *  This method is not synchronized so the caller should be.
+     *  @return True if this receiver is contained on the inside of
+     *   a boundary port; return false otherwise.
+     *  @see BoundaryDetector
+     */
+    public boolean isInsideBoundary();
+
+    /** Return true if this receiver is contained on the outside of a
+     *  boundary port. A boundary port is an opaque port that is
+     *  contained by a composite actor. If this receiver is contained
+     *  on the outside of a boundary port then return true; otherwise
+     *  return false. 
+     *  <P>
+     *  It is suggested that this method be implemented using
+     *  the BoundaryDetector class although such an implementation 
+     *  is not necessary.
+     *  <P>
+     *  This method is not synchronized so the caller should be.
+     *  @return True if this receiver is contained on the outside of
+     *   a boundary port; return false otherwise.
+     *  @see BoundaryDetector
+     */
+    public boolean isOutsideBoundary();
+
     /** Reset the local flags of this receiver. Use this method when
      *  restarting execution.
      */
@@ -79,4 +130,13 @@ public interface ProcessReceiver extends Receiver {
     /** Set a local flag requesting that the simulation be finished.
      */
     public void requestFinish();
+    
+    /** Determine if this receiver is read blocked.
+     */
+    public boolean isReadBlocked();
+    
+    /** Determine if this receiver is write blocked.
+     */
+    public boolean isWriteBlocked();
+    
 }

@@ -173,7 +173,7 @@ public class Branch {
     /** Register that the receiver controlled by this branch
      *  is blocked.
      */
-    public void registerRcvrBlocked() {
+    public void registerRcvrBlocked(ProcessReceiver rcvr) {
     	if( !_rcvrBlocked ) {
             _controller._branchBlocked();
         }
@@ -182,7 +182,7 @@ public class Branch {
     /** Register that the receiver controlled by this branch
      *  is no longer blocked.
      */
-    public void registerRcvrUnBlocked() {
+    public void registerRcvrUnBlocked(ProcessReceiver rcvr) {
     	if( _rcvrBlocked ) {
             _controller._branchUnBlocked();
         }
