@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (bart@eecs.berkeley.edu)
-
+@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+// Review base URL stuff.
 */
 
 package ptolemy.moml;
@@ -33,6 +33,7 @@ package ptolemy.moml;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
+import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLChangeRequest
@@ -54,15 +55,36 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  so that when it is notified of errors or successful completion
      *  of changes, it can tell whether the change is one it requested.
      *  Alternatively, it can call waitForCompletion().
+     *  All external references are assumed to be absolute URLs.  Whenever
+     *  possible, use a different constructor that specifies the base.
      *  @param originator The originator of the change request.
      *  @param parser The parser to execute the request.
      *  @param request The mutation request in MoML.
      */
     public MoMLChangeRequest(
              Object originator, MoMLParser parser, String request) {
+	this(originator, parser, request, null);
+    }
+
+    /** Construct a mutation request for the specified parser.
+     *  The originator is the source of the change request.
+     *  A listener to changes will probably want to check the originator
+     *  so that when it is notified of errors or successful completion
+     *  of changes, it can tell whether the change is one it requested.
+     *  Alternatively, it can call waitForCompletion().
+     *  External references will be resolved relative to the given base URL.
+     *  @param originator The originator of the change request.
+     *  @param parser The parser to execute the request.
+     *  @param request The mutation request in MoML.
+     *  @param base The URL relative to which external references should
+     *  be resolved.
+     */
+    public MoMLChangeRequest(
+             Object originator, MoMLParser parser, String request, URL base) {
         super(originator, request);
         _parser = parser;
         _context = parser.getToplevel();
+	_base = base;
     }
 
     /** Construct a mutation request to be executed in the specified context.
@@ -74,15 +96,39 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  so that when it is notified of errors or successful completion
      *  of changes, it can tell whether the change is one it requested.
      *  Alternatively, it can call waitForCompletion().
+     *  All external references are assumed to be absolute URLs.  Whenever
+     *  possible, use a different constructor that specifies the base.
      *  @param originator The originator of the change request.
      *  @param context The context in which to execute the MoML.
      *  @param request The mutation request in MoML.
      */
     public MoMLChangeRequest(
             Object originator, NamedObj context, String request) {
+	this(originator, context, request, null);
+    }
+
+     /** Construct a mutation request to be executed in the specified context.
+     *  The context is typically a Ptolemy II container, such as an entity,
+     *  within which the objects specified by the MoML code will be placed.
+     *  This method resets and uses a parser that is a static member
+     *  of this class.
+     *  A listener to changes will probably want to check the originator
+     *  so that when it is notified of errors or successful completion
+     *  of changes, it can tell whether the change is one it requested.
+     *  Alternatively, it can call waitForCompletion().
+     *  External references will be resolved relative to the given base URL.
+     *  @param originator The originator of the change request.
+     *  @param context The context in which to execute the MoML.
+     *  @param request The mutation request in MoML.
+     *  @param base The URL relative to which external references should
+     *  be resolved.
+     */
+    public MoMLChangeRequest(
+            Object originator, NamedObj context, String request, URL base) {
         super(originator, request);
         _parser = _staticParser;
         _context = context;
+	_base = base;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -98,7 +144,7 @@ public class MoMLChangeRequest extends ChangeRequest {
         if (_context != null) {
             _parser.setContext(_context);
         }
-        _parser.parse(getDescription());
+	_parser.parse(_base, getDescription());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -106,6 +152,9 @@ public class MoMLChangeRequest extends ChangeRequest {
 
     // The context in which to execute the request.
     private NamedObj _context;
+
+    // The URL relative to which external references should be resolved.
+    private URL _base;
 
     // The parser given in the constructor.
     private MoMLParser _parser;
