@@ -254,17 +254,19 @@ public class BasePNDirector extends CompositeProcessDirector {
     }
 
     /** Return true if the containing composite actor contains active
-     *  processes and the composite actor has input ports. Return
-     *  false otherwise. This method should normally be called only after
-     *  detecting a real deadlock. True is returned to indicate that the
-     *  composite actor can start its execution again if it receives data on
-     *  any of its input ports.
+     *  processes and the composite actor has input ports and if stop()
+     *  has not been called. Return false otherwise. This method is
+     *  normally called only after detecting a real deadlock, or if
+     *  stopFire() is called. True is returned to indicate that the
+     *  composite actor can start its execution again if it
+     *  receives data on any of its input ports.
      *  @return true to indicate that the composite actor can continue
      *  executing on receiving additional input on its input ports.
      *  @exception IllegalActionException Not thrown in this base class. May be
      *  thrown by derived classes.
      */
     public boolean postfire() throws IllegalActionException {
+        _notDone = _notDone && !_stopRequested;
 	//If the container has input ports and there are active processes
 	//in the container, then the execution might restart on receiving
 	// additional data.
