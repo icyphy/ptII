@@ -379,6 +379,7 @@ remote1distjavadocs:
 # $PTII/doc/makefile in two places so that we automatically generate docs.
 # Tests in actor/lib use DE, so actor/lib should be after de/lib
 # Tests in actor/lib/auto use vergil and moml
+# sdf/codegen should be run after lang and codegen
 # We include the following directories so that they will appear in the
 # code coverage stats even though they are graphical: gui actor/gui
 #
@@ -430,7 +431,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/test \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/graph \
 	$(REMOTE1PTIIDIST)/ptolemy/math \
 	$(REMOTE1PTIIDIST)/ptolemy/media \
@@ -438,6 +438,8 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
 	$(REMOTE1PTIIDIST)/ptolemy/lang \
 	$(REMOTE1PTIIDIST)/ptolemy/lang/java \
+	$(REMOTE1PTIIDIST)/ptolemy/codegen \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil/toolbox \
@@ -453,7 +455,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/javasound \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/lib/jspaces/util \
-	$(REMOTE1PTIIDIST)/ptolemy/codegen \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/actor/gui
 
