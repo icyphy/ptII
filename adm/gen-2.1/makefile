@@ -689,9 +689,9 @@ remote1distnonjsall:
 	-if [ "x$(NONJSALLDIRS)" != "x" ]; then \
 		set $(NONJSALLDIRS); \
 		for x do \
-		    if [ -w $$x ] ; then \
-			( cd $$x ; \
-			echo making tests  in $$x ; \
+		    if [ -w $(PTIIHOME)/$$x ] ; then \
+			( cd $(PTIIHOME)/$$x ; \
+			echo making tests in $(PTIIHOME)/$$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
 				tests \
 			);  \
