@@ -1,6 +1,6 @@
 /* Execute a command in a subprocess.
 
- Copyright (c) 2003 The Regents of the University of California.
+ Copyright (c) 2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (cxh@eecs.berkeley.edu) 2/5/04
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -60,17 +60,9 @@ import java.io.OutputStreamWriter;
 //////////////////////////////////////////////////////////////////////////
 //// Execute
 /**
-Execute a command and create a separately running subprocess.
+Execute a command as separately running subprocess.
 
-The <i>command</i> PortParameter contains the command to be
-executed.  If the value of the <i>command</i> PortParameter changes,
-then each time fire() is called, a new subprocess always is invoked.
-If the value() of the <i>command</i> PortParameter does not change,
-then each time fire() is called, a new subprocess is only invoked
-if the previous subprocess exited.
-
-
-<p>This actor uses java.lang.Runtime.exec().
+<p>This actor uses java.lang.Runtime.exec() to invoke the subprocess
 For information about Runtime.exec(), see:
 <a href="http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html" target="_top">http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>
 and
@@ -140,17 +132,24 @@ public class Exec extends TypedAtomicActor {
      * {@link ptolemy.util.StringUtilities#tokenizeForExec(String)}
      * into tokens and then executed as a  separate process.
      * The initial default is the string "echo 'Hello, world.'".
+     * If the value of the <i>command</i> PortParameter changes,
+     * then each time fire() is called, a new subprocess always is invoked.
+     * If the value() of the <i>command</i> PortParameter does not change,
+     * then each time fire() is called, a new subprocess is only invoked
+     * if the previous subprocess exited.
      */
     public PortParameter command;
 
-    /** The directory to execute the command in.  The initial default
+    /** The directory to execute the command in.  The directory parameter is
+     *  read each time the subprocess is executed. The initial default
      *  value of this parameter $CWD, which corresponds with the value
-     *  of the JDK user.dir property.
+     *  of the JDK user.dir property.  
      */
     public FileParameter directory;
 
     // FIXME: need a test here
-    /** The environment to execute the command in.  This parameter
+    /** The environment to execute the command in.  This parameter is read
+     *  each time the subprocess is executed. This parameter
      *  is an array of strings of the format { {"name=value"} }.  If the
      *  length of the array is zero (the default), then the environment
      *  from the current process is used in the new command.
@@ -178,7 +177,6 @@ public class Exec extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        // FIXME: what about the other parameters?
         if (attribute == blocking) {
             _blocking =
                 ((BooleanToken)blocking.getToken()).booleanValue();
@@ -271,9 +269,6 @@ public class Exec extends TypedAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        // FIXME: What if the portParameter command changes?
-        // FIXME: Should this be called in fire() instead?
-        //    _exec();
         _process = null;
     }
 
@@ -313,6 +308,9 @@ public class Exec extends TypedAtomicActor {
         _terminateProcess();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                       ////
+
     // Execute a command, set _process to point to the subprocess
     // and set up _errorGobbler and _outputGobbler.
     private void _exec() throws IllegalActionException {
@@ -320,17 +318,23 @@ public class Exec extends TypedAtomicActor {
             _stopFireRequested = false;
 
             if (_process != null) {
-                _process.destroy();
+                // Note that we assume that _process is null upon entry
+                // to this method, but we check again here just to be sure.
+                _terminateProcess();
             }
+
             Runtime runtime = Runtime.getRuntime();
 
             String [] commandArray =
-                StringUtilities.tokenizeForExec(((StringToken)command.getToken()).stringValue());
+                StringUtilities.tokenizeForExec(
+                        ((StringToken)command.getToken()).stringValue());
 
             File directoryAsFile = directory.asFile();
 
             if (_debugging) {
-                _debug("About to exec \"" + ((StringToken)command.getToken()).stringValue() + "\""
+                _debug("About to exec \""
+                        + ((StringToken)command.getToken()).stringValue()
+                        + "\""
                         + "\n in \"" + directoryAsFile
                         + "\"\n with environment:");
             }
@@ -392,7 +396,7 @@ public class Exec extends TypedAtomicActor {
     }
 
 
-    // Terminate the process and close any associated streams
+    // Terminate the process and close any associated streams.
     private void _terminateProcess() throws IllegalActionException {
         try {
             if (_inputBufferedWriter != null) {
@@ -410,7 +414,19 @@ public class Exec extends TypedAtomicActor {
                 }
                 //_process = null;
             }
-            // FIXME: kill of the gobblers threads?
+
+            // Kill of the gobblers threads. See
+            // http://java.sun.com/j2se/1.4.2/docs/guide/misc/threadPrimitiveDeprecation.html
+//             if (_errorGobbler != null) {
+//                 Thread moribundErrorGobbler = _errorGobbler;
+//                 _errorGobbler = null;
+//                 moribundErrorGobbler.interrupt();
+//             }
+//             if (_outputGobbler != null) {
+//                 Thread moribundOutputGobbler = _outputGobbler;
+//                 _outputGobbler = null;
+//                 moribundOutputGobbler.interrupt();
+//             }
 
         } catch (IOException ex) {
             // ignore
@@ -453,11 +469,19 @@ public class Exec extends TypedAtomicActor {
             return _lockingStringBuffer.blockingGetAndReset();
         }
 
+        public void interrupt() {
+            System.out.println("Exec: " + this + "interrupted");
+            dumpStack();
+            //_lockingStringBuffer.append("Exec: " + this + "interrupted");
+            super.interrupt();
+        }
+
         public void notifyStringBuffer() {
             // Object.notifyAll() is final, so we call this method
             // notifyStringBuffer instead.
             _lockingStringBuffer.notifyStringBuffer();
         }
+
         /** Get the current value of the stringBuffer and empty
          *  the contents of the stringBuffer.
          */
@@ -466,7 +490,8 @@ public class Exec extends TypedAtomicActor {
         }
 
         /** Read lines from the inputStream and append them to the
-         *  stringBuffer.
+         *  stringBuffer.  If _otherStream is not null, then
+         *  if we read any data, notify the other thread. 
          */
         public void run() {
             try {
@@ -474,7 +499,7 @@ public class Exec extends TypedAtomicActor {
                     new InputStreamReader(_inputStream);
                 // We read the data as a char[] instead of using readline()
                 // so that we can get strings that do not end in end of
-                // line chars such as prompts to stderr.
+                // line chars such as prompts to stderr when running bash.
 
                 //BufferedReader bufferedReader =
                 //    new BufferedReader(inputStreamReader);
@@ -503,26 +528,27 @@ public class Exec extends TypedAtomicActor {
             }
         }
 
-        // StringBuffer that we read and write to in a locking fashion
+        // StringBuffer that we read and write to in a locking fashion.
         private LockingStringBuffer _lockingStringBuffer;
 
         // If non-null, then the other stream to notify if this stream
         // gets any data.
         private _StreamReaderThread _otherStream;
 
-        // StringBuffer to update
+        // StringBuffer to update.
         private StringBuffer _stringBuffer;
 
         // Stream to read from.
         private InputStream _inputStream;
-
     }
 
 
     // Private class that provides a synchronized interface to
     // StringBuffer.  The documentation for StringBuffer says that
     // the underlying mechanism is synchronized, but we need slightly
-    // finer control here.
+    // finer control so that we can optionally block on reading
+    // from a StringBuffer until either there is data or stop as been
+    // requested or the error stream has been written to.
     // See
     // http://java.sun.com/docs/books/tutorial/essential/threads/synchronization.html
     private class LockingStringBuffer {
@@ -553,7 +579,9 @@ public class Exec extends TypedAtomicActor {
             notifyAll();
         }
 
-        /** Always append the value to the internal StringBuffer. */
+        /** Always append the value to the internal StringBuffer.
+         *  @param value The string to append to the internal StringBuffer
+         */
         public synchronized void append(String value) {
             // If we have the lock, we always append.
             _stringBuffer.append(value);
@@ -568,8 +596,8 @@ public class Exec extends TypedAtomicActor {
 
         /** Block until there is data in the StringBuffer or
          *  until stop() or stopFire() is called and then
-         * return the value of the internal StringBuffer.
-         * The StringBuffer is reset before returning.
+         *  return the value of the internal StringBuffer.
+         *  The StringBuffer is reset before returning.
          */
         public synchronized String blockingGetAndReset()
                 throws IllegalActionException {
@@ -579,7 +607,8 @@ public class Exec extends TypedAtomicActor {
                     && !_appendCalled ) {
                 try {
                     if (_debugging) {
-                        _debug("Exec: _blockingGetAndReset: wait() loop " + _appendCalled );
+                        _debug("Exec: _blockingGetAndReset: wait() loop "
+                                + _appendCalled );
                     }
                     wait();
                 } catch (InterruptedException ex) {
@@ -592,7 +621,7 @@ public class Exec extends TypedAtomicActor {
                 _appendCalled = false;
                 // FIXME? If we write to stderr, then appendCalled gets
                 // set to true. Wait 100ms to see if anything appears
-                // on stdout
+                // on stdout.
                 if (_debugging) {
                     _debug("Exec: _blockingGetAndReset: about 2 sleep");
                 }
@@ -620,7 +649,8 @@ public class Exec extends TypedAtomicActor {
             _stringBuffer = new StringBuffer();
             _appendCalled = false;
             if (_debugging) {
-                _debug("Exec: nonblockingGetAndReset(): set _appendCalled to false");
+                _debug("Exec: nonblockingGetAndReset(): "
+                        + "set _appendCalled to false");
             }
             notifyAll();
             return returnValue;
@@ -643,7 +673,10 @@ public class Exec extends TypedAtomicActor {
     // StreamReader that we read stderr from the subprocess with.
     private _StreamReaderThread _errorGobbler;
 
+    // The previous value of the command parameter.  If the command parameter
+    // changes, we kill the old process and start a new process.
     private String _oldCommandValue;
+
     // StreamReader that we read stdout from the subprocess with.
     private _StreamReaderThread _outputGobbler;
 
