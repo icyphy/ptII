@@ -48,6 +48,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = DocAttribute.java \
+	LinkAttribute.java \
+	LocationAttribute.java \
+	VertexAttribute.java \
 	MoMLApplet.java \
 	MoMLParser.java
 
