@@ -61,6 +61,7 @@ JSRCS = \
 	CTReceiver.java \
 	CTScheduler.java \
 	CTSingleSolverDirector.java \
+	NumericalNonconvergeException.java \
 	ODESolver.java
 
 EXTRA_SRCS =	$(JSRCS)
