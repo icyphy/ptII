@@ -91,10 +91,10 @@ public class DEApplet extends PtolemyApplet {
         // Process the stoptime parameter.
         double stoptime = 1.0;
         try {
-            String stopspec = getParameter("stoptime");
-            if (stopspec != null) {
-                stoptime = (new Double(stopspec)).doubleValue();
-                _stoptimegiven = true;
+            String stopSpec = getParameter("stoptime");
+            if (stopSpec != null) {
+                stoptime = (new Double(stopSpec)).doubleValue();
+                _stopTimeGiven = true;
             }
         } catch (Exception ex) {
             report("Warning: stop time parameter failed: ", ex);
@@ -121,22 +121,22 @@ public class DEApplet extends PtolemyApplet {
      */
     protected Panel _createRunControls(int numbuttons) {
         Panel panel = super._createRunControls(numbuttons);
-        if (!_stoptimegiven) {
+        if (!_stopTimeGiven) {
             // To keep the label and entry box together, put them
             // in a new panel.
-            Panel stoptimepanel = new Panel();
-            stoptimepanel.add(new Label("Stop time:"));
+            Panel stopTimePanel = new Panel();
+            stopTimePanel.add(new Label("Stop time:"));
 
             // Process the defaultiterations parameter.
-            String defstopspec = getParameter("defaultstoptime");
-            if (defstopspec == null) {
-                defstopspec = "1.0";
+            String defaultStopSpec = getParameter("defaultstoptime");
+            if (defaultStopSpec == null) {
+                defaultStopSpec = "1.0";
             }
 
-            _stoptimebox = new TextField(defstopspec, 10);
-            _stoptimebox.addActionListener(new StopTimeBoxListener());
-            stoptimepanel.add(_stoptimebox);
-            panel.add(stoptimepanel);
+            _stopTimeBox = new TextField(defstopspec, 10);
+            _stopTimeBox.addActionListener(new StopTimeBoxListener());
+            stopTimePanel.add(_stopTimeBox);
+            panel.add(stopTimePanel);
         }
         return panel;
     }
@@ -149,9 +149,9 @@ public class DEApplet extends PtolemyApplet {
         if(_director != null) {
             result = _director.getStopTime();
         }
-        if(_stoptimebox != null) {
+        if(_stopTimeBox != null) {
             try {
-                result = (new Double(_stoptimebox.getText())).doubleValue();
+                result = (new Double(_stopTimeBox.getText())).doubleValue();
             } catch (NumberFormatException ex) {
                 report("Error in stop time:\n", ex);
             }
@@ -182,12 +182,12 @@ public class DEApplet extends PtolemyApplet {
     /** True if the stop time has been given via an applet
      *  parameter.  Note that this is set by the init() method.
      */
-    protected boolean _stoptimegiven = false;
+    protected boolean _stopTimeGiven = false;
 
     /** The entry box containing the stop time, or null if
      *  there is none.
      */
-    protected TextField _stoptimebox;
+    protected TextField _stopTimeBox;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
