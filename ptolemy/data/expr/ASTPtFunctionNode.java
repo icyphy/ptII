@@ -73,10 +73,61 @@ the Token to be stored in this node.
 <p>
 The arguments to a function and its return types can be either
 Java primitive types (double, boolean, etc.), String types,
-or Token types. In the case of Token types, polymorphism is supported.
-That is, one can define a function foo(IntToken) and
-a different function foo(DoubleToken), and the correct function
-will be invoked.
+or Token types.
+Argument type polymorphism is supported. That is, one can define a
+function foo(IntToken) and a different function foo(DoubleToken),
+and the correct function will be invoked.<p>
+This class first attempts to find a static function signature
+among the registered classes using token argument types.
+If this fails, the token argument values supplied by the expression
+parser are mapped to java types according to the following table:
+<pre>
+     Token type               Java type
+     ---------------------------------------------------
+     IntToken                 int
+     DoubleToken              double
+     LongToken                long
+     StringToken              String
+     BooleanToken             boolean
+     ComplexToken             ptolemy.math.Complex
+     FixToken                 ptolemy.math.FixPoint
+     FixMatrixToken           ptolemy.math.FixPoint[][]
+     IntMatrixToken           int[][]
+     DoubleMatrixToken        double[][]
+     ComplexMatrixToken       ptolemy.math.Complex[][]
+     LongMatrixToken          long[][]
+     ArrayToken(FixToken)     ptolemy.math.FixPoint[]
+     ArrayToken(IntToken)     int[]
+     ArrayToken(DoubleToken)  double[]
+     ArrayToken(ComplexToken) ptolemy.math.Complex[]
+     ---------------------------------------------------
+</pre>
+That is, static functions using java types will be matched if all
+arguments are one of the types (or subclasses of) java types
+listed in the table above.<p>
+The function result type is subject to the same rules.<p>
+If the above fails and at least one argument is an
+array type, the dimensions of the argument types are reduced by
+one and the registered function classes are searched again. This
+process is repeated until all arguments are scalars or a function
+signature match is found. If a match is found, the function is
+iterated over the argument array and the results are aggregated
+into a result array which is returned.<p>
+For example, the "fix([0.5, 0.1; 0.4, 0.3], 16, 1)" expression
+performs the argument dimension reduction technique twice until
+the fix(double,int,int) signature is found in the
+ptolemy.data.expr.FixPointFunctions class. This function is
+iterated over the elements of rows, returning rows of FixPoint
+results, and then the rows are combined into a FixPoint matrix
+FixPoint[][] which is converted to a FixMatrixToken result
+according to the above table.<p>
+Note that functions returning Token values do not lend themselves
+to the argument dimension reduction technique since the result
+would be Token[] or Token[][]... which is not currently
+handled as a valid result value. Functions returning Token
+values should take all arguments in Token form so that they
+are matched without the need for mapping to java types
+as described above.
 <p>
 @author Neil Smyth and Edward A. Lee
 @author Zoltan Kemenczy, Research in Motion Limited
@@ -215,7 +266,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 				      .findFile(dirs.nextToken()) + "'");
                         }
                         cellFormat.append("}");
-
+                        
                         if (cellFormat.length() > 2) {
                             addPathCommand = "addedPath_=" + cellFormat.toString()
                                 + ";addpath(addedPath_{:});";
@@ -262,7 +313,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         Object result = FindAndRunMethod(_funcName, argTypes, argValues);
 
         if (result == null) {
-
+            
             // Note: Java makes a distinction between the class objects
             // for double & Double...
             for (int i = 0; i < args; i++) {
@@ -340,7 +391,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                     argTypes[i] = argValues[i].getClass();
                 }
                 if (debug) System.out.println("Arg "+i+": "+child);
-
+                
                 // FIXME: what is the TYPE that needs to be filled
                 // in the argValues[]. Current it is from the
                 // child.
@@ -350,7 +401,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
             result = FindAndRunMethod(_funcName, argTypes, argValues);
         }
         if (debug) System.out.println("function: "+_funcName);
-
+        
         if (result != null) {
             ptolemy.data.Token retval = null;
             if (result instanceof ptolemy.data.Token) {
@@ -408,16 +459,15 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
 		// Create back an ArrayToken containing FixTokens
 		FixToken[] temp = new FixToken[((FixPoint[])result).length];
 		for (int j = 0; j < temp.length; j++) {
-		    temp[j] = new FixToken(((FixPoint[])result)[j]);
+		    temp[j] = new FixToken((FixPoint)((FixPoint[])result)[j]);
 		}
 		retval = new ArrayToken(temp);
             } else {
-                throw new IllegalActionException("FunctionNode: "+
-                                                 "result of function " + _funcName +
-                                                 " not a valid type: boolean, complex, fixpoint" +
-                                                 " double, int, long  and String, or a Token; or:" +
-                                                 " int[][], double[][], Complex[][], int[], double[], Complex[]"
-                                                 );
+                throw new IllegalActionException
+                    ("FunctionNode: result of function " + _funcName +
+                     " is "+result.getClass()+" and is not supported by"+
+                     " FunctionNode. See the java class documentation."
+                     );
             }
             if (debug) System.out.println("result:  "+retval);
             return retval;
@@ -446,7 +496,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
     ////                         private methods                   ////
 
    private Object FindAndRunMethod(
-	String funcName,
+	String funcName, 
         Class[] argTypes,
         Object[] argValues
 	) throws IllegalActionException {
