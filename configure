@@ -13,7 +13,15 @@ ac_default_prefix=/usr/local
 # Any additions from configure.in:
 ac_default_prefix=$PTII
 ac_help="$ac_help
-  --with-java=DIR           use Java binaries from DIR, defaults to the value of the PTJAVA_DIR environment variable"
+  --with-java=DIR         use Java binaries from DIR,
+                           defaults to the value of the
+                           PTJAVA_DIR environment variable"
+ac_help="$ac_help
+  --with-javacc=DIR       use JavaCC.zip from DIR,
+                           defaults to \$PTOLEMY/vendors/sun/JavaCC"
+ac_help="$ac_help
+  --with-jtclsh=SCRIPT    jtclsh is at BINARY. jtclsh is
+                           used for running the test scripts"
 
 # Initialize some variables set by options.
 # The variables have the same names as the options, with
@@ -568,7 +576,7 @@ so we search for the java compiler." 1>&2
     # Extract the first word of "javac", so it can be a program name with args.
 set dummy javac; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:572: checking for $ac_word" >&5
+echo "configure:580: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JAVAC'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -622,15 +630,15 @@ fi
 # Check that we have the javac that corresponds with PTJAVA_DIR in our path
 #
 echo $ac_n "checking for the java runtime in $PTJAVA_DIR/bin""... $ac_c" 1>&6
-echo "configure:626: checking for the java runtime in $PTJAVA_DIR/bin" >&5
+echo "configure:634: checking for the java runtime in $PTJAVA_DIR/bin" >&5
 if test -f $PTJAVA_DIR/bin/java; then
     echo "$ac_t""$PTJAVA_DIR/bin/java" 1>&6
     echo $ac_n "checking that you have the right java in your path.""... $ac_c" 1>&6
-echo "configure:630: checking that you have the right java in your path." >&5
+echo "configure:638: checking that you have the right java in your path." >&5
     # Extract the first word of "java", so it can be a program name with args.
 set dummy java; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:634: checking for $ac_word" >&5
+echo "configure:642: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JAVA'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -676,15 +684,15 @@ fi
 # Check that we have the javac that corresponds with PTJAVA_DIR in our path
 #
 echo $ac_n "checking for the java compiler in $PTJAVA_DIR/bin""... $ac_c" 1>&6
-echo "configure:680: checking for the java compiler in $PTJAVA_DIR/bin" >&5
+echo "configure:688: checking for the java compiler in $PTJAVA_DIR/bin" >&5
 if test -f $PTJAVA_DIR/bin/javac; then
     echo "$ac_t""$PTJAVA_DIR/bin/javac" 1>&6
     echo $ac_n "checking that you have the right javac in your path.""... $ac_c" 1>&6
-echo "configure:684: checking that you have the right javac in your path." >&5
+echo "configure:692: checking that you have the right javac in your path." >&5
     # Extract the first word of "javac", so it can be a program name with args.
 set dummy javac; ac_word=$2
 echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
-echo "configure:688: checking for $ac_word" >&5
+echo "configure:696: checking for $ac_word" >&5
 if eval "test \"`echo '$''{'ac_cv_path_JAVAC'+set}'`\" = set"; then
   echo $ac_n "(cached) $ac_c" 1>&6
 else
@@ -725,8 +733,163 @@ else
   Try --with-java=DIR, or set the JAVA_HOME environment variable." 1>&2; exit 1; }
 fi
 
+#--------------------------------------------------------------------
+#	See if there was a command-line option for where Java is;  if
+#	not, check to see if the PTJAVA_DIR environment variable is set;
+#       if it is not, look for javac on the path.
+#--------------------------------------------------------------------
+
+echo $ac_n "checking for JavaCC""... $ac_c" 1>&6
+echo "configure:744: checking for JavaCC" >&5
+# Check whether --with-java or --without-java was given.
+if test "${with_java+set}" = set; then
+  withval="$with_java"
+  JAVACC_DIR=$withval
+else
+  JAVACC_DIR=$PTOLEMY/vendors/sun/JavaCC
+fi
+
+
+if test "`uname -s`" = "CYGWIN32_NT"; then
+    JJTREE='\$(JAVA) COM.sun.labs.jjtree.Main'
+    JAVACC='\$(JAVA) COM.sun.labs.javacc.Main'
+    echo "configure: warning: Be sure that your CLASSPATH includes JavaCC.zip" 1>&2;
+else
+    if test ! -d "$JAVACC_DIR"; then
+	echo "configure: warning: '${JAVACC_DIR}' is not a directory, 
+so we search for the jjtree command." 1>&2
+	# Extract the first word of "jjtree", so it can be a program name with args.
+set dummy jjtree; ac_word=$2
+echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+echo "configure:765: checking for $ac_word" >&5
+if eval "test \"`echo '$''{'ac_cv_path_JJTREE'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  case "$JJTREE" in
+  /*)
+  ac_cv_path_JJTREE="$JJTREE" # Let the user override the test with a path.
+  ;;
+  *)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
+  for ac_dir in $PATH; do
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      ac_cv_path_JJTREE="$ac_dir/$ac_word"
+      break
+    fi
+  done
+  IFS="$ac_save_ifs"
+  ;;
+esac
+fi
+JJTREE="$ac_cv_path_JJTREE"
+if test -n "$JJTREE"; then
+  echo "$ac_t""$JJTREE" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+
+	if test -x "$JJTREE"; then	
+	    echo "$ac_t""$JJTREE" 1>&6;
+	    JAVACCBIN=`dirname $JJTREE`
+	    JAVACC_DIR=`dirname $JAVACCBIN`
+	else  	
+	    echo "configure: warning: Failed to find jjtree" 1>&2;
+	fi
+    fi	
+    if test -d "$JAVACC_DIR"; then
+	echo "$ac_t""$JAVACC_DIR" 1>&6
+	echo $ac_n "checking for jjtree""... $ac_c" 1>&6
+echo "configure:804: checking for jjtree" >&5
+ 	if test -x "$JAVACC_DIR/bin/jjtree"; then
+	    # Note that we don't substitute in the $(JAVACC_DIR) here
+	    JJTREE='$(JAVACC_DIR)/bin/jjtree'
+	    echo "$ac_t""$JJTREE" 1>&6
+	else    
+	    echo "configure: warning: Failed to find jjtree in '$JAVACC_DIR/bin'" 1>&2;
+	fi    
+	echo $ac_n "checking for javacc""... $ac_c" 1>&6
+echo "configure:813: checking for javacc" >&5
+ 	if test -x "$JAVACC_DIR/bin/javacc"; then
+	    # Note that we don't substitute in the $(JAVACC_DIR) here
+	    JAVACC='$(JAVACC_DIR)/bin/javacc'
+	    echo "$ac_t""$JAVACC" 1>&6
+	else    
+	    echo "configure: warning: Failed to find javacc in '$JAVACC_DIR/bin'" 1>&2;
+	fi    
+    fi
+fi
+
+if test ! -d "$JAVACC_DIR"; then
+        echo "configure: warning: Failed to find javacc, perhaps JavaCC is not installed?
+You need not download JavaCC unless you plan on modifying certain files 
+in ptolemy/data/expr. 
+JavaCC can be downloaded from http://www.sun.com/suntest'" 1>&2
+fi
+
+#--------------------------------------------------------------------
+#	See if there was a command-line option for where Tcl Blend is
+#--------------------------------------------------------------------
+
+# Check whether --with-java or --without-java was given.
+if test "${with_java+set}" = set; then
+  withval="$with_java"
+  JTCLSH=$withval
+else
+  JTCLSH=jtclsh
+fi
+
+if test "$JTCLSH" != "jtclsh"; then
+    echo $ac_n "checking for jtclsh""... $ac_c" 1>&6
+echo "configure:845: checking for jtclsh" >&5
+    echo "$ac_t""$JTCLSH]" 1>&6;
+else
+    # Extract the first word of "jtclsh", so it can be a program name with args.
+set dummy jtclsh; ac_word=$2
+echo $ac_n "checking for $ac_word""... $ac_c" 1>&6
+echo "configure:851: checking for $ac_word" >&5
+if eval "test \"`echo '$''{'ac_cv_path_JTCLSH'+set}'`\" = set"; then
+  echo $ac_n "(cached) $ac_c" 1>&6
+else
+  case "$JTCLSH" in
+  /*)
+  ac_cv_path_JTCLSH="$JTCLSH" # Let the user override the test with a path.
+  ;;
+  *)
+  IFS="${IFS= 	}"; ac_save_ifs="$IFS"; IFS="${IFS}:"
+  for ac_dir in $PATH; do
+    test -z "$ac_dir" && ac_dir=.
+    if test -f $ac_dir/$ac_word; then
+      ac_cv_path_JTCLSH="$ac_dir/$ac_word"
+      break
+    fi
+  done
+  IFS="$ac_save_ifs"
+  ;;
+esac
+fi
+JTCLSH="$ac_cv_path_JTCLSH"
+if test -n "$JTCLSH"; then
+  echo "$ac_t""$JTCLSH" 1>&6
+else
+  echo "$ac_t""no" 1>&6
+fi
+
+    if test ! -x "$JTCLSH"; then	
+	echo "configure: warning: jtclsh not found.  jtclsh is a startup script for
+Tcl Blend, which is used to run the test suite.
+You only need to have jtclsh if you are planning on running the test suite.
+See http://www.scriptics.com/java for Tcl Blend sources and binaries." 1>&2
+   fi     
+fi 
+
+
+#--------------------------------------------------------------------
+#	Figure out which separator to use for CLASSPATH
+#	So much for write once, run everywhere.
+#--------------------------------------------------------------------
 echo $ac_n "checking for the proper CLASSPATH separator""... $ac_c" 1>&6
-echo "configure:730: checking for the proper CLASSPATH separator" >&5
+echo "configure:893: checking for the proper CLASSPATH separator" >&5
 case "`uname -s`" in
     CYGWIN32_NT) CLASSPATHSEPARATOR=";";;
     *) CLASSPATHSEPARATOR=":";;
@@ -739,7 +902,21 @@ echo "$ac_t""'$CLASSPATHSEPARATOR'" 1>&6
 
 # Separator in CLASSPATH,  For Unix, this should be :, for Cygwin, use ;
 
+
+# javacc binary
+
+
+# Directory that contains JavaCC, which is used in ptolemy/data/expr
+
+
+# jtclsh script, used for test suites
+
+
+# jtree binary
+
+
 # Location of the JDK
+
 
 # Location of the PtII directory
 
@@ -889,7 +1066,12 @@ s%@infodir@%$infodir%g
 s%@mandir@%$mandir%g
 s%@JAVAC@%$JAVAC%g
 s%@JAVA@%$JAVA%g
+s%@JJTREE@%$JJTREE%g
+s%@JTCLSH@%$JTCLSH%g
 s%@CLASSPATHSEPARATOR@%$CLASSPATHSEPARATOR%g
+s%@JAVACC@%$JAVACC%g
+s%@JAVACC_DIR@%$JAVACC_DIR%g
+s%@JTREE@%$JTREE%g
 s%@PTJAVA_DIR@%$PTJAVA_DIR%g
 s%@PTII_DEFAULT@%$PTII_DEFAULT%g
 
