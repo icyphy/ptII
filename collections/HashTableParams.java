@@ -63,7 +63,7 @@ public interface HashTableParams {
 
     /**
      * Return the current load factor threshold
-     * The Hash table occasionally checka against the load factor
+     * The Hash table occasionally check against the load factor
      * resizes itself if it has gone past it.
      **/
 
