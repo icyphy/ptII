@@ -476,13 +476,6 @@ public class FixToken extends ScalarToken {
             return new FixToken( 0.0, _value.getPrecision().toString() );
         }
 
-    /** Set the Rounding mode of the FixPoint number. */
-    // FIXME: Currently it is a string, should be come a
-    // type safe enumerated type
-    public void setRoundingMode(String x) {
-	// _value.setRounding( (String) x );
-    }
-
     /** Print the content of this FixToken: Debug Function */
     public void print() {
         _value.printFix();
