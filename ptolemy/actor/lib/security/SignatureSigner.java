@@ -91,7 +91,7 @@ public class SignatureSigner extends SignatureActor {
         super(container, name);
 
         privateKey = new TypedIOPort(this, "privateKey", true, false);
-        privateKey.setTypeEquals(BaseType.OBJECT);
+        privateKey.setTypeEquals(KeyToken.KEY);
 
         signature = new TypedIOPort(this, "signature", false, true);
         signature.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
@@ -130,8 +130,8 @@ public class SignatureSigner extends SignatureActor {
         // by attribute changes.
         super.fire();
         if (privateKey.hasToken(0)) {
-            ObjectToken objectToken = (ObjectToken)privateKey.get(0);
-            _privateKey = (PrivateKey)objectToken.getValue();
+            KeyToken keyToken = (KeyToken)privateKey.get(0);
+            _privateKey = (PrivateKey)keyToken.getValue();
         }
 
         if (input.hasToken(0)) {

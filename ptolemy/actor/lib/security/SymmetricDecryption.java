@@ -95,15 +95,15 @@ public class SymmetricDecryption extends CipherActor {
         super(container, name);
 
         key = new TypedIOPort(this, "key", true, false);
-        key.setTypeEquals(BaseType.OBJECT);
+        key.setTypeEquals(KeyToken.KEY);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** The key port.  This port contains the key that is used to
-     *  decrypt data from the <i>input</i> port.  The type is ObjectToken
-     *  that wraps a java.security.key
+     *  decrypt data from the <i>input</i> port.  The type is KeyToken
+     *  that contains a java.security.key
      */
     public TypedIOPort key;
 
@@ -122,8 +122,8 @@ public class SymmetricDecryption extends CipherActor {
     public void fire() throws IllegalActionException {
         try {
             if (key.hasToken(0)) {
-                ObjectToken objectToken = (ObjectToken)key.get(0);
-                _key = (java.security.Key)objectToken.getValue();
+                KeyToken keyToken = (KeyToken)key.get(0);
+                _key = (java.security.Key)keyToken.getValue();
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex, "fire() failed");

@@ -34,7 +34,6 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Sink;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.StringParameter;
@@ -69,8 +68,7 @@ which will create a keystore store password and key password is
 <pre>this.is.not.secure,it.is.for.testing.only</code>
 <br>The alias of the certificate will be <code>ptClaudius</code>
 
-<p>The input is of type Object and is expected to contain object
-of type java.security.Key.  
+<p>The input is of type {@link KeyToken}.
 This actor does not support writing PublicKeys because
 PublicKeys require certificates.  To write a PublicKey to a keystore,
 use the <code>keytool</code> executable.
@@ -99,14 +97,13 @@ public class KeyWriter extends KeyStoreActor {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);
-        input.setTypeEquals(BaseType.OBJECT);
+        input.setTypeEquals(KeyToken.KEY);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The input port, which contains on ObjectToken that contains a
-     *  java.security.Key.
+    /** The input port, which contains on KeyToken.
      */
     public TypedIOPort input;
 
@@ -119,8 +116,8 @@ public class KeyWriter extends KeyStoreActor {
      */
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ObjectToken objectToken = (ObjectToken)input.get(0);
-            java.security.Key key = (java.security.Key)objectToken.getValue(); 
+            KeyToken keyToken = (KeyToken)input.get(0);
+            java.security.Key key = (java.security.Key)keyToken.getValue(); 
             if (key instanceof java.security.PrivateKey) {
                 throw new IllegalActionException(this,
                         "Key is a PrivateKey, which is not supported because "

@@ -34,7 +34,6 @@ package ptolemy.actor.lib.security;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.Source;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
@@ -98,7 +97,7 @@ public class KeyReader extends KeyStoreActor {
         getPublicKey.setTypeEquals(BaseType.BOOLEAN);                
 
         output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(BaseType.OBJECT);
+        output.setTypeEquals(KeyToken.KEY);
 
         trigger = new TypedIOPort(this, "trigger", true, false);
         // NOTE: It used to be that trigger was set to GENERAL, but this
@@ -128,7 +127,7 @@ public class KeyReader extends KeyStoreActor {
      */
     public Parameter getPublicKey;
 
-    /** The output port.  This port contains an ObjectToken that contains
+    /** The output port.  This port contains an KeyToken that contains
      *  a java.security.Key
      */
     public TypedIOPort output = null;
@@ -200,7 +199,7 @@ public class KeyReader extends KeyStoreActor {
                 trigger.get(i);
             }
         }
-        output.broadcast(new ObjectToken(_key));
+        output.broadcast(new KeyToken(_key));
     }
 
     /** Read in or initialize the keyStore.

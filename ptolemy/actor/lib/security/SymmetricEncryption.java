@@ -100,14 +100,14 @@ public class SymmetricEncryption extends CipherActor {
         super(container, name);
 
         key = new TypedIOPort(this, "key", true, false);
-        key.setTypeEquals(BaseType.OBJECT);
+        key.setTypeEquals(KeyToken.KEY);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** The key to be used by this actor to encrypt the data.
-     *  The type is an ObjectToken of type java.security.Key.
+     *  The type is an KeyToken containing a java.security.Key.
      *  Usually the output of the {@link ptolemy.actor.lib.security.Key}
      *  actor is connected to this port
      */
@@ -130,10 +130,10 @@ public class SymmetricEncryption extends CipherActor {
     public void fire() throws IllegalActionException {
         if (key.hasToken(0)) {
             try {
-                ObjectToken objectToken = (ObjectToken)key.get(0);
+                KeyToken keyToken = (KeyToken)key.get(0);
                 // FIXME: do we really want to initialize the key each time?
                 java.security.Key key =
-                    (java.security.Key)objectToken.getValue();
+                    (java.security.Key)keyToken.getValue();
                 _cipher.init(Cipher.ENCRYPT_MODE, key);
             } catch (Exception ex) {
                 throw new IllegalActionException (this, ex,

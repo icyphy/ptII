@@ -32,7 +32,6 @@ package ptolemy.actor.lib.security;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
-import ptolemy.data.ObjectToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -58,7 +57,7 @@ PublicKeyReader} and {@link SignatureActor} for possible values.
 be set to the same value as the corresponding parameter in the
 SignatureSigner actor.
 
-<p>This actor reads an ObjectToken public key from the
+<p>This actor reads a KeyToken public key from the
 <i>publicKey</i> port and then reads unsigned byte arrays from
 the <i>signature</i> port and verifies the signature of
 each unsigned byte array that appears on the <i>input</i> port.
@@ -94,7 +93,7 @@ public class SignatureVerifier extends SignatureActor {
         signature.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
         publicKey = new TypedIOPort(this, "publicKey", true, false);
-        publicKey.setTypeEquals(BaseType.OBJECT);
+        publicKey.setTypeEquals(KeyToken.KEY);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,7 +106,7 @@ public class SignatureVerifier extends SignatureActor {
 
     /** The public key that is used to verify the signature.
      *  This port receives the public key to be used from the
-     *  The type of this input port is an ObjectToken containing
+     *  The type of this input port is an KeyToken containing
      *  a java.security.PublicKey.
      */
     public TypedIOPort publicKey;
@@ -128,8 +127,8 @@ public class SignatureVerifier extends SignatureActor {
         // by attribute changes.
         super.fire();
         if (publicKey.hasToken(0)) {
-            ObjectToken objectToken = (ObjectToken)publicKey.get(0);
-            _publicKey = (PublicKey)objectToken.getValue();
+            KeyToken keyToken = (KeyToken)publicKey.get(0);
+            _publicKey = (PublicKey)keyToken.getValue();
         }
         if (input.hasToken(0) && signature.hasToken(0) && _publicKey != null) {
             // Process the input data to generate a signature.
