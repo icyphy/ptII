@@ -363,8 +363,9 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  Increment the version of the workspace.
      *  This method is write-synchronized on the workspace.
      *  @param name The new name.
-     *  @exception NameDuplicationException Never thrown in this base
-     *        class. May needed by derived class for name duplication.
+     *  @exception NameDuplicationException Not thrown in this base
+     *   class. May be thrown by derived classes if the container
+     *   already contains an object with this name.  
      */
     public void setName(String name) throws NameDuplicationException {
         if (name == null) {
