@@ -1246,3 +1246,21 @@ test IOPort-16.1 {test opaque deepInsidePorts} {
     list [enumToFullNames [$p1 deepInsidePorts]] \
             [enumToFullNames [$p2 deepInsidePorts]]
 } {.E1.E2.P2 .E1.E2.E3.P3}
+
+test IOPort-16.1 {test sourcePortList} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    $e0 setName E0
+    set e1 [java::new ptolemy.actor.TypedAtomicActor $e0 E1]
+    set e2 [java::new ptolemy.actor.TypedAtomicActor $e0 E2]
+    set p1 [java::new ptolemy.actor.TypedIOPort $e1 P1]
+    set p2 [java::new ptolemy.actor.TypedIOPort $e2 P2]
+    $p1 setOutput true
+    $p2 setInput true
+    set r [java::new ptolemy.actor.TypedIORelation $e0 R0]
+    $p1 link $r
+    $p2 link $r
+    set d [java::new ptolemy.actor.Director $e0 D0]
+    # p1 should be in p2's sourcePortList
+    list [[$p2 sourcePortList] size]
+} {1}
+
