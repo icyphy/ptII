@@ -40,21 +40,29 @@ DOC_CODEDOC_JAR = \
 	doc/codeDoc.jar
 #DOC_CODEDOC_JAR =
 
-# If a jar file is checked in to cvs, and we sign it, then
+# We put the signed jar files in a separate subdirectory
+# for two reasons
+# 1) If a jar file is checked in to cvs, and we sign it, then
 # cvs update will think that we need to update it.
 # So, we copy the jar files to a different directory and then sign
 # them.
+#
+# 2) If we run applets with jar files that have been signed, then the
+# user gets a confusing message asking if they want to run the signed
+# applets.  Since the Ptolemy II applets do not require signed jar
+# files, this is unnecessary
+
 SIGNED_DIR =		signed
 
 # NATIVE_SIGNED_LIB_JARS is a separate vaiable so that we can
 # include it in ALL_JNLP_JARS
-NATIVE_SIGNED_LIB_JARS = $(SIGNED_DIR)/lib/matlabWindows.jar 
+NATIVE_SIGNED_LIB_JARS = lib/matlabWindows.jar 
 
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
-			$(SIGNED_DIR)/lib/diva.jar \
-			$(SIGNED_DIR)/lib/jasminclasses.jar \
-			$(SIGNED_DIR)/lib/matlab.jar \
-			$(SIGNED_DIR)/lib/sootclasses.jar
+			lib/diva.jar \
+			lib/jasminclasses.jar \
+			lib/matlab.jar \
+			lib/sootclasses.jar
 
 # Web Start can load jars either eagerly or lazily.
 # This makefile variable gets passed to $PTII/bin/mkjnlp and determines
@@ -67,7 +75,7 @@ NUMBER_OF_JARS_TO_LOAD_EAGERLY = 8
 # Jar files that will appear in all Ptolemy II JNLP files.
 CORE_JNLP_JARS = \
 	doc/docConfig.jar \
-	$(SIGNED_DIR)/lib/diva.jar \
+	lib/diva.jar \
 	ptolemy/domains/domains.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/sdf/doc/doc.jar \
@@ -130,8 +138,8 @@ PTINY_SANDBOX_JNLP_JARS = \
 # Full
 #
 COPERNICUS_JARS = \
-	$(SIGNED_DIR)/lib/jasminclasses.jar \
-	$(SIGNED_DIR)/lib/sootclasses.jar \
+	lib/jasminclasses.jar \
+	lib/sootclasses.jar \
 	ptolemy/copernicus/copernicus.jar
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
@@ -155,7 +163,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/tm/demo/demo.jar \
 	ptolemy/domains/tm/doc/doc.jar \
 	ptolemy/matlab/demo/demo.jar \
-	$(SIGNED_DIR)/lib/matlab.jar
+	lib/matlab.jar
 
 FULL_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/FullApplication.jar
@@ -325,51 +333,18 @@ vergil.jnlp: vergil.jnlp.in $(KEYSTORE)
 		$(FULL_MAIN_JAR) $(KEYALIAS)
 
 
-jnlp_sign: $(JNLPS) $(KEYSTORE) $(SIGNED_LIB_JARS)
+jnlp_sign: $(JNLPS) $(KEYSTORE)
 	set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
-		echo "# Signing '$$x'."; \
+		echo "# Signing '$$x', placing results in $(SIGNED_DIR)/."; \
+		if [ ! -f $(SIGNED_DIR)/$$x ]; then
+			mkdir -p `dirname $xx`
+			cp $(SIGNED_DIR)/$$x ]; then
 		"$(PTJAVA_DIR)/bin/jarsigner" \
 			-keystore $(KEYSTORE) \
 			$(STOREPASSWORD) \
 			$$x $(KEYALIAS); \
 	done;
-
-
-# Jar files that we copy befor signing so as to avoid problems with cvs
-# Each of the jar files below should be listed in $(SIGNED_LIB_JARS)
-$(SIGNED_DIR)/lib/diva.jar: lib/diva.jar
-		if [ ! -d $(SIGNED_DIR)/lib ]; then \
-			mkdir -p $(SIGNED_DIR)/lib; \
-		fi
-		cp $< $@
-
-$(SIGNED_DIR)/lib/jasminclasses.jar: lib/jasminclasses.jar
-		if [ ! -d $(SIGNED_DIR)/lib ]; then \
-			mkdir -p $(SIGNED_DIR)/lib; \
-		fi
-		cp $< $@
-
-$(SIGNED_DIR)/lib/matlab.jar: lib/matlab.jar
-		if [ ! -d $(SIGNED_DIR)/lib ]; then \
-			mkdir -p $(SIGNED_DIR)/lib; \
-		fi
-		cp $< $@
-
-$(SIGNED_DIR)/lib/matlabWindows.jar: lib/matlabWindows.jar
-		if [ ! -d $(SIGNED_DIR)/lib ]; then \
-			mkdir -p $(SIGNED_DIR)/lib; \
-		fi
-		cp $< $@
-
-$(SIGNED_DIR)/lib/sootclasses.jar: lib/sootclasses.jar
-		if [ ! -d $(SIGNED_DIR)/lib ]; then \
-			mkdir -p $(SIGNED_DIR)/lib; \
-		fi
-		cp $< $@
-
-
-
 
 sign_jar: 
 	"$(PTJAVA_DIR)/bin/jarsigner" \
@@ -389,7 +364,7 @@ jnlp_verify:
 	done;
 
 # Update a location with the files necessary to download
-DIST_BASE = ptolemyII/ptII2.0/ptII2.0-beta
+DIST_BASE = ptolemyII/ptII2.0/jnlp
 DIST_DIR = /vol/ptolemy/pt0/ptweb/$(DIST_BASE)
 DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif
@@ -415,4 +390,3 @@ sign_jar_dist:
 	"$(PTJAVA_DIR)/bin/jarsigner" \
 		-keystore $(KEYSTORE2) \
 		$(JARFILE) $(KEYALIAS2)
-
