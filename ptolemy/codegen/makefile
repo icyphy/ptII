@@ -46,7 +46,15 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	codegen
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+# If you change this, change DIRS above
+PTCLASSALLJARS = \
+	c/c.jar \
+	kernel/kernel.jar
 
 # Keep this list alphabetized.
 JSRCS =

@@ -50,7 +50,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	SDFDirector.java
+	Repeat.java \
+	SampleDelay.java
 
 OTHER_FILES_TO_BE_JARED =
 

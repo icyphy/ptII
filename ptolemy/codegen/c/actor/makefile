@@ -36,7 +36,7 @@ ME =		ptolemy/codegen/c/actor
 DIRS =		lib
 
 # Root of the Java directory
-ROOT =		../..
+ROOT =		../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -46,7 +46,14 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	actor
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+# If you change this, change DIRS above
+PTCLASSALLJARS = \
+	lib/lib.jar
 
 # Keep this list alphabetized.
 JSRCS =
