@@ -1,0 +1,120 @@
+#!/bin/sh
+# Generate runtime stats for previous builds
+
+runtimedir=/vol/carson/carson1/cxh/runtimes
+
+year=`date +%Y`
+month=`date +%m`
+
+# List of dates, starting with 2000/1/1 up to the current month
+dates=`echo "foo" |
+    awk '{
+	    for ( y=2000; y <= year; y++) {
+		for (m=1; m <= 12; m+=1) {
+		    if (y == year) {
+			if (m <= month) {
+			    # Only print year / month combos up to this month
+			    printf("%s/%02d/01 ", y, m);
+ 			}
+		    } else {
+			printf("%s/%02d/01 ", y, m);
+		    }
+		}
+	    }
+    }' year=$year month=$month - `
+
+if [ ! -d ${runtimedir}/logs ]; then
+    echo "Creating the log directory at ${runtimedir}/logs"
+    mkdir -p ${runtimedir}/logs
+fi
+
+# The ptolemy II tree where we started from, so we can find adm/bin/runtimes
+MASTER_PTII=$PTII
+
+# Uncomment this line for debugging
+#dates=2000/01/01
+
+echo "Running on `echo $dates | wc -w` different versions" 
+
+base=runtime-past
+
+# Just to make sure that we remove these space hogs
+rm -rf 	$runtimedir/*/ptolemy/apps $runtimedir/*/doc/design
+
+for date in $dates
+do
+    cd $runtimedir
+
+    year=`echo $date | awk -F / '{print $1}'`
+    month=`echo $date | awk -F / '{print $2}'`
+    day=`echo $date | awk -F / '{print $3}'`
+
+    logfile=${runtimedir}/logs/${year}${month}${day}.txt
+    cvslogfile=${runtimedir}/logs/${year}${month}${day}cvs.txt
+    buildlogfile=${runtimedir}/logs/${year}${month}${day}build.txt
+    PTII=$runtimedir/ptII${year}${month}${day}
+    export PTII
+
+    echo "$base: Build of Ptolemy II from $date (`date`)"
+
+    if [ ! -d $PTII ]; then
+	echo "$base: Checking out ptII for $date in $runtimedir"
+	if [ -d ptII ]; then
+	    echo "$base: Removing the existing ptII dir"
+	    rm -rf ptII
+	fi    
+        echo "$base: CVS co of Ptolemy II from $date" > $cvslogfile
+	echo "$base: cvs co started `date` in `pwd`" >> $cvslogfile 
+	cvs -d :ext:gigasource:/home/cvs co -D $date ptII >> $cvslogfile 2>&1
+	echo "$base: cvs co finished `date`" >> $cvslogfile 
+	echo "$base: removing ptolemy/apps doc/design directory because of space issues (`date`)"
+	rm -rf ptII/ptolemy/apps ptII/doc/design
+	mv ptII ptII${year}${month}${day}
+    fi
+
+    cd $PTII
+    export PTII
+    # Gather some stats
+    javafiles=`find . -name "*.java" -print`
+    echo "$base: `echo $javafiles | wc -w` java files" >> $logfile
+    echo "$base: `echo $javafiles | wc -w` java files" >> $logfile
+    echo "$base: `wc -l $javafiles | tail -1` java lines" >> $logfile
+    echo "$base: du returns: `du -ks .` (`date`)" 
+
+    
+    if [ ! -f $PTII/config.status ]; then
+        echo "$base: Build of Ptolemy II from $date" > $buildlogfile
+	echo "$base: configure started `date`" > $buildlogfile 
+	echo "$base: configuring ptII for $date in $runtimedir (`date`)"
+	./configure >> $buildlogfile 2>&1
+	echo "$base: configure finished `date`" >> $buildlogfile 
+
+	echo "$base: `date` building ptII for $date in $runtimedir"
+	echo "$base: make fast started (`date`)" >> $buildlogfile
+	# TODO: count makefile errors (***)
+	make -k fast >> $logfile 2>&1
+	echo "$base: make fast finished `date`" >> $buildlogfile
+	echo "$base: sleeping 65 seconds to check for active processes" >> $buildlogfile
+    sleep 65
+
+    fi
+
+    echo "$base: Running tests of Ptolemy II from $date" > $logfile
+
+    echo "$base: uptime: `uptime`" >> $logfile
+
+    echo "$base: running stats $date in $runtimedir PT=\$PTII"
+    # Run the stats
+    echo "$base: runtimes started `date`" >> $logfile    
+    $MASTER_PTII/adm/bin/runtimes >> $logfile
+    echo "$base: runtimes started `date`" >> $logfile    
+
+    
+    cd $runtimedir
+    capacity=`df -k . | awk '{print substr($5,1,length($5)-1)}' | tail -1`
+
+    if [ $capacity -gt 89 ]; then
+	echo "$base: disk is $capacity %full, removing tree"
+	rm -rf $PTII
+    fi	
+done
