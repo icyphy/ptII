@@ -58,66 +58,72 @@ import ptolemy.util.StringUtilities;
 //// NamedObj
 /**
 This is a base class for almost all Ptolemy II objects.
+
+<p>
 This class supports a naming scheme, change requests, a persistent
 file format (MoML), a mutual exclusion mechanism for models (the
 workspace), and a hierarchical class mechanism with inheritance.
 Instances of this class can also be parameterized by making this
 instance the container of instances of the Attribute class.
+
 <p>
-A simple name is an arbitrary string with no periods.
-If no simple name is provided, the name is taken to be an
-empty string (not a null reference). An instance also has a full name,
-which is a concatenation of the container's full name and the simple
-name, separated by a period. If there is no
-container, then the full name begins with a period. The
-full name is used for error reporting throughout Ptolemy II.
+A simple name is an arbitrary string with no periods.  If no simple
+name is provided, the name is taken to be an empty string (not a null
+reference). An instance also has a full name, which is a concatenation
+of the container's full name and the simple name, separated by a
+period. If there is no container, then the full name begins with a
+period. The full name is used for error reporting throughout Ptolemy
+II.
+
 <p>
-Instances of this class are associated with a workspace, specified
-as a constructor argument.  The workspace is immutable.  It cannot
-be changed during the lifetime of the object.  It is used for
+Instances of this class are associated with a workspace, specified as
+a constructor argument.  The workspace is immutable.  It cannot be
+changed during the lifetime of the object.  It is used for
 synchronization of methods that depend on or modify the state of
-objects within it. If no workspace is
-specified, then the default workspace is used.
-Note that the workspace should not be confused with the container.
-The workspace never serves as a container.
+objects within it. If no workspace is specified, then the default
+workspace is used.  Note that the workspace should not be confused
+with the container.  The workspace never serves as a container.
+
 <p>
-In this base class, the container is null by default, and no method is
-provided to change it. Derived classes that support hierarchy provide one
-or more methods that set the container.
-<p>
-By convention, if the container of an instance of
-NamedObj is set, then the instance should be removed from the
-workspace directory, if it is present.  The workspace directory
-is expected to list only top-level objects in a hierarchy.
-The NamedObj can still use the workspace for synchronization.
-Any object contained by another uses the workspace of its container
-as its own workspace by default.
+In this base class, the container is null by default, and no
+method is provided to change it. Derived classes that support
+hierarchy provide one or more methods that set the container.
+
+<p> By convention, if the container of an instance of NamedObj is set,
+then the instance should be removed from the workspace directory, if
+it is present.  The workspace directory is expected to list only
+top-level objects in a hierarchy.  The NamedObj can still use the
+workspace for synchronization.  Any object contained by another uses
+the workspace of its container as its own workspace by default.
+
 <p>
 Instances of Attribute can be attached by calling their setContainer()
-method and passing this object as an argument. These instances will then
-be reported by the getAttribute() and attributeList() methods.
-Classes derived from NamedObj may constrain attributes to be a subclass
-of Attribute.  To do that, they should override the protected
-_addAttribute() method to throw an exception if the
-object provided is not of the right class.
+method and passing this object as an argument. These instances will
+then be reported by the getAttribute() and attributeList() methods.
+Classes derived from NamedObj may constrain attributes to be a
+subclass of Attribute.  To do that, they should override the protected
+_addAttribute() method to throw an exception if the object provided is
+not of the right class.
+
 <p>
-This class supports <i>change requests</i> or
-<i>mutations</i>, which are changes to a model
-that are performed in a disciplined fashion.  In particular, a
-mutation can be requested via the requestChange() method.
-Derived classes will ensure that the mutation is executed
-at a time when it is safe to execute mutations.
+This class supports <i>change requests</i> or <i>mutations</i>,
+which are changes to a model that are performed in a disciplined
+fashion.  In particular, a mutation can be requested via the
+requestChange() method.  Derived classes will ensure that the mutation
+is executed at a time when it is safe to execute mutations.
+
 <p>
-This class supports the notion of a <i>model error</i>, which is an
-exception that is handled by a registered model error handler,
-or passed up the container hierarchy if there is no registered model
-error handler.  This mechanism complements the exception mechanism
-in Java. Instead of unraveling the calling stack to handle exceptions,
+This class supports the notion of a <i>model error</i>, which is
+an exception that is handled by a registered model error handler, or
+passed up the container hierarchy if there is no registered model
+error handler.  This mechanism complements the exception mechanism in
+Java. Instead of unraveling the calling stack to handle exceptions,
 this mechanism passes control up the Ptolemy II hierarchy.
+
 <p>
-Derived classes should override the _description() method to append
-new fields if there is new information that should be included in the
-description.
+Derived classes should override the _description() method to
+append new fields if there is new information that should be included
+in the description.
 
 @author Mudit Goel, Edward A. Lee, Neil Smyth
 @version $Id$
@@ -156,6 +162,7 @@ public class NamedObj implements
     /** Construct an object in the specified workspace with an empty string
      *  as its name. The object is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  @param workspace Object for synchronization and version tracking
      */
     public NamedObj(Workspace workspace) {
         // NOTE: Can't call the constructor below, which has essentially
@@ -380,7 +387,6 @@ public class NamedObj implements
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
-     *  @see #getMoMLInfo()
      *  @see #exportMoML(Writer, int, String)
      */
     public Object clone(Workspace workspace)
@@ -475,6 +481,7 @@ public class NamedObj implements
      *  atomic (see CompositeEntity), and always returns false if the entities
      *  are not in the same workspace.
      *  This method is read-synchronized on the workspace.
+     *  @param inside The object to check for inside this object.
      *  @return True if this contains the argument, directly or indirectly.
      */
     public boolean deepContains(NamedObj inside) {
@@ -636,6 +643,7 @@ public class NamedObj implements
      *  three-argument version of this method.  It is final to ensure that
      *  derived classes only override that method to change
      *  the MoML description.
+     *  @param name The name of we use when exporting the description.
      *  @return A MoML description, or the empty string if there is none.
      *  @see #exportMoML(Writer, int, String)
      *  @see #isPersistent()
@@ -731,7 +739,6 @@ public class NamedObj implements
      *  @param name The name to use in the exported MoML.
      *  @exception IOException If an I/O error occurs.
      *  @see #clone(Workspace)
-     *  @see #getMoMLInfo()
      *  @see #isPersistent()
      *  @see #isInherited()
      */
@@ -993,7 +1000,7 @@ public class NamedObj implements
      *  so this error is caught here.
      *  <p>
      *  This method is read-synchronized on the workspace.
-     *  @param relativeTo The object relative to which you want the name.
+     *  @param parent The object relative to which you want the name.
      *  @return A string of the form "name2...nameN".
      *  @exception InvalidStateException If a recursive structure is
      *   encountered, where this object directly or indirectly contains
@@ -1457,6 +1464,8 @@ public class NamedObj implements
      *  a model or after making changes to it.  It is called, for example,
      *  by the MoMLParser.
      *  @see #handleModelError(NamedObj context, IllegalActionException exception)
+     *  @exception IllegalActionException If there is a problem validating
+     *  the deeply contained attributes.
      */
     public void validateSettables() throws IllegalActionException {
         // This base class contains only attributes, so check those.
@@ -1604,6 +1613,9 @@ public class NamedObj implements
      * The object is assumed to be a clone of this one.  The fields
      * are fixed to point to the corresponding attribute of the clone,
      * instead of pointing to attributes of this object.
+     *  @param newObject The object in which we fix the fields.
+     *  @param CloneNotSupportedException If there is a problem
+     *  getting the attribute
      */
     protected void _cloneFixAttributeFields(NamedObj newObject)
             throws CloneNotSupportedException {
@@ -1623,16 +1635,20 @@ public class NamedObj implements
                                 newObject.getAttribute(name));
                     }
                 }
-            } catch (IllegalAccessException e) {
-
-                // FIXME: This would be a nice
-                // place for exception chaining.
-                throw new CloneNotSupportedException(
+            } catch (IllegalAccessException ex) {
+                // CloneNotSupportedException does not have a 
+                // constructor that takes a cause argument, so we call
+                // initCause() and then throw.
+                CloneNotSupportedException cloneException =
+                    new CloneNotSupportedException(
                         "The field associated with "
                         + fields[i].getName()
                         + " could not be automatically cloned because "
-                        + e.getMessage() + ".  This can be caused if "
+                        + ex.getMessage() + ".  This can be caused if "
                         + "the field is not defined in a public class.");
+                
+                cloneException.initCause(ex);
+                throw cloneException;
             }
         }
     }
