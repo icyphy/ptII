@@ -225,12 +225,18 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                                 stmt, 
                                 _localDefs, 
                                 _localUses);
+                    //System.out.println("port for " + r.getBase() + " = " + port);
                     if(methodName.equals("broadcast")) {
                         // The type of the argument must be less than the 
                         // type of the port.
                    
                     } else if(methodName.equals("get")) {
-                        out.put(leftOp, port.getType());
+                        // The port here may be null if the model does not
+                        // actually contain the port...  This happens, for
+                        // instance, in MathFunction
+                        if(port != null) {
+                            out.put(leftOp, port.getType());
+                        }
                     } else if(methodName.equals("send")) {
                         if(r.getArgCount() == 3) {
                             // The type of the argument must be less than the 
