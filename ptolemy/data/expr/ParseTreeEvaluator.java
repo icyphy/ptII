@@ -391,7 +391,7 @@ public class ParseTreeEvaluator implements ParseTreeVisitor {
         // collect all free variables in the function definition
         ParseTreeFreeVariableCollector collector =
             new ParseTreeFreeVariableCollector();
-        Set freeVariableNames = collector.collectFreeVariables(node);
+        Set freeVariableNames = collector.collectFreeVariables(node, _scope);
         // construct a NamedConstantsScope that maps the free variables to
         // their current value in the scope
         Map map = new HashMap();
