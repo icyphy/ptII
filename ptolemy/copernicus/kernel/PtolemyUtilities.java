@@ -1112,6 +1112,7 @@ public class PtolemyUtilities {
     // Soot class representing the ptolemy.data.MatrixToken class.
     public static SootClass matrixTokenClass;
     public static SootMethod matrixTokenCreateMethod;
+    public static SootMethod matrixGetElementAsTokenMethod;
 
     // SootClass representing ptolemy.kernel.util.NamedObj.
     public static SootClass namedObjClass;
@@ -1411,6 +1412,8 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("ptolemy.data.MatrixToken");
         matrixTokenCreateMethod = 
             matrixTokenClass.getMethod("ptolemy.data.MatrixToken create(ptolemy.data.Token[],int,int)");
+        matrixGetElementAsTokenMethod =
+            matrixTokenClass.getMethod("ptolemy.data.Token getElementAsToken(int,int)");
 
         doubleTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.DoubleToken");

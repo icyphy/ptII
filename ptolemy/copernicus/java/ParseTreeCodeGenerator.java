@@ -216,7 +216,60 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                                         
             } else if(argCount == 2) {
                 // matrix..
-          	throw new IllegalActionException("unimplemented case");
+                Local tokenCastLocal = Jimple.v().newLocal("indexToken", 
+                        RefType.v(PtolemyUtilities.matrixTokenClass));
+                _body.getLocals().add(tokenCastLocal);
+                  
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                tokenCastLocal,
+                                Jimple.v().newCastExpr(
+                                        local,
+                                        RefType.v(PtolemyUtilities.matrixTokenClass))));
+
+                Local rowIndexTokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(0));
+                Local columnIndexTokenLocal = (Local)_nodeToLocal.get(node.jjtGetChild(1));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                rowIndexTokenLocal,
+                                Jimple.v().newCastExpr(
+                                        rowIndexTokenLocal,
+                                        RefType.v(PtolemyUtilities.intTokenClass))));
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                columnIndexTokenLocal,
+                                Jimple.v().newCastExpr(
+                                        columnIndexTokenLocal,
+                                        RefType.v(PtolemyUtilities.intTokenClass))));
+
+                Local rowIndexLocal = Jimple.v().newLocal("rowIndex", 
+                        IntType.v());
+                _body.getLocals().add(rowIndexLocal);
+                 Local columnIndexLocal = Jimple.v().newLocal("columnIndex", 
+                        IntType.v());
+                _body.getLocals().add(columnIndexLocal);
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                rowIndexLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        rowIndexTokenLocal,
+                                        PtolemyUtilities.intValueMethod)));
+                             
+                 _units.add(
+                        Jimple.v().newAssignStmt(
+                                columnIndexLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        columnIndexTokenLocal,
+                                        PtolemyUtilities.intValueMethod)));
+                             
+                _units.add(
+                        Jimple.v().newAssignStmt(
+                                resultLocal,
+                                Jimple.v().newVirtualInvokeExpr(
+                                        tokenCastLocal,
+                                        PtolemyUtilities.matrixGetElementAsTokenMethod,
+                                        rowIndexLocal, columnIndexLocal)));
+                         
             } else {
 		throw new IllegalActionException("Wrong number of indices "
 			+ "when referencing " + node.getFunctionName());
