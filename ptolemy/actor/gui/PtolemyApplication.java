@@ -86,10 +86,16 @@ public class PtolemyApplication extends MoMLApplication {
                 Thread.currentThread().sleep(2000);
             } catch (InterruptedException e) {
             }
-            System.exit(0);
+	    System.exit(0);
         }
     }
 
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public variables                       ////
+
+    /** Ptolemy II Release version name */
+    public static final String RELEASE_VERSION = new String("1.0 beta");
+	
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
