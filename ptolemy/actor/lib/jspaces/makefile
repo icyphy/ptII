@@ -76,15 +76,24 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	doc 
 
-JCLASS = $(JSRCS:%.java=%.class)
+STUB_JCLASS = \
+	Subscriber_Stub.class
+
+.PRECIOUS: $(STUB_JCLASS)
+
+JCLASS = $(JSRCS:%.java=%.class) $(STUB_JCLASS)
 
 
-all: jclass
-install: jclass jars
+all: jclass $(PTCLASSJAR)
 
+install: all
 
 depend:
 	@echo "no dependencies in this directory"
+
+Subscriber_Stub.class: Subscriber.java
+	$(RMIC) -d $(ROOT) -classpath $(CLASSPATH) \
+		ptolemy.actor.lib.$(PTPACKAGE).Subscriber
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
