@@ -121,6 +121,8 @@ int numBlocks = 0;
 char str1[SMALLBUFSIZE*2];
 char str2[SMALLBUFSIZE*2];
 char consStuff[BIGBUFSIZE];
+char javaConsStuff[BIGBUFSIZE];
+char javaPortsAndParameters[BIGBUFSIZE];
 char publicMembers[MEDBUFSIZE];
 char protectedMembers[MEDBUFSIZE];
 char privateMembers[MEDBUFSIZE];
@@ -873,6 +875,7 @@ int g;
 		domain = derivedFrom = objAuthor = objCopyright =
 		objExpl = objHTMLdoc = objLocation = NULL;
 	consStuff[0] = ccCode[0] = hCode[0] = consCalls[0] = 0;
+	javaConsStuff[0] = javaPortsAndParameters[0] = 0;
 	publicMembers[0] = privateMembers[0] = protectedMembers[0] = 0;
 	inputDescriptions[0] = outputDescriptions[0] = inoutDescriptions[0] = 0;
 	stateDescriptions[0] = 0;
@@ -1016,6 +1019,7 @@ void genState ()
 	strcat (str2, "));\n");
 	strcat (protectedMembers, str1);
 	strcat (consStuff, str2);
+	strcat (javaConsStuff, str2);
 }
 
 /* describe the states */
@@ -1091,6 +1095,43 @@ void genPort ()
 			portName, portName, cvtToUpper(portType));
 	strcat (publicMembers, str1);
 	strcat (consStuff, str2);
+
+	// JAVA
+	// FIXME: handle input or output ports
+	if (strcmp(portName, "output") == 0) {
+		sprintf(str1, "false, true");
+	} else {
+		sprintf(str1, "true, false");
+	}
+	sprintf (str2, "        %s = new TypedIOPort(this, \"%s\", %s);\n", portName, portName, str1);
+	strcat (javaConsStuff, str2);
+	char ptIIType[MEDBUFSIZE];
+	sprintf(ptIIType,cvtToUpper(portType));
+	if (strcmp(ptIIType, "FLOAT") == 0) {
+		sprintf(ptIIType, "DOUBLE");
+	}
+	
+	sprintf (str2, "        %s.setTypeEquals(BaseType.%s);\n", portName, ptIIType);
+	strcat (javaConsStuff, str2);
+
+	// Ports and Parameters 
+	sprintf (str2, "\n    /**\n"); 
+	strcat (javaPortsAndParameters, str2);
+	char descriptString[MEDBUFSIZE];
+	if (portDesc) {
+	    if(unescape(descriptString, portDesc, MEDBUFSIZE))
+		yywarn("warning: Descriptor too long. May be truncated.");
+	    sprintf(str1,"%s\n",descriptString);
+	    strcat (javaPortsAndParameters, str1);
+	} else {
+	    sprintf(str1,"     * %s of type %s.\n", portName, cvtToLower(ptIIType));
+            strcat(javaPortsAndParameters,str1);
+        }
+	sprintf (str2, "     */\n"); 
+	strcat (javaPortsAndParameters, str2);
+	sprintf (str2, "    public TypedIOPort %s;\n", portName); 
+	strcat (javaPortsAndParameters, str2);
+
 	if (portAttrib) {
 		sprintf (str2, "\t%s.setAttributes(\n%s);\n", portName,
 			portAttrib);
@@ -1850,13 +1891,13 @@ void genDef ()
 	fprintf (fp, "*/\n");
 	//if ( coreDef == 1 )
 	//	fprintf(fp, "#include \"%s%s.h\"\n", domain, objName);
-	for (i = 0; i < nCcInclude; i++)
-		fprintf (fp, "#include %s\n", ccInclude[i]);
-/* generate className and (optional) makeNew function */
-/* also generate a global identifier with name star_nm_DDDNNN, where DDD is
-   the domain and NNN is the name */
+	//for (i = 0; i < nCcInclude; i++)
+	//	fprintf (fp, "#include %s\n", ccInclude[i]);
+	///* generate className and (optional) makeNew function */
+	///* also generate a global identifier with name star_nm_DDDNNN, where DDD is
+	//   the domain and NNN is the name */
 	//fprintf (fp, "\nconst char *star_nm_%s = \"%s\";\n", fullClass, fullClass);
-/* Corona keeps source directory for loading cores. */
+	// /* Corona keeps source directory for loading cores. */
 	//if ( coronaDef == 1 ) { 
 	//	if (getcwd(srcDirectory, SMALLBUFSIZE) == NULL) {
 	//		perror("ptlang: getcwd() error"); exit(2);
@@ -1864,7 +1905,7 @@ void genDef ()
 	//	fprintf (fp, "\nconst char *src_dir_%s = \"%s\";\n", fullClass, srcDirectory);
 	//	fprintf (fp, "\nconst char* %s :: getSrcDirectory() const { return src_dir_%s; }\n", fullClass, fullClass);
 	//}
-/* FIXME: Corona uses className virtual method as secondary init. */
+	// /* FIXME: Corona uses className virtual method as secondary init. */
 	//if ( coronaDef == 1 ) 
         //	fprintf (fp, "\nconst char* %s :: className() const { %sCorona* ptr = (%sCorona* )this; if ( initCoreFlag == 0 ) ptr->addCores(); return star_nm_%s;}\n",
 	//	fullClass, domain, domain, fullClass);
@@ -1888,11 +1929,11 @@ void genDef ()
 	fprintf(fp, "        super(container, name);\n");
 
 	//if (!pureFlag) {
-/* makeNew() for cores takes a corona as argument. */
+	// /* makeNew() for cores takes a corona as argument. */
 	//	if ( coreDef ) {
 	//		fprintf (fp, "\n%sCore* %s :: makeNew( %sCorona & corona_) const { LOG_NEW; return new %s(corona_); }\n",
 	//		 domain, fullClass, domain, fullClass );
-/* Corona constructor takes do core init argument. */
+	// /* Corona constructor takes do core init argument. */
 	//	} else if ( coronaDef == 1 ) {
 	//		fprintf (fp, "\nBlock* %s :: makeNew() const { LOG_NEW; return new %s(1);}\n",
 	//		 fullClass, fullClass);
@@ -1918,17 +1959,17 @@ void genDef ()
 	    }
 	}
 /* prefix code and constructor */
-/* Core constructor takes corona as argument. */
+	// /* Core constructor takes corona as argument. */
 	//if ( coreDef == 1 ) {
 	//	fprintf (fp, "\n%s%s::%s ( %sCorona & corona_) : %s%sCore(corona_), corona((%s%s&)corona_)", ccCode, fullClass, fullClass, domain, domain, coreCategory, domain, objName);
-/* Corona takes do core init flag and calls parent constructor. */
+	// /* Corona takes do core init flag and calls parent constructor. */
 	//} else if ( coronaDef == 1 ) {
 	//	fprintf (fp, "\n%s%s::%s (int doCoreInitFlag) : %sCorona(0)", ccCode, fullClass, fullClass, domain);
 	//} else {
 	//	fprintf (fp, "\n%s%s::%s ()", ccCode, fullClass, fullClass);
 	//}
 	//if (consCalls[0]) {
-/* Core constructor has initializer for corona reference. */
+	// /* Core constructor has initializer for corona reference. */
 	//	if ( coreDef == 1 )
 	//		fprintf (fp, ",\n\t%s", consCalls);
 	//	else
@@ -1941,18 +1982,31 @@ void genDef ()
 	}
 	/* define the class name */
 	if (!consCode) consCode = "";
-	fprintf (fp, "%s\n%s\n", consStuff, consCode);
+
+	// Dump out Constructor body
+	fprintf (fp, "%s\n/* %s\n*/\n", javaConsStuff, consCode);
+
 /* Corona conditionally constructs coreList */
 	//if ( coronaDef == 1 )
 	//	fprintf (fp, "\n\tif (doCoreInitFlag == 1 ) addCores();\n");
 	fprintf (fp, "    }\n");
+	// End of Constructor
+
+	fprintf(fp, "    ///////////////////////////////////////////////////////////////////\n");
+	fprintf(fp, "    ////                     ports and parameters                  ////\n");
+	fprintf(fp, "%s", javaPortsAndParameters);
+
+	fprintf(fp, "    ///////////////////////////////////////////////////////////////////\n");
+	fprintf(fp, "    ////                     public methods                        ////\n");
 
 	for (i = 1; i < N_FORMS; i++) {
 		if (codeBody[i] && !inlineFlag[i]) {
 		    char *dst = malloc(2*strlen(codeBody[i])+MEDBUFSIZE);
 		    cvtMethod( codeBody[i], dst);
-		    fprintf (fp, "\n%s%s::%s() {\n%s\n}\n",
-		      codeType[i], fullClass, codeFuncName[i], dst);
+		    fprintf (fp, "\n    /**\n");
+		    fprintf (fp, "     */\n");
+		    fprintf (fp, "    public %s %s() {\n        /*\n   \n    %s\n         */\n    }\n",
+		      codeType[i], codeFuncName[i], dst);
 		    free(dst);
 		}
 	}
