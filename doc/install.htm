@@ -8,6 +8,48 @@
 See the <a href="ptII1.0.release.htm">Ptolemy II 1.0 release notes</a>
 for details about this release.
 
+<h2>Instructions for the impatient</h2>
+
+<ol>
+
+<li> Install JDK1.3 and have the make command available.   
+
+<li> Set the PTII environment variable to the top level Ptolemy directory,
+that is the directory above this directory
+	<dl>
+	<dt> bash
+	<dd> <pre>
+PTII=c:\users\yourname\ptII
+export PTII
+</pre>
+
+<dt> csh
+<dd> <pre>
+setenv PTII /users/yourname/ptII
+</pre>
+
+</dl>
+
+<li> Run configure
+<pre>
+cd $PTII
+./configure
+</pre>
+
+<li> Run make install
+<pre>
+make install
+</pre>
+
+
+<li> Start vergil
+<pre>
+$PTII/bin/vergil
+</pre>
+
+
+</ol>
+
 
 <h2>Requirements</h2>
 <h3>The PTII variable</h3>
