@@ -117,6 +117,11 @@ Top-level DT Directors have a <i>period</i> parameter that can be set by the
 user.  Setting the period parameter of a non-top-level DT Director
 under hierarchical DT has no meaning; and hence will be ignored.
 <p>
+<p>
+Domain-polymorphic actors that want to take advantage of the multi-rate timing 
+capabilities of DT should call getCurrentTime(channel_number) for every
+get(channel_number). Moreover, the call sequence should be ordered as follows:
+getCurrentTime(channel_number) before get(channel_number).
 
 @see ptolemy.domains.dt.kernel.DTReceiver
 @see ptolemy.domains.sdf.kernel.SDFDirector
