@@ -371,10 +371,10 @@ public class PlotBox extends Applet {
         _xtickscale = width/(_xtickMax - _xtickMin);
         
         // White background for the plotting rectangle
-        graphics.setColor(Color.white);
+        graphics.setColor(_background);
         graphics.fillRect(_ulx,_uly,width,height);
 
-        graphics.setColor(Color.black);
+        graphics.setColor(_foreground);
         graphics.drawRect(_ulx,_uly,width,height);
         
         // NOTE: subjective tick length.
@@ -398,7 +398,7 @@ public class PlotBox extends Applet {
                 if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
                     graphics.setColor(Color.lightGray);
                     graphics.drawLine(xCoord1,yCoord1,xCoord2,yCoord1);
-                    graphics.setColor(Color.black);
+                    graphics.setColor(_foreground);
                 }
                 // NOTE: 3 pixel spacing between axis and labels.
                 graphics.drawString(ylabels[ind],
@@ -430,7 +430,7 @@ public class PlotBox extends Applet {
                 if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
                     graphics.setColor(Color.lightGray);
                     graphics.drawLine(xCoord1,yCoord1,xCoord2,yCoord1);
-                    graphics.setColor(Color.black);
+                    graphics.setColor(_foreground);
                 }
                 // NOTE: 3 pixel spacing between axis and labels.
                 graphics.drawString(label, _ulx - lfm.stringWidth(label) - 3,
@@ -470,7 +470,7 @@ public class PlotBox extends Applet {
                 if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
                     graphics.setColor(Color.lightGray);
                     graphics.drawLine(xCoord1,yCoord1,xCoord1,yCoord2);
-                    graphics.setColor(Color.black);
+                    graphics.setColor(_foreground);
                 }
                 int labxpos = xCoord1 - lfm.stringWidth(xticklabel)/2;
                 // NOTE: 3 pixel spacing between axis and labels.
@@ -491,7 +491,7 @@ public class PlotBox extends Applet {
                 if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
                     graphics.setColor(Color.lightGray);
                     graphics.drawLine(xCoord1,yCoord1,xCoord1,yCoord2);
-                    graphics.setColor(Color.black);
+                    graphics.setColor(_foreground);
                 }
                 int labxpos = xCoord1 - lfm.stringWidth(label)/2;
                 // NOTE: 3 pixel spacing between axis and labels.
@@ -503,7 +503,7 @@ public class PlotBox extends Applet {
         
     	// Center the title and X label over the plotting region, not
     	// the window.
-        graphics.setColor(Color.black);
+        graphics.setColor(_foreground);
         
         if (_title != null) {
          	graphics.setFont(_titlefont);
@@ -550,6 +550,51 @@ public class PlotBox extends Applet {
 	    "Christopher Hylands, cxh@eecs.berkeley.edu\n " +
 	    "($Id$)";
     }
+
+    /** 
+     * Convert a color name into a Color.
+     */
+    public Color getColorByName(String name) {
+        try {
+	    // Check to see if it is a hexadecimal
+	    // Can't use Color decode here, it is not in 1.0.2
+            //Color col = Color.decode(name);
+	    Color col = new Color(Integer.parseInt(name,16));
+	    return col;
+	} catch (NumberFormatException e) {
+	}
+	// FIXME: This is a poor excuse for a list of colors and values.
+	// We should use a hash table here.
+	// Note that Color decode() wants the values to start with 0x.
+	String names[][] = {
+	    {"black","00000"},{"white","ffffff"},
+	    {"red","ff0000"}, {"green","00ff00"}, {"blue","0000ff"}
+	};
+	for(int i=0;i< names.length; i++) {
+	    System.out.println("PlotBox:getColorByName: "+name+" "+names[i][0]);
+	    if(name.equals(names[i][0])) {
+		try {
+		    Color col = new Color(Integer.parseInt(names[i][1],16));
+		    return col;
+		} catch (NumberFormatException e) {}
+	    }
+	}
+	return null;
+    }
+
+    /** 
+     * Read a parameter as a hexadecimal color value.  If the parameter
+     * is not set, return null.
+     */
+    public Color getColorParameter(String param) {
+        try {
+            Color col = getColorByName(getParameter(param));
+	    return col;
+        } catch (NullPointerException e) {
+	    return null;
+	}
+    }
+
     /** 
      * Get the legend for a dataset.
      */
@@ -567,6 +612,8 @@ public class PlotBox extends Applet {
      */
     public String[][] getParameterInfo () {
         String pinfo[][] = {
+	    {"background", "hexcolor value", "background color"},
+	    {"foreground", "hexcolor value", "foreground color"},
             {"dataurl",   "url",     "the URL of the data to plot"},
             {"pxgraphargs",   "args",    
 	     "pxgraph style command line arguments"}
@@ -597,6 +644,34 @@ public class PlotBox extends Applet {
 			       "Graphic was null");
 	    return;
 	}
+
+	// If the foreground applet parameter is set, then get its value
+	// and set the foreground.  If the foregrund parameter is not
+	// set, check the _foreground field and set the foreground if
+	// it is not null.
+	Color foreground = getColorParameter("foreground");
+	if (foreground != null) {
+	    setForeground(foreground);
+	    _foreground = foreground;
+	} else if (_foreground != null) {
+	    setForeground(_foreground);
+	} else {
+	    _foreground = Color.black;
+	}
+
+	Color background = getColorParameter("background");
+	if (background != null) {
+	    setBackground(background);
+	    _background = background; 
+	} else if (_background != null) {
+	    setBackground(_background);
+	} else {
+	    _background = Color.white;
+	}
+	if (_debug > 6)
+	    System.out.println("PlotBox: color = "+foreground+" "+_foreground
+			       +" "+background+" "+_background);
+
 
         // Check to see whether a data URL has been given.
         // Need the catch here because applets used as components have
@@ -662,7 +737,7 @@ public class PlotBox extends Applet {
             }
 
             if (_zoomin == true){   
-                graphics.setXORMode(Color.white);
+                graphics.setXORMode(_background);
                 // Erase the previous box if necessary.
                 if ((_zoomxn != -1 || _zoomyn != -1) && (_drawn == true)) {
                     int minx = Math.min(_zoomx, _zoomxn);
@@ -685,7 +760,7 @@ public class PlotBox extends Applet {
                     return true;
                 } else _drawn = false;
             } else if (_zoomout == true){
-                graphics.setXORMode(Color.white);
+                graphics.setXORMode(_background);
                 // Erase previous box if necessary.
                 if ((_zoomxn != -1 || _zoomyn != -1) && (_drawn == true)) {
                     int x_diff = Math.abs(_zoomx-_zoomxn);
@@ -727,7 +802,7 @@ public class PlotBox extends Applet {
                 int maxx = Math.max(_zoomx, _zoomxn);
                 int miny = Math.min(_zoomy, _zoomyn);
                 int maxy = Math.max(_zoomy, _zoomyn);
-                graphics.setXORMode(Color.white);
+                graphics.setXORMode(_background);
                 graphics.drawRect(minx, miny, maxx - minx, maxy - miny);
                 graphics.setPaintMode();
                 // if in range, zoom
@@ -746,7 +821,7 @@ public class PlotBox extends Applet {
             }
         } else if (_zoomout == true){
             // Erase previous rectangle.
-            graphics.setXORMode(Color.white);
+            graphics.setXORMode(_background);
             int x_diff = Math.abs(_zoomx-_zoomxn);
             int y_diff = Math.abs(_zoomy-_zoomyn);
             graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
@@ -855,7 +930,17 @@ public class PlotBox extends Applet {
         
     } 
   
-    /** Set the binary flag to true if we are reading pxgraph format binar
+    /** Set the background color.  The color is not actually changed
+     * until a  later time.
+     */
+    public void saveBackground (Color background) {
+	// Can't call this setBackground, or we will get confused
+	// with the Component method.
+	_background = background;
+	System.out.println("PlotBox: saveBackground:" + _background);
+    }
+
+    /** Set the binary flag to true if we are reading pxgraph format binary
      * data.
      */
     public void setBinary (boolean binary) {
@@ -868,6 +953,13 @@ public class PlotBox extends Applet {
      */
     public void setDataurl (String dataurl) {
 	_dataurl = dataurl;
+    }
+
+    /** Set the foreground color.  The color is not actually changed
+     * until a  later time.
+     */
+    public void saveForeground (Color foreground) {
+	_foreground = foreground;
     }
 
     /**
@@ -954,7 +1046,7 @@ public class PlotBox extends Applet {
             graphics.setColor(_colors[dataset]);
         }
         graphics.fillOval(xpos-1, ypos-1, 3, 3);
-        graphics.setColor(Color.black);
+        graphics.setColor(_foreground);
         return true;
     }
 
@@ -1147,7 +1239,7 @@ public class PlotBox extends Applet {
                     graphics.setColor(_colors[dataset]);
                 }
                 graphics.fillRect(urx-6, ypos-6, 6, 6);
-                graphics.setColor(Color.black);
+                graphics.setColor(_foreground);
             }
             int width = lfm.stringWidth(legend);
             if (width > maxwidth) maxwidth = width;
@@ -1285,6 +1377,9 @@ public class PlotBox extends Applet {
     // The URL to be opened.  This variable is not used if we are running
     // as an applet, but applications should call setDataurl().
     private String _dataurl = null;
+
+    private Color _background = null;
+    private Color _foreground = null;
 
     // Set to true if we are reading in pxgraph format binary data.
     private boolean _binary = false;
