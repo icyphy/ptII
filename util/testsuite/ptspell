@@ -35,7 +35,7 @@
 # If the local dictionary can be found, use it
 LOCALFILE=
 if [ -f "$PTII/util/ptlocaldict" ]; then
-	LOCALFILE="$PTII/util/ptlocaldict
+	LOCALFILE="$PTII/util/ptlocaldict"
 else
 	echo "$0: The Ptolemy II local dictionary at '$PTII/util/ptlocaldict' can't be found"
 fi
