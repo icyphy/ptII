@@ -1,4 +1,5 @@
-/* Check the input streams against a parameter value.
+/* Check the input streams against a parameter value and outputs
+ a boolean true if result is correct.
 
  Copyright (c) 1998-2002 The Regents of the University of California.
  All rights reserved.
@@ -29,7 +30,8 @@
 */
 
 package ptolemy.actor.lib;
-
+import ptolemy.actor.lib.Sink;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -82,9 +84,13 @@ then the comparison passes if the value is close to what it should
 be, within the specified <i>tolerance</i> (which defaults to
 10<sup>-9</sup>.  The input data type is undeclared, so it can
 resolve to anything.
+<p>
+If the result is correct, the actor outputs a boolean true. While
+checking is in progress, and if the result is incorrect, the output is
+boolean false.
 
 @see NonStrictTest
-@author Edward A. Lee, Christopher Hylands
+@author Edward A. Lee, Christopher Hylands, Jim Armsrong
 @version $Id$
 @since Ptolemy II 1.0
 */
@@ -100,9 +106,10 @@ public class Test extends Sink {
      *   actor with this name.
      */
     public Test(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException  {
+	throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-
+        outputCorrect = new TypedIOPort(this, "output", false, true);
+        outputCorrect.setTypeEquals(BaseType.BOOLEAN);
         Token[] defaultEntries = new Token[1];
         defaultEntries[0] = new BooleanToken(true);
         ArrayToken defaultArray = new ArrayToken(defaultEntries);
@@ -127,6 +134,8 @@ public class Test extends Sink {
      */
     public Parameter tolerance;
 
+
+    public TypedIOPort outputCorrect;
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -136,7 +145,7 @@ public class Test extends Sink {
      *   increasing and nonnegative, or the indexes is not a row vector.
      */
     public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+	throws IllegalActionException {
         if (attribute == tolerance) {
 	    _tolerance = ((DoubleToken)(tolerance.getToken())).doubleValue();
         } else {
@@ -150,6 +159,7 @@ public class Test extends Sink {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _numberOfInputTokensSeen = 0;
+	outputCorrect.send(0, new BooleanToken(false));
     }
 
     /** Read one token from each input channel and compare against
@@ -164,7 +174,7 @@ public class Test extends Sink {
     public boolean postfire() throws IllegalActionException {
 	int width = input.getWidth();
 	if (_numberOfInputTokensSeen
-                >= ((ArrayToken)(correctValues.getToken())).length()) {
+	    >= ((ArrayToken)(correctValues.getToken())).length()) {
 	    // Consume and discard input values.  We are beyond the end
 	    // of the correctValues array.
 	    for (int i = 0; i < width; i++) {
@@ -172,7 +182,9 @@ public class Test extends Sink {
 		    input.get(i);
 		}
 	    }
+	    outputCorrect.send(0, new BooleanToken(true));
 	    return true;
+	} else { outputCorrect.send(0, new BooleanToken(false));
 	}
 	Token referenceToken
 	    = ((ArrayToken)(correctValues.getToken()))
@@ -186,29 +198,29 @@ public class Test extends Sink {
 		reference = ((ArrayToken)referenceToken).arrayValue();
 	    } catch (ClassCastException ex) {
 		throw new IllegalActionException(this,
-                        "Test fails in iteration " + _numberOfInputTokensSeen
-			+ ".\n"
-                        + "Width of input is " + width
-                        + ", but correctValues parameter is not an array "
-                        + "of arrays.");
+						 "Test fails in iteration " + _numberOfInputTokensSeen
+						 + ".\n"
+						 + "Width of input is " + width
+						 + ", but correctValues parameter is not an array "
+						 + "of arrays.");
 	    }
 	    if (width != reference.length) {
 		throw new IllegalActionException(this,
-                        "Test fails in iteration " + _numberOfInputTokensSeen
-			+ ".\n"
-                        + "Width of input is " + width
-                        + ", which does not match the width of the "
-			+ _numberOfInputTokensSeen
-                        + "-th element of correctValues, "
-                        + reference.length);
+						 "Test fails in iteration " + _numberOfInputTokensSeen
+						 + ".\n"
+						 + "Width of input is " + width
+						 + ", which does not match the width of the "
+						 + _numberOfInputTokensSeen
+						 + "-th element of correctValues, "
+						 + reference.length);
 	    }
 	}
 	for (int i = 0; i < width; i++) {
 	    if (!input.hasToken(i)) {
 		throw new IllegalActionException(this,
-                        "Test fails in iteration "
-			+ _numberOfInputTokensSeen + ".\n"
-                        + "Empty input on channel " + i);
+						 "Test fails in iteration "
+						 + _numberOfInputTokensSeen + ".\n"
+						 + "Empty input on channel " + i);
 	    }
 	    Token token = input.get(i);
             boolean isClose;
@@ -218,19 +230,19 @@ public class Test extends Sink {
             } catch (IllegalActionException ex) {
                 // Chain the exceptions together so we know which test
                 // actor failed if there was more than one...
-                throw new IllegalActionException(this, ex,  
-                        "Test fails in iteration " + _numberOfInputTokensSeen
-                        + ".\n"
-                        + "Value was: " + token
-                        + ". Should have been: " + reference[i]);
+                throw new IllegalActionException(this, ex,
+						 "Test fails in iteration " + _numberOfInputTokensSeen
+						 + ".\n"
+						 + "Value was: " + token
+						 + ". Should have been: " + reference[i]);
             }
-            
+
 	    if (!isClose) {
 		throw new IllegalActionException(this,
-                        "Test fails in iteration " + _numberOfInputTokensSeen
-                        + ".\n"
-                        + "Value was: " + token
-                        + ". Should have been: " + reference[i]);
+						 "Test fails in iteration " + _numberOfInputTokensSeen
+						 + ".\n"
+						 + "Value was: " + token
+						 + ". Should have been: " + reference[i]);
             }
         }
         _numberOfInputTokensSeen++;
