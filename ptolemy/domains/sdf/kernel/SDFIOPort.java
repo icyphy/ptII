@@ -271,8 +271,8 @@ public final class SDFIOPort extends TypedIOPort {
      */
     public void setTokenProductionRate(int rate)
             throws IllegalActionException {
-        if(rate <= 0) throw new IllegalActionException(
-                "Rate must be > 0");
+        if(rate < 0) throw new IllegalActionException(
+                "Rate must be >= 0");
         if(!isOutput()) throw new IllegalActionException(this, "Port " +
                 "is not an Output Port.");
 	tokenProductionRate.setToken(new IntToken(rate));

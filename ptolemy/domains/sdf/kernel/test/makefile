@@ -50,7 +50,9 @@ JSRCS = \
 	SDFTestDelay.java \
 	SDFTestJoin.java \
 	SDFTestRamp.java \
-	SDFTestSplit.java
+	SDFTestSplit.java \
+	SDFTestZeroRate1.java \
+	SDFTestZeroRate2.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \

@@ -86,6 +86,12 @@ Note that reconstructing the schedule is expensive, so the schedule is
 locally cached for as long as possible, and mutations under SDF should
 be avoided.
 
+<p>
+
+Note that this sheduler supports actors with 0-rate ports as long as
+the graph is not equivalent to a disconnected graph. This scheduler
+is somewhat conservative in this repect. 
+
 @see ptolemy.actor.sched.Scheduler
 @see ptolemy.domains.sdf.kernel.SDFIOPort
 
@@ -380,7 +386,42 @@ public class SDFScheduler extends Scheduler {
         // First solve the balance equations
         Map firings = null;
         try {
+
             firings = _solveBalanceEquations(AllActors);
+
+	    List deadActors = new LinkedList();
+	    // now remove all actors that get fired 0 times.
+	    Iterator allActor = AllActors.iterator();
+	    while (allActor.hasNext()) {
+		ComponentEntity anActor = (ComponentEntity)allActor.next();
+		// Revome this actor from the firing sequence if it will
+		// not be fired.
+		Fraction theFiring = (Fraction)firings.get(anActor);
+		_debug("************ actor name: " + anActor.getName());
+		_debug("************ has firings value: " + 
+		       theFiring.getNumerator());
+		if (theFiring.getNumerator() == 0) {
+		    _debug("************ and will be removed");
+		    deadActors.add(anActor);
+		}
+	    }
+
+	    // Now remove the dead actors.
+	    Iterator removeIt = deadActors.iterator();
+	    while (removeIt.hasNext()) {
+		ComponentEntity actorToRemove = 
+		    (ComponentEntity)removeIt.next();
+		_debug("Removing actor : " + 
+		       actorToRemove.getName() + 
+		       " from the schedule");
+		firings.remove(actorToRemove);
+		// remove the actor from the list of all actors, as
+		// well.
+		AllActors.remove(actorToRemove);
+	    }
+
+	    _debug("theFiring string: " +  firings.toString());
+
         } catch (IllegalActionException ex) {
             throw new NotSchedulableException(this, "Check expression of "
                     + "rate and initial production parameters:\n"
@@ -561,7 +602,7 @@ public class SDFScheduler extends Scheduler {
         // Calculate over all the output ports of this actor.
         int currentRate = getTokenConsumptionRate(currentPort);
 
-        if(currentRate > 0) {
+        if(currentRate >= 0) {
             // Compute the rate for the Actor currentPort is connected to
             Iterator connectedPorts =
                 currentPort.deepConnectedOutPortList().iterator();
@@ -586,17 +627,51 @@ public class SDFScheduler extends Scheduler {
 
                 // the firing that we think the connected actor should be,
                 // based on currentActor
-                Fraction desiredFiring =
-                    currentFiring.multiply(
-                            new Fraction(currentRate, connectedRate));
+		Fraction desiredFiring;
+
+		if ((currentRate == 0) && (connectedRate > 0)) {
+		    // the current port of the current actor has a rate
+		    // of 0, and the current connected port of the
+		    // connected actor has a positive integer rate.
+		    // therefore, we must set the firing count of
+		    // the connected actor to 0 so that it will
+		    // not appear in the final static schedule.
+		    desiredFiring = Fraction.ZERO;
+		} else if ((currentRate > 0) && (connectedRate == 0)) {
+		    // the current port of the current actor has a 
+		    // positive integer rate, and the current
+		    // connected port of the connected actor has
+		    // rate of 0. therefore, we set the firing
+		    // count of the current actor to 0 so that
+		    // it will not appear in the final static schedule.
+		    currentFiring = Fraction.ZERO;
+		    // update the entry in the firing table.
+		    firings.put(currentActor, currentFiring);
+		    
+		    // Set the firing count of the connected actor to
+		    // be 1.
+		    desiredFiring = new Fraction(1);
+		} else if ((currentRate == 0) && (connectedRate == 0)) {
+		    // Give the connected actor the same rate as the
+		    // current actor.
+		    desiredFiring = currentFiring;
+		} else {
+		    // Only do this if both of these rates 
+		    // are non-zero.
+		    desiredFiring =
+			currentFiring.multiply(
+			  new Fraction(currentRate, connectedRate));
+		}
 
                 // What the firing for connectedActor already is set to.
                 // This should be either 0, or equal to desiredFiring.
                 try {
+		    Fraction minusOne = new Fraction(-1);
+
                     Fraction presentFiring =
                         (Fraction) firings.get(connectedActor);
 		    if(presentFiring == null) {
-		    } else if(presentFiring.equals(Fraction.ZERO)) {
+		    } else if(presentFiring.equals(minusOne)) {
                         // create the entry in the firing table
                         firings.put(connectedActor, desiredFiring);
                         // Remove them from remainingActors
@@ -690,7 +765,7 @@ public class SDFScheduler extends Scheduler {
         //Calculate over all the output ports of this actor.
         int currentRate = getTokenProductionRate(currentPort);
 
-        if(currentRate > 0) {
+        if(currentRate >= 0) {
             // Compute the rate for the Actor currentPort is connected to
             Iterator connectedPorts =
                 currentPort.deepConnectedInPortList().iterator();
@@ -715,17 +790,59 @@ public class SDFScheduler extends Scheduler {
 
                 // the firing that we think the connected actor should be,
                 // based on currentActor
-                Fraction desiredFiring =
-                    currentFiring.multiply(
-                            new Fraction(currentRate, connectedRate));
+
+		if (_debugging) {
+		    if (connectedRate == 0) {
+			_debug("_propagateOutputPort: connectedRate == 0");
+			_debug("_propagateOutputPort: currentRate = " + 
+			      currentRate);
+		    }
+		}
+		
+                // the firing that we think the connected actor should be,
+                // based on currentActor
+		Fraction desiredFiring;
+
+		if ((currentRate == 0) && (connectedRate > 0)) {
+		    // the current port of the current actor has a rate
+		    // of 0, and the current connected port of the
+		    // connected actor has a positive integer rate.
+		    // therefore, we must set the firing count of
+		    // the connected actor to 0 so that it will
+		    // not appear in the final static schedule.
+		    desiredFiring = Fraction.ZERO;
+		} else if ((currentRate > 0) && (connectedRate == 0)) {
+		    // the current port of the current actor has a 
+		    // positive integer rate, and the current
+		    // connected port of the connected actor has
+		    // rate of 0. therefore, we set the firing
+		    // count of the current actor to 0 so that
+		    // it will not appear in the final static schedule.
+		    currentFiring = Fraction.ZERO;
+		    // update the entry in the firing table
+		    firings.put(currentActor, currentFiring);
+		    desiredFiring = new Fraction(1);
+		} else if ((currentRate == 0) && (connectedRate == 0)) {
+		    // Give the connected actor the same rate as the
+		    // current actor.
+		    desiredFiring = currentFiring;
+		} else {
+		    // Only do this if both of these rates 
+		    // are non-zero.
+		    desiredFiring =
+			currentFiring.multiply(
+			  new Fraction(currentRate, connectedRate));
+		}
 
                 // What the firing for connectedActor already is set to.
                 // This should be either 0, or equal to desiredFiring.
                 try {
+		    Fraction minusOne = new Fraction(-1);
+
                     Fraction presentFiring =
                         (Fraction) firings.get(connectedActor);
 
-                    if(presentFiring.equals(Fraction.ZERO)) {
+                    if(presentFiring.equals(minusOne)) {
                         firings.put(connectedActor, desiredFiring);
                         // Remove them from remainingActors
                         remainingActors.remove(connectedActor);
@@ -1417,7 +1534,8 @@ public class SDFScheduler extends Scheduler {
         Map firings = new TreeMap(new NamedObjComparator());
 
         // remainingActors contains the pool of Actors that have not been
-        // touched yet. (i.e. all their firings are still set to Fraction.ZERO)
+        // touched yet. (i.e. all their firings are still set to Fraction
+	// equal to -1/1)
         LinkedList remainingActors = new LinkedList();
 
         // pendingActors have their firings set, but have not had their
@@ -1434,14 +1552,35 @@ public class SDFScheduler extends Scheduler {
         Iterator enumActors = remainingActors.iterator();
         while(enumActors.hasNext()) {
             ComponentEntity e = (ComponentEntity) enumActors.next();
-            firings.put(e, Fraction.ZERO);
+	    // bkv: Don't initialize to zero, since we want allow
+	    // schedules that contain actors with 0-rate ports.
+	    // This functionality is needed for HDF.
+            //firings.put(e, Fraction.ZERO);
+	    // I will use -1 to denote that no rate has been set yet.
+	    firings.put(e, new Fraction(-1));
         }
 
         // FIXME: this doesn't work if there are no actors (i.e. a tunneling
         // actor in a hierarchical model)
         try {
             // Pick an actor as a reference
-            Actor a = (Actor) remainingActors.removeFirst();
+	    // Should pick the reference actor to be one
+	    // that contains 0-valued ports, if there exists one.
+	    ComponentEntity a = null;
+	    // Try to find an actor that contains at least one 0-rate
+	    // port. Note that this preprossessing step only needs to
+	    // be done if we want to support SDF graphs with actors that
+	    // contain one or more 0-rate ports.
+	    a = _pickZeroRatePortActor(remainingActors);
+	    if (a == null) {
+		// We did not find an actor with any 0-rate ports,
+		// so just pick a reference actor arbitrarily.
+		a = (ComponentEntity) remainingActors.removeFirst();
+	    } else {
+		// We found an actor "a" with at least one 0-rate port.
+		remainingActors.remove(a);
+	    }
+
             // And set it's rate to one per iteration
             firings.put(a, new Fraction(1));
             // And start the list to recurse over.
@@ -1556,6 +1695,48 @@ public class SDFScheduler extends Scheduler {
 
 	throw new InternalErrorException("Receiver not found in the port " +
                 port.getFullName());
+    }
+
+    /** Try to find an actor that contains at least one 0-rate
+     *  port. Note that this preprossessing step only needs to
+     *  be done if we want to support SDF graphs with actors that
+     *  contain one or more 0-rate ports.
+     *
+     * @param remainingActors The list of all of the actors in the
+     *  SDF graph, not in any particular order.
+     * @return An actor that contains at least one 0-rate port.
+     *  Otherwise return null.
+     */
+    private ComponentEntity _pickZeroRatePortActor(List remainingActors)
+    throws IllegalActionException {
+	ComponentEntity a = null;
+	    Iterator remainingActorsIter = remainingActors.iterator();
+	    boolean foundZeroPortActor = false;
+	    while (remainingActorsIter.hasNext()) {
+		ComponentEntity tempActor = 
+		    (ComponentEntity)remainingActorsIter.next();
+		// Check if this actor has any ports with rate = 0.
+		Iterator thePorts =
+                ((ComponentEntity) tempActor).portList().iterator();
+		while (thePorts.hasNext()) {
+		    // Get the next port.
+		    IOPort currentPort = (IOPort)thePorts.next();
+		    
+		    int currentRate = -1; 
+		    if(currentPort.isInput()) {
+			currentRate = 
+			    getTokenConsumptionRate(currentPort);
+		    } else if (currentPort.isOutput()) {
+			currentRate = 
+			    getTokenProductionRate(currentPort);
+		    }
+		    if (currentRate == 0) {
+			foundZeroPortActor = true;
+			a = tempActor;
+		    }
+		}
+	    }
+	    return a;
     }
 
     /** A comparator for Named Objects.  This is currently SLOW because
