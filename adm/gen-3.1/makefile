@@ -443,10 +443,9 @@ bldmastrcoverage:
 		remote1distjsall \
 		remote1distjsrestore \
 		remote1build \
+		remote1distnonjsall \
 		remote1ChangeLog \
 		remote1jnlp
-
-#		remote1distnonjsall
 
 # Remove the remote dist
 remote1nuke:
@@ -602,7 +601,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/gui \
 	$(REMOTE1PTIIDIST)/ptolemy/hsif \
 	$(REMOTE1PTIIDIST)/jni \
-	$(REMOTE1PTIIDIST)/ptolemy/copernicus/java \
 	$(REMOTE1PTIIDIST)/ptolemy/vergil \
 	$(REMOTE1PTIIDIST)/ptolemy/configs 
 
@@ -614,10 +612,11 @@ NONJSALLCOREDIRS = \
 
 # Directories to run tests in outside of JavaScope
 NONJSALLDIRS = \
-	ptolemy/copernicus/c
+	ptolemy/copernicus/java \
+	ptolemy/copernicus/shallow
 
-#	ptolemy/copernicus/java
-#	ptolemy/copernicus/shallow
+#	ptolemy/copernicus/c
+#	
 
 
 # Run JavaScope Code Coverage tool in the distribution tree
