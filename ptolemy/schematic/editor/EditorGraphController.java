@@ -32,6 +32,7 @@ package ptolemy.schematic.editor;
 
 import ptolemy.schematic.util.*;
 import ptolemy.schematic.xml.*;
+import ptolemy.gui.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*; 
@@ -50,6 +51,7 @@ import java.util.Enumeration;
 import java.util.Iterator;
 import java.net.URL;
 import javax.swing.*;
+import javax.swing.event.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorGraphController
@@ -457,26 +459,45 @@ ef.route();
 	    Node sourcenode = (Node) source.getUserObject();
             if(sourcenode instanceof SchematicEntity) {
                 JPopupMenu menu = 
-                    new EntityContextMenu((SchematicEntity) sourcenode);
+                    new ObjectContextMenu((PTMLObject)sourcenode);
                 menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
             }
         }
     }
 
-    /** A Context Sensitive menu for entities
+    /** A Context Sensitive menu for PTMLObjects
      */
-    public class EntityContextMenu extends JPopupMenu {
-        public EntityContextMenu(SchematicEntity entity) {
-            super(entity.getName());
+    public class ObjectContextMenu extends JPopupMenu {
+        JFrame _frame;
+        Query _query;
+        public ObjectContextMenu(PTMLObject target) {
+            super(target.getName());
             Action action;
             action = new AbstractAction ("Get Parameters") {
                 public void actionPerformed(ActionEvent e) {
                     // Create a dialog and attach the dialog values 
-                    // to the parameters of the entity
-                    System.out.println("Object = " + getValue("target"));
+                    // to the parameters of the object                    
+                    PTMLObject object = (PTMLObject) getValue("target");
+                    System.out.println(object);
+                    _frame = new JFrame("Parameters for " + object);
+                    JPanel pane = (JPanel) _frame.getContentPane();
+
+                    _query = new Query();
+                    Enumeration parameters = object.deepParameters();
+                    while(parameters.hasMoreElements()) {
+                        SchematicParameter param = 
+                            (SchematicParameter) parameters.nextElement();
+                        _query.addLine(param.getName(), param.getName(), 
+                                param.getValue());
+                    }
+                    pane.add(_query);
+                    _query.setTextWidth(20);                   
+                    pane.layout();
+                    _frame.setVisible(true);
+                    _frame.pack();
                 }
             };
-            action.putValue("target", entity);
+            action.putValue("target", target);
             action.putValue("tooltip", "Get Parameters");
             JMenuItem item = add(action);
             item.setToolTipText("Get Parameters");

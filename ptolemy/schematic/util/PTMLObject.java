@@ -73,33 +73,23 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
      * added at the end of the current parameters.  If a parameter with the 
      * same name already exists, then update the type and value of that
      * parameter, instead of appending the new one.
-     *  @exception IllegalActionException If the parameter has no name.
+     * @exception IllegalActionException If the parameter has no name.
+     * @exception NameDuplicationException If adding the parameter would
+     * result in having two parameters with the same name.
      */
     public void addParameter (SchematicParameter t)
-        throws IllegalActionException {
-        try {
-            if(_parameters == null) {            
-                // This is rather convoluted, since we don't want to
-                // save the NamedList if the append is just going to throw
-                // an exception.
-                NamedList newparameters = new NamedList();
-                newparameters.append(t);
-                _parameters = newparameters;
-            } else {
-                SchematicParameter oldParam = getParameter(t.getName());
-                if(oldParam == null) {
-                    _parameters.append(t);
-                } else {
-                    oldParam.setType(t.getType());
-                    oldParam.setValue(t.getValue());
-                }
-            }
-        } 
-        catch (NameDuplicationException ex) {
-            ex.printStackTrace();
-            throw new InternalErrorException(ex.getMessage());
+        throws IllegalActionException, NameDuplicationException {
+        if(_parameters == null) {            
+            // This is rather convoluted, since we don't want to
+            // save the NamedList if the append is just going to throw
+            // an exception.
+            NamedList newparameters = new NamedList();
+            newparameters.append(t);
+            _parameters = newparameters;
+        } else {
+            _parameters.append(t);
         }
-    }
+    }    
 
     /**
      * Test if this object contains the given Parameter.
@@ -159,6 +149,19 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
             }
         }
         return false;
+    }
+
+    /**
+     * Return an enumeration over the parameters in this object, and all the 
+     * parameters in any objects associated with it.  These associated objects
+     * are usually "templates" which provide some default parameters shared 
+     * between many objects.
+     * In this base class, this is the same as calling parameters().
+     *
+     * @return Enumeration of SchematicParameter.
+     */
+    public Enumeration deepParameters() {
+        return parameters();
     }
 
     /** Return a description of the object. The general
@@ -303,6 +306,32 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
             // }
         }
         _name = name;
+    }
+
+    /** 
+     * Set a parameter in this object with the given name, value and type.
+     * If a parameter already exists with the name, then alter that parameter
+     * to have the new value and type.
+     * Otherwise, create a new parameter with the given characteristics and
+     * add it to this object.
+     * @exception IllegalActionException If name is null.
+     */
+    public void setParameter(String name, String value, String type) 
+        throws IllegalActionException {
+        SchematicParameter parameter = getParameter(name);
+        if(parameter == null) {
+            parameter = new SchematicParameter(name);
+            try {
+                addParameter(parameter);
+            }
+            catch (NameDuplicationException ex) {
+                // This should never happen.
+                ex.printStackTrace();
+                throw new InternalErrorException(ex.getMessage());
+            }
+        }
+        parameter.setValue(value);
+        parameter.setType(type);
     }
 
     /** Return the class name and the full name of the object,

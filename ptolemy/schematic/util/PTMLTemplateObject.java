@@ -81,6 +81,64 @@ public class PTMLTemplateObject extends PTMLObject {
         _template = template;
     }
 
+    /**
+     * Return an enumeration over the parameters in this object, and all the 
+     * parameters in any of its templates.  If a parameter with a duplicate
+     * name appears in the templates, then the template's version is ignored. 
+     *
+     * @return Enumeration of Parameters.
+     */
+    public Enumeration deepParameters() {
+        NamedList l = new NamedList();
+        Enumeration params = parameters();
+        while(params.hasMoreElements()) {
+            SchematicParameter param = 
+                (SchematicParameter)params.nextElement();
+            try {
+                l.append(param);
+            } catch (Exception ex) {
+                // This should never happen. 
+                throw new InternalErrorException(ex.getMessage());
+            }
+        }
+        if(hasTemplate()) {
+            // These parameters may have been overriden by the local ones, 
+            // so we only want to add them if they don't conflict.
+            params = getTemplate().deepParameters();
+            while(params.hasMoreElements()) {
+                SchematicParameter param = 
+                    (SchematicParameter)params.nextElement();
+                SchematicParameter newParam = 
+                    (SchematicParameter) l.get(param.getName());
+                if(newParam == null) {
+                    try {
+                        l.append(param);
+                    } catch (Exception ex) {
+                        // This should never happen. 
+                        throw new InternalErrorException(ex.getMessage());
+                    }
+                }
+            }
+        }
+        return l.elements();
+    }
+
+    /** Get the parameter with the given name in this object.  If no
+     * such parameter exists, then check recursively check all of this
+     * objects templates.  If no such parameter exists in this object, or 
+     * any of it's templates, then return null.
+     */
+    public SchematicParameter deepGetParameter(String name) {
+        SchematicParameter param = getParameter(name);
+        if(param != null) 
+            return param;
+        else 
+            if(hasTemplate()) 
+                return getTemplate().getParameter(name);
+            else 
+                return null;
+    }
+
     /*
      * Get the template object for this object.
      */
