@@ -40,12 +40,20 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	Inspection
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 JSRCS =
 
-EXTRA_SRCS =	$(JSRCS) \
-	Inspection.htm \
-	InspectionVergil.htm \
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS) \
 	Inspection.xml
+
+EXTRA_SRCS = \
+	$(OTHER_FILES_TO_BE_JARED) \
+	Inspection.htm \
+	InspectionVergil.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
