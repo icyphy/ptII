@@ -46,6 +46,7 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
+	DotProductSystem.java \
 	RampArraySystem.java \
 	RampSystem.java
 
@@ -113,6 +114,32 @@ compile_ramp2:
 run_ramp2:
 	(cd $(CGROOT)/cg/RampArraySystem; \
 		"$(JAVA)" -classpath ../.. cg.RampArraySystem.CG_Main)
+
+
+
+# Generate code for a trivial dotproduct demo - much faster for testing
+# To generate code in the current directory:
+#   rm -rf ~/ptII/cg; make CGROOT=. dotproduct
+CGROOT=$(ROOT)
+dotproduct: interpret_dotproduct generate_dotproduct compile_dotproduct run_dotproduct
+interpret_dotproduct: jclass
+	CLASSPATH="$(CLASSPATH)" \
+		$(JAVA) ptolemy.actor.gui.CompositeActorApplication \
+		-class ptolemy.domains.sdf.codegen.test.DotProductSystem \
+		-iterations 10
+
+generate_dotproduct:
+	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)." \
+	"$(JAVA)" ptolemy.domains.sdf.codegen.SDFCodeGenerator \
+	-class  ptolemy.domains.sdf.codegen.test.DotProductSystem \
+	-iterations 10 \
+	-outdir $(CGROOT) -outpkg cg.DotProductSystem
+
+compile_dotproduct:
+	(cd $(CGROOT)/cg/DotProductSystem; "$(JAVAC)" $(JFLAGS) -classpath ../.. CG_Main.java)
+run_dotproduct:
+	(cd $(CGROOT)/cg/DotProductSystem; \
+		"$(JAVA)" -classpath ../.. cg.DotProductSystem.CG_Main)
 
 
 # Generate code for a trivial butterfly demo - much faster for testing
