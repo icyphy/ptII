@@ -98,8 +98,6 @@ public class ArrayType extends StructuredType {
      *  a one dimensional token array if the MatrixToken has only one row,
      *  or it will be converted to an ArrayToken containing another ArrayToken
      *  (an array of arrays) if the MatrixToken has more than one row.
-     *  If this type is a variable, convert the the argument into a
-     *  substitution instance of this variable.
      *  @param t A token.
      *  @return An ArrayToken.
      *  @exception IllegalActionException If lossless conversion
@@ -119,29 +117,12 @@ public class ArrayType extends StructuredType {
             argArrTok = (ArrayToken)t;
         }
 
-        // may not need to distinguish constant and non-constant, can alway
-        // call the convert method to convert all elements.
-        if (isConstant()) {
-            if (isEqualTo(argArrTok.getType())) {
-                return argArrTok;
-            } else {
-                Token[] argArray = argArrTok.arrayValue();
-                Token[] result = new Token[argArray.length];
-                for (int i = 0; i < argArray.length; i++) {
-                        result[i] = _elementType.convert(argArray[i]);
-                }
-                return new ArrayToken(result);
-            }
+        Token[] argArray = argArrTok.arrayValue();
+        Token[] result = new Token[argArray.length];
+        for (int i = 0; i < argArray.length; i++) {
+            result[i] = _elementType.convert(argArray[i]);
         }
-
-        // This type is a variable. argArrTok must be a substitution instance
-        // since it is compatible. But do a sanity check.
-        if (isSubstitutionInstance(argArrTok.getType())) {
-            return argArrTok;
-        } else {
-            throw new InternalErrorException("ArrayType.convert: Argument " +
-                    "is not a substitution instance but is compatible.");
-        }
+        return new ArrayToken(result);
     }
 
     /** Convert the argument MatrixToken to an ArrayToken. If the argument
