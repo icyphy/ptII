@@ -24,7 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (nsmyth@eecs.berkeley.edu)
+@ProposedRating Yellow (nsmyth@eecs.berkeley.edu)
+@AcceptedRating Yellow (yuhong@eecs.berkeley.edu)
 
 Created : May 1998
 
@@ -55,7 +56,7 @@ ptolemy.data.expr.UtilityFunctions are searched for a given function.
 FIXME: need to add in ComplexToken when it is written.
 <p>
 @author Neil Smyth
-@version @(#)ASTPtFunctionNode.java	1.21 09/22/98
+@version $Id$
 @see ptolemy.data.expr.ASTPtRootNode
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token
@@ -84,7 +85,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
                 argValues[i] = new Long(((LongToken)child).getValue());
                 argTypes[i] = Long.TYPE;
             } else if (child instanceof StringToken) {
-                argValues[i] = new Long(((StringToken)child).getValue());
+                argValues[i] = new String(((StringToken)child).getValue());
                 argTypes[i] = argValues[i].getClass();
             } else if (child instanceof BooleanToken) {
                 argValues[i] = new Boolean(((BooleanToken)child).getValue());
@@ -100,6 +101,7 @@ public class ASTPtFunctionNode extends ASTPtRootNode {
         Enumeration allClasses = PtParser.getRegisteredClasses().elements();
         boolean foundMethod = false;
         Object result = null;
+        System.out.println("About to start looking for function " + funcName);
         while (allClasses.hasMoreElements()) {
             Class nextClass = (Class)allClasses.nextElement();
             try {
