@@ -380,7 +380,7 @@ and then rerun
 See $PTII/doc/install.htm for details.'])
 
 fi
-cd "$startdir"
+
 
 #--------------------------------------------------------------------
 #	We require JDK1.4 or later
@@ -799,28 +799,38 @@ else
     AC_MSG_CHECKING([for GMP])
     AC_CHECK_HEADERS(gmp.h, PT_GMP=yes, PT_GMP=no)
     if test "$PT_GMP" = "yes"; then
-           AC_MSG_RESULT(yes)
+        AC_MSG_CHECKING([for gcc])
+        AC_PATH_PROG(PTCC, gcc)
+        if test "${PTCC:-none}" == "none"; then
+            AC_MSG_WARN([Failed to find gcc])
+	    AC_PATH_PROG(PTCC, cc)
+	    if test "${PTCC:-none}" == "none"; then
+	        AC_MSG_WARN([Failed to find gcc or cc, so we will
+    not be able to compile the mescal output]);
+            fi
+	fi
+
+	PT_GMP_OK=no
+	startdir=`pwd`
+        cd "$srcdir/config"
+        AC_MSG_CHECKING([gmp by compiling a small program])
+	if "$PTCC" gmpTest.c -o gmpTest -L/usr/local/lib -lgmp ; then
+	    ./gmpTest
+	    AC_MSG_RESULT([ok])
+	else    
+	    RESULTS=`"$PTCC" gmpTest.c -o gmpTest -L/usr/local/lib -lgmp`
+	    AC_MSG_WARN([Failed to compile config/gmpTest.c, 
+    "$PTCC" gmpTest.c -o gmpTest -L/usr/local/lib -lgmp
+    $RESULTS])
+	fi
+        cd "$startdir"
     else
-           # FIXME: We could look for gmp.h in vendors/misc
-           AC_MSG_WARN([Failed to find gmp.h, which is only
+        # FIXME: We could look for gmp.h in vendors/misc
+        AC_MSG_WARN([Failed to find gmp.h, which is only
     needed to compile $MESCAL_RELSAT_USER_DIR
     gmp can be found at http://www.swox.com/gmp/
     Under cygwin, you should configure with
        ./configure --disable-static --enable-shared])
-    fi
-    AC_MSG_CHECKING([for gcc])
-    AC_PATH_PROG(PTCC, gcc)
-    if test "${PTCC:-none}" != "none"; then
-        PTMATLAB_DIR=matlab
-    else    
-        AC_MSG_WARN([Failed to find gcc])
-	AC_PATH_PROG(PTCC, cc)
-	if test "${PTCC:-none}" != "none"; then
-	    PTMATLAB_DIR=matlab
-	else	
-	    AC_MSG_WARN([Failed to find gcc or cc, so we will
-    not be able to compile the Matlab interface in ptolemy/matlab]);
-	fi
     fi
 fi
 
