@@ -490,7 +490,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public void initialize() throws IllegalActionException {
         if(_debugging) {
-            _debug(getFullName(), " initializeing");
+            _debug(getFullName(), " initializing");
             _debug(getFullName(), " get state Time parameter " +
                     ((DoubleToken)startTime.getToken()).doubleValue());
         }
@@ -501,7 +501,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         } else {
             double time =
                 containersContainer.getDirector().getCurrentTime();
-            startTime.setToken(new DoubleToken(time));
+            //startTime.setToken(new DoubleToken(time));
             setCurrentTime(time);
         }
         if(_debugging) {
@@ -570,7 +570,6 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         }
         // invalidate schedule
         scheduler.setValid(false);
-        
         if(_debugging) _debug(getFullName(), " clearing break point table.");
         TotallyOrderedSet bps = getBreakPoints();
         if(bps != null) {
@@ -578,7 +577,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
         } else {
             _breakPoints = new TotallyOrderedSet(
                     new FuzzyDoubleComparator(_timeResolution));
-        }
+        }       
         if(_debugging) _debug(getName(), " preinitialize actors");
         Iterator allactors = ca.deepEntityList().iterator();
         while (allactors.hasNext()) {

@@ -587,12 +587,6 @@ public abstract class CTSingleSolverDirector extends CTDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    // Indicate the first round of execution.
-    //protected boolean _first;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
     // The classname of the ODE solver.
