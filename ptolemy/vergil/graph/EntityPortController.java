@@ -121,13 +121,19 @@ public class EntityPortController extends NodeController {
 
     public static class EntityPortRenderer implements NodeRenderer {
 	public Figure render(Object n) {
+	    Port port = (Port)n;
 	    Polygon2D.Double polygon = new Polygon2D.Double();
 	    polygon.moveTo(-4, 4);
 	    polygon.lineTo(4, 0);
 	    polygon.lineTo(-4, -4);
 	    polygon.closePath();
-	    Figure figure = new BasicFigure(polygon, Color.black);
-	    Port port = (Port)n;
+            Color fill;
+            if(port instanceof IOPort && ((IOPort)port).isMultiport()) {
+                fill = Color.white;
+            } else {
+                fill = Color.black;
+            }
+	    Figure figure = new BasicFigure(polygon, fill, (float)1.5);
 	    figure.setToolTipText(port.getName());
 	    return figure;
 	}
