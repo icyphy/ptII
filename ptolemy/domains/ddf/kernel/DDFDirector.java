@@ -108,6 +108,7 @@ import ptolemy.kernel.util.Workspace;
 
    @author Gang Zhou
    @version $Id$
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Red (cxh)
    @Pt.AcceptedRating Red (cxh)
 */

@@ -54,6 +54,10 @@ import ptolemy.kernel.util.Settable;
    the next iteration.
 
    @author Gang Zhou
+   @version $Id$
+   @since Ptolemy II 4.1
+   @Pt.ProposedRating Red (zgang)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class  DDFSingleTokenCommutator extends SingleTokenCommutator {
 

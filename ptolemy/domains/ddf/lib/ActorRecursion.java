@@ -73,6 +73,10 @@ import ptolemy.kernel.util.NameDuplicationException;
    directly controls all actors inside.
 
    @author Gang Zhou
+   @version $Id$
+   @since Ptolemy II 4.1
+   @Pt.ProposedRating Red (zgang)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class ActorRecursion extends TypedCompositeActor {
 

@@ -57,6 +57,10 @@ import ptolemy.kernel.util.StringAttribute;
    this with BooleanSelect which sends an output token every iteration.
 
    @author Gang Zhou
+   @version $Id$
+   @since Ptolemy II 4.1
+   @Pt.ProposedRating Red (zgang)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class DDFBooleanSelect extends TypedAtomicActor {

@@ -60,6 +60,10 @@ import ptolemy.kernel.util.Settable;
    port.
 
    @author Gang Zhou
+   @version $Id$
+   @since Ptolemy II 4.1
+   @Pt.ProposedRating Red (zgang)
+   @Pt.AcceptedRating Red (cxh)
 */
 
 public class DDFOrderedMerge extends OrderedMerge {
