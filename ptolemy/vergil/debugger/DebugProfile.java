@@ -46,8 +46,9 @@ which the actor should break.
 */
 public class DebugProfile {
 
-    /** Contruct a debug profile for an actor with the associated
-     * GraphController.
+    /** Construct a debug profile for an actor with the associated
+     *  GraphController.
+     *  @param graphController The GraphController.
      */
     public DebugProfile(BasicGraphController graphController) {
         _graphController = graphController;
