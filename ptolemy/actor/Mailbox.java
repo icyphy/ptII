@@ -137,8 +137,8 @@ public class Mailbox extends AbstractReceiver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                       protected variables                 ////
 
     // The token held.
-    private Token _token = null;
+    protected Token _token = null;
 }
