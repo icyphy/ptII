@@ -29,9 +29,7 @@
 @AcceptedRating Yellow (chf@eecs.berkeley.edu)
 */
 
-package ptolemy.actor.lib.javasound;
-
-import java.io.IOException;
+package ptolemy.apps.etherealSting;
 
 import ptolemy.actor.lib.Source;
 import ptolemy.data.DoubleToken;
@@ -41,12 +39,17 @@ import ptolemy.kernel.attributes.FileAttribute;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.media.javasound.SoundPlayback; // For javadoc
 import ptolemy.media.javasound.SoundReader;
+import ptolemy.media.javasound.SoundWriter; // For javadoc
+
+import java.io.IOException;
 
 
 /////////////////////////////////////////////////////////////////
 //// AudioReader
 /**
+
 This actor outputs samples from a sound file as doubles in
 the range [-1.0, 1.0]. If the file has multiple channels of
 output data, then the separate channels are sent on successive
@@ -75,12 +78,12 @@ applets more privileges.
 <p>
 Note: Requires Java 2 v1.3.0 or later.
 
-@author Brian K. Vogel, Christopher Hylands, Edward A. Lee
+@author Brian K. Vogel, Christopher Hylands, Edward A. Lee, Steve Neuendorffer
 @version $Id$
 @since Ptolemy II 1.0
 @see ptolemy.media.javasound.LiveSound
-@see ptolemy.media.javasound.SoundWriter
-@see ptolemy.media.javasound.SoundPlayback
+@see SoundWriter
+@see SoundPlayback
 */
 public class AudioReader extends Source {
 
@@ -162,79 +165,6 @@ public class AudioReader extends Source {
         }
     }
 
-    /** Invoke <i>count</i> iterations of this actor. This method
-     *  causes one audio sample per channel per iteration to be
-     *  read from the specified file. Each sample is converted to
-     *  a double token, with a maximum range of -1.0 to 1.0.
-     *  One double token per channel is written to the output port
-     *  in an iteration.
-     *  <p>
-     *  This method should be called instead of the prefire(),
-     *  fire(), and postfire() methods when this actor is used in a
-     *  domain that supports vectorized actors.
-     *  @param count The number of iterations to perform.
-     *  @return COMPLETED if the actor was successfully iterated the
-     *   specified number of times. Return STOP_ITERATING if the
-     *   end of the sound file is reached.
-     *  @see ptolemy.actor.Executable
-     *  @exception IllegalActionException If there is a problem reading
-     *   from the specified sound file.
-     */
-    public int iterate(int count) throws IllegalActionException {
-        if (_reachedEOF || _soundReader == null) {
-            return STOP_ITERATING;
-        }
-        _firedSinceWrapup = true;
-        // Check whether we need to reallocate the output token array.
-        if (_audioSendArray == null
-                || _channels > _audioSendArray.length
-                || count > _audioSendArray[0].length) {
-            _audioSendArray = new DoubleToken[_channels][count];
-        }
-        // For each sample.
-        int samplesToOutput = 0;
-        while (samplesToOutput < count) {
-            // Copy a sample to the output array for each channel.
-            for (int j = 0; j < _channels; j++) {
-                _audioSendArray[j][samplesToOutput] = new DoubleToken(
-                        _audioIn[j][_sampleIndex]);
-            }
-            samplesToOutput++;
-            _sampleIndex++;
-            // Check whether we still have at least one sample left.
-            // NOTE: This assumes that all channels have the same length
-            // as the 0 channel.
-            if ((_audioIn[0].length - _sampleIndex) <= 0) {
-                // We just ran out of samples.
-                // Need to read more data.
-                try {
-                    // Read in audio data.
-                    _audioIn = _soundReader.getSamples();
-                } catch (Exception ex) {
-                    throw new IllegalActionException(this, ex,
-                            "Unable to get samples from the file.");
-                }
-                _sampleIndex = 0;
-                // Check that the read was successful
-                if (_audioIn != null) {
-                    _reachedEOF = false;
-                } else {
-                    _reachedEOF = true;
-                    break;
-                }
-            }
-        }
-        // Send outputs.
-        for (int j = 0; j < _channels; j++) {
-            output.send(j, _audioSendArray[j], samplesToOutput);
-        }
-        if (_reachedEOF) {
-            return STOP_ITERATING;
-        } else {
-            return COMPLETED;
-        }
-    }
-
     /** This method causes one audio sample per channel to be
      *  read from the specified file. Each sample is converted to
      *  a double token, with a maximum range of -1.0 to 1.0.
@@ -246,17 +176,55 @@ public class AudioReader extends Source {
      *   from the specified sound file.
      */
     public boolean postfire() throws IllegalActionException {
-        int returnVal = iterate(1);
-        if (returnVal == COMPLETED) {
-            return true;
-        } else if (returnVal == NOT_READY) {
-            // This should never happen.
-            throw new IllegalActionException(this,
-                    "Actor is not ready to fire.");
-        } else if (returnVal == STOP_ITERATING) {
+        super.postfire();
+        if (_reachedEOF || _soundReader == null) {
             return false;
         }
-        return false;
+        _firedSinceWrapup = true;
+        // Check whether we need to reallocate the output token array.
+        if (_audioSendArray == null
+                || _channels > _audioSendArray.length) {
+            _audioSendArray = new DoubleToken[_channels];
+        }
+        // Copy a sample to the output array for each channel.
+        for (int j = 0; j < _channels; j++) {
+            _audioSendArray[j] = new DoubleToken(
+                    _audioIn[j][_sampleIndex]);
+        }
+   
+        _sampleIndex++;
+       
+        // Check whether we still have at least one sample left.
+        // NOTE: This assumes that all channels have the same length
+        // as the 0 channel.
+        if ((_audioIn[0].length - _sampleIndex) <= 0) {
+            // We just ran out of samples.
+            // Need to read more data.
+            try {
+                // Read in audio data.
+                _audioIn = _soundReader.getSamples();
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, ex,
+                        "Unable to get samples from the file.");
+            }
+            _sampleIndex = 0;
+            // Check that the read was successful
+            if (_audioIn != null) {
+                _reachedEOF = false;
+            } else {
+                _reachedEOF = true;
+            }
+        }
+    
+        // Send outputs.
+        for (int j = 0; j < _channels; j++) {
+            output.send(j, _audioSendArray[j]);
+        }
+        if (_reachedEOF) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     /** Return false if there is no more data available in the file.
@@ -302,6 +270,7 @@ public class AudioReader extends Source {
             // This value was chosen arbitrarily.
             int getSamplesArraySize = 64;
             try {
+                System.out.println("URL = " + fileOrURL.asURL());
                 _soundReader = new SoundReader(fileOrURL.asURL(),
                         getSamplesArraySize);
             } catch (IOException ex) {
@@ -342,7 +311,7 @@ public class AudioReader extends Source {
     private double[][] _audioIn;
 
     /** Buffer of tokens to send. */
-    private DoubleToken[][] _audioSendArray;
+    private DoubleToken[] _audioSendArray;
 
     /** The number of channels. */
     private int _channels;
