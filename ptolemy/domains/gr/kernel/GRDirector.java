@@ -177,11 +177,11 @@ public class GRDirector extends StaticSchedulingDirector {
                     " fired, but it has no container!");
         }
 
-        Scheduler s = getScheduler();
-        if (s == null)
+        Scheduler scheduler = getScheduler();
+        if (scheduler == null)
             throw new IllegalActionException(this,"Attempted to fire " +
                     "GR system with no scheduler");
-        Enumeration allactors = s.schedule();
+        Enumeration allactors = scheduler.schedule();
         while (allactors.hasMoreElements()) {
 
             Actor actor = (Actor)allactors.nextElement();
