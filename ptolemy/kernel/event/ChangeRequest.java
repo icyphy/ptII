@@ -63,7 +63,7 @@ public abstract class ChangeRequest {
      *  @param originator The source of the change request.
      *  @param description A description of the change request.
      */
-    protected ChangeRequest(Nameable originator, String description) {
+    public ChangeRequest(Nameable originator, String description) {
         _description = description;
         _originator = originator;
     }
