@@ -215,15 +215,6 @@ class SaveAsJava {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Split the specified name at the last period, and return the
-     *  last part. If there is no period, return the original name.
-     *  @param name The string from which the suffix is to be extracted.
-     *  @return The extracted suffix.
-     */
-    protected static final String _extractSuffix(String name) {
-        return name.substring(name.lastIndexOf(".") + 1);
-    }
-
     /** Generate Java code that creates attributes, if necessary,
      *  and initializes them with their initial values.
      *  Since attributes can themselves have attributes, this
@@ -499,10 +490,6 @@ class SaveAsJava {
         // generate code for actor/lib/test/auto/IIR.xml.
         // If we don't, then when we create IIR.java, we have problems
         // compiling because we have the ptolemy.actor.lib.IIR actor.
-
-        //String className = _extractSuffix(classFullName);
-        //_insertIfUnique(classFullName, _importList);
-        //return className;
 
         String classFullName = object.getClass().getName();
         return classFullName;
