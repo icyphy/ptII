@@ -125,7 +125,7 @@ public class VariableRecursiveLattice extends RecursiveLattice {
                             "tokenConsumptionRate");
                 }
                 tokenConsumptionRate.setToken(rate);
-                
+
                 Parameter tokenProductionRate = (Parameter)
                         output.getAttribute("tokenProductionRate");
                 if (tokenProductionRate == null) {

@@ -77,10 +77,10 @@ The signs of the coefficients used in this actor are appropriate for values
 given by the LevinsonDurbin actor.
 <p>
 <b>References</b>
-<p>[1]  
+<p>[1]
 J. Makhoul, "Linear Prediction: A Tutorial Review",
 <i>Proc. IEEE</i>, Vol. 63, pp. 561-580, Apr. 1975.
-<p>[2]  
+<p>[2]
 S. M. Kay, <i>Modern Spectral Estimation: Theory & Application</i>,
 Prentice-Hall, Englewood Cliffs, NJ, 1988.
 
@@ -173,7 +173,7 @@ public class Lattice extends Transformer {
             // Backward:  Compute the weights for the next round
             for (int i = M-1; i >0 ; i--) {
                 k = - _reflectionCoefs[i-1];
-                _backward[i] = k * _forward[i-1] + _backward[i-1];	
+                _backward[i] = k * _forward[i-1] + _backward[i-1];
             }
             _backward[0] = _forward[0];   // _backward[0]=x[n]
         }
