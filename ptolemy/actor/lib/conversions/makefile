@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2000 The Regents of the University of California.
+# @Copyright (c) 1999-2000 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -45,19 +45,19 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	lib
+PTPACKAGE = 	conversions
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	ComplexToReal.java\
-	DoubleToFix.java\
-	FixToDouble.java\
-	PolarToRectangular.java\
-	RectangularToPolar.java\
+	ComplexToReal.java \
+	DoubleToFix.java \
+	FixToDouble.java \
+	PolarToRectangular.java \
+	RectangularToPolar.java \
 	RealToComplex.java
-	
+
 EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -73,7 +73,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 
 depend:
