@@ -208,8 +208,11 @@ public class PtolemyModule implements Module {
            getApplication().showError("Failed to parse icon library", e);
         }
    
+	// Get the url for the entity library.
+	URL entityLibURL = 
+	    getModuleResources().getResource("rootEntityLibrary");
 	// Create the library browser.
-	JTree pTree = LibraryTreeModel.createTree(application);
+	JTree pTree = LibraryTreeModel.createTree(application, entityLibURL);
         pTree.setBackground(BACKGROUND_COLOR);
         JScrollPane scrollPane = new JScrollPane(pTree);
         scrollPane.setMinimumSize(new Dimension(200, 200));

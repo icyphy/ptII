@@ -101,17 +101,16 @@ public class LibraryTreeModel extends EntityTreeModel {
      *  @param application The application, for error reporting, or null
      *   to send errors to the standard error stream.
      */
-    public static JTree createTree(Application application) {
+    public static JTree createTree(Application application, URL entitylibURL) {
+	// FIXME: perhaps this should clear the tree and reparse?
         if (instance._pTree != null) return instance._pTree;
         // If this fails, we don't really want to throw an exception
         // so that users can manually open libraries.
         try {
-            URL entitylibURL = ClassLoader.getSystemClassLoader().getResource(
-                    "ptolemy/vergil/lib/rootEntityLibrary.xml");
             if (entitylibURL == null) {
                 throw new Exception(
                         "Cannot open master library: "
-                        + "ptolemy/vergil/lib/rootEntityLibrary.xml");
+                        + entitylibURL);
             }
             MoMLParser parser = new MoMLParser();
             instance._masterLibrary = (CompositeEntity) parser.parse(
