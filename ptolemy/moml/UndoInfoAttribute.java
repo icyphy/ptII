@@ -113,7 +113,7 @@ public class UndoInfoAttribute extends SingletonAttribute
      *  undoable.
      */
      public void mergeTopTwoUndos() {
-        if (_undoEntries.size() < 2) {
+         if (_undoEntries.size() < 2) {
             // Nothing to do so return
             return;
         }
@@ -122,6 +122,8 @@ public class UndoInfoAttribute extends SingletonAttribute
         NamedObj contextFirst = entryFirst.getUndoContext();
         if (contextFirst != entryLast.getUndoContext()) {
             // cannot merge
+            pushUndoEntry(entryFirst);
+            pushUndoEntry(entryLast);
             return;
         }
         StringBuffer combinedMoML = new StringBuffer();
