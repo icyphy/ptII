@@ -42,7 +42,7 @@ applet is displayed on a XGA screen-->
                    VALUE = "ptolemy.actor.gui.MoMLApplet" > \
 	    <PARAM NAME = "codebase"   VALUE = "@codeBase@" > \
 	    <PARAM NAME = "archive" \
-                   VALUE = "ptolemy/ptsupport.jar,@domainJar@" > \
+                   VALUE = "@modelJarFiles@" > \
             <PARAM NAME = "type" \
                    VALUE = "application/x-java-applet;jpi-version=1.4.1" > \
             <PARAM NAME = "scriptable" VALUE = "false" > \
@@ -61,7 +61,7 @@ applet is displayed on a XGA screen-->
             type = "application/x-java-applet;jpi-version=1.4.1" \
             code = "ptolemy.actor.gui.MoMLApplet" \
             codebase = "@codeBase@" \
-            archive = "ptolemy/ptsupport.jar,@domainJar@" \
+            archive = "@modelJarFiles@" \
             width = "450" \
             height = "400" \
             NAME = "@sanitizedModelName@" background = "#faf0e6" controls = "buttons, directorParameters, topParameters" orientation = "vertical" modelURL = "@sanitizedModelName@.xml"  \
@@ -77,7 +77,7 @@ applet is displayed on a XGA screen-->
         <APPLET \
             code = "ptolemy.actor.gui.MoMLApplet" \
             codebase = "@codeBase@" \
-            archive = "ptolemy/ptsupport.jar,@domainJar@" \
+            archive = "@modelJarFiles@" \
             width = "450" \
             height = "400" \
             > \
