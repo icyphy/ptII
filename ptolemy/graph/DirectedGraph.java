@@ -188,11 +188,11 @@ public class DirectedGraph extends Graph {
     /** Return the nodes that are in cycles. If there are multiple cycles,
      *  the nodes in all the cycles will be returned.
      *  The implementation computes the transitive closure of the
-     *  graph, if it is not already computed after the last graph
+     *  graph, if it has not already been computed since the last graph
      *  change.  So the first call to this method after graph
      *  change may be slow, but all the subsequent calls return
      *  in constant time.
-     *  @return an array of Objects representing nodes in cycles.
+     *  @return An array of Objects representing nodes in cycles.
      */
     public Object[] cycleNodes() {
 	_computeTransitiveClosure();
