@@ -129,10 +129,27 @@ public class SDFDirector extends StaticSchedulingDirector {
     /** A Parameter representing the number of times that postfire may be
      *  called before it returns false.  If the value is less than or
      *  equal to zero, then the execution will never return false in postfire,
-     *  and thus the execution can continue forever.
+     *  and thus the execution can continue forever. Note that the amount
+     *  of data processed by the SDF model is a function of both this
+     *  parameter and the value of parameter <i>vectorizationFactor</i>, since
+     *  <i>vectorizationFactor</i> can influence the choice of schedule.
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
+
+    /** A Parameter representing the requested vectorization factor.
+     *  The director will attempt to construct a single appearance
+     *  schedule that minimizes actor activations, using the value
+     *  of this parameter as the global blocking factor. This parameter 
+     *  serves only as a suggestion, and the director is free to ignore 
+     *  it or to use a different factor. Allowable values for this
+     *  parameter consist of positive integers. An exception will occur 
+     *  if the value is not a positive integer. It is currently unsafe 
+     *  to set the value of this parameter to be greater than one if the SDF 
+     *  graph contains loops. The default value is an IntToken with the 
+     *  value one.
+     */
+    public Parameter vectorizationFactor;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -150,6 +167,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         SDFDirector newobj = (SDFDirector)(super.clone(ws));
         newobj.iterations =
             (Parameter)newobj.getAttribute("iterations");
+	newobj.vectorizationFactor =
+            (Parameter)newobj.getAttribute("vectorizationFactor");
         return newobj;
     }
 
@@ -159,12 +178,13 @@ public class SDFDirector extends StaticSchedulingDirector {
      *  director is updated during fire, so it may be used with domains that
      *  require this property, such as CT.
      *  <p>
-     *  Iterating an actor involves calling the actor's prefire, fire and
-     *  postfire methods in succession.  If prefire returns false, indicating
-     *  that the actor is not ready to execute, then an IllegalActionException
-     *  will be thrown.   The values returned from postfire are recorded and
-     *  are used to determine the value that postfire will return at the
-     *  end of the director's iteration.
+     *  Iterating an actor involves calling the actor's iterate() method,
+     *  which is equivalent to calling the actor's  prefire(), fire() and
+     *  postfire() methods in succession.  If iterate() returns NOT_READY, 
+     *  indicating that the actor is not ready to execute, then an 
+     *  IllegalActionException will be thrown. The values returned from 
+     *  iterate() are recorded and are used to determine the value that 
+     *  postfire() will return at the end of the director's iteration.
      *  @exception IllegalActionException If any actor executed by this
      *  actor return false in prefire.
      *  @exception InvalidStateException If this director does not have a
@@ -185,32 +205,37 @@ public class SDFDirector extends StaticSchedulingDirector {
             while (allactors.hasMoreElements()) {
                 Actor actor = (Actor)allactors.nextElement();
 
-		// Notify of the prefire event. 
-		if(_debugging) {
-		    _debug(new FiringEvent(this, actor, FiringEvent.PREFIRE));
+		if(_debugging) {		    
+		  _debug("Iterating " + ((Nameable)actor).getFullName());
+		  _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
 		}
 
-                if(!actor.prefire()) {
-                    throw new IllegalActionException(this,
-                            (ComponentEntity) actor, "Actor " +
-                            "is not ready to fire.");
-                }
-
-                if(_debugging) {		    
-                    _debug("Firing " + ((Nameable)actor).getFullName());
-		    _debug(new FiringEvent(this, actor, FiringEvent.FIRE));
+		// FIXME: This is a hack. It does not even check if the
+		// SDF graph contains loops, and may be far from optimal when
+		// the SDF graph contains non-homogeneous actors. However,
+		// the default value of vectorizationFactor = 1,
+		// which should be completely safe for all models.
+		// TODO: I need to modify the scheduler to generate an
+		// optimum vectorized schedule. I.e., first try to
+		// obtain a single appearance schedule. Then, try
+		// to minimize the number of actor activations.
+		int factor = ((IntToken) (vectorizationFactor.getToken())).intValue();
+		if (factor < 1) {
+		    throw new IllegalActionException(this,
+			 "The supplied vectorization factor is invalid " +
+			 "Valid values consist of positive integers. " +
+                         "The supplied value was: " + factor);
 		}
-
-                actor.fire();
-
-		if(_debugging) {
-		    _debug(new FiringEvent(this, actor, FiringEvent.POSTFIRE));
-		}
-
-                _postfirereturns = _postfirereturns && actor.postfire();
-
-		if(_debugging) {
-		    _debug(new FiringEvent(this, actor, FiringEvent.POSTPOSTFIRE));
+		int returnVal = 
+		  actor.iterate(factor);
+		if (returnVal == COMPLETED) {
+		    _postfirereturns = _postfirereturns && true;
+		} else if (returnVal == NOT_READY) {
+		    throw new IllegalActionException(this,
+		          (ComponentEntity) actor, "Actor " +
+		          "is not ready to fire.");
+		} else if (returnVal == STOP_ITERATING) {
+		    _postfirereturns = false;
 		}
             }
         }
@@ -424,6 +449,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         try {
             iterations
                 = new Parameter(this,"iterations",new IntToken(0));
+	    vectorizationFactor
+                = new Parameter(this,"vectorizationFactor",new IntToken(1));
         }
         catch (Exception e) {
             throw new InternalErrorException(
