@@ -37,6 +37,7 @@ import soot.util.*;
 import soot.toolkits.graph.*;
 import java.util.*;
 
+import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 
 /** 
@@ -55,7 +56,9 @@ public class TokenInstanceofEliminator extends BodyTransformer
 
     public static TokenInstanceofEliminator v() { return instance; }
 
-    public String getDeclaredOptions() { return super.getDeclaredOptions(); }
+    public String getDeclaredOptions() {
+        return super.getDeclaredOptions() + " debug"; 
+    }
     
     protected void internalTransform(Body b, String phaseName, Map options)
     {
@@ -64,11 +67,7 @@ public class TokenInstanceofEliminator extends BodyTransformer
         System.out.println("TokenInstanceofEliminator.internalTransform(" +
                 body.getMethod() + ", " + phaseName + ")");
 
-        eliminateCastsAndInstanceOf(body, phaseName, new HashSet());
-    }
- 
-    public static void eliminateCastsAndInstanceOf(
-            Body body, String phaseName, Set unsafeLocalSet) {
+        boolean debug = Options.getBoolean(options, "debug");
 
         // Analyze the types of variables which refer to tokens.
         TokenTypeAnalysis tokenTypes = 
@@ -95,80 +94,17 @@ public class TokenInstanceofEliminator extends BodyTransformer
                         continue;
                     }
 
+                    // Use the token type inference to get the actual
+                    // type of the argument.
                     ptolemy.data.type.Type type =
                         tokenTypes.getTypeOfBefore((Local)op, unit);
 
                     Type opType = 
                         PtolemyUtilities.getSootTypeForTokenType(type);
 
-                    // Skip locals that are unsafe.
-                    if(unsafeLocalSet.contains(op)) {
-                        continue;
-                    }
-
-                    RefType checkRef, opRef;
-                    if(checkType instanceof RefType && 
-                            opType instanceof RefType) {
-                        checkRef = (RefType)checkType;
-                        opRef = (RefType)opType;
-                      
-                    } else if(checkType instanceof ArrayType &&
-                              opType instanceof ArrayType) {
-                        if(((ArrayType)checkType).numDimensions != 
-                                ((ArrayType)opType).numDimensions) {
-                            // We know the answer is false.
-                            box.setValue(IntConstant.v(0));
-                            System.out.println("Replacing " + value + 
-                                    " with false.");
-                            continue;
-                        }
-                        Type checkBase = ((ArrayType)checkType).baseType;
-                        Type opBase = ((ArrayType)opType).baseType;
-                        if(checkBase instanceof RefType &&
-                               opBase instanceof RefType) {
-                            checkRef = (RefType)checkBase;
-                            opRef = (RefType)opBase;
-                        } else {
-                            // Can't say anything?
-                            continue;
-                        }
-                    } else {
-                        // Can't say anything?
-                        continue;
-                    }
-                    SootClass checkClass = ((RefType)checkRef).getSootClass();
-                    SootClass opClass = ((RefType)opRef).getSootClass();
-                    Hierarchy hierarchy = Scene.v().getActiveHierarchy();
-                    System.out.println("checkClass = " + checkClass);
-                    System.out.println("opClass = " + opClass);
-                    // FIXME: This part is the same as in Cast and Instanceof
-                    // eliminator... can we factor it out?
-                    if(checkClass.isInterface()) {
-                        if(opClass.getInterfaces().contains(checkClass)) {
-                            // Then we know the instanceof will be true.
-                            System.out.println("Replacing " + value +
-                                    " with true.");
-                            box.setValue(IntConstant.v(1));
-                        } else {
-                            // We need to ensure that no subclass of
-                            // opclass implements the interface.
-                        }
-                       
-                    } else if(hierarchy.isClassSuperclassOfIncluding(
-                            checkClass, opClass)) {
-                        // Then we know the instanceof will be true.
-                        System.out.println("Replacing " + value + 
-                                " with true.");
-                        box.setValue(IntConstant.v(1));
-                    } else if(!hierarchy.isClassSuperclassOfIncluding(
-                            opClass, checkClass)) {
-                        // Then we know the instanceof will be false,
-                        // because no subclass of opClass can suddenly
-                        // become a subclass of checkClass.
-                        System.out.println("Replacing " + value +
-                                " with false.");
-                        box.setValue(IntConstant.v(0));
-                    }
+                    CastAndInstanceofEliminator.replaceInstanceofCheck(
+                            box, Scene.v().getActiveHierarchy(), 
+                            checkType, opType, debug);
                 }
             }
         }
