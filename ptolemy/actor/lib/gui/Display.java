@@ -54,13 +54,14 @@ import javax.swing.text.BadLocationException;
 
 
 /**
-Display the values of the tokens arriving on the input channels
-in a text area on the screen.  The input on each firing is written
-on a separate line.  If there is more than one input channel,
-then the displays are separated by tabs.
-The input type is GENERAL, meaning that any token is acceptable.
-Tokens are read from the input only in the postfire() method, to
-allow them to settle in domains where they converge to a fixed point.
+
+Display the values of the tokens arriving on the input channels in a
+text area on the screen.  The input on each firing is written on a
+separate line.  If there is more than one input channel, then the
+displays are separated by tabs.  The input type is GENERAL, meaning
+that any token is acceptable.  Tokens are read from the input only in
+the postfire() method, to allow them to settle in domains where they
+converge to a fixed point.
 
 @author  Yuhong Xiong, Edward A. Lee
 @version $Id$
@@ -82,6 +83,7 @@ public class Display extends Sink implements Placeable, SequenceActor {
         input.setTypeEquals(BaseType.GENERAL);
 
         rowsDisplayed = new Parameter(this, "rowsDisplayed", new IntToken(10));
+        columnsDisplayed = new Parameter(this, "columnsDisplayed", new IntToken(40));
 
         // NOTE: As of jdk 1.3-beta, the setTabSize() method of
         // JTextArea does not work (it is ignored), so the tabSize
@@ -93,9 +95,14 @@ public class Display extends Sink implements Placeable, SequenceActor {
     ////        public variables and parameters                    ////
 
     /** The vertical size of the display, in rows. This contains an
-     *  an integer, and defaults to 10.
+     *  integer, and defaults to 10.
      */
     public Parameter rowsDisplayed;
+
+    /** The horizontal size of the display, in columnss. This contains
+     *  an integer, and defaults to 40.
+     */
+    public Parameter columnsDisplayed;
 
     /** The number of characters to expand tabs to. This contains an
      *  an integer, and defaults to 8.
@@ -125,7 +132,19 @@ public class Display extends Sink implements Placeable, SequenceActor {
             if (textArea != null) {
                 textArea.setRows(numRows);
             }
+        } else if (attribute == columnsDisplayed) {
+            int numColumns = 
+                ((IntToken)columnsDisplayed.getToken()).intValue();
+            if (numColumns <= 0) {
+                throw new IllegalActionException(this,
+                        "columnsDisplayed: requires a positive value.");
+            }
+            if (textArea != null) {
+                textArea.setColumns(numColumns);
+            }
         }
+        
+
         /* NOTE: Does not work...
            else if (attribute == tabSize) {
            int tab = ((IntToken)tabSize.getToken()).intValue();
@@ -151,7 +170,10 @@ public class Display extends Sink implements Placeable, SequenceActor {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Display newobj = (Display)super.clone(workspace);
         newobj.textArea = null;
-        newobj.rowsDisplayed = (Parameter)newobj.getAttribute("rowsDisplayed");
+        newobj.rowsDisplayed = 
+            (Parameter)newobj.getAttribute("rowsDisplayed");
+        newobj.columnsDisplayed = 
+            (Parameter)newobj.getAttribute("columnsDisplayed");
         // newobj.tabSize = (Parameter)newobj.getAttribute("tabSize");
         return newobj;
     }
@@ -208,8 +230,12 @@ public class Display extends Sink implements Placeable, SequenceActor {
             _container.add(_scrollPane);
             textArea.setBackground(Color.white);
             try {
-                int numRows = ((IntToken)rowsDisplayed.getToken()).intValue();
+                int numRows = 
+                    ((IntToken)rowsDisplayed.getToken()).intValue();
                 textArea.setRows(numRows);
+                int numColumns = 
+                    ((IntToken)columnsDisplayed.getToken()).intValue();
+                textArea.setColumns(numColumns);
             } catch (IllegalActionException ex) {
                 // Ignore, and use default number of rows.
             }
