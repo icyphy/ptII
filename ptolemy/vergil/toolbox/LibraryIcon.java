@@ -58,7 +58,7 @@ pattern.
 public class LibraryIcon extends PatternIcon implements Configurable {
 
     /**
-     * Create a new icon with the name "_ccon" in the given container.
+     * Create a new icon with the name "_icon" in the given container.
      * By default, the icon contains no graphic
      * representations.
      */
