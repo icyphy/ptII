@@ -7,4 +7,4 @@ http://www.jhdl.org/download.html
 
 Read and accept the license, then download the jar under 'Current Release'
 
-The current release of JHDL is version 0.3.17
+As of 8/11/02, the current release of JHDL is version 0.3.20
