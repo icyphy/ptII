@@ -106,8 +106,7 @@ OTHER_FILES_TO_BE_JARED = \
 # Note that PtolemyIISmallIcon.gif is also in doc/img.
 # We place a duplicate copy here to make it easy to ship
 # jar files that contain all the appropriate images.
-EXTRA_SRCS = \
-	$(JSRCS) \
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 
 # Sources that may or may not be present, but if they are present, we don't
