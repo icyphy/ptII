@@ -55,7 +55,6 @@ public class PrintTree {
        debug = args[0].equals("-d");
        if (debug) {
           fileStart++;
-          files--;
        }
     }
 
