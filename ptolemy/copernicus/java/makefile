@@ -82,7 +82,7 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) cg
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -284,6 +284,25 @@ compareTreeShakeJars:
 # Rules to run gcj, the GNU Java -> Native compiler
 # This code is very experimental, and not likely to work
 
+
+GCJ_DIR =	/home/eecs/cxh/src/ptII/vendors/gcj
+#GCJ_DIR =	/usr/local
+# The GNU C/Java compiler 
+GCJ =		$(GCJ_DIR)/bin/gcj
+GCJ_LIBDIR =	$(GCJ_DIR)/lib
+
+# GCJ Options, see http://gcc.gnu.org/onlinedocs/
+# If there is no -g or -O option, then the default is -g1
+#GCJ_FLAGS =	-static
+GCJ_FLAGS =	-static -pg -g0 -O3 -fno-bounds-check
+
+
+# GCJ flags used at link time
+#GCJ_LINK_FLAGS = -v -Wl,-R,$(GCJ_LIBDIR)
+GCJ_LINK_FLAGS = -v
+# -L$(GCJ_LIBDIR) should be first so we get the right libgcj.spec
+#GCJ_LINK_LIBS =  -L$(GCJ_LIBDIR)
+
 gcj:
 	echo "To compile a demo with gcj:" 
 	echo " 1) Run 'make gcjSetup gcjFix'"
@@ -316,12 +335,10 @@ gcj1:
 	@echo "     'make gcjFix'"
 	cd $(ROOT)/$(TARGETPATH); \
 		CLASSPATH=$(PTII) \
-		gcj --main=ptolemy.copernicus.java.cg.Orthogonal.Main -o ortho *.class
+		$(GCJ) $(GCJ_FLAGS) \
+			--main=ptolemy.copernicus.java.cg.$(MODEL).Main \
+			-o ortho *.class;
 	@echo "Even so, this fails when linking"
-
-GCJ_DIR=/home/eecs/cxh/src/ptII/vendors/gcj
-GCJ=$(GCJ_DIR)/bin/gcj
-GCJ_LIBDIR=$(GCJ_DIR)/lib
 
 gcj2: $(ROOT)/$(TARGETPATH)/gcj gcj2_0 gcj2_1 gcj2_2
 
@@ -376,18 +393,26 @@ gcj2_1:
 			files=`ls -1 $$dir/*.class | awk 'END {print NR}'`; \
 			if [ $$files -gt 1 ]; then \
 				echo "$$retval---Running gcj in $$dir"; \
-				(cd $$dir; CLASSPATH="."; $(GCJ) -g -c --CLASSPATH=$(PTII)/$(TARGETPATH)/gcj --encoding=UTF-8 *.class); \
+				(cd $$dir; CLASSPATH="."; \
+					$(GCJ) -g -c \
+					$(GCJ_FLAGS) \
+					--CLASSPATH=$(PTII)/$(TARGETPATH)/gcj \
+					--encoding=UTF-8 *.class); \
 			fi; \
 		done;
+
 gcj2_2:
 	@echo "--- Run gcj on all the .o files in the jar file dir"
 	@echo "    Note that here, we end up needing .class files other"
 	@echo "    than the ones in the tree shaken jar file"
 	cd $(ROOT)/$(TARGETPATH)/gcj; \
 		objs=`find . -name "*.o" -print | awk -F / '{for(i=1;i<NF;i++) {printf("%s/", $$i) } printf("*.o\n")}' | sort | uniq`; \
-		$(GCJ) -g --main=ptolemy.copernicus.java.cg.OrthogonalCom.Main \
-			-Wl,-R,$(GCJ_LIBDIR) \
-			-o $(MODEL)_gcj $$objs;
+		$(GCJ) -g --main=ptolemy.copernicus.java.cg.$(MODEL).Main \
+			$(GCJ_FLAGS) \
+			$(GCJ_LINK_FLAGS) \
+			-o $(MODEL)_gcj $$objs \
+			$(GCJ_LINK_LIBS);
+	ls -l $(ROOT)/$(TARGETPATH)/gcj/$(MODEL)_gcj
 
 gcjRun:
 	cd $(ROOT)/$(TARGETPATH)/gcj; \
@@ -414,32 +439,58 @@ gcjGdb:
 
 
 
+AR =		ar
+LIBNONSHAREDSUFFIX =	a
+RANLIB =	ranlib
+LIBDIR =	$(PTII)/$(TARGETPATH)/gcj/lib
 gcj3_1:
 	@echo "--- Determine what directories are in the jar file"
-	@echo "    then run gcj on the .class files with the "
-	@echo "    same directories in $PTII."
-	@echo "    Expect errors, so run with -k"
+	@echo "    then create libraries in "
+	@echo "    $(PTII)/$(TARGETPATH)/gcj/lib/"
+	if [ ! -d $(PTII)/$(TARGETPATH)/gcj/lib ]; then \
+		echo "making $(PTII)/$(TARGETPATH)/gcj/lib"; \
+		mkdir $(PTII)/$(TARGETPATH)/gcj/lib; \
+	fi
 	cd $(ROOT)/$(TARGETPATH)/gcj; \
 		dirs=`find . -type d -print`; \
 		echo "dirs=$$dirs"; \
 		for dir in $$dirs; \
 		do \
-			echo "---Running gcj in $$dir"; \
-			(cd $(PTII)/$$dir; CLASSPATH="$(PTII)"; gcj -c --CLASSPATH=$(PTII) --encoding=UTF-8 *.class); \
+			files=`ls -1 $$dir/*.o | awk 'END {print NR}'`; \
+			if [ $$files -gt 1 ]; then \
+				echo "---Running ar in $$dir"; \
+				ptlib=lib`basename $$dir`.$(LIBNONSHAREDSUFFIX); \
+				(cd $$dir; \
+					pwd; \
+					rm -f $$ptlib; \
+					$(AR) cq $$ptlib \
+						*.o; \
+					$(RANLIB) $$ptlib; \
+					rm -f $(LIBDIR)/$$ptlib; \
+					ln $$ptlib \
+						$(LIBDIR); \
+					); \
+			fi; \
 		done;
+		ls -l $(LIBDIR)
+
+
 gcj3_2:
-	@echo "--- Determine what directories are in the jar file"
-	@echo "    then run gcj on the .o files in the same directories in $PTII."
+	@echo "--- Link using the libraries in "
+	@echo "    $(PTII)/$(TARGETPATH)/gcj/lib/"
 	cd $(ROOT)/$(TARGETPATH)/gcj; \
-		objs=`find . -name "*.o" -print | awk -F / '{for(i=1;i<NF;i++) {printf("%s/", $$i) } printf("*.o\n")}' | sort | uniq`; \
-		(cd $(PTII); gcj --main=ptolemy.copernicus.java.cg.OrthogonalCom.Main \
-			-o ortho $$objs);
-	@echo "Unfortunately, this still does not work because we need"
-	@echo "yet more methods in other packages"
+		$(GCJ) -g --main=ptolemy.copernicus.java.cg.$(MODEL).Main \
+			$(GCJ_FLAGS) \
+			$(GCJ_LINK_FLAGS) \
+			-o $(MODEL)_lib_gcj  \
+			$(TARGETPATH)/*.o \
+			ptolemy/data/Numerical.o \
+			$(GCJ_LINK_LIBS) \
+			-L$(LIBDIR) \
+			-ldata -lexpr -ltype -lunit -lexpr -ldata -lmath -lgraph -lutil;
+	ls -l $(ROOT)/$(TARGETPATH)/gcj/$(MODEL)_lib_gcj
 
-
-
-
+#############################################################################
 
 
 timeOrthoCommDemo:
