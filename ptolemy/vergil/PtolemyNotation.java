@@ -38,7 +38,7 @@ import ptolemy.vergil.graph.*;
 
 
 /**
- * A visual notation creates views for a ptolemy document in Vergil. 
+ * A visual notation creates views for a ptolemy document in Vergil.
  *
  * @author Steve Neuendorffer
  * @version $Id$
@@ -49,7 +49,7 @@ public class PtolemyNotation extends Attribute implements VisualNotation {
      */
     public GraphPane createView(Document d) {
 	if(!(d instanceof PtolemyDocument)) {
-	    throw new InternalErrorException("Ptolemy Notation is only " + 
+	    throw new InternalErrorException("Ptolemy Notation is only " +
 		"compatible with Ptolemy documents.");
 	}
 

@@ -1,4 +1,4 @@
-/* A Visual Notation for Vergil Documents.  
+/* A Visual Notation for Vergil Documents.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -33,7 +33,7 @@ import diva.gui.*;
 import diva.graph.*;
 
 /**
- * A visual notation creates views for a document in Vergil. 
+ * A visual notation creates views for a document in Vergil.
  *
  * @author Steve Neuendorffer
  * @version $Id$

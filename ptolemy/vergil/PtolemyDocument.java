@@ -64,7 +64,7 @@ import javax.swing.*;
 
 /**
  * A Vergil document that contains a Ptolemy model.
- * Ptolemy documents are stored in MoML.  
+ * Ptolemy documents are stored in MoML.
  * <p>
  * In order to create views on itself, this document defers to an attribute
  * that is contained in the toplevel composite entity of the model.  This
@@ -109,7 +109,7 @@ public class PtolemyDocument extends AbstractDocument
 	return jgraph;
     }
 
-    /** Return the toplevel composite entity of the 
+    /** Return the toplevel composite entity of the
      * model contained in this document.
      */
     public CompositeEntity getModel() {
@@ -117,7 +117,7 @@ public class PtolemyDocument extends AbstractDocument
     }
 
     /** Return a visual notation that can create a view on this document.
-     * In this class, we search the toplevel entity in the model for a 
+     * In this class, we search the toplevel entity in the model for a
      * Ptolemy notation attribute and return the first one found.
      */
     public VisualNotation getVisualNotation() {
@@ -130,11 +130,15 @@ public class PtolemyDocument extends AbstractDocument
 	    notation = new PtolemyNotation();
 	}
 	return notation;
-    }	
+    }
 
-    /** Open the document from its current file.  
+    /** Open the document from its current file.
      *
+<<<<<<< PtolemyDocument.java
+     * @exception Exception  If there is no file, or if the I/O operation failed.
+=======
      * @exception Exception If there is no file, or if the I/O operation failed.
+>>>>>>> 1.6
      */
     public void open() throws Exception {
         if (getFile() == null) {
@@ -152,7 +156,11 @@ public class PtolemyDocument extends AbstractDocument
 
     /** Save the document to the current file.
      *
+<<<<<<< PtolemyDocument.java
+     * @exception Exception  If there is no file, or if the I/O operation failed.
+=======
      * @exception Exception If there is no file, or if the I/O operation failed.
+>>>>>>> 1.6
      */
     public void save() throws Exception {
         if (getFile() == null) {
@@ -165,7 +173,11 @@ public class PtolemyDocument extends AbstractDocument
     /** Save the document to the given file. Do not change the file
      * attribute to the new File object.
      *
+<<<<<<< PtolemyDocument.java
+     * @exception Exception  If the I/O operation failed.
+=======
      * @exception Exception If the I/O operation failed.
+>>>>>>> 1.6
      */
     public void saveAs(File file) throws Exception {
         String filename = file.getName();
@@ -174,18 +186,18 @@ public class PtolemyDocument extends AbstractDocument
         writer.flush();
     }
 
-    /** Save the document to the given URL.  
+    /** Save the document to the given URL.
      *
      * @exception UnsupportedOperationException always, as the save to
      * URL operation is not supported.
      */
     public void saveAs(URL url) {
         throw new UnsupportedOperationException(
-                "PtolemyDocument " + getTitle() + 
+                "PtolemyDocument " + getTitle() +
                 ": save to URL not supported");
     }
 
-    /** Set the model contained in this document.  
+    /** Set the model contained in this document.
      */
     public void setModel(CompositeEntity toplevel) {
 	_model = toplevel;
@@ -241,7 +253,7 @@ public class PtolemyDocument extends AbstractDocument
     }
 
     /**
-     * The factory for Ptolemy documents.  
+     * The factory for Ptolemy documents.
      */
     public static class Factory implements VergilDocumentFactory {
         /** Create a document with an empty typed composite actor for
@@ -258,7 +270,7 @@ public class PtolemyDocument extends AbstractDocument
         /** Create a document and create a new model using the information
          * in the given URL. In this base class, throw and exception, since
          * URL's are not supported.
-         * @exception UnsupportedOperationException 
+         * @exception UnsupportedOperationException
          * If the URL's are not supported.
          */
         public Document createDocument(Application app, URL url) {
@@ -267,7 +279,7 @@ public class PtolemyDocument extends AbstractDocument
         }
 
         /** Create a document and create a new model using the information
-         * in the given file. 
+         * in the given file.
          */
         public Document createDocument(Application app, File file) {
             PtolemyDocument d = new PtolemyDocument(app);

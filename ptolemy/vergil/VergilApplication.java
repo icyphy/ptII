@@ -139,7 +139,7 @@ public class VergilApplication extends MDIApplication {
         frame.setIconImage(iconImage);
 
         setCurrentDocument(null);
-       
+
         // Swing is stupid and adds components with the cross-platform UI and
         // not the system UI.
         SwingUtilities.updateComponentTreeUI(treepane);
@@ -219,7 +219,7 @@ public class VergilApplication extends MDIApplication {
     }
 
     /** Given a document, create a new view which displays that
-     * document. If the document is vergil document then defer to the 
+     * document. If the document is vergil document then defer to the
      * document to create the view.
      * @exception RuntimeException If the document is not a vergil document.
      */
@@ -239,10 +239,10 @@ public class VergilApplication extends MDIApplication {
         return Collections.unmodifiableList(_documentFactoryList);
     }
 
-    /** Return the default document factory.  This will be the first 
+    /** Return the default document factory.  This will be the first
      *  factory added with the addDocumentFactory method.
      */
-    public DocumentFactory getDocumentFactory() { 
+    public DocumentFactory getDocumentFactory() {
 	return (DocumentFactory)_documentFactoryList.get(0);
     }
 
@@ -397,7 +397,7 @@ public class VergilApplication extends MDIApplication {
 
     /** Set the given document to be the current document, and raise
      * the internal window that corresponds to that component.
-     * If there are no documents present, then disable the appropriate 
+     * If there are no documents present, then disable the appropriate
      * menu entries.
      */
     public void setCurrentDocument(Document d) {
@@ -416,11 +416,11 @@ public class VergilApplication extends MDIApplication {
 
     }
 
-    /** Throw an Exception.  Vergil uses a factory list instead of a 
+    /** Throw an Exception.  Vergil uses a factory list instead of a
      *  single factory.  Use addDocumentFactory to add a document factory.
      */
     public void setDocumentFactory(DocumentFactory df) {
-	throw new RuntimeException("setDocumentFactory is not allowed, use " + 
+	throw new RuntimeException("setDocumentFactory is not allowed, use " +
 				   "addDocumentFactory instead.");
     }
 
@@ -428,12 +428,12 @@ public class VergilApplication extends MDIApplication {
      * Grab the keyboard focus when the component that this listener is
      * attached to is clicked on.
      */
-    public class MouseFocusMover extends MouseAdapter {        
+    public class MouseFocusMover extends MouseAdapter {
         public void mouseClicked(
                 MouseEvent mouseEvent) {
             Component component =
                 mouseEvent.getComponent();
- 
+
             if (!component.hasFocus()) {
                 component.requestFocus();
             }
@@ -447,9 +447,9 @@ public class VergilApplication extends MDIApplication {
 	public void run() {
 	    DesktopFrame frame = ((DesktopFrame) getApplicationFrame());
 	    JTreePane pane = (JTreePane)frame.getPalettePane();
-	    
+
 	    JSplitPane splitPane = frame.getSplitPane();
-	    
+
 	    // There are differences in the way swing acts in JDK1.2 and 1.3
 	    // The way to get it to work with both is to set
 	    // the preferred size along with the minimum size.   JDK1.2 has a
@@ -460,17 +460,17 @@ public class VergilApplication extends MDIApplication {
 		setMinimumSize(new Dimension(150, 150));
 	    ((JComponent)pane.getTopComponent()).
 		setPreferredSize(new Dimension(150, 150));
-    
+
 	    parseLibraries();
 	    //System.out.println("Icons = " + _iconLibrary.description());
 
 	    CompositeEntity lib = getEntityLibrary();
-	    
+
 	    // We have "" because that is the name that was given in the
 	    // treepane constructor.
 	    //System.out.println("lib = " + lib.description());
 	    createTreeNodes(pane, lib.getFullName(), lib);
-	
+
 	    pane.setMinimumSize(new Dimension(150, 150));
 	    ((JComponent)pane.getTopComponent()).
 	    setMinimumSize(new Dimension(150, 150));

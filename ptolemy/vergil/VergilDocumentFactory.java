@@ -34,7 +34,7 @@ import diva.gui.DocumentFactory;
 
 /**
  * A document factory for Vergil that contains a name in order to differentiate
- * different factories.  
+ * different factories.
  *
  * @author Steve Neuendorffer
  * @version $Id$

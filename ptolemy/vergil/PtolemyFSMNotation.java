@@ -37,7 +37,7 @@ import diva.graph.model.*;
 import ptolemy.vergil.graph.*;
 
 /**
- * A visual notation creates views for a ptolemy document in Vergil. 
+ * A visual notation creates views for a ptolemy document in Vergil.
  *
  * @author Steve Neuendorffer
  * @version $Id$
@@ -85,13 +85,13 @@ public class PtolemyFSMNotation extends Attribute implements VisualNotation {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-  
+
     /** Construct a graph document that is owned by the given
      *  application
      */
     public GraphPane createView(Document d) {
 	if(!(d instanceof PtolemyDocument)) {
-	    throw new InternalErrorException("Ptolemy Notation is only " + 
+	    throw new InternalErrorException("Ptolemy Notation is only " +
 		"compatible with Ptolemy documents.");
 	}
 

@@ -32,7 +32,7 @@ package ptolemy.vergil;
 
 /**
  * A modular package that can be plugged into Vergil.  Usually the package
- * will take a reference to the application in its constructor and use the 
+ * will take a reference to the application in its constructor and use the
  * reference to add toolbars and menubars to the application.
  *
  * @author Steve Neuendorffer

@@ -69,25 +69,25 @@ import ptolemy.domains.sdf.kernel.*;
 import ptolemy.domains.pn.kernel.*;
 
 /**
- * A modular package that can be plugged into Vergil that adds support for 
+ * A modular package that can be plugged into Vergil that adds support for
  * Ptolemy II.  This package adds a Ptolemy II menu to the menu bar, which
  * allows access to the model of the currently selected document, if that
  * document is a Ptolemy document.  It also adds a new tool bar that contains
- * a pulldown menu for selecting directors and a pulldown menu for executing a 
+ * a pulldown menu for selecting directors and a pulldown menu for executing a
  * graph layout algorithm.
  * <p>
  * This package contains a list of Directors which are placed in the
  * appropriate toolbar menu.
  * <p>
- * This package contains a list of Visual notations.  Each notation is 
+ * This package contains a list of Visual notations.  Each notation is
  * capable of creating a view on a Ptolemy Document.  In some cases,
- * certain notations may be preferable for some domains.  For instance, 
+ * certain notations may be preferable for some domains.  For instance,
  * Finite State Machine models are usually represented using a bubble
  * and arc diagram.  However, bubble and arc diagrams are not usually used
  * for dataflow diagrams.
  * <p>
  * Currently the only access to the model that is allowed is executing the
- * model.  When the model is executed, this package listens to the state of 
+ * model.  When the model is executed, this package listens to the state of
  * the model's manager and updates the status bar.
  *
  * @author Steve Neuendorffer
@@ -122,7 +122,7 @@ public class PtolemyPackage implements Package {
 
         action = new AbstractAction("Execute System") {
             public void actionPerformed(ActionEvent e) {
-                PtolemyDocument d = 
+                PtolemyDocument d =
 		(PtolemyDocument) _application.getCurrentDocument();
                 if (d == null) {
                     return;
@@ -210,7 +210,7 @@ public class PtolemyPackage implements Package {
 	_application.addMenuItem(menuDevel, action, 'E', "Execute System");
 
 	JToolBar tb = new JToolBar();
-	Container pane = 
+	Container pane =
 	    ((DesktopFrame)_application.getApplicationFrame()).getToolBarPane();
 	pane.add(tb);
 
@@ -233,9 +233,9 @@ public class PtolemyPackage implements Package {
                 }
             }
         });
-	
+
 	tb.add(_layoutComboBox);
-	
+
 	_directorModel = new DefaultComboBoxModel();
 	_directorModel.addElement(new SDFDirector());
 	_directorModel.addElement(new PNDirector());
@@ -249,13 +249,13 @@ public class PtolemyPackage implements Package {
 		    Director director = (Director) e.getItem();
 		    PtolemyDocument d = (PtolemyDocument)
 			_application.getCurrentDocument();
-		    CompositeEntity entity = 
+		    CompositeEntity entity =
 			d.getModel();
 		    if(entity instanceof Actor) {
-			CompositeActor actor = 
+			CompositeActor actor =
 			    (CompositeActor) entity;
 			try {
-			    Director clone = 
+			    Director clone =
 				(Director)director.clone(actor.workspace());
 			    actor.setDirector(clone);
 			} catch (Exception ex) {
@@ -267,7 +267,7 @@ public class PtolemyPackage implements Package {
             }
         });
         tb.add(_directorComboBox);
-	
+
         application.addDocumentFactory(new PtolemyDocument.Factory());
     }
 
@@ -285,7 +285,7 @@ public class PtolemyPackage implements Package {
 	_directorModel.addElement(director);
     }
 
-    /** 
+    /**
      * Return a list of the directors in the director list.
      */
     public List directorList() {
@@ -337,7 +337,7 @@ public class PtolemyPackage implements Package {
     public void removeDirector(Director director) {
 	_directorModel.removeElement(director);
     }
-   
+
     /**
      * Remove a notation from the list of notations
      */
@@ -357,14 +357,14 @@ public class PtolemyPackage implements Package {
 	}
 
 	public void managerStateChanged(Manager manager) {
-	    DesktopFrame frame = (DesktopFrame) 
+	    DesktopFrame frame = (DesktopFrame)
 		_application.getApplicationFrame();
 	    JStatusBar statusBar = frame.getStatusBar();
 	    statusBar.setMessage(manager.getState().getDescription());
 	}
     }
 
-    public class DirectorCellRenderer extends JLabel 
+    public class DirectorCellRenderer extends JLabel
 	implements ListCellRenderer {
 	public DirectorCellRenderer() {
 	    setOpaque(true);
@@ -379,7 +379,7 @@ public class PtolemyPackage implements Package {
 	    return this;
 	}
     }
- 
+
     /** The application that this package is associated with.
      */
     private VergilApplication _application;
