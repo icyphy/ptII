@@ -246,7 +246,7 @@ public class KernelException extends Exception {
 
     /** Get the cause of this exception.
      *  @return The cause that was passed in as an argument to the
-     *  constructor, or null of no cause was specified.
+     *  constructor, or null if no cause was specified.
      */
     public Throwable getCause() {
         return _cause;
@@ -335,7 +335,7 @@ public class KernelException extends Exception {
         }
     }
 
-    /** Print the following to stderr:
+    /** Print a stack trace message to stderr including
      *  this exception, its stack trace and if the cause
      *  exception is known, print the cause exception and the
      *  cause stacktrace.
@@ -350,18 +350,20 @@ public class KernelException extends Exception {
         printStackTrace(new PrintWriter(System.err));
     }
 
-    /** Print this exception, its stack trace and if the cause
-     *  exception is known, print the cause exception and the cause
-     *  stacktrace.
+    /** Print a stack trace message to printStream including this
+     *  exception, its stack trace and if the cause exception is
+     *  known, print the cause exception and the cause stacktrace.
+     *
      *  @param printStream The PrintStream to write to.
      */
     public void printStackTrace(PrintStream printStream) {
         printStackTrace(new PrintWriter(printStream));
     }
 
-    /** Print this exception, its stack trace and if the cause
-     *  exception is known, print the cause exception and the
-     *  cause stacktrace.
+    /** Print a stack trace message to printWriter including this
+     *  exception, its stack trace and if the cause exception is
+     *  known, print the cause exception and the cause stacktrace.
+     *
      *  @param printWriter The PrintWriter to write to.
      */
     public void printStackTrace(PrintWriter printWriter) {
@@ -404,7 +406,7 @@ public class KernelException extends Exception {
 
     /** Sets the error message to the specified string.
      *  If the message argument is null, then the error
-     *  message is sent to the empty string.
+     *  message is set to the empty string.
      *  @param message The message.
      */
     protected void _setMessage(String message) {
