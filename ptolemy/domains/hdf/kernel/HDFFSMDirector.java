@@ -51,6 +51,7 @@ import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
+import ptolemy.domains.hdf.kernel.HDFFSMActor;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
@@ -67,6 +68,7 @@ import ptolemy.kernel.util.Workspace;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.lang.String;
 
 //////////////////////////////////////////////////////////////////////////
 //// HDFFSMDirector
@@ -172,8 +174,13 @@ public class HDFFSMDirector extends FSMDirector {
      *  @exception IllegalActionException If there is no controller.
      */
     public void fire() throws IllegalActionException {
+        
         if (_debug_info) System.out.println(getName() +
                                            " fire() invoked.");
+        // Call the protected method in HDFFSMDirector, which
+        // will then call the HDFFSMActor
+        // Should now be calling FSMActor, which will now provide
+        // the multi-rate functions.
         _setInputVariables();
 
         FSMActor ctrl = getController();
@@ -288,7 +295,7 @@ public class HDFFSMDirector extends FSMDirector {
              "Can't postfire because current refinement is null.");
         }
         if (_debug_info) {
-            _debugPostfire(curState);
+            //_debugPostfire(curState);
         }
         // Postfire the current refinement.
         // FIXME
@@ -308,7 +315,7 @@ public class HDFFSMDirector extends FSMDirector {
         if (_firingsPerScheduleIteration == -1) {
             // Get the firing count for the HDF actor (the container
             // of this director) in the current schedule.
-            _firingsPerScheduleIteration =
+               _firingsPerScheduleIteration =
                 _getFiringsPerSchedulIteration();
         }
         if (_debug_info) {
@@ -479,11 +486,12 @@ public class HDFFSMDirector extends FSMDirector {
      */
     protected void _setInputVariables() throws IllegalActionException {
         FSMActor ctrl = getController();
-        if (ctrl instanceof HDFFSMActor) {
-            ((HDFFSMActor)ctrl)._setInputVariables(_firingsSoFar, _getFiringsPerSchedulIteration());
-        } else {
+        //if (ctrl instanceof HDFFSMActor) {
+            //((HDFFSMActor)ctrl)._setInputVariables(_firingsSoFar, _getFiringsPerSchedulIteration());
+        //ctrl._setInputVariables(_firingsSoFar, _getFiringsPerSchedulIteration());
+        //} else {
            super._setInputVariables();
-        }
+        //}
     }
 
     /** Return true if data are transferred from the input port of
@@ -583,6 +591,8 @@ public class HDFFSMDirector extends FSMDirector {
         Receiver[][] insiderecs = port.getInsideReceivers();
         if (insiderecs != null) {
             for (int i = 0; i < insiderecs.length; i++) {
+                // "i" is port index.
+                // "j" is that port's channel index.
                 if (insiderecs[i] != null) {
                     if (_debug_info) System.out.println(getName() +
                     " : transferOutputs(): insiderecs[0].length: " +
@@ -592,8 +602,13 @@ public class HDFFSMDirector extends FSMDirector {
                             try {
                                 ptolemy.data.Token t =
                                     insiderecs[i][j].get();
-                                if (_debug_info) System.out.println(getName() +
+                                if (_debug_info) {
+                                    System.out.println(getName() +
                                       " : transferOutputs(): sending token.");
+                                    System.out.println(getName() +
+                                     " : transferOutputs(): token value =  " +
+                                     t.toString());
+                                }
                                 port.send(i, t);
                                 trans = true;
                             } catch (NoTokenException ex) {
@@ -611,11 +626,15 @@ public class HDFFSMDirector extends FSMDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         protected
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
 
     /** Debug.
      */
+    /*
     private void _debugPostfire(State curState)
         throws IllegalActionException {
             TypedCompositeActor ta =
@@ -643,6 +662,7 @@ public class HDFFSMDirector extends FSMDirector {
                     //((CompositeActor)(curState.getRefinement())).getFullName());
                     ((CompositeActor)(curState.getRefinement())[0]).getFullName());
     }
+    */
 
     /** If the container of this director does not have an
      *  HDFFSMDirector as its executive director, then return it.
@@ -689,6 +709,7 @@ public class HDFFSMDirector extends FSMDirector {
      *   if the container of this director is not directly or indirectly
      *   contained by a model governed by an SDF or HDF director.
      */
+    /* Not used anywhere
     private Scheduler _getDataflowScheduler()
         throws IllegalActionException {
         CompositeActor container =   _getHighestFSM();
@@ -701,6 +722,7 @@ public class HDFFSMDirector extends FSMDirector {
         }
         return scheduler;
     }
+*/
 
     /** Return the firing count for the current refinement actor
      *  in the current dataflow schedule.
@@ -792,6 +814,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  @exception IllegalActionException If the TokenConsumptionRate
      *   parameter has an invalid expression.
      */
+    /* solely used in _debugPostfire(State)
     private int _getTokenConsumptionRate(IOPort p)
             throws IllegalActionException {
         Parameter param =
@@ -804,7 +827,7 @@ public class HDFFSMDirector extends FSMDirector {
         } else
             return ((ptolemy.data.IntToken)param.getToken()).intValue();
     }
-
+*/
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor during each firing,
      *  as supplied by
@@ -814,6 +837,9 @@ public class HDFFSMDirector extends FSMDirector {
      *  @exception IllegalActionException If the tokenProductionRate
      *   parameter has an invalid expression.
      */
+    // Not used anywhere.
+    // Probably should be called in _debugPostfire(State)
+    /*
     private int _getTokenProductionRate(IOPort p)
             throws IllegalActionException {
         Parameter param =
@@ -826,8 +852,9 @@ public class HDFFSMDirector extends FSMDirector {
         }
         return ((ptolemy.data.IntToken)param.getToken()).intValue();
     }
+*/
 
-
+    // called by _updateInputTokenConsumptionRates(TypedCompositeActor)
     private void _setTokenConsumptionRate(Entity e, IOPort port, int rate)
             throws NotSchedulableException {
         if (rate < 0) throw new NotSchedulableException(
@@ -857,6 +884,7 @@ public class HDFFSMDirector extends FSMDirector {
         }
     }
 
+    // called by _updateOutputTokenProductionRates(TypedCompositeActor)
     private void _setTokenProductionRate(Entity e, IOPort port, int rate)
             throws NotSchedulableException {
         if (rate < 0) throw new NotSchedulableException(
@@ -900,6 +928,7 @@ public class HDFFSMDirector extends FSMDirector {
         if (_debug_info) System.out.println(getName() + " : " +
                 "_updateInputTokenConsumptionRates() invoked on actor: " +
                 actor.getFullName());
+        FSMActor ctrl = getController();
         // Get the current refinement's container.
         CompositeActor refineInPortContainer =
             (CompositeActor) actor.getContainer();
@@ -922,10 +951,15 @@ public class HDFFSMDirector extends FSMDirector {
             if (_debug_info) System.out.println(getName() +
                 " : _updateInputTokenConsumptionRates(): Current " +
                                          "port of refining actor " +
-                                          refineInPort.getFullName());
+                                          refineInPort.getFullName()
+                                          + " with rate = " +
+            SDFScheduler.getTokenConsumptionRate(refineInPort));
             // Get all of the input ports this port is
             // linked to on the outside (should only consist
             // of 1 port).
+            //Iterator inPorts = inputPortList().iterator();
+            //            while (inPorts.hasNext()) {
+            //                TypedIOPort inPort = (TypedIOPort)inPorts.next();
             Iterator inPortsOutside =
                 refineInPort.deepConnectedInPortList().iterator();
             if (!inPortsOutside.hasNext()) {
@@ -946,8 +980,13 @@ public class HDFFSMDirector extends FSMDirector {
                 // container of the current refinment.
                 ComponentEntity thisPortContainer =
                     (ComponentEntity)inputPortOutside.getContainer();
+          
+                String temp = refineInPortContainer.getFullName() 
+                    + "._Controller";
+                
                 if (thisPortContainer.getFullName() ==
-                    refineInPortContainer.getFullName()) {
+                    refineInPortContainer.getFullName() ||
+                    temp.equals(thisPortContainer.getFullName())) {
                     // The current port  is contained by the
                     // container of the current refinment.
                     // Update its consumption rate.
@@ -957,7 +996,7 @@ public class HDFFSMDirector extends FSMDirector {
                                                 "rate of port: " +
                                    inputPortOutside.getFullName());
 
-
+                    // set the outside port rate = port rate of the refinement.
                     int portRateToSet = SDFScheduler.getTokenConsumptionRate(refineInPort);
                     SDFScheduler.setTokenConsumptionRate(inputPortOutside, portRateToSet);
                 }
@@ -1028,6 +1067,8 @@ public class HDFFSMDirector extends FSMDirector {
                 // container of the current refinment.
                 ComponentEntity thisPortContainer =
                     (ComponentEntity)outputPortOutside.getContainer();
+                String temp = refineOutPortContainer.getFullName() 
+                                    + "._Controller";
                 if (thisPortContainer.getFullName() ==
                     refineOutPortContainer.getFullName()) {
                     // The current port  is contained by the
@@ -1039,8 +1080,19 @@ public class HDFFSMDirector extends FSMDirector {
                             "rate of port: " +
                             outputPortOutside.getFullName());
 
+                    // set the outside port = port rate of the refinement.
                     int portRateToSet = SDFScheduler.getTokenProductionRate(refineOutPort);
                     SDFScheduler.setTokenProductionRate(outputPortOutside, portRateToSet);
+                } else if (temp.equals(thisPortContainer.getFullName())) {
+                    if (_debug_info) System.out.println(getName() +
+                        " : _updateOutputTokenComsumptionRates(): " +
+                        "Updating controller's consumption " +
+                        "rate of port: " +
+                        outputPortOutside.getFullName());
+
+                        // set the outside port = port rate of the refinement.
+                        int portRateToSet = SDFScheduler.getTokenProductionRate(refineOutPort);
+                        SDFScheduler.setTokenConsumptionRate(outputPortOutside, portRateToSet);
                 }
             }
         }

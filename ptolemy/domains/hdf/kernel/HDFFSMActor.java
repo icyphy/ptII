@@ -158,10 +158,12 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
      *
      *  @return The current state of this actor.
      */
+    // Never used.
+    /*
     public State getCurrentState() {
         return _currentState;
     }
-
+*/
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -332,10 +334,14 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
      *  @exception IllegalActionException If a value variable cannot take
      *   the token read from its corresponding channel.
      */
+    // Never used anywhere ELSE than in FSMDirector or HSDirector
+    /*
     protected void _setInputsFromRefinement()
             throws IllegalActionException {
         super._setInputsFromRefinement();
     }
+    */
+    
     /** Set the input variables for all ports of this actor.
      *
      *  @param firings The number of times this actor has been fired in
@@ -430,6 +436,8 @@ public class HDFFSMActor extends FSMActor implements TypedActor {
             }
             pVars[channel][1].setToken(tok);
             // HDF specific:
+            // Get the rate of the port; firingsPerIteration as parameter.
+            // # of tokens to consume = port rate * firingsPerIteration.
             int portRate = SDFScheduler.getTokenConsumptionRate(port);
             int index = firingsPerIteration*portRate - 1 -
                 (firings*portRate + currentTokenIndex);
