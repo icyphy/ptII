@@ -58,23 +58,35 @@ public class TypeConflictException extends KernelException {
     /** Construct an Exception with an Enumeration of TypedIOPorts.
      *  The ports are the places where type conflicts
      *  occurred.  The detailed message of this Exception will be
-     *  the string "type conflict.".
+     *  the string "Type conflicts occured on the following ports:",
+     *  followed by a list of ports and their resolved types. The
+     *  type is represented by the corresponding class name. For
+     *  example, the type "Int" is represented by "ptolemy.data.IntToken"
+     *  in the message.
+     *  Each port takes one line, and each line starts
+     *  with 2 white spaces to make the message more readable.
      *  @param ports an Enumeration of TypedIOPorts.
      */
     public TypeConflictException(Enumeration ports) {
-	this(ports, "type conflict.");
+	this(ports, "Type conflicts occured on the following ports:");
     }
 
     /** Construct an Exception with an Enumeration of TypedIOPorts
      *  and a message. The ports are the places where type conflicts
      *  occurred.  The detailed message of this Exception will be
-     *  the specified message.
+     *  the specified message, following by the list of ports with
+     *  type conflicts, and their resolved types.  The type is
+     *  represented by the corresponding class name. For example,
+     *  the type "Int" is represented by "ptolemy.data.IntToken"
+     *  in the message.
+     *  Each port takes one line, and each line starts
+     *  with 2 white spaces to make the message more readable.
      *  @param ports an Enumeration of TypedIOPorts.
      *  @param detail a message.
      */
     public TypeConflictException(Enumeration ports, String detail) {
 	_portList.appendElements(ports);
-	_setMessage(detail);
+	_setMessage(detail + "\n" + _getPortsAndTypes());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -87,6 +99,29 @@ public class TypeConflictException extends KernelException {
      */
     public Enumeration getPorts() {
 	return _portList.elements();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                          private methods                  ////
+
+    // Create a string listing all the ports in _portList and their
+    // resolved types. Each port takes one line, and each line starts
+    // with 2 white spaces to make the String more readable.
+    private String _getPortsAndTypes() {
+	String result = "";;
+	Enumeration ports = getPorts();
+	while(ports.hasMoreElements()) {
+	    TypedIOPort port = (TypedIOPort)ports.nextElement();
+	    result += "  " + port.getFullName() + ": ";
+	    Class type = port.getResolvedType();
+	    if (type.equals(Void.TYPE)) {
+		result += "NaT\n";
+	    } else {
+		result += type.getName() + "\n";
+	    }
+	}
+
+	return result;
     }
 
     ///////////////////////////////////////////////////////////////////
