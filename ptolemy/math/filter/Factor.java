@@ -71,7 +71,8 @@ public abstract class Factor {
     /** Check if this factor contains the given zero.  This method should be
      * overwritten in the derived class.
      * @param zero the given zero to be checked on.
-     * @return boolean value indicating if the given pole is part of this factor
+     * @return boolean value indicating if the given pole is part of
+     *         this factor
      */
     public abstract boolean ifZero(Complex zero);
 
@@ -82,6 +83,7 @@ public abstract class Factor {
      * @param imag destination's imaginary value
      */
     public abstract void movePole(Complex pole, double real, double imag);
+
     /** Move the given zero to the given value.  This method should be
      * overwritten in the derived class.
      * @param zero the given zero to be moved
@@ -92,12 +94,9 @@ public abstract class Factor {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         protected methods                 ////
 
     // Solve the pole/zero of this factor
-    private abstract void _solvePoleZero();
+    protected abstract void _solvePoleZero();
 
 }
-
-
-
