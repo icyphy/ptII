@@ -61,6 +61,7 @@ import ptolemy.kernel.attributes.VersionAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.StringUtilities;
 
 import java.util.Date;			// For timing measurements
 
@@ -536,19 +537,8 @@ public class MoMLApplication {
      *  @return A usage string.
      */
     protected String _usage() {
-        String result = "Usage: " + _commandTemplate + "\n\n"
-            + "Options that take values:\n";
-
-        int i;
-        for (i = 0; i < _commandOptions.length; i++) {
-            result += " " + _commandOptions[i][0] +
-                " " + _commandOptions[i][1] + "\n";
-        }
-        result += "\nBoolean flags:\n";
-        for (i = 0; i < _commandFlags.length; i++) {
-            result += " " + _commandFlags[i];
-        }
-        return result;
+        // Call the static method that generates the usage strings.
+        return StringUtilities.usageString(_commandTemplate, _commandOptions, _commandFlags);
     }
 
     ///////////////////////////////////////////////////////////////////
