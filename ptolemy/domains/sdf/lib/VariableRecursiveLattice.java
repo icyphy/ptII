@@ -30,16 +30,20 @@ package ptolemy.domains.sdf.lib;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.RecursiveLattice;
+import ptolemy.actor.util.ExplicitChangeContext;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+
+import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// VariableRecursiveLattice
@@ -59,7 +63,8 @@ import ptolemy.kernel.util.Workspace;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Yellow (eal)
 */
-public class VariableRecursiveLattice extends RecursiveLattice {
+public class VariableRecursiveLattice extends RecursiveLattice
+    implements ExplicitChangeContext {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -172,6 +177,29 @@ public class VariableRecursiveLattice extends RecursiveLattice {
         for (int i = 0; i < _blockSizeValue; i++) {
             super.fire();
         }
+    }
+
+    /** Return a list of variables that this entity modifies.  The
+     * variables are assumed to have a change context of the given
+     * entity.
+     * @return A list of variables.
+     * @exception IllegalActionException If the list of modified
+     * variables cannot be returned.
+     */
+    public List getModifiedVariables() throws IllegalActionException {
+        List list = new LinkedList();
+        list.add(reflectionCoefficients);
+        return list;
+    }
+
+    /**
+     * Return the change context being made explicit.  In simple cases, this
+     * will simply be the entity implementing this interface.  However, in
+     * more complex cases, directors may implement this interface, or entities
+     * may modify parameters according to a different change context (i.e. HDF)
+     */
+    public Entity getContext() throws IllegalActionException {
+        return this;
     }
 
     /** Return false if the input does not have enough tokens to fire.
