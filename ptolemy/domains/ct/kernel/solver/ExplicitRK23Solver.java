@@ -105,7 +105,7 @@ public class ExplicitRK23Solver extends ODESolver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Fire dynamic actors. Advance the model time. The amound of increment
+    /** Fire dynamic actors. Advance the model time. The amount of increment
      *  is decided by the number of the round counter.
      *  @throws IllegalActionException If thrown in the super class or the
      *  model time can not be set.

@@ -126,7 +126,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
             dir.setModelTime(dir.getModelTime().add(dir.getCurrentStepSize()));
         }
         if (_isConverged()) {
-            // Resolved satates have converged.
+            // Resolved states have converged.
             // We need to recalculate the states with two steps.
             // The new states will be used to control local truncation error
             if (!_recalculatingWithTwoSteps) {
