@@ -842,10 +842,6 @@ public class PtolemyPlatform implements Platform {
             return ((ClassObject)((ObjectToken)o).getValue()).getClassObject();
         }
 
-        public Class getJavaClassOfObject(Object o) {
-            return (o instanceof ObjectToken) ? ObjectToken.class : o.getClass();
-        }
-
 
         ///////// Misc.
 
@@ -859,24 +855,28 @@ public class PtolemyPlatform implements Platform {
             // FIXME
         }
 
-        public Class toJavaClass(Object o) {
+        public Class getJavaClassOfObject(Object o) {
 
             // FIXME very preliminary. what about FunctionToken?
             // also, how will reflection work on methods that
             // need bytes, etc.
 
             if (o == null) {
-                return null;
+                return Object.class;
             } else if (o instanceof BooleanToken) {
-                return boolean.class;
+                return Boolean.class;
             } else if (o instanceof DoubleToken) {
-                return double.class;
+                return Double.class;
             } else if (o instanceof IntToken) {
-                return int.class;
+                return Integer.class;
             } else if (o instanceof StringToken) {
                 return String.class;
             } else if (o instanceof ObjectToken) {
-                return ((ObjectToken) o).getValue().getClass();
+	        Object v = ((ObjectToken)o).getValue();
+		if (v instanceof ClassObject)
+		    return Class.class;
+		else
+                    return v.getClass();
             } else if (o instanceof Token) {
                 return o.getClass();
             } else throw new InterpreterException(
@@ -894,7 +894,11 @@ public class PtolemyPlatform implements Platform {
             } else if (o instanceof StringToken) {
                 return stringValue(o);
             } else if (o instanceof ObjectToken) {
-                return ((ObjectToken) o).getValue();
+	        Object v = ((ObjectToken)o).getValue();
+		if (v instanceof ClassObject)
+		    return ((ClassObject)v).getClassObject();
+		else
+                    return ((ObjectToken) o).getValue();
             } else if (o instanceof Token) {
                 return o;
             } else throw new InterpreterException(
@@ -914,7 +918,9 @@ public class PtolemyPlatform implements Platform {
                     return new IntToken(((Integer) o).intValue());
                 } else if (o instanceof String) {
                     return new StringToken((String) o);
-                } else {
+                } else if (o instanceof Class) {
+		  return new ObjectToken(new ClassObject((Class)o, this)); 
+		} else {
                     return new ObjectToken(o);
                 }
             } catch (IllegalActionException ex) {
@@ -924,21 +930,18 @@ public class PtolemyPlatform implements Platform {
             }
         }
 
-        public Object selectField(Object o, String fieldName) {
-            Object composite = (o instanceof ObjectToken) ? ((ObjectToken)o).getValue() : o;
-            // check if the name of e is a Field in the enclosingObject. if so, return that value. otherwise,
-            // assume it's a method.
-            Class c = composite.getClass();
+        public Object selectField(Object composite, String fieldName) {
+            Class c = this.getJavaClassOfObject(composite);
             Field f;
             try {
                 f = c.getField(fieldName);
-                return this.fromJavaObject(f.get(composite));
+                return this.fromJavaObject(f.get(this.toJavaObject(composite)));
             } catch (NoSuchFieldException nsfe1) {
                 // maybe the enclosing object is a Class?
                 if (this.isClass(composite)) {
                     try {
                         f = this.getJavaClass(composite).getField(fieldName);
-                        return this.fromJavaObject(f.get(composite));
+                        return this.fromJavaObject(f.get(null));
                     } catch (NoSuchFieldException nsfe2) {
                         // assume it's a method.
                     } catch (IllegalAccessException iae) {
