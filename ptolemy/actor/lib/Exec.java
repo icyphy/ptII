@@ -34,8 +34,11 @@ import ptolemy.actor.parameters.PortParameter;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.StringToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.util.StringUtilities;
@@ -74,6 +77,10 @@ public class Exec extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
+        blocking = new Parameter(this, "blocking");
+        blocking.setTypeEquals(BaseType.BOOLEAN);
+        blocking.setToken(BooleanToken.FALSE);
+
         command = new PortParameter(this, "command", new StringToken("echo 'Hello, world.'"));
         // Make command be a StringParameter (no surrounding double quotes).
         command.setStringMode(true);
@@ -91,6 +98,12 @@ public class Exec extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
+
+
+    /** Indicator of whether fire method blocks on the process.
+     *  The type is boolean with default false.
+     */
+    public Parameter blocking;
 
     /** The command to be executed.  The command is parsed by
      * java.util.StringTokenizer into tokens and then executed as a s
@@ -112,6 +125,21 @@ public class Exec extends TypedAtomicActor {
     public TypedIOPort output;
 
 
+    /**
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == blocking) {
+            _blocking =
+                ((BooleanToken)blocking.getToken()).booleanValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
+
     /** Send input to the subprocess and read output and errors
      */
     public synchronized void fire() throws IllegalActionException {
@@ -119,18 +147,34 @@ public class Exec extends TypedAtomicActor {
         String line = null;
 
         try {
+            if (_process == null) {
+                _exec(command.getExpression());
+            }
             if (input.hasToken(0)) {
                 // FIXME: Do we need to append a new line?
-                line = ((StringToken)input.get(0)).stringValue();
-                _inputBufferedWriter.write(line);
+                if ((line = ((StringToken)input.get(0)).stringValue())
+                            != null) {
+                    System.out.println("Exec: input: " + line);
+                    if (_inputBufferedWriter != null) { 
+                            _inputBufferedWriter.write(line);
+                    }
+                }
             }
 
-            if ((line = _errorBufferedReader.readLine()) != null) {
-                error.send(0, new StringToken(line));
-            }
+            if (!_blocking) {
+                if (_errorBufferedReader != null
+                        && _errorBufferedReader.ready()
+                        && (line = _errorBufferedReader.readLine()) != null) {
+                    System.out.println("Exec: error: " + line);
+                    error.send(0, new StringToken(line));
+                }
 
-            if ((line = _outputBufferedReader.readLine()) != null) {
-                output.send(0, new StringToken(line));
+                if (_outputBufferedReader != null
+                        && _outputBufferedReader.ready()
+                        && (line = _outputBufferedReader.readLine()) != null) {
+                    System.out.println("Exec: output: " + line);
+                    output.send(0, new StringToken(line));
+                }
             }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
@@ -144,36 +188,7 @@ public class Exec extends TypedAtomicActor {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        Runtime runtime = Runtime.getRuntime();
-        try {
-            final String [] commandTokens =
-                StringUtilities
-                .tokenizeForExec((String)command.getExpression());
-            _process = runtime.exec(commandTokens);
-
-            // The notion of output and input is confusing here.
-            // This actor reads from its input port and writes that data
-            // to the process.
-            InputStreamReader errorStreamReader =
-                new InputStreamReader(_process.getErrorStream());
-            BufferedReader _errorBufferedReader =
-                new BufferedReader(errorStreamReader);
-            
-            OutputStreamWriter inputStreamWriter =
-                new OutputStreamWriter(_process.getOutputStream());
-            BufferedWriter _inputBufferedWriter =
-                new BufferedWriter(inputStreamWriter);
-
-            InputStreamReader outputStreamReader =
-                new InputStreamReader(_process.getInputStream());
-            BufferedReader _outputBufferedReader =
-                new BufferedReader(outputStreamReader);
-        } catch (IOException ex) {
-            throw new IllegalActionException(this, ex,
-                    "Problem setting up command '" + command.getExpression()
-                    + "'");
-        }
-
+        _exec(command.getExpression());
     }
 
     /** Terminate the subprocess.
@@ -184,25 +199,71 @@ public class Exec extends TypedAtomicActor {
      */
     public void wrapup() throws IllegalActionException {
         try {
-            _errorBufferedReader.close();
-            _inputBufferedWriter.close();
-            _outputBufferedReader.close();
+            if (_errorBufferedReader != null) {
+                _errorBufferedReader.close();
+            }
+            if (_inputBufferedWriter != null) {
+                _inputBufferedWriter.close();
+            }
+            if (_outputBufferedReader != null) {
+                _outputBufferedReader.close();
+            }
         } catch (IOException ex) {
             // ignore
         }
         //synchronized(this) {
-        _process.destroy();
+        if (_process != null) {
+            _process.destroy();
+        }
         //    _process = null;
         //}
     }
 
+    // Execute a command.o
+    private void _exec( String command) throws IllegalActionException {
+       try {
+            //final String [] commandTokens =
+            //    StringUtilities
+            //    .tokenizeForExec((String)command.getExpression());
+            if (_process != null) {
+                _process.destroy();
+            }
+            Runtime runtime = Runtime.getRuntime();
+            _process = runtime.exec(command);
+            // The notion of output and input is confusing here.
+            // This actor reads from its input port and writes that data
+            // to the process.
+            InputStreamReader errorStreamReader =
+                new InputStreamReader(_process.getErrorStream());
+            _errorBufferedReader =
+                new BufferedReader(errorStreamReader);
+            
+            OutputStreamWriter inputStreamWriter =
+                new OutputStreamWriter(_process.getOutputStream());
+            _inputBufferedWriter =
+                new BufferedWriter(inputStreamWriter);
+
+            InputStreamReader outputStreamReader =
+                new InputStreamReader(_process.getInputStream());
+            _outputBufferedReader =
+                new BufferedReader(outputStreamReader);
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Problem setting up command '" + command + "'");
+        }
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The Process that we are running.
-    private Process _process;
+    // Whether this actor is blocking.
+    private boolean _blocking;
 
     private BufferedReader _errorBufferedReader;
     private BufferedWriter _inputBufferedWriter;
     private BufferedReader _outputBufferedReader;
+
+    // The Process that we are running.
+    private Process _process;
 }
