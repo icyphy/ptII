@@ -69,7 +69,9 @@ public final class Node {
         return _weight != null;
     }
 
-    /** Set or change the weight of a node.
+    /** Set or change the weight of a node. This method should be used with
+     *  caution since it may make the node incompatible with graphs that 
+     *  contain it. 
      *  @param weight The new weight.
      */
     public void setWeight(Object weight) {

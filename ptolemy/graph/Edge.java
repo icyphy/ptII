@@ -98,7 +98,9 @@ public final class Edge {
         return _source == _sink;
     }
 
-    /** Set or change the weight of an edge.
+    /** Set or change the weight of an edge. This method should be used with
+     *  caution since it may make the edge incompatible with graphs that 
+     *  contain it. 
      *  @param weight The new weight.
      */
     public void setWeight(Object weight) {
