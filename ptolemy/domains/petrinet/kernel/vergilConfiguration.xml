@@ -101,8 +101,9 @@
 
           <entity name="state" class="ptolemy.domains.fsm.kernel.State"/>
            <entity name="Place" class="ptolemy.domains.petrinet.kernel.Place"/>
+
            <entity name="PetriNetActor" class="ptolemy.domains.petrinet.kernel.PetriNetActor"/>
-           <entity name="Transition" class="ptolemy.domains.petrinet.kernel.Transition"/>
+
     <entity name="fsm actor" class="ptolemy.domains.fsm.kernel.FSMActor">
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
           <configure>
@@ -112,6 +113,8 @@
           </configure>
         </property>
     </entity>
+
+
     <entity name="interface automaton" class="ptolemy.domains.fsm.kernel.InterfaceAutomaton">
         <property name="_library" class="ptolemy.moml.LibraryAttribute">
           <configure>
