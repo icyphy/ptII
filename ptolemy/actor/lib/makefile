@@ -45,7 +45,7 @@ DIRS = 		conversions gui logic hoc image net \
 		test $(PTCOMM_DIR) $(PTJAVASOUND_DIR) $(PTJSPACES_DIR)
 
 # Root of the Java directory
-ROOT =		../../../..
+ROOT =		../../..
 
 CLASSPATH =	$(ROOT)
 
