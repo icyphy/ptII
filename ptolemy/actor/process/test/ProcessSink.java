@@ -33,6 +33,7 @@ package ptolemy.actor.process.test;
 import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.kernel.util.*;
+import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////
 //// ProcessSink
@@ -60,6 +61,7 @@ public class ProcessSink extends Sink {
     public ProcessSink(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
+        _name = name;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -68,7 +70,14 @@ public class ProcessSink extends Sink {
     /** 
      */
     public void fire() throws IllegalActionException {
-        input.get(0);
+        /*
+        Token token = input.get(0);
+        if( token != null ) {
+            System.out.println(_name+": Just finished getting a token");
+        } else {
+            System.out.println(_name+": Get returned with no token");
+        }
+        */
     }
     
     /** 
@@ -76,5 +85,7 @@ public class ProcessSink extends Sink {
     public boolean postfire() {
         return false;
     }
+    
+    private String _name;
 
 }
