@@ -244,10 +244,13 @@ public class ComponentEntity extends Entity {
             name = new String("");
         }
         CompositeEntity container = (CompositeEntity) getContainer();
-        ComponentEntity another = (ComponentEntity) container.getEntity(name);
-        if((container != null) && (another != null) && (another != this)) {
-            throw new NameDuplicationException(container, 
-                "already contains an entity with the name "+name+".");
+        if((container != null)) {
+            ComponentEntity another = (ComponentEntity)
+                container.getEntity(name);
+            if((another != null) && (another != this)) {
+                throw new NameDuplicationException(container, 
+                    "already contains an entity with the name "+name+".");
+            }
         }
         super.setName(name);
     }
