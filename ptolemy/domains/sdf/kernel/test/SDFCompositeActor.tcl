@@ -37,9 +37,14 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
-if {[info procs enumToObjects] == "" } then {
-     source enums.tcl
-}
+if {[string compare sdfModel [info procs sdfModel]] != 0} \
+        then {
+    source [file join $PTII util testsuite models.tcl]
+} {}
+
+#if {[info procs enumToObjects] == "" } then {
+#     source enums.tcl
+#}
 
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
@@ -47,5 +52,45 @@ if {[info procs enumToObjects] == "" } then {
 ######################################################################
 ####
 #
-test SDFCompositeActor-2.1 {} {
-} {}
+test SDFCompositeActor-1.1 {SDF Bug when actors are connected through external ports} {
+
+    # The release notes say:
+    # The SDF scheduler reports that actors are
+    # disconnected, when they are connected through
+    # external ports.
+    # Workaround: Connect the actors in another way.
+    # This is usually possible when the connection is
+    # through an output port (since sources have
+    # trigger inputs that are usually disconnected in SDF),
+    # but somewhat more difficult when the connection is
+    # only through an input port
+
+    set e0 [sdfModel 5]
+    set const [java::new ptolemy.actor.lib.Const $e0 const]
+    set scale [java::new ptolemy.actor.lib.Scale $e0 scale]
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
+
+    set port8 [java::new ptolemy.actor.TypedIOPort $e0 "port8" false true]
+    $port8 setMultiport true
+
+    $e0 connect $port8 \
+	    [java::field [java::cast ptolemy.actor.lib.Source $ramp] output]
+
+
+    $e0 connect $port8 \
+	    [java::field [java::cast ptolemy.actor.lib.Transformer $scale] output]
+
+    set relation5 [java::new ptolemy.actor.TypedIORelation $e0 relation5]
+
+    set const_output [java::field [java::cast ptolemy.actor.lib.Source $const] output] 
+    $const_output link $relation5
+
+    set scale_input [java::field [java::cast ptolemy.actor.lib.Transformer $scale] input] 
+    $scale_input link $relation5
+
+
+    [$e0 getManager] execute
+} {} {KNOWN_FAILURE}
+
+
+
