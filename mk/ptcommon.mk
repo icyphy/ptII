@@ -133,9 +133,9 @@ subinstall:
 
 # Create the directory that contains the scripts
 bin_install_dir:
-	if [ ! -d "$(BIN_INSTALL_DIR}" ]; then
+	if [ ! -d "$(BIN_INSTALL_DIR)" ]; then \
 		echo "Creating '$(BIN_INSTALL_DIR)' directory"; \
-		mkdir -p $(BIN_INSTALL_DIR); \
+		mkdir -p "$(BIN_INSTALL_DIR)"; \
 	fi
 
 # Install links for scripts in $PTOLEMY/bin and $TYCHO/bin
