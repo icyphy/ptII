@@ -266,7 +266,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
     /** Return the canonical pathname of the output package, including the last
      *  file separator character.
-     *  @returns the pathnam of the output package.
+     *  @returns the pathname of the output package.
      */
     public String getPackageDirectoryName() {
 	return _packageDirectoryName;
@@ -420,14 +420,15 @@ public class SDFCodeGenerator extends CompositeActorApplication
     /** Generate the main() method of the main class. */
     protected MethodDeclNode _generateMainMethod()
             throws IllegalActionException {
-        // a map of actors to the ObjectNodes that represent the actors
+        // A map of actors to the ObjectNodes that represent the actors.
         HashMap actorToVariableMap = new HashMap();
 
-        LinkedList stmtList = new LinkedList();
+        LinkedList statementList = new LinkedList();
 
         Iterator actorItr = _actorSet.iterator();
 
-        // generate actor allocation statments and fill in actorToVariableMap
+        // Generate actor allocation statements and
+        // fill in actorToVariableMap..
         while (actorItr.hasNext()) {
             TypedAtomicActor actor = (TypedAtomicActor) actorItr.next();
 
@@ -448,7 +449,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
             AllocateNode allocateActorNode = new AllocateNode(actorTypeNode,
                     new LinkedList(), AbsentTreeNode.instance);
 
-            stmtList.addLast(new LocalVarDeclNode(FINAL_MOD, actorTypeNode,
+            statementList.addLast(new LocalVarDeclNode(FINAL_MOD, actorTypeNode,
                     actorVarNameNode, allocateActorNode));
 
             actorToVariableMap.put(actor, new ObjectNode(
@@ -482,7 +483,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                         allocateStartTimeNode),
                         new LinkedList());
 
-	    stmtList.addLast(new LocalVarDeclNode(NO_MOD,
+	    statementList.addLast(new LocalVarDeclNode(NO_MOD,
                     startTimeTypeNode,
                     startTimeVarNameNode,
                     getTimeMethodCallNode));
@@ -506,7 +507,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
                             actorObjectNode),
                     new LinkedList());
 
-            stmtList.addLast(new ExprStmtNode(methodCallNode));
+            statementList.addLast(new ExprStmtNode(methodCallNode));
         }
 
 
@@ -808,7 +809,7 @@ public class SDFCodeGenerator extends CompositeActorApplication
 
                 for (int channel = 0; channel < inputWidth; channel++) {
                     // get the receiver for this channel
-                    // we only support one reciever per channel
+                    // we only support one receiver per channel
                     Receiver receiver = receivers[channel][0];
 
                     // Find the output port for this channel and the channel
@@ -954,9 +955,9 @@ public class SDFCodeGenerator extends CompositeActorApplication
      *  and # is a number.
      */
     protected String _makeUniqueName(String name) {
-        String retval = "_cg_" + name + "_" + labelNum;
+        String returnValue = "_cg_" + name + "_" + labelNum;
         labelNum++;
-        return retval;
+        return returnValue;
     }
 
     /** Parse a command-line argument.
