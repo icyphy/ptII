@@ -50,7 +50,7 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test DirectedGraph-2.1 {Create an empty instance} {
+test Graph-2.1 {Create an empty instance} {
     set p [java::new pt.graph.Graph]
     $p contains null
 } {0}
@@ -96,4 +96,17 @@ test Graph-2.3 {Create a graph with 4 nodes forming a diamond} {
 	 [$e0 get 0] [$e0 get 1] [$e1 get 0] [$e1 get 1] \
 	 [$e2 get 0] [$e2 get 1] [$e3 get 0] [$e3 get 1]
 } {node1 node2 node3 node4 node1 node2 node1 node3 node2 node4 node3 node4}
+
+######################################################################
+####
+# 
+test Graph-3.1 {Test description} {
+    # use the graph built in 2.3
+    list [$p description]
+} {{{pt.graph.Graph
+  {node1 node2 node3}
+  {node2 node4}
+  {node3 node4}
+  {node4}
+}}}
 
