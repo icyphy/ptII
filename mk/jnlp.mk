@@ -202,7 +202,7 @@ MKJNLP =		$(PTII)/bin/mkjnlp
 # JNLP files that do the actual installation
 JNLPS =	vergilDSP.jnlp vergilPtiny.jnlp  vergilPtinySandbox.jnlp vergil.jnlp 
 
-jnlp_all: $(KEYSTORE) $(SIGNED_LIB_JARS) $(JNLPS) jnlp_sign
+jnlp_all: $(KEYSTORE) jnlp_sign $(JNLPS) 
 jnlps: $(SIGNED_LIB_JARS) $(JNLPS)
 jnlp_clean: 
 	rm -f $(JNLPS) $(SIGNED_DIR)
@@ -347,7 +347,8 @@ vergil.jnlp: vergil.jnlp.in $(KEYSTORE)
 
 # We first copy the jars, then sign them so as to avoid
 # problems with cvs and applets.
-jnlp_sign: $(JNLPS) $(KEYSTORE)
+jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
+jnlp_sign1: 
 	set $(ALL_NON_APPLICATION_JNLP_JARS); \
 	for x do \
 		if [ ! -f $(SIGNED_DIR)/$$x ]; then \
