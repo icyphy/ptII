@@ -69,8 +69,13 @@ only.  We expect it to mature considerably in the near future.
 apply to all of the code generators:
 <ul>
 <li> The code generators uses <a href="#soot">Soot</a> to analyze a
-model and generate a set of Java .class files.  Soot will not
-work with JDK1.4, it requires JDK1.3.
+model and generate a set of Java .class files.  
+Soot works best with JDK1.3.  Under JDK1.4, Soot will work if
+Ptolemy II is compiled with the <code>javac</code>
+<code>-target 1.1</code> flag, and if Soot has been patched and recompiled
+
+
+
 <pre>
 Date: Mon, 13 May 2002 11:49:30 -0700
 To: soot-list@sable.mcgill.ca
@@ -166,6 +171,28 @@ public class test {
 --=====================_613917086==_--
 
 </pre>
+To which there was this response:
+<pre>
+ Hi Stephen,
+ I haven't try soot-1.2.2 on JDK1.4, but tried soot-1.2.3, I did
+ not find the source of the problem, but here is a quick hacker to
+ make it runable on JDK1.4
+ In soot/jimple/toolkits/invoke/ClassHierarchyAnalysis.java
+ replace line 67 :
+ Iterator methodsIt = c.getMethods().iterator();
+   by:
+ Iterator methodsIt = c.getMethods().snapshotIterator();
+ It is not verified that this change won't affect others. (look
+ at the  code, it is not supposed to be).
+ Cheers,
+===========================================================
+Feng Qian                             fqian@sable.mcgill.ca
+</pre>
+<code>$PTII/lib/sootclasses.jar</code> has this change folded in to it.
+
+<p>We are working on getting Ptolemy code generation and Soot
+working together without the <code>-target 1.1</code> command
+line option to <code>javac</code>
 
 <li> The primary interface to the code generator is through
 the makefiles and the 
