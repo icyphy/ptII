@@ -327,7 +327,7 @@ JAVACC_DIR =	@JAVACC_DIR@
 JJTREE =	"@JJTREE@"
 JAVACC =	"@JAVACC@"
 
-# Set to $PTII/lib if $PTII/lib/synthesis.jar was found and used
+# Set to $PTII/lib if $PTII/lib/mapss.jar was found and used
 # in $PTII/bin/ptinvoke.in
 PSDF_DIR =	@PSDF_DIR@
 
@@ -443,7 +443,7 @@ PTMATLAB_DIR =	@PTMATLAB_DIR@
 PTMESCAL_DIR=	@PTMESCAL_DIR@
 
 # Set to psdf and used in $PTII/ptolemy/domains/makefile if
-# $PTII/lib/synthesis.jar was found
+# $PTII/lib/mapss.jar was found
 PTPSDF_DIR =	@PTPSDF_DIR@
 
 # Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if

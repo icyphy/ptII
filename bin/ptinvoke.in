@@ -357,12 +357,12 @@ if [ "$PTJXTA_DIR" = "jxta" ]; then
 fi
 
 #### PSDF is Parameterized Synchronous Data Flow
-# PTPSDF_DIR is set to psdf if configure found synthesis.jar
+# PTPSDF_DIR is set to psdf if configure found mapss.jar
 PTPSDF_DIR=@PTPSDF_DIR@
 PSDF_JARS=""
 if [ "$PTPSDF_DIR" = "psdf" ]; then 
     PSDF_DIR="@PSDF_DIR@"
-    PSDF_JARS="${CLASSPATHSEPARATOR}${PSDF_DIR}/synthesis.jar"
+    PSDF_JARS="${CLASSPATHSEPARATOR}${PSDF_DIR}/mapss.jar"
 fi
 
 #### Saxon is the XSLT and XQuery Processor (http://saxon.sourceforge.net/)
