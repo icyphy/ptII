@@ -2624,13 +2624,13 @@ test MoMLParser-13.3 {test with weird configure text} {
     <property name="myAttribute" class="ptolemy.kernel.util.ConfigurableAttribute">
         <configure>
 <svg>
-  <rect x="0" y="0" width="20" height="20" style="fill:blue;stroke:green;stroke-width:30"/>
-  <circle cx="0" cy="0" r="20" style="fill:blue;stroke:green;stroke-width:30"/>
-  <ellipse cx="0" cy="0" rx="20" ry="30" style="fill:blue;stroke:green;stroke-width:30"/>
-  <polygon points="10,30 50,10 50,30" style="fill:blue;stroke:green;stroke-width:30"/>
-  <polyline points="10,30 50,10 50,30" style="stroke:green;stroke-width:30"/>
-  <line x1="10" y1="20" x2="30" y2="40" style="stroke:green;stroke-width:30"/>
-</svg> 
+  <rect x="0" y="0" width="20" height="20" style="fill:blue;stroke:green;stroke-width:30"></rect>
+  <circle cx="0" cy="0" r="20" style="fill:blue;stroke:green;stroke-width:30"></circle>
+  <ellipse cx="0" cy="0" rx="20" ry="30" style="fill:blue;stroke:green;stroke-width:30"></ellipse>
+  <polygon points="10,30 50,10 50,30" style="fill:blue;stroke:green;stroke-width:30"></polygon>
+  <polyline points="10,30 50,10 50,30" style="stroke:green;stroke-width:30"></polyline>
+  <line x1="10" y1="20" x2="30" y2="40" style="stroke:green;stroke-width:30"></line>
+</svg>
 </configure>
     </property>
 </entity>
