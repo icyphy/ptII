@@ -68,6 +68,16 @@ public class BusContentionDemo {
         _proc3 = new CSPProcessor( _topLevelActor, "proc3", 3 );
     }
  
+    /** 
+     */
+    public BusContentionDemo(BusContentionGraphic bcg) 
+            throws IllegalActionException, NameDuplicationException {
+        this();
+        _proc1.setGraphicFrame( bcg );
+        _proc2.setGraphicFrame( bcg );
+        _proc3.setGraphicFrame( bcg );
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -83,30 +93,6 @@ public class BusContentionDemo {
         demo.makeConnections();
         demo.run();
     }
-        
-        /*
-        // Set up Manager, Director and top level CompositeActor
-        Workspace workSpc = new Workspace();
-        CompositeActor _topLevelActor = new CompositeActor(workSpc);
-        _topLevelActor.setName("universe");
-        Manager _manager = new Manager(workSpc, "_manager");
-        CSPDirector director = new CSPDirector(workSpc, "director");
-        _topLevelActor.setManager( _manager );
-        _topLevelActor.setDirector( director );
-        
-        
-        // Set up next level actors
-        CSPController controller = 
-                new CSPController( _topLevelActor, "_controller" );
-        CSPContentionAlarm _alarm = 
-                new CSPContentionAlarm( _topLevelActor, "_alarm" );
-        CSPMemory _memory = new CSPMemory( _topLevelActor, "_memory" );
-        CSPProcessor _proc1 = new CSPProcessor( _topLevelActor, "_proc1", 1 );
-        CSPProcessor _proc2 = new CSPProcessor( _topLevelActor, "_proc2", 2 );
-        CSPProcessor _proc3 = new CSPProcessor( _topLevelActor, "_proc3", 3 );
-        // System.out.println("Actors have been instantiated.");
-        */
-        
         
     /** 
      * @exception IllegalActionException If there are problems
