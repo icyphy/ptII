@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II JHDL code generation
+# Makefile for Ptolemy II JHDL code generation testing
 #
 # @Authors: Steve Neuendorffer, Christopher Hylands
 #
@@ -49,14 +49,12 @@ JSRCS = \
 	test1.java \
 	Test.java
 
-OTHER_FILES_TO_BE_JARED = \
-	compileCommandTemplate.txt \
-	runCommandTemplate.txt
+OTHER_FILES_TO_BE_JARED =
+
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
-	JHDLClass.java
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -65,8 +63,7 @@ MISC_FILES =	$(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	'Main$$IgnoreAllApplicationClasses.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
