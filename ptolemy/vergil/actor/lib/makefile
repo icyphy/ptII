@@ -50,7 +50,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	ImageAttribute.java \
-	MonitorImage.java
+	LineAttribute.java \
+	MonitorImage.java \
+	RectangleAttribute.java
 
 OTHER_FILES_TO_BE_JARED = \
 	interactive.xml
