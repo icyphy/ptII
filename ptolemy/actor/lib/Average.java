@@ -100,7 +100,7 @@ public class Average extends Transformer {
         return newobj;
     }
 
-    /** Consume exactly one token from the the input
+    /** Consume exactly one token from the <i>input</i>
      *  and compute the average of the input tokens so far. Send the
      *  result to the output.  It is assumed that there is at least
      *  one input token available, or a NoTokenException will be thrown.
@@ -111,30 +111,33 @@ public class Average extends Transformer {
      *  future averages.  Inputs that are read earlier in the iteration
      *  are forgotten.
      *  <P>
-     *  If a BooleanToken with true value is received from the reset
-     *  input, the averaging process will be reset. 
-     *  @exception IllegalActionException If the right arithmetic operations
-     *   are not supported by the supplied tokens.
+     *  If a true valued token is received at the <i>reset</i>
+     *  input, then the average is restarted with the current input. 
+     *  @exception IllegalActionException If addition or division by an
+     *   integer are not supported by the supplied tokens.
      */
     public void fire() throws IllegalActionException {
         try {
-            // First test if it is dangling... then if it has token.
-            if (reset.getWidth() > 0) {
-                if (reset.hasToken(0)) {
+            _latestSum = _accum;
+            _latestCount = _count + 1;
+            // Check whether to reset.
+            for (int i = 0; i < reset.getWidth(); i++) {
+                if (reset.hasToken(i)) {
                     BooleanToken r = (BooleanToken)reset.get(0);
                     if(r.booleanValue()) {
                         // Being reset at this firing.
-                        _accum = null;
-                        _count = 1;
+                        _latestSum = null;
+                        _latestCount = 1;
                     }
                 }
             }
             Token in = input.get(0);
-            if (_accum == null) {
-                _accum = in.zero();
+            if (_latestSum == null) {
+                _latestSum = in;
+            } else {
+                _latestSum = _latestSum.add(in);
             }
-            _latestSum = _accum.add(in);
-            Token out = _latestSum.divide(new IntToken(_count));
+            Token out = _latestSum.divide(new IntToken(_latestCount));
             output.broadcast(out);
         } catch (IllegalActionException ex) {
             // Should not be thrown because this is an output port.
@@ -147,7 +150,7 @@ public class Average extends Transformer {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _count = 1;
+        _count = 0;
         _accum = null;
     }
 
@@ -157,7 +160,7 @@ public class Average extends Transformer {
      */
     public boolean postfire() throws IllegalActionException {
         _accum = _latestSum;
-        _count++;
+        _count = _latestCount;
         return super.postfire();
     }
 
@@ -165,6 +168,7 @@ public class Average extends Transformer {
     ////                         private members                   ////
 
     private Token _accum;
-    private int _count = 1;
+    private int _count = 0;
+    private int _latestCount;
     private Token _latestSum;
 }
