@@ -36,7 +36,8 @@
 # doc directory should be last so we get files from version control before
 # updating the docs
 #DIRS = kernel actors domains pitcl doc graph data
-DIRS = kernel plot filter graph data actor automata gui math domains 
+# filter is not yet ready 
+DIRS = kernel plot graph data actor automata gui math domains #filter
 
 # Root of Ptolemy II directory
 ROOT =		..
