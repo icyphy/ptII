@@ -35,7 +35,10 @@ ME =		ptolemy/actor/test
 # Root of the Ptolemy II directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)$(CLASSPATHSEPARATOR)$(JXTA_JARS)
+
+# AUXCLASSPATH is used by jtclsh
+AUXCLASSPATH =	$(CLASSPATH)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
