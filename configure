@@ -584,7 +584,7 @@ fi
 
 echo $ac_n "checking if $PTII contains "cygdrive"""... $ac_c" 1>&6
 echo "configure:587: checking if $PTII contains "cygdrive"" >&5
-grep cygdrive "$PTII" > /dev/null
+echo "$PTII" | grep cygdrive > /dev/null
 status=$?
 if test "$status" -eq 1 ; then
     echo "$ac_t""ok
