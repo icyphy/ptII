@@ -42,6 +42,24 @@ equal. The default value of the fuzzy threshold is 1e-10.
 @version $Id $
 */
 public class FuzzyDoubleComparator implements Comparator{
+
+    /** Construct a FuzzyDoubleComparator. The compare threshold is
+     *  1e-10
+     */
+    public FuzzyDoubleComparator() {
+        _threshold = 1e-10;
+    }
+
+    /** Construct a FuzzyDoubleComparator with the given threshold.
+     *  @param threshold The threshold
+     */
+    public FuzzyDoubleComparator(double threshold) {
+        _threshold = threshold;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
     /** Return -1 if fst < snd - threshold/2; <BR>
      *  return 1 if fst > snd + threshold/2; <BR>
      *  return 0 otherwise.<BR>
@@ -82,5 +100,5 @@ public class FuzzyDoubleComparator implements Comparator{
     ////                         private variables                 ////
 
     // The threshold that controls the fuzziness. Default value 1e-10.
-    private double _threshold = 1e-10;
+    private double _threshold;
 }

@@ -60,10 +60,18 @@ test FuzzyDoubleComparator-2.1 {Construct a FuzzyDoubleComparator} {
     list [$fdc getThreshold]
 } {1e-10}
 
+test FuzzyDoubleComparator-2.2 {Construct with threshold} {
+    set fdc [java::new \
+	    ptolemy.domains.ct.kernel.util.FuzzyDoubleComparator 1e-7]
+    list [$fdc getThreshold]
+} {1e-07}
+
+
+
 ######################################################################
 #### set and get threshold
 #
-test FuzzyDoubleComparator-2.1 {Construct a FuzzyDoubleComparator} {
+test FuzzyDoubleComparator-3.1 {Construct a FuzzyDoubleComparator} {
     $fdc setThreshold 1e-5
     list [$fdc getThreshold]
 } {1e-05}
@@ -71,7 +79,7 @@ test FuzzyDoubleComparator-2.1 {Construct a FuzzyDoubleComparator} {
 ######################################################################
 #### compare
 #
-test FuzzyDoubleComparator-2.1 {Construct a FuzzyDoubleComparator} {
+test FuzzyDoubleComparator-4.1 {Construct a FuzzyDoubleComparator} {
     set zero [java::new java.lang.Double 0.0]
     set one [java::new java.lang.Double 1.0]
     set minusone [java::new java.lang.Double -1.0]
