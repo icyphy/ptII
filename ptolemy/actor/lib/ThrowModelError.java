@@ -54,7 +54,7 @@ don't. But some containers might do more with the error.
 @version $Id$
 @since Ptolemy II 2.1
 @see ThrowException
-@see NamedObj.handleModelError(NamedObj, IllegalActionException)
+@see NamedObj#handleModelError(NamedObj, IllegalActionException)
 */
 public class ThrowModelError extends Sink {
 
