@@ -390,7 +390,7 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      *  is always a workpace.
      *  @return The workspace responsible for this object.
      */
-    public Workspace workspace() {
+    public final Workspace workspace() {
         return _workspace;
     }
 
