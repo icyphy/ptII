@@ -224,7 +224,7 @@ public class IOPort extends ComponentPort {
      *  <p>
      *  It is <i>not</i> write-synchronized on the workspace, so the
      *  caller should be. 
-     *  @exception IllegalActionException Thrown if this port is not 
+     *  @exception IllegalActionException If this port is not 
      *   an opaque input port or if there is no director.
      */
     public void createReceivers() throws IllegalActionException {
