@@ -52,24 +52,11 @@ JARFILE = 	$(JPACKAGE).jar
 CLASSPATH = ../../../..
 
 JSRCS = \
-	PNAdder.java \
 	PNAlternate.java \
-	PNAudioPacker.java \
-	PNAudioSource.java \
-	PNCirConvFilter.java \
-	PNDAConverter.java \
 	PNInterleave.java \
-	PNQuantizer.java \
-	PNRDController.java \
-	PNRDDecider.java \
-	PNRDDecoder.java \
-	PNRDIdentifier.java \
-	PNRDInfo.java \
-	PNRDMainController.java \
 	PNRamp.java \
 	PNRedirect.java \
 	PNSieve.java \
-	PNSink.java \
 
 EXTRA_SRCS =	$(JSRCS)
 
