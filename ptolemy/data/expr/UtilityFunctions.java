@@ -31,22 +31,8 @@
 
 package ptolemy.data.expr;
 
-import ptolemy.data.ArrayToken;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.ComplexMatrixToken;
-import ptolemy.data.DoubleMatrixToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.FunctionToken;
-import ptolemy.data.IntMatrixToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.LongMatrixToken;
-import ptolemy.data.LongToken;
-import ptolemy.data.ObjectToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.ScalarToken;
-import ptolemy.data.StringToken;
+import ptolemy.data.*;
 import ptolemy.data.Token;
-import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.FunctionType;
@@ -55,6 +41,7 @@ import ptolemy.data.type.TypeLattice;
 import ptolemy.graph.CPO;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.math.Complex;
 import ptolemy.math.ComplexMatrixMath;
 import ptolemy.util.StringUtilities;
 
@@ -62,9 +49,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -119,6 +106,23 @@ public class UtilityFunctions {
      */
     public static String findFile(String name) {
         File file = new File(name);
+
+        // File has problems if we change user.dir, which we do in
+        // ptolemy/actor/gui/jnlp/MenuApplication.java if we are running
+        // under Web Start or InstallAnywhere.  What happens is that
+        // File ignores changes to user.dir, so findFile("ptmatlab.dll")
+        // will look in the old value of user.dir instead of the new
+        // value of user.dir.  The hack is to get the canonical path
+        // and use that instead.
+
+        if (file.exists()) {
+            try {
+                file = new File(file.getCanonicalPath());
+            } catch (IOException ex) {
+                file = file.getAbsoluteFile();
+            }
+        }
+
         if (!file.exists()) {
             String curDir = StringUtilities.getProperty("user.dir");
             file = new File(curDir, name);
@@ -444,7 +448,21 @@ public class UtilityFunctions {
 
             String libraryPath = UtilityFunctions.findFile(libraryWithSuffix);
 
-            if (libraryPath.equals(libraryWithSuffix)) {
+	    boolean libraryPathExists = false;
+	    try {
+		// It turns out that when looking for libraries under
+		// InstallAnywhere, findFile() can somehow end up returning
+		// a bogus value in C:/Documents and Settings
+		File libraryPathFile = new File(libraryPath);
+		if (libraryPathFile.exists()) {
+		    libraryPathExists = true;
+		}
+	    } catch( Throwable throwable) {
+		// Ignore, the file can't be found
+	    }
+
+            if (libraryPath.equals(libraryWithSuffix)
+		|| !libraryPathExists) {
 
                 try {
                     // findFile did not find the library, so we try using
@@ -492,7 +510,7 @@ public class UtilityFunctions {
                                 + "classpath was: "
                                 + classpath
                                 + " Also tried loadLibrary(\""
-                                + shortLibraryName + "\"");
+                                + shortLibraryName + "\", exception for loadLibrary was: " + ex2 );
 
                     error.initCause(ex);
                     throw error;
@@ -542,7 +560,7 @@ public class UtilityFunctions {
         } else if (arity > 1){
             for (int i = 0; i < array.length(); i++) {
                 Token args = (Token)array.getElement(i);
-                if (! (args instanceof ArrayToken)) {
+                if(! (args instanceof ArrayToken)) {
                     throw new IllegalActionException(
                             "Invalid arguments to map(): mismatched arity.");
                 }
@@ -590,7 +608,7 @@ public class UtilityFunctions {
                             "map(): specified array token is not compatible "
                             + "with function argument type.");
                 }
-            } else if (castFunctionType.getArgCount() > 1) {
+            } else if(castFunctionType.getArgCount() > 1) {
                 Type firstArgType = castFunctionType.getArgType(0);
                 boolean flag = true;
                 for (int i = 1; i< castFunctionType.getArgCount(); i++) {
@@ -677,7 +695,7 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type maxReturnType(Type type) {
-        if (type instanceof ArrayType) {
+        if(type instanceof ArrayType) {
             ArrayType arrayType = (ArrayType) type;
             return arrayType.getElementType();
         } else {
@@ -729,7 +747,7 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type minReturnType(Type type) {
-        if (type instanceof ArrayType) {
+        if(type instanceof ArrayType) {
             ArrayType arrayType = (ArrayType) type;
             return arrayType.getElementType();
         } else {
@@ -767,54 +785,6 @@ public class UtilityFunctions {
      */
     public static StringToken property(String propertyName) {
         return new StringToken(StringUtilities.getProperty(propertyName));
-    }
-
-    /** Return a pseudo random sequence listed in an array.
-     *  @param polynomial The polynomial with binary coefficients.
-     *  @param initial Initial state of the shift register.
-     *  @param length Length of the array.
-     *  @return An array of binaries listed in the order of 
-     *  pseudo random sequence.
-     *  @see ptolemy.actor.lib.comm.Scrambler
-     */ 
-    public static ArrayToken pseudoRandom(
-            int polynomial, int initial, int length)
-            throws IllegalActionException {
-        if (initial <= 0) {
-            throw new IllegalActionException(
-                    "shift register's initial must be postive.");
-        }
-        if (polynomial <= 0) {
-            throw new IllegalActionException(
-                    "Polynomial is required to be strictly postive.");
-        }
-        if ((polynomial & 1) == 0) {
-            throw new IllegalActionException(
-                    "The low-order bit of the polynomial is not set.");
-        }
-
-        int reg = initial;
-        int mask = polynomial;
-        IntToken[] result = new IntToken[length];
-        for (int i = 0; i < length; i++) {
-            reg = reg << 1;
-            int masked = mask & reg;
-            int parity = 0;
-            while (masked > 0) {
-                parity = parity ^ (masked & 1);
-                masked = masked >> 1;
-            }
-            reg = reg | parity; 
-            result[i] = new IntToken(parity);           
-        }
-        try {
-            return new ArrayToken(result);
-        } catch (IllegalActionException illegalAction) {
-            // This should not happen since result should not be null.
-            throw new InternalErrorException("UtilityFunction.pseudoRandom: "
-                    + "Cannot create the array that contains "
-                    + "pseudo random numbers.");
-        }
     }
 
     /** Return an array of IID random numbers with value greater than
@@ -867,7 +837,7 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type randomReturnType(Type type) {
-        if (type.equals(BaseType.INT)) {
+        if(type.equals(BaseType.INT)) {
             return new ArrayType(BaseType.DOUBLE);
         } else {
             return BaseType.UNKNOWN;
@@ -1133,7 +1103,7 @@ public class UtilityFunctions {
      *  @return The type of the value returned from the corresponding function.
      */
     public static Type sumReturnType(Type type) {
-        if (type instanceof ArrayType) {
+        if(type instanceof ArrayType) {
             ArrayType arrayType = (ArrayType) type;
             return arrayType.getElementType();
         } else {
