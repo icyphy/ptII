@@ -49,7 +49,7 @@ import soot.jimple.*;
 import soot.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
  * This class represents a JHDL constant circuit. This class will generate
  * the corresponding JHDL Wire with the given constant.
@@ -59,21 +59,21 @@ import soot.*;
 @since Ptolemy II 2.0
 */
 public class JHDLConstantActor extends JHDLAtomicActor {
-    
-    JHDLConstantActor(CompositeEntity container, String name, int constant, 
-		      int width) 
+
+    JHDLConstantActor(CompositeEntity container, String name, int constant,
+		      int width)
 	throws IllegalActionException, NameDuplicationException {
 	super(container,name);
 	_constant = constant;
     }
 
-    JHDLConstantActor(CompositeEntity container, int constant, int width) 
+    JHDLConstantActor(CompositeEntity container, int constant, int width)
 	throws IllegalActionException, NameDuplicationException {
 	this(container,container.uniqueName("C"),constant,width);
 	output = new JHDLIOPort(this, "output", width);
     }
 
-    public boolean resolve() { 
+    public boolean resolve() {
 	boolean resolve = output.resolveOutside();
 	return resolve;
     }

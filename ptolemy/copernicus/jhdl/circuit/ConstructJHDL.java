@@ -32,16 +32,16 @@ package ptolemy.copernicus.jhdl.circuit;
 import byucc.jhdl.Logic.Logic;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
- * An interface that specifies the build method (for JHDL circuits). 
+ * An interface that specifies the build method (for JHDL circuits).
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
 */
 
 interface ConstructJHDL {
-    
+
     public void build(Logic parent);
 
 }

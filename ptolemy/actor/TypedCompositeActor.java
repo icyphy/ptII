@@ -234,7 +234,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 
             // Collect and solve type constraints.
             List constraintList = topLevel.typeConstraintList();
-            
+
             // NOTE: To view all type constraints, uncomment these.
             /*
             Iterator constraintsIterator = constraintList.iterator();
@@ -242,7 +242,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
                 System.out.println(constraintsIterator.next().toString());
             }
             */
-            
+
             if (constraintList.size() > 0) {
                 InequalitySolver solver = new InequalitySolver(
                         TypeLattice.lattice());
@@ -506,7 +506,7 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     }
     // NOTE: There is nothing new to report in the _description() method,
     // so we do not override it.
-    
+
     /** Return the type constraints on all connections starting from the
      *  specified source port to all the ports in a group of destination
      *  ports.

@@ -182,6 +182,6 @@ public class TimedSource extends Source implements TimedActor {
 
     // Flag indicating that the model is running.
     private boolean _executing = false;
-    
+
     private double _stopTime = 0.0;
 }

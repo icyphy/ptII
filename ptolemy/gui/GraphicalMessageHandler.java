@@ -80,7 +80,7 @@ public class GraphicalMessageHandler extends MessageHandler {
     /** Set the component with respect to which the display window
      *  should be created.  This ensures that if the application is
      *  iconified or deiconified, that the display window goes with it.
-     *  This is maintained in a weak reference so that the frame can be 
+     *  This is maintained in a weak reference so that the frame can be
      *  garbage collected.
      *  @see #getContext()
      *  @param context The component context.
@@ -89,7 +89,7 @@ public class GraphicalMessageHandler extends MessageHandler {
         // FIXME: This seems utterly incomplete...
         // We will inevitably have multiple frames,
         // so having one static context just doesn't
-        // work.      
+        // work.
         _context = new WeakReference(context);
     }
 
@@ -108,7 +108,7 @@ public class GraphicalMessageHandler extends MessageHandler {
                     String string = info;
                     message[0] = StringUtilities.ellipsis(string,
                             StringUtilities.ELLIPSIS_LENGTH_SHORT);
-                
+
                     Object[] options = {"Dismiss"};
 
                     // Show the MODAL dialog
@@ -125,7 +125,7 @@ public class GraphicalMessageHandler extends MessageHandler {
             };
         Top.deferIfNecessary(doMessage);
     }
-    
+
     /** Show the specified message and throwable information.
      *  If the throwable is an instance of CancelException, then it
      *  is not shown.  By default, only the message of the throwable
@@ -231,14 +231,14 @@ public class GraphicalMessageHandler extends MessageHandler {
         if (EventQueue.isDispatchThread()) {
             Object[] options = {"OK", "Cancel"};
             Object[] message = new Object[1];
-        
+
             // If the message lines are longer than 80 characters, we split it
             // into shorter new line separated strings.
             // Running vergil on a HSIF .xml file will create a line longer
             // than 80 characters
             message[0] = StringUtilities.ellipsis(info,
                     StringUtilities.ELLIPSIS_LENGTH_LONG);
-            
+
             // Show the MODAL dialog
             int selected = JOptionPane.showOptionDialog(
                     getContext(),
@@ -258,7 +258,7 @@ public class GraphicalMessageHandler extends MessageHandler {
                 public void run() {
                     Object[] options = {"OK"};
                     Object[] message = new Object[1];
-        
+
                     // If the message lines are longer than 80 characters, we split it
                     // into shorter new line separated strings.
                     // Running vergil on a HSIF .xml file will create a line longer
@@ -311,7 +311,7 @@ public class GraphicalMessageHandler extends MessageHandler {
             message[0] = StringUtilities.ellipsis(info,
                     StringUtilities.ELLIPSIS_LENGTH_LONG);
             Object[] options = {"OK", "Display Stack Trace", "Cancel"};
-            
+
             // Show the MODAL dialog
             int selected = JOptionPane.showOptionDialog(
                     getContext(),
@@ -335,7 +335,7 @@ public class GraphicalMessageHandler extends MessageHandler {
                     message[0] = StringUtilities.ellipsis(info,
                             StringUtilities.ELLIPSIS_LENGTH_LONG);
                     Object[] options = {"OK", "Display Stack Trace"};
- 
+
                     // Show the MODAL dialog
                     int selected = JOptionPane.showOptionDialog(
                             getContext(),
@@ -368,7 +368,7 @@ public class GraphicalMessageHandler extends MessageHandler {
         message[0] = StringUtilities.ellipsis(question,
                 StringUtilities.ELLIPSIS_LENGTH_LONG);
         Object[] options = {"Yes", "No"};
- 
+
         // Show the MODAL dialog
         int selected = JOptionPane.showOptionDialog(
                 getContext(),
@@ -426,7 +426,7 @@ public class GraphicalMessageHandler extends MessageHandler {
         message[0] = StringUtilities.ellipsis(string,
                 StringUtilities.ELLIPSIS_LENGTH_LONG);
         message[1] = stext;
-        
+
         // Show the MODAL dialog
         JOptionPane.showMessageDialog(
                 getContext(),

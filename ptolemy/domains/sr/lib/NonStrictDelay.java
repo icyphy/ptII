@@ -106,13 +106,13 @@ public class NonStrictDelay extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** If the input known and there is a token on the input port, 
-     *  consume the token from the input port, and store it for output 
+    /** If the input known and there is a token on the input port,
+     *  consume the token from the input port, and store it for output
      *  on the next iteration. Otherwise, store an AbsentToken for
-     *  output on the next iteration.  
+     *  output on the next iteration.
      *  If a token was received on the previous iteration, output it to the
      *  receivers. Otherwise, notify the receivers that there will never be
-     *  any token available in the current iteration. 
+     *  any token available in the current iteration.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
@@ -156,7 +156,7 @@ public class NonStrictDelay extends Transformer {
     }
 
     /** Explicitly declare which inputs and outputs are not dependent.
-     *  
+     *
      */
     public void removeDependencies() {
         removeDependency(input, output);

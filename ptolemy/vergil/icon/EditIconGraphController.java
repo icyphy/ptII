@@ -79,7 +79,7 @@ public class EditIconGraphController extends BasicGraphController {
         super.addToMenuAndToolbar(menu, toolbar);
         // FIXME: Placeholder for adding support for icon editing here.
     }
-    
+
     /** Throw an exception. This should not be called.
      *  @param edge The edge object.
      *  @exception InternalErrorException If this is called.

@@ -197,7 +197,7 @@ public class PushSupplier extends Sink {
 					_debug("after try to get remote consumer.");
 				   if (_remoteConsumer instanceof pushConsumer) {
 						_debug("get remote consumer.");
-				    	break;	
+				    	break;
 				   }
 				   try {
 						Thread.sleep(1000);
@@ -209,15 +209,15 @@ public class PushSupplier extends Sink {
 				    // ignor here and retry.
                     _debug("failed to resolve the remote consumer. will try again." );
 				try {
-						
+
 						Thread.sleep(1000);
 					} catch (InterruptedException ex1) {
                         _debug("thread is interrupted when trying to find" +
                                 "remote consumer");
 					}
-				} 
+				}
             }
-           
+
         } catch (UserException ex) {
             //ex.printStackTrace();
             throw new IllegalActionException(this,

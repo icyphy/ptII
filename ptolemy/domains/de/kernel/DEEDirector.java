@@ -61,7 +61,7 @@ This director extends DE director and handles hierarchical DE models.
 <p>
 This director uses FunctionDependencies, which specify the input and output
 relations of an actor, to do topological sort and scheduling. This director
-excludes the models with cyclic loops in the graph composed of IO ports 
+excludes the models with cyclic loops in the graph composed of IO ports
 of actors, and throws an exception complaining that no valid schedules
 can be found.
 <p>
@@ -74,10 +74,10 @@ of each iteration. For simultaneous pure events, they will be processed
 based on the order they are inserted into the event queue, which reflects
 the topological order of the actors producing these pure events.
 <p>
-Another interesting point was pointed out by Steve, that the equivalence 
-of the send method of Delay actor and the fireAt method of general actor 
+Another interesting point was pointed out by Steve, that the equivalence
+of the send method of Delay actor and the fireAt method of general actor
 on breaking the loop. A simple but intuitive example is an opaque composite
-actor with a Delay actor embedded inside. 
+actor with a Delay actor embedded inside.
 
 @author Haiyang Zheng
 @version $Id$
@@ -268,7 +268,7 @@ public class DEEDirector extends DEDirector {
                     currentEvent = (DEEvent) _eventQueue.take();
                     currentTime = currentEvent.timeStamp();
                     actorToFire = currentEvent.actor();
-                    
+
                     // Deal with a fireAtCurrentTime event.
                     if (currentTime == Double.NEGATIVE_INFINITY) {
                         currentTime = getCurrentTime();
@@ -320,9 +320,9 @@ public class DEEDirector extends DEDirector {
                 // Check whether the next event has equal tag.
                 // If so, the destination actor should
                 // be the same, but check anyway.
-                
+
                 // FIXME: the same ioPort requirement is not correct.
-                // Consider the multi-input atomic actors, e.g. the 
+                // Consider the multi-input atomic actors, e.g. the
                 // BooleanSelect and Inhibit.
                 if ((nextEvent.timeStamp() == Double.NEGATIVE_INFINITY ||
                         nextEvent.isSimultaneousWith(currentEvent))
@@ -379,17 +379,17 @@ public class DEEDirector extends DEDirector {
                     + " Current time is " + getCurrentTime()
                     + " while event time is " + time);
         }
-        // FIXME: what depth for this pure event? 
-        // If the actor has different depths because of 
+        // FIXME: what depth for this pure event?
+        // If the actor has different depths because of
         // multiple inputs?
-        
+
         // Or, we constrain that there is only one input for
         // each actor to accept the inputs, and a Merge actor
         // is necessary to sort the multiple inputs?
-        
+
         //int depth = _getDepth(actor);
         int depth = 0;
-        
+
         if (_debugging) _debug("FIXME: possible issues may arise here. " +
                 "enqueue a pure event: ",
                 ((NamedObj)actor).getName(),
@@ -460,8 +460,8 @@ public class DEEDirector extends DEDirector {
 
         IOPort destination = (IOPort) receiver.getContainer();
         int depth = _getDepth(destination);
-        
-        if (_debugging) _debug("enqueue event: to", 
+
+        if (_debugging) _debug("enqueue event: to",
         receiver.getContainer().getFullName() + " ("+token.toString()+") ",
         "time = "+ getCurrentTime() + " microstep = "+ (_microstep + 1) + " depth = "
         + depth);
@@ -493,24 +493,24 @@ public class DEEDirector extends DEDirector {
         DirectedAcyclicGraph portsGraph = new DirectedAcyclicGraph();
 
         Nameable container = getContainer();
-        // If the container is not composite actor, 
+        // If the container is not composite actor,
         // there are no actors.
         if (!(container instanceof CompositeActor)) return portsGraph;
         CompositeActor castContainer = (CompositeActor)container;
 
-        // Get the functionDependency attribute of the container of this 
+        // Get the functionDependency attribute of the container of this
         // director. If there is no such attribute, construct one.
         FunctionDependency functionDependency = castContainer.getFunctionDependencies();
-         
-//        Since the functionDependency is synchronized to workspace, 
+
+//        Since the functionDependency is synchronized to workspace,
 //        there is no need to invalidate functionDependency here.
 //        // The functionDependency attribute is used to construct
 //        // the schedule. If the schedule needs recalculation,
 //        // the functionDependency also needs recalculation.
 //        functionDependency.invalidate();
-      
-        // FIXME: The following may be a very costly test. 
-        // -- from the comments of former implementation. 
+
+        // FIXME: The following may be a very costly test.
+        // -- from the comments of former implementation.
         // If the port based data flow graph contains directed
         // loops, the model is invalid. An IllegalActionException
         // is thrown with the names of the actors in the loop.
@@ -568,7 +568,7 @@ public class DEEDirector extends DEDirector {
 
         if (_debugging) _debug("## adjusting port depth based on the " +
             "strictness constraints.");
-        
+
         // Adjust port depths with strictness constraints.
         for (int i = sort.length-1; i >= 0; i--) {
             IOPort ioPort = (IOPort)sort[i];
@@ -582,11 +582,11 @@ public class DEEDirector extends DEDirector {
             if (portContainer.equals(getContainer())) {
                 continue;
             }
-            
-            FunctionDependency functionDependency = 
+
+            FunctionDependency functionDependency =
                 ((Actor)portContainer).getFunctionDependencies();
-                
-            Iterator inputsIterator = 
+
+            Iterator inputsIterator =
                 functionDependency.getDependentInputPorts(ioPort).iterator();
             int maximumPortDepth = -1;
             while (inputsIterator.hasNext()) {
@@ -595,9 +595,9 @@ public class DEEDirector extends DEDirector {
                 if (maximumPortDepth < inputPortDepth) {
                     maximumPortDepth = inputPortDepth;
                 }
-            }    
+            }
 
-            inputsIterator = 
+            inputsIterator =
                 functionDependency.getDependentInputPorts(ioPort).iterator();
             while (inputsIterator.hasNext()) {
                 IOPort input = (IOPort)inputsIterator.next();
@@ -605,7 +605,7 @@ public class DEEDirector extends DEDirector {
                         "depth is adjusted to: " + maximumPortDepth);
                 // Insert the hashtable entry.
                 _portToDepth.put(input, new Integer(maximumPortDepth));
-            }    
+            }
         }
 
         if (_debugging) _debug("## End of topological sort.");

@@ -71,7 +71,7 @@ a public key signed with a self signed certificate, run:
 cd $PTII
 make ptKeystore
 </pre>
-which will create a keystore with a store password 
+which will create a keystore with a store password
 of <code>this.is.the.storePassword,change.it</code>
 and key password of
 of <code>this.is.the.keyPassword,change.it</code>.

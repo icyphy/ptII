@@ -46,7 +46,7 @@ import soot.*;
 import soot.jimple.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
  * This class represents a "Wire" in JHDL. It has a signal width and
  * provides signal width resolution functionality.
@@ -102,11 +102,11 @@ public class JHDLIORelation extends IORelation implements Signal {
 
 	if (isResolved()) {
 	    return isResolved();
-	} 
-	
+	}
+
 	// Output ports set the signal width
 	for (Iterator i = linkedPortList().iterator();i.hasNext();) {
-	    JHDLIOPort port = (JHDLIOPort) i.next();	    
+	    JHDLIOPort port = (JHDLIOPort) i.next();
 	    if (port.isOutput()) {
 		setSignalWidth(port.getSignalWidth());
 	    }
@@ -131,7 +131,7 @@ public class JHDLIORelation extends IORelation implements Signal {
     }
 
     protected String _description(int detail, int indent, int bracket) {
-	return super._description(detail,indent,bracket) + 
+	return super._description(detail,indent,bracket) +
 	    " { relationWidth="+  _portWidth+"}";
     }
 

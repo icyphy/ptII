@@ -58,5 +58,5 @@ public class InvariantViolationException extends IllegalActionException {
     public InvariantViolationException(Nameable object, String detail) {
         super(object, null, null, detail);
     }
-    
+
 }

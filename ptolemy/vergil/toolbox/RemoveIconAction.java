@@ -60,7 +60,7 @@ public class RemoveIconAction extends FigureAction {
         // Determine which entity was selected for the look inside action.
         super.actionPerformed(e);
         NamedObj object = getTarget();
-            
+
         try {
             EditorIcon icon = (EditorIcon)object
                     .getAttribute("_icon", EditorIcon.class);
@@ -78,14 +78,14 @@ public class RemoveIconAction extends FigureAction {
             MessageHandler.error("Remove custom Icon failed.", ex);
         }
     }
-    
+
     /** Specify the configuration.  This has to be called with a
      *  non-null argument for this action to work.
      */
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 

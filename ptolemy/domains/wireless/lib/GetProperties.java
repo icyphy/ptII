@@ -50,7 +50,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
 This actor retrieves the properties most recently received by
-an input port that is connected on the inside to the trigger 
+an input port that is connected on the inside to the trigger
 port of this actor. That port
 must be an instance of WirelessIOPort, and must be contained
 by the container of this actor, or an exception will be thrown.
@@ -113,8 +113,8 @@ public class GetProperties extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read the properties from the port connected to the trigger 
-     *  port and produce them at the output. If there are no properties, 
+    /** Read the properties from the port connected to the trigger
+     *  port and produce them at the output. If there are no properties,
      *  then produce no output.
      *  @exception IllegalActionException If the specified port is not
      *   an instance of WirelessIOPort, or if there is no such port.

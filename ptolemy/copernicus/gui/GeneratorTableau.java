@@ -308,7 +308,7 @@ public class GeneratorTableau extends Tableau {
                             // ptolemy/copernicus such as "java" or "shallow".
                             String codeGenerator =
                                 options.getParameter("codeGenerator");
-                            
+
                             String targetPath =
                                 options.getParameter("targetPath");
 
@@ -316,7 +316,7 @@ public class GeneratorTableau extends Tableau {
                                 options.getParameter("ptIIUserDirectory");
 
                             // Check that we will be able to write
-                            File directory = new File(ptIIUserDirectory, 
+                            File directory = new File(ptIIUserDirectory,
                                     targetPath);
                             if (!directory.isDirectory()) {
                                 throw new IllegalActionException(model,
@@ -332,7 +332,7 @@ public class GeneratorTableau extends Tableau {
                                         "Can't write: "
                                         + ptIIUserDirectory + "/" + targetPath);
                             }
-                            
+
                             exec.updateStatusBar("Starting " + codeGenerator
                                     + " code generation.");
 
@@ -347,7 +347,7 @@ public class GeneratorTableau extends Tableau {
                                 throw new IllegalActionException(
                                         model, ex, null);
                             }
-                            
+
                             // FIXME: Above is asynchronous: Do in listener?
                             exec.updateStatusBar("Code generation "
                                         + "complete.");
@@ -425,7 +425,7 @@ public class GeneratorTableau extends Tableau {
             String codeGenerator)
             throws IllegalArgumentException, IllegalActionException,
             InternalErrorException, NameDuplicationException {
-        
+
         List results = new LinkedList();
         try {
             // Write the model to a temporary file.
@@ -434,7 +434,7 @@ public class GeneratorTableau extends Tableau {
             FileWriter writer = new FileWriter(temporaryFile);
             model.exportMoML(writer);
             writer.close();
-             
+
             // Set the temporary modelPath.
             generatorAttribute.sanityCheckAndUpdateParameters(
                     temporaryFile.toURI().toString());
@@ -444,7 +444,7 @@ public class GeneratorTableau extends Tableau {
                     Copernicus.substitute(
                            "ptolemy/copernicus/gui/compileCommandTemplate.txt",
                            generatorAttribute));
-            
+
             // Replace the original modelPath.
             generatorAttribute.sanityCheckAndUpdateParameters(
                    ((GeneratorFrame)getFrame()).getEffigy().uri.getURI().toString());

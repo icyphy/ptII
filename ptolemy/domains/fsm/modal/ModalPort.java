@@ -58,7 +58,7 @@ ports can be initiated in either class.
 
 public class ModalPort extends TypedIOPort {
 
-    /** Construct a port in the given workspace.  
+    /** Construct a port in the given workspace.
      *  @param workspace The workspace.
      *  @exception IllegalActionException If the port is not of an acceptable
      *   class for the container, or if the container does not implement the

@@ -49,7 +49,7 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// Backoff
 
-/** 
+/**
 
 
 @author Yang Zhao
@@ -74,38 +74,38 @@ public class Backoff extends MACActorBase {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Create and configure the ports.       
+        // Create and configure the ports.
         channelStatus = new TypedIOPort(this, "channelStatus", true, false);
         fromProtocol = new TypedIOPort(this, "fromProtocol", true, false);
         toProtocol = new TypedIOPort(this, "toProtocol", false, true);
-        
+
         channelStatus.setTypeEquals(BaseType.GENERAL);
         fromProtocol.setTypeEquals(BaseType.GENERAL);
-        toProtocol.setTypeEquals(BaseType.GENERAL); 
-        
+        toProtocol.setTypeEquals(BaseType.GENERAL);
+
         seed = new Parameter(this, "seed", new LongToken(0));
         seed.setTypeEquals(BaseType.LONG);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The input port for channel status message.  
+    /** The input port for channel status message.
      *  This has undeclared type.
      */
     public TypedIOPort channelStatus;
-    
+
 
     /** The input port for backoff message from the Protocol control block.
      */
     public TypedIOPort fromProtocol;
-    
+
 
     /** The output port that produces messages that
      *  indicate the backoff is done.
      */
     public TypedIOPort toProtocol;
-    
+
     /** The seed that controls the random number generation.
      *  A seed of zero is interpreted to mean that no seed is specified,
      *  which means that each execution of the model could result in
@@ -115,11 +115,11 @@ public class Backoff extends MACActorBase {
      *  distinct seeds.  However, current time may not have enough
      *  resolution to ensure that two subsequent executions of the
      *  same model have distinct seeds.
-     *  
+     *
      *  This parameter contains a LongToken, initially with value 0.
      */
     public Parameter seed;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Clone the object into the specified workspace. The new object is
@@ -148,19 +148,19 @@ public class Backoff extends MACActorBase {
 	    int kind=whoTimeout();
         // if a timer is processed, should not consume the message token
         // kind = -1 means no timer event.
-        if (kind == -1) { 
+        if (kind == -1) {
             if (fromProtocol.hasToken(0)) {
                 _inputMessage = (RecordToken) fromProtocol.get(0);
             } else if (channelStatus.hasToken(0)) {
                 _inputMessage = (RecordToken) channelStatus.get(0);
-            } 
+            }
             if (_inputMessage != null) {
                 _messageType = ((IntToken)
                         _inputMessage.get("kind")).intValue();
 
-            } 
+            }
         }
-                
+
         switch (_state) {
             case No_Backoff:
               switch (_messageType) {
@@ -188,7 +188,7 @@ public class Backoff extends MACActorBase {
                   break;
               }
             break;
-            
+
             case Channel_Busy:
               switch(_messageType) {
                   // modify standard here
@@ -196,7 +196,7 @@ public class Backoff extends MACActorBase {
                     _startBackoff();
                       break;
                   // end modification
-    
+
                   case Cancel:
                     _backoffDone(_slotCnt);
                   break;
@@ -230,9 +230,9 @@ public class Backoff extends MACActorBase {
             break;
         }
         _inputMessage = null;
-        _messageType = UNKNOWN;   
+        _messageType = UNKNOWN;
     }
-    
+
     /** Initialize the private variables.
      *  @exception IllegalActionException If thrown by the base class.
      */
@@ -250,14 +250,14 @@ public class Backoff extends MACActorBase {
         _status = Busy;
         _state = No_Backoff;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
     private int _generateRandom(int ccw) {
         double r = _random.nextDouble();
         return (int)Math.ceil(ccw * r);
     }
-    
+
     private void _backoffDone(int cnt) throws IllegalActionException {
         Token[] value = {new IntToken(BkDone), new IntToken(_cnt)};
         toProtocol.send(0, new RecordToken(BackoffDoneMsgFields, value));
@@ -282,20 +282,20 @@ public class Backoff extends MACActorBase {
 
     private int _state=0;
     private int _slotCnt;
-    private int _cnt; 
-    private int _status; 
+    private int _cnt;
+    private int _status;
 
-    
+
     private Timer _BackoffTimer;
     // timer types
     private static final int BackoffTimeOut=0;
-    
+
     private double _backoffStartTime = 0.0;
 
     private RecordToken _inputMessage;
     private int _messageType;
     private double _currentTime;
-    
+
     protected Random _random = new Random();
 
 }

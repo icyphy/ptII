@@ -112,7 +112,7 @@ is ignored. It will not cause collisions and is not produced
 at the <i>collided</i> output.  The <i>powerThreshold</i> parameter
 thus specifies the power level at which the receiver simply fails
 to detect the signal.  It is given in a linear scale (vs. DB) with
-the same units as the <i>power</i> input. The default value is zero, 
+the same units as the <i>power</i> input. The default value is zero,
 i.e. by default it won't ignore any received signal.
 <p>
 Any message whose power exceeds <i>powerThreshold</i> has the
@@ -221,12 +221,12 @@ public class CollisionDetector extends TypedAtomicActor {
      */
     public TypedIOPort power;
 
-    /** The input port for the time that a message transmission takes. 
+    /** The input port for the time that a message transmission takes.
      *  This has type double.
      */
     public TypedIOPort duration;
 
-    /** The output port that produces messages that are successfully 
+    /** The output port that produces messages that are successfully
      *  received. This has the same type as the message input.
      */
     public TypedIOPort received;

@@ -118,9 +118,9 @@ Breakpoints at the same time (controlled by the time resolution parameter)
 are considered to be one. A breakpoint can be inserted into the table by
 calling the fireAt() method. The fireAt method may be requested
 by the director, which inserts the start time and stop time of the
-execution. In this case, the first parameter actor is null. The fireAt 
+execution. In this case, the first parameter actor is null. The fireAt
 method may also be requested by the actors and the requests are handled
-differently depending on the second parameter time. If the time is the 
+differently depending on the second parameter time. If the time is the
 current time, and if the actors are discrete actors, the actors are
 added into a refireActor list and will be fired in the current iteration.
 Otherwise, the time will be inserted into the breakpoint table.
@@ -349,34 +349,34 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     public abstract boolean canBeTopLevelDirector();
 
-    /** Handle the firing request from the containing actors. 
+    /** Handle the firing request from the containing actors.
      *  If the specified time is the current time (within the
      *  <i>timeResolution</i> of this director), and the actor is
      *  not null nor a step size control actor, then the actor will
-     *  be added into a refiredActors list and fired as part of the 
-     *  current execution phase.  If the specified time is in the 
-     *  future, or the actor is null, or the actor is a step size 
-     *  control actor, this director will register a breakpoint at 
-     *  the specified time. 
+     *  be added into a refiredActors list and fired as part of the
+     *  current execution phase.  If the specified time is in the
+     *  future, or the actor is null, or the actor is a step size
+     *  control actor, this director will register a breakpoint at
+     *  the specified time.
      *  <p>
      *  From this director's point of view, it is irrelevant
      *  which actor requests the breakpoint. All actors will be
      *  executed at every breakpoint.
      *  <p>
      *  If the actor is null, it indicates the time for the start or
-     *  the stop of an execution. Otherwise, it is the actor that 
+     *  the stop of an execution. Otherwise, it is the actor that
      *  requests the firing.
      *  <p>
      *  In CT domain, the signals may be piecewise continuous. They
      *  may generate discontinuities at some time points. In order to
      *  generate the discontinuities, the actors request to be fired at
      *  some time as many times as necessary, and each time they produce
-     *  some outputs. The CT director does not deal with discontinuity 
-     *  but only handle the requests from the actors it contains. For 
+     *  some outputs. The CT director does not deal with discontinuity
+     *  but only handle the requests from the actors it contains. For
      *  example, the ContinuousClock actor fires twice at each offset.
 
-     *  @param actor The actor that requested the firing or null that 
-     *    indicates the time of the start or stop of an execution. 
+     *  @param actor The actor that requested the firing or null that
+     *    indicates the time of the start or stop of an execution.
      *  @param time The requested firing time.
      *  @exception IllegalActionException If the time is earlier than
      *   the current time.
@@ -385,7 +385,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             throws IllegalActionException{
         double resolution = getTimeResolution();
         double currentTime = getCurrentTime();
-        
+
         // Check if the request fire time is later than the current time.
         if (time < currentTime - resolution) {
             throw new IllegalActionException((Nameable)actor,
@@ -406,8 +406,8 @@ public abstract class CTDirector extends StaticSchedulingDirector {
             }
             _refireActors.add(actor);
         } else {
-            // Otherwise, the fireAt request is in the future, or 
-            // some actors try to generate discontinuities at current time. 
+            // Otherwise, the fireAt request is in the future, or
+            // some actors try to generate discontinuities at current time.
             // We insert the time into the breakpoint table.
             // Note that the _breakPoints may be null if an actor calls
             // fireAt() in its constructor.

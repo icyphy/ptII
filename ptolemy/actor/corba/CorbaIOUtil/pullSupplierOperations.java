@@ -11,7 +11,7 @@ package ptolemy.actor.corba.CorbaIOUtil;
 
 /* A CORBA compatible interface for a pull supplier.
 	 */
-public interface pullSupplierOperations 
+public interface pullSupplierOperations
 {
 
   /* this method is intended to be called remotely by a pull consumer

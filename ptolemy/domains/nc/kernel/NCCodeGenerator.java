@@ -87,14 +87,14 @@ public class NCCodeGenerator extends Director {
                 + "<text x=\"-15\" y=\"9\" "
                 + "style=\"font-size:24; font-family:SansSerif; fill:white\">"
                 + "NC</text></svg>");
-        
+
         destinationDirectory = new FileParameter(this, "destinationDirectory");
         destinationDirectory.setExpression("$CWD");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** The directory into which to write the code.
      */
     public FileParameter destinationDirectory;
@@ -106,7 +106,7 @@ public class NCCodeGenerator extends Director {
      */
     public void fire() {
     }
-    
+
     /** Do nothing.
      */
     public void initialize() {
@@ -134,7 +134,7 @@ public class NCCodeGenerator extends Director {
             "Requires the container to be an instance of CompositeActor.");
         }
         CompositeActor container = (CompositeActor)getContainer();
-        
+
         File directory = destinationDirectory.asFile();
         if (!directory.isDirectory()) {
             // FIXME: Should we create the directory?
@@ -147,7 +147,7 @@ public class NCCodeGenerator extends Director {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Generate NC code for the given model. This does not descend
      *  hierarchically into contained composites. It simply generates
      *  code for the top level of the specified model.
@@ -195,7 +195,7 @@ public class NCCodeGenerator extends Director {
         }
         return codeString.toString();
     }
-    
+
     /** Generate interface the model uses.
      *  @return The code.
      */
@@ -246,13 +246,13 @@ public class NCCodeGenerator extends Director {
         codeString.append(";" + _endLine);
         return codeString.toString();
      }
-     
+
     /** Generate code for the connections.
      *  @return The connections code.
      */
     private static String _includeConnection(CompositeActor model, Actor actor)
             throws IllegalActionException {
-        
+
         StringBuffer codeString = new StringBuffer();
 
         String actorName = StringUtilities.
@@ -296,7 +296,7 @@ public class NCCodeGenerator extends Director {
                 codeString.append(_endLine);
             }
         }
-        
+
         return codeString.toString();
     }
 
@@ -336,7 +336,7 @@ public class NCCodeGenerator extends Director {
             }
             IOPort sourcePort;
             if (sourcePortList != null ) {
-     
+
                 sourcePort = (IOPort) sourcePortList.get(0);
             String sanitizedOutPortName =
                 StringUtilities.sanitizeName(
@@ -356,7 +356,7 @@ public class NCCodeGenerator extends Director {
     }
 
 
-    /** Return true if the given actor has at least one input port, which 
+    /** Return true if the given actor has at least one input port, which
      *  requires it to have an input driver.
      */
     private static boolean _needsInputDriver(Actor actor) {
@@ -379,13 +379,13 @@ public class NCCodeGenerator extends Director {
      *   file.
      */
     private void _writeCode(
-            CompositeActor model, 
-            CompositeActor toplevel, 
+            CompositeActor model,
+            CompositeActor toplevel,
             File directory)
             throws IllegalActionException {
-        
+
         String code = generateCode(model);
-        
+
         String name;
         if (toplevel != null) {
             name = toplevel.getName() + "_" + model.getName(toplevel);
@@ -394,7 +394,7 @@ public class NCCodeGenerator extends Director {
             name = toplevel.getName();
         }
         name = StringUtilities.sanitizeName(name);
-        
+
         // FIXME: We just overwrite the file.
         File writeFile = new File(directory, name + ".nc");
         // FIXME: Check whether the file exists?  How to manage overwriting?
@@ -406,7 +406,7 @@ public class NCCodeGenerator extends Director {
             throw new IllegalActionException(this, e,
             "Failed to open file for writing.");
         }
-        
+
         // Descend recursively into contained composites.
         Iterator entities = model.entityList(CompositeActor.class).iterator();
         while (entities.hasNext()) {
@@ -416,7 +416,7 @@ public class NCCodeGenerator extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////    
+    ////                         private variables                 ////
 
     private static String _endLine = "\n";
 

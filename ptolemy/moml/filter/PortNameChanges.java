@@ -255,7 +255,7 @@ public class PortNameChanges implements MoMLFilter {
         _actorsWithPortNameChanges
             .put("ptolemy.actor.lib.comm.Scrambler",
                     scramblerPorts);
-     
+
         // ConvolutionalCoder changed between 3.0.2 and 4.0
         HashMap convolutionalCoderPorts = new HashMap();
         convolutionalCoderPorts.put("initial", "initialState");

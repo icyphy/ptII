@@ -477,7 +477,7 @@ public class FixPoint implements Cloneable, Serializable {
                 return bigString;
             } else {
 
-                // Java 1.5 release notes: 
+                // Java 1.5 release notes:
                 // "The DecimalFormat class has been enhanced
                 // to format and parse BigDecimal and BigInteger
                 // values without loss of precision. Formatting of
@@ -494,7 +494,7 @@ public class FixPoint implements Cloneable, Serializable {
                 // are supported. Limited formatting customization for
                 // arbitrary user types is provided through the
                 // java.util.Formattable interface."
-                
+
                 // As a result, sometimes we get 0E-12 or 0E-8 instead
                 // of 0.0.
                 if (bigString.startsWith("0E-")) {

@@ -43,7 +43,7 @@ import soot.jimple.*;
 import soot.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
  * Simple implementation of the Signal interface.
 
@@ -67,10 +67,10 @@ public class SimpleSignal implements Signal {
 	    return true;
 	return false;
     }
-    public String toString() { 
+    public String toString() {
 	return "Port:"+_name+"-"+_width;
     }
-    public String getName() { return _name; } 
+    public String getName() { return _name; }
     protected String _name;
     protected int _width;
 }

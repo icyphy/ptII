@@ -41,7 +41,7 @@ import x10.Command;
 
 //////////////////////////////////////////////////////////////////////////
 //// Sender
-/** 
+/**
 Add broadcast functionality to the X10 interface. Derived classes need to
 implement logic for sending commands.
 
@@ -65,31 +65,31 @@ public class Sender extends X10Interface {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-		// Create input ports and port parameters.    
+		// Create input ports and port parameters.
     	houseCode = new StringParameter(this, "houseCode");
         unitCode = new StringParameter(this, "unitCode");
-        
+
     	// The default value for the house code is A while the default value
         // for the unit code is 1. This is the normal x10 default address
         // value for most x10 devices.
 		houseCode.setExpression("A");
         unitCode.setExpression("1");
     }
-	
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** This string stores the destination-housecode address. */
     public StringParameter houseCode;
-    
-    /** This string stores the destination-unitcode address. */ 
+
+    /** This string stores the destination-unitcode address. */
     public StringParameter unitCode;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Get the destination and instruction for this command. Since each x10
-     * device is specialized, derived classes will define logic for each 
+     * device is specialized, derived classes will define logic for each
      * command.
      *  @exception IllegalActionException If super class thows exception.
      */
@@ -98,28 +98,28 @@ public class Sender extends X10Interface {
 
         _destination = houseCode.stringValue() + unitCode.stringValue();
     }
-	
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Add a command to the x10-interface send-queue. Commands are
-     * broadcasted in a FIFO manner. 
+     * broadcasted in a FIFO manner.
      * @param command The command to be sent on the x10 network.
      */
     protected void _transmit(Command command) {
         _interface.addCommand(command);
     }
-    
+
     /** Return true if any channel on a given port has a true input; return
      *  false otherwise.
      *  @return true if any channel on a given port has a true input; return
      *  false otherwise.
      */
-    protected boolean _hasTrueInput (TypedIOPort port) 
+    protected boolean _hasTrueInput (TypedIOPort port)
             throws NoTokenException, IllegalActionException{
-        
+
         boolean hasTrue = false;
-        
+
         if (port.getWidth() > 0) {
             for (int i = 0; i < port.getWidth(); i++) {
                 if (port.hasToken(i)) {
@@ -129,13 +129,13 @@ public class Sender extends X10Interface {
                 }
             }
         }
-           
+
         return (hasTrue);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
-	
+
     /** The address of a given module on the x10 network. */
     protected String _destination;
 }

@@ -46,7 +46,7 @@ import soot.*;
 import soot.jimple.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
  * Represents a composite actor that can generate a JHDL circuit.
  * Provides methods for creating JHDLIORelations and JHDLIOPorts.
@@ -58,19 +58,19 @@ import soot.jimple.*;
 @since Ptolemy II 2.0
 */
 
-public class JHDLCompositeActor 
+public class JHDLCompositeActor
     extends CompositeActor implements Resolve, ConstructJHDL {
-    
+
     public JHDLCompositeActor() {
 	super();
     }
 
-    public ComponentRelation newRelation(String name) 
+    public ComponentRelation newRelation(String name)
 	throws IllegalActionException, NameDuplicationException {
 	return new JHDLIORelation(this, name);
     }
 
-    public ComponentRelation newRelation() 
+    public ComponentRelation newRelation()
 	throws IllegalActionException {
 	try {
 	    return new JHDLIORelation(this);
@@ -117,7 +117,7 @@ public class JHDLCompositeActor
 	    }
 	    //} while (false);
 	} while (resolvedNodes.size() < unresolvedNodes.size());
-	
+
 	return true;
     }
 
@@ -132,7 +132,7 @@ public class JHDLCompositeActor
 	    JHDLIOPort port = (JHDLIOPort) i.next();
 	    port.buildJHDLPort(cell);
 	}
-	
+
 	// 2. Create Wires for all internal relations
 	for (Iterator i = relationList().iterator(); i.hasNext();) {
 	    JHDLIORelation r = (JHDLIORelation) i.next();
@@ -152,7 +152,7 @@ public class JHDLCompositeActor
     // generate a structural view (in dot format) of the circuit
     public String toDot() {
         StringBuffer sb = new StringBuffer();
-	
+
         sb.append("//Dotfile created for JHDLCompositeActor\r\n");
         sb.append("digraph "+getName()+" {\r\n");
         sb.append("\tcompound=true;\r\n");
@@ -196,7 +196,7 @@ public class JHDLCompositeActor
         }
         sb.append("}\r\n");
         return sb.toString();
-	
+
     }
 
 }

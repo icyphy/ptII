@@ -43,7 +43,7 @@ import org.w3c.dom.Document;
 //////////////////////////////////////////////////////////////////////////
 //// XmlToken
 /**
-A token that contains a xml document. 
+A token that contains a xml document.
 
 Currently, no operations between function tokens (add, multiply, etc.)
 are supported.
@@ -76,7 +76,7 @@ public class XMLToken extends Token {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 	/** Convert the specified token into an instance of XMLToken.
-	 *  If the specified token is not an instance of XMLToken, 
+	 *  If the specified token is not an instance of XMLToken,
 	 *  an exception is thrown.
 	 *  @param token The token to be converted to a XMLToken.
 	 *  @return A XMLToken.
@@ -115,7 +115,7 @@ public class XMLToken extends Token {
     }
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Test for closeness of the values of this Token and the argument
      *  Token.  It is assumed that the type of the argument is
      *  StringToken.

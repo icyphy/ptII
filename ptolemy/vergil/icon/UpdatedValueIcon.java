@@ -168,7 +168,7 @@ public class UpdatedValueIcon extends AttributeValueIcon {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Update the figures that were created by this icon to reflect the 
+    /** Update the figures that were created by this icon to reflect the
      *  new attribute value.  This method is called by this class in response
      *  to notification that attributes have changed.
      */

@@ -46,7 +46,7 @@ import soot.jimple.*;
 import soot.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
  * This class represents an abstract circuit topology. The primary
  * purpose of this class is to force the use of a bit-width resolve
@@ -58,15 +58,15 @@ import soot.*;
 @version $Id$
 @since Ptolemy II 2.0
 */
-public abstract class JHDLAtomicActor extends AtomicActor 
+public abstract class JHDLAtomicActor extends AtomicActor
     implements Resolve, ConstructJHDL {
 
-    JHDLAtomicActor(CompositeEntity container, String name) 
+    JHDLAtomicActor(CompositeEntity container, String name)
 	throws IllegalActionException, NameDuplicationException {
 	super(container,name);
     }
 
-    JHDLAtomicActor(CompositeEntity container) 
+    JHDLAtomicActor(CompositeEntity container)
 	throws IllegalActionException, NameDuplicationException {
 	super(container,container.uniqueName("C"));
     }

@@ -113,9 +113,9 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         double[] transform = new double[2];
         transform[0] = _dragStart[0] - dragEnd[0];
         transform[1] = _dragStart[1] - dragEnd[1];
-        
+
         if (transform[0] == 0.0 && transform[1] == 0.0) return;
-        
+
         BasicGraphController graphController
                 = (BasicGraphController)_controller.getController();
         BasicGraphFrame frame
@@ -157,20 +157,20 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                 }
             }
         }
-        
+
         // Generate the MoML to carry out move.
         // Note that the location has already been set by the mouseMoved()
         // call, but we need to do this so that the undo is generated and
         // so that the change propagates.
-        
+
         // The toplevel is the container being edited.
         NamedObj toplevel = (NamedObj)graphModel.getRoot();
-        
+
         StringBuffer moml = new StringBuffer();
         StringBuffer undoMoml = new StringBuffer();
         moml.append("<group>\n");
         undoMoml.append("<group>\n");
-        
+
         Iterator elements = namedObjSet.iterator();
         while (elements.hasNext()) {
             NamedObj element = (NamedObj)elements.next();
@@ -200,7 +200,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
                     element.getName() + "\" >\n";
             moml.append(elementToMove);
             undoMoml.append(elementToMove);
-            
+
             // NOTE: use the moml info element name here in case the
             // location is a vertex
             String momlInfo = ((NamedObj)locatable).getElementName();
@@ -228,7 +228,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
         undoInfo.push(newEntry);
         // FIXME: Doesn't the above MoMLChangeRequest also result in an undo?
         // Maybe not, since the value isn't changing.
-        
+
         if (frame != null) {
             // NOTE: Use changeExecuted rather than directly calling
             // setModified() so that the panner is also updated.

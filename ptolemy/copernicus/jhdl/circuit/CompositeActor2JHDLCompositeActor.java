@@ -40,15 +40,15 @@ import ptolemy.kernel.util.*;
 import ptolemy.copernicus.jhdl.util.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
  * This class provides a static method that takes a regular Ptolemy
  * CompositeActor and generates a "JHDLCompositeActor". This method
  * copies the hierarchy of the Ptolemy actor. For leaf Ptolemy actors
  * that need to be "synthesized", this method calls createGraph
  * on ModelGraph2Entity and then generates a JHDLCompositeActor
- * from the atomic actor using the ModelGraph2Entity class. 
- 
+ * from the atomic actor using the ModelGraph2Entity class.
+
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
@@ -56,11 +56,11 @@ import ptolemy.copernicus.jhdl.util.*;
 public class CompositeActor2JHDLCompositeActor {
 
     public static JHDLCompositeActor build(CompositeActor
-					   oldTopEntity, Map options) 
+					   oldTopEntity, Map options)
 	throws IllegalActionException, NameDuplicationException {
 
 	Map old2newMap = new HashMap();
-	
+
 	// create new actor
 	JHDLCompositeActor newTopEntity = new JHDLCompositeActor();
 	newTopEntity.setName(oldTopEntity.getName());
@@ -159,7 +159,7 @@ public class CompositeActor2JHDLCompositeActor {
 	//
 	PtDirectedGraphToDotty dgToDotty = new PtDirectedGraphToDotty();
 	dgToDotty.writeDotFile(".", "actor",g);
-	
+
 	ModelGraph2Entity model = new ModelGraph2Entity(g,actor.getName());
 	JHDLCompositeActor newActor = model.getEntity();
 	return  newActor;

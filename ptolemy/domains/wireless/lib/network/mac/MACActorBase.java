@@ -42,18 +42,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// MACActorBase
 
-/** 
+/**
 This is a base class designed for the MAC actors. Since these actors
 largely share a set of parameters, we would like to declare them here
 to avoid repeatly do the same amount of work in every MAC actor.
 FIXME: Currently, the parameters in this actor are extracted from
 the ChannelState component...
 
-This actor also defines a set of constant that are widely used in 
+This actor also defines a set of constant that are widely used in
 the OMNET c++ classes.
 
 Based on this, it is relativly easy to translate a OMNET class
-to a actor here. 
+to a actor here.
 @author Yang Zhao
 @version MACActorBase.java,v 1.8 2004/04/12 15:30:36 cxh Exp
 @since Ptolemy II 2.1
@@ -76,32 +76,32 @@ public class MACActorBase extends NetworkActorBase {
     public MACActorBase(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Configure MAC layer parameters.
         aSifsTime = new Parameter(this, "aSifsTime");
         aSifsTime.setTypeEquals(BaseType.INT);
         aSifsTime.setExpression("16");
-        
+
         aPreambleLength = new Parameter(this, "aPreambleLength");
         aPreambleLength.setTypeEquals(BaseType.INT);
         aPreambleLength.setExpression("20");
-        
+
         aPlcpHeaderLength = new Parameter(this, "aPlcpHeaderLength");
         aPlcpHeaderLength.setTypeEquals(BaseType.INT);
         aPlcpHeaderLength.setExpression("4");
-        
+
         aRxTxTurnaroundTime = new Parameter(this, "aRxTxTurnaroundTime");
         aRxTxTurnaroundTime.setTypeEquals(BaseType.INT);
         aRxTxTurnaroundTime.setExpression("0");
-        
+
         sAckCtsLng = new Parameter(this, "sAckCtsLng");
         sAckCtsLng.setTypeEquals(BaseType.INT);
         sAckCtsLng.setExpression("112");
-        
+
         mBrate = new Parameter(this, "mBrate");
         mBrate.setTypeEquals(BaseType.INT);
         mBrate.setExpression("1");
-        
+
         aSlotTime = new Parameter(this, "aSlotTime");
         aSlotTime.setTypeEquals(BaseType.INT);
         aSlotTime.setExpression("9");
@@ -136,48 +136,48 @@ public class MACActorBase extends NetworkActorBase {
 
 
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
     // all time are in the unit of microseconds
-    
+
     /** The parameter for SIFS (Short Inter Frame Space). This time
      *  is used to separate transmissions belong to a single dialog.
      *  This Value is fixed per PHY and is calculated base on
      *  the time that takes for the transmitting part to switch back
-     *  to receive mode.    
+     *  to receive mode.
      */
     public Parameter aSifsTime;
-    
+
     /** The size of the Preamble header in a frame. The Preamble
-     *  header contains synchronization information and timing 
-     *  information for the frame.    
+     *  header contains synchronization information and timing
+     *  information for the frame.
      */
     public Parameter aPreambleLength;
-    
-    /** The size of the PLCP header in a frame. The PLCP header 
-     *  contains logical information for the physical layer to 
-     *  decode the frame.    
+
+    /** The size of the PLCP header in a frame. The PLCP header
+     *  contains logical information for the physical layer to
+     *  decode the frame.
      */
     public Parameter aPlcpHeaderLength;
-    
-    /** Time needed for a transceiver to go from receiving to transmitting  
+
+    /** Time needed for a transceiver to go from receiving to transmitting
      */
     public Parameter aRxTxTurnaroundTime;
-    
+
     /** The size of a CTS/Ack message
      */
     public Parameter sAckCtsLng;
-    
+
     /** The radio data rate in the unit of Mbps
      */
     public Parameter mBrate;
-    
+
     /**  The time unit for the backoff time
      */
     public Parameter aSlotTime;
-   
+
     /** The nominal time between the end of a symbol at the air interface to
      *  the issuance of a PMD-DATA.indicate to the PLCP.
      */
@@ -216,10 +216,10 @@ public class MACActorBase extends NetworkActorBase {
     /** The flag indicating whether backoff is in progress.
      */
     public static boolean mBkIP;
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** If the specified attribute is changed,
      *  check that a positive number is given. Otherwise,
      *  defer to the base class.
@@ -236,20 +236,20 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                 "aSifsTime is required to be positive. "
-                + "Attempt to set it to: " 
-                + temp);            
+                + "Attempt to set it to: "
+                + temp);
             } else {
                 _aSifsTime = temp;
             }
-            
+
         } else if (attribute == aPreambleLength) {
             temp = ((IntToken)
                     aPreambleLength.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
                 "preamble Length is required to be nonnegative. "
-                + "Attempt to set it to: " 
-                + temp);            
+                + "Attempt to set it to: "
+                + temp);
             } else {
                 _aPreambleLength = temp;
             }
@@ -259,8 +259,8 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                 "PLCPHeader Length is required to be nonnegative. "
-                + "Attempt to set it to: " 
-                + temp);            
+                + "Attempt to set it to: "
+                + temp);
             } else {
                 _aPlcpHeaderLength = temp;
             }
@@ -270,8 +270,8 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                 "aRxTxTurnaroundTime is required to be nonnegative. "
-                + "Attempt to set it to: " 
-                + temp);            
+                + "Attempt to set it to: "
+                + temp);
             } else {
                 _aRxTxTurnaroundTime = temp;
             }
@@ -281,8 +281,8 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                 "sAckCtsLng is required to be nonnegative. "
-                + "Attempt to set it to: " 
-                + temp);            
+                + "Attempt to set it to: "
+                + temp);
             } else {
                 _sAckCtsLng = temp;
             }
@@ -292,22 +292,22 @@ public class MACActorBase extends NetworkActorBase {
             if (temp < 0) {
                 throw new IllegalActionException(this,
                 "mBrate is required to be nonnegative. "
-                + "Attempt to set it to: " 
-                + temp);            
+                + "Attempt to set it to: "
+                + temp);
             } else {
                 _mBrate = temp;
-            } 
+            }
         } else if (attribute == aSlotTime) {
             temp = ((IntToken)
                     aSlotTime.getToken()).intValue();
             if (temp < 0) {
                 throw new IllegalActionException(this,
                 "aSlotTime is required to be nonnegative. "
-                + "Attempt to set it to: " 
-                + temp);            
+                + "Attempt to set it to: "
+                + temp);
             } else {
                 _aSlotTime = temp;
-            } 
+            }
         } else if (attribute == aRxRfDelay) {
             temp = ((IntToken)
                     aRxRfDelay.getToken()).intValue();
@@ -318,7 +318,7 @@ public class MACActorBase extends NetworkActorBase {
                 + temp);
             } else {
                 _aRxRfDelay = temp;
-            }    
+            }
         } else if (attribute == aRxPlcpDelay) {
             temp = ((IntToken)
                     aRxPlcpDelay.getToken()).intValue();
@@ -329,7 +329,7 @@ public class MACActorBase extends NetworkActorBase {
                 + temp);
             } else {
                 _aRxPlcpDelay = temp;
-            }    
+            }
         } else if (attribute == aCWmin) {
             temp = ((IntToken)
                    aCWmin .getToken()).intValue();
@@ -340,7 +340,7 @@ public class MACActorBase extends NetworkActorBase {
                 + temp);
             } else {
                 _aCWmin = temp;
-            }    
+            }
         } else if (attribute == aCWmax) {
             temp = ((IntToken)
                     aCWmax.getToken()).intValue();
@@ -351,7 +351,7 @@ public class MACActorBase extends NetworkActorBase {
                 + temp);
             } else {
                 _aCWmax = temp;
-            }    
+            }
         } else if (attribute == dot11ShortRetryLimit) {
             temp = ((IntToken)
                     dot11ShortRetryLimit.getToken()).intValue();
@@ -362,7 +362,7 @@ public class MACActorBase extends NetworkActorBase {
                 + temp);
             } else {
                 _dot11ShortRetryLimit = temp;
-            }    
+            }
         } else if (attribute == dot11LongRetryLimit) {
             temp = ((IntToken)
                     dot11LongRetryLimit.getToken()).intValue();
@@ -373,7 +373,7 @@ public class MACActorBase extends NetworkActorBase {
                 + temp);
             } else {
                 _dot11LongRetryLimit = temp;
-            }    
+            }
         } else if (attribute == dotllRTSThreshold) {
             temp = ((IntToken)
                     dotllRTSThreshold.getToken()).intValue();
@@ -384,7 +384,7 @@ public class MACActorBase extends NetworkActorBase {
                 + temp);
             } else {
                 _dotllRTSThreshold = temp;
-            }        
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -422,37 +422,37 @@ public class MACActorBase extends NetworkActorBase {
             {"kind", "pdu", "endRx", "rxRate"};
     protected static final String[] NeedAckMessageFields =
             {"kind", "ackto", "endRx", "rxRate", "dAck"};
-    protected static final String[] SetNavMessageFields = 
+    protected static final String[] SetNavMessageFields =
             {"kind", "tRef", "dNav", "src"};
-  
+
     protected static final String[] CSMsgFields={"kind"};
-    
+
     // the value for the pdu field is a record with fields as DataPacket's fields.
     protected static final String[] TxRequestMsgFields = {"kind", "pdu", "rate"};
-    protected static final String[] TxConfirmMsgFields = {"kind"}; 
-    
+    protected static final String[] TxConfirmMsgFields = {"kind"};
+
     protected static final String[] DataPacket = {"protocolVer", "Type", "Subtype",
-            "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit", 
-            "orderBit", "FCS", "durId", "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", "Addr4", 
+            "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
+            "orderBit", "FCS", "durId", "Addr1", "Addr2", "Addr3", "SeqNum", "FragNum", "Addr4",
             "payload","Length"};
-            
+
     protected static final String[] AckPacket = {"protocolVer", "Type", "Subtype",
-            "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit", 
+            "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
             "orderBit", "FCS", "durId", "RA","Length"};
 
     protected static final String[] RtsPacket = {"protocolVer", "Type", "Subtype",
-            "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit", 
+            "toDs", "frDs", "moreFrag", "retryBit", "pwrMgt", "moreData", "wepBit",
             "orderBit", "FCS", "durId", "RA", "TA","Length"};
 
-    protected static final String[] BackoffDoneMsgFields = {"kind","cnt"};   
+    protected static final String[] BackoffDoneMsgFields = {"kind","cnt"};
     protected static final String[] getBackoffMsgFields = {"kind","ccw", "cnt"};
     protected static final String[] GotCtsMsgFields = {"kind","endRx"};
 
 
 
 
-  
-    // message types  
+
+    // message types
     protected static final int  NeedAck        = 1;
     protected static final int  RxIndicate     = 2;
     protected static final int  TxConfirm      = 3;

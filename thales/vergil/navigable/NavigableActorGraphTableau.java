@@ -48,7 +48,7 @@ import thales.vergil.SingleWindowApplication;
 //////////////////////////////////////////////////////////////////////////
 //// NavigableActorGraphTableau
 /**
-A simple copy of the ActorGraphFrame with additional functionalities for 
+A simple copy of the ActorGraphFrame with additional functionalities for
 navigation
 
 @author J&eacute;r&ocirc;me Blanc & Benoit Masson, Thales Research and Technology, 01 sept. 2003

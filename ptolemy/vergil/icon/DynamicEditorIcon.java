@@ -98,10 +98,10 @@ public class DynamicEditorIcon extends EditorIcon {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -112,7 +112,7 @@ public class DynamicEditorIcon extends EditorIcon {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        DynamicEditorIcon newObject = 
+        DynamicEditorIcon newObject =
             (DynamicEditorIcon)super.clone(workspace);
         newObject._figures = new LinkedList();
         return newObject;
@@ -127,10 +127,10 @@ public class DynamicEditorIcon extends EditorIcon {
      */
     protected void _addLiveFigure(Figure newFigure) {
         _figures.add(new WeakReference(newFigure));
-        
+
         _trimLiveFigures();
     }
-        
+
     /** Return a regular iterator over the figures created by this
      *  icon which have not been garbage collected.  The objects
      *  returned by the iterator are Figures, not WeakReferences.
@@ -158,8 +158,8 @@ public class DynamicEditorIcon extends EditorIcon {
                         _object = ((WeakReference)iterator.next()).get();
                         if (_object == null) {
                             iterator.remove();
-                        }                    
-                    } 
+                        }
+                    }
                     if (_object == null) {
                         throw new NoSuchElementException(
                                 "The iterator is empty.");
@@ -176,7 +176,7 @@ public class DynamicEditorIcon extends EditorIcon {
                 private Object _object;
             };
     }
-    
+
     /** Trim the list of figures to discard entries that are no longer
      *  live.
      */
@@ -194,7 +194,7 @@ public class DynamicEditorIcon extends EditorIcon {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-        
+
     // A list of weak references to figures that this has created.
     private List _figures = new LinkedList();
 }

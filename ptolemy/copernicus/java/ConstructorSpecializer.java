@@ -108,7 +108,7 @@ public class ConstructorSpecializer extends SceneTransformer implements HasPhase
         int localCount = 0;
         System.out.println("ConstructorSpecializer.internalTransform("
                 + phaseName + ", " + options + ")");
- 
+
         List modifiedConstructorClassList = new LinkedList();
 
         // Loop over all the classes
@@ -127,33 +127,33 @@ public class ConstructorSpecializer extends SceneTransformer implements HasPhase
                     for (Iterator methods = theClass.getMethods().iterator();
                          methods.hasNext();) {
                         SootMethod method = (SootMethod)methods.next();
-                        if (method.getName().equals("<init>") && 
+                        if (method.getName().equals("<init>") &&
                                 method.getParameterCount() == 2) {
                             // Change the constructor so that it takes an
                             // appropriate container type.
                             SootField containerField =
                                 theClass.getFieldByName(
                                         ModelTransformer.getContainerFieldName());
-                            RefType containerType = 
+                            RefType containerType =
                                 (RefType)containerField.getType();
                             List typeList = new LinkedList();
                             typeList.add(containerType);
                             typeList.add(RefType.v("java.lang.String"));
                             method.setParameterTypes(typeList);
-                            
+
                             // Dance so that indexes in the Scene are properly
                             // updated.
                             theClass.removeMethod(method);
-                            theClass.addMethod(method);      
-                            
+                            theClass.addMethod(method);
+
                             // Replace the parameter refs so THEY have
                             // the right type, too..
                             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-                            
+
                             for (Iterator units = body.getUnits().snapshotIterator();
                                  units.hasNext();) {
                                 Stmt unit = (Stmt)units.next();
-                                
+
                                 if (unit instanceof IdentityStmt) {
                                     IdentityStmt identityStmt = (IdentityStmt)unit;
                                     Value value = identityStmt.getRightOp();
@@ -172,7 +172,7 @@ public class ConstructorSpecializer extends SceneTransformer implements HasPhase
                     // Keep track of the modification, so we know to
                     // modify invocations of that constructor.
                     modifiedConstructorClassList.add(theClass);
-                    
+
                 }
             }
         }
@@ -213,7 +213,7 @@ public class ConstructorSpecializer extends SceneTransformer implements HasPhase
                                 // System.out.println(
 //                                         "replacing constructor invocation = "
 //                                         + unit + " in method " + method);
-                                SootMethod newConstructor = 
+                                SootMethod newConstructor =
                                     declaringClass.getMethodByName("<init>");
                                 if (newConstructor.getParameterCount() == 1) {
                                     // Replace with just container arg constructor.

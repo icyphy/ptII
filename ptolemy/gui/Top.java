@@ -184,7 +184,7 @@ public abstract class Top extends JFrame {
         };
         deferIfNecessary(doCenter);
     }
-    
+
     /** Close the window, prompting the user to save changes if there
      *  have been any.  Derived classes should override the protected
      *  method _close(), not this one. This method returns immediately
@@ -199,7 +199,7 @@ public abstract class Top extends JFrame {
         };
         deferIfNecessary(doClose);
     }
-    
+
     /** If this method is called in the AWT event dispatch thread,
      *  then simply execute the specified action.  Otherwise,
      *  if there are already deferred actions, then add the specified
@@ -217,7 +217,7 @@ public abstract class Top extends JFrame {
         // NOTE: This is a static version of a method in PlotBox, but
         // we do not want to create cross dependencies between these
         // packages.
-        
+
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
         // Otherwise, queue a request or add to a pending request.
@@ -820,7 +820,7 @@ public abstract class Top extends JFrame {
 
     /** Indicator that a file is saved. */
     static protected int _SAVED = 0;
-    
+
     /** Indicator that a file is discarded. */
     static protected int _DISCARDED = 1;
 
@@ -829,7 +829,7 @@ public abstract class Top extends JFrame {
 
     /** Indicator that a file save failed. */
     static protected int _FAILED = 3;
-         
+
     /** The most recent directory used in a file dialog. */
     protected static File _directory = null;
 
@@ -878,10 +878,10 @@ public abstract class Top extends JFrame {
 
     /** List of deferred actions. */
     private static List _deferredActions = new LinkedList();
-    
+
     // The input file.
     private File _file = null;
-    
+
     // The most recently entered URL in Open URL.
     private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
 

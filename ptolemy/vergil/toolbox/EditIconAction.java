@@ -68,7 +68,7 @@ public class EditIconAction extends FigureAction {
         // Determine which entity was selected for the action.
         super.actionPerformed(e);
         final NamedObj object = getTarget();
-            
+
         // Do this as a change request since it may add a new icon.
         ChangeRequest request = new ChangeRequest(this, "Edit Custom Icon") {
             protected void _execute() throws Exception {
@@ -88,14 +88,14 @@ public class EditIconAction extends FigureAction {
         };
         object.requestChange(request);
     }
-    
+
     /** Specify the configuration.  This has to be called with a
      *  non-null argument for this action to work.
      */
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 

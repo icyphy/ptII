@@ -42,7 +42,7 @@ UndoStackAttribute.
 @since Ptolemy II 3.1
 */
 public interface UndoAction  {
-    
+
     // NOTE: Except for the fact that execute() throws Exception,
     // we could have used the Java Runnable interface.
 

@@ -44,7 +44,7 @@ import x10.Command;
 /**
  * This x10 actor will broadcast appliance-module commands to the X10 network.
  * An appliance module is an X10 device that can turn an appliance on and off.
- * This is a specialized X10 broadcaster actor that will only transmit the 
+ * This is a specialized X10 broadcaster actor that will only transmit the
  * following commands:
  * <ul>
  * <li> <b>ON</b>: Turn on an appliance module.
@@ -67,31 +67,31 @@ public class ApplianceController extends Sender {
     public ApplianceController(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
- 
-        // Create input ports, each one is a multiport.    
+
+        // Create input ports, each one is a multiport.
         on = new TypedIOPort(this, "on", true, false);
         off = new TypedIOPort(this, "off", true, false);
-        
+
         // Create attributes that force the names to be shown.
         new SingletonAttribute(on, "_showName");
         new SingletonAttribute(off, "_showName");
-        
+
         // Will output true if movement is detected.
         on.setTypeEquals(BaseType.BOOLEAN);
         on.setMultiport(true);
         off.setTypeEquals(BaseType.BOOLEAN);
         off.setMultiport(true);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-       
-   /** When this port has a true input, the actor will send an ON X10 
+
+   /** When this port has a true input, the actor will send an ON X10
     *  command. Its type is boolean.
     */
     public TypedIOPort on;
-    
-   /** When this port has a true input, the actor will send an OFF X10 
+
+   /** When this port has a true input, the actor will send an OFF X10
     *  command. Its type is boolean.
     */
     public TypedIOPort off;
@@ -111,7 +111,7 @@ public class ApplianceController extends Sender {
 
         boolean isOn = _hasTrueInput(on);
         boolean isOff = _hasTrueInput(off);
-            
+
         if (isOn) {
             _transmit(new Command((_destination), x10.Command.ON));
         }

@@ -127,7 +127,7 @@ public class ConstVariableModelAnalysis {
             Variable variable = (Variable)variables.next();
             _variableToChangeContext.put(variable, model);
         }
-        
+
         _dependencyGraph = new DirectedGraph();
 
         _collectConstraints(model);
@@ -155,7 +155,7 @@ public class ConstVariableModelAnalysis {
         CompositeActor toplevel = (CompositeActor)object.toplevel();
         Manager manager = toplevel.getManager();
 
-        ConstVariableModelAnalysis analysis = (ConstVariableModelAnalysis) 
+        ConstVariableModelAnalysis analysis = (ConstVariableModelAnalysis)
             manager.getAnalysis("ConstVariableModelAnalysis");
         if (analysis == null) {
             analysis = new ConstVariableModelAnalysis(toplevel);
@@ -230,7 +230,7 @@ public class ConstVariableModelAnalysis {
         } else {
             targetNode = _dependencyGraph.addNodeWeight(variable);
         }
-     
+
         // compute the variables.
         try {
             Set freeIdentifiers = variable.getFreeIdentifiers();
@@ -256,16 +256,16 @@ public class ConstVariableModelAnalysis {
                 //                         if (!_assumeUnboundVariablesAreConstant) {
                 //                             _variableToChangeContext.put(variable,
                 //                                     container.toplevel());
-                //                         }          
+                //                         }
                 //                     }
             }
         } catch (IllegalActionException ex) {
             // Assume that this will be changed later...
-            // i.e. input_isPresent in FSM.  
-                
+            // i.e. input_isPresent in FSM.
+
             // Note that this also traps expressions that
             // have no value as being variable...
-            _updateChangeContext(variable, 
+            _updateChangeContext(variable,
                     (Entity)variable.toplevel());
         }
     }
@@ -279,7 +279,7 @@ public class ConstVariableModelAnalysis {
         if (container instanceof Variable) {
             Variable variable = (Variable)container;
             _collectConstraints(variable);
-       
+
         }
         if (container instanceof DependencyDeclaration) {
             DependencyDeclaration declaration =
@@ -299,12 +299,12 @@ public class ConstVariableModelAnalysis {
             }
         }
         if (container instanceof ExplicitChangeContext) {
-            List list = 
+            List list =
                 ((ExplicitChangeContext)container).getModifiedVariables();
             for (Iterator variables = list.iterator();
                 variables.hasNext();) {
                 Variable variable = (Variable)variables.next();
-                _updateChangeContext(variable, 
+                _updateChangeContext(variable,
                         ((ExplicitChangeContext)container).getContext());
             }
         }
@@ -320,11 +320,11 @@ public class ConstVariableModelAnalysis {
             for (Iterator entities = composite.entityList().iterator();
                  entities.hasNext();) {
                 _collectConstraints((Entity)entities.next());
-                       
+
             }
         }
         if (container instanceof Entity) {
-            for (Iterator ports = 
+            for (Iterator ports =
                     ((Entity)container).portList().iterator();
                 ports.hasNext();) {
                 Port port = (Port)ports.next();
@@ -340,16 +340,16 @@ public class ConstVariableModelAnalysis {
         // Sets of variables used to track the fixed point iteration.
         LinkedList workList = new LinkedList(
                 _variableToChangeContext.keySet());
-        
+
         while (!workList.isEmpty()) {
             Variable variable = (Variable)workList.removeFirst();
             Node node = _dependencyGraph.node(variable);
-            Entity changeContext = (Entity) 
+            Entity changeContext = (Entity)
                 _variableToChangeContext.get(variable);
             for (Iterator outputEdges = _dependencyGraph.outputEdges(node).iterator();
                 outputEdges.hasNext();) {
                 Node sinkNode = ((Edge)outputEdges.next()).sink();
-                Variable targetVariable = 
+                Variable targetVariable =
                     (Variable) sinkNode.getWeight();
                 if (_updateChangeContext(targetVariable, changeContext)
                         && !workList.contains(targetVariable)) {
@@ -369,7 +369,7 @@ public class ConstVariableModelAnalysis {
 //         System.out.println("variable = " + variable);
 //         System.out.println("oldChangeContext = " + oldChangeContext);
 //         System.out.println("undatedChangeContext = " + changeContext);
-        Entity newChangeContext = 
+        Entity newChangeContext =
             _computeBound(changeContext, oldChangeContext);
 //         System.out.println("newChangeContext = " + newChangeContext);
         if (newChangeContext != oldChangeContext) {
@@ -389,7 +389,7 @@ public class ConstVariableModelAnalysis {
     private final Entity _computeBound(Entity entity1, Entity entity2) {
         if (entity2 == null || entity2.equals(entity1)) {
             return entity1;
-        } 
+        }
         if (entity2.deepContains(entity1)) {
             return entity1;
         } else if (entity1.deepContains(entity2)) {
@@ -402,7 +402,7 @@ public class ConstVariableModelAnalysis {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private static ConstVariableModelAnalysis  _previousCache;    
+    private static ConstVariableModelAnalysis  _previousCache;
     private static Entity _previousCacheToplevel;
     private DirectedGraph _dependencyGraph;
     private Map _variableToChangeContext;

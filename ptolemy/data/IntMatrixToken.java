@@ -205,7 +205,7 @@ public class IntMatrixToken extends MatrixToken {
      */
     public Complex[][] complexMatrix() {
         return ComplexMatrixMath.toMatrixFromArray(
-                IntegerArrayMath.toComplexArray(_value), 
+                IntegerArrayMath.toComplexArray(_value),
                 _rowCount, _columnCount);
     }
 
@@ -290,7 +290,7 @@ public class IntMatrixToken extends MatrixToken {
      */
     public double[][] doubleMatrix() {
         return DoubleMatrixMath.toMatrixFromArray(
-                IntegerArrayMath.toDoubleArray(_value), 
+                IntegerArrayMath.toDoubleArray(_value),
                 _rowCount, _columnCount);
     }
 

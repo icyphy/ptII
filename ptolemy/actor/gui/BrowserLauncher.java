@@ -106,7 +106,7 @@ public class BrowserLauncher {
      *  Second and subsequent arguments are ignored.
      *  It is best if the first argument is an absolute URL
      *  as opposed to a relative URL.
-     *  
+     *
      *  <p> For example, to open the user's default browser on
      *  http://www.eecs.berkeley.edu
      *  <pre>

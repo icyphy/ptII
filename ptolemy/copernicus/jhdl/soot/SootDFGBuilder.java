@@ -41,11 +41,11 @@ import soot.jimple.*;
 //////////////////////////////////////////////////////////////////////////
 //// SootDFGBuilder
 /**
- * 
+ *
  * This class extends the SootASTVisitor to generate a directed graph
  * from a Soot Block object. Specifically, this class will generate a
  * SootBlockDirectedGraph (which extends
- * Ptolemy.graph.DirectedGraph). 
+ * Ptolemy.graph.DirectedGraph).
  *
 @author Mike Wirthlin
 @version $Id$

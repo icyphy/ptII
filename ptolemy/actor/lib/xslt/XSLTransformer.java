@@ -54,10 +54,10 @@ import ptolemy.kernel.util.Workspace;
 This actor reads an XSLT file and apply it to a dom tree. The file or
 URL is specified using any form acceptable to the FileParameter class.
 
-<p>Currently, this actor requires the 
+<p>Currently, this actor requires the
 <a href="http://saxon.sourceforge.net/">Saxon</a> XSLT processor
 so as to ensure reproducible results.  This restriction may
-be relaxed in later versions of this actor. 
+be relaxed in later versions of this actor.
 
 <p>FIXME: what should the type of the input/output ports be???.
 
@@ -183,9 +183,9 @@ public class XSLTransformer extends Transformer{
     }
 
     /** Open the XSL file named by the fileOrURL parameter and
-     *  set up the transformer.   
+     *  set up the transformer.
      *  @exception IllegalActionException If the TransformFactory
-     *  class name does not start with net.sf.saxon. 
+     *  class name does not start with net.sf.saxon.
      */
     public void initialize() throws IllegalActionException {
         _xsltSource = null;
@@ -235,7 +235,7 @@ public class XSLTransformer extends Transformer{
                             + "has the appropriate\nService Provider set.\n"
                             + "(For details about Jar Service Providers,\nsee "
                             + "http://java.sun.com/j2se/1.4.2/docs/guide/jar/jar.html)\n"
-                            + "The saxon7.jar file includes a\n" 
+                            + "The saxon7.jar file includes a\n"
                             + "META-INF/services/javax.xml.transform.TransformerFactory "
                             + "\nfile that sets the TransformerFactory "
                             + "class name start with 'net.sf.saxon'."

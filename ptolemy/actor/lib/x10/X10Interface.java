@@ -1,6 +1,6 @@
-/* This class creates an x10 inteface device which can send and receive 
+/* This class creates an x10 inteface device which can send and receive
    x10 commands to and from an x10 network.
- 
+
 Copyright (c) 2003-2003 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
@@ -22,7 +22,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                         PT_COPYRIGHT_VERSION_2
 					COPYRIGHTENDKEY
-                                        
+
 ProposedRating Green (ptolemy@ptolemy.eecs.berkeley.edu)
 AcceptedRating Yellow (ptolemy@ptolemy.eecs.berkeley.edu)
 */
@@ -57,7 +57,7 @@ models for communication with a host computer:
 Note that the wireless serial module is unidirectional, only sending
 commands to the X10 network, and not receiving from it.  Thus, the
 Listener, CommandSensor, and LevelSensor actors will not work with it.
-For instructions concerning the physical setup of these devices, refer to 
+For instructions concerning the physical setup of these devices, refer to
 their respective manuals.
 <p>
 This actor requires that the Java comm API be installed.
@@ -65,10 +65,10 @@ The comm API comes from <a href="http://java.sun.com/products/javacomm/" target=
 
 To install the comm API on a Windows machine:
 <ul>
-<li> place the win32com.dll in $JDK\jre\bin directory. 
+<li> place the win32com.dll in $JDK\jre\bin directory.
 <li> make sure the win32com.dll is executable.
-<li> Place the comm.jar in $JDK\jre\lib\ext. 
-<li> Place the javax.comm.properties in $JDK\jre\lib . 
+<li> Place the comm.jar in $JDK\jre\lib\ext.
+<li> Place the javax.comm.properties in $JDK\jre\lib .
 </ul>
 where $JDK is the location of your Java development kit.
 <p>
@@ -98,10 +98,10 @@ cd $PTII
 @since Ptolemy II 3.2
 */
 public class X10Interface extends TypedAtomicActor {
-    
+
     // NOTE: This class has a bit of duplication with actor.lib.io.SerialComm.
     // These should probably be consolidated.
-    
+
     // FIXME: The x10 library that this relies on has a number of problems.
     // First, it takes down connections only in finalize(), which we can't
     // force to run.  Second, it has concurrency errors.  You might get
@@ -120,14 +120,14 @@ public class X10Interface extends TypedAtomicActor {
      */
     public X10Interface(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
-                
+
         super(container, name);
 
-        // Create input ports and port parameters.    
+        // Create input ports and port parameters.
         x10Interface = new StringParameter(this, "x10Interface");
         serialPortName = new StringParameter(this, "serialPortName");
-        
-        // The x10 interface is selectable, e.g. CM11A or CM17A. The x10 
+
+        // The x10 interface is selectable, e.g. CM11A or CM17A. The x10
         // parameter allows the user to choose an interface.
         x10Interface.addChoice("CM11A");
         x10Interface.addChoice("CM17A");
@@ -153,10 +153,10 @@ public class X10Interface extends TypedAtomicActor {
         }
         serialPortName.setExpression(defaultChoice);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** Attribute giving the type of interface to use. This is a string
      *  with default "CM11A". Currently, options are:
      *  <ul>
@@ -165,7 +165,7 @@ public class X10Interface extends TypedAtomicActor {
      *  <ul>
      */
     public StringParameter x10Interface;
-    
+
     /** Attribute giving the serial port to use. This is a string with
      *  the default being the first serial port listed by the
      *  javax.comm.CommPortIdentifier class.  If there are no serial
@@ -174,7 +174,7 @@ public class X10Interface extends TypedAtomicActor {
      *  be "no ports available".
      */
     public StringParameter serialPortName;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
@@ -186,7 +186,7 @@ public class X10Interface extends TypedAtomicActor {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        
+
         // NOTE: using private variables here ensures that if the parameter
         // values are changed while the model is running, the same port
         // and controller are taken down in wrapup() as are opened here.
@@ -202,7 +202,7 @@ public class X10Interface extends TypedAtomicActor {
                 "Failed to open X10 controller.");
         }
     }
-    
+
     /** Close an x10 interface.
      *  @exception IllegalActionException If the super class throws it.
      */
@@ -212,17 +212,17 @@ public class X10Interface extends TypedAtomicActor {
         _closeInterface(_portName);
     }
 
-    /////////////////////////////////////////////////////////////////// 
+    ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** This is the interface object used for sending and receiving x10 
+    /** This is the interface object used for sending and receiving x10
       * commands.
       */
     protected Controller _interface;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Disassociate a user with an interface. When no more users are accessing
      *  an interface, the interface is closed.
      *  @param portName The name of the serial port this controller.
@@ -256,7 +256,7 @@ public class X10Interface extends TypedAtomicActor {
             }
         }
     }
-    
+
     /** Return an x10 interface for sending and receiving x10 commands.
      *  @param portName The name of the serial port for the controller.
      *  @param controller The type of controller.
@@ -266,7 +266,7 @@ public class X10Interface extends TypedAtomicActor {
         String portName,
         String controller)
         throws IOException {
-            
+
         synchronized (_serialNameToController) {
             if (!_serialNameToController.containsKey(portName)) {
                 if (controller.equals("CM11A")) {
@@ -290,21 +290,21 @@ public class X10Interface extends TypedAtomicActor {
             return ((Controller) _serialNameToController.get(portName));
         }
     }
-    /////////////////////////////////////////////////////////////////// 
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
-    /** This is the type of controller being used. 
+
+    /** This is the type of controller being used.
      */
     private String _controllerName;
-    
+
     /** This is the name of the serial port being used.
      */
     private String _portName;
-    
+
     /** This hash table associates a serial port name with a controller.
      */
     private static HashMap _serialNameToController = new HashMap();
-    
+
     /** This hash table stores how many users are using each serial port.
      */
     private static HashMap _serialNameToUserCount = new HashMap();

@@ -79,7 +79,7 @@ public class ArrayElement extends Transformer {
     public ArrayElement(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        
+
         // set type constraints.
         input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         ArrayType inputArrayType = (ArrayType)input.getType();

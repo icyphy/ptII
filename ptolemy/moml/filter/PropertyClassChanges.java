@@ -235,7 +235,7 @@ public class PropertyClassChanges implements MoMLFilter {
     // Cache of map from old property names to new class names for
     // the actor we are working on.
     private static HashMap _propertyMap;
-    
+
     static {
         ///////////////////////////////////////////////////////////
         // Actors that have properties that have changed class.

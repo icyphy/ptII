@@ -53,8 +53,8 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 
 //////////////////////////////////////////////////////////////////////////
 //// IconViewScreen3D
-/** 
-A sink actor that renders a two-dimensional scene into an Icon.  
+/**
+A sink actor that renders a two-dimensional scene into an Icon.
 
 NOTE: This doesn't seem to be possible (using the techniques I tried)
 in the current version of Java3D without having the frame visible.
@@ -86,14 +86,14 @@ public class IconViewScreen3D extends ViewScreen {
 
         icon = new ImageIcon(this, "_icon");
     }
-    
+
     /** The icon for this actor. */
     public ImageIcon icon;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Initialize the execution.  Create the IconViewScreen3D frame if 
+    /** Initialize the execution.  Create the IconViewScreen3D frame if
      *  it hasn't been set using the place() method.
      *  @exception IllegalActionException If the base class throws it.
      */
@@ -151,21 +151,21 @@ public class IconViewScreen3D extends ViewScreen {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
- 
-    /** Class CapturingCanvas3D, using the instructions from the Java3D 
+
+    /** Class CapturingCanvas3D, using the instructions from the Java3D
         FAQ pages on how to capture a still image in jpeg format.
-        
+
         Peter Z. Kunszt
         Johns Hopkins University
         Dept of Physics and Astronomy
         Baltimore MD
-     */    
+     */
     private class CapturingCanvas3D extends Canvas3D  {
         public CapturingCanvas3D(
                 GraphicsConfiguration gc, boolean offscreen) {
             super(gc, offscreen);
         }
-        
+
         public void postSwap() {
             GraphicsContext3D context = getGraphicsContext3D();
             // The raster components need all be set!
@@ -179,16 +179,16 @@ public class IconViewScreen3D extends ViewScreen {
                             new BufferedImage(_frameWidth, _frameHeight,
                                     BufferedImage.TYPE_INT_RGB)),
                     null);
-            
+
             context.readRaster(raster);
-            
+
             // Now strip out the image info
             _image = raster.getImage().getImage();
-            
+
             icon.setImage(_image);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 

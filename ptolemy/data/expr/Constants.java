@@ -163,7 +163,7 @@ public class Constants {
         // and getting files from the file system.
         _table.put("CLASSPATH",
                 new StringToken("xxxxxxCLASSPATHxxxxxx"));
-        
+
         try {
             // StringToken.getProperty() specially handles user.dir.
             _putProperty("CWD", "user.dir");
@@ -171,14 +171,14 @@ public class Constants {
             _putProperty("HOME", "user.home");
 
             // When Vergil is started up, java is called with
-            // -Dptolemy.ptII.dir=${PTII} and 
-            // StringUtilities.getProperty() does some special munging 
+            // -Dptolemy.ptII.dir=${PTII} and
+            // StringUtilities.getProperty() does some special munging
             // for ptolemy.ptII.dir
 
             _putProperty("PTII", "ptolemy.ptII.dir");
 
             // See also the ptolemy.ptII.dirAsURL property in StringUtilities.
-            
+
             // Note that TMPDIR almost always ends with a \ or /
             // so usually we refer to it as ${TMPDIR}.
             _putProperty("TMPDIR", "java.io.tmpdir");
@@ -203,7 +203,7 @@ public class Constants {
                 new DoubleToken(Double.POSITIVE_INFINITY));
         _table.put("NegativeInfinity",
                 new DoubleToken(Double.NEGATIVE_INFINITY));
-        
+
         // Type constants.
         _table.put("boolean", BooleanToken.FALSE);
         _table.put("complex", new ComplexToken(new Complex(0.0, 0.0)));
@@ -234,7 +234,7 @@ public class Constants {
         } catch (SecurityException ex) {
             System.out.println("Warning: While trying to set '" + variableName
                     + "', failed to read '" + property
-                    + "' property " 
+                    + "' property "
                     + "(-sandbox always causes this)");
         }
     }

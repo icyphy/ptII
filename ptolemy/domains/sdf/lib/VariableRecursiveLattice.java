@@ -139,7 +139,7 @@ public class VariableRecursiveLattice extends RecursiveLattice {
                 throw new IllegalActionException(this,
                         "Invalid blockSize: " + _blockSizeValue);
             }
-    
+
         }
         super.attributeChanged(attribute);
     }

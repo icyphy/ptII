@@ -89,7 +89,7 @@ public class UpSample extends SDFTransformer {
         factor.setExpression("2");
         phase = new Parameter(this, "phase");
         phase.setExpression("factor-1");
-        
+
         output_tokenProductionRate.setExpression("factor");
     }
 
@@ -127,7 +127,7 @@ public class UpSample extends SDFTransformer {
                 throw new IllegalActionException(this,
                         "Invalid factor: " + factorValue);
             }
- 
+
         } else if (attribute == phase) {
             int phaseValue = ((IntToken)phase.getToken()).intValue();
             if (phaseValue < 0) {

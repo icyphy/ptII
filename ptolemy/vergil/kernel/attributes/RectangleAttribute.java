@@ -109,14 +109,14 @@ public class RectangleAttribute extends FilledShapeAttribute {
             super.attributeChanged(attribute);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
-    
+
     /** Return the a new rectangle given a new width and height.
      *  @param width The new width.
      *  @param height The new height.
-     *  @return A new shape. 
+     *  @return A new shape.
      */
     protected Shape _newShape() {
         double roundingValue = 0.0;
@@ -145,7 +145,7 @@ public class RectangleAttribute extends FilledShapeAttribute {
                     roundingValue);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        protected members                  ////
 

@@ -218,7 +218,7 @@ public class Query extends JPanel {
             boolean editable) {
         addChoice(name, label, values, defaultChoice, editable, Color.white);
     }
-    
+
     /** Create a choice menu.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
@@ -291,7 +291,7 @@ public class Query extends JPanel {
             new QueryColorChooser(name, defaultColor);
         _addPair(name, lbl, colorChooser, colorChooser);
     }
-    
+
     /** Create a FileChooser
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
@@ -307,14 +307,14 @@ public class Query extends JPanel {
             URI base,
             File startingDirectory) {
         addFileChooser(
-                name, 
-                label, 
-                defaultName, 
-                base, 
-                startingDirectory, 
+                name,
+                label,
+                defaultName,
+                base,
+                startingDirectory,
                 Color.white);
     }
-    
+
     /** Create a FileChooser
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
@@ -336,10 +336,10 @@ public class Query extends JPanel {
         lbl.setBackground(_background);
         QueryFileChooser fileChooser =
             new QueryFileChooser(
-                    name, 
-                    defaultName, 
-                    base, 
-                    startingDirectory, 
+                    name,
+                    defaultName,
+                    base,
+                    startingDirectory,
                     background);
         _addPair(name, lbl, fileChooser, fileChooser);
     }
@@ -355,7 +355,7 @@ public class Query extends JPanel {
     public void addLine(String name, String label, String defaultValue) {
         addLine(name, label, defaultValue, Color.white);
     }
-    
+
     /** Create a single-line entry box with the specified name, label,
      *  default value, and background color.  To control the width of
      *  the box, call setTextWidth() first.
@@ -410,7 +410,7 @@ public class Query extends JPanel {
     /** Create a single-line password box with the specified name,
      *  label, and default value.  To control the width of the box,
      *  call setTextWidth() first.
-     *  <p>To get the value, call getCharArrayValue().  
+     *  <p>To get the value, call getCharArrayValue().
      *  Calling getStringValue() on a password entry will result in an
      *  error because it is less secure to pass around passwords as
      *  Strings than as arrays of characters.
@@ -418,7 +418,7 @@ public class Query extends JPanel {
      *  facility is javax.sqing.JPasswordField.  For details about how to
      *  use JPasswordField, see the
      *  <a href="http://java.sun.com/docs/books/tutorial/uiswing/components/passwordfield.html" target="_top">Java Tutorial</a>
-     * 
+     *
      *  @param name The name used to identify the entry (when accessing
      *   the entry).
      *  @param label The label to attach to the entry.
@@ -464,7 +464,7 @@ public class Query extends JPanel {
     public void addTextArea(String name, String label, String theValue) {
         addTextArea(name, label, theValue, Color.white, _height, _width);
     }
-    
+
     /*  Create a text area.
      *  @param name The name used to identify the entry (when calling get).
      *  @param label The label to attach to the entry.
@@ -720,7 +720,7 @@ public class Query extends JPanel {
     }
 
     /** Get the current value in the entry with the given name
-     *  and return as an array of characters. 
+     *  and return as an array of characters.
      *  <p>If the entry is a password field, then it is recommended for
      *  strong security that each element of the array be set to 0
      *  after use.
@@ -1534,7 +1534,7 @@ public class Query extends JPanel {
         public QueryColorChooser(
             String name,
             String defaultColor) {
-                
+
             super(BoxLayout.X_AXIS);
             _defaultColor = defaultColor;
             _entryBox = new JTextField(defaultColor, _width);

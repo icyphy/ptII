@@ -220,7 +220,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         if (_debugFlag) {
             graph.printEdgeRateExpressions();
         }
-    
+
         PSDFAPGANStrategy strategy = new PSDFAPGANStrategy(graph);
         ptolemy.graph.sched.Schedule graphSchedule = strategy.schedule();
         _debug("P-APGAN schedule = \n" + graphSchedule.toString());
@@ -238,9 +238,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
                         + _bufferSizeMap.get(relation) + "\n");
             }
         }
- 
+
         _saveBufferSizes(_bufferSizeMap);
-       
+
         // Crazy hack to infer firing counts for each actor.
         try {
             _inferFiringCounts(resultSchedule, null);
@@ -256,7 +256,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
         // another actors input port that are connected on the inside
         // to the same external input port.  See
         // BaseSDFScheduler.setContainerRates.
-        
+
         CompositeActor container = (CompositeActor) director.getContainer();
         Iterator ports = container.portList().iterator();
         while (ports.hasNext()) {
@@ -276,11 +276,11 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     String name = connectedPort.getName(container);
                     String identifier = name.replaceAll("\\.", "::");
                     String expression = identifier + "::tokenConsumptionRate * " + entity.getName() + "::firingCount";
-                   
+
                     SDFUtilities.setExpressionIfNotDefined(
                             port, "tokenConsumptionRate",
                             expression);
-                    
+
                     if (_debugging && VERBOSE) {
                         _debug("Setting tokenConsumptionRate to "
                                 + expression);
@@ -313,10 +313,10 @@ public class PSDFScheduler extends BaseSDFScheduler {
 //                 int inferredRate = 0;
 //                 while (connectedPorts.hasNext()) {
 //                     IOPort connectedPort = (IOPort) connectedPorts.next();
-                    
+
 //                     int newRate;
 //                     if (connectedPort.isOutput()) {
-//                         newRate = 
+//                         newRate =
 //                             SDFUtilities.getTokenInitProduction(connectedPort);
 //                     } else {
 //                         newRate = 0;
@@ -346,8 +346,8 @@ public class PSDFScheduler extends BaseSDFScheduler {
                         "External port is neither an input and an output, "
                         + "which is not allowed in SDF.");
             }
-        }        
-    
+        }
+
         if (resultSchedule instanceof Schedule) {
             return (Schedule)resultSchedule;
         } else {
@@ -414,7 +414,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                 // sink clusters.
                 String producedExpression = apgan.producedExpression(edge);
                 String consumedExpression = apgan.consumedExpression(edge);
-             
+
                 // These errors should not occur.
                 if (producedExpression == null) {
                     throw new RuntimeException("Internal error: null "
@@ -491,7 +491,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
     }
 
     private void _inferFiringCounts(
-            SymbolicScheduleElement element, String expression) 
+            SymbolicScheduleElement element, String expression)
             throws IllegalActionException, NameDuplicationException {
         String recursiveExpression;
         if (expression == null) {
@@ -511,9 +511,9 @@ public class PSDFScheduler extends BaseSDFScheduler {
             parameter.setExpression(recursiveExpression);
         } else if (element instanceof SymbolicSchedule) {
             SymbolicSchedule schedule = (SymbolicSchedule)element;
-            
+
             for (Iterator i = schedule.iterator(); i.hasNext();) {
-                _inferFiringCounts((SymbolicScheduleElement)i.next(), 
+                _inferFiringCounts((SymbolicScheduleElement)i.next(),
                         recursiveExpression);
             }
         } else {
@@ -535,7 +535,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
     /** An actor firing with an iteration count that is determined by
      *  a symbolic expression.
      */
-    private class SymbolicFiring extends Firing 
+    private class SymbolicFiring extends Firing
         implements SymbolicScheduleElement {
         /** Construct a firing with the given actor and the given
          *  expression.  The given actor
@@ -623,7 +623,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
 
     /** A schedule whose iteration count is given by an expression.
      */
-    private class SymbolicSchedule extends Schedule 
+    private class SymbolicSchedule extends Schedule
         implements SymbolicScheduleElement {
         /** Construct a symbolic schedule with the given expression.
          *  This schedule is assumed to fire the number of times determined
@@ -785,7 +785,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     null,
                     reference,
                     name);
-       
+
             if (result != null) {
                 return result.getType();
             } else {
@@ -809,7 +809,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
                     null,
                     reference,
                     name);
-            
+
             if (result != null) {
                 return result.getTypeTerm();
             } else {
@@ -827,7 +827,7 @@ public class PSDFScheduler extends BaseSDFScheduler {
             return getAllScopedVariableNames(null, reference);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

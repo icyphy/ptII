@@ -74,7 +74,7 @@ public class CastAndInstanceofEliminator extends BodyTransformer {
     protected void internalTransform(Body b, String phaseName, Map options)
     {
         JimpleBody body = (JimpleBody)b;
-        
+
         boolean debug = PhaseOptions.getBoolean(options, "debug");
         if (debug) {
             System.out.println("CastAndInstanceofEliminator.internalTransform("

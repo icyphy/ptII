@@ -66,7 +66,7 @@ public class FreeVariableModelAnalysis {
      *  be defined externally for the model to be completely specified.
      *  In addition, store the intermediate results for contained actors
      *  so they can be retrieved by the getFreeVariables() method.
-     *  @param model The model that will be analyzed. 
+     *  @param model The model that will be analyzed.
      *  @exception IllegalActionException If an exception occurs
      *  during analysis.
      */
@@ -124,7 +124,7 @@ public class FreeVariableModelAnalysis {
         // container are not free variables of this container.
         set.removeAll(variableNames);
 
-        // Iterate over all the variables of this container, and add in 
+        // Iterate over all the variables of this container, and add in
         // any free variables they reference.
         PtParser parser = new PtParser();
         ParseTreeFreeVariableCollector collector =
@@ -134,13 +134,13 @@ public class FreeVariableModelAnalysis {
              variables.hasNext();) {
             Variable variable = (Variable)variables.next();
             String expression = variable.getExpression();
-            ASTPtRootNode root;     
+            ASTPtRootNode root;
             if (variable.isStringMode()) {
                 root = parser.generateStringParseTree(expression);
             } else {
                 root = parser.generateParseTree(expression);
             }
-            Set freeIdentifiers = 
+            Set freeIdentifiers =
                 new HashSet(collector.collectFreeVariables(root));
 
             // Identifiers that reference other variables in the same container
@@ -148,7 +148,7 @@ public class FreeVariableModelAnalysis {
             Set tempSet = new HashSet(variableNames);
             tempSet.remove(variable.getName());
             freeIdentifiers.removeAll(tempSet);
-            
+
             set.addAll(freeIdentifiers);
         }
 

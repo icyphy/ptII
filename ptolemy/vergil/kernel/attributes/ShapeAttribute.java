@@ -82,12 +82,12 @@ public abstract class ShapeAttribute extends Attribute {
 
         _icon = new ShapeIcon(this, "_icon", _getDefaultShape());
         _icon.setPersistent(false);
-        
+
         // Create a location because, for some mysterious reason,
         // if there isn't one, then the icon is not shown in the
         // icon editor.
         new Location(this, "_location");
-        
+
         // This must appear before lineColor or cloning could
         // fail if lineColor references it.
         _none = new Variable(this, "none");
@@ -96,7 +96,7 @@ public abstract class ShapeAttribute extends Attribute {
         lineWidth = new Parameter(this, "lineWidth");
         lineWidth.setTypeEquals(BaseType.DOUBLE);
         lineWidth.setExpression("1.0");
-        
+
         lineColor = new ColorAttribute(this, "lineColor");
         lineColor.setExpression("{0.0, 0.0, 0.0, 1.0}");
     }
@@ -110,7 +110,7 @@ public abstract class ShapeAttribute extends Attribute {
      *  represents an opaque black.
      */
     public ColorAttribute lineColor;
-    
+
     /** The line width.  This is a double that defaults to 1.0.
      */
     public Parameter lineWidth;
@@ -142,7 +142,7 @@ public abstract class ShapeAttribute extends Attribute {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -178,13 +178,13 @@ public abstract class ShapeAttribute extends Attribute {
         // the utilities library.
         return new Rectangle2D.Double(0.0, 0.0, 20.0, 20.0);
     }
-                       
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected members                   ////
 
     /** The shape icon. */
     protected ShapeIcon _icon;
-    
+
     /** A color parameter whose value is a fully transparent white
      *  (alpha = 0.0), which is interepreted as no color.
      */

@@ -65,7 +65,7 @@ see it in parameter editing dialogs.
 */
 public class WindowPropertiesAttribute extends Parameter
         implements ComponentListener {
-    
+
     /** Construct an attribute with the given name contained by the specified
      *  entity. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -93,7 +93,7 @@ public class WindowPropertiesAttribute extends Parameter
      *  @param event The component event.
      */
     public void componentHidden(ComponentEvent event) {}
-             
+
     /** Record the new position. This method is
      *  invoked when the component's position changes.
      *  @param event The component event.
@@ -101,7 +101,7 @@ public class WindowPropertiesAttribute extends Parameter
     public void componentMoved(ComponentEvent event) {
         recordProperties(_listeningTo);
     }
-             
+
     /** Record the new size. This method is
      *  invoked when the component's size changes.
      *  @param event The component event.
@@ -145,10 +145,10 @@ public class WindowPropertiesAttribute extends Parameter
             names[1] = "maximized";
 
             setToken(new RecordToken(names, values));
-            
+
             // If we don't do this, then the bounds may not be written.
             setOverrideDepth(0);
-            
+
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(
                     "Can't set propertes value! " + ex);
@@ -181,7 +181,7 @@ public class WindowPropertiesAttribute extends Parameter
             int y = ((IntToken)boundsToken.getElement(1)).intValue();
             int width = ((IntToken)boundsToken.getElement(2)).intValue();
             int height = ((IntToken)boundsToken.getElement(3)).intValue();
-            
+
             frame.setBounds(x, y, width, height);
 
             if (maximizedToken != null) {

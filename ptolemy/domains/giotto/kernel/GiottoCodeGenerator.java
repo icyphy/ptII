@@ -553,7 +553,7 @@ public class GiottoCodeGenerator extends Attribute {
         String codeString = "";
 
         int actorFreq = 0;
-    
+
         String outputName, actorName, modeName;
 
         modeName = StringUtilities.sanitizeName(model.getName());
@@ -596,7 +596,7 @@ public class GiottoCodeGenerator extends Attribute {
                                     getToken()).intValue();
                         }
                     }
-                  
+
                     codeString +=  "    actfreq "
                         + actorFreq
                         + " do "
@@ -644,7 +644,7 @@ public class GiottoCodeGenerator extends Attribute {
 
     }
 
-    /** Return true if the given actor has at least one input port, which 
+    /** Return true if the given actor has at least one input port, which
      *  requires it to have an input driver.
      */
     private static boolean _needsInputDriver(Actor actor) {

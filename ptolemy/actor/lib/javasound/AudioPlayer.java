@@ -162,7 +162,7 @@ public class AudioPlayer extends LiveSoundActor {
         try {
             // Set the correct parameters in LiveSound.
             _initializeAudio();
-            
+
             // Reallocate the arrays.
             if ((_audioPutArray == null)
                     || (_channels != _audioPutArray.length)) {
@@ -171,11 +171,11 @@ public class AudioPlayer extends LiveSoundActor {
             for (int i = 0; i < _channels; i++) {
                 _audioPutArray[i] = new double[_transferSize];
             }
-            
+
             // Start audio playback.
             LiveSound.startPlayback(this);
         } catch (IOException ex) {
-            throw new IllegalActionException(this, ex, 
+            throw new IllegalActionException(this, ex,
                     "Error initializing audio playback.");
         }
     }
@@ -204,7 +204,7 @@ public class AudioPlayer extends LiveSoundActor {
             // NOTE: inArray[j].length may be > count, in which case
             // only the first count tokens are valid.
             Token[] inputArray = input.get(j, count);
-            
+
             // Convert to doubles.
             for (int element = 0; element < count; element++) {
                 _audioPutArray[j][element] =

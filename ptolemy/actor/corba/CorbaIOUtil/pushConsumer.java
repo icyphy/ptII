@@ -11,6 +11,6 @@ package ptolemy.actor.corba.CorbaIOUtil;
 
 /* A CORBA compatible interface for a push consumer.
 	 */
-public interface pushConsumer extends pushConsumerOperations, org.omg.CORBA.Object, org.omg.CORBA.portable.IDLEntity 
+public interface pushConsumer extends pushConsumerOperations, org.omg.CORBA.Object, org.omg.CORBA.portable.IDLEntity
 {
 } // interface pushConsumer

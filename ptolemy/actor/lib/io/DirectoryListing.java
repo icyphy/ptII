@@ -86,15 +86,15 @@ public class DirectoryListing extends Source implements FilenameFilter {
     public DirectoryListing(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // FIXME: The file browser doesn't allow me to select a directory.
         directoryOrURL = new FileParameter(this, "directoryOrURL");
-        
+
         directoryOrURLPort = new TypedIOPort(this, "directoryOrURL", true, false);
         directoryOrURLPort.setTypeEquals(BaseType.STRING);
-        
+
         output.setTypeEquals(new ArrayType(BaseType.STRING));
-        
+
         pattern = new StringParameter(this, "pattern");
         pattern.setExpression("");
     }
@@ -135,7 +135,7 @@ public class DirectoryListing extends Source implements FilenameFilter {
         }
         return true;
     }
-                          
+
     /** Override the base class to locally cache parameter values.
      *  @param attribute The attribute that has changed.
      *  @exception IllegalActionException If the specified attribute
@@ -164,7 +164,7 @@ public class DirectoryListing extends Source implements FilenameFilter {
     public void fire() throws IllegalActionException {
         super.fire();
         URL sourceURL = directoryOrURL.asURL();
-        
+
         if (sourceURL == null) {
             // Nothing to read
             throw new IllegalActionException(this,
@@ -233,9 +233,9 @@ public class DirectoryListing extends Source implements FilenameFilter {
                     "Could not parse '"
                     + directoryOrURL
                     + "'; it needs to end with '/'");
-        
+
         }
-        
+
         // Parse the contents in a haphazard fashion.
         // The idea is that we look for the <BODY> line and
         // then look for lines that contain HREF
@@ -298,7 +298,7 @@ public class DirectoryListing extends Source implements FilenameFilter {
     // named by sourceURL.
     // FIXME: Should we clone this?
     private String[] _data;
-    
+
     // The pattern for the regular expression.
     private Pattern _pattern;
 }

@@ -206,7 +206,7 @@ public class FileParameter extends StringParameter {
      */
     public URL asURL() throws IllegalActionException {
         String name = stringValue();
-        
+
         try {
             return StringUtilities.stringToURL(
                     name, getBaseDirectory(), getClass().getClassLoader());
@@ -382,7 +382,7 @@ public class FileParameter extends StringParameter {
 
     /** The base directory to use for relative file names. */
     private URI _baseDirectory;
-    
+
     /** The current reader for the input file. */
     private BufferedReader _reader;
 

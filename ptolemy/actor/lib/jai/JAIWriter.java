@@ -161,10 +161,10 @@ public abstract class JAIWriter extends Sink {
                 try {
                     stream = new FileOutputStream(fileRoot);
                 } catch (FileNotFoundException ex) {
-                    throw new IllegalActionException(this, ex, 
+                    throw new IllegalActionException(this, ex,
                             "Could not create stream '" + fileRoot + "'");
                 }
-            
+
                 ImageEncoder encoder = ImageCodec.createImageEncoder(
                         _imageEncoderName, stream, _imageEncodeParam);
                 if (encoder == null) {
@@ -215,7 +215,7 @@ public abstract class JAIWriter extends Sink {
      */
     protected RenderedOp _image;
 
-    /** The name of the encoder in a format suitable for 
+    /** The name of the encoder in a format suitable for
       * com.sun.media.jai.codec.ImageCodec, for example "BMP", or "JPG".
       */
     protected String _imageEncoderName;

@@ -501,9 +501,9 @@ public class TypeLattice {
             StructuredType recordRep =
                 (new RecordType(labels, types))._getRepresentative();
 
-            StructuredType functionRep = 
+            StructuredType functionRep =
                 new ptolemy.data.type.FunctionType(
-                        new ptolemy.data.type.Type[0], 
+                        new ptolemy.data.type.Type[0],
                      ptolemy.data.type.BaseType.UNKNOWN)._getRepresentative();
 
             _basicLattice.addNodeWeight(BaseType.BOOLEAN);
@@ -531,7 +531,7 @@ public class TypeLattice {
 
             _basicLattice.addNodeWeight(arrayRep);
             _basicLattice.addNodeWeight(recordRep);
-            
+
             _basicLattice.addEdge(BaseType.XMLTOKEN, BaseType.GENERAL);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.XMLTOKEN);
             _basicLattice.addEdge(BaseType.OBJECT, BaseType.GENERAL);
@@ -561,7 +561,7 @@ public class TypeLattice {
             _basicLattice.addEdge(BaseType.INT, BaseType.INT_MATRIX);
             _basicLattice.addEdge(BaseType.UNKNOWN, BaseType.UNSIGNED_BYTE);
 
-            _basicLattice.addEdge(BaseType.INT_MATRIX, 
+            _basicLattice.addEdge(BaseType.INT_MATRIX,
                     BaseType.DOUBLE_MATRIX);
             _basicLattice.addEdge(BaseType.DOUBLE_MATRIX,
                     BaseType.COMPLEX_MATRIX);

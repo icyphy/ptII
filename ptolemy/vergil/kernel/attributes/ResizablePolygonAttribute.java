@@ -109,7 +109,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
             int length = verticesValue.length();
             if (length/2 != (length + 1)/2)  {
                 throw new IllegalActionException(this,
-                "Length of the vertices array is required to be even.");           
+                "Length of the vertices array is required to be even.");
             }
             try {
                 // Prevent redundant actions here... When we evaluate the
@@ -131,21 +131,21 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
             super.attributeChanged(attribute);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
-    
+
     /** Return the a new polygon with the given vertices.
      *  @param width The new width.
      *  @param height The new height.
-     *  @return A new shape. 
+     *  @return A new shape.
      */
     protected Shape _newShape() {
-        
+
         try {
             ArrayToken verticesValue = (ArrayToken)vertices.getToken();
             int length = verticesValue.length();
-            
+
             // Keep computations in double as long as possible.
             double[] xPoints = new double[length/2];
             double[] yPoints = new double[length/2];
@@ -153,16 +153,16 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
             double xMin = Double.POSITIVE_INFINITY;
             double yMax = Double.NEGATIVE_INFINITY;
             double yMin = Double.POSITIVE_INFINITY;
-            
+
             // Scaling.
             double width = _widthValue;
             double height = _heightValue;
-            
+
             // First, read vertex values and find the bounds.
             for (int j = 0; j < length/2; j++) {
                 xPoints[j] = ((DoubleToken)verticesValue.getElement(2*j)).doubleValue();
                 yPoints[j] = ((DoubleToken)verticesValue.getElement(2*j + 1)).doubleValue();
-                
+
                 if (xPoints[j] > xMax) {
                     xMax = xPoints[j];
                 }
@@ -176,7 +176,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
                     yMin = yPoints[j];
                 }
             }
-            
+
             // Next, scale to width and height.
             double scaleX = _widthValue/(xMax - xMin);
             double scaleY = _heightValue/(yMax - yMin);
@@ -184,7 +184,7 @@ public class ResizablePolygonAttribute extends FilledShapeAttribute {
                 xPoints[j] *= scaleX;
                 yPoints[j] *= scaleY;
             }
-            
+
             // Finally, correct if centered, and convert to int.
             int[] xInt = new int[length/2];
             int[] yInt = new int[length/2];

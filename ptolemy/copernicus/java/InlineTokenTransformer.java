@@ -119,7 +119,7 @@ public class InlineTokenTransformer extends SceneTransformer implements HasPhase
         _options = options;
         System.out.println("InlineTokenTransformer.internalTransform("
                 + phaseName + ", " + options + ")");
-        
+
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
             classes.hasNext();) {
             SootClass theClass = (SootClass)classes.next();
@@ -218,7 +218,7 @@ public class InlineTokenTransformer extends SceneTransformer implements HasPhase
 
                 // if we are invoking a method on a token class, then
                 // attempt to get the constant value of the token.
-                Token token = getTokenValue((Local)r.getBase(), 
+                Token token = getTokenValue((Local)r.getBase(),
                         unit, _localDefs, _tokenAnalysis);
                 if (_debug) System.out.println(
                         "reference to Token with value = " + token);

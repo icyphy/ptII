@@ -253,7 +253,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         while (!eventPresent && actors.hasNext()) {
             Actor actor = (Actor)actors.next();
             if (actor instanceof CTCompositeActor) {
-                eventPresent |= 
+                eventPresent |=
                     ((CTCompositeActor)actor).hasCurrentEvent();
             }
         }
@@ -391,8 +391,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             _ctrl._readOutputsFromRefinement();
         }
         // FIXME: why do we need to execute the update actions again in postfire?
-        // From Xiaojun: actions of the event triggered transition need to be 
-        // executed. 
+        // From Xiaojun: actions of the event triggered transition need to be
+        // executed.
         // This is not necessary. hyzheng 08/14/2003
         // Transition tr = _ctrl._chooseTransition(_st.outgoingPort.linkedRelationList());
          Transition tr = _enabledTransition;
@@ -459,26 +459,26 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         return super.prefire();
     }
 
-    /** Check if the modal model is embedded inside a CT model or another 
+    /** Check if the modal model is embedded inside a CT model or another
      *  modal model with a HSDirector.
-     * 
-     *  @exception IllegalActionException If parent class throws it or the 
-     *  immediately upper director is neither a CTDirector nor a HSDirector. 
+     *
+     *  @exception IllegalActionException If parent class throws it or the
+     *  immediately upper director is neither a CTDirector nor a HSDirector.
      */
 //    public void preinitialize() throws IllegalActionException {
 //        super.preinitialize();
 //        Nameable container = getContainer();
 //        if (container instanceof CompositeActor) {
-//            CompositeActor compositeActor = (CompositeActor)container; 
-//            if (!(compositeActor.getExecutiveDirector() instanceof CTDirector 
-//                  || compositeActor.getExecutiveDirector() instanceof 
+//            CompositeActor compositeActor = (CompositeActor)container;
+//            if (!(compositeActor.getExecutiveDirector() instanceof CTDirector
+//                  || compositeActor.getExecutiveDirector() instanceof
 //                  CTTransparentDirector)) {
 //                throw new IllegalActionException("HSDirector is designed for " +
 //                    "a modal model embedded inside a CT model or another " +
 //                    "modal model with a HSDirector. If the modal " +
 //                    "model is embedded inside other domains, like DE or SDF, " +
 //                    "use FSMDirector instead. Right click the modal model and " +
-//                    "configure the directorClass parameter.");  
+//                    "configure the directorClass parameter.");
 //            }
 //        }
 //    }

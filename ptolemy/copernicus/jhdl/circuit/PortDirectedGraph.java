@@ -43,7 +43,7 @@ import soot.jimple.*;
 import soot.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
  * This class represents a DirectedGraph that has distinct Nodes
  * that are considered "ports". The class also provides a method
@@ -55,7 +55,7 @@ import soot.*;
 */
 
 public class PortDirectedGraph extends DirectedGraph {
-    
+
     public PortDirectedGraph() {
 	_inputPortNodes = new Vector();
 	_outputPortNodes = new Vector();

@@ -93,7 +93,7 @@ public class HSIFEffigyFactory extends EffigyFactory {
      *  a MoML temporary file, and then delegate to the container of
      *  this effigy factory to open that file. If the specified file
      *  is not HSIF, return null.
-     
+
      *  @param container The container for the effigy.
      *  @param base The base for relative file references, or null if
      *   there are no relative file references.

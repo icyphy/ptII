@@ -385,7 +385,7 @@ public class FSMCreator implements AtomicActorCreator {
                                 RefType.v(PtolemyUtilities.entityClass));
                         body.getLocals().add(entityLocal);
 
-                        NamedObj containerModel = 
+                        NamedObj containerModel =
                             (NamedObj)entity.getContainer();
                         String deepName
                             = ((NamedObj)refinement).getName(containerModel);
@@ -457,7 +457,7 @@ public class FSMCreator implements AtomicActorCreator {
                     Transition transition = (Transition)transitions.next();
                     System.out.println("transition = " + transition);
                     String guardExpression = transition.getGuardExpression();
-                                 
+
                     Local guardLocal =
                         DataUtilities.generateExpressionCode(
                                 entity, entityInstanceClass, guardExpression,
@@ -617,8 +617,8 @@ public class FSMCreator implements AtomicActorCreator {
                     _generateActionCode(entity, entityInstanceClass,
                             nameToField, nameToType, body, action);
                 }
-                
-                // Generate code to reinitialize the target state, if 
+
+                // Generate code to reinitialize the target state, if
                 // reset is true.
                 TypedActor[] refinements = null;
                 try {
@@ -634,19 +634,19 @@ public class FSMCreator implements AtomicActorCreator {
                 if (refinements != null) {
                     for (int i = 0; i < refinements.length; i++) {
                         TypedActor refinement = refinements[i];
-                        
+
                         Local containerLocal = Jimple.v().newLocal("container",
                                 RefType.v(PtolemyUtilities.namedObjClass));
                         body.getLocals().add(containerLocal);
                         Local entityLocal = Jimple.v().newLocal("entity",
                                    RefType.v(PtolemyUtilities.entityClass));
                         body.getLocals().add(entityLocal);
-                        
-                        NamedObj containerModel = 
+
+                        NamedObj containerModel =
                             (NamedObj)entity.getContainer();
                         String deepName
                             = ((NamedObj)refinement).getName(containerModel);
-                        
+
                         units.add(
                                 Jimple.v().newAssignStmt(containerLocal,
                                         Jimple.v().newInterfaceInvokeExpr(
@@ -664,13 +664,13 @@ public class FSMCreator implements AtomicActorCreator {
                                                 containerLocal,
                                                 PtolemyUtilities.getEntityMethod,
                                                 StringConstant.v(deepName))));
-                        
+
                         units.add(
                                 Jimple.v().newAssignStmt(entityLocal,
                                         Jimple.v().newCastExpr(
                                                 entityLocal,
                                                 RefType.v(PtolemyUtilities.compositeActorClass))));
-                        
+
                         SootMethod rinitializeMethod =
                             SootUtilities.searchForMethodByName(
                                     PtolemyUtilities.compositeActorClass,
@@ -682,7 +682,7 @@ public class FSMCreator implements AtomicActorCreator {
                                                 rinitializeMethod)));
                     }
                 }
-                       
+
                 units.add(Jimple.v().newGotoStmt(finishedStmt));
             }
             units.add(errorStmt);
@@ -766,7 +766,7 @@ public class FSMCreator implements AtomicActorCreator {
                     // since the parameter we are assigning to may be
                     // above us in the hierarchy.
 
-                    NamedObj containerModel = 
+                    NamedObj containerModel =
                         (NamedObj)entity.getContainer();
                     String deepName
                         = ((NamedObj)destination).getName(containerModel);

@@ -45,7 +45,7 @@ import soot.jimple.*;
 import soot.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
  * This class represents the dataflow of a Ptolmey actor. This
  * class will take a AtomicActor, analyze the dataflow (using the
@@ -86,7 +86,7 @@ public class ActorPortDirectedGraph extends PortDirectedGraph {
 
 	// HERE
 
-	// 
+	//
 	Map ioPortNodeListMap = _getPortCallNodes(entity,this);
 	dgToDotty = new PtDirectedGraphToDotty();
         dgToDotty.writeDotFile(".", "fixed", fireGraph);
@@ -196,7 +196,7 @@ public class ActorPortDirectedGraph extends PortDirectedGraph {
 		// In this case, the successor to the getInt call is
 		// identified as the Node associated with this port
 		// call (i.e. input port)
-                portNode = 
+                portNode =
 		    (Node) entityGraph.successors(node).iterator().next();
             } else {
                 // "sendInt" method call

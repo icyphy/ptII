@@ -120,7 +120,7 @@ public class NonStrictTest extends Sink {
         trainingMode = new Parameter(this, "trainingMode");
         trainingMode.setExpression("false");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
-        
+
         input.setMultiport(false);
     }
 
@@ -268,7 +268,7 @@ public class NonStrictTest extends Sink {
         if (training && _trainingTokens != null &&
                 _trainingTokens.size() > 0) {
             Object[] newValues = _trainingTokens.toArray();
-            
+
             // NOTE: Support input multiport for the benefit of derived classes.
             int width = input.getWidth();
             Token[] newTokens = new Token[newValues.length];
@@ -305,7 +305,7 @@ public class NonStrictTest extends Sink {
     + "  that are checked into the nightly build!"
     + "  To run the tests in nightly build mode, use"
     + "     make nightly";
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

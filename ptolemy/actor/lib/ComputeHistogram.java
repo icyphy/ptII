@@ -1,20 +1,20 @@
 /* Compute a histogram of input data.
-   
+
 @Copyright (c) 2003-2004 The Regents of the University of California.
 All rights reserved.
-   
+
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
 software and its documentation for any purpose, provided that the
 above copyright notice and the following two paragraphs appear in all
 copies of this software.
-   
+
 IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
 FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
 ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
-   
+
 THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
@@ -77,7 +77,7 @@ is not enforced.
 @since Ptolemy II 3.1
  */
 public class ComputeHistogram extends TypedAtomicActor {
-        
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -89,17 +89,17 @@ public class ComputeHistogram extends TypedAtomicActor {
     public ComputeHistogram(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
-  
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new ArrayType(BaseType.INT));
-      
+
         minimumValue = new Parameter(this, "minimumValue");
         minimumValue.setExpression("0.0");
         minimumValue.setTypeEquals(BaseType.DOUBLE);
-        
+
         maximumValue = new Parameter(this, "maximumValue");
         maximumValue.setExpression("1.0");
         maximumValue.setTypeEquals(BaseType.DOUBLE);
@@ -107,7 +107,7 @@ public class ComputeHistogram extends TypedAtomicActor {
         numberOfBins = new Parameter(this, "numberOfBins");
         numberOfBins.setExpression("10");
         numberOfBins.setTypeEquals(BaseType.INT);
-        
+
         inputCount = new PortParameter(this, "inputCount");
         inputCount.setExpression("10");
         inputCount.setTypeEquals(BaseType.INT);
@@ -119,7 +119,7 @@ public class ComputeHistogram extends TypedAtomicActor {
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setPersistent(false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -162,7 +162,7 @@ public class ComputeHistogram extends TypedAtomicActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == minimumValue || 
+        if (attribute == minimumValue ||
                 attribute == maximumValue ||
                 attribute == numberOfBins) {
             _minimumValue = ((DoubleToken)minimumValue.getToken()).doubleValue();
@@ -188,7 +188,7 @@ public class ComputeHistogram extends TypedAtomicActor {
      */
     public boolean postfire() throws IllegalActionException {
         _bins = new int[_numberOfBins];
-      
+
         inputCount.update();
 
         int count = ((IntToken)inputCount.getToken()).intValue();
@@ -196,9 +196,9 @@ public class ComputeHistogram extends TypedAtomicActor {
             if (input.hasToken(0)) {
                 DoubleToken curToken = (DoubleToken)input.get(0);
                 double curValue = curToken.doubleValue();
-                
+
                 _addPoint(curValue);
-                
+
             }
         }
         // Send the output array.
@@ -207,7 +207,7 @@ public class ComputeHistogram extends TypedAtomicActor {
             values[i] = new IntToken(_bins[i]);
         }
         output.send(0, new ArrayToken(values));
-        
+
         return super.postfire();
     }
 
@@ -229,7 +229,7 @@ public class ComputeHistogram extends TypedAtomicActor {
             return false;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -240,12 +240,12 @@ public class ComputeHistogram extends TypedAtomicActor {
             _bins[bin]++;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
     private int[] _bins;
-    
+
     private double _minimumValue;
     private double _maximumValue;
     private double _binWidth;

@@ -186,7 +186,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
      * figure and triggers a repaint.
      */
     private class Resizer extends DragInteractor {
-        
+
         /** Create a new resizer.
          */
         public Resizer() {
@@ -209,7 +209,7 @@ public class AttributeBoundsManipulator extends BoundsManipulator {
         public void translate(LayerEvent e, double x, double y) {
             // Snap to grid.
             double[] snapped = SnapConstraint.constrainPoint(x, y);
-            
+
             // Translate the grab-handle, resizing the geometry
             GrabHandle g = (GrabHandle) e.getFigureSource();
             g.translate(snapped[0], snapped[1]);

@@ -71,9 +71,9 @@ public class Absent extends Undefined {
     public void fire() throws IllegalActionException {
         output.sendClear(0);
     }
-    
+
     /** Explicitly declare which inputs and outputs are not dependent.
-     *  
+     *
      */
     public void removeDependencies() {
         removeDependency(trigger, output);

@@ -68,7 +68,7 @@ public class ShapeIcon extends DynamicEditorIcon {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     /** Create a new icon with the given name in the given container
      *  with the given default shape.
      *  @param container The container.
@@ -88,7 +88,7 @@ public class ShapeIcon extends DynamicEditorIcon {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -116,7 +116,7 @@ public class ShapeIcon extends DynamicEditorIcon {
         // repainted, which seems excessive to me.  This will happen
         // every time there is a modification to the model that is
         // carried out by a MoMLChangeRequest.
-        
+
         // The Diva graph package implements a model-view-controller
         // architecture, which implies that this needs to return a new
         // figure each time it is called.  The reason is that the figure
@@ -140,12 +140,12 @@ public class ShapeIcon extends DynamicEditorIcon {
         newFigure.setLineWidth(_lineWidth);
         newFigure.setStrokePaint(_lineColor);
         newFigure.setFillPaint(_fillColor);
-        
+
         _addLiveFigure(newFigure);
-        
+
         return newFigure;
     }
-    
+
     /** Return whether the figure should be centered on its origin.
      *  @return False If the origin of the figure, as
      *   returned by getOrigin(), is the upper left corner.
@@ -162,7 +162,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      */
     public void setCentered(boolean centered) {
         _centered = centered;
-        
+
         // Update the shapes of all the figures that this icon has
         // created (which may be in multiple views). This has to be
         // done in the Swing thread.  Assuming that createBackgroundFigure()
@@ -180,14 +180,14 @@ public class ShapeIcon extends DynamicEditorIcon {
         };
         SwingUtilities.invokeLater(doSet);
     }
-    
+
     /** Specify the fill color to use.  This is deferred and executed
      *  in the Swing thread.
      *  @param fillColor The fill color to use.
      */
     public void setFillColor(Color fillColor) {
         _fillColor = fillColor;
-        
+
         // Update the shapes of all the figures that this icon has
         // created (which may be in multiple views). This has to be
         // done in the Swing thread.  Assuming that createBackgroundFigure()
@@ -205,14 +205,14 @@ public class ShapeIcon extends DynamicEditorIcon {
         };
         SwingUtilities.invokeLater(doSet);
     }
-    
+
     /** Specify the line color to use.  This is deferred and executed
      *  in the Swing thread.
      *  @param lineColor The line color to use.
      */
     public void setLineColor(Color lineColor) {
         _lineColor = lineColor;
-        
+
         // Update the shapes of all the figures that this icon has
         // created (which may be in multiple views). This has to be
         // done in the Swing thread.  Assuming that createBackgroundFigure()
@@ -237,7 +237,7 @@ public class ShapeIcon extends DynamicEditorIcon {
      */
     public void setLineWidth(float lineWidth) {
         _lineWidth = lineWidth;
-        
+
         // Update the shapes of all the figures that this icon has
         // created (which may be in multiple views). This has to be
         // done in the Swing thread.  Assuming that createBackgroundFigure()
@@ -286,22 +286,22 @@ public class ShapeIcon extends DynamicEditorIcon {
 
     // Indicator of whether the figure should be centered on its origin.
     private boolean _centered = false;
-    
+
     // Default shape specified in the constructor.
     private Shape _defaultShape;
-    
+
     // The specified fill color.
     private Color _fillColor = Color.white;
 
     // The specified line color.
     private Color _lineColor = Color.black;
-      
+
     // The specified line width.
     private float _lineWidth = 1f;
-    
+
     // The shape that is rendered.
     private Shape _shape;
-    
+
     // The scale percentage.
     private double _scalePercentage = 100.0;
 }

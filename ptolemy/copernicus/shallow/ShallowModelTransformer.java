@@ -127,7 +127,7 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
             Attribute attribute = (Attribute)attributes.next();
 
             // Ignore things like Variable.
-            if (!attribute.isPersistent() || 
+            if (!attribute.isPersistent() ||
                     attribute instanceof GeneratorAttribute) {
                 continue;
             }
@@ -391,7 +391,7 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                 body.getUnits().add(
                         Jimple.v().newAssignStmt(local,
                                 Jimple.v().newCastExpr(entityLocal,
-                                        RefType.v(className))));    
+                                        RefType.v(className))));
             } else {
                // Create a new local variable.
                 // The name of the local is determined automatically.
@@ -627,13 +627,13 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
                 PtolemyUtilities.createNamedObjAndLocal(body, className,
                         thisLocal, relation.getName());
             _relationLocalMap.put(relation, local);
-          
+
             Relation classRelation = (Relation)_findDeferredInstance(relation);
-            
+
             _updateCreatedSet(
                     composite.getFullName() + "." + relation.getName(),
                     classRelation, classRelation, createdSet);
-            
+
             createFieldsForAttributes(body, composite, thisLocal,
                     relation, local, modelClass, createdSet);
         }
@@ -826,11 +826,11 @@ public class ShallowModelTransformer extends SceneTransformer  implements HasPha
 
         // actor/lib/test/auto/ElectronicUnitBase1.xml and others were failing
         // here, so now we check for null.
-        if (object == null || object.attributeList() == null) { 
+        if (object == null || object.attributeList() == null) {
             System.out.println("ShallowModelTransformer: Warning: "
                     + "object == null, or object.attributeList() == null?, "
                     + "object: " + object);
-        } else { 
+        } else {
             for (Iterator attributes = object.attributeList().iterator();
                  attributes.hasNext();) {
                 Attribute attribute = (Attribute)attributes.next();

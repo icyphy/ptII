@@ -140,9 +140,9 @@ public class SROptimizedScheduler extends Scheduler {
                     + "cannot schedule graph with no container.");
         }
 
-        FunctionDependency functionDependency = 
+        FunctionDependency functionDependency =
             compositeActor.getFunctionDependencies();
-            
+
         Object[] cycleNodes = functionDependency.getCycleNodes();
         if (cycleNodes.length != 0) {
             StringBuffer names = new StringBuffer();
@@ -160,9 +160,9 @@ public class SROptimizedScheduler extends Scheduler {
                     "randomized scheduler instead.");
         }
 
-        DirectedAcyclicGraph dependencyGraph = 
+        DirectedAcyclicGraph dependencyGraph =
             functionDependency.getDetailedPortsGraph().toDirectedAcyclicGraph();
-            
+
         if (_debugging) {
             _debug("## dependency graph is:" + dependencyGraph.toString());
         }
@@ -170,11 +170,11 @@ public class SROptimizedScheduler extends Scheduler {
         if (_debugging) {
             _debug("## Result of topological sort (highest depth to lowest):");
         }
-        
+
         Schedule schedule = new Schedule();
         Actor lastActor = null;
         Actor actor = null;
-        
+
         for (int i = 0; i < sort.length; i++) {
             IOPort ioPort = (IOPort)sort[i];
             // If this ioPort is input but has no connections,
@@ -182,7 +182,7 @@ public class SROptimizedScheduler extends Scheduler {
             if (ioPort.isInput() && ioPort.numLinks() == 0) {
                 continue;
             }
-            
+
             actor = (Actor) ioPort.getContainer();
             // We record the information of last actor.
             // If some consecutive ports belong to the
@@ -191,7 +191,7 @@ public class SROptimizedScheduler extends Scheduler {
                 lastActor = actor;
             } else {
                 if (lastActor.equals(actor)) {
-                   continue; 
+                   continue;
                 } else {
                     lastActor = actor;
                 }

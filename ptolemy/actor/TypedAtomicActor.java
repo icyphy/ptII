@@ -133,7 +133,7 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         }
     }
 
-    /** clone() is not supported, call clone(Workspace workspace) 
+    /** clone() is not supported, call clone(Workspace workspace)
      *  instead.  Usually it is a mistake for an actor to have a
      *  clone() method and call super.clone(), instead the actor
      *  should have a clone(Workspace workspace) method and

@@ -335,7 +335,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                         body, className,
                         namedObjLocal, attribute.getName());
                 // System.out.println("created local");
-                
+
                 // NOTE: Assume that attributes that contain other
                 // attributes must implement a workspace constructor
                 try {
@@ -353,11 +353,11 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             // System.out.println("creating new field");
             // Create a new field for the attribute, and initialize
             // it to the the attribute above.
-            SootField field = 
+            SootField field =
                 SootUtilities.createAndSetFieldFromLocal(body, local,
                         theClass, attributeType, fieldName);
             field.addTag(new ValueTag(attribute));
-                    
+
             createAttributes(body, context, contextLocal,
                     attribute, local, theClass, createdSet);
         }
@@ -395,7 +395,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
              ports.hasNext();) {
             Port port = (Port)ports.next();
             //   System.out.println("ModelTransformer: port: " + port);
-                   
+
             String className = port.getClass().getName();
             String portName = port.getName(context);
             String fieldName = getFieldNameForPort(port, context);
@@ -420,7 +420,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                                 Jimple.v().newVirtualInvokeExpr(contextLocal,
                                         PtolemyUtilities.getAttributeMethod,
                                         StringConstant.v(parameter.getName(context)))));
-              
+
                 // If the class for the object already creates the
                 // port, then get a reference to the existing port.
                 // First assign to temp
@@ -512,7 +512,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             }
 
             if (!theClass.declaresFieldByName(fieldName)) {
-                SootField field = 
+                SootField field =
                     SootUtilities.createAndSetFieldFromLocal(body,
                             portLocal, theClass, RefType.v(className),
                             fieldName);
@@ -663,7 +663,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                                         PtolemyUtilities.validateMethod)),
                         insertPoint);
             }
-           
+
             // recurse so that we get all parameters deeply.
             initializeAttributesBefore(body, insertPoint,
                     context, contextLocal,
@@ -681,7 +681,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                                     PtolemyUtilities.validateMethod)),
                     insertPoint);
         }
-       
+
         if (namedObj instanceof Entity) {
             Entity entity = (Entity)namedObj;
             for (Iterator ports = entity.portList().iterator();
@@ -818,7 +818,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
         _objectToClassMap.put(entity, theClass);
         _actorClasses.add(theClass);
     }
-    
+
     /**
      *  Return the list of classes that correspond to actors.
      */
@@ -1016,19 +1016,19 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                 // Don't inline obviously recursive methods.
                 if (targetMethod == method) {
                     continue;
-                } 
+                }
                 // Don't inline methods invoked on the super
                 // class. (These get taken care of later explicitly)
                 if (!targetMethod.getDeclaringClass().equals(theClass)) {
                     continue;
                 }
-                boolean isCGInitMethod = 
-                    targetMethod.getName().equals("__CGInit");       
+                boolean isCGInitMethod =
+                    targetMethod.getName().equals("__CGInit");
                 // Avoid inlining methods that don't take or return
                 // named objects, except for the CGInit method, which
                 // is always inlined.
                 boolean hasDangerousType = false;
-                
+
                 {
                     Type type = targetMethod.getReturnType();
                     if (type instanceof RefType) {
@@ -1039,7 +1039,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                         }
                     }
                 }
-                for (Iterator argTypes = 
+                for (Iterator argTypes =
                          targetMethod.getParameterTypes().iterator();
                      argTypes.hasNext();) {
                     Type type = (Type)argTypes.next();
@@ -1050,7 +1050,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                             hasDangerousType = true;
                         }
                     }
-                }                         
+                }
                 if (!isCGInitMethod && !hasDangerousType) {
                     continue;
                 }
@@ -1132,7 +1132,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
         // given the objects class, and vice versa.
         _entityToFieldMap = new HashMap();
         _fieldToEntityMap = new HashMap();
-     
+
         _classToObjectMap = new HashMap();
         _objectToClassMap = new HashMap();
 
@@ -1201,7 +1201,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                         body, local, modelClass,
                         RefType.v(className), entityFieldName);
                 field.addTag(new ValueTag(entity));
-                
+
                 _ports(body, thisLocal, composite,
                         local, entity, modelClass, createdSet, false);
             } else {
@@ -1255,7 +1255,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             Port port = (Port)ports.next();
             //System.out.println("ModelTransformer: port: " + port);
 
-                 
+
             String className = port.getClass().getName();
             String portName = port.getName(context);
             String fieldName = getFieldNameForPort(port, context);
@@ -1280,7 +1280,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                                 Jimple.v().newVirtualInvokeExpr(contextLocal,
                                         PtolemyUtilities.getAttributeMethod,
                                         StringConstant.v(parameter.getName(context)))));
-              
+
                 // If the class for the object already creates the
                 // port, then get a reference to the existing port.
                 // First assign to temp
@@ -1373,7 +1373,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             _portLocalMap.put(port, portLocal);
             if (createFieldsInClass &&
                     !modelClass.declaresFieldByName(fieldName)) {
-                SootField field = 
+                SootField field =
                     SootUtilities.createAndSetFieldFromLocal(body,
                             portLocal, modelClass, portType, fieldName);
                 field.addTag(new ValueTag(port));
@@ -1675,7 +1675,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             String className = entity.getClass().getName();
 
             String newClassName = getInstanceClassName(entity, options);
-                
+
             if (Scene.v().containsClass(newClassName)) {
                 continue;
             }
@@ -1696,27 +1696,27 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
 
             if (entity.getClass().getName().equals(
                         "ptolemy.actor.lib.MathFunction")) {
-                throw new RuntimeException("Code Generation for " + 
-                        "ptolemy.actor.lib.MathFunction not supported, since " 
+                throw new RuntimeException("Code Generation for " +
+                        "ptolemy.actor.lib.MathFunction not supported, since "
                         + "it dynamically creates ports.");
             } else if (entity.getClass().getName().equals(
                                "ptolemy.actor.lib.TypeTest")) {
-                throw new RuntimeException("Code Generation for " + 
-                        "ptolemy.actor.lib.TypeTest not supported, since " 
+                throw new RuntimeException("Code Generation for " +
+                        "ptolemy.actor.lib.TypeTest not supported, since "
                         + "it walks around the model.");
             } else if (entity.getClass().getName().equals(
                                "ptolemy.actor.lib.RecordAssembler") ||
                     entity.getClass().getName().equals(
                             "ptolemy.actor.lib.RecordDisassembler")) {
-                throw new RuntimeException("Code Generation for " + 
-                        "some record actors not supported, since " 
+                throw new RuntimeException("Code Generation for " +
+                        "some record actors not supported, since "
                         + "they iterate over ports.");
             } else if (entity.getClass().getName().equals(
                                "ptolemy.actor.lib.ExpressionToToken") ||
                     entity.getClass().getName().equals(
                             "ptolemy.actor.lib.io.ExpressionReader")) {
-                throw new RuntimeException("Code Generation for " + 
-                        "some actors not supported, since " 
+                throw new RuntimeException("Code Generation for " +
+                        "some actors not supported, since "
                         + "they have dynamic expressions.");
             } else if (entity instanceof CompositeActor) {
                 CompositeActor composite = (CompositeActor)entity;
@@ -1736,7 +1736,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
                 creator.createAtomicActor((AtomicActor)entity,
                         newClassName, constAnalysis, options);
             }
-            SootClass entityClass = 
+            SootClass entityClass =
                 Scene.v().loadClassAndSupport(newClassName);
             addActorForClass(entityClass, entity);
         }
@@ -1784,19 +1784,19 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
             body.getUnits().add(insertPoint);
 
             // InitializeAttributes of the ports and parameters.
-            initializeAttributesBefore(body, insertPoint, 
+            initializeAttributesBefore(body, insertPoint,
                     entity, thisLocal,
                     entity, thisLocal, entityInstanceClass);
 
             // Create code in the model class to instantiate all
             // actors and relations, and connect the relations
             // to the ports.
-            _entities(body, thisLocal, entity, thisLocal, entity, 
+            _entities(body, thisLocal, entity, thisLocal, entity,
                     entityInstanceClass, tempCreatedSet, options);
             _relations(body, thisLocal, entity, entityInstanceClass);
             _links(body, entity);
             _linksOnPortsContainedByContainedEntities(body, entity);
-         
+
             // return void
             units.add(Jimple.v().newReturnVoidStmt());
         }
@@ -1850,7 +1850,7 @@ public class ModelTransformer extends SceneTransformer implements HasPhaseOption
 
     private static Map _classToObjectMap;
     private static Map _objectToClassMap;
-    
+
     private static List _actorClasses;
     private static List _attributeClasses;
 

@@ -245,7 +245,7 @@ public abstract class MatrixToken extends Token {
 
         Type type = (Type)TypeLattice.lattice().leastUpperBound(
                 typeTerms);
-        
+
         return arrayToMatrix(type, tokens, rows, columns);
     }
 

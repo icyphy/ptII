@@ -93,13 +93,13 @@ public class SizeAttribute extends Parameter implements ComponentListener {
      *  @param event The component event.
      */
     public void componentHidden(ComponentEvent event) {}
-             
+
     /** Do nothing. This method is
      *  invoked when the component's position changes.
      *  @param event The component event.
      */
     public void componentMoved(ComponentEvent event) {}
-             
+
     /** Record the new size. This method is
      *  invoked when the component's size changes.
      *  @param event The component event.
@@ -133,7 +133,7 @@ public class SizeAttribute extends Parameter implements ComponentListener {
 
             IntMatrixToken token = new IntMatrixToken(boundsMatrix);
             setToken(token);
-            
+
             // If we don't do this, then the bounds may not be written.
             setOverrideDepth(0);
 
@@ -184,7 +184,7 @@ public class SizeAttribute extends Parameter implements ComponentListener {
             return false;
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

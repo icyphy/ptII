@@ -198,7 +198,7 @@ public abstract class BasicGraphController extends AbstractGraphController
      */
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
-        
+
         if (_configuration != null && _menuFactory != null) {
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
@@ -404,7 +404,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 
     ////////////////////////////////////////////////////////////////////////
     //// OpenBaseClassAction
-    
+
     /** An action that will open the base class of a subclass or the class
      *  of an instance.
      */
@@ -434,7 +434,7 @@ public abstract class BasicGraphController extends AbstractGraphController
 
             NamedObj target = getTarget();
             if (target == null) return;
-            
+
             try {
                 if (target instanceof Prototype) {
                     Prototype deferTo = (Prototype)((Prototype)target).getParent();

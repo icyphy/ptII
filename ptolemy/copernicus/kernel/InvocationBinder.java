@@ -82,60 +82,60 @@ public class InvocationBinder extends SceneTransformer
 
         Scene.v().releaseCallGraph();
         CallGraph cg = Scene.v().getCallGraph();
-  
+
         Iterator classesIt = Scene.v().getApplicationClasses().iterator();
         while (classesIt.hasNext()) {
             SootClass c = (SootClass)classesIt.next();
-            
+
             LinkedList methodsList = new LinkedList();
             methodsList.addAll(c.getMethods());
-            
+
             while (!methodsList.isEmpty()) {
                 SootMethod container = (SootMethod)methodsList.removeFirst();
-                
+
                 if (!container.isConcrete()) {
                     // System.out.println("skipping " + container + ": not concrete");
                     continue;
                 }
                 if (!instanceInvokesFilter.wrap( cg.edgesOutOf(container) ).hasNext())
                     continue;
-                
+
                 JimpleBody b = (JimpleBody)container.getActiveBody();
-                
+
                 List unitList = new ArrayList(); unitList.addAll(b.getUnits());
                 Iterator unitIt = unitList.iterator();
-                
+
                 while (unitIt.hasNext()) {
                     Stmt s = (Stmt)unitIt.next();
                     if (!s.containsInvokeExpr())
                         continue;
-                    
+
                     InvokeExpr ie = (InvokeExpr)s.getInvokeExpr();
-                    
+
                     if (ie instanceof StaticInvokeExpr ||
                             ie instanceof SpecialInvokeExpr) {
                         // System.out.println("skipping " + container + ":" +
                         //        s + ": not virtual");
-                        
+
                         continue;
                     }
-                                                   
+
                     Iterator targets = new Targets( cg.edgesOutOf(s) );
- 
+
                     if (!targets.hasNext() ) continue;
                     SootMethod target = (SootMethod)targets.next();
                     if (targets.hasNext() ) continue;
-                    
+
                     // Ok, we have an Interface or VirtualInvoke going to 1.
 
                     if (!AccessManager.ensureAccess(container, target, modifierOptions)) {
                         // System.out.println("skipping: no access");
-                        
+
                         continue;
                     }
                     if (!target.isConcrete()) {
                         //  System.out.println("skipping: not concrete");
-                        
+
                         continue;
                     }
 
@@ -145,7 +145,7 @@ public class InvocationBinder extends SceneTransformer
                                 target.getDeclaringClass())) {
                         continue;
                     }
-                 
+
                     // Change the InterfaceInvoke or VirtualInvoke to
                     // a new VirtualInvoke.
                     ValueBox box = s.getInvokeExprBox();

@@ -1014,7 +1014,7 @@ public class ComplexMatrixMath {
      *  @return A new String representing the matrix in the specified format.
      */
     public static final String toString(final Complex[][] matrix,
-            String elementDelimiter, String matrixBegin, String matrixEnd, 
+            String elementDelimiter, String matrixBegin, String matrixEnd,
             String vectorBegin, String vectorDelimiter, String vectorEnd) {
         StringBuffer sb = new StringBuffer();
         sb.append(matrixBegin);

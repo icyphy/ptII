@@ -73,7 +73,7 @@ public class BitsToInt extends SDFConverter {
             throws NameDuplicationException, IllegalActionException  {
 
         super(container, name);
-        
+
         numberOfBits = new Parameter(this, "numberOfBits");
         numberOfBits.setExpression("32");
 

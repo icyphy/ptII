@@ -69,7 +69,7 @@ import com.microstar.xml.XmlException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Main
-/** 
+/**
 Base class that provides common functionality to be used by various
 code generators.  Particular code generators should extend this class
 and generally override the addTransforms method to instantiate the
@@ -95,10 +95,10 @@ public abstract class KernelMain {
         if (transformer instanceof HasPhaseOptions) {
             HasPhaseOptions options = (HasPhaseOptions) transformer;
             // Note: First appearance of an option has precendence
-            t.setDefaultOptions(defaultOptions + " " + 
+            t.setDefaultOptions(defaultOptions + " " +
                     options.getDefaultOptions() + " " +
                     t.getDefaultOptions());
-            t.setDeclaredOptions(options.getDeclaredOptions() + " " + 
+            t.setDeclaredOptions(options.getDeclaredOptions() + " " +
                     t.getDeclaredOptions());
         } else {
             t.setDefaultOptions(defaultOptions + " " +
@@ -134,7 +134,7 @@ public abstract class KernelMain {
 
             // Parse any copernicus args.
             String[] sootArgs = _parseArgs(attribute);
-                
+
             // Add Transforms to the Scene.
             addTransforms();
 
@@ -144,7 +144,7 @@ public abstract class KernelMain {
             // Print out memory usage info
             System.out.println(modelName + " "
                     + ptolemy.actor.Manager.timeAndMemory(startTime));
-            
+
 //         } catch (Exception ex) {
 //             System.err.println("Code generation of '" + modelName
 //                     + "' failed:");
@@ -173,9 +173,9 @@ public abstract class KernelMain {
 //         if (!Options.v().parse(args))
 //             throw new KernelRuntimeException(
 //                     "Option parse error");
-      
+
         PackManager.v().getPack("wjtp").apply();
-  
+
         // Reset the state of the manager.  We haven't actually done
         // anything, but the state of the manager must be reset.
         try {
@@ -231,7 +231,7 @@ public abstract class KernelMain {
         addTransform(pack, "wjtp.StandardOptimizations" + time,
                 new TransformerAdapter(standardList));
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -239,7 +239,7 @@ public abstract class KernelMain {
     /** Parse any code generator specific arguments.  Derived classes
      * should override this method to extract any code
      * generator-specific variables from the GeneratorAttribute.
-     */ 
+     */
     protected String[] _parseArgs(GeneratorAttribute attribute)
             throws Exception {
         return new String[0];

@@ -261,7 +261,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
                 // This is necessary so that if the location later moves,
                 // then the move can be duplicated in the deferrers.
                 Locatable location = new Location(object, "_location");
-                
+
                 // Since this isn't delegated to the MoML parser,
                 // we have to handle propagation here.
                 List heritageList = object.getDerivedList();
@@ -270,7 +270,7 @@ public abstract class AbstractBasicGraphModel extends ModularGraphModel {
                     NamedObj inherited = (NamedObj)heritage.next();
                     new Location(inherited, "_location");
                 }
-                
+
                 return location;
             }
             catch (Exception e) {

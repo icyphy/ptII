@@ -94,7 +94,7 @@ public class WiredToWireless extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** Input port that receives the payload to be transmitted on the 
+    /** Input port that receives the payload to be transmitted on the
      *  <i>output</i> port.
      */
     public TypedIOPort payload;

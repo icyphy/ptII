@@ -2005,7 +2005,7 @@ public class Plot extends PlotBox {
         // Draw the line to the previous point.
         long prevx = ((Long)_prevx.elementAt(dataset)).longValue();
         long prevy = ((Long)_prevy.elementAt(dataset)).longValue();
-        
+
         // Avoid drawing points and lines that are invisible.
         if (xpos != prevx || ypos != prevy) {
             // MIN_VALUE is a flag that there has been no previous x or y.
@@ -2013,12 +2013,12 @@ public class Plot extends PlotBox {
                 _drawLine(graphics, dataset, xpos, ypos,
                         prevx, prevy, true, 2f);
             }
-            
+
             // Save the current point as the "previous" point for future
             // line drawing.
             _prevx.setElementAt(new Long(xpos), dataset);
             _prevy.setElementAt(new Long(ypos), dataset);
-            
+
             // Draw decorations that may be specified on a per-dataset basis
             Format fmt = (Format)_formats.elementAt(dataset);
             if (fmt.impulsesUseDefault) {
@@ -2026,12 +2026,12 @@ public class Plot extends PlotBox {
             } else {
                 if (fmt.impulses) _drawImpulse(graphics, xpos, ypos, true);
             }
-            
+
             // Check to see whether the dataset has a marks directive
             int marks = _marks;
             if (!fmt.marksUseDefault) marks = fmt.marks;
             if (marks != 0) _drawPoint(graphics, dataset, xpos, ypos, true);
-            
+
             if (_bars) _drawBar(graphics, dataset, xpos, ypos, true);
         }
 

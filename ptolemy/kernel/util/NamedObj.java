@@ -1061,7 +1061,7 @@ public class NamedObj implements
     }
 
     /** FIXME: Update per interface.
-     * 
+     *
      *  Return a list of objects to which a change to this
      *  object should propagate, which is the list of objects that
      *  are created as a side effect of creating this one (that is, they
@@ -1347,9 +1347,9 @@ public class NamedObj implements
      *  true to specify that this inherited object has been
      *  modified. To reverse the effect of this call, call it again
      *  with false argument.
-     * 
+     *
      *  FIXME doc
-     * 
+     *
      *  @param modified True to mark modified.
      *  @see #setInherited(boolean)
      *  @see #isModifiedHeritage()
@@ -1647,7 +1647,7 @@ public class NamedObj implements
                     }
                 }
             } catch (IllegalAccessException ex) {
-                // CloneNotSupportedException does not have a 
+                // CloneNotSupportedException does not have a
                 // constructor that takes a cause argument, so we call
                 // initCause() and then throw.
                 CloneNotSupportedException cloneException =
@@ -1657,7 +1657,7 @@ public class NamedObj implements
                         + " could not be automatically cloned because "
                         + ex.getMessage() + ".  This can be caused if "
                         + "the field is not defined in a public class.");
-                
+
                 cloneException.initCause(ex);
                 throw cloneException;
             }
@@ -2125,11 +2125,11 @@ public class NamedObj implements
                     newRelativeName = context.getName() + "." + relativeName;
                 }
                 result.addAll(_getHeritageList(
-                        visited, 
-                        shadow, 
-                        container, 
-                        depth + 1, 
-                        newRelativeName, 
+                        visited,
+                        shadow,
+                        container,
+                        depth + 1,
+                        newRelativeName,
                         depthList));
             }
             if (!(context instanceof Instantiable)) {
@@ -2140,7 +2140,7 @@ public class NamedObj implements
             // Increment the depth by one to represent the parent
             // relationship here.
             depth = depth + 1;
-            
+
             // Iterate over the children.
             List othersList = ((Instantiable)context).getChildren();
             if (othersList != null) {
@@ -2171,7 +2171,7 @@ public class NamedObj implements
 
                         // Is it shadowed?
                         int overrideDepth = candidate.getOverrideDepth();
-                        if (shadow && 
+                        if (shadow &&
                                 (overrideDepth == 0
                                 || overrideDepth > depth)) {
                             // Yes, it is.

@@ -55,8 +55,8 @@ on the distance between the transmitter and receiver at the time
 that the transmitter initiates the communication. This channel model
 assumes that the duration of the message is (effectively) zero, so
 that neither the transmitter nor the receiver move during the
-transmission. It also assumes that the receiver does not move during 
-propagation. I.e., it assumes that the propagation of the message is 
+transmission. It also assumes that the receiver does not move during
+propagation. I.e., it assumes that the propagation of the message is
 much faster than the node movement.
 <p>
 A speed equal to Infinity (the default) results in no
@@ -130,7 +130,7 @@ public class DelayChannel extends ErasureChannel {
      *  the token to the receiver.
      *  @exception IllegalActionException If the _transimitTo() method of the
      *  base class throws it, i.e. the token attribute of the reception
-     *  cannot be converted or the token attribute is null and the receiver 
+     *  cannot be converted or the token attribute is null and the receiver
      *  attribute of the receptions does not support clear.
      */
     public void fire() throws IllegalActionException {

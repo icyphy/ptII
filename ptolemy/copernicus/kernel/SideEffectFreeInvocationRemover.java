@@ -79,7 +79,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
 
         SideEffectAnalysis analysis =
             new SideEffectAnalysis();
-  
+
         CallGraph callGraph = Scene.v().getCallGraph();
         for (Iterator classes = Scene.v().getApplicationClasses().iterator();
              classes.hasNext();) {
@@ -99,7 +99,7 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
      */
     public static void _removeSideEffectFreeMethodCalls(SootMethod method,
             CallGraph callGraph, SideEffectAnalysis analysis) {
-      
+
         Body body = method.retrieveActiveBody();
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
         // this will help us figure out where locals are defined.

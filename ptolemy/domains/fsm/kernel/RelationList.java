@@ -39,7 +39,7 @@ import java.util.ListIterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// RelationList
-/** 
+/**
 
 A RelationList contains a list of relations of a guard expression.  It
 provides facilities to access the former and current information of
@@ -56,7 +56,7 @@ exported into MoML.
  <p> <i>// Construct a relation list for a transition.  // The first
   argument of the constructor is a // transition.</i> _relationList =
   new RelationList(this, "relationList");
- 
+
 <p> <i>// Associate the relation list with the
          ParseTreeEvaluatorForGuardExpression</i> _parseTreeEvaluator
          = new ParseTreeEvaluatorForGuardExpression(_relationList);
@@ -167,7 +167,7 @@ public class RelationList extends Attribute {
     public int length() {
     	return _relationList.size();
     }
-    
+
     /** Iterating the relation list and get the maximum current
      *  difference of all the relations.
      *  @return maximumDistance The maximum current distance.

@@ -201,7 +201,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 
 
         Director upperDirector = ((CompositeActor) getContainer()).getExecutiveDirector();
-        
+
         if (upperDirector instanceof CTDirector) {
             // If embedded inside a CT model
             if (Math.abs(getCurrentTime() - _expectedNextIterationTime) < ((CTDirector) upperDirector).getTimeResolution()) {
@@ -230,11 +230,11 @@ public class GiottoDirector extends StaticSchedulingDirector {
             if (_debugging) {
                 _debug("*** Prefire returned true.");
             }
-            // if the outside time is beyond the formerly set 
+            // if the outside time is beyond the formerly set
             // _expectedNextIterationTime, and if it is the start
-            // of a new run, 
+            // of a new run,
             // update the next expected iteration time as current time
-            // This situation happens when the whole Giotto model is 
+            // This situation happens when the whole Giotto model is
             // triggered by some discrete events.
             if (_iterationCount == 0) {
                 if (_debugging) {

@@ -129,7 +129,7 @@ public class HTMLViewer extends TableauFrame
             URL newURL = event.getURL();
 
             if (event.getDescription().startsWith("about:")) {
-                // Process "about:" hyperlinks 
+                // Process "about:" hyperlinks
                 try {
                     newURL = HTMLAbout.hyperlinkUpdate(event,
                             getConfiguration());

@@ -80,7 +80,7 @@ public class PTreeMenuCreator extends MouseAdapter {
     }
 
     /** Create an instance of the menu associated with this factory.
-     *  @param e The mouse event.  If the mouse event is 
+     *  @param e The mouse event.  If the mouse event is
      *  the third button, then menu is created and shown.
      */
     public void mousePressed(MouseEvent e) {
@@ -88,8 +88,8 @@ public class PTreeMenuCreator extends MouseAdapter {
             return;
         }
         PTree tree = (PTree) e.getComponent();
-        TreePath treePath = tree.getPathForLocation(e.getX(), e.getY()); 
-        Object object = treePath.getLastPathComponent(); 
+        TreePath treePath = tree.getPathForLocation(e.getX(), e.getY());
+        Object object = treePath.getLastPathComponent();
         if (object instanceof NamedObj) {
             NamedObj namedObj = (NamedObj)object;
             JContextMenu menu = new JContextMenu(

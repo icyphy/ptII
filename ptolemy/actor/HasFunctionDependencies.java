@@ -1,4 +1,4 @@
-/* An interface provides access to the FunctionDependency object 
+/* An interface provides access to the FunctionDependency object
 associated with an entitiy.
 
  Copyright (c) 2003-2004 The Regents of the University of California.
@@ -33,8 +33,8 @@ package ptolemy.actor;
 
 //////////////////////////////////////////////////////////////////////////
 //// HasFunctionDependencies
-/** An interface provides access to the FunctionDependency object 
-ssociated with an entity. This interface is extended by Actor interface. 
+/** An interface provides access to the FunctionDependency object
+ssociated with an entity. This interface is extended by Actor interface.
 
 @see Actor
 @see FunctionDependency
@@ -43,13 +43,13 @@ ssociated with an entity. This interface is extended by Actor interface.
 @since Ptolemy II 3.1
 */
 public interface HasFunctionDependencies {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return an instance of FunctionDependency. 
+    /** Return an instance of FunctionDependency.
      *  @return the FunctionDependency object.
      */
     public FunctionDependency getFunctionDependencies();
-    
+
 }

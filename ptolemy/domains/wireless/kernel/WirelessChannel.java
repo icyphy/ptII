@@ -41,19 +41,19 @@ import ptolemy.kernel.util.Nameable;
 //////////////////////////////////////////////////////////////////////////
 //// WirelessChannel
 /**
-Interface for wireless channels in the wireless domain. 
-Wireless channels are special components in a wireless model. 
+Interface for wireless channels in the wireless domain.
+Wireless channels are special components in a wireless model.
 They are used to determine the connectivity and deliver
-tokens from the transmiter to receiver(s). This interface 
+tokens from the transmiter to receiver(s). This interface
 defines a set of methods for the wireless channel components.
 <p>
-The transmiter can call the channel's transmit() method to 
+The transmiter can call the channel's transmit() method to
 deliver data to its corresponding receivers. It can specify
 the transmission properties by a record token including the
-transimission range, transmission power. The transmit 
+transimission range, transmission power. The transmit
 properties may be modified by the channel model or by some
-property transformers(@see PropertyTransformer) during the 
-transmission to take into account channel losses, antenna 
+property transformers(@see PropertyTransformer) during the
+transmission to take into account channel losses, antenna
 gain, noise, etc.
 
 @author Yang Zhao and Edward A. Lee
@@ -78,7 +78,7 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *  from this channel.  This must include input ports contained by
      *  entities contained by the container of this channel that
      *  have their <i>outsideChannel</i> parameter set to the name
-     *  of this channel. Transparent hierarchy is not supported. 
+     *  of this channel. Transparent hierarchy is not supported.
      *  @return The list of input ports of class WirelessIOPort
      *   using this channel.
      *  @exception IllegalActionException If a port is encountered
@@ -97,7 +97,7 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
      *   whose <i>insideChannel</i> parameter cannot be evaluated.
      */
     public List listeningOutputPorts() throws IllegalActionException;
-    
+
     /** Register a property transformer for transmissions from the
      *  specified port. A PropertyTransformer modifies the transmission
      *  property and returns the modified property. If null is
@@ -158,7 +158,7 @@ public interface WirelessChannel extends Actor, Nameable, PropertyTransformer {
     public void transmit(Token token, WirelessIOPort port,
             RecordToken properties)
             throws IllegalActionException;
-            
+
     /** Unregister a property transformer for transmissions from the specified
      *  port (or from null for a generic property transformer). If the transformer
      *  has not been registered, then do nothing.

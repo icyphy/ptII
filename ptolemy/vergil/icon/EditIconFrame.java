@@ -99,14 +99,14 @@ public class EditIconFrame extends BasicGraphFrame {
             Tableau tableau,
             LibraryAttribute defaultLibrary) {
         super(entity, tableau, defaultLibrary);
-        
+
         _dropTarget.setDropIntoEnabled(false);
 
         // Override the default help file.
         helpFile = "ptolemy/configs/doc/vergilGraphEditorHelp.htm";
-        
+
         zoomReset();
-        
+
         _drawReferenceBox();
     }
 
@@ -141,7 +141,7 @@ public class EditIconFrame extends BasicGraphFrame {
     /** Create the default library to use if an entity has no
      *  LibraryAttribute.  Note that this is called in the
      *  constructor and therefore overrides in subclasses
-     *  should not refer to any members that may not have been 
+     *  should not refer to any members that may not have been
      *  initialized.  This method overrides the base class to
      *  look for a library called "icon library" in the
      *  configuration. If there is no such library, then
@@ -187,7 +187,7 @@ public class EditIconFrame extends BasicGraphFrame {
         ActorGraphModel graphModel = new ActorGraphModel(getModel());
         return new GraphPane(_controller, graphModel);
     }
-    
+
     /** Draw a reference box with the default icon size, 60x40.
      */
     protected void _drawReferenceBox() {
@@ -207,7 +207,7 @@ public class EditIconFrame extends BasicGraphFrame {
 
     // The delay time specified that last time animation was set.
     private long _lastDelayTime = 0;
-    
+
     // The default zoom scale.
     private double _ZOOM_SCALE = 4.0;
 }

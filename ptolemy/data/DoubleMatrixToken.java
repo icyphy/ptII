@@ -201,7 +201,7 @@ public class DoubleMatrixToken extends MatrixToken {
      */
     public final Complex[][] complexMatrix() {
         return ComplexMatrixMath.toMatrixFromArray(
-                DoubleArrayMath.toComplexArray(_value), 
+                DoubleArrayMath.toComplexArray(_value),
                 _rowCount, _columnCount);
     }
 

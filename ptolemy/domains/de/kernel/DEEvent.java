@@ -240,7 +240,7 @@ public final class DEEvent implements Comparable {
 
     // The destination actor.
     private Actor _actor;
-    
+
     // The ioPort of the destination actor.
     private IOPort _ioPort;
 

@@ -91,7 +91,7 @@ public class LocatableNodeController extends BasicNodeController {
             float[] dash = {2.0f, 5.0f};
             Stroke stroke = new BasicStroke(
                     2f,                     /* width */
-                    BasicStroke.CAP_SQUARE, /* cap   */ 
+                    BasicStroke.CAP_SQUARE, /* cap   */
                     BasicStroke.JOIN_MITER, /* join  */
                     10.0f,                  /* mitre limit */
                     dash,                   /* dash  */
@@ -172,7 +172,7 @@ public class LocatableNodeController extends BasicNodeController {
         } else throw new RuntimeException("The node " + node +
                 "cannot have a desired location");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                 ////
 

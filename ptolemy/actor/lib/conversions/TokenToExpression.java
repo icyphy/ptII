@@ -72,7 +72,7 @@ public class TokenToExpression extends Converter {
     ////                         public methods                    ////
 
     /** Output a string token whose value is an expression representing
-     *  the value of the input token. 
+     *  the value of the input token.
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {

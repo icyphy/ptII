@@ -107,7 +107,7 @@ public class FileWriter extends ptolemy.actor.lib.Writer {
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex,
-                        "attributeChanged(" + 
+                        "attributeChanged(" +
                         attribute.getName() + ") failed");
             }
         }

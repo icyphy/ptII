@@ -288,7 +288,7 @@ public class HDFDirector extends SDFDirector {
             }
         };
         request.setPersistent(false);
-        container.requestChange(request); 
+        container.requestChange(request);
         return super.postfire();
     }
 
@@ -361,7 +361,7 @@ public class HDFDirector extends SDFDirector {
     /** Initialize the object. In this case, we give the HDFDirector a
      *  default scheduler of the class HDFScheduler.
      */
-    private void _init() 
+    private void _init()
             throws IllegalActionException, NameDuplicationException {
         try {
             SDFScheduler scheduler =
@@ -380,7 +380,7 @@ public class HDFDirector extends SDFDirector {
         _cacheSize = cacheSize;
         scheduleCacheSize = new Parameter(this,
                 "scheduleCacheSize", new IntToken(cacheSize));
-        
+
         _scheduleCache = new HashMap();
         _scheduleKeyList = new ArrayList(cacheSize);
         _externalRatesCache = new TreeMap();

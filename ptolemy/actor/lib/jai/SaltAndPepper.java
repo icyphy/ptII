@@ -44,7 +44,7 @@ import ptolemy.data.DoubleToken;
 //// SaltAndPepper
 /** Randomly change values in a double matrix to 0.0 or 255.0.
 
-<p>This actor reads in a double matrix and then randomly changes 
+<p>This actor reads in a double matrix and then randomly changes
 some of the matrix elements to 0.0 or to 255.0.  Some of the elements
 remain unchanged.  If the double matrix represents an image, then
 the image would appear to have Salt and Pepper scattered on it.

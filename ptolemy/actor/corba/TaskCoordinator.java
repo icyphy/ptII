@@ -55,9 +55,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  An actor that coordiantor a set of clients connecting to it to work together
  to finish some tasks.
- 
+
  It has an inner class that implements the Coordinator interface defined in
- Coordinator.idl. The clients connect to this need to implement the Client 
+ Coordinator.idl. The clients connect to this need to implement the Client
  interface defined in Coordinator.idl also.
 
  Specify the ORB initial property with the<i>ORBInitProperties<i>
@@ -70,7 +70,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  to register to the name service.
 
 @author Yang Zhao
-@version 
+@version
 @since Ptolemy II 3.0
 */
 
@@ -101,16 +101,16 @@ public class TaskCoordinator extends Transformer {
      */
     public Parameter ORBInitProperties;
 
-    /** The name of the coordinator to register with the naming service. 
+    /** The name of the coordinator to register with the naming service.
      *  The type of the Parameter is StringToken.
      */
-    public Parameter coordinatorName; 
+    public Parameter coordinatorName;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Initialize this actor. This includes creating
-     *  the ORB, initializing the naming service, instantiate and register 
+     *  the ORB, initializing the naming service, instantiate and register
      *  the coordinator.
      *  @exception IllegalActionException If any of the above actions
      *  failted.
@@ -140,7 +140,7 @@ public class TaskCoordinator extends Transformer {
 
     /** Read one input token, if there is one, from the input
      *  and send it to the remote TaskReceiver by call the stub method.
-     *  If there is no input token, then send received result to the 
+     *  If there is no input token, then send received result to the
      *  output port.
      *  @exception IllegalActionException If the publication
      *  action fails due to network problems, transaction errors,
@@ -160,10 +160,10 @@ public class TaskCoordinator extends Transformer {
                     //prepare to send the token to task Receivers.
                     org.omg.CORBA.Any event = _orb.create_any();
                     event.insert_string(data);
-                    Client selectedClient;                    
+                    Client selectedClient;
                     if (_availableClients.size() > 0) {
                         synchronized(_lock2) {
-                            selectedClient = (Client)_availableClients.removeFirst();    
+                            selectedClient = (Client)_availableClients.removeFirst();
                         }
                         selectedClient.push(event);
                         if (_debugging) {
@@ -183,14 +183,14 @@ public class TaskCoordinator extends Transformer {
                         }
                         if (_availableClients.size() > 0) {
                             synchronized(_lock2) {
-                                selectedClient = (Client)_availableClients.removeFirst();    
+                                selectedClient = (Client)_availableClients.removeFirst();
                             }
                             selectedClient.push(event);
                             if (_debugging) {
                                 _debug(getName(), "coordinator sends new task: " + data);
                             }
                         }
-                    }                        
+                    }
                 } else { // we enter fire due to receiving returned result from some client.
                     _debug(getName(), "coordinator send out received task result.");
                     output.send(0, _resultToken);
@@ -219,7 +219,7 @@ public class TaskCoordinator extends Transformer {
         }
         super.stop();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                    ////
     //use a private method to deal with necessary CORBA operations.
@@ -266,7 +266,7 @@ public class TaskCoordinator extends Transformer {
     private boolean _fireIsWaiting;
     private Object _lock1, _lock2;
     private Token _resultToken;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                ////
 
@@ -286,11 +286,11 @@ public class TaskCoordinator extends Transformer {
                     if (_fireIsWaiting) {
                         synchronized(_lock1) {
                             _lock1.notifyAll();
-                        }        
+                        }
                     }
                 }
             }
-            
+
         }
 
         public void result(String clientName, Any data) throws CorbaIllegalActionException {
@@ -310,7 +310,7 @@ public class TaskCoordinator extends Transformer {
                            _debug(getName(), "get synchronized object lock1.");
                            _lock1.notifyAll();
                        }
-                    }                    
+                    }
                 }
             }
             try {
@@ -319,19 +319,19 @@ public class TaskCoordinator extends Transformer {
             } catch (IllegalActionException ex) {
                 throw new CorbaIllegalActionException("failed in dealing with director.");
             }
-        }            
-        
+        }
+
         public void unregister(String clientName) throws CorbaIllegalActionException {
             synchronized(_lock2) {
                 if (_clientRefs.containsKey(clientName)) {
-                    Client client = (Client)_clientRefs.get(clientName); 
+                    Client client = (Client)_clientRefs.get(clientName);
                     _availableClients.remove(client);
                     _clientRefs.remove(clientName);
-                }   
-            }                
-            
+                }
+            }
+
         }
-    }    
+    }
 
 }
 

@@ -180,7 +180,7 @@ public class FSMGraphFrame extends ExtendedGraphFrame {
 
     /** Debug menu for this frame. */
     protected JMenu _debugMenu;
-    
+
     /** The graph menu. */
     protected JMenu _graphMenu;
 

@@ -412,7 +412,7 @@ public class DataflowActorInterpreter {
 
         public Object value(final Object[] location) {
             // FIXME
-            throw new InterpreterException("Indices not yet implemented."); 
+            throw new InterpreterException("Indices not yet implemented.");
         }
 
         public void freeze() {

@@ -83,7 +83,7 @@ public class LiveSines {
         double[][] samplesArray = new double[channels][putSamplesSize];
         // keep track of time, used in calculating the sine wave values.
         double[] samples = new double[channels];
-        
+
         System.out.println("                           Actual size: " +
                 LiveSound.getBufferSizePlayback() + " samples.");
 
@@ -125,7 +125,7 @@ public class LiveSines {
 
                 // Play the processed audio samples.
                 LiveSound.putSamples(_producer, samplesArray);
-                
+
                 // break out of loop after 10 seconds.  0 is the channel number
                 // chosen arbitrarily
                 if (samples[0] > 10.0) {

@@ -112,7 +112,7 @@ truly required, then simply set the <i>delay</i> parameter of that
 actor to zero. The directed loops are based on the port connections
 rather than the actor connections because the port connections reflect
 the data flow more accurately. The information of port connections are
-stored in a nonpersistent attribute FunctionDependency, which is 
+stored in a nonpersistent attribute FunctionDependency, which is
 constructed during run time.
 <p>
 Input ports in a DE model contain instances of DEReceiver.
@@ -423,7 +423,7 @@ public class DEDirector extends Director {
 
                 // FIXME: The following is the actual part that DE director handles
                 // multiple events. Think about what it means in the SR semantics.
-                
+
                 // Check the input ports of the actor see whether there
                 // is additional input data available.
                 Iterator inputPorts = actorToFire.inputPortList().iterator();
@@ -697,7 +697,7 @@ public class DEDirector extends Director {
         _exceedStopTime = false;
         // use the protected variable directly, since time can go backward.
         // This is the only place in DE where time can go backward.
-        
+
         // Note: If it is embedded, it should get the current time from its
         // executive director. Modified by yang.
         if (_isEmbedded()) {
@@ -1320,8 +1320,8 @@ if (_debugging) _debug("Skipping actor: ",
 
         Actor destination = (Actor)(receiver.getContainer()).getContainer();
         int depth = _getDepth(destination);
-        
-        if (_debugging) _debug("enqueue event: to", 
+
+        if (_debugging) _debug("enqueue event: to",
         receiver.getContainer().getFullName() + " ("+token.toString()+") ",
         "time = "+ getCurrentTime() + " microstep = "+ (_microstep + 1) + " depth = "
         + depth);
@@ -1423,22 +1423,22 @@ if (_debugging) _debug("Skipping actor: ",
         DirectedAcyclicGraph dag = new DirectedAcyclicGraph();
 
         Nameable container = getContainer();
-        // If the container is not composite actor, 
+        // If the container is not composite actor,
         // there are no actors.
         if (!(container instanceof CompositeActor)) return dag;
         CompositeActor castContainer = (CompositeActor)container;
 
-        // Get the FunctionDependency attribute of the container of this 
+        // Get the FunctionDependency attribute of the container of this
         // director. If there is no such attribute, construct one.
         FunctionDependency functionDependency = castContainer.getFunctionDependencies();
-         
+
         // The FunctionDependency attribute is used to construct
         // the schedule. If the schedule needs recalculation,
         // the FunctionDependency also needs recalculation.
         functionDependency.invalidate();
-      
-        // FIXME: The following may be a very costly test. 
-        // -- from the comments of former implementation. 
+
+        // FIXME: The following may be a very costly test.
+        // -- from the comments of former implementation.
         // If the port based data flow graph contains directed
         // loops, the model is invalid. An IllegalActionException
         // is thrown with the names of the actors in the loop.
@@ -1471,7 +1471,7 @@ if (_debugging) _debug("Skipping actor: ",
             functionDependency = actor.getFunctionDependencies();
             // The following check may not be necessary since the FunctionDependency
             // attribute is constructed before. However, we check
-            // it anyway. 
+            // it anyway.
             if (functionDependency == null) {
                 throw new IllegalActionException(this, "doesn't " +
                         "contain a valid FunctionDependency attribute.");
@@ -1482,7 +1482,7 @@ if (_debugging) _debug("Skipping actor: ",
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort)inputPorts.next();
 
-                Set notDirectlyDependentPorts = 
+                Set notDirectlyDependentPorts =
                     functionDependency.getIndependentOutputPorts(inputPort);
 
                 // get all the output ports of the current actor.
@@ -1490,7 +1490,7 @@ if (_debugging) _debug("Skipping actor: ",
                 while (outputPorts.hasNext()) {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
-                    if (notDirectlyDependentPorts != null && 
+                    if (notDirectlyDependentPorts != null &&
                         notDirectlyDependentPorts.contains(outputPort)) {
                         // Skip the port without direct dependence.
                         continue;
@@ -1514,9 +1514,9 @@ if (_debugging) _debug("Skipping actor: ",
                                 continue;
                             }
                         }
-                        
+
                         Actor successor = (Actor)(port.getContainer());
-                        // If the destination is the same as the current 
+                        // If the destination is the same as the current
                         // actor, skip the destination.
                         if (successor.equals(actor)) {
                             continue;
@@ -1540,7 +1540,7 @@ if (_debugging) _debug("Skipping actor: ",
                 }
             }
         }
-        
+
         return dag;
     }
 

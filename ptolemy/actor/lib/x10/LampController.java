@@ -44,8 +44,8 @@ import x10.Command;
 /**
  * This x10 actor will broadcast lamp module commands to the X10 network
  * based on the inputs that are provided when it fires.
- * A lamp module is an x10 device that can turn a lamp on and off or control 
- * a lamp's brightness level. This is a specialized x10 broadcaster actor 
+ * A lamp module is an x10 device that can turn a lamp on and off or control
+ * a lamp's brightness level. This is a specialized x10 broadcaster actor
  * that will only transmit the following commands:
  * <ul>
  * <li> <b>Bright</b>: Set a lamp module's brightness level.
@@ -69,18 +69,18 @@ public class LampController extends Sender {
     public LampController(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        
+
         bright = new TypedIOPort(this, "bright", true, false);
         dim = new TypedIOPort(this, "dim", true, false);
         on = new TypedIOPort(this, "on", true, false);
         off = new TypedIOPort(this, "off", true, false);
-        
+
         // Add attributes to indicate that names should be shown.
         new SingletonAttribute(bright, "_showName");
         new SingletonAttribute(dim, "_showName");
         new SingletonAttribute(on, "_showName");
         new SingletonAttribute(off, "_showName");
-        
+
         bright.setTypeEquals(BaseType.INT);
         dim.setTypeEquals(BaseType.INT);
         on.setTypeEquals(BaseType.BOOLEAN);
@@ -88,25 +88,25 @@ public class LampController extends Sender {
         off.setTypeEquals(BaseType.BOOLEAN);
         off.setMultiport(true);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-     
+
    /** When provided with an integer between 0 and 100, inclusive,
     *  on this port, this actor will issue an X10 BRIGHT command.
     */
     public TypedIOPort bright;
-   
+
    /** When provided with an integer between 0 and 100, inclusive,
     *  on this port, this actor will issue an X10 DIM command.
     */
-    public TypedIOPort dim;  
-         
+    public TypedIOPort dim;
+
    /** When provided with a true token on this input port,
     *  this actor will send an ON X10 command.
     */
     public TypedIOPort on;
-    
+
    /** When provided with a true token on this input port,
     *  this actor will send an OFF X10 command.
     */
@@ -126,7 +126,7 @@ public class LampController extends Sender {
      *  @exception IllegalActionException If reading from the ports fails.
      */
     public void fire() throws IllegalActionException {
-        // Must call super fire here to get the destination for this command. 
+        // Must call super fire here to get the destination for this command.
         super.fire();
 
 		int brightLevel = -1;
@@ -140,7 +140,7 @@ public class LampController extends Sender {
 
         boolean isOff = _hasTrueInput(off);
         boolean isOn = _hasTrueInput(on);
-        
+
         if (brightLevel >= 0 && brightLevel <= 100) {
             _transmit(new Command((_destination), x10.Command.BRIGHT,
                     brightLevel));
@@ -153,7 +153,7 @@ public class LampController extends Sender {
             _transmit(new Command((_destination), x10.Command.ON));
         }
         if (isOff) {
-            _transmit(new Command((_destination), x10.Command.OFF));  
+            _transmit(new Command((_destination), x10.Command.OFF));
         }
     }
 }

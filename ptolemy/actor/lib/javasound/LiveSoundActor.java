@@ -50,7 +50,7 @@ import ptolemy.media.javasound.LiveSoundListener;
 //// LiveSoundActor
 /**
 This actor forms a base class for actors that interact with real-time
-sound through the ptolemy.media.LiveSound class.  This class manages the 
+sound through the ptolemy.media.LiveSound class.  This class manages the
 parameters for live sound.
 <p>
 Note: Requires Java 2 v1.3.0 or later.
@@ -61,7 +61,7 @@ Note: Requires Java 2 v1.3.0 or later.
 @see AudioPlayer
 @see AudioCapture
 */
-public class LiveSoundActor extends TypedAtomicActor 
+public class LiveSoundActor extends TypedAtomicActor
     implements LiveSoundListener {
 
     /** Construct an actor with the given container and name.
@@ -75,7 +75,7 @@ public class LiveSoundActor extends TypedAtomicActor
     public LiveSoundActor(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         sampleRate = new Parameter(this, "sampleRate", new IntToken(8000));
         sampleRate.setTypeEquals(BaseType.INT);
 
@@ -86,7 +86,7 @@ public class LiveSoundActor extends TypedAtomicActor
         channels = new Parameter(this, "channels",
                 new IntToken(1));
         channels.setTypeEquals(BaseType.INT);
- 
+
         transferSize = new Parameter(this, "transferSize");
         transferSize.setExpression("1");
         transferSize.setTypeEquals(BaseType.INT);
@@ -144,7 +144,7 @@ public class LiveSoundActor extends TypedAtomicActor
                 // to LiveSound.putSamples().
                 _transferSize =
                     ((IntToken)transferSize.getToken()).intValue();
-                if (!_isExecuting && 
+                if (!_isExecuting &&
                         LiveSound.getTransferSize() != _transferSize) {
                     LiveSound.setTransferSize(_transferSize);
                 }
@@ -158,10 +158,10 @@ public class LiveSoundActor extends TypedAtomicActor
                             + " . The value must be a "
                             + "positive integer.");
                 }
-               
+
                 // Only set the channels if it is different than
                 // the currently active channels.
-                if (!_isExecuting && 
+                if (!_isExecuting &&
                         LiveSound.getChannels() != channelsInt) {
                     LiveSound.setChannels(channelsInt);
                 }
@@ -170,7 +170,7 @@ public class LiveSoundActor extends TypedAtomicActor
                     ((IntToken)sampleRate.getToken()).intValue();
                 // Only set the sample rate if it is different than
                 // the currently active sample rate.
-                if (!_isExecuting && 
+                if (!_isExecuting &&
                         LiveSound.getSampleRate() != sampleRateInt) {
                     LiveSound.setSampleRate(sampleRateInt);
                 }
@@ -179,11 +179,11 @@ public class LiveSoundActor extends TypedAtomicActor
                     ((IntToken)bitsPerSample.getToken()).intValue();
                 // Only set the bitsPerSample if it is different than
                 // the currently active bitsPerSample.
-                if (!_isExecuting && 
+                if (!_isExecuting &&
                         LiveSound.getBitsPerSample() != bitsPerSampleInt) {
                     LiveSound.setBitsPerSample(bitsPerSampleInt);
                 }
-            } 
+            }
             super.attributeChanged(attribute);
             return;
         } catch (IOException ex) {
@@ -272,14 +272,14 @@ public class LiveSoundActor extends TypedAtomicActor
      */
     protected synchronized void _initializeAudio()
             throws IllegalActionException, IOException {
-              
+
         // Initialize audio.
         _transferSize = ((IntToken)transferSize.getToken()).intValue();
         _channels = ((IntToken)channels.getToken()).intValue();
         int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
         int bitsPerSampleInt =
             ((IntToken)bitsPerSample.getToken()).intValue();
-  
+
         if (LiveSound.getSampleRate() != sampleRateInt) {
             LiveSound.setSampleRate(sampleRateInt);
         }

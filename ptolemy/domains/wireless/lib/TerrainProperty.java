@@ -117,14 +117,14 @@ public class TerrainProperty extends TypedAtomicActor
     ////                     ports and parameters                  ////
 
     /** The name of the channel.  The default name is "TerrainChannel".
-     */  
+     */
     public StringParameter channelName;
 
     /** The x/y coordinates of ? (FIXME)
      *  The default value is an array of integer pairs:
      *  {{0, 0}, {0, 5}, {20, 5}, {20, 0}}
      *  FIXME: need more info
-     */   
+     */
     public Parameter xyPoints;
 
     ///////////////////////////////////////////////////////////////////

@@ -273,7 +273,7 @@ public class PtolemyUtilities {
             return tokenLocal;
         } else if (token instanceof FixToken) {
             FixToken fixToken = (FixToken)token;
-            FixPoint fixValue = fixToken.fixValue();  
+            FixPoint fixValue = fixToken.fixValue();
             List args = new ArrayList(3);
             // Some possible loss of precision?
             args.add(DoubleConstant.v(fixValue.doubleValue()));
@@ -351,7 +351,7 @@ public class PtolemyUtilities {
                                 tokenConstructor,
                                 constructorArgs)),
                 insertPoint);
-        return tokenLocal;   
+        return tokenLocal;
     }
 
     private static Local _buildConstantTokenLocal(Body body,
@@ -579,7 +579,7 @@ public class PtolemyUtilities {
                     functionType.getArgType(i);
                 Local elementTypeLocal = buildConstantTypeLocal(body,
                         insertPoint, elementType);
-                           
+
                 // Store into the array of types.
                 units.insertBefore(Jimple.v().newAssignStmt(
                         Jimple.v().newArrayRef(typeArrayLocal,
@@ -590,7 +590,7 @@ public class PtolemyUtilities {
 
             Local returnTypeLocal = buildConstantTypeLocal(body,
                     insertPoint, functionType.getReturnType());
-           
+
             // Create the new local and assign to local variable.
             Local typeLocal = Jimple.v().newLocal(typeName,
                     RefType.v(functionTypeClass));
@@ -844,7 +844,7 @@ public class PtolemyUtilities {
                     new String[0], new ptolemy.data.type.Type[0]);
         } else if (className.equals("ptolemy.data.FunctionToken")) {
             return new ptolemy.data.type.FunctionType(
-                    new ptolemy.data.type.Type[0], 
+                    new ptolemy.data.type.Type[0],
                     ptolemy.data.type.BaseType.UNKNOWN);
         } else if (className.equals("ptolemy.data.Token")) {
             return ptolemy.data.type.BaseType.UNKNOWN;
@@ -1530,14 +1530,14 @@ public class PtolemyUtilities {
             namedObjClass.getMethod("java.lang.String getName()");
         toplevelMethod =
             namedObjClass.getMethod("ptolemy.kernel.util.NamedObj toplevel()");
-        handleModelErrorMethod = 
+        handleModelErrorMethod =
             namedObjClass.getMethod("boolean handleModelError(ptolemy.kernel.util.NamedObj,ptolemy.kernel.util.IllegalActionException)");
 
         getContainerMethod =
             Scene.v().getMethod("<ptolemy.kernel.util.NamedObj: ptolemy.kernel.util.NamedObj getContainer()>");
         getModelURIMethod =
             Scene.v().loadClassAndSupport("ptolemy.kernel.attributes.URIAttribute")
-            .getMethod("java.net.URI getModelURI(ptolemy.kernel.util.NamedObj)");        
+            .getMethod("java.net.URI getModelURI(ptolemy.kernel.util.NamedObj)");
 
         attributeClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.Attribute");
@@ -1556,7 +1556,7 @@ public class PtolemyUtilities {
         stringAttributeClass =
             Scene.v().loadClassAndSupport("ptolemy.kernel.util.StringAttribute");
 
-        parameterClass = 
+        parameterClass =
             Scene.v().loadClassAndSupport("ptolemy.data.expr.Parameter");
         variableClass =
             Scene.v().loadClassAndSupport("ptolemy.data.expr.Variable");
@@ -1623,11 +1623,11 @@ public class PtolemyUtilities {
             Scene.v().loadClassAndSupport("ptolemy.actor.TypedIOPort");
         ioportType = RefType.v(ioportClass);
 
-        portParameterClass = 
+        portParameterClass =
             Scene.v().loadClassAndSupport("ptolemy.actor.parameters.PortParameter");
-        portParameterGetPortMethod = 
+        portParameterGetPortMethod =
             Scene.v().getMethod("<ptolemy.actor.parameters.PortParameter: ptolemy.actor.parameters.ParameterPort getPort()>");
-        portParameterUpdateMethod = 
+        portParameterUpdateMethod =
             Scene.v().getMethod("<ptolemy.actor.parameters.PortParameter: void update()>");
 
         portSetTypeMethod =
@@ -1860,9 +1860,9 @@ public class PtolemyUtilities {
 
         functionTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.FunctionToken");
-        functionTokenApplyMethod = 
+        functionTokenApplyMethod =
             functionTokenClass.getMethod("ptolemy.data.Token apply(ptolemy.data.Token[])");
-        functionTokenConstructor = 
+        functionTokenConstructor =
             functionTokenClass.getMethod("void <init>(ptolemy.data.Function,ptolemy.data.type.FunctionType)");
         functionInterface =
             Scene.v().loadClassAndSupport("ptolemy.data.Function");

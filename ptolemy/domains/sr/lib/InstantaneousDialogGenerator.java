@@ -127,7 +127,7 @@ public class InstantaneousDialogGenerator extends TypedAtomicActor {
     }
 
     /** Explicitly declare which inputs and outputs are not dependent.
-     *  
+     *
      */
     public void removeDependencies() {
         removeDependency(dataInput, dataOutput);

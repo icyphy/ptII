@@ -145,7 +145,7 @@ refinement of its source state is fired.
 @see Action
 @see FSMDirector
 */
-public class FSMActor extends CompositeEntity 
+public class FSMActor extends CompositeEntity
     implements TypedActor, ExplicitChangeContext {
 
     /** Construct an FSMActor in the default workspace with an empty string
@@ -267,7 +267,7 @@ public class FSMActor extends CompositeEntity
         _chooseTransition(transitionList);
     }
 
-    /** 
+    /**
      * Return the change context being made explicit.  This class returns
      * this.
      */
@@ -331,10 +331,10 @@ public class FSMActor extends CompositeEntity
     }
 
     /** Return an instance of DirectedGraph, where the nodes are IOPorts,
-     *  and the edges are the relations between ports. The graph shows 
+     *  and the edges are the relations between ports. The graph shows
      *  the dependencies between the input and output ports. If there is
-     *  a path between a pair, input and output, they are dependent. 
-     *  Otherwise, they are independent. 
+     *  a path between a pair, input and output, they are dependent.
+     *  Otherwise, they are independent.
      *  @return A FunctionDependency object of an FSM actor.
      */
     public FunctionDependency getFunctionDependencies() {
@@ -348,10 +348,10 @@ public class FSMActor extends CompositeEntity
                     //not dependent. Otherwise, it is a Zeno behavior, which
                     //is beyond the problem-solving ability of FunctionDependency
                     //analysis.
-                    _functionDependency = 
-                        new FunctionDependencyOfFSMActor(this); 
+                    _functionDependency =
+                        new FunctionDependencyOfFSMActor(this);
                 } else {
-                    //Throw an exception that in order to use refinements, 
+                    //Throw an exception that in order to use refinements,
                     //a modal model has to be used.
                     MessageHandler.error("FSMActor does not " +
                         "contain refinements, use ModalModel instead.");
@@ -359,7 +359,7 @@ public class FSMActor extends CompositeEntity
             } catch (IllegalActionException e) {
                // FIXME: how to deal the IllegalActionException possibly
                // thrown by the getRefinement method?
-               // Similar things happen in the _getEntities method 
+               // Similar things happen in the _getEntities method
                // in FunctionDependencyOfModalModel
                MessageHandler.error("Invalid refinements.", e);
             }
@@ -405,12 +405,12 @@ public class FSMActor extends CompositeEntity
                      actions.hasNext();) {
                     AbstractActionsAttribute action =
                         (AbstractActionsAttribute)actions.next();
-                    for (Iterator names = 
+                    for (Iterator names =
                              action.getDestinationNameList().iterator();
                          names.hasNext();) {
                         String name = (String)names.next();
                         NamedObj object = action.getDestination(name);
-                        if (object instanceof Variable && 
+                        if (object instanceof Variable &&
                             deepContains(object)) {
                             list.add(object);
                         }
@@ -421,8 +421,8 @@ public class FSMActor extends CompositeEntity
                      actions.hasNext();) {
                     AbstractActionsAttribute action =
                         (AbstractActionsAttribute)actions.next();
-                    
-                    for (Iterator names = 
+
+                    for (Iterator names =
                              action.getDestinationNameList().iterator();
                          names.hasNext();) {
                         String name = (String)names.next();
@@ -434,7 +434,7 @@ public class FSMActor extends CompositeEntity
                     }
                 }
             }
-        }      
+        }
         return list;
     }
 
@@ -451,11 +451,11 @@ public class FSMActor extends CompositeEntity
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
-        // FIXME: why reset happens here, and 
+        // FIXME: why reset happens here, and
         // not in the preinitialize method?
         // From Edward, if a reset transition is taken, only
         // the initialize method is called. So, reset must be
-        // called here. 
+        // called here.
         reset();
     }
 
@@ -649,7 +649,7 @@ public class FSMActor extends CompositeEntity
         _newIteration = true;
         _createReceivers();
         _hdfArrays = new Hashtable();
-        
+
         // Populate a map from identifier to the input port represented.
         _identifierToPort.clear();
         for (Iterator inputPorts = inputPortList().iterator();
@@ -662,7 +662,7 @@ public class FSMActor extends CompositeEntity
                 _setIdentifierToPort(inPort.getName() + "_" + i, inPort);
                 _setIdentifierToPort(inPort.getName() + "_" + i + "_isPresent", inPort);
                 _setIdentifierToPort(inPort.getName() + "_" + i + "Array", inPort);
-            }       
+            }
         }
 
         _inputTokenMap.clear();
@@ -670,7 +670,7 @@ public class FSMActor extends CompositeEntity
         // initialize() now (zk 2002/09/11)`
         // FIXME: why this is necessary?
         // I moved reset() here because the FunctionDependency analysis
-        // needs to catch the currentState. 
+        // needs to catch the currentState.
         // In DE/ModalModel, reset() happening in the initialize method
         // is too late. hyzheng 1/7/2004
         reset();
@@ -700,7 +700,7 @@ public class FSMActor extends CompositeEntity
 
     /** Set the flag indicating whether we are at the start of
      *  a new iteration (firing).  Normally, the flag is set to true.
-     *  It is only set to false in HDF. 
+     *  It is only set to false in HDF.
      *  @param newIteration
      */
     public void setNewIteration(boolean newIteration) {
@@ -756,10 +756,10 @@ public class FSMActor extends CompositeEntity
 
             // Collect constraints from contained HasTypeConstraints
             // attributes.
-            Iterator attributes = 
+            Iterator attributes =
                 attributeList(HasTypeConstraints.class).iterator();
             while (attributes.hasNext()) {
-                HasTypeConstraints typeableAttribute = 
+                HasTypeConstraints typeableAttribute =
                     (HasTypeConstraints)attributes.next();
                 result.addAll(typeableAttribute.typeConstraintList());
             }
@@ -768,10 +768,10 @@ public class FSMActor extends CompositeEntity
             Iterator transitionRelations = relationList().iterator();
             while (transitionRelations.hasNext()) {
                 Relation tr = (Relation)transitionRelations.next();
-                attributes = 
+                attributes =
                     tr.attributeList(HasTypeConstraints.class).iterator();
                 while (attributes.hasNext()) {
-                    HasTypeConstraints typeableAttribute = 
+                    HasTypeConstraints typeableAttribute =
                         (HasTypeConstraints)attributes.next();
                     result.addAll(typeableAttribute.typeConstraintList());
                 }
@@ -948,7 +948,7 @@ public class FSMActor extends CompositeEntity
         }
         _setCurrentConnectionMap();
     }
-    
+
     /** Return true if the channel of the port is connected to an output
      *  port of the refinement of current state. If the current state
      *  does not have refinement, return false.
@@ -1025,13 +1025,13 @@ public class FSMActor extends CompositeEntity
             return;
         }
         int width = port.getWidth();
-        
+
         if (port.isKnown(channel)) {
             int portRate = SDFUtilities.getTokenConsumptionRate(port);
             if (_debugging) {
                 _debug(port.getFullName() + " port rate = " + portRate);
             }
-            
+
             // If we're in a new iteration, reallocate arrays to keep
             // track of hdf data.
             if (_newIteration && channel == 0) {
@@ -1041,10 +1041,10 @@ public class FSMActor extends CompositeEntity
                 }
                 _hdfArrays.put(port, tokenListArray);
             }
-            
+
             // Get the list of tokens for the given port.
             List[] tokenListArray = (LinkedList[])_hdfArrays.get(port);
-      
+
             // Update the value variable if there is/are token(s) in
             // the channel.  FIXME: What if there are not enough tokens?
             // In HDF(SDF) this shouldn't happen.
@@ -1066,11 +1066,11 @@ public class FSMActor extends CompositeEntity
             int length = tokenListArray[channel].size();
             if (length > 0) {
                 Token[] tokens = new Token[length];
-                tokenListArray[channel].toArray(tokens);    
-                
-                _setInputTokenMap(portName + 
+                tokenListArray[channel].toArray(tokens);
+
+                _setInputTokenMap(portName +
                         "_isPresent", port, BooleanToken.TRUE);
-                _setInputTokenMap(portChannelName + 
+                _setInputTokenMap(portChannelName +
                         "_isPresent", port, BooleanToken.TRUE);
                 _setInputTokenMap(portName, port, tokens[0]);
                 _setInputTokenMap(portChannelName, port, tokens[0]);
@@ -1078,7 +1078,7 @@ public class FSMActor extends CompositeEntity
                 _setInputTokenMap(portName + "Array", port, arrayToken);
                 _setInputTokenMap(portChannelName + "Array", port, arrayToken);
             } else {
-                _setInputTokenMap(portName + "_isPresent", port, 
+                _setInputTokenMap(portName + "_isPresent", port,
                         BooleanToken.FALSE);
                 _setInputTokenMap(portChannelName + "_isPresent", port,
                         BooleanToken.FALSE);
@@ -1128,7 +1128,7 @@ public class FSMActor extends CompositeEntity
 
     /** Indicator that a stop has been requested by a call to stop(). */
     protected boolean _stopRequested = false;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -1247,11 +1247,11 @@ public class FSMActor extends CompositeEntity
             throw new InternalErrorException("Constructor error "
                     + ex.getMessage());
         }
-        
+
         _identifierToPort = new HashMap();
         /*
         try {
-            tokenHistorySize = 
+            tokenHistorySize =
                 new Parameter(this, "tokenHistorySize", new IntToken(1));
         } catch (Exception e) {
             throw new InternalErrorException(
@@ -1259,11 +1259,11 @@ public class FSMActor extends CompositeEntity
         }
         */
     }
-    
+
     // Ensure that the given identifier can only be associated with
     // the given port, and then set it's value in the _inputTokenMap
     // to the given token.
-    private void _setInputTokenMap(String name, Port inputPort, Token token) 
+    private void _setInputTokenMap(String name, Port inputPort, Token token)
             throws IllegalActionException {
         _setIdentifierToPort(name, inputPort);
         _inputTokenMap.put(name, token);
@@ -1272,21 +1272,21 @@ public class FSMActor extends CompositeEntity
     // Associate the given identifier as referring to some aspect of
     // the given input port.  If the given identifier is already
     // associated with another port, then throw an exception.
-    private void _setIdentifierToPort(String name, Port inputPort) 
+    private void _setIdentifierToPort(String name, Port inputPort)
             throws IllegalActionException {
         Port previousPort = (Port)_identifierToPort.get(name);
         if (previousPort != null && previousPort != inputPort) {
             throw new IllegalActionException("Name conflict in finite state"
-                    + " machine.  The identifier \"" + name 
-                    + "\" is associated with the port " + previousPort 
+                    + " machine.  The identifier \"" + name
+                    + "\" is associated with the port " + previousPort
                     + " and with the port " + inputPort);
         }
         _identifierToPort.put(name, inputPort);
     }
 
-    /** This class implements a scope, which is used to evaluate the 
-     *  parsed expressions.  This class is currently rather simple, 
-     *  but in the future should allow the values of input ports to 
+    /** This class implements a scope, which is used to evaluate the
+     *  parsed expressions.  This class is currently rather simple,
+     *  but in the future should allow the values of input ports to
      *  be referenced without having shadow variables.
      */
     private class PortScope extends ModelScope {
@@ -1327,7 +1327,7 @@ public class FSMActor extends CompositeEntity
             if (port != null && port instanceof Typeable) {
                 return ((Typeable)port).getType();
             }
-                            
+
             Variable result = getScopedVariable(
                     null, FSMActor.this, name);
             if (result != null) {
@@ -1352,7 +1352,7 @@ public class FSMActor extends CompositeEntity
             if (port != null && port instanceof Typeable) {
                 return ((Typeable)port).getTypeTerm();
             }
-                            
+
             Variable result = getScopedVariable(
                     null, FSMActor.this, name);
             if (result != null) {
@@ -1361,7 +1361,7 @@ public class FSMActor extends CompositeEntity
                 return null;
             }
         }
-        
+
         /** Return the list of identifiers within the scope.
          *  @return The list of identifiers within the scope.
          */
@@ -1399,7 +1399,7 @@ public class FSMActor extends CompositeEntity
 
     // Version of the reference to the initial state.
     private long _initialStateVersion = -1;
-    
+
     // A map that associates each identifier with the unique port that
     // that identifier describes.  This map is used to detect port
     // names that result in ambiguous identifier bindings.
@@ -1413,21 +1413,21 @@ public class FSMActor extends CompositeEntity
 
     // True if the current state is a final state.
     private boolean _reachedFinalState;
-    
-    // A flag indicating whether the controller 
+
+    // A flag indicating whether the controller
     // is under an HDFFSMDirector.
     private boolean _HDFFSMActor = false;
-    
+
     // A flag indicating whether this is at the beginning
     // of one iteration (firing). Normally it is set to true.
-    // It is only set to false in HDF. 
+    // It is only set to false in HDF.
     private boolean _newIteration = true;
-     
+
     // Hashtable to save an array of tokens for each port.
     // This is used in HDF when multiple tokens are consumed
     // by the FSMActor in one iteration.
     private Hashtable _hdfArrays;
-    
+
     // The FunctionDependence attribute of this actor.
     private FunctionDependency _functionDependency;
 

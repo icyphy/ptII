@@ -527,7 +527,7 @@ public class PtolemyPlatform implements Platform {
                     Map res = new HashMap();
                     for (Iterator i = c.iterator(); i.hasNext(); ) {
                         argument[0] = i.next();
-                        Object mapFragment = 
+                        Object mapFragment =
                             _theContext.applyFunction(f, argument);
                         res.putAll(_theContext.getMap(mapFragment));
                     }
@@ -617,7 +617,7 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean isNull(Object o) {
-            return o instanceof ObjectToken && 
+            return o instanceof ObjectToken &&
                 ((ObjectToken)o).getValue() == null;
         }
 
@@ -647,7 +647,7 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean isCharacter(Object o) {
-            return o instanceof ObjectToken && 
+            return o instanceof ObjectToken &&
                 ((ObjectToken)o).getValue() instanceof Character;
         }
 
@@ -738,7 +738,7 @@ public class PtolemyPlatform implements Platform {
 
         public boolean isList(Object o) {
             return (o instanceof PtArrayList) ||
-                   (o instanceof ObjectToken && 
+                   (o instanceof ObjectToken &&
                            ((ObjectToken)o).getValue() instanceof List);
         }
 
@@ -765,7 +765,7 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean isSet(Object o) {
-            return o instanceof ObjectToken && 
+            return o instanceof ObjectToken &&
                 ((ObjectToken)o).getValue() instanceof Set;
         }
 
@@ -783,7 +783,7 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean isMap(Object o) {
-            return o instanceof ObjectToken && 
+            return o instanceof ObjectToken &&
                 ((ObjectToken)o).getValue() instanceof Map;
         }
 
@@ -804,7 +804,7 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean isCollection(Object o) {
-            return o instanceof ObjectToken && 
+            return o instanceof ObjectToken &&
                 ((ObjectToken)o).getValue() instanceof Collection;
         }
 
@@ -833,7 +833,7 @@ public class PtolemyPlatform implements Platform {
 
         public boolean isFunction(Object a) {
             return (a instanceof FunctionToken) ||
-                    (a instanceof ObjectToken && 
+                    (a instanceof ObjectToken &&
                             ((ObjectToken)a).getValue() instanceof Function);
         }
 
@@ -864,7 +864,7 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean  isProcedure(Object a) {
-            return a instanceof ObjectToken && 
+            return a instanceof ObjectToken &&
                 ((ObjectToken) a).getValue() instanceof Procedure;
         }
 
@@ -892,7 +892,7 @@ public class PtolemyPlatform implements Platform {
         }
 
         public boolean isClass(Object o) {
-            return o instanceof ObjectToken && 
+            return o instanceof ObjectToken &&
                 ((ObjectToken)o).getValue() instanceof ClassObject;
         }
 
@@ -977,7 +977,7 @@ public class PtolemyPlatform implements Platform {
                 } else if (o instanceof String) {
                     return new StringToken((String) o);
                 } else if (o instanceof Class) {
-                    return new ObjectToken(new ClassObject((Class)o, this)); 
+                    return new ObjectToken(new ClassObject((Class)o, this));
 		} else {
                     return new ObjectToken(o);
                 }
@@ -1018,12 +1018,12 @@ public class PtolemyPlatform implements Platform {
                                     composite, fieldName, this));
                 } catch (Exception e) {
                     throw new InterpreterException(
-                            "Tried to create method object " + fieldName 
+                            "Tried to create method object " + fieldName
                             + " in " + composite, e);
                 }
             } catch (IllegalAccessException iae) {
                 throw new InterpreterException(
-                        "Tried to access field " + fieldName 
+                        "Tried to access field " + fieldName
                         + " in " + composite, iae);
             }
 

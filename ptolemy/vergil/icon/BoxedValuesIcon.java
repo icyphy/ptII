@@ -111,7 +111,7 @@ public class BoxedValuesIcon extends XMLIcon {
         }
         return new BasicRectangle(0, 0, width, heigth, Color.white, 1);
     }
-    
+
     /** Create a new Diva figure that visually represents this icon.
      *  The figure will be an instance of LabelFigure that renders the
      *  values of the attributes of the container.
@@ -134,7 +134,7 @@ public class BoxedValuesIcon extends XMLIcon {
         Rectangle2D backBounds = result.getBackgroundFigure().getBounds();
         label.translateTo(backBounds.getCenterX(), backBounds.getCenterY());
         result.add(label);
-        
+
         _addLiveFigure(label);
         return result;
     }
@@ -182,7 +182,7 @@ public class BoxedValuesIcon extends XMLIcon {
         }
         return null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 

@@ -235,7 +235,7 @@ public class RecursiveLattice extends Transformer {
                 _forwardCache.length);
         return super.prefire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -84,7 +84,7 @@ public class ThalesGraphFrame extends ActorGraphFrame {
         JMenuItem[] jniMenuItems = {
                 new JMenuItem("Generate C Interface",
                 KeyEvent.VK_G)};
-            
+
         _jniMenu = new JMenu("JNI");
         _jniMenu.setMnemonic(KeyEvent.VK_J);
         JNIMenuListener jniMenuListener = new JNIMenuListener();
@@ -106,7 +106,7 @@ public class ThalesGraphFrame extends ActorGraphFrame {
      *  local variables that may not have yet been created.
      */
     protected GraphPane _createGraphPane() {
-        
+
         GraphPane result = super._createGraphPane();
 
         // Add the ArgumentDialogFactory to the context menu for actors

@@ -38,10 +38,10 @@ import java.util.*;
  *  Any superclass.
  *  Any interface.
  *  The declaring class of any field or method referenced from the class.
- * 
+ *
  * @author Steve Neuendorffer
  */
-public class DependedClasses { 
+public class DependedClasses {
 
     /** Create a new set of classes that contains all of the classes that are
      *  required to load the given set of initial classes.
@@ -52,17 +52,17 @@ public class DependedClasses {
         Iterator classes = _unprocessedClasses.reader();
 
         _addClasses(initialClasses);
-        
+
         while (classes.hasNext()) {
             SootClass nextClass = (SootClass)classes.next();
             _processClass(nextClass);
-        }           
+        }
     }
 
     public List list() {
         return Collections.unmodifiableList(_reachableClasses);
     }
-    
+
     private void _addClasses(Collection set) {
         for (Iterator i = set.iterator(); i.hasNext();) {
             _addClass((SootClass)i.next());
@@ -70,7 +70,7 @@ public class DependedClasses {
     }
 
     private void _addClass(SootClass theClass) {
-        if (!_reachableClasses.contains(theClass) && 
+        if (!_reachableClasses.contains(theClass) &&
                 !theClass.getName().startsWith("java")) {
             // System.out.println("adding class " + theClass);
             _reachableClasses.add(theClass);
@@ -92,7 +92,7 @@ public class DependedClasses {
         _addClasses(hierarchy.getSuperclassesOfIncluding(theClass));
         // FIXME: what about super interfaces
         _addClasses(theClass.getInterfaces());
-      
+
         // Grab the types of all fields.
         for (Iterator fields = theClass.getFields().iterator();
             fields.hasNext();) {
@@ -106,25 +106,25 @@ public class DependedClasses {
         for (Iterator methods = theClass.getMethods().iterator();
             methods.hasNext();) {
             SootMethod method = (SootMethod) methods.next();
-            
+
             //   System.out.println("processing method = " + method);
             // Grab the classes of all arguments.
-            for (Iterator types = method.getParameterTypes().iterator(); 
+            for (Iterator types = method.getParameterTypes().iterator();
                 types.hasNext();) {
                 Type type = (Type)types.next();
                 if (type instanceof RefType) {
                     _addClass(((RefType)type).getSootClass());
                 }
             }
-            
+
             // Grab the method return types.
             {
                 Type type = method.getReturnType();
                 if (type instanceof RefType) {
                     _addClass(((RefType)type).getSootClass());
                 }
-            } 
-            
+            }
+
             // Don't drag in the bodies of abstract methods.
             if (!method.isConcrete()) {
                 continue;
@@ -160,7 +160,7 @@ public class DependedClasses {
                             _addClass(refClass);
                         }
                     } else if (value instanceof NewExpr) {
-                        SootClass refClass = 
+                        SootClass refClass =
                             ((NewExpr)value).getBaseType().getSootClass();
                         if (!refClass.equals(theClass)) {
                             _addClass(refClass);

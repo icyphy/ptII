@@ -108,7 +108,7 @@ public class TextEditor extends TableauFrame implements DocumentListener {
     ////                         public methods                    ////
 
     /** React to notification that an attribute or set of attributes
-     *  changed. 
+     *  changed.
      */
     public void changedUpdate(DocumentEvent e) {
         // Do nothing... We don't care about attributes.
@@ -120,7 +120,7 @@ public class TextEditor extends TableauFrame implements DocumentListener {
     public Color getBackground() {
         return _scrollPane.getBackground();
     }
-    
+
     /** React to notification that there was an insert into the document.
      */
     public void insertUpdate(DocumentEvent e) {
@@ -132,7 +132,7 @@ public class TextEditor extends TableauFrame implements DocumentListener {
     public void removeUpdate(DocumentEvent e) {
         setModified(true);
     }
-    
+
     /** Scroll as necessary so that the last line is visible.
      */
     public void scrollToEnd() {

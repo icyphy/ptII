@@ -209,13 +209,13 @@ public abstract class ActorController extends AttributeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The access level defined in the constructor. */
     protected Access _access;
 
     /** The action that handles edit custom icon. */
     protected EditIconAction _editIconAction = new EditIconAction();
-            
+
     /** The action that handles look inside.  This is accessed by
      *  by ActorViewerController to create a hot key for the editor.
      */
@@ -273,7 +273,7 @@ public abstract class ActorController extends AttributeController {
             Vector eastPorts = new Vector ();
             Vector southPorts = new Vector ();
             Vector northPorts = new Vector ();
-     
+
             while (nodes.hasNext()) {
                 Port port = (Port) nodes.next();
                 StringAttribute cardinal =
@@ -468,7 +468,7 @@ public abstract class ActorController extends AttributeController {
 
     /////////////////////////////////////////////////////////////////////
     //// ListenToActorAction
-    
+
     /** An action to listen to debug messages in the actor.
      *  This is static so that other classes can use it.
      */
@@ -534,7 +534,7 @@ public abstract class ActorController extends AttributeController {
         private BasicGraphController _controller;
         private NamedObj _target;
     }
-    
+
     /////////////////////////////////////////////////////////////////////
     //// LookInsideAction
 
@@ -559,7 +559,7 @@ public abstract class ActorController extends AttributeController {
             // Determine which entity was selected for the look inside action.
             super.actionPerformed(e);
             NamedObj object = getTarget();
-            
+
             // NOTE: Used to open source code here if the object
             // was not a CompositeEntity. But this made it impossible
             // to associate a custom tableau with an atomic entity.

@@ -165,11 +165,11 @@ public class ClassChanges implements MoMLFilter {
         // New in 3.1-devel
         _classChanges.put("ptolemy.domains.fsm.lib.RelationList",
                 "ptolemy.domains.fsm.kernel.RelationList");
-                
+
         // Renamed in 3.1-devel
         _classChanges.put("ptolemy.vergil.icon.ImageEditorIcon",
                 "ptolemy.vergil.icon.ImageIcon");
-                
+
         // Replaced FileAttribute with FileParameter in 3.2-devel
         _classChanges.put("ptolemy.kernel.attributes.FileAttribute",
                 "ptolemy.data.expr.FileParameter");
@@ -185,11 +185,11 @@ public class ClassChanges implements MoMLFilter {
         // Moved ModalModel
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalModel",
                 "ptolemy.domains.fsm.modal.ModalModel");
-                
+
         // Moved ModalTableauFactory
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalModel$ModalTableauFactory",
                 "ptolemy.vergil.fsm.modal.ModalTableauFactory");
-                
+
         // Moved ModalPort
         _classChanges.put("ptolemy.vergil.fsm.modal.ModalPort",
                 "ptolemy.domains.fsm.modal.ModalPort");
@@ -213,22 +213,22 @@ public class ClassChanges implements MoMLFilter {
         // Moved TransitionRefinementPort
         _classChanges.put("ptolemy.vergil.fsm.modal.TransitionRefinementPort",
                 "ptolemy.domains.fsm.modal.TransitionRefinementPort");
-                
+
 // The following change is too aggressive.
 //        _classChanges.put("ptolemy.domains.de.kernel.DEDirector",
 //            "ptolemy.domains.de.kernel.DEEDirector");
 
     }
-    
+
     // Set of class names that are obsolete and should be simply
     // removed.
     private static HashSet _classesToRemove;
-    
+
     static {
         ////////////////////////////////////////////////////////////
         // Classes that are obsolete and should be removed.
         _classesToRemove = new HashSet();
-        
+
         // NotEditableParameter
         _classesToRemove.add("ptolemy.data.expr.NotEditableParameter");
     }

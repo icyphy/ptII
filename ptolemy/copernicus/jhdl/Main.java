@@ -86,11 +86,11 @@ public class Main extends KernelMain {
         // all actors referenced by the model.
         addTransform(pack, "wjtp.mt", ModelTransformer.v(_toplevel),
                      "targetPackage:" + _targetPackage);
-        
+
 
         // Inline the director into the composite actor.
         addTransform(pack, "wjtp.idt",InlineDirectorTransformer.v(_toplevel),
-               "targetPackage:" + _targetPackage + 
+               "targetPackage:" + _targetPackage +
                " outDir:" + _outputDirectory);
 
 
@@ -98,7 +98,7 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.clt",
                     CommandLineTransformer.v(_toplevel),
                     "targetPackage:" + _targetPackage);
-       
+
        addTransform(pack, "wjtp.ta1",
                new TransformerAdapter(TypeAssigner.v()));
        addStandardOptimizations(pack,1);
@@ -110,7 +110,7 @@ public class Main extends KernelMain {
        }
 
        addTransform(pack, "wjtp.ib1", InvocationBinder.v());
-       
+
        addTransform(pack, "wjtp.ls7",
                         new TransformerAdapter(LocalSplitter.v()));
        addTransform(pack, "wjtp.ffet",
@@ -144,7 +144,7 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.lns",
                new TransformerAdapter(LocalNameStandardizer.v()));
        addStandardOptimizations(pack, 3);
-       
+
        addTransform(pack, "wjtp.ls3",
                new TransformerAdapter(LocalSplitter.v()));
        addTransform(pack, "wjtp.ta3",
@@ -176,7 +176,7 @@ public class Main extends KernelMain {
                     "targetPackage:" + _targetPackage);
        addTransform(pack, "wjtp.ls4",
                new TransformerAdapter(LocalSplitter.v()));
-       
+
         // While we still have references to ports, use the
         // resolved types of the ports and run a typing
         // algorithm to specialize the types of domain
@@ -189,7 +189,7 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.cp1",
                new TransformerAdapter(CopyPropagator.v()));
 
-       
+
        if (_snapshots) {
            addTransform(pack, "wjtp.snapshot2", ClassWriter.v(),
                    "outDir:" + _outputDirectory + "/jimple2");
@@ -232,17 +232,17 @@ public class Main extends KernelMain {
        addTransform(pack, "wjtp.finalSnapshotJimple",
                     JimpleWriter.v(),
                     "outDir:" + _outputDirectory);
-       
+
        addTransform(pack, "wjtp.circuit",
                     ptolemy.copernicus.jhdl.CircuitTransformer.v(_toplevel),
                     "JHDL");
-       
+
 
     }
 
     /** Parse any code generator specific arguments.
-     */ 
-    protected String[] _parseArgs(GeneratorAttribute attribute) 
+     */
+    protected String[] _parseArgs(GeneratorAttribute attribute)
             throws Exception {
        //  String snapshots = attribute.getParameter("snapshots");
 //         if (snapshots.equals("true")) {
@@ -250,12 +250,12 @@ public class Main extends KernelMain {
 //         } else {
 //             _snapshots = false;
 //         }
-        
+
         _targetPackage = attribute.getParameter("targetPackage");
         //        _templateDirectory = attribute.getParameter("templateDirectory");
         _watchDogTimeout = attribute.getParameter("watchDogTimeout");
         _outputDirectory = attribute.getParameter("outputDirectory");
-//         _generatorAttributeFileName = 
+//         _generatorAttributeFileName =
 //             attribute.getParameter("generatorAttributeFileName");
         //String sootArgs = attribute.getParameter("sootArgs");
         return new String[1];
@@ -265,5 +265,5 @@ public class Main extends KernelMain {
     private static String _watchDogTimeout = "unsetParameter";
     private static String _targetPackage = "unsetParameter";
     private static String _outputDirectory = "unsetParameter";
-    
+
 }

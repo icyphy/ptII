@@ -117,7 +117,7 @@ public class CircuitTransformer extends SceneTransformer {
 
         //_outDir = Options.getString(options, "outDir");
         _outDir = PhaseOptions.getString(options, "outDir");
-        
+
         System.out.println("**************************************************");
         System.out.println("*** START JHDL");
         System.out.println("**************************************************");
@@ -136,15 +136,15 @@ public class CircuitTransformer extends SceneTransformer {
 	    System.out.println("here");
 	    boolean resolve = c.resolve();
 	    System.out.println("here");
-	    int descriptionLevel = 
-		NamedObj.LINKS | 
+	    int descriptionLevel =
+		NamedObj.LINKS |
 		NamedObj.FULLNAME |
 		//NamedObj.ATTRIBUTES |
 		NamedObj.CONTENTS |
 		NamedObj.DEEP;
 	    System.out.println(c.description(descriptionLevel));
 	    if (resolve) {
-		testbench = 
+		testbench =
 		    new ptolemy.copernicus.jhdl.circuit.JHDLActorTestbench(c);
 		HWSystem hw = new HWSystem();
 		testbench.build(hw);

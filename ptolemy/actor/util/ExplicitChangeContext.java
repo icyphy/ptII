@@ -72,7 +72,7 @@ public interface ExplicitChangeContext extends Nameable {
      */
     public List getModifiedVariables() throws IllegalActionException;
 
-    /** 
+    /**
      * Return the change context being made explicit.  In simple cases, this
      * will simply be the entity implementing this interface.  However, in
      * more complex cases, directors may implement this interface, or entities

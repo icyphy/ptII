@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 ///////////////////////////////////////////////////////////////
 /// IntToBits
 /**
-This actor converts an IntToken into a sequence of Boolean tokens. 
+This actor converts an IntToken into a sequence of Boolean tokens.
 The number of Boolean tokens is specified by the <i>numberOfBits</i>
 parameter. It should be a positive integer not bigger than 32.
 The most significant bit (the sign bit) is the first boolean
@@ -75,10 +75,10 @@ public class IntToBits extends SDFConverter {
         super(container, name);
 
         input.setTypeEquals(BaseType.INT);
-        
+
         numberOfBits = new Parameter(this, "numberOfBits");
         numberOfBits.setExpression("32");
- 
+
         output_tokenProductionRate.setExpression("numberOfBits");
         output.setTypeEquals(BaseType.BOOLEAN);
     }

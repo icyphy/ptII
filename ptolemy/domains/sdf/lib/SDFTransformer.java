@@ -48,7 +48,7 @@ import ptolemy.kernel.util.Settable;
 /**
 This is an abstract base class for actors that transform an input
 stream into an output stream.  It provides an input and an output
-port. 
+port.
 
 @author Edward A. Lee, Steve Neuendorffer
 @version $Id$
@@ -78,14 +78,14 @@ public class SDFTransformer extends TypedAtomicActor implements SequenceActor {
         input_tokenConsumptionRate.setVisibility(Settable.NOT_EDITABLE);
         input_tokenConsumptionRate.setTypeEquals(BaseType.INT);
         input_tokenConsumptionRate.setPersistent(false);
-        
+
         output_tokenProductionRate =
             new Parameter(output, "tokenProductionRate");
         output_tokenProductionRate.setExpression("1");
         output_tokenProductionRate.setVisibility(Settable.NOT_EDITABLE);
         output_tokenProductionRate.setTypeEquals(BaseType.INT);
         output_tokenProductionRate.setPersistent(false);
-        
+
         output_tokenInitProduction =
             new Parameter(output, "tokenInitProduction");
         output_tokenInitProduction.setExpression("0");

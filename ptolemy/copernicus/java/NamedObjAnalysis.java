@@ -78,7 +78,7 @@ public class NamedObjAnalysis {
                 if (unit instanceof DefinitionStmt) {
                     DefinitionStmt stmt = (DefinitionStmt)unit;
                     Value rightValue = (Value)stmt.getRightOp();
-                  
+
                     if (stmt.getLeftOp() instanceof Local) {
                         Local local = (Local)stmt.getLeftOp();
                         if (rightValue instanceof Local) {
@@ -94,32 +94,32 @@ public class NamedObjAnalysis {
                         }
                     } else if (stmt.getLeftOp() instanceof FieldRef) {
                         if (rightValue instanceof Local) {
-                            SootField field = 
+                            SootField field =
                                 ((FieldRef)stmt.getLeftOp()).getField();
                             _set((Local)rightValue, _getFieldObject(field));
                         }
                     } else {
                         // Ignore..  probably not a named obj anyway.
-                        
+
                     }
                 }
-            } 
+            }
         }
     }
-    
+
     public NamedObj getObject(Local local) {
         Object current = _localToObject.get(local);
-        if (current != null && 
+        if (current != null &&
                 current.equals(_errorObject)) {
-            throw new RuntimeException( 
+            throw new RuntimeException(
                     "Could not determine the static value of "
                     + local);
         } else {
             return (NamedObj)current;
         }
     }
-    
-    /** Retrieve the field value tag for the given field and 
+
+    /** Retrieve the field value tag for the given field and
      *  return its value.  If the field does not point to a namedObj,
      *  then return null.  If the field does not have a value tag, then
      *  return a unique namedObj.
@@ -127,7 +127,7 @@ public class NamedObjAnalysis {
     private NamedObj _getFieldObject(SootField field) {
         if (field.getType() instanceof RefType &&
                 SootUtilities.derivesFrom(
-                        ((RefType)field.getType()).getSootClass(), 
+                        ((RefType)field.getType()).getSootClass(),
                                     PtolemyUtilities.namedObjClass)) {
             ValueTag tag = (ValueTag)field.getTag("_CGValue");
             if (tag == null) {
@@ -146,7 +146,7 @@ public class NamedObjAnalysis {
     }
 
     private void _set(Local local, NamedObj object) {
-//         System.out.println("setting local " + local + 
+//         System.out.println("setting local " + local +
 //                 " to value of " + object);
         Object current = _localToObject.get(local);
 //         System.out.println("current = " + current);

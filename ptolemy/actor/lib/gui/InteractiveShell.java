@@ -100,10 +100,10 @@ public class InteractiveShell extends TypedAtomicActor
 
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.STRING);
-                
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.STRING);
-        
+
         prompt = new PortParameter(this, "prompt",
                 new StringToken(">>"));
         // Make command be a StringParameter (no surrounding double quotes).
@@ -112,7 +112,7 @@ public class InteractiveShell extends TypedAtomicActor
 
         _windowProperties = new WindowPropertiesAttribute(
                 this, "_windowProperties");
-                
+
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-20\" y=\"-20\" "
                 + "width=\"40\" height=\"40\" "
@@ -132,14 +132,14 @@ public class InteractiveShell extends TypedAtomicActor
 
     /** The input port. */
     public TypedIOPort input;
-    
+
     /** The output port. */
     public TypedIOPort output;
-    
+
     /** The prompt.
-     * The initial default is the string >>.   
+     * The initial default is the string >>.
      * Double quotes are not necessary.
-     */  
+     */
     public PortParameter prompt;
 
     /** The shell window object. */
@@ -162,7 +162,7 @@ public class InteractiveShell extends TypedAtomicActor
         newObject._frame = null;
         return newObject;
     }
-    
+
     /** Evaluate the specified command.
      *  @param command The command.
      *  @return The return value of the command, or null if there is none.
@@ -178,7 +178,7 @@ public class InteractiveShell extends TypedAtomicActor
         // the next time fire() is called.
         return null;
     }
-    
+
     /** Read and display the input, then
      *  wait for user input and produce the user data on the output.
      *  If the user input is "quit" or "exit", then set a flag that causes
@@ -211,7 +211,7 @@ public class InteractiveShell extends TypedAtomicActor
         }
         output.broadcast(new StringToken(userCommand));
     }
-      
+
     /** Get the output string to be sent. This does not
      *  return until a value is entered on the shell by the user.
      *  @return The output string to be sent.
@@ -234,7 +234,7 @@ public class InteractiveShell extends TypedAtomicActor
             return((String)_outputValues.remove(0));
         }
     }
-    
+
     /** If the shell has not already been created, create it.
      *  Then wait for user input and produce it on the output.
      *  @exception IllegalActionException If the parent class throws it.
@@ -292,7 +292,7 @@ public class InteractiveShell extends TypedAtomicActor
     public boolean isCommandComplete(String command) {
         return true;
     }
-    
+
     /** Specify the container into which this shell should be placed.
      *  This method needs to be called before the first call to initialize().
      *  Otherwise, the shell will be placed in its own frame.
@@ -303,7 +303,7 @@ public class InteractiveShell extends TypedAtomicActor
      */
     public void place(Container container) {
         _container = container;
-        
+
         if (_container == null) {
             // Dissociate with any container.
             // NOTE: _remove() doesn't work here.  Why?
@@ -323,7 +323,7 @@ public class InteractiveShell extends TypedAtomicActor
         // will inherit the  background color of its parent."
         shell.setBackground(null);
     }
-    
+
     /** Override the base class to return false if the user has typed
      *  "quit" or "exit".
      *  @return False if the user has typed "quit" or "exit".
@@ -350,7 +350,7 @@ public class InteractiveShell extends TypedAtomicActor
             _remove();
         }
     }
-    
+
     /** Specify an output string to be sent. This method
      *  appends the specified string to a queue. Strings
      *  are retrieved from the queue by getOutput().
@@ -371,7 +371,7 @@ public class InteractiveShell extends TypedAtomicActor
             notifyAll();
         }
     }
-    
+
     /** Override the base class to make the shell uneditable.
      *  @exception IllegalActionException If the parent class throws it.
      */
@@ -385,7 +385,7 @@ public class InteractiveShell extends TypedAtomicActor
             shell.setEditable(false);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -411,19 +411,19 @@ public class InteractiveShell extends TypedAtomicActor
 
     /** Container into which this plot should be placed. */
     private Container _container;
-    
+
     /** Indicator of the first time through. */
     private boolean _firstTime = true;
 
     /** Frame into which plot is placed, if any. */
     private TableauFrame _frame;
-    
+
     /** The list of strings to send to the output. */
     private List _outputValues = new LinkedList();
-    
+
     /** Flag indicating that "exit" or "quit" has been entered. */
     private boolean _returnFalseInPostfire = false;
-        
+
     // A specification for the window properties of the frame.
     private WindowPropertiesAttribute _windowProperties;
 
@@ -447,7 +447,7 @@ public class InteractiveShell extends TypedAtomicActor
                 }
             });
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -455,7 +455,7 @@ public class InteractiveShell extends TypedAtomicActor
      *  the display when it is closed.
      */
     public class ShellTableau extends ExpressionShellTableau {
-        
+
         /** Construct a new tableau for the model represented by the
          *  given effigy.
          *  @param container The container.
@@ -473,7 +473,7 @@ public class InteractiveShell extends TypedAtomicActor
             frame.setTableau(this);
         }
     }
-    
+
     /** The frame that is created by an instance of ShellTableau.
      */
     public class ShellFrame extends ExpressionShellFrame {
@@ -493,7 +493,7 @@ public class InteractiveShell extends TypedAtomicActor
                 throws IllegalActionException, NameDuplicationException {
             super(tableau);
         }
-                
+
         /** Overrides the base class to record
          *  the size and location of the frame.
          *  @return False if the user cancels on a save query.

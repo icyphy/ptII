@@ -380,7 +380,7 @@ public class LocalZenoApplet extends PtolemyApplet {
 
 
 
-      
+
 
     ///////////////////////////////////////////////////////////////////
     //// LocalZenoGraphController

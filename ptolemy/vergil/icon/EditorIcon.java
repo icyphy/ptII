@@ -131,7 +131,7 @@ public class EditorIcon extends Attribute {
             throw new InternalErrorException(ex);
         }
     }
-    
+
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
      *  @param name The name of the attribute.
@@ -150,7 +150,7 @@ public class EditorIcon extends Attribute {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -166,7 +166,7 @@ public class EditorIcon extends Attribute {
         newObject._iconCache = null;
         return newObject;
     }
-    
+
     /** Create a new background figure.  This figure is a composition of
      *  the figures of any contained visible attributes. If there are no such
      *  visible attributes, then this figure is a simple white box.
@@ -177,7 +177,7 @@ public class EditorIcon extends Attribute {
      *  @return A new figure.
      */
     public Figure createBackgroundFigure() {
-        
+
         // If this icon itself contains any visible attributes, then
         // compose their background figures to make this one.
         CompositeFigure figure = null;
@@ -255,7 +255,7 @@ public class EditorIcon extends Attribute {
         Figure background = createBackgroundFigure();
         Rectangle2D backBounds = background.getBounds();
         CompositeFigure figure = new CompositeFigure(background);
-             
+
         NamedObj container = (NamedObj)getContainerOrContainerToBe();
         // Create the label, unless this is a visible attribute,
         // which typically carries no label.
@@ -340,7 +340,7 @@ public class EditorIcon extends Attribute {
         output.write(_getIndentPrefix(depth) + "</"
                 + _elementName + ">\n");
     }
-    
+
     /** Return the container of this object, if there is one, or
      *  if not, the container specified by setContainerToBe(), if
      *  there is one, or if not, null. This rather specialized method is
@@ -440,7 +440,7 @@ public class EditorIcon extends Attribute {
 
     /** The container to be eventually the container for this icon. */
     protected NamedObj _containerToBe;
-    
+
     /** The cached Swing icon. */
     protected javax.swing.Icon _iconCache = null;
 

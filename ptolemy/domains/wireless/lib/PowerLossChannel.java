@@ -47,16 +47,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 //// PowerLossChannel
 
 /**
-This is a model of a wireless channel with a specified power propagation 
-formula. The power propagation is given as an expression that is evaluated 
+This is a model of a wireless channel with a specified power propagation
+formula. The power propagation is given as an expression that is evaluated
 and then multiplied by the power field of the transmit properties before
-delivery to the receiver. For convenience, a variable named "distance" 
-is available and equal to the distance between the transmitter and the 
-receiver when the power propagation formula is evaluated.  Thus, the 
+delivery to the receiver. For convenience, a variable named "distance"
+is available and equal to the distance between the transmitter and the
+receiver when the power propagation formula is evaluated.  Thus, the
 expression can depend on this distance. The value of the power field should
 be interpreted as power at the transmitter but power density at the receiver.
-A receiver may multiply the power density with its efficiency and an 
-area(typically the antenna area). A receiver can then use the resulting 
+A receiver may multiply the power density with its efficiency and an
+area(typically the antenna area). A receiver can then use the resulting
 power to compare against a detectable threshold, or to determine
 signal-to-interference ratio, for example.
 <p>
@@ -68,8 +68,8 @@ This assumes that the transmit power is uniformly distributed
 on a sphere of radius <i>distance</i>. The result of multiplying
 this by a transmit power is a power density (power per unit area).
 The receiver should multiply this power density by the area of the
-sensor it uses to capture the energy (such as antenna area) and 
-also an efficiency factor which represents how effectively it capture 
+sensor it uses to capture the energy (such as antenna area) and
+also an efficiency factor which represents how effectively it capture
 the energy.
 <p>
 The power field of the transmit properties can be supplied by

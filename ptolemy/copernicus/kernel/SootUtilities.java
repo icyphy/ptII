@@ -702,7 +702,7 @@ public class SootUtilities {
             return elementType;
         } else if (shapeType instanceof ArrayType) {
             ArrayType arrayShapeType = (ArrayType)shapeType;
-            if (elementType instanceof RefType 
+            if (elementType instanceof RefType
                     || elementType instanceof PrimType) {
                 return ArrayType.v(elementType,
                         arrayShapeType.numDimensions);
@@ -1029,7 +1029,7 @@ public class SootUtilities {
                 continue;
             }
             oldMethod.retrieveActiveBody();
-                         
+
             SootMethod newMethod = new SootMethod(oldMethod.getName(),
                     oldMethod.getParameterTypes(),
                     oldMethod.getReturnType(),
@@ -1110,7 +1110,7 @@ public class SootUtilities {
                     InvokeExpr invoke = (InvokeExpr)stmt.getInvokeExpr();
                     SootMethod invokeMethod = invoke.getMethod();
                     if (invokeMethod.getDeclaringClass() == superClass) {
-                        // if (collidedMethodList.contains(invokeMethod)) {    
+                        // if (collidedMethodList.contains(invokeMethod)) {
                         // Force the body of the thing we are inlining to be
                         // loaded
 

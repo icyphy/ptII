@@ -68,16 +68,16 @@ public class SideEffectAnalysis {
 
         Scene.v().releaseCallGraph();
         CallGraph callGraph = Scene.v().getCallGraph();
-        _reachables = new ReachableMethods(callGraph, 
+        _reachables = new ReachableMethods(callGraph,
                 EntryPoints.v().application());
         _reachables.update();
-        
+
         // Process all the reachableMethods.
         for (Iterator reachableMethods = _reachables.listener();
             reachableMethods.hasNext();) {
             _addMethod((SootMethod)reachableMethods.next());
         }
-        
+
         while (methods.hasNext()) {
             SootMethod nextMethod = (SootMethod)methods.next();
             EffectFlow in = _getEffectFlow(nextMethod);
@@ -94,7 +94,7 @@ public class SideEffectAnalysis {
                     }
                 }
             }
-        }        
+        }
     }
 
     private void _addMethod(Collection set) {
@@ -114,7 +114,7 @@ public class SideEffectAnalysis {
     private EffectFlow _getEffectFlow(SootMethod method) {
         return (EffectFlow)_methodToEffectFlow.get(method);
     }
-    
+
     // Merge the flow for the given method with the given flow.
     // If there is no flow for the given method (i.e. it is not reachable)
     // then set the given flow to have unknown side effects.
@@ -183,7 +183,7 @@ public class SideEffectAnalysis {
     private EffectFlow _processMethod(SootMethod method) {
         EffectFlow in = _getEffectFlow(method);
         EffectFlow out = new EffectFlow();
-       
+
         if (_debug) System.out.println(
                 "SideEffectAnalysis: method = " + method);
         if (_debug) System.out.println(
@@ -249,7 +249,7 @@ public class SideEffectAnalysis {
                             hierarchy.resolveSpecialDispatch(
                                     (SpecialInvokeExpr)expr, invokedMethod);
                         _mergeFlow(out, target);
-                    
+
                     } else if (expr instanceof InstanceInvokeExpr) {
                         Type baseType =
                             ((InstanceInvokeExpr)expr).getBase().getType();

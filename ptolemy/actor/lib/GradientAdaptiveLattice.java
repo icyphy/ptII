@@ -80,7 +80,7 @@ public class GradientAdaptiveLattice extends Lattice {
         timeConstant.setExpression("1.0");
         timeConstant.setTypeEquals(BaseType.DOUBLE);
         timeConstant.validate();
-        
+
         // The currently adapted reflection coefficients
         adaptedReflectionCoefficients = new TypedIOPort(this,
                 "adaptedReflectionCoefficients", false, true);
@@ -97,8 +97,8 @@ public class GradientAdaptiveLattice extends Lattice {
      * coefficients.  The port is of type array of double.
      */
     public TypedIOPort adaptedReflectionCoefficients;
-    
-    /** The time constant of the filter, which determines how fast the 
+
+    /** The time constant of the filter, which determines how fast the
      *  filter adapts.
      *  The default value of this parameter is 1.0.
      */
@@ -119,7 +119,7 @@ public class GradientAdaptiveLattice extends Lattice {
         if (attribute == timeConstant) {
             double timeConstantValue =
                 ((DoubleToken)timeConstant.getToken()).doubleValue();
-            _oneMinusAlpha = 
+            _oneMinusAlpha =
                 ((timeConstantValue - 1.0) / (timeConstantValue + 1.0));
             _alpha = 1.0 - _oneMinusAlpha;
         }
@@ -136,7 +136,7 @@ public class GradientAdaptiveLattice extends Lattice {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        GradientAdaptiveLattice newObject = 
+        GradientAdaptiveLattice newObject =
             (GradientAdaptiveLattice)super.clone(workspace);
         newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
@@ -178,7 +178,7 @@ public class GradientAdaptiveLattice extends Lattice {
             k = _reflectionCoefficients[i];
             _forwardCache[i+1] = -k * _backwardCache[i] + _forwardCache[i];
         }
-               
+
         Token[] outputArray = new Token[_order];
 
         // Backward: Compute the weights for the next round Note:
@@ -189,13 +189,13 @@ public class GradientAdaptiveLattice extends Lattice {
             k = _reflectionCoefficients[i-1];
             _backwardCache[i] = -k * _forwardCache[i-1]
                 + _backwardCache[i-1];
-    
+
             double fe_i = _forwardCache[i];
             double be_i = _backwardCache[i];
             double fe_ip = _forwardCache[i-1];
             double be_ip = _backwardCache[i-1];
-            
-            double newError = 
+
+            double newError =
                 _estimatedErrorPower[i] * _oneMinusAlpha +
                 _alpha * ( fe_ip * fe_ip + be_ip * be_ip);
             double newCoefficient = _reflectionCoefficients[i-1];
@@ -212,7 +212,7 @@ public class GradientAdaptiveLattice extends Lattice {
             _reflectionCoefficientsCache[i - 1] = newCoefficient;
             _estimatedErrorPowerCache[i] = newError;
         }
-       
+
         adaptedReflectionCoefficients.send(0, new ArrayToken(outputArray));
     }
 

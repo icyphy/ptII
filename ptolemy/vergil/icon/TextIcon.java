@@ -72,10 +72,10 @@ public class TextIcon extends DynamicEditorIcon {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -101,7 +101,7 @@ public class TextIcon extends DynamicEditorIcon {
         // repainted, which seems excessive to me.  This will happen
         // every time there is a modification to the model that is
         // carried out by a MoMLChangeRequest.
-        
+
         // The Diva graph package implements a model-view-controller
         // architecture, which implies that this needs to return a new
         // figure each time it is called.  The reason is that the figure
@@ -121,7 +121,7 @@ public class TextIcon extends DynamicEditorIcon {
         // By default, the origin should be the upper left.
         newFigure.setAnchor(SwingConstants.NORTH_WEST);
         newFigure.setFillPaint(_textColor);
-      
+
         _addLiveFigure(newFigure);
         return newFigure;
     }
@@ -149,7 +149,7 @@ public class TextIcon extends DynamicEditorIcon {
      */
     public void setTextColor(Color textColor) {
         _textColor = textColor;
-        
+
         // Update the shapes of all the figures that this icon has
         // created (which may be in multiple views). This has to be
         // done in the Swing thread.  Assuming that createBackgroundFigure()
@@ -166,14 +166,14 @@ public class TextIcon extends DynamicEditorIcon {
         };
         SwingUtilities.invokeLater(doSet);
     }
-    
+
     /** Specify the font to use.  This is deferred and executed
      *  in the Swing thread.
      *  @param font The font to use.
      */
     public void setFont(Font font) {
         _font = font;
-        
+
         // Update the shapes of all the figures that this icon has
         // created (which may be in multiple views). This has to be
         // done in the Swing thread.  Assuming that createBackgroundFigure()
@@ -219,19 +219,19 @@ public class TextIcon extends DynamicEditorIcon {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-        
+
     // Default text.
     private String _DEFAULT_TEXT = "Double click to edit text.";
 
      // The font to use.
     private Font _font = new Font("SansSerif", Font.PLAIN, 12);
-    
+
     // Default text.
     private String _ICON_TEXT = "-A-";
 
     // The specified text color.
     private Color _textColor = Color.blue;
-      
+
     // The text that is rendered.
     private String _text;
 }

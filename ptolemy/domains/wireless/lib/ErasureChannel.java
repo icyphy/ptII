@@ -126,7 +126,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
      *  This parameter contains a LongToken, initially with value 0.
      */
     public Parameter seed;
-    
+
     /** A variable that is set to the distance between the transmitter
      *  and the receiver before the
      *  <i>powerLossFactor</i> expression is evaluated.
@@ -138,7 +138,7 @@ public class ErasureChannel extends AtomicWirelessChannel {
     ////                         public methods                    ////
 
     /** Initialize the random number generator with the seed, if it
-     *  has been given.  
+     *  has been given.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {

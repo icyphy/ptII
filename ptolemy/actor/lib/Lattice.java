@@ -77,11 +77,11 @@ The structure of the filter is as follows:
 <pre>
      y[0]              y[1]               y[n-1]           y[n]
 X(n) -------o--&gt;-(+)--&gt;----o--&gt;-(+)--&gt;-- ... -&gt;---o--&gt;-(+)------&gt;  Y(n)
-     |       \   /          \   /                  \   /        
-     |      +K1 /          +K2 /                  +Kn /         
-     |         X              X                      X          
-     V      -K1 \          -K2 \                  -Kn \         
-     |       /   \          /   \                  /   \        
+     |       \   /          \   /                  \   /
+     |      +K1 /          +K2 /                  +Kn /
+     |         X              X                      X
+     V      -K1 \          -K2 \                  -Kn \
+     |       /   \          /   \                  /   \
      \-[z]--o--&gt;-(+)-[z]---o--&gt;-(+)-[z]- ... -&gt;---o--&gt;-(+)
           w[0]         w[1]               w[n-1]           w[n]
 
@@ -157,7 +157,7 @@ public class Lattice extends Transformer {
             for (int i = 0; i < _order; i++) {
                 _reflectionCoefficients[i] =
                     ((DoubleToken)value.getElement(i)).doubleValue();
-            }        
+            }
         } else {
             super.attributeChanged(attribute);
         }
@@ -170,11 +170,11 @@ public class Lattice extends Transformer {
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             DoubleToken in = (DoubleToken)input.get(0);
-       
+
             _forwardCache[0] = in.doubleValue();   // _forwardCache(0) = x(n)
-    
+
             _doFilter();
-          
+
             _backwardCache[0] = _forwardCache[0];   // _backwardCache[0] = x[n]
 
             // Send the forward residual.
@@ -219,7 +219,7 @@ public class Lattice extends Transformer {
                 _order + 1);
         return super.prefire();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected methods                   ////
 
@@ -233,7 +233,7 @@ public class Lattice extends Transformer {
             k = _reflectionCoefficients[i];
             _forwardCache[i+1] = -k * _backwardCache[i] + _forwardCache[i];
         }
-               
+
         // Backward: Compute the weights for the next round Note:
         // strictly speaking, _backwardCache[_order] is not necessary
         // for computing the output.  It is computed for the use of
@@ -253,7 +253,7 @@ public class Lattice extends Transformer {
         _forwardCache = new double[_order + 1];
         _reflectionCoefficients = new double[_order];
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

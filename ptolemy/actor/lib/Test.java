@@ -122,7 +122,7 @@ public class Test extends NonStrictTest {
 
     ///////////////////////////////////////////////////////////////////
     ////                         ports                             ////
-    
+
     /** Boolean output that is false as long as there is data to
      *  compare against the input, but becomes true on the first
      *  firing after such data has been exhausted.
@@ -146,7 +146,7 @@ public class Test extends NonStrictTest {
      */
     public void fire() throws IllegalActionException {
         int width = input.getWidth();
-        
+
         // If we are in training mode, read the inputs and at to the
         // training data.
         boolean training = ((BooleanToken)trainingMode.getToken())
@@ -168,7 +168,7 @@ public class Test extends NonStrictTest {
             }
             return;
         }
-        
+
         if (_numberOfInputTokensSeen
                 >= ((ArrayToken)(correctValues.getToken())).length()) {
             // Consume and discard input values.  We are beyond the end

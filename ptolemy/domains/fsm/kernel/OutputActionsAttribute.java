@@ -108,7 +108,7 @@ public class OutputActionsAttribute
      *  be null, or a NullPointerException will be thrown. This action will
      *  use the workspace of the transition for synchronization and
      *  version counts. If the name argument is null, then the name is
-     *  set to the empty string. 
+     *  set to the empty string.
      *  This increments the version of the workspace.
      *  @param transition The transition that contains this action.
      *  @param name The name of this action.

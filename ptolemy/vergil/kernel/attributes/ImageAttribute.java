@@ -76,20 +76,20 @@ public class ImageAttribute extends Attribute {
     public ImageAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Hide the name.
         new Attribute(this, "_hideName");
 
         _icon = new ImageIcon(this, "_icon");
         _icon.setPersistent(false);
-        
+
         source = new FileParameter(this, "source");
         source.setExpression("$CLASSPATH/doc/img/ptIIplanetIcon.gif");
-        
+
         scale = new Parameter(this, "scale");
         scale.setTypeEquals(BaseType.DOUBLE);
         scale.setExpression("100.0");
-        
+
         // Create a custom controller.
         new ResizableAttributeControllerFactory(this, "_controllerFactory");
     }
@@ -101,7 +101,7 @@ public class ImageAttribute extends Attribute {
      * This is a double that defaults to 100.0.
      */
     public Parameter scale;
-     
+
     /** The source image file. This is a file name or URL, where the default
      *  is "$CLASSPATH/doc/img/ptIIplanetIcon.gif".
      */
@@ -123,14 +123,14 @@ public class ImageAttribute extends Attribute {
             Toolkit tk = Toolkit.getDefaultToolkit();
             Image image = tk.getImage(url);
             _icon.setImage(image);
-        } else if (attribute == scale) {      
+        } else if (attribute == scale) {
             double scaleValue = ((DoubleToken)scale.getToken()).doubleValue();
             _icon.scaleImage(scaleValue);
         } else {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).

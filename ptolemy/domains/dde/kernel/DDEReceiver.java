@@ -490,7 +490,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
     public void clear() {
        //queue.clear();
     }
-    
+
     /** Do a blocking write on the queue. Set the time stamp to be
      *  the current time of the sending actor. If the current time
      *  is greater than the completionTime of this

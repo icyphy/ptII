@@ -110,9 +110,9 @@ public class PasswordStyle extends ParameterEditorStyle {
         String defaultValue = "";
         defaultValue = container.getExpression();
         query.addPassword(
-                name, 
-                name, 
-                defaultValue, 
+                name,
+                name,
+                defaultValue,
                 PtolemyQuery.preferredBackgroundColor(container));
         query.attachParameter(container, name);
     }

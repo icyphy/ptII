@@ -627,20 +627,20 @@ public class CTScheduler extends Scheduler {
         Object[] discreteSorted = discreteGraph.topologicalSort();
         for (int i = 0; i < discreteSorted.length; i++) {
             Actor actor = (Actor) discreteSorted[i];
-                
+
             discreteActorSchedule.add(new Firing(actor));
 
             // FIXME: For a CTCompositeActor, if it only has outputs
             // and the outputs are "DISCRETE", it is treated as a
-            // discrete actor. Consequently, it is not included in 
-            // the sinkActors, not in the outputSSCActors. 
+            // discrete actor. Consequently, it is not included in
+            // the sinkActors, not in the outputSSCActors.
             // The following code adds it into the continuousActor list.
             if ((actor instanceof CompositeActor) &&
                 (actor instanceof CTStepSizeControlActor)) {
                     if (!continuousActors.contains(actor)) {
                         continuousActors.add(actor);
                     }
-                }            
+                }
         }
 
         // Actors remain in the continuousActors list are real continuous
@@ -744,20 +744,20 @@ public class CTScheduler extends Scheduler {
             }
         }
 
-        // The assumption that the CTEventGenerators do not 
+        // The assumption that the CTEventGenerators do not
         // appear in an integration path and they
         // bridge the continous actors and discrete actors
-        // only applies to the ATOMIC actors, like a 
-        // LevelCrossingDetector.  
+        // only applies to the ATOMIC actors, like a
+        // LevelCrossingDetector.
         // For a ModalModel or CT subSystem (CTCompositeActor),
         // which may generate discrete events and have to implement
-        // the CTEventGenerator interface, the assumption 
-        // is not true any more. 
-        // There is a possibility that they are added into the 
-        // outputSchedule multiple times. 
-        
+        // the CTEventGenerator interface, the assumption
+        // is not true any more.
+        // There is a possibility that they are added into the
+        // outputSchedule multiple times.
+
         // The situation happens when an actor in the sinkActors
-        // list happens to be in the backward reachable nodes of 
+        // list happens to be in the backward reachable nodes of
         // another actor in the sinkActors list. (See comment below
         // for details.)
 
@@ -771,12 +771,12 @@ public class CTScheduler extends Scheduler {
                 Actor a = (Actor)gxSorted[i];
 
                 if (sinkActors.contains(a)) {
-                    // If Actor a is already in the sinkActors list, 
+                    // If Actor a is already in the sinkActors list,
                     // we add it to the outputSchedule here because
-                    // we want to keep the ordering of the event 
-                    // passing. 
+                    // we want to keep the ordering of the event
+                    // passing.
                     // We remove the actor from the sinkActors list
-                    // such that it is not added twice. 
+                    // such that it is not added twice.
                     sinkActors.remove(a);
                 }
 
@@ -797,7 +797,7 @@ public class CTScheduler extends Scheduler {
             }
 
         }
-        
+
         // Create the CTSchedule. Note it must be done in this order.
         ctSchedule.add(discreteActorSchedule);
         ctSchedule.add(continuousActorSchedule);
@@ -849,7 +849,7 @@ public class CTScheduler extends Scheduler {
         Director director = (Director) getContainer();
         final CompositeActor container =
             (CompositeActor)director.getContainer();
-            
+
         ChangeRequest request = new ChangeRequest(this, "Record signal types") {
             protected void _execute() throws KernelException {
                 Iterator entities = container.deepEntityList().iterator();
@@ -899,7 +899,7 @@ public class CTScheduler extends Scheduler {
             // CTCompositeActor is basically everything,
             // it may be an event generator, or a state transition
             // actor.
-            if ((actor instanceof CTCompositeActor) || 
+            if ((actor instanceof CTCompositeActor) ||
                 (!(actor instanceof CTDynamicActor) &&
                     !(actor instanceof CTEventGenerator))
                      ) {

@@ -643,7 +643,7 @@ public class TypeSpecializerAnalysis {
                             }
                             public InequalityTerm[] getVariables() {
                                 if (matrixTerm.isSettable()) {
-                                    InequalityTerm[] terms = 
+                                    InequalityTerm[] terms =
                                         new InequalityTerm[1];
                                     terms[0] = matrixTerm;
                                     return terms;
@@ -652,7 +652,7 @@ public class TypeSpecializerAnalysis {
                                 }
                             }
                         };
-                    
+
                     return returnTypeTerm;
                 } else if (methodName.equals("absolute")) {
                     // Return the same as the input type, unless

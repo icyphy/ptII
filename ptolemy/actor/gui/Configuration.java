@@ -412,7 +412,7 @@ public class Configuration extends CompositeEntity {
      */
     public Tableau openModel(NamedObj entity)
         throws IllegalActionException, NameDuplicationException {
-        
+
         return openModel(entity, null);
     }
 
@@ -444,7 +444,7 @@ public class Configuration extends CompositeEntity {
             deferredTo = (Prototype)((Prototype)entity).getParent();
             isClass = ((Prototype)entity).isClassDefinition();
         }
-        String elementName = entity.getElementName();        
+        String elementName = entity.getElementName();
         if (deferredTo != null && !isClass) {
             entity = deferredTo;
         }
@@ -507,7 +507,7 @@ public class Configuration extends CompositeEntity {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Return an identifier for the specified effigy based on its
      *  container (if any) and its name.
      *  @return An identifier for the effigy.
@@ -583,15 +583,15 @@ public class Configuration extends CompositeEntity {
             // There is no pre-existing effigy.  Create one.
             effigy = new PtolemyEffigy(workspace());
             effigy.setModel(entity);
-        
+
             // Look to see whether the model has a URIAttribute.
             List attributes = entity.attributeList(URIAttribute.class);
             if (attributes.size() > 0) {
                 // The entity has a URI, which was probably
                 // inserted by MoMLParser.
-        
+
                 URI uri = ((URIAttribute) attributes.get(0)).getURI();
-                
+
                 // Set the URI and identifier of the effigy.
                 effigy.uri.setURI(uri);
 
@@ -606,7 +606,7 @@ public class Configuration extends CompositeEntity {
                     effigy.identifier.setExpression(
                             uri.toString());
                 }
-        
+
                 if (container == null) {
                     // Put the effigy into the directory
                     ModelDirectory directory = getDirectory();
@@ -616,7 +616,7 @@ public class Configuration extends CompositeEntity {
                     effigy.setName(container.uniqueName(entity.getName()));
                     effigy.setContainer(container);
                 }
-        
+
                 // Create a default tableau.
                 return createPrimaryTableau(effigy);
             } else {
@@ -624,7 +624,7 @@ public class Configuration extends CompositeEntity {
                 // that is defined within the same file as the parent,
                 // probably.  Create a new PtolemyEffigy
                 // and open a tableau for it.
-        
+
                 // Put the effigy inside the effigy of the parent,
                 // rather than directly into the directory.
                 NamedObj parent = (NamedObj) entity.getContainer();
@@ -640,11 +640,11 @@ public class Configuration extends CompositeEntity {
                     // OK, we can put it into this other effigy.
                     effigy.setName(parentEffigy.uniqueName(entity.getName()));
                     effigy.setContainer(parentEffigy);
-        
+
                     // Set the uri of the effigy to that of
                     // the parent.
                     effigy.uri.setURI(parentEffigy.uri.getURI());
-        
+
                     // Indicate success.
                     isContainerSet = true;
                 }
@@ -658,11 +658,11 @@ public class Configuration extends CompositeEntity {
                         effigy.setContainer(directory);
                     } else {
                         effigy.setName(container.uniqueName(entity.getName()));
-                        effigy.setContainer(container);                        
+                        effigy.setContainer(container);
                     }
                 }
                 effigy.identifier.setExpression(_effigyIdentifier(effigy, entity));
-        
+
                 return createPrimaryTableau(effigy);
             }
         }

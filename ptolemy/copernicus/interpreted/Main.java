@@ -66,7 +66,7 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.makefileWriter",
                 MakefileWriter.v(_toplevel),
                 "_generatorAttributeFileName:" + _generatorAttributeFileName +
-                " targetPackage:" + _targetPackage + 
+                " targetPackage:" + _targetPackage +
                 " templateDirectory:" + _templateDirectory +
                 " outDir:" + _outputDirectory);
 
@@ -77,14 +77,14 @@ public class Main extends KernelMain {
 
     }
     /** Parse any code generator specific arguments.
-     */ 
-    protected String[] _parseArgs(GeneratorAttribute attribute) 
+     */
+    protected String[] _parseArgs(GeneratorAttribute attribute)
             throws Exception {
         _targetPackage = attribute.getParameter("targetPackage");
         _templateDirectory = attribute.getParameter("templateDirectory");
         _watchDogTimeout = attribute.getParameter("watchDogTimeout");
         _outputDirectory = attribute.getParameter("outputDirectory");
-        _generatorAttributeFileName = 
+        _generatorAttributeFileName =
             attribute.getParameter("generatorAttributeFileName");
         //String sootArgs = attribute.getParameter("sootArgs");
         return new String[1];

@@ -237,7 +237,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 _jgraph.setPreferredSize(new Dimension(600, 400));
                 _jgraph.setSize(600, 400);
             }
-            
+
             // Set the zoom factor.
             Parameter zoom = (Parameter)getModel().getAttribute(
                     "_vergilZoomFactor", Parameter.class);
@@ -246,7 +246,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 // Make sure the visibility is only expert.
                 zoom.setVisibility(Settable.EXPERT);
             }
-            
+
             // Set the pan position.
             Parameter pan = (Parameter)getModel().getAttribute(
                     "_vergilCenter", Parameter.class);
@@ -259,7 +259,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 // Make sure the visibility is only expert.
                 pan.setVisibility(Settable.EXPERT);
             }
-            
+
         } catch (Exception ex) {
             // Ignore problems here.  Errors simply result in a default
             // size and location.
@@ -330,7 +330,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         _libraryContextMenuCreator.addMenuItemFactory(
                 new OpenLibraryMenuItemFactory());
         _library.addMouseListener(_libraryContextMenuCreator);
-        
+
         _libraryScrollPane = new JScrollPane(_library);
         _libraryScrollPane.setMinimumSize(new Dimension(200, 200));
         _libraryScrollPane.setPreferredSize(new Dimension(200, 200));
@@ -806,7 +806,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         AbstractBasicGraphModel graphModel
                 = (AbstractBasicGraphModel)controller.getGraphModel();
         Object selection[] = model.getSelectionAsArray();
-        
+
         // First collect selected objects into the userObjects array
         // and deselect them.
         Object userObjects[] = new Object[selection.length];
@@ -1289,7 +1289,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
     /** Create the default library to use if an entity has no
      *  LibraryAttribute.  Note that this is called in the
      *  constructor and therefore overrides in subclasses
-     *  should not refer to any members that may not have been 
+     *  should not refer to any members that may not have been
      *  initialized. If no library is found in the configuration,
      *  then an empty one is created in the specified workspace.
      *  @param workspace The workspace in which to create
@@ -1407,7 +1407,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                 size = new SizeAttribute(getModel(), "_vergilSize");
             }
             size.recordSize(_jgraph);
-            
+
             // Also record zoom and pan state.
             JCanvas canvas = _jgraph.getGraphPane().getCanvas();
             AffineTransform current =
@@ -1422,7 +1422,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
             zoom.setToken(new DoubleToken(scale));
             // Make sure the visibility is only expert.
             zoom.setVisibility(Settable.EXPERT);
-            
+
             // Save the center, to record the pan state.
             Point2D center = getCenter();
             Parameter pan = (Parameter)getModel().getAttribute(
@@ -1464,7 +1464,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
     /** The instance of EditorDropTarget associated with this object. */
     protected EditorDropTarget _dropTarget;
-    
+
     /** The library. */
     protected CompositeEntity _topLibrary;
 
@@ -1544,7 +1544,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Action to redo the last undone MoML change. */
     private Action _redoAction = new RedoAction();
 
@@ -1920,7 +1920,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame
                         } catch(KernelException ex) {
                             // FIXME
                         }
-                    }        
+                    }
                 };
             action.putValue("tooltip",
                     "Open library for editing.");

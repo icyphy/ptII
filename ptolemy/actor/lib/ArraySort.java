@@ -45,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ArraySort
 /**
-Sort the elements of an input array.  This actor reads an array from the 
+Sort the elements of an input array.  This actor reads an array from the
 <i>input</i> port and sends a sorted array to the <i>output</i> port.
 The input array is required to contain either strings or non-complex
 scalars, or a type error will occur. The output array will have the
@@ -106,7 +106,7 @@ public class ArraySort extends Transformer {
     ////                         public methods                    ////
 
     /** Consume at most one array from the input port and produce
-     *  a sorted array on the <i>output</i> port.  
+     *  a sorted array on the <i>output</i> port.
      *  If there is no token on the input, then no output is produced.
      *  If the input is an empty array, then the same empty array token
      *  is produced on the output.

@@ -1,7 +1,7 @@
 /* An application for testing the conversion of Ptolemy models into
 weighted graphs.
 
- Copyright (c) 2003-2004 The University of Maryland  
+ Copyright (c) 2003-2004 The University of Maryland
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,16 +40,16 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// TestGraphReader
 /** An application for testing the conversion of Ptolemy models into
-weighted graphs. 
+weighted graphs.
 <p>
-Usage: <code>java ptolemy.actor.test <em>xmlFileName</em></code>, 
+Usage: <code>java ptolemy.actor.test <em>xmlFileName</em></code>,
 <p>
 where <code><em>xmlFileName</code></em> is the name of a MoML file that
 contains a Ptolemy II specification. This application converts the
 specification into a weighted graph representation, and prints out information
 about this weighted graph.
 
-@author Shuvra S. Bhattacharyya 
+@author Shuvra S. Bhattacharyya
 @version $Id$
 */
 
@@ -84,30 +84,30 @@ public class TestGraphReader {
      * @param graph The graph for which information is to be printed.
      */
     protected void _printGraph(DirectedGraph graph) {
-        System.out.println(graph.toString()); 
+        System.out.println(graph.toString());
 
         // Determine the source nodes
         Collection sourceCollection = graph.sourceNodes();
-        System.out.println("Number of source nodes = " + 
-                sourceCollection.size()); 
+        System.out.println("Number of source nodes = " +
+                sourceCollection.size());
         Iterator sources = sourceCollection.iterator();
         int sourceNumber = 1;
         while (sources.hasNext()) {
-            System.out.println("source #" + sourceNumber++ + ": " + 
-                    ((Node)(sources.next())).getWeight()); 
-            System.out.println(); 
+            System.out.println("source #" + sourceNumber++ + ": " +
+                    ((Node)(sources.next())).getWeight());
+            System.out.println();
         }
 
         // Determine the sink nodes
         Collection sinkCollection = graph.sinkNodes();
-        System.out.println("Number of sink nodes = " + 
-                sinkCollection.size()); 
+        System.out.println("Number of sink nodes = " +
+                sinkCollection.size());
         Iterator sinks = sinkCollection.iterator();
         int sinkNumber = 1;
         while (sinks.hasNext()) {
-            System.out.println("sink #" + sinkNumber++ + ": " + 
-                    ((Node)(sinks.next())).getWeight()); 
-            System.out.println(); 
+            System.out.println("sink #" + sinkNumber++ + ": " +
+                    ((Node)(sinks.next())).getWeight());
+            System.out.println();
         }
 
     }
@@ -137,7 +137,7 @@ public class TestGraphReader {
         if (! (toplevel instanceof CompositeActor)) {
             throw new RuntimeException("Top level must be a CompositeActor "
                     + "(in this case, it is '"
-                    + ((toplevel == null) ? "null" : 
+                    + ((toplevel == null) ? "null" :
                     toplevel.getClass().getName())
                     + "')\n");
         }

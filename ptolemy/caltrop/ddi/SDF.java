@@ -207,7 +207,7 @@ public class SDF extends AbstractDDI implements DDI {
                 } else {
                     throw new DDIException("IOPort " + ioPort.getName()
                             + " contains An attribute named " + varName
-                            + " that is not a Variable... " 
+                            + " that is not a Variable... "
                             + "this shouldn't happen.");
                 }
             }
@@ -560,7 +560,7 @@ public class SDF extends AbstractDDI implements DDI {
             else
                 return _ptActor.superPrefire();
         } catch (Exception ex) {
-            throw new IllegalActionException(null, ex, 
+            throw new IllegalActionException(null, ex,
                     "Error during action selection in actor '"
                     + _actor.getName() + "': " + ex.getMessage());
         }

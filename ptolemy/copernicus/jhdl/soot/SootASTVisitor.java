@@ -54,7 +54,7 @@ indicate that the syntax object has been properly processed.
 
 @author Mike Wirthlin
 @version $Id$
-@since Ptolemy II 2.0 
+@since Ptolemy II 2.0
 @see SootASTException
 
 */

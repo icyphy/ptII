@@ -77,7 +77,7 @@ public class StringParameter extends Parameter {
         super(container, name);
         setStringMode(true);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

@@ -153,7 +153,7 @@ public class DataUtilities {
             throw new IllegalActionException("The ID " + name +
                     " does not have a value");
         }
-        
+
         public Local getLocal(String name)
                 throws IllegalActionException {
             Local thisLocal = _body.getThisLocal();
@@ -327,7 +327,7 @@ public class DataUtilities {
                 //         "The ID " + name + " is undefined.");
             }
         }
-        
+
         public Set identifierSet() {
             if (_entity == null) {
                 return Collections.EMPTY_SET;

@@ -108,7 +108,7 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
 //                 Set methodSet = _getMethodSet(theClass);
 //                 forcedReachableMethodSet.addAll(methodSet);
 //             }
-            
+
             // Assume that any method that is part of an interface that this
             // object implements, is reachable.
             //  System.out.println("forcing interfaces of " + theClass);
@@ -116,12 +116,12 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
                 for (Iterator interfaces = theClass.getInterfaces().iterator();
                      interfaces.hasNext();) {
                     SootClass theInterface = (SootClass)interfaces.next();
-              
+
                     _addMethodsFrom(forcedReachableMethodSet,
                             theInterface, theClass);
-              
+
                 }
-            }       
+            }
         }
 
         //  System.out.println("forcedMethods = " + forcedReachableMethodSet);
@@ -133,7 +133,7 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
         // targeted by that invocation.
         Scene.v().releaseCallGraph();
         CallGraph callGraph = Scene.v().getCallGraph();
-        ReachableMethods reachables = new ReachableMethods(callGraph, 
+        ReachableMethods reachables = new ReachableMethods(callGraph,
                 forcedReachableMethodSet);
         reachables.update();
 
@@ -156,7 +156,7 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
             }
         }
     }
-    private void _addMethodsFrom(Set forcedReachableMethodSet, 
+    private void _addMethodsFrom(Set forcedReachableMethodSet,
             SootClass theInterface, SootClass theClass) {
         // Except for InequalityTerm...
         if (theInterface.getName().equals(
@@ -176,11 +176,11 @@ public class UnreachableMethodRemover extends SceneTransformer implements HasPha
                 // Ignore..
             }
         }
-        
+
         for (Iterator superInterfaces = theInterface.getInterfaces().iterator();
             superInterfaces.hasNext();) {
             _addMethodsFrom(forcedReachableMethodSet,
-                    (SootClass)superInterfaces.next(), theClass); 
+                    (SootClass)superInterfaces.next(), theClass);
         }
     }
 

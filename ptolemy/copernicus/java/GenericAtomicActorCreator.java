@@ -156,11 +156,11 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             // Create and initialize ports
             ModelTransformer.createPorts(body, thisLocal, entity,
                     thisLocal, entity, entityInstanceClass, tempCreatedSet);
-      
+
             // Extra initialization necessary?
             Stmt insertPoint = Jimple.v().newNopStmt();
             body.getUnits().add(insertPoint);
-          
+
             ModelTransformer.initializeAttributesBefore(body, insertPoint,
                     entity, thisLocal,
                     entity, thisLocal,
@@ -182,7 +182,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
             SootMethod method = theClass.getMethodByName("preinitialize");
             JimpleBody body = (JimpleBody)method.getActiveBody();
             Stmt insertPoint = body.getFirstNonIdentityStmt();
-            
+
             // Do we initialize parameters in preinitialize or in the
             // constructor?
             // ModelTransformer.initializeAttributesBefore(body,
@@ -190,7 +190,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
 //                     entity, body.getThisLocal(),
 //                     entity, body.getThisLocal(),
 //                     entityInstanceClass);
-         
+
             LocalNameStandardizer.v().transform(body, "at.lns");
             LocalSplitter.v().transform(body, "at.ls");
         }
@@ -223,7 +223,7 @@ public class GenericAtomicActorCreator implements AtomicActorCreator {
         } catch (Error ex) {
             ex.printStackTrace(System.out);
         }
-     
+
         try {
             Scene.v().setFastHierarchy(new FastHierarchy());
         } catch (Error ex) {

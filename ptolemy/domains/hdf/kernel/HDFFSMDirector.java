@@ -100,7 +100,7 @@ import java.lang.String;
    does not support multiple state refinements or transition refinements.
    This is because multiple refinements may result in type signature
    conflicts. Such restriction should not be a limitation to expressiveness
-   since users can put all the models in one refinement. 
+   since users can put all the models in one refinement.
    <p>
    To use this director, create a ModalModel and specify this director
    as its director.  Then look inside to populate the controller
@@ -129,7 +129,7 @@ import java.lang.String;
    @see HDFDirector
  */
 public class HDFFSMDirector extends FSMDirector {
-    
+
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -146,7 +146,7 @@ public class HDFFSMDirector extends FSMDirector {
     public HDFFSMDirector(Workspace workspace) {
         super(workspace);
     }
-    
+
     /** Construct a director in the given container with the given name.
      *  If the container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -184,7 +184,7 @@ public class HDFFSMDirector extends FSMDirector {
             _chooseTransition(st.nonpreemptiveTransitionList());
 
         if (tr != null) {
-            
+
             TypedActor[] trRefinements = (tr.getRefinement());
 
             Actor[] actors = tr.getRefinement();
@@ -232,7 +232,7 @@ public class HDFFSMDirector extends FSMDirector {
         State st = ctrl.currentState();
         Actor[] actors = ctrl.currentState().getRefinement();
         _fireRefinement = false;
-        
+
         if (actors != null) {
             for (int i = 0; i < actors.length; ++ i) {
                 if (_stopRequested) break;
@@ -242,9 +242,9 @@ public class HDFFSMDirector extends FSMDirector {
                 }
             }
         }
-        
+
         _readOutputsFromRefinement();
-        
+
         if (_embeddedInSDF) {
             chooseStateTransition();
         }
@@ -253,7 +253,7 @@ public class HDFFSMDirector extends FSMDirector {
                 new ChangeRequest(this, "choose a transition") {
                 protected void _execute() throws KernelException {
                     chooseStateTransition();
-                } 
+                }
             };
             request.setPersistent(false);
             container.requestChange(request);
@@ -326,7 +326,7 @@ public class HDFFSMDirector extends FSMDirector {
         }
     }
 
-    /** 
+    /**
      * Return the change context being made explicit.  In this case,
      * the change context returned is the context in which HDF makes
      * state transitions.
@@ -364,7 +364,7 @@ public class HDFFSMDirector extends FSMDirector {
         }
         return list;
     }
-    
+
     /** Set up new state and connection map if exactly
      *  one transition is enabled. Get the schedule of the current
      *  refinement and propagate its port rates to the outside.
@@ -449,7 +449,7 @@ public class HDFFSMDirector extends FSMDirector {
         //return super.postfire();
         return superPostfire;
     }
-    
+
     /** Return a new receiver of a type compatible with this director.
      *  This returns an instance of SDFReceiver.
      *  @return A new SDFReceiver.
@@ -480,14 +480,14 @@ public class HDFFSMDirector extends FSMDirector {
         // FIXME
         //boolean postfireReturn = currentRefinement.postfire();
         boolean postfireReturn = currentRefinement[0].postfire();
-        
+
         if (_sendRequest && !_embeddedInSDF) {
             _sendRequest = false;
             ChangeRequest request =
                 new ChangeRequest(this, "make a transition") {
-                protected void _execute() throws KernelException {  
+                protected void _execute() throws KernelException {
                     _sendRequest = true;
-                    makeStateTransition();   
+                    makeStateTransition();
                 }
             };
             request.setPersistent(false);
@@ -604,7 +604,7 @@ public class HDFFSMDirector extends FSMDirector {
                         // Successfully transferred data, so return true.
                         transferred = true;
                     }
-                } 
+                }
             } catch (NoTokenException ex) {
                 // this shouldn't happen.
                 throw new InternalErrorException(
@@ -628,7 +628,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
      */
-    
+
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
 
@@ -672,7 +672,7 @@ public class HDFFSMDirector extends FSMDirector {
      * and direction and each port of each refinement with the same
      * name has the same rate parameter.
      */
-    private boolean _allRefinementsHaveSameRate() 
+    private boolean _allRefinementsHaveSameRate()
             throws IllegalActionException {
         CompositeActor container = (CompositeActor)getContainer();
         FSMActor controller = getController();
@@ -687,7 +687,7 @@ public class HDFFSMDirector extends FSMDirector {
                 states.hasNext();) {
                 State state = (State)states.next();
                 // FIXME
-                CompositeActor refinement = 
+                CompositeActor refinement =
                     (CompositeActor)state.getRefinement()[0];
                 IOPort refinementPort = (IOPort)refinement.getPort(name);
                 int tokenProductionRate = 0;
@@ -700,10 +700,10 @@ public class HDFFSMDirector extends FSMDirector {
                     if (port.isOutput() != refinementPort.isOutput()) {
                         return false;
                     }
-                    tokenConsumptionRate = 
+                    tokenConsumptionRate =
                         SDFUtilities._getRateVariableValue(
                                 refinementPort, "tokenConsumptionRate", 0);
-                    tokenProductionRate = 
+                    tokenProductionRate =
                         SDFUtilities._getRateVariableValue(
                                 refinementPort, "tokenProductionRate", 0);
                 }
@@ -713,7 +713,7 @@ public class HDFFSMDirector extends FSMDirector {
                 if (previousTokenProductionRate != tokenProductionRate) {
                     return false;
                 }
-            }                    
+            }
         }
         return true;
     }
@@ -774,7 +774,7 @@ public class HDFFSMDirector extends FSMDirector {
         CompositeActor refineInPortContainer =
             (CompositeActor) actor.getContainer();
         Transition lastChosenTr = _getLastChosenTransition();
-        
+
         // Get all of the input ports of the container of this director.
         List containerPortList = refineInPortContainer.inputPortList();
         // Set all of the port rates to zero.
@@ -812,7 +812,7 @@ public class HDFFSMDirector extends FSMDirector {
                     (ComponentEntity)inputPortOutside.getContainer();
                 String temp = refineInPortContainer.getFullName()
                     + "._Controller";
-                
+
                 if (thisPortContainer.getFullName() ==
                         refineInPortContainer.getFullName() ||
                         temp.equals(thisPortContainer.getFullName())) {
@@ -830,7 +830,7 @@ public class HDFFSMDirector extends FSMDirector {
                     while (transitions.hasNext()) {
                         Transition transition =
                             (Transition)transitions.next();
-                        if (transition != null) { 
+                        if (transition != null) {
                             TypedActor[] trRefinements
                                 = (transition.getRefinement());
                             if (trRefinements != null) {
@@ -839,7 +839,7 @@ public class HDFFSMDirector extends FSMDirector {
                                     TypedCompositeActor trRefinement
                                         = (TypedCompositeActor)
                                           (trRefinements[i]);
-                                    String trRefinementName 
+                                    String trRefinementName
                                         = trRefinement.getFullName();
                                     if (thisPortContainer.getFullName()
                                         == trRefinementName) {
@@ -847,7 +847,7 @@ public class HDFFSMDirector extends FSMDirector {
                                             SDFUtilities
                                             .getTokenConsumptionRate
                                             (refineInPort);
-                                        int transitionPortRate = 
+                                        int transitionPortRate =
                                             SDFUtilities.
                                             getTokenConsumptionRate
                                             (inputPortOutside);
@@ -863,7 +863,7 @@ public class HDFFSMDirector extends FSMDirector {
                                     }
                                 }
                             }
-                        }    
+                        }
                     }
                 }
             }
@@ -945,7 +945,7 @@ public class HDFFSMDirector extends FSMDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // A flag indicating whether the FSM can send a change request.
     // An FSM in HDF can only send one request per global iteration.
     private boolean _sendRequest;
@@ -954,7 +954,7 @@ public class HDFFSMDirector extends FSMDirector {
     // FIXME: It should function as a flag indicating whether
     // state transition can be made between arbitrary firings.
     private boolean _embeddedInSDF = false;
-    
+
     // A flag indicating whether the initialize method is
     // called due to reinitialization.
     private boolean _reinitialize;

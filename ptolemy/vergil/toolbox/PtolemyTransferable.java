@@ -58,7 +58,7 @@ DataFlavor.plainTextFlavor.
 @since Ptolemy II 1.0
 */
 public class PtolemyTransferable implements Transferable, Serializable {
-    // This class implements Serializable in hopes that 
+    // This class implements Serializable in hopes that
     // drag and drop will work under Mac OS X.
 
     /**

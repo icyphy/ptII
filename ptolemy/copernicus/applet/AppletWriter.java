@@ -385,11 +385,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
 
 
-            
+
     // If jarFile exists, optionally copy it and return true.
     // If jarFile does not exist, return false.
     private boolean _copyPotentialJarFile(String jarFile, String className,
-            HashSet jarFilesThatHaveBeenRequired) 
+            HashSet jarFilesThatHaveBeenRequired)
             throws IOException  {
 
         File potentialSourceJarFile =
@@ -467,7 +467,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
         jarFilesThatHaveBeenRequired.add("ptolemy/actor/actor.jar");
         jarFilesThatHaveBeenRequired.add("ptolemy/actor/lib/lib.jar");
 
-	// Set to true if we need to fix up jar files because 
+	// Set to true if we need to fix up jar files because
 	// jar files are not present probably because
 	// 'make install' was not run.
 	boolean fixJarFiles = false;
@@ -505,7 +505,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                 // but looking up a file will fail if the file has
                 // a space in it and we are looking for a %20.
                 classResource = StringUtilities
-                    .substitute(classResource, "%20", " "); 
+                    .substitute(classResource, "%20", " ");
 
                 // We need to actually look up the file to deal with
                 // the various C:/ptII, c:/ptII, c:\ptII, C:\ptII possibilities
@@ -522,7 +522,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     // the we look for $PTII/foo/bar/bar.jar
 
                     String pathName = className.replace('.', '/');
-                    String directoryName = pathName.substring(0,  
+                    String directoryName = pathName.substring(0,
                             pathName.lastIndexOf("/"));
                     String jarFileName = directoryName
                         + directoryName.substring(
@@ -531,8 +531,8 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 
                     if (_copyPotentialJarFile(jarFileName,
                         className, jarFilesThatHaveBeenRequired)) {
-                        
-                    } else {   
+
+                    } else {
                         String warning = "Looking up '" + className
                             + "'\nreturned the $PTII directory '"
                             + _ptIIDirectory + "' instead of a jar file.\n'"
@@ -540,7 +540,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                         if (_codeBase.equals(".")) {
                             // We only need print an error message if
                             // we are actually trying to copy the file
-                            throw new IOException(warning 
+                            throw new IOException(warning
                                     + "Since the applet directory is not "
                                     + "inside the Ptolemy II tree, we need "
                                     + "to have\n"
@@ -585,11 +585,11 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 // 		    // we copy the jar file.
 // 		    _copyFile(classResource, _outputDirectory,
 //                             (String)classMap.get(className));
-// 		} 
+// 		}
             }
         }
 
-	
+
         jarFilesThatHaveBeenRequired.remove("ptolemy/actor/actor.jar");
         jarFilesThatHaveBeenRequired.remove("ptolemy/actor/lib/lib.jar");
 
@@ -613,7 +613,7 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
 	    // If the code generator was run but codeBase != . and
 	    // make install was not run, then we will not have figured
 	    // out very many jar files.  So, we fix up the list
-	    // 
+	    //
 	    jarFilesThatHaveBeenRequired.add("ptolemy/ptsupport.jar");
             jarFilesThatHaveBeenRequired.add(_domainJar);
 

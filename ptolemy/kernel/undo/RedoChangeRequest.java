@@ -35,7 +35,7 @@ import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
 A change request to redo. When executed, this change request will
 identify the undo stack associated with the specified context,

@@ -170,7 +170,7 @@ public class Accumulator extends Transformer {
 
     /** The running sum. */
     private Token _sum;
-    
+
     /** The latest sum, prior to a state commit. */
     private Token _latestSum;
 }

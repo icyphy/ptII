@@ -142,7 +142,7 @@ public class MoMLChangeRequest extends ChangeRequest {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return the context specified in the constructor, or null if none
      *  was specified.
      *  @return The context.
@@ -150,7 +150,7 @@ public class MoMLChangeRequest extends ChangeRequest {
     public NamedObj getContext() {
         return _context;
     }
-    
+
     /** Return the first container, moving up the hierarchy, for which there
      *  are other objects that defer their MoML definitions to it.
      *  If there is no such container, then return null. If the specified
@@ -195,7 +195,7 @@ public class MoMLChangeRequest extends ChangeRequest {
     public void setMergeWithPreviousUndo(boolean mergeWithPrevious) {
         _mergeWithPreviousUndo = mergeWithPrevious;
     }
-    
+
     /** Specify whether or not to report errors via the handler that
      *  is registered with the parser. The initial default is to not
      *  report errors to the registered handler. If this method is not
@@ -207,8 +207,8 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  ErrorHandler.CONTINUE, then the exception will not be reported
      *  to any change listeners and the change listener will think
      *  that the change succeeded.
-     * 
-     *  @see ErrorHandler 
+     *
+     *  @see ErrorHandler
      *  @param report False to disable error reporting.
      */
     public void setReportErrorsToHandler(boolean report) {
@@ -280,10 +280,10 @@ public class MoMLChangeRequest extends ChangeRequest {
 
     // The URL relative to which external references should be resolved.
     private URL _base;
-    
+
     // Flag to print out information about what's being done.
     private static boolean _DEBUG = false;
-    
+
     // The parser given in the constructor.
     private MoMLParser _parser;
 

@@ -81,13 +81,13 @@ public class ActorInstanceController extends ActorController {
      */
     public ActorInstanceController(GraphController controller, Access access) {
         super(controller, access);
-                
+
         if (access == FULL) {
             // The following do not require a configuration.
             _menuFactory.addMenuItemFactory(
-                    new MenuActionFactory(_convertToClassAction));                
+                    new MenuActionFactory(_convertToClassAction));
         }
-        
+
         // Set up a listener to lay out the ports when graph changes.
         // NOTE: Because of this listener, it is imperative that there
         // be no more than one instance of this object associated with
@@ -95,7 +95,7 @@ public class ActorInstanceController extends ActorController {
         // ports will be laid out more than once. This manifests itself
         // as a bug where port names are rendered twice, and for some
         // inexplicable reason, are rendered in two different places!
-        
+
         // The filter for the layout algorithm of the ports within this
         // entity. This returns true only if the candidate object is
         // an instance of Locatable and the semantic object associated
@@ -155,8 +155,8 @@ public class ActorInstanceController extends ActorController {
 
             // Determine which entity was selected for the create instance action.
             super.actionPerformed(e);
-            
-            NamedObj object = getTarget();            
+
+            NamedObj object = getTarget();
             NamedObj container = (NamedObj)object.getContainer();
             // Assumes MoML parser will convert to class.
             // NOTE: This cast should be safe because this controller is

@@ -440,7 +440,7 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
                     Jimple.v().newAssignStmt(iterationLocal,
                             IntConstant.v(0)),
                     unit);
-            
+
             iterationLimitLocal = Jimple.v().newLocal("iterationLimit",
                     IntType.v());
             body.getLocals().add(iterationLimitLocal);
@@ -503,7 +503,7 @@ public class CommandLineTransformer extends SceneTransformer implements HasPhase
                     Jimple.v().newAddExpr(iterationLocal,
                             IntConstant.v(1))),
                     unit);
-            
+
             // If the number of iterations is greater than, or equal
             // to the limit, then we're done.
             units.insertBefore(Jimple.v().newIfStmt(

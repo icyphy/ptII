@@ -43,7 +43,7 @@ What does it do?  What is its intended use?
 */
 
 public class ClassName {
-    
+
     /** Create an instance with ... (describe the properties of the
      *  instance). Use the imperative case here.
      *  @param parameterName Description of the parameter.
@@ -55,7 +55,7 @@ public class ClassName {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** Desription of the variable. */
     public int variableName;
 

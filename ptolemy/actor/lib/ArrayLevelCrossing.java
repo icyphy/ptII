@@ -1,6 +1,6 @@
 /* An actor that finds the index of the first item in an array to
    cross a specified threshold.
-   
+
  Copyright (c) 2003-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -86,30 +86,30 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
         start.setExpression("0");
         start.setTypeEquals(BaseType.INT);
         new SingletonAttribute(start.getPort(), "_showName");
-                
+
         forwards = new Parameter(this, "forwards");
         forwards.setExpression("true");
         forwards.setTypeEquals(BaseType.BOOLEAN);
-        
+
         threshold = new Parameter(this, "threshold");
         threshold.setExpression("0.0");
         threshold.setTypeEquals(BaseType.DOUBLE);
-        
+
         above = new Parameter(this, "above");
         above.setExpression("false");
         above.setTypeEquals(BaseType.BOOLEAN);
-        
+
         scale = new StringParameter(this, "scale");
         scale.setExpression("absolute");
         scale.addChoice("absolute");
         scale.addChoice("relative linear");
         scale.addChoice("relative amplitude decibels");
         scale.addChoice("relative power decibels");
-        
+
         // Ports
         array = new TypedIOPort(this, "array", true, false);
         new SingletonAttribute(array, "_showName");
-        
+
         output = new TypedIOPort(this, "output", false, true);
 
         // Set Type Constraints.
@@ -125,17 +125,17 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
      *  which specifies to find values below the threshold.
      */
     public Parameter above;
-    
+
     /** The array to search for a threshold crossing.
      *  This has type {double}.
      */
     public TypedIOPort array;
-    
+
     /** The direction to search from the start. If true, search forwards.
      *  Otherwise, search backwards.  This is a boolean that defaults to true.
      */
     public Parameter forwards;
-    
+
     /** The output port producing the index of the first bin to break
      *  the threshold.  This has type int.
      */
@@ -156,7 +156,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
      *  This is an integer that defaults to 0.
      */
     public PortParameter start;
-        
+
     /** The threshold to look for. This is a double that can be interpreted on
      *  an absolute or relative scale, and if relative, on a linear or decibel
      *  scale, depending on the <i>scale</i> parameter. It defaults to 0.0.
@@ -175,27 +175,27 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
         if (array.hasToken(0)) {
             ArrayToken inputArray = (ArrayToken) array.get(0);
             int inputSize = inputArray.length();
-            
+
             int startValue = ((IntToken)start.getToken()).intValue();
-            
+
             if (startValue >= inputSize || startValue < 0) {
                 throw new IllegalActionException(this,
                 "start is out of range: " + startValue);
             }
-            
+
             int increment = -1;
             if (((BooleanToken)forwards.getToken()).booleanValue()) {
                 increment = 1;
             }
-            
+
             double reference = ((DoubleToken)inputArray.getElement(startValue))
                     .doubleValue();
 
             double thresholdValue = ((DoubleToken)threshold.getToken())
                     .doubleValue();
-            
+
             String scaleValue = scale.stringValue();
-                    
+
             boolean aboveValue = ((BooleanToken)above.getToken())
                     .booleanValue();
 
@@ -218,7 +218,7 @@ public class ArrayLevelCrossing extends TypedAtomicActor {
                     thresholdValue = reference - thresholdValue;
                 }
             }
-            
+
             // Default output if we don't find a crossing.
             int bin = -1;
             for (int i = startValue; i < inputSize && i >= 0; i += increment) {

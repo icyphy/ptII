@@ -218,17 +218,17 @@ public class FSMDirector extends Director
 
         _enabledTransition = tr;
 
-        // Note, I modified the firing order of transitions and 
+        // Note, I modified the firing order of transitions and
         // refinements of preemptive transitions. See comments inserted
         // below. Hyzheng 01/25/2004.
-        
-        // FIXME: I added several 
+
+        // FIXME: I added several
         //  ctrl._readOutputsFromRefinement();
         //  statements in the following code. There is a semantics issue.
-        //  For state semantics, it does not matter how many times we 
-        //  read output from refinements, because only the last one counts. 
+        //  For state semantics, it does not matter how many times we
+        //  read output from refinements, because only the last one counts.
         //  For event semantics, things are complicated if several events
-        //  are generated at different phases. I think the right solution 
+        //  are generated at different phases. I think the right solution
         //  is to record all the tokens. Hyzheng 01/25/2004.
 
         if (tr != null) {
@@ -278,9 +278,9 @@ public class FSMDirector extends Director
 
         // For nonpreemptive transitions, we execute the model
         // in the following order. First, the state refinements,
-        // then, the transition refinements, finally, the actions 
+        // then, the transition refinements, finally, the actions
         // associated with the transition.
-        
+
         Actor[] actors = st.getRefinement();
         if (actors != null) {
             for (int i = 0; i < actors.length; ++i) {
@@ -405,7 +405,7 @@ public class FSMDirector extends Director
         }
     }
 
-    /** 
+    /**
      * Return the change context being made explicit.  In this case,
      * the change context returned is the composite actor controlled
      * by this director.
@@ -435,7 +435,7 @@ public class FSMDirector extends Director
                      actions.hasNext();) {
                     AbstractActionsAttribute action =
                         (AbstractActionsAttribute)actions.next();
-                    for (Iterator names = 
+                    for (Iterator names =
                              action.getDestinationNameList().iterator();
                          names.hasNext();) {
                         String name = (String)names.next();
@@ -450,8 +450,8 @@ public class FSMDirector extends Director
                      actions.hasNext();) {
                     AbstractActionsAttribute action =
                         (AbstractActionsAttribute)actions.next();
-                    
-                    for (Iterator names = 
+
+                    for (Iterator names =
                              action.getDestinationNameList().iterator();
                          names.hasNext();) {
                         String name = (String)names.next();
@@ -462,7 +462,7 @@ public class FSMDirector extends Director
                     }
                 }
             }
-        }      
+        }
         return list;
     }
 
@@ -522,30 +522,30 @@ public class FSMDirector extends Director
             // FIXME: handle the multiple enabled transitions
             throw exception;
         }
-        
+
         // If the exception is an InvariantViolationException
         // exception, check if any transition is enabled.
         if (exception instanceof InvariantViolationException) {
-        
+
             FSMActor fsm = getController();
             fsm._readOutputsFromRefinement();
             State st = fsm.currentState();
             Transition tr = fsm._chooseTransition(st.nonpreemptiveTransitionList());
-   
+
             if (tr == null) {
                 ModelErrorHandler container = getContainer();
                 if (container != null) {
-                    
+
                     //The following statement leads to dead loop
                     // because the container will call this method again.
                     //return container.handleModelError(context, exception);
-    
+
                     throw exception;
                 }
             }
 
             if (_debugging) {
-                _debug("ModelError: " + exception.getMessage() 
+                _debug("ModelError: " + exception.getMessage()
                      + " is handled and discarded.");
             }
             return true;
@@ -625,17 +625,17 @@ public class FSMDirector extends Director
         }
         FSMActor controller = getController();
         boolean result = controller.postfire();
-        
+
         // FIXME: the method comments say the refinement will postfired.
         // However, that is not true.
         // Note: we differ the usage of FSMDirector and HSDirector.
-        // I will try to come up with an abstract director and three 
+        // I will try to come up with an abstract director and three
         // concrete directors for hybrid systems, events semantics domain,
         // and HDF domain. Hyzheng 01/25/2004.
         _currentLocalReceiverMap =
             (Map)_localReceiverMaps.get(controller.currentState());
-            
-        // Note, we increment the workspace version such that the 
+
+        // Note, we increment the workspace version such that the
         // io dependency will be reconstructed. This design is based
         // on that each time one transition happens, the new refinement
         // takes place of the modal model for execution, consequently,
@@ -718,7 +718,7 @@ public class FSMDirector extends Director
     public void setCurrentTime(double newTime) throws IllegalActionException {
         _currentTime = newTime;
     }
-    
+
     /** Transfer data from the input port of the container to the ports
      *  connected to the inside of the input port and on the mode controller
      *  or the refinement of its current state. This method will transfer
@@ -806,7 +806,7 @@ public class FSMDirector extends Director
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     // FIXME: Alphabetize the following, and add javadoc comments.
 
     // Build for each state of the mode controller the map from input
@@ -921,7 +921,7 @@ public class FSMDirector extends Director
             throw new IllegalActionException(this, "No controller!");
         }
     }
-    
+
     /** Return the receivers contained by ports connected to the inside
      *  of the given input port and on the mode controller or the
      *  refinement of its current state.
@@ -937,7 +937,7 @@ public class FSMDirector extends Director
         }
         return (Receiver[][])_currentLocalReceiverMap.get(port);
     }
-    
+
     /** Return the last chosen transition.
      *  @return The last chosen transition, or null if there has been none.
      */
@@ -948,7 +948,7 @@ public class FSMDirector extends Director
             return null;
         }
     }
-    
+
     /** Set the current state of this actor.
      *  @param state The state to set.
      *  @exception IllegalActionException If there is no controller.
@@ -976,7 +976,7 @@ public class FSMDirector extends Director
             throw new IllegalActionException(this, "No controller!");
         }
     }
-    
+
     /** Set the value of the shadow variables for input ports of the controller
      *  actor that are defined by output ports of the refinement.
      *  @exception IllegalActionException If a shadow variable cannot take
@@ -987,7 +987,7 @@ public class FSMDirector extends Director
             _controller._readOutputsFromRefinement();
         }
     }
-    
+
     /** Set the value of the shadow variables for input ports of the controller
      *  actor.
      *  @exception IllegalActionException If a shadow variable cannot take

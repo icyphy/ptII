@@ -122,7 +122,7 @@ public class MultiportToSinglePort implements MoMLFilter {
                     // did match, so keep looking
                     _foundChange = false;
                 }
-            } 
+            }
         }
 
         // If you change this class, you should run before and after
@@ -190,7 +190,7 @@ public class MultiportToSinglePort implements MoMLFilter {
     public String toString() {
         StringBuffer results =
             new StringBuffer(getClass().getName()
-                    + ": Update any actor multiports that are now\n" 
+                    + ": Update any actor multiports that are now\n"
                     + "single ports.\n"
                     + "Below are the actors that are affected, along "
                     + "with the port name:"

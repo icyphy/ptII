@@ -155,7 +155,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
         MakefileWriter.addMakefileSubstitution("@extraClassPath@", "");
 
         try {
-            if (model.getDirector() instanceof SDFDirector) {      
+            if (model.getDirector() instanceof SDFDirector) {
                 _inlineSDFDirector(model, modelClass, phaseName, options);
             } else if (model.getDirector() instanceof HSDirector ||
                     model.getDirector() instanceof FSMDirector) {
@@ -170,7 +170,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
         } catch (Exception ex) {
             throw new RuntimeException("Inlining director failed", ex);
         }
-           
+
         // First remove methods that are called on the director.
         // Loop over all the entity classes...
         for (Iterator i = model.deepEntityList().iterator();
@@ -253,7 +253,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
         SootField modelField = new SootField("_GiottoModel",
                 RefType.v(modelClass), Modifier.PUBLIC | Modifier.STATIC);
         modelClass.addField(modelField);
-        
+
         SootClass giottoParameterClass = Scene.v().loadClassAndSupport(
                 "giotto.functionality.table.Parameter");
         SootClass giottoTokenPortVariableClass =
@@ -328,7 +328,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                 Local actorLocal = Jimple.v().newLocal("actor", actorType);
                 body.getLocals().add(actorLocal);
 
-                Local modelLocal = 
+                Local modelLocal =
                     Jimple.v().newLocal("model", RefType.v(modelClass));
                 body.getLocals().add(modelLocal);
 
@@ -537,7 +537,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                 Local actorLocal = Jimple.v().newLocal("actor", actorType);
                 body.getLocals().add(actorLocal);
 
-                Local modelLocal = 
+                Local modelLocal =
                     Jimple.v().newLocal("model", RefType.v(modelClass));
                 body.getLocals().add(modelLocal);
 
@@ -573,13 +573,13 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                 Local initialValueVariableLocal = Jimple.v().newLocal("initialValueVariable",
                         RefType.v(PtolemyUtilities.variableClass));
                 body.getLocals().add(initialValueVariableLocal);
-                
+
                 Parameter initialValueParameter = (Parameter)
                     ((NamedObj) port).getAttribute("initialValue");
                 if (initialValueParameter != null) {
-                    String initialValueNameInContext = 
+                    String initialValueNameInContext =
                         initialValueParameter.getName(entity);
-                    
+
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(
                                     initialValueLocal,
@@ -587,7 +587,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                                             PtolemyUtilities.getAttributeMethod,
                                             StringConstant.v(initialValueNameInContext))),
                             insertPoint);
-                    
+
                     // cast to Variable.
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(
@@ -596,11 +596,11 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                                             initialValueLocal,
                                             RefType.v(PtolemyUtilities.variableClass))),
                             insertPoint);
-                    
+
                     Local tokenLocal = Jimple.v().newLocal("initialValueToken",
                             RefType.v(PtolemyUtilities.tokenClass));
                     body.getLocals().add(tokenLocal);
-                    
+
                     // call getToken.
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(
@@ -609,7 +609,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                                             initialValueVariableLocal,
                                             PtolemyUtilities.variableGetTokenMethod)),
                             insertPoint);
-                    
+
                     // Get the Parameter argument.
                     units.insertBefore(
                             Jimple.v().newAssignStmt(paramLocal,
@@ -654,21 +654,21 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 
             Chain units = body.getUnits();
             Local thisLocal = body.getThisLocal();
-            
+
             // Set the static field pointing to the model.
             units.insertBefore(
                     Jimple.v().newAssignStmt(
                             Jimple.v().newStaticFieldRef(modelField),
                             thisLocal),
                     insertPoint);
-            
+
             // Add code to the beginning of the preinitialize method that
             // initializes the attributes.
 //             ModelTransformer.initializeAttributesBefore(body, insertPoint,
 //                     model, body.getThisLocal(),
 //                     model, body.getThisLocal(),
 //                     modelClass);
-                    
+
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
@@ -916,7 +916,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate = SDFUtilities.getTokenProductionRate(port);
-               
+
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
                 SootField field = modelClass.getFieldByName(fieldName);
@@ -1118,7 +1118,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
 //                     model, body.getThisLocal(),
 //                     model, body.getThisLocal(),
 //                     modelClass);
-            
+
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
@@ -1348,7 +1348,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                  ports.hasNext();) {
                 IOPort port = (IOPort)ports.next();
                 int rate = SDFUtilities.getTokenProductionRate(port);
-                
+
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
                 SootField field = modelClass.getFieldByName(fieldName);
@@ -1531,7 +1531,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                 iterationLimit = token.intValue();
             }
         }
-    
+
         // Inline the director
         {
             // populate the preinitialize method
@@ -1555,14 +1555,14 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                             thisLocal, postfireReturnsField),
                     postfireReturnsLocal),
                     insertPoint);
-            
+
             // Add code to the beginning of the preinitialize method that
             // initializes the attributes.
 //             ModelTransformer.initializeAttributesBefore(body, insertPoint,
 //                     model, body.getThisLocal(),
 //                     model, body.getThisLocal(),
 //                     modelClass);
-     
+
             for (Iterator entities = model.deepEntityList().iterator();
                  entities.hasNext();) {
                 Entity entity = (Entity)entities.next();
@@ -1591,7 +1591,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
             //                   insertPoint);
         }
 
-        SootField iterationField = 
+        SootField iterationField =
             new SootField("_iteration", IntType.v());
         modelClass.addField(iterationField);
 
@@ -1613,7 +1613,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                                         iterationField),
                                 IntConstant.v(0)),
                         insertPoint);
-            }                
+            }
 
             Local actorLocal = Jimple.v().newLocal("actor", actorType);
             body.getLocals().add(actorLocal);
@@ -1697,7 +1697,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                 Local parameterLocal = Jimple.v().newLocal("parameter",
                         fieldType);
                 SootClass fieldClass = fieldType.getSootClass();
-                
+
                 body.getLocals().add(parameterLocal);
                 // Get a reference to the port parameter.
                 units.insertBefore(
@@ -1723,7 +1723,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                 }
                 int rate;
                 rate = SDFUtilities.getTokenConsumptionRate(port);
-               
+
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
                 SootField field = modelClass.getFieldByName(fieldName);
@@ -1919,7 +1919,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                 IOPort port = (IOPort)ports.next();
                 int rate;
                 rate = SDFUtilities.getTokenProductionRate(port);
-               
+
                 String fieldName = ModelTransformer.getFieldNameForPort(
                         port, model);
                 SootField field = modelClass.getFieldByName(fieldName);
@@ -2065,7 +2065,7 @@ public class InlineDirectorTransformer extends SceneTransformer implements HasPh
                         insertPoint);
                 units.insertBefore(endStmt, insertPoint);
             }
-            
+
             units.insertBefore(Jimple.v().newReturnStmt(postfireReturnsLocal),
                     insertPoint);
             LocalSplitter.v().transform(body, phaseName + ".lns");

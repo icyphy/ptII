@@ -65,15 +65,15 @@ public class ModelUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    /** 
+    /**
      * This method takes a url specifying the model to be execute. The
      * <i>args<i> argument is a record token that will be used to set
      * corresponding attributes of the spedified model by
-     * naming match, (see _setAttribute() method). The results of 
+     * naming match, (see _setAttribute() method). The results of
      * executing the model is returned back by setting the value of some
-     * Attributes. In particular, only Attributes 
-     * that have name matches the <i>resultLabels<i> are returned. 
-     * The return result is a RecordToken which has the resultLabels as 
+     * Attributes. In particular, only Attributes
+     * that have name matches the <i>resultLabels<i> are returned.
+     * The return result is a RecordToken which has the resultLabels as
      * its field.
      * @param url The Model url.
      * @param args A set of attributes of the specified model.
@@ -83,7 +83,7 @@ public class ModelUtilities {
      * or failed to execute the model.
      */
     public static synchronized RecordToken executeModel
-            (URL url, RecordToken args, String[] resultLabels) 
+            (URL url, RecordToken args, String[] resultLabels)
              throws IllegalActionException {
         if (url != null) {
             MoMLParser parser = new MoMLParser();
@@ -93,7 +93,7 @@ public class ModelUtilities {
             } catch (Exception ex) {
                 throw new IllegalActionException(
                     ex +
-                    "Failed to pass the model URL." + 
+                    "Failed to pass the model URL." +
                     url.toString());
             }
             if (model instanceof CompositeActor) {
@@ -105,16 +105,16 @@ public class ModelUtilities {
             return null;
         }
     }
-    
-    /** 
-     * This method takes model argument which is type of CompositeActor. 
+
+    /**
+     * This method takes model argument which is type of CompositeActor.
      * The <i>args<i> argument is a record token that will be used to
      * set corresponding attributes of the spedified model by
-     * naming match, (see _setAttribute() method). The results of 
+     * naming match, (see _setAttribute() method). The results of
      * executing the model is returned back by setting the value of some
-     * Attributes. In particular, only Attributes 
-     * that have name matches the <i>resultLabels<i> are returned. 
-     * The return result is a RecordToken which has the resultLabels as 
+     * Attributes. In particular, only Attributes
+     * that have name matches the <i>resultLabels<i> are returned.
+     * The return result is a RecordToken which has the resultLabels as
      * its field.
      * @param model The Model.
      * @param args A set of attributes of the specified model.
@@ -123,7 +123,7 @@ public class ModelUtilities {
      * @exception IllegalActionException If failed to execute the model.
      */
     public static synchronized RecordToken executeModel
-            (CompositeActor model, RecordToken args, 
+            (CompositeActor model, RecordToken args,
             String[] resultLabels) throws IllegalActionException {
         Manager manager = model.getManager();
         if (manager == null) {
@@ -144,14 +144,14 @@ public class ModelUtilities {
 ///////////////////////////////////////////////////////////////////
 ////                        private methods                    ////
 
-/** Iterate over the labelSet of the <i>args<i> argument and 
+/** Iterate over the labelSet of the <i>args<i> argument and
  *  check whether the specified model has Attribute with the
  *  same name of a label. If so, set the value of the attribute
  *  to be the value of that record field.
  *  @exception IllegalActionException If reading the ports or
  *   setting the parameters causes it.
  */
-    private static void _setAttribute(CompositeActor model, 
+    private static void _setAttribute(CompositeActor model,
         RecordToken args) throws IllegalActionException {
         Object[] labels = args.labelSet().toArray();
         int length = args.length();
@@ -171,9 +171,9 @@ public class ModelUtilities {
                 }
             }
         }
-    }    
-    
-/** Iterate over the resultLabels and 
+    }
+
+/** Iterate over the resultLabels and
  *  check whether the specified model has Attribute with the
  *  same name of a label. If so, get the value of the attribute
  *  and return a record token with labels equal to resultLabels
@@ -192,8 +192,8 @@ private static RecordToken _getResult(CompositeActor model,
         Attribute attribute = model.getAttribute(label);
         if (attribute instanceof Variable) {
             value[i] =((Variable) attribute).getToken();
-        } 
-    }    
+        }
+    }
     return new RecordToken(resultLabels, value);
 }
 

@@ -73,7 +73,7 @@ import ptolemy.math.Fraction;
 This class factors code out of the SDF domain, for use in different
 schedulers, so that they can be implemented in a consistent fashion.
 
-@author Stephen Neuendorffer, Shuvra S. Bhattacharyya 
+@author Stephen Neuendorffer, Shuvra S. Bhattacharyya
 @version $Id$
 @since Ptolemy II 0.2
 */
@@ -136,21 +136,21 @@ public abstract class BaseSDFScheduler extends Scheduler {
      * list to the given list.
      */
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
-            Port port, String name, List dependents) 
+            Port port, String name, List dependents)
             throws IllegalActionException {
         if (_debugging && VERBOSE) {
-            _debug("declaring dependency for rate variable " + 
+            _debug("declaring dependency for rate variable " +
                     name + " in port " + port.getFullName());
         }
-        Variable variable = 
+        Variable variable =
             (Variable)SDFUtilities.getRateVariable(port, name);
         DependencyDeclaration declaration = (DependencyDeclaration)
             variable.getAttribute(
-                    "_SDFRateDependencyDeclaration", 
+                    "_SDFRateDependencyDeclaration",
                     DependencyDeclaration.class);
         if (declaration == null) {
             try {
-                declaration = new DependencyDeclaration(variable, 
+                declaration = new DependencyDeclaration(variable,
                         "_SDFRateDependencyDeclaration");
             } catch (NameDuplicationException ex) {
                 // Ignore... should not happen.
@@ -216,7 +216,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                 receiver.getContainer() + " not found in the port " +
                 port.getFullName());
     }
-    
+
     /** Create and set a parameter in each relation according
      *  to the buffer sizes calculated for this system.
      *  @param minimumBufferSizes A map from relation
@@ -226,13 +226,13 @@ public abstract class BaseSDFScheduler extends Scheduler {
         Director director = (Director) getContainer();
         final CompositeActor container =
             (CompositeActor)director.getContainer();
-        ChangeRequest request = 
+        ChangeRequest request =
             new ChangeRequest(this, "Record buffer sizes") {
             protected void _execute() throws KernelException {
                 Iterator relations = container.relationList().iterator();
                 while (relations.hasNext()) {
                     Relation relation = (Relation)relations.next();
-                    Object bufferSizeObject = 
+                    Object bufferSizeObject =
                             minimumBufferSizes.get(relation);
                     if (bufferSizeObject instanceof Integer) {
                         int bufferSize = ((Integer)bufferSizeObject).intValue();
@@ -243,8 +243,8 @@ public abstract class BaseSDFScheduler extends Scheduler {
                                     " with value " + bufferSize);
                         }
                     } else if (bufferSizeObject instanceof String) {
-                        String bufferSizeExpression = (String)bufferSizeObject; 
-                        SDFUtilities._setOrCreate(relation, "bufferSize", 
+                        String bufferSizeExpression = (String)bufferSizeObject;
+                        SDFUtilities._setOrCreate(relation, "bufferSize",
                                "\"" + bufferSizeExpression + "\"");
                         if (_debugging) {
                             _debug("Adding bufferSize parameter to "
@@ -255,7 +255,7 @@ public abstract class BaseSDFScheduler extends Scheduler {
                     } else {
                         throw new InternalErrorException("Invalid value found "
                                 + "in buffer size map.\nValue is of type "
-                                + bufferSizeObject.getClass().getName() 
+                                + bufferSizeObject.getClass().getName()
                                 + ".\nIt should be of type Integer or String.\n"                                );
                     }
                 }
@@ -318,10 +318,10 @@ public abstract class BaseSDFScheduler extends Scheduler {
                 int inferredRate = 0;
                 while (connectedPorts.hasNext()) {
                     IOPort connectedPort = (IOPort) connectedPorts.next();
-                    
+
                     int newRate;
                     if (connectedPort.isOutput()) {
-                        newRate = 
+                        newRate =
                             SDFUtilities.getTokenInitProduction(connectedPort);
                     } else {
                         newRate = 0;
@@ -362,8 +362,8 @@ public abstract class BaseSDFScheduler extends Scheduler {
         Director director = (Director) getContainer();
         final CompositeActor container =
                 (CompositeActor)director.getContainer();
-            
-        ChangeRequest request = 
+
+        ChangeRequest request =
             new ChangeRequest(this, "Record firings per iteration") {
             protected void _execute() throws KernelException {
                 Iterator entities = entityToFiringsPerIteration.keySet().iterator();
@@ -373,8 +373,8 @@ public abstract class BaseSDFScheduler extends Scheduler {
                             ((Integer)entityToFiringsPerIteration.get(entity)).intValue();
                     SDFUtilities._setOrCreate(entity, "firingsPerIteration", firingCount);
                     if (_debugging) {
-                        _debug("Adding firingsPerIteration parameter to " 
-                                + entity.getName() + " with value " 
+                        _debug("Adding firingsPerIteration parameter to "
+                                + entity.getName() + " with value "
                                 + firingCount);
                     }
                 }

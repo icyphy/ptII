@@ -323,7 +323,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
                     getName() + " is not valid because" +
                     " it is a result of divide-by-zero.");
             }
-        } catch (IllegalActionException e) {        
+        } catch (IllegalActionException e) {
             throw new InternalErrorException(getName() +
                     " can't read input." + e.getMessage());
         }
@@ -438,7 +438,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
     }
 
     /** Explicitly declare which inputs and outputs are not dependent.
-     *  
+     *
      */
     public void removeDependencies() {
         removeDependency(input, output);

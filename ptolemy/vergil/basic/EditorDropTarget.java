@@ -92,10 +92,10 @@ public class EditorDropTarget extends DropTarget {
             addDropTargetListener(new DTListener());
         } catch(java.util.TooManyListenersException wow) {}
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-  
+
     /** Return true if the feature is enabled that a
      *  a drop onto an instance of NamedObj results in that NamedObj
      *  containing the dropped object. Otherwise, return false.
@@ -103,7 +103,7 @@ public class EditorDropTarget extends DropTarget {
     public boolean isDropIntoEnabled() {
         return _dropIntoEnabled;
     }
-  
+
     /** If the argument is false, then disable the feature that a
      *  a drop onto an instance of NamedObj results in that NamedObj
      *  containing the dropped object.  If the argument is true, then
@@ -148,7 +148,7 @@ public class EditorDropTarget extends DropTarget {
         /** Remove any highlighting that might be active.
          *  This is called while a drag operation is ongoing, when the mouse
          *  pointer has exited the operable part of the drop site for the
-         *  DropTarget registered with this listener. 
+         *  DropTarget registered with this listener.
          *  @param dtde The drop event.
          */
         public void dragExit(DropTargetEvent dtde) {
@@ -200,11 +200,11 @@ public class EditorDropTarget extends DropTarget {
          *  the container.
          *  This is called when the drag operation has terminated with a
          *  drop on the operable part of the drop site for the DropTarget
-         *  registered with this listener. 
+         *  registered with this listener.
          *  @param dtde The drop event.
          */
         public void drop(DropTargetDropEvent dtde) {
-            
+
             // Unhighlight the target. Do this first in case
             // errors occur... Don't want to leave highlighting.
             if (_highlighted != null) {
@@ -212,12 +212,12 @@ public class EditorDropTarget extends DropTarget {
                 _highlighted = null;
                 _highlightedFigure = null;
             }
-            
+
             // See whether there is a container under the point.
             Point2D originalPoint = SnapConstraint.constrainPoint(
                     dtde.getLocation());
             NamedObj container = _getObjectUnder(originalPoint);
-            
+
             GraphPane pane = ((JGraph)getComponent()).getGraphPane();
 
             if (container == null  || !_dropIntoEnabled) {
@@ -226,13 +226,13 @@ public class EditorDropTarget extends DropTarget {
                 GraphModel model = controller.getGraphModel();
                 container = (NamedObj)model.getRoot();
             }
-            
+
             // Find the location for the dropped objects.
             // Account for the scaling in the pane.
             Point2D transformedPoint = new Point2D.Double();
             pane.getTransformContext().getInverseTransform().transform(
                     originalPoint, transformedPoint);
-            
+
             // Get an iterator over objects to drop.
             Iterator iterator = null;
             if (dtde.isDataFlavorSupported(
@@ -289,7 +289,7 @@ public class EditorDropTarget extends DropTarget {
         }
 
         /** Accept the event if the data is a known key.
-         *  This is called if the user has modified the current drop gesture. 
+         *  This is called if the user has modified the current drop gesture.
          *  @param dtde The drop event.
          */
         public void dropActionChanged(DropTargetDragEvent dtde) {
@@ -308,14 +308,14 @@ public class EditorDropTarget extends DropTarget {
          */
         private Figure _getFigureUnder(Point2D point) {
             GraphPane pane = ((JGraph)getComponent()).getGraphPane();
-                                           
+
             // Account for the scaling in the pane.
             Point2D transformedPoint = new Point2D.Double();
             pane.getTransformContext().getInverseTransform().transform(
                     point, transformedPoint);
-                       
+
             FigureLayer layer = pane.getForegroundLayer();
-           
+
             // Find the figure under the point.
             // NOTE: Unfortunately, FigureLayer.getCurrentFigure() doesn't
             // work with a drop target (I guess it hasn't seen the mouse events),
@@ -343,7 +343,7 @@ public class EditorDropTarget extends DropTarget {
             }
             return null;
         }
-        
+
         /** Return the object under the specified point, or null if there
          *  is none.
          *  @param point The point in the graph pane.
@@ -370,10 +370,10 @@ public class EditorDropTarget extends DropTarget {
 
         // Currently highlighted drop target.
         private NamedObj _highlighted = null;
-        
+
         // Currently highlighted figure.
         private Figure _highlightedFigure = null;
-        
+
         // The renderer used for highlighting.
         private AnimationRenderer _highlighter = null;
     }

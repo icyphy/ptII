@@ -334,7 +334,7 @@ public class HSPortInliner implements PortInliner {
                             tokenType,
                             Modifier.PUBLIC | Modifier.STATIC);
                     _modelClass.addField(field);
-              
+
                     // Tag the field with the type.
                     field.addTag(new TypeTag(type));
 

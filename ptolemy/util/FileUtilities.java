@@ -63,7 +63,7 @@ public class FileUtilities {
     /** Copy sourceURL to destinationFile without doing any byte conversion.
      *  @param sourceURL The source URL
      *  @param destinationFile The destination File.
-     */   
+     */
     public static void binaryCopyURLToFile(URL sourceURL,
             File destinationFile)
             throws IOException {

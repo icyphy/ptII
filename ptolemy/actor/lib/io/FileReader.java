@@ -71,12 +71,12 @@ public class FileReader extends Source {
         super(container, name);
 
         output.setTypeEquals(BaseType.STRING);
-        
+
         fileOrURL = new FileParameter(this, "fileOrURL");
-        
+
         fileOrURLPort = new TypedIOPort(this, "fileOrURL", true, false);
         fileOrURLPort.setTypeEquals(BaseType.STRING);
-        
+
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-25\" y=\"-20\" "
                 + "width=\"50\" height=\"40\" "
@@ -89,7 +89,7 @@ public class FileReader extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** The file name or URL from which to read.  This is a string with
      *  any form accepted by FileParameter.
      *  @see FileParameter
@@ -103,14 +103,14 @@ public class FileReader extends Source {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Output the data read from the file or URL as a string.
      *  @exception IllegalActionException If there is no director or
      *   if reading the file triggers an exception.
      */
     public void fire() throws IllegalActionException  {
         super.fire();
-        
+
         // If the fileOrURL input port is connected and has data, then
         // get the file name from there.
         if (fileOrURLPort.getWidth() > 0) {

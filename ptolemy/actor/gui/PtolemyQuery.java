@@ -377,7 +377,7 @@ public class PtolemyQuery extends Query
         if (change == null || change.getSource() != this) {
             return;
         }
-        
+
         // Restore the parser error handler.
         if (_savedErrorHandler != null) {
             MoMLParser.setErrorHandler(_savedErrorHandler);
@@ -395,7 +395,7 @@ public class PtolemyQuery extends Query
                 return;
             }
             change.setErrorReported(true);
-            
+
             _query = new PtolemyQuery(_handler);
             _query.setTextWidth(getTextWidth());
             _query._isOpenErrorWindow = true;
@@ -594,7 +594,7 @@ public class PtolemyQuery extends Query
             }
         }
     }
-    
+
     /** Return the preferred background color for editing the specified
      *  object.  The default is Color.white, but if the object is an
      *  instance of Parameter and it is in string mode, then a light
@@ -714,7 +714,7 @@ public class PtolemyQuery extends Query
 
     // Saved error handler to restore after change.
     private ErrorHandler _savedErrorHandler = null;
-    
+
     // Background color for string mode edit boxes.
     private static Color _STRING_MODE_BACKGROUND_COLOR
             = new Color(230, 255, 255, 255);

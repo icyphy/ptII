@@ -64,7 +64,7 @@ constructor bytecode that look like avac's constructors
 public class GrimpTransformer extends SceneTransformer {
 
     /** Return an instance of this transformer that will operate on
-     *  the given model.  
+     *  the given model.
      */
     public static GrimpTransformer v() {
         return _instance;

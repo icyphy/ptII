@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 /**
  An actor that register itself to a romote data provide that implements the
  Coordinator inteface and receives data from it.
- 
+
  Specify the ORB initial property with the<i>ORBInitProperties<i>
  paremerter, for example:
  "-ORBInitialHost xyz.eecs.berkeley.edu -ORBInitialPort 1050"
@@ -66,12 +66,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  Specify the name of the coordiantor with <i>coordinatorName<i>, which is
  registed on the name server.
- 
- Specify whether the actor blocks when it haven't receive data with 
+
+ Specify whether the actor blocks when it haven't receive data with
  the <i>blocking<i> parameter.
 
  Specify the name of this client with <i>thisClientName<i>.
- 
+
  See TaskCoordinator.java for the implementation of the coordinator.
 
 @author Yang Zhao
@@ -119,11 +119,11 @@ public class TaskReceiver extends Source {
      *  is StringToken.
      */
     public Parameter coordinatorName;
-    
-    /** The name represents the client application that the instance of 
+
+    /** The name represents the client application that the instance of
      * this actor belongs to. The type of the Parameter
      *  is StringToken.
-     */    
+     */
     public Parameter thisClientName;
 
     /** Indicate whether the actor blocks when it haven't receive
@@ -149,7 +149,7 @@ public class TaskReceiver extends Source {
      /** If the attribute is <i>blocking</i> update the local
      *  cache of the parameter value, else if the attribute is
      *  <i>defaultToken<i> update the type of the output token to
-     *  the be the same type of defaultToken, otherwise pass the 
+     *  the be the same type of defaultToken, otherwise pass the
      *  call to the super class.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -159,7 +159,7 @@ public class TaskReceiver extends Source {
         if (attribute == blocking) {
             _blocking = ((BooleanToken)blocking.getToken()).booleanValue();
         } else if (attribute == defaultToken) {
-            output.setTypeEquals(defaultToken.getType()); 
+            output.setTypeEquals(defaultToken.getType());
         }
         else {
             super.attributeChanged(attribute);
@@ -167,7 +167,7 @@ public class TaskReceiver extends Source {
     }
 
     /** Setup the link to the remote coordinator. This includes creating
-     *  the ORB, initializing the naming service, and resolve the 
+     *  the ORB, initializing the naming service, and resolve the
      *  coordinator from the naming context.
      *  @exception IllegalActionException If any of the above actions
      *  failted.
@@ -255,13 +255,13 @@ public class TaskReceiver extends Source {
                 throw new KernelRuntimeException(this,
                         " failed to unregister itself from the remote " +
                         " TaskCoordinator. " +
-                        " the error message is: " + ex.getMessage());                
+                        " the error message is: " + ex.getMessage());
             } catch (IllegalActionException e) {
                 throw new KernelRuntimeException(this,
                         " gets an error when it tries to get the string value" +
                         " from the thisClientName parameter. " +
-                        " the error message is: " + e.getMessage());                
-            }  
+                        " the error message is: " + e.getMessage());
+            }
         }
         if (_fireIsWaiting) {
              synchronized( _lock) {
@@ -297,7 +297,7 @@ public class TaskReceiver extends Source {
             NameComponent path[] = {namecomp};
             _coordinator =
                    ptolemy.actor.corba.CoordinatorUtil.CoordinatorHelper
-                   .narrow(ncRef.resolve(path));                        
+                   .narrow(ncRef.resolve(path));
             _client = new Client();
             _orb.connect(_client);
             if (_coordinator != null) {
@@ -321,10 +321,10 @@ public class TaskReceiver extends Source {
     ////                         private methods                   ////
 
     private ORB _orb;
-    
+
     // the Client objecte to commute with the remote Coordinator object.
     private Client _client;
-    
+
     // the proxy object of the Coordiantor.
     private Coordinator _coordinator;
 
@@ -342,15 +342,15 @@ public class TaskReceiver extends Source {
 
     //The flag indicates wheather the fire() method is waiting.
     private boolean _fireIsWaiting;
-    
+
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                ////
 
-    /** this inner class implements the Client interface defined in 
+    /** this inner class implements the Client interface defined in
      * Coordinator.idl.
-     */ 
+     */
     private class Client extends _ClientImplBase{
         /**
          * Construct a pushConsumer.
@@ -406,14 +406,14 @@ public class TaskReceiver extends Source {
          */
         public void start() {
             // TODO Auto-generated method stub
-            
+
         }
 
         /* (non-Javadoc)
          * @see ptolemy.actor.corba.CoordinatorUtil.ClientOperations#stop()
          */
         public void stop() {
-            
+
         }
     }
 

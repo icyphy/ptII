@@ -74,13 +74,13 @@ public class TextAttribute extends Attribute {
     public TextAttribute(NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         // Hide the name.
         new Attribute(this, "_hideName");
 
         _icon = new TextIcon(this, "_icon");
         _icon.setPersistent(false);
-        
+
         // Don't use StringParameter here because variable
         // substitution would be strange.
         text = new StringAttribute(this, "text");
@@ -88,7 +88,7 @@ public class TextAttribute extends Attribute {
         TextStyle style = new TextStyle(text, "_style");
         style.height.setExpression("20");
         style.width.setExpression("80");
-        
+
         textSize = new Parameter(this, "textSize");
         textSize.setExpression("14");
         textSize.setTypeEquals(BaseType.INT);
@@ -100,7 +100,7 @@ public class TextAttribute extends Attribute {
         textSize.addChoice("18");
         textSize.addChoice("24");
         textSize.addChoice("32");
-        
+
         textColor = new ColorAttribute(this, "textColor");
         textColor.setExpression("{0.0, 0.0, 1.0, 1.0}");
 
@@ -115,7 +115,7 @@ public class TextAttribute extends Attribute {
         for (int i = 0; i < families.length; i++) {
             fontFamily.addChoice(families[i]);
         }
-        
+
         bold = new Parameter(this, "bold");
         bold.setExpression("false");
         bold.setTypeEquals(BaseType.BOOLEAN);
@@ -132,7 +132,7 @@ public class TextAttribute extends Attribute {
      *  This defaults to false.
      */
     public Parameter bold;
-    
+
     /** The font family. This is a string that defaults to "SansSerif".
      */
     public StringParameter fontFamily;
@@ -141,7 +141,7 @@ public class TextAttribute extends Attribute {
      *  This defaults to false.
      */
     public Parameter italic;
-    
+
     /** The text.  This is a string that defaults to
      *  "Double click to edit text."
      */
@@ -201,13 +201,13 @@ public class TextAttribute extends Attribute {
             super.attributeChanged(attribute);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       protected members                   ////
 
     /** The text icon. */
     protected TextIcon _icon;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 

@@ -86,7 +86,7 @@ public class StringUtilities {
     }
 
     /** Return a string with a maximum line length of <i>length</i>
-     *  characters, limited to the given number of characters. 
+     *  characters, limited to the given number of characters.
      *  If there are more than 10 newlines, then the string is truncated
      *  after 10 lines.
      *  If the string is truncated, an ellipsis will be appended to
@@ -100,7 +100,7 @@ public class StringUtilities {
         // Third argument being true means return the delimiters as tokens.
         StringTokenizer tokenizer = new StringTokenizer(string, "\n", true);
         // If there are more than 10 lines and 10 newlines, return
-        // truncate after the first 20 lines and newlines. 
+        // truncate after the first 20 lines and newlines.
         // This is necessary so that we can deal with very long lines
         // of text without spaces.
         if (tokenizer.countTokens() > 20) {
@@ -108,7 +108,7 @@ public class StringUtilities {
             for (int i = 0; i < 20 && tokenizer.hasMoreTokens(); i++) {
                 results.append(tokenizer.nextToken());
             }
-            results.append("..."); 
+            results.append("...");
             string = results.toString();
         }
 
@@ -193,9 +193,9 @@ public class StringUtilities {
             property = System.getProperty(propertyName);
         } catch (SecurityException ex) {
             if (!propertyName.equals("ptolemy.ptII.dir")) {
-                // Constants.java depends on this when running with 
+                // Constants.java depends on this when running with
                 // -sandbox.
-                SecurityException security = 
+                SecurityException security =
                     new SecurityException("Could not find '"
                         + propertyName + "' System property");
                 security.initCause(ex);
@@ -303,7 +303,7 @@ public class StringUtilities {
 
         return property;
     }
-    
+
     /** Return a string representing the name of the file expected to
      *  contain the source code for the specified object.  This method
      *  simply replaces "." with "/" and appends ".java" to the class
@@ -378,7 +378,7 @@ public class StringUtilities {
 
     /**  If the string is longer than 79 characters, split it up by
      *  displaying adding newlines in all newline delimited substrings
-     *  that are longer than 79 characters. 
+     *  that are longer than 79 characters.
      *  If the <i>longName</i> argument is null, then the string
      *  "<Unnamed>" is returned.
      *  @see #abbreviate(String longName)
@@ -496,7 +496,7 @@ public class StringUtilities {
             return new URL(name);
         }
     }
-    
+
     /** Replace all occurrences of <i>pattern</i> in the specified
      *  string with <i>replacement</i>.  Note that the pattern is NOT
      *  a regular expression, and that relative to the
@@ -532,17 +532,17 @@ public class StringUtilities {
      *  we use the file system to find the canonical names of the files.
      *  For this to work, <i>prefix<i> and <i>string</i> should name
      *  files that exist, see java.io.File.getCanonicalFile() for details.
-     * 
+     *
      *  <p>If <i>prefix</i> is not a prefix of <i>string</i>, then
      *  we return <i>string<i>
-     *  
+     *
      *  @param prefix The prefix string, for example, "c:/ptII".
      *  @param string The string to be substituted, for example,
      *  "c:/ptII/ptolemy".
      *  @param replacement The replacement to be substituted in, for example,
      *  "$PTII"
      *  @return The possibly substituted string.
-     */   
+     */
     public static String substituteFilePrefix(String prefix,
             String string, String replacement) {
 
@@ -737,17 +737,17 @@ public class StringUtilities {
 
     // If you change these, be sure to try running vergil on
     // a HSIF moml file
-    // vergil ../hsif/demo/SwimmingPool/SwimmingPool.xml 
-    /** Maximum length in characters of a long string before 
+    // vergil ../hsif/demo/SwimmingPool/SwimmingPool.xml
+    /** Maximum length in characters of a long string before
      *  {@link #ellipse(String, int)} truncates and add a
      *  trailing . . .
-     */ 
+     */
     public static final int ELLIPSIS_LENGTH_LONG = 2000;
 
-    /** Maximum length in characters of a short string before 
+    /** Maximum length in characters of a short string before
      *  {@link #ellipse(String, int)} truncates and add a
      *  trailing . . .
-     */ 
+     */
     public static final int ELLIPSIS_LENGTH_SHORT = 400;
 
     /** Location of Application preferences such as the user library.

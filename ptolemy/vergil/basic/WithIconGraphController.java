@@ -70,7 +70,7 @@ and "Remove Custom Icon".  This also adds a port controller.
 @since Ptolemy II 2.0
 */
 public abstract class WithIconGraphController extends BasicGraphController {
-    
+
     /** Create a new controller.
      */
     public WithIconGraphController() {
@@ -129,7 +129,7 @@ public abstract class WithIconGraphController extends BasicGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-            
+
     /** The edit custom icon action. */
     protected static EditIconAction _editIconAction
             = new EditIconAction();

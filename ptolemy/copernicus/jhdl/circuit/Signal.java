@@ -43,7 +43,7 @@ import soot.jimple.*;
 import soot.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
 
 @author Mike Wirthlin
@@ -52,7 +52,7 @@ import soot.*;
 */
 
 interface Signal  {
-    
+
     public int getSignalWidth();
     public void setSignalWidth(int width);
     public boolean isResolved();

@@ -149,7 +149,7 @@ public class DoubleToken extends ScalarToken {
         if (object.getClass() != getClass()) {
             return false;
         }
-        
+
         if (((DoubleToken)object).doubleValue() == _value) {
             return true;
         }

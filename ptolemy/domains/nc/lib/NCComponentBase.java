@@ -88,10 +88,10 @@ public class NCComponentBase extends AtomicActor {
         super(container, name);
         _init();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** The source code file or URL. */
     public FileParameter source;
 

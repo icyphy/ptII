@@ -137,7 +137,7 @@ public class Copernicus {
     public Copernicus(String args[]) throws Exception {
         // Parse the command-line arguments
         _parseArgs(args);
-        
+
         if (_modelPath == null) {
             throw new RuntimeException("No model found in command line " +
                     "arguments.\nRun 'copernicus -help' for information " +
@@ -146,14 +146,14 @@ public class Copernicus {
 
         // Parse the model.
         CompositeActor toplevel = readInModel(_modelPath);
-        
-        _generatorAttribute = 
+
+        _generatorAttribute =
             (GeneratorAttribute)toplevel.getAttribute(GENERATOR_NAME);
         if (_generatorAttribute == null) {
             _generatorAttribute =
                 new GeneratorAttribute(toplevel, GENERATOR_NAME);
             _generatorAttribute.initialize();
-         
+
             // Parse the file named by the modelPath Parameter and update
             // parameters.  FIXME: Is this necessary?
             // _generatorAttribute.sanityCheckAndUpdateParameters(_modelPath);
@@ -171,7 +171,7 @@ public class Copernicus {
         // For example, if the user changes ptIIUserDirectory, then
         // we need to change ptIIUserDirectoryAsURL.
         _generatorAttribute.sanityCheckAndUpdateParameters(_modelPath);
-        
+
         // See if we are redirecting the output.
         StringParameter output = (StringParameter)
             _generatorAttribute.getAttribute("output");
@@ -272,7 +272,7 @@ public class Copernicus {
 //                             + model.getMoMLInfo().source
 //                             + "': " + xml);
 //             }
-            
+
            //  if (modelClass != null) {
 //                 model = modelClass;
 //             }
@@ -284,7 +284,7 @@ public class Copernicus {
             Class codeGeneratorClass = Class.forName(codeGeneratorClassName);
             KernelMain codeGenerator = (KernelMain)
                 codeGeneratorClass.newInstance();
-     
+
             // Compile the model.
             codeGenerator.compile(
                     model.getName(),
@@ -566,7 +566,7 @@ public class Copernicus {
                     + "' as a top level model in \n"
                     + modelURL + "!");
         }
-        
+
         // If the name of the toplevel is the empty string, change it to
         // the basename of the file.
         // FIXME: is this correct for filenames?
@@ -578,7 +578,7 @@ public class Copernicus {
             }
             toplevel.setName(baseName);
         }
-        
+
         // Make the name follow Java initializer naming conventions.
         toplevel.setName(StringUtilities.sanitizeName(toplevel.getName()));
 
@@ -776,7 +776,7 @@ public class Copernicus {
     /** Save arguments that were parsed in the generatorAttribute of
      * the model.
      */
-    protected void _saveParsedArgs() throws Exception { 
+    protected void _saveParsedArgs() throws Exception {
         _generatorAttribute.updateModelAttributes(_modelPath);
 
         // Check saved options to see whether any is setting an attribute.
@@ -806,7 +806,7 @@ public class Copernicus {
             }
         }
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -946,7 +946,7 @@ public class Copernicus {
                 //String prefix = ((_stream == System.err) ? "Copernicus._StreamReaderThread() Writing to STDERR: " : "");
                 String line = null;
                 while ( (line = bufferedReader.readLine()) != null) {
-                    
+
                     _stream.println(/*prefix + */ line);
                 }
             } catch (IOException ioe) {

@@ -79,19 +79,19 @@ public class TwoPort extends TypedAtomicActor {
         outrate2 = new Parameter(this, "outrate2", new IntToken(1));
         _outrate2 = 1;
 
-        input1_tokenConsumptionRate = 
+        input1_tokenConsumptionRate =
             new Parameter(input1, "tokenConsumptionRate");
         input1_tokenConsumptionRate.setExpression("inrate1");
-        
-        input2_tokenConsumptionRate = 
+
+        input2_tokenConsumptionRate =
             new Parameter(input2, "tokenConsumptionRate");
         input2_tokenConsumptionRate.setExpression("inrate2");
 
-        output1_tokenProductionRate = 
+        output1_tokenProductionRate =
             new Parameter(output1, "tokenProductionRate");
         output1_tokenProductionRate.setExpression("outrate1");
 
-        output2_tokenProductionRate = 
+        output2_tokenProductionRate =
             new Parameter(output2, "tokenProductionRate");
         output2_tokenProductionRate.setExpression("outrate2");
     }
@@ -133,7 +133,7 @@ public class TwoPort extends TypedAtomicActor {
 
     public final void fire() throws IllegalActionException  {
         int i;
-        
+
         _inrate1 = ((IntToken)inrate1.getToken()).intValue();
         _inrate2 = ((IntToken)inrate2.getToken()).intValue();
         _outrate1 = ((IntToken)outrate1.getToken()).intValue();

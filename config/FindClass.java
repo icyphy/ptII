@@ -39,7 +39,7 @@ import java.net.URL;
  */
 public class FindClass {
     /** Given a dot separated class name, return the location of the
-     *  class in the classpath.     
+     *  class in the classpath.
      *  For example:
      *  java FindClass javax.media.CaptureDeviceInfo
      */
@@ -61,7 +61,7 @@ public class FindClass {
         String classNamePath = className.replace('.', '/') + ".class";
         URL entryURL = refClass.getClassLoader().getResource(classNamePath);
         if (entryURL.toString().startsWith("jar:file:")) {
-            // The class was found in a jar file, so return 
+            // The class was found in a jar file, so return
             // that jar file
             // Test this with:
             // java FindClass javax.media.CaptureDeviceInfo
@@ -70,10 +70,10 @@ public class FindClass {
             String shortJarFile = longJarFile.substring(0,
                     longJarFile.indexOf("!/"));
             URL jarFileURL = new URL(shortJarFile);
-            
+
             File jarFileURLFile = new File(jarFileURL.getFile()
                     .toString().replaceAll("%20", " "));
-            
+
             System.out.println(jarFileURLFile.getCanonicalPath()
                     .replace('\\', '/'));
 
@@ -86,7 +86,7 @@ public class FindClass {
             System.out.println(classFile.getCanonicalPath()
                     .replace('\\', '/'));
         } else {
-            System.out.println(entryURL);            
+            System.out.println(entryURL);
         }
     }
 }

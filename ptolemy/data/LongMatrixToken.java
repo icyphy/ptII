@@ -381,7 +381,7 @@ public class LongMatrixToken extends MatrixToken {
      */
     public long[][] longMatrix() {
         return LongMatrixMath.toMatrixFromArray(
-                _value, _rowCount, _columnCount); 
+                _value, _rowCount, _columnCount);
     }
 
     /** Return a new Token representing the left multiplicative
@@ -412,7 +412,7 @@ public class LongMatrixToken extends MatrixToken {
     public Token oneRight() {
         try {
             return new LongMatrixToken(LongMatrixMath.identity(_columnCount),
-                    DO_NOT_COPY);  
+                    DO_NOT_COPY);
         } catch (IllegalActionException illegalAction) {
             // should not happen
             throw new InternalErrorException("LongMatrixToken.oneRight: "

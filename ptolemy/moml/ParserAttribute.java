@@ -86,7 +86,7 @@ public class ParserAttribute extends SingletonAttribute {
         }
         return _parser;
     }
-    
+
     /** Get a parser for the specified object. This searches up the
      *  hierarchy until it finds a container of the specified object
      *  that contains an instance of ParserAttribute. If none is

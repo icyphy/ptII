@@ -129,7 +129,7 @@ public class FFT extends SDFTransformer {
         super.fire();
         Token[] inTokenArray = input.get(0, _transformSize);
         for (int i = 0; i < _transformSize; i++) {
-            _inComplexArray[i] = 
+            _inComplexArray[i] =
                 ((ComplexToken)inTokenArray[i]).complexValue();
         }
         Complex[] outComplexArray =

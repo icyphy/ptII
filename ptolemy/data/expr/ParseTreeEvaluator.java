@@ -261,7 +261,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         if ( functionName != null && _scope != null) {
             value = _scope.get(node.getFunctionName());
         }
-        
+
         // The first child contains the function name as an id.  It is
         // ignored, and not evaluated unless necessary.
         int argCount = node.jjtGetNumChildren() - 1;
@@ -281,7 +281,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
             // The value of the first child should be either a FunctionToken,
             // an ArrayToken, or a MatrixToken.
             ptolemy.data.Token result;
-                        
+
             // Evaluate it, if necessary.
             if (value == null) {
                 value = _evaluateChild(node, 0);
@@ -316,7 +316,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                             + "arguments when applying function "
                             + value.toString());
                 }
-           
+
                 result = function.apply(argValues);
             } else {
                 // the value cannot be indexed or applied
@@ -495,7 +495,7 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
         // scope.
         ptolemy.data.Token value = null;
         if (_scope != null) {
-            value = _scope.get(name);           
+            value = _scope.get(name);
         }
 
         // Look up for constants.

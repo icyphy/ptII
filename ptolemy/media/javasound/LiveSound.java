@@ -264,7 +264,7 @@ public class LiveSound {
      *  @exception IllegalStateException If audio playback is currently
      *  inactive. That is, if startPlayback() has not yet been called
      *  or if stopPlayback() has already been called.
-     * 
+     *
      *  @exception IOException If the calling program does not have permission
      *  to access the audio playback resources.
      */
@@ -316,7 +316,7 @@ public class LiveSound {
      *  channel.
      *
      *  @return The internal buffer size in samples per channel.
-     * 
+     *
      *  @exception IllegalStateException If audio capture is inactive.
      */
     public static int getBufferSizeCapture() throws IllegalStateException {
@@ -324,7 +324,7 @@ public class LiveSound {
             // FIXME check this division operation?
             return _targetLine.getBufferSize() / _frameSizeInBytes;
         } else {
-            throw new IllegalStateException("LiveSound: " + 
+            throw new IllegalStateException("LiveSound: " +
                     "getBufferSizeCapture(), capture is probably inactive." +
                     "Try to startCapture().");
         }
@@ -334,7 +334,7 @@ public class LiveSound {
      *  channel.
      *
      *  @return The internal buffer size in samples per channel.
-     * 
+     *
      *  @exception IllegalStateException If audio playback is inactive.
      */
     public static int getBufferSizePlayback() {
@@ -342,7 +342,7 @@ public class LiveSound {
             // FIXME check this division operation?
             return _sourceLine.getBufferSize() / _frameSizeInBytes;
         } else {
-            throw new IllegalStateException("LiveSound: " + 
+            throw new IllegalStateException("LiveSound: " +
                     "getBufferSizePlayback(), playback is probably inactive." +
                     "Try to startPlayback().");
         }
@@ -426,7 +426,7 @@ public class LiveSound {
         if (_debug) {
             System.out.println("LiveSound: getSamples(): invoked");
         }
-       
+
         // Real-time capture.
         int numBytesRead = _targetLine.read(_captureData, 0,
                 _transferSize * _frameSizeInBytes);
@@ -437,11 +437,11 @@ public class LiveSound {
             // Reallocate
             _audioInDoubleArray = new double[_channels][_transferSize];
         }
-        
+
         if (numBytesRead == _captureData.length) {
             // Convert byte array to double array.
             _byteArrayToDoubleArray(
-                    _audioInDoubleArray, 
+                    _audioInDoubleArray,
                     _captureData,
                     _bytesPerSample,
                     _channels);
@@ -558,7 +558,7 @@ public class LiveSound {
                 samplesArray,
                 _bytesPerSample,
                 _channels);
-        
+
         // Note: _playbackData is a byte array containing data to
         // be written to the output device.
         // Note: consumptionRate is amount of data to write, in bytes.
@@ -1039,7 +1039,7 @@ public class LiveSound {
             int bytesPerSample,
             int channels) {
         int lengthInSamples = byteArray.length / (bytesPerSample*channels);
-      
+
         //double maxSampleReciprocal = 1/(Math.pow(2, 8 * bytesPerSample - 1));
         // Could use above line, but hopefully, code below will
         // be faster.
@@ -1091,7 +1091,7 @@ public class LiveSound {
                 case 2:
                     result <<= 8;
                     result += _captureBytes[j++] | 0xff;
-                }  
+                }
                 doubleArray[currChannel][currSamp] =
                     ((double) result * maxSampleReciprocal);
             }
@@ -1145,7 +1145,7 @@ public class LiveSound {
             // Should not happen.
             maxSample = 0;
         }
-      
+
         // Check if we need to reallocate.
         if (bytesPerSample != _playbackBytes.length) {
             _playbackBytes = new byte[bytesPerSample];
@@ -1162,7 +1162,7 @@ public class LiveSound {
                     sample = 1.0;
                 } else if (sample <= -1.0) {
                     sample = -1.0;
-                } 
+                }
                 // signed integer representation of current sample of the
                 // current channel.
                 // Note: Floor instead of cast to remove deadrange at zero.
@@ -1187,7 +1187,7 @@ public class LiveSound {
                 // the linear signed pcm big endian formatted byte array.
                 for (int i = 0; i < bytesPerSample; i += 1) {
                     byteArray[currSamp * bytesPerSample * channels +
-                            bytesPerSample * currChannel + i] = 
+                            bytesPerSample * currChannel + i] =
                         _playbackBytes[i];
                 }
             }
@@ -1254,7 +1254,7 @@ public class LiveSound {
         // Array of audio samples in byte format.
         _captureData = new byte[_transferSize * _frameSizeInBytes];
         _audioInDoubleArray = new double[_channels][_transferSize];
- 
+
         _bytesPerSample = _bitsPerSample / 8;
         // Start the target data line
         _targetLine.start();
@@ -1270,7 +1270,7 @@ public class LiveSound {
                 _bitsPerSample, _channels, signed, bigEndian);
 
         _frameSizeInBytes = format.getFrameSize();
-      
+
         DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
                 format,
                 AudioSystem.NOT_SPECIFIED);
@@ -1282,7 +1282,7 @@ public class LiveSound {
             // Open line and suggest a buffer size (in bytes) to use or
             // the internal audio buffer.
             _sourceLine.open(format, _bufferSize * _frameSizeInBytes);
-   
+
         } catch (LineUnavailableException ex) {
             throw new IOException("Unable to open the line for " +
                     "real-time audio playback: " + ex);

@@ -43,10 +43,10 @@ import soot.jimple.*;
 import soot.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
  * An interface that specifies the resolve method (for bit-width
- * resolution). 
+ * resolution).
  *
 @author Mike Wirthlin
 @version $Id$
@@ -54,7 +54,7 @@ import soot.*;
 */
 
 interface Resolve {
-    
+
     public boolean resolve();
 
 }

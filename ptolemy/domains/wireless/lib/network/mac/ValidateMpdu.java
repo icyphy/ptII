@@ -45,11 +45,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //
 //// ValidateMpdu
 /**
-ValidateMpdu class checks the status field of the RxEnd message. If it indicates 
+ValidateMpdu class checks the status field of the RxEnd message. If it indicates
 no error, the received data is forwarded to FilterMpdu process. Otherwise,
 the data is dropped and ChannelState process will be notified of using EIFS
 as IFS (interframe space). In the case of correctly received data, this class
-also check its data type. If it is a RTS packet, a timer is set. The duration 
+also check its data type. If it is a RTS packet, a timer is set. The duration
 is set to be the time needed to receive a CTS, plus some guard time. If no CTS
 is received before this timer expires, a RTSTimeout signal is sent to ChannelState
 process, which will clear the channel reservation made earlier by the above
@@ -60,7 +60,7 @@ RTS packet.
 */
 
 public class ValidateMpdu extends MACActorBase {
-   
+
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -77,8 +77,8 @@ public class ValidateMpdu extends MACActorBase {
     public ValidateMpdu(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-       
-     
+
+
         // create ports
         fromPHYLayer =new TypedIOPort(this, "fromPHYLayer", true, false);
         fromPHYLayer.setTypeEquals(BaseType.GENERAL);
@@ -88,7 +88,7 @@ public class ValidateMpdu extends MACActorBase {
 
         toFilterMpdu =new TypedIOPort(this, "toFilterMpdu", false,true);
         toFilterMpdu.setTypeEquals(BaseType.GENERAL);
-       
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -125,7 +125,7 @@ public class ValidateMpdu extends MACActorBase {
 		    if (kind==RtsTimeout)
 		    { // send RtsTimeout message to ChannelState process
 			    Token[] values ={
-			          new IntToken(RtsTimeout)};			       
+			          new IntToken(RtsTimeout)};
 			    RecordToken msgout =new RecordToken(RtsTimeoutMsgFields, values);
 			    toChannelState.send(0, msgout);
 		    } else if  (fromPHYLayer.hasToken(0)) {
@@ -156,7 +156,7 @@ public class ValidateMpdu extends MACActorBase {
 			        if ( ((IntToken)msg.get("status")).intValue()==NoError)
 				    {
 				        // if the received message is RTS, set RtsTimeout timer
-				        if (((IntToken)_pdu.get("Type")).intValue()==ControlType 
+				        if (((IntToken)_pdu.get("Type")).intValue()==ControlType
 				            && ((IntToken)_pdu.get("Subtype")).intValue()==Rts)
 				        {
                             _dRts=2*_aSifsTime+2*_aSlotTime+_sAckCtsLng/_rxRate+
@@ -169,14 +169,14 @@ public class ValidateMpdu extends MACActorBase {
 				                _pdu,
 				               new DoubleToken(_endRx),
 				               new IntToken(_rxRate)};
-				        RecordToken msgout = 
+				        RecordToken msgout =
                                 new RecordToken(RxMpduMsgFields, RxMpduvalues);
-				        // forward the packet to FilterMpdu process 
+				        // forward the packet to FilterMpdu process
 				        toFilterMpdu.send(0, msgout);
 				        // use DIFS as IFS for normal packets
 				        UseIfs=UseDifs;
 				    } else {
-				        // use EIFS as IFS if a packet is corrupted 
+				        // use EIFS as IFS if a packet is corrupted
 				        UseIfs=UseEifs;
 				    }
 
@@ -217,8 +217,8 @@ public class ValidateMpdu extends MACActorBase {
     private int _dRts;
     private int _rxRate;
     private double _endRx = 0.0;
-    private RecordToken _pdu; 
-    private Timer _timer;  
+    private RecordToken _pdu;
+    private Timer _timer;
     private int _D1;
 
     // define states in FSM

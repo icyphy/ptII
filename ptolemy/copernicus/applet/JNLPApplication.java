@@ -60,9 +60,9 @@ we create these wrapper classes that call the appropriate main class.
 public class JNLPApplication {
 
     /** Execute one or more models.
-     *  @param args The arguments to pass to 
+     *  @param args The arguments to pass to
      * {@link ptolemy.actor.gui.PtExecuteApplication}.
-     *  Typically the argument names a MoML file. 
+     *  Typically the argument names a MoML file.
      */
     public static void main(final String [] args) {
         // See the class comment of MenuApplication

@@ -1211,7 +1211,7 @@ public class UtilityFunctions {
         Arrays.sort(value, _DESCENDING);
         return new ArrayToken(value);
     }
-    
+
     /** Return the (exact) return type of the sortDescending function above.
      *  If the argument is an array type with elements that are strings
      *  or scalars other than complex, then return the argument;
@@ -1222,7 +1222,7 @@ public class UtilityFunctions {
     public static Type sortDescendingReturnType(Type type) {
         return sortReturnType(type);
     }
-        
+
     /** Return the sum of the elements in the specified array.
      *  This method is polymorphic in that it can sum any array
      *  whose elements support addition.

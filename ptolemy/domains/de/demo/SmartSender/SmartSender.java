@@ -80,7 +80,7 @@ or any domain that respects fireAt() calls.
 @version $Id$
 */
 public class SmartSender extends TypedAtomicActor {
-    
+
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
@@ -149,7 +149,7 @@ public class SmartSender extends TypedAtomicActor {
                             if (port instanceof IOPort
                                     && ((IOPort) port).isInput()
                                     && ((IOPort) port).getWidth() == 0) {
-                                    
+
                                 container.connect(output, (IOPort)port);
                                 return;
                             }
@@ -172,7 +172,7 @@ public class SmartSender extends TypedAtomicActor {
 
         _count = 1;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 

@@ -171,14 +171,14 @@ public class TimedDelay extends DETransformer {
         return super.postfire();
     }
 
-   
+
     /** Explicitly declare which inputs and outputs are not dependent.
-     *  
+     *
      */
     public void removeDependencies() {
         removeDependency(input, output);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -287,7 +287,7 @@ public class FairDFDirector extends Director {
         public void clear() {
             queue.clear();
         }
-        
+
         public void put(Token token) throws NoRoomException {
             queue.add(token);
             added += 1;

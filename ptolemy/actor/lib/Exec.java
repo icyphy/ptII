@@ -120,7 +120,7 @@ public class Exec extends TypedAtomicActor {
                 new StringToken("echo \"Hello, world.\""));
         // Make command be a StringParameter (no surrounding double quotes).
         command.setStringMode(true);
-                
+
         directory = new FileParameter(this, "directory");
         directory.setExpression("$CWD");
         // Hide the directory parameter.
@@ -129,7 +129,7 @@ public class Exec extends TypedAtomicActor {
         environment = new Parameter(this, "environment");
         String [] labels = new String [] {"name", "value"};
         Type [] values = new Type [] {BaseType.STRING, BaseType.STRING};
-            
+
         // An array of records {{name="", value=""}}
         environment.setTypeEquals(
                 new ArrayType(new RecordType(labels, values)));
@@ -165,13 +165,13 @@ public class Exec extends TypedAtomicActor {
      */
     public PortParameter command;
 
-    /** The directory in which to execute the command. 
-     *   
+    /** The directory in which to execute the command.
+     *
      *  <p> This parameter is an Expert mode parameter, so it is
      *  usually hidden.  To edit it, right click on the actor, select
      *  'Configure', then hit the 'Preferences' button and select
      *  'Expert Mode'.
-     *   
+     *
      *  <p>This parameter is read each time the subprocess is started
      *  in fire(). Once the subprocess is running, this parameter is not
      *  read again until fire() is called again.
@@ -182,17 +182,17 @@ public class Exec extends TypedAtomicActor {
      *  directory.  Note that if we are running inside a menu launched
      *  application, then ptolemy.actor.gui.jnlp.MenuApplication will
      *  change user.dir to be the value of user.home, which is the
-     *  name of the user's home directory.  
+     *  name of the user's home directory.
      */
     public FileParameter directory;
 
     /** The environment in which to execute the command.
-     *   
+     *
      *  <p> This parameter is an Expert mode parameter, so it is
      *  usually hidden.  To edit it, right click on the actor, select
      *  'Configure', then hit the 'Preferences' button and select
      *  'Expert Mode'.
-     *   
+     *
      *  <p>This parameter is read each time the subprocess is started
      *  in fire(). Once the subprocess is running, this parameter is not
      *  read again until fire() is called again.
@@ -262,7 +262,7 @@ public class Exec extends TypedAtomicActor {
      *  string is sent to the appropriate port(s).
      *
      *  @exception IllegalActionException If the subprocess cannot be
-     *  started, if the input of the subprocess cannot be written, 
+     *  started, if the input of the subprocess cannot be written,
      *  if the subprocess gets interrupted, or if the return value
      *  of the process is non-zero.
      */
@@ -294,14 +294,14 @@ public class Exec extends TypedAtomicActor {
         try {
             // The next line waits for the subprocess to finish.
             int processReturnCode = _process.waitFor();
-            
+
             if (processReturnCode != 0) {
                 // We could have a parameter that would enable
                 // or disable this.
                 throw new IllegalActionException(this,
                         "Executing command \""
                         + ((StringToken)command.getToken()).stringValue()
-                        + "\" returned a non-zero return value of " 
+                        + "\" returned a non-zero return value of "
                         + processReturnCode);
             }
 
@@ -312,7 +312,7 @@ public class Exec extends TypedAtomicActor {
 
         String outputString = _outputGobbler.getAndReset();
         String errorString = _errorGobbler.getAndReset();
-        
+
         if (_debugging) {
             _debug("Exec: Error: '" + errorString + "'");
             _debug("Exec: Output: '" + outputString + "'");
@@ -331,7 +331,7 @@ public class Exec extends TypedAtomicActor {
         try {
             _terminateProcess();
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex); 
+            throw new InternalErrorException(ex);
         }
     }
 
@@ -343,7 +343,7 @@ public class Exec extends TypedAtomicActor {
         try {
             _terminateProcess();
         } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex); 
+            throw new InternalErrorException(ex);
         }
     }
 
@@ -551,7 +551,7 @@ public class Exec extends TypedAtomicActor {
             int length; // Number of characters read.
 
             try {
-                // Oddly, InputStreamReader.read() will return -1 
+                // Oddly, InputStreamReader.read() will return -1
                 // if there is no data present, but the string can still
                 // read.
                 while ((length = _inputStreamReader.read(chars, 0, 80))
@@ -564,7 +564,7 @@ public class Exec extends TypedAtomicActor {
                         // we already read the data.
                         _debug("_read(): Gobbler '" + getName()
                                 + "' Ready: " + _inputStreamReader.ready()
-                                + " Value: '" 
+                                + " Value: '"
                                 + String.valueOf(chars, 0, length) + "'");
                     }
 

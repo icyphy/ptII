@@ -54,18 +54,18 @@ public class OnePort extends TypedAtomicActor {
         inrate = new Parameter(this, "inrate", new IntToken(1));
         _inrate = 1;
 
-        input_tokenConsumptionRate = 
+        input_tokenConsumptionRate =
             new Parameter(input, "tokenConsumptionRate");
         input_tokenConsumptionRate.setExpression("inrate");
-        
+
 
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
         output.setTypeSameAs(input);
         outrate = new Parameter(this, "outrate", new IntToken(1));
         _outrate = 1;
-        
-        output_tokenProductionRate = 
+
+        output_tokenProductionRate =
             new Parameter(input, "tokenProductionRate");
         output_tokenProductionRate.setExpression("outrate");
 

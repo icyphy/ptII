@@ -230,7 +230,7 @@ public class SRReceiver extends AbstractReceiver {
                         _lastKnownStatus = _known;
                         return true;
                     }
-                } 
+                }
             }
             return false;
         } else {

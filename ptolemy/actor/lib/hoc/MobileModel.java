@@ -88,7 +88,7 @@ public class MobileModel extends TypedCompositeActor {
         refresh = new Parameter(this, "refresh", new BooleanToken(true));
         refresh.setTypeEquals(BaseType.BOOLEAN);
         connectPorts = new Parameter(this, "connectPorts", new BooleanToken(true));
-        connectPorts.setTypeEquals(BaseType.BOOLEAN);                
+        connectPorts.setTypeEquals(BaseType.BOOLEAN);
         // create a defaultDirector. Without this director, it may get
         // an infinite loop when preinitialize, etc. is called in case the
         // specified director is not successfully constructed. Even when the
@@ -161,18 +161,18 @@ public class MobileModel extends TypedCompositeActor {
      *
      */
     public Parameter director;
-    
+
     /** This Parameter specifies whether to replace the previous model
      *  when there is model changing request or not. The type of thie
      *  parameter is boolean. Select this parameter if it does replace.
      */
     public Parameter refresh;
 
-    /** the Parameter specifies whether to connect the input and output 
+    /** the Parameter specifies whether to connect the input and output
      * to the inside model. The type of this parameter is boolean.
      */
     public Parameter connectPorts;
-    
+
     /** The default output token when there is no inside model
      *  defined. The default value is 0, and the default type is
      *  int. Notice that the type of the output port
@@ -266,7 +266,7 @@ public class MobileModel extends TypedCompositeActor {
                     throw new IllegalActionException(this, ex,
                             "Problem parsing " + str.stringValue());
                 }
-        }               
+        }
         super.fire();
         }
 
@@ -334,14 +334,14 @@ public class MobileModel extends TypedCompositeActor {
                 _debug("issues change request to modify the model");
             }
             _moml = null;
-           
-            // the model topology changes, 
+
+            // the model topology changes,
             _modelChanged = true;
 
             //By calling fireAt to register an event at the current time, so that the outside
             // time won't advance. This is necessary to allow the newly instantiated sub-model
-            // to register event that should happen before the next outside event. 
-            
+            // to register event that should happen before the next outside event.
+
             // FIXME: No, this won't work. Because this model is a composite actor,
             // if it has no inputs at the boundary, the prefire method returns false,
             // and it won't be fired.
@@ -361,13 +361,13 @@ public class MobileModel extends TypedCompositeActor {
         if (_debugging) {
             _debug("Invoking prefire");
         }
-        
+
         // if model just changed, there is a pure event registered
         // for this model. this model needs firing immediately.
         // FIXME:
         // a correct solution is to register a pure event to local event queue
         // and another pure event to upper level.
-        // Again, this involves hierarchical execution .... 
+        // Again, this involves hierarchical execution ....
         if (_modelChanged) {
             _modelChanged = false;
             return true;
@@ -388,7 +388,7 @@ public class MobileModel extends TypedCompositeActor {
     public void preinitialize() throws IllegalActionException {
        _director = null;
        _createDirector();
-       
+
        _moml = null;
        try {
            _parser = new MoMLParser();
@@ -406,7 +406,7 @@ public class MobileModel extends TypedCompositeActor {
            throw new IllegalActionException(this, ex, "preinitialize() failed");
        }
        //connect(input, output);
-       
+
        super.preinitialize();
    }
 
@@ -516,22 +516,22 @@ public class MobileModel extends TypedCompositeActor {
         delete.append("</group>");
         return delete.toString();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     /**the inside director.
      *
      */
     private Director _director;
-    
+
     /** the local cache of the <i>refresh<i> Parameter value
-     * 
+     *
      */
     private boolean _refresh;
-    
+
     /** the local cache of the <i>connectPorts<i> Parameter value
-     * 
-     */    
+     *
+     */
     private boolean _connectPorts;
 
     /** The moml string for the inside model that contained by this actor.
@@ -543,6 +543,6 @@ public class MobileModel extends TypedCompositeActor {
      *
      */
     private MoMLParser _parser;
-    
+
     private boolean _modelChanged = false;
 }

@@ -208,7 +208,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
             if (expr instanceof SpecialInvokeExpr) {
                 SpecialInvokeExpr r = (SpecialInvokeExpr)expr;
                 String methodName = r.getMethod().getName();
-                
+
                 Type type = r.getBase().getType();
                 //   System.out.println("baseType = " + type);
                 //  System.out.println("methodName = " + methodName);
@@ -228,7 +228,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                         // of its constructor argument.
                         //     System.out.println("found array invoke: " + r);
                         //     System.out.println("Argument type is : " + in.get(r.getArg(0)));
-                        ptolemy.data.type.Type argType = 
+                        ptolemy.data.type.Type argType =
                             (ptolemy.data.type.Type)in.get(r.getArg(0));
                         if (argType == null) {
                             argType = BaseType.UNKNOWN;
@@ -257,7 +257,7 @@ public class TokenTypeAnalysis extends FastForwardFlowAnalysis {
                     rightOp instanceof InterfaceInvokeExpr) {
                 InstanceInvokeExpr r = (InstanceInvokeExpr)rightOp;
                 String methodName = r.getMethod().getName();
-              
+
                 Type type = r.getBase().getType();
                 //   System.out.println("baseType = " + type);
                 //  System.out.println("methodName = " + methodName);

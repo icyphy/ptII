@@ -350,7 +350,7 @@ public final class CrossRefList implements Serializable  {
      */
     protected class CrossRef implements Serializable{
 
-        /** The far CrossRef. */ 
+        /** The far CrossRef. */
         protected CrossRef _far;
 
         private CrossRef _next;

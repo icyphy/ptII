@@ -76,7 +76,7 @@ public class IDAttribute extends SingletonAttribute {
     public IDAttribute(Entity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         this.name = new StringAttribute(this, "name");
         this.name.setExpression(container.getName());
         // This should not be persistent, in case the name changes outside
@@ -84,15 +84,15 @@ public class IDAttribute extends SingletonAttribute {
         this.name.setPersistent(false);
         // This should not be editable, since the name is set by saveAs.
         this.name.setVisibility(Settable.NOT_EDITABLE);
-        
+
         // FIXME: Need to listen for changes to the name.
         // How to do that?
-        
+
         boolean isClass = false;
         if (container instanceof Prototype) {
             isClass = ((Prototype)container).isClassDefinition();
         }
-        
+
         String className = container.getClassName();
 
         baseClass = new StringAttribute(this, "baseClass");
@@ -102,7 +102,7 @@ public class IDAttribute extends SingletonAttribute {
         baseClass.setPersistent(false);
         // Cannot change the base class.
         baseClass.setVisibility(Settable.NOT_EDITABLE);
-        
+
         URIAttribute modelURI = (URIAttribute)container.getAttribute(
                "_uri", URIAttribute.class);
         if (modelURI != null) {
@@ -111,11 +111,11 @@ public class IDAttribute extends SingletonAttribute {
             definedIn.setPersistent(false);
             definedIn.setVisibility(Settable.NOT_EDITABLE);
         }
-        
+
         lastUpdated = new StringAttribute(this, "lastUpdated");
         setDate(null);
         lastUpdated.setVisibility(Settable.NOT_EDITABLE);
-        
+
         author = new StringAttribute(this, "author");
         String userName = null;
         try {
@@ -132,16 +132,16 @@ public class IDAttribute extends SingletonAttribute {
         // Hide the name.
         new Attribute(this, "_hideName");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         attributes                        ////
 
     /** The author of the class. */
     public StringAttribute author;
-    
+
     /** The base class of the containing class or entity. */
     public StringAttribute baseClass;
-        
+
     /** A boolean indicating whether the container is a class or an
      *  instance.  This is a string that must have value "true" or
      *  "false".
@@ -150,7 +150,7 @@ public class IDAttribute extends SingletonAttribute {
 
     /** The date that this model was last updated. */
     public StringAttribute lastUpdated;
-    
+
     /** The name of the containing class or entity. */
     public StringAttribute name;
 
@@ -177,7 +177,7 @@ public class IDAttribute extends SingletonAttribute {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Set the date for the <i>lastUpdated</i> parameter.
      *  A null argument requests that the date be set to now.
      *  @param date The date to set.

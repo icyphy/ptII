@@ -139,7 +139,7 @@ public class RemoveEmptyProperties implements MoMLFilter {
     ////                         private variables                 ////
 
     // Set of properties that should have values
-    // (the value should not be null). 
+    // (the value should not be null).
     private static HashSet _propertiesThatShouldHaveValues;
 
     // The the full name of the actor we are currently processing

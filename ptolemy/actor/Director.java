@@ -152,7 +152,7 @@ public class Director extends Attribute implements Executable {
      *  @return True if at least one data token is transferred.
      *  @see IOPort#transferInputs
      */
-    public boolean domainPolymorphicTransferInputs(IOPort port) 
+    public boolean domainPolymorphicTransferInputs(IOPort port)
             throws IllegalActionException {
         if (_debugging) {
             _debug("Calling transferInputs on port: " + port.getFullName());
@@ -203,7 +203,7 @@ public class Director extends Attribute implements Executable {
      *  @return True if at least one data token is transferred.
      *  @see IOPort#transferOutputs
      */
-    public boolean domainPolymorphicTransferOutputs(IOPort port) 
+    public boolean domainPolymorphicTransferOutputs(IOPort port)
             throws IllegalActionException {
         if (_debugging) {
             _debug("Calling transferOutputs on port: " + port.getFullName());

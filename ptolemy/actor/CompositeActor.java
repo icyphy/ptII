@@ -116,7 +116,7 @@ newRelation(), _addRelation(), and _addEntity().
 @see ptolemy.actor.Director
 @see ptolemy.actor.Manager
 */
-public class CompositeActor extends CompositeEntity 
+public class CompositeActor extends CompositeEntity
     implements Actor, HasFunctionDependencies {
 
     /** Construct a CompositeActor in the default workspace with no container
@@ -287,7 +287,7 @@ public class CompositeActor extends CompositeEntity
                 throw new IllegalActionException(this,
                         "Cannot fire a non-opaque actor.");
             }
-          
+
             // This HAS to be split because in some domains (e.g. SDF)
             // the behavior of the schedule might depend on rate variables
             // set from ParameterPorts.
@@ -362,23 +362,23 @@ public class CompositeActor extends CompositeEntity
         }
     }
 
-    /** Return the FunctionDependency object associated with this 
+    /** Return the FunctionDependency object associated with this
      *  composite actor.
      *  @return the FunctionDependency object.
      *  @see FunctionDependency
      */
     public FunctionDependency getFunctionDependencies() {
-        // If the _functionDependency object is not constructed, 
+        // If the _functionDependency object is not constructed,
         // construct a FunctionDependencyOfAtomicActor object.
         if (_functionDependency == null) {
             _functionDependency = new FunctionDependencyOfCompositeActor(this);
         }
-        // Note, we don't guarantee the validity of this 
+        // Note, we don't guarantee the validity of this
         // _functionDependency in this method. Any further access of
         // the _functionDependency will check the validity.
         return _functionDependency;
     }
-    
+
     /** Get the manager responsible for execution of this composite actor.
      *  If this is the toplevel composite actor, then return what was
      *  set with setManager().
@@ -439,7 +439,7 @@ public class CompositeActor extends CompositeEntity
                             for (int j = 0; j < receivers2.length; j++) {
                                 receivers2[j].clear();
                             }
-                        } 
+                        }
                     }
                 }
             }
@@ -456,7 +456,7 @@ public class CompositeActor extends CompositeEntity
                         for (int j = 0; j < receivers2.length; j++) {
                             receivers2[j].clear();
                         }
-                    } 
+                    }
                 }
             }
             // Note that this is assured of firing the local director,
@@ -657,7 +657,7 @@ public class CompositeActor extends CompositeEntity
      *  read-synchronized on the workspace, so the preinitialize()
      *  method of the director need not be, assuming it is only called
      *  from here.
-     * 
+     *
      *  @exception IllegalActionException If there is no director, or if
      *   the director's preinitialize() method throws it, or if this actor
      *   is not opaque.
@@ -673,7 +673,7 @@ public class CompositeActor extends CompositeEntity
         try {
             _workspace.getReadAccess();
             _createReceivers();
-            
+
             if (!isOpaque()) {
                 throw new IllegalActionException(this,
                         "Cannot preinitialize a non-opaque actor.");
@@ -1121,7 +1121,7 @@ public class CompositeActor extends CompositeEntity
 
     // Indicator that we are in the connectionsChanged method.
     private boolean _inConnectionsChanged = false;
-    
+
     // The manager for this composite actor.
     private Manager _manager;
 
@@ -1130,7 +1130,7 @@ public class CompositeActor extends CompositeEntity
     private transient List _cachedInputPorts;
     private transient long _outputPortsVersion = -1;
     private transient List _cachedOutputPorts;
-    
+
     // Cached FunctionDependency object.
     private FunctionDependencyOfCompositeActor _functionDependency;
 }

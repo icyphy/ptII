@@ -130,7 +130,7 @@ public class MoMLApplication {
      *  @exception Exception If command line arguments have problems.
      */
     public MoMLApplication(String basePath, String args[]) throws Exception {
-        
+
         _basePath = basePath;
 
         // The Java look & feel is pretty lame, so we use the native
@@ -290,10 +290,10 @@ public class MoMLApplication {
 
                     // This works in Web Start, see
                     // http://java.sun.com/products/javawebstart/faq.html#54
-  
+
                     specURL = Thread.currentThread()
                         .getContextClassLoader().getResource(spec);
-                    
+
                     if (specURL == null) {
                         throw new Exception("getResource(\"" + spec
                                 + "\") returned null.");

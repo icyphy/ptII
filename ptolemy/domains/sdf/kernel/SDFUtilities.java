@@ -98,7 +98,7 @@ public class SDFUtilities {
             String altName = "_" + name;
             parameter = (Variable)port.getAttribute(altName);
         }
-    
+
         return parameter;
     }
 
@@ -141,7 +141,7 @@ public class SDFUtilities {
             return _getRateVariableValue(port, "tokenInitProduction", 0);
         }
     }
-    
+
     /** Get the number of tokens that are produced on the given port.
      *  If the port is not an output port, then return zero.
      *  Otherwise, return the value of the port's
@@ -227,7 +227,7 @@ public class SDFUtilities {
                     + " allowed in SDF.");
         }
     }
-    
+
     /** Get the integer value stored in the Variable with the
      *  specified name.  If there is still no such variable, then
      *  return the specified default.
@@ -244,7 +244,7 @@ public class SDFUtilities {
             return defaultValue;
         }
         Token token = parameter.getToken();
-  
+
         if (token instanceof IntToken) {
             return ((IntToken)token).intValue();
         } else {
@@ -257,7 +257,7 @@ public class SDFUtilities {
                     + ".");
         }
     }
-    
+
     /** If a variable with the given name does not exist, then create
      *  a variable with the given name and set the value of that
      *  variable to the specified value. The resulting variable is not
@@ -266,7 +266,7 @@ public class SDFUtilities {
      *  @param name Name of the variable.
      *  @param value The value.
      */
-    protected static void _setIfNotDefined(Port port, String name, int value) 
+    protected static void _setIfNotDefined(Port port, String name, int value)
             throws IllegalActionException {
         Variable rateParameter = (Variable)port.getAttribute(name);
         if (rateParameter == null) {
@@ -278,7 +278,7 @@ public class SDFUtilities {
                     rateParameter.setVisibility(Settable.NOT_EDITABLE);
                     rateParameter.setPersistent(false);
                 }
-                rateParameter.setToken(new IntToken(value)); 
+                rateParameter.setToken(new IntToken(value));
             } catch (KernelException ex) {
                 throw new InternalErrorException(port, ex, "Should not occur");
             }
@@ -294,7 +294,7 @@ public class SDFUtilities {
      *  @param value The value.
      */
     public static void setExpressionIfNotDefined(
-            Port port, String name, String value) 
+            Port port, String name, String value)
             throws IllegalActionException {
         Variable rateParameter = (Variable)port.getAttribute(name);
         if (rateParameter == null) {
@@ -306,7 +306,7 @@ public class SDFUtilities {
                     rateParameter.setVisibility(Settable.NOT_EDITABLE);
                     rateParameter.setPersistent(false);
                 }
-                rateParameter.setExpression(value); 
+                rateParameter.setExpression(value);
             } catch (KernelException ex) {
                 throw new InternalErrorException(port, ex, "Should not occur");
             }
@@ -341,7 +341,7 @@ public class SDFUtilities {
      *  @exception If the variable exists and its value cannot be set.
      */
     protected static void _setOrCreate(
-            NamedObj container, String name, String expression) 
+            NamedObj container, String name, String expression)
             throws IllegalActionException {
         Variable variable = _getOrCreate(container, name);
         variable.setExpression(expression);
@@ -417,7 +417,7 @@ public class SDFUtilities {
 
     // If a variable exists with the given container and given name,
     // then return it. Otherwise, create the variable and return it.
-    private static Variable _getOrCreate(NamedObj container, String name) 
+    private static Variable _getOrCreate(NamedObj container, String name)
             throws IllegalActionException {
         Variable variable = (Variable)container.getAttribute(name);
         if (variable == null) {

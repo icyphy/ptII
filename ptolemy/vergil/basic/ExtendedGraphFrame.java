@@ -122,7 +122,7 @@ public abstract class ExtendedGraphFrame extends BasicGraphFrame {
         toFront();
         _jgraph.requestFocus();
     }
-    
+
     /** Go to full screen.
      */
     public void fullScreen() {

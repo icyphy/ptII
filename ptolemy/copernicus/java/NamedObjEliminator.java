@@ -108,7 +108,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
         int localCount = 0;
         System.out.println("NamedObjEliminator.internalTransform("
                 + phaseName + ", " + options + ")");
- 
+
         // First remove most method invocations that are not
         // specialInvokes.
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
@@ -222,7 +222,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                                     body.getUnits().insertBefore(
                                             Jimple.v().newInvokeStmt(
                                                     Jimple.v().newSpecialInvokeExpr(
-                                                            local, 
+                                                            local,
                                                             initMethod,
                                                             StringConstant.v(uriString))),
                                             unit);
@@ -323,7 +323,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                         Value value = identityStmt.getRightOp();
                         if (value instanceof ParameterRef) {
                             ParameterRef parameterRef = (ParameterRef)value;
-                            if (parameterRef.getIndex() == 0 && 
+                            if (parameterRef.getIndex() == 0 &&
                                     method.getParameterCount() == 1) {
                                 //       System.out.println("found = " + identityStmt);
                                 ValueBox box = identityStmt.getRightOpBox();
@@ -392,7 +392,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
                                 // System.out.println(
 //                                         "replacing constructor invocation = "
 //                                         + unit + " in method " + method);
-                                SootMethod newConstructor = 
+                                SootMethod newConstructor =
                                     declaringClass.getMethodByName("<init>");
                                 if (newConstructor.getParameterCount() == 1) {
                                     // Replace with just container arg constructor.
@@ -422,7 +422,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
              i.hasNext();) {
 
             SootClass theClass = (SootClass) i.next();
-                        
+
             // Loop through all the methods in the class.
             for (Iterator methods = theClass.getMethods().iterator();
                  methods.hasNext();) {
@@ -430,7 +430,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
 
                 // System.out.println("method = " + method);
                 JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-              
+
                 // Infer types.
                 LocalSplitter.v().transform(
                         body, "nee.ls");
@@ -493,7 +493,7 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
         for (Iterator i = Scene.v().getApplicationClasses().iterator();
              i.hasNext();) {
             SootClass theClass = (SootClass) i.next();
-                        
+
             for (Iterator interfaces = theClass.getInterfaces().snapshotIterator();
                 interfaces.hasNext();) {
                 SootClass theInterface = (SootClass)interfaces.next();

@@ -91,7 +91,7 @@ public abstract class FastForwardFlowAnalysis extends FlowAnalysis
         // Set initial values for entry points
         {
             Iterator it = graph.getHeads().iterator();
-            
+
             while (it.hasNext()) {
                 Object s = it.next();
                 // this is a forward flow analysis

@@ -87,7 +87,7 @@ public class MatrixToSequence extends SDFTransformer {
 
         input.setTypeAtMost(BaseType.MATRIX);
         output.setTypeAtLeast(new FunctionTerm(input));
-        
+
         // Set parameters.
         rows = new Parameter(this, "rows");
         rows.setExpression("1");
@@ -98,7 +98,7 @@ public class MatrixToSequence extends SDFTransformer {
         enforceMatrixSize.setTypeEquals(BaseType.BOOLEAN);
 
         output_tokenProductionRate.setExpression("rows * columns");
- 
+
         // Set the icon.
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
@@ -141,7 +141,7 @@ public class MatrixToSequence extends SDFTransformer {
             if (rowsValue <= 0) {
                 throw new IllegalActionException(this,
                         "Invalid number of rows: " + rowsValue);
-            }   
+            }
         } else if (attribute == columns) {
             int columnsValue = ((IntToken)columns.getToken()).intValue();
             if (columnsValue <= 0) {

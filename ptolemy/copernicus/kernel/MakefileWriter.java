@@ -85,7 +85,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
     }
 
     public String getDeclaredOptions() {
-        return 
+        return
           "_generatorAttributeFileName outDir overwrite targetPackage templateDirectory";
     }
 
@@ -154,7 +154,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                             }
                             codeBase = buffer2.toString();
                             System.out.println("MakefileWriter: codeBase was "
-                                    + ".., recalculated to " + codeBase); 
+                                    + ".., recalculated to " + codeBase);
 
                         }
                     } else {
@@ -198,7 +198,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
      *  <code>c:/ptII/ptolemy/copernicus/applet/cg/Butterfly</code>
      *  <dt>overwrite
      *  <dd>Determines whether we overwrite a preexisting makefile.
-     *  The default is to overwrite.  T 
+     *  The default is to overwrite.  T
      *  <dt>targetPackage
      *  <dd>The package where the generated code will reside, for example:
      *  <code>ptolemy.copernicus.applet.cg.Butterfly</code>
@@ -317,7 +317,7 @@ public class MakefileWriter extends SceneTransformer implements HasPhaseOptions 
                     + generatorAttribute);
         }
 
-        if (overwrite 
+        if (overwrite
                 || !(new File(_outputDirectory + "makefile")).isFile()) {
             try {
                 System.out.println("MakefileWriter: reading '"

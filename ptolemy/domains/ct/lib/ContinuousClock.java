@@ -48,11 +48,11 @@ but overrides the fire() method and postfire() method.
 <p>
 The actor uses the fireAt() method of the director to request
 firings at the beginning of each period plus each of the offsets,
-which are treated as breakpoints. At each breakpoint, 
+which are treated as breakpoints. At each breakpoint,
 the actor produces two outputs, one at t_minus phase and the other
 one at t_plus phase. The time does not advance at these two phases.
-For example, with the default settings, at time 1.0, the actor 
-produces 0 at t_minus phase and 1 at t_plus phase. Note, at 
+For example, with the default settings, at time 1.0, the actor
+produces 0 at t_minus phase and 1 at t_plus phase. Note, at
 the breakpoint, we treat the output of this actor as any
 value between 0 and 1.
 <p>
@@ -63,7 +63,7 @@ the clock starts. The default value is 0.
 <p>
 The clock has a stopTime parameter and a numberOfCycles parameter. If the
 stopTime is a positive double, the whole model will stop execution when the
-stop time is reached. If the numberOfCycles is set to a positive integer, 
+stop time is reached. If the numberOfCycles is set to a positive integer,
 the clock will continue outputting the value of the defaultValue parameter
 after the number of cycles are reached.
 <p>
@@ -95,8 +95,8 @@ public class ContinuousClock extends Clock {
     ////                     ports and parameters                  ////
 
     /** The default value used after the clock stops. In the triggered
-     *  continuous clock, which extends this class and has a start 
-     *  trigger, the default value is used as output before the clock starts. 
+     *  continuous clock, which extends this class and has a start
+     *  trigger, the default value is used as output before the clock starts.
      *  This parameter must contain a token, and it defaults to 0.
      */
     public Parameter defaultValue;
@@ -142,7 +142,7 @@ public class ContinuousClock extends Clock {
             // Adjust the phase if time has moved beyond the current phase.
             // Synchronize the _tentativePhase with the currentTime considering
             // the time resolution.
-            
+
             // Note that in CTDirector, the time resolution causes troubles.
             // For example, if currentTime is slightly smaller than the
             // expected break point, it should be treated as a break point

@@ -174,7 +174,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Declare the rate dependency on any external ports of the model.
      *  SDF directors should invoke this method once during preinitialize.
      */
@@ -190,7 +190,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 if (port.isInput()) {
                     _declareDependency(analysis, port, "tokenConsumptionRate",
                             _rateVariables);
-                } 
+                }
                 if (port.isOutput()) {
                     _declareDependency(analysis, port, "tokenProductionRate",
                             _rateVariables);
@@ -200,7 +200,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             }
         }
     }
-    
+
     /** Get the external port rates.
      */
     public Map getExternalRates() {
@@ -216,8 +216,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         return _getFiringCount(entity);
     }
 
-    /** This method simply calls _saveContainerRates(Map externalRates). 
-     *  It is used in HDF when a cached schedule is used instead of 
+    /** This method simply calls _saveContainerRates(Map externalRates).
+     *  It is used in HDF when a cached schedule is used instead of
      *  computing a new schedule.
      *  @param externalRates A map from external port to the rate of that
      *  port.
@@ -238,7 +238,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  @param settable The object that has changed value.
      */
     public void valueChanged(Settable settable) {
-        // FIXME: causes 
+        // FIXME: causes
         //for (Iterator variables = _rateVariables.iterator();
 //             variables.hasNext();) {
 //             Variable variable = (Variable)variables.next();
@@ -277,9 +277,9 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         SDFDirector director =
             (SDFDirector)getContainer();
         CompositeActor model = (CompositeActor)director.getContainer();
-        
+
         _checkDynamicRateVariables(model, _rateVariables);
-        
+
         int vectorizationFactor = 1;
         if (director instanceof SDFDirector) {
             Token token =
@@ -326,7 +326,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // An association between all the relations in a simulation and
         // and array of the maximum number of tokens that are ever
         // waiting on that relation.
-        Map minimumBufferSize = 
+        Map minimumBufferSize =
             new TreeMap(new SDFUtilities.NamedObjComparator());
 
         // Initialize the buffer size of each relation to zero.
@@ -396,7 +396,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // Set parameters on each actor that contain the number
         // of firings in an iteration.
         _saveFiringCounts(entityToFiringsPerIteration);
-        
+
         // Set parameters on each relation that contain the maximum
         // buffer sizes necessary during execution.
         _saveBufferSizes(minimumBufferSize);
@@ -409,11 +409,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         _externalRates = externalRates;
         return result;
     }
-    
+
     /** Initialize the local data members of this object.
      */
     protected void _localMemberInitialize() {
-        _firingVector = 
+        _firingVector =
             new TreeMap(new SDFUtilities.NamedObjComparator());
         _firingVectorValid = true;
     }
@@ -422,14 +422,14 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      *  corresponds to a single SDF iteration. Multiply all of the
      *  fractions by the least common multiple (LCM) of their
      *  denominators and by the given vectorizationFactor.  This factor
-     *  is normally the integer value of the vectorizationFactor 
+     *  is normally the integer value of the vectorizationFactor
      *  parameter of the director.  Also multiply the production and
-     *  consumption rates of the external ports of the model by the 
+     *  consumption rates of the external ports of the model by the
      *  same amount.
      *
      *  @param vectorizationFactor An integer scaling factor to multiply
      *  the firing vector by.
-     *  @param entityToFiringsPerIteration 
+     *  @param entityToFiringsPerIteration
      *  Map of firing ratios to be normalized.
      *  @param externalRates Map of token production rates that will
      *  be scaled along with the entityToFiringsPerIteration map.
@@ -447,7 +447,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
         // First find the lcm of all the denominators of all the
         // computed firingsPerIteration.
-        for (Iterator unnormalizedFirings = 
+        for (Iterator unnormalizedFirings =
                  entityToFiringsPerIteration.values().iterator();
              unnormalizedFirings.hasNext();) {
             Fraction fraction = (Fraction)unnormalizedFirings.next();
@@ -470,7 +470,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 _debug("Normalizing Actor " +
                         ((ComponentEntity) actor).getName());
             }
-            Fraction repetitions = 
+            Fraction repetitions =
                 (Fraction)entityToFiringsPerIteration.get(actor);
             repetitions = repetitions.multiply(lcmFraction);
             if (repetitions.getDenominator() != 1) {
@@ -478,7 +478,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                         "Failed to properly perform " +
                         "fraction normalization");
             }
-            entityToFiringsPerIteration.put(actor, 
+            entityToFiringsPerIteration.put(actor,
                     new Integer(repetitions.getNumerator()));
         }
 
@@ -526,7 +526,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         // The map that we will return.
         // This will be populated with the fraction firing ratios for
         // each actor.
-        Map entityToFiringsPerIteration = 
+        Map entityToFiringsPerIteration =
             new TreeMap(new SDFUtilities.NamedObjComparator());
 
         // The pool of Actors that have not been touched
@@ -592,7 +592,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                         ((ComponentEntity) currentActor).portList().iterator();
                     while (AllPorts.hasNext()) {
                         IOPort currentPort = (IOPort) AllPorts.next();
-                        _propagatePort(container, currentPort, 
+                        _propagatePort(container, currentPort,
                                 entityToFiringsPerIteration,
                                 externalRates, remainingActors, pendingActors);
                     }
@@ -639,7 +639,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 ((ComponentEntity) currentActor).portList().iterator();
             while (AllPorts.hasNext()) {
                 IOPort currentPort = (IOPort) AllPorts.next();
-                _propagatePort(container, currentPort, 
+                _propagatePort(container, currentPort,
                         entityToFiringsPerIteration, externalRates,
                         remainingActors, pendingActors);
             }
@@ -678,8 +678,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
     private void _assertDynamicRateVariable(CompositeActor model,
             Variable variable,
-            List rateVariables, 
-            ConstVariableModelAnalysis analysis) 
+            List rateVariables,
+            ConstVariableModelAnalysis analysis)
             throws IllegalActionException {
         boolean allowRateChanges = ((BooleanToken)
                 ((SDFDirector)getContainer()).allowRateChanges.getToken()).booleanValue();
@@ -694,7 +694,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             }
         } else {
             throw new IllegalActionException(variable,
-                    "The SDF rate parameter may change." + 
+                    "The SDF rate parameter may change." +
                     " This is not allowed in SDF models " +
                     "that will be run through the code " +
                     "generator.  If you don't care about " +
@@ -702,11 +702,11 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     "consider setting the allowRateChanges " +
                     "parameter of the SDF director to false.");
         }
-        Entity changeContext = 
+        Entity changeContext =
             analysis.getChangeContext(variable);
-        if (!(changeContext == model || 
+        if (!(changeContext == model ||
                    changeContext.deepContains(model))) {
-            throw new IllegalActionException(variable, 
+            throw new IllegalActionException(variable,
                     "The SDF rate parameter changes during " +
                     "execution of the schedule!");
         }
@@ -714,7 +714,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
     // Populate the given set with the dynamic rate variables in the model.
     protected void _checkDynamicRateVariables(
-            CompositeActor model, List rateVariables) 
+            CompositeActor model, List rateVariables)
             throws IllegalActionException {
         // Check for rate parameters which are dynamic.
         ConstVariableModelAnalysis analysis =
@@ -734,19 +734,19 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 if (set.contains(variable)) {
                     _assertDynamicRateVariable(
                             model, variable, rateVariables, analysis);
-                } 
+                }
                 variable = SDFUtilities.getRateVariable(
                         port, "tokenConsumptionRate");
                 if (set.contains(variable)) {
-                    _assertDynamicRateVariable( 
+                    _assertDynamicRateVariable(
                             model, variable, rateVariables, analysis);
-                } 
+                }
                 variable = SDFUtilities.getRateVariable(
                         port, "tokenProductionRate");
                 if (set.contains(variable)) {
                     _assertDynamicRateVariable(
                             model, variable, rateVariables, analysis);
-                } 
+                }
             }
         }
     }
@@ -1091,7 +1091,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             // the firing that we computed previously, or null
             // if the port is an external port, or _minusOne if
             // we have not computed the firing ratio for this actor yet.
-            Fraction presentFiring = 
+            Fraction presentFiring =
                 (Fraction)entityToFiringsPerIteration.get(connectedActor);
             if (_debugging && VERBOSE) {
                 _debug("presentFiring of connectedActor "
@@ -1108,7 +1108,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                         new Fraction(currentRate, 1));
                 Fraction previousRate =
                     (Fraction) externalRates.get(connectedPort);
-               
+
                 if (previousRate.equals(Fraction.ZERO)) {
                     externalRates.put(connectedPort, rate);
                 } else if (!rate.equals(previousRate)) {
@@ -1120,7 +1120,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                             "detected on external port " +
                             connectedPort.getFullName());
                 }
-                _propagatePort(container, connectedPort, 
+                _propagatePort(container, connectedPort,
                         entityToFiringsPerIteration,
                         externalRates, remainingActors, pendingActors);
                 entityToFiringsPerIteration.remove(connectedActor);
@@ -1189,7 +1189,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
         // An association between each actor and the number of firings
         // for that actor that remain to be simulated.
-        Map firingsRemainingVector = 
+        Map firingsRemainingVector =
             new TreeMap(new SDFUtilities.NamedObjComparator());
 
         // Initialized the firingsRemainingVector to the current
@@ -1202,7 +1202,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
         // An association between all the input ports in a simulation and an
         // array of the number of tokens waiting on each relation of that port.
-        Map waitingTokens = 
+        Map waitingTokens =
             new TreeMap(new SDFUtilities.NamedObjComparator());
         try {
             // Initialize waitingTokens
@@ -1258,7 +1258,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                 Iterator outputPorts = actor.outputPortList().iterator();
                 while (outputPorts.hasNext()) {
                     IOPort outputPort = (IOPort) outputPorts.next();
-                    int count = 
+                    int count =
                         SDFUtilities.getTokenInitProduction(outputPort);
                     if (_debugging && VERBOSE) {
                         _debug("Simulating " + count
@@ -1395,7 +1395,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                      outputPorts.hasNext();) {
                     IOPort outputPort = (IOPort) outputPorts.next();
 
-                    int count = 
+                    int count =
                         SDFUtilities.getTokenProductionRate(outputPort);
 
                     _simulateTokensCreated(outputPort,
@@ -1637,7 +1637,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         while (inputPorts.hasNext()) {
             IOPort inputPort = (IOPort) inputPorts.next();
             int[] tokens = (int []) waitingTokens.get(inputPort);
-            int tokenRate = 
+            int tokenRate =
                 SDFUtilities.getTokenConsumptionRate(inputPort);
             for (int channel = 0;
                  channel < inputPort.getWidth();
@@ -1712,7 +1712,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     // transparent hierarchy... just ignore.
                     continue;
                 }
-                
+
                 if (_debugging && VERBOSE) {
                     _debug("destination receivers for relation "
                             + relation.getName() + " channel "
@@ -1800,8 +1800,8 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     // actor for which we have not determined the number of times it will
     // fire.
     private Fraction _minusOne = new Fraction(-1);
-    
-    private Map _externalRates = 
+
+    private Map _externalRates =
     new TreeMap(new SDFUtilities.NamedObjComparator());
 
     private List _rateVariables = new LinkedList();

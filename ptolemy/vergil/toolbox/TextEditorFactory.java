@@ -54,7 +54,7 @@ public interface TextEditorFactory {
     /** Clear the object.
      */
     public void clear();
-    
+
     /** Return the current text in the editor.
      *  @return The current text in the editor.
      */

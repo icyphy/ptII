@@ -226,10 +226,10 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
 
     /** Debug menu for this frame. */
     protected JMenu _debugMenu;
-    
+
     /** The graph menu. */
     protected JMenu _graphMenu;
-    
+
     /** action for creating a level of hierarchy. */
     protected Action _createHierarchyAction;
     protected Action _layoutAction;
@@ -384,7 +384,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             createHierarchy();
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// ImportLibraryAction
 
@@ -483,19 +483,19 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
                 NamedObj context = model.getPtolemyModel();
 
                 _lastClassName = query.getStringValue("class");
-                
+
                 // Find the root for the instance name.
                 String rootName = _lastClassName;
                 int period = rootName.lastIndexOf(".");
                 if (period >= 0 && (rootName.length() > period + 1)) {
                     rootName = rootName.substring(period + 1);
                 }
-                
+
                 // Use the center of the screen as a location.
                 Rectangle2D bounds = getVisibleCanvasRectangle();
                 double x = bounds.getWidth()/2.0;
                 double y = bounds.getHeight()/2.0;
-                
+
                 // Use the "auto" namespace group so that name collisions
                 // are automatically avoided by appending a suffix to the name.
                 String moml = "<group name=\"auto\"><entity name=\""
@@ -513,7 +513,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             }
         }
     };
-   
+
     ///////////////////////////////////////////////////////////////////
     //// LayoutAction
 
@@ -539,7 +539,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     //// SaveInLibraryAction
 

@@ -120,7 +120,7 @@ public class EditablePlotMLApplication extends PlotMLApplication {
         // suggests this, which does not seem to help
         getRootPane().getInputMap
             (JComponent.WHEN_IN_FOCUSED_WINDOW).put(
-                    KeyStroke.getKeyStroke(KeyEvent.VK_ALT, 
+                    KeyStroke.getKeyStroke(KeyEvent.VK_ALT,
                             Event.ALT_MASK, false),
                     "repaint");
 

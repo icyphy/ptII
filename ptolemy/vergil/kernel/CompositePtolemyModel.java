@@ -139,7 +139,7 @@ public class CompositePtolemyModel implements CompositeModel {
                 // This is necessary so that if the location later moves,
                 // then the move can be duplicated in the deferrers.
                 Locatable location = new Location(object, "_location");
-                
+
                 // Since this isn't delegated to the MoML parser,
                 // we have to handle propagation here.
                 List heritageList = object.getDerivedList();
@@ -148,7 +148,7 @@ public class CompositePtolemyModel implements CompositeModel {
                     NamedObj inherited = (NamedObj)heritage.next();
                     new Location(inherited, "_location");
                 }
-                
+
                 return location;
             } catch (Exception e) {
                 throw new InternalErrorException("Failed to create " +
@@ -231,7 +231,7 @@ public class CompositePtolemyModel implements CompositeModel {
                             String name = relation.uniqueName("vertex");
                             Vertex vertex = new Vertex(relation, name);
                             nodes.add(vertex);
-                            
+
                             // Have to manually handle propagation, since
                             // the MoML parser is not involved.
                             // FIXME: Could get name collision here!
@@ -240,10 +240,10 @@ public class CompositePtolemyModel implements CompositeModel {
                             List heritageList = relation.getDerivedList();
                             Iterator heritage = heritageList.iterator();
                             while (heritage.hasNext()) {
-                                ComponentRelation inherited 
+                                ComponentRelation inherited
                                         = (ComponentRelation)heritage.next();
                                 new Vertex(inherited, name);
-                            }                
+                            }
 
                         } catch (Exception e) {
                             throw new InternalErrorException(
@@ -254,7 +254,7 @@ public class CompositePtolemyModel implements CompositeModel {
                 }
             }
         }
-        
+
         // Add a node for every director or visible attribute.
         // The node is again the location.
         // For directors, if there is no location, then create one.

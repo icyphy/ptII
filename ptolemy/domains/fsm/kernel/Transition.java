@@ -69,7 +69,7 @@ transition has a guard expression and a trigger expression. Both
 expressions should evaluate to a boolean value. The trigger of a
 transition must be true whenever the guard is true. A transition is
 enabled and can be taken when its guard is true.  A transition is
-triggered and must be taken when its trigger is true.  
+triggered and must be taken when its trigger is true.
 
 <p> A transition can contain actions. The way to specify actions is
 to give value to the <i>outputActions</i> parameter and the
@@ -177,15 +177,15 @@ public class Transition extends ComponentRelation {
      *  @exception NameDuplicationException If the name coincides with
      *   any relation already in the container.
      */
-    public Transition(FSMActor container, String name) 
+    public Transition(FSMActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** Attribute the exit angle of a visual rendition.
      *  This parameter contains a DoubleToken, initially with value PI/5.
      *  It must lie between -PI and PI.  Otherwise, it will be truncated
@@ -266,9 +266,9 @@ public class Transition extends ComponentRelation {
         // _guard and _trigger are the variables that do the evaluation.
         if (attribute == guardExpression) {
             _guardParseTree = null;
-            
-            // If the executive director is HSDirector, 
-            if (_exeDirectorIsHSDirector) {                
+
+            // If the executive director is HSDirector,
+            if (_exeDirectorIsHSDirector) {
                 // Invalid a relation list for the transition.
                 _relationList.destroy();
                 // Reconstruct the relation list.
@@ -316,7 +316,7 @@ public class Transition extends ComponentRelation {
         (StringAttribute)newObject.getAttribute("triggerExpression");
         newObject.refinementName =
         (StringAttribute)newObject.getAttribute("refinementName");
-        newObject._guardParseTree = null;        
+        newObject._guardParseTree = null;
         newObject._triggerParseTree = null;
         newObject._actionListsVersion = -1;
         newObject._choiceActionList = new LinkedList();
@@ -494,8 +494,8 @@ public class Transition extends ComponentRelation {
         } catch (UnknownResultException ex) {
             return false;
         } catch (IllegalActionException ex) {
-            throw new IllegalActionException(this, ex, 
-                    "Error evaluating guard expression: " 
+            throw new IllegalActionException(this, ex,
+                    "Error evaluating guard expression: "
                     + getGuardExpression());
         }
     }
@@ -531,7 +531,7 @@ public class Transition extends ComponentRelation {
         Token triggerToken = _parseTreeEvaluator.evaluateParseTree(
                     _triggerParseTree, fsmActor.getPortScope());
         boolean triggerValue = ((BooleanToken)triggerToken).booleanValue();
-     
+
         if (_guardParseTree == null) {
             String expr = guardExpression.getExpression();
             // Parse the guard expression.
@@ -541,7 +541,7 @@ public class Transition extends ComponentRelation {
         Token guardToken = _parseTreeEvaluator.evaluateParseTree(
                     _guardParseTree, fsmActor.getPortScope());
         boolean guardValue = ((BooleanToken)guardToken).booleanValue();
-     
+
         if (triggerValue == true && guardValue == false) {
             throw new IllegalActionException(this, "The trigger: "
                     + getTriggerExpression() + " is true but the guard: "
@@ -680,7 +680,7 @@ public class Transition extends ComponentRelation {
             workspace().doneReading();
         }
     }
-    
+
     // Initialize the variables of this transition.
     private void _init()
             throws IllegalActionException, NameDuplicationException {
@@ -703,45 +703,45 @@ public class Transition extends ComponentRelation {
         preemptive.setToken(BooleanToken.FALSE);
         triggerExpression = new StringAttribute(this, "triggerExpression");
         triggerExpression.setVisibility(Settable.NONE);
-        
+
         _exeDirectorIsHSDirector = false;
-        
+
         // Depending on whether the director is FSM director
-        // or HSDirector, we configure the Transitions with 
+        // or HSDirector, we configure the Transitions with
         // different ParseTreeEvaluators.
-        
+
         CompositeEntity container = (CompositeEntity) getContainer();
-        
+
         _parseTreeEvaluator = new ParseTreeEvaluator();
 
-        // If the executive director is HSDirector, 
+        // If the executive director is HSDirector,
         if (container != null) {
             TypedCompositeActor modalModel =
                 (TypedCompositeActor)container.getContainer();
-            if (modalModel != null 
+            if (modalModel != null
                     && modalModel.getDirector() instanceof HSDirector) {
-            
+
                 // FIXME: This is wrong...  what if the director changes?
                 _exeDirectorIsHSDirector = true;
-                
+
                 // construct a relation list for the transition;
                 _relationList = new RelationList(this, "relationList");
-                
+
                 // associate the relation list with the
                 // ParseTreeEvaluatorForGuardExpression
-                
+
                 // FIXME: how to get the error tolerance
                 // If we limite the HSDirector only works under CT model
                 // or Modal Models, we can use the error tolerance from
                 // the top level CT director.
-                
+
                 _parseTreeEvaluator = new ParseTreeEvaluatorForGuardExpression(
                         _relationList, 1e-4);
             }
         }
-        
+
         // If the executive director is FSMDirector, do nothing.
-                
+
         // Add refinement name parameter
         refinementName = new StringAttribute(this, "refinementName");
     }
@@ -786,10 +786,10 @@ public class Transition extends ComponentRelation {
 
     // Flag to indicate whether the executive director is HSDirector.
     private boolean _exeDirectorIsHSDirector = false;
-    
+
     // The parse tree for the guard expression.
     private ASTPtRootNode _guardParseTree;
-    
+
     // Set to true when the transition is preemptive.
     private boolean _preemptive = false;
 

@@ -106,7 +106,7 @@ public class MoMLUndoEntry implements UndoAction, ChangeListener {
             throw _exception;
         }
     }
-    
+
     /** Return the MoML of the undo action.
      *  @return MoML for the undo action.
      */
@@ -119,7 +119,7 @@ public class MoMLUndoEntry implements UndoAction, ChangeListener {
 
     // The context in which to execute the undo.
     private NamedObj _context;
-    
+
     // Exception that occurs during a change.
     private Exception _exception = null;
 

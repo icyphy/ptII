@@ -174,24 +174,24 @@ public class HDFDownSample extends Transformer {
             //_firingCount =
                 //((SDFScheduler)scheduler).getFiringCount(this);
               //  ((HDFDirector)director).getDirectorFiringsPerIteration();
-              
+
             if (_requestChange) {
                 _requestChange = false;
                 ChangeRequest request =
                     new ChangeRequest(this, "change sampling rate") {
                         protected void _execute() throws KernelException {
-                            Director director = getDirector(); 
+                            Director director = getDirector();
                             ((HDFDirector)director).invalidateSchedule();
                             int rateValue =
                                 ((IntToken)rate.getToken()).intValue();
                             _rateValue = rateValue;
-  
+
                             _inputRate.setToken(new IntToken(_rateValue));
                             _requestChange = true;
                         }
                     };
                 request.setPersistent(false);
-                container.requestChange(request);    
+                container.requestChange(request);
             } else {
                 _inputRate.setToken(new IntToken(_rateValue));
             }

@@ -69,7 +69,7 @@ public class SingletonParameter extends Parameter {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

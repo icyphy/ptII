@@ -48,7 +48,7 @@ import ptolemy.util.MessageHandler;
 //// PtExecuteApplication
 /**
 This application executes Ptolemy II models specified on the
-command line.  
+command line.
 <p>
 The exact facilities that are available are determined by an optional
 command line argument that names a directory in ptolemy/configs that
@@ -70,7 +70,7 @@ $PTII/bin/ptexecute -full ../../domains/sdf/demo/Butterfly/Butterfly.xml
 </pre>
 are equivalent
 <p>
-If no configuration is specified on the command line, then 
+If no configuration is specified on the command line, then
 the MoML file ptolemy/configs/runConfiguration.xml is loaded before
 other command line arguments are processed.
 <p>

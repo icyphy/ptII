@@ -78,7 +78,7 @@ public class FileChooserQuery extends JFrame
                 "fileChooser", "FileChooser", "default", null, null);
         _query.addColorChooser(
                 "colorChooser", "ColorChoser", "{0.0, 0.0, 0.0, 1.0}");
-        
+
         _query.addQueryListener(this);
         _query.setBackground(getBackground());
         setContentPane(contentPane);

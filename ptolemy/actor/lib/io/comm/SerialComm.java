@@ -362,7 +362,7 @@ public class SerialComm extends TypedAtomicActor
                     if (_debugging) {
                         _debug("Blocking waiting for minimum number of bytes: "
                         + _minimumOutputSize);
-                    }                    
+                    }
                     wait();
                     bytesAvailable = in.available();
                     if (_debugging) {

@@ -203,7 +203,7 @@ public class SDFPortInliner implements PortInliner {
                                     i, port.getType()));
                 Local containerLocal = FieldsForEntitiesTransformer.getLocalReferenceForEntity(
                         _model, theClass, body.getThisLocal(), body, stmt, _options);
-                
+
                 // load the buffer array.
                 body.getUnits().insertBefore(
                         Jimple.v().newAssignStmt(bufferLocal,
@@ -1109,7 +1109,7 @@ public class SDFPortInliner implements PortInliner {
                     PtolemyUtilities.getSootTypeForTokenType(type);
                 Type arrayType = ArrayType.v(tokenType, 1);
                 String fieldName = relation.getName() + "_bufferLocal";
-               
+
                 for (int i = 0; i < relation.getWidth(); i++) {
                     SootField field = new SootField(
                             InlinePortTransformer.getBufferFieldName(relation, i, type),
@@ -1127,7 +1127,7 @@ public class SDFPortInliner implements PortInliner {
                     for (Iterator methods = _modelClass.getMethods().iterator();
                         methods.hasNext();) {
                         SootMethod initMethod = (SootMethod) methods.next();
-                        
+
                         // Only look at constructors.
                         if (!initMethod.getName().equals("<init>")) {
                             continue;
@@ -1137,7 +1137,7 @@ public class SDFPortInliner implements PortInliner {
                         Local arrayLocal =
                             Jimple.v().newLocal(fieldName, arrayType);
                         initBody.getLocals().add(arrayLocal);
-          
+
                         // Create the new buffer
                         Stmt insertPoint = (Stmt)initBody.getFirstNonIdentityStmt();
                         // This *should* be the statment after the constructor.
@@ -1146,7 +1146,7 @@ public class SDFPortInliner implements PortInliner {
                             FieldsForEntitiesTransformer.getLocalReferenceForEntity(
                                 _model, _modelClass, initBody.getThisLocal(),
                                 initBody, insertPoint, _options);
-                        
+
                         initUnits.insertBefore(
                                 Jimple.v().newAssignStmt(arrayLocal,
                                         Jimple.v().newNewArrayExpr(tokenType,
@@ -1332,10 +1332,10 @@ public class SDFPortInliner implements PortInliner {
                         _modelClass.getFieldByName(
                                 InlinePortTransformer.getBufferFieldName(relation,
                                         i, type));
-               
+
                     Local containerLocal = FieldsForEntitiesTransformer.getLocalReferenceForEntity(
                             _model, entityClass, body.getThisLocal(), body, insertPoint, _options);
-               
+
                     // Load the buffer array.
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(bufferLocal,
@@ -1360,7 +1360,7 @@ public class SDFPortInliner implements PortInliner {
     // This includes both the communication buffers and index arrays.
     private void _createInsideBufferReferences() {
         if (_debug) {
-            System.out.println("creating inside buffer references for " 
+            System.out.println("creating inside buffer references for "
                     + _model.getFullName());
         }
         // Loop over all the ports of the _model
@@ -1452,7 +1452,7 @@ public class SDFPortInliner implements PortInliner {
             SootClass modelClass,
             TypedIOPort port, ptolemy.data.type.Type type,
             Map typeNameToBufferField) {
-        
+
         //  System.out.println("creating inside buffer reference for " + port + " type = " + type);
         RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
         // Create a field that refers to all the channels of that port.
@@ -1522,7 +1522,7 @@ public class SDFPortInliner implements PortInliner {
 
                     Local containerLocal = FieldsForEntitiesTransformer.getLocalReferenceForEntity(
                             _model, modelClass, body.getThisLocal(), body, insertPoint, _options);
-               
+
                     // Load the buffer array.
                     body.getUnits().insertBefore(
                             Jimple.v().newAssignStmt(bufferLocal,
@@ -1644,7 +1644,7 @@ public class SDFPortInliner implements PortInliner {
             for (Iterator relations = relationList.iterator();
                  !found && relations.hasNext();) {
                 TypedIORelation relation = (TypedIORelation)relations.next();
-           
+
                 for (int i = 0;
                      !found && i < relation.getWidth();
                      i++, channel++) {
@@ -1657,7 +1657,7 @@ public class SDFPortInliner implements PortInliner {
 
                         Local containerLocal = FieldsForEntitiesTransformer.getLocalReferenceForEntity(
                                 _model, theClass, body.getThisLocal(), body, stmt, _options);
-                      
+
                         // load the buffer array.
                         body.getUnits().insertBefore(
                                 Jimple.v().newAssignStmt(bufferLocal,

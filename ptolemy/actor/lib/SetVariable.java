@@ -77,7 +77,7 @@ on the variable is used to set the value.
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class SetVariable extends TypedAtomicActor 
+public class SetVariable extends TypedAtomicActor
     implements ChangeListener, ExplicitChangeContext {
 
     /** Construct an actor with the given container and name.
@@ -111,7 +111,7 @@ public class SetVariable extends TypedAtomicActor
     ////                         public methods                    ////
 
     /** Do nothing.
-     *  @param change The change that executed. 
+     *  @param change The change that executed.
      */
     public void changeExecuted(ChangeRequest change) {
     }
@@ -127,8 +127,8 @@ public class SetVariable extends TypedAtomicActor
             java.lang.Exception exception) {
         MessageHandler.error("Failed to set variable.", exception);
     }
-    
-    /** 
+
+    /**
      * Return the change context being made explicit.  In this case,
      * the change context returned is this actor.
      */
@@ -158,13 +158,13 @@ public class SetVariable extends TypedAtomicActor
             } catch (NameDuplicationException ex) {
                 throw new IllegalActionException(
                     this, ex,
-                    "Existing attribute that is not an attribute " + 
+                    "Existing attribute that is not an attribute " +
                     "with specified name: "
                     + variableNameValue
                     + ". It is: "
                     + container.getAttribute(variableNameValue));
             }
-        }   
+        }
         return attribute;
     }
 
@@ -212,7 +212,7 @@ public class SetVariable extends TypedAtomicActor
                         }
                     }
                 };
-            
+
             // To prevent prompting for saving the model, mark this
             // change as non-persistent.
             request.setPersistent(false);

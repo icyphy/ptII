@@ -158,7 +158,7 @@ public class TextEditorConfigureFactory
         _editor.centerOnScreen();
         _editor.setVisible(true);
     }
-    
+
     /** Return the current text of the text editor.
      *  @return The current text of the text editor, or null if there
      *   is none.

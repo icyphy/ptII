@@ -53,7 +53,7 @@ TXCoordination class is responsible for initiating a session. After a packet
 arrives from the network layer, TXCoordination will generate RTS if the packet
 is long enough. It will send RTS to the destination and wait for CTS. If CTS
 is received within a specified interval, data will be sent after SIFS seconds.
-If ACK is received within a given time after the data is sent, the session 
+If ACK is received within a given time after the data is sent, the session
 is complete. TXCoordination will go to backoff before handling the next packet
 in the queue.If the network packet is not long enough, RTS/CTS will not be used
 to reduce overhead. In either case, Carrier sense is only done for the first
@@ -74,7 +74,7 @@ avoid congestions.
 */
 
 public class TxCoordination extends MACActorBase {
-   
+
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -92,8 +92,8 @@ le
     public TxCoordination(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-       
-     
+
+
         // create ports
         PduRequest =new TypedIOPort(this, "PduRequest", true, false);
         PduRequest.setTypeEquals(BaseType.GENERAL);
@@ -150,7 +150,7 @@ le
      */
     public TypedIOPort TXTXRequest;
 
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -164,11 +164,11 @@ le
 
   boolean isNetData=false;
 
-  if (PduRequest.hasToken(0)) 
+  if (PduRequest.hasToken(0))
       {
 	    isNetData=true;
           RecordToken msg= (RecordToken)PduRequest.get(0);
-	 
+
           if (_txQueue.size() >= QueueSize)
             if (_debugging) {
                 _debug("Queue is full.");}
@@ -180,9 +180,9 @@ le
       {
       case TxC_Idle:
           if (isNetData && !mBkIP)
-	      _handleData(); 
+	      _handleData();
 	  else if (BkDone.hasToken(0))
- 	      _checkQueue();	     
+ 	      _checkQueue();
 	  break;
 
       case Wait_Rts_Backoff:
@@ -221,7 +221,7 @@ le
 
 	          // backoff before retry
 	          _backoff(_ccw,-1);
-	   
+
 	          // need to reset it!!!
 	          _slrc++;
 
@@ -245,11 +245,11 @@ le
 		     cancelTimer(_Trsp);
 		     double endRx=((DoubleToken)GotCtsMsg.get("endRx")).doubleValue();
 	           _ssrc=0;
-		     setTimer(SifsTimeout, endRx+_dSifsDly*1e-6); 
+		     setTimer(SifsTimeout, endRx+_dSifsDly*1e-6);
 	           int durId=_aSifsTime+_aPreambleLength+_aPlcpHeaderLength+_sAckCtsLng/_mBrate;
-                 _setDurIdField(_tpdu,durId);	    
+                 _setDurIdField(_tpdu,durId);
 	           _currentState=Wait_Cts_Sifs;
-              }	
+              }
 	      }
 	  break;
 
@@ -528,7 +528,7 @@ le
         int durId=3*(_aSifsTime+_aPreambleLength+_aPlcpHeaderLength)+(length+
             2*_sAckCtsLng)/_mBrate;
 	  // no RTS is needed for broadcast
-        if (length<= _dotllRTSThreshold || Addr1==mac_broadcast_addr)     
+        if (length<= _dotllRTSThreshold || Addr1==mac_broadcast_addr)
               if (_debugging) {
                 _debug("RTS is not sent.");}
 	  else
@@ -550,16 +550,16 @@ le
 	else
 	  _currentState=TxC_Idle;
 }
-	
-     
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
- 
+
     private int _dSifsDly, _ccw, _slrc, _ssrc, _CTSTimeout, _seqNum;
     private boolean _cont;
 
-    private RecordToken _pdu, _rtsdu, _tpdu;   
+    private RecordToken _pdu, _rtsdu, _tpdu;
     private LinkedList _txQueue;
     private Timer _Trsp;
 

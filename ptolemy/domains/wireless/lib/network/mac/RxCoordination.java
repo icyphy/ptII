@@ -46,11 +46,11 @@ import ptolemy.kernel.util.NameDuplicationException;
 //
 //// RxCoordination
 /**
-RxCoordination class is responsible for the sequence of events in response 
-to a session setup request. When a RTS packet is received, RxCoordination 
+RxCoordination class is responsible for the sequence of events in response
+to a session setup request. When a RTS packet is received, RxCoordination
 sends a CTS back after SIFS seconds if NAV is zero (i.e. channel is available);
-when a data packet is received, a Ack is sent back after SIFS seconds and 
-the data packet received will be forwarded to the network layer. RxCoordination 
+when a data packet is received, a Ack is sent back after SIFS seconds and
+the data packet received will be forwarded to the network layer. RxCoordination
 also notifies TxCoordination process of the receipt of either CTS or Ack.
 
 @author Charlie Zhong
@@ -58,7 +58,7 @@ also notifies TxCoordination process of the receipt of either CTS or Ack.
 */
 
 public class RxCoordination extends MACActorBase {
-   
+
     /** Construct an actor with the specified name and container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -75,8 +75,8 @@ public class RxCoordination extends MACActorBase {
     public RxCoordination(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-       
-     
+
+
         // create ports
         fromReception =new TypedIOPort(this, "fromReception", true, false);
         fromReception.setTypeEquals(BaseType.GENERAL);
@@ -95,7 +95,7 @@ public class RxCoordination extends MACActorBase {
 
         RXTXRequest =new TypedIOPort(this, "RXTXRequest", false,true);
         RXTXRequest.setTypeEquals(BaseType.GENERAL);
-       
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -138,7 +138,7 @@ public class RxCoordination extends MACActorBase {
           RecordToken pdu;
 
         // perform the actions/computation done in the handleMessage()
-        // method 
+        // method
 	    switch(_currentState)
 	    {
 	        case RxC_Idle:
@@ -150,7 +150,7 @@ public class RxCoordination extends MACActorBase {
                            if (_debugging) {
                                _debug("Got NeedAck msg");
                            }
-                                
+
                            dAck= ((IntToken)msg.get("dAck")).intValue();
                            ackto= ((IntToken)msg.get("ackto")).intValue();
                            endRx= ((DoubleToken)msg.get("endRx")).doubleValue();
@@ -182,7 +182,7 @@ public class RxCoordination extends MACActorBase {
                                               Token[] GotAckvalues={
                                                       new IntToken(GotAckMsg),
                                                       new DoubleToken(endRx)};
-                                              RecordToken GotAckmsg = 
+                                              RecordToken GotAckmsg =
                                               new RecordToken(GotCtsMsgFields, GotAckvalues);
 				                      // send the message to the TxCoordination process
 				                      GotAck.send(0, GotAckmsg);
@@ -192,7 +192,7 @@ public class RxCoordination extends MACActorBase {
                                               Token[] GotCtsvalues={
                                                       new IntToken(GotCts),
                                                       new DoubleToken(endRx)};
-                                              RecordToken GotCtsmsg = 
+                                              RecordToken GotCtsmsg =
                                               new RecordToken(GotCtsMsgFields, GotCtsvalues);
 				                      // send the message to the TxCoordination process
 				                      GotAck.send(0, GotCtsmsg);
@@ -229,7 +229,7 @@ public class RxCoordination extends MACActorBase {
                        break;
                   }}
               break;
-            
+
               case Wait_Sifs:
 	             int kind=whoTimeout();	// check if a timer times out and which
                    if (kind==SifsTimeout)
@@ -250,7 +250,7 @@ public class RxCoordination extends MACActorBase {
                    {
                        _currentState=RxC_Idle;
                    }
-              break; 
+              break;
     }
 }
 
@@ -291,7 +291,7 @@ public class RxCoordination extends MACActorBase {
     ////                         private variables                 ////
 
     private int _dSifsDly, _dRsp, _rate;
-    private RecordToken _rspdu; 
+    private RecordToken _rspdu;
     private static final int SifsTimeout=1;
 
     // define states in FSM

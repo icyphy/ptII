@@ -51,7 +51,7 @@ import org.omg.CosNaming.NamingContextHelper;
 //////////////////////////////////////////////////////////////////////////
 //// TaskReporter
 /**
- An actor that sends data to a remote coordinator that implements the 
+ An actor that sends data to a remote coordinator that implements the
  Coordinator inteface defined in Coordinator.idl.
 
  Specify the ORB initial property with the<i>ORBInitProperties<i>
@@ -62,7 +62,7 @@ import org.omg.CosNaming.NamingContextHelper;
 
  Specify the name of the coordinator with <i>coordinatorName<i> that it wants
  to connect to.
- 
+
  Specify the name of this client application that this actor belongs to with
  <i>thisClientName<i>
 
@@ -90,7 +90,7 @@ public class TaskReporter extends Sink {
         coordinatorName = new Parameter(this, "coordinatorName");
         coordinatorName.setToken(new StringToken("TaskCoordinator"));
         thisClientName = new Parameter(this, "thisClientName");
-        thisClientName.setToken(new StringToken(""));        
+        thisClientName.setToken(new StringToken(""));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -105,11 +105,11 @@ public class TaskReporter extends Sink {
      *  is StringToken.
      */
     public Parameter coordinatorName;
-    
-    /** The name represents the client application that the instance of 
+
+    /** The name represents the client application that the instance of
      * this actor belongs to. The type of the Parameter
      *  is StringToken.
-     */    
+     */
     public Parameter thisClientName;
 
     ///////////////////////////////////////////////////////////////////
@@ -221,10 +221,10 @@ public class TaskReporter extends Sink {
     ////                         private methods                   ////
 
     private ORB _orb;
-    
+
     //the proxy object of the Coordiantor.
     private Coordinator _coordinator;
-    
+
     //the name of the client application that this actor belongs to.
     private String _clientName;
 

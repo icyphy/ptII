@@ -169,7 +169,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
         // Currently, arrays of arrays and records don't work.
         try {
             _checkBadTypes(_model);
-              
+
         } catch (IllegalActionException ex) {
             throw new RuntimeException("Token unboxing not possible.",
                     ex);
@@ -250,15 +250,15 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
             for (Iterator classes = classList.iterator();
                  classes.hasNext();) {
                 SootClass entityClass = (SootClass)classes.next();
-                
+
                 // This will allow us to get a better type inference below.
                 for (Iterator methods = entityClass.getMethods().iterator();
                      methods.hasNext();) {
                     SootMethod method = (SootMethod)methods.next();
                     if (debug) System.out.println("method = " + method);
-                    
+
                     JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-                    
+
                     LocalSplitter.v().transform(
                             body, _phaseName + ".ls");
                     // We may have locals with the same name.  Rename them.
@@ -266,9 +266,9 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                             body, _phaseName + ".lns");
                 }
             }
- 
+
             updateTokenTypes(classList, depth, unsafeLocalSet, debug);
-           
+
             depth--;
         }
     }
@@ -362,7 +362,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 TypeAssigner.v().transform(
                         body, _phaseName + ".ta");
                 TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
-                        body, _phaseName + ".cie", 
+                        body, _phaseName + ".cie",
                         Collections.EMPTY_SET, debug);
             }
         }
@@ -440,8 +440,8 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
 
                 // Run some cleanup...  this will speedup the rest
                 // of the analysis.  And prevent typing errors.
-                if (debug) 
-                    System.out.println("eliminating instanceof in " + method); 
+                if (debug)
+                    System.out.println("eliminating instanceof in " + method);
                 TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
                         body, _phaseName + ".tie", unsafeLocalSet,
                         debug);
@@ -475,7 +475,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 TypeAssigner.v().transform(
                         body, _phaseName + ".ta");
                 TokenInstanceofEliminator.eliminateCastsAndInstanceOf(
-                        body, _phaseName + ".cie", 
+                        body, _phaseName + ".cie",
                         Collections.EMPTY_SET, debug);
             }
 
@@ -499,7 +499,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 SootMethod method = (SootMethod)methods.next();
 
                 // Check to see if the method is safe to modify with:
-                // It has no arguments or return values which are 
+                // It has no arguments or return values which are
                 // tokens.
                 if (_methodWillBeInlined(method)) {
                     continue;
@@ -605,9 +605,9 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
             if (baseType instanceof RefType &&
                     Scene.v().getApplicationClasses().contains(
                             ((RefType)baseType).getSootClass())) {
-                Type returnType = r.getMethod().getReturnType(); 
+                Type returnType = r.getMethod().getReturnType();
                 isInlineableTokenMethod |= _isInlineableTokenType(returnType);
-                        
+
                 for (Iterator args = r.getArgs().iterator();
                      args.hasNext() && !isInlineableTokenMethod;) {
                     Object arg = args.next();
@@ -624,7 +624,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                     }
                 }
             }
-        
+
             if (!isInlineableTokenMethod) {
                 return false;
             }
@@ -1113,7 +1113,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 entityClass.addField(replacementField);
 
                 // Hack for type of array type.
-                if (elementType != null && 
+                if (elementType != null &&
                         tokenField.getName().equals("_value")) {
                     //       System.err.println("replacmentField = " + replacementField);
                     replacementField.addTag(new TypeTag(elementType));
@@ -1138,7 +1138,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
             SootMethod method = (SootMethod)methods.next();
 
             // Check to see if the method is safe to modify with:
-            // It has no arguments or return values which are 
+            // It has no arguments or return values which are
             // tokens.
             if (_methodWillBeInlined(method)) {
                 continue;
@@ -1262,7 +1262,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                                 argumentList.add((Local)localToIsNotNullLocal.get(fromLocal));
                                 argumentList.add(r.getArg(3));
                                 argumentList.add(r.getArg(4));
-                                
+
                                 body.getUnits().insertBefore(
                                         Jimple.v().newInvokeStmt(
                                                 Jimple.v().newStaticInvokeExpr(
@@ -1270,7 +1270,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                                                         argumentList)),
                                         unit);
                             }
-                            
+
                             for (Iterator tokenFields = toFieldToReplacementLocal.keySet().iterator();
                                  tokenFields.hasNext();) {
                                 SootField tokenField = (SootField)tokenFields.next();
@@ -1723,7 +1723,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                                     if (debug) System.out.println("tokenField = " + tokenField);
                                     Local replacementLocal = (Local)
                                         map.get(tokenField);
-                                    
+
                                     Type replacementType =
                                         SootUtilities.createIsomorphicType(newExpr.getBaseType(),
                                                 tokenField.getType());
@@ -2080,22 +2080,22 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
             SootMethod method) {
         boolean isInlineableTokenMethod = _isInlineableTokenType(
                 method.getReturnType());
-        
+
         for (Iterator args = method.getParameterTypes().iterator();
              args.hasNext() && !isInlineableTokenMethod;) {
             Type argType = (Type)args.next();
             isInlineableTokenMethod = _isInlineableTokenType(argType);
         }
-        
+
         return isInlineableTokenMethod;
     }
-    
+
     // Return true if the type is one we will inline because it is a
     // token type.
     private static boolean _isInlineableTokenType(Type type) {
         if (type instanceof RefType) {
             RefType refType = (RefType)type;
-            
+
             if (SootUtilities.derivesFrom(refType.getSootClass(),
                         PtolemyUtilities.tokenClass)) {
                 return true;
@@ -2114,7 +2114,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
         // or Type, and the token is not unsafe.
         if (_isInlineableTokenType(baseType) &&
                 !unsafeLocalSet.contains(local)) {
-            
+
             // If it is a token, then check to
             // make sure that it has the
             // appropriate type
@@ -2134,7 +2134,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
 
     // Return true if the given object contains a typeable object with
     // a type that is not supported by token unboxing.
-    private void _checkBadTypes(NamedObj object) 
+    private void _checkBadTypes(NamedObj object)
             throws IllegalActionException {
         if (object instanceof Attribute &&
                 ModelTransformer._isIgnorableAttribute((Attribute)object)) {
@@ -2142,19 +2142,19 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
         }
         if (object instanceof Typeable) {
             Typeable typeable = (Typeable)object;
-           
+
             ptolemy.data.type.Type type = typeable.getType();
             boolean badType = false;
             if (type instanceof ptolemy.data.type.FunctionType) {
-                
+
                 badType = true;
             }
             if (type instanceof ptolemy.data.type.RecordType) {
-                
+
                 badType = true;
             }
             if (type instanceof ptolemy.data.type.ArrayType) {
-                ptolemy.data.type.Type elementType = 
+                ptolemy.data.type.Type elementType =
                     ((ptolemy.data.type.ArrayType)type).getElementType();
                 if (elementType instanceof ptolemy.data.type.ArrayType) {
                     System.out.println("elementType = " + elementType.getClass());
@@ -2162,7 +2162,7 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 }
             }
             if (badType) {
-                throw new IllegalActionException(object.getFullName() + 
+                throw new IllegalActionException(object.getFullName() +
                         " has type " + type + " which cannot be unboxed.");
             }
         }

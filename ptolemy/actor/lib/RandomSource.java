@@ -81,7 +81,7 @@ public abstract class RandomSource extends Source {
      *  distinct seeds.  However, current time may not have enough
      *  resolution to ensure that two subsequent executions of the
      *  same model have distinct seeds.
-     *  
+     *
      *  This parameter contains a LongToken, initially with value 0.
      */
     public Parameter seed;

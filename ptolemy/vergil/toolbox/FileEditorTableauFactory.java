@@ -99,10 +99,10 @@ public class FileEditorTableauFactory
      *   Tableau for the effigy, but something goes wrong.
      */
     public Tableau createTableau(Effigy effigy) throws Exception {
-        
+
         // FIXME: Exceptions thrown here are ignored by the caller,
         // who then just goes to the next tableau factory...
-        
+
         if (!(effigy instanceof PtolemyEffigy)) {
             return null;
         }

@@ -229,17 +229,17 @@ public class SRDirector extends StaticSchedulingDirector {
         _initFiring();
 
         // we compute the rough cost of the execution in this way.
-        // Assume the cost of one evaluation of an actor is 1, 
-        // the cost of the execution to reach a fixed point is 
-        // the number of actors in the schedule times the 
+        // Assume the cost of one evaluation of an actor is 1,
+        // the cost of the execution to reach a fixed point is
+        // the number of actors in the schedule times the
         // iterations of the schedule at that instant.
         // The sum of the cost of all instants is the cost of
         // the whole execution.
         int iterationCount = 0;
         int numberOfActors = schedule.size();
         // also, we calculate the real cost, which excludes the
-        // overhead caused by not-firing-allowed actors. 
-        
+        // overhead caused by not-firing-allowed actors.
+
         // Here we need to check for each actor that iteration is allowed
         // (in other words, that the actor has not returned false in
         // postfire()).
@@ -250,7 +250,7 @@ public class SRDirector extends StaticSchedulingDirector {
         // in prefire()).
 
         // _fireActor is also responsible for checking that the actor is
-        // ready to fire (sufficient known inputs are available) via 
+        // ready to fire (sufficient known inputs are available) via
         // _isFiringAllowed method.
 
         do {
@@ -685,7 +685,7 @@ public class SRDirector extends StaticSchedulingDirector {
             iterations = new Parameter(this, "iterations", new IntToken(0));
             iterations.setTypeEquals(BaseType.INT);
             setCurrentTime(0.0);
-            
+
         } catch (KernelException ex) {
             throw new InternalErrorException(
                     "Cannot initialize SRDirector: " + ex.getMessage());
@@ -774,36 +774,36 @@ public class SRDirector extends StaticSchedulingDirector {
         if (_isNonStrict(actor)) {
             // if all the inputs and outputs are known, and
             // the inputs have not just changed from unknown to known,
-            // it is unnecessary to fire the actor again, 
+            // it is unnecessary to fire the actor again,
             // because according to the SR semantics, the
             // the inputs, which are the outputs from other
             // actors, can not change.
-            
-            // FIXME: 
+
+            // FIXME:
             // Two issues here: 1. if the nonStrict actor receives multiple
             // tokens at the same time instant, e.g., its input connects
             // to a Repeat actor. 2. if the inputs connects to outside
-            // domain which does not have SR semantics, they may change. 
+            // domain which does not have SR semantics, they may change.
             // Does this composition make sense?
 
             // Check whether the inputs have changed.
-            // Note, the isChanged method forces the receivers to update 
+            // Note, the isChanged method forces the receivers to update
             // the cached information.
             Iterator inputPorts = actor.inputPortList().iterator();
             boolean changed = false;
-    
+
             while (inputPorts.hasNext()) {
                 IOPort inputPort = (IOPort)inputPorts.next();
                 Receiver[][] receivers = inputPort.getReceivers();
                 for (int i = 0; i < receivers.length; i++) {
                     for (int j = 0; j < receivers[i].length; j++) {
-                        changed |= ((SRReceiver)receivers[i][j]).isChanged(); 
+                        changed |= ((SRReceiver)receivers[i][j]).isChanged();
                     }
                 }
-            }            
-            
+            }
+
             if (_areAllInputsKnown(actor) && _areAllOutputsKnown(actor)) {
-                return !changed; 
+                return !changed;
             } else {
                 return false;
             }
@@ -813,7 +813,7 @@ public class SRDirector extends StaticSchedulingDirector {
         if ((_actorsFired == null) || (!_actorsFired.contains(actor))) {
             return false;
         }
-        
+
         // otherwise,
         return _areAllOutputsKnown(actor);
     }
@@ -995,12 +995,12 @@ public class SRDirector extends StaticSchedulingDirector {
 
     // cost
     // We calculate the real cost, which excludes the
-    // overhead caused by not-firing-allowed actors. 
+    // overhead caused by not-firing-allowed actors.
     private int _realCost;
     // we compute the rough cost of the execution in this way.
-    // Assume the cost of one evaluation of an actor is 1, 
-    // the cost of the execution to reach a fixed point is 
-    // the number of actors in the schedule times the 
+    // Assume the cost of one evaluation of an actor is 1,
+    // the cost of the execution to reach a fixed point is
+    // the number of actors in the schedule times the
     // iterations of the schedule at that instant.
     // The sum of the cost of all instants is the cost of
     // the whole execution.

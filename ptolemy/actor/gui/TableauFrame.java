@@ -428,7 +428,7 @@ public class TableauFrame extends Top {
             }
         }
         // If we get here, there was no other tableau.
-        
+
         // NOTE: Do not use the superclass method so we can
         // check for children of the model.
         // NOTE: We use dispose() here rather than just hiding the
@@ -688,14 +688,14 @@ public class TableauFrame extends Top {
                         if (selected == 1) {
                             return false;
                         }
-                        
+
                         // If the model has children, then
                         // issue a warning that those children will
                         // persist.  Give the user the chance to cancel.
                         if (!_checkForDerivedObjects()) {
                             return false;
                         }
-                        
+
                         // Mark unmodified so that we don't get another
                         // query when it is closed.
                         previousOpen.setModified(false);
@@ -787,7 +787,7 @@ public class TableauFrame extends Top {
     /** If the model has children, then issue a warning that those
      *  children will persist in modified form.  Give the user the
      *  chance to cancel.
-     *  @return False if there are children and 
+     *  @return False if there are children and
      *   the user cancels. True otherwise.
      */
     private boolean _checkForDerivedObjects() {
@@ -840,7 +840,7 @@ public class TableauFrame extends Top {
         }
         return true;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

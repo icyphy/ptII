@@ -123,7 +123,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             throws IllegalActionException {
         int argCount = node.jjtGetNumChildren() - 1;
         String functionName = node.getFunctionName();
-      
+
         // Get the child types.
         Type[] childTypes = new Type[argCount];
         for (int i = 0; i < argCount; i++) {
@@ -141,7 +141,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
 
         if (baseType != null || functionName == null) {
             baseType = _inferChild(node, 0);
-            
+
             // Handle as an array or matrix index into a named
             // variable reference.
             if (baseType instanceof FunctionType) {
@@ -150,7 +150,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             } else if (argCount == 1) {
                 if (baseType instanceof ArrayType) {
                     _setType(node, ((ArrayType)baseType).getElementType());
-                    return;         
+                    return;
                 } else {
                     _assert(true, node, "Cannot use array "
                             + "indexing on '" + node.getFunctionName()
@@ -168,7 +168,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             }
             throw new IllegalActionException("Wrong number of indices "
                     + "when referencing " + functionName);
-        }            
+        }
 
 
         // Psuedo-temporary hack for casts....
@@ -205,8 +205,8 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
             return;
         }
 
-        // Otherwise, try to reflect the method name. 
-       
+        // Otherwise, try to reflect the method name.
+
         CachedMethod cachedMethod;
         try {
             cachedMethod = CachedMethod.findMethod(functionName,
@@ -266,7 +266,7 @@ public class ParseTreeTypeInference extends AbstractParseTreeVisitor {
                         return type;
                     }
                 }
-                public InequalityTerm getTypeTerm(String name) 
+                public InequalityTerm getTypeTerm(String name)
                         throws IllegalActionException {
                     Type type = (Type)map.get(name);
                     if (type == null && currentScope != null) {

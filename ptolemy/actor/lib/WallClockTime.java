@@ -75,7 +75,7 @@ public class WallClockTime extends Source {
         super(container, name);
 
         output.setTypeEquals(BaseType.DOUBLE);
-        
+
         passThrough = new TypedIOPort(this, "passThrough", false, true);
         passThrough.setTypeAtLeast(trigger);
         passThrough.setMultiport(true);
@@ -89,7 +89,7 @@ public class WallClockTime extends Source {
      *  which is undeclared, meaning that it will resolve to any type.
      */
     public TypedIOPort passThrough;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 

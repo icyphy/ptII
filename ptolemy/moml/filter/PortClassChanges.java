@@ -74,15 +74,15 @@ public class PortClassChanges implements MoMLFilter {
             // that first
             return null;
         }
-        
+
         if (attributeName.equals("name")) {
-            // record the name of the current attribute 
+            // record the name of the current attribute
             _lastNameSeen = attributeValue;
 
             // If the current actor has its port classes changed,
             // and if the current attribute value is a port contained
-            // by the portMap, find the class mapping and record the 
-            // name of the port. 
+            // by the portMap, find the class mapping and record the
+            // name of the port.
             if (_currentlyProcessingActorWithPortClassChanges
                     && _portMap != null
                     && _portMap.containsKey(attributeValue)) {
@@ -108,12 +108,12 @@ public class PortClassChanges implements MoMLFilter {
                 // Find the port mapping of the current actor.
                 _portMap = (HashMap) _actorsWithPortClassChanges
                     .get(attributeValue);
-            } else if ( _foundPort && _lastNameSeen.equals(_portName) 
+            } else if ( _foundPort && _lastNameSeen.equals(_portName)
                 && _classMap.containsKey(attributeValue)) {
                 // We found the port.
                 // We use the new class to replace the old class.
                 String newClass = (String)_classMap.get(attributeValue);
-                
+
                 // Reset the state variables indicating a new start.
                 _currentlyProcessingActorWithPortClassChanges = false;
                 _foundPort = false;
@@ -121,7 +121,7 @@ public class PortClassChanges implements MoMLFilter {
                 MoMLParser.setModified(true);
                 return newClass;
             }
-        } 
+        }
         return attributeValue;
     }
 
@@ -163,7 +163,7 @@ public class PortClassChanges implements MoMLFilter {
                 while (classChanges.hasNext()) {
                     String oldClass = (String) classChanges.next();
                     String newClass = (String) classMap.get(oldClass);
-                    results.append("\t\t" + oldClass 
+                    results.append("\t\t" + oldClass
                         + "\t -> " + newClass + "\n");
                 }
             }
@@ -194,22 +194,22 @@ public class PortClassChanges implements MoMLFilter {
     // Cache of map from actor to port for
     // the actor we are working on.
     private static HashMap _portMap;
-    
+
     // the name of the port that has its class changed.
     private static String _portName;
-    
+
     static {
         ///////////////////////////////////////////////////////////
         // Actors with port class changes.
         _actorsWithPortClassChanges = new HashMap();
-        
+
        // VariableDelay: delay is now a ParameterPort,
         // not a DEIOPort.
         HashMap variableDelayPorts = new HashMap();
         HashMap portChanges = new HashMap();
- 
+
         variableDelayPorts.put(
-            "ptolemy.domains.de.kernel.DEIOPort", 
+            "ptolemy.domains.de.kernel.DEIOPort",
             "ptolemy.actor.parameters.ParameterPort");
 
         portChanges.put("delay", variableDelayPorts);
@@ -217,6 +217,6 @@ public class PortClassChanges implements MoMLFilter {
         _actorsWithPortClassChanges
             .put("ptolemy.domains.de.lib.VariableDelay",
                 portChanges);
-                
+
     }
 }

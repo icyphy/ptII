@@ -102,7 +102,7 @@ parameter of the referenced model.
 A suite of parameters is provided to control what happens when this
 actor executes:
 <ul>
-<li> <i>executionOnFiring</i>: 
+<li> <i>executionOnFiring</i>:
 The value of this string attribute determines what execution
 happens when the fire() method is invoked.  The recognized
 values are:
@@ -475,7 +475,7 @@ public class ModelReference
                     _debug("** Creating a new thread to execute the model.");
                 }
                 _manager.addExecutionListener(this);
-                    
+
                 // Create a thread.  Can't directly use _manager.startRun()
                 // because we need to write outputs upon completion.
                 if (_manager.getState() != Manager.IDLE) {
@@ -513,7 +513,7 @@ public class ModelReference
                 };
                 // Priority set to the minimum to get responsive UI during execution.
                 thread.setPriority(Thread.MIN_PRIORITY);
-                thread.start();   
+                thread.start();
             }
             long lingerTimeValue =
                 ((LongToken) lingerTime.getToken()).longValue();
@@ -653,7 +653,7 @@ public class ModelReference
             }
         }
     }
-    
+
     /** Iterate over output ports and read any available values from
      *  the referenced model parameters and produce them on the outputs.
      *  @exception IllegalActionException If reading the parameters or
@@ -684,13 +684,13 @@ public class ModelReference
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
 
     /** The model. */
     protected NamedObj _model;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
@@ -698,7 +698,7 @@ public class ModelReference
     private static int _DO_NOTHING = 0;
     private static int _RUN_IN_CALLING_THREAD = 1;
     private static int _RUN_IN_A_NEW_THREAD = 2;
-    
+
     /** The value of the executionOnFiring parameter. */
     private transient int _executionOnFiringValue = _RUN_IN_CALLING_THREAD;
 
@@ -707,7 +707,7 @@ public class ModelReference
 
     /** Indicator of what the last call to iterate() returned. */
     private transient int _lastIterateResult = NOT_READY;
-    
+
     /** Reference to a thread that is lingering. */
     private Thread _lingeringThread = null;
 

@@ -255,8 +255,8 @@ public class VergilApplication extends MoMLApplication {
      *  in the directory returned by
      *  {@link ptolemy.util.StringUtilities#preferencesDirectory()}
      *  If the configuration contains a top level Parameter named
-     *  _hideUserLibrary, then we do not open the user library. 
-     * 
+     *  _hideUserLibrary, then we do not open the user library.
+     *
      *  @return A default configuration.
      *  @exception Exception If the configuration cannot be opened.
      */

@@ -88,7 +88,7 @@ java -classpath $PTII ptolemy.copernicus.kernel.Copernicus -help
 @version $Id$
 @since Ptolemy II 2.0
 */
-public class GeneratorAttribute extends SingletonAttribute 
+public class GeneratorAttribute extends SingletonAttribute
     implements ChangeListener {
 
     /** Construct an attribute with the given name contained by the specified
@@ -156,7 +156,7 @@ public class GeneratorAttribute extends SingletonAttribute
             if (token instanceof StringToken) {
                 return ((StringToken)token).stringValue();
             } else {
-                throw new IllegalActionException("Parameter with name " + name 
+                throw new IllegalActionException("Parameter with name " + name
                         + " is not a String.");
             }
         } else {
@@ -173,7 +173,7 @@ public class GeneratorAttribute extends SingletonAttribute
         Attribute attribute = getAttribute(name);
         return (attribute != null);
     }
-  
+
     /** If this GeneratorAttribute has not yet been initialized, the
      *  initialized it by reading the moml file named by the
      *  initialParametersURL and creating Parameters and Variables
@@ -267,7 +267,7 @@ public class GeneratorAttribute extends SingletonAttribute
      */
     public void sanityCheckAndUpdateParameters(String modelPathOrURL)
             throws IllegalActionException, NameDuplicationException {
-       
+
         if (modelPathOrURL == null) {
             // Get the modelPath and update modelPath and model.
             modelPathOrURL = getParameter("modelPath");
@@ -344,7 +344,7 @@ public class GeneratorAttribute extends SingletonAttribute
 
         ((Variable)getAttribute("ptIIUserDirectoryAsURL"))
             .setExpression(ptIIUserDirectoryAsURL);
-        
+
 
         String targetPath = getParameter("targetPath");
 
@@ -374,7 +374,7 @@ public class GeneratorAttribute extends SingletonAttribute
      *  @exception IllegalActionException If no Settable object with
      *  the given name exists in this GeneratorAttribute.
      */
-    public void setParameter(String name, String value) 
+    public void setParameter(String name, String value)
             throws IllegalActionException {
         Attribute attribute = getAttribute(name);
         if (attribute instanceof Settable) {
@@ -401,7 +401,7 @@ public class GeneratorAttribute extends SingletonAttribute
                 } catch (Exception ex) {
                     value.append(ex);
                 }
-                
+
                 String className = "Parameter";
                 if (attribute instanceof StringParameter) {
                     className = "StringParameter";
@@ -572,7 +572,7 @@ public class GeneratorAttribute extends SingletonAttribute
     // separate jar files
     private void _updateNecessaryClassPath() throws IllegalActionException {
 
-        
+
         //StringParameter necessaryClassesParameter =
         //    (StringParameter)getAttribute("necessaryClasses");
         ArrayToken necessaryClassesToken =

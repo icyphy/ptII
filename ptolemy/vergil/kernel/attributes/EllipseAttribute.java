@@ -82,7 +82,7 @@ public class EllipseAttribute extends FilledShapeAttribute {
     /** Return the a new ellipse given a new width and height.
      *  @param width The new width.
      *  @param height The new height.
-     *  @return A new shape. 
+     *  @return A new shape.
      */
     protected Shape _newShape() {
         if (_centeredValue) {

@@ -87,10 +87,10 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
         centered = new Parameter(this, "centered");
         centered.setTypeEquals(BaseType.BOOLEAN);
         centered.setExpression("false");
-                
+
         fillColor = new ColorAttribute(this, "fillColor");
         fillColor.setExpression("none");
-        
+
         // Create a custom controller.
         new ResizableAttributeControllerFactory(this, "_controllerFactory");
     }
@@ -103,14 +103,14 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      *  location is the upper left corner.
      */
     public Parameter centered;
-    
+
     /** The line color.  This is a string representing an array with
      *  four elements, red, green, blue, and alpha, where alpha is
      *  transparency. The default is "{0.0, 0.0, 0.0, 1.0}", which
      *  represents an opaque black.
      */
     public ColorAttribute fillColor;
-    
+
     /** The vertical extent.
      *  This is a double that defaults to 100.0.
      */
@@ -120,7 +120,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      *  This is a double that defaults to 100.0.
      */
     public Parameter width;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -169,7 +169,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
      *  yourself if you want it there).
@@ -185,24 +185,24 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
         newObject._inAttributeChanged = false;
         return newObject;
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
-    
+
     /** Return the a new shape given a new width and height. This class
      *  guarantees that the protected variables _centeredValue, _widthValue,
      *  and _heightValue are up to date when this method is called.
      *  Derived classes should override this to return an appropriate shape.
-     *  @return A new shape. 
+     *  @return A new shape.
      */
     protected abstract Shape _newShape();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
 
     /** Most recently set value of the centered parameter. */
     protected boolean _centeredValue = false;
-    
+
     /** Most recently set value of the height parameter. */
     protected double _heightValue = 0.0;
 

@@ -97,7 +97,7 @@ public class StringToXML extends Transformer{
         }
 
         /*//for test purpose, use the following code when fire.
-        String in = "<?xml version='1.0' encoding='UTF-8'?> <Actors>" +  
+        String in = "<?xml version='1.0' encoding='UTF-8'?> <Actors>" +
          			"<Actor> <name>Const</name> <class>ptolemy.actor.lib.Const</class>"
          			+ " </Actor> </Actors>";
         try {
@@ -113,7 +113,7 @@ public class StringToXML extends Transformer{
         }
         output.broadcast(_outToken); */
     }
-	
+
     /** Return true if there is token at the <i>input<i> input.
      *  Otherwise, return false.
      *  @exception IllegalActionException if the superclass throws it.

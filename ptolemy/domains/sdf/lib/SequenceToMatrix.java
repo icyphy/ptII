@@ -127,12 +127,12 @@ public class SequenceToMatrix extends SDFTransformer {
                         "Invalid number of rows: " + rowsValue);
             }
         } else if (attribute == columns) {
-            int columnsValue = ((IntToken)columns.getToken()).intValue();  
+            int columnsValue = ((IntToken)columns.getToken()).intValue();
             if (columnsValue <= 0) {
                 throw new IllegalActionException(this,
                         "Invalid number of columns: " + columnsValue);
             }
-        } 
+        }
         super.attributeChanged(attribute);
     }
 
@@ -160,7 +160,7 @@ public class SequenceToMatrix extends SDFTransformer {
         int length = rowsValue * columnsValue;
         Token[] valueArray = input.get(0, length);
 
-        Token outputToken = 
+        Token outputToken =
             MatrixToken.arrayToMatrix(
                     input.getType(), valueArray, rowsValue, columnsValue);
          output.send(0, outputToken);

@@ -205,7 +205,7 @@ public class Parameter extends Variable {
         output.write(_getIndentPrefix(depth) + "</"
                 + _elementName + ">\n");
     }
-    
+
     /** Get choices.
      *  @return An array of choices, or null if there are none.
      *  @see #addChoice(String)
@@ -217,7 +217,7 @@ public class Parameter extends Variable {
             return (String [])_choices.toArray(new String[_choices.size()]);
         }
     }
-        
+
     /** Remove all the choices.
      *  @see #removeChoice(String)
      */
@@ -235,7 +235,7 @@ public class Parameter extends Variable {
             _choices.remove(choice);
         }
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -46,19 +46,19 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// DataPump
 
-/** 
-This actor works in the Transmission block in IEEE 802.11 Mac. For every 
+/**
+This actor works in the Transmission block in IEEE 802.11 Mac. For every
 TxRequest from the Protocol_Control block, this actor sends a PhyTxStart
 request to the physical layer. Upon receiving the PhyTxStart confirmation,
 it sends data to the physical layer. After the data has been sent, it sends
 PhyTxEnd request to the physical layer and sends TxConfirm to the source of
-the original TxRequest after receiving PhyTxEnd confirmation from the 
+the original TxRequest after receiving PhyTxEnd confirmation from the
 physical layer.
 <p>
-Both TxCoordination and RxCoordination in the Protocol_Control can send 
+Both TxCoordination and RxCoordination in the Protocol_Control can send
 TxRequest and require TxConfirm. This actor uses a pair of input and output
-ports to tell the source of the TxRequest and the destination of the 
-TxConfirm. 
+ports to tell the source of the TxRequest and the destination of the
+TxConfirm.
 
 @author Yang Zhao, Charlie Zhong and Xiaojun Liu
 @version DataPump.java,v 1.4 2004/04/12 15:30:36 cxh Exp
@@ -82,7 +82,7 @@ public class DataPump extends MACActorBase {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Create and configure the ports.       
+        // Create and configure the ports.
         fromProtocolTx = new TypedIOPort(this, "fromProtocolTx", true, false);
         fromProtocolRx = new TypedIOPort(this, "fromProtocolRx", true, false);
         fromCs = new TypedIOPort(this, "fromCs", true, false);
@@ -91,17 +91,17 @@ public class DataPump extends MACActorBase {
         toProtocolRx = new TypedIOPort(this, "toProtocolRx", false, true);
         forwardCs = new TypedIOPort(this, "forwardCs", false, true);
         toPhysical = new TypedIOPort(this, "toPhysical", false, true);
-        
+
         fromProtocolTx.setTypeEquals(BaseType.GENERAL);
         fromProtocolRx.setTypeEquals(BaseType.GENERAL);
         fromCs.setTypeEquals(BaseType.GENERAL);
         fromPhysical.setTypeEquals(BaseType.GENERAL);
-        toProtocolTx.setTypeEquals(BaseType.GENERAL); 
-        toProtocolRx.setTypeEquals(BaseType.GENERAL); 
-        forwardCs.setTypeEquals(BaseType.GENERAL); 
-        toPhysical.setTypeEquals(BaseType.GENERAL);     
+        toProtocolTx.setTypeEquals(BaseType.GENERAL);
+        toProtocolRx.setTypeEquals(BaseType.GENERAL);
+        forwardCs.setTypeEquals(BaseType.GENERAL);
+        toPhysical.setTypeEquals(BaseType.GENERAL);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
@@ -109,46 +109,46 @@ public class DataPump extends MACActorBase {
      *  Tx_Coordination block.
      */
     public TypedIOPort fromProtocolTx;
-    
+
     /** The input port for transmission request from the Protocol_Control
      *  Rx_Coordination block.
      */
     public TypedIOPort fromProtocolRx;
-    
 
-    /** The input port for the channel status massage from the 
+
+    /** The input port for the channel status massage from the
      *  reception block.
      */
     public TypedIOPort fromCs;
-    
+
     /** The input port for transmission conformation from the physical
      *  layer, including transmission start confirmation, transmiting
-     *  data confirmation and transmission end confirmation. 
+     *  data confirmation and transmission end confirmation.
      */
     public TypedIOPort fromPhysical;
-    
+
     /** The output port for transmission confirmation to the Protocol_Control
      *  Tx_Coordination block.
      */
     public TypedIOPort toProtocolTx;
-    
+
     /** The output port for transmission confirmation to the Protocol_Control
      *  Rx_Coordination block.
      */
     public TypedIOPort toProtocolRx;
-    
+
     /** The output port that send transmission request to the physical
      *  layer, including transmission start request, transmiting
-     *  data request and transmission end request. 
+     *  data request and transmission end request.
      */
     public TypedIOPort toPhysical;
-    
+
     /** The output port sending the the channel status to the
      *  Backoff block.
      */
     public TypedIOPort forwardCs;
-    
-    
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Clone the object into the specified workspace. The new object is
@@ -171,7 +171,7 @@ public class DataPump extends MACActorBase {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         Director director = getDirector();
         if (fromProtocolTx.hasToken(0)) {
             _inputMessage = (RecordToken) fromProtocolTx.get(0);
@@ -196,9 +196,9 @@ public class DataPump extends MACActorBase {
                             // in the channel module. The "channel" field are used
                             // for specifying a channel. We don't need it here. Yang
                             //channel = _inputMessage.get("channel").intValue();
-                            
-                            
-                            _pdu = (RecordToken)(_inputMessage.get("pdu")); 
+
+
+                            _pdu = (RecordToken)(_inputMessage.get("pdu"));
                             _toBackoff(Busy);
                             int length = ((IntToken)_pdu.get("Length")).intValue();
                             int rate = ((IntToken)_inputMessage.get("rate")).intValue();
@@ -207,9 +207,9 @@ public class DataPump extends MACActorBase {
                                              new IntToken(rate)};
                             toPhysical.send(0, new RecordToken(TxStartMsgFields, value));
                             _state = Wait_TxStart;
-                            
+
                         break;
-    
+
                         case Idle:
                         case Slot:
                         case Busy:
@@ -217,7 +217,7 @@ public class DataPump extends MACActorBase {
                         break;
                     }
                 break;
-                    
+
                 case Wait_TxStart:
                     if (_messageType == TxStartConfirm) {
                         int pduType = ((IntToken) _pdu.get("Type")).intValue();
@@ -230,33 +230,33 @@ public class DataPump extends MACActorBase {
                               case Ack:
                                 pduName = "ACK";
                               break;
-        
+
                               case Cts:
                                 pduName ="CTS";
                               break;
-        
+
                               case Rts:
                                 pduName = "RTS";
                               break;
                               }
                             break;
-        
+
                             case DataType:
                               if (pduSubtype==Data)
                                 pduName = "Data";
                             break;
                         }
                        String[] labels = {"kind", "name"};
-                       Token[] values = {new IntToken(TxData), new StringToken( pduName)};  
-                       
-                       RecordToken mergeToPdu = new RecordToken(labels, values); 
+                       Token[] values = {new IntToken(TxData), new StringToken( pduName)};
+
+                       RecordToken mergeToPdu = new RecordToken(labels, values);
                        RecordToken newPdu = RecordToken.merge(mergeToPdu, _pdu);
                        toPhysical.send(0, newPdu);
                        _state = Wait_TxEnd;
-                    
+
                     }
                 break;
-    
+
                 case Wait_TxEnd:
                   if (_messageType == TxEnd) {
                       Token[] value = {new IntToken(TxConfirm)};
@@ -273,7 +273,7 @@ public class DataPump extends MACActorBase {
             _messageType = UNKNOWN;
         }
     }
-    
+
     /** Initialize the private variables.
      *  @exception IllegalActionException If thrown by the base class.
      */
@@ -286,7 +286,7 @@ public class DataPump extends MACActorBase {
         _messageType = UNKNOWN;
         _pdu = null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
 
@@ -307,9 +307,9 @@ public class DataPump extends MACActorBase {
         if (_inputMessage != null) {
             _messageType = ((IntToken)
             _inputMessage.get("kind")).intValue();
-        } 
+        }
     }
-*/    
+*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -318,11 +318,11 @@ public class DataPump extends MACActorBase {
     private static final int Wait_TxStart = 1;
     private static final int Wait_TxEnd = 2;
 
-    
+
     private int _state=0;
     private int _source = 0;
-    private static final int FromProtocolTx = 0; 
-    private static final int FromProtocolRx = 1; 
+    private static final int FromProtocolTx = 0;
+    private static final int FromProtocolRx = 1;
     private RecordToken _pdu;
 
     private RecordToken _inputMessage;

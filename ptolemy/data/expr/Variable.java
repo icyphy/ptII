@@ -320,7 +320,7 @@ public class Variable extends Attribute
         newObject._dependencyLoop = false;
         // _noTokenYet and _initialToken are preserved in clone
         newObject._parserScope = null;
-        
+
         // Very subtle bug from missing this.
         // This bug only showed up when using MoML classes (e.g.
         // SmoothedPeriodogram actors, which are composite actors
@@ -390,7 +390,7 @@ public class Variable extends Attribute
                     value = ((StringToken)token).stringValue();
                 } else {
                     value = token.toString();
-                }               
+                }
             }
         }
         if (value == null) {
@@ -599,7 +599,7 @@ public class Variable extends Attribute
     public boolean isLazy() {
         return _isLazy;
     }
-   
+
     /** Return true if this parameter is in string mode.
      *  @return True if this parameter is in string mode.
      *  @see #setStringMode(boolean)
@@ -746,7 +746,7 @@ public class Variable extends Attribute
         _currentExpression = expr;
         _parseTree = null;
         _parseTreeValid = false;
-        
+
         // Make sure the new value is exported in MoML.  EAL 12/03.
         if (changed) {
             setOverrideDepth(0);
@@ -846,7 +846,7 @@ public class Variable extends Attribute
         // Override any expression that may have been previously given.
         if (_currentExpression != null) {
             _currentExpression = null;
-            
+
             // Make sure the new value is exported in MoML.
             setOverrideDepth(0);
 
@@ -856,7 +856,7 @@ public class Variable extends Attribute
 
         setUnknown(false);
     }
-    
+
     /** Set the expression for this variable by calling
      *  setExpression(), and then evaluate it by calling
      *  validate().  This will cause any other variables
@@ -1251,7 +1251,7 @@ public class Variable extends Attribute
             workspace().doneReading();
         }
     }
-    
+
     /** Evaluate the current expression to a token. If this variable
      *  was last set directly with a token, then do nothing. In other words,
      *  the expression is evaluated only if the value of the token was most
@@ -1345,7 +1345,7 @@ public class Variable extends Attribute
             }
         }
     }
-    
+
     /** Parse the expression, if the current parse tree is not valid.
      *  This method should only be called if the expression is valid.
      *  @exception IllegalActionException If the exception cannot be parsed.
@@ -1353,7 +1353,7 @@ public class Variable extends Attribute
     protected final void _parseIfNecessary() throws IllegalActionException {
         if (!_parseTreeValid) {
             if (_currentExpression == null) {
-                throw new IllegalActionException(this, 
+                throw new IllegalActionException(this,
                         "Empty expression cannot be parsed!");
             }
             PtParser parser = new PtParser();
@@ -1365,7 +1365,7 @@ public class Variable extends Attribute
                 // Normal parse rules for expressions.
                 _parseTree = parser.generateParseTree(
                         _currentExpression);
-            } 
+            }
             _parseTreeValid = (_parseTree != null);
         }
     }
@@ -1447,7 +1447,7 @@ public class Variable extends Attribute
         }
         return result;
     }
-    
+
     /** Set the token value and type of the variable.
      *  If the type of the specified token is incompatible with specified
      *  absolute type constraints (i.e. those that can be checked), then
@@ -1609,18 +1609,18 @@ public class Variable extends Attribute
      *  the variable was set from a token.
      */
     protected String _currentExpression = null;
-    
+
     /** Flags that the expression needs to be evaluated when the value of this
      *  variable is queried.
      */
     protected boolean _needsEvaluation = false;
-    
+
     /** The instance of VariableScope. */
     protected ParserScope _parserScope = null;
-    
+
     /** Indicator that the parse tree is valid. */
     protected boolean _parseTreeValid = false;
-    
+
     /** Listeners for changes in value. */
     protected List _valueListeners;
 
@@ -1678,7 +1678,7 @@ public class Variable extends Attribute
 
     // Used to check for dependency loops among variables.
     private transient boolean _dependencyLoop = false;
-    
+
     // Empty string token.
     private static StringToken _EMPTY_STRING_TOKEN = new StringToken("");
 
@@ -1706,7 +1706,7 @@ public class Variable extends Attribute
 
     /** Stores the variables that are referenced by this variable. */
     private HashMap _variablesDependentOn = null;
-    
+
     /** Version of the workspace when _variablesDependentOn was updated. */
     private transient long _variablesDependentOnVersion = -1;
 
@@ -1728,7 +1728,7 @@ public class Variable extends Attribute
     // The type set by setTypeEquals(). If _declaredType is not
     // BaseType.UNKNOWN, the type of this Variable is fixed to that type.
     private Type _declaredType = BaseType.UNKNOWN;
-    
+
     // If the variable was last set from an expression, this stores
     //  the parse tree for that expression.
     private ASTPtRootNode _parseTree;
@@ -1864,7 +1864,7 @@ public class Variable extends Attribute
 
     /** Scope implementation with local caching. */
     protected class VariableScope extends ModelScope {
-        
+
         /** Construct a scope consisting of the variables
          *  of the container of the the enclosing instance of
          *  Variable and its containers and their scope-extending
@@ -1873,7 +1873,7 @@ public class Variable extends Attribute
         public VariableScope() {
             this(null);
         }
-        
+
         /** Construct a scope consisting of the variables
          *  of the specified container its containers and their
          *  scope-extending attributes. If the argument is null,
@@ -1909,7 +1909,7 @@ public class Variable extends Attribute
             }
             // Either cache is not valid, or the variable is not in the cache.
             _variablesDependentOnVersion = workspace().getVersion();
-            
+
             NamedObj reference = _reference;
             if (_reference == null) {
                 reference = (NamedObj)Variable.this.getContainer();
@@ -1993,7 +1993,7 @@ public class Variable extends Attribute
             }
             return getAllScopedVariableNames(Variable.this, reference);
         }
-        
+
         // Reference object for the scope.
         private NamedObj _reference;
     }

@@ -37,7 +37,7 @@ import ptolemy.kernel.util.Nameable;
 //////////////////////////////////////////////////////////////////////////
 //// MultipleEnabledTransitionsException
 /**
-Thrown when multiple outgoing transitions from one state are enabled at the 
+Thrown when multiple outgoing transitions from one state are enabled at the
 same time.
 
 @author Haiyang Zheng
@@ -60,5 +60,5 @@ public class MultipleEnabledTransitionsException extends IllegalActionException 
     public MultipleEnabledTransitionsException(Nameable object, String detail) {
         super(object, null, null, detail);
     }
-    
+
 }

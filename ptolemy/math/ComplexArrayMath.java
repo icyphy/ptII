@@ -870,7 +870,7 @@ public class ComplexArrayMath {
         return toString(array, ", ", "{", "}");
     }
 
-    /** Return a new String representing the array, formatted 
+    /** Return a new String representing the array, formatted
      *  specified starting with vectorBegin, where each
      *  successive element is separated by elementDelimiter
      *  and ending with vectorEnd.

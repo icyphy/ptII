@@ -387,7 +387,7 @@ public abstract class BaseType implements Type, Serializable {
 		}
 	}
 	public static final XmlTokenType XMLTOKEN = new XmlTokenType();
-    
+
     /** The scalar data type: The least upper bound of all the scalar types. */
     public static class ScalarType extends BaseType {
         private ScalarType() {

@@ -178,18 +178,18 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return getDirector();
     }
 
-    /** Return the FunctionDependency object associated with this 
+    /** Return the FunctionDependency object associated with this
      *  atomic actor.
      *  @return the FunctionDependency object.
      *  @see FunctionDependency
      */
     public FunctionDependency getFunctionDependencies() {
-        // If the _functionDependency object is not constructed, 
+        // If the _functionDependency object is not constructed,
         // construct a FunctionDependencyOfAtomicActor object.
         if (_functionDependency == null) {
             _functionDependency = new FunctionDependencyOfAtomicActor(this);
         }
-        // Note, we don't guarantee the validity of this 
+        // Note, we don't guarantee the validity of this
         // _functionDependency in this method. Any further access of
         // the _functionDependency will check the validity.
         return _functionDependency;
@@ -427,11 +427,11 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Explicitly declare which inputs and outputs are not dependent.
      *  In this base class, this method does nothing. Subclasses should
-     *  implement the details. 
+     *  implement the details.
      *  <p>
      *  To declare a pair, input and output, independent, use the <i>
-     *  removeDependency(IOPort IOPort)</i> method. 
-     *  
+     *  removeDependency(IOPort IOPort)</i> method.
+     *
      *  @see ptolemy.domains.de.lib.TimedDelay
      *  @see #removeDependency(IOPort, IOPort)
      */
@@ -581,7 +581,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     private transient List _cachedInputPorts;
     private transient long _outputPortsVersion = -1;
     private transient List _cachedOutputPorts;
-    
+
     // Cached FunctionDependency object.
     private FunctionDependencyOfAtomicActor _functionDependency;
 }

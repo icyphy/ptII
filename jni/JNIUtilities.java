@@ -442,7 +442,7 @@ public class JNIUtilities {
                 + ");\n\n"
                 + "JNIEXPORT "
                 + (actor.getArgumentReturn() == null
-                        ? "void /* Warning: getArgumentReturn() == null (1)*/" 
+                        ? "void /* Warning: getArgumentReturn() == null (1)*/"
                         :actor.getArgumentReturn().getJNIType())
                 + " JNICALL Java_jni_"
                 + nativeLibrary
@@ -979,7 +979,7 @@ public class JNIUtilities {
         } else {
             if (argRet == null) {
                 results.append(
-                        "/* Warning: getArgumentReturn() == null (2)*/"); 
+                        "/* Warning: getArgumentReturn() == null (2)*/");
             }
             results.append( interNativeFunction
                     + "("
@@ -1027,7 +1027,7 @@ public class JNIUtilities {
 
         if (argRet == null) {
             results.append("/* Warning: getArgumentReturn() == null (3)*/");
-        } 
+        }
 
         results.append( "\n}");
         File dir = new File(destinationDirectory);

@@ -215,7 +215,7 @@ public class Manager extends NamedObj implements Runnable {
     public final static State WRAPPING_UP = new State("wrapping up");
 
     /** Indicator that the execution is in the wrapup phase and about
-     *  to exit. 
+     *  to exit.
      */
     public final static State EXITING = new State("exiting");
 
@@ -272,7 +272,7 @@ public class Manager extends NamedObj implements Runnable {
         _finishRequested = false;
 
         boolean completedSuccessfully = false;
-        
+
         try {
             initialize();
             // Call iterate() until finish() is called or postfire()
@@ -320,7 +320,7 @@ public class Manager extends NamedObj implements Runnable {
      *  set, then when wrapup() is almost finished, we call System.exit().
      *  If the ptolemy.ptII.exitAfterWrapup property is set, then
      *  we throw an Exception.
-     */   
+     */
     public void exitAfterWrapup() {
         _exitAfterWrapup = true;
         _setState(EXITING);
@@ -362,7 +362,7 @@ public class Manager extends NamedObj implements Runnable {
         ((CompositeActor)container).stop();
     }
 
-    /** Get the analysis with the given name, or return null if no such 
+    /** Get the analysis with the given name, or return null if no such
      *  analysis exists.
      */
     public Object getAnalysis(String name) {
@@ -409,7 +409,7 @@ public class Manager extends NamedObj implements Runnable {
             throws KernelException, IllegalActionException {
         try {
             _workspace.getReadAccess();
-            
+
             // Make sure that change requests are not executed when requested,
             // but rather only executed when executeChangeRequests() is called.
             setDeferringChangeRequests(true);
@@ -961,7 +961,7 @@ public class Manager extends NamedObj implements Runnable {
                     * 100.0)
             + "%)";
     }
-    
+
     /** If there is an active thread created by startRun(), then wait
      *  for it to complete and return. The wait is accomplished by
      *  calling the join() method on the thread.  If there is no
@@ -1027,7 +1027,7 @@ public class Manager extends NamedObj implements Runnable {
         _workspace.incrVersion();
 
         if (_exitAfterWrapup) {
-            // $PTII/util/testsuite/testDefs.tcl sets 
+            // $PTII/util/testsuite/testDefs.tcl sets
             // ptolemy.ptII.exitAfterWrapup
             if (StringUtilities
                 .getProperty("ptolemy.ptII.exitAfterWrapup")
@@ -1154,7 +1154,7 @@ public class Manager extends NamedObj implements Runnable {
 
     // Flag indicating that finish() has been called.
     private boolean _finishRequested = false;
-    
+
     // Count the number of iterations completed.
     private int _iterationCount;
 

@@ -116,7 +116,7 @@ public class AttributeValueIcon extends XMLIcon {
         Rectangle2D backBounds = result.getBackgroundFigure().getBounds();
         label.translateTo(backBounds.getCenterX(), backBounds.getCenterY());
         result.add(label);
-        
+
         _addLiveFigure(label);
         return result;
     }

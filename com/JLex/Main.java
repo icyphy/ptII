@@ -2054,7 +2054,7 @@ class CMakeNfa
     {
         CNfa start;
         boolean isAlphaL;
-      
+
         if (CUtility.DESCENT_DEBUG)
             {
                 CUtility.enter("term",m_spec.m_lexeme,m_spec.m_current_token);
@@ -4811,7 +4811,7 @@ class CLexGen
 
             /* Initialize spec structure. */
             m_spec = new CSpec(this);
-            
+
             /* Nfa to dfa converter. */
             m_nfa2dfa = new CNfa2Dfa();
             m_minimize = new CMinimize();
@@ -4821,7 +4821,7 @@ class CLexGen
 
             /* Successful initialization flag. */
             m_init_flag = true;
-        } finally { 
+        } finally {
             if (m_instream != null) {
                     try {
                         m_instream.close();
@@ -7068,7 +7068,7 @@ class CLexGen
         Enumeration states;
         String state;
         Integer index;
- 
+
         System.out.println("\n\t** Macros **");
         names = m_spec.m_macros.keys();
         while (names.hasMoreElements())

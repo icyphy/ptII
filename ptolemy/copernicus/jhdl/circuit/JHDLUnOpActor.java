@@ -48,7 +48,7 @@ import soot.*;
 import soot.jimple.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
  * This class represents a unary operator JHDL circuit. This class
  * can generate the following JHDL circuits: NOT
@@ -57,7 +57,7 @@ import soot.jimple.*;
 @since Ptolemy II 2.0
 */
 public class JHDLUnOpActor extends JHDLAtomicActor {
-    
+
     JHDLUnOpActor(CompositeEntity container, int operation)
 	throws IllegalActionException, NameDuplicationException {
  	super(container);

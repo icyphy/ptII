@@ -430,5 +430,5 @@ public class TransitionRefinementPort extends RefinementPort {
      *  associated input port siblings
      */
     protected boolean _hasSibling = false;
-    
+
 }

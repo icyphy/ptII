@@ -160,18 +160,18 @@ Reference:  http://192.168.1.1/Forward.htm
 <p>NOTE: This actor can also be configured to handle multicase datagram
 socket. A MulticastSocket is a DatagramSocket with additional capabilities
 to join groups of other multicast hosts on the internet. A multicast group
-is specified by a class D IP address and a standard UDP port number. 
-When one member sends a packet to a multicast group, all recipients 
-subscribing to that host and port reiceive the packet. 
+is specified by a class D IP address and a standard UDP port number.
+When one member sends a packet to a multicast group, all recipients
+subscribing to that host and port reiceive the packet.
 Currently, The parameter <i>defaultReturnAddress</i> is overloaded to specify
 a multicast datagram IP address. When the return address is a multicast IP
-address, The parameter <i>localSocketNumber</i> is used to specify the 
-UDP port number for the multicast group. A multicast IP address 
+address, The parameter <i>localSocketNumber</i> is used to specify the
+UDP port number for the multicast group. A multicast IP address
 ranges from 224.0.0.0 to 239.255.255.255, inclusive. To send a packet to the
-group, the sender can be either a DatagramSocket or a MulticastSocket. The 
+group, the sender can be either a DatagramSocket or a MulticastSocket. The
 only difference is that MulticastSocket allows you to control the time-to-live
 of the datagram. Don't use 224.0.0.1 ~ 224.255.255.255 when the live time of
-is specified larger than 1. 
+is specified larger than 1.
 
 <p>FIXME: we might not want to overload the <i>defaultReturnAddress</i> and
 the <i>localSocketNumber</i> parameter...
@@ -330,8 +330,8 @@ public class DatagramReader extends TypedAtomicActor {
      *  system resource allocated to this actor.</b> No other actor
      *  with the same local socket number may run at the same time.
      *  Currently, When the return address is a multicast IP address,
-     *  this parameter is also used to specify the UDP port number 
-     *  for the multicast group. 
+     *  this parameter is also used to specify the UDP port number
+     *  for the multicast group.
      */
     public Parameter localSocketNumber;
 
@@ -368,7 +368,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  used to set the platform's receive buffer size.  This
      *  parameter must contain a boolean token, and has a default of
      *  false.
-     */  
+     */
     public Parameter setPlatformBufferLength;
 
     /** Whether to overwrite when inundated with datagrams or let
@@ -447,7 +447,7 @@ public class DatagramReader extends TypedAtomicActor {
                 //check whether is ip multicase datagram.
                 //multicast IP ranges from 224.0.0.1 to 239.255.255.255(inclusive).
                 //Note: don't use 224.0.0.1 ~ 224.255.255.255 when the live time
-                //of the socket is specified larger than 1. 
+                //of the socket is specified larger than 1.
                 if (_defaultReturnAddress.compareTo("224.0.0.1")>=0 &&
 					_defaultReturnAddress.compareTo("239.255.255.255")<=0 ) {
 					_multiCast = true;
@@ -554,7 +554,7 @@ public class DatagramReader extends TypedAtomicActor {
                     }
                     int newSocketNumber = ((IntToken)
                             (localSocketNumber.getToken())).intValue();
-					if (_multicastSocket != null && 
+					if (_multicastSocket != null &&
 							newSocketNumber != _multicastSocket.getLocalPort()) {
 						synchronized(_syncSocket) {
 							if (_inReceive) {
@@ -589,7 +589,7 @@ public class DatagramReader extends TypedAtomicActor {
 								}
 							}
 						}
-					} else if (_socket != null && 
+					} else if (_socket != null &&
 							newSocketNumber != _socket.getLocalPort()) {
                         synchronized(_syncSocket) {
                             if (_inReceive) {
@@ -666,7 +666,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  of the output port.
      */
     public void fire() throws IllegalActionException {
-           
+
         // Consume trigger input(s), otherwise model can hang.
         for (int i = 0; i < trigger.getWidth(); i++) {
             if (trigger.hasToken(i)) {
@@ -802,9 +802,9 @@ public class DatagramReader extends TypedAtomicActor {
 					+ " is outside the required 0..65535 range");
 		}
 		if (_debugging) _debug(this + "portNumber = " + portNumber);
-		
+
 		if (_multiCast == true) {
-	        
+
 	        // Allocate a new multicast socket.
 	        try {
 	            if (_debugging) {
@@ -818,7 +818,7 @@ public class DatagramReader extends TypedAtomicActor {
 	        catch (Exception ex) {
 	            throw new IllegalActionException(this, ex,
 	                    "Failed to create a new multicast socket on port " + portNumber);
-	
+
 	        }
 			String address =
 				((StringToken)defaultReturnAddress.getToken()).stringValue();
@@ -850,7 +850,7 @@ public class DatagramReader extends TypedAtomicActor {
 				throw new IllegalActionException(this, ex,
 						"Failed to create a new socket on port " + portNumber);
 
-			}			
+			}
 		}
         // Set flag so that thread will [Set and] get platform's buffer length.
         _ChangeRequestedToPlatformBufferLength = 1;
@@ -988,7 +988,7 @@ public class DatagramReader extends TypedAtomicActor {
 			}
 		}
 	}
-	
+
     /** Release resources acquired in the initialize() method,
      *  specifically the evaluation variable, the DatagramSocket, and
      *  the SocketReadingThread.  This method also gets called from
@@ -1021,7 +1021,7 @@ public class DatagramReader extends TypedAtomicActor {
             _socket = null;
         }else if (_multicastSocket != null) {
         	_multicastSocket.close();
-        	_multicastSocket = null; 
+        	_multicastSocket = null;
         }
         else {
             if (_debugging) {
@@ -1043,7 +1043,7 @@ public class DatagramReader extends TypedAtomicActor {
     private int _actorBufferLength;
     private boolean _overwrite;
     private boolean _blockAwaitingDatagram;
-    
+
     //whether is multicast datagram or not.
     private boolean _multiCast = false;
 
@@ -1079,8 +1079,8 @@ public class DatagramReader extends TypedAtomicActor {
     private String _returnAddress;
     private int _returnSocketNumber;
     private Token _outputToken;
-    
-    //the remote address the packege from. 
+
+    //the remote address the packege from.
     private InetAddress _address = null;
 
     // Flag used when changing the port number (a.k.a. socket number) of
@@ -1216,7 +1216,7 @@ public class DatagramReader extends TypedAtomicActor {
 							//throw new RuntimeException("-null ptr-");
 							// -> java.lang.RuntimeException: -null ptr-
 							//     at ptolemy.actor.lib.net.DatagramReceiver$ListenerThread.run(DatagramReceiver.java:935)
-						}                    
+						}
                     }else {
 	                    try {
 	                        // NOTE: The following call may block.

@@ -100,7 +100,7 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
     public static FieldsForPortsTransformer v(CompositeActor model) {
         return new FieldsForPortsTransformer(model);
     }
-    
+
     public String getPhaseName() {
         return "";
     }
@@ -127,7 +127,7 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
         _options = options;
         _debug = PhaseOptions.getBoolean(_options, "debug");
         _portToFieldMap = new HashMap();
-   
+
         _indexExistingFields(ModelTransformer.getModelClass(),
                 _model);
 
@@ -158,7 +158,7 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
                 if (!unit.containsInvokeExpr()) {
                     continue;
                 }
-                
+
                 ValueBox box = (ValueBox)unit.getInvokeExprBox();
                 Value value = box.getValue();
                 if (value instanceof InstanceInvokeExpr) {
@@ -193,7 +193,7 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
                                 "statically determined";
                             throw new RuntimeException(string);
                         }
-                    } 
+                    }
                 }
             }
         }
@@ -292,7 +292,7 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
         for (Iterator ports = object.portList().iterator();
              ports.hasNext();) {
             Port port = (Port)ports.next();
-            
+
             String fieldName =
                 ModelTransformer.getFieldNameForPort(port, container);
             SootField field;
@@ -343,7 +343,7 @@ public class FieldsForPortsTransformer extends SceneTransformer implements HasPh
         // the fields that already exist.
         _getPortFields(actorClass, actor,
                 actor);
-   
+
         // Loop over all the actor instance classes and get
         // fields for ports.
         if (actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {

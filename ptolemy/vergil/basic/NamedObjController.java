@@ -85,7 +85,7 @@ public class NamedObjController extends LocatableNodeController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** This is an action that accesses the documentation for a Ptolemy
      *  object associated with a figure.  Note that this base class does
      *  not put this action in a menu, since some derived classes will

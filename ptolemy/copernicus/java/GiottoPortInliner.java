@@ -765,8 +765,8 @@ public class GiottoPortInliner implements PortInliner {
     private void _createPortBufferReference(SootClass entityClass,
             TypedIOPort port, ptolemy.data.type.Type type,
             Map typeNameToBufferField) {
-        if (_debug) {  
-            System.out.println("creating  buffer reference for " + port 
+        if (_debug) {
+            System.out.println("creating  buffer reference for " + port
                     + " type = " + type);
         }
         RefType tokenType = PtolemyUtilities.getSootTypeForTokenType(type);
@@ -836,7 +836,7 @@ public class GiottoPortInliner implements PortInliner {
                     typeNameToInsideBufferField);
 
             if (_debug) {
-                System.out.println("port = " + port.getFullName() 
+                System.out.println("port = " + port.getFullName()
                         + " type = " + port.getType());
             }
 

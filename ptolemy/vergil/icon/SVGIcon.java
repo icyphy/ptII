@@ -91,7 +91,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
             throw new InternalErrorException(ex);
         }
     }
-    
+
     /** Create a new icon with the given name in the given container.
      *  By default, the icon contains no graphic objects.
      *  @param container The container for this attribute.
@@ -121,7 +121,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
         newObject._smallIconDescription = null;
         return newObject;
     }
-    
+
     /** Override the base class to establish this as a listener to
      *  icon descriptions in the container.
      *  @param container The container to attach this attribute to..
@@ -157,7 +157,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
         super.setContainerToBe(container);
         _bindToContainer(container);
     }
-    
+
     /** React to the fact that the value of an attribute named
      *  "_iconDescription" contained by the same container has changed
      *  value by redrawing the figure.
@@ -234,7 +234,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
         // clear the caches
         _recreateFigure();
     }
-    
+
     /** Create a new attribute and insert it in this icon. This method
      *  must be called at a time when this thread can get write access
      *  on the workspace. For example, it is safe to call it from
@@ -251,22 +251,22 @@ public class SVGIcon extends EditorIcon implements ValueListener {
             if (type.equals("rect")) {
                 RectangleAttribute attribute
                         = new RectangleAttribute(this, uniqueName("rect"));
-                
+
                 _processFilledShapeAttributeAttributes(attribute, attributes);
             } else if (type.equals("circle")) {
                 EllipseAttribute attribute
                         = new EllipseAttribute(this, uniqueName("rect"));
-    
+
                 // Rename the attributes.
                 attributes.put("x", _getAttribute(attributes, "cx", "0.0"));
                 attributes.put("y", _getAttribute(attributes, "cy", "0.0"));
-                
+
                 double r = _getDouble(attributes, "r", 10.0);
                 double width = r * 2.0;
                 String widthString = Double.toString(width);
                 attributes.put("width", widthString);
                 attributes.put("height", widthString);
-    
+
                 _processFilledShapeAttributeAttributes(attribute, attributes);
     /* FIXME
             } else if (type.equals("ellipse")) {
@@ -275,12 +275,12 @@ public class SVGIcon extends EditorIcon implements ValueListener {
                 cy = _getDouble(attributes, "cy", 0);
                 rx = _getDouble(attributes, "rx");
                 ry = _getDouble(attributes, "ry");
-    
+
                 PaintedShape ps = new PaintedShape(new Ellipse2D.Double(
                         cx - rx, cy - ry, 2 * rx, 2 * ry));
                 processPaintedShapeAttributes(ps, attributes);
                 return ps;
-    
+
             } else if (type.equals("line")) {
                 double x1, y1, x2, y2;
                 x1 = _getDouble(attributes, "x1", 0);
@@ -311,11 +311,11 @@ public class SVGIcon extends EditorIcon implements ValueListener {
                     poly.lineTo(coords[i], coords[i+1]);
                 }
                 poly.closePath();
-    
+
                 PaintedShape ps = new PaintedShape(poly);
                 processPaintedShapeAttributes(ps, attributes);
                 return ps;
-    
+
             } else if (type.equals("text")) {
                 double x, y;
                 x = _getDouble(attributes, "x", 0);
@@ -348,7 +348,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
                         }
                         url = _refClass.getClassLoader().getResource(link);
                     }
-    
+
                     // Try as a regular URL.
                     if (url == null) {
                         url = new URL(link);
@@ -383,9 +383,9 @@ public class SVGIcon extends EditorIcon implements ValueListener {
             throw new InternalErrorException(e);
         }
     }
-    
+
     /** Given the root of an XML tree, populate this icon with
-     *  attributes for each graphical element. 
+     *  attributes for each graphical element.
      */
     private void _generateContents(XmlElement root) {
         String name = root.getType();
@@ -434,7 +434,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
             return defaultValue;
         }
     }
-    
+
     /** Set the attributes of a FilledShapeAttribute from the specified
      *  map of SVG attribute values.
      */
@@ -442,7 +442,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
             FilledShapeAttribute attribute, Map attributes) {
 
         _processShapeAttributeAttributes(attribute, attributes);
-        
+
         String width = _getAttribute(attributes, "width", "10.0");
         String height = _getAttribute(attributes, "height", "10.0");
         attribute.width.setExpression(width);
@@ -475,7 +475,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
     private static void _processShapeAttributeAttributes (
             ShapeAttribute attribute, Map attributes) {
         // FIXME: set lineWidth and lineColor.
-        
+
         _processLocation(attribute, attributes);
 
         String style = (String) attributes.get("style");
@@ -506,11 +506,11 @@ public class SVGIcon extends EditorIcon implements ValueListener {
             Attribute attribute, Map attributes) {
         double locationValue[] = new double[2];
         locationValue[0] = _getDouble(attributes, "x", 0.0);
-        locationValue[1] = _getDouble(attributes, "y", 0.0);           
+        locationValue[1] = _getDouble(attributes, "y", 0.0);
         try {
             Location location = new Location(attribute, "_location");
             location.setLocation(locationValue);
-            
+
             // Since this isn't delegated to the MoML parser,
             // we have to handle propagation here.
             List heritageList = attribute.getDerivedList();
@@ -541,7 +541,7 @@ public class SVGIcon extends EditorIcon implements ValueListener {
         XmlElement root = document.getRoot();
 
         _generateContents(root);
-        
+
         // FIXME: What to do about the _smallIconDescription?
     }
 

@@ -71,7 +71,7 @@ public abstract class FunctionDependency {
      *  @param container The container has this FunctionDependency object.
      */
     public FunctionDependency(Actor container) {
-        // FIXME: how to specify a function dependency for a state. 
+        // FIXME: how to specify a function dependency for a state.
         // Currently, only actors have function dependencies.
         _container = container;
     }

@@ -138,15 +138,15 @@ public class TransmitPropertyTransformer extends RunCompositeActor
 
     /** The x/y location of the sender.  The default value is a double
      *  array of length 2: {0.0, 0.0}
-     */   
+     */
     public Parameter senderLocation;
 
     /** The x/y location of the receiver.  The default value is a double
      *  array of length 2: {0.0, 0.0}
-     */   
+     */
     public Parameter receiverLocation;
 
-    /** The properties of the transformer.  The default value is a 
+    /** The properties of the transformer.  The default value is a
      *  record token with value {power = 0.0, range = 0.0}.
      */
     public Parameter property;

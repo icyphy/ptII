@@ -76,11 +76,11 @@ public class ElementsToArray extends Transformer {
     public ElementsToArray(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        
+
         // set the output type to be an ArrayType.
         output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         input.setMultiport(true);
-        
+
         // Set the icon.
         _attachText("_iconDescription", "<svg>\n" +
             "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "

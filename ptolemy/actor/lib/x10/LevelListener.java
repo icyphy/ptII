@@ -42,7 +42,7 @@ import x10.Command;
 
 //////////////////////////////////////////////////////////////////////////
 //// LevelListener
-/** 
+/**
 This actor will output an integer between 0 and 100 whenever a specified
 command with the specified house and unit code is detected.  If this actor
 fires and no such command has been issued, then it outputs -1. Only commands
@@ -74,52 +74,52 @@ public class LevelListener extends Receiver {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        // Create output port.    
+        // Create output port.
         level = new TypedIOPort(this, "level", false, true);
         level.setTypeEquals(BaseType.INT);
-        
+
         // Identify the command to detect.
         command = new StringParameter(this, "command");
         command.addChoice("BRIGHT");
         command.addChoice("DIM");
         command.setExpression("BRIGHT");
-        
-        // Parameters.        
+
+        // Parameters.
         houseCode = new StringParameter(this, "houseCode");
         houseCode.setExpression("A");
 
         unitCode = new Parameter(this, "unitCode");
-        unitCode.setTypeEquals(BaseType.INT);        
+        unitCode.setTypeEquals(BaseType.INT);
         unitCode.setExpression("1");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** The X10 command to listen for.  This is a string with a value
      *  that is one of BRIGHT or DIM. The default is BRIGHT.
      */
     public StringParameter command;
-    
+
     /** An output with value 0-100, inclusive, is produced on this port
      *  when the specified X10 command is detected for the specified
      *  house and unit codes.
      */
     public TypedIOPort level;
-    
+
     /** This string is the house code for the command that this
      *  actor listens for. The default value is "A".
      */
     public StringParameter houseCode;
-    
+
     /** This parameter is the unit code for the command that this
      *  actor listens for. It is an integer that defaults to 1.
      */
     public Parameter unitCode;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Output an integer between 0 and 100 if the specified command
      *  is sensed with the specified house and unit codes, and output
      *  -1 otherwise. If there are additional commands pending, then
@@ -128,7 +128,7 @@ public class LevelListener extends Receiver {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         // Check whether a command is ready
         if (_commandReady()) {
             Command sensedCommand = _getCommand();
@@ -138,13 +138,13 @@ public class LevelListener extends Receiver {
             if (!commandValue.equals("BRIGHT")) {
                 functionOfInterest = Command.DIM;
             }
-            
+
             String sensedHouseCode = "" + sensedCommand.getHouseCode();
             int sensedUnitCode = sensedCommand.getUnitCode();
-            
+
             String houseCodeValue = houseCode.stringValue();
             int unitCodeValue = ((IntToken)unitCode.getToken()).intValue();
-            
+
             if (sensedHouseCode.equals(houseCodeValue)
                     && sensedUnitCode == unitCodeValue
                     && function == functionOfInterest) {
@@ -156,10 +156,10 @@ public class LevelListener extends Receiver {
             level.send(0, _NO_COMMAND_TOKEN);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     // Token to produce when no command is detected.
     private IntToken _NO_COMMAND_TOKEN = new IntToken(-1);
 }

@@ -82,7 +82,7 @@ public class KeyToken extends Token {
      *  and the byte arrays that contain the encoding have the same contents.
      *  Consult the java.security.Key documentation for the meaning of these
      *  terms.
-     *  
+     *
      *  @param rightArgument The Token to test against.
      *  @exception IllegalActionException Not thrown in this base class.
      *  @return A boolean token that contains the value true if the

@@ -273,7 +273,7 @@ public class VisualModelReference
                         // deferred to the UI thread, may not have completed, so
                         // we may open the old tableau as it is closing!
                         _tableau = configuration.openModel(_model, myEffigy);
-                        
+
                         // Do not allow editing on this tableau.  In particular,
                         // if editing were allowed, then an attempt to save the
                         // changes will result in a spectacular failure.  The
@@ -382,7 +382,7 @@ public class VisualModelReference
         }
         return result;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 

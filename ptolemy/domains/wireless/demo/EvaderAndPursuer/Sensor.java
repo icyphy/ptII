@@ -55,20 +55,20 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 
 /**
 This is a wireless sensor node that senses evaders in the sensor
-field. The sensors in the field communicate with each other to 
+field. The sensors in the field communicate with each other to
 construct a spanning tree from the root node (where the evader is close
-to) to nodes that are one hop from the root node and so on. When a 
+to) to nodes that are one hop from the root node and so on. When a
 sensor detects the evader, it sets itself as the root
 and broadcast a message to its neighbor nodes. The message includes
-the time when the evader is detected, the location and the depth, 
+the time when the evader is detected, the location and the depth,
 zero for the root node, of the sensor. If a sensor receives
 a message from another sensor, it checks whether the root node
-has been changed from last time (by check the detected time), 
-or whether there is a shorter path to the root node. If so, it 
-records the detected time, updates the information of its parent 
+has been changed from last time (by check the detected time),
+or whether there is a shorter path to the root node. If so, it
+records the detected time, updates the information of its parent
 node (location and depth in the tree) and broadcast a message,
 include the detected time, its location and depth in the tree, to
-it neighbot nodes. By doing this in a sensor network, a spaning 
+it neighbot nodes. By doing this in a sensor network, a spaning
 tree is constructed distributedly and sensors are indexed according
 to how far it is from the root node. With the evader moving, it may
 be detected by another sensor, and the tree changes dynamically.
@@ -90,39 +90,39 @@ public class Sensor extends TypedAtomicActor {
     public Sensor(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         // Create and configure the parameters.
         messageChannelName = new StringParameter(this, "messageChannelName");
         messageChannelName.setExpression("MessageChannel");
 
         signalChannelName = new StringParameter(this, "signalChannelName");
         signalChannelName.setExpression("SignalChannel");
-        
+
         outputChannelName = new StringParameter(this, "outputChannelName");
         outputChannelName.setExpression("OutputChannel");
-        
+
         range = new Parameter(this, "range");
         range.setToken("50.0");
         range.setTypeEquals(BaseType.DOUBLE);
-        
-        // Create and configure the ports.       
+
+        // Create and configure the ports.
         input = new WirelessIOPort(this, "input", true, false);
         input.outsideChannel.setExpression("$messageChannelName");
-        
+
         signal = new WirelessIOPort(this, "signal", true, false);
         signal.outsideChannel.setExpression("$signalChannelName");
         signal.setTypeEquals(BaseType.STRING);
-        
+
         output = new WirelessIOPort(this, "output", false, true);
         output.outsideChannel.setExpression("$outputChannelName");
         // Since this actor sources the data at this port, we have to
         // declare the type.
         TypeAttribute portType = new TypeAttribute(output, "type");
         portType.setExpression("{location={double}, time=double, depth=int}");
-        
+
         // Create an icon for this sensor node.
         EditorIcon node_icon = new EditorIcon(this, "_icon");
-        
+
         // The icon has two parts: a circle and an antenna.
         // Create a circle that indicates the signal radius.
         _circle = new EllipseAttribute(node_icon, "_circle");
@@ -138,19 +138,19 @@ public class Sensor extends TypedAtomicActor {
         _circle2.height.setToken("20");
         _circle2.fillColor.setToken("{1.0, 1.0, 1.0, 1.0}");
         _circle2.lineColor.setToken("{0.0, 0.5, 0.5, 1.0}");
-        
+
         node_icon.setPersistent(false);
-        
-        // Hide the name of this sensor node. 
+
+        // Hide the name of this sensor node.
         new Attribute(this, "_hideName");
         // Hide the ports.
         new Attribute(output, "_hide");
         new Attribute(input, "_hide");
-        new Attribute(signal, "_hide"); 
+        new Attribute(signal, "_hide");
     }
-    
+
     /** Explicitly declare which inputs and outputs are not dependent.
-     *  
+     *
      */
     public void removeDependencies() {
         super.removeDependency(input, output);
@@ -158,24 +158,24 @@ public class Sensor extends TypedAtomicActor {
     }
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
-    
+
     /** Port that receives update message for the spanning tree.
      */
     public WirelessIOPort input;
-    
+
     /** Port that receives a signal from the envader or pursuer.
      */
-    public WirelessIOPort signal;    
+    public WirelessIOPort signal;
 
     /** Name of the channel for messaging between sensors.
      *  This is a string that defaults to "messageChannel".
      */
     public StringParameter messageChannelName;
-    
+
     /** Name of the channel for sensors to detect envader or pursuer.
      *  This is a string that defaults to "signalChannel".
      */
-    public StringParameter signalChannelName;    
+    public StringParameter signalChannelName;
 
     /** Port that transmits the update message for the spanning tree.
      *  This has type {location={double}, time=double, depth =int},
@@ -187,35 +187,35 @@ public class Sensor extends TypedAtomicActor {
      *  "OutputChannel".
      */
     public StringParameter outputChannelName;
-    
+
     /** The transmition range of the sensor. The icon for this sensor
-     *  node includes a circle with this as its radius. This is a 
+     *  node includes a circle with this as its radius. This is a
      *  double and default to 50.0.
       */
      public Parameter range;
-       
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
- 
-    /** When it receives token from the signal port, which is 
-     *  used to receive signal from the pursuer or the evader. 
+
+    /** When it receives token from the signal port, which is
+     *  used to receive signal from the pursuer or the evader.
      *  it tells what the signal is from by checking the signal header.
      *  If it is from the evader, it set itself to be the root node
      *  and broadcast a message for updating the tree. Otherwise, it
-     *  output a message to the pursuer to tell it the location of 
+     *  output a message to the pursuer to tell it the location of
      *  its parent node, and the pursuer will move closer to the evader
-     *  using this information.  
-     *  When it receives token from the input port, which is used to 
+     *  using this information.
+     *  When it receives token from the input port, which is used to
      *  receive message from other sensors, it check whether the rootnode
      *  has been changed or whether there is a shorter path. If so, it
      *  performs update and broadcast a message. Otherwise, simply
-     *  consumes the messge. 
+     *  consumes the messge.
      */
     public void fire() throws IllegalActionException {
 
         super.fire();
-        
+
         if (signal.hasToken(0)) {
             String signalValue = ((StringToken) signal.get(0)).stringValue();
             if (_debugging) {
@@ -232,7 +232,7 @@ public class Sensor extends TypedAtomicActor {
                 for (int i = 0; i < location.length; i++) {
                     locationArray[i] = new DoubleToken(location[i]);
                 }
-            
+
                 double time = getDirector().getCurrentTime();
                 Token[] values = {
                     new ArrayToken(locationArray),
@@ -241,12 +241,12 @@ public class Sensor extends TypedAtomicActor {
                 };
                 Token result = new RecordToken(labels, values);
 
-                output.send(0, result);                
+                output.send(0, result);
             } else {
                 // It is the pursuer. Send its parent info to the pursuer.
                 if (_timeValue > 0.0) {
                     String[] labels = {"location", "time", "depth"};
-            
+
                     Token[] values = {
                         new ArrayToken(_parentLocation),
                         new DoubleToken(_timeValue),
@@ -255,10 +255,10 @@ public class Sensor extends TypedAtomicActor {
                     Token result = new RecordToken(labels, values);
 
                     output.send(0, result);
-                }                
+                }
             }
         }
-        
+
         if (input.hasToken(0)) {
             //receive message for updating the spanning tree.
             RecordToken inputToken = (RecordToken) input.get(0);
@@ -268,23 +268,23 @@ public class Sensor extends TypedAtomicActor {
             DoubleToken time =(DoubleToken) inputToken.get("time");
             IntToken d = (IntToken) inputToken.get("depth");
             if (time.doubleValue() > _timeValue ||
-                (time.doubleValue() == _timeValue 
+                (time.doubleValue() == _timeValue
                  && d.intValue() < _parentDepth)) {
                 //the root node may have been changed
                 //or there is a shorter path.
-                ArrayToken locationArray = 
+                ArrayToken locationArray =
                         (ArrayToken)inputToken.get("location");
                 int length = locationArray.length();
                 _parentLocation = new DoubleToken[length];
                 for (int i = 0; i < length ; i++) {
-                    _parentLocation[i] = 
+                    _parentLocation[i] =
                             (DoubleToken) locationArray.getElement(i);
                 }
                 _timeValue = time.doubleValue();
                 _parentDepth = d.intValue();
-                
+
                 String[] labels = {"location", "time", "depth"};
-            
+
                 Token[] values = {
                     new ArrayToken(_parentLocation),
                     new DoubleToken(_timeValue),
@@ -292,11 +292,11 @@ public class Sensor extends TypedAtomicActor {
                 };
                 Token result = new RecordToken(labels, values);
 
-                output.send(0, result); 
+                output.send(0, result);
             }
         }
     }
-    
+
     /** Initialize the private varialbles of the sensor node.
      *  @exception IllegalActionException If thrown by the base class.
      */
@@ -310,7 +310,7 @@ public class Sensor extends TypedAtomicActor {
         _parentDepth = 0;
         _timeValue = 0.0;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -340,17 +340,17 @@ public class Sensor extends TypedAtomicActor {
 
     /** Its parent's location. */
     private DoubleToken[] _parentLocation;
-    
+
     /** The time when the root node detected the envader. */
     private double _timeValue;
-    
+
     /** The depth of its parent.
-     */   
+     */
     private int _parentDepth;
-    
+
     /** Icon indicating the communication region. */
     private EllipseAttribute _circle;
-    
+
     /** Icon of this actor. */
     private EllipseAttribute _circle2;
 }

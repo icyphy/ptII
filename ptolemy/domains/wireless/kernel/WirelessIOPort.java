@@ -57,30 +57,30 @@ import ptolemy.kernel.util.Workspace;
 
 This port communicates via channels without wired connections.
 Channels are instances of WirelessChannel. The port references
-channels by name, where the name is specified by the 
+channels by name, where the name is specified by the
 <i>outsideChannel</i> or <i>insideChannel</i> parameter.
 <p>
 This port can be used on the boundary of wireless domain models.
 A port is outside wireless if an outside channel name is given and
 a wireless channel with the given name is contained by the container
-of the port's container(transparant hierarchy is not supported). 
+of the port's container(transparant hierarchy is not supported).
 Specially, it will use the specified wireless channel to communicate
 on the outside. A port is inside wireless if an inside channel
-name is given and a wireless channel with the given name is 
-contained by the container of this port. It will use the specified 
-wireless channel to communicate on the inside. If no outside channel 
-or inside channel name is given or the named channel does not exist, 
-then the behavior of the port reverts to that of the base class. 
-Specifically, it will only communicate if it is wired. 
+name is given and a wireless channel with the given name is
+contained by the container of this port. It will use the specified
+wireless channel to communicate on the inside. If no outside channel
+or inside channel name is given or the named channel does not exist,
+then the behavior of the port reverts to that of the base class.
+Specifically, it will only communicate if it is wired.
 <p>
-it is valid for a model using the wireless director to have both 
-wireless communication and wired communication, i.e. it may contain 
-actors with ports using wireless communication (by specifying a 
+it is valid for a model using the wireless director to have both
+wireless communication and wired communication, i.e. it may contain
+actors with ports using wireless communication (by specifying a
 wireless channel) and actors with ports using wired communication.
 If a port is outside/inside wireless(a wireless channel is specified),
-it will ignore all the communication through the wired connections 
-to it if there is any on the outside/inside of it. 
-<p> 
+it will ignore all the communication through the wired connections
+to it if there is any on the outside/inside of it.
+<p>
 The width of this port on either side that is using wireless
 communication is fixed at one. Otherwise, it depends on the
 number of links to the port.
@@ -89,8 +89,8 @@ When this port is used for wireless communications, nothing is
 connected to it.  Consequently, methods that access the topology such
 as connectedPortList() and deepConnectedInPortList() return an empty
 list. There are no deeply connected ports.  However, sinkPortList()
-returns the port of the specified wireless channel. A consequence of 
-this is that type constraints are automatically set up between ports 
+returns the port of the specified wireless channel. A consequence of
+this is that type constraints are automatically set up between ports
 that send on the channel and the channel port.
 
 @author Edward A. Lee and Xiaojun Liu
@@ -367,7 +367,7 @@ public class WirelessIOPort
      *  Transparent hierarchy is ignored in getting the inside channel.
      *  @return A wireless channel, or null if no channel is specified
      *  or if the spedified channel does not exist.
-     *  @exception IllegalActionException If the <i>insideChannel</i> 
+     *  @exception IllegalActionException If the <i>insideChannel</i>
      *  parameter value cannot be evaluated.
      */
     public WirelessChannel getInsideChannel() throws IllegalActionException {
@@ -410,7 +410,7 @@ public class WirelessIOPort
 
     /** Get the channel specified by the <i>outsideChannel</i> parameter.
      *  The channel is contained by the container of the container of this
-     *  port. Transparent hierarchy is ignored in getting the outside 
+     *  port. Transparent hierarchy is ignored in getting the outside
      *  channel.
      *  @return A wireless channel, or null if no channel is specified
      *  or if the spedified channel does not exist.
@@ -614,8 +614,8 @@ public class WirelessIOPort
     /** Return a list of the ports that can potentially send data to
      *  this port from the inside.  If the port is inside wireless,
      *  then this includes only the wireless channel port.  Otherwise,
-     *  this includes opaque output ports that are connected on the 
-     *  outside to this port and opaque input ports that are connected 
+     *  this includes opaque output ports that are connected on the
+     *  outside to this port and opaque input ports that are connected
      *  on the inside to this one.
      *  @return A list of IOPort objects.
      */
@@ -661,7 +661,7 @@ public class WirelessIOPort
     }
 
     /** Return 1 if the port is outside wireless,, which represents the
-     *  channel port of the outside wireless channel. If not, defer to 
+     *  channel port of the outside wireless channel. If not, defer to
      *  the base class.
      *  @return The number of ports that can receive data from this one.
      */
@@ -681,8 +681,8 @@ public class WirelessIOPort
     }
 
     /** Override the base class to delegate to the wireless channel if
-     *  the port is outside wireless. If there is no outside channel,  
-     *  then defer to the base class. 
+     *  the port is outside wireless. If there is no outside channel,
+     *  then defer to the base class.
      *  @param channelIndex The index of the channel, from 0 to width-1.
      *  If there is an outside channel, then this argument is ignored.
      *  @param token The token to send.
@@ -708,9 +708,9 @@ public class WirelessIOPort
         }
     }
 
-    /** Override the base class to delegate to the wireless channel if 
-     *  the port is outside wireless. If there is no outside channel,  
-     *  then defer to the base class. 
+    /** Override the base class to delegate to the wireless channel if
+     *  the port is outside wireless. If there is no outside channel,
+     *  then defer to the base class.
      *  @param channelIndex The index of the channel, from 0 to width-1
      *  If there is an outside channel, then this argument is ignored.
      *  @param tokenArray The token array to send
@@ -742,8 +742,8 @@ public class WirelessIOPort
     }
 
     /** Override the base class to delegate to the wireless channel if
-     *  the port is outside wireless. If there is no outside channel,  
-     *  then defer to the base class. 
+     *  the port is outside wireless. If there is no outside channel,
+     *  then defer to the base class.
      *  @param channelIndex The index of the channel, from 0 to width-1.
      *  If there is an outside channel, then this argument is ignored.
      *  @exception IllegalActionException If a receiver does not support
@@ -763,8 +763,8 @@ public class WirelessIOPort
     }
 
     /** Override the base class to delegate to the wireless channel if
-     *  the port is inside wireless. If there is no inside channel,  
-     *  then defer to the base class. 
+     *  the port is inside wireless. If there is no inside channel,
+     *  then defer to the base class.
      *  @param channelIndex The index of the channel, from 0 to width-1.
      *  If there is an inside channel, then this argument is ignored.
      *  @exception IllegalActionException If a receiver does not support
@@ -787,8 +787,8 @@ public class WirelessIOPort
     // FIXME: Where is the sendInside vector version?
 
     /** Override the base class to delegate to the wireless channel if
-     *  the port is inside wireless. If there is no inside channel,  
-     *  then defer to the base class. 
+     *  the port is inside wireless. If there is no inside channel,
+     *  then defer to the base class.
      *  @param channelIndex The index of the channel, from 0 to width-1.
      *  If there is an inside channel, then this argument is ignored.
      *  @param token The token to send

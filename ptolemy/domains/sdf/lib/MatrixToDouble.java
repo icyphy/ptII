@@ -81,7 +81,7 @@ public class MatrixToDouble extends SDFConverter {
         rows = new Parameter(this, "rows");
         rows.setExpression("2");
         rows.setTypeEquals(BaseType.INT);
-        
+
         columns = new Parameter(this, "columns");
         columns.setExpression("2");
         columns.setTypeEquals(BaseType.INT);

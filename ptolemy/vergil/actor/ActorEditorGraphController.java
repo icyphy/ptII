@@ -134,7 +134,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
         // Add an item that adds new relations.
         diva.gui.GUIUtilities.addMenuItem(menu, _newRelationAction);
         diva.gui.GUIUtilities.addToolBarButton(toolbar, _newRelationAction);
-        
+
         // Add hot key for create instance action.
         diva.gui.GUIUtilities.addHotKey(getFrame().getJGraph(),
                 ((ClassDefinitionController)_classDefinitionController)

@@ -191,9 +191,9 @@ public class AudioReader extends Source {
             _audioSendArray[j] = new DoubleToken(
                     _audioIn[j][_sampleIndex]);
         }
-   
+
         _sampleIndex++;
-       
+
         // Check whether we still have at least one sample left.
         // NOTE: This assumes that all channels have the same length
         // as the 0 channel.
@@ -215,7 +215,7 @@ public class AudioReader extends Source {
                 _reachedEOF = true;
             }
         }
-    
+
         // Send outputs.
         for (int j = 0; j < _channels; j++) {
             output.send(j, _audioSendArray[j]);

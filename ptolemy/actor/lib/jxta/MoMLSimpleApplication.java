@@ -173,7 +173,7 @@ public class MoMLSimpleApplication extends NamedObj implements ChangeListener {
             StringWriter buffer = new StringWriter();
             simpleApplication.toplevel.exportMoML(buffer) ;
             // FIXME: hardwired path
-            String fileName = 
+            String fileName =
                 "c:/Cygwin/home/ellen_zh/ptII/ptolemy/actor/lib/jxta/model.xml";
             FileOutputStream file = null;
             try {

@@ -134,7 +134,7 @@ public class Refinement extends CTCompositeActor {
             _workspace.doneWriting();
         }
     }
-    
+
     /** Control whether adding a port should be mirrored in the modal
      *  model and the mode controller.
      *  This is added to allow control by the UI.

@@ -71,7 +71,7 @@ public class HTMLAbout {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return a string containing HTML that describes the about: 
+    /** Return a string containing HTML that describes the about:
      *  features.
      *
      *  <p>If the configuration contains an _applicationName attribute
@@ -81,7 +81,7 @@ public class HTMLAbout {
      *
      *  @param configuration The configuration to look for the
      *  _applicationName attribute in
-     */   
+     */
     public static String about(Configuration configuration) {
         String version = VersionAttribute.CURRENT_VERSION.getExpression();
 
@@ -159,7 +159,7 @@ public class HTMLAbout {
                     + "   \nOpen up the .xml files in\n"
                     + "   <code>ptolemy/configs/hyvisual/intro.htm</code>.\n"
                     + " </ul>\n");
-        }           
+        }
 
         if (_configurationExists("ptiny")) {
             needCloser = true;
@@ -170,13 +170,13 @@ public class HTMLAbout {
                     + "   <code>about:demos#ptolemy/configs/doc/completeDemosPtiny.htm</code></a>"
                     + "   \nOpen up the .xml files in\n"
                     + "   <code>ptolemy/configs/doc/completeDemosPtiny.htm</code>.\n"
-                    
+
                     + "  <li><a href=\"about:demos#ptolemy/configs/doc/demosPtiny.htm\">"
                     + "   <code>about:demos#ptolemy/configs/doc/demosPtiny.htm</code></a>"
                     + "   \nOpen up the .xml files in\n"
                     + "   <code>ptolemy/configs/doc/demosPtiny.htm</code>.\n"
                     + " </ul>\n");
-        } 
+        }
 
 //             + "<li><a href=\"about:runAllDemos\"><code>about:runAllDemos</code></a>"
 //             + "Run all the demonstrations.\n"
@@ -195,7 +195,7 @@ public class HTMLAbout {
                     + "   \nOpen up the .xml files in\n"
                     + "   <code>ptolemy/configs/visualsense/intro.htm</code>.\n"
                     + " </ul>\n");
-        }           
+        }
 
         if (needCloser) {
             htmlBuffer.append("</ul>\n");
@@ -211,8 +211,8 @@ public class HTMLAbout {
      *  to the .xml files.  If this argument is the empty string, then
      *  "ptolemy/configs/doc/completeDemos.htm" is used.
      *  @param configuration  The configuration to open the files in.
-     *  @return the URL of the HTML file that was searched. 
-     */   
+     *  @return the URL of the HTML file that was searched.
+     */
     public static URL demos(String demosFileName, Configuration configuration)
             throws Exception {
 
@@ -229,7 +229,7 @@ public class HTMLAbout {
                 throw new Exception("Failed to open '" + modelURL
                         + "'", throwable);
             }
-        } 
+        }
         return demosURL;
     }
 
@@ -279,7 +279,7 @@ public class HTMLAbout {
             newURL = runAllDemos(aboutURI.getFragment(),
                     configuration);
         } else {
-            // Display a message about the about: facility 
+            // Display a message about the about: facility
             newURL = _temporaryHTMLFile("about", ".htm", about(configuration));
         }
         return newURL;
@@ -290,8 +290,8 @@ public class HTMLAbout {
      *  to the .xml files.  If this argument is the empty string, then
      *  "ptolemy/configs/doc/completeDemos.htm" is used.
      *  @param configuration  The configuration to run the files in.
-     *  @return the URL of the HTML file that was searched. 
-     */   
+     *  @return the URL of the HTML file that was searched.
+     */
     public static URL runAllDemos(String demosFileName,
             Configuration configuration)
             throws Exception {
@@ -317,7 +317,7 @@ public class HTMLAbout {
                 //manager.addExecutionListener(this);
                 manager.execute();
             }
-        } 
+        }
         return demosURL;
     }
     ///////////////////////////////////////////////////////////////////
@@ -348,7 +348,7 @@ public class HTMLAbout {
 	while ((inputLine = in.readLine()) != null) {
             demosBuffer.append(inputLine);
         }
-	in.close();       
+	in.close();
 
         // demos contains the contents of the html file that has
         // links to the demos we are interested in.
@@ -374,7 +374,7 @@ public class HTMLAbout {
                 }
             }
             modelStartIndex = demos.indexOf("href=\"", modelEndIndex);
-        } 
+        }
         return modelList;
     }
 
@@ -388,7 +388,7 @@ public class HTMLAbout {
         try {
             URL url = Thread.currentThread()
                 .getContextClassLoader().getResource(
-                        "ptolemy/configs/" + configurationName 
+                        "ptolemy/configs/" + configurationName
                         + "/configuration.xml");
             if (url != null) {
                 configurationExists = true;
@@ -406,8 +406,8 @@ public class HTMLAbout {
     // file name.
     // @param contents  The contents of the temporary file
     // @return A URL pointing to a temporary file.
-    private static URL _temporaryHTMLFile(String prefix, 
-            String suffix, String contents) 
+    private static URL _temporaryHTMLFile(String prefix,
+            String suffix, String contents)
             throws IOException {
         // Generate a copyright page in a temporary file
         File temporaryFile = File.createTempFile(

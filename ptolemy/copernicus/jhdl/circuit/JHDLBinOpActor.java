@@ -49,12 +49,12 @@ import soot.*;
 import soot.jimple.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
  * This class represents a binary operator JHDL circuit. This class
  * can generate the following JHDL circuits: ADD, SUB, AND, OR, XOR,
- * MULT, and conditions. 
- * 
+ * MULT, and conditions.
+ *
  * TODO: implement circuit conditionals!
  *
 @author Mike Wirthlin
@@ -62,7 +62,7 @@ import soot.jimple.*;
 @since Ptolemy II 2.0
 */
 public class JHDLBinOpActor extends JHDLAtomicActor {
-    
+
     JHDLBinOpActor(CompositeEntity container, int operation)
 	throws IllegalActionException, NameDuplicationException {
  	super(container);
@@ -105,7 +105,7 @@ public class JHDLBinOpActor extends JHDLAtomicActor {
 		return false;
 	    }
 	}
-	    
+
 	output.setSignalWidth(input1.getSignalWidth());
 	output.resolveOutside();
 	return true;
@@ -125,13 +125,13 @@ public class JHDLBinOpActor extends JHDLAtomicActor {
 	    binOpWire = cell.sub(input1Wire,input2Wire);
 	    break;
 	case AND:
-	    binOpWire = cell.and(input1Wire,input2Wire);	    
+	    binOpWire = cell.and(input1Wire,input2Wire);
 	    break;
 	case OR:
-	    binOpWire = cell.or(input1Wire,input2Wire);	    
+	    binOpWire = cell.or(input1Wire,input2Wire);
 	    break;
 	case XOR:
-	    binOpWire = cell.xor(input1Wire,input2Wire);	    
+	    binOpWire = cell.xor(input1Wire,input2Wire);
 	    break;
 	case MULT:
 	    Wire allbits = cell.wire(64);
@@ -151,7 +151,7 @@ public class JHDLBinOpActor extends JHDLAtomicActor {
     }
 
     protected String _description(int detail, int indent, int bracket) {
-	return super._description(detail,indent,bracket) + " { OP=" 
+	return super._description(detail,indent,bracket) + " { OP="
 	    +_operation+"}";
     }
 

@@ -85,7 +85,7 @@ However, these rules do not guarantee the codeword can be decoded
 successfully, and it is not always true that larger polynomials
 yield better codes. Users should check tables for convolutional
 codes from professional references. For convenience, we list here
-some convolutional codes that have large distance property. 
+some convolutional codes that have large distance property.
 <pre>
 Rate = 1/2
 polynomialArray
@@ -97,7 +97,7 @@ polynomialArray
 <p>
 Rate = 1/3
 polynomialArray
-{05, 07, 07}    
+{05, 07, 07}
 {015, 013, 017}
 {025, 033, 037}
 {071, 065, 057}
@@ -127,7 +127,7 @@ polynomialArray
 <p>
 Rate = 2/3
 polynomialArray
-{017, 06, 013} 
+{017, 06, 013}
 {072, 057, 027}
 {0171, 0166, 0273}
 <p>
@@ -274,7 +274,7 @@ public class ConvolutionalCoder extends Transformer {
     /** Read <i>uncodedRate</i> bits from the input port and shift
      *  them into the shift register. Compute the parity for each
      *  polynomial specified in <i>polynomialArray</i>. Send the results
-     *  in sequence to the output. The i-th bit in the output 
+     *  in sequence to the output. The i-th bit in the output
      *  corresponds to the parity computed using the i-th polynomial.
      */
     public void fire() throws IllegalActionException {

@@ -73,7 +73,7 @@ public abstract class Action extends StringAttribute {
     public Action(Workspace workspace) {
         super(workspace);
     }
-    
+
     /** Construct an action with the given name contained by the
      *  specified transition. The transition argument must not be
      *  null, or a NullPointerException will be thrown. This action

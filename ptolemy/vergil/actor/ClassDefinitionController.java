@@ -98,7 +98,7 @@ public class ClassDefinitionController extends ActorController {
     public ClassDefinitionController(
             GraphController controller, Access access) {
         super(controller, access);
-        
+
         if (access == FULL) {
             // The following do not require a configuration.
             _menuFactory.addMenuItemFactory(
@@ -118,7 +118,7 @@ public class ClassDefinitionController extends ActorController {
         // ports will be laid out more than once. This manifests itself
         // as a bug where port names are rendered twice, and for some
         // inexplicable reason, are rendered in two different places!
-        
+
         // The filter for the layout algorithm of the ports within this
         // entity. This returns true only if the candidate object is
         // an instance of Locatable and the semantic object associated
@@ -159,11 +159,11 @@ public class ClassDefinitionController extends ActorController {
         Figure nf = super._renderNode(node);
         // This cast should be safe...
         CompositeFigure cf = (CompositeFigure)nf;
-        BasicFigure bf = 
+        BasicFigure bf =
             new BasicFigure(cf.getBackgroundFigure().getBounds(), 4.0f);
         bf.setStrokePaint(_HIGHLIGHT_COLOR);
         cf.add(bf);
-    
+
         return cf;
     }
 
@@ -174,7 +174,7 @@ public class ClassDefinitionController extends ActorController {
      */
     protected ConvertToInstanceAction _convertToInstanceAction
             = new ConvertToInstanceAction("Convert to Instance");
-    
+
     /** The action that handles creating an instance from a class.
      */
     protected CreateInstanceAction _createInstanceAction
@@ -184,7 +184,7 @@ public class ClassDefinitionController extends ActorController {
      */
     protected CreateSubclassAction _createSubclassAction
             = new CreateSubclassAction("Create Subclass");
-            
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
@@ -195,7 +195,7 @@ public class ClassDefinitionController extends ActorController {
      *   an instance.
      */
     private void _createChangeRequest(NamedObj object, boolean subclass) {
-            
+
         NamedObj container = (NamedObj)object.getContainer();
         StringBuffer moml = new StringBuffer();
         moml.append("<group name=\"auto\">");
@@ -257,10 +257,10 @@ public class ClassDefinitionController extends ActorController {
 
             // Determine which entity was selected for the create instance action.
             super.actionPerformed(e);
-            
+
             // NOTE: This cast should be safe because this controller is
             // used for actors.
-            Prototype object = (Prototype)getTarget();            
+            Prototype object = (Prototype)getTarget();
             NamedObj container = (NamedObj)object.getContainer();
             // Assumes MoML parser will convert to instance.
             if (!object.isClassDefinition()) {
@@ -326,7 +326,7 @@ public class ClassDefinitionController extends ActorController {
             _createChangeRequest(object, false);
         }
     }
-    
+
     /////////////////////////////////////////////////////////////////////
     //// CreateSubclassAction
 

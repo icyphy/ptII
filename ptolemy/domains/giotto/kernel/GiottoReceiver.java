@@ -78,7 +78,7 @@ public class GiottoReceiver extends AbstractReceiver {
     public void clear() {
         reset();
     }
-     
+
     /** Get the contained and available token, i.e., get the last
      *  token that has been put into the receiver before the last
      *  update.

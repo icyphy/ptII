@@ -142,7 +142,7 @@ public class ParameterPort extends TypedIOPort {
             }
         }
     }
-    
+
     /** Get the associated parameter.
      *  @return The associated parameter.
      */
@@ -182,7 +182,7 @@ public class ParameterPort extends TypedIOPort {
      *  can define different type constraints.  It is assured that when
      *  this is called, _parameter is non-null.  However, use caution,
      *  since this method may be called during construction of this
-     *  port, and hence the port may not be fully constructed. 
+     *  port, and hence the port may not be fully constructed.
      */
     protected void _setTypeConstraints() {
         _parameter.setTypeSameAs(this);

@@ -196,10 +196,10 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                 while (moreToDo) {
                     TypeAssigner.v().transform(body,
                             _phaseName + ".ta");
-                    
+
                     moreToDo = _inlineMethodCalls(theClass, method, body,
                             attributeToValueFieldMap, debug);
-                    
+
                     // After inlining the methods, simplify the
                     // control flow to avoid infinite recursion...
                     LocalNameStandardizer.v().transform(body,
@@ -226,7 +226,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                             body, _phaseName + ".uce");
                     UnusedLocalEliminator.v().transform(
                             body, _phaseName + ".ule");
-                    
+
                 }
             }
         }
@@ -238,15 +238,15 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
         boolean doneSomething = false;
         if (debug) System.out.println("Inlining method calls in method " +
                 method);
-        
+
         // Resolve thisRef for this class.
         NamedObj referredObject = ModelTransformer.getObjectForClass(theClass);
-    
+
         CompleteUnitGraph unitGraph = new CompleteUnitGraph(body);
         // this will help us figure out where locals are defined.
         SimpleLocalDefs localDefs = new SimpleLocalDefs(unitGraph);
         SimpleLocalUses localUses = new SimpleLocalUses(unitGraph, localDefs);
-        NamedObjAnalysis namedObjAnalysis = 
+        NamedObjAnalysis namedObjAnalysis =
             new NamedObjAnalysis(method, referredObject);
 
         for (Iterator units = body.getUnits().snapshotIterator();
@@ -303,13 +303,13 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                 }
                                 inlinee.retrieveActiveBody();
                                 if (inlinee.equals(method)) {
-                                    System.out.println("Skipping inline at " + r 
+                                    System.out.println("Skipping inline at " + r
                                             + " because we can't inline methods into themselves.");
                                 } else {
                                     if (debug) System.out.println("Inlining method call: " + r);
                                     if (debug) System.out.println("Inlinee = " + inlinee);
                                     SiteInliner.inlineSite(inlinee, stmt, method);
-                                    
+
                                     doneSomething = true;
                                 }
                             } else {
@@ -349,9 +349,9 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                         Attribute attribute = (Attribute)
                             namedObjAnalysis.getObject((Local)r.getBase());
                         //   getAttributeValue(method, (Local)r.getBase(), stmt, localDefs, localUses);
-                                                
+
                         if (debug) System.out.println("Settable base = " + attribute);
-                        
+
                         // If the attribute resolves to null, then
                         // replace the invocation with an
                         // exception throw.
@@ -398,19 +398,19 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                         Entity container =
                             FieldsForEntitiesTransformer.getEntityContainerOfObject(attribute);
                         Local thisLocal = body.getThisLocal();
-                        
+
                         Local containerLocal = getAttributeContainerRef(
                                 container, method, (Local)r.getBase(),
                                 stmt, localDefs, localUses, stmt);
                             // FieldsForEntitiesTransformer.getLocalReferenceForEntity(
 //                                 container, theClass, thisLocal, body, stmt, _options);
-                                              
+
                         // For Variables, we handle get/setToken,
                         // get/setExpression different from other
                         // settables
                         if (attribute instanceof Variable) {
                             // Deal with tricky methods separately.
-                            
+
                             // Match the subsignature so we catch
                             // isomorphic subclasses as well...
                             if (r.getMethod().getSubSignature().equals(
@@ -486,7 +486,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                     box.setValue(Jimple.v().newInstanceFieldRef(containerLocal, tokenField));
                                 }
                                 doneSomething = true;
-                            } else if (r.getMethod().getName().equals("setToken") || 
+                            } else if (r.getMethod().getName().equals("setToken") ||
                                        r.getMethod().getName().equals("_setTokenAndNotify")) {
                                 if (debug) System.out.println("Replacing setToken on Variable");
                                 // replace the entire statement
@@ -549,7 +549,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                 Local tokenLocal = Jimple.v().newLocal(localName,
                                         tokenField.getType());
                                 body.getLocals().add(tokenLocal);
-                                
+
                                 body.getUnits().insertBefore(
                                         Jimple.v().newAssignStmt(tokenLocal,
                                                 Jimple.v().newInstanceFieldRef(containerLocal, tokenField)),
@@ -568,7 +568,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                 // early on.  Beware variables used to
                                 // evaluate expressions!
                                 if (debug) System.out.println("Replacing setExpression on Variable");
-                           
+
                                 // Call attribute changed AFTER we set the token.
                                 PtolemyUtilities.callAttributeChanged(
                                         containerLocal, (Local)r.getBase(),
@@ -629,10 +629,10 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                 body.getUnits().remove(stmt);
                             } else if (r.getMethod().getSubSignature().equals(
                                   PtolemyUtilities.portParameterGetPortMethod.getSubSignature())) {
-                              //   PortParameter parameter = 
+                              //   PortParameter parameter =
 //                                     (PortParameter)attribute;
 //                                 ParameterPort port = parameter.getPort();
-//                                 SootField field = 
+//                                 SootField field =
 //                                     FieldsForPortsTransformer.getPortField(
 //                                             port);
 //                                 box.setValue(Jimple.v().newInstanceFieldRef(
@@ -662,7 +662,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                                 if (!r.getMethod().getDeclaringClass().isApplicationClass()) {
                                     throw new RuntimeException("Found unknown " +
                                             "variable method invocation of method "
-                                            + r.getMethod() 
+                                            + r.getMethod()
                                             + " that cannot be removed!");
                                 }
                             }
@@ -671,7 +671,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                             if (r.getMethod().getSubSignature().equals(
                                     PtolemyUtilities.getExpressionMethod.getSubSignature())) {
                                 if (debug) System.out.println("Replacing getExpression on Settable");
-                          
+
                                 box.setValue(Jimple.v().newInstanceFieldRef(containerLocal,
                                         (SootField)attributeToValueFieldMap.get(attribute)));
                                 doneSomething = true;
@@ -708,7 +708,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                             } else {
                                 throw new RuntimeException("Found unknown " +
                                         "settable method invocation of method "
-                                        + r.getMethod() 
+                                        + r.getMethod()
                                         + " that cannot be removed!");
                             }
                         }
@@ -739,7 +739,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
     // the attribute.
     public Local getAttributeContainerRef(
             Entity container, SootMethod method, Local local,
-            Unit location, LocalDefs localDefs, LocalUses localUses, 
+            Unit location, LocalDefs localDefs, LocalUses localUses,
             Unit insertPoint) {
         if (method.getName().equals("<init>")) {
             //   System.out.println("
@@ -767,7 +767,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                     if (pair.getUnit() instanceof DefinitionStmt) {
                         DefinitionStmt useStmt = (DefinitionStmt)pair.getUnit();
                         if (useStmt.getLeftOp() instanceof InstanceFieldRef) {
-                            InstanceFieldRef leftOp = 
+                            InstanceFieldRef leftOp =
                                 ((InstanceFieldRef)useStmt.getLeftOp());
                             return (Local)leftOp.getBase();
                         }
@@ -784,7 +784,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
                 JimpleBody body = (JimpleBody)method.getActiveBody();
                 // Manufacture a reference.
                 Local newLocal = FieldsForEntitiesTransformer.getLocalReferenceForEntity(
-                        container, method.getDeclaringClass(), body.getThisLocal(), 
+                        container, method.getDeclaringClass(), body.getThisLocal(),
                         body, insertPoint, _options);
                 return newLocal;
             } else {
@@ -888,7 +888,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
             throw new RuntimeException(string);
         }
     }
-     
+
     // Create a static field in the given class for each attribute in
     // the given container that is a variable, with type Token.
     // and if only a settable, then the field will have type String.
@@ -931,7 +931,7 @@ public class InlineParameterTransformer extends SceneTransformer implements HasP
 
                     boolean isConstant = constantAnalysis.getConstVariables(
                             (Entity)context).contains(attribute);
-              
+
                     int modifier;
                     if (isConstant) {
                         modifier = Modifier.PUBLIC | Modifier.FINAL;

@@ -165,7 +165,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             addChoice(param.getName(), param.getName(),
                     styleArray, styleArray[defaultIndex]);
         }
-        
+
         // Add the expert mode box.
         _originalExpertMode = _object.getAttribute("_expertMode") != null;
         addCheckBox("expertMode", "expert mode", _originalExpertMode);
@@ -198,7 +198,7 @@ public class StyleConfigurer extends Query implements QueryListener {
             }
             return;
         }
-        
+
         // Entry is not expertMode.
         ParameterEditorStyle found = null;
         Attribute param = _object.getAttribute(name);
@@ -281,7 +281,7 @@ public class StyleConfigurer extends Query implements QueryListener {
 
     // The object that this configurer configures.
     private NamedObj _object;
-    
+
     // Indicator of what the expert mode was upon entry.
     private boolean _originalExpertMode = false;
 

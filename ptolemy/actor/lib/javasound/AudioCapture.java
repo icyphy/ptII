@@ -125,7 +125,7 @@ public class AudioCapture extends LiveSoundActor {
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setTypeEquals(BaseType.DOUBLE);
         trigger.setMultiport(true);
-       
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
         output.setMultiport(true);
@@ -142,7 +142,7 @@ public class AudioCapture extends LiveSoundActor {
     /** The trigger port.
      */
     public TypedIOPort trigger;
-    
+
     /** The output port.  This will always produce double data,
      * between -1.0 and 1.0.
      */
@@ -172,12 +172,12 @@ public class AudioCapture extends LiveSoundActor {
                     "capture resource. Only one AudioCapture actor may " +
                     "be used at a time.");
         }
-        
-        try {  
+
+        try {
             // Set the parameters of the audio system.
             _initializeAudio();
 
-            LiveSound.startCapture(this);    
+            LiveSound.startCapture(this);
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
                     "Cannot initialize audio capture.");

@@ -73,7 +73,7 @@ This class visits parse trees and generates soot instructions that evaluate the 
 
 public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -114,8 +114,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         // Make sure that exactly one of AND, OR, XOR is set.
         _assert(node.isBitwiseAnd() ^ node.isBitwiseOr() ^ node.isBitwiseXor(),
                 node, "Invalid operation");
-        
-        String statement = nodeName + " = " + 
+
+        String statement = nodeName + " = " +
             _nodeToLocalName.get(node.jjtGetChild(0));
         for (int i = 1; i < numChildren; i++ ) {
             if (node.isBitwiseAnd()) {
@@ -145,7 +145,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
-   
+
         if (_isValidName(node.getFunctionName())) {
    //          Local local = _getLocalForName(node.getFunctionName());
 //             Local resultLocal = Jimple.v().newLocal("token",
@@ -161,7 +161,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                 // matrix..
                 System.out.println(nodeName + " = ");
                 System.out.println(_nodeToLocalName.get(node.jjtGetChild(0)) +
-                        "[" + _nodeToLocalName.get(node.jjtGetChild(1)) + 
+                        "[" + _nodeToLocalName.get(node.jjtGetChild(1)) +
                         "," + _nodeToLocalName.get(node.jjtGetChild(1)) + "]");
 
             } else {
@@ -216,18 +216,18 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             // Insert the appropriate conversion.
             String argName = (String)
                 _nodeToLocalName.get(node.jjtGetChild(i + 1));
-            
+
             // _convertTokenArgToJavaArg(
                 //    tokenLocal, argTypes[i], conversions[i]);
                 //            args.add(argLocal);
         }
 
         System.out.println(nodeName + " = FIXME:method invocation of " + method.getName());
-              
+
         // Convert the result back to a token.
         String convertedReturnName = "FIXME"; //_convertJavaResultToToken(returnLocal, returnType);
         _nodeToLocalName.put(node, convertedReturnName);
-        
+
     }
 
     // Add code to the method being generated to convert the given
@@ -325,7 +325,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             ptolemy.data.type.Type tokenType,
             CachedMethod.ArgumentConversion conversion)
             throws IllegalActionException {
-        
+
         if (conversion == CachedMethod.IDENTITY_CONVERSION) {
             Local tempLocal = Jimple.v().newLocal("arg" ,
                     PtolemyUtilities.tokenType);
@@ -674,7 +674,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
                     "CodeGeneration not supported for argument " +
                     "conversion " + conversion);
         }
-         
+
     }
      */
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
@@ -758,16 +758,16 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
     public void visitLeafNode(ASTPtLeafNode node)
             throws IllegalActionException {
-           
+
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
-        
+
         if (node.isConstant() && node.isEvaluated()) {
-            System.out.println(nodeName + " = " + node.getToken());    
+            System.out.println(nodeName + " = " + node.getToken());
             return;
         }
 
-        System.out.println(nodeName + " = " + 
+        System.out.println(nodeName + " = " +
                 _getLocalNameForName(node.getName()));
     }
 
@@ -779,9 +779,9 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
 
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
-  
+
       // Note: doesn't ensure short circuit
-        String statement = nodeName + " = " + 
+        String statement = nodeName + " = " +
             _nodeToLocalName.get(node.jjtGetChild(0));
         for (int i = 1; i < numChildren; i++ ) {
             if (node.isLogicalAnd()) {
@@ -1068,13 +1068,13 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        String statement = nodeName + " = " + 
+        String statement = nodeName + " = " +
             _nodeToLocalName.get(node.jjtGetChild(0));
 
         for (int i = 1; i < numChildren; i++) {
             statement += "^" + _nodeToLocalName.get(node.jjtGetChild(i));
         }
-        System.out.println(statement);      
+        System.out.println(statement);
     }
     public void visitProductNode(ASTPtProductNode node)
             throws IllegalActionException {
@@ -1093,7 +1093,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        String statement = nodeName + " = " + 
+        String statement = nodeName + " = " +
             _nodeToLocalName.get(node.jjtGetChild(0));
         for (int i = 1; i < numChildren; i++) {
             Token operator = (Token)lexicalTokenList.get(i - 1);
@@ -1108,7 +1108,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             }
             statement += _nodeToLocalName.get(node.jjtGetChild(i));
         }
-        System.out.println(statement);      
+        System.out.println(statement);
     }
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
             throws IllegalActionException {
@@ -1127,8 +1127,8 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         _nodeToLocalName.put(node, nodeName);
 
         Token operator = (Token)node.getOperator();
-     
-        String statement = nodeName + " = " + 
+
+        String statement = nodeName + " = " +
             _nodeToLocalName.get(node.jjtGetChild(0));
         if (operator.kind == PtParserConstants.EQUALS) {
             statement += "==";
@@ -1156,13 +1156,13 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren == 2, node,
                 "The number of child nodes must be two");
-        
+
         Token operator = (Token)node.getOperator();
-     
+
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        String statement = nodeName + " = " + 
+        String statement = nodeName + " = " +
             _nodeToLocalName.get(node.jjtGetChild(0));
         if (operator.kind == PtParserConstants.SHL) {
             statement += "<<";
@@ -1174,7 +1174,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
             _assert(false, node, "Invalid operation");
         }
         statement += _nodeToLocalName.get(node.jjtGetChild(1));
-        System.out.println(statement);      
+        System.out.println(statement);
     }
     public void visitSumNode(ASTPtSumNode node)
             throws IllegalActionException {
@@ -1192,7 +1192,7 @@ public class CParseTreeCodeGenerator extends AbstractParseTreeVisitor {
         String nodeName = "node" + _nodeNumber++;
         _nodeToLocalName.put(node, nodeName);
 
-        String statement = nodeName + " = " + 
+        String statement = nodeName + " = " +
             _nodeToLocalName.get(node.jjtGetChild(0));
         for (int i = 1; i < numChildren; i++) {
             Token operator = (Token)lexicalTokenList.get(i - 1);

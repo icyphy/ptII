@@ -184,7 +184,7 @@ public class Configurer extends JPanel implements CloseListener {
                             String newValue = parameter.getExpression();
                             String oldValue = (String)_originalValues.get(parameter);
                             if (!newValue.equals(oldValue)) {
-                                hasChanges = true;                                
+                                hasChanges = true;
                                 buffer.append("<property name=\"");
                                 buffer.append(((NamedObj)parameter).getName(_object));
                                 buffer.append("\" value=\"");
@@ -194,7 +194,7 @@ public class Configurer extends JPanel implements CloseListener {
                         }
                     }
                     buffer.append("</group>\n");
-                    
+
                     // If there a changes, then issue a change request.
                     // Use a MoMLChangeRequest so undo works... I.e., you can undo a cancel
                     // of a previous change.

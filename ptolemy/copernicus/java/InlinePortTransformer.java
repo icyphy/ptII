@@ -256,7 +256,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
             SootClass theClass, SootMethod method, JimpleBody body,
             PortInliner inliner, boolean debug) {
         if (debug) System.out.println("Inlining method calls in method " + method);
-                          
+
         boolean doneSomething = false;
         // System.out.println("portToIndexArrayField = " + portToIndexArrayField);
         //System.out.println("portToInsideIndexArrayField = " + portToInsideIndexArrayField);
@@ -386,7 +386,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                                         methodName.equals("put"))) {
                             // NOTE: broadcast is legal on a zero
                             // width port.
-                            
+
                             // If we try to get on a port with
                             // zero width, then throw a runtime
                             // exception.
@@ -413,9 +413,9 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                         if (r.getMethod().getName().equals("isInput")) {
                             if (debug) {
                                 System.out.println(
-                                        "replacing isInput at " 
+                                        "replacing isInput at "
                                         + stmt);
-                            } 
+                            }
                             if (port.isInput()) {
                                 box.setValue(IntConstant.v(1));
                             } else {
@@ -424,9 +424,9 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                         } else if (r.getMethod().getName().equals("isOutput")) {
                             if (debug) {
                                 System.out.println(
-                                        "replacing isOutput at " 
+                                        "replacing isOutput at "
                                         + stmt);
-                            }   
+                            }
                             if (port.isOutput()) {
                                 box.setValue(IntConstant.v(1));
                             } else {
@@ -435,9 +435,9 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                         } else if (r.getMethod().getName().equals("isMultiport")) {
                             if (debug) {
                                 System.out.println(
-                                        "replacing isMultiport at " 
+                                        "replacing isMultiport at "
                                         + stmt);
-                            }      
+                            }
                             if (port.isMultiport()) {
                                 box.setValue(IntConstant.v(1));
                             } else {
@@ -445,26 +445,26 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                             }
                         } else if (r.getMethod().getName().equals("getWidth")) {
                             if (debug) {
-                                System.out.println("replacing getWidth at " 
+                                System.out.println("replacing getWidth at "
                                         + stmt);
-                            }  
+                            }
                             // Reflect and invoke the same method on our port
-                            Object object = 
+                            Object object =
                                 SootUtilities.reflectAndInvokeMethod(
                                         port, r.getMethod(), argValues);
                             // System.out.println("method result  = " + constant);
                             Constant constant =
                                 SootUtilities.convertArgumentToConstantValue(
                                         object);
-                            
+
                             // replace the method invocation.
                             box.setValue(constant);
                         } else if (r.getMethod().getName().equals("hasToken")) {
                             // return true.
                             if (debug) {
-                                System.out.println("replacing hasToken at " 
+                                System.out.println("replacing hasToken at "
                                         + stmt);
-                            }  
+                            }
                             box.setValue(IntConstant.v(1));
                         } else if (r.getMethod().getName().equals("hasRoom")) {
                             // return true.
@@ -492,7 +492,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                             // either case, replace the send with
                             // circular array ref.
                             if (debug) {
-                                System.out.println("replacing send at " 
+                                System.out.println("replacing send at "
                                         + stmt);
                             }
                             inliner.inlineSend(body, stmt, r, port);
@@ -503,7 +503,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                             if (port.getWidth() == 0) {
                                 if (debug) {
                                     System.out.println(
-                                            "removing width zero broadcast at" 
+                                            "removing width zero broadcast at"
                                             + stmt);
                                 }
                                 body.getUnits().remove(stmt);
@@ -515,7 +515,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                                 // array ref.
                                 if (debug) {
                                     System.out.println(
-                                            "replacing broadcast at" 
+                                            "replacing broadcast at"
                                             + stmt);
                                 }
                                 inliner.inlineBroadcast(body, stmt, r, port);
@@ -532,7 +532,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
             SootClass theClass, SootMethod method, JimpleBody body,
             PortInliner inliner, boolean debug) {
         if (debug) System.out.println("Inlining inside method calls in method " + method);
-                          
+
         boolean doneSomething = false;
 
         // System.out.println("portToIndexArrayField = " + portToIndexArrayField);
@@ -723,14 +723,14 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                         } else if (r.getMethod().getName().equals("hasToken")) {
                             // return true.
                             if (debug) {
-                                System.out.println("inlining hasToken at " 
+                                System.out.println("inlining hasToken at "
                                         + stmt);
-                            }   
+                            }
                             box.setValue(IntConstant.v(1));
                         } else if (r.getMethod().getName().equals("hasRoom")) {
                             // return true.
                             if (debug) {
-                                System.out.println("inlining hasRoom at " 
+                                System.out.println("inlining hasRoom at "
                                         + stmt);
                             }
                             box.setValue(IntConstant.v(1));
@@ -742,7 +742,7 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                             // replace the get with circular array
                             // ref.
                             if (debug) {
-                                System.out.println("inlining getInside at " 
+                                System.out.println("inlining getInside at "
                                         + stmt);
                             }
                             inliner.inlineGetInside(body, stmt, box, r, port);
@@ -753,13 +753,13 @@ public class InlinePortTransformer extends SceneTransformer implements HasPhaseO
                             // channel and an array of tokens.  In
                             // either case, replace the send with
                             // circular array ref.
-                            
+
                             if (debug) {
-                                System.out.println("inlining sendInside at " 
+                                System.out.println("inlining sendInside at "
                                         + stmt);
                             }
                             inliner.inlineSendInside(body, stmt, r, port);
-                            
+
                         }
                     }
 

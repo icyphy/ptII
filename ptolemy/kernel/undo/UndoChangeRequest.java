@@ -34,7 +34,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
 A change request to undo. When executed, this change request will
 identify the undo stack associated with the specified context,

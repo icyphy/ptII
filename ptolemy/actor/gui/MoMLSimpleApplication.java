@@ -146,7 +146,7 @@ public class MoMLSimpleApplication implements ChangeListener {
         if (change != null) {
             description = change.getDescription();
         }
-        
+
         throw new RuntimeException("MoMLSimplApplication.changeFailed(): "
                 + description + " failed: ",
                 exception);

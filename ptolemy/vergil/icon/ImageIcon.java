@@ -103,7 +103,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         // repainted, which seems excessive to me.  This will happen
         // every time there is a modification to the model that is
         // carried out by a MoMLChangeRequest.
-        
+
         // The Diva graph package implements a model-view-controller
         // architecture, which implies that this needs to return a new
         // figure each time it is called.  The reason is that the figure
@@ -124,10 +124,10 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         }
         Figure newFigure = new ImageFigure(_scaledImage);
         _addLiveFigure(newFigure);
-        
+
         return newFigure;
     }
-    
+
     /** This method, which is required by the ImageObserver interface,
      *  is called if something has changed in a background loading of
      *  the image.
@@ -148,21 +148,21 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
             int y,
             int width,
             int height) {
-        
+
         if (((infoflags | ImageObserver.WIDTH) != 0)
                 || ((infoflags | ImageObserver.HEIGHT) != 0)) {
             // Width and height information is available now.
             scaleImage(_scalePercentage);
-            
+
             // If the width and height change, then ports may need to be
-            // laid out again. 
+            // laid out again.
             // FIXME: Regrettably, the only way to do this is to
             // trigger a graph listener, which lays out the entire graph.
             // This is a flaw that needs to fixed. As a major hack,
             // what we do here is to issue a MoMLChangeRequest, which
             // will cause the graph to lay out again.  This will also
             // introduce a bug in that there will be an empty undo action.
-            
+
             return false;
         }
         if (((infoflags | ImageObserver.ERROR) != 0)
@@ -181,24 +181,24 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
                 }
             };
         SwingUtilities.invokeLater(doRepaint);
-           
-        
+
+
         // This method returns true to indicate that further
         // updates are needed.  However, I can't begin to understand
         // how this method could possibly know whether further updates
         // are needed.  This seems like a ridiculous API.
         return true;
     }
-    
+
     /** Specify a scaling for the image as a percentage.
      *  @param percentage The scaling percentage.
      */
     public void scaleImage(double percentage) {
         _scalePercentage = percentage;
-        
+
         // This needs to be in the swing thread.
         Runnable doScale = new Runnable() {
-            public void run() {        
+            public void run() {
                 if (_image == null) {
                     // No image has been set yet, so return.
                     return;
@@ -234,7 +234,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         };
         SwingUtilities.invokeLater(doScale);
     }
-    
+
     /** Specify an image to display.  This is deferred and executed
      *  in the Swing thread.
      *  @param image The image to display.
@@ -270,10 +270,10 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
 
     // The image that is the master.
     private Image _image;
-    
+
     // The scaled version of the image that is the master.
     private Image _scaledImage;
-    
+
     // The scale percentage.
     private double _scalePercentage = 100.0;
 }

@@ -51,7 +51,7 @@ import ptolemy.kernel.util.Workspace;
 //// ArrayAverage
 /**
 Compute the average of the elements in an array.  This actor reads an
-array from the <i>input</i> port and sends the average of its elements 
+array from the <i>input</i> port and sends the average of its elements
 to the <i>output</i> port. The output data type is at least the
 type of the elements of the input array.  The elements of the input
 array have to support addition and division by an integer, or an
@@ -75,7 +75,7 @@ public class ArrayAverage extends Transformer {
     public ArrayAverage(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        
+
         // set type constraints.
         input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         ArrayType inputArrayType = (ArrayType)input.getType();
@@ -103,7 +103,7 @@ public class ArrayAverage extends Transformer {
     }
 
     /** Consume at most one array from the input port and produce
-     *  the average of its elements on the <i>output</i> port.  
+     *  the average of its elements on the <i>output</i> port.
      *  If there is no token on the input, or if the input array
      *  is empty, then no output is produced.
      *  @exception IllegalActionException If there is no director.

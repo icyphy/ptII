@@ -183,7 +183,7 @@ public class ModalModel extends CTCompositeActor {
             String directorClass =
                 ((StringAttribute)attribute).getExpression();
             if (directorClass.equals(modalDirectorClassNames[2])) {
-                // The director is an HDFFSMDirector.  
+                // The director is an HDFFSMDirector.
                 _controller.setHDFFSMActor(true);
                 _directorChanged = true;
             } else if (_directorChanged &&
@@ -207,17 +207,17 @@ public class ModalModel extends CTCompositeActor {
         ModalModel newModel = (ModalModel)super.clone(workspace);
         newModel._controller = (FSMActor)newModel.getEntity("_Controller");
         return newModel;
-    }   
+    }
 
     /** Return an instance of DirectedGraph, where the nodes are IOPorts,
-     *  and the edges are the relations between ports. The graph shows 
+     *  and the edges are the relations between ports. The graph shows
      *  the dependencies between the input and output ports. If there is
-     *  a path between a pair, input and output, they are dependent. 
+     *  a path between a pair, input and output, they are dependent.
      *  Otherwise, they are independent.
      */
     public FunctionDependency getFunctionDependencies() {
         if (_functionDependency == null) {
-            _functionDependency = 
+            _functionDependency =
                 new FunctionDependencyOfModalModel(this);
         }
         return _functionDependency;
@@ -246,7 +246,7 @@ public class ModalModel extends CTCompositeActor {
         // HSDirector.
         return new HSDirector(this, "_Director");
     }
-    
+
     /** Create a new port with the specified name in this entity, the
      *  controller, and all the refinements.  Link these ports so that
      *  if the new port is set to be an input, output, or multiport, then
@@ -313,8 +313,8 @@ public class ModalModel extends CTCompositeActor {
     }
 
     /** Reset internal non-persistent variables and invoke the
-     *  preinitialize() method of the CompositeActor. 
-     * 
+     *  preinitialize() method of the CompositeActor.
+     *
      *  @exception IllegalActionException If the preinitialize()
      *  method of the CompositeActor throws a IllegalActionException.
      */
@@ -428,12 +428,12 @@ public class ModalModel extends CTCompositeActor {
 
     /** The FSM controller. */
     private FSMActor _controller;
-    
+
     // A flag indicating the director has been changed to HDFFSMDirector
     // by the user. This prevents setting the HDFFSMActor flag before
     // the FSMActor is created.
     private boolean _directorChanged = false;
-    
+
     private FunctionDependencyOfModalModel _functionDependency;
-    
+
 }

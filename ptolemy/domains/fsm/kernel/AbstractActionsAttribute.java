@@ -94,7 +94,7 @@ to variables and parameters contained by the FSM actor.
 @see Transition
 @see FSMActor
 */
-public abstract class AbstractActionsAttribute extends Action 
+public abstract class AbstractActionsAttribute extends Action
     implements HasTypeConstraints {
 
     /** Construct an action in the specified workspace with an empty
@@ -400,12 +400,12 @@ public abstract class AbstractActionsAttribute extends Action
                         return BaseType.UNKNOWN;
                     }
                 }
-                
+
                 ASTPtRootNode parseTree =
                     (ASTPtRootNode)_parseTrees.get(
                             _destinationNames.indexOf(_name));
                 if (_scope == null) {
-                    FSMActor fsmActor = 
+                    FSMActor fsmActor =
                         (FSMActor)getContainer().getContainer();
                     _scope = fsmActor.getPortScope();
                 }
@@ -413,7 +413,7 @@ public abstract class AbstractActionsAttribute extends Action
                 return type;
             } catch (Exception ex) {
                 throw new IllegalActionException(
-                        AbstractActionsAttribute.this, ex, 
+                        AbstractActionsAttribute.this, ex,
                         "An error occurred during expression type inference");
             }
         }
@@ -434,7 +434,7 @@ public abstract class AbstractActionsAttribute extends Action
                             _destinationNames.indexOf(_name));
 
                 if (_scope == null) {
-                    FSMActor fsmActor = 
+                    FSMActor fsmActor =
                         (FSMActor)getContainer().getContainer();
                     _scope = fsmActor.getPortScope();
                 }

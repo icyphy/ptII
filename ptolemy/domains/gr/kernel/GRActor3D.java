@@ -99,7 +99,7 @@ abstract public class GRActor3D extends GRActor {
         if (actor instanceof ViewScreen) {
             _viewScreen = (ViewScreen)actor;
         } else {
-            throw new RuntimeException("Actor " + getClass().getName() + 
+            throw new RuntimeException("Actor " + getClass().getName() +
                     " can only be used with a ViewScreen");
         }
     }

@@ -410,7 +410,7 @@ public class Entity extends Prototype {
             _workspace.doneWriting();
         }
     }
-    
+
     /** Specify whether this object is a class definition.
      *  This method overrides the base class to check that if the
      *  argument is true, then this entity contains no ports with links.

@@ -123,7 +123,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements 
         _options = options;
         _debug = PhaseOptions.getBoolean(_options, "debug");
         _attributeToFieldMap = new HashMap();
-    
+
         _getDirectorSig =
             PtolemyUtilities.getDirectorMethod.getSubSignature();
         _getAttributeSig =
@@ -233,7 +233,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements 
 
         // FIXME: This is not enough.
         RefType type = (RefType)baseLocal.getType();
-        NamedObj baseObject = 
+        NamedObj baseObject =
             ModelTransformer.getObjectForClass(type.getSootClass());
         if (baseObject != null) {
             // Then we are dealing with a getAttribute call on one of the
@@ -381,7 +381,7 @@ public class FieldsForAttributesTransformer extends SceneTransformer implements 
             Port port = (Port)ports.next();
             _getAttributeFields(actorClass, actor, port);
         }
-   
+
         // Loop over all the actor instance classes and get
         // fields for ports.
         if (actor instanceof CompositeEntity && !(actor instanceof FSMActor)) {

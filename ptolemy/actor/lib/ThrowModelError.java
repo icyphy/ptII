@@ -106,15 +106,15 @@ public class ThrowModelError extends Sink {
             }
         }
         if (result) {
-            //FIXME: instead of throw an IllegalActionException, 
+            //FIXME: instead of throw an IllegalActionException,
             // an InvariantViolationException is thrown. Should we
             // configure the "model error" type?
-            
+
             //handleModelError(this,
             //        new IllegalActionException(this, message.getExpression()));
             handleModelError(this,
                     new InvariantViolationException(this, message.getExpression()));
-            
+
         }
         return super.postfire();
     }

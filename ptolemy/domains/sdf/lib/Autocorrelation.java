@@ -218,7 +218,7 @@ public class Autocorrelation extends SDFTransformer {
             } else {
                 _lengthOfOutput = 2 * _numberOfLags;
             }
-     
+
             if (_outputs == null || _lengthOfOutput != _outputs.length) {
                 _outputs = new Token[_lengthOfOutput];
             }

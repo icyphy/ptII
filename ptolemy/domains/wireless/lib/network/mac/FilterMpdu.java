@@ -1,8 +1,8 @@
-/* An actor that filters out duplicate MPDU packets. It also reads the 
+/* An actor that filters out duplicate MPDU packets. It also reads the
  *duration field of a RTS message and let the ChannelState process to
  * make reservation. In addition, if a data packet is received, it informs
  * the ProtocolControl block that an Ack is needed.
- 
+
  Copyright (c) 1998-2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// FilterMPDU
-/** 
+/**
 Filter the received MPDU (MAC Protocol Data Unit) packets.
 The code is based on a OMNET model created by Charlie Zhong.
 
@@ -71,49 +71,49 @@ public class FilterMpdu extends MACActorBase {
     public FilterMpdu(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         fromValidateMpdu = new TypedIOPort(this, "fromValidateMpdu", true, false);
 
         fromValidateMpdu.setTypeEquals(BaseType.GENERAL);
-        
+
         toChannelState = new TypedIOPort(this, "toChannelState", false, true);
         toChannelState.setTypeEquals(BaseType.GENERAL);
         toChannelState.setMultiport(true);
-        
+
         toProtocolControl = new TypedIOPort(this, "toProtocolControl", false, true);
         toProtocolControl.setTypeEquals(BaseType.GENERAL);
     }
 
-    /////////////////////////////////////////////////////////////////   
+    /////////////////////////////////////////////////////////////////
     ////                         parameters                      ////
-    
+
     /** Port receiving packets to be filtered.
      */
     TypedIOPort fromValidateMpdu;
-    
+
     /** Send NAV (Network Allocation Vector) to ChannelState component.
      */
     TypedIOPort toChannelState;
-    
+
     /** Send data to ProtocolControl component.
      */
     TypedIOPort toProtocolControl;
-    
-    
-    /////////////////////////////////////////////////////////////////   
+
+
+    /////////////////////////////////////////////////////////////////
     ////                         public methods                  ////
-    
+
     /** Process input packets.
      *  @exception IllegalActionException If an error occurs reading
      *   or writing inputs or outputs.
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         if (!fromValidateMpdu.hasToken(0)) return;
-        
+
         int dAck = 0;
-        
+
         RecordToken msg = (RecordToken)fromValidateMpdu.get(0);
         int msgKind = ((IntToken)msg.get("kind")).intValue();
 
@@ -136,12 +136,12 @@ public class FilterMpdu extends MACActorBase {
                                 msg.get("endRx"),
                                 msg.get("rxRate")
 				});
-                // send RxIndicate message to the ProtocolControl block             
+                // send RxIndicate message to the ProtocolControl block
                 toProtocolControl.send(0, msgout);
                 if (_debugging) _debug("FILTER: Sent RxIndicate");
             } else if (intFieldValue(pdu, "Addr1") == getID()) {
                 boolean dup = false;
-                if (intFieldValue(pdu, "retryBit") == 1) 
+                if (intFieldValue(pdu, "retryBit") == 1)
                     dup = _searchTupleCache(pdu);
                 if (intFieldValue(pdu, "retryBit") == 0 || !dup) {
                     RecordToken msgout = new RecordToken(
@@ -154,7 +154,7 @@ public class FilterMpdu extends MACActorBase {
                                     msg.get("endRx"),
                                     msg.get("rxRate")
                                     });
-                    // only if it is not a duplicate packet, will it be forwarded                
+                    // only if it is not a duplicate packet, will it be forwarded
                     toProtocolControl.send(0, msgout);
                     if (_debugging) _debug("FILTER: Sent RxIndicate");
                 }
@@ -174,13 +174,13 @@ public class FilterMpdu extends MACActorBase {
 		    // add this packet to the TupleCache
                     _updateTupleCache(pdu);
                 }
-            } 
+            }
 	    // if this packet is not for me
 	    else {
                 if (intFieldValue(pdu, "Type") ==ControlType &&
                         intFieldValue(pdu, "Subtype") == Rts)
                     src = Rts;
-                
+
                 if (intFieldValue(pdu, "durId") <= 32767) {
                     RecordToken msgout = new RecordToken(
                             SetNavMessageFields,
@@ -209,7 +209,7 @@ public class FilterMpdu extends MACActorBase {
         IntToken t = (IntToken)token.get(label);
         return t.intValue();
     }
-    
+
     private boolean _searchTupleCache(RecordToken pdu) {
         boolean result = false;
         int addr = intFieldValue(pdu, "Addr2");
@@ -223,7 +223,7 @@ public class FilterMpdu extends MACActorBase {
         }
         return false;
     }
-    
+
     private void _updateTupleCache(RecordToken pdu) {
         int addr = intFieldValue(pdu, "Addr2");
         int seqNum = intFieldValue(pdu, "SeqNum");
@@ -248,7 +248,7 @@ public class FilterMpdu extends MACActorBase {
             _tupleCache.removeLast();
         _tupleCache.addFirst(tuple);
     }
-    
+
     private LinkedList _tupleCache;
     private static final int _TUPLE_CACHE_SIZE = 32;
 

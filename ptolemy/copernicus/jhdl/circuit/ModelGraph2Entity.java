@@ -51,7 +51,7 @@ import soot.jimple.*;
 import soot.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
  * This class will take a PortDirectedGraph (created from a Ptolemy
  * Atomic Actor) and generate a JHDLCompositeEntity.
@@ -74,7 +74,7 @@ public class ModelGraph2Entity {
 	// 1. Create empty entity
 	_entity = new JHDLCompositeActor();
 	_entity.setName(name);
-	
+
 	// 2. Add input ports to Entity & relation for input port
 	for (Iterator i = _graph.getInputPortNodes().iterator();
 	     i.hasNext();) {
@@ -121,7 +121,7 @@ public class ModelGraph2Entity {
 	for (Iterator i = _graph.getOutputPortNodes().iterator();
 	     i.hasNext();) {
 	    Node outputNode = (Node) i.next();
-	    JHDLIOPort outputPort = 
+	    JHDLIOPort outputPort =
 		(JHDLIOPort) _nodeEntityMap.get(outputNode);
 	    // Get input edge to output Node
 	    Collection c = _graph.inputEdges(outputNode);
@@ -136,7 +136,7 @@ public class ModelGraph2Entity {
 
     }
 
-    protected void _processNode(Node node) 
+    protected void _processNode(Node node)
 	throws IllegalActionException, NameDuplicationException, JHDLUnsupportedException {
 
         // Process Node
@@ -159,9 +159,9 @@ public class ModelGraph2Entity {
         }
     }
 
-    // No hardware (thus no port linking 
-    protected void _processLocal(Node node) 
-	throws JHDLUnsupportedException, IllegalActionException, 
+    // No hardware (thus no port linking
+    protected void _processLocal(Node node)
+	throws JHDLUnsupportedException, IllegalActionException,
 	       NameDuplicationException {
 
         // should have one input and one output. Just update the _wireMap
@@ -182,17 +182,17 @@ public class ModelGraph2Entity {
 
     }
 
-    protected void _processConstant(Node node) 
+    protected void _processConstant(Node node)
 	throws IllegalActionException, NameDuplicationException, JHDLUnsupportedException {
         Object weight = node.getWeight();
         if (weight instanceof IntConstant) {
             int value = ((IntConstant) weight).value;
-	    
+
 	    // entity
-	    JHDLConstantActor actor = 
+	    JHDLConstantActor actor =
 		new JHDLConstantActor(_entity, value, 32);
 	    _nodeEntityMap.put(node,actor);
-	    
+
 	    // relation
 	    JHDLIORelation r = _getOrAddOutputRelation(node);
 	    actor.output.link(r);
@@ -380,8 +380,8 @@ public class ModelGraph2Entity {
 
 	ModelGraph2Entity process = null;
 	JHDLActorTestbench testbench = null;
-	int descriptionLevel = 
-	    NamedObj.LINKS | 
+	int descriptionLevel =
+	    NamedObj.LINKS |
 	    NamedObj.FULLNAME |
 	    //NamedObj.ATTRIBUTES |
 	    NamedObj.CONTENTS |
@@ -407,7 +407,7 @@ public class ModelGraph2Entity {
             e.printStackTrace();
             System.exit(1);
 	}
-	    
+
 
 	HWSystem hw = new HWSystem();
 	testbench.build(hw);
@@ -437,7 +437,7 @@ public class ModelGraph2Entity {
 }
 
 class IntervalParameterPortDirectedGraph extends PortDirectedGraph {
-    
+
     public IntervalParameterPortDirectedGraph(IntervalBlockDirectedGraph g) {
 	super();
 	addGraph(g);
@@ -471,7 +471,7 @@ class IntervalParameterPortDirectedGraph extends PortDirectedGraph {
 	// fix input nodes
 	for (Iterator i = inputNodeSignalMap.keySet().iterator();i.hasNext();) {
 	    Node n = (Node) i.next();
-	    Node successor = (Node) successors(n).iterator().next(); 
+	    Node successor = (Node) successors(n).iterator().next();
 	    removeNode(n);
 	    Node port = addInputPortNode((Signal)inputNodeSignalMap.get(n));
 	    addEdge(port,successor);
@@ -481,10 +481,10 @@ class IntervalParameterPortDirectedGraph extends PortDirectedGraph {
 	removeNode(returnNode);
 	Node outport = addOutputPortNode(new SimpleSignal("output"));
 	addEdge(pred,outport);
-	
+
 	System.out.println("return op="+ ((ReturnStmt)returnNode.getWeight()).getOp());
 
-	// 
+	//
 	removeUnreachable();
     }
 

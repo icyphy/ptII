@@ -71,7 +71,7 @@ public class NonStrictTokenToExpression extends TokenToExpression {
     ////                         public methods                    ////
 
     /** Output a string token whose value is an expression representing
-     *  the value of the input token. 
+     *  the value of the input token.
      *  @exception IllegalActionException If there's no director.
      */
     public void fire() throws IllegalActionException {
@@ -96,7 +96,7 @@ public class NonStrictTokenToExpression extends TokenToExpression {
     }
 
     /** Explicitly declare which inputs and outputs are not dependent.
-     *  
+     *
      */
     public void removeDependencies() {
         removeDependency(input, output);

@@ -85,13 +85,13 @@ public class ColorAttribute extends Parameter {
         try {
             ArrayToken spec = (ArrayToken) getToken();
             int length = spec.length();
-    
+
             // Default values allow us to tolerate incomplement specs.
             float red = 0f;
             float green = 0f;
             float blue = 0f;
             float alpha = 1.0f;
-    
+
             if (length > 0) {
                 red = (float) ((DoubleToken) spec.getElement(0)).doubleValue();
             }

@@ -45,7 +45,7 @@ import java.util.Set;
 Generate an HTML file that contains links to the appropriate
 copyrights for entities in the configuration.
 This class looks for particular classes, and if the class is found
-in the classpath, then a corresponding html file is included 
+in the classpath, then a corresponding html file is included
 in the list of copyrights.
 
 @author Christopher Hylands
@@ -71,12 +71,12 @@ public class GenerateCopyrights {
      *
      *  <p>If the configuration contains an _applicationCopyright
      *  StringAttribute, then the value of that attributed is used
-     *  as the location of the copyright html file.  If 
-     *  _applicationCopyright is not present, then 
+     *  as the location of the copyright html file.  If
+     *  _applicationCopyright is not present, then
      *  "ptolemy/configs/doc/copyright.htm" is used.
      *
      *  @param configuration The configuration to look for the
-     *  _applicationName and _applicationCopyright attributes in.  
+     *  _applicationName and _applicationCopyright attributes in.
      *  @return A String containing HTML that describes what
      *  copyrights are used by Entities in the configuration
      */
@@ -183,7 +183,7 @@ public class GenerateCopyrights {
         htmlBuffer.append("<html>\n<head>\n<title>Copyrights</title>\n"
                 + "</head>\n<body>\n"
                 + "<h1>" + applicationName + "</h1>\n"
-                + "The primary copyright for the " 
+                + "The primary copyright for the "
                 + applicationName + " System can be\n"
                 + "found in <a href=\"" + applicationCopyrightURL + "\"><code>"
                 + _canonicalizeURLToPTII(applicationCopyrightURL)
@@ -193,7 +193,7 @@ public class GenerateCopyrights {
         if (!applicationCopyright.equals(defaultApplicationCopyright)) {
             // If the Ptolemy II copyright is not the main copyright, add it.
             String ptolemyIICopyright = _findURL(defaultApplicationCopyright);
-            htmlBuffer.append(                
+            htmlBuffer.append(
                     "<p>" + applicationName + " uses Ptolemy II "
                     + VersionAttribute.CURRENT_VERSION.getExpression() + ".\n"
                     + "PtolemyII is covered by the copyright in\n "
@@ -201,7 +201,7 @@ public class GenerateCopyrights {
                     + _canonicalizeURLToPTII(ptolemyIICopyright)
                     + "</code></a>\n");
         }
-        htmlBuffer.append(                
+        htmlBuffer.append(
                 "<p>" + applicationName + " uses AElfred as an XML Parser.\n"
                 + "AElfred is covered by the copyright in\n "
                 + "<a href=\"" + aelfredCopyright + "\"><code>"
@@ -234,7 +234,7 @@ public class GenerateCopyrights {
                         entityBuffer.append(", ");
                     }
                     String entityClassName = (String)entities.next();
-                    
+
                     // If we have javadoc, link to it.
                     // Assuming that entityClassName contains a dot separated
                     // classpath here.

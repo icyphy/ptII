@@ -53,7 +53,7 @@ FIXME: More details.
 @version $Id$
 */
 public class RunCompositeActor extends TypedCompositeActor {
-    
+
     /** Construct an actor in the default workspace with no
      *  container and an empty string as its name. Add the actor to the
      *  workspace directory.  You should set the local director or
@@ -127,7 +127,7 @@ public class RunCompositeActor extends TypedCompositeActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Execute requested changes. In this class,
      *  do not delegate the change request to the container, but
      *  execute the request immediately.  Listeners will be notified
@@ -158,7 +158,7 @@ public class RunCompositeActor extends TypedCompositeActor {
                     _workspace.getWriteAccess();
 
                     // Defer change requests so that if changes are
-                    // requested during execution, they get queued.                    
+                    // requested during execution, they get queued.
                     setDeferringChangeRequests(true);
                     while (requests.hasNext()) {
                         ChangeRequest change = (ChangeRequest)requests.next();
@@ -174,7 +174,7 @@ public class RunCompositeActor extends TypedCompositeActor {
                     _workspace.doneWriting();
                     setDeferringChangeRequests(previousDeferStatus);
                 }
-                
+
                 // Change requests may have been queued during the execute.
                 // Execute those by a recursive call.
                 executeChangeRequests();
@@ -250,8 +250,8 @@ public class RunCompositeActor extends TypedCompositeActor {
             }
         }
     }
-    
-    /** Initialize this actor, which in this case, does nothing. 
+
+    /** Initialize this actor, which in this case, does nothing.
      *  The initialization of the submodel is accomplished in fire().
      *  The subclass of this can set the <i>_isSubclassOfThis<i> to
      *  be true to call the initialize method of the superclass of this.
@@ -262,12 +262,12 @@ public class RunCompositeActor extends TypedCompositeActor {
         if (_debugging) {
             _debug("Called initialize()");
         }
-        //Call the initialize method of the superclass. 
+        //Call the initialize method of the superclass.
         if (_isSubclassOfThis) {
             super.initialize();
         }
     }
-    
+
     /** Return true, since this actor is always opaque.
      *  This method is <i>not</i> synchronized on the workspace,
      *  so the caller should be.
@@ -275,7 +275,7 @@ public class RunCompositeActor extends TypedCompositeActor {
     public boolean isOpaque() {
         return true;
     }
-    
+
     /** Return true, indicating that execution can continue.
      *  The subclass of this can set the <i>_isSubclassOfThis<i> to
      *  be true to call the postfire method of the superclass of this.
@@ -283,13 +283,13 @@ public class RunCompositeActor extends TypedCompositeActor {
      *   so the subclasses can throw it.
      */
     public boolean postfire() throws IllegalActionException {
-        //Call the initialize method of the superclass. 
+        //Call the initialize method of the superclass.
         if (_isSubclassOfThis) {
             return super.postfire();
         }
         return true;
     }
-    
+
     /** Return true, indicating that this actor is always ready to fire.
      *  @exception IllegalActionException Not thrown, but declared
      *   so the subclasses can throw it.
@@ -331,7 +331,7 @@ public class RunCompositeActor extends TypedCompositeActor {
             }
         }
     }
-    
+
     /** Override the base class to do nothing.
      *  @exception IllegalActionException Not thrown, but declared
      *   so the subclasses can throw it.
@@ -340,15 +340,15 @@ public class RunCompositeActor extends TypedCompositeActor {
         if (_debugging) {
             _debug("Called wrapup()");
         }
-        //Call the method of the superclass. 
+        //Call the method of the superclass.
         if (_isSubclassOfThis) {
             super.wrapup();
         }
     }
- 
+
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
-   
+
     /** Call the initialize method of the superclass.  This is
      *  provided so that subclasses have a mechanism for doing
      *  this, since Java doesn't supported super.super.initialize().
@@ -357,7 +357,7 @@ public class RunCompositeActor extends TypedCompositeActor {
     //protected void _callSuperInitialize() throws IllegalActionException {
       //  super.initialize();
     //}
-    
+
     /** Run a complete execution of the contained model.  A complete
      *  execution consists of invocation of super.initialize(), repeated
      *  invocations of super.prefire(), super.fire(), and super.postfire(),
@@ -374,8 +374,8 @@ public class RunCompositeActor extends TypedCompositeActor {
          // NOTE: Use the superclass initialize() because this method overrides
          // initialize() and does not initialize the model.
          super.initialize();
-            
-            
+
+
          // Call iterate() until finish() is called or postfire()
          // returns false.
          _debug("-- RunCompositeActor beginning to iterate.");
@@ -398,13 +398,13 @@ public class RunCompositeActor extends TypedCompositeActor {
     }
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
-    
+
     /** Indicator of what the last call to iterate() returned. */
-    private int _lastIterateResult = NOT_READY; 
-    
+    private int _lastIterateResult = NOT_READY;
+
     ///////////////////////////////////////////////////////////////////
     ////                        protected variables                ////
-    
+
     /** This flag is used to indicate whether to call corresponding
      *  method of the superclass. This is
      *  provided so that subclasses have a mechanism for doing

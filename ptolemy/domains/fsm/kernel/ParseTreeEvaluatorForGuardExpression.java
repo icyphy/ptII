@@ -197,7 +197,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             if (_relationIndex >= _relationList.length()) {
             	_relationIndex -= _relationList.length();
             }
-       
+
             return;
         }
 
@@ -324,7 +324,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                 _relationIndex++;
 				if (_relationIndex >= _relationList.length()) {
 					_relationIndex -= _relationList.length();
-				}     
+				}
                 return;
             }
         }
@@ -340,7 +340,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         ptolemy.data.Token rightToken = tokens[1];
 
         ptolemy.data.Token result;
-        
+
         if (operator.kind == PtParserConstants.EQUALS ||
                 operator.kind == PtParserConstants.NOTEQUALS) {
             // If the operator is about equal or notEqual relations,
@@ -375,7 +375,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                      _relationType = 2;
                  }
                  _difference = 0.0;
-             } 
+             }
         } else {
             // If the operator is neither about equal nor notEqual relations.
             if (!((leftToken instanceof ScalarToken) &&
@@ -388,7 +388,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             ScalarToken leftScalar = (ScalarToken)leftToken;
             ScalarToken rightScalar = (ScalarToken)rightToken;
 
-            // A relation needs strictly satisfied. 
+            // A relation needs strictly satisfied.
             if (operator.kind == PtParserConstants.GTE) {
                 result = leftScalar.isLessThan(rightScalar).not();
             } else if (operator.kind == PtParserConstants.GT) {
@@ -403,7 +403,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                         leftToken.getClass().getName() + " and " +
                         rightToken.getClass().getName());
             }
-            
+
             if (((BooleanToken) result).booleanValue()) {
                 _relationType = 1;
             } else {
@@ -423,7 +423,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         _relationIndex++;
 		if (_relationIndex >= _relationList.length()) {
 			_relationIndex -= _relationList.length();
-		}    
+		}
         return;
     }
 
@@ -446,7 +446,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     // The list to store the relation nodes and leaf nodes with
     // boolean tokens inside a guard expression.
     private RelationList _relationList;
-    
+
     // the relation types have 5 integer values with meaning:
     // 1: true; 2: false; 3: equal/inequal; 4: less_than: 5: bigger_than.
     private int _relationType;

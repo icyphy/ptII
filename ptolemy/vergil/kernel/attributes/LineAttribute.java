@@ -67,11 +67,11 @@ public class LineAttribute extends ShapeAttribute {
     public LineAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         x = new Parameter(this, "x");
         x.setTypeEquals(BaseType.DOUBLE);
         x.setExpression("100.0");
-        
+
         y = new Parameter(this, "y");
         y.setTypeEquals(BaseType.DOUBLE);
         y.setExpression("0.0");
@@ -88,7 +88,7 @@ public class LineAttribute extends ShapeAttribute {
      *  This is a double that defaults to 100.0.
      */
     public Parameter x;
-    
+
     /** The y extent.
      *  This is a double that defaults to 0.0.
      */
@@ -105,7 +105,7 @@ public class LineAttribute extends ShapeAttribute {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-        if (attribute == x || attribute == y) {      
+        if (attribute == x || attribute == y) {
             double xValue
                    = ((DoubleToken)x.getToken()).doubleValue();
             double yValue
@@ -116,7 +116,7 @@ public class LineAttribute extends ShapeAttribute {
             super.attributeChanged(attribute);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////
 

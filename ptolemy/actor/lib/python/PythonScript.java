@@ -62,7 +62,7 @@ of this actor provided in the Vergil libraries.  The one called
 "PythonActor" has an input port and an output port; to view or edit
 its Python script, look inside the actor.  The second version is
 called "PythonScript" and has no ports; to view or edit its Python
-script, select Configure (or double click on the icon). 
+script, select Configure (or double click on the icon).
 <p>
 Upon creation, this actor has no ports, and no parameters other than
 {@link #script script}; The <i>script</i> parameter has visibility
@@ -546,15 +546,15 @@ public class PythonScript extends TypedAtomicActor {
 
     static {
         try {
-            // If the python.home property is not set, then set it 
+            // If the python.home property is not set, then set it
             // so that we can figure out where to write the jython cache.
             //
             // Under Webstart python/core/PySystemState.findRoot() first
             // looks for the python.home property, so if it is
-            // not set we set it.  
+            // not set we set it.
             if (System.getProperty("python.home") == null) {
                 // Look for jython.jar in the classpath
-                // Start of code based on python/core/PySystemState.findRoot() 
+                // Start of code based on python/core/PySystemState.findRoot()
                 String classpath
                     = StringUtilities.getProperty("java.class.path");
                 if (classpath == null) {
@@ -565,12 +565,12 @@ public class PythonScript extends TypedAtomicActor {
                     = classpath.toLowerCase().indexOf("jython.jar");
                 if (jythonIndex == -1) {
                     // We did not find jython.jar, so set it to user.home.
-                    // WebStart will end up here. 
+                    // WebStart will end up here.
                     System.setProperty("python.home",
                             StringUtilities.getProperty("user.home"));
                 } else {
                     // We found jython.jar, return the parent directory.
-                    // Under WebStart, jython.jar will not be in the classpath 
+                    // Under WebStart, jython.jar will not be in the classpath
                     int start
                         = classpath.lastIndexOf(java.io.File.pathSeparator,
                                 jythonIndex) + 1;
@@ -578,7 +578,7 @@ public class PythonScript extends TypedAtomicActor {
                             classpath.substring(start, jythonIndex));
 
                 }
-                // End of code based on python/core/PySystemState.findRoot() 
+                // End of code based on python/core/PySystemState.findRoot()
             }
         } catch (Exception ex) {
             // Ignore, we are probably under an an applet
@@ -590,7 +590,7 @@ public class PythonScript extends TypedAtomicActor {
             // causes PySystemState.initialize() to call
             // System.getProperties(), which throws an exception
             // The solution is to pass our own custom Properties
-        
+
             // Properties that are accessible via an applet.
             String[] propertyNames = {"file.separator",
                               "line.separator",
@@ -603,8 +603,8 @@ public class PythonScript extends TypedAtomicActor {
                               "os.arch",
                               "os.version"};
             Properties preProperties = new Properties();
-            for (int i = 0; i < propertyNames.length; i++) {    
-                     preProperties.setProperty(propertyNames[i], 
+            for (int i = 0; i < propertyNames.length; i++) {
+                     preProperties.setProperty(propertyNames[i],
                              System.getProperty(propertyNames[i]));
             }
 
@@ -629,7 +629,7 @@ public class PythonScript extends TypedAtomicActor {
             if (classFile.isDirectory()) {
                 PySystemState.add_extdir(classResource);
             } else {
-                PySystemState.add_classdir(classResource);                
+                PySystemState.add_classdir(classResource);
             }
         }
     }

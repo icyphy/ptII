@@ -92,7 +92,7 @@ public class ExpressionToToken extends Converter {
                 _parser = new PtParser();
             }
             ASTPtRootNode parseTree = _parser.generateParseTree(string);
-            
+
             if (_parseTreeEvaluator == null) {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
             }
@@ -105,7 +105,7 @@ public class ExpressionToToken extends Converter {
             // Chain exceptions to get the actor that threw the exception.
             throw new IllegalActionException(this, ex, "Expression invalid.");
         }
-        
+
         if (result == null) {
             throw new IllegalActionException(this,
                     "Expression yields a null result: " +
@@ -129,8 +129,8 @@ public class ExpressionToToken extends Converter {
     /** Wrapup execution of this actor.  This method overrides the
      *  base class to discard the internal parser to save memory.
      */
-    public void wrapup() { 
-        _parser = null; 
+    public void wrapup() {
+        _parser = null;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -143,7 +143,7 @@ public class ExpressionToToken extends Converter {
          *  @return The attribute with the specified name in the scope.
          */
         public Token get(String name) throws IllegalActionException {
-            Variable result = getScopedVariable(null, 
+            Variable result = getScopedVariable(null,
                     ExpressionToToken.this, name);
             if (result != null) {
                 return result.getToken();
@@ -157,7 +157,7 @@ public class ExpressionToToken extends Converter {
          *  @return The attribute with the specified name in the scope.
          */
         public Type getType(String name) throws IllegalActionException {
-            Variable result = 
+            Variable result =
                 getScopedVariable(null, ExpressionToToken.this, name);
             if (result != null) {
                 return (Type)result.getTypeTerm().getValue();
@@ -175,14 +175,14 @@ public class ExpressionToToken extends Converter {
          */
         public ptolemy.graph.InequalityTerm getTypeTerm(String name)
                 throws IllegalActionException {
-            Variable result = 
+            Variable result =
                 getScopedVariable(null, ExpressionToToken.this, name);
             if (result != null) {
                 return result.getTypeTerm();
             }
             return null;
         }
-        
+
         /** Return the list of identifiers within the scope.
          *  @return The list of identifiers within the scope.
          */
@@ -193,7 +193,7 @@ public class ExpressionToToken extends Converter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     private PtParser _parser = null;
     private ParseTreeEvaluator _parseTreeEvaluator = null;
     private ParserScope _scope = null;

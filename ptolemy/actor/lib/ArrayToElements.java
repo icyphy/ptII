@@ -84,7 +84,7 @@ public class ArrayToElements extends Transformer {
         InequalityTerm elementTerm = inputType.getElementTypeTerm();
         output.setTypeAtLeast(elementTerm);
         output.setMultiport(true);
-        
+
         // Set the icon.
         _attachText("_iconDescription", "<svg>\n" +
             "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
@@ -126,7 +126,7 @@ public class ArrayToElements extends Transformer {
         if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken)input.get(0);
             int size = token.length();
-        
+
             int min = Math.min(size, output.getWidth());
 
             Token[] elements = token.arrayValue();

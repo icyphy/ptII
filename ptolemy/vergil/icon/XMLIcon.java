@@ -100,7 +100,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
             throw new InternalErrorException(ex);
         }
     }
-    
+
     /** Create a new icon with the given name in the given container.
      *  By default, the icon contains no graphic objects.
      *  @param container The container for this attribute.
@@ -132,7 +132,7 @@ public class XMLIcon extends DynamicEditorIcon implements ValueListener {
         newObject._smallIconDescription = null;
         return newObject;
     }
-    
+
     /** Create a background figure based on this icon.  The background figure
      *  will be painted with each graphic element that this icon contains.
      *  @return A figure for this icon.

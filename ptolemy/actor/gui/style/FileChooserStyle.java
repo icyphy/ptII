@@ -121,11 +121,11 @@ public class FileChooserStyle extends ParameterEditorStyle {
             }
         }
         query.addFileChooser(
-                name, 
-                name, 
-                defaultValue, 
-                modelURI, 
-                directory, 
+                name,
+                name,
+                defaultValue,
+                modelURI,
+                directory,
                 PtolemyQuery.preferredBackgroundColor(container));
         query.attachParameter(container, name);
     }

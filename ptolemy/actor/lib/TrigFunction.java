@@ -125,7 +125,7 @@ public class TrigFunction extends Transformer {
         function.addChoice("atan");
         function.addChoice("cos");
         function.addChoice("sin");
-        function.addChoice("tan");        
+        function.addChoice("tan");
 
         _function = _SIN;
 

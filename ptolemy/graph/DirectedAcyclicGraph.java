@@ -420,31 +420,31 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     // if ids.length = 0, return null.
     private Object _leastElementNodeId(int[] ids) {
 
-        // Algorithm: Use a linked list storing all the elements incomparable 
-        // with at least one other. The least element, if it exists, must be 
-        // less than all the elements in this list. Compare the elements in 
-        // the ids array in consecutive pairs. Elements found  higher in a 
-        // pair-comparison are removed from the ids array. Elements found 
-        // incomparable are removed from the ids array and put into the list. 
-        // If two elements are found equal, one of them is arbitrarily removed 
-        // from the ids array. Repeat the above process until the ids array 
-        // contains no more than one element. In the end, if the ids array 
-        // contains no elements, return null. If it contains an element, 
-        // compare it with all the elements in the list. If it is found lower 
-        // than all of them, then this is the least element, otherwise there 
-        // exists no least element. 
-        // This algorithm computes the least element of a poset in O(n) time. 
+        // Algorithm: Use a linked list storing all the elements incomparable
+        // with at least one other. The least element, if it exists, must be
+        // less than all the elements in this list. Compare the elements in
+        // the ids array in consecutive pairs. Elements found  higher in a
+        // pair-comparison are removed from the ids array. Elements found
+        // incomparable are removed from the ids array and put into the list.
+        // If two elements are found equal, one of them is arbitrarily removed
+        // from the ids array. Repeat the above process until the ids array
+        // contains no more than one element. In the end, if the ids array
+        // contains no elements, return null. If it contains an element,
+        // compare it with all the elements in the list. If it is found lower
+        // than all of them, then this is the least element, otherwise there
+        // exists no least element.
+        // This algorithm computes the least element of a poset in O(n) time.
         // (ematsi 09/2003)
-        
+
         // list of incomparable elements.
         LinkedList incomparables = new LinkedList();
         int virtualLength = ids.length;
-        
+
         while (virtualLength > 1) {
             int i;
             int virtualIndex = 0;
             int numberOfRemovedElements = 0;
-    
+
             for (i = 0; i < virtualLength-1; ) {
                 switch (_compareNodeId(ids[i++], ids[i++])) {
                 case LOWER:
@@ -458,7 +458,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
                     break;
                 case INCOMPARABLE:
                     incomparables.addLast(new Integer(ids[i-2]));
-                    incomparables.addLast(new Integer(ids[i-1]));                
+                    incomparables.addLast(new Integer(ids[i-1]));
                     numberOfRemovedElements += 2;
                     break;
                 default:
@@ -469,15 +469,15 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
             if (i == virtualLength-1) {
                 ids[virtualIndex] = ids[i];
             }
-            virtualLength -= numberOfRemovedElements;      
+            virtualLength -= numberOfRemovedElements;
         }
-        
+
         if (virtualLength == 0) {
             return null;
         } else if (incomparables.size() != 0) {
             for (ListIterator iterator = incomparables.listIterator(0);
                  iterator.hasNext() ;) {
-                int result = _compareNodeId(ids[0], 
+                int result = _compareNodeId(ids[0],
                         ((Integer)iterator.next()).intValue());
                 if (result == HIGHER || result == INCOMPARABLE)
                     return null;

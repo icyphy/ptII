@@ -65,25 +65,25 @@ public class Main extends KernelMain {
         addTransform(pack, "wjtp.makefileWriter",
                 MakefileWriter.v(_toplevel),
                 "_generatorAttributeFileName:" + _generatorAttributeFileName +
-                " targetPackage:" + _targetPackage + 
+                " targetPackage:" + _targetPackage +
                 " templateDirectory:" + _templateDirectory +
                 " outDir:" + _outputDirectory +
-                " overwrite:false"); 
+                " overwrite:false");
 
         // Generate the applet files in outDir
         addTransform(pack, "wjtp.appletWriter",
                 AppletWriter.v(_toplevel),
-                "targetPackage:" + _targetPackage + 
+                "targetPackage:" + _targetPackage +
                 " modelPath:" + _modelPath +
                 " outDir:" + _outputDirectory);
     }
 
     /** Parse any code generator specific arguments.
-     */ 
-    protected String[] _parseArgs(GeneratorAttribute attribute) 
+     */
+    protected String[] _parseArgs(GeneratorAttribute attribute)
             throws Exception {
 
-        _generatorAttributeFileName = 
+        _generatorAttributeFileName =
             attribute.getParameter("generatorAttributeFileName");
         _modelPath = attribute.getParameter("modelPath");
         _outputDirectory = attribute.getParameter("outputDirectory");

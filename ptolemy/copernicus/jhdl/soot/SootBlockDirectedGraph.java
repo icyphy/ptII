@@ -42,8 +42,8 @@ import soot.jimple.*;
 //////////////////////////////////////////////////////////////////////////
 ////
 /**
- * 
- * Is this class necessary? 
+ *
+ * Is this class necessary?
  *
 @author Mike Wirthlin
 @version $Id$

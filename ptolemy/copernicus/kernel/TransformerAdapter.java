@@ -82,7 +82,7 @@ public class TransformerAdapter extends SceneTransformer {
                         transformers.hasNext();) {
                         BodyTransformer transformer = (BodyTransformer)
                             transformers.next();
-                        
+
                         // FIXME: pass in the options.
                         // Currently this is not possible because the
                         // internalTransform method is protected.

@@ -43,7 +43,7 @@ import x10.Command;
 
 //////////////////////////////////////////////////////////////////////////
 //// CommandListener
-/** 
+/**
 This actor will output a <i>true</i> whenever a specified command with the
 specified house and unit code is detected.  Only commands that are present
 or absent are supported by this actor. Use LevelSensor for commands (like
@@ -86,11 +86,11 @@ public class CommandListener extends Receiver {
 			throws NameDuplicationException, IllegalActionException  {
 		super(container, name);
 
-		// Create output port.    
+		// Create output port.
 		detected = new TypedIOPort(this, "detected", false, true);
         // Output true if detected is detected.
         detected.setTypeEquals(BaseType.BOOLEAN);
-        
+
         // Identify the command to detect.
         command = new StringParameter(this, "command");
         command.addChoice("ON");
@@ -99,8 +99,8 @@ public class CommandListener extends Receiver {
         command.addChoice("ALL_LIGHTS_OFF");
         command.addChoice("ALL_UNITS_OFF");
         command.setExpression("ON");
-        
-        // Parameters.        
+
+        // Parameters.
 		houseCode = new StringParameter(this, "houseCode");
         houseCode.setExpression("A");
 
@@ -108,41 +108,41 @@ public class CommandListener extends Receiver {
         unitCode.setTypeEquals(BaseType.INT);
         unitCode.setExpression("1");
 	}
-	
+
 	///////////////////////////////////////////////////////////////////
 	////                     ports and parameters                  ////
-    
+
     /** The X10 command to listen for.  This is a string with a value
      *  that is one of ALL_LIGHTS_OFF, ALL_LIGHTS_ON, ALL_UNITS_OFF,
      *  OFF, or ON.  The default is ON.
      */
     public StringParameter command;
-    
+
 	/** An output with value true is produced on this port when the specified
      *  X10 command is detected for the specified house and unit codes.
 	 */
 	public TypedIOPort detected;
-	
+
 	/** This string is the house code for the command that this
      *  actor listens for. The default value is "A".
 	 */
 	public StringParameter houseCode;
-    
+
     /** This parameter is the unit code for the command that this
      *  actor listens for. This is an integer that defaults to 1.
      */
     public Parameter unitCode;
-    
+
 	///////////////////////////////////////////////////////////////////
 	////                         public methods                    ////
-    
+
     /** Output true if the specified command is sensed with the specified
      *  house and unit codes, and output false otherwise.
 	 *  @exception IllegalActionException If the super class throws it.
 	 */
 	public void fire() throws IllegalActionException {
 		super.fire();
-        
+
         // Check whether a command is ready
         if (_commandReady()) {
             Command sensedCommand = _getCommand();
@@ -160,10 +160,10 @@ public class CommandListener extends Receiver {
             }
             String sensedHouseCode = "" + sensedCommand.getHouseCode();
             int sensedUnitCode = sensedCommand.getUnitCode();
-            
+
             String houseCodeValue = houseCode.stringValue();
             int unitCodeValue = ((IntToken)unitCode.getToken()).intValue();
-            
+
             if (sensedHouseCode.equals(houseCodeValue)
                     && sensedUnitCode == unitCodeValue
                     && function == functionOfInterest) {
@@ -174,5 +174,5 @@ public class CommandListener extends Receiver {
         } else {
             detected.send(0, BooleanToken.FALSE);
         }
-	}	
+	}
 }

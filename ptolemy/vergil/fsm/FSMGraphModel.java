@@ -441,7 +441,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                                 }
                             }
                         }
-                        
+
                         // Next check transitions.
                         Iterator transitions = master.relationList().iterator();
                         while (removeIt && transitions.hasNext()) {
@@ -474,7 +474,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
                     }
                 }
             }
-             
+
             return moml.toString();
         }
 
@@ -995,7 +995,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
     /** The model for external ports.
      */
     public class PortModel extends NamedObjNodeModel {
-        
+
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. This assumes that the context is the container
          *  of the port to be deleted.
@@ -1097,7 +1097,7 @@ public class FSMGraphModel extends AbstractBasicGraphModel {
     /** The model for an icon that represent states.
      */
     public class StateModel extends NamedObjNodeModel {
-        
+
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. This assumes that the context is the container
          *  of the state.

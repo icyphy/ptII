@@ -72,7 +72,7 @@ public class BlockGraphToDotty extends GraphToDotty {
             Block source = (Block)nodes.next();
             String name="v" + count++;
             sb.append("\t\""+name+"\" [label=\""
-                      // soot 2.0 
+                      // soot 2.0
                       //+convertSpecialsToEscapes(source.toString(m))
                       +convertSpecialsToEscapes(source.toString())
                     +"\"];"+MYEOL);

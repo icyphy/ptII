@@ -84,7 +84,7 @@ same syntax as in expressions. For example:
 @see ptolemy.data.expr.Constants
 */
 public class TypeAttribute extends Parameter {
-    
+
     /** Construct a parameter in the specified workspace with an empty
      *  string as a name.
      *  If the workspace argument is null, then use the default workspace.

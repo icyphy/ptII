@@ -57,7 +57,7 @@ if not.
 @version $Id$
 */
 public class CopyCatIcon extends XMLIcon {
-    
+
     /** Create a new icon with the given name in the given container.
      *  @param container The container.
      *  @param name The name of the attribute.
@@ -88,7 +88,7 @@ public class CopyCatIcon extends XMLIcon {
         newObject._originalDescription = null;
         return newObject;
     }
-    
+
     /** Create a new background figure.  This method looks for entities
      *  contained by the same container, and if there are any, copies
      *  the icon of the last such entity.  If there are none, then it
@@ -96,8 +96,8 @@ public class CopyCatIcon extends XMLIcon {
      *  @return A new figure.
      */
     public Figure createBackgroundFigure() {
-        
-        Figure result = null;        
+
+        Figure result = null;
         Nameable container = getContainer();
         if (container instanceof CompositeEntity) {
             CompositeEntity myContainer = ((CompositeEntity)container);
@@ -110,7 +110,7 @@ public class CopyCatIcon extends XMLIcon {
                 if (entity != null) {
                     // Look for an icon within the entity.
                     EditorIcon icon = null;
-                    Iterator icons = 
+                    Iterator icons =
                         entity.attributeList(EditorIcon.class).iterator();
                     while (icons.hasNext()) {
                         icon = (EditorIcon)icons.next();
@@ -199,7 +199,7 @@ public class CopyCatIcon extends XMLIcon {
         composite.add(result);
         return composite;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -139,7 +139,7 @@ public class UndoStackAttribute extends SingletonAttribute {
                     System.out.println(
                             "=======> Merging top two on undo stack:\n"
                             + mergedAction.toString());
-                }            
+                }
             }
         }
     }
@@ -198,7 +198,7 @@ public class UndoStackAttribute extends SingletonAttribute {
             _redoEntries.clear();
         }
     }
-    
+
     /** Remove the top redo action and execute it.
      *  If there are no redo entries, do nothing.
      */
@@ -244,10 +244,10 @@ public class UndoStackAttribute extends SingletonAttribute {
             }
         }
     }
-  
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-  
+
     /** Return an action that is a merger of the two specified actions.
      *  @return An action that is a merger of the two specified actions.
      */
@@ -273,7 +273,7 @@ public class UndoStackAttribute extends SingletonAttribute {
 
     // Flag indicating whether to debug.
     private static boolean _DEBUG = false;
-    
+
     // Counter used to count pushes during a redo.
     private int _inRedo = 0;
 

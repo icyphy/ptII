@@ -164,7 +164,7 @@ public class HDFActor extends Transformer {
                     }
                };
                request.setPersistent(false);
-               container.requestChange(request); 
+               container.requestChange(request);
             } else {
                 _outputRate.setToken(new IntToken(_rateValue));
                 _inputRate.setToken(new IntToken(_rateValue));

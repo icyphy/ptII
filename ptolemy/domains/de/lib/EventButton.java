@@ -207,7 +207,7 @@ public class EventButton extends Source implements Placeable {
     // The frame into which to put the text widget, if any.
     private JFrame _frame;
 
- 
+
 
     private EventButton _self;
 

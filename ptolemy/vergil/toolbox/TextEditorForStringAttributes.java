@@ -70,7 +70,7 @@ public class TextEditorForStringAttributes extends TextEditor {
         // The above will mark the text object modified. Reverse this.
         setModified(false);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -93,7 +93,7 @@ public class TextEditorForStringAttributes extends TextEditor {
 
     ///////////////////////////////////////////////////////////////////
     ////                      protected methods                    ////
-    
+
     /** Override to query whether to apply the changes, if any.
      *  @return False if the user cancels on a apply query.
      */
@@ -144,7 +144,7 @@ public class TextEditorForStringAttributes extends TextEditor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     // Open a dialog to prompt the user to apply the data.
     // Return false if the user clicks "cancel", and otherwise return true.
     private boolean _queryForApply() {
@@ -171,10 +171,10 @@ public class TextEditorForStringAttributes extends TextEditor {
         }
         return false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     private final TextEditorFactory _factory;
     private StringAttribute _attributeToEdit;
 }

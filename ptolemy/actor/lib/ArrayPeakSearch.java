@@ -106,14 +106,14 @@ public class ArrayPeakSearch extends TypedAtomicActor {
         squelch = new Parameter(this, "squelch");
         squelch.setExpression("-10.0");
         squelch.setTypeEquals(BaseType.DOUBLE);
-        
+
         scale = new StringParameter(this, "scale");
         scale.setExpression("absolute");
         scale.addChoice("absolute");
         scale.addChoice("relative linear");
         scale.addChoice("relative amplitude decibels");
         scale.addChoice("relative power decibels");
-        
+
         startIndex = new PortParameter(this, "startIndex");
         startIndex.setExpression("0");
         startIndex.setTypeEquals(BaseType.INT);
@@ -125,12 +125,12 @@ public class ArrayPeakSearch extends TypedAtomicActor {
         maximumNumberOfPeaks = new Parameter(this, "maximumNumberOfPeaks");
         maximumNumberOfPeaks.setExpression("MaxInt");
         maximumNumberOfPeaks.setTypeEquals(BaseType.INT);
-        
+
         // Ports.
         input = new TypedIOPort(this, "input", true, false);
         peakValues = new TypedIOPort(this, "peakValues", false, true);
         peakIndices = new TypedIOPort(this, "peakIndices", false, true);
-        
+
         new SingletonAttribute(peakValues, "_showName");
         new SingletonAttribute(peakIndices, "_showName");
 
@@ -153,32 +153,32 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      *  parameter. It defaults to 0.0.
      */
     public Parameter dip;
-    
+
     /** The end point of the search. If this number is larger than
      *  the length of the input array, then the search is to the end
      *  of the array.  This is an integer that defaults to MaxInt.
      */
     public PortParameter endIndex;
-    
+
     /** The input port.  This is required to be an array of doubles
      */
     public TypedIOPort input;
-    
+
     /** The maximum number of peaks to report.
      *  This is an integer that defaults to MaxInt.
      */
     public Parameter maximumNumberOfPeaks;
-    
+
     /** The output port for the indices of the peaks. The type is
      *  {int} (array of int).
      */
     public TypedIOPort peakIndices;
-    
+
     /** The output port for the values of the peaks. The type is the
      *  same as the input port.
      */
     public TypedIOPort peakValues;
-    
+
     /** An indicator of whether <i>dip</i> and <i>squelch</i>
      *  should be interpreted as absolute or relative, and if relative, then on a
      *  linear scale, in amplitude decibels, or power decibels.
@@ -190,7 +190,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      *  power decibels". The default value is "absolute".
      */
     public StringParameter scale;
-    
+
     /** The value below which the input is ignored by the
      *  algorithm. This is a double that can be interpreted as an
      *  absolute number or a relative number, and if relative, on a
@@ -199,7 +199,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
      *  to the global peak. It defaults to -10.0.
      */
     public Parameter squelch;
-    
+
     /** The starting point of the search. If this number is larger than
      *  the value of <i>endIndex</i>, the search is conducted backwards
      *  (and the results presented in reverse order). If this number is
@@ -228,7 +228,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
 
     /** Consume at most one array from the input port and produce
      *  two arrays containing the indices and values of the identified
-     *  peaks.  
+     *  peaks.
      *  If there is no token on the input, then no output is produced.
      *  If the input is an empty array, then the same empty array token
      *  is produced on both outputs.
@@ -249,7 +249,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
             int start = ((IntToken)startIndex.getToken()).intValue();
             int end = ((IntToken)endIndex.getToken()).intValue();
             int maxPeaks = ((IntToken)maximumNumberOfPeaks.getToken()).intValue();
-            
+
             // Constrain start and end.
             if (end >= inputSize) {
                 end = inputSize - 1;
@@ -270,23 +270,23 @@ public class ArrayPeakSearch extends TypedAtomicActor {
 
             boolean searchValley = false;
             boolean searchPeak = true;
-            
+
             int localMaxIndex = start;
             int localMinIndex = start;
-            
+
             double localMax = ((DoubleToken)inputArray.getElement(start)).doubleValue();
             double localMin = localMax;
-            
+
             double dipValue = ((DoubleToken)dip.getToken()).doubleValue();
             double squelchValue = ((DoubleToken)squelch.getToken()).doubleValue();
-            
+
             // The following values change since they are relative to most recently
             // peaks or values.
             double dipThreshold = dipValue;
             double riseThreshold = dipValue;
-            
+
             String scaleValue = scale.stringValue();
-            
+
             // Index of what scale we are dealing with.
             int scaleIndicator = _ABSOLUTE;
             if (!scaleValue.equals("absolute")) {
@@ -364,7 +364,7 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                         localMaxIndex = i;
                         searchValley = false;
                         searchPeak = true;
-                    }  
+                    }
                 } else if (searchPeak) {
                     if (indata > localMax && indata > squelchValue) {
                         localMax = indata;
@@ -418,12 +418,12 @@ public class ArrayPeakSearch extends TypedAtomicActor {
                 resultPeaks.add(inputArray.getElement(start));
                 resultIndices.add(startIndex.getToken());
             }
-            
+
             Token[] resultPeaksArray = (Token[])resultPeaks
                     .toArray(new Token[resultPeaks.size()]);
             Token[] resultIndicesArray = (Token[])resultIndices
                     .toArray(new Token[resultIndices.size()]);
-                    
+
             peakValues.send(0, new ArrayToken(resultPeaksArray));
             peakIndices.send(0, new ArrayToken(resultIndicesArray));
         }

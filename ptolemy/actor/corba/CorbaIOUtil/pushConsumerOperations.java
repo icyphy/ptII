@@ -11,7 +11,7 @@ package ptolemy.actor.corba.CorbaIOUtil;
 
 /* A CORBA compatible interface for a push consumer.
 	 */
-public interface pushConsumerOperations 
+public interface pushConsumerOperations
 {
 
   /* this method is intended to be called remotely by a push publisher,

@@ -68,9 +68,9 @@ public class TextStyle extends ParameterEditorStyle {
      *  Parameter name coincides with an attribute already in the
      *  container.
      */
-    public TextStyle() 
+    public TextStyle()
             throws IllegalActionException, NameDuplicationException {
-        // Note: StyleConfigurer calls this constructor when 
+        // Note: StyleConfigurer calls this constructor when
         // configure -> preferences -> text is selected.
         super();
         _initialize();
@@ -131,8 +131,8 @@ public class TextStyle extends ParameterEditorStyle {
             int heightValue = ((IntToken)height.getToken()).intValue();
             int widthValue = ((IntToken)width.getToken()).intValue();
             query.addTextArea(
-                    name, 
-                    name, 
+                    name,
+                    name,
                     defaultValue,
                     PtolemyQuery.preferredBackgroundColor(container),
                     heightValue,
@@ -147,7 +147,7 @@ public class TextStyle extends ParameterEditorStyle {
     ////                         private methods                   ////
 
     // Initialize height and width.  This method is called by the
-    // constructors so as to avoid code duplication. 
+    // constructors so as to avoid code duplication.
     private void _initialize()
             throws IllegalActionException, NameDuplicationException {
         height = new Parameter(this, "height");

@@ -322,7 +322,7 @@ public class EditParametersDialog extends ComponentDialog
         // Need to escape quotes in default value.
         String newDefValue = StringUtilities.escapeForXML(
                 _query.getStringValue("default"));
-                
+
 
         if (dialog.buttonPressed().equals("OK") && !newName.equals("")) {
             String moml = "<property name=\""

@@ -174,12 +174,12 @@ public abstract class AbstractCompoundExpression extends CompoundBooleanExpressi
         up.literal(")");
 
         up.literal(getSymbol());
-        
+
         up.literal("(");
-        op2Box.toString(up);        
+        op2Box.toString(up);
         up.literal(")");
     }
-    
+
     /*
     public String toBriefString()
     {

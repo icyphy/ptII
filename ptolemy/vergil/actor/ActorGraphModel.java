@@ -475,7 +475,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 try {
                     String name = relation.uniqueName("vertex");
                     rootVertex = new Vertex(relation, name);
-                    
+
                     // Have to manually handle propagation, since
                     // the MoML parser is not involved.
                     // FIXME: This could cause a name collision!
@@ -484,10 +484,10 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     List heritageList = relation.getDerivedList();
                     Iterator heritage = heritageList.iterator();
                     while (heritage.hasNext()) {
-                        ComponentRelation inherited 
+                        ComponentRelation inherited
                                 = (ComponentRelation)heritage.next();
                         new Vertex(inherited, name);
-                    }                
+                    }
 
                 }
                 catch (Exception e) {
@@ -546,7 +546,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  These ports are always contained by the root of this graph model.
      */
     public class ExternalPortModel extends NamedObjNodeModel {
-        
+
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. The MoML assumes a context that is the container
          *  of the port.
@@ -661,7 +661,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      */
     public class IconModel extends NamedObjNodeModel
             implements CompositeNodeModel {
-                
+
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. The returned string assumes that the context is
          *  the container of the object with an icon.
@@ -1043,7 +1043,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 relationName = _linkMoML(
                         container, moml, failmoml,
                         (NamedObj)newLinkHead, linkTail);
-                        
+
                 appendedMoML = appendedMoML || (relationName != null);
             } catch (Exception ex) {
                 // The link is bad... remove it.
@@ -1266,7 +1266,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
     /** The model for ports that are contained in icons in this graph.
      */
     public class PortModel extends NamedObjNodeModel {
-        
+
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. This assumes that the context is the container
          *  of the port.
@@ -1303,7 +1303,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                     while (heritage.hasNext()) {
                         NamedObj inherited = (NamedObj)heritage.next();
                         Location inheritedLocation = new Location(inherited, "_location");
-                    }                
+                    }
                     return location;
                  } catch (Exception e) {
                      throw new InternalErrorException("Failed to create " +
@@ -1392,7 +1392,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  ptolemy model.
      */
     public class VertexModel extends NamedObjNodeModel {
-        
+
         /** Return a MoML String that will delete the given node from the
          *  Ptolemy model. This assumes that the context is the container
          *  of the vertex.
@@ -1402,7 +1402,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             ComponentRelation deleteObj
                     = (ComponentRelation)((Vertex)node).getContainer();
             NamedObj container = (NamedObj)deleteObj.getContainer();;
-            
+
             String moml = "<deleteRelation name=\""
                     + deleteObj.getName()
                     + "\"/>\n";

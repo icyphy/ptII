@@ -397,7 +397,7 @@ public class Expression extends TypedAtomicActor {
                         return BaseType.UNKNOWN;
                     }
                 }
-                
+
                 // Note: This code is similar to the token evaluation
                 // code above.
                 if (_parseTree == null) {
@@ -408,14 +408,14 @@ public class Expression extends TypedAtomicActor {
                     _parseTree = parser.generateParseTree(
                             expression.getExpression());
                 }
-                
+
                 if (_scope == null) {
                     _scope = new VariableScope();
                 }
                 Type type = _typeInference.inferTypes(_parseTree, _scope);
                 return type;
             } catch (Exception ex) {
-                throw new IllegalActionException(Expression.this, ex, 
+                throw new IllegalActionException(Expression.this, ex,
                         "An error occurred during expression type inference");
             }
         }

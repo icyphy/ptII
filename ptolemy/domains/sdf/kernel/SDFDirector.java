@@ -352,7 +352,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      */
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-              
+
         BaseSDFScheduler scheduler = (BaseSDFScheduler)getScheduler();
         if (scheduler == null)
             throw new IllegalActionException("Attempted to initialize " +
@@ -541,7 +541,7 @@ public class SDFDirector extends StaticSchedulingDirector {
         iterations = new Parameter(this, "iterations");
         iterations.setTypeEquals(BaseType.INT);
         iterations.setExpression("0");
-        
+
         vectorizationFactor = new Parameter(this, "vectorizationFactor");
         vectorizationFactor.setTypeEquals(BaseType.INT);
         vectorizationFactor.setExpression("1");

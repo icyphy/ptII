@@ -46,7 +46,7 @@ import ptolemy.kernel.util.Workspace;
 //////////////////////////////////////////////////////////////////////////
 //// ChannelState
 
-/** 
+/**
 This actor updates the channel state based on the information from PHY
 and NAV (Network Allocation Vector). To speed up simulation, slot events
 in 802.11 are not generated here.
@@ -74,35 +74,35 @@ public class ChannelState extends MACActorBase {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Create and configure the ports.       
+        // Create and configure the ports.
         channelStatus = new TypedIOPort(this, "channelStatus", true, false);
         //set the port to be a south port if it hasn't been configured.
         /**StringAttribute cardinal = (StringAttribute)
                 channelStatus.getAttribute("_cardinal");
         if (cardinal == null) {
-            StringAttribute thisCardinal =  
+            StringAttribute thisCardinal =
                     new StringAttribute(channelStatus, "_cardinal");
             thisCardinal.setExpression("SOUTH");
         }*/
-        
-        fromFilterMpdu = new TypedIOPort(this, "fromFilterMpdu", true, false);     
+
+        fromFilterMpdu = new TypedIOPort(this, "fromFilterMpdu", true, false);
         fromValidateMpdu = new TypedIOPort(this, "fromValidateMpdu", true, false);
         toTransmission = new TypedIOPort(this, "toTransmission", false, true);
 
         channelStatus.setTypeEquals(BaseType.GENERAL);
-        fromValidateMpdu.setTypeEquals(BaseType.GENERAL);       
+        fromValidateMpdu.setTypeEquals(BaseType.GENERAL);
         fromFilterMpdu.setTypeEquals(BaseType.GENERAL);
-        toTransmission.setTypeEquals(BaseType.GENERAL);     
+        toTransmission.setTypeEquals(BaseType.GENERAL);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
-    /** The input port for channel status message from the 
+    /** The input port for channel status message from the
      *  physical layer.  This has undeclared type.
      */
     public TypedIOPort channelStatus;
-      
+
     /** The input port for messages from ValidateMpdu process.
      *  Two types of messages: UseIfs and RtsTimeout
      */
@@ -111,12 +111,12 @@ public class ChannelState extends MACActorBase {
     /** The input port for setNav message from FilterMpdu.
      */
     public TypedIOPort fromFilterMpdu;
-    
+
     /** The output port that produces messages that
      *  indicate the channel status.
      */
     public TypedIOPort toTransmission;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     /** Clone the object into the specified workspace. The new object is
@@ -134,7 +134,7 @@ public class ChannelState extends MACActorBase {
         String[] labels = {"type", "content"};
         Type[] types = {BaseType.INT, BaseType.GENERAL};
         RecordType recordType = new RecordType(labels, types);
-        
+
         newObject.channelStatus.setTypeAtMost(recordType);
         newObject.fromFilterMpdu.setTypeAtMost(recordType);
         newObject.fromValidateMpdu.setTypeAtMost(recordType);
@@ -151,17 +151,17 @@ public class ChannelState extends MACActorBase {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        
+
         Director director = getDirector();
         _currentTime = director.getCurrentTime();
 	    int kind=whoTimeout();
         // if a timer is processed, should not consume the message token
         // kind = -1 means no timer event.
-        if (kind == -1) { 
+        if (kind == -1) {
             //THE SDL specification has don-deterministic
             //transition.However the order does not matter,
             // so We will pick a particular order.
-            // all states handle UseIfs messages 
+            // all states handle UseIfs messages
             if (fromValidateMpdu.hasToken(0)) {
                 _inputMessage = (RecordToken) fromValidateMpdu.get(0);
                 _messageType = ((IntToken)_inputMessage.
@@ -191,36 +191,36 @@ public class ChannelState extends MACActorBase {
                 _messageType = ((IntToken)
                         _inputMessage.get("kind")).intValue();
 
-            } 
+            }
         }
-                
+
         switch (_state) {
             case Cs_noNav:
 		        //_getMsgType();
                 switch(_messageType) {
-                    case Idle: 
+                    case Idle:
 		                // if channel becomes idle,set timer and goes to Wait_Ifs state
 		                _IfsTimer=setTimer(IfsTimeOut,_currentTime + _dIfs*1e-6);
                         _state = Wait_Ifs;
                     break;
-                    
+
                      case SetNav:
 			             // if a reservation is needed, make it and goes to Cs_Nav state
                          if (_setNav()) {
                              _state = Cs_Nav;
                          }
-                     break;     
+                     break;
                 }
             break;
-            
+
             case Wait_Ifs:
                 if (kind == IfsTimeOut) {
 		            // if channel remains idle for the whole IFS duration,
 		            // let the Transmission block know.
   		            _changeStatus(Idle);
-                    _state = noCs_noNav;                   
+                    _state = noCs_noNav;
                 } else {
-		            // if we have processed IfsTimer, we will not consume this token 
+		            // if we have processed IfsTimer, we will not consume this token
 		            //_getMsgType();
                     switch(_messageType) {
                         case Busy:
@@ -237,8 +237,8 @@ public class ChannelState extends MACActorBase {
                         break;
                    }
                 }
-            break;    
-                
+            break;
+
             case noCs_noNav:
 		        //_getMsgType();
                 switch(_messageType) {
@@ -262,7 +262,7 @@ public class ChannelState extends MACActorBase {
                     _state = Cs_noNav;
                 } else {
 		            //_getMsgType();
-                    if (_messageType == Idle) 
+                    if (_messageType == Idle)
                         _state = noCs_Nav;
                     else
 			            // RtsTimeout token will be consumed if NavTimeout
@@ -288,9 +288,9 @@ public class ChannelState extends MACActorBase {
         }
         _inputMessage = null;
         _messageType = UNKNOWN;
-        kind = -1;       
+        kind = -1;
     }
-    
+
     /** Initialize the private variables.
      *  @exception IllegalActionException If thrown by the base class.
      */
@@ -309,16 +309,16 @@ public class ChannelState extends MACActorBase {
 	    // First assume channel is busy until PHY sends an idle event
 	    _changeStatus(Busy);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
-    
+
     private void _updateNav() throws IllegalActionException {
         double tNew;
-        
+
         switch(_messageType) {
             case SetNav:
-            
+
                 tNew = ((DoubleToken)_inputMessage.get("tRef")).doubleValue()
                        +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6;
                 if (tNew > _NavTimer.expirationTime) {
@@ -339,7 +339,7 @@ public class ChannelState extends MACActorBase {
                 tNavEnd=_currentTime;
                 _curSrc=nosrc;
              break;
-      
+
          }
     }
 
@@ -372,9 +372,9 @@ public class ChannelState extends MACActorBase {
         if (_inputMessage != null) {
             _messageType = ((IntToken)
             _inputMessage.get("kind")).intValue();
-        } 
+        }
     }
-*/    
+*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -384,18 +384,18 @@ public class ChannelState extends MACActorBase {
     private static final int Wait_Ifs   = 2;
     private static final int noCs_Nav   = 3;
     private static final int noCs_noNav = 4;
-    
+
     private int _state=0;
-    
+
     //the distributed inter frame space.
     private int _dDIfs;
     //the extended inter frame space.
     private int _dEIfs;
     //the applying inter frame space.
     private int _dIfs;
-    
+
     private int _curSrc;
-    
+
     private Timer _IfsTimer;
     private Timer _NavTimer;
 

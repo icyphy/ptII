@@ -112,7 +112,7 @@ public class VariableDelay extends DETransformer {
     public void fire() throws IllegalActionException {
         delay.update();
         _delay = ((DoubleToken)delay.getToken()).doubleValue();
-        
+
         if (input.hasToken(0)) {
             _currentInput = input.get(0);
         } else {
@@ -134,11 +134,11 @@ public class VariableDelay extends DETransformer {
     }
 
     /** Explicitly declare which inputs and outputs are not dependent.
-     *  
+     *
      */
     public void removeDependencies() {
         removeDependency(input, output);
-        removeDependency(delay.getPort(), output);  
+        removeDependency(delay.getPort(), output);
 }
 
     ///////////////////////////////////////////////////////////////////

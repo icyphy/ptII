@@ -98,7 +98,7 @@ public class PrintThreads {
         for (int i = 0; i < threadGroups.length; i++) {
             results.append(threadGroups[i].toString() + "\n");
         }
-        
+
         return results.toString();
     }
 

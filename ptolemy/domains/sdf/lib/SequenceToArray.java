@@ -81,7 +81,7 @@ public class SequenceToArray extends SDFTransformer {
         super(container, name);
 
         input_tokenConsumptionRate.setExpression("arrayLength");
-        
+
         // set the output type to be an ArrayType.
         output.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
@@ -103,7 +103,7 @@ public class SequenceToArray extends SDFTransformer {
      *  to 1.
      */
     public PortParameter arrayLength;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -121,7 +121,7 @@ public class SequenceToArray extends SDFTransformer {
                 throw new IllegalActionException(this,
                         "Invalid arrayLength: " + rate);
             }
-        
+
         } else {
             super.attributeChanged(attribute);
         }

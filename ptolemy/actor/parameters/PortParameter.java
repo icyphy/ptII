@@ -182,7 +182,7 @@ public class PortParameter extends Parameter {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Return the associated port.  Normally, there always is one,
      *  but if setContainer() is called to change the container, then
      *  this might return null. Also, during cloning, there is a

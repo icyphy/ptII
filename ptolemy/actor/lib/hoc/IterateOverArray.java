@@ -178,7 +178,7 @@ public class IterateOverArray extends TypedCompositeActor {
             throw new InternalErrorException(this, ex, null);
         }
     }
-    
+
     /** Override the base class to ensure that the ports of this
      *  actor all have array types.
      *  @return A list of instances of Inequality.
@@ -216,7 +216,7 @@ public class IterateOverArray extends TypedCompositeActor {
             "Cannot place a class definition in an IterateOverArray actor.");
         }
         super._addEntity(entity);
-        
+
         // This needs to be a MoMLChangeRequest so that undo works.
         // Alternatively, we could explicitly create the undo request,
         // but then we would also have to create the redo.
@@ -279,12 +279,12 @@ public class IterateOverArray extends TypedCompositeActor {
                         // Only delete ports whose names don't match the
                         // current entity. This preserves connections to
                         // ports with the same name.
-                        
+
                         // NOTE: then if I add ports to an empty
                         // instance (no inside entity), then these ports
                         // don't go away if I drop in an entity.  Maybe
                         // this is OK?
-                        
+
                         // NOTE: When reading a MoML file (vs. processing
                         // a change request), the ports of the entity have
                         // not been created because the entity has not been
@@ -527,11 +527,11 @@ public class IterateOverArray extends TypedCompositeActor {
      */
     protected void _removePort(final Port port) {
         super._removePort(port);
-        
+
         // NOTE: Do not use MoML here because we do not want to generate
         // undo actions to recreate the inside relation and port.
         // This is because _addPort() will take care of that.
-        
+
         // The cast is safe because all my ports are instances of IOPort.
         Iterator relations = ((IOPort)port).insideRelationList().iterator();
         while (relations.hasNext()) {
@@ -637,7 +637,7 @@ public class IterateOverArray extends TypedCompositeActor {
 
     // Flag indicating that we are executing _addEntity().
     private boolean _inAddEntity = false;
-    
+
     // Variable that reflects the current iteration count on the
     // inside.
     private Variable _iterationCount;

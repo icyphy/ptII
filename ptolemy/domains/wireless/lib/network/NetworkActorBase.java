@@ -44,10 +44,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// NetWorkActorBase
 
-/** 
-This is a base class designed for the Network actors. 
+/**
+This is a base class designed for the Network actors.
 
-Currently, it mainly contains several methods for dealing with timers 
+Currently, it mainly contains several methods for dealing with timers
 that are widely used in the OMNET c++ classes.
 
 
@@ -72,8 +72,8 @@ public class NetworkActorBase extends TypedAtomicActor {
     public NetworkActorBase(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-    }    
-    
+    }
+
     /** Initialize the <i>_timersSet<i> variable.
      *  @exception IllegalActionException If thrown by the base class.
      */
@@ -100,12 +100,12 @@ public class NetworkActorBase extends TypedAtomicActor {
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////        
+    ////                         protected methods                 ////
     /** Check whether this has a <i>id<i> attribute. If yes, return
      *  the value of it; if no, return the default value 0.
      *  @return return the value of the <i>id<i> attribute of 0 if no
      *  such an attribute.
-     *  
+     *
      * FIXME: why use 0 as the default id? some node may use 0 as its id...
      * FIXME: when this method is used?
      */
@@ -123,28 +123,28 @@ public class NetworkActorBase extends TypedAtomicActor {
         return id;
     }
 
-    /** Construct a timer object with the specified <i>kink<i> and 
+    /** Construct a timer object with the specified <i>kink<i> and
      *  <i>expirationTime<i> and add the timer to the timers set.
      *  @return return the created timer to the caller method
      *  (make it easy for it to cancel the timer).
-     *  @exception IllegalActionException If thrown by 
+     *  @exception IllegalActionException If thrown by
      *  getDirector().fireAt().
      */
-    protected Timer setTimer(int kind, double expirationTime) 
+    protected Timer setTimer(int kind, double expirationTime)
             throws IllegalActionException {
 
 	    Timer timer=new Timer();
-	    timer.kind=kind;	
+	    timer.kind=kind;
 	    timer.expirationTime=expirationTime;
 	    // put all timers of this object into a queue
 	    _timersSet.add(timer);
 	    getDirector().fireAt(this, expirationTime);
 	    return timer;
     }
-  
+
     /** Remove the timer that matches with the <i>timerToCancel<i> argument
      *  from the timers set. If no match is found, do nothing.
-     */ 
+     */
     protected void cancelTimer(Timer timerToCancel)
             throws IllegalActionException {
         Iterator timers = _timersSet.iterator();
@@ -159,14 +159,14 @@ public class NetworkActorBase extends TypedAtomicActor {
     }
 
     /** Get the timer with expiration time that matches the current time.
-     *  Remove the timer from the timers set and return the <i>kind<i> 
+     *  Remove the timer from the timers set and return the <i>kind<i>
      *  parameter of the timer to the caller method. If there are multiple
-     *  timers with expiration time matching the current time, return the 
-     *  first one from the iterator list. 
+     *  timers with expiration time matching the current time, return the
+     *  first one from the iterator list.
      *  @return return the i>kind<i> parameter of the timeout timer.
-     *  @exception IllegalActionException If thrown by 
+     *  @exception IllegalActionException If thrown by
      *  getDirector().getCurrentTime().
-     */ 
+     */
     protected int whoTimeout()
             throws IllegalActionException {
 	// find the 1st timer expired
@@ -176,7 +176,7 @@ public class NetworkActorBase extends TypedAtomicActor {
 	        if (timer.expirationTime==getDirector().getCurrentTime())
 		    {
 		        // remove it from the set no matter that
-		        // it will be processed or ignored 
+		        // it will be processed or ignored
 		        timers.remove();
 		        return timer.kind;
 		    }
@@ -188,11 +188,11 @@ public class NetworkActorBase extends TypedAtomicActor {
     ////                         protected variables                 ////
     // The set for the timers to be processed when they are expried.
     protected HashSet _timersSet;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
     protected class Timer {
-  
+
 	    public int kind;
         public double expirationTime;
     }

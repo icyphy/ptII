@@ -139,7 +139,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements HasP
             }
         }
     }
-    
+
     /** Remove comparisons between equal objects in the given method.
      */
     public static boolean eliminateNamedObjComparisons(SootMethod method,
@@ -172,7 +172,7 @@ public class NamedObjEqualityEliminator extends SceneTransformer implements HasP
                     if (left.getType() instanceof NullType) {
                         leftObject = null;
                     } else if (left.getType() instanceof RefType) {
-                       RefType leftType = (RefType)left.getType(); 
+                       RefType leftType = (RefType)left.getType();
                        SootClass leftClass = leftType.getSootClass();
                        if (SootUtilities.derivesFrom(leftClass,
                                    PtolemyUtilities.namedObjClass)) {

@@ -42,7 +42,7 @@ import x10.Command;
 //// Listener
 /** Monitor the X10 network for any and all commands and output a string
  *  description of the command.
- * 
+ *
  *  @author Colin Cochran (contributor: Edward A. Lee)
  *  @version $Id$
  */
@@ -61,21 +61,21 @@ public class Listener extends Receiver {
 			throws NameDuplicationException, IllegalActionException  {
 		super(container, name);
 
-		// Create output port.    
+		// Create output port.
 		receivedCommand = new TypedIOPort(this, "receivedCommand", false, true);
 		receivedCommand.setTypeEquals(BaseType.STRING);
 	}
-	
+
 	///////////////////////////////////////////////////////////////////
 	////                     ports and parameters                  ////
-    
+
 	/** Port on which to output the command received as a string.
 	 */
 	public TypedIOPort receivedCommand;
 
 	///////////////////////////////////////////////////////////////////
 	////                         public methods                    ////
-    
+
     /** Output any received command as a string. If no command has been
      *  received, then output an empty string. If there are additional
      *  commands pending, then request another firing at the current
@@ -85,8 +85,8 @@ public class Listener extends Receiver {
 	 */
 	public void fire() throws IllegalActionException {
 		super.fire();
-        
-        // Check whether a command is ready. 
+
+        // Check whether a command is ready.
         if (_commandReady()) {
             Command command = _getCommand();
             receivedCommand.send(0, new StringToken(_commandToString(command)));
@@ -94,7 +94,7 @@ public class Listener extends Receiver {
             receivedCommand.send(0, _EMPTY_STRING);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 

@@ -46,13 +46,13 @@ import x10.UnitListener;
 
 //////////////////////////////////////////////////////////////////////////
 //// Receiver
-/** 
+/**
  * Listen for X10 commands propagating through an X10 network. When a
  * command is detected, this actor requests a firing by calling
  * fireAtCurrentTime() on its director. Alternatively, it can be
  * triggered via the trigger port, or fired by the scheduler when
  * it chooses.
- * 
+ *
  * @author Colin Cochran and Edward A. Lee
  * @version $Id$
  */
@@ -70,10 +70,10 @@ public class Receiver extends X10Interface {
     public Receiver(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        
+
         trigger = new TypedIOPort(this, "trigger", true, false);
         trigger.setMultiport(true);
-        
+
         blocking = new Parameter(this, "blocking");
         blocking.setTypeEquals(BaseType.BOOLEAN);
         blocking.setToken(BooleanToken.FALSE);
@@ -166,7 +166,7 @@ public class Receiver extends X10Interface {
     }
 
 	/** Begin listening for X10 commands.
-     *  @exception IllegalActionException If the super class throws it. 
+     *  @exception IllegalActionException If the super class throws it.
      */
 	public void initialize() throws IllegalActionException {
 		super.initialize();
@@ -174,7 +174,7 @@ public class Receiver extends X10Interface {
         _stopFireRequested = false;
         _fireAtCurrentTimeCalled = false;
 	}
-    
+
     /** Override the base class to stop waiting for input data.
      */
     public synchronized void stop() {
@@ -190,7 +190,7 @@ public class Receiver extends X10Interface {
         notifyAll();
     }
     /** Remove the <i>UnitListener</i> from the x10 interface.
-     *  @exception IllegalActionException If the super class throws it. 
+     *  @exception IllegalActionException If the super class throws it.
      */
     public void wrapup() throws IllegalActionException {
         super.wrapup();
@@ -198,21 +198,21 @@ public class Receiver extends X10Interface {
             _interface.removeUnitListener(_listener);
         }
     }
-    
+
 	///////////////////////////////////////////////////////////////////
 	////                         protected methods                 ////
-    
+
     /** Remove and then return the first command from the command queue.
      *  @return The first command in the command queue, or null if there
-     *   is none. 
+     *   is none.
      */
     protected Command _getCommand () {
         synchronized (_commandQueue) {
-            return (Command) _commandQueue.removeFirst();   
-        }       
+            return (Command) _commandQueue.removeFirst();
+        }
     }
-    
-    /** Return true if the </i>commandQueue<i> is not empty; return false 
+
+    /** Return true if the </i>commandQueue<i> is not empty; return false
      *  otherwise.
      *  @return True if there is a command in the command queue.
      */
@@ -225,13 +225,13 @@ public class Receiver extends X10Interface {
             }
         }
     }
-    
+
     /** Return a string description of the command.
      *  @return A string description of the command.
      */
     protected static String _commandToString(Command command) {
-        byte function = command.getFunctionByte(); 
-        
+        byte function = command.getFunctionByte();
+
         String functionString = "UNRECOGNIZED_COMMAND";
 
         if (function == x10.Command.ALL_LIGHTS_OFF) {
@@ -249,49 +249,49 @@ public class Receiver extends X10Interface {
         } else if (function == x10.Command.ON) {
             functionString = "ON";
         }
-        
-        String commandString = "<" + command.getHouseCode() 
-                + command.getUnitCode() + "-" + functionString + "-" 
+
+        String commandString = "<" + command.getHouseCode()
+                + command.getUnitCode() + "-" + functionString + "-"
                 + command.getLevel() + ">";
-        
+
         return commandString;
     }
-	
+
 	///////////////////////////////////////////////////////////////////
 	////                       private variables                   ////
-	
-	/** This is a linked list that stores any and all received commands from 
-     *  a registered </i>CommandListener<i>. 
+
+	/** This is a linked list that stores any and all received commands from
+     *  a registered </i>CommandListener<i>.
 	 */
     private LinkedList _commandQueue = new LinkedList();
-    
+
     /** Indicator that fireAtCurrentTime() has been called and not yet
      *  serviced.
      */
     private boolean _fireAtCurrentTimeCalled = false;
-    
-	/** This is the </i>UnitListener<i> that will be listening for commands 
+
+	/** This is the </i>UnitListener<i> that will be listening for commands
      *  from the x10 network
 	 */
     private CommandListener _listener = new CommandListener();
-    
+
     // Indicator that stopFire() has been called.
     private boolean _stopFireRequested = false;
 
     ///////////////////////////////////////////////////////////////////
     ////                        private inner class                ////
-    
-   /** This is an implementation of the <i>UnitListener</i> interface. One 
+
+   /** This is an implementation of the <i>UnitListener</i> interface. One
     *  callback function exists for each instruction. Refer to the x10 API
     *  for additional information concerning the <i>UntiListener</i> class:
-    *  <a href="http://x10.homelinux.org/docs/"> 
+    *  <a href="http://x10.homelinux.org/docs/">
     *  http://x10.homelinux.org/docs/</a>
     */
     private class CommandListener implements UnitListener {
 
         ///////////////////////////////////////////////////////////////////
         ///                       public methods                       ////
-        
+
         public void allLightsOff(UnitEvent event) {
             _appendCommand(event);
         }
@@ -311,12 +311,12 @@ public class Receiver extends X10Interface {
             _appendCommand(event);
         }
         public void unitOn(UnitEvent event) {
-            _appendCommand(event); 
-        }          
-        
+            _appendCommand(event);
+        }
+
         ///////////////////////////////////////////////////////////////////
         ///                       private methods                      ////
-    
+
        /** Append a received command onto the </i>commandQueue<i>.
          * @return void
          */
@@ -339,6 +339,6 @@ public class Receiver extends X10Interface {
             synchronized (Receiver.this) {
                 Receiver.this.notifyAll();
             }
-        }    
+        }
     }
 }

@@ -133,7 +133,7 @@ public class CalInterpreter extends TypedAtomicActor {
         if (attribute == calCode) {
             String s = calCode.getExpression();
             Actor actor;
-            try { 
+            try {
                 actor = _stringToActor(s);
             } catch (Throwable ex) {
                 // FIXME: It would be nice if _stringToActor threw
@@ -143,7 +143,7 @@ public class CalInterpreter extends TypedAtomicActor {
                         + "This sometimes occurs if saxon7.jar is not in "
                         + "your classpath.");
             }
-            try {       
+            try {
                 if (actor != null) {
                     _setupActor(actor);
                 }
@@ -383,7 +383,7 @@ public class CalInterpreter extends TypedAtomicActor {
                 + "</svg>\n");
     }
 
-    private Environment _extendEnvWithImports(Import[] imports) 
+    private Environment _extendEnvWithImports(Import[] imports)
             throws IllegalActionException {
         Environment lastEnv = _globalEnv;
 

@@ -68,7 +68,7 @@ Ptolemy token types.
 @since Ptolemy II 2.0
 */
 
-public class TokenInstanceofEliminator extends BodyTransformer 
+public class TokenInstanceofEliminator extends BodyTransformer
     implements HasPhaseOptions {
     private static TokenInstanceofEliminator instance =
     new TokenInstanceofEliminator();
@@ -158,7 +158,7 @@ public class TokenInstanceofEliminator extends BodyTransformer
                     if (debug) System.out.println("opType = " + opType);
                     CastAndInstanceofEliminator.replaceCast(box, hierarchy,
                             castType, op, opType, debug);
-                    
+
                 } else if (value instanceof InstanceOfExpr) {
                     // If the operand of the expression is
                     // declared to be of a type that implies

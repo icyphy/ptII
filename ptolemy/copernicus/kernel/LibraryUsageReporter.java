@@ -86,14 +86,14 @@ public class LibraryUsageReporter extends SceneTransformer
                 + phaseName + ", " + options + ")");
         Scene.v().releaseCallGraph();
         CallGraph callGraph = Scene.v().getCallGraph();
-        ReachableMethods reachableMethods = new ReachableMethods(callGraph, 
+        ReachableMethods reachableMethods = new ReachableMethods(callGraph,
                 EntryPoints.v().application());
 
         reachableMethods.update();
         Hierarchy hierarchy = Scene.v().getActiveHierarchy();
-        
+
         final Set createableClasses = new HashSet();
-        for (Iterator reachables = reachableMethods.listener(); 
+        for (Iterator reachables = reachableMethods.listener();
              reachables.hasNext();) {
             SootMethod method = (SootMethod)reachables.next();
             String methodName = method.getSignature();
@@ -114,17 +114,17 @@ public class LibraryUsageReporter extends SceneTransformer
                 new EdgePredicate() {
                     public boolean want(Edge e) {
                         SootMethod target = e.tgt();
-                        return e.isExplicit() && (target.isStatic() || 
+                        return e.isExplicit() && (target.isStatic() ||
                             createableClasses.contains(
                                     target.getDeclaringClass()));
                     }
                 });
         Set necessaryClasses = new HashSet();
-        ReachableMethods RTAReachableMethods = new ReachableMethods(callGraph, 
+        ReachableMethods RTAReachableMethods = new ReachableMethods(callGraph,
                 EntryPoints.v().application().iterator(), filter);
         RTAReachableMethods.update();
         List list = new LinkedList();
-        for (Iterator reachables = RTAReachableMethods.listener(); 
+        for (Iterator reachables = RTAReachableMethods.listener();
              reachables.hasNext();) {
             SootMethod method = (SootMethod)reachables.next();
             String methodName = method.getSignature();
@@ -134,7 +134,7 @@ public class LibraryUsageReporter extends SceneTransformer
                 necessaryClasses.add(declaringClass);
             }
             if (method.isConcrete())
-            for (Iterator units = 
+            for (Iterator units =
                      method.retrieveActiveBody().getUnits().iterator();
                  units.hasNext();) {
                 Unit unit = (Unit)units.next();
@@ -146,32 +146,32 @@ public class LibraryUsageReporter extends SceneTransformer
                         CastExpr expr = (CastExpr)value;
                         Type castType = expr.getCastType();
                         if (castType instanceof RefType) {
-                            SootClass castClass = 
+                            SootClass castClass =
                                 ((RefType)castType).getSootClass();
                             necessaryClasses.addAll(
                                     hierarchy.getSuperclassesOfIncluding(
                                             castClass));
-                            _addAllInterfaces(necessaryClasses, 
+                            _addAllInterfaces(necessaryClasses,
                                     castClass);
                          }
                     } else if (value instanceof InstanceOfExpr) {
                         InstanceOfExpr expr = (InstanceOfExpr)value;
                         Type checkType = expr.getCheckType();
                         if (checkType instanceof RefType) {
-                            SootClass checkClass = 
+                            SootClass checkClass =
                                 ((RefType)checkType).getSootClass();
                             if (!checkClass.isInterface()) {
                                 necessaryClasses.addAll(
                                         hierarchy.getSuperclassesOfIncluding(
                                                 checkClass));
                             }
-                            _addAllInterfaces(necessaryClasses, 
+                            _addAllInterfaces(necessaryClasses,
                                     checkClass);
-                        }  
+                        }
                     }
                 }
             }
-                    
+
         }
 
         // Print out all the used methods
@@ -179,10 +179,10 @@ public class LibraryUsageReporter extends SceneTransformer
         for (Iterator names = list.iterator(); names.hasNext();) {
             System.out.println(names.next());
         }
-        
+
         try {
             // Add to the set of necessary classes all that they depend on.
-            DependedClasses dependedClasses = 
+            DependedClasses dependedClasses =
                 new DependedClasses(necessaryClasses);
             FileWriter writer = new FileWriter(outFile);
             for (Iterator classes = dependedClasses.list().iterator();

@@ -185,7 +185,7 @@ public class RemoveGraphicalClasses implements MoMLFilter {
                 "ptolemy.kernel.util.Attribute");
         _graphicalClasses.put("ptolemy.vergil.fsm.modal.ModalTableauFactory",
                 "ptolemy.kernel.util.Attribute");
-        
+
         // 4/04 BooleanSwitch uses EditorIcon
         _graphicalClasses.put(
                 "ptolemy.vergil.icon.EditorIcon",

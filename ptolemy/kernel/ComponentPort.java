@@ -478,7 +478,7 @@ public class ComponentPort extends Port {
     public void link(Relation relation) throws IllegalActionException {
         if (relation != null) {
             _checkLink(relation);
-        } 
+        }
         _doLink(relation);
     }
 
@@ -661,7 +661,7 @@ public class ComponentPort extends Port {
             }
             // Check that the container is not a class or that
             // if it is, that this is an inside link.
-            if (container.isClassDefinition() 
+            if (container.isClassDefinition()
                     && container != relation.getContainer()) {
                 throw new IllegalActionException(this, relation,
                         "Cannot establish a link to a port contained " +

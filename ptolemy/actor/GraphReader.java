@@ -73,7 +73,7 @@ public class GraphReader {
      *  for assigning node and edge weights can be changed in
      *  specialized graph reader classes by overriding the
      *  {@link ptolemy.actor.GraphReader#_computeNodeWeight(Actor)} and
-     *  {@link ptolemy.actor.GraphReader#_computeEdgeWeight(IOPort sourcePort, 
+     *  {@link ptolemy.actor.GraphReader#_computeEdgeWeight(IOPort sourcePort,
      *  IOPort sinkPort)}
      *  methods.
      *  This method will convert low level CompositeActor as a node.
@@ -83,7 +83,7 @@ public class GraphReader {
      *  composite actor contains an entry that is not an AtomicActor.
      */
     public Graph convert(CompositeActor compositeActor) {
-        
+
         // Instantiate an empty graph.
         Graph graph = _initializeGraph(compositeActor);
 
@@ -91,7 +91,7 @@ public class GraphReader {
         Iterator actors = compositeActor.deepEntityList().iterator();
         while (actors.hasNext()) {
             Object entity = actors.next();
-            if (entity instanceof AtomicActor || 
+            if (entity instanceof AtomicActor ||
                     entity instanceof CompositeActor) {
                 Actor actor = (Actor)entity;
                 Node newNode = graph.addNodeWeight(_computeNodeWeight(actor));
@@ -122,7 +122,7 @@ public class GraphReader {
                         if (_debug) System.out.println("Adding edge from "
                                 + source + " to " + sink);
 
-                        Edge newEdge = 
+                        Edge newEdge =
                                 graph.addEdge((Node)(_actorMap.get(source)),
                                 (Node)(_actorMap.get(sink)),
                                 _computeEdgeWeight(outPort, inPort));
@@ -189,7 +189,7 @@ public class GraphReader {
      *  @param edge The new edge.
      *  @param sourcePort The source port of the connection in the model.
      *  @param sinkPort The sink port of the connection.
-     */ 
+     */
     protected void _processNewEdge(Graph graph, Edge edge, IOPort sourcePort,
             IOPort sinkPort) {
         return;
@@ -200,8 +200,8 @@ public class GraphReader {
      *  aspects that operate at the level of individual nodes.
      *  @param graph The graph that contains the new node.
      *  @param node The new node.
-     *  @param actor The actor that corresponds to the new node. 
-     */ 
+     *  @param actor The actor that corresponds to the new node.
+     */
     protected void _processNewNode(Graph graph, Node node, Actor actor) {
         return;
     }
@@ -213,20 +213,20 @@ public class GraphReader {
      *  edges).
      *  @param graph the graph.
      */
-    protected void _transformTopology(Graph graph) {        
+    protected void _transformTopology(Graph graph) {
         if (_debug) {
             System.out.println("A dump of the graph before global "
                     + "transformation:\n" + graph.toString() + "\n");
         }
-        
-        //write transform strategy here.        
-        
+
+        //write transform strategy here.
+
         if (_debug) {
             System.out.println("A dump of the graph after global "
                     + "transformation:\n" + graph.toString() + "\n");
         }
     }
-    
+
     /** Set debug mode and let the class display conversion information.
      * @param debug True will turn on debug mode, false will turn off debug
      * mode.
@@ -234,7 +234,7 @@ public class GraphReader {
     protected void _setDebug(boolean  debug) {
         _debug = debug;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

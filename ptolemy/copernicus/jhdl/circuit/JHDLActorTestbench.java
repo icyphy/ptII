@@ -48,19 +48,19 @@ import soot.*;
 import soot.jimple.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
  * A testbench for a generated JHDL circuit. Creates the top-level
- * wires for the circuit under test. 
- * 
+ * wires for the circuit under test.
+ *
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0
 */
 
 public class JHDLActorTestbench extends JHDLCompositeActor {
-    
-    public JHDLActorTestbench(ComponentEntity e) 
+
+    public JHDLActorTestbench(ComponentEntity e)
 	throws IllegalActionException, NameDuplicationException {
 	super();
 	setName("testbench");
@@ -93,5 +93,5 @@ public class JHDLActorTestbench extends JHDLCompositeActor {
 
     // Actual JHDL testbench
     protected Logic _testbench;
-    
+
 }

@@ -174,7 +174,7 @@ public class ExternalIOPortController extends AttributeController {
         }
         return false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 

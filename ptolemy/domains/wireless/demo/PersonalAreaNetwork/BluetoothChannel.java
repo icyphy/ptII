@@ -47,7 +47,7 @@ import ptolemy.kernel.util.Settable;
 //// BluetoothChannel
 
 /**
-Models a bluetooth communication between nodes.  All powersave and tranmit 
+Models a bluetooth communication between nodes.  All powersave and tranmit
 characteristics of the Bluetooth protocol will be modelled in this channel.
 
 @author TODO: Philip Baldwin
@@ -67,7 +67,7 @@ public class BluetoothChannel extends LimitedRangeChannel {
 	public BluetoothChannel(CompositeEntity container, String name)
 			throws IllegalActionException, NameDuplicationException {
 		super(container, name);
-        
+
 		// Force the type of the defaultProperties to at least include
 		// the range field.
 		String[] labels = {"range"};
@@ -77,7 +77,7 @@ public class BluetoothChannel extends LimitedRangeChannel {
 		defaultProperties.setTypeAtMost(type);
 		defaultProperties.setExpression("{range=Infinity}");
 	}
-    
+
 	///////////////////////////////////////////////////////////////////
 	////                         public methods                    ////
 
@@ -94,12 +94,12 @@ public class BluetoothChannel extends LimitedRangeChannel {
 	public void valueChanged(Settable settable) {
 		_receiversInRangeCacheValid = false;
 	}
-    
+
     public boolean isInBluetoothRange() {
-    	
-    	
+
+
 		return false;
-    	
+
     }
 	///////////////////////////////////////////////////////////////////
 	////                         protected methods                 ////
@@ -146,7 +146,7 @@ public class BluetoothChannel extends LimitedRangeChannel {
 			range = field.doubleValue();
 		}
 		boolean result = (_distanceBetween(source, destination) <= range);
-		
+
         if (result) {
         	double dist = _distanceBetween(source, destination);
         	double incrRange = (dist/range)*100;
@@ -154,8 +154,8 @@ public class BluetoothChannel extends LimitedRangeChannel {
         		 increaseRange = true;
         	}
         }
-        	
-        
+
+
 		// Whether a port is in range depends on the
 		// transmit properties of this sender, so we set up
 		// a listener to be notified of any changes in those
@@ -171,11 +171,11 @@ public class BluetoothChannel extends LimitedRangeChannel {
 
 		return result;
 	}
-	
-	
+
+
 	/////////////////////////////////////////////////////////////////////
 	////// public variable
-	
+
 	public static boolean increaseRange = false;
-	
+
 }

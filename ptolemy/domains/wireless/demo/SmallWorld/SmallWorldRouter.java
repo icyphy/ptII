@@ -69,14 +69,14 @@ nodes are in range and the location of that node. It also assumes that the
 location of the destination is known. Based on this information, it finds the
 node that is closest to the destination from its connected node set.
 <p>
-We assume that the actor are connected to nodes inside a particular range, 
-specified by the <i>sureRange<i> parameter, for sure. Outside this range, 
+We assume that the actor are connected to nodes inside a particular range,
+specified by the <i>sureRange<i> parameter, for sure. Outside this range,
 it may connected to a node with probability propotional to the r-th inverse power
 of the distance between them. Whether it is connected to a particular
 node is independent of whether it is connected to any other node.
 <p>
 For convenience, a variable named "distance" is available and
-equal to the distance between this actor and other actors. The 
+equal to the distance between this actor and other actors. The
 loss probability can be given as an expression that depends
 on this distance.
 <p>
@@ -110,10 +110,10 @@ public class SmallWorldRouter extends TypedAtomicActor {
 
         outputChannelName = new StringParameter(this, "outputChannelName");
         outputChannelName.setExpression("OutputChannel");
-        
+
         testChannelName = new StringParameter(this, "testChannelName");
         testChannelName.setExpression("testChannel");
-        
+
         // Create and configure the ports.
         input = new WirelessIOPort(this, "input", true, false);
         input.outsideChannel.setExpression("$inputChannelName");
@@ -121,17 +121,17 @@ public class SmallWorldRouter extends TypedAtomicActor {
         //TypeAttribute inputPortType = new TypeAttribute(input, "type");
         //inputPortType.setExpression
         //    ("{data=double, destination=String, routeTo=String, hops=int}");
-        
+
         output = new WirelessIOPort(this, "output", false, true);
         output.outsideChannel.setExpression("$outputChannelName");
         //TypeAttribute outputPortType = new TypeAttribute(output, "type");
         //outputPortType.setExpression
         //    ("{data=double, destination=String, routeTo=String, hops=int}");
-        
+
         test = new WirelessIOPort(this, "test", false, true);
         test.outsideChannel.setExpression("$testChannelName");
         test.setTypeEquals(BaseType.INT);
-                    
+
         lossProbability = new Parameter(this, "lossProbability");
         lossProbability.setTypeEquals(BaseType.DOUBLE);
         lossProbability.setExpression("0.0");
@@ -139,30 +139,30 @@ public class SmallWorldRouter extends TypedAtomicActor {
         sureRange = new Parameter(this, "sureRange");
         sureRange.setToken("100.0");
         sureRange.setTypeEquals(BaseType.DOUBLE);
-        
-        output.outsideTransmitProperties.setExpression("{range=Infinity}");        
- 
+
+        output.outsideTransmitProperties.setExpression("{range=Infinity}");
+
         delay = new Parameter(this, "delay", new DoubleToken(1.0));
         delay.setTypeEquals(BaseType.DOUBLE);
-               
+
         seed = new Parameter(this, "seed", new LongToken(0));
         seed.setTypeEquals(BaseType.LONG);
-        
+
         doublePath = new Parameter(this, "doublePath", new LongToken(0));
         doublePath.setToken("false");
         doublePath.setTypeEquals(BaseType.BOOLEAN);
-        
+
         _distance = new Variable(this, "distance");
         _distance.setExpression("Infinity");
-        
+
         // Hide the ports in Vergil.
         new Attribute(output, "_hide");
         new Attribute(input, "_hide");
         new Attribute(test, "_hide");
-        
+
         // Create an icon for this sensor node.
         EditorIcon node_icon = new EditorIcon(this, "_icon");
-        
+
         // The icon has two parts: a circle and an antenna.
         // Create a circle that indicates the signal radius.
         _circle = new EllipseAttribute(node_icon, "_circle");
@@ -178,16 +178,16 @@ public class SmallWorldRouter extends TypedAtomicActor {
         _circle2.height.setToken("20");
         _circle2.fillColor.setToken("{1.0, 1.0, 1.0, 1.0}");
         _circle2.lineColor.setToken("{0.0, 0.5, 0.5, 1.0}");
-        
+
         node_icon.setPersistent(false);
-        
-        // Hide the name of this sensor node. 
-        new Attribute(this, "_hideName");        
+
+        // Hide the name of this sensor node.
+        new Attribute(this, "_hideName");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** The input port for messages to route. It requires the received
      *  token to be a record token has type:
      *  {data=double, destination=String, routeTo=String, hops=int}.
@@ -201,11 +201,11 @@ public class SmallWorldRouter extends TypedAtomicActor {
 
     /** The output port that send a message to connected nodes.
      *  This has type:
-     *  {data=double, destination=String, routeTo=String, hops=int}.    
+     *  {data=double, destination=String, routeTo=String, hops=int}.
      */
     public WirelessIOPort output;
-    
-    /** This port is for analysis uses. When the destination node 
+
+    /** This port is for analysis uses. When the destination node
      *  receives the message, it outputs an int token to indicate
      *  how many hops from the source.
      */
@@ -220,25 +220,25 @@ public class SmallWorldRouter extends TypedAtomicActor {
      *  "testChannel".
      */
     public StringParameter testChannelName;
-    
-    /** The probability that a connection between two node will fail 
+
+    /** The probability that a connection between two node will fail
      *  to happen. This is a double that defaults to 0.0, which means that
      *  no loss occurs.
      * FIXME: get a better name for it.
      */
     public Parameter lossProbability;
-    
+
     /** The for sure connected range between two nodes. This is a double that
      *  defaults to 100.0.  The icon for this sensor node includes
      *  a circle with this as its radius.
      */
     public Parameter sureRange;
-    
+
     /** The time required for relaying a message. This is a double that
-     *  defaults to 1.0.  
+     *  defaults to 1.0.
      */
     public Parameter delay;
-    
+
     /** The seed that controls the random number generation.
      *  A seed of zero is interpreted to mean that no seed is specified,
      *  which means that each execution of the model could result in
@@ -251,35 +251,35 @@ public class SmallWorldRouter extends TypedAtomicActor {
      *  This parameter contains a LongToken, initially with value 0.
      */
     public Parameter seed;
-    
+
     /** If true, then this actor will also route the message to the node that
      *  is the second closest to the destination among all its connected nodes.
      *  FIXME: This is still under experiment. The issue I try to address is that
      *  some links may fail and long links may fail with higher probability. If so,
      *  routing a message to two paths may improve the hit probability. However, this
      *  will also cost more energy and also lower the capacity of the network.
-     *  There is a tradeoff. A simple idea is to use a threshold to control the 
-     *  exponentially increased branches. For example, with a threshold equals 2, 
+     *  There is a tradeoff. A simple idea is to use a threshold to control the
+     *  exponentially increased branches. For example, with a threshold equals 2,
      *  it only route to two pathes for the first hop.
      */
     public Parameter doublePath;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Check whether it is the destination of the massage, if so,
      *  change the color of the icon to red and schedule
      *  another firing after 1.0 time unit to change it back to white.
      *  If not, check whether it is on the short path (hops ==0 means
      *  it detected a signal and would initiate a message). If yes, change
      *  its icon to green, calculate the distance between a node connected
-     *  to it and the destination node, choose the one closest the the 
-     *  destination to be the next node on the short path, and schedule 
-     *  another firing after some delay time to output the message and 
-     *  change its icon back to white.  
+     *  to it and the destination node, choose the one closest the the
+     *  destination to be the next node on the short path, and schedule
+     *  another firing after some delay time to output the message and
+     *  change its icon back to white.
      */
     public void fire() throws IllegalActionException {
-        
+
         if (input.hasToken(0)) {
             RecordToken in = (RecordToken)input.get(0);
             double data = ((DoubleToken)in.get("data")).doubleValue();
@@ -292,7 +292,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                              + "routeTo = " + routeTo + "\n"
                              + "hops = " + hops);
             */
-            
+
             if (getName().equals(destination)) {
                 // Change the color of the icon to red.
                 _circle2.fillColor.setToken("{1.0, 0.0, 0.1, 0.7}");
@@ -302,7 +302,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 Director director = getDirector();
                 double delayTime = ((DoubleToken)delay.getToken()).doubleValue();
                 double time = director.getCurrentTime() + delayTime;
-                director.fireAt(this, time);    
+                director.fireAt(this, time);
             } else if (getName().equals(routeTo) || hops == 0) {
                 // Change the color of the icon to green.
                 _circle2.fillColor.setToken("{0.0, 1.0, 0.0, 1.0}");
@@ -317,7 +317,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                             "Cannot determine location for node "
                             + destNode.getName()
                             + ".");
-                    
+
                 }
                 Iterator nodes = _connectedNodes.iterator();
                 double minDistance = _distanceBetween(destLocation, myLocation);
@@ -334,7 +334,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                                 "Cannot determine location for node "
                                 + node.getName()
                                 + ".");
-                    
+
                     }
                     double d = _distanceBetween(destLocation, location);
                     if (multi) {
@@ -342,7 +342,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                             nextMinDistance = minDistance;
                             to2 = to;
                             minDistance = d;
-                            to = node.getName();    
+                            to = node.getName();
                         } else if (d < nextMinDistance) {
                             nextMinDistance = d;
                             to2 = node.getName();
@@ -351,10 +351,10 @@ public class SmallWorldRouter extends TypedAtomicActor {
                         if (d < minDistance) {
                             minDistance = d;
                             to = node.getName();
-                        }      
+                        }
                     }
                 }
-                
+
                 // Request refiring after a certain amount of time specified
                 // by the <i>delay<i> parameter.
                 Director director = getDirector();
@@ -371,7 +371,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 String[] labels = {"data", "destination", "routeTo", "hops"};
                 RecordToken result = new RecordToken(labels, values);
                 _receptions.put(timeDouble, result);
-            
+
                 director.fireAt(this, time);
                 if (multi) {
                     Token[] values2 = {new DoubleToken(data),
@@ -383,11 +383,11 @@ public class SmallWorldRouter extends TypedAtomicActor {
                     }
                     RecordToken result2 = new RecordToken(labels, values2);
                     _receptions.put(timeDouble, result2);
-            
+
                     director.fireAt(this, time + delayTime);
                 }
                 //output.send(0, result);
-            } 
+            }
         } else {
             if (_receptions != null) {
                 // We may be getting fired because of an impending event.
@@ -406,9 +406,9 @@ public class SmallWorldRouter extends TypedAtomicActor {
                 //Set color back to white.
                 _circle2.fillColor.setToken("{1.0, 1.0, 1.0, 1.0}");
                 //_isRed = false;
-            //}            
+            //}
         }
-    }    
+    }
 
     /** Initialize the random number generator with the seed, if it
      *  has been given.  A seed of zero is interpreted to mean that no
@@ -436,7 +436,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
     }
 
     /** Explicitly declare which inputs and outputs are not dependent.
-     *  
+     *
      */
     public void removeDependencies() {
         super.removeDependency(input, output);
@@ -463,9 +463,9 @@ public class SmallWorldRouter extends TypedAtomicActor {
         return Math.sqrt((p1[0] - p2[0])*(p1[0] - p2[0])
                 + (p1[1] - p2[1])*(p1[1] - p2[1]));
     }
-    
+
     /** Return the list of nodes that can receive from the specified
-     *  port. 
+     *  port.
      *  @param sourcePort The sending port.
      *  @return A list of instances of Entity.
      *  @exception IllegalActionException If a location of a port cannot be
@@ -476,7 +476,7 @@ public class SmallWorldRouter extends TypedAtomicActor {
             throws IllegalActionException {
         List nodesInRangeList = new LinkedList();
         CompositeEntity container = (CompositeEntity) getContainer();
-        Iterator ports = ModelTopology.listeningInputPorts(container, 
+        Iterator ports = ModelTopology.listeningInputPorts(container,
                 outputChannelName.stringValue()).iterator();
         while (ports.hasNext()) {
             WirelessIOPort port = (WirelessIOPort)ports.next();
@@ -496,11 +496,11 @@ public class SmallWorldRouter extends TypedAtomicActor {
             // Make sure a probability of 1.0 is truly a sure loss.
             if (probability < 1.0 && experiment >= probability) {
                 nodesInRangeList.add(port.getContainer());
-            } 
+            }
         }
         return nodesInRangeList;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -513,19 +513,19 @@ public class SmallWorldRouter extends TypedAtomicActor {
     /** A random number generator.
      */
     protected Random _random = new Random();
-    
+
     /** A list of entities that can receive message from this actor.
      */
-    protected LinkedList _connectedNodes = new LinkedList();    
-    
+    protected LinkedList _connectedNodes = new LinkedList();
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables               ////
     /** Icon indicating the communication region. */
     private EllipseAttribute _circle;
-    
+
     /** Icon of this actor. */
     private EllipseAttribute _circle2;
-       
+
     /** Messages received but haven't been relayed out.
      */
     private HashMap _receptions;

@@ -72,10 +72,10 @@ public class VirtualTinyOS extends TypedAtomicActor {
         super(container, name);
         //timer = new TypedIOPort(this, "timer", true, false);
         //toLED = new TypedIOPort(this, "toLED", false, true);
-        
+
         //create the node icon.
         EditorIcon node_icon = new EditorIcon(this, "_icon");
-        
+
         // The icon has two parts: a circle and an antenna.
         // Create a circle that indicates the signal radius.
         _circle = new EllipseAttribute(node_icon, "_circle");
@@ -120,7 +120,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
         _scheduledTime = 0.0;
         //call the native method to initialize the application.
         initMote();
-       
+
     }
 
     /** pass the input to the proper event handler.
@@ -134,14 +134,14 @@ public class VirtualTinyOS extends TypedAtomicActor {
         Director director = getDirector();
         //If there is a timer component, we handel the timer interupt here.
         if (_hasTimer && director.getCurrentTime()>= _scheduledTime) {
-           
+
                if (_debugging) {
                    _debug("Called native method to trigger the time event");
                }
                // signal a timer interupt here to the application.
                triggerTimerEvent();
                _scheduledTime = _scheduledTime + _timerPeriod;
-               director.fireAt(this, _scheduledTime);           
+               director.fireAt(this, _scheduledTime);
         } else if (_hasLed) {
             if (_debugging) {
                 _debug("LED Blinking");
@@ -155,7 +155,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
             // Set color back to blue.
             _circle.fillColor.setToken("{0.0, 0.0, 1.0, 0.05}");
         }
-        
+
     }
 
     // a callback method for the native code. Potentially, the mote code can
@@ -174,16 +174,16 @@ public class VirtualTinyOS extends TypedAtomicActor {
             }
         }
      }
-    
+
     public int triggerTimerEvent() {
          System.out.println("about to call the native method to signal an event");
          int r = signalTimerEvent();
          System.out.println("return from the native method");
          return r;
     }
-    
+
     // A callback method for the application to notify this of the timer settings.
-    // FIXME: should be able to handle muti-timers... 
+    // FIXME: should be able to handle muti-timers...
     public void setupTimer(int period) {
         double currentTime = getDirector().getCurrentTime();
         if (period >=0) {
@@ -198,7 +198,7 @@ public class VirtualTinyOS extends TypedAtomicActor {
             }
         }
     }
-    
+
 
 
 
@@ -207,14 +207,14 @@ public class VirtualTinyOS extends TypedAtomicActor {
 
     private native int signalTimerEvent();
     private native void initMote();
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                ////
     private boolean _hasTimer = false;
     private double _timerPeriod;
     private double _scheduledTime;
     private boolean _hasLed;
-    
+
     /** Icon indicating the led blinking. */
     private EllipseAttribute _circle;
 }

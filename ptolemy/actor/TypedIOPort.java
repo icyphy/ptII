@@ -367,7 +367,7 @@ public class TypedIOPort extends IOPort implements Typeable {
         newObject._constraints = new LinkedList();
         return newObject;
     }
-    
+
     /** Convert the specified token into a token with type equal
      *  to the type returned by getType(). If the token is already
      *  of this type, then simply return the specified token.
@@ -900,7 +900,7 @@ public class TypedIOPort extends IOPort implements Typeable {
     }
 
     /** Check that the specified token is compatible with the
-     *  resolved type of this port.     * 
+     *  resolved type of this port.     *
      *  @param token The token to check.
      *  @throws IllegalActionException If the specified token is
      *   either incomparable to the resolved type or higher in the

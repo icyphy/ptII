@@ -57,7 +57,7 @@ When the <i>trigger</i> equals to the level threshold (within the specified
 <i>errorTolerance</i>), this actor outputs a discrete event with the value as
 <i>defaultEventValue</i> if <i>useEventValue</i> is selected. Otherwise, the actor
 outputs a discrete event with the value as the level threshold.
-This actor controls the integration step size to accurately resolve the time 
+This actor controls the integration step size to accurately resolve the time
 at which the level crossing occurs. So, this actor is only used in Continuous
 Time domain.
 
@@ -317,8 +317,8 @@ public class LevelCrossingDetector extends Transformer
             return true;
         } else {
             // FIXME: if last step is a level, this step may still not be accurate
-            // because of other actors's accuracy requirements. 
-            if (!_enabled) {  
+            // because of other actors's accuracy requirements.
+            if (!_enabled) {
                 // FIXME: The statement below has some questions. Hyzheng 07/25/2003
                 // if last step is a level, always accurate.
                 _enabled = true;

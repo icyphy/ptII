@@ -48,10 +48,10 @@ import soot.*;
 import soot.jimple.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// 
+////
 /**
  * A simple empty JHDL Testbench. Will be modified by JHDLActorTestbench.
- * 
+ *
 @author Mike Wirthlin
 @version $Id$
 @since Ptolemy II 2.0

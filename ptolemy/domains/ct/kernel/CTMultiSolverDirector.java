@@ -339,7 +339,7 @@ public class CTMultiSolverDirector extends CTDirector {
             if (getBreakPoints().contains(new Double(getCurrentTime()))) {
                 hasDiscreteEvents = true;
             }
-            return hasDiscreteEvents;        
+            return hasDiscreteEvents;
         } catch (IllegalActionException ex) {
             throw new InternalErrorException (
                     "Can not get a valid schedule: " +
@@ -467,9 +467,9 @@ public class CTMultiSolverDirector extends CTDirector {
     protected void _discretePhaseExecution() throws IllegalActionException {
         if (_debugging) _debug(getName(), ": discrete phase execution at "
                 + getCurrentTime());
-        
+
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
-        
+
         // Execute all discrete actors in their topological order only
         // if there are events happening.
         if (hasCurrentEvent()) {
@@ -493,7 +493,7 @@ public class CTMultiSolverDirector extends CTDirector {
                 // result in blank lines in the displays, indicating
                 // absent inputs. EAL 12/31/02.
                 // FIXME: CTCompositeActor imiplements CTEventGenerator
-                // interface. It may consume events and generate more 
+                // interface. It may consume events and generate more
                 // events.
                 if (actor instanceof CTEventGenerator
                         && !((CTEventGenerator)actor).hasCurrentEvent()
