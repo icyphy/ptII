@@ -59,7 +59,7 @@ public class SchedulePlotter implements ScheduleListener {
 
     /** Create a schedule listener that displays the schedule in
         a plot window.
-     */
+    */
     public SchedulePlotter() {
 	_taskMap = new HashMap();
 	_taskState = new ArrayList();
