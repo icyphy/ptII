@@ -1,0 +1,27 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ModelID" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="4.1">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds = {104, 125, 815, 518}, maximized = false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 200.0}">
+    </property>
+    <property name="ModelID" class="ptolemy.vergil.kernel.attributes.IDAttribute">
+        <property name="created" class="ptolemy.kernel.util.StringAttribute" value="Jul 23, 2004 8:21:32 PM">
+        </property>
+        <property name="lastUpdated" class="ptolemy.kernel.util.StringAttribute" value="Jul 23, 2004 10:10:09 PM">
+        </property>
+        <property name="author" class="ptolemy.kernel.util.StringAttribute" value="hyzheng">
+        </property>
+        <property name="contributors" class="ptolemy.kernel.util.StringAttribute" value="Haiyang Zheng">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 110.0]">
+        </property>
+    </property>
+</entity>

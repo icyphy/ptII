@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Vergil attributes demos 
+# Makefile for Ptolemy II ModelID
 #
 # @Version: $Id$
 # @Author: Christopher Hylands Brooks (makefile only)
@@ -28,46 +28,59 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/vergil/kernel/attributes/demo
+ME =		ptolemy/vergil/kernel/attributes/demo/ModelID
 
 # Keep these alphabetical please.
-DIRS = 		AnimateVergil ModelID Viewgraph
+DIRS =
 
 # Root of Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	demo
-PTCLASSJAR =
+PTPACKAGE = 	ModelID
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-	AnimateVergil/AnimateVergil.jar \
-	ModelID/ModelID.jar \
-	Viewgraph/Viewgraph.jar
+JSRCS =
 
+OTHER_FILES_TO_BE_JARED = \
+	ModelID.xml
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+EXTRA_SRCS = \
+	$(JSRCS) \
+	$(OTHER_FILES_TO_BE_JARED)
+
+#	Viewgraph.htm
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = 	$(DIRS)
+MISC_FILES =
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	doc
+OPTIONAL_FILES =
 
+JCLASS = $(JSRCS:%.java=%.class)
+
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
-install: jclass jars
+install: all jars
 
-demo: subdemo
+demo: demo_ptolemy demo_vergil
+#demo_applet: $(PTCLASSJAR)
+#	CLASSPATH=$(CLASSPATH) appletviewer ModelID.htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" ModelID.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" ModelID.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

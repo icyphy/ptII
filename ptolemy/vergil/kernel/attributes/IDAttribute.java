@@ -51,10 +51,12 @@ import ptolemy.vergil.icon.BoxedValuesIcon;
 //// IDAttribute
 /**
    This attribute identifies the containing model, showing its name, base
-   class, last modified date, and author information. Of these, only the
-   author information is editable.  For the others, they are inferred
-   from the model.  Unfortunately, if they change, the display will
-   not be updated, however, until the model is re-opened.
+   class, last modified date, author, and contributors information. 
+   Of these, only the contributors information is editable.  
+   For the others, they are inferred from either the model itself or the 
+   operations on the model.  
+   Unfortunately, the changes will not be shown on the display until the 
+   model is saved, closed and re-opened.
    <p>
    @author Edward A. Lee
    @version $Id$
@@ -79,6 +81,7 @@ public class IDAttribute extends SingletonAttribute {
      */
     public IDAttribute(Entity container, String name)
             throws IllegalActionException, NameDuplicationException {
+
         super(container, name);
 
         // name for the model
@@ -92,6 +95,8 @@ public class IDAttribute extends SingletonAttribute {
 
         // FIXME: Need to listen for changes to the name.
         // How to do that?
+        // The current design is also a solution in that the name of this
+        // attribute and model must be consistent with the name of the file. 
 
         boolean isClass = false;
         if (container instanceof InstantiableNamedObj) {
@@ -117,18 +122,32 @@ public class IDAttribute extends SingletonAttribute {
             definedIn.setVisibility(Settable.NOT_EDITABLE);
         }
 
+        // The date when this model is created.
+        // Actually, it is the date when this attribute is created.
+        // We assume that when the model is created, this attribute
+        // is also created. 
+        // We may force this to happen.:-) Further more, we may force
+        // that only the top level contains an model ID.
         created = new StringAttribute(this, "created");
         created.setExpression(
             DateFormat.getDateTimeInstance().format(new Date()));
         created.setVisibility(Settable.NOT_EDITABLE);
         created.setPersistent(true);
 
+        // The date when this model is modified.
+        // Everytime the model gets modified, the updateContent method
+        // defined below is called and the lastUpdated attribute gets
+        // updated.
         lastUpdated = new StringAttribute(this, "lastUpdated");
         _updateDate();
         lastUpdated.setVisibility(Settable.NOT_EDITABLE);
         lastUpdated.setPersistent(true);
 
+        // The name of the author who creates the model.
+        // This attribute can not be changed so that the 
+        // intellectual property (IP) is preserved.  
         author = new StringAttribute(this, "author");
+        author.setVisibility(Settable.NOT_EDITABLE);
         String userName = null;
         try {
             userName = StringUtilities.getProperty("user.name");
@@ -142,7 +161,13 @@ public class IDAttribute extends SingletonAttribute {
         }
         author.setPersistent(true);
 
-        // Hide the name.
+        // The names of the contributors who modify the model.
+        contributors = new StringAttribute(this, "contributors");
+        String contributorsNames = "";
+        contributors.setExpression(contributorsNames);
+        author.setPersistent(true);
+
+        // Hide the name of this ID attribute.
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
@@ -155,8 +180,11 @@ public class IDAttribute extends SingletonAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         attributes                        ////
 
-    /** The author of the class. */
+    /** The author of the model. */
     public StringAttribute author;
+
+    /** The contributors of the model. */
+    public StringAttribute contributors;
 
     /** The date that this model was created. */
     public StringAttribute created;
@@ -203,6 +231,7 @@ public class IDAttribute extends SingletonAttribute {
     /** Update the modification date of this attribute. 
      */
     public void updateContent() throws InternalErrorException {
+        super.updateContent();
         _updateDate();
     }
 
