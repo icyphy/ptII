@@ -146,26 +146,6 @@ public class SDFReceiver extends AbstractReceiver {
         }
     }
 
-    /** Remove the first tokens (the oldest ones) from the receiver and
-     *  fill the array with them.
-     *  If there are not enough tokens in the receiver, throw an exception
-     *  and remove none of the tokens from the receiver.
-     *
-     *  @deprecated Use Token[] getArray(int) instead.
-     *  @exception NoTokenException If there is no token in the receiver.
-     */
-    public void getArray(Token t[]) {
-        try {
-            _queue.takeArray(t);
-            return;
-        } catch (NoSuchElementException ex) {
-            throw new NoTokenException(getContainer(),
-                    "Count " + t.length + " out of range with " + _queue.size()
-                    + " tokens in the receiver and " + _queue.historySize()
-                    + " in history.");
-        }
-    }
-
     /** Get an array of tokens from this receiver. The parameter
      *  specifies the number of valid tokens to get in the returned
      *  array. The length of the returned array will be at least euqal to
@@ -285,21 +265,6 @@ public class SDFReceiver extends AbstractReceiver {
      */
     public void put(Token token) {
         if (!_queue.put(token)) {
-            throw new NoRoomException(getContainer(),
-                    "Queue is at capacity. Cannot put a token.");
-        }
-    }
-
-    /** Put an array of tokens in the receiver.
-     *  If the receiver has insufficient room, throw an
-     *  exception, and add none of the tokens to the receiver.
-     *
-     *  @deprecated Use void putArray(token[], int) instead.
-     *  @param token The token to be put to the receiver.
-     *  @exception NoRoomException If the receiver is full.
-     */
-    public void putArray(Token token[]) {
-        if (!_queue.putArray(token)) {
             throw new NoRoomException(getContainer(),
                     "Queue is at capacity. Cannot put a token.");
         }
