@@ -612,7 +612,8 @@ codeblock:
 					    savelineref();
 					  codeMode = 1;
 					}
-		BODY	 		{ codeBlocks[numBlocks++]=$8;
+		BODY	 		{ 
+					  codeBlocks[numBlocks++]=$8;
 					  codeMode = 0;
 					}
 ;
@@ -1851,6 +1852,13 @@ void genDef ()
 /* include files */
 	//fprintf (fp, "#include \"%s.h\"\n", fullClass);
 	fprintf (fp, "package ptolemy.domains.sdf.cgc;\n\n");
+	fprintf (fp, "import ptolemy.actor.TypedAtomicActor;\n");
+	fprintf (fp, "import ptolemy.actor.TypedIOPort;\n");
+	fprintf (fp, "import ptolemy.data.type.BaseType;\n");
+	fprintf (fp, "import ptolemy.kernel.CompositeEntity;\n");
+	fprintf (fp, "import ptolemy.kernel.util.IllegalActionException;\n");
+	fprintf (fp, "import ptolemy.kernel.util.NameDuplicationException;\n");
+	fprintf (fp, "\n");
 	fprintf (fp, "//////////////////////////////////////////////////////////////////////////\n");
 	fprintf (fp, "//// %s\n", fullClass);
 	fprintf (fp, "/**\n");
@@ -1914,7 +1922,7 @@ void genDef ()
 	//	fullClass, fullClass);
 	//fprintf (fp, "\nISA_FUNC(%s,%s);\n",fullClass,baseClass);
 
-	fprintf(fp, "public class %s extends TypedAtomicActor {\n");
+	fprintf(fp, "public class %s extends TypedAtomicActor {\n", fullClass);
 	fprintf(fp, "    /** Construct an actor in the specified container with the specified\n");
 	fprintf(fp, "     *  name.\n");
 	fprintf(fp, "     *  @param container The container.\n");
@@ -2038,6 +2046,7 @@ void genDef ()
 	//		"static RegisterBlock registerBlock(proto,\"%s\");\n",
 	//		objName );
 	//}
+	fprintf (fp, "}\n");  
 	(void) fclose(fp);
     }  /* htmlOnly */
 
