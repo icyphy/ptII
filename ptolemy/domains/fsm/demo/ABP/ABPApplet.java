@@ -38,7 +38,6 @@ import ptolemy.domains.de.lib.*;
 import ptolemy.domains.fsm.kernel.*;
 import ptolemy.domains.fsm.lib.*;
 import ptolemy.data.expr.Variable;
-import ptolemy.domains.fsm.kernel.util.VariableList;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
