@@ -178,20 +178,17 @@ public class ODFActor extends AtomicActor {
 	return highPriorityTriple;
     }
    
-    /** Return the earliest possible time stamp of the next token to be
-     *  processed or produced by this actor. The next time is equal to the 
-     *  oldest (smallest valued) rcvrTime of all receivers contained by 
-     *  this actor. 
-     * @return The next earliest possible time stamp to be produced by 
-     *  this actor.
-     * @see TimedQueueReceiver
+    /** Return a non-NullToken from the receiver which has the minimum
+     *  rcvrTime.
+     *  FIXME: Add thorough comments.
      */
-    public double getNextTime() {
-        if( _rcvrTimeList.size() == 0 ) {
-            return _currentTime;
+    public Token getNextToken() {
+        Token token = getNextInput(); 
+        if( token instanceof NullToken ) {
+            sendOutNullTokens();
+            return getNextInput();
         }
-        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
-        return triple.getTime();
+        return token;
     }
     
     /** Return a token from the receiver which has the minimum rcvrTime
@@ -205,7 +202,8 @@ public class ODFActor extends AtomicActor {
      *  The following describes the algorithm that this method implements.
      *  <P>
      *  Prior to returning the appropriate token, set the current time of 
-     *  this actor. If the current time is equal to -1, then this means
+     *  this actor to equal the minimum rcvrTime of all receivers contained
+     *  by this actor. If the current time is equal to -1, then this means
      *  that all receivers contained by this actor have expired. In this
      *  case, call noticeOfTermination() so that actors connected downstream
      *  are made aware that this actor will no longer be producing tokens.
@@ -217,14 +215,14 @@ public class ODFActor extends AtomicActor {
      *  receiver which has the minimum rcvrTime and is listed first in 
      *  the RcvrTimeTriple list. If get() returns null, then check to
      *  see if there is a single receiver which has a minimum rcvrTime. 
-     *  If so, call getNextToken() - note that a new receiver may now have 
+     *  If so, call getNextInput(). Note that a new receiver may now have 
      *  the minimum rcvrTime. If multiple receivers share a common minimum 
      *  rcvrTime, then determine the receiver which has the minimum rcvrTime 
      *  and highest priority. Call simultaneousIgnore() on this receiver 
      *  followed by get(). If get() returns a non-null token then return this 
      *  token. Otherwise this indicates that the receiver which previously 
      *  had the minimum rcvrTime and highest priority no longer has the 
-     *  minimum rcvrTime. In this case call getNextToken().
+     *  minimum rcvrTime. In this case call getNextInput().
      * @return The token with the smallest time stamp of all tokens
      *  contained by this actor. If multiple tokens share the smallest time
      *  stamp this token will come from the highest priority receiver that
@@ -233,7 +231,13 @@ public class ODFActor extends AtomicActor {
      * @see TimedQueueReceiver
      * @see ODFConservativeRcvr
      */
-    public Token getNextToken() {
+    public Token getNextInput() {
+        /*
+        if( nullTokensShouldBeSent ) {
+            sendOutNullTokens();
+        }
+        */
+        
         if( _rcvrTimeList.size() == 0 ) {
             return null;
         }
@@ -243,7 +247,8 @@ public class ODFActor extends AtomicActor {
         String name = getName();
         
         RcvrTimeTriple bestTriple = (RcvrTimeTriple)_rcvrTimeList.first();
-        ODFConservativeRcvr lowestRcvr = (ODFConservativeRcvr)bestTriple.getReceiver();
+        ODFConservativeRcvr lowestRcvr = 
+                (ODFConservativeRcvr)bestTriple.getReceiver();
         _currentTime = bestTriple.getTime();
 
 	if( bestTriple.getTime() == -1.0 ) {
@@ -266,7 +271,7 @@ public class ODFActor extends AtomicActor {
 	        // been blocking and then received an receiver time that 
 	        // was not the minimum.
 
-                return getNextToken();
+                return getNextInput();
             } else {
                 // This means that multiple receivers have the the same 
 	        // minimum rcvrTime. Find the receiver with the lowest 
@@ -286,12 +291,28 @@ public class ODFActor extends AtomicActor {
                     // had the minimum time. The result is that there 
                     // is another minimum.
                     
-                    return getNextToken();
+                    return getNextInput();
                 }
             }
         }
     }
 
+    /** Return the earliest possible time stamp of the next token to be
+     *  processed or produced by this actor. The next time is equal to the 
+     *  oldest (smallest valued) rcvrTime of all receivers contained by 
+     *  this actor. 
+     * @return The next earliest possible time stamp to be produced by 
+     *  this actor.
+     * @see TimedQueueReceiver
+     */
+    public double getNextTime() {
+        if( _rcvrTimeList.size() == 0 ) {
+            return _currentTime;
+        }
+        RcvrTimeTriple triple = (RcvrTimeTriple)_rcvrTimeList.first();
+        return triple.getTime();
+    }
+    
     /** Return true if the minimum receiver time is unique to a single
      *  receiver. Return true if there are no input receivers. Return
      *  false if two or more receivers share the same rcvrTime and this 
@@ -358,6 +379,32 @@ public class ODFActor extends AtomicActor {
     public boolean postfire() throws IllegalActionException {
         noticeOfTermination();
         return false;
+    }
+    
+    /** Send a NullToken to all output channels that have a rcvrTime 
+     *  less than the current time of this actor. Associate a time
+     *  stamp with each NullToken that is equal to the current time
+     *  of this actor.
+     */
+    public void sendOutNullTokens() {
+        Enumeration ports = outputPorts(); 
+        while( ports.hasMoreElements() ) {
+            IOPort port = (IOPort)ports.nextElement();
+	    Receiver rcvrs[][] = (Receiver[][])port.getRemoteReceivers();
+	    if( rcvrs == null ) {
+	        return;
+	    }
+            for (int i = 0; i < rcvrs.length; i++) {
+                for (int j = 0; j < rcvrs[i].length; j++) {
+                    double time = getCurrentTime();
+                    if( time > ( (ODFConservativeRcvr)rcvrs[i][j]
+                            ).getRcvrTime() ) {
+                        ((ODFConservativeRcvr)rcvrs[i][j]).put( 
+                                new NullToken(), time );
+                    }
+		}
+            }
+        }
     }
     
     /** Set the priorities of the receivers contained in the input 
@@ -583,7 +630,7 @@ public class ODFActor extends AtomicActor {
     
     // The currentTime of this actor is equivalent to the minimum
     // positive rcvrTime of each input receiver. This value is 
-    // updated in getNextToken().
+    // updated in getNextInput().
     private double _currentTime = 0.0;
 
 }
