@@ -105,11 +105,31 @@ public class SchematicRelation extends PTMLObject
     }
 
    /**
-     * Test if this relation contains the given port.
+     * Test if this relation contains the given terminal.
      */
     public boolean containsTerminal (SchematicTerminal terminal) {
         return _terminals.includes(terminal);
     }
+
+   /**
+     * Test if this relation contains a terminal with the given name.
+     */
+    public boolean containsTerminal (String name) {
+        return _terminals.get(name) != null;
+    }
+
+    /**
+     * Return the schematic terminal that has the given name.
+     * Throw an exception if there is no terminal with the
+     * given name in this relation.
+     */
+    public SchematicTerminal getTerminal (String name)         
+            throws IllegalActionException {
+        SchematicTerminal terminal = (SchematicTerminal) _terminals.get(name);
+        if(terminal == null) throw new IllegalActionException(
+                "Terminal not found with name " + name);
+        return terminal;
+    }     
 
     /**
      * @return The width of this relation.
@@ -177,6 +197,35 @@ public class SchematicRelation extends PTMLObject
 	}
 	str += "})";
 	return str;
+    }
+
+    /**
+     * Return a string this representing Entity.
+     */
+    protected String _description(int indent, int bracket) {
+        String result = "";
+        if(bracket == 0) 
+            result += super._description(indent, 0);
+        else 
+            result += super._description(indent, 1);
+        result += " terminals {\n";
+        Enumeration els = terminals();
+        while(els.hasMoreElements()) {
+            SchematicTerminal term = (SchematicTerminal) els.nextElement();
+	    result += term._description(indent + 1, 2) + "\n";
+	}    
+
+        result += _getIndentPrefix(indent) + "} links {\n";
+        els = links();
+        while(els.hasMoreElements()) {
+            SchematicLink link = (SchematicLink) els.nextElement();
+	    result += link._description(indent + 1, 2) + "\n";
+	}    
+
+        result += _getIndentPrefix(indent) + "}";
+        if (bracket == 2) result += "}";
+
+        return result;
     }
 
     // methods from diva.graph.Node.

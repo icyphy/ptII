@@ -55,15 +55,68 @@ test PTMLObjectFactory-2.1 {Constructor tests} {
     set xmllib [$parser parse "file:/users/neuendor/ptII/ptolemy/schematic/util/test/exampleIconLibrary.ptml"]   
     set iconlib [java::call ptolemy.schematic.util.PTMLObjectFactory \
 	    createIconLibrary $xmllib]
-    $iconlib toString
-} {SDF({}{
-ptolemy.schematic.util.Icon {LoadImage}(
-....rectangle(content=,color=red,fill=red,coords=-20 -20 40 40)
-....text(content=Hello!,font=helvetica,coords=0 0)
-....polygon(content=,coords=0 0 30 30 0 30 30 0,fill=blue)
-....ellipse(content=,fill=yellow,coords=0 0 10 10))
-ptolemy.schematic.util.Icon {SaveImage}(
-....rectangle(content=,outline=red,fill=blue,coords=0 0 10 10))})}
+    $iconlib description
+} {ptolemy.schematic.util.IconLibrary {SDF} parameters {
+} sublibraries {
+} icons {
+    {ptolemy.schematic.util.Icon {LoadImage} parameters {
+    } graphics {
+        {ptolemy.schematic.util.GraphicElement {rectangle} attributes {
+            {content=}
+            {color=red}
+            {fill=pink}
+            {coords=0 0 60 40}
+        }}
+        {ptolemy.schematic.util.GraphicElement {polygon} attributes {
+            {content=}
+            {coords=10 10 50 30 10 30 50 10}
+            {fill=blue}
+        }}
+        {ptolemy.schematic.util.GraphicElement {ellipse} attributes {
+            {content=}
+            {fill=yellow}
+            {coords=25 15 10 10}
+        }}
+        {ptolemy.schematic.util.GraphicElement {line} attributes {
+            {content=}
+            {coords=30 20 60 20}
+        }}
+    }}
+    {ptolemy.schematic.util.Icon {SaveImage} parameters {
+    } graphics {
+        {ptolemy.schematic.util.GraphicElement {rectangle} attributes {
+            {content=}
+            {color=red}
+            {fill=orange}
+            {coords=0 0 60 40}
+        }}
+        {ptolemy.schematic.util.GraphicElement {polygon} attributes {
+            {content=}
+            {coords=10 10 50 30 10 30 50 10}
+            {fill=blue}
+        }}
+        {ptolemy.schematic.util.GraphicElement {ellipse} attributes {
+            {content=}
+            {fill=yellow}
+            {coords=25 15 10 10}
+        }}
+        {ptolemy.schematic.util.GraphicElement {line} attributes {
+            {content=}
+            {coords=0 20 30 20}
+        }}
+    }}
+} terminalstyles{
+    {ptolemy.schematic.util.TerminalStyle {1out} parameters {
+    } terminals {
+        {ptolemy.schematic.util.Terminal {output} parameters {
+        } X {64.0} Y {20.0}}
+    }}
+    {ptolemy.schematic.util.TerminalStyle {1in} parameters {
+    } terminals {
+        {ptolemy.schematic.util.Terminal {input} parameters {
+        } X {-4.0} Y {20.0}}
+    }}
+}}
 
 ######################################################################
 ####
@@ -76,23 +129,77 @@ test PTMLObjectFactory-2.2 {Constructor tests} {
     
     set entitylib [java::call ptolemy.schematic.util.PTMLObjectFactory \
 	    createEntityLibrary $xmllib $iconroot]
-    list [$iconroot toString] [$entitylib toString]
-} {{root({SDF({}{
-ptolemy.schematic.util.Icon {LoadImage}(
-....rectangle(content=, color=red, fill=red, coords=-20 -20 40 40)
-....text(content=Hello!, font=helvetica, coords=0 0)
-....polygon(content=, coords=0 0 30 30 0 30 30 0, fill=blue)
-....ellipse(content=, fill=yellow, coords=0 0 10 10))
-ptolemy.schematic.util.Icon {SaveImage}(
-....rectangle(content=, outline=red, fill=blue, coords=0 0 10 10))})}{})} {SDF({}{
-ptolemy.schematic.util.EntityTemplate {LoadImage}(
-ptolemy.schematic.util.Icon {LoadImage}(
-....rectangle(content=, color=red, fill=red, coords=-20 -20 40 40)
-....text(content=Hello!, font=helvetica, coords=0 0)
-....polygon(content=, coords=0 0 30 30 0 30 30 0, fill=blue)
-....ellipse(content=, fill=yellow, coords=0 0 10 10))
-ptolemy.schematic.util.TerminalStyle {1out}(output((44.0, 44.0))))
-ptolemy.schematic.util.EntityTemplate {SaveImage}(
-ptolemy.schematic.util.Icon {SaveImage}(
-....rectangle(content=, outline=red, fill=blue, coords=0 0 10 10))
-ptolemy.schematic.util.TerminalStyle {1in}(input((-4.0, -4.0))))})}}
+    $entitylib description
+} {ptolemy.schematic.util.EntityLibrary {SDF} parameters {
+} sublibraries {
+} entites {
+    {ptolemy.schematic.util.EntityTemplate {LoadImage} parameters {
+    } icon {
+        ptolemy.schematic.util.Icon {LoadImage} parameters {
+        } graphics {
+            {ptolemy.schematic.util.GraphicElement {rectangle} attributes {
+                {content=}
+                {color=red}
+                {fill=pink}
+                {coords=0 0 60 40}
+            }}
+            {ptolemy.schematic.util.GraphicElement {polygon} attributes {
+                {content=}
+                {coords=10 10 50 30 10 30 50 10}
+                {fill=blue}
+            }}
+            {ptolemy.schematic.util.GraphicElement {ellipse} attributes {
+                {content=}
+                {fill=yellow}
+                {coords=25 15 10 10}
+            }}
+            {ptolemy.schematic.util.GraphicElement {line} attributes {
+                {content=}
+                {coords=30 20 60 20}
+            }}
+        }
+    } terminalstyle {
+        ptolemy.schematic.util.TerminalStyle {1out} parameters {
+        } terminals {
+            {ptolemy.schematic.util.Terminal {output} parameters {
+            } X {64.0} Y {20.0}}
+        }
+    } ports {
+    }}
+    {ptolemy.schematic.util.EntityTemplate {SaveImage} parameters {
+    } icon {
+        ptolemy.schematic.util.Icon {SaveImage} parameters {
+        } graphics {
+            {ptolemy.schematic.util.GraphicElement {rectangle} attributes {
+                {content=}
+                {color=red}
+                {fill=orange}
+                {coords=0 0 60 40}
+            }}
+            {ptolemy.schematic.util.GraphicElement {polygon} attributes {
+                {content=}
+                {coords=10 10 50 30 10 30 50 10}
+                {fill=blue}
+            }}
+            {ptolemy.schematic.util.GraphicElement {ellipse} attributes {
+                {content=}
+                {fill=yellow}
+                {coords=25 15 10 10}
+            }}
+            {ptolemy.schematic.util.GraphicElement {line} attributes {
+                {content=}
+                {coords=0 20 30 20}
+            }}
+        }
+    } terminalstyle {
+        ptolemy.schematic.util.TerminalStyle {1in} parameters {
+        } terminals {
+            {ptolemy.schematic.util.Terminal {input} parameters {
+            } X {-4.0} Y {20.0}}
+        }
+    } ports {
+    }}
+}}
+
+
+

@@ -81,8 +81,12 @@ proc _testEnums {enummethod args} {
 test TerminalStyle-2.1 {Constructor tests} {
     set e0 [java::new ptolemy.schematic.util.TerminalStyle]
     set e1 [java::new ptolemy.schematic.util.TerminalStyle "TestTerminalStyle"]
-    list [$e0 toString] [$e1 toString]
-} {TerminalStyle() TestTerminalStyle()}
+    list [$e0 description] [$e1 description]
+} {{ptolemy.schematic.util.TerminalStyle {TerminalStyle} parameters {
+} terminals {
+}} {ptolemy.schematic.util.TerminalStyle {TestTerminalStyle} parameters {
+} terminals {
+}}}
 
 test TerminalStyle-2.2 {setDocumenation, isDocumentation tests} {
     # NOTE: Uses the setup above
@@ -101,8 +105,12 @@ test TerminalStyle-3.1 {addTerminal} {
     set t1 [java::new ptolemy.schematic.util.Terminal Terminal1]
     set t2 [java::new ptolemy.schematic.util.Terminal Terminal2]
     $e0 addTerminal $t1
-    $e0 toString
-} {TerminalStyle(Terminal1((0.0, 0.0)))}
+    $e0 description
+} {ptolemy.schematic.util.TerminalStyle {TerminalStyle} parameters {
+} terminals {
+    {ptolemy.schematic.util.Terminal {Terminal1} parameters {
+    } X {0.0} Y {0.0}}
+}}
 
 test TerminalStyle-3.2 {containsTerminal} {
     list [$e0 containsTerminal $t1] [$e0 containsTerminal $t2]
@@ -115,6 +123,10 @@ test TerminalStyle-3.3 {terminals} {
 
 test TerminalStyle-3.4 {removeTerminal} {
     $e0 removeTerminal $t1
-    $e0 toString
-} {TerminalStyle(Terminal2((0.0, 0.0)))}
+    $e0 description
+} {ptolemy.schematic.util.TerminalStyle {TerminalStyle} parameters {
+} terminals {
+    {ptolemy.schematic.util.Terminal {Terminal2} parameters {
+    } X {0.0} Y {0.0}}
+}}
 

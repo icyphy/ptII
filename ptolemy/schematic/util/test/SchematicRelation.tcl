@@ -81,8 +81,14 @@ proc _testEnums {enummethod args} {
 test SchematicRelation-2.1 {Constructor tests} {
     set e0 [java::new ptolemy.schematic.util.SchematicRelation]
     set e1 [java::new ptolemy.schematic.util.SchematicRelation "TestSchematicRelation"]
-    list [$e0 toString] [$e1 toString]
-} {relation({}{}) TestSchematicRelation({}{})}
+    list [$e0 description] [$e1 description]
+} {{ptolemy.schematic.util.SchematicRelation {relation} parameters {
+} terminals {
+} links {
+}} {ptolemy.schematic.util.SchematicRelation {TestSchematicRelation} parameters {
+} terminals {
+} links {
+}}}
 
 test SchematicRelation-2.2 {setDocumentation, isDocumentation tests} {
     # NOTE: Uses the setup above
@@ -103,12 +109,21 @@ test SchematicRelation-2.2 {setDocumentation, isDocumentation tests} {
 ####
 #
 test SchematicRelation-3.1 {addTerminal} {
-    set t1 [java::new ptolemy.schematic.util.SchematicTerminal Terminal1]
-    set t2 [java::new ptolemy.schematic.util.SchematicTerminal Terminal2]
+    set tt1 [java::new ptolemy.schematic.util.Terminal ToTemplate]
+    set tt2 [java::new ptolemy.schematic.util.Terminal FromTemplate]
+    set t1 [java::new ptolemy.schematic.util.SchematicTerminal Terminal1 $tt1]
+    set t2 [java::new ptolemy.schematic.util.SchematicTerminal Terminal2 $tt2]
     $e0 addTerminal $t1
-    $e0 toString
-} {relation({
-...Terminal1((0.0, 0.0), Input)}{})}
+    $e0 description
+} {ptolemy.schematic.util.SchematicRelation {relation} parameters {
+} terminals {
+    {ptolemy.schematic.util.SchematicTerminal {Terminal1} parameters {
+    } template {
+        ptolemy.schematic.util.Terminal {ToTemplate} parameters {
+        } X {0.0} Y {0.0}
+    } X {0.0} Y {0.0}}
+} links {
+}}
 
 test SchematicRelation-3.2 {containsTerminal} {
     list [$e0 containsTerminal $t1] [$e0 containsTerminal $t2]
@@ -121,34 +136,68 @@ test SchematicRelation-3.3 {terminals} {
 
 test SchematicRelation-3.4 {removeTerminal} {
     $e0 removeTerminal $t1
-    $e0 toString
-} {relation({
-...Terminal2((0.0, 0.0), Output)}{})}
+    $e0 description
+} {ptolemy.schematic.util.SchematicRelation {relation} parameters {
+} terminals {
+    {ptolemy.schematic.util.SchematicTerminal {Terminal2} parameters {
+    } template {
+        ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+        } X {0.0} Y {0.0}
+    } X {0.0} Y {0.0}}
+} links {
+}}
 
 test SchematicRelation-3.5 {addLink} {
     set l1 [java::new ptolemy.schematic.util.SchematicLink $t1 $t2]
     set l2 [java::new ptolemy.schematic.util.SchematicLink $t2 $t1]
     $e0 addLink $l1
-    $e0 toString
-} {relation({
-...Terminal2((0.0, 0.0), Output)}{
-...Link1(to_terminal((0.0, 0.0)), from_terminal((0.0, 0.0)))})}
+    $e0 description
+} {ptolemy.schematic.util.SchematicRelation {relation} parameters {
+} terminals {
+    {ptolemy.schematic.util.SchematicTerminal {Terminal2} parameters {
+    } template {
+        ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+        } X {0.0} Y {0.0}
+    } X {0.0} Y {0.0}}
+} links {
+    {ptolemy.schematic.util.SchematicLink
+     to {
+        ptolemy.schematic.util.SchematicTerminal {Terminal1} parameters {
+        } template {
+            ptolemy.schematic.util.Terminal {ToTemplate} parameters {
+            } X {0.0} Y {0.0}
+        } X {0.0} Y {0.0}
+    } from {
+        ptolemy.schematic.util.SchematicTerminal {Terminal2} parameters {
+        } template {
+            ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+            } X {0.0} Y {0.0}
+        } X {0.0} Y {0.0}
+    }}
+}}
 
 test SchematicRelation-3.6 {containsLink} {
     list [$e0 containsLink $l1] [$e0 containsLink $l2]
 } {1 0}
 
-test SchematicRelation-3.7 {Links} {
-    $e0 addLink $l2
-    _testEnums links $e0
-} {{Link1 Link2}}
+# Links are not nameable
+#test SchematicRelation-3.7 {Links} {
+#    $e0 addLink $l2
+#    _testEnums links $e0
+#} {{Link1 Link2}}
 
 test SchematicRelation-3.8 {removeLink} {
     $e0 removeLink $l1
-    $e0 toString
-} {relation({
-...Terminal2((0.0, 0.0), Output)}{
-...Link2(to_terminal((0.0, 0.0)), from_terminal((0.0, 0.0)))})}
+    $e0 description
+} {ptolemy.schematic.util.SchematicRelation {relation} parameters {
+} terminals {
+    {ptolemy.schematic.util.SchematicTerminal {Terminal2} parameters {
+    } template {
+        ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+        } X {0.0} Y {0.0}
+    } X {0.0} Y {0.0}}
+} links {
+}}
 
 test SchematicRelation-3.9 {setWidth, getWidth tests} {
     # NOTE: Uses the setup above

@@ -101,6 +101,21 @@ public class Terminal extends PTMLObject {
         return str + ")";
     }
 
+    /** 
+     * Return a string representation of the terminal
+     */
+    protected String _description(int indent, int bracket) {
+        String result = "";
+        if(bracket == 0) 
+            result += super._description(indent, 0);
+        else 
+            result += super._description(indent, 1);
+        result += " X {" + _x + "} ";
+        result += "Y {" + _y + "}";
+        if (bracket == 2) result += "}";
+        return result;
+    }
+
     private double _x, _y;
 }
 

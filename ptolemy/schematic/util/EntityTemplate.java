@@ -189,20 +189,33 @@ public class EntityTemplate extends PTMLObject {
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
      */
-    protected String _description(int indent) {
-        String result = super._description(indent);
-	result += _getIndentPrefix(indent) + "icon\n";
-	result += _icon._description(indent + 1);
-	result += _getIndentPrefix(indent) + "terminalstyle\n";
-	result += _terminalstyle._description(indent + 1);
-	result += _getIndentPrefix(indent) + "ports\n";
+    protected String _description(int indent, int bracket) {
+        String result = "";
+        if(bracket == 0) 
+            result += super._description(indent, 0);
+        else 
+            result += super._description(indent, 1);
+	result += " icon {\n";
+	if(_icon == null) 
+            result += _getIndentPrefix(indent + 1) + "null\n";
+        else
+            result += _icon._description(indent + 1, 0) + "\n";
+
+	result += _getIndentPrefix(indent) + "} terminalstyle {\n";
+	if(_terminalstyle == null) 
+            result += _getIndentPrefix(indent + 1) + "null\n";
+        else
+            result += _terminalstyle._description(indent + 1, 0) + "\n";
+
+	result += _getIndentPrefix(indent) + "} ports {\n";
 	Enumeration ports = ports();
         while (ports.hasMoreElements()) {
             EntityPort p = (EntityPort) ports.nextElement();
-            result += p._description(indent + 1);
+            result += p._description(indent + 1, 2) + "\n";
         }
 	
-        //        result += _getIndentPrefix(indent);
+        result += _getIndentPrefix(indent) + "}";
+        if (bracket == 2) result += "}";
 
         return result;
     }

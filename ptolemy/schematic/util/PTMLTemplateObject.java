@@ -114,13 +114,21 @@ public class PTMLTemplateObject extends PTMLObject {
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
      */
-    protected String _description(int indent) {
-        String result = super._description(indent);
-        result += _getIndentPrefix(indent) + "template\n";
+    protected String _description(int indent, int bracket) {
+        String result = "";
+        if(bracket == 0) 
+            result += super._description(indent, 0);
+        else 
+            result += super._description(indent, 1);
+        result += " template {\n";
         if(_template == null) 
             result += _getIndentPrefix(indent + 1) + "null\n";
         else
-            result += _template._description(indent + 1);
+            result += _template._description(indent + 1, 0) + "\n";
+
+        result += _getIndentPrefix(indent) + "}";
+        if (bracket == 2) result += "}";
+
         return result;
     }
 

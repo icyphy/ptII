@@ -127,7 +127,7 @@ public class Schematic extends PTMLObject
     }
 
     /**
-     * Test if there is an entity with the given name in the
+     * Test if the given entity is contained within this
      * schematic.
      */
     public boolean containsEntity (SchematicEntity entity) {
@@ -135,19 +135,41 @@ public class Schematic extends PTMLObject
     }
 
     /**
-     * Test if this schematic contains a port with the
-     * given name.
+     * Test if there is an entity with the given name in the
+     * schematic.
+     */
+    public boolean containsEntity (String name) {
+        return _entities.get(name) != null;
+    }
+
+    /**
+     * Test if this schematic contains the given port
      */
     public boolean containsPort (SchematicPort port) {
         return _ports.includes(port);
     }
     
     /**
-     * Test if there is an relation with the given name in the
-     * schematic.
+     * Test if this schematic contains a port with the
+     * given name.
+     */
+    public boolean containsPort (String name) {
+        return _ports.get(name) != null;
+    }
+    
+    /**
+     * Test if this schematic contains the given relation
      */
     public boolean containsRelation (SchematicRelation relation) {
         return _relations.includes(relation);
+    }
+
+    /**
+     * Test if there is an relation with the given name in the
+     * schematic.
+     */
+    public boolean containsRelation (String name) {
+        return _relations.get(name) != null;
     }
 
     /**
@@ -158,6 +180,14 @@ public class Schematic extends PTMLObject
         return _terminals.includes(terminal);
     }
     
+    /**
+     * Test if this schematic contains a terminal with the
+     * given name.
+     */
+    public boolean containsTerminal (String name) {
+        return _terminals.get(name) != null;
+    }
+    
      /**
      * Return an enumeration over the entities in this
      * schematic.
@@ -166,24 +196,46 @@ public class Schematic extends PTMLObject
         return _entities.keys();
     }
 */
+
     /**
      * Return the schematic entity that has the given name.
      * Throw an exception if there is no entity with the
      * given name in this schematic.
-     *
-    public SchematicEntity getEntity (String name) {
-        return (SchematicEntity) _entities.at(name);
+     */
+    public SchematicEntity getEntity (String name) 
+        throws IllegalActionException {
+        SchematicEntity entity = (SchematicEntity) _entities.get(name);
+        if(entity == null) throw new IllegalActionException(
+                "Entity not found with name " + name);
+        return entity;
     }
-    */
-     /**
+    
+    /**
      * Return the schematic relation that has the given name.
      * Throw an exception if there is no relation with the
      * given name in this schematic.
-     *
-    public SchematicRelation getRelation (String name) {
-        return (SchematicRelation) _relations.at(name);
-    }
-*/
+     */
+    public SchematicRelation getRelation (String name)         
+            throws IllegalActionException {
+        SchematicRelation relation = (SchematicRelation) _relations.get(name);
+        if(relation == null) throw new IllegalActionException(
+                "Relation not found with name " + name);
+        return relation;
+    } 
+
+    /**
+     * Return the schematic terminal that has the given name.
+     * Throw an exception if there is no terminal with the
+     * given name in this schematic.
+     */
+    public SchematicTerminal getTerminal (String name)         
+            throws IllegalActionException {
+        SchematicTerminal terminal = (SchematicTerminal) _terminals.get(name);
+        if(terminal == null) throw new IllegalActionException(
+                "Terminal not found with name " + name);
+        return terminal;
+    } 
+
     /**
      * Return an enumeration over the entities in this
      * schematic.

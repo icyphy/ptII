@@ -127,6 +127,13 @@ public class SchematicEntity extends PTMLTemplateObject
         return _terminals.includes(terminal);
     }
     
+   /**
+     * Test if this relation contains a terminal with the given name.
+     */
+    public boolean containsTerminal (String name) {
+        return _terminals.get(name) != null;
+    }
+
     /**
      * Get the icon of this entity.
      */
@@ -153,6 +160,19 @@ public class SchematicEntity extends PTMLTemplateObject
 	throws IllegalActionException {
 	_template.getPort(name);
 	}*/
+ 
+    /**
+     * Return the schematic terminal that has the given name.
+     * Throw an exception if there is no terminal with the
+     * given name in this relation.
+     */
+    public SchematicTerminal getTerminal (String name)         
+            throws IllegalActionException {
+        SchematicTerminal terminal = (SchematicTerminal) _terminals.get(name);
+        if(terminal == null) throw new IllegalActionException(
+                "Terminal not found with name " + name);
+        return terminal;
+    }     
 
     /**
      * Return the X position of this Entity
@@ -217,28 +237,34 @@ public class SchematicEntity extends PTMLTemplateObject
     }
 
     /**
-     * Set the TerminalStyle that describes this entity.
-     * FIXME  make this public when figure out what it should do to the 
+     * Set the TerminalStyle that describes this entity.  If the terminal
+     * style is already set, then do nothing.  If the terminal style changes
+     * and the new terminal style is not null, then create schematicTerminals
+     * for each terminal in the terminalstyle.
+     * FIXME Figure out what it should do to the 
      * contained terminals.
      */
     private void setTerminalStyle (TerminalStyle style) {
-	_terminalstyle = style;
-	if(_terminalstyle != null) {
-	    Enumeration templateTerminals = _terminalstyle.terminals();
-	    while(templateTerminals.hasMoreElements()) {
-		Terminal terminal = (Terminal)templateTerminals.nextElement();
-		try {
-		    addTerminal(new SchematicTerminal(terminal.getName(), 
-						      terminal));
-		    
-		} catch (Exception ex) {
-		    throw new InternalErrorException(ex.getMessage());
-		    // This should never happen, because the terminals in the
-		    // template must follow the same rules as the schematic 
-		    // terminals.
-		}
-	    }
-	}
+	if(_terminalstyle == null) {
+            _terminalstyle = style;
+            if(_terminalstyle != null) {
+                Enumeration templateTerminals = _terminalstyle.terminals();
+                while(templateTerminals.hasMoreElements()) {
+                    Terminal terminal = 
+                        (Terminal)templateTerminals.nextElement();
+                    try {
+                        addTerminal(new SchematicTerminal(terminal.getName(), 
+                                terminal));
+                        
+                    } catch (Exception ex) {
+                        throw new InternalErrorException(ex.getMessage());
+                        // This should never happen, because the terminals in the
+                        // template must follow the same rules as the schematic 
+                        // terminals.
+                    }
+                }
+            }
+        }
     }
     
    /**
@@ -379,24 +405,33 @@ public class SchematicEntity extends PTMLTemplateObject
     /**
      * Return a string this representing Entity.
      */
-    protected String _description(int indent) {
-        String result = super._description(indent);
-        result += _getIndentPrefix(indent) + "terminalstyle\n";
-	result += _terminalstyle._description(indent + 1);
-	result += _getIndentPrefix(indent) + "ports\n";
+    protected String _description(int indent, int bracket) {
+        String result = "";
+        if(bracket == 0) 
+            result += super._description(indent, 0);
+        else 
+            result += super._description(indent, 1);
+        result += _getIndentPrefix(indent) + " terminalstyle {\n";
+        if(_terminalstyle == null) 
+            result += _getIndentPrefix(indent + 1) + "null\n";
+        else
+            result += _terminalstyle._description(indent + 1, 0) + "\n";
+	result += _getIndentPrefix(indent) + "} ports {\n";
         Enumeration els = ports();
         while(els.hasMoreElements()) {
             SchematicPort port = (SchematicPort) els.nextElement();
-	    result += port._description(indent + 1);
+	    result += port._description(indent + 1, 2) + "\n";
         }
-        //       result += _getIndentPrefix(indent) + "terminalstyle";
-        //result += getTerminalStyle().getFullName();
-        result += _getIndentPrefix(indent) + "terminals\n";
+        result += _getIndentPrefix(indent) + "} terminals {\n";
         els = terminals();
         while(els.hasMoreElements()) {
             SchematicTerminal term = (SchematicTerminal) els.nextElement();
-	    result += term._description(indent + 1);
+	    result += term._description(indent + 1, 2) + "\n";
 	}    
+
+        result += _getIndentPrefix(indent) + "}";
+        if (bracket == 2) result += "}";
+
         return result;
     }
 

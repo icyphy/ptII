@@ -149,7 +149,7 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
      *  @return A description of this object.
      */
     public String description() {
-            return _description(0);
+            return _description(0, 0);
     }
 
     /** Get the container of this PTMLObject.  
@@ -317,18 +317,21 @@ public class PTMLObject extends diva.util.BasicPropertyContainer
      *  @param bracket The number of surrounding brackets (0, 1, or 2).
      *  @return A description of the object.
      */
-    protected String _description(int indent) {
+    protected String _description(int indent, int bracket) {
         String result = _getIndentPrefix(indent);
-        result += getClass().getName() + "(";
-        result += getFullName() + ")\n";
-        result += _getIndentPrefix(indent) + "parameters\n";
+        if (bracket == 1 || bracket == 2) result += "{";
+        result += getClass().getName() + " {";
+        result += getFullName() + "} ";
+        result += "parameters {\n";
 
         Enumeration params = parameters();
         while (params.hasMoreElements()) {
             SchematicParameter p = (SchematicParameter) params.nextElement();
-            result += p._description(indent + 1) + "\n";
+            result += p._description(indent + 1, 2) + "\n";
         }
-        //        result += _getIndentPrefix(indent);
+        
+        result += _getIndentPrefix(indent) + "}";
+        if (bracket == 2) result += "}";
 
         return result;
     }

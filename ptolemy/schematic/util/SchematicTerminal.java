@@ -250,10 +250,15 @@ public class SchematicTerminal extends PTMLTemplateObject
     /** 
      * Return a string representation of the terminal
      */
-    protected String _description(int indent) {
-        String result = super._description(indent);
-        result += _getIndentPrefix(indent) + "X=" + _x + "\n";
-        result += _getIndentPrefix(indent) + "Y=" + _y + "\n";
+    protected String _description(int indent, int bracket) {
+        String result = "";
+        if(bracket == 0) 
+            result += super._description(indent, 0);
+        else 
+            result += super._description(indent, 1);
+        result += " X {" + _x + "} ";
+        result += "Y {" + _y + "}";
+        if (bracket == 2) result += "}";
         return result;
     }
 

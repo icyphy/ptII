@@ -102,17 +102,6 @@ public class SchematicLink extends BasicPropertyContainer
         }
     }
    
-    /** 
-     * Return a string representation of the link
-     */
-    /*    protected String _description(int indent) {
-        String result = super._description(indent);
-        result +=  _getIndentPrefix(indent) + "to\n" + 
-            _to._description(indent + 1); 
-	result +=  _getIndentPrefix(indent) + "from\n" + 
-            _from._description(indent + 1);
-        return result;
-        }*/
     public String toString() {
         String s = getClass().getName();
         s += " {" + getFrom().getFullName();
@@ -120,6 +109,43 @@ public class SchematicLink extends BasicPropertyContainer
         s += "}";
         return s;
     }
+
+    /**
+     * Return a string this representing Entity.
+     */
+    protected String _description(int indent, int bracket) {
+        String result = _getIndentPrefix(indent);
+        if (bracket == 1 || bracket == 2) result += "{";
+        result += getClass().getName() + "\n";
+        result += _getIndentPrefix(indent) + " to {\n";
+        if(_to == null) 
+            result += _getIndentPrefix(indent + 1) + "null\n";
+        else
+            result += _to._description(indent + 1, 0) + "\n";
+	result += _getIndentPrefix(indent) + "} from {\n";
+        if(_from == null) 
+            result += _getIndentPrefix(indent + 1) + "null\n";
+        else
+            result += _from._description(indent + 1, 0) + "\n";
+
+        result += _getIndentPrefix(indent) + "}";
+        if (bracket == 2) result += "}";
+
+        return result;
+    }
+
+    /** Return a number of spaces that is proportional to the argument.
+     *  If the argument is negative or zero, return an empty string.
+     *  @param level The level of indenting represented by the spaces.
+     *  @return A string with zero or more spaces.
+     */
+    protected static String _getIndentPrefix(int level) {
+        String result = "";
+        for (int i = 0; i < level; i++) {
+            result += "    ";
+        }
+        return result;
+    }    
 
     //diva.graph.model.Edge
     /*    public void attach(BasicNode tail, BasicNode head) {

@@ -164,6 +164,49 @@ public class GraphicElement extends Object {
         return str + ")";
     }
 
+    /** Return a description of the object.  Lines are indented according to
+     *  to the level argument using the protected method _getIndentPrefix().
+     *  Zero, one or two brackets can be specified to surround the returned
+     *  description.  If one is specified it is the the leading bracket.
+     *  This is used by derived classes that will append to the description.
+     *  Those derived classes are responsible for the closing bracket.
+     *  An argument other than 0, 1, or 2 is taken to be equivalent to 0.
+     *  This method is read-synchronized on the workspace.
+     *  @param indent The amount of indenting.
+     *  @param bracket The number of surrounding brackets (0, 1, or 2).
+     *  @return A description of the object.
+     */
+    protected String _description(int indent, int bracket) {
+        String result = _getIndentPrefix(indent);
+        if (bracket == 1 || bracket == 2) result += "{";
+        result += getClass().getName() + " {" + _type + "}";
+	result += " attributes {\n";
+	Enumeration attributeNames = attributeNames();
+        while (attributeNames.hasMoreElements()) {
+            String p = (String) attributeNames.nextElement();
+            result +=  _getIndentPrefix(indent + 1) +
+                "{" + p + "=" + getAttribute(p) + "}\n";
+        }
+	
+        result += _getIndentPrefix(indent) + "}";
+        if (bracket == 2) result += "}";
+
+        return result;
+    }
+
+    /** Return a number of spaces that is proportional to the argument.
+     *  If the argument is negative or zero, return an empty string.
+     *  @param level The level of indenting represented by the spaces.
+     *  @return A string with zero or more spaces.
+     */
+    protected static String _getIndentPrefix(int level) {
+        String result = "";
+        for (int i = 0; i < level; i++) {
+            result += "    ";
+        }
+        return result;
+    }
+
     private static final PaintedString _errorObject = 
 	new PaintedString("ERROR!");
     

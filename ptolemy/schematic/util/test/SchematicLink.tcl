@@ -57,33 +57,31 @@ test SchematicLink-2.1 {Constructor tests} {
     set e0 [java::new ptolemy.schematic.util.SchematicLink $t1 $t2]
     list [$t2 description] [[$e0 getTo] description] [$t1 description] \
 	    [[$e0 getFrom] description]
-} {{ptolemy.schematic.util.SchematicTerminal(From)
-parameters
-template
-X=0.0
-Y=0.0
-} {ptolemy.schematic.util.SchematicTerminal(To)
-parameters
-template
-X=0.0
-Y=0.0
-} {ptolemy.schematic.util.SchematicTerminal(To)
-parameters
-template
-X=0.0
-Y=0.0
-} {ptolemy.schematic.util.SchematicTerminal(From)
-parameters
-template
-X=0.0
-Y=0.0
-}}
+} {{ptolemy.schematic.util.SchematicTerminal {From} parameters {
+} template {
+    ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+    } X {0.0} Y {0.0}
+} X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {To} parameters {
+} template {
+    ptolemy.schematic.util.Terminal {ToTemplate} parameters {
+    } X {0.0} Y {0.0}
+} X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {To} parameters {
+} template {
+    ptolemy.schematic.util.Terminal {ToTemplate} parameters {
+    } X {0.0} Y {0.0}
+} X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {From} parameters {
+} template {
+    ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+    } X {0.0} Y {0.0}
+} X {0.0} Y {0.0}}}
 
 ######################################################################
 ####
 #
-set t1 [java::new ptolemy.schematic.util.SchematicTerminal T1]
-set t2 [java::new ptolemy.schematic.util.SchematicTerminal T2]
+set tt1 [java::new ptolemy.schematic.util.Terminal ToTemplate]
+set tt2 [java::new ptolemy.schematic.util.Terminal FromTemplate]
+set t1 [java::new ptolemy.schematic.util.SchematicTerminal T1 $tt1]
+set t2 [java::new ptolemy.schematic.util.SchematicTerminal T2 $tt2]
 
 test SchematicLink-3.1 {setTo, getTo tests} {
     # NOTE: Uses the setup above
@@ -93,25 +91,19 @@ test SchematicLink-3.1 {setTo, getTo tests} {
     $e0 setTo $t2
     set r2 [$e0 getTo]
     list [$r0 description] [$r1 description] [$r2 description]
-} {{ptolemy.schematic.util.SchematicTerminal(To)
-parameters
-template
-    null
-X=0.0
-Y=0.0
-} {ptolemy.schematic.util.SchematicTerminal(T1)
-parameters
-template
-    null
-X=0.0
-Y=0.0
-} {ptolemy.schematic.util.SchematicTerminal(T2)
-parameters
-template
-    null
-X=0.0
-Y=0.0
-}}
+} {{ptolemy.schematic.util.SchematicTerminal {To} parameters {
+} template {
+    ptolemy.schematic.util.Terminal {ToTemplate} parameters {
+    } X {0.0} Y {0.0}
+} X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {T1} parameters {
+} template {
+    ptolemy.schematic.util.Terminal {ToTemplate} parameters {
+    } X {0.0} Y {0.0}
+} X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {T2} parameters {
+} template {
+    ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+    } X {0.0} Y {0.0}
+} X {0.0} Y {0.0}}}
 
 test SchematicLink-3.2 {setFrom, getFrom tests} {
     # NOTE: Uses the setup above
@@ -121,34 +113,21 @@ test SchematicLink-3.2 {setFrom, getFrom tests} {
     $e0 setFrom $t2
     set r2 [$e0 getFrom]
     list [$r0 description] [$r1 description] [$r2 description]
-} {{ptolemy.schematic.util.SchematicTerminal(From)
-parameters
-template
-    null
-X=0.0
-Y=0.0
-} {ptolemy.schematic.util.SchematicTerminal(T1)
-parameters
-template
-    null
-X=0.0
-Y=0.0
-} {ptolemy.schematic.util.SchematicTerminal(T2)
-parameters
-template
-    null
-X=0.0
-Y=0.0
-}}
+} {{ptolemy.schematic.util.SchematicTerminal {From} parameters {
+} template {
+    ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+    } X {0.0} Y {0.0}
+} X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {T1} parameters {
+} template {
+    ptolemy.schematic.util.Terminal {ToTemplate} parameters {
+    } X {0.0} Y {0.0}
+} X {0.0} Y {0.0}} {ptolemy.schematic.util.SchematicTerminal {T2} parameters {
+} template {
+    ptolemy.schematic.util.Terminal {FromTemplate} parameters {
+    } X {0.0} Y {0.0}
+} X {0.0} Y {0.0}}}
 
-######################################################################
-####
-#
-test SchematicLink-4.1 {toString} {
-    $e0 setFrom $t1
-    $e0 setTo $t2
-    $e0 toString
-} {ptolemy.schematic.util.SchematicLink {T1->T2}}
+
 
 
 

@@ -176,6 +176,62 @@ public class PTMLObjectFactory {
     }
 
     /** 
+     * Create a Schematic from the given XML element and entity library.  
+     * @exception IllegalActionException If the XML element does not 
+     * have a type of "schematic"
+     * @exception NameDuplicationException If the XML element contains two
+     * named objects with the same name.
+     */
+    public static Schematic createSchematic(XMLElement e,
+            EntityLibrary lib) 
+            throws IllegalActionException, NameDuplicationException {
+
+        _checkElement(e, "schematic");
+        Schematic schematic = new Schematic();
+        Enumeration children = e.childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement) children.nextElement();
+            String etype = child.getElementType();
+            if(etype.equals("port")) {
+                // if it's a port, then create it, 
+                // and add it to the list of ports.
+                // FIXME
+                //schematic.addPort(_createSchematicPort(child));
+            } else if(etype.equals("terminal")) {
+                // if it's a terminal, then create it, 
+                // and add it to the list of terminals.
+                schematic.addTerminal(_createSchematicTerminal(child, null));
+            } else if(etype.equals("entity")) {
+                // if it's a entity, then create it, 
+                // and add it to the list of entities.
+                schematic.addEntity(_createSchematicEntity(child, lib));
+            } else if(etype.equals("relation")) {
+                // if it's a relation, then create it, 
+                // and add it to the list of relations.
+                schematic.addRelation(
+                        _createSchematicRelation(child, schematic));
+            } else if(etype.equals("description")) {
+                schematic.setDocumentation(child.getPCData());
+            } else {
+                _unknownElementType(child, "iconlibrary");
+            }
+        }
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            if (n.equals("name")) {
+                try {
+                    schematic.setName(_getString(e, n));
+                } catch (Exception ex) {};
+            } else {
+                _unknownAttribute(e, n);
+            }
+        }
+
+        return schematic;            
+    }
+
+    /** 
      * Parse an Icon Library from the given url string. 
      * Create a PTMLParser and point it at the URL, then call createIconLibrary
      * on the returned tree of XMLElements.
@@ -202,6 +258,22 @@ public class PTMLObjectFactory {
         String urlstring = url.toString();        
         XMLElement root = _parser.parse(urlstring);
         return PTMLObjectFactory.createEntityLibrary(root, iconLib);
+    }
+
+    /** 
+     * Parse an schematic from the given url string. 
+     * Point the PTMLParser at the URL, then call createSchematic
+     * on the returned tree of XMLElements.  All entities
+     * should be contained within the given EntityLibrary, which will be used
+     * to resolve references.
+     */
+    public static Schematic parseSchematic(URL url, 
+            EntityLibrary entityLib) 
+            throws Exception {
+
+        String urlstring = url.toString();        
+        XMLElement root = _parser.parse(urlstring);
+        return PTMLObjectFactory.createSchematic(root, entityLib);
     }
 
     /** 
@@ -237,7 +309,7 @@ public class PTMLObjectFactory {
 
     private static EntityTemplate _createEntityTemplate(XMLElement e, 
             IconLibrary iconroot)
-        throws IllegalActionException {
+        throws IllegalActionException, NameDuplicationException {
 
         _verifyElement(e, "entity");
 
@@ -256,9 +328,7 @@ public class PTMLObjectFactory {
         while(attributes.hasMoreElements()) {
             String n = (String) attributes.nextElement();
             if (n.equals("name")) {
-                try {
-                    entity.setName(_getString(e, n));
-                } catch (Exception ex) {};
+                entity.setName(_getString(e, n));
             } else if (n.equals("icon")) {
                 Icon icon = _findIcon(iconroot, _getString(e, n));
                 entity.setIcon(icon);
@@ -337,8 +407,142 @@ public class PTMLObjectFactory {
         return icon;
     }
 
+    private static SchematicEntity _createSchematicEntity(XMLElement e,
+            EntityLibrary entityLib)
+        throws IllegalActionException, NameDuplicationException {
+
+        _verifyElement(e, "entity");
+
+        EntityTemplate template = null;
+        if(e.hasAttribute("template")) {
+            String templateString = _getString(e, "template");
+            template = _findEntityTemplate(entityLib, templateString);
+        } else {
+            throw new IllegalActionException(
+                    "SchematicEntity has no template.");
+        }
+
+        SchematicEntity entity = 
+            new SchematicEntity(template.getName(), template);
+        Enumeration children = e.childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement)children.nextElement();
+            _unknownElementType(child, "relation");
+        }
+
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            if (n.equals("name")) {
+                entity.setName(_getString(e, n));
+            } else if (n.equals("x")) {
+                entity.setX(_getDouble(e, n));
+            } else if (n.equals("y")) {
+                entity.setY(_getDouble(e, n));
+            } else {
+                _unknownAttribute(e, n);
+            }
+        }
+        return entity;
+    }
+
+    private static SchematicLink _createSchematicLink(XMLElement e, 
+            Schematic schematic)
+        throws IllegalActionException, NameDuplicationException {
+
+        _verifyElement(e, "entity");
+
+        SchematicLink entity = new SchematicLink();
+        Enumeration children = e.childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement)children.nextElement();
+            _unknownElementType(child, "relation");
+        }
+
+        // FIXME hmm... I bet it is possible for the terminal that 
+        // Schematic Terminal returns to not be in this relation.  This is
+        // Probably bad, but we don't check for it.
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            if (n.equals("to")) {
+                entity.setTo(
+                        _findSchematicTerminal(schematic, _getString(e, n)));
+            } else if (n.equals("from")) {
+                entity.setFrom(
+                        _findSchematicTerminal(schematic, _getString(e, n)));
+            } else {
+                _unknownAttribute(e, n);
+            }
+        }
+        return entity;
+    }
+
+    private static SchematicRelation _createSchematicRelation(XMLElement e, 
+            Schematic schematic)
+        throws IllegalActionException, NameDuplicationException {
+
+        _verifyElement(e, "relation");
+
+        SchematicRelation relation = new SchematicRelation();
+        Enumeration children = e.childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement)children.nextElement();
+            String etype = child.getElementType();
+            if(etype.equals("link")) {
+                relation.addLink(_createSchematicLink(child, schematic));
+            } else if(etype.equals("terminal")) {
+                relation.addTerminal(_createSchematicTerminal(child, null));
+            } else 
+                _unknownElementType(child, "relation");
+        }
+
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            if (n.equals("name")) {
+                relation.setName(_getString(e, n));
+            } else if (n.equals("width")) {
+                relation.setWidth(_getInt(e, n));
+            } else {
+                _unknownAttribute(e, n);
+            }
+        }
+        return relation;
+    }
+
+    //FIXME do we need this terminalstyle?
+    private static SchematicTerminal _createSchematicTerminal(XMLElement e,
+            TerminalStyle terminalStyle)
+        throws IllegalActionException, NameDuplicationException {
+
+        _verifyElement(e, "terminal");
+
+        SchematicTerminal terminal = new SchematicTerminal("terminal", null);
+        Enumeration children = e.childElements();
+        while(children.hasMoreElements()) {
+            XMLElement child = (XMLElement)children.nextElement();
+            _unknownElementType(child, "terminal");
+        }
+
+        Enumeration attributes = e.attributeNames();
+        while(attributes.hasMoreElements()) {
+            String n = (String) attributes.nextElement();
+            if (n.equals("name")) {
+                terminal.setName(_getString(e, n));
+            } else if (n.equals("x")) {
+                terminal.setX(_getDouble(e, n));
+            } else if (n.equals("y")) {
+                terminal.setY(_getDouble(e, n));
+            } else {
+                _unknownAttribute(e, n);
+            }
+        }
+        return terminal;
+    }
+
     private static Terminal _createTerminal(XMLElement e)
-        throws IllegalActionException {
+        throws IllegalActionException, NameDuplicationException {
 
         _verifyElement(e, "terminal");
 
@@ -353,9 +557,7 @@ public class PTMLObjectFactory {
         while(attributes.hasMoreElements()) {
             String n = (String) attributes.nextElement();
             if (n.equals("name")) {
-                try {                    
-                    terminal.setName(_getString(e, n));
-                } catch (Exception ex) {};
+                terminal.setName(_getString(e, n));
             } else if (n.equals("x")) {
                 terminal.setX(_getDouble(e, n));
             } else if (n.equals("y")) {
@@ -387,9 +589,7 @@ public class PTMLObjectFactory {
         while(attributes.hasMoreElements()) {
             String n = (String) attributes.nextElement();
             if (n.equals("name")) {
-                try {
-                    terminalStyle.setName(_getString(e, n));
-                } catch (Exception ex) {};
+                terminalStyle.setName(_getString(e, n));
             } else {
                 _unknownAttribute(e, n);
             }
@@ -419,6 +619,47 @@ public class PTMLObjectFactory {
      *  If no terminal style with the given name exists, 
      *  then throw an exception.
      */
+    private static SchematicTerminal _findSchematicTerminal(
+            Schematic schematic, String name)
+            throws IllegalActionException {
+        StringTokenizer tokens = new StringTokenizer(name, ".");
+        int count = tokens.countTokens();
+
+        SchematicTerminal terminal = null;
+        if(count == 1) {
+            // Then this is a terminal contained directly in the schematic
+            String terminalName = (String)tokens.nextElement();
+            terminal = schematic.getTerminal(terminalName);
+        } else if(count == 2) {
+            String objectName = (String)tokens.nextElement();
+            String terminalName = (String)tokens.nextElement();
+
+            // Then the terminal is in an entity or relation
+            if(schematic.containsRelation(objectName)) {
+                SchematicRelation relation = schematic.getRelation(objectName);
+                if(relation.containsTerminal(terminalName)) 
+                    terminal = relation.getTerminal(terminalName);
+            }
+            if(schematic.containsEntity(objectName)) {
+                SchematicEntity entity = schematic.getEntity(objectName);
+                if(entity.containsTerminal(terminalName) && 
+                        (terminal != null))  
+                    terminal = entity.getTerminal(terminalName);
+                else 
+                    throw new IllegalActionException("Ambiguous Terminals " +
+                            "found with name " + name);
+            }
+        }            
+        if(terminal == null) throw new IllegalActionException("Terminal not " +
+                "found with name " + name);
+        return terminal;
+    }
+
+    /** Return the terminalstyle with the given name in the 
+     *  given root icon library.
+     *  If no terminal style with the given name exists, 
+     *  then throw an exception.
+     */
     private static TerminalStyle _findTerminalStyle(
             IconLibrary root, String name)
             throws IllegalActionException {
@@ -431,6 +672,25 @@ public class PTMLObjectFactory {
             temp = temp.getSubLibrary((String) (tokens.nextElement()));
         
         return temp.getTerminalStyle((String) (tokens.nextElement()));
+    }
+
+    /** Return the terminalstyle with the given name in the 
+     *  given root icon library.
+     *  If no terminal style with the given name exists, 
+     *  then throw an exception.
+     */
+    private static EntityTemplate _findEntityTemplate(
+            EntityLibrary root, String name)
+            throws IllegalActionException {
+        StringTokenizer tokens = new StringTokenizer(name, ".");
+        EntityLibrary temp = root;
+        int count = tokens.countTokens();
+        
+        int i;
+        for(i = 0; i < (count - 1); i++) 
+            temp = temp.getSubLibrary((String) (tokens.nextElement()));
+        
+        return temp.getEntity((String) (tokens.nextElement()));
     }
 
     /** Return a boolean corresponding to the value of the attribute with
@@ -461,6 +721,24 @@ public class PTMLObjectFactory {
         try {
             Double d = new Double(v);
             return d.doubleValue();
+        } catch (NumberFormatException e) {
+            throw new IllegalActionException(
+                    "Attribute " + name + " with value " + v + 
+                    " does not represent a valid double.");
+        }
+    }
+
+   /** Return an integer corresponding to the value of the attribute with
+     * the given name in the given XMLElement.
+     * @throws IllegalActionException If the value of the XML attribute
+     *  does not represent a valid int
+     */
+    private static int _getInt(XMLElement el, String name) 
+        throws IllegalActionException {
+        String v = el.getAttribute(name);
+        try {
+            Integer d = new Integer(v);
+            return d.intValue();
         } catch (NumberFormatException e) {
             throw new IllegalActionException(
                     "Attribute " + name + " with value " + v + 
