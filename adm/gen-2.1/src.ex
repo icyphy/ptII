@@ -43,11 +43,12 @@ mems
 nsmail
 ptjar_tmpdir
 ptolemy/PtolemyII.ptml
+ptolemy/actor/corba
 ptolemy/actor/lib/Broadcast.java
 ptolemy/actor/lib/javasound/test/pitchshift
 ptolemy/actor/lib/javasound/test/outfile.wav
-ptolemy/actor/lib/joystick
 ptolemy/actor/lib/jspaces
+ptolemy/actor/lib/jxta
 ptolemy/actor/lib/net/test_auto
 ptolemy/actor/lib/test/auto/FileWriter1Output.txt
 ptolemy/actor/xslt
@@ -70,6 +71,7 @@ ptolemy/copernicus/java/test/ptolemy*
 ptolemy/copernicus/java/test/NamedObjConstructorAnalysis.class
 ptolemy/copernicus/java/test/NamedObjConstructorAnalysis.java
 ptolemy/copernicus/java/test/runSnapShot.stats
+ptolemy/copernicus/jhdl
 ptolemy/copernicus/shallow/ptolemy.giotto
 ptolemy/domains/csp/demo/DiningPhilosophers/checkDeadlock
 ptolemy/domains/ct/demo/Agilent
