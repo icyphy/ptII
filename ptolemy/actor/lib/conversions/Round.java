@@ -61,9 +61,6 @@ If the argument is NaN, then the result is NaN.
 
 @author C. Fong
 @version $Id$
-@see AbsoluteValue
-@see TrigFunction
-@see Scale
 */
 
 public class Round extends Transformer {
@@ -86,7 +83,7 @@ public class Round extends Transformer {
         _function = ROUND;
 
         input.setTypeEquals(BaseType.DOUBLE);
-        output.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -134,7 +131,7 @@ public class Round extends Transformer {
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             double in = ((DoubleToken)input.get(0)).doubleValue();
-            output.send(0, new DoubleToken(_doFunction(in)));
+            output.send(0, new IntToken(_doFunction(in)));
         }
     }
 
@@ -158,7 +155,7 @@ public class Round extends Transformer {
     public int iterate(int count) throws IllegalActionException {
 	// Check whether we need to reallocate the output token array.
 	    if (count > _resultArray.length) {
-	        _resultArray = new DoubleToken[count];
+	        _resultArray = new IntToken[count];
 	    }
 
         if (input.hasToken(0, count)) {
@@ -167,8 +164,8 @@ public class Round extends Transformer {
             Token[] inArray = input.get(0, count);
 	        for (int i = 0; i < count; i++) {
 		        double input = ((DoubleToken)(inArray[i])).doubleValue();
-		        _resultArray[i] = new DoubleToken(_doFunction(input));
-	        }
+		        _resultArray[i] = new IntToken(_doFunction(input));
+	         }
             output.send(0, _resultArray, count);
             return COMPLETED;
         } else {
@@ -183,23 +180,23 @@ public class Round extends Transformer {
      *  @param in The input value.
      *  @return The result of applying the function.
      */
-    private double _doFunction(double in) {
-        double result;
+    private int _doFunction(double in) {
+        int result;
         switch(_function) {
         case CEIL:
-            result = Math.ceil(in);
+            result = (int) Math.ceil(in);
             break;
         case FLOOR:
-            result = Math.floor(in);
+            result = (int) Math.floor(in);
             break;
         case ROUND:
-            result = Math.round(in);
+            result = (int) Math.round(in);
             break;
         case TRUNCATE:
             if ( in > 0) {
-                result = Math.floor(in);
+                result = (int) Math.floor(in);
             } else {
-                result = Math.ceil(in);
+                result = (int) Math.ceil(in);
             }
             break;
         default:
@@ -216,7 +213,7 @@ public class Round extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private DoubleToken[] _resultArray = new DoubleToken[1];
+    private IntToken[] _resultArray = new IntToken[1];
 
     // An indicator for the function to compute.
     private int _function;
