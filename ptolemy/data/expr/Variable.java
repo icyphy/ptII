@@ -265,6 +265,16 @@ public class Variable extends Attribute implements Typeable {
         _destroyParseTree();
     }
 
+    /** Add a listener to be notified when the value of this variable changes.
+     *  @param listener The listener to add.
+     */
+    public void addValueListener(ValueListener listener) {
+        if (_valueListeners == null) {
+            _valueListeners = new LinkedList();
+        }
+        _valueListeners.add(listener);
+    }
+
     /** Clone the variable.  This creates a new variable containing the
      *  same token (if the value was set with setToken()) or the same
      *  (unevaluated) expression, if the expression was set with
@@ -502,6 +512,17 @@ public class Variable extends Attribute implements Typeable {
         }
         _scopeVersion = -1;
         _destroyParseTree();
+    }
+
+    /** Remove a listener from the list of listeners that is
+     *  notified when the value of this variable changes.  If no such listener
+     *  exists, do nothing.
+     *  @param listener The listener to remove.
+     */
+    public void removeValueListener(ValueListener listener) {
+        if (_valueListeners != null) {
+            _valueListeners.remove(listener);
+        }
     }
 
     /** Reset the variable to its initial value. If the variable was
@@ -755,27 +776,6 @@ public class Variable extends Attribute implements Typeable {
      */
     public void setTypeEquals(Type type) throws IllegalActionException {
         if (_token != null) {
-
-	//    if (type.isConstant()) {
-        //        int typeInfo = TypeLattice.compare(_token.getType(), type);
-        //        if ((typeInfo == CPO.HIGHER)
-        //        			|| (typeInfo == CPO.INCOMPARABLE)) {
-        //            throw new IllegalActionException(this, "setTypeEquals(): "
-        //                + "the currently contained token " + _token.toString()
-        //                + " cannot be losslessly converted to the desired "
-	//		+ "type " + type.toString());
-        //        }
-        //        _token = type.convert(_token);
-	//    } else {
-	//	// argument is a variable
-	//	if ( !type.isSubstitutionInstance(_token.getType())) {
-        //            throw new IllegalActionException(this, "setTypeEquals(): "
-        //                + "the currently contained token " + _token.toString()
-        //                + " is not a substitution instance of the desired "
-	//		+ "type " + type.toString());
-	//	}
-	//    }
-
 	    if (type.isCompatible(_token)) {
 		_token = type.convert(_token);
 	    } else {
@@ -1202,48 +1202,6 @@ public class Variable extends Attribute implements Typeable {
 		((StructuredType)_varType).reset();
 	    }
         } else {
-            // Argument is not null
-            // Type tokenType = newToken.getType();
-
-            // if (_declaredType.isConstant()) {
-                // Type has been set by setTypeEquals().
-                // Check whether new token is instance of this type.
-            //     if (!_declaredType.isEqualTo(newToken.getType())) {
-                    // Check to see whether new token can be converted
-                    // to this type.
-            //         int typeInfo
-            //             = TypeLattice.compare(_declaredType, tokenType);
-            //         if (typeInfo == CPO.HIGHER) {
-                        // Convert newToken to _declaredType.
-            //             newToken = _declaredType.convert(newToken);
-            //         } else {
-                        // Incompatible type!
-            //             throw new IllegalActionException(this,
-            //                 "Variable._setToken: Cannot store a token of type "
-            //                 + tokenType.toString()
-            //                 + ", which is incompatible with type "
-            //                 + _varType.toString());
-            //         }
-            //     }
-            // } else {
-		// _declaredType is a variable.
-	    //	if (_declaredType.isSubstitutionInstance(tokenType)) {
-	    //	    if (_declaredType == BaseType.NAT) {
-	    //	        _varType = tokenType;
-	    //	    } else {
-			// _declaredType is a structured type
-	    //		((StructuredType)_varType).updateType(
-	    //					(StructuredType)tokenType);
-	    //	    }
-	    //	} else {
-            //            throw new IllegalActionException(this,
-            //            "Variable._setToken: Cannot store a token of type "
-            //            + tokenType.toString()
-            //            + ", which is incompatible with type "
-            //            + _varType.toString());
-	    //	}
-            // }
-
 	    if (_declaredType.isCompatible(newToken)) {
 		newToken = _declaredType.convert(newToken);
 	    } else {
@@ -1295,7 +1253,9 @@ public class Variable extends Attribute implements Typeable {
 
     /*  Set the token value and type of the variable, and notify the
      *  container that the value (and type, if appropriate) has changed.
-     *  Also notify value dependents that they need to be re-evaluated.
+     *  Also notify value dependents that they need to be re-evaluated,
+     *  and notify any listeners that have been registered with
+     *  addValueListener().
      *  If setTypeEquals() has been called, then attempt to convert
      *  the specified token into one of the appropriate type, if needed,
      *  rather than changing the type.
@@ -1327,6 +1287,13 @@ public class Variable extends Attribute implements Typeable {
                     container.attributeTypeChanged(this);
                 }
                 container.attributeChanged(this);
+            }
+            if (_valueListeners != null) {
+                Iterator listeners = _valueListeners.iterator();
+                while (listeners.hasNext()) {
+                    ValueListener listener = (ValueListener)listeners.next();
+                    listener.valueChanged(this);
+                }
             }
         } catch (IllegalActionException ex) {
             // reverse the changes
@@ -1411,6 +1378,8 @@ public class Variable extends Attribute implements Typeable {
     // Reference to the inner class that implements InequalityTerm.
     TypeTerm _typeTerm = null;
 
+    // Listeners for changes in value.
+    private List _valueListeners;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
