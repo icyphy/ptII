@@ -54,7 +54,6 @@ public class NumerDenomView extends View{
      * @param mode mode of environment: 0 for frame, 1 for applet
      * @param name name of filter.
      * @return nothing
-     * @exception full-classname description
      */
     public NumerDenomView(FilterObj filter, int mode, String name) {
           _viewPanel = new NumerDenomPanel();
