@@ -120,8 +120,12 @@ test ComponentPort-3.2 {Make multiple aliases and test deepInsidePorts} {
     $p2 link $a1
     $p3 link $a1
     list [enumToFullNames [$p3 deepInsidePorts]] \
-            [enumToFullNames [$p3 insidePorts]]
-} {{.E1.E2.P1 .E1.E2.P2} {.E1.E2.P1 .E1.E2.P2}}
+            [enumToFullNames [$p3 insidePorts]] \
+	    [$p2 isDeeplyConnected $p1] \
+	    [$p1 isDeeplyConnected $p2] \
+	    [$p1 isDeeplyConnected $p3] \
+	    [$p3 isDeeplyConnected $p2] 
+} {{.E1.E2.P1 .E1.E2.P2} {.E1.E2.P1 .E1.E2.P2} 1 1 0 0} 
 
 ######################################################################
 ####
@@ -314,7 +318,7 @@ test ComponentPort-6.0 {unlinkAll} {
             [enumToNames [$p5 deepConnectedPorts]]
 } {{} {} P5 P5 P3}
 
-test ComponentPort-7.0 {transaprent ports in a loop} {
+test ComponentPort-7.0 {transparent ports in a loop} {
     set w [java::new ptolemy.kernel.CompositeEntity]
     set a [java::new ptolemy.kernel.CompositeEntity $w A]
     set p1 [$a newPort P1]
