@@ -458,7 +458,7 @@ public class PetriNetDirector extends Director {
                 }
                 LinkedList temporaryDestinationPortList = new LinkedList();
                 while(newRelationList.size() > 0 )  {
-                    IORelation weights = 
+                    IORelation weights =
                                   (IORelation) newRelationList.getFirst();
                     if (weights != null) {
                         Iterator weightPorts =
