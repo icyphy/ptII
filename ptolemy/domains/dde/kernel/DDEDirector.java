@@ -518,7 +518,7 @@ public class DDEDirector extends ProcessDirector {
         * @exception ClassCastException If fst and scd are
         *  not instances of DDEReceiver.
         */
-       public int compare( Object fst, Object scd ) {
+       public int compare(Object fst, Object scd) {
            DDEReceiver first = null;
            DDEReceiver second = null;
 
