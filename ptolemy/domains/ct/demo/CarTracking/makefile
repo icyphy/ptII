@@ -90,13 +90,42 @@ depend:
 	@echo "no dependencies in this directory"
 
 CarInformationSubscriber_Stub.class: CarInformationSubscriber.java
-	$(RMIC) -classpath $(CLASSPATH) ptolemy.domains.ct.demo.$(PTPACKAGE).CarInformationSubscriber
+	$(RMIC) -classpath $(CLASSPATH) \
+		ptolemy.domains.ct.demo.$(PTPACKAGE).CarInformationSubscriber
 
 CTSubscriber_Stub.class: CTSubscriber.java
-	$(RMIC) -classpath $(CLASSPATH) ptolemy.domains.ct.demo.$(PTPACKAGE).CTSubscriber
+	$(RMIC) -classpath $(CLASSPATH) \
+		ptolemy.domains.ct.demo.$(PTPACKAGE).CTSubscriber
 
 DERealTimeSubscriber_Stub.class: DERealTimeSubscriber.java
-	$(RMIC) -classpath $(CLASSPATH) ptolemy.domains.ct.demo.$(PTPACKAGE).DERealTimeSubscriber
+	$(RMIC) -classpath $(CLASSPATH) \
+		ptolemy.domains.ct.demo.$(PTPACKAGE).DERealTimeSubscriber
+
+demo:
+	$(MAKE) LeadingCar &
+	$(MAKE) FollowingCar &
+	$(MAKE) Monitor &
+
+# This command is common to all the JINI commands
+DEMO_CMD = $(JAVA) -Djava.security.policy=./policy.all \
+		-Doutrigger.spacename=JavaSpaces \
+		-Dcom.sun.jini.lookup.groups=public \
+		-cp $(CLASSPATH) 
+		-Djava.rmi.server.codebase=file:${PTII}/ \
+		ptolemy.actor.gui.PtolemyApplication
+
+# $(DEMO_CMD) LeadingCar.xml
+LeadingCar:
+	$(PTII)/bin/ptjini LeadingCar.xml
+
+# $(DEMO_CMD) FollowingCar.xml
+FollowingCar:
+	$(PTII)/bin/ptjini FollowingCar.xml
+
+# $(DEMO_CMD) Monitor.xml
+Monitor:
+	$(PTII)/bin/ptjini Monitor.xml
+
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
