@@ -297,11 +297,11 @@ public class RTOSDirector extends Director {
         while (!_interruptQueue.isEmpty()) {
             DEEvent interruptEvent = (DEEvent)_interruptQueue.get();
             double timeStamp = interruptEvent.timeStamp();
-            if (timeStamp < (getCurrentTime() - 1e-10)) {
+            if (timeStamp < getCurrentTime()) {
                 // This should never happen.
                 throw new IllegalActionException(this,
                             "external input in the past.");
-            } else if (Math.abs(timeStamp - getCurrentTime()) < 1e-10) {
+            } else if (timeStamp == getCurrentTime()) {
                 _interruptQueue.take();
                 Actor actor = interruptEvent.actor();
                 if (actor != null) {
@@ -380,6 +380,12 @@ public class RTOSDirector extends Director {
                         _eventQueue.take();
 
                         actor.fire();
+
+		        // Actor stops executing, ie finishing
+		        _displaySchedule(((Nameable)actor).getName(),
+		        	     getCurrentTime(),
+				     SchedulePlotter.TASK_SLEEPING);
+                        _displaySchedule();
 
                         if (!actor.postfire()) {
                             _disableActor(actor);
@@ -672,7 +678,7 @@ public class RTOSDirector extends Director {
     protected final void _displaySchedule() {
       if(_eventQueue != null) {
 	Object[] events = _eventQueue.toArray();
-//	System.out.println("REPORT SCHEDULE @ " + getCurrentTime());
+	// System.out.println("REPORT SCHEDULE @ " + getCurrentTime());
 	for (int i = events.length-1; i >= 0; i-- ) {
 	  String actorName = ((Nameable)((RTOSEvent)events[i]).actor()).getName();
 	  double time = getCurrentTime();
@@ -680,8 +686,8 @@ public class RTOSDirector extends Director {
 	  if (i == 0) {
 	    scheduleEvent = SchedulePlotter.TASK_RUNNING;
 	  }
-//	  System.out.println("EVENT: " + actorName + ", " +
-//                           time + ", " + scheduleEvent);
+	  // System.out.println("EVENT: " + actorName + ", " +
+          //                  time + ", " + scheduleEvent);
 	  _displaySchedule(actorName, time, scheduleEvent);
 	}
       }
