@@ -370,10 +370,10 @@ public class StringUtilities {
     }
 
     /** Replace all occurrences of <i>pattern</i> in the specified
-     *  string with <i>replacement</i>.
-     *  Note that using backslashes in the pattern can be tricky,
-     *  see the documentation for java.lang.String.replaceAll() for
-     *  details.
+     *  string with <i>replacement</i>.  Note that the pattern is NOT
+     *  a regular expression, and that relative to the
+     *  String.replaceAll() method in jdk1.4, this method is extremely
+     *  slow.
      *  @param string The string to edit.
      *  @param old The string to replace.
      *  @param replacement The string to replace it with.
@@ -381,16 +381,14 @@ public class StringUtilities {
      */
     public static String substitute(String string,
             String pattern, String replacement) {
-        string = string.replaceAll(pattern, replacement);
-        // Note: we used to do this by hand, before jdk1.4
-//         int start = string.indexOf(pattern);
-//         while (start != -1) {
-//             StringBuffer buffer = new StringBuffer(string);
-//             buffer.delete(start, start + pattern.length());
-//             buffer.insert(start, replacement);
-//             string = new String(buffer);
-//             start = string.indexOf(pattern, start + replacement.length());
-//         }
+        int start = string.indexOf(pattern);
+        while (start != -1) {
+            StringBuffer buffer = new StringBuffer(string);
+            buffer.delete(start, start + pattern.length());
+            buffer.insert(start, replacement);
+            string = new String(buffer);
+            start = string.indexOf(pattern, start + replacement.length());
+        }
         return string;
     }
 
