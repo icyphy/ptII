@@ -140,25 +140,19 @@ public class JVMTableau extends Tableau {
 	}
     }
 
-    /** A factory that creates a control panel to display JVM Properties
+    /** A factory that creates a control panel to display JVM Properties.
      */
     public static class Factory extends TableauFactory {
 
-	/** Create an factory with the given name and container.
-	 *  The container argument must not be null, or a
-	 *  NullPointerException will be thrown.  This entity will use the
-	 *  workspace of the container for synchronization and version counts.
-	 *  If the name argument is null,
-	 *  then the name is set to the empty string.
-	 *  Increment the version of the workspace.
-	 *  @param container The container entity.
-	 *  @param name The name of the entity.
+	/** Create a factory with the given name and container.
+	 *  @param container The container.
+	 *  @param name The name.
 	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this entity.
+	 *   with this attribute.
 	 *  @exception NameDuplicationException If the name coincides with
-	 *   an entity already in the container.
+	 *   an attribute already in the container.
 	 */
-	public Factory(CompositeEntity container, String name)
+	public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
 	}
@@ -197,7 +191,6 @@ public class JVMTableau extends Tableau {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-
     // Update the memory statistics in textArea.
     private void updateMemoryStatistics(JTextArea textArea) {
 	// Report memory usage statistics.
@@ -214,5 +207,3 @@ public class JVMTableau extends Tableau {
                 + "%)");
     }
 }
-
-

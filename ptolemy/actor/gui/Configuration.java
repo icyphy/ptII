@@ -108,9 +108,41 @@ public class Configuration extends CompositeEntity {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
 
+                // If the object referenced by the effigy contains
+                // an attribute that is an instance of TableauFactory,
+                // then use that factory to create the tableau.
+                // Otherwise, use the first factory encountered in the
+                // configuration that agrees to represent this effigy.
+                TableauFactory factory = null;
+                if (effigy instanceof PtolemyEffigy) {
+                    NamedObj model = ((PtolemyEffigy)effigy).getModel();
+                    if (model != null) {
+                        Iterator factories = model.attributeList(
+                                TableauFactory.class).iterator();
+                        // If there are more than one of these, use the first
+                        // one that agrees to open the model.
+                        while (factories.hasNext() && factory == null) {
+                            factory = (TableauFactory)factories.next();
+                            try {
+                                Tableau tableau = factory.createTableau(effigy);
+                                if (tableau != null) {
+                                    // The first tableau is a master.
+                                    tableau.setMaster(true);
+                                    tableau.setEditable(effigy.isModifiable());
+                                    tableau.show();
+                                    return;
+                                }
+                            } catch (Exception ex) {
+                                // Ignore so we keep trying.
+                                factory = null;
+                            }
+                        }
+                    }
+                }
+
+                // Defer to the configuration.
                 // Create a tableau if there is a tableau factory.
-                TableauFactory factory = (TableauFactory)getEntity(
-                        "tableauFactory");
+                factory = (TableauFactory)getAttribute("tableauFactory");
                 if (factory != null) {
                     // If this fails, we do not want the effigy to linger
                     try {

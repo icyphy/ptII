@@ -115,7 +115,6 @@ public class FSMViewerController extends PtolemyGraphController {
     public void setConfiguration(Configuration configuration) {
         super.setConfiguration(configuration);
         _attributeController.setConfiguration(configuration);
-        _portController.setConfiguration(configuration);
         _stateController.setConfiguration(configuration);
         _transitionController.setConfiguration(configuration);
     }
@@ -131,9 +130,8 @@ public class FSMViewerController extends PtolemyGraphController {
      *  will not have been fully constructed by the time this is called.
      */
     protected void _createControllers() {
+        super._createControllers();
 	_attributeController = new AttributeController(this,
-                 AttributeController.PARTIAL);
-	_portController = new PortController(this,
                  AttributeController.PARTIAL);
 	_stateController = new FSMStateController(this,
                  AttributeController.PARTIAL);
@@ -168,9 +166,6 @@ public class FSMViewerController extends PtolemyGraphController {
 
     /** The attribute controller. */
     protected PtolemyNodeController _attributeController;
-
-    /** The port controller. */
-    protected PortController _portController;
 
     /** The state controller. */
     protected FSMStateController _stateController;

@@ -29,7 +29,6 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 import java.io.IOException;
@@ -122,18 +121,14 @@ public class HTMLViewerTableau extends Tableau {
     public static class Factory extends TableauFactory {
 
 	/** Create a factory with the given name and container.
-	 *  The container argument must not be null, or a
-	 *  NullPointerException will be thrown.
-	 *  If the name argument is null,
-	 *  then the name is set to the empty string.
 	 *  @param container The container.
 	 *  @param name The name.
 	 *  @exception IllegalActionException If the container is incompatible
-	 *   with this entity.
+	 *   with this attribute.
 	 *  @exception NameDuplicationException If the name coincides with
-	 *   an entity already in the container.
+	 *   an attribute already in the container.
 	 */
-	public Factory(CompositeEntity container, String name)
+	public Factory(NamedObj container, String name)
                 throws IllegalActionException, NameDuplicationException {
 	    super(container, name);
 	}

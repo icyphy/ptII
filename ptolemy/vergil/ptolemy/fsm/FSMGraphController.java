@@ -53,13 +53,20 @@ import diva.canvas.interactor.CompositeInteractor;
 import diva.canvas.interactor.GrabHandle;
 import diva.graph.GraphException;
 import diva.graph.GraphPane;
+import diva.graph.NodeRenderer;
+import diva.gui.toolbox.FigureIcon;
 
 import ptolemy.gui.MessageHandler;
+import ptolemy.domains.fsm.kernel.State;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.moml.Location;
 import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.ptolemy.GraphFrame;
 import ptolemy.vergil.ptolemy.kernel.AttributeController;
 import ptolemy.vergil.ptolemy.kernel.PortController;
 import ptolemy.vergil.toolbox.FigureAction;
@@ -95,10 +102,26 @@ public class FSMGraphController extends FSMViewerController {
      */
     public void addToMenuAndToolbar(JMenu menu, JToolBar toolbar) {
         super.addToMenuAndToolbar(menu, toolbar);
+
+	diva.gui.GUIUtilities.addMenuItem(menu, _newInputPortAction);
+       	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInputPortAction);
+	diva.gui.GUIUtilities.addMenuItem(menu, _newOutputPortAction);
+       	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newOutputPortAction);
+	diva.gui.GUIUtilities.addMenuItem(menu, _newInoutPortAction);
+       	diva.gui.GUIUtilities.addToolBarButton(toolbar, _newInoutPortAction);
+	diva.gui.GUIUtilities.addMenuItem(menu, _newInputMultiportAction);
+       	diva.gui.GUIUtilities.addToolBarButton(
+                   toolbar, _newInputMultiportAction);
+	diva.gui.GUIUtilities.addMenuItem(menu, _newOutputMultiportAction);
+       	diva.gui.GUIUtilities.addToolBarButton(
+                   toolbar, _newOutputMultiportAction);
+	diva.gui.GUIUtilities.addMenuItem(menu, _newInoutMultiportAction);
+       	diva.gui.GUIUtilities.addToolBarButton(
+                   toolbar, _newInoutMultiportAction);
+
         // Add an item that adds new states.
 	diva.gui.GUIUtilities.addMenuItem(menu, _newStateAction);
-        // To get a new-state item on the toolbar, uncomment this:
-        // diva.gui.GUIUtilities.addToolBarButton(toolbar, _newStateAction);
+        diva.gui.GUIUtilities.addToolBarButton(toolbar, _newStateAction);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -164,6 +187,54 @@ public class FSMGraphController extends FSMViewerController {
     private MouseFilter _shiftFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK,
             InputEvent.SHIFT_MASK);
+
+    /** Action for creating a new input port. */
+    private Action _newInputPortAction = new NewPortAction(
+            PortController._GENERIC_INPUT, "New input port",
+            KeyEvent.VK_I);
+
+    /** Action for creating a new output port. */
+    private Action _newOutputPortAction = new NewPortAction(
+            PortController._GENERIC_OUTPUT, "New output port",
+            KeyEvent.VK_O);
+
+    /** Action for creating a new inout port. */
+    private Action _newInoutPortAction = new NewPortAction(
+            PortController._GENERIC_INOUT, "New input/output port",
+            KeyEvent.VK_P);
+
+    /** Action for creating a new input multiport. */
+    private Action _newInputMultiportAction = new NewPortAction(
+            PortController._GENERIC_INPUT_MULTIPORT,
+            "New input multiport",
+            KeyEvent.VK_N);
+
+    /** Action for creating a new output multiport. */
+    private Action _newOutputMultiportAction = new NewPortAction(
+            PortController._GENERIC_OUTPUT_MULTIPORT,
+            "New output multiport",
+            KeyEvent.VK_U);
+
+    /** Action for creating a new inout multiport. */
+    private Action _newInoutMultiportAction = new NewPortAction(
+            PortController._GENERIC_INOUT_MULTIPORT,
+            "New input/output multiport",
+            KeyEvent.VK_T);
+
+    /** Prototype state for rendering. */
+    private static Location _prototypeState;
+
+    static {
+        CompositeEntity container = new CompositeEntity();
+        try {
+            State state = new State(container, "S");
+            _prototypeState = new Location(state, "_location");
+            new SingletonAttribute(state, "_centerName");
+        } catch (KernelException ex) {
+            // This should not happen.
+            throw new InternalErrorException(ex.toString());
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -241,14 +312,11 @@ public class FSMGraphController extends FSMViewerController {
 	    super("New State");
 	    putValue("tooltip", "New State");
 	    String dflt = "";
-            // If we want a new-state item in the toolbar, uncomment this:
-            /*
 	    NodeRenderer renderer = new FSMStateController.StateRenderer();
-	    Figure figure = renderer.render(null);
+	    Figure figure = renderer.render(_prototypeState);
 	    // Standard toolbar icons are 25x25 pixels.
 	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
 	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
-            */
 	    putValue("tooltip", "Control-click to create a new state.");
 	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
                     new Integer(KeyEvent.VK_S));
@@ -257,16 +325,25 @@ public class FSMGraphController extends FSMViewerController {
         /** Execute the action. */
 	public void actionPerformed(ActionEvent e) {
 	    super.actionPerformed(e);
-	    GraphPane pane = getGraphPane();
 	    double x;
 	    double y;
 	    if(getSourceType() == TOOLBAR_TYPE ||
                     getSourceType() == MENUBAR_TYPE) {
-		// No location in the action, so make something up.
-		// NOTE: is there a better way to do this?
-		Point2D point = pane.getSize();
-		x = point.getX()/2;
-		y = point.getY()/2;
+		// No location in the action, so put it in the middle.
+                GraphFrame frame = getFrame();
+                Point2D center;
+                if (frame != null) {
+                    // Put in the middle of the visible part.
+                    center = frame.getCenter();
+                    x = center.getX();
+                    y = center.getY();
+                } else {
+                    // Put in the middle of the pane.
+                    GraphPane pane = getGraphPane();
+                    center = pane.getSize();
+                    x = center.getX()/2;
+                    y = center.getY()/2;
+                }
 	    } else {
 		x = getX();
 		y = getY();
@@ -286,8 +363,9 @@ public class FSMGraphController extends FSMViewerController {
                     "\" class=\"ptolemy.domains.fsm.kernel.State\">\n");
 	    moml.append("<property name=\"" + locationName +
                     "\" class=\"ptolemy.moml.Location\"/>\n");
+	    moml.append("<property name=\"_centerName\"" +
+                    " class=\"ptolemy.kernel.util.SingletonAttribute\"/>\n");
 	    moml.append("</entity>\n");
-
 
 	    ChangeRequest request =
 		new MoMLChangeRequest(this, toplevel, moml.toString()) {

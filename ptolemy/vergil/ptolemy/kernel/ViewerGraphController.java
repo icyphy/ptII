@@ -141,7 +141,6 @@ public class ViewerGraphController extends PtolemyGraphController {
         super.setConfiguration(configuration);
         _attributeController.setConfiguration(configuration);
         _entityController.setConfiguration(configuration);
-        _portController.setConfiguration(configuration);
         _entityPortController.setConfiguration(configuration);
         _relationController.setConfiguration(configuration);
         _linkController.setConfiguration(configuration);
@@ -158,13 +157,12 @@ public class ViewerGraphController extends PtolemyGraphController {
      *  will not have been fully constructed by the time this is called.
      */
     protected void _createControllers() {
+        super._createControllers();
 	_attributeController = new AttributeController(this,
                  AttributeController.PARTIAL);
 	_entityController = new EntityController(this,
                  AttributeController.PARTIAL);
 	_entityPortController = new EntityPortController(this,
-                 AttributeController.PARTIAL);
-	_portController = new PortController(this,
                  AttributeController.PARTIAL);
 	_relationController = new RelationController(this);
 	_linkController = new LinkController(this);
@@ -209,9 +207,6 @@ public class ViewerGraphController extends PtolemyGraphController {
 
     /** The link controller. */
     protected LinkController _linkController;
-
-    /** The port controller. */
-    protected PtolemyNodeController _portController;
 
     /** The relation controller. */
     protected PtolemyNodeController _relationController;

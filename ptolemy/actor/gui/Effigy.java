@@ -52,7 +52,7 @@ An effigy represents model data, and is contained in the model directory
 or another effigy.
 An effigy contains all open instances of Tableau associated with the model.
 It also contains a string attribute named "identifier" with a value that
-uniquely identifies the model. A typical choice (which depend on
+uniquely identifies the model. A typical choice (which depends on
 the configuration) is the canonical URL for a MoML file that
 describes the model.  In the case of an effigy contained by another,
 a typical choice is the URL of the parent effigy, a pound sign "#",

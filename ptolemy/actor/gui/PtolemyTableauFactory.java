@@ -31,9 +31,9 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -68,7 +68,7 @@ public class PtolemyTableauFactory extends TableauFactory {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public PtolemyTableauFactory(CompositeEntity container, String name)
+    public PtolemyTableauFactory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -96,7 +96,7 @@ public class PtolemyTableauFactory extends TableauFactory {
 
         // Delegate to the first contained effigy to open a view.
  	Tableau tableau = null;
-	Iterator factories = entityList(TableauFactory.class).iterator();
+	Iterator factories = attributeList(TableauFactory.class).iterator();
 	if(factories.hasNext()) {
 	    TableauFactory factory = (TableauFactory)factories.next();
 	    tableau = factory.createTableau(effigy);

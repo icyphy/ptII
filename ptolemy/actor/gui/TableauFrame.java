@@ -217,7 +217,7 @@ public abstract class TableauFrame extends Top {
                     try {
                         // Create a tableau if there is a tableau factory.
                         TableauFactory factory = (TableauFactory)
-                            getConfiguration().getEntity("tableauFactory");
+                            getConfiguration().getAttribute("tableauFactory");
                         if (factory != null) {
                             Tableau tableau = factory.createTableau(effigy);
                             if (tableau == null) {
@@ -308,7 +308,7 @@ public abstract class TableauFrame extends Top {
                     _menubar.add(_viewMenu);
                     ViewMenuListener vml = new ViewMenuListener();
                     Iterator factories =
-                        _factoryContainer.entityList(TableauFactory.class)
+                        _factoryContainer.attributeList(TableauFactory.class)
                         .iterator();
                     while (factories.hasNext()) {
                         TableauFactory factory
@@ -657,7 +657,7 @@ public abstract class TableauFrame extends Top {
                 JMenuItem target = (JMenuItem)e.getSource();
                 String actionCommand = target.getActionCommand();
                 TableauFactory factory = (TableauFactory)
-                    _factoryContainer.getEntity(actionCommand);
+                    _factoryContainer.getAttribute(actionCommand);
                 if (factory != null) {
                     Effigy tableauContainer = (Effigy)_tableau.getContainer();
                     try {

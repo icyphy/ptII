@@ -30,24 +30,36 @@
 
 package ptolemy.vergil.ptolemy.kernel;
 
+import java.awt.event.ActionEvent;
+import java.awt.geom.Point2D;
+import java.awt.geom.Rectangle2D;
 import java.util.List;
-
 import javax.swing.JMenu;
 import javax.swing.JToolBar;
 
 import diva.canvas.Figure;
 import diva.graph.AbstractGraphController;
 import diva.graph.GraphController;
+import diva.graph.GraphException;
 import diva.graph.GraphPane;
 import diva.graph.NodeController;
+import diva.graph.NodeRenderer;
+import diva.gui.toolbox.FigureIcon;
 import diva.gui.toolbox.MenuCreator;
 
+import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.Location;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.vergil.ptolemy.AbstractPtolemyGraphModel;
 import ptolemy.vergil.ptolemy.GraphFrame;
 import ptolemy.vergil.toolbox.EditParametersFactory;
+import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
+import ptolemy.vergil.toolbox.SnapConstraint;
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyGraphController
@@ -136,6 +148,7 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
      */
     public void setConfiguration(Configuration configuration) {
         _configuration = configuration;
+        _portController.setConfiguration(configuration);
     }
 
     /** Set the graph frame.  This is used by some of the controllers
@@ -148,6 +161,18 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Create the controllers for nodes in this graph.
+     *  In this base class, a port controller with PARTIAL access is created.
+     *  This is called by the constructor, so derived classes that
+     *  override this must be careful not to reference local variables
+     *  defined in the derived classes, because the derived classes
+     *  will not have been fully constructed by the time this is called.
+     */
+    protected void _createControllers() {
+	_portController = new PortController(this,
+                 AttributeController.PARTIAL);
+    }
 
     /** Initialize all interaction on the graph pane. This method
      *  is called by the setGraphPane() method of the superclass.
@@ -174,6 +199,9 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
     /** The factory belonging to the menu creator. */
     protected PtolemyMenuFactory _menuFactory;
 
+    /** The port controller. */
+    protected PtolemyNodeController _portController;
+
     ///////////////////////////////////////////////////////////////////
     ////                        private variables                  ////
 
@@ -183,8 +211,152 @@ public abstract class PtolemyGraphController extends AbstractGraphController {
     // The graph frame, if there is one.
     private GraphFrame _frame;
 
+    /** Offset of ports from the visible border. */
+    private static double _PORT_OFFSET = 20.0;
+
     ///////////////////////////////////////////////////////////////////
     ////                          inner classes                    ////
+
+    ///////////////////////////////////////////////////////////////
+    //// NewPortAction
+
+    /** An action to create a new port. */
+    public class NewPortAction extends FigureAction {
+
+        /** Create a new port that has the same input, output, and
+         *  multiport properties as the specified port.  If the specified
+         *  port is null, then a new port that is neither an input, an
+         *  output, nor a multiport will be created.
+         *  @param prototype Prototype port.
+         *  @param description The description used for menu entries and
+         *   tooltips.
+         *  @param mnemonicKey The KeyEvent field for the mnemonic key to
+         *   use in the menu.
+         */
+	public NewPortAction(
+                IOPort prototype, String description, int mnemonicKey) {
+	    super(description);
+            _prototype = prototype;
+	    String dflt = "";
+	    // Creating the renderers this way is rather nasty..
+	    // Standard toolbar icons are 25x25 pixels.
+	    NodeRenderer renderer = _portController.getNodeRenderer();
+            Object location = null;
+            if (_prototype != null) {
+                location = _prototype.getAttribute("_location");
+            }
+	    Figure figure = renderer.render(location);
+
+	    FigureIcon icon = new FigureIcon(figure, 25, 25, 1, true);
+	    putValue(diva.gui.GUIUtilities.LARGE_ICON, icon);
+
+	    putValue("tooltip", description);
+	    putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    new Integer(mnemonicKey));
+	}
+
+        /** Create a new port. */
+	public void actionPerformed(ActionEvent e) {
+	    super.actionPerformed(e);
+	    double x;
+	    double y;
+	    if(getSourceType() == TOOLBAR_TYPE ||
+                    getSourceType() == MENUBAR_TYPE) {
+		// No location in the action, so put it in the middle.
+                GraphFrame frame = getFrame();
+                if (frame != null) {
+                    // Put in the middle of the visible part.
+                    Point2D center = frame.getCenter();
+                    if (_prototype != null) {
+                        Rectangle2D visiblePart = frame.getVisibleRectangle();
+                        if (_prototype.isInput() && _prototype.isOutput()) {
+                            x = center.getX();
+                            y = visiblePart.getY()
+                                   + visiblePart.getHeight() - _PORT_OFFSET;
+                        } else if (_prototype.isInput()) {
+                            x = visiblePart.getX() + _PORT_OFFSET;
+                            y = center.getY();
+                        } else if (_prototype.isOutput()) {
+                            x = visiblePart.getX()
+                                   + visiblePart.getWidth() - _PORT_OFFSET;
+                            y = center.getY();
+                        } else {
+                            x = center.getX();
+                            y = center.getY();
+                        }
+                    } else {
+                        x = center.getX();
+                        y = center.getY();
+                    }
+                } else {
+                    // Put in the middle of the pane.
+                    GraphPane pane = getGraphPane();
+                    Point2D center = pane.getSize();
+                    x = center.getX()/2;
+                    y = center.getY()/2;
+                }
+	    } else {
+		x = getX();
+		y = getY();
+	    }
+
+	    AbstractPtolemyGraphModel graphModel =
+                    (AbstractPtolemyGraphModel)getGraphModel();
+            // FIXME: This is not sufficient for some reason to get proper
+            // snap to grid.
+            final double[] point = SnapConstraint.constrainPoint(x, y);
+	    final CompositeEntity toplevel = graphModel.getPtolemyModel();
+	    final String portName = toplevel.uniqueName("port");
+	    final String locationName = "_location";
+	    // Create the port.
+	    StringBuffer moml = new StringBuffer();
+	    moml.append("<port name=\"" + portName + "\">\n");
+	    moml.append("<property name=\"" + locationName +
+                    "\" class=\"ptolemy.moml.Location\"/>\n");
+            if (_prototype != null) {
+                if (_prototype.isInput()) {
+                    moml.append("<property name=\"input\"/>");
+                }
+                if (_prototype.isOutput()) {
+                    moml.append("<property name=\"output\"/>");
+                }
+                if (_prototype.isMultiport()) {
+                    moml.append("<property name=\"multiport\"/>");
+                }
+            }
+	    moml.append("</port>");
+
+	    ChangeRequest request =
+		new MoMLChangeRequest(this, toplevel, moml.toString()) {
+                protected void _execute() throws Exception {
+                    super._execute();
+
+                    // Set the location of the icon.
+                    // Note that this really needs to be done after
+                    // the change request has succeeded, which is why
+                    // it is done here.  When the graph controller
+                    // gets around to handling this, it will draw
+                    // the icon at this location.
+                    NamedObj newObject = toplevel.getPort(portName);
+                    Location location =
+			     (Location) newObject.getAttribute(locationName);
+                    location.setLocation(point);
+                }
+            };
+	    toplevel.requestChange(request);
+	    try {
+		request.waitForCompletion();
+	    } catch (Exception ex) {
+		ex.printStackTrace();
+		throw new GraphException(ex);
+	    }
+	}
+
+        private IOPort _prototype;
+    }
+
+    ///////////////////////////////////////////////////////////////
+    //// SchematicContextMenuFactory
 
     /** Factory for context menus. */
     public static class SchematicContextMenuFactory

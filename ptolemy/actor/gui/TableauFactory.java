@@ -31,9 +31,10 @@
 
 package ptolemy.actor.gui;
 
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.NamedObj;
 
 import java.io.InputStream;
 import java.io.IOException;
@@ -45,6 +46,10 @@ import java.util.List;
 //////////////////////////////////////////////////////////////////////////
 //// TableauFactory
 /**
+This class is an attribute that creates a tableau to view a specified effigy.
+When a model is opened, if the top-level of that model contains this
+attribute or a subclass, then that attribute handles constructing a tableau.
+Otherwise, the configuration specifies which tableau is used.
 A configuration contains an instance of this class, and uses it to create
 a tableau for a model represented by an effigy.  This base class assumes
 that it contains other tableau factories. Its createTableau() method defers
@@ -65,7 +70,7 @@ any single view is opened.
 @see Effigy
 @see Tableau
 */
-public class TableauFactory extends CompositeEntity {
+public class TableauFactory extends Attribute {
 
     /** Create a factory with the given name and container.
      *  @param container The container.
@@ -75,7 +80,7 @@ public class TableauFactory extends CompositeEntity {
      *  @exception NameDuplicationException If the name coincides with
      *   an entity already in the container.
      */
-    public TableauFactory(CompositeEntity container, String name)
+    public TableauFactory(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
@@ -105,7 +110,7 @@ public class TableauFactory extends CompositeEntity {
      */
     public Tableau createTableau(Effigy effigy) throws Exception {
 	Tableau tableau = null;
-	Iterator factories = entityList(TableauFactory.class).iterator();
+	Iterator factories = attributeList(TableauFactory.class).iterator();
 	while(factories.hasNext() && tableau == null) {
 	    TableauFactory factory = (TableauFactory)factories.next();
 	    tableau = factory.createTableau(effigy);

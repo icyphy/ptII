@@ -67,6 +67,17 @@ public class FSMGraphFrame extends GraphFrame {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Create the menus that are used by this frame.
+     *  It is essential that _createGraphPane() be called before this.
+     */
+    protected void _addMenus() {
+	super._addMenus();
+
+        // Add any commands to graph menu and toolbar that the controller
+        // wants in the graph menu and toolbar.
+        _controller.addToMenuAndToolbar(_graphMenu, _toolbar);
+    }
+
     /** Create a new graph pane. Note that this method is called in
      *  constructor of the base class, so it must be careful to not reference
      *  local variables that may not have yet been created.
