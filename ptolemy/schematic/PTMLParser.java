@@ -204,9 +204,18 @@ public class PTMLParser extends HandlerBase{
             throws Exception {
         if(pubID == null) return sysID;
 
-        System.out.println(java.lang.System.getProperty("PTII"));
+        // Construct the path to the DTD file
+        StringBuffer dtdPath = new StringBuffer(DomainLibrary.getPTIIRoot());
+        String fileSep = java.lang.System.getProperty("file.separator");
 
-        return XMLLOCATION+pubID;
+        int last = dtdPath.length()-1;
+        if (dtdPath.charAt(last) != fileSep.charAt(0)) {
+            dtdPath.append(fileSep);
+        }
+        dtdPath.append("ptolemy" + fileSep + "schematic" + fileSep);
+        dtdPath.append("lib" + fileSep + pubID);
+
+        return "file://" + dtdPath;
     }
 
     /**
