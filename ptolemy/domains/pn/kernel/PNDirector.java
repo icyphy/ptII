@@ -83,15 +83,15 @@ public class PNDirector extends ProcessDirector {
      *  This method should be called only when an active thread that was 
      *  registered using increaseActiveCount() is terminated.
      */
-    public synchronized  void decreaseActiveCount() {
-	_activeActorsCount--;	    
-	_checkForDeadlock();
+    // public synchronized  void decreaseActiveCount() {
+// 	_activeActorsCount--;	    
+// 	_checkForDeadlock();
 	//System.out.println("decreased active count");
         //If pause requested, then check if paused
-        if (_pause) {
-            _checkForPause();
-        }
-    }
+        // if (_pause) {
+//             _checkForPause();
+//         }
+//}
     
     /** This handles deadlocks in PN. It is responsible for doing mutations, 
      *  and increasing queue capacities in PNQueueReceivers if required.
@@ -141,9 +141,9 @@ public class PNDirector extends ProcessDirector {
      *  deadlocks. The corresponding method decreaseActiveCount should be called 
      *  when the thread is terminated.
      */
-    public synchronized void increaseActiveCount() {
-	_activeActorsCount++;
-    }
+    // public synchronized void increaseActiveCount() {
+// 	_activeActorsCount++;
+//     }
 
     /** This method increases the number of paused threads and checks if the 
      *  entire simulation is paused. 
@@ -160,7 +160,7 @@ public class PNDirector extends ProcessDirector {
      */
     public LinkedList setPause() throws IllegalActionException {
         synchronized(this) {
-            _pause = true;
+            _pauseRequested = true;
         }
 	workspace().getReadAccess();
 	try {
@@ -209,7 +209,7 @@ public class PNDirector extends ProcessDirector {
         synchronized (this) {
             _pausedRecs.clear();
             _pausedcount= 0;
-            _pause = false;
+            _pauseRequested = false;
         }
     }
 
@@ -295,7 +295,7 @@ public class PNDirector extends ProcessDirector {
 	_readBlockCount++;
 	//System.out.println("Readblocked with count "+_readBlockCount);
 	_checkForDeadlock();
-        if (_pause) {
+        if (_pauseRequested) {
             _checkForPause();
         }
 	return;
@@ -330,7 +330,7 @@ public class PNDirector extends ProcessDirector {
 	_writeblockedQs.insertFirst(queue);
 	//System.out.println("WriteBlockedQ "+_writeBlockCount );
 	_checkForDeadlock();
-        if (_pause) {
+        if (_pauseRequested) {
             _checkForPause();
         }
 	return;
@@ -379,7 +379,7 @@ public class PNDirector extends ProcessDirector {
     // This is not synchronized and thus should be called from a synchronized
     // method
     protected synchronized void _checkForDeadlock() {
-	if (_readBlockCount + _writeBlockCount >= _activeActorsCount) {
+	if (_readBlockCount + _writeBlockCount >= _actorsActive) {
 	    _deadlock = true;
             //System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" **************************");
             
@@ -391,7 +391,7 @@ public class PNDirector extends ProcessDirector {
     //Check if all threads are either blocked or paused
     protected synchronized void _checkForPause() {
 	//System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" *PAUSED*"+"pausedcoint = "+_pausedcount);
-	if (_readBlockCount + _writeBlockCount + _pausedcount >= _activeActorsCount) {
+	if (_readBlockCount + _writeBlockCount + _pausedcount >= _actorsActive) {
 	    _paused = true;
             notifyAll();
 	}
@@ -532,11 +532,10 @@ public class PNDirector extends ProcessDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
-    private long _activeActorsCount = 0;
     private long _pausedcount = 0;
 
     private LinkedList _threadlist = new LinkedList();
-    private boolean _pause = false;
+    //private boolean _pause = false;
     private boolean _paused = false;
     private boolean _mutate = true;
     private boolean _deadlock = false;
