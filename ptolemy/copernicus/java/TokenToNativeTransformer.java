@@ -2154,8 +2154,10 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                 badType = true;
             }
             if(type instanceof ptolemy.data.type.ArrayType) {
-                type = ((ptolemy.data.type.ArrayType)type).getElementType();
-                if(type instanceof ptolemy.data.type.ArrayType) {
+                ptolemy.data.type.Type elementType = 
+                    ((ptolemy.data.type.ArrayType)type).getElementType();
+                if(elementType instanceof ptolemy.data.type.ArrayType) {
+                    System.out.println("elementType = " + elementType.getClass());
                     badType = true;
                 }
             }
