@@ -51,15 +51,19 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	ComponentEntity.tcl \
+	ComponentPort.tcl \
 	CompositeEntity.tcl \
 	CrossRefList.tcl \
 	Entity.tcl \
-	HierEntity.tcl \
-	IntParam.tcl \
-	NamedObj.tcl \
+	IllegalActionException.tcl \
+	InvalidStateException.tcl \
+	KernelException.tcl \
+	NameDuplicationException.tcl \
 	NamedList.tcl \
+	NamedObj.tcl \
+	NoSuchItemException.tcl \
 	Port.tcl \
-	PtolemyException.tcl \
 	Relation.tcl
 
 # Graphical Java tests that use Tcl.
