@@ -134,7 +134,7 @@ public class SROptimizedScheduler extends Scheduler {
         }
 
         CompositeActor compositeActor =
-	    (CompositeActor) (director.getContainer());
+            (CompositeActor) (director.getContainer());
 
         if (compositeActor == null) {
             throw new NotSchedulableException(this, "SROptimizedScheduler "

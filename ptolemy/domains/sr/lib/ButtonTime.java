@@ -23,8 +23,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (pwhitake@eecs.berkeley.edu)
 @AcceptedRating Red (pwhitake@eecs.berkeley.edu)
 */
@@ -122,7 +122,7 @@ public class ButtonTime extends WallClockTime implements Placeable {
 
     /** Set the background */
     public Color getBackground() {
-	return _button.getBackground();
+        return _button.getBackground();
     }
 
     /** An instance of JButton will be added to the specified container.
@@ -158,7 +158,7 @@ public class ButtonTime extends WallClockTime implements Placeable {
 
     /** Set the background */
     public void setBackground(Color background) {
-	_button.setBackground(background);
+        _button.setBackground(background);
     }
 
     /** Override the base class to remove the display from its graphical

@@ -81,7 +81,7 @@ public class  TokenMultiplexor  extends Transformer
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(_currentInputPosition)) {
-	    output.send(0, input.get(_currentInputPosition));
+            output.send(0, input.get(_currentInputPosition));
         }
     }
 
