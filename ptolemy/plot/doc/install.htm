@@ -7,7 +7,15 @@
 </head>
 <body>
 <h1>Installing Ptplot</h1>
-<h2>Ptplot Installation under Unix or Windows with Cygwin</h2>
+Ptplot is distributed in several formats. 
+<menu>
+ <li>The first format is the usual <a href="#tarorzip">tar file and zip file format.</a>
+ <li>The second format is an experimental format using the 
+<a href="#installshield">Installshield JShield installer.</a>
+</menu>
+
+
+<h2><a name="tarorzip">Ptplot Installation under Unix or Windows with Cygwin from tar or zip files</a></h2>
 
 Ptplot is shipped with the java files precompiled, so you need not
 recompile.  However, if you are using the standalone scripts such as
@@ -22,10 +30,13 @@ Cygwin toolkit from
 so that you can run <CODE>/bin/sh</CODE> and <CODE>make</CODE>.
 
  <p>Below are the installation instructions for Unix and Windows
-with Cygwin
+with Cygwin.
 <ol>
+
 <li> Be sure that JDK1.2 is installed, and that <CODE>javac</CODE> 
 is in your path.
+
+<li> Untar or unzip the Ptplot distribution.
 
 <li> Set the <CODE>PTII</CODE> environment variable to point
 to the top of the Ptplot tree.  Under C-shell, one would do:
@@ -50,12 +61,37 @@ make
 </pre>
 
 
-<li> View the applets by going to
+<li> View the applets by going starting your browser and going to:
 <a href="index.htm">ptolemy/plot/doc/index.htm</a>
-
 
 </ol>
 
+<h2><a name="installshield">Installshield Installer</a></h2>
+Ptplot is also available in several self-extracting formats
+that were created with the Installshield JShield tool.
+
+ <p>Our use of this tool is still experimental.  If you have problems,
+please try the tar or zip files.
+
+ <p>Note that when you run the installer under Windows, Ptplot is
+added to your Start menu under Ptolemy -&gt; Ptplot.
+
+<h3>Installshield limitations</h3>
+
+<menu>
+<li> The File browser does not work very well.  Installshield says
+that this is because we are using JDK1.2.  The standalone
+applications require JDK1.2 so that they can use Swing.  Note that
+the applets can still be run with JDK1.1.x, so we don't require
+JDK1.2.
+
+<li> Installing Ptplot in a directory whose pathname has a  space  in it
+seem to cause problems with the start up scripts.  
+
+
+</menu>
+
+<h2>Notes about building and installing</h2>
 <h3>How does configure work?</h3>
 <CODE>configure</CODE> is a <CODE>/bin/sh</CODE> script
 that determines some information about your environment and
@@ -94,7 +130,9 @@ PTII_DEFAULT=/users/cxh/ptII
 PTJAVA_DIR=/usr/java1.1
 </pre>
 
-<h2>Rebuilding under Windows without Cygwin</h2>
+
+
+<h3>Rebuilding under Windows without Cygwin</h3>
 Below are the instructions for recompiling the Java files
 if you are under Windows and you do not have the Cygwin.
 
@@ -137,7 +175,7 @@ C:\ptplot3.1\ptolemy\plot&gt;ptplot.bat
 </ol>
 
 
-<h2>Installing Ptplot as an applet</h2>
+<h3>Installing Ptplot as an applet</h3>
 Ptplot includes several jar files, which are collections of 
 Java <CODE>.class</CODE> files
 <dl>
@@ -179,7 +217,7 @@ and then to use the <CODE>archive</CODE> applet directive.
 For examples of applet html code, see the demonstrations.
 
 
-<h2>Installing Ptplot as an application</h2>
+<h3>Installing Ptplot as an application</h3>
 
 Under Unix and Windows with the Cygwin toolkit,
  ptplot can be run as three standalone applications:
