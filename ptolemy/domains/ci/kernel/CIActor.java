@@ -55,7 +55,7 @@ public class CIActor extends Transformer {
      *   actor with this name.
      */
     public CIActor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(false);
         output.setMultiport(false);

@@ -12,5 +12,5 @@ package ptolemy.domains.ct.demo.Corba.util;
  * methods of Ptolemy II.
  */
 public interface CorbaActor extends CorbaActorOperations, org.omg.CORBA.Object,
-    org.omg.CORBA.portable.IDLEntity {
+                                    org.omg.CORBA.portable.IDLEntity {
 } // interface CorbaActor

@@ -149,7 +149,7 @@ public abstract class AbstractApplication implements Application {
      * @deprecated Use method in GUIUtilities instead.
      */
     public JMenuItem addMenuItem(JMenu menu, Action action, int mnemonic,
-        String tooltip) {
+            String tooltip) {
         return GUIUtilities.addMenuItem(menu, action, mnemonic, tooltip);
     }
 
@@ -162,9 +162,9 @@ public abstract class AbstractApplication implements Application {
      * @deprecated Use method in GUIUtilities instead.
      */
     public JMenuItem addMenuItem(JMenu menu, String label, Action action,
-        int mnemonic, String tooltip, boolean isEnabled) {
+            int mnemonic, String tooltip, boolean isEnabled) {
         return GUIUtilities.addMenuItem(menu, label, action, mnemonic, tooltip,
-            isEnabled);
+                isEnabled);
     }
 
     /** Add an action to the toolbar.  If the tool tip is null, use
@@ -175,7 +175,7 @@ public abstract class AbstractApplication implements Application {
      * @deprecated Use method in GUIUtilities instead.
      */
     public JButton addToolBarButton(JToolBar toolbar, Action action,
-        String tooltip, Icon icon) {
+            String tooltip, Icon icon) {
         return GUIUtilities.addToolBarButton(toolbar, action, tooltip, icon);
     }
 
@@ -186,9 +186,9 @@ public abstract class AbstractApplication implements Application {
      * @deprecated Use method in GUIUtilities instead.
      */
     public JButton addToolBarButton(JToolBar toolbar, Action action,
-        String tooltip, Icon icon, boolean isEnabled) {
+            String tooltip, Icon icon, boolean isEnabled) {
         return GUIUtilities.addToolBarButton(toolbar, action, tooltip, icon,
-            isEnabled);
+                isEnabled);
     }
 
     /** Add a property change listener to this application. Changes to
@@ -211,7 +211,7 @@ public abstract class AbstractApplication implements Application {
     public void addDocument(Document d) {
         if (_documents.contains(d)) {
             throw new IllegalArgumentException("Document " + d
-                + " is already known by application " + this);
+                    + " is already known by application " + this);
         }
 
         _documents.addElement(d);
@@ -225,7 +225,7 @@ public abstract class AbstractApplication implements Application {
     public void addView(View v) {
         if (_views.contains(v)) {
             throw new IllegalArgumentException("View " + v
-                + " is already known by application " + this);
+                    + " is already known by application " + this);
         }
 
         List l = (List) _documentMap.get(v.getDocument());
@@ -363,7 +363,7 @@ public abstract class AbstractApplication implements Application {
     public void removeDocument(Document d) {
         if (!_documents.contains(d)) {
             throw new IllegalArgumentException("Document " + d
-                + " is not known by application " + this);
+                    + " is not known by application " + this);
         }
 
         _documents.removeElement(d);
@@ -388,7 +388,7 @@ public abstract class AbstractApplication implements Application {
     public void removeView(View v) {
         if (!_views.contains(v)) {
             throw new IllegalArgumentException("View " + v
-                + " is not known by application " + this);
+                    + " is not known by application " + this);
         }
 
         _views.removeElement(v);
@@ -434,7 +434,7 @@ public abstract class AbstractApplication implements Application {
     public void setCurrentView(View v) {
         if ((v != null) && !_views.contains(v)) {
             throw new IllegalArgumentException("View " + v
-                + " is not known by application " + this);
+                    + " is not known by application " + this);
         }
 
         _views.setSelectedItem(v);
@@ -466,7 +466,7 @@ public abstract class AbstractApplication implements Application {
      */
     public void showError(String op, Exception e) {
         GUIUtilities.showStackTrace(getAppContext().makeComponent(), e,
-            "Please submit a bug report.\n\n" + op);
+                "Please submit a bug report.\n\n" + op);
     }
 
     /** Set the app context that this application draws itself in. For use

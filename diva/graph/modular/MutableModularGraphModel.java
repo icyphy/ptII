@@ -86,7 +86,7 @@ public abstract class MutableModularGraphModel extends ModularGraphModel
      * then dispatch events to the listeners.
      */
     public void connectEdge(Object eventSource, Object edge, Object tailNode,
-        Object headNode) {
+            Object headNode) {
         Object prevTail = getMutableEdgeModel(edge).getTail(edge);
         Object prevHead = getMutableEdgeModel(edge).getHead(edge);
         getMutableEdgeModel(edge).setHead(edge, headNode);

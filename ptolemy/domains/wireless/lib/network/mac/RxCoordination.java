@@ -75,7 +75,7 @@ public class RxCoordination extends MACActorBase {
      *   an actor already in the container.
      */
     public RxCoordination(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // create ports
@@ -184,9 +184,9 @@ public class RxCoordination extends MACActorBase {
                         case Ack:
 
                             Token[] GotAckvalues = {
-                                    new IntToken(GotAckMsg),
-                                    new DoubleToken(endRx.getDoubleValue())
-                                };
+                                new IntToken(GotAckMsg),
+                                new DoubleToken(endRx.getDoubleValue())
+                            };
                             RecordToken GotAckmsg = new RecordToken(GotCtsMsgFields,
                                     GotAckvalues);
 
@@ -197,9 +197,9 @@ public class RxCoordination extends MACActorBase {
                         case Cts:
 
                             Token[] GotCtsvalues = {
-                                    new IntToken(GotCts),
-                                    new DoubleToken(endRx.getDoubleValue())
-                                };
+                                new IntToken(GotCts),
+                                new DoubleToken(endRx.getDoubleValue())
+                            };
                             RecordToken GotCtsmsg = new RecordToken(GotCtsMsgFields,
                                     GotCtsvalues);
 
@@ -225,7 +225,7 @@ public class RxCoordination extends MACActorBase {
                                     .intValue();
                                 _rspdu = _createPacket(Cts, durId - _dRsp, Addr2);
                                 setTimer(SifsTimeout,
-                                    endRx.add(_dSifsDly * 1e-6));
+                                        endRx.add(_dSifsDly * 1e-6));
                                 _currentState = Wait_Sifs;
                             }
 
@@ -267,8 +267,8 @@ public class RxCoordination extends MACActorBase {
 
             if (kind == SifsTimeout) {
                 Token[] TXRequestvalues = {
-                        new IntToken(TxRequest), _rspdu, new IntToken(_rate)
-                    };
+                    new IntToken(TxRequest), _rspdu, new IntToken(_rate)
+                };
                 RecordToken txrq = new RecordToken(TxRequestMsgFields,
                         TXRequestvalues);
 
@@ -307,20 +307,20 @@ public class RxCoordination extends MACActorBase {
         } else {
             _tNavEnd = null;
             throw new IllegalActionException("the MAC compositor "
-                + "dosen't contain a parameter named tNavEnd");
+                    + "dosen't contain a parameter named tNavEnd");
         }
     }
 
     private RecordToken _createPacket(int subtype, int duration, int RA)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Token[] AckPacketValues = {
-                new IntToken(0), new IntToken(ControlType),
-                new IntToken(subtype), new IntToken(0), new IntToken(0),
-                new IntToken(0), new IntToken(0), new IntToken(0),
-                new IntToken(0), new IntToken(0), new IntToken(0),
-                new IntToken(123), new IntToken(duration), new IntToken(RA),
-                new IntToken(14 * 8)
-            };
+            new IntToken(0), new IntToken(ControlType),
+            new IntToken(subtype), new IntToken(0), new IntToken(0),
+            new IntToken(0), new IntToken(0), new IntToken(0),
+            new IntToken(0), new IntToken(0), new IntToken(0),
+            new IntToken(123), new IntToken(duration), new IntToken(RA),
+            new IntToken(14 * 8)
+        };
         RecordToken pkt = new RecordToken(AckPacket, AckPacketValues);
         return pkt;
     }

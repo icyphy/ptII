@@ -63,7 +63,7 @@ public abstract class StringOut extends TypedAtomicActor {
      *  superclass throws a NameDuplicationException .
      */
     public StringOut(TypedCompositeActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);

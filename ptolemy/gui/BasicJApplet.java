@@ -69,8 +69,8 @@ public class BasicJApplet extends JApplet {
      */
     public String getAppletInfo() {
         return "Ptolemy II swing-based applet.\n"
-        + "Ptolemy II comes from UC Berkeley, Department of EECS.\n"
-        + "See http://ptolemy.eecs.berkeley.edu/ptolemyII";
+            + "Ptolemy II comes from UC Berkeley, Department of EECS.\n"
+            + "See http://ptolemy.eecs.berkeley.edu/ptolemyII";
     }
 
     /** Describe the applet parameters. Derived classes should override
@@ -80,8 +80,8 @@ public class BasicJApplet extends JApplet {
      */
     public String[][] getParameterInfo() {
         String[][] pinfo = {
-                { "background", "#RRGGBB", "color of the background" },
-            };
+            { "background", "#RRGGBB", "color of the background" },
+        };
         return pinfo;
     }
 
@@ -122,7 +122,7 @@ public class BasicJApplet extends JApplet {
      */
     public void report(Throwable throwable) {
         report(MessageHandler.shortDescription(throwable)
-            + " thrown by applet.", throwable);
+                + " thrown by applet.", throwable);
     }
 
     /** Report a message to the user.
@@ -135,8 +135,8 @@ public class BasicJApplet extends JApplet {
         } catch (Throwable throwable) {
             // Under JDK 1.4.2_04, we get NullPointerExceptions
             System.err.println("showStatus() threw a NullPointerException\n"
-                + "This can happen if the Applet has already exited\n "
-                + "because of an error or exception.\n");
+                    + "This can happen if the Applet has already exited\n "
+                    + "because of an error or exception.\n");
             throwable.printStackTrace();
         }
     }
@@ -159,11 +159,11 @@ public class BasicJApplet extends JApplet {
         } catch (Throwable throwable2) {
             // Under JDK 1.4.2_04, we get NullPointerExceptions
             System.err.println("showStatus() threw an exception\n"
-                + _stackTraceToString(throwable2)
-                + "This can happen if the Applet has already exited\n "
-                + "because of an error or exception.\n"
-                + "The original error or exception was:\n"
-                + _stackTraceToString(throwable));
+                    + _stackTraceToString(throwable2)
+                    + "This can happen if the Applet has already exited\n "
+                    + "because of an error or exception.\n"
+                    + "The original error or exception was:\n"
+                    + _stackTraceToString(throwable));
         }
     }
 

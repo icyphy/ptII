@@ -55,7 +55,7 @@ public class CTDummyWaveformGenerator extends TypedAtomicActor
     /** Constructor
      */
     public CTDummyWaveformGenerator(TypedCompositeActor container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");
         input.setInput(true);

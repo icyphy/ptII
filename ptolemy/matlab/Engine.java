@@ -252,7 +252,7 @@ public class Engine {
      * @see #getOutput(long[])
      */
     public long[] open(String startCmd, boolean needOutput)
-        throws IllegalActionException {
+            throws IllegalActionException {
         long[] retval = new long[2];
 
         synchronized (semaphore) {
@@ -260,10 +260,10 @@ public class Engine {
 
             if (retval[0] == 0) {
                 throw new IllegalActionException("matlabEngine.open("
-                    + startCmd + ") : can't find Matlab engine. Try starting "
-                    + "Matlab by hand as an application to verify that "
-                    + "Matlab is set up properly and the license is "
-                    + "correct.");
+                        + startCmd + ") : can't find Matlab engine. Try starting "
+                        + "Matlab by hand as an application to verify that "
+                        + "Matlab is set up properly and the license is "
+                        + "correct.");
             }
 
             if (needOutput) {
@@ -273,7 +273,7 @@ public class Engine {
 
             if (debug > 0) {
                 System.out.println(retval[0] + " = matlabEngine.open(\""
-                    + startCmd + "\")");
+                        + startCmd + "\")");
             }
         }
 
@@ -312,18 +312,18 @@ public class Engine {
      * @exception IllegalActionException If the matlab engine is not opened.
      */
     public int evalString(long[] eng, String evalStr)
-        throws IllegalActionException {
+            throws IllegalActionException {
         int retval;
 
         synchronized (semaphore) {
             if ((eng == null) || (eng[0] == 0)) {
                 throw new IllegalActionException("matlabEngine.evalStr(): "
-                    + errNotOpened);
+                        + errNotOpened);
             }
 
             if (debug > 0) {
                 System.out.println("matlabEngine.evalString(\"" + evalStr
-                    + "\")");
+                        + "\")");
             }
 
             retval = ptmatlabEngEvalString(eng[0], evalStr);
@@ -355,21 +355,21 @@ public class Engine {
      * @see Expression
      */
     public Token get(long[] eng, String name, ConversionParameters par)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Token retval = null;
 
         synchronized (semaphore) {
             if ((eng == null) || (eng[0] == 0)) {
                 throw new IllegalActionException("matlabEngine.get(): "
-                    + errNotOpened);
+                        + errNotOpened);
             }
 
             long ma = ptmatlabEngGetArray(eng[0], name);
 
             if (ma == 0) {
                 throw new IllegalActionException("matlabEngine.get(" + name
-                    + "): can't find matlab " + "variable \"" + name + "\"\n"
-                    + getOutput(eng).stringValue());
+                        + "): can't find matlab " + "variable \"" + name + "\"\n"
+                        + getOutput(eng).stringValue());
             }
 
             retval = _convertMxArrayToToken(ma, par);
@@ -377,7 +377,7 @@ public class Engine {
 
             if (debug > 0) {
                 System.out.println("matlabEngine.get(" + name + ") = "
-                    + retval.toString());
+                        + retval.toString());
             }
         }
 
@@ -405,18 +405,18 @@ public class Engine {
      * @see Engine
      */
     public int put(long[] eng, String name, Token t)
-        throws IllegalActionException {
+            throws IllegalActionException {
         int retval;
 
         synchronized (semaphore) {
             if ((eng == null) || (eng[0] == 0)) {
                 throw new IllegalActionException("matlabEngine.put(): "
-                    + errNotOpened);
+                        + errNotOpened);
             }
 
             if (debug > 0) {
                 System.out.println("matlabEngine.put(" + name + ", "
-                    + t.toString() + ")");
+                        + t.toString() + ")");
             }
 
             long ma = _createMxArray(name, t);
@@ -448,19 +448,19 @@ public class Engine {
     private native long ptmatlabCreateString(String name, String s, int n, int m);
 
     private native long ptmatlabCreateDoubleMatrixOneDim(String name,
-        double[] a, int length);
+            double[] a, int length);
 
     private native long ptmatlabCreateDoubleMatrix(String name, double[][] a,
-        int n, int m);
+            int n, int m);
 
     private native long ptmatlabCreateComplexMatrixOneDim(String name,
-        Complex[] a, int length);
+            Complex[] a, int length);
 
     private native long ptmatlabCreateComplexMatrix(String name, Complex[][] a,
-        int n, int m);
+            int n, int m);
 
     private native long ptmatlabCreateStructMatrix(String name,
-        Object[] fieldNames, int n, int m);
+            Object[] fieldNames, int n, int m);
 
     private native void ptmatlabDestroy(long mxArray, String name);
 
@@ -471,17 +471,17 @@ public class Engine {
     private native int[] ptmatlabGetDimensions(long mxArray);
 
     private native Complex[][] ptmatlabGetComplexMatrix(long mxArray, int n,
-        int m);
+            int m);
 
     private native double[][] ptmatlabGetDoubleMatrix(long mxArray, int n, int m);
 
     private native int[][] ptmatlabGetLogicalMatrix(long mxArray, int nRows,
-        int nCols);
+            int nCols);
 
     private native String ptmatlabGetFieldNameByNumber(long mxArray, int k);
 
     private native long ptmatlabGetFieldByNumber(long mxArray, int k, int n,
-        int m);
+            int m);
 
     private native int ptmatlabGetNumberOfFields(long mxArray);
 
@@ -492,13 +492,13 @@ public class Engine {
     private native boolean ptmatlabIsComplex(long mxArray);
 
     private native void ptmatlabSetCell(String name, long mxArray, int n,
-        int m, long valueMxArray);
+            int m, long valueMxArray);
 
     private native void ptmatlabSetString(String name, long mxArray, int n,
-        String s, int slen);
+            String s, int slen);
 
     private native void ptmatlabSetStructField(String name, long mxArray,
-        String fieldName, int n, int m, long valueMxArray);
+            String fieldName, int n, int m, long valueMxArray);
 
     // Converts a matlab engine mxArray (ma) variable to a Ptolemy II Token.
     // @param ma Pointer to the matlab engine variable's mxArray
@@ -510,7 +510,7 @@ public class Engine {
     // an ArrayToken to be created are of the same type.
     // @see Engine
     private Token _convertMxArrayToToken(long ma, ConversionParameters par)
-        throws IllegalActionException {
+            throws IllegalActionException {
         String maClassStr = ptmatlabGetClassName(ma);
         int[] dims = ptmatlabGetDimensions(ma);
         int nRows = dims[0];
@@ -526,7 +526,7 @@ public class Engine {
 
                 if (a == null) {
                     throw new IllegalActionException(
-                        "can't get complex matrix from matlab engine.");
+                            "can't get complex matrix from matlab engine.");
                 }
 
                 if (scalarMatrices) {
@@ -539,7 +539,7 @@ public class Engine {
 
                 if (a == null) {
                     throw new IllegalActionException(
-                        "can't get double matrix from matlab engine.");
+                            "can't get double matrix from matlab engine.");
                 }
 
                 if (scalarMatrices) {
@@ -555,7 +555,7 @@ public class Engine {
 
                     for (int i = 0; allIntegers && (i < a.length); i++) {
                         for (int j = 0; allIntegers && (j < a[0].length);
-                                j++) {
+                             j++) {
                             allIntegers &= _doubleisInteger(a[i][j]);
                         }
                     }
@@ -580,7 +580,7 @@ public class Engine {
 
             if (a == null) {
                 throw new IllegalActionException(
-                    "can't get logical matrix from matlab engine.");
+                        "can't get logical matrix from matlab engine.");
             }
 
             if (scalarMatrices) {
@@ -609,8 +609,8 @@ public class Engine {
                             fieldValues[k] = _convertMxArrayToToken(fma, par);
                         } else {
                             throw new IllegalActionException("can't get field "
-                                + fieldNames[k] + "from matlab " + "struct "
-                                + nRows + "x" + nCols);
+                                    + fieldNames[k] + "from matlab " + "struct "
+                                    + nRows + "x" + nCols);
                         }
                     }
 
@@ -681,7 +681,7 @@ public class Engine {
             }
         } else {
             throw new IllegalActionException("no support for mxArray class "
-                + maClassStr + " " + dims[0] + " x " + dims[1]);
+                    + maClassStr + " " + dims[0] + " x " + dims[1]);
         }
 
         return retval;
@@ -695,7 +695,7 @@ public class Engine {
     // Token was not one of the types supported by _createMxArray().
     // @see Engine
     private long _createMxArray(String name, Token t)
-        throws IllegalActionException {
+            throws IllegalActionException {
         long ma = 0;
 
         if (t instanceof ArrayToken) {
@@ -706,7 +706,7 @@ public class Engine {
 
                 if (ma == 0) {
                     throw new IllegalActionException("couldn't create cell "
-                        + "array " + name);
+                            + "array " + name);
                 }
 
                 for (int n = 0; n < ta.length; n++) {
@@ -714,8 +714,8 @@ public class Engine {
 
                     if (fma == 0) {
                         throw new IllegalActionException(
-                            "couldn't create array for index " + n
-                            + " in cell array " + name);
+                                "couldn't create array for index " + n
+                                + " in cell array " + name);
                     }
 
                     ptmatlabSetCell(name, ma, 0, n, fma);
@@ -735,7 +735,7 @@ public class Engine {
 
             if (ma == 0) {
                 throw new IllegalActionException("couldn't create struct "
-                    + "array " + name);
+                        + "array " + name);
             }
 
             for (int n = 0; n < fieldNames.length; n++) {
@@ -744,12 +744,12 @@ public class Engine {
 
                 if (fma == 0) {
                     throw new IllegalActionException(
-                        "couldn't create array for field " + fieldNames[n]
-                        + " in struct " + name);
+                            "couldn't create array for field " + fieldNames[n]
+                            + " in struct " + name);
                 }
 
                 ptmatlabSetStructField(name, ma, (String) fieldNames[n], 0, 0,
-                    fma);
+                        fma);
             }
         } else if (t instanceof StringToken) {
             String s = ((StringToken) t).stringValue();
@@ -777,7 +777,7 @@ public class Engine {
 
         if (ma == 0) {
             throw new IllegalActionException("couldn't create array for "
-                + name);
+                    + name);
         }
 
         return ma;
@@ -785,7 +785,7 @@ public class Engine {
 
     private boolean _doubleisInteger(double d) {
         return (d == Math.floor(d)) && (d <= Integer.MAX_VALUE)
-        && (d >= Integer.MIN_VALUE);
+            && (d >= Integer.MIN_VALUE);
     }
 
     ///////////////////////////////////////////////////////////////////

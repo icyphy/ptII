@@ -68,7 +68,7 @@ import ptolemy.kernel.util.Workspace;
    @Pt.AcceptedRating red (cxh)
 */
 public class ComponentActor extends TypedCompositeActor
-        implements Component {
+    implements Component {
 
     /** Construct an entity with the given name contained by the specified
      *  entity. The container argument must not be null, or a
@@ -263,7 +263,7 @@ public class ComponentActor extends TypedCompositeActor
      */
     public void wrapup() throws IllegalActionException {
         // TODO Auto-generated method stub
-       super.wrapup();
+        super.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -433,22 +433,22 @@ public class ComponentActor extends TypedCompositeActor
             if (isOutput()) {
                 try {
                     for (int i = 0; i < getWidthInside(); i++) {
-                    if (hasTokenInside(i)) {
-                        //System.out.println("has token to transfer to a method call outside");
-                        Token t = getInside(i);
-                        Token[] tokens = new Token[1];
-                        tokens[0] = t;
-                        Iterator ports = this.deepConnectedPortList().iterator();
-                        MethodCallPort port = (MethodCallPort) ports.next();
-                        //System.out.println("get the connected method call port");
-                        return port.call(new TupleToken(tokens));
-                    } else {
-                        return TupleToken.VOID;
-                    }
+                        if (hasTokenInside(i)) {
+                            //System.out.println("has token to transfer to a method call outside");
+                            Token t = getInside(i);
+                            Token[] tokens = new Token[1];
+                            tokens[0] = t;
+                            Iterator ports = this.deepConnectedPortList().iterator();
+                            MethodCallPort port = (MethodCallPort) ports.next();
+                            //System.out.println("get the connected method call port");
+                            return port.call(new TupleToken(tokens));
+                        } else {
+                            return TupleToken.VOID;
+                        }
                     }
                 } catch (Exception ex) {
-                        // this shouldn't happen.
-                        throw new InternalErrorException(this, ex, null);
+                    // this shouldn't happen.
+                    throw new InternalErrorException(this, ex, null);
                 }
             } else {
                 // The port provided should over write this method.
@@ -503,8 +503,8 @@ public class ComponentActor extends TypedCompositeActor
             if (output) {
                 Iterator insideRelations = insideRelationList().iterator();
                 if (insideRelations.hasNext()) {
-                        _insideReceivers = new Receiver[1][1];
-                        _insideReceivers[0][0] = _newInsideReceiver();
+                    _insideReceivers = new Receiver[1][1];
+                    _insideReceivers[0][0] = _newInsideReceiver();
                 }
             }
         }

@@ -92,7 +92,7 @@ public class Processor extends CSPActor {
      *  already has an actor with this name.
      */
     public Processor(CompositeEntity cont, String name, int code)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         requestOutput = new TypedIOPort(this, "requestOutput", false, true);

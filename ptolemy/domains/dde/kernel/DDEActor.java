@@ -95,7 +95,7 @@ public class DDEActor extends TypedAtomicActor {
      *  superclass throws a NameDuplicationException .
      */
     public DDEActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -172,8 +172,8 @@ public class DDEActor extends TypedAtomicActor {
             }
         } else {
             throw new IllegalActionException(this,
-                "Illegal attempt "
-                + "to execute a DDEActor by a non-DDEThread.");
+                    "Illegal attempt "
+                    + "to execute a DDEActor by a non-DDEThread.");
         }
     }
 

@@ -61,7 +61,7 @@ public class PrintString extends DDEActor {
      *  superclass throws a NameDuplicationException .
      */
     public PrintString(TypedCompositeActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         _input = new TypedIOPort(this, "input", true, false);

@@ -1,29 +1,29 @@
 /* An actor that provides the common functions to all wireless
-network models.
+   network models.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+   Copyright (c) 2004-2005 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
 */
 package ptolemy.domains.wireless.lib.network;
@@ -65,7 +65,7 @@ public class NetworkActorBase extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public NetworkActorBase(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -79,22 +79,22 @@ public class NetworkActorBase extends TypedAtomicActor {
 
     // messages between the layers
     protected static final String[] PCRequestMsgFields = {
-            "kind", "fromMACAddr", "toMACAddr", "range", "angle", "num_nb",
-            "xpos", "ypos", "Length"
-        };
+        "kind", "fromMACAddr", "toMACAddr", "range", "angle", "num_nb",
+        "xpos", "ypos", "Length"
+    };
     protected static final String[] PCResponseMsgFields = {
-            "kind", "fromMACAddr", "toMACAddr", "xpos", "ypos", "range",
-            "Length"
-        };
+        "kind", "fromMACAddr", "toMACAddr", "xpos", "ypos", "range",
+        "Length"
+    };
     protected static final String[] StartRspMsgFields = { "kind", "range" };
     protected static final String[] cNetwInterestMessageFields = {
-            "kind", "cost", "hop_distance", "fromMACAddr", "toMACAddr",
-            "hopcount", "arrivalTime", "Length"
-        };
+        "kind", "cost", "hop_distance", "fromMACAddr", "toMACAddr",
+        "hopcount", "arrivalTime", "Length"
+    };
     protected static final String[] cNetwDataMessageFields = {
-            "kind", "fromMACAddr", "toMACAddr", "hopcount", "arrivalTime",
-            "payload", "Length"
-        };
+        "kind", "fromMACAddr", "toMACAddr", "hopcount", "arrivalTime",
+        "payload", "Length"
+    };
 
     // message types
     protected static final int RxStart = 30;
@@ -129,7 +129,7 @@ public class NetworkActorBase extends TypedAtomicActor {
      *  getDirector().fireAt().
      */
     protected Timer setTimer(int kind, Time expirationTime)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Timer timer = new Timer();
         timer.kind = kind;
         timer.expirationTime = expirationTime;
@@ -144,7 +144,7 @@ public class NetworkActorBase extends TypedAtomicActor {
      *  from the timers set. If no match is found, do nothing.
      */
     protected void cancelTimer(Timer timerToCancel)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Iterator timers = _timersSet.iterator();
 
         // iterate through the queue to find the timer to be canceled

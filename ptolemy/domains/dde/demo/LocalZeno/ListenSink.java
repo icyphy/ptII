@@ -62,7 +62,7 @@ public class ListenSink extends DDESink {
      * @params name The name of this actor.
      */
     public ListenSink(CompositeEntity cont, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(cont, name);
     }
 
@@ -85,7 +85,7 @@ public class ListenSink extends DDESink {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new IllegalActionException(this,
-                "InternalError " + "exception during a sleeping thread.");
+                    "InternalError " + "exception during a sleeping thread.");
         }
 
         return super.postfire();
@@ -107,7 +107,7 @@ public class ListenSink extends DDESink {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new IllegalActionException(this,
-                "InternalError " + "exception during a sleeping thread.");
+                    "InternalError " + "exception during a sleeping thread.");
         }
 
         return super.prefire();

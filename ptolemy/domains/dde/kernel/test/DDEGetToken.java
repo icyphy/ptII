@@ -53,7 +53,7 @@ public class DDEGetToken extends DDEGet {
     /**
      */
     public DDEGetToken(TypedCompositeActor cont, String name, int numTokens)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         _numTokens = numTokens;
@@ -106,7 +106,7 @@ public class DDEGetToken extends DDEGet {
 
                     if (receiver.hasToken()) {
                         _receiverTimes[cnt] = receiver.getReceiverTime()
-                                                      .getDoubleValue();
+                            .getDoubleValue();
                         _tokens[cnt] = receiver.get();
 
                         Thread thread = Thread.currentThread();

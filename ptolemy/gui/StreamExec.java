@@ -259,7 +259,7 @@ public class StreamExec {
     // JTextArea.
     private class _StreamReaderThread extends Thread {
         _StreamReaderThread(InputStream inputStream, String streamType,
-            StreamExec streamExec) {
+                StreamExec streamExec) {
             _inputStream = inputStream;
             _streamType = streamType;
             _streamExec = streamExec;
@@ -274,7 +274,7 @@ public class StreamExec {
 
                 while ((line = bufferedReader.readLine()) != null) {
                     _streamExec.stdout( /*_streamType + ">" +*/
-                        line);
+                            line);
                 }
             } catch (IOException ioe) {
                 _streamExec.stderr("IOException: " + ioe);

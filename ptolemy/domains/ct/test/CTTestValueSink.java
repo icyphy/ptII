@@ -62,7 +62,7 @@ public class CTTestValueSink extends TypedAtomicActor {
      *  @param name The name.
      */
     public CTTestValueSink(TypedCompositeActor container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input");
         input.setInput(true);
@@ -112,7 +112,7 @@ public class CTTestValueSink extends TypedAtomicActor {
 
             if (dir != null) {
                 System.out.println(dir.getModelTime() + " "
-                    + ((DoubleToken) _lastToken).doubleValue());
+                        + ((DoubleToken) _lastToken).doubleValue());
             }
         }
 

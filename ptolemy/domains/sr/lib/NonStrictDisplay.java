@@ -66,7 +66,7 @@ public class NonStrictDisplay extends Display {
      *   actor with this name.
      */
     public NonStrictDisplay(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Attribute(this, "_nonStrictMarker");
     }

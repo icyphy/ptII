@@ -149,8 +149,8 @@ public class PNQueueReceiver extends QueueReceiver implements ProcessReceiver {
 
         if (!(director instanceof PNDirector)) {
             throw new IllegalActionException(port,
-                "Cannot use an instance of PNQueueReceiver "
-                + "since the director is not a PNDirector.");
+                    "Cannot use an instance of PNQueueReceiver "
+                    + "since the director is not a PNDirector.");
         }
 
         _director = (PNDirector) director;

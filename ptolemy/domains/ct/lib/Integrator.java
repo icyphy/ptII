@@ -111,7 +111,7 @@ public class Integrator extends CTBaseIntegrator {
      * @exception IllegalActionException If there was an internal problem.
      */
     public Integrator(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
 
@@ -119,10 +119,10 @@ public class Integrator extends CTBaseIntegrator {
         //                new StringToken("DISCRETE"));
         new Parameter(output, "signalType", new StringToken("CONTINUOUS"));
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-15\" y=\"-20\" "
-            + "width=\"30\" height=\"40\" " + "style=\"fill:white\"/>\n"
-            + "<image x=\"-4\" y=\"-20\" width=\"8\" height=\"40\""
-            + "xlink:href=\"ptolemy/domains/ct/lib/integral.gif\"/>\n"
-            + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-15\" y=\"-20\" "
+                + "width=\"30\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<image x=\"-4\" y=\"-20\" width=\"8\" height=\"40\""
+                + "xlink:href=\"ptolemy/domains/ct/lib/integral.gif\"/>\n"
+                + "</svg>\n");
     }
 }

@@ -67,7 +67,7 @@ public class ND_1 extends TypedAtomicActor {
      *   actor with this name.
      */
     public ND_1(CompositeEntity aContainer, String aName)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(aContainer, aName);
 
         WP_2 = new TypedIOPort(this, "WP_2", false, true);

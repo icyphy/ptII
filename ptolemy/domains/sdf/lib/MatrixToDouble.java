@@ -74,7 +74,7 @@ public class MatrixToDouble extends SDFConverter {
      *   actor with this name.
      */
     public MatrixToDouble(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         rows = new Parameter(this, "rows");
@@ -114,14 +114,14 @@ public class MatrixToDouble extends SDFConverter {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((attribute == rows) || (attribute == columns)) {
             _rows = ((IntToken) rows.getToken()).intValue();
             _columns = ((IntToken) columns.getToken()).intValue();
 
             if ((_rows <= 0) || (_columns <= 0)) {
                 throw new IllegalActionException(this,
-                    "Number of rows and columns is required to be positive.");
+                        "Number of rows and columns is required to be positive.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -147,8 +147,8 @@ public class MatrixToDouble extends SDFConverter {
         if (director instanceof SDFDirector) {
             if ((inputRows * inputColumns) != (_rows * _columns)) {
                 throw new IllegalActionException(this,
-                    "Received a matrix whose dimension does not "
-                    + "match the declared dimensions.");
+                        "Received a matrix whose dimension does not "
+                        + "match the declared dimensions.");
             }
         }
 

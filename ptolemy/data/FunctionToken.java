@@ -70,7 +70,7 @@ public class FunctionToken extends Token {
             _type = ((FunctionToken) token)._type;
         } else {
             throw new IllegalActionException("A function token cannot be"
-                + " created from the expression '" + init + "'");
+                    + " created from the expression '" + init + "'");
         }
     }
 
@@ -118,7 +118,7 @@ public class FunctionToken extends Token {
      *  this token.
      */
     public BooleanToken isCloseTo(Token rightArgument, double epsilon)
-        throws IllegalActionException {
+            throws IllegalActionException {
         return isEqualTo(rightArgument);
     }
 
@@ -132,7 +132,7 @@ public class FunctionToken extends Token {
     public BooleanToken isEqualTo(Token rightArgument) {
         FunctionToken convertedArgument = (FunctionToken) rightArgument;
         return BooleanToken.getInstance(convertedArgument._function.isCongruent(
-                _function));
+                                                _function));
     }
 
     /** Return a String representation of this function

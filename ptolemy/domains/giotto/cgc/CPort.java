@@ -40,20 +40,20 @@ import ptolemy.kernel.util.Settable;
 //// TypedIOPort
 
 /**
-  This port class is used with actors that are instances of CActor.
-  It features additional parameters specific to the
-  Giotto domain. If the port is specified as an output port, then
-  it has two parameters specified by default.
-  <ul>
-  <li> The parameter <i>initialOutputValue</i> which specifies
-     the value of the port
-     until the container has fired and assigned it a value. The
-     default value of this parameter is 0. It is constrained to
-     have the same type as this port.
-  <ul> The parameter <i>arrayLength</i>, which is used only if the type is
-     an array. This specifies the length of the array. The default
-     value of this parameter is 1.
-  </ul>
+   This port class is used with actors that are instances of CActor.
+   It features additional parameters specific to the
+   Giotto domain. If the port is specified as an output port, then
+   it has two parameters specified by default.
+   <ul>
+   <li> The parameter <i>initialOutputValue</i> which specifies
+   the value of the port
+   until the container has fired and assigned it a value. The
+   default value of this parameter is 0. It is constrained to
+   have the same type as this port.
+   <ul> The parameter <i>arrayLength</i>, which is used only if the type is
+   an array. This specifies the length of the array. The default
+   value of this parameter is 1.
+   </ul>
 
    @author N.Vinay Krishnan, Edward A. Lee
    @version $Id$
@@ -74,7 +74,7 @@ public class CPort extends TypedIOPort {
      *   a port already in the container.
      */
     public CPort(ComponentEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         initialOutputValue = new Parameter(this, "initialOutputValue");
         initialOutputValue.setExpression("0");
@@ -103,8 +103,8 @@ public class CPort extends TypedIOPort {
      *   a port already in the container.
      */
     public CPort(ComponentEntity container, String name, boolean isInput,
-        boolean isOutput)
-        throws IllegalActionException, NameDuplicationException {
+            boolean isOutput)
+            throws IllegalActionException, NameDuplicationException {
         this(container, name);
         setInput(isInput);
         setOutput(isOutput);

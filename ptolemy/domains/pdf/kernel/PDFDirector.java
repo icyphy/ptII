@@ -122,7 +122,7 @@ public class PDFDirector extends Director {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public PDFDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -166,7 +166,7 @@ public class PDFDirector extends Director {
 
         if (container == null) {
             throw new InvalidStateException("PDFDirector " + getName()
-                + " fired, but it has no container!");
+                    + " fired, but it has no container!");
         } else {
             _postfirereturns = true;
 
@@ -245,9 +245,9 @@ public class PDFDirector extends Director {
                 if (!receivers[channel][0].hasToken(threshold)) {
                     if (_debugging) {
                         _debug("Channel " + channel
-                            + " does not have enough tokens."
-                            + " Prefire returns false on "
-                            + container.getFullName());
+                                + " does not have enough tokens."
+                                + " Prefire returns false on "
+                                + container.getFullName());
                     }
 
                     return false;
@@ -303,8 +303,8 @@ public class PDFDirector extends Director {
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                "transferInputs: port argument is not an opaque"
-                + "input port.");
+                    "transferInputs: port argument is not an opaque"
+                    + "input port.");
         }
 
         boolean trans = false;
@@ -320,7 +320,7 @@ public class PDFDirector extends Director {
                     if ((insiderecs != null) && (insiderecs[i] != null)) {
                         if (_debugging) {
                             _debug(getName(),
-                                "transferring input from " + port.getName());
+                                    "transferring input from " + port.getName());
                         }
 
                         for (int j = 0; j < insiderecs[i].length; j++) {
@@ -332,8 +332,8 @@ public class PDFDirector extends Director {
                 } catch (NoTokenException ex) {
                     // this shouldn't happen.
                     throw new InternalErrorException(
-                        "PDFDirector.transferInputs: Not enough tokens "
-                        + ex.getMessage());
+                            "PDFDirector.transferInputs: Not enough tokens "
+                            + ex.getMessage());
                 }
             }
         }
@@ -359,8 +359,8 @@ public class PDFDirector extends Director {
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                "transferOutputs: port argument is not "
-                + "an opaque output port.");
+                    "transferOutputs: port argument is not "
+                    + "an opaque output port.");
         }
 
         System.out.println("transferring Outputs for port" + port.getFullName());
@@ -378,7 +378,7 @@ public class PDFDirector extends Director {
 
                 if (insiderecs[i] != null) {
                     System.out.println("has " + insiderecs[i].length
-                        + " Receivers");
+                            + " Receivers");
 
                     for (int j = 0; j < insiderecs[i].length; j++) {
                         System.out.println("checking hasToken number" + j);
@@ -403,8 +403,8 @@ public class PDFDirector extends Director {
                                 trans = true;
                             } catch (NoTokenException ex) {
                                 throw new InternalErrorException(
-                                    "Director.transferOutputs: "
-                                    + "Internal error: " + ex.getMessage());
+                                        "Director.transferOutputs: "
+                                        + "Internal error: " + ex.getMessage());
                             }
                         }
                     }
@@ -442,7 +442,7 @@ public class PDFDirector extends Director {
         } catch (Exception e) {
             e.printStackTrace();
             throw new InternalErrorException(
-                "Cannot create default parameter:\n" + e.getMessage());
+                    "Cannot create default parameter:\n" + e.getMessage());
         }
     }
 

@@ -67,7 +67,7 @@ public class ListenFork extends DoubleFork {
      *  instantiating and specifying the type of this actor's ports.
      */
     public ListenFork(CompositeEntity cont, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(cont, name);
     }
 
@@ -90,7 +90,7 @@ public class ListenFork extends DoubleFork {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new IllegalActionException(this,
-                "InternalError " + "exception during a sleeping thread.");
+                    "InternalError " + "exception during a sleeping thread.");
         }
 
         return super.postfire();
@@ -112,7 +112,7 @@ public class ListenFork extends DoubleFork {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new IllegalActionException(this,
-                "InternalError " + "exception during a sleeping thread.");
+                    "InternalError " + "exception during a sleeping thread.");
         }
 
         return super.prefire();

@@ -174,7 +174,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  CompositeActor and the name collides with an entity in the container.
      */
     public HDFFSMDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -192,7 +192,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *   transition is enabled.
      */
     public State chooseStateTransition(State state)
-        throws IllegalActionException {
+            throws IllegalActionException {
         FSMActor controller = getController();
         State destinationState;
         Transition transition = null;
@@ -200,8 +200,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         if ((state.getRefinement() != null)
                 && (state.preemptiveTransitionList().size() != 0)) {
             throw new IllegalActionException(this,
-                state.getName() + " cannot have outgoing preemptive "
-                + "transitions because the state has a refinement.");
+                    state.getName() + " cannot have outgoing preemptive "
+                    + "transitions because the state has a refinement.");
         }
 
         if (state.getRefinement() == null) {
@@ -222,7 +222,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
             if (actors != null) {
                 throw new IllegalActionException(this,
-                    "HDFFSM Director does not support transition refinements.");
+                        "HDFFSM Director does not support transition refinements.");
             }
 
             _readOutputsFromRefinement();
@@ -247,7 +247,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  but no further transition is enabled.
      */
     public void chooseTransitions(State currentState)
-        throws IllegalActionException {
+            throws IllegalActionException {
         State state = chooseStateTransition(currentState);
         Actor[] actors = state.getRefinement();
         Transition transition;
@@ -259,7 +259,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
             if (transition == null) {
                 throw new IllegalActionException(this,
-                    "Reached a state without a refinement: " + state.getName());
+                        "Reached a state without a refinement: " + state.getName());
             }
 
             actors = (transition.destinationState()).getRefinement();
@@ -288,8 +288,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         // NOTE: Paranoid coding.
         if ((actors == null) || (actors.length != 1)) {
             throw new IllegalActionException(this,
-                "Current state is required to have exactly one refinement: "
-                + currentState.getName());
+                    "Current state is required to have exactly one refinement: "
+                    + currentState.getName());
         }
 
         for (int i = 0; i < actors.length; ++i) {
@@ -311,7 +311,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             ChangeRequest request = new ChangeRequest(this,
                     "choose a transition") {
                     protected void _execute()
-                        throws KernelException, IllegalActionException {
+                            throws KernelException, IllegalActionException {
                         FSMActor controller = getController();
                         State currentState = controller.currentState();
                         chooseTransitions(currentState);
@@ -392,9 +392,9 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
             if ((curRefinements == null) || (curRefinements.length != 1)) {
                 throw new IllegalActionException(this,
-                    "Multiple refinements are not supported."
-                    + " Found multiple refinements in: "
-                    + currentState.getName());
+                        "Multiple refinements are not supported."
+                        + " Found multiple refinements in: "
+                        + currentState.getName());
             }
 
             TypedCompositeActor curRefinement = (TypedCompositeActor) (curRefinements[0]);
@@ -406,7 +406,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                 // Recompute the schedule if the refinement domain has a schedule.
                 refinementDir.invalidateSchedule();
                 ((StaticSchedulingDirector) refinementDir).getScheduler()
-                 .getSchedule();
+                    .getSchedule();
             }
 
             _updateInputTokenConsumptionRates(curRefinement);
@@ -445,8 +445,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
             if ((actors == null) || (actors.length != 1)) {
                 throw new IllegalActionException(this,
-                    "Current state is required to have exactly one refinement: "
-                    + currentState.getName());
+                        "Current state is required to have exactly one refinement: "
+                        + currentState.getName());
             }
 
             actor = (TypedCompositeActor) (actors[0]);
@@ -461,8 +461,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
             if ((actors == null) || (actors.length != 1)) {
                 throw new IllegalActionException(this,
-                    "Current state is required to have exactly one refinement: "
-                    + currentState.getName());
+                        "Current state is required to have exactly one refinement: "
+                        + currentState.getName());
             }
 
             actor = (TypedCompositeActor) (actors[0]);
@@ -473,7 +473,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             } else if (refinementDir instanceof StaticSchedulingDirector) {
                 refinementDir.invalidateSchedule();
                 ((StaticSchedulingDirector) refinementDir).getScheduler()
-                 .getSchedule();
+                    .getSchedule();
             }
         }
 
@@ -506,9 +506,9 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         /*TypedActor[] currentRefinement = _lastIntransientState.getRefinement();
 
         if (currentRefinement == null || currentRefinement.length != 1) {
-            throw new IllegalActionException(this,
-                    "Current state is required to have exactly one refinement: "
-                    + _lastIntransientState.getName());
+        throw new IllegalActionException(this,
+        "Current state is required to have exactly one refinement: "
+        + _lastIntransientState.getName());
         }
 
         boolean postfireReturn = currentRefinement[0].postfire();
@@ -572,8 +572,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
         if ((currentRefinements == null) || (currentRefinements.length != 1)) {
             throw new IllegalActionException(this,
-                "Current state is required to have exactly one refinement: "
-                + controller.currentState().getName());
+                    "Current state is required to have exactly one refinement: "
+                    + controller.currentState().getName());
         }
 
         TypedCompositeActor curRefinement = (TypedCompositeActor) (currentRefinements[0]);
@@ -602,14 +602,14 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             if (!(port instanceof ParameterPort)) {
                 if (port.isInput()) {
                     _declareReconfigurationDependencyForRefinementRateVariables(analysis,
-                        port, "tokenConsumptionRate");
+                            port, "tokenConsumptionRate");
                 }
 
                 if (port.isOutput()) {
                     _declareReconfigurationDependencyForRefinementRateVariables(analysis,
-                        port, "tokenProductionRate");
+                            port, "tokenProductionRate");
                     _declareReconfigurationDependencyForRefinementRateVariables(analysis,
-                        port, "tokenInitProduction");
+                            port, "tokenInitProduction");
                 }
             }
         }
@@ -638,8 +638,8 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
             if (lastChosenTransition == null) {
                 throw new IllegalActionException(this,
-                    "Reached a transient state "
-                    + "without an enabled transition.");
+                        "Reached a transient state "
+                        + "without an enabled transition.");
             } else {
                 currentRefinements = currentState.getRefinement();
             }
@@ -659,12 +659,12 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      * list to the given list.
      */
     protected void _declareDependency(ConstVariableModelAnalysis analysis,
-        IOPort port, String name, List dependents)
-        throws IllegalActionException {
+            IOPort port, String name, List dependents)
+            throws IllegalActionException {
         Variable variable = (Variable) DFUtilities.getRateVariable(port, name);
         DependencyDeclaration declaration = (DependencyDeclaration) variable
             .getAttribute("_HDFFSMRateDependencyDeclaration",
-                DependencyDeclaration.class);
+                    DependencyDeclaration.class);
 
         if (declaration == null) {
             try {
@@ -687,18 +687,18 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      * @exception IllegalActionException
      */
     private void _declareReconfigurationDependencyForRefinementRateVariables(
-        ConstVariableModelAnalysis analysis, IOPort port, String parameterName)
-        throws IllegalActionException {
+            ConstVariableModelAnalysis analysis, IOPort port, String parameterName)
+            throws IllegalActionException {
         List refinementRateVariables = _getRefinementRateVariables(port,
                 parameterName);
         _declareDependency(analysis, port, parameterName,
-            refinementRateVariables);
+                refinementRateVariables);
 
         boolean isConstantAndIdentical = true;
         Token value = null;
 
         for (Iterator variables = refinementRateVariables.iterator();
-                variables.hasNext() && isConstantAndIdentical;) {
+             variables.hasNext() && isConstantAndIdentical;) {
             Variable rateVariable = (Variable) variables.next();
             isConstantAndIdentical = isConstantAndIdentical
                 && (analysis.getChangeContext(rateVariable) == null);
@@ -726,11 +726,11 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      * contained by ports connected to the given port on the inside.
      */
     private List _getRefinementRateVariables(IOPort port, String parameterName)
-        throws IllegalActionException {
+            throws IllegalActionException {
         List list = new LinkedList();
 
         for (Iterator insidePorts = port.deepInsidePortList().iterator();
-                insidePorts.hasNext();) {
+             insidePorts.hasNext();) {
             IOPort insidePort = (IOPort) insidePorts.next();
             Variable variable = (Variable) DFUtilities.getRateVariable(insidePort,
                     parameterName);
@@ -753,7 +753,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *   inside some other domain.
      */
     private CompositeActor _getEnclosingDomainActor()
-        throws IllegalActionException {
+            throws IllegalActionException {
         // Keep moving up towards the toplevel of the hierarchy until
         // we find either an SDF or HDF executive director or we reach
         // the toplevel composite actor.
@@ -774,7 +774,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
         }
 
         throw new IllegalActionException(this,
-            "This director must be contained within another domain.");
+                "This director must be contained within another domain.");
     }
 
     /** Extract the token consumption rates from the input
@@ -786,7 +786,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  @param actor The current refinement.
      */
     private void _updateInputTokenConsumptionRates(TypedCompositeActor actor)
-        throws IllegalActionException {
+            throws IllegalActionException {
         FSMActor ctrl = getController();
 
         // Get the current refinement's container.
@@ -806,12 +806,12 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             // while (inPorts.hasNext()) {
             //     IOPort inPort = (IOPort)inPorts.next();
             Iterator inPortsOutside = refineInPort.deepConnectedInPortList()
-                                                  .iterator();
+                .iterator();
 
             if (!inPortsOutside.hasNext()) {
                 throw new IllegalActionException("Current "
-                    + "state's refining actor has an input port not"
-                    + "connected to an input port of its container.");
+                        + "state's refining actor has an input port not"
+                        + "connected to an input port of its container.");
             }
 
             while (inPortsOutside.hasNext()) {
@@ -825,13 +825,13 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                     + "._Controller";
 
                 if ((thisPortContainer.getFullName() == refineInPortContainer
-                        .getFullName())
+                            .getFullName())
                         || temp.equals(thisPortContainer.getFullName())) {
                     // set the outside port rate equal to the port rate
                     // of the refinement.
                     int portRateToSet = DFUtilities.getTokenConsumptionRate(refineInPort);
                     DFUtilities.setTokenConsumptionRate(inputPortOutside,
-                        portRateToSet);
+                            portRateToSet);
                 } else {
                     State curState = ctrl.currentState();
                     List transitionList = curState.nonpreemptiveTransitionList();
@@ -842,11 +842,11 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
                         if (transition != null) {
                             TypedActor[] trRefinements = (transition
-                                .getRefinement());
+                                    .getRefinement());
 
                             if (trRefinements != null) {
                                 for (int i = 0; i < trRefinements.length;
-                                        i++) {
+                                     i++) {
                                     TypedCompositeActor trRefinement = (TypedCompositeActor) (trRefinements[i]);
                                     String trRefinementName = trRefinement
                                         .getFullName();
@@ -859,11 +859,11 @@ public class HDFFSMDirector extends MultirateFSMDirector {
 
                                         if (portRateToSet != transitionPortRate) {
                                             throw new IllegalActionException(this,
-                                                "Consumption rate of"
-                                                + "transition refinement "
-                                                + "not consistent with the"
-                                                + "consumption rate of the"
-                                                + "state refinement.");
+                                                    "Consumption rate of"
+                                                    + "transition refinement "
+                                                    + "not consistent with the"
+                                                    + "consumption rate of the"
+                                                    + "state refinement.");
                                         }
                                     }
                                 }
@@ -885,7 +885,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
      *  @param actor The current refinement.
      */
     private void _updateOutputTokenProductionRates(TypedCompositeActor actor)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // Get the current refinement's container.
         CompositeActor refineOutPortContainer = (CompositeActor) actor
             .getContainer();
@@ -900,7 +900,7 @@ public class HDFFSMDirector extends MultirateFSMDirector {
             // linked to on the outside (should only consist
             // of 1 port).
             Iterator outPortsOutside = refineOutPort.deepConnectedOutPortList()
-                                                    .iterator();
+                .iterator();
 
             //if (!outPortsOutside.hasNext()) {
             //throw new IllegalActionException("Current " +
@@ -925,15 +925,15 @@ public class HDFFSMDirector extends MultirateFSMDirector {
                     int portRateToSet = DFUtilities.getTokenProductionRate(refineOutPort);
                     int portInitRateToSet = DFUtilities.getTokenInitProduction(refineOutPort);
                     DFUtilities.setTokenProductionRate(outputPortOutside,
-                        portRateToSet);
+                            portRateToSet);
                     DFUtilities.setTokenInitProduction(outputPortOutside,
-                        portInitRateToSet);
+                            portInitRateToSet);
                 } else if (temp.equals(thisPortContainer.getFullName())) {
                     // set the outside port rate equal to the port rate of
                     // the refinement.
                     int portRateToSet = DFUtilities.getTokenProductionRate(refineOutPort);
                     DFUtilities.setTokenConsumptionRate(outputPortOutside,
-                        portRateToSet);
+                            portRateToSet);
                 }
             }
         }

@@ -115,7 +115,7 @@ public class HDFDirector extends SDFDirector {
      *
      */
     public HDFDirector()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -126,7 +126,7 @@ public class HDFDirector extends SDFDirector {
      *  @param workspace The workspace for this object.
      */
     public HDFDirector(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -146,7 +146,7 @@ public class HDFDirector extends SDFDirector {
      *  CompositeActor and the name collides with an entity in the container.
      */
     public HDFDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -383,7 +383,7 @@ public class HDFDirector extends SDFDirector {
      *  default scheduler of the class HDFScheduler.
      */
     private void _init()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         try {
             SDFScheduler scheduler = new SDFScheduler(this,
                     uniqueName("Scheduler"));
@@ -393,7 +393,7 @@ public class HDFDirector extends SDFDirector {
             // this should never happen because we don't override
             // setScheduler() to do sanity checks.
             throw new InternalErrorException(
-                "Could not create Default Scheduler:\n" + e.getMessage());
+                    "Could not create Default Scheduler:\n" + e.getMessage());
         }
 
         int cacheSize = 100;

@@ -234,7 +234,7 @@ public class EditorDropTarget extends DropTarget {
             // Account for the scaling in the pane.
             Point2D transformedPoint = new Point2D.Double();
             pane.getTransformContext().getInverseTransform().transform(originalPoint,
-                transformedPoint);
+                    transformedPoint);
 
             // Get an iterator over objects to drop.
             Iterator iterator = null;
@@ -243,11 +243,11 @@ public class EditorDropTarget extends DropTarget {
                 try {
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
                     iterator = (Iterator) dtde.getTransferable()
-                                              .getTransferData(PtolemyTransferable.namedObjFlavor);
+                        .getTransferData(PtolemyTransferable.namedObjFlavor);
                 } catch (Exception e) {
                     MessageHandler.error(
-                        "Can't find a supported data flavor for drop in "
-                        + dtde, e);
+                            "Can't find a supported data flavor for drop in "
+                            + dtde, e);
                     return;
                 }
             } else {
@@ -278,9 +278,9 @@ public class EditorDropTarget extends DropTarget {
 
                 moml.append(dropObj.exportMoML(name));
                 moml.append("<" + dropObj.getElementName() + " name=\"" + name
-                    + "\">\n");
+                        + "\">\n");
                 moml.append(
-                    "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{");
+                        "<property name=\"_location\" class=\"ptolemy.kernel.util.Location\" value=\"{");
                 moml.append((int) newPoint.getX());
                 moml.append(", ");
                 moml.append((int) newPoint.getY());
@@ -320,7 +320,7 @@ public class EditorDropTarget extends DropTarget {
             // Account for the scaling in the pane.
             Point2D transformedPoint = new Point2D.Double();
             pane.getTransformContext().getInverseTransform().transform(point,
-                transformedPoint);
+                    transformedPoint);
 
             FigureLayer layer = pane.getForegroundLayer();
 

@@ -65,7 +65,7 @@ public class Repeat extends SDFTransformer {
      *   an actor already in the container.
      */
     public Repeat(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // parameters
@@ -101,21 +101,21 @@ public class Repeat extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((attribute == numberOfTimes) || (attribute == blockSize)) {
             int repetitions = ((IntToken) numberOfTimes.getToken()).intValue();
             int count = ((IntToken) blockSize.getToken()).intValue();
 
             if (repetitions < 1) {
                 throw new IllegalActionException(numberOfTimes,
-                    "The value of numberOfTimes must be positive, but "
-                    + "was set to " + repetitions);
+                        "The value of numberOfTimes must be positive, but "
+                        + "was set to " + repetitions);
             }
 
             if (count < 1) {
                 throw new IllegalActionException(blockSize,
-                    "The value of blockSize must be positive, but "
-                    + "was set to " + count);
+                        "The value of blockSize must be positive, but "
+                        + "was set to " + count);
             }
         } else {
             super.attributeChanged(attribute);

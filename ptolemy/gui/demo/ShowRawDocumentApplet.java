@@ -147,10 +147,10 @@ public class ShowRawDocumentApplet extends BasicJApplet {
      */
     public String[][] getParameterInfo() {
         String[][] newinfo = {
-                { "columns", "integer", "40" },
-                { "rows", "integer", "10" },
-                { "source", "", "URL of the file to be displayed" },
-            };
+            { "columns", "integer", "40" },
+            { "rows", "integer", "10" },
+            { "source", "", "URL of the file to be displayed" },
+        };
         return _concatStringArrays(super.getParameterInfo(), newinfo);
     }
 

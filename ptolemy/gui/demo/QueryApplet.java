@@ -97,13 +97,13 @@ public class QueryApplet extends BasicJApplet implements QueryListener {
 
         try {
             _query.addFileChooser("fileChooser", "FileChooser", "default",
-                null, null);
+                    null, null);
         } catch (SecurityException security) {
             System.out.println("addFileChooser failed: " + security);
         }
 
         _query.addColorChooser("colorChooser", "ColorChoser",
-            "{0.0, 0.0, 0.0, 1.0}");
+                "{0.0, 0.0, 0.0, 1.0}");
         _query.addQueryListener(this);
         _query.setBackground(getBackground());
         getContentPane().add(_query);

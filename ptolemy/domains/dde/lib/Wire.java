@@ -67,7 +67,7 @@ public class Wire extends TypedAtomicActor {
      *  instantiating and specifying the type of this actor's ports.
      */
     public Wire(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);

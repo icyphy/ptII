@@ -134,7 +134,7 @@ public class QuadrantConstraint implements PointConstraint {
         if ((quadrant < SwingConstants.NORTH_EAST)
                 || (quadrant > SwingConstants.SOUTH_WEST)) {
             throw new IllegalArgumentException("Quadrant " + quadrant
-                + " not legal");
+                    + " not legal");
         }
 
         this._quadrant = quadrant;

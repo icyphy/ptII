@@ -139,7 +139,7 @@ public class FigureInteractor extends AbstractInteractor implements KeyListener 
      */
     public void mouseDragged(LayerEvent layerEvent) {
         _figure.translate(layerEvent.getLayerX() - dragPointX,
-            layerEvent.getLayerY() - dragPointY);
+                layerEvent.getLayerY() - dragPointY);
         dragPointX = layerEvent.getLayerX();
         dragPointY = layerEvent.getLayerY();
     }

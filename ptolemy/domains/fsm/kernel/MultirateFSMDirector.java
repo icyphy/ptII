@@ -70,7 +70,7 @@ public class MultirateFSMDirector extends FSMDirector {
      * @exception NameDuplicationException
      */
     public MultirateFSMDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // TODO Auto-generated constructor stub
@@ -104,8 +104,8 @@ public class MultirateFSMDirector extends FSMDirector {
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                "transferInputs: port argument is not an opaque"
-                + "input port.");
+                    "transferInputs: port argument is not an opaque"
+                    + "input port.");
         }
 
         boolean transferred = false;
@@ -128,13 +128,13 @@ public class MultirateFSMDirector extends FSMDirector {
                         insideReceivers[i][j].clear();
 
                         /*
-                        while (insideReceivers[i][j].hasToken()) {
-                            // clear tokens.
-                            // FIXME: This could be a problem for Giotto, etc.
-                            // as get() method in Giotto does not remove the
-                            // token from the receiver.
-                            insideReceivers[i][j].get();
-                        }*/
+                          while (insideReceivers[i][j].hasToken()) {
+                          // clear tokens.
+                          // FIXME: This could be a problem for Giotto, etc.
+                          // as get() method in Giotto does not remove the
+                          // token from the receiver.
+                          insideReceivers[i][j].get();
+                          }*/
                     }
 
                     // Transfer number of tokens at most the declared port rate.
@@ -154,7 +154,7 @@ public class MultirateFSMDirector extends FSMDirector {
             } catch (NoTokenException ex) {
                 // this shouldn't happen.
                 throw new InternalErrorException(
-                    "Director.transferInputs: Internal error: " + ex);
+                        "Director.transferInputs: Internal error: " + ex);
             }
         }
 
@@ -177,8 +177,8 @@ public class MultirateFSMDirector extends FSMDirector {
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                "HDFFSMDirector: transferOutputs():"
-                + "  port argument is not an opaque output port.");
+                    "HDFFSMDirector: transferOutputs():"
+                    + "  port argument is not an opaque output port.");
         }
 
         boolean transferred = false;
@@ -195,9 +195,9 @@ public class MultirateFSMDirector extends FSMDirector {
                         port.send(i, t);
                     } catch (NoTokenException ex) {
                         throw new InternalErrorException(
-                            "Director.transferOutputs: "
-                            + "Not enough tokens for port " + port.getName()
-                            + " " + ex);
+                                "Director.transferOutputs: "
+                                + "Not enough tokens for port " + port.getName()
+                                + " " + ex);
                     }
                 }
             }

@@ -44,12 +44,12 @@ import ptolemy.kernel.util.NameDuplicationException;
 */
 public class SDFTestDirector extends SDFDirector {
     public SDFTestDirector()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
     public SDFTestDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

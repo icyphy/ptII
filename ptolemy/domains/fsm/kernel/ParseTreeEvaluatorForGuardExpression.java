@@ -110,7 +110,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  @param errorTolerance The errorTolerance.
      */
     public ParseTreeEvaluatorForGuardExpression(RelationList relationList,
-        double errorTolerance) {
+            double errorTolerance) {
         if (relationList.isEmpty()) {
             _constructingRelationList = true;
         } else {
@@ -136,7 +136,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *   evaluation.
      */
     public ptolemy.data.Token evaluateParseTree(ASTPtRootNode node,
-        ParserScope scope) throws IllegalActionException {
+            ParserScope scope) throws IllegalActionException {
         _relationIndex = 0;
         return super.evaluateParseTree(node, scope);
     }
@@ -248,7 +248,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  visitLogicalNode throws the IllegalActionException.
      */
     public void visitLogicalNode(ASTPtLogicalNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             return;
         }
@@ -259,19 +259,19 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         // FIXME: Discrete variables should be treated differently.
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
-            "The number of child nodes must be greater than zero");
+                "The number of child nodes must be greater than zero");
 
         ptolemy.data.Token result = _evaluateChild(node, 0);
 
         if (!(result instanceof BooleanToken)) {
             throw new IllegalActionException("Cannot perform logical "
-                + "operation on " + result + " which is a "
-                + result.getClass().getName());
+                    + "operation on " + result + " which is a "
+                    + result.getClass().getName());
         }
 
         // Make sure that exactly one of AND or OR is set.
         _assert(node.isLogicalAnd() ^ node.isLogicalOr(), node,
-            "Invalid operation");
+                "Invalid operation");
 
         boolean flag = node.isLogicalAnd();
 
@@ -281,8 +281,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
             if (!(nextToken instanceof BooleanToken)) {
                 throw new IllegalActionException("Cannot perform logical "
-                    + "operation on " + nextToken + " which is a "
-                    + result.getClass().getName());
+                        + "operation on " + nextToken + " which is a "
+                        + result.getClass().getName());
             }
 
             if (flag) {
@@ -305,7 +305,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
      *  visitRelationNode throws the IllegalActionException.
      */
     public void visitRelationalNode(ASTPtRelationalNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (node.isConstant() && node.isEvaluated()) {
             return;
         }
@@ -390,9 +390,9 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         } else {
             // If the operator is neither about equal nor notEqual relations.
             if (!((leftToken instanceof ScalarToken)
-                    && (rightToken instanceof ScalarToken))) {
+                        && (rightToken instanceof ScalarToken))) {
                 throw new IllegalActionException("The " + operator.image
-                    + " operator can only be applied between scalars.");
+                        + " operator can only be applied between scalars.");
             }
 
             ScalarToken leftScalar = (ScalarToken) leftToken;
@@ -409,9 +409,9 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
                 result = leftScalar.isLessThan(rightScalar);
             } else {
                 throw new IllegalActionException("Invalid operation "
-                    + operator.image + " between "
-                    + leftToken.getClass().getName() + " and "
-                    + rightToken.getClass().getName());
+                        + operator.image + " between "
+                        + leftToken.getClass().getName() + " and "
+                        + rightToken.getClass().getName());
             }
 
             if (((BooleanToken) result).booleanValue()) {

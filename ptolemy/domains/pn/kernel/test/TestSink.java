@@ -53,7 +53,7 @@ public class TestSink extends AtomicActor {
      *  two ports with the same name has been made
      */
     public TestSink(CompositeActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _input = new IOPort(this, "input", true, false);
     }

@@ -154,7 +154,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *   a property in the container.
      */
     public CTDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initParameters();
 
@@ -163,10 +163,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
         } catch (IllegalActionException e) {
             // This should never occur.
             throw new InternalErrorException(this.getFullName()
-                + "Error setting a CTScheduler.");
+                    + "Error setting a CTScheduler.");
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException("There is already a scheduler"
-                + " with name " + this.getFullName());
+                    + " with name " + this.getFullName());
         }
     }
 
@@ -187,10 +187,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
         } catch (IllegalActionException e) {
             // This should never occur.
             throw new InternalErrorException(this.getFullName()
-                + "Error setting a CTScheduler.");
+                    + "Error setting a CTScheduler.");
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException("There is already a scheduler"
-                + " with name " + this.getFullName());
+                    + " with name " + this.getFullName());
         }
     }
 
@@ -254,7 +254,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  is not valid.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (_debugging) {
             _debug("Updating CTDirector parameter: ", attribute.getName());
         }
@@ -272,7 +272,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
             if (value < 0.0) {
                 throw new IllegalActionException(this,
-                    "Cannot set a negative step size.");
+                        "Cannot set a negative step size.");
             }
 
             _initStepSize = value;
@@ -282,7 +282,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
             if (value < 0.0) {
                 throw new IllegalActionException(this,
-                    "Cannot set a negative error tolerance.");
+                        "Cannot set a negative error tolerance.");
             }
 
             _errorTolerance = value;
@@ -291,7 +291,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
             if (value < 0.0) {
                 throw new IllegalActionException(this,
-                    "Cannot set a negative step size.");
+                        "Cannot set a negative step size.");
             }
 
             _minStepSize = value;
@@ -300,7 +300,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
             if (value < 0.0) {
                 throw new IllegalActionException(this,
-                    "Cannot set a negative step size.");
+                        "Cannot set a negative step size.");
             }
 
             _maxStepSize = value;
@@ -310,7 +310,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
             if (value < 0.0) {
                 throw new IllegalActionException(this,
-                    "Cannot set a negative value resolution.");
+                        "Cannot set a negative value resolution.");
             }
 
             _valueResolution = value;
@@ -319,7 +319,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
             if (value < 1) {
                 throw new IllegalActionException(this,
-                    "Cannot set a zero or negative iteration number.");
+                        "Cannot set a zero or negative iteration number.");
             }
 
             _maxIterations = value;
@@ -365,14 +365,14 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
         if (time.compareTo(currentTime) < 0) {
             throw new IllegalActionException((Nameable) actor,
-                "Requested fire time: " + time + " is earlier than"
-                + " the current time." + currentTime);
+                    "Requested fire time: " + time + " is earlier than"
+                    + " the current time." + currentTime);
         }
 
         // check the validity of breakpoint table
         if (_breakpoints == null) {
             throw new IllegalActionException(
-                "Breakpoint table can not be null!");
+                    "Breakpoint table can not be null!");
         }
 
         if (_debugging) {
@@ -601,7 +601,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
         if (_debugging && _verbose) {
             _debug("Postfire returns " + postfireReturns + " at: "
-                + getModelTime());
+                    + getModelTime());
         }
 
         return postfireReturns;
@@ -649,15 +649,15 @@ public abstract class CTDirector extends StaticSchedulingDirector
             if (!ready) {
                 _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
                 throw new IllegalActionException((Nameable) actor,
-                    "Actor is not ready to fire. In the CT domain, all "
-                    + "dynamic actors should be ready to fire at "
-                    + "all times.\n "
-                    + "Does the actor only operate on sequence of tokens?");
+                        "Actor is not ready to fire. In the CT domain, all "
+                        + "dynamic actors should be ready to fire at "
+                        + "all times.\n "
+                        + "Does the actor only operate on sequence of tokens?");
             }
 
             if (_debugging && _verbose) {
                 _debug("Prefire of " + ((Nameable) actor).getName()
-                    + " returns " + ready);
+                        + " returns " + ready);
             }
         }
 
@@ -667,7 +667,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
         // Without this, on the first round of integration, the state
         // transition actors will complain that inputs are not ready.
         Iterator integrators = schedule.get(CTSchedule.DYNAMIC_ACTORS)
-                                       .actorIterator();
+            .actorIterator();
 
         while (integrators.hasNext() && !_stopRequested) {
             CTDynamicActor dynamic = (CTDynamicActor) integrators.next();
@@ -711,7 +711,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
         if (!(nameable instanceof CompositeActor)) {
             throw new IllegalActionException(this,
-                "has no CompositeActor container.");
+                    "has no CompositeActor container.");
         }
 
         CompositeActor container = (CompositeActor) nameable;
@@ -719,12 +719,12 @@ public abstract class CTDirector extends StaticSchedulingDirector
         if (container.getContainer() != null) {
             if (!canBeInsideDirector()) {
                 throw new IllegalActionException(this,
-                    "cannot serve as an inside director.");
+                        "cannot serve as an inside director.");
             }
         } else {
             if (!canBeTopLevelDirector()) {
                 throw new IllegalActionException(this,
-                    "cannot serve as an top-level director.");
+                        "cannot serve as an top-level director.");
             }
         }
 
@@ -859,7 +859,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
             throw new InternalErrorException("Parameter creation error: " + e);
         } catch (NameDuplicationException ex) {
             throw new InvalidStateException(this,
-                "Parameter name duplication: " + ex);
+                    "Parameter name duplication: " + ex);
         }
     }
 
@@ -871,7 +871,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  @exception IllegalActionException If the solver can not be created.
      */
     protected final ODESolver _instantiateODESolver(String className)
-        throws IllegalActionException {
+            throws IllegalActionException {
         ODESolver newSolver;
 
         if (_debugging) {
@@ -883,13 +883,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
             newSolver = (ODESolver) solver.newInstance();
         } catch (ClassNotFoundException e) {
             throw new IllegalActionException(this,
-                "ODESolver: " + className + " is not found.");
+                    "ODESolver: " + className + " is not found.");
         } catch (InstantiationException e) {
             throw new IllegalActionException(this,
-                "ODESolver: " + className + " instantiation failed.");
+                    "ODESolver: " + className + " instantiation failed.");
         } catch (IllegalAccessException e) {
             throw new IllegalActionException(this,
-                "ODESolver: " + className + " is not accessible.");
+                    "ODESolver: " + className + " is not accessible.");
         }
 
         newSolver._makeSolverOf(this);
@@ -903,7 +903,7 @@ public abstract class CTDirector extends StaticSchedulingDirector
      *  appropriate.
      */
     protected final void _setCurrentODESolver(ODESolver solver)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _currentSolver = solver;
     }
 
@@ -943,8 +943,8 @@ public abstract class CTDirector extends StaticSchedulingDirector
     protected final void _setIterationEndTime(Time time) {
         if (time.compareTo(getModelTime()) < 0) {
             throw new InvalidStateException(this,
-                " Iteration end time" + time + " is earlier than"
-                + " the current time." + getModelTime());
+                    " Iteration end time" + time + " is earlier than"
+                    + " the current time." + getModelTime());
         }
 
         _iterationEndTime = time;

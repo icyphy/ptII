@@ -235,7 +235,7 @@ public class ExtensionFileFilter extends FileFilter {
 
                     while (extensions.hasMoreElements()) {
                         fullDescription += (", "
-                        + (String) extensions.nextElement());
+                                + (String) extensions.nextElement());
                     }
                 }
 

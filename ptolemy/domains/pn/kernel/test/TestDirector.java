@@ -59,7 +59,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 */
 public class TestDirector extends AtomicActor {
     public TestDirector(CompositeActor container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new IOPort(this, "input", true, false);
         output = new IOPort(this, "output", false, true);

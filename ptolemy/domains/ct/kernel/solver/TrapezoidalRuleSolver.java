@@ -130,7 +130,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
             _recalculatingWithTwoSteps = false;
             _firstStep = true;
             director.setModelTime(director.getModelTime().add(director
-                    .getCurrentStepSize()));
+                                          .getCurrentStepSize()));
         }
 
         if (_isConverged()) {
@@ -187,7 +187,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
      *  read input, or send output.
      */
     public void integratorFire(CTBaseIntegrator integrator)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CTDirector director = (CTDirector) getContainer();
         double h = director.getCurrentStepSize();
         double tentativeState;
@@ -268,20 +268,20 @@ public class TrapezoidalRuleSolver extends ODESolver {
 
         if (_debugging) {
             _debug("Integrator: " + integrator.getName()
-                + " local truncation error = " + localError);
+                    + " local truncation error = " + localError);
         }
 
         if (localError < tolerance) {
             if (_debugging) {
                 _debug("Integrator: " + integrator.getName()
-                    + " report a success.");
+                        + " report a success.");
             }
 
             return true;
         } else {
             if (_debugging) {
                 _debug("Integrator: " + integrator.getName()
-                    + " reports a failure.");
+                        + " reports a failure.");
             }
 
             return false;
@@ -311,7 +311,7 @@ public class TrapezoidalRuleSolver extends ODESolver {
         }
 
         _debug("integrator: " + integrator.getName()
-            + " suggests next step size = " + newh);
+                + " suggests next step size = " + newh);
         return newh;
     }
 

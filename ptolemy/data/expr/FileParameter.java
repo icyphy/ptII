@@ -149,7 +149,7 @@ public class FileParameter extends StringParameter {
      *   an attribute already in the container.
      */
     public FileParameter(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -192,7 +192,7 @@ public class FileParameter extends StringParameter {
             // Java 1.4.2 some times reports:
             //  java.lang.IllegalArgumentException: URI is not absolute
             throw new IllegalActionException(this, ex,
-                "Failed to create a file with name '" + name + "'.");
+                    "Failed to create a file with name '" + name + "'.");
         }
     }
 
@@ -211,10 +211,10 @@ public class FileParameter extends StringParameter {
 
         try {
             return FileUtilities.nameToURL(name, getBaseDirectory(),
-                getClass().getClassLoader());
+                    getClass().getClassLoader());
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "Cannot read file '" + name + "'");
+                    "Cannot read file '" + name + "'");
         }
     }
 
@@ -341,7 +341,7 @@ public class FileParameter extends StringParameter {
             return _writer;
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex,
-                "Cannot open file for writing");
+                    "Cannot open file for writing");
         }
     }
 

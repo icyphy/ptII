@@ -97,7 +97,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public ActorRecursion(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new DDFDirector(this, uniqueName("DDFDirector"));
         recursionActor = new StringParameter(this, "recursionActor");
@@ -198,7 +198,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *  @exception IOException If an I/O error occurs.
      */
     protected void _exportMoMLContents(Writer output, int depth)
-        throws IOException {
+            throws IOException {
         Iterator attributes = attributeList().iterator();
 
         while (attributes.hasNext()) {
@@ -236,17 +236,17 @@ public class ActorRecursion extends TypedCompositeActor {
     private void _checkCompatibility() throws IllegalActionException {
         if (!(getExecutiveDirector() instanceof DDFDirector)) {
             throw new IllegalActionException(this,
-                "The executive Director " + "must be DDFDirector.");
+                    "The executive Director " + "must be DDFDirector.");
         }
 
         if ((_recursionActor.inputPortList().size() != inputPortList().size())
                 || (_recursionActor.outputPortList().size() != outputPortList()
-                                                                       .size())) {
+                        .size())) {
             throw new IllegalActionException(this,
-                "The recursionActor " + recursionActor.stringValue()
-                + " must have the same "
-                + "number of input ports and same number of output "
-                + "ports as the actor to be replaced.");
+                    "The recursionActor " + recursionActor.stringValue()
+                    + " must have the same "
+                    + "number of input ports and same number of output "
+                    + "ports as the actor to be replaced.");
         }
 
         Iterator ports = portList().iterator();
@@ -257,24 +257,24 @@ public class ActorRecursion extends TypedCompositeActor {
 
             if (matching == null) {
                 throw new IllegalActionException(this,
-                    "Each port of the " + "recursionActor "
-                    + recursionActor.stringValue()
-                    + " must have the same name as the matching "
-                    + "port of the actor to be replaced.");
+                        "Each port of the " + "recursionActor "
+                        + recursionActor.stringValue()
+                        + " must have the same name as the matching "
+                        + "port of the actor to be replaced.");
             }
 
             TypedIOPort matchingPort = (TypedIOPort) matching;
 
             if (port.getWidth() != matchingPort.getWidth()) {
                 throw new IllegalActionException(this,
-                    "The matching " + "ports must have same width.");
+                        "The matching " + "ports must have same width.");
             }
 
             if ((port.isInput() && !matchingPort.isInput())
                     || (port.isOutput() && !matchingPort.isOutput())) {
                 throw new IllegalActionException(this,
-                    "The matching "
-                    + "ports must be both input ports or output ports.");
+                        "The matching "
+                        + "ports must be both input ports or output ports.");
             }
 
             Type portType = port.getType();
@@ -282,16 +282,16 @@ public class ActorRecursion extends TypedCompositeActor {
 
             if (port.isInput() && !matchingPortType.isCompatible(portType)) {
                 throw new IllegalActionException(this,
-                    "The type of the port " + port.getName() + " of the actor "
-                    + getName()
-                    + " must be the same or less than the matching port.");
+                        "The type of the port " + port.getName() + " of the actor "
+                        + getName()
+                        + " must be the same or less than the matching port.");
             }
 
             if (port.isOutput() && !portType.isCompatible(matchingPortType)) {
                 throw new IllegalActionException(this,
-                    "The type of the port " + port.getName() + " of the actor "
-                    + getName() + " must "
-                    + "be the same or less than the matching port.");
+                        "The type of the port " + port.getName() + " of the actor "
+                        + getName() + " must "
+                        + "be the same or less than the matching port.");
             }
         }
 
@@ -309,7 +309,7 @@ public class ActorRecursion extends TypedCompositeActor {
      *   be cloned.
      */
     private void _cloneRecursionActor()
-        throws IllegalActionException, CloneNotSupportedException {
+            throws IllegalActionException, CloneNotSupportedException {
         try {
             // Clone the composite actor.
             CompositeActor clone = (CompositeActor) _recursionActor.clone(workspace());
@@ -384,7 +384,7 @@ public class ActorRecursion extends TypedCompositeActor {
         }
 
         throw new IllegalActionException(this,
-            "Can not find a " + "container with name " + recursionActorValue);
+                "Can not find a " + "container with name " + recursionActorValue);
     }
 
     /** Read rate parameters of input ports of all actors receiving tokens
@@ -469,11 +469,11 @@ public class ActorRecursion extends TypedCompositeActor {
                                 // port to find the channel index.
                                 Receiver[][] portReceivers = port.getReceivers();
                                 int channelIndex = 0;
-foundChannelIndex: 
+                                foundChannelIndex: 
                                 for (int m = 0; m < portReceivers.length;
-                                        m++) {
+                                     m++) {
                                     for (int n = 0;
-                                            n < portReceivers[m].length; n++) {
+                                         n < portReceivers[m].length; n++) {
                                         if (farReceiver == portReceivers[m][n]) {
                                             channelIndex = m;
                                             break foundChannelIndex;
@@ -499,7 +499,7 @@ foundChannelIndex:
             }
 
             IntToken[] productionRateToken = new IntToken[outputPort
-                .getWidthInside()];
+                    .getWidthInside()];
 
             for (int i = 0; i < outputPort.getWidthInside(); i++) {
                 productionRateToken[i] = new IntToken(productionRate[i]);

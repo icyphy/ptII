@@ -135,7 +135,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public CTMultiSolverDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -179,7 +179,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  instantiated, or the change to other attributes is invalid.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == ODESolver) {
             if (_debugging) {
                 _debug(getFullName() + " updating ODE solver...");
@@ -201,8 +201,8 @@ public class CTMultiSolverDirector extends CTDirector {
 
             if (defaultSolver instanceof BreakpointODESolver) {
                 throw new IllegalActionException(this,
-                    _solverClassName
-                    + " can only be used as a breakpoint ODE solver.");
+                        _solverClassName
+                        + " can only be used as a breakpoint ODE solver.");
             }
 
             _normalSolver = defaultSolver;
@@ -338,7 +338,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         Iterator eventGenerators = schedule.get(CTSchedule.EVENT_GENERATORS)
-                                           .actorIterator();
+            .actorIterator();
 
         while (eventGenerators.hasNext() && !_stopRequested) {
             Actor actor = (Actor) eventGenerators.next();
@@ -348,18 +348,18 @@ public class CTMultiSolverDirector extends CTDirector {
             if (!isPrefireComplete(actor)) {
                 if (_debugging && _verbose) {
                     _debug("Prefire event generator: "
-                        + ((Nameable) actor).getName() + " at time "
-                        + getModelTime());
+                            + ((Nameable) actor).getName() + " at time "
+                            + getModelTime());
                 }
 
                 if (!actor.prefire()) {
                     _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
                     throw new IllegalActionException((Nameable) actor,
-                        "Actor is not ready to fire. In the CT domain, "
-                        + "all event generators should be ready to fire "
-                        + "at all times.\n"
-                        + "Does the actor only operate on sequence "
-                        + "of tokens?");
+                            "Actor is not ready to fire. In the CT domain, "
+                            + "all event generators should be ready to fire "
+                            + "at all times.\n"
+                            + "Does the actor only operate on sequence "
+                            + "of tokens?");
                 }
 
                 setPrefireComplete(actor);
@@ -367,7 +367,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
             if (_debugging) {
                 _debug("Fire event generator : " + ((Nameable) actor).getName()
-                    + " at time " + getModelTime());
+                        + " at time " + getModelTime());
             }
 
             actor.fire();
@@ -418,7 +418,7 @@ public class CTMultiSolverDirector extends CTDirector {
         try {
             CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
             Iterator eventGenerators = schedule.get(CTSchedule.EVENT_GENERATORS)
-                                               .actorIterator();
+                .actorIterator();
             boolean hasDiscreteEvents = false;
 
             while (eventGenerators.hasNext() && !hasDiscreteEvents) {
@@ -436,7 +436,7 @@ public class CTMultiSolverDirector extends CTDirector {
             return hasDiscreteEvents;
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Can not get a valid schedule: "
-                + ex.getMessage());
+                    + ex.getMessage());
         }
     }
 
@@ -491,7 +491,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
         if (_debugging) {
             _debug("Set both current step size and suggested next "
-                + "step size to " + initialStepSize);
+                    + "step size to " + initialStepSize);
         }
 
         // register the stop time as a breakpoint.
@@ -520,7 +520,7 @@ public class CTMultiSolverDirector extends CTDirector {
             // Whenever an InternalErrorException happens, there
             // is (at least) one bug. :(
             throw new IllegalActionException(
-                "Execution can not exceed the stop time.");
+                    "Execution can not exceed the stop time.");
         }
 
         // Now, the current time is equal to the stop time.
@@ -572,7 +572,7 @@ public class CTMultiSolverDirector extends CTDirector {
         // Instantiate a normal ODE solver.
         if (_debugging) {
             _debug(getFullName(), " instantiating the ODE solver ",
-                _solverClassName);
+                    _solverClassName);
         }
 
         _normalSolver = _instantiateODESolver(_solverClassName);
@@ -580,7 +580,7 @@ public class CTMultiSolverDirector extends CTDirector {
         // Instantiate a breakpoint solver.
         if (_debugging) {
             _debug(getFullName(), "instantiating the breakpoint solver ",
-                _breakpointSolverClassName);
+                    _breakpointSolverClassName);
         }
 
         _breakpointSolver = _instantiateODESolver(_breakpointSolverClassName);
@@ -619,7 +619,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         Iterator outputActors = schedule.get(CTSchedule.OUTPUT_ACTORS)
-                                        .actorIterator();
+            .actorIterator();
 
         while (outputActors.hasNext() && !_stopRequested) {
             Actor actor = (Actor) outputActors.next();
@@ -629,23 +629,23 @@ public class CTMultiSolverDirector extends CTDirector {
 
                 if (_debugging && _verbose) {
                     _debug("Prefire output actor: "
-                        + ((Nameable) actor).getName() + " at time "
-                        + getModelTime());
+                            + ((Nameable) actor).getName() + " at time "
+                            + getModelTime());
                 }
 
                 if (!actor.prefire()) {
                     throw new IllegalActionException((Nameable) actor,
-                        "Actor is not ready to fire. In the CT domain, "
-                        + "all continuous actors should be ready to fire "
-                        + "at all times.\n"
-                        + "Does the actor only operate on sequence "
-                        + "of tokens?");
+                            "Actor is not ready to fire. In the CT domain, "
+                            + "all continuous actors should be ready to fire "
+                            + "at all times.\n"
+                            + "Does the actor only operate on sequence "
+                            + "of tokens?");
                 }
             }
 
             if (_debugging) {
                 _debug("Fire output actor: " + ((Nameable) actor).getName()
-                    + " at time " + getModelTime());
+                        + " at time " + getModelTime());
             }
 
             actor.fire();
@@ -668,15 +668,15 @@ public class CTMultiSolverDirector extends CTDirector {
 
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         Iterator eventGenerators = schedule.get(CTSchedule.EVENT_GENERATORS)
-                                           .actorIterator();
+            .actorIterator();
 
         while (eventGenerators.hasNext() && !_stopRequested) {
             Actor actor = (Actor) eventGenerators.next();
 
             if (_debugging) {
                 _debug("Postfire event generator : "
-                    + ((Nameable) actor).getName() + " at time "
-                    + getModelTime());
+                        + ((Nameable) actor).getName() + " at time "
+                        + getModelTime());
             }
 
             _postfireReturns = _postfireReturns && actor.postfire();
@@ -722,12 +722,12 @@ public class CTMultiSolverDirector extends CTDirector {
         if (((BooleanToken) synchronizeToRealTime.getToken()).booleanValue()) {
             long realTime = System.currentTimeMillis() - _timeBase;
             long simulationTime = (long) ((getModelTime()
-                                               .subtract(getModelStartTime())
-                                               .getDoubleValue()) * 1000);
+                                                  .subtract(getModelStartTime())
+                                                  .getDoubleValue()) * 1000);
 
             if (_debugging) {
                 _debug("real time " + realTime + " and simulation time "
-                    + simulationTime);
+                        + simulationTime);
             }
 
             long timeDifference = simulationTime - realTime;
@@ -741,13 +741,13 @@ public class CTMultiSolverDirector extends CTDirector {
                     Thread.sleep(timeDifference - 20);
                 } catch (Exception e) {
                     throw new IllegalActionException(this,
-                        "Sleep Interrupted" + e.getMessage());
+                            "Sleep Interrupted" + e.getMessage());
                 }
             } else {
                 if (_debugging) {
                     _debug("Warning: " + getFullName(),
-                        " cannot achieve real-time performance"
-                        + " at simulation time " + getModelTime());
+                            " cannot achieve real-time performance"
+                            + " at simulation time " + getModelTime());
                 }
             }
         }
@@ -757,7 +757,7 @@ public class CTMultiSolverDirector extends CTDirector {
         // Call the postfire method of the continuous actors.
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         Iterator actors = schedule.get(CTSchedule.CONTINUOUS_ACTORS)
-                                  .actorIterator();
+            .actorIterator();
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -823,8 +823,8 @@ public class CTMultiSolverDirector extends CTDirector {
 
         if (_debugging) {
             _debug("execute the system from " + getModelTime()
-                + " with a step size " + getCurrentStepSize()
-                + " using solver " + getCurrentODESolver().getName());
+                    + " with a step size " + getCurrentStepSize()
+                    + " using solver " + getCurrentODESolver().getName());
         }
 
         // Resolve the initial states at a future time
@@ -880,8 +880,8 @@ public class CTMultiSolverDirector extends CTDirector {
 
             if (_debugging) {
                 _debug("  ---> " + getName(),
-                    ": propagating the resolved states through "
-                    + "continuous actors");
+                        ": propagating the resolved states through "
+                        + "continuous actors");
             }
 
             // Establish the initial states for discrete phase of execution.
@@ -889,29 +889,29 @@ public class CTMultiSolverDirector extends CTDirector {
 
             if (_debugging) {
                 _debug("  ---> " + getName(),
-                    ": generating events (if any) (continuous -> discrete)");
+                        ": generating events (if any) (continuous -> discrete)");
             }
 
             _iterateEventGenerators(schedule);
 
             if (_debugging) {
                 _debug("  ---> " + getName(),
-                    ": iterating pure discrete actors (discrete -> discrete)");
+                        ": iterating pure discrete actors (discrete -> discrete)");
             }
 
             _iteratePurelyDiscreteActors(schedule);
 
             if (_debugging) {
                 _debug("  ---> " + getName(),
-                    ": iterating waveform generators (discrete -> continuous)");
+                        ": iterating waveform generators (discrete -> continuous)");
             }
 
             _iterateWaveformGenerators(schedule);
 
             if (_debugging) {
                 _debug("  ---> " + getName(),
-                    ": propagating the resolved states through "
-                    + "continuous actors");
+                        ": propagating the resolved states through "
+                        + "continuous actors");
             }
 
             // Update continuous actors. Two subtleties are:
@@ -933,9 +933,9 @@ public class CTMultiSolverDirector extends CTDirector {
         // phase of execution.
         if (_debugging) {
             _debug(" >>> The next breakpoint is at " + getBreakPoints().first()
-                + ", which is in the future.");
+                    + ", which is in the future.");
             _debug(" >>> The fixed point of the current discrete "
-                + "phase of execution is reached.");
+                    + "phase of execution is reached.");
         }
 
         // We are leaving discrete phase of execution...
@@ -988,7 +988,7 @@ public class CTMultiSolverDirector extends CTDirector {
         try {
             CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
             actors = schedule.get(CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS)
-                             .actorIterator();
+                .actorIterator();
         } catch (IllegalActionException e) {
             throw new InternalErrorException("Can not get schedule.");
         }
@@ -1006,8 +1006,8 @@ public class CTMultiSolverDirector extends CTDirector {
 
             if (_debugging) {
                 _debug("  Checking output step size control actor: "
-                    + ((NamedObj) actor).getName() + ", which returns "
-                    + thisAccurate);
+                        + ((NamedObj) actor).getName() + ", which returns "
+                        + thisAccurate);
             }
 
             accurate = accurate && thisAccurate;
@@ -1039,7 +1039,7 @@ public class CTMultiSolverDirector extends CTDirector {
         try {
             CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
             actors = schedule.get(CTSchedule.STATE_STEP_SIZE_CONTROL_ACTORS)
-                             .actorIterator();
+                .actorIterator();
         } catch (IllegalActionException e) {
             throw new InternalErrorException("Can not get schedule.");
         }
@@ -1054,8 +1054,8 @@ public class CTMultiSolverDirector extends CTDirector {
 
             if (_debugging) {
                 _debug("  Checking state step size control actor: "
-                    + ((NamedObj) actor).getName() + ", which returns "
-                    + thisAccurate);
+                        + ((NamedObj) actor).getName() + ", which returns "
+                        + thisAccurate);
             }
 
             accurate = accurate && thisAccurate;
@@ -1078,7 +1078,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @exception IllegalActionException If any actor can not be iterated.
      */
     protected void _iteratePurelyDiscreteActors(CTSchedule schedule)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _setExecutionPhase(CTExecutionPhase.ITERATING_PURELY_DISCRETE_ACTORS_PHASE);
         _iterateSchedule(schedule.get(CTSchedule.DISCRETE_ACTORS));
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
@@ -1089,7 +1089,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @exception IllegalActionException If any actor can not be iterated.
      */
     protected void _iterateEventGenerators(CTSchedule schedule)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _setExecutionPhase(CTExecutionPhase.GENERATING_EVENTS_PHASE);
         _iterateSchedule(schedule.get(CTSchedule.EVENT_GENERATORS));
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
@@ -1100,7 +1100,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @exception IllegalActionException If any actor can not be iterated.
      */
     protected void _iterateWaveformGenerators(CTSchedule schedule)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _setExecutionPhase(CTExecutionPhase.GENERATING_WAVEFORMS_PHASE);
         _iterateSchedule(schedule.get(CTSchedule.WAVEFORM_GENERATORS));
         _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
@@ -1127,7 +1127,7 @@ public class CTMultiSolverDirector extends CTDirector {
             boolean foundOne = false;
             CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
             Iterator actors = schedule.get(CTSchedule.STATE_STEP_SIZE_CONTROL_ACTORS)
-                                      .actorIterator();
+                .actorIterator();
 
             while (actors.hasNext()) {
                 CTStepSizeControlActor actor = (CTStepSizeControlActor) actors
@@ -1138,7 +1138,7 @@ public class CTMultiSolverDirector extends CTDirector {
             }
 
             actors = schedule.get(CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS)
-                             .actorIterator();
+                .actorIterator();
 
             while (actors.hasNext()) {
                 CTStepSizeControlActor actor = (CTStepSizeControlActor) actors
@@ -1178,7 +1178,7 @@ public class CTMultiSolverDirector extends CTDirector {
         double refinedStep = getCurrentStepSize();
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         Iterator actors = schedule.get(CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS)
-                                  .actorIterator();
+            .actorIterator();
 
         while (actors.hasNext()) {
             CTStepSizeControlActor actor = (CTStepSizeControlActor) actors.next();
@@ -1187,13 +1187,13 @@ public class CTMultiSolverDirector extends CTDirector {
 
         if (refinedStep < (0.5 * getTimeResolution())) {
             throw new IllegalActionException(this,
-                "The refined step size is less than the minimum time "
-                + "resolution, at time " + getModelTime());
+                    "The refined step size is less than the minimum time "
+                    + "resolution, at time " + getModelTime());
         }
 
         if (_debugging && _verbose) {
             _debug(getFullName(),
-                "refine step with respect to output to" + refinedStep);
+                    "refine step with respect to output to" + refinedStep);
         }
 
         _setIterationEndTime(getModelTime().add(refinedStep));
@@ -1218,7 +1218,7 @@ public class CTMultiSolverDirector extends CTDirector {
         double refinedStep = getCurrentStepSize();
         CTSchedule schedule = (CTSchedule) getScheduler().getSchedule();
         Iterator actors = schedule.get(CTSchedule.STATE_STEP_SIZE_CONTROL_ACTORS)
-                                  .actorIterator();
+            .actorIterator();
 
         while (actors.hasNext()) {
             CTStepSizeControlActor actor = (CTStepSizeControlActor) actors.next();
@@ -1226,7 +1226,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
             if (_debugging && _verbose) {
                 _debug(((NamedObj) actor).getName(),
-                    "refines step size to " + size);
+                        "refines step size to " + size);
             }
 
             refinedStep = Math.min(refinedStep, size);
@@ -1234,8 +1234,8 @@ public class CTMultiSolverDirector extends CTDirector {
 
         if (refinedStep < (0.5 * getMinStepSize())) {
             throw new IllegalActionException(this,
-                "Cannot resolve new states even using "
-                + "the minimum step size, at time " + getModelTime());
+                    "Cannot resolve new states even using "
+                    + "the minimum step size, at time " + getModelTime());
         }
 
         _setIterationEndTime(getModelTime().add(refinedStep));
@@ -1248,7 +1248,7 @@ public class CTMultiSolverDirector extends CTDirector {
      *  @exception IllegalActionException If a breakpoint is missed.
      */
     protected boolean _removeCurrentTimeFromBreakpointTable()
-        throws IllegalActionException {
+            throws IllegalActionException {
         // NOTE: We only remove elements from breakpont table in this method
         // and the postfire() method of the CT director.
         boolean currentTimeIsABreakpoint = false;
@@ -1307,7 +1307,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
         if (_debugging && _verbose) {
             _debug("Using breakpoint solver: " + solver.getName()
-                + " to propagate states.");
+                    + " to propagate states.");
         }
 
         _setExecutionPhase(CTExecutionPhase.PREFIRING_DYNAMIC_ACTORS_PHASE);
@@ -1347,7 +1347,7 @@ public class CTMultiSolverDirector extends CTDirector {
     protected void _resolveInitialStates() throws IllegalActionException {
         if (_debugging && _verbose) {
             _debug("Resolving the initial states at " + getModelTime(),
-                " (current time) plus step size " + getCurrentStepSize());
+                    " (current time) plus step size " + getCurrentStepSize());
         }
 
         ODESolver solver = getCurrentODESolver();
@@ -1429,9 +1429,9 @@ public class CTMultiSolverDirector extends CTDirector {
                     // of iterations. e.g. in implicit methods.
                     if (getCurrentStepSize() < (0.5 * getMinStepSize())) {
                         throw new IllegalActionException(this,
-                            "Cannot resolve new states even using "
-                            + "the minimum step size, at time "
-                            + getModelTime());
+                                "Cannot resolve new states even using "
+                                + "the minimum step size, at time "
+                                + getModelTime());
                     }
 
                     setCurrentStepSize(0.5 * getCurrentStepSize());
@@ -1443,7 +1443,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
                 if (_debugging && _verbose) {
                     _debug("Execute the system from " + getModelTime()
-                        + " with a smaller step size" + getCurrentStepSize());
+                            + " with a smaller step size" + getCurrentStepSize());
                 }
             }
 
@@ -1474,7 +1474,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
                 if (_debugging && _verbose) {
                     _debug("Refine the current step size"
-                        + " with a smaller one " + getCurrentStepSize());
+                            + " with a smaller one " + getCurrentStepSize());
                 }
             } else {
                 // outputs are generated successfully.
@@ -1495,7 +1495,7 @@ public class CTMultiSolverDirector extends CTDirector {
     // Iterate all the actors inside a given schedule, by prefiring,
     // firing and postfiring them.
     private void _iterateSchedule(ScheduleElement schedule)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Iterator actors = schedule.actorIterator();
 
         while (actors.hasNext()) {
@@ -1503,20 +1503,20 @@ public class CTMultiSolverDirector extends CTDirector {
 
             if (_debugging && _verbose) {
                 _debug("Prefire actor: " + ((Nameable) actor).getName()
-                    + " at time " + getModelTime());
+                        + " at time " + getModelTime());
             }
 
             if (actor.prefire()) {
                 if (_debugging && _verbose) {
                     _debug("Fire actor: " + ((Nameable) actor).getName()
-                        + " at time " + getModelTime());
+                            + " at time " + getModelTime());
                 }
 
                 actor.fire();
 
                 if (_debugging && _verbose) {
                     _debug("Postfire actor: " + ((Nameable) actor).getName()
-                        + " at time " + getModelTime());
+                            + " at time " + getModelTime());
                 }
 
                 _postfireReturns = actor.postfire() && _postfireReturns;
@@ -1538,7 +1538,7 @@ public class CTMultiSolverDirector extends CTDirector {
         if ((breakPoints != null) && !breakPoints.isEmpty()) {
             if (_debugging && _verbose) {
                 _debug("The first breakpoint in the breakpoint list is at "
-                    + breakPoints.first());
+                        + breakPoints.first());
             }
 
             // Adjust step size so that the first breakpoint is
@@ -1551,7 +1551,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
                 if (_debugging && _verbose) {
                     _debug("Refining the current step size w.r.t. "
-                        + "the next breakpoint to " + currentStepSize);
+                            + "the next breakpoint to " + currentStepSize);
                 }
 
                 _setIterationEndTime(point);

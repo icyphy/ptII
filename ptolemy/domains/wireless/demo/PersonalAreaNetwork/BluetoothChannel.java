@@ -64,7 +64,7 @@ public class BluetoothChannel extends LimitedRangeChannel {
      *   actor with this name.
      */
     public BluetoothChannel(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Force the type of the defaultProperties to at least include
@@ -119,8 +119,8 @@ public class BluetoothChannel extends LimitedRangeChannel {
      *   class).
      */
     protected boolean _isInRange(WirelessIOPort source,
-        WirelessIOPort destination, RecordToken properties)
-        throws IllegalActionException {
+            WirelessIOPort destination, RecordToken properties)
+            throws IllegalActionException {
         double range = Double.POSITIVE_INFINITY;
         boolean rangeIsSet = false;
 

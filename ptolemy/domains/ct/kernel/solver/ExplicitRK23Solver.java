@@ -126,7 +126,7 @@ public class ExplicitRK23Solver extends ODESolver {
         Time iterationBeginTime = director.getIterationBeginTime();
         double currentStepSize = director.getCurrentStepSize();
         director.setModelTime(iterationBeginTime.add(
-                currentStepSize * _timeInc[_getRoundCount()]));
+                                      currentStepSize * _timeInc[_getRoundCount()]));
     }
 
     /** Fire state transition actors. Increment the round count.
@@ -168,7 +168,7 @@ public class ExplicitRK23Solver extends ODESolver {
      *  read input, or can not send output.
      */
     public void integratorFire(CTBaseIntegrator integrator)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CTDirector director = (CTDirector) getContainer();
         int r = _getRoundCount();
         double xn = integrator.getState();
@@ -203,7 +203,7 @@ public class ExplicitRK23Solver extends ODESolver {
 
         default:
             throw new InvalidStateException(this,
-                "execution sequence out of range.");
+                    "execution sequence out of range.");
         }
 
         integrator.output.broadcast(new DoubleToken(outvalue));
@@ -231,21 +231,21 @@ public class ExplicitRK23Solver extends ODESolver {
             //k[3] is Local Truncation Error
             integrator.setAuxVariables(3, error);
             _debug("Integrator: " + integrator.getName()
-                + " local truncation error = " + error);
+                    + " local truncation error = " + error);
 
             if (error < tolerance) {
                 _debug("Integrator: " + integrator.getName()
-                    + " report a success.");
+                        + " report a success.");
                 return true;
             } else {
                 _debug("Integrator: " + integrator.getName()
-                    + " reports a failure.");
+                        + " reports a failure.");
                 return false;
             }
         } catch (IllegalActionException e) {
             //should never happen.
             throw new InternalErrorException(integrator.getName()
-                + " can't read input." + e.getMessage());
+                    + " can't read input." + e.getMessage());
         }
     }
 
@@ -270,7 +270,7 @@ public class ExplicitRK23Solver extends ODESolver {
         }
 
         _debug("integrator: " + integrator.getName()
-            + " suggests next step size = " + newh);
+                + " suggests next step size = " + newh);
         return newh;
     }
 
@@ -284,15 +284,15 @@ public class ExplicitRK23Solver extends ODESolver {
 
     // B coefficients
     private static final double[][] _B = {
-            { 0.5 },
-            { 0, 0.75 },
-            { 2.0 / 9.0, 1.0 / 3.0, 4.0 / 9.0 }
-        };
+        { 0.5 },
+        { 0, 0.75 },
+        { 2.0 / 9.0, 1.0 / 3.0, 4.0 / 9.0 }
+    };
 
     // E coefficients
     private static final double[] _E = {
-            -5.0 / 72.0, 1.0 / 12.0, 1.0 / 9.0, -1.0 / 8.0
-        };
+        -5.0 / 72.0, 1.0 / 12.0, 1.0 / 9.0, -1.0 / 8.0
+    };
 
     // The order of the algorithm.
     private static final double _order = 3;

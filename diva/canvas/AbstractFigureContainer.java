@@ -49,7 +49,7 @@ public abstract class AbstractFigureContainer extends AbstractFigure
     public void decorate(Figure child, FigureDecorator decorator) {
         if (child.getParent() != this) {
             throw new IllegalArgumentException("The object " + child
-                + " is not a child of " + this);
+                    + " is not a child of " + this);
         }
 
         child.repaint();
@@ -174,7 +174,7 @@ public abstract class AbstractFigureContainer extends AbstractFigure
     public void undecorate(FigureDecorator decorator) {
         if (decorator.getParent() != this) {
             throw new IllegalArgumentException("The object " + decorator
-                + " is not a child of " + this);
+                    + " is not a child of " + this);
         }
 
         decorator.repaint();

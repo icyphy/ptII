@@ -62,7 +62,7 @@ import ptolemy.plot.Plot;
 */
 public class NonlinearClient extends TypedCompositeActor {
     public NonlinearClient(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         setName("NonlinearSystem");
 

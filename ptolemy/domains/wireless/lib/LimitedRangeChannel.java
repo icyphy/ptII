@@ -83,7 +83,7 @@ public class LimitedRangeChannel extends DelayChannel {
      *   an actor already in the container.
      */
     public LimitedRangeChannel(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Force the type of the defaultProperties to at least include
@@ -137,8 +137,8 @@ public class LimitedRangeChannel extends DelayChannel {
      *   class).
      */
     protected boolean _isInRange(WirelessIOPort source,
-        WirelessIOPort destination, RecordToken properties)
-        throws IllegalActionException {
+            WirelessIOPort destination, RecordToken properties)
+            throws IllegalActionException {
         double range = Double.POSITIVE_INFINITY;
         boolean rangeIsSet = false;
 

@@ -73,7 +73,7 @@ public class VrmlLoad extends GRPickActor {
      *   actor with this name.
      */
     public VrmlLoad(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         filename = new Parameter(this, "filename", new StringToken("mwave.wrl"));
     }
@@ -133,7 +133,7 @@ public class VrmlLoad extends GRPickActor {
 
         try {
             System.out.println("call "
-                + ((StringToken) filename.getToken()).stringValue());
+                    + ((StringToken) filename.getToken()).stringValue());
         } catch (Exception e) {
             System.out.println("process call back exception");
         }

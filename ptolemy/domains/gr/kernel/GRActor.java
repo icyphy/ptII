@@ -62,7 +62,7 @@ abstract public class GRActor extends TypedAtomicActor {
      *   an entity already in the container.
      */
     public GRActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _allowAttributeChanges = false;
         _isSceneGraphInitialized = false;
@@ -118,12 +118,12 @@ abstract public class GRActor extends TypedAtomicActor {
      *  @exception IllegalActionException Always thrown for this base class.
      */
     abstract protected void _makeSceneGraphConnection()
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Set the view screen that this actor is connected to.
      */
     abstract protected void _setViewScreen(GRActor actor)
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////

@@ -62,7 +62,7 @@ public class FrontDropQueue extends CIActor {
      *   actor with this name.
      */
     public FrontDropQueue(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(false);
         output.setMultiport(false);

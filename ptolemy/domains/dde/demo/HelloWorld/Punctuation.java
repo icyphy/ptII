@@ -59,7 +59,7 @@ public class Punctuation extends StringOut {
      *  superclass throws a NameDuplicationException .
      */
     public Punctuation(TypedCompositeActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _punctuation = new LinkedList();
     }

@@ -67,7 +67,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
      *   actor with this name.
      */
     public RectangularFigure2D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         xPosition = new Parameter(this, "xPosition", new DoubleToken(0.0));
@@ -86,9 +86,9 @@ public abstract class RectangularFigure2D extends GRShape2D {
      * @param attribute The attribute which changed.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (((attribute == xPosition) || (attribute == yPosition)
-                || (attribute == width) || (attribute == height))
+                    || (attribute == width) || (attribute == height))
                 && (_viewScreen != null)) {
             _updateFigure();
         }
@@ -130,7 +130,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
      *  @exception IllegalActionException If a parameter is not valid.
      */
     protected abstract BasicFigure _createFigure()
-        throws IllegalActionException;
+            throws IllegalActionException;
 
     /** Return the offset in a single axis by which to move the rectangle
      *  so that the figure is centered at the cartesian origin.
@@ -141,7 +141,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
      * an exception.
      */
     protected double _getCenterOffset(Parameter dimension)
-        throws IllegalActionException {
+            throws IllegalActionException {
         return ((DoubleToken) dimension.getToken()).doubleValue() / -2.0;
     }
 
@@ -152,7 +152,7 @@ public abstract class RectangularFigure2D extends GRShape2D {
      */
     protected Point.Double _getCenterPoint() throws IllegalActionException {
         return new Point.Double(((DoubleToken) xPosition.getToken())
-            .doubleValue(), ((DoubleToken) yPosition.getToken()).doubleValue());
+                .doubleValue(), ((DoubleToken) yPosition.getToken()).doubleValue());
     }
 
     /** Calculate the lower left point of the rectangle as a Point.Double.
@@ -163,9 +163,9 @@ public abstract class RectangularFigure2D extends GRShape2D {
     protected Point.Double _getCornerPoint() throws IllegalActionException {
         Point.Double center = _getCenterPoint();
         return new Point.Double(center.getX()
-            + (((DoubleToken) width.getToken()).doubleValue() / 2.0),
-            (center.getY()
-            + (((DoubleToken) height.getToken()).doubleValue() / 2.0)));
+                + (((DoubleToken) width.getToken()).doubleValue() / 2.0),
+                (center.getY()
+                        + (((DoubleToken) height.getToken()).doubleValue() / 2.0)));
     }
 
     /** Update the figure's position and size when the user changes

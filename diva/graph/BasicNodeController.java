@@ -182,7 +182,7 @@ public class BasicNodeController implements NodeController {
         }
 
         _controller.dispatch(new GraphViewEvent(this,
-                GraphViewEvent.NODE_DRAWN, node));
+                                     GraphViewEvent.NODE_DRAWN, node));
 
         return newFigure;
     }
@@ -202,7 +202,7 @@ public class BasicNodeController implements NodeController {
         _drawChildren(node);
 
         _controller.dispatch(new GraphViewEvent(this,
-                GraphViewEvent.NODE_DRAWN, node));
+                                     GraphViewEvent.NODE_DRAWN, node));
 
         return newFigure;
     }

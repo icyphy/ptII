@@ -63,7 +63,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
      *  the workspace. Increment the version number of the workspace.
      */
     public RTPDirector()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super();
         _init();
     }
@@ -74,7 +74,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
      *  @param workspace The workspace for this object.
      */
     public RTPDirector(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -93,7 +93,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
      *   "iterations" parameter (which it should not).
      */
     public RTPDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -129,7 +129,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
      */
     public Time getModelTime() {
         double currentTime = (double) (System.currentTimeMillis()
-            - _realStartTime);
+                - _realStartTime);
         return new Time(this, currentTime);
     }
 
@@ -247,7 +247,7 @@ public class RTPDirector extends ProcessDirector implements TimedDirector {
      *  parameter.
      */
     private void _init()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         executionDuration = new Parameter(this, "executionDuration",
                 new LongToken(10000));
         executionDuration.setTypeEquals(BaseType.LONG);

@@ -68,7 +68,7 @@ public class NonInterruptibleTimer extends Timer {
      *   actor with this name.
      */
     public NonInterruptibleTimer(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 
@@ -118,7 +118,7 @@ public class NonInterruptibleTimer extends Timer {
 
                 if (!eventTime.equals(currentTime)) {
                     throw new InternalErrorException("Timer time is "
-                        + "reached, but output is not available.");
+                            + "reached, but output is not available.");
                 }
 
                 _currentOutput = (Token) earliestEvent.contents;
@@ -173,7 +173,7 @@ public class NonInterruptibleTimer extends Timer {
             double delay = delayToken.doubleValue();
             _nextTimeFree = currentTime.add(delay);
             _delayedOutputTokens.put(new TimedEvent(_nextTimeFree,
-                    value.getToken()));
+                                             value.getToken()));
             getDirector().fireAt(this, _nextTimeFree);
         }
 

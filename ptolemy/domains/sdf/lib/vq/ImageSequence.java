@@ -86,14 +86,14 @@ public class ImageSequence extends Source {
      *   actor with this name.
      */
     public ImageSequence(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         output.setTypeEquals(BaseType.INT_MATRIX);
 
         imageURLTemplate = new Parameter(this, "imageURLTemplate",
                 new StringToken("ptolemy/domains/sdf/lib/vq"
-                    + "/data/seq/missa/missa***.qcf"));
+                        + "/data/seq/missa/missa***.qcf"));
         imageColumns = new Parameter(this, "imageColumns", new IntToken("176"));
         imageRows = new Parameter(this, "imageRows", new IntToken("144"));
         startFrame = new Parameter(this, "startFrame", new IntToken("0"));
@@ -176,7 +176,7 @@ public class ImageSequence extends Source {
 
                     if (dataurl == null) {
                         throw new FileNotFoundException("Failed to find '"
-                            + fileName + "' as " + "a resource");
+                                + fileName + "' as " + "a resource");
                     }
 
                     source = dataurl.openStream();
@@ -185,7 +185,7 @@ public class ImageSequence extends Source {
                 // Load the frame from the file.
                 if (_fullRead(source, _frameBytes) != (_imageRows * _imageColumns)) {
                     throw new IllegalActionException("Error reading "
-                        + "image file!");
+                            + "image file!");
                 }
 
                 // This is necessary to convert from bytes to ints
@@ -199,11 +199,11 @@ public class ImageSequence extends Source {
             } catch (IllegalActionException ex) {
                 _images = null;
                 throw new IllegalActionException(this, ex,
-                    "Failed to initialize");
+                        "Failed to initialize");
             } catch (Exception ex) {
                 _images = null;
                 throw new IllegalActionException(this, ex,
-                    "Failed to initialize");
+                        "Failed to initialize");
             } finally {
                 if (source != null) {
                     try {
@@ -211,7 +211,7 @@ public class ImageSequence extends Source {
                     } catch (IOException ex) {
                         _images = null;
                         throw new IllegalActionException(this, ex,
-                            "Failed to close source");
+                                "Failed to close source");
                     }
                 }
             }

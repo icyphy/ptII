@@ -79,7 +79,7 @@ public class ModalController extends FSMActor {
      *   an actor already in the container.
      */
     public ModalController(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -136,7 +136,7 @@ public class ModalController extends FSMActor {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-                "ModalController.newPort: Internal error: " + ex.getMessage());
+                    "ModalController.newPort: Internal error: " + ex.getMessage());
         } finally {
             _mirrorDisable = false;
             _workspace.doneWriting();
@@ -162,11 +162,11 @@ public class ModalController extends FSMActor {
      *   TypedActor, or if the base class throws it.
      */
     protected void _checkContainer(Entity container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (!(container instanceof ModalModel) && (container != null)) {
             throw new IllegalActionException(container, this,
-                "ModalController can only be contained by "
-                + "ModalModel objects.");
+                    "ModalController can only be contained by "
+                    + "ModalModel objects.");
         }
     }
 

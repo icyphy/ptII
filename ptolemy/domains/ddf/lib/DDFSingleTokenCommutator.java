@@ -70,7 +70,7 @@ public class DDFSingleTokenCommutator extends SingleTokenCommutator {
      *   by the proposed container.
      */
     public DDFSingleTokenCommutator(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         input_tokenConsumptionRate = new Parameter(input, "tokenConsumptionRate");

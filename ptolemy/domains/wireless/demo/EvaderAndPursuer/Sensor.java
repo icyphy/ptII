@@ -90,7 +90,7 @@ public class Sensor extends TypedAtomicActor {
      *   actor with this name.
      */
     public Sensor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create and configure the parameters.
@@ -246,9 +246,9 @@ public class Sensor extends TypedAtomicActor {
 
                 double timeValue = getDirector().getModelTime().getDoubleValue();
                 Token[] values = {
-                        new ArrayToken(locationArray),
-                        new DoubleToken(timeValue), new IntToken(0)
-                    };
+                    new ArrayToken(locationArray),
+                    new DoubleToken(timeValue), new IntToken(0)
+                };
                 Token result = new RecordToken(labels, values);
 
                 output.send(0, result);
@@ -258,10 +258,10 @@ public class Sensor extends TypedAtomicActor {
                     String[] labels = { "location", "time", "depth" };
 
                     Token[] values = {
-                            new ArrayToken(_parentLocation),
-                            new DoubleToken(_timeValue),
-                            new IntToken(_parentDepth)
-                        };
+                        new ArrayToken(_parentLocation),
+                        new DoubleToken(_timeValue),
+                        new IntToken(_parentDepth)
+                    };
                     Token result = new RecordToken(labels, values);
 
                     output.send(0, result);
@@ -282,7 +282,7 @@ public class Sensor extends TypedAtomicActor {
 
             if ((time.doubleValue() > _timeValue)
                     || ((time.doubleValue() == _timeValue)
-                    && (d.intValue() < _parentDepth))) {
+                            && (d.intValue() < _parentDepth))) {
                 //the root node may have been changed
                 //or there is a shorter path.
                 ArrayToken locationArray = (ArrayToken) inputToken.get(
@@ -300,9 +300,9 @@ public class Sensor extends TypedAtomicActor {
                 String[] labels = { "location", "time", "depth" };
 
                 Token[] values = {
-                        new ArrayToken(_parentLocation),
-                        new DoubleToken(_timeValue), new IntToken(_parentDepth)
-                    };
+                    new ArrayToken(_parentLocation),
+                    new DoubleToken(_timeValue), new IntToken(_parentDepth)
+                };
                 Token result = new RecordToken(labels, values);
 
                 output.send(0, result);
@@ -347,7 +347,7 @@ public class Sensor extends TypedAtomicActor {
 
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
-                "Cannot find a _location attribute of class Location.");
+                    "Cannot find a _location attribute of class Location.");
         }
 
         return locationAttribute.getLocation();

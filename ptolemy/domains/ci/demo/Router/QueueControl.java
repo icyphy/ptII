@@ -76,7 +76,7 @@ public class QueueControl extends TypedAtomicActor {
      *   actor with this name.
      */
     public QueueControl(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         q1Length = new TypedIOPort(this, "q1Length", true, false);

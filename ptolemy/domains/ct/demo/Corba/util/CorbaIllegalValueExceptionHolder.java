@@ -15,7 +15,7 @@ public final class CorbaIllegalValueExceptionHolder
     }
 
     public CorbaIllegalValueExceptionHolder(
-        ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException initialValue) {
+            ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException initialValue) {
         value = initialValue;
     }
 
@@ -26,11 +26,11 @@ public final class CorbaIllegalValueExceptionHolder
 
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueExceptionHelper
-        .write(o, value);
+            .write(o, value);
     }
 
     public org.omg.CORBA.TypeCode _type() {
         return ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueExceptionHelper
-        .type();
+            .type();
     }
 }

@@ -50,7 +50,7 @@ public class CTDummySource extends TypedAtomicActor {
     /** Constructor
      */
     public CTDummySource(TypedCompositeActor container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         output = new TypedIOPort(this, "output");
         output.setInput(false);

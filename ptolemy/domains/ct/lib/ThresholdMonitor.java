@@ -79,7 +79,7 @@ public class ThresholdMonitor extends TypedAtomicActor
      *   an entity already in the container.
      */
     public ThresholdMonitor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(false);
@@ -130,7 +130,7 @@ public class ThresholdMonitor extends TypedAtomicActor
      *  the attribute.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((attribute == thresholdCenter) || (attribute == thresholdWidth)) {
             _thCenter = ((DoubleToken) thresholdCenter.getToken()).doubleValue();
             _thWidth = Math.abs(((DoubleToken) thresholdWidth.getToken())
@@ -258,9 +258,9 @@ public class ThresholdMonitor extends TypedAtomicActor
         if (!_first) {
             if (((_lastInput >= _upperBound) && (_thisInput <= _lowerBound))
                     || ((_lastInput <= _lowerBound)
-                    && (_thisInput >= _upperBound))) {
+                            && (_thisInput >= _upperBound))) {
                 _debug(getFullName() + "one step crosses the threshold"
-                    + "cutting the step size in half.");
+                        + "cutting the step size in half.");
                 _accurate = false;
                 return false;
             }

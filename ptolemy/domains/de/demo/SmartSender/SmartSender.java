@@ -94,7 +94,7 @@ public class SmartSender extends TypedAtomicActor {
      *   an entity already in the container.
      */
     public SmartSender(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output = new TypedIOPort(this, "output");

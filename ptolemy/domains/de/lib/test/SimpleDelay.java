@@ -33,14 +33,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
 /**
-  @author Edward A. Lee, Haiyang Zheng
-  @version $Id$
-  @Pt.ProposedRating Yellow (hyzheng)
-  @Pt.AcceptedRating Red (cxh)
+   @author Edward A. Lee, Haiyang Zheng
+   @version $Id$
+   @Pt.ProposedRating Yellow (hyzheng)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class SimpleDelay extends TimedDelay {
     public SimpleDelay(TypedCompositeActor container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 }

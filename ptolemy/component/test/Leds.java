@@ -62,13 +62,13 @@ public class Leds extends AtomicComponent {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         display = new MethodCallPort(this, "display", true) {
-            public synchronized TupleToken call(TupleToken args) {
-                System.out.println("---call method Leds.displays.");
-                IntToken arg = (IntToken)args.getElement(0);
-                System.out.println("*** Leds Displays: " + arg.intValue());
-                return TupleToken.VOID;
-            }
-        };
+                public synchronized TupleToken call(TupleToken args) {
+                    System.out.println("---call method Leds.displays.");
+                    IntToken arg = (IntToken)args.getElement(0);
+                    System.out.println("*** Leds Displays: " + arg.intValue());
+                    return TupleToken.VOID;
+                }
+            };
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -68,7 +68,7 @@ public class FunctionDependencyOfModalModel
      *  the attribute is not compatible with the specified container.
      */
     public FunctionDependencyOfModalModel(CompositeActor compositeActor,
-        String name) throws IllegalActionException, NameDuplicationException {
+            String name) throws IllegalActionException, NameDuplicationException {
         super(compositeActor, name);
     }
 
@@ -84,7 +84,7 @@ public class FunctionDependencyOfModalModel
 
         try {
             Actor[] actors = ((ModalModel) getContainer()).getController()
-                              .currentState().getRefinement();
+                .currentState().getRefinement();
 
             if (actors != null) {
                 for (int i = 0; i < actors.length; ++i) {

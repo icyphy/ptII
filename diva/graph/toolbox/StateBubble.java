@@ -87,7 +87,7 @@ public class StateBubble extends AbstractFigure {
      * given fill.
      */
     public StateBubble(double x, double y, double width, double height,
-        Paint fill) {
+            Paint fill) {
         Shape s = new Ellipse2D.Double(x, y, width, height);
         _outsideEllipse = new PaintedShape(s, fill);
     }

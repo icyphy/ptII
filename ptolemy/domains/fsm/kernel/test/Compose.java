@@ -60,7 +60,7 @@ public class Compose {
      *  @exception Exception If the automata cannot be composed.
      */
     public Compose(String[] momls, boolean considerTransient)
-        throws Exception {
+            throws Exception {
         InterfaceAutomaton[] automata = new InterfaceAutomaton[momls.length];
 
         for (int i = 0; i < momls.length; i++) {

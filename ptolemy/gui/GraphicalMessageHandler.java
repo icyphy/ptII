@@ -125,8 +125,8 @@ public class GraphicalMessageHandler extends MessageHandler {
 
                     // Show the MODAL dialog
                     JOptionPane.showOptionDialog(getContext(), message,
-                        "Error", JOptionPane.YES_NO_OPTION,
-                        JOptionPane.ERROR_MESSAGE, null, options, options[0]);
+                            "Error", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.ERROR_MESSAGE, null, options, options[0]);
                 }
             };
 
@@ -202,9 +202,9 @@ public class GraphicalMessageHandler extends MessageHandler {
 
                     // Show the MODAL dialog
                     JOptionPane.showOptionDialog(getContext(), message,
-                        "Message", JOptionPane.YES_NO_OPTION,
-                        JOptionPane.INFORMATION_MESSAGE, null, options,
-                        options[0]);
+                            "Message", JOptionPane.YES_NO_OPTION,
+                            JOptionPane.INFORMATION_MESSAGE, null, options,
+                            options[0]);
                 }
             };
 
@@ -226,7 +226,7 @@ public class GraphicalMessageHandler extends MessageHandler {
      * "Cancel" button.
      */
     protected void _warning(final String info)
-        throws ptolemy.util.CancelException {
+            throws ptolemy.util.CancelException {
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
         // Otherwise, defer.
@@ -294,7 +294,7 @@ public class GraphicalMessageHandler extends MessageHandler {
      *  "Cancel" button.
      */
     protected void _warning(final String info, final Throwable throwable)
-        throws ptolemy.util.CancelException {
+            throws ptolemy.util.CancelException {
         // In swing, updates to showing graphics must be done in the
         // event thread.  If we are in the event thread, then proceed.
         // Otherwise, defer.
@@ -410,6 +410,6 @@ public class GraphicalMessageHandler extends MessageHandler {
 
         // Show the MODAL dialog
         JOptionPane.showMessageDialog(getContext(), message, "Stack trace",
-            JOptionPane.ERROR_MESSAGE);
+                JOptionPane.ERROR_MESSAGE);
     }
 }

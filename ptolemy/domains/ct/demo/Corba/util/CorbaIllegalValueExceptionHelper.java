@@ -11,7 +11,7 @@ abstract public class CorbaIllegalValueExceptionHelper {
     private static String _id = "IDL:util/CorbaIllegalValueException:1.0";
 
     public static void insert(org.omg.CORBA.Any a,
-        ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException that) {
+            ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException that) {
         org.omg.CORBA.portable.OutputStream out = a.create_output_stream();
         a.type(type());
         write(out, that);
@@ -19,7 +19,7 @@ abstract public class CorbaIllegalValueExceptionHelper {
     }
 
     public static ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException extract(
-        org.omg.CORBA.Any a) {
+            org.omg.CORBA.Any a) {
         return read(a.create_input_stream());
     }
 
@@ -56,7 +56,7 @@ abstract public class CorbaIllegalValueExceptionHelper {
     }
 
     public static ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException read(
-        org.omg.CORBA.portable.InputStream istream) {
+            org.omg.CORBA.portable.InputStream istream) {
         ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException value = new ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException();
 
         // read and discard the repository ID
@@ -66,7 +66,7 @@ abstract public class CorbaIllegalValueExceptionHelper {
     }
 
     public static void write(org.omg.CORBA.portable.OutputStream ostream,
-        ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException value) {
+            ptolemy.domains.ct.demo.Corba.util.CorbaIllegalValueException value) {
         // write the repository ID
         ostream.write_string(id());
         ostream.write_string(value.message);

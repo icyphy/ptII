@@ -477,7 +477,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
          * @param iconifiable if true, the frame can be iconified
          */
         public DesktopInternalFrame(String title, boolean resizable,
-            boolean closable, boolean maximizable, boolean iconifiable) {
+                boolean closable, boolean maximizable, boolean iconifiable) {
             super(title, resizable, closable, maximizable, iconifiable);
         }
 
@@ -605,7 +605,7 @@ public class DesktopContext extends AppContextDelegate implements MDIContext {
                 c = getCurrentContentPane();
             } else {
                 throw new RuntimeException("Could not find content "
-                    + "for frame " + f);
+                        + "for frame " + f);
             }
 
             ViewEvent event = new ViewEvent(c, id);

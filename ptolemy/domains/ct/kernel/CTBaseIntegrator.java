@@ -108,7 +108,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @see CTDirector
 */
 public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
-    CTStepSizeControlActor, CTDynamicActor, CTStatefulActor {
+                                                                  CTStepSizeControlActor, CTDynamicActor, CTStatefulActor {
     /** Construct an integrator, with a name and a container.
      *  The integrator is in the same workspace as the container.
      *
@@ -120,7 +120,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
      *  thrown by the super class.
      */
     public CTBaseIntegrator(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         //      impulseInput = new TypedIOPort(this, "impulseInput", true, false);
@@ -308,7 +308,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
             throw new IllegalActionException(this, " no director available");
         } else if (!(dir instanceof CTGeneralDirector)) {
             throw new IllegalActionException("Integrators can only be "
-                + "used in CT models.");
+                    + "used in CT models.");
         }
 
         ODESolver solver = (ODESolver) dir.getCurrentODESolver();
@@ -325,8 +325,8 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
 
         if (_debugging) {
             _debug(getName(),
-                " initialize: initial state = " + _tentativeState
-                + " derivative = " + _tentativeDerivative);
+                    " initialize: initial state = " + _tentativeState
+                    + " derivative = " + _tentativeDerivative);
         }
 
         _history.clear();
@@ -353,12 +353,12 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
 
             if (Double.isNaN(f_dot) || Double.isInfinite(f_dot)) {
                 throw new InternalErrorException("The input of " + getName()
-                    + " is not valid because"
-                    + " it is a result of divide-by-zero.");
+                        + " is not valid because"
+                        + " it is a result of divide-by-zero.");
             }
         } catch (IllegalActionException e) {
             throw new InternalErrorException(getName() + " can't read input."
-                + e.getMessage());
+                    + e.getMessage());
         }
 
         ODESolver solver = ((CTDirector) getDirector()).getCurrentODESolver();
@@ -395,7 +395,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
 
         if (_debugging) {
             _debug("Saving the following into history: state: " + _state
-                + " derivative: " + _derivative);
+                    + " derivative: " + _derivative);
         }
 
         if (getHistoryCapacity() > 0) {
@@ -436,7 +436,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
 
         if (solver == null) {
             throw new IllegalActionException(this,
-                " does not have an ODE solver.");
+                    " does not have an ODE solver.");
         }
 
         int n = solver.getIntegratorAuxVariableCount();
@@ -492,12 +492,12 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
      *  @see #getAuxVariables
      */
     public void setAuxVariables(int index, double value)
-        throws InvalidStateException {
+            throws InvalidStateException {
         try {
             _auxVariables[index] = value;
         } catch (ArrayIndexOutOfBoundsException e) {
             throw new InvalidStateException(this,
-                "index out of the range of the auxVariables.");
+                    "index out of the range of the auxVariables.");
         }
     }
 
@@ -631,7 +631,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
          *  of history is less than or equal to zero.
          */
         public void pushEntry(double state, double derivative)
-            throws IllegalActionException {
+                throws IllegalActionException {
             if (_capacity > 0) {
                 DoubleDouble entry = new DoubleDouble(state, derivative);
 
@@ -646,7 +646,7 @@ public class CTBaseIntegrator extends TypedAtomicActor implements TimedActor,
                     .getCurrentStepSize();
             } else {
                 throw new IllegalActionException(getContainer(),
-                    "The history capacity is less than or equal to 0.");
+                        "The history capacity is less than or equal to 0.");
             }
         }
 

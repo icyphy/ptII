@@ -63,7 +63,7 @@ public class FlowThrough extends TypedAtomicActor {
     /**
      */
     public FlowThrough(TypedCompositeActor cont, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         output = new TypedIOPort(this, "output", false, true);

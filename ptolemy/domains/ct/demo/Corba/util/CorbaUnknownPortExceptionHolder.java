@@ -15,7 +15,7 @@ public final class CorbaUnknownPortExceptionHolder
     }
 
     public CorbaUnknownPortExceptionHolder(
-        ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException initialValue) {
+            ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortException initialValue) {
         value = initialValue;
     }
 
@@ -26,11 +26,11 @@ public final class CorbaUnknownPortExceptionHolder
 
     public void _write(org.omg.CORBA.portable.OutputStream o) {
         ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper
-        .write(o, value);
+            .write(o, value);
     }
 
     public org.omg.CORBA.TypeCode _type() {
         return ptolemy.domains.ct.demo.Corba.util.CorbaUnknownPortExceptionHelper
-        .type();
+            .type();
     }
 }

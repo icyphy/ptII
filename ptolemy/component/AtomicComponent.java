@@ -51,7 +51,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating red (cxh)
 */
 public class AtomicComponent extends ComponentEntity
-        implements Component {
+    implements Component {
 
     /** Construct an entity with the given name contained by the specified
      *  entity. The container argument must not be null, or a

@@ -95,7 +95,7 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
             _x = x;
             _y = y;
             ((Rectangle2D) getShape()).setFrame(x - _size, y - _size,
-                _size * 2, _size * 2);
+                    _size * 2, _size * 2);
         }
     }
 
@@ -114,7 +114,7 @@ public class BasicGrabHandle extends BasicRectangle implements GrabHandle {
     public void setSize(float size) {
         this._size = size;
         ((Rectangle2D) getShape()).setFrame(_x - _size, _y - _size, _size * 2,
-            _size * 2);
+                _size * 2);
     }
 
     /**

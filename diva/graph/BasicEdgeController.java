@@ -173,7 +173,7 @@ public class BasicEdgeController implements EdgeController {
 
                 if (tailSite == null) {
                     throw new RuntimeException("Invalid connector target: "
-                        + "no valid site found for tail of new connector.");
+                            + "no valid site found for tail of new connector.");
                 }
 
                 model.setEdgeTail(_controller, edge, node);
@@ -183,7 +183,7 @@ public class BasicEdgeController implements EdgeController {
 
                 if (headSite == null) {
                     throw new RuntimeException("Invalid connector target: "
-                        + "no valid site found for head of new connector.");
+                            + "no valid site found for head of new connector.");
                 }
 
                 model.setEdgeHead(_controller, edge, node);
@@ -293,7 +293,7 @@ public class BasicEdgeController implements EdgeController {
         // Create the figure
         Connector c = render(edge, layer, tailSite, headSite);
         _controller.dispatch(new GraphViewEvent(this,
-                GraphViewEvent.EDGE_DRAWN, edge));
+                                     GraphViewEvent.EDGE_DRAWN, edge));
         return c;
     }
 
@@ -372,7 +372,7 @@ public class BasicEdgeController implements EdgeController {
     /** Render the edge on the given layer between the two sites.
      */
     public Connector render(Object edge, FigureLayer layer, Site tailSite,
-        Site headSite) {
+            Site headSite) {
         Connector ef = getEdgeRenderer().render(edge, tailSite, headSite);
         ef.setInteractor(getEdgeInteractor());
         ef.setUserObject(edge);
@@ -413,7 +413,7 @@ public class BasicEdgeController implements EdgeController {
 
                 default:
                     throw new IllegalStateException(
-                        "Cannot handle both ends of an edge being dragged.");
+                            "Cannot handle both ends of an edge being dragged.");
                 }
             } catch (GraphException ex) {
                 SelectionModel selectionModel = _controller.getSelectionModel();

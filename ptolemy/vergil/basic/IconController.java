@@ -182,8 +182,8 @@ public class IconController extends ParameterizedNodeController {
                 }
             } catch (KernelException ex) {
                 throw new InternalErrorException(null, ex,
-                    "Could not create icon " + "in " + object + " even "
-                    + "though one did not previously exist.");
+                        "Could not create icon " + "in " + object + " even "
+                        + "though one did not previously exist.");
             }
 
             result.setToolTipText(object.getClassName());
@@ -193,7 +193,7 @@ public class IconController extends ParameterizedNodeController {
             if (object instanceof ComponentEntity) {
                 ComponentEntity ce = (ComponentEntity) object;
                 StringAttribute _colorAttr = (StringAttribute) (ce.getAttribute(
-                        "_color"));
+                                                                        "_color"));
 
                 if (_colorAttr != null) {
                     String _color = _colorAttr.getExpression();
@@ -202,7 +202,7 @@ public class IconController extends ParameterizedNodeController {
                     _animationRenderer.renderSelected(result);
 
                     StringAttribute _explAttr = (StringAttribute) (ce
-                        .getAttribute("_explanation"));
+                            .getAttribute("_explanation"));
 
                     if (_explAttr != null) {
                         result.setToolTipText(_explAttr.getExpression());

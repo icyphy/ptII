@@ -76,7 +76,7 @@ public class DDFOrderedMerge extends OrderedMerge {
      *   actor with this name.
      */
     public DDFOrderedMerge(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         inputA_tokenConsumptionRate = new Parameter(inputA,

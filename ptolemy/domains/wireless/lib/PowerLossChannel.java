@@ -116,7 +116,7 @@ public class PowerLossChannel extends LimitedRangeChannel {
      *   an actor already in the container.
      */
     public PowerLossChannel(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Set the default properties.  Note that this type is a
@@ -137,7 +137,7 @@ public class PowerLossChannel extends LimitedRangeChannel {
         powerPropagationFactor = new Parameter(this, "powerPropagationFactor");
         powerPropagationFactor.setTypeEquals(BaseType.DOUBLE);
         powerPropagationFactor.setExpression(
-            "1.0 / (4 * PI * distance * distance)");
+                "1.0 / (4 * PI * distance * distance)");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -171,8 +171,8 @@ public class PowerLossChannel extends LimitedRangeChannel {
      *   be transformed. Not thrown in this base class.
      */
     public RecordToken transformProperties(RecordToken properties,
-        WirelessIOPort source, WirelessIOPort destination)
-        throws IllegalActionException {
+            WirelessIOPort source, WirelessIOPort destination)
+            throws IllegalActionException {
         // Use the superclass to merge the record argument with the
         // default properties and to apply registered transformers.
         RecordToken merged = super.transformProperties(properties, source,
@@ -184,7 +184,7 @@ public class PowerLossChannel extends LimitedRangeChannel {
         // Evaluate the power loss factor, which will have been updated
         // with the new value of "distance."
         double powerPropagationFactorValue = ((DoubleToken) powerPropagationFactor
-            .getToken()).doubleValue();
+                .getToken()).doubleValue();
 
         // Calculate the receive power.
         double receivePower = transmitPower.doubleValue() * powerPropagationFactorValue;

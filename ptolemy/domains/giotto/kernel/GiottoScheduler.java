@@ -174,11 +174,11 @@ public class GiottoScheduler extends Scheduler {
 
         if (actorCount < 1) {
             throw new NotSchedulableException("Could not get schedule, "
-                + "the number of deeply contained entities for '"
-                + compositeActor.getFullName() + "' is " + actorCount
-                + ", which is less than 1."
-                + "If you have empty composite actors, try adding an  actor"
-                + "to the inside of one of the empty composite actors.");
+                    + "the number of deeply contained entities for '"
+                    + compositeActor.getFullName() + "' is " + actorCount
+                    + ", which is less than 1."
+                    + "If you have empty composite actors, try adding an  actor"
+                    + "to the inside of one of the empty composite actors.");
         }
 
         int[] frequencyArray = new int[actorCount];
@@ -298,7 +298,7 @@ public class GiottoScheduler extends Scheduler {
 
         if (count < 1) {
             throw new RuntimeException(
-                "Length array passed to _lcm() is less than 1?");
+                    "Length array passed to _lcm() is less than 1?");
         }
 
         int X = array[0];
@@ -364,7 +364,7 @@ public class GiottoScheduler extends Scheduler {
                 if (getFrequency((Actor) actor1) < getFrequency((Actor) actor2)) {
                     return -1;
                 } else if (getFrequency((Actor) actor1) == getFrequency(
-                            (Actor) actor2)) {
+                                   (Actor) actor2)) {
                     return 0;
                 } else {
                     return 1;

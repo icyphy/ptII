@@ -63,7 +63,7 @@ abstract public class GRActor2D extends GRActor {
      *   an entity already in the container.
      */
     public GRActor2D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -81,7 +81,7 @@ abstract public class GRActor2D extends GRActor {
             _viewScreen = (ViewScreen2D) actor;
         } else {
             throw new RuntimeException("Actor " + getClass().getName()
-                + " can only be used with a ViewScreen2D");
+                    + " can only be used with a ViewScreen2D");
         }
     }
 

@@ -120,7 +120,7 @@ import ptolemy.kernel.util.Workspace;
    @see FSMActor
 */
 public class FSMDirector extends Director implements ModelErrorHandler,
-    ExplicitChangeContext {
+                                                     ExplicitChangeContext {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
@@ -153,7 +153,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      *   CompositeActor and the name collides with an entity in the container.
      */
     public FSMDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _createAttribute();
     }
@@ -181,7 +181,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      *  attributeChanged() method.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super.attributeChanged(attribute);
 
         if (attribute == controllerName) {
@@ -236,8 +236,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
 
         if (_debugging && _verbose) {
             _debug(getFullName(),
-                " find FSMActor " + ctrl.getName() + " at time: "
-                + getModelTime());
+                    " find FSMActor " + ctrl.getName() + " at time: "
+                    + getModelTime());
         }
 
         ctrl._readInputs();
@@ -279,7 +279,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                 if (actors[i].prefire()) {
                     if (_debugging) {
                         _debug(getFullName(), " fire refinement",
-                            ((ptolemy.kernel.util.NamedObj) actors[i]).getName());
+                                ((ptolemy.kernel.util.NamedObj) actors[i]).getName());
                     }
 
                     actors[i].fire();
@@ -305,9 +305,9 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                     if (actors[i].prefire()) {
                         if (_debugging) {
                             _debug(getFullName(),
-                                " fire transition refinement",
-                                ((ptolemy.kernel.util.NamedObj) actors[i])
-                                .getName());
+                                    " fire transition refinement",
+                                    ((ptolemy.kernel.util.NamedObj) actors[i])
+                                    .getName());
                         }
 
                         actors[i].fire();
@@ -384,7 +384,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
 
             if (name == null) {
                 throw new IllegalActionException(this,
-                    "No name for mode " + "controller is set.");
+                        "No name for mode " + "controller is set.");
             }
 
             Nameable container = getContainer();
@@ -398,12 +398,12 @@ public class FSMDirector extends Director implements ModelErrorHandler,
 
             if (entity == null) {
                 throw new IllegalActionException(this,
-                    "No controller found " + "with name " + name);
+                        "No controller found " + "with name " + name);
             }
 
             if (!(entity instanceof FSMActor)) {
                 throw new IllegalActionException(this, entity,
-                    "mode controller must be an instance of FSMActor.");
+                        "mode controller must be an instance of FSMActor.");
             }
 
             _controller = (FSMActor) entity;
@@ -434,21 +434,21 @@ public class FSMDirector extends Director implements ModelErrorHandler,
 
         // Collect assignments from FSM transitions
         for (Iterator states = getController().entityList().iterator();
-                states.hasNext();) {
+             states.hasNext();) {
             State state = (State) states.next();
 
             for (Iterator transitions = state.outgoingPort.linkedRelationList()
-                                                          .iterator();
-                    transitions.hasNext();) {
+                     .iterator();
+                 transitions.hasNext();) {
                 Transition transition = (Transition) transitions.next();
 
                 for (Iterator actions = transition.choiceActionList().iterator();
-                        actions.hasNext();) {
+                     actions.hasNext();) {
                     AbstractActionsAttribute action = (AbstractActionsAttribute) actions
                         .next();
 
                     for (Iterator names = action.getDestinationNameList()
-                                                .iterator(); names.hasNext();) {
+                             .iterator(); names.hasNext();) {
                         String name = (String) names.next();
                         NamedObj object = action.getDestination(name);
 
@@ -459,12 +459,12 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                 }
 
                 for (Iterator actions = transition.commitActionList().iterator();
-                        actions.hasNext();) {
+                     actions.hasNext();) {
                     AbstractActionsAttribute action = (AbstractActionsAttribute) actions
                         .next();
 
                     for (Iterator names = action.getDestinationNameList()
-                                                .iterator(); names.hasNext();) {
+                             .iterator(); names.hasNext();) {
                         String name = (String) names.next();
                         NamedObj object = action.getDestination(name);
 
@@ -511,7 +511,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                     // The refinement has a local director.
                     result = Math.min(result,
                             actors[i].getDirector().getModelNextIterationTime()
-                                     .getDoubleValue());
+                            .getDoubleValue());
                     givenByRefinement = true;
                 }
             }
@@ -555,7 +555,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      *  outputs from refinements.
      */
     public boolean handleModelError(NamedObj context,
-        IllegalActionException exception) throws IllegalActionException {
+            IllegalActionException exception) throws IllegalActionException {
         // NOTE: Besides throwing exception directly, we can handle
         // multiple enabled transitions in different ways...
         // For example, try refining the step size.
@@ -629,10 +629,10 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                         super.put(token);
                     } catch (NoRoomException ex) {
                         throw new InternalErrorException("One-place buffer: "
-                            + ex.getMessage());
+                                + ex.getMessage());
                     } catch (NoTokenException ex) {
                         throw new InternalErrorException("One-place buffer: "
-                            + ex.getMessage());
+                                + ex.getMessage());
                     }
                 }
             };
@@ -743,7 +743,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      *  collides with a name already in the container.
      */
     public void setContainer(NamedObj container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
         if (container != null) {
@@ -780,8 +780,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
-                "transferInputs: port argument is not an opaque"
-                + "input port.");
+                    "transferInputs: port argument is not an opaque"
+                    + "input port.");
         }
 
         boolean transferredToken = false;
@@ -803,10 +803,10 @@ public class FSMDirector extends Director implements ModelErrorHandler,
 
                             if (_debugging) {
                                 _debug(getFullName(),
-                                    "transferring input from "
-                                    + port.getFullName() + " to "
-                                    + (insideReceivers[i][j]).getContainer()
-                                       .getFullName());
+                                        "transferring input from "
+                                        + port.getFullName() + " to "
+                                        + (insideReceivers[i][j]).getContainer()
+                                        .getFullName());
                             }
                         }
 
@@ -825,8 +825,8 @@ public class FSMDirector extends Director implements ModelErrorHandler,
             } catch (NoTokenException ex) {
                 // this shouldn't happen.
                 throw new InternalErrorException(
-                    "Director.transferInputs: Internal error: "
-                    + ex.getMessage());
+                        "Director.transferInputs: Internal error: "
+                        + ex.getMessage());
             }
         }
 
@@ -882,36 +882,36 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                         for (int j = 0; j < allReceivers[i].length; ++j) {
                             Receiver receiver = allReceivers[i][j];
                             Nameable cont = receiver.getContainer()
-                                                    .getContainer();
+                                .getContainer();
 
                             if (cont == controller) {
                                 resultsList.add(receiver);
                             } else {
                                 // check transitions
                                 Iterator transitions = state.nonpreemptiveTransitionList()
-                                                            .iterator();
+                                    .iterator();
 
                                 while (transitions.hasNext()) {
                                     Transition transition = (Transition) transitions
                                         .next();
                                     _checkActorsForReceiver(transition
-                                        .getRefinement(), cont, receiver,
-                                        resultsList);
+                                            .getRefinement(), cont, receiver,
+                                            resultsList);
                                 }
 
                                 // check refinements
                                 List stateList = new LinkedList();
                                 stateList.add(state);
                                 transitions = state.preemptiveTransitionList()
-                                                   .iterator();
+                                    .iterator();
 
                                 while (transitions.hasNext()) {
                                     Transition transition = (Transition) transitions
                                         .next();
                                     stateList.add(transition.destinationState());
                                     _checkActorsForReceiver(transition
-                                        .getRefinement(), cont, receiver,
-                                        resultsList);
+                                            .getRefinement(), cont, receiver,
+                                            resultsList);
                                 }
 
                                 Iterator nextStates = stateList.iterator();
@@ -920,7 +920,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
                                     actors = ((State) nextStates.next())
                                         .getRefinement();
                                     _checkActorsForReceiver(actors, cont,
-                                        receiver, resultsList);
+                                            receiver, resultsList);
                                 }
                             }
                         }
@@ -957,7 +957,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      *   by the enabled transition, or if there is no controller.
      */
     protected Transition _chooseTransition(List transitionList)
-        throws IllegalActionException {
+            throws IllegalActionException {
         FSMActor controller = getController();
 
         if (controller != null) {
@@ -976,7 +976,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      *  @exception IllegalActionException If there is no controller.
      */
     protected Receiver[][] _currentLocalReceivers(IOPort port)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (_localReceiverMapsVersion != workspace().getVersion()) {
             _buildLocalReceiverMaps();
         }
@@ -989,7 +989,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
      *  @exception IllegalActionException If there is no controller.
      */
     protected Transition _getLastChosenTransition()
-        throws IllegalActionException {
+            throws IllegalActionException {
         FSMActor controller = getController();
 
         if (controller != null) {
@@ -1086,7 +1086,7 @@ public class FSMDirector extends Director implements ModelErrorHandler,
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _checkActorsForReceiver(TypedActor[] actors, Nameable cont,
-        Receiver receiver, List resultsList) {
+            Receiver receiver, List resultsList) {
         if (actors != null) {
             for (int k = 0; k < actors.length; ++k) {
                 if (cont == actors[k]) {
@@ -1111,10 +1111,10 @@ public class FSMDirector extends Director implements ModelErrorHandler,
             controllerName = new StringAttribute(this, "controllerName");
         } catch (NameDuplicationException ex) {
             throw new InternalErrorException(getName() + "Cannot create "
-                + "controllerName attribute.");
+                    + "controllerName attribute.");
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(getName() + "Cannot create "
-                + "controllerName attribute.");
+                    + "controllerName attribute.");
         }
     }
 

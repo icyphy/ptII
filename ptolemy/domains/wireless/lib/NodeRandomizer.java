@@ -96,7 +96,7 @@ public class NodeRandomizer extends TypedAtomicActor {
      *   with an entity in the container.
      */
     public NodeRandomizer(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         randomizeInPreinitialize = new Parameter(this,
                 "randomizeInPreinitialize");
@@ -245,7 +245,7 @@ public class NodeRandomizer extends TypedAtomicActor {
 
                 if (lowHigh.length() < 2) {
                     throw new IllegalActionException(this,
-                        "Invalid range: " + range.getExpression());
+                            "Invalid range: " + range.getExpression());
                 }
 
                 double low = ((DoubleToken) lowHigh.getElement(0)).doubleValue();
@@ -253,7 +253,7 @@ public class NodeRandomizer extends TypedAtomicActor {
 
                 if (high < low) {
                     throw new IllegalActionException(this,
-                        "Invalid range: " + range.getExpression());
+                            "Invalid range: " + range.getExpression());
                 }
 
                 randomLocation[i] = low
@@ -261,7 +261,7 @@ public class NodeRandomizer extends TypedAtomicActor {
             }
 
             changeMoML.append(_getLocationSetMoML(container, node,
-                    randomLocation));
+                                      randomLocation));
         }
 
         changeMoML.append("</group>");
@@ -283,10 +283,10 @@ public class NodeRandomizer extends TypedAtomicActor {
      *  cannot be set.
      */
     protected String _getLocationSetMoML(CompositeEntity container,
-        Entity node, double[] location) throws IllegalActionException {
+            Entity node, double[] location) throws IllegalActionException {
         return "<property name=\"" + node.getName(container) + "._location\" "
-        + "class=\"ptolemy.kernel.util.Location\" value=\"[" + location[0]
-        + ", " + location[1] + "]\"/>\n";
+            + "class=\"ptolemy.kernel.util.Location\" value=\"[" + location[0]
+            + ", " + location[1] + "]\"/>\n";
     }
 
     ///////////////////////////////////////////////////////////////////

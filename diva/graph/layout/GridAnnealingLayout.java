@@ -327,7 +327,7 @@ public class GridAnnealingLayout extends AbstractGlobalLayout {
         double heightCost = HEIGHT_FACTOR * Math.abs(phead[1] - ptail[1]);
         double widthCost = WIDTH_FACTOR * Math.abs(phead[0] - ptail[0]);
         double elbowCost = ((heightCost == 0) || (widthCost == 0)) ? 0
-                                                                   : ELBOW_PENALTY;
+            : ELBOW_PENALTY;
         double overlapCost = numOverlaps(edge, _graph) * EDGE_OVERLAP_PENALTY;
         double crossingCost = numCrossings(edge, _graph) * CROSSING_PENALTY;
         return heightCost + widthCost + elbowCost + overlapCost + crossingCost;

@@ -62,7 +62,7 @@ public class TwoPut extends TypedAtomicActor {
     /**
      */
     public TwoPut(TypedCompositeActor cont, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         _name = name;
 

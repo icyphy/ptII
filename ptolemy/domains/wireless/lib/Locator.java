@@ -74,7 +74,7 @@ public class Locator extends TypedAtomicActor {
      *   actor with this name.
      */
     public Locator(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // Create and configure the parameters.
@@ -151,8 +151,8 @@ public class Locator extends TypedAtomicActor {
 
             double timeValue = getDirector().getModelTime().getDoubleValue();
             Token[] values = {
-                    new ArrayToken(locationArray), new DoubleToken(timeValue)
-                };
+                new ArrayToken(locationArray), new DoubleToken(timeValue)
+            };
             Token result = new RecordToken(labels, values);
 
             output.send(0, result);
@@ -179,7 +179,7 @@ public class Locator extends TypedAtomicActor {
 
         if (locationAttribute == null) {
             throw new IllegalActionException(this,
-                "Cannot find a _location attribute of class Location.");
+                    "Cannot find a _location attribute of class Location.");
         }
 
         return locationAttribute.getLocation();

@@ -210,7 +210,7 @@ public abstract class BasicGraphController extends AbstractGraphController
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _openBaseClassAction));
+                                                    _openBaseClassAction));
         }
     }
 
@@ -310,7 +310,7 @@ public abstract class BasicGraphController extends AbstractGraphController
                                 if (model.isComposite(userObject)) {
                                     Iterator edges = GraphUtilities
                                         .partiallyContainedEdges(userObject,
-                                            model);
+                                                model);
 
                                     while (edges.hasNext()) {
                                         Figure connector = getFigure(edges.next());
@@ -382,9 +382,9 @@ public abstract class BasicGraphController extends AbstractGraphController
             // NOTE: The following requires that the configuration be
             // non-null, or it will report an error.
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _openBaseClassAction));
+                                                    _openBaseClassAction));
             _menuFactory.addMenuItemFactory(new MenuActionFactory(
-                    _unitSolverDialogAction));
+                                                    _unitSolverDialogAction));
         }
     }
 
@@ -454,7 +454,7 @@ public abstract class BasicGraphController extends AbstractGraphController
         public void actionPerformed(ActionEvent e) {
             if (_configuration == null) {
                 MessageHandler.error(
-                    "Cannot open base class without a configuration.");
+                        "Cannot open base class without a configuration.");
                 return;
             }
 
@@ -495,7 +495,7 @@ public abstract class BasicGraphController extends AbstractGraphController
                 String sourceFileName = StringUtilities.objectToSourceFileName(target);
                 URL sourceURL = target.getClass().getClassLoader().getResource(sourceFileName);
                 _configuration.openModel(null, sourceURL,
-                    sourceURL.toExternalForm());
+                        sourceURL.toExternalForm());
             } catch (Exception ex) {
                 MessageHandler.error("Open base class failed.", ex);
             }
@@ -548,7 +548,7 @@ public abstract class BasicGraphController extends AbstractGraphController
             if (source != null) {
                 Object object = source.getUserObject();
                 return (NamedObj) getController().getGraphModel()
-                                      .getSemanticObject(object);
+                    .getSemanticObject(object);
             } else {
                 return (NamedObj) getController().getGraphModel().getRoot();
             }

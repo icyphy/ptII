@@ -72,7 +72,7 @@ public class WaitingTime extends DEActor {
      *   actor with this name.
      */
     public WaitingTime(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         // create the ports
@@ -144,7 +144,7 @@ public class WaitingTime extends DEActor {
             for (int i = 0; i < _waiting.size(); i++) {
                 Time previousTime = (Time) _waiting.elementAt(i);
                 DoubleToken outToken = new DoubleToken(currentTime.subtract(
-                            previousTime).getDoubleValue());
+                                                               previousTime).getDoubleValue());
                 output.send(0, outToken);
             }
 

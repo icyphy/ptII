@@ -90,13 +90,13 @@ public class Register extends Sampler {
      *   actor with this name.
      */
     public Register(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-10\" y=\"-20\" "
-            + "width=\"20\" height=\"40\" " + "style=\"fill:white\"/>\n"
-            + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-10\" y=\"-20\" "
+                + "width=\"20\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

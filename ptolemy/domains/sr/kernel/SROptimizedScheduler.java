@@ -104,7 +104,7 @@ public class SROptimizedScheduler extends Scheduler {
      *   an attribute already in the container.
      */
     public SROptimizedScheduler(Director container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -127,16 +127,16 @@ public class SROptimizedScheduler extends Scheduler {
 
         if (director == null) {
             throw new NotSchedulableException(this,
-                "SROptimizedScheduler "
-                + "cannot schedule graph with no director.");
+                    "SROptimizedScheduler "
+                    + "cannot schedule graph with no director.");
         }
 
         CompositeActor compositeActor = (CompositeActor) (director.getContainer());
 
         if (compositeActor == null) {
             throw new NotSchedulableException(this,
-                "SROptimizedScheduler "
-                + "cannot schedule graph with no container.");
+                    "SROptimizedScheduler "
+                    + "cannot schedule graph with no container.");
         }
 
         FunctionDependencyOfCompositeActor functionDependency = (FunctionDependencyOfCompositeActor) compositeActor
@@ -155,19 +155,19 @@ public class SROptimizedScheduler extends Scheduler {
                     }
 
                     names.append(((Nameable) cycleNodes[i]).getContainer()
-                                  .getFullName());
+                            .getFullName());
                 }
             }
 
             MessageHandler.error("There are strict cycle loops in the model:"
-                + names.toString() + "\n"
-                + " The results may contain unknowns.  This optimized "
-                + "scheduler does not handle this model. Try the "
-                + "randomized scheduler instead.");
+                    + names.toString() + "\n"
+                    + " The results may contain unknowns.  This optimized "
+                    + "scheduler does not handle this model. Try the "
+                    + "randomized scheduler instead.");
         }
 
         DirectedAcyclicGraph dependencyGraph = functionDependency.getDetailedDependencyGraph()
-                                                                 .toDirectedAcyclicGraph();
+            .toDirectedAcyclicGraph();
 
         if (_debugging) {
             _debug("## dependency graph is:" + dependencyGraph.toString());

@@ -131,7 +131,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *   contained by the proposed container.
      */
     public DDEReceiver(IOPort container, int priority)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super(container, priority);
         _boundaryDetector = new BoundaryDetector(this);
     }
@@ -166,8 +166,8 @@ public class DDEReceiver extends PrioritizedTimedQueue
     public Token get(Branch branch) throws NoTokenException {
         if (!_hasTokenCache) {
             throw new NoTokenException(getContainer(),
-                "Attempt to get token that does not have "
-                + "have the earliest time stamp.");
+                    "Attempt to get token that does not have "
+                    + "have the earliest time stamp.");
         }
 
         synchronized (this) {
@@ -489,8 +489,8 @@ public class DDEReceiver extends PrioritizedTimedQueue
             _otherBranch = branch;
         } else {
             DDEDirector director = ((DDEDirector) ((Actor) (getContainer()
-                                                                .getContainer()))
-                .getDirector());
+                                                           .getContainer()))
+                    .getDirector());
             director._actorBlocked(this);
             _otherBranch = branch;
         }
@@ -594,7 +594,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
                     && (_getCompletionTime().getDoubleValue() != ETERNITY)
                     && !_terminate) {
                 time = new Time(((Actor) getContainer().getContainer()
-                                             .getContainer()).getDirector(),
+                                        .getContainer()).getDirector(),
                         INACTIVE);
             }
 
@@ -631,7 +631,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
                 }
 
                 throw new TerminateProcessException(getContainer(),
-                    "This receiver has been terminated " + "during _put()");
+                        "This receiver has been terminated " + "during _put()");
             }
         }
 
@@ -672,8 +672,8 @@ public class DDEReceiver extends PrioritizedTimedQueue
             _otherBranch.registerReceiverUnBlocked(this);
         } else {
             DDEDirector director = ((DDEDirector) ((Actor) (getContainer()
-                                                                .getContainer()))
-                .getDirector());
+                                                           .getContainer()))
+                    .getDirector());
             director._actorUnBlocked(this);
         }
 

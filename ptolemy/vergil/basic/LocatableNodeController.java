@@ -108,7 +108,7 @@ public class LocatableNodeController extends BasicNodeController {
             return ((Locatable) node).getLocation();
         } else {
             throw new RuntimeException("The node " + node
-                + "does not have a desired location");
+                    + "does not have a desired location");
         }
     }
 
@@ -163,17 +163,17 @@ public class LocatableNodeController extends BasicNodeController {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void setLocation(Object node, double[] location)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if ((location != null) && (location.length != 2)) {
             throw new RuntimeException("The location " + location
-                + " is not valid");
+                    + " is not valid");
         }
 
         if (node instanceof Locatable) {
             ((Locatable) node).setLocation(location);
         } else {
             throw new RuntimeException("The node " + node
-                + "cannot have a desired location");
+                    + "cannot have a desired location");
         }
     }
 
@@ -257,7 +257,7 @@ public class LocatableNodeController extends BasicNodeController {
                         dash, /* dash  */
                         0.0f); /* dash_phase  */
                 BasicFigure bf = new BasicFigure(cf.getBackgroundFigure()
-                                                   .getBounds());
+                        .getBounds());
                 bf.setStroke(stroke);
                 bf.setStrokePaint(CLASS_ELEMENT_HIGHLIGHT_COLOR);
                 cf.add(bf);

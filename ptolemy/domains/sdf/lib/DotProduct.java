@@ -78,7 +78,7 @@ public class DotProduct extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public DotProduct(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input1 = new TypedIOPort(this, "input1", true, false);
@@ -186,13 +186,13 @@ public class DotProduct extends TypedAtomicActor {
 
         if (array1.length != array2.length) {
             throw new IllegalActionException("Inputs to DotProduct have "
-                + "unequal lengths: " + array1.length + " and " + array2.length
-                + ".");
+                    + "unequal lengths: " + array1.length + " and " + array2.length
+                    + ".");
         }
 
         if (array1.length < 1) {
             throw new IllegalActionException("Inputs to DotProduct have "
-                + "no elements.");
+                    + "no elements.");
         }
 
         Token dotProd = null;
@@ -245,7 +245,7 @@ public class DotProduct extends TypedAtomicActor {
             String matrix1 = rowCount1 + " by " + columnCount1;
             String matrix2 = rowCount2 + " by " + columnCount2;
             throw new IllegalActionException("Tried to multiply a " + matrix1
-                + " matrix with a " + matrix2 + " matrix");
+                    + " matrix with a " + matrix2 + " matrix");
         }
     }
 

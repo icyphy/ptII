@@ -57,7 +57,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 */
 public class KeyInput3D extends GRActor3D {
     public KeyInput3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         keycode = new TypedIOPort(this, "keycode");
         keycode.setOutput(true);

@@ -68,7 +68,7 @@ public class Memory extends CSPActor {
      *  already has an actor with this name.
      */
     public Memory(CompositeEntity cont, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         input = new TypedIOPort(this, "input", true, false);

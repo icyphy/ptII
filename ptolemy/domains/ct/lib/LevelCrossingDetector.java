@@ -82,7 +82,7 @@ public class LevelCrossingDetector extends Transformer
      *   an entity already in the container.
      */
     public LevelCrossingDetector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         new Parameter(input, "signalType", new StringToken("CONTINUOUS"));
 
@@ -149,14 +149,14 @@ public class LevelCrossingDetector extends Transformer
      *  @exception IllegalActionException If the attribute change failed.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == errorTolerance) {
             double tolerance = ((DoubleToken) errorTolerance.getToken())
                 .doubleValue();
 
             if (tolerance <= 0) {
                 throw new IllegalActionException(this,
-                    "Error tolerance must be greater than 0.");
+                        "Error tolerance must be greater than 0.");
             }
 
             _errorTolerance = tolerance;
@@ -230,14 +230,14 @@ public class LevelCrossingDetector extends Transformer
 
                     if (_debugging) {
                         _debug("Emitting an event with a default value: "
-                            + defaultEventValue.getToken());
+                                + defaultEventValue.getToken());
                     }
                 } else {
                     output.send(0, new DoubleToken(_level));
 
                     if (_debugging) {
                         _debug("Emitting an event with the level value: "
-                            + _level);
+                                + _level);
                     }
                 }
 
@@ -276,9 +276,9 @@ public class LevelCrossingDetector extends Transformer
         if (_levelCrossingDetectionDisabled) {
             if (_debugging && _verbose) {
                 _debug("First firing of this actor, "
-                    + "the output is always accurate. "
-                    + "Note that if the initial step size is too big, "
-                    + "an event may be missing.");
+                        + "the output is always accurate. "
+                        + "Note that if the initial step size is too big, "
+                        + "an event may be missing.");
             }
 
             _levelCrossingDetectionDisabled = false;
@@ -305,7 +305,7 @@ public class LevelCrossingDetector extends Transformer
                 // The current time is when the event happens.
                 if (_debugging) {
                     _debug("Event is detected at "
-                        + getDirector().getModelTime());
+                            + getDirector().getModelTime());
                 }
 
                 _eventNow = true;
@@ -377,7 +377,7 @@ public class LevelCrossingDetector extends Transformer
     public void preinitialize() throws IllegalActionException {
         if (!(getDirector() instanceof CTDirector)) {
             throw new IllegalActionException("LevelCrossingDetector can only"
-                + " be used inside CT domain.");
+                    + " be used inside CT domain.");
         }
 
         super.preinitialize();
@@ -394,11 +394,11 @@ public class LevelCrossingDetector extends Transformer
         if (_eventMissed) {
             // The refined step size is a linear interpolation.
             refinedStep = (Math.abs(_lastTrigger - _level) * dir
-                .getCurrentStepSize()) / Math.abs(_thisTrigger - _lastTrigger);
+                    .getCurrentStepSize()) / Math.abs(_thisTrigger - _lastTrigger);
 
             if (_debugging) {
                 _debug(getFullName() + " Event Missed: refined step at"
-                    + refinedStep);
+                        + refinedStep);
             }
         }
 

@@ -69,7 +69,7 @@ public class ND_3 extends TypedAtomicActor {
      *   actor with this name.
      */
     public ND_3(CompositeEntity aContainer, String aName)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(aContainer, aName);
 
         RP_1 = new TypedIOPort(this, "RP_1", true, false);
@@ -134,25 +134,25 @@ public class ND_3 extends TypedAtomicActor {
             for (int j = 1; j <= (1 * N); j += 1) {
                 if ((k - 2) >= 0) {
                     r_2.add(new Double(
-                            ((DoubleToken) RP_1.get(0)).doubleValue()));
+                                    ((DoubleToken) RP_1.get(0)).doubleValue()));
                     in_0 = ((Double) r_2.elementAt(w_r_2++)).doubleValue();
                 }
 
                 if ((k - 1) == 0) {
                     r_1.add(new Double(
-                            ((DoubleToken) RP_2.get(0)).doubleValue()));
+                                    ((DoubleToken) RP_2.get(0)).doubleValue()));
                     in_0 = ((Double) r_1.elementAt(w_r_1++)).doubleValue();
                 }
 
                 if ((j - 2) >= 0) {
                     x_3.add(new Double(
-                            ((DoubleToken) RP_3.get(0)).doubleValue()));
+                                    ((DoubleToken) RP_3.get(0)).doubleValue()));
                     in_1 = ((Double) x_3.elementAt(w_x_3++)).doubleValue();
                 }
 
                 if ((j - 1) == 0) {
                     x_1.add(new Double(
-                            ((DoubleToken) RP_4.get(0)).doubleValue()));
+                                    ((DoubleToken) RP_4.get(0)).doubleValue()));
                     in_1 = ((Double) x_1.elementAt(w_x_1++)).doubleValue();
                 }
 

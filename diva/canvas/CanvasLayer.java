@@ -123,7 +123,7 @@ public abstract class CanvasLayer implements CanvasComponent {
     public final void setParent(CanvasComponent parent) {
         if (!(parent instanceof CanvasPane)) {
             throw new IllegalArgumentException("The component " + parent
-                + " is not an instance of CanvasPane");
+                    + " is not an instance of CanvasPane");
         }
 
         this._containingPane = (CanvasPane) parent;

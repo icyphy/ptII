@@ -32,11 +32,11 @@ package ptolemy.data.unit;
 
 /** A place holder for the day there is a UnitInEquality
 
-    @author Rowland R Johnson
-    @version $Id$
-    @since Ptolemy II 4.0
-    @Pt.ProposedRating Red (rowland)
-    @Pt.AcceptedRating Red (rowland)
+@author Rowland R Johnson
+@version $Id$
+@since Ptolemy II 4.0
+@Pt.ProposedRating Red (rowland)
+@Pt.AcceptedRating Red (rowland)
 */
 public class UnitInEquality extends UnitConstraint implements UnitPresentation {
     /** Construct a UnitInEquality from the left and right hand sides.

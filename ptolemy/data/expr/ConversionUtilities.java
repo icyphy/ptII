@@ -127,7 +127,7 @@ public class ConversionUtilities {
      * @return A new token.
      */
     public static ptolemy.data.Token convertJavaTypeToToken(Object object)
-        throws ptolemy.kernel.util.IllegalActionException {
+            throws ptolemy.kernel.util.IllegalActionException {
         ptolemy.data.Token returnValue = null;
 
         if (object instanceof ptolemy.data.Token) {
@@ -234,7 +234,7 @@ public class ConversionUtilities {
             // should be caught by "instanceof Object" above, but I
             // don't like the dangling else if.
             throw new InternalErrorException("object type not recognized: "
-                + object);
+                    + object);
         }
 
         return returnValue;
@@ -247,16 +247,16 @@ public class ConversionUtilities {
      *  recognized, or creating the type fails.
      */
     public static Type convertJavaTypeToTokenType(Class tokenClass)
-        throws ptolemy.kernel.util.IllegalActionException {
+            throws ptolemy.kernel.util.IllegalActionException {
         try {
             if (tokenClass.equals(ptolemy.data.Token.class)) {
                 return BaseType.GENERAL;
             } else if (ptolemy.data.ArrayToken.class.isAssignableFrom(
-                        tokenClass)) {
+                               tokenClass)) {
                 Type type = new ArrayType(BaseType.GENERAL);
                 return type;
             } else if (ptolemy.data.RecordToken.class.isAssignableFrom(
-                        tokenClass)) {
+                               tokenClass)) {
                 Type type = new RecordType(new String[0], new Type[0]);
                 return type;
             } else if (ptolemy.data.Token.class.isAssignableFrom(tokenClass)) {
@@ -264,7 +264,7 @@ public class ConversionUtilities {
 
                 if (type == null) {
                     throw new IllegalActionException(
-                        "Could not return type for class " + tokenClass);
+                            "Could not return type for class " + tokenClass);
                 }
 
                 return type;
@@ -302,14 +302,14 @@ public class ConversionUtilities {
             } else if (tokenClass.equals(Class.forName("[[D"))) {
                 return BaseType.DOUBLE_MATRIX;
             } else if (tokenClass.equals(Class.forName(
-                            "[[Lptolemy.math.Complex;"))) {
+                                                 "[[Lptolemy.math.Complex;"))) {
                 return BaseType.COMPLEX_MATRIX;
             } else if (tokenClass.equals(Class.forName(
-                            "[[Lptolemy.math.FixPoint;"))) {
+                                                 "[[Lptolemy.math.FixPoint;"))) {
                 return BaseType.FIX_MATRIX;
             } else if (tokenClass.isArray()) {
                 return new ArrayType(convertJavaTypeToTokenType(
-                        tokenClass.getComponentType()));
+                                             tokenClass.getComponentType()));
             } else if (java.lang.Object.class.isAssignableFrom(tokenClass)) {
                 return BaseType.OBJECT;
             } else {
@@ -317,11 +317,11 @@ public class ConversionUtilities {
                 // should be caught by the isAssignable test above,
                 // but I don't like the dangling else if.
                 throw new InternalErrorException("type not found: "
-                    + tokenClass);
+                        + tokenClass);
             }
         } catch (ClassNotFoundException ex) {
             throw new IllegalActionException(null, ex,
-                "Could not find Class '" + tokenClass + "'");
+                    "Could not find Class '" + tokenClass + "'");
         }
     }
 
@@ -340,7 +340,7 @@ public class ConversionUtilities {
      * of ptolemy.data.Token.
      */
     public static Object convertTokenToJavaType(ptolemy.data.Token token)
-        throws ptolemy.kernel.util.IllegalActionException {
+            throws ptolemy.kernel.util.IllegalActionException {
         // Design note: it is arguable that this could be moved to the
         // token interface for better object-oriented design, and to
         // more easily support token types not explicitly listed here.
@@ -447,11 +447,11 @@ public class ConversionUtilities {
                 returnValue = array;
             } else {
                 throw new InternalErrorException("token type not recognized: "
-                    + token);
+                        + token);
             }
         } else {
             throw new InternalErrorException("token type not recognized: "
-                + token);
+                    + token);
         }
 
         return returnValue;
@@ -467,7 +467,7 @@ public class ConversionUtilities {
      *  recognized, or creating the type fails.
      */
     public static Class convertTokenTypeToJavaType(Type type)
-        throws ptolemy.kernel.util.IllegalActionException {
+            throws ptolemy.kernel.util.IllegalActionException {
         try {
             if (type.equals(BaseType.DOUBLE)) {
                 return Double.TYPE;
@@ -511,7 +511,7 @@ public class ConversionUtilities {
                     return Class.forName("[Z");
                 } else {
                     return java.lang.reflect.Array.newInstance(convertTokenTypeToJavaType(
-                            arrayType.getElementType()), 0).getClass();
+                                                                       arrayType.getElementType()), 0).getClass();
                 }
             } else {
                 // Bailout.  The type is not recognized, so defer to
@@ -520,7 +520,7 @@ public class ConversionUtilities {
             }
         } catch (ClassNotFoundException ex) {
             throw new IllegalActionException(null, ex,
-                "Could not find Type '" + type + "'");
+                    "Could not find Type '" + type + "'");
         }
     }
 }

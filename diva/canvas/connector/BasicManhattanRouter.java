@@ -99,7 +99,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
         // smarter, and should depend on the normal at the other
         // end if there is one.
         int headDir = CanvasUtilities.reverseDirection(getManhattanDirection(
-                    xDiff, yDiff));
+                                                               xDiff, yDiff));
         headSite.setNormal(CanvasUtilities.getNormal(headDir));
 
         if (currentContext != null) {
@@ -159,7 +159,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
     }
 
     private Polyline2D _route(Point2D head, int headDir, Point2D tail,
-        int tailDir) {
+            int tailDir) {
         double xDiff = head.getX() - tail.getX();
         double yDiff = head.getY() - tail.getY();
         Point2D point;

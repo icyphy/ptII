@@ -73,7 +73,7 @@ public class VrmlLoader3D extends GRShadedShape {
      *   actor with this name.
      */
     public VrmlLoader3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         filename = new Parameter(this, "filename",
                 new StringToken("chopper.obj"));

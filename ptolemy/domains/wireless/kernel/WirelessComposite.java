@@ -79,7 +79,7 @@ public class WirelessComposite extends TypedCompositeActor {
      *   an actor already in the container.
      */
     public WirelessComposite(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _initialize();
     }
@@ -122,18 +122,18 @@ public class WirelessComposite extends TypedCompositeActor {
         setClassName("ptolemy.domains.wireless.kernel.WirelessComposite");
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<ellipse cx=\"0\" cy=\"0\" " + "rx=\"27\" ry=\"27\" "
-            + "style=\"fill:red\"/>\n" + "<ellipse cx=\"0\" cy=\"0\" "
-            + "rx=\"25\" ry=\"25\" " + "style=\"fill:lightgrey\"/>\n"
-            + "<rect x=\"-15\" y=\"-10\" width=\"10\" height=\"8\" "
-            + "style=\"fill:white\"/>\n"
-            + "<rect x=\"-15\" y=\"2\" width=\"10\" height=\"8\" "
-            + "style=\"fill:white\"/>\n"
-            + "<rect x=\"5\" y=\"-4\" width=\"10\" height=\"8\" "
-            + "style=\"fill:white\"/>\n"
-            + "<line x1=\"-5\" y1=\"-6\" x2=\"0\" y2=\"-6\"/>"
-            + "<line x1=\"-5\" y1=\"6\" x2=\"0\" y2=\"6\"/>"
-            + "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>"
-            + "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" + "</svg>\n");
+                "<svg>\n" + "<ellipse cx=\"0\" cy=\"0\" " + "rx=\"27\" ry=\"27\" "
+                + "style=\"fill:red\"/>\n" + "<ellipse cx=\"0\" cy=\"0\" "
+                + "rx=\"25\" ry=\"25\" " + "style=\"fill:lightgrey\"/>\n"
+                + "<rect x=\"-15\" y=\"-10\" width=\"10\" height=\"8\" "
+                + "style=\"fill:white\"/>\n"
+                + "<rect x=\"-15\" y=\"2\" width=\"10\" height=\"8\" "
+                + "style=\"fill:white\"/>\n"
+                + "<rect x=\"5\" y=\"-4\" width=\"10\" height=\"8\" "
+                + "style=\"fill:white\"/>\n"
+                + "<line x1=\"-5\" y1=\"-6\" x2=\"0\" y2=\"-6\"/>"
+                + "<line x1=\"-5\" y1=\"6\" x2=\"0\" y2=\"6\"/>"
+                + "<line x1=\"0\" y1=\"-6\" x2=\"0\" y2=\"6\"/>"
+                + "<line x1=\"0\" y1=\"0\" x2=\"5\" y2=\"0\"/>" + "</svg>\n");
     }
 }

@@ -56,7 +56,7 @@ public class Circle2D extends GRShape2D {
      *   actor with this name.
      */
     public Circle2D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -72,7 +72,7 @@ public class Circle2D extends GRShape2D {
      */
     protected BasicFigure _createFigure() throws IllegalActionException {
         BasicFigure figure = new BasicFigure(new Ellipse2D.Double(10.0, 10.0,
-                    10.0, 10.0));
+                                                     10.0, 10.0));
         return figure;
     }
 }

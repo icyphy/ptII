@@ -74,7 +74,7 @@ public class DDFSelect extends TypedAtomicActor {
      *   an actor already in the container.
      */
     public DDFSelect(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         input = new TypedIOPort(this, "input", true, false);

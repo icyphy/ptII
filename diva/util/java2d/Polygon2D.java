@@ -105,7 +105,7 @@ public abstract class Polygon2D implements Shape {
                     // do nothing, so that two adjacent segments
                     // don't both get counted
                 } else if (Line2D.linesIntersect(x, y, Math.max(x1, x2), y, x1,
-                            y1, x2, y2)) {
+                                   y1, x2, y2)) {
                     crossings++;
                 }
             }
@@ -155,7 +155,7 @@ public abstract class Polygon2D implements Shape {
         double x2 = x1 + w;
         double y2 = y1 + h;
         return contains(x1, y1) && contains(x1, y2) && contains(x2, y1)
-        && contains(x2, y2);
+            && contains(x2, y2);
     }
 
     /** Get the integer bounds of the polygon.
@@ -414,7 +414,7 @@ public abstract class Polygon2D implements Shape {
         public void lineTo(double x, double y) {
             if (_closed) {
                 throw new UnsupportedOperationException(
-                    "This polygon has already been closed");
+                        "This polygon has already been closed");
             }
 
             if (_coordCount == _coords.length) {
@@ -435,7 +435,7 @@ public abstract class Polygon2D implements Shape {
         public void moveTo(double x, double y) {
             if (_coordCount > 0) {
                 throw new UnsupportedOperationException(
-                    "This polygon already has vertices");
+                        "This polygon already has vertices");
             }
 
             _coords[0] = (float) x;
@@ -596,7 +596,7 @@ public abstract class Polygon2D implements Shape {
         public void moveTo(double x, double y) {
             if (_coordCount > 0) {
                 throw new UnsupportedOperationException(
-                    "This polygon already has vertices");
+                        "This polygon already has vertices");
             }
 
             _coords[0] = x;

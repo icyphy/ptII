@@ -213,7 +213,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
      *   an entity with the specified name.
      */
     public DTDirector(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -231,7 +231,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public DTDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -263,7 +263,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // -attributeChanged-
         // FIXME: handle period parameter mutations
         super.attributeChanged(attribute);
@@ -425,7 +425,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
             periodValue = periodValue * storedValue;
         } else {
             throw new IllegalActionException(
-                "Illegal DT period parameter value");
+                    "Illegal DT period parameter value");
         }
 
         if (shouldUpdatePeriod) {
@@ -474,7 +474,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
 
             if (dtActor == null) {
                 throw new IllegalActionException(
-                    "DT internal error: unknown actor");
+                        "DT internal error: unknown actor");
             }
 
             Parameter param = (Parameter) currentPort.getAttribute(
@@ -518,7 +518,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
                 if (dtFromActor._shouldGenerateInitialTokens) {
                     if (_debugging) {
                         _debug("initial port: " + fromType + " to "
-                            + currentPort.getType());
+                                + currentPort.getType());
                     }
 
                     for (int j = 0; j < outrate; j++) {
@@ -719,7 +719,7 @@ public class DTDirector extends SDFDirector implements TimedDirector {
         ListIterator actorIterator = _actorTable.listIterator();
         int repeats = 0;
 
-foundRepeatValue: 
+        foundRepeatValue: 
         while (actorIterator.hasNext()) {
             DTActor currentActor = (DTActor) actorIterator.next();
 
@@ -731,7 +731,7 @@ foundRepeatValue:
 
         if (repeats == 0) {
             throw new IllegalActionException(
-                "internal DT error: actor with zero firing count");
+                    "internal DT error: actor with zero firing count");
         }
 
         return repeats;
@@ -901,7 +901,7 @@ foundRepeatValue:
         Time timeElapsed = currentTime.subtract(_formerValidTimeFired);
 
         _debug("DT Director just started fire----------------"
-            + _formerValidTimeFired + " " + currentTime);
+                + _formerValidTimeFired + " " + currentTime);
 
         if ((currentTime.getDoubleValue() != 0) && (!_inputTokensAvailable)
                 && (currentTime.compareTo(_formerTimeFired) == 0)) {
@@ -934,7 +934,7 @@ foundRepeatValue:
         if (timeRemaining.getDoubleValue() < 0) {
             // this case should not occur
             _debug("InternalErrorException time: " + _formerValidTimeFired
-                + " " + currentTime);
+                    + " " + currentTime);
             throw new InternalErrorException("unexpected time rollback");
         }
 
@@ -956,7 +956,7 @@ foundRepeatValue:
                 if (Math.abs(Math.round(ratio) - ratio) < _TOLERANCE) {
                     // firing at a time when transferOutputs should be called
                     _debug("*************** fractional fire ratio " + ratio
-                        + " should transferOutputs");
+                            + " should transferOutputs");
                     _shouldTransferOutputs.put(port, Boolean.TRUE);
                     _isFiringAllowed = false;
                     _shouldDoInternalTransferOutputs = true;
@@ -972,7 +972,7 @@ foundRepeatValue:
                     }
 
                     _debug("******* nonfractional fire ratio " + ratio
-                        + " don't transferOutputs");
+                            + " don't transferOutputs");
                     _shouldTransferOutputs.put(port, Boolean.FALSE);
                 }
             }
@@ -1010,7 +1010,7 @@ foundRepeatValue:
 
             _debug("Actor " + actorName + " repeats:" + currentActor._repeats);
             _debug(" initial_tokens? "
-                + currentActor._shouldGenerateInitialTokens);
+                    + currentActor._shouldGenerateInitialTokens);
 
             if (currentActor._actor instanceof SampleDelay) {
                 SampleDelay delay = (SampleDelay) currentActor._actor;
@@ -1063,7 +1063,7 @@ foundRepeatValue:
      *  name 'pseudo-firing'
      */
     private void _issuePseudoFire(Time currentTime)
-        throws IllegalActionException {
+            throws IllegalActionException {
         List list = ((TypedCompositeActor) getContainer()).outputPortList();
         Iterator listIterator = list.iterator();
         Receiver[][] insideReceivers;
@@ -1076,12 +1076,12 @@ foundRepeatValue:
             double deltaTime = receiver.getDeltaTime();
             int periodDivider = receiver.getTokenFlowRate();
             _debug("request pseudo-fire at " + deltaTime + " intervals. "
-                + periodDivider);
+                    + periodDivider);
 
             for (int n = 1; n < periodDivider; n++) {
                 _requestRefireAt(currentTime.add(n * deltaTime));
                 _debug(" request pseudo-fire at "
-                    + (currentTime.add(n * deltaTime)).getDoubleValue());
+                        + (currentTime.add(n * deltaTime)).getDoubleValue());
             }
         }
     }
@@ -1156,7 +1156,7 @@ foundRepeatValue:
             timePrecisionInDigits.setVisibility(Settable.FULL);
         } catch (Exception e) {
             throw new InternalErrorException(
-                "unable to initialize DT Director:\n" + e.getMessage());
+                    "unable to initialize DT Director:\n" + e.getMessage());
         }
     }
 

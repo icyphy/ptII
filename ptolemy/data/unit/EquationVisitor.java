@@ -63,7 +63,7 @@ public abstract class EquationVisitor {
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected Object _visitUnitEquation(UnitEquation uEquation)
-        throws IllegalActionException {
+            throws IllegalActionException {
         _visitUnitExpr(uEquation.getLhs());
         _visitUnitExpr(uEquation.getRhs());
         return null;
@@ -75,7 +75,7 @@ public abstract class EquationVisitor {
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected Object _visitUnitExpr(UnitExpr unitExpr)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Iterator iter = unitExpr.getUTerms().iterator();
         Vector uTerms = new Vector();
 
@@ -94,7 +94,7 @@ public abstract class EquationVisitor {
      * @exception IllegalActionException Not thrown in this base class.
      */
     protected Object _visitUnitTerm(UnitTerm uTerm)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (uTerm.isUnitExpr()) {
             UnitExpr uExpr = uTerm.getUnitExpr();
 

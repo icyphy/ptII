@@ -72,7 +72,7 @@ public class SequenceToMatrix extends SDFTransformer {
      *   actor with this name.
      */
     public SequenceToMatrix(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         output.setTypeAtLeast(new FunctionTerm(input));
@@ -87,8 +87,8 @@ public class SequenceToMatrix extends SDFTransformer {
 
         // Set the icon.
         _attachText("_iconDescription",
-            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-            + "style=\"fill:white\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -112,20 +112,20 @@ public class SequenceToMatrix extends SDFTransformer {
      *  @exception IllegalActionException If the parameters are out of range.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute == rows) {
             int rowsValue = ((IntToken) rows.getToken()).intValue();
 
             if (rowsValue <= 0) {
                 throw new IllegalActionException(this,
-                    "Invalid number of rows: " + rowsValue);
+                        "Invalid number of rows: " + rowsValue);
             }
         } else if (attribute == columns) {
             int columnsValue = ((IntToken) columns.getToken()).intValue();
 
             if (columnsValue <= 0) {
                 throw new IllegalActionException(this,
-                    "Invalid number of columns: " + columnsValue);
+                        "Invalid number of columns: " + columnsValue);
             }
         }
 

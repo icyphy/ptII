@@ -121,7 +121,7 @@ public class Parameter extends Variable {
      *   a parameter already in the container.
      */
     public Parameter(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setVisibility(Settable.FULL);
 
@@ -149,7 +149,7 @@ public class Parameter extends Variable {
      *   an parameter already in the container.
      */
     public Parameter(NamedObj container, String name, ptolemy.data.Token token)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name, token);
         setVisibility(Settable.FULL);
 
@@ -192,7 +192,7 @@ public class Parameter extends Variable {
      *  @see #isPersistent()
      */
     public void exportMoML(Writer output, int depth, String name)
-        throws IOException {
+            throws IOException {
         if (_isMoMLSuppressed(depth)) {
             return;
         }
@@ -206,7 +206,7 @@ public class Parameter extends Variable {
         }
 
         output.write(_getIndentPrefix(depth) + "<" + _elementName + " name=\""
-            + name + "\" class=\"" + getClassName() + "\"" + valueTerm + ">\n");
+                + name + "\" class=\"" + getClassName() + "\"" + valueTerm + ">\n");
         _exportMoMLContents(output, depth + 1);
         output.write(_getIndentPrefix(depth) + "</" + _elementName + ">\n");
     }

@@ -64,7 +64,7 @@ public class TypedNodeRenderer implements NodeRenderer {
      * has a type that is not understood by this renderer).
      */
     public TypedNodeRenderer(GraphController controller,
-        NodeRenderer defaultRenderer) {
+            NodeRenderer defaultRenderer) {
         _controller = controller;
         _defaultRenderer = defaultRenderer;
         _typedRenderers = new Hashtable();

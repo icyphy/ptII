@@ -76,14 +76,14 @@ public class NCCodeGenerator extends Director {
      *   an attribute already in the container.
      */
     public NCCodeGenerator(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-40\" y=\"-15\" width=\"80\" height=\"30\" "
-            + "style=\"fill:blue\"/>" + "<text x=\"-15\" y=\"9\" "
-            + "style=\"font-size:24; font-family:SansSerif; fill:white\">"
-            + "NC</text></svg>");
+                "<svg>\n" + "<rect x=\"-40\" y=\"-15\" width=\"80\" height=\"30\" "
+                + "style=\"fill:blue\"/>" + "<text x=\"-15\" y=\"9\" "
+                + "style=\"font-size:24; font-family:SansSerif; fill:white\">"
+                + "NC</text></svg>");
 
         destinationDirectory = new FileParameter(this, "destinationDirectory");
         destinationDirectory.setExpression("$CWD");
@@ -128,7 +128,7 @@ public class NCCodeGenerator extends Director {
     public void preinitialize() throws IllegalActionException {
         if (!(getContainer() instanceof CompositeActor)) {
             throw new IllegalActionException(this,
-                "Requires the container to be an instance of CompositeActor.");
+                    "Requires the container to be an instance of CompositeActor.");
         }
 
         CompositeActor container = (CompositeActor) getContainer();
@@ -138,7 +138,7 @@ public class NCCodeGenerator extends Director {
         if (!directory.isDirectory()) {
             // FIXME: Should we create the directory?
             throw new IllegalActionException(this,
-                "No directory named: " + destinationDirectory.getExpression());
+                    "No directory named: " + destinationDirectory.getExpression());
         }
 
         _writeCode(container, null, directory);
@@ -154,7 +154,7 @@ public class NCCodeGenerator extends Director {
      *  @return The NC code.
      */
     public static String generateCode(CompositeActor model)
-        throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer generatedCode = new StringBuffer();
 
         String containerName = model.getName();
@@ -175,7 +175,7 @@ public class NCCodeGenerator extends Director {
      *  @return The code describing the input ports.
      */
     private static String _interfaceProvides(CompositeActor model)
-        throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer codeString = new StringBuffer();
 
         Iterator inPorts = model.inputPortList().iterator();
@@ -185,11 +185,11 @@ public class NCCodeGenerator extends Director {
 
             if (port.isOutput()) {
                 throw new IllegalActionException(port,
-                    "Ports that are both inputs and outputs are not allowed.");
+                        "Ports that are both inputs and outputs are not allowed.");
             }
 
             codeString.append("provides interface " + port.getName() + ";"
-                + _endLine);
+                    + _endLine);
         }
 
         return codeString.toString();
@@ -199,7 +199,7 @@ public class NCCodeGenerator extends Director {
      *  @return The code.
      */
     private static String _interfaceUses(CompositeActor model)
-        throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer codeString = new StringBuffer();
 
         Iterator outPorts = model.outputPortList().iterator();
@@ -209,11 +209,11 @@ public class NCCodeGenerator extends Director {
 
             if (port.isInput()) {
                 throw new IllegalActionException(port,
-                    "Ports that are both inputs and outputs are not allowed.");
+                        "Ports that are both inputs and outputs are not allowed.");
             }
 
             codeString.append("uses interface " + port.getName() + ";"
-                + _endLine);
+                    + _endLine);
         }
 
         return codeString.toString();
@@ -223,7 +223,7 @@ public class NCCodeGenerator extends Director {
      *  @return The code.
      */
     private static String _includeModule(CompositeActor model)
-        throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer codeString = new StringBuffer();
 
         // Include components.
@@ -255,14 +255,14 @@ public class NCCodeGenerator extends Director {
      *  @return The connections code.
      */
     private static String _includeConnection(CompositeActor model, Actor actor)
-        throws IllegalActionException {
+            throws IllegalActionException {
         StringBuffer codeString = new StringBuffer();
 
         String actorName = StringUtilities.sanitizeName(((NamedObj) actor)
                 .getName());
 
         for (Iterator inPorts = actor.inputPortList().iterator();
-                inPorts.hasNext();) {
+             inPorts.hasNext();) {
             IOPort inPort = (IOPort) inPorts.next();
             String sanitizedInPortName = StringUtilities.sanitizeName(inPort
                     .getName());
@@ -270,8 +270,8 @@ public class NCCodeGenerator extends Director {
 
             if (sourcePortList.size() > 1) {
                 throw new IllegalActionException(inPort,
-                    "Input port (provides) cannot connect to "
-                    + "multiple output ports (requires) in NC.");
+                        "Input port (provides) cannot connect to "
+                        + "multiple output ports (requires) in NC.");
             }
 
             if (sourcePortList.size() == 1) {
@@ -279,15 +279,15 @@ public class NCCodeGenerator extends Director {
                 String sanitizedSourcePortName = StringUtilities.sanitizeName(sourcePort
                         .getName());
                 String sourceActorName = StringUtilities.sanitizeName(sourcePort.getContainer()
-                                                                                .getName());
+                        .getName());
 
                 if (sourcePort.getContainer() == model) {
                     codeString.append(sanitizedSourcePortName + " = "
-                        + actorName + "." + sanitizedInPortName + ";");
+                            + actorName + "." + sanitizedInPortName + ";");
                 } else {
                     codeString.append(sourceActorName + "."
-                        + sanitizedSourcePortName + " -> " + actorName + "."
-                        + sanitizedInPortName + ";");
+                            + sanitizedSourcePortName + " -> " + actorName + "."
+                            + sanitizedInPortName + ";");
                 }
 
                 codeString.append(_endLine);
@@ -303,7 +303,7 @@ public class NCCodeGenerator extends Director {
      *  @return The drivers code.
      */
     private static String _includeConnection(CompositeActor model)
-        throws IllegalActionException {
+            throws IllegalActionException {
         String codeString = "";
         Actor actor;
 
@@ -327,15 +327,15 @@ public class NCCodeGenerator extends Director {
             // input or output and not both.
             //String portID = port.getName();
             System.out.println("tring to get the connected port for: "
-                + port.getName());
+                    + port.getName());
 
             List sourcePortList = port.insidePortList();
 
             //FIXME: can the list be empty?
             if (sourcePortList.size() > 1) {
                 throw new IllegalActionException(port,
-                    "Input port "
-                    + "cannot receive data from multiple sources in NC.");
+                        "Input port "
+                        + "cannot receive data from multiple sources in NC.");
             }
 
             IOPort sourcePort;
@@ -346,9 +346,9 @@ public class NCCodeGenerator extends Director {
                 String sanitizedOutPortName = StringUtilities.sanitizeName(sourcePort
                         .getName());
                 String sourceActorName = StringUtilities.sanitizeName(sourcePort.getContainer()
-                                                                                .getName());
+                        .getName());
                 codeString += (sourceActorName + "." + sanitizedOutPortName
-                + " = " + port.getName() + ";" + _endLine);
+                        + " = " + port.getName() + ";" + _endLine);
             }
         }
 
@@ -378,7 +378,7 @@ public class NCCodeGenerator extends Director {
      *   file.
      */
     private void _writeCode(CompositeActor model, CompositeActor toplevel,
-        File directory) throws IllegalActionException {
+            File directory) throws IllegalActionException {
         String code = generateCode(model);
 
         String name;
@@ -402,7 +402,7 @@ public class NCCodeGenerator extends Director {
             writer.close();
         } catch (IOException e) {
             throw new IllegalActionException(this, e,
-                "Failed to open file for writing.");
+                    "Failed to open file for writing.");
         }
 
         // Descend recursively into contained composites.
@@ -422,7 +422,7 @@ public class NCCodeGenerator extends Director {
     ////                         inner classes                     ////
     private class CodeDisplayerFactory extends EditorFactory {
         public CodeDisplayerFactory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
@@ -459,7 +459,7 @@ public class NCCodeGenerator extends Director {
                 configuration.createPrimaryTableau(codeEffigy);
             } catch (Exception ex) {
                 throw new InternalErrorException(object, ex,
-                    "Cannot generate code. Perhaps outside Vergil?");
+                        "Cannot generate code. Perhaps outside Vergil?");
             }
         }
     }

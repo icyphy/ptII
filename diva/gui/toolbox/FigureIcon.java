@@ -85,10 +85,10 @@ public class FigureIcon extends ImageIcon {
 
             if (antialias) {
                 graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
+                        RenderingHints.VALUE_ANTIALIAS_ON);
             } else {
                 graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_OFF);
+                        RenderingHints.VALUE_ANTIALIAS_OFF);
             }
 
             figure.paint(graphics);
@@ -138,10 +138,10 @@ public class FigureIcon extends ImageIcon {
 
             if (antialias) {
                 graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_ON);
+                        RenderingHints.VALUE_ANTIALIAS_ON);
             } else {
                 graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING,
-                    RenderingHints.VALUE_ANTIALIAS_OFF);
+                        RenderingHints.VALUE_ANTIALIAS_OFF);
             }
 
             graphics.setBackground(new Color(0, 0, 0, 0));

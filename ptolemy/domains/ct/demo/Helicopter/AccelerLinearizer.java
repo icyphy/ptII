@@ -58,7 +58,7 @@ public class AccelerLinearizer extends TypedAtomicActor {
     /** Constructor
      */
     public AccelerLinearizer(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         inputPx = new TypedIOPort(this, "inputPx");
         inputPx.setInput(true);
@@ -189,9 +189,9 @@ public class AccelerLinearizer extends TypedAtomicActor {
         double D4Pz = ((DoubleToken) inputD4Pz.get(0)).doubleValue();
 
         double Vx = -1.0 * ((_alphaA[0] * (DDPx - _cAx)) + (_alphaA[1] * D3Px)
-            + (_alphaA[2] * D4Px));
+                + (_alphaA[2] * D4Px));
         double Vz = -1.0 * ((_alphaP[0] * (Pz - _cPz)) + (_alphaP[1] * DPz)
-            + (_alphaP[2] * DDPz) + (_alphaP[3] * D3Pz) + (_alphaP[4] * D4Pz));
+                + (_alphaP[2] * DDPz) + (_alphaP[3] * D3Pz) + (_alphaP[4] * D4Pz));
 
         double V = Math.sqrt((DPx * DPx) + (DPz * DPz));
         double R = Math.PI / 2.0;
@@ -219,7 +219,7 @@ public class AccelerLinearizer extends TypedAtomicActor {
 
             if (stokens.countTokens() < 5) {
                 throw new IllegalActionException(this,
-                    "Not enough parameter numbers.");
+                        "Not enough parameter numbers.");
             }
 
             while (stokens.hasMoreTokens() && (index < 5)) {
@@ -233,7 +233,7 @@ public class AccelerLinearizer extends TypedAtomicActor {
 
             if (stokens.countTokens() < 3) {
                 throw new IllegalActionException(this,
-                    "Not enough parameter numbers.");
+                        "Not enough parameter numbers.");
             }
 
             while (stokens.hasMoreTokens() && (index < 3)) {

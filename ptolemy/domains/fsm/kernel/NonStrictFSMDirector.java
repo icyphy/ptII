@@ -1,29 +1,29 @@
 /* This director extends FSMDirector by consuming only input tokens
    that are needed in the current state.
 
-Copyright (c) 2004-2005 The Regents of the University of California.
-All rights reserved.
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the above
-copyright notice and the following two paragraphs appear in all copies
-of this software.
+   Copyright (c) 2004-2005 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-PT_COPYRIGHT_VERSION_2
-COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 */
 package ptolemy.domains.fsm.kernel;
 
@@ -99,7 +99,7 @@ public class NonStrictFSMDirector extends FSMDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public NonStrictFSMDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -162,12 +162,12 @@ public class NonStrictFSMDirector extends FSMDirector {
      *  the guard expression is illegal.
      */
     public void getGuardReferredInputPorts(State currentState)
-        throws IllegalActionException {
+            throws IllegalActionException {
         //System.out.println("currentState" + currentState.getName());
         _guardReferredInputPorts.clear();
 
         Iterator transitions = currentState.nonpreemptiveTransitionList()
-                                           .iterator();
+            .iterator();
 
         while (transitions.hasNext()) {
             Transition transition = (Transition) transitions.next();
@@ -177,7 +177,7 @@ public class NonStrictFSMDirector extends FSMDirector {
 
             if (string == "") {
                 throw new IllegalActionException(this,
-                    "guard expression on " + transition.getName() + "is null!");
+                        "guard expression on " + transition.getName() + "is null!");
             }
 
             PtParser parser = new PtParser();
@@ -197,7 +197,7 @@ public class NonStrictFSMDirector extends FSMDirector {
      *  the outputActions is illegal.
      */
     public void getOutputActionsReferredInputPorts(Transition transition)
-        throws IllegalActionException {
+            throws IllegalActionException {
         //System.out.println("get output action referred ports:");
         _outputActionReferredInputPorts.clear();
 

@@ -153,7 +153,7 @@ public class Transition extends ComponentRelation {
      *  tracking.
      */
     public Transition(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
@@ -171,7 +171,7 @@ public class Transition extends ComponentRelation {
      *   any relation already in the container.
      */
     public Transition(FSMActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _init();
     }
@@ -244,7 +244,7 @@ public class Transition extends ComponentRelation {
      *   does not evaluate to a boolean value.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         super.attributeChanged(attribute);
 
         if (attribute == preemptive) {
@@ -449,15 +449,15 @@ public class Transition extends ComponentRelation {
 
                 if (name.equals("")) {
                     throw new IllegalActionException(this,
-                        "Malformed list of refinements: " + names);
+                            "Malformed list of refinements: " + names);
                 }
 
                 TypedActor element = (TypedActor) containerContainer.getEntity(name);
 
                 if (element == null) {
                     throw new IllegalActionException(this,
-                        "Cannot find " + "refinement with name \"" + name
-                        + "\" in " + containerContainer.getFullName());
+                            "Cannot find " + "refinement with name \"" + name
+                            + "\" in " + containerContainer.getFullName());
                 }
 
                 _refinement[index++] = element;
@@ -499,7 +499,7 @@ public class Transition extends ComponentRelation {
         try {
             if (_exeDirectorIsHSDirector && !_relationList.isEmpty()) {
                 ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
-                .setConstructionMode(false);
+                    .setConstructionMode(false);
             }
 
             FSMActor fsmActor = (FSMActor) getContainer();
@@ -528,7 +528,7 @@ public class Transition extends ComponentRelation {
             return false;
         } catch (IllegalActionException ex) {
             throw new IllegalActionException(this, ex,
-                "Error evaluating guard expression: " + getGuardExpression());
+                    "Error evaluating guard expression: " + getGuardExpression());
         }
     }
 
@@ -541,8 +541,8 @@ public class Transition extends ComponentRelation {
             return ((BooleanToken) preemptive.getToken()).booleanValue();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(preemptive.getFullName()
-                + ": The parameter does not have a valid value, \""
-                + preemptive.getExpression() + "\".");
+                    + ": The parameter does not have a valid value, \""
+                    + preemptive.getExpression() + "\".");
         }
     }
 
@@ -580,9 +580,9 @@ public class Transition extends ComponentRelation {
 
         if ((triggerValue == true) && (guardValue == false)) {
             throw new IllegalActionException(this,
-                "The trigger: " + getTriggerExpression()
-                + " is true but the guard: " + getGuardExpression()
-                + " is false.");
+                    "The trigger: " + getTriggerExpression()
+                    + " is true but the guard: " + getGuardExpression()
+                    + " is false.");
         }
 
         return triggerValue;
@@ -603,12 +603,12 @@ public class Transition extends ComponentRelation {
      *   an relation with the name of this transition.
      */
     public void setContainer(CompositeEntity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         if (container != null) {
             if (!(container instanceof FSMActor)) {
                 throw new IllegalActionException(container, this,
-                    "Transition can only be contained by instances of "
-                    + "FSMActor.");
+                        "Transition can only be contained by instances of "
+                        + "FSMActor.");
             }
         }
 
@@ -625,7 +625,7 @@ public class Transition extends ComponentRelation {
             guardExpression.validate();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Error in setting the "
-                + "guard expression of a transition.");
+                    + "guard expression of a transition.");
         }
     }
 
@@ -639,7 +639,7 @@ public class Transition extends ComponentRelation {
             triggerExpression.validate();
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Error in setting the "
-                + "trigger expression of a transition.");
+                    + "trigger expression of a transition.");
         }
     }
 
@@ -670,15 +670,15 @@ public class Transition extends ComponentRelation {
 
         if (!(port.getContainer() instanceof State)) {
             throw new IllegalActionException(this, port.getContainer(),
-                "Transition can only connect to instances of State.");
+                    "Transition can only connect to instances of State.");
         }
 
         State st = (State) port.getContainer();
 
         if ((port != st.incomingPort) && (port != st.outgoingPort)) {
             throw new IllegalActionException(this, port.getContainer(),
-                "Transition can only be linked to incoming or outgoing "
-                + "port of State.");
+                    "Transition can only be linked to incoming or outgoing "
+                    + "port of State.");
         }
 
         if (numLinks() == 0) {
@@ -687,7 +687,7 @@ public class Transition extends ComponentRelation {
 
         if (numLinks() >= 2) {
             throw new IllegalActionException(this,
-                "Transition can only connect two States.");
+                    "Transition can only connect two States.");
         }
 
         Iterator ports = linkedPortList().iterator();
@@ -697,7 +697,7 @@ public class Transition extends ComponentRelation {
         if (((pt == s.incomingPort) && (port == st.incomingPort))
                 || ((pt == s.outgoingPort) && (port == st.outgoingPort))) {
             throw new IllegalActionException(this,
-                "Transition can only have one source and one destination.");
+                    "Transition can only have one source and one destination.");
         }
 
         return;
@@ -734,7 +734,7 @@ public class Transition extends ComponentRelation {
 
     // Initialize the variables of this transition.
     private void _init()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         guardExpression = new StringAttribute(this, "guardExpression");
         outputActions = new OutputActionsAttribute(this, "outputActions");
         setActions = new CommitActionsAttribute(this, "setActions");
@@ -833,7 +833,7 @@ public class Transition extends ComponentRelation {
 
                 // Reconstruct the relation list.
                 ((ParseTreeEvaluatorForGuardExpression) _parseTreeEvaluator)
-                .setConstructionMode(true);
+                    .setConstructionMode(true);
             } else {
                 _parseTreeEvaluator = new ParseTreeEvaluator();
             }

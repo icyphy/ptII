@@ -64,7 +64,7 @@ public class Line2D extends GRActor2D {
      *   actor with this name.
      */
     public Line2D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
@@ -128,15 +128,15 @@ public class Line2D extends GRActor2D {
      * the user changes the parameters.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (((attribute == xStart) || (attribute == yStart)
-                || (attribute == xEnd) || (attribute == yEnd))
+                    || (attribute == xEnd) || (attribute == yEnd))
                 && (_viewScreen != null)) {
             _figure.setPrototypeShape(new java.awt.geom.Line2D.Double(
-                    ((DoubleToken) xStart.getToken()).doubleValue(),
-                    ((DoubleToken) yStart.getToken()).doubleValue(),
-                    ((DoubleToken) xEnd.getToken()).doubleValue(),
-                    ((DoubleToken) xEnd.getToken()).doubleValue()));
+                                              ((DoubleToken) xStart.getToken()).doubleValue(),
+                                              ((DoubleToken) yStart.getToken()).doubleValue(),
+                                              ((DoubleToken) xEnd.getToken()).doubleValue(),
+                                              ((DoubleToken) xEnd.getToken()).doubleValue()));
         } else if (((attribute == rgbColor) || (attribute == lineWidth))
                 && (_viewScreen != null)) {
             _setAppearance(_figure);
@@ -178,10 +178,10 @@ public class Line2D extends GRActor2D {
      */
     protected BasicFigure _createFigure() throws IllegalActionException {
         BasicFigure figure = new BasicFigure(new java.awt.geom.Line2D.Double(
-                    ((DoubleToken) xStart.getToken()).doubleValue(),
-                    ((DoubleToken) yStart.getToken()).doubleValue(),
-                    ((DoubleToken) xEnd.getToken()).doubleValue(),
-                    ((DoubleToken) yEnd.getToken()).doubleValue()));
+                                                     ((DoubleToken) xStart.getToken()).doubleValue(),
+                                                     ((DoubleToken) yStart.getToken()).doubleValue(),
+                                                     ((DoubleToken) xEnd.getToken()).doubleValue(),
+                                                     ((DoubleToken) yEnd.getToken()).doubleValue()));
         _setAppearance(figure);
         return figure;
     }
@@ -199,7 +199,7 @@ public class Line2D extends GRActor2D {
     // Set the appearance of the given figure consistent with the
     // parameters of this class.
     private void _setAppearance(BasicFigure figure)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Paint strokePaint = rgbColor.asColor();
         figure.setStrokePaint(strokePaint);
 

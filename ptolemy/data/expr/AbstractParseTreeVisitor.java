@@ -51,32 +51,32 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     public void visitArrayConstructNode(ASTPtArrayConstructNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtArrayConstructNode");
     }
 
     public void visitAssignmentNode(ASTPtAssignmentNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtAssignmentNode");
     }
 
     public void visitBitwiseNode(ASTPtBitwiseNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtBitwiseNode");
     }
 
     public void visitFunctionApplicationNode(ASTPtFunctionApplicationNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtFunctionApplicationNode");
     }
 
     public void visitFunctionDefinitionNode(ASTPtFunctionDefinitionNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtFunctionDefinitionNode");
     }
 
     public void visitFunctionalIfNode(ASTPtFunctionalIfNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtFunctionalIfNode");
     }
 
@@ -85,42 +85,42 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
     }
 
     public void visitLogicalNode(ASTPtLogicalNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtLogicalNode");
     }
 
     public void visitMatrixConstructNode(ASTPtMatrixConstructNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtMatrixConstructNode");
     }
 
     public void visitMethodCallNode(ASTPtMethodCallNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtMethodCallNode");
     }
 
     public void visitPowerNode(ASTPtPowerNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtPowerNode");
     }
 
     public void visitProductNode(ASTPtProductNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtProductNode");
     }
 
     public void visitRecordConstructNode(ASTPtRecordConstructNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtRecordConstructNode");
     }
 
     public void visitRelationalNode(ASTPtRelationalNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtRelationalNode");
     }
 
     public void visitShiftNode(ASTPtShiftNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtShiftNode");
     }
 
@@ -129,13 +129,13 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
     }
 
     public void visitUnaryNode(ASTPtUnaryNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         throw _unsupportedVisitException("ASTPtUnaryNode");
     }
 
     protected IllegalActionException _unsupportedVisitException(String name) {
         return new IllegalActionException("Nodes of type " + name
-            + " cannot be visited by a " + getClass().getName() + ".");
+                + " cannot be visited by a " + getClass().getName() + ".");
     }
 
     /** Loop through all of the children of this node,
@@ -143,7 +143,7 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
      *  value to be determined.
      */
     protected void _visitAllChildren(ASTPtRootNode node)
-        throws IllegalActionException {
+            throws IllegalActionException {
         int numChildren = node.jjtGetNumChildren();
 
         for (int i = 0; i < numChildren; i++) {
@@ -155,7 +155,7 @@ public class AbstractParseTreeVisitor implements ParseTreeVisitor {
      *  This is usually called while visiting the given node.
      */
     protected void _visitChild(ASTPtRootNode node, int i)
-        throws IllegalActionException {
+            throws IllegalActionException {
         ASTPtRootNode child = (ASTPtRootNode) node.jjtGetChild(i);
         child.visit(this);
     }

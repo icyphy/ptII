@@ -74,7 +74,7 @@ public class Rotate3D extends GRTransform {
      *   actor with this name.
      */
     public Rotate3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         angle = new TypedIOPort(this, "angle", true, false);
@@ -84,13 +84,13 @@ public class Rotate3D extends GRTransform {
 
         axisDirection = new Parameter(this, "axisDirection",
                 new DoubleMatrixToken(new double[][] {
-                        { 0.0, 1.0, 0.0 }
-                    }));
+                    { 0.0, 1.0, 0.0 }
+                }));
 
         pivotLocation = new Parameter(this, "pivotLocation",
                 new DoubleMatrixToken(new double[][] {
-                        { 0.0, 0.0, 0.0 }
-                    }));
+                    { 0.0, 0.0, 0.0 }
+                }));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -158,10 +158,10 @@ public class Rotate3D extends GRTransform {
                 if (_isAccumulating()) {
                     _accumulatedAngle = in + _accumulatedAngle;
                     quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis,
-                            _accumulatedAngle));
+                                     _accumulatedAngle));
                 } else {
                     quat.set(new AxisAngle4d(_xAxis, _yAxis, _zAxis,
-                            in + originalAngle));
+                                     in + originalAngle));
                 }
 
                 _rotation.set(quat);

@@ -114,13 +114,13 @@ public abstract class ConditionalBranch {
      *   the port is not of type CSPActor.
      */
     public ConditionalBranch(boolean guard, IOPort port, int branchID)
-        throws IllegalActionException {
+            throws IllegalActionException {
         Nameable tmp = port.getContainer();
 
         if (!(tmp instanceof ConditionalBranchActor)) {
             throw new IllegalActionException(port,
-                "A conditional branch can only be created"
-                + "with a port contained by ConditionalBranchActor");
+                    "A conditional branch can only be created"
+                    + "with a port contained by ConditionalBranchActor");
         }
 
         _branchID = branchID;
@@ -149,7 +149,7 @@ public abstract class ConditionalBranch {
      *   the port is not of type CSPActor.
      */
     public ConditionalBranch(boolean guard, IOPort port, int branchID,
-        ConditionalBranchController cbc) throws IllegalActionException {
+            ConditionalBranchController cbc) throws IllegalActionException {
         _branchID = branchID;
         _guard = guard;
         _controller = cbc;

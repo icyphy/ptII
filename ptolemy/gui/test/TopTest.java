@@ -55,9 +55,9 @@ public class TopTest extends Top {
     }
 
     /** Write the model to the specified file.
-    *  @param file The file to write to.
-    *  @exception IOException If the write fails.
-    */
+     *  @param file The file to write to.
+     *  @exception IOException If the write fails.
+     */
     protected void _writeFile(File file) throws IOException {
         throw new RuntimeException("TopTest._writeFile() not implemented");
     }

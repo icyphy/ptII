@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  */
 public class SDFTestSplit extends TypedAtomicActor {
     public SDFTestSplit(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input_tokenConsumptionRate = new Parameter(input,

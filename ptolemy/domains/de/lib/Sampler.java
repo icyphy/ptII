@@ -93,7 +93,7 @@ public class Sampler extends DETransformer {
      *   actor with this name.
      */
     public Sampler(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);
@@ -104,11 +104,11 @@ public class Sampler extends DETransformer {
         initialValue = new Parameter(this, "initialValue");
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
-            + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
-            + "<polyline points=\"0,20 0,0\"/>\n"
-            + "<polyline points=\"-30,-0 -10,0 10,-7\"/>\n"
-            + "<polyline points=\"10,0 30,0\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" " + "style=\"fill:white\"/>\n"
+                + "<polyline points=\"0,20 0,0\"/>\n"
+                + "<polyline points=\"-30,-0 -10,0 10,-7\"/>\n"
+                + "<polyline points=\"10,0 30,0\"/>\n" + "</svg>\n");
 
         StringAttribute cardinality = new StringAttribute(trigger, "_cardinal");
         cardinality.setExpression("SOUTH");

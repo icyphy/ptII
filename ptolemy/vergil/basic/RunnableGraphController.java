@@ -133,7 +133,7 @@ public abstract class RunnableGraphController extends WithIconGraphController
 
         if (!(toplevel instanceof CompositeActor)) {
             throw new IllegalActionException(toplevel,
-                "Cannot get a manager because the model is not a CompositeActor.");
+                    "Cannot get a manager because the model is not a CompositeActor.");
         }
 
         Manager manager = ((CompositeActor) toplevel).getManager();
@@ -209,8 +209,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
 
             putValue("tooltip", description + " (Ctrl+R)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                KeyStroke.getKeyStroke(KeyEvent.VK_R,
-                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_R,
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         /** Run the model. */
@@ -256,8 +256,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
 
             putValue("tooltip", description + " (Ctrl+U)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                KeyStroke.getKeyStroke(KeyEvent.VK_U,
-                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_U,
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         /** Pause the model. */
@@ -298,8 +298,8 @@ public abstract class RunnableGraphController extends WithIconGraphController
 
             putValue("tooltip", description + " (Ctrl+H)");
             putValue(GUIUtilities.ACCELERATOR_KEY,
-                KeyStroke.getKeyStroke(KeyEvent.VK_H,
-                    Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
+                    KeyStroke.getKeyStroke(KeyEvent.VK_H,
+                            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask()));
         }
 
         /** Stop the model. */

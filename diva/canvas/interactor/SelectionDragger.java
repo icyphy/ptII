@@ -293,7 +293,7 @@ public class SelectionDragger extends DragInteractor {
         }
 
         for (Iterator i = ((HashSet) _holdovers.clone()).iterator();
-                i.hasNext();) {
+             i.hasNext();) {
             Figure f = (Figure) i.next();
 
             if (f.hit(_rubberBand)) {

@@ -61,7 +61,7 @@ public class EventFilter extends DETransformer {
      *   actor with this name.
      */
     public EventFilter(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input.setMultiport(true);
         output.setMultiport(true);

@@ -144,7 +144,7 @@ public class CSPActor extends TypedAtomicActor implements ConditionalBranchActor
      *  with an entity already in the container.
      */
     public CSPActor(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _conditionalBranchController = new ConditionalBranchController(this);
     }
@@ -201,7 +201,7 @@ public class CSPActor extends TypedAtomicActor implements ConditionalBranchActor
                     return;
                 } else if (delta < 0.0) {
                     throw new IllegalActionException(this,
-                        "delay() called with a negative argument: " + delta);
+                            "delay() called with a negative argument: " + delta);
                 } else {
                     _delayed = true;
                     ((CSPDirector) getDirector())._actorDelayed(delta, this);
@@ -219,7 +219,7 @@ public class CSPActor extends TypedAtomicActor implements ConditionalBranchActor
             }
         } catch (InterruptedException ex) {
             throw new TerminateProcessException("CSPActor interrupted "
-                + "while delayed.");
+                    + "while delayed.");
         }
     }
 
@@ -280,7 +280,7 @@ public class CSPActor extends TypedAtomicActor implements ConditionalBranchActor
     protected void _continue() {
         if (_delayed == false) {
             throw new InvalidStateException("CSPActor._continue() "
-                + "called on an actor that was not delayed: " + getName());
+                    + "called on an actor that was not delayed: " + getName());
         }
 
         // NOTE: perhaps this notifyAll() should be called in another
@@ -309,7 +309,7 @@ public class CSPActor extends TypedAtomicActor implements ConditionalBranchActor
             }
         } catch (InterruptedException ex) {
             throw new TerminateProcessException("CSPActor interrupted "
-                + "while waiting for deadlock.");
+                    + "while waiting for deadlock.");
         }
     }
 

@@ -44,7 +44,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 public class TimedDisplay extends Display implements Placeable, SequenceActor {
     public TimedDisplay(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         rowsDisplayed.setToken(new IntToken(20));
     }

@@ -100,7 +100,7 @@ public class XMLParserTest extends TestSuite {
 
                     try {
                         input = new BufferedReader(new FileReader(
-                                    "/java/diva/util/test/xml1.xml"));
+                                                           "/java/diva/util/test/xml1.xml"));
                         line = input.readLine();
                     } catch (Exception e) {
                     }

@@ -64,7 +64,7 @@ public class When extends Transformer {
      *   an actor already in the container.
      */
     public When(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         control = new TypedIOPort(this, "control", true, false);

@@ -343,8 +343,8 @@ public class PaintedString implements PaintedObject {
                     _shapes.add(s);
                 } else {
                     Rectangle2D.union(_bounds,
-                        (Rectangle2D) ShapeUtilities.translateModify(b, x, y),
-                        _bounds);
+                            (Rectangle2D) ShapeUtilities.translateModify(b, x, y),
+                            _bounds);
                     _shapes.add(ShapeUtilities.translateModify(s, x, y));
                 }
             }

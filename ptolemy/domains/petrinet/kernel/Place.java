@@ -70,7 +70,7 @@ public class Place extends Transformer {
      *   an entity already in the container.
      */
     public Place(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         initialMarking = new Parameter(this, "initialMarking");

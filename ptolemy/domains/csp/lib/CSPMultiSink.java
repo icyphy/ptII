@@ -77,7 +77,7 @@ public class CSPMultiSink extends CSPActor {
      *   with a port already in this actor.
      */
     public CSPMultiSink(TypedCompositeActor container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
@@ -131,7 +131,7 @@ public class CSPMultiSink extends CSPActor {
                     if (successfulBranch == i) {
                         Token t = branches[successfulBranch].getToken();
                         System.out.println(getName() + ": received Token: "
-                            + t.toString() + " from receiver " + i);
+                                + t.toString() + " from receiver " + i);
                         flag = true;
                     }
                 }
@@ -141,14 +141,14 @@ public class CSPMultiSink extends CSPActor {
                     continueCDO = false;
                 } else if (!flag) {
                     throw new TerminateProcessException(getName() + ": "
-                        + "branch id returned during execution of CDO.");
+                            + "branch id returned during execution of CDO.");
                 }
 
                 count++;
             }
         } catch (IllegalActionException ex) {
             throw new TerminateProcessException(getName() + ": Error: "
-                + "could not create ConditionalReceive branch");
+                    + "could not create ConditionalReceive branch");
         }
 
         return;
@@ -167,11 +167,11 @@ public class CSPMultiSink extends CSPActor {
      */
     public void wrapup() {
         System.out.println(Thread.currentThread().getName()
-            + ":Invoking wrapup of CSPMultiSink...\n");
+                + ":Invoking wrapup of CSPMultiSink...\n");
 
         for (int i = 0; i < input.getWidth(); i++) {
             System.out.println("MultiSink: Branch " + i
-                + " successfully  rendezvoused " + _branchCount[i] + " times.");
+                    + " successfully  rendezvoused " + _branchCount[i] + " times.");
         }
     }
 

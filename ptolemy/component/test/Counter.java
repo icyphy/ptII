@@ -62,15 +62,15 @@ public class Counter extends AtomicComponent {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         increment = new MethodCallPort(this, "increment", true) {
-            public synchronized TupleToken call(TupleToken args) {
-                System.out.println("---call method Counter.increment");
-                IntToken arg = (IntToken)args.getElement(0);
-                _count+= arg.intValue();
-                IntToken[] t = new IntToken[1];
-                t[0] = new IntToken(_count);
-                return output.call(new TupleToken(t));
-            }
-        };
+                public synchronized TupleToken call(TupleToken args) {
+                    System.out.println("---call method Counter.increment");
+                    IntToken arg = (IntToken)args.getElement(0);
+                    _count+= arg.intValue();
+                    IntToken[] t = new IntToken[1];
+                    t[0] = new IntToken(_count);
+                    return output.call(new TupleToken(t));
+                }
+            };
         //increment.setTypeEquals(BaseType.GENERAL);
         decrement = new MethodCallPort(this, "decrement", true);
         //decrement.setTypeEquals(BaseType.GENERAL);

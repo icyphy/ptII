@@ -90,7 +90,7 @@ public class RelationList extends Attribute {
      *   has an attribute with the name.
      */
     public RelationList(Transition transition, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(transition, name);
         setPersistent(false);
         _relationList = new LinkedList();
@@ -141,7 +141,7 @@ public class RelationList extends Attribute {
      */
     public double getPreviousMaximumDistance() {
         return ((RelationNode) _relationList.get(_maximumDifferenceIndex))
-        .gePreviousDifference();
+            .gePreviousDifference();
     }
 
     /** Return true if there is some event caused by some relation

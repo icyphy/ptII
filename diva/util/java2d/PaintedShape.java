@@ -93,7 +93,7 @@ public class PaintedShape extends AbstractPaintedGraphic {
      * an outline of the given color and given width.
      */
     public PaintedShape(Shape shape, Paint fillPaint, float lineWidth,
-        Paint strokePaint) {
+            Paint strokePaint) {
         this.shape = shape;
         setFillPaint(fillPaint);
         setStrokePaint(strokePaint);

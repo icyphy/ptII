@@ -66,7 +66,7 @@ public class WiredToWireless extends TypedAtomicActor {
      *   actor with this name.
      */
     public WiredToWireless(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         payload = new TypedIOPort(this, "payload", true, false);
@@ -87,8 +87,8 @@ public class WiredToWireless extends TypedAtomicActor {
         output.setTypeSameAs(payload);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
-            + "style=\"fill:white\"/>\n" + "</svg>\n");
+                "<svg>\n" + "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                + "style=\"fill:white\"/>\n" + "</svg>\n");
     }
 
     ///////////////////////////////////////////////////////////////////

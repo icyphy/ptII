@@ -66,7 +66,7 @@ public class Translate3D extends GRTransform {
      *   actor with this name.
      */
     public Translate3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         xTranslate = new TypedIOPort(this, "xTranslate", true, false);
@@ -199,7 +199,7 @@ public class Translate3D extends GRTransform {
 
         Transform3D transform = new Transform3D();
         transform.setTranslation(new Vector3d(_initialXTranslation,
-                _initialYTranslation, _initialZTranslation));
+                                         _initialYTranslation, _initialZTranslation));
         _transformNode.setTransform(transform);
 
         /*

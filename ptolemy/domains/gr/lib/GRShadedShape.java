@@ -116,7 +116,7 @@ abstract public class GRShadedShape extends GRActor3D {
      *   actor with this name.
      */
     public GRShadedShape(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         sceneGraphOut = new TypedIOPort(this, "sceneGraphOut");
         sceneGraphOut.setOutput(true);
@@ -231,7 +231,7 @@ abstract public class GRShadedShape extends GRActor3D {
      *  an update is supported by the <i>allowRuntimeChanges</i> parameter.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // If allowRuntimeChanges is null, then we are in the
         // constructor, and don't need to do any of this.
         if (allowRuntimeChanges != null) {
@@ -239,7 +239,7 @@ abstract public class GRShadedShape extends GRActor3D {
                 if ((attribute == transparency)
                         && (_transparencyAttributes != null)) {
                     float transparent = (float) ((DoubleToken) transparency
-                        .getToken()).doubleValue();
+                            .getToken()).doubleValue();
 
                     if (transparent > 0.0) {
                         _transparencyAttributes.setTransparencyMode(TransparencyAttributes.NICEST);

@@ -109,7 +109,7 @@ public class PaintedFigure extends AbstractFigure {
      */
     public Point2D getOrigin() {
         return new Point2D.Double(_transform.getTranslateX(),
-            _transform.getTranslateY());
+                _transform.getTranslateY());
     }
 
     /** Get the shape of this figure. This is the same as the

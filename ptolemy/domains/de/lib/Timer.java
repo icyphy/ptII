@@ -79,7 +79,7 @@ public class Timer extends DETransformer {
      *   actor with this name.
      */
     public Timer(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         value = new Parameter(this, "value", new BooleanToken(true));
         input.setTypeEquals(BaseType.DOUBLE);
@@ -171,7 +171,7 @@ public class Timer extends DETransformer {
         _currentInput = null;
         _currentOutput = null;
         _delayedOutputTokens = new CalendarQueue(new TimedEvent.TimeComparator(
-                    this.getDirector()));
+                                                         this.getDirector()));
     }
 
     /** Update the internal states of this actor. If the current input
@@ -208,7 +208,7 @@ public class Timer extends DETransformer {
         // to process it.
         if (_currentInput != null) {
             _delayedOutputTokens.put(new TimedEvent(delayToTime,
-                    value.getToken()));
+                                             value.getToken()));
             getDirector().fireAt(this, delayToTime);
         }
 

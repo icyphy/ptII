@@ -103,7 +103,7 @@ public class BackwardEulerSolver extends FixedStepSolver {
      *  read input, or can not send output.
      */
     public void integratorFire(CTBaseIntegrator integrator)
-        throws IllegalActionException {
+            throws IllegalActionException {
         CTDirector director = (CTDirector) getContainer();
         double tentativeState = integrator.getState();
 

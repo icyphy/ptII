@@ -54,7 +54,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Green (hyzheng)
 */
 public abstract class DEActor extends TypedAtomicActor implements SequenceActor,
-    TimedActor {
+                                                                  TimedActor {
     /** Construct an actor with the specified container and name.
      *  This is protected because there is no reason to create an instance
      *  of this class, but derived classes will want to invoke the
@@ -67,7 +67,7 @@ public abstract class DEActor extends TypedAtomicActor implements SequenceActor,
      *   actor with this name.
      */
     protected DEActor(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
     }
 }

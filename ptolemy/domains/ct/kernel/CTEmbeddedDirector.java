@@ -88,7 +88,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
      *   CompositeActor and the name collides with an entity in the container.
      */
     public CTEmbeddedDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -127,8 +127,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     public void emitCurrentStates() {
         try {
             Iterator dynamicActors = getScheduler().getSchedule()
-                                         .get(CTSchedule.DYNAMIC_ACTORS)
-                                         .actorIterator();
+                .get(CTSchedule.DYNAMIC_ACTORS)
+                .actorIterator();
 
             while (dynamicActors.hasNext() && !_stopRequested) {
                 CTDynamicActor dynamicActor = (CTDynamicActor) dynamicActors
@@ -197,8 +197,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with a "
-                + "CTEmbeddedDirector must be used inside "
-                + "another CT model.");
+                    + "CTEmbeddedDirector must be used inside "
+                    + "another CT model.");
         }
     }
 
@@ -215,8 +215,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with a "
-                + "CTEmbeddedDirector must be used inside "
-                + "another CT model.");
+                    + "CTEmbeddedDirector must be used inside "
+                    + "another CT model.");
         }
     }
 
@@ -233,8 +233,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with a "
-                + "CTEmbeddedDirector must be used inside "
-                + "another CT model.");
+                    + "CTEmbeddedDirector must be used inside "
+                    + "another CT model.");
         }
     }
 
@@ -250,8 +250,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with a "
-                + "CTEmbeddedDirector must be used inside "
-                + "another CT model.");
+                    + "CTEmbeddedDirector must be used inside "
+                    + "another CT model.");
         }
     }
 
@@ -263,8 +263,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             setModelTime(_savedIterationBeginTime);
 
             Iterator statefulActors = getScheduler().getSchedule()
-                                          .get(CTSchedule.STATEFUL_ACTORS)
-                                          .actorIterator();
+                .get(CTSchedule.STATEFUL_ACTORS)
+                .actorIterator();
 
             while (statefulActors.hasNext() && !_stopRequested) {
                 CTStatefulActor statefulActor = (CTStatefulActor) statefulActors
@@ -288,8 +288,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             // This should never happen because a CT model with
             // a CTEmbeddedDirector must be used inside another CT model.
             throw new InternalErrorException("A CT model with a "
-                + "CTEmbeddedDirector must be used inside "
-                + "another CT model.");
+                    + "CTEmbeddedDirector must be used inside "
+                    + "another CT model.");
         }
     }
 
@@ -345,8 +345,8 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             _savedIterationBeginTime = getModelTime();
 
             Iterator statefulActors = getScheduler().getSchedule()
-                                          .get(CTSchedule.STATEFUL_ACTORS)
-                                          .actorIterator();
+                .get(CTSchedule.STATEFUL_ACTORS)
+                .actorIterator();
 
             while (statefulActors.hasNext() && !_stopRequested) {
                 CTStatefulActor statefulActor = (CTStatefulActor) statefulActors
@@ -385,13 +385,13 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
 
             if (_debugging) {
                 _debug(getName(), "at " + getModelTime(),
-                    " predicts next step size as " + nextStepSize);
+                        " predicts next step size as " + nextStepSize);
             }
 
             return nextStepSize;
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(
-                " Fail to predict the next step size." + ex.getMessage());
+                    " Fail to predict the next step size." + ex.getMessage());
         }
     }
 
@@ -424,11 +424,11 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
     public void preinitialize() throws IllegalActionException {
         if (!(getContainer() instanceof CTStepSizeControlActor)) {
             throw new IllegalActionException(this,
-                "can only be contained by "
-                + "a composite actor that implements "
-                + "the CTStepSizeControlActor "
-                + "interface, for example, a continuous "
-                + "time composite actor.");
+                    "can only be contained by "
+                    + "a composite actor that implements "
+                    + "the CTStepSizeControlActor "
+                    + "interface, for example, a continuous "
+                    + "time composite actor.");
         }
 
         super.preinitialize();
@@ -453,7 +453,7 @@ public class CTEmbeddedDirector extends CTMultiSolverDirector
             return refinedStepSize;
         } catch (IllegalActionException ex) {
             throw new InternalErrorException("Fail to refine step size. "
-                + ex.getMessage());
+                    + ex.getMessage());
         }
     }
 

@@ -70,7 +70,7 @@ public class EventButton extends Source implements Placeable {
      *   actor with this name.
      */
     public EventButton(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         text = new StringAttribute(this, "text");
@@ -176,7 +176,7 @@ public class EventButton extends Source implements Placeable {
      *  @exception NameDuplicationException If the base class throws it.
      */
     public void setContainer(CompositeEntity container)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
 
         if (container == null) {

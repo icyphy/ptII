@@ -38,10 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
 /**
-  @author Edward A. Lee
-  @version $Id$
-  @Pt.ProposedRating Red (eal)
-  @Pt.AcceptedRating Red (cxh)
+   @author Edward A. Lee
+   @version $Id$
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class Mutate {
     public Manager manager;
@@ -70,7 +70,7 @@ public class Mutate {
         // Create an anonymous inner class
         ChangeRequest change = new ChangeRequest(_top, "test2") {
                 public void _execute()
-                    throws IllegalActionException, NameDuplicationException {
+                        throws IllegalActionException, NameDuplicationException {
                     _clock.output.unlinkAll();
                     _rec.input.unlinkAll();
 

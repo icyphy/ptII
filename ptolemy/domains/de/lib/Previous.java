@@ -74,7 +74,7 @@ public class Previous extends DETransformer {
      *   actor with this name.
      */
     public Previous(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         initialValue = new Parameter(this, "initialValue");
     }

@@ -104,7 +104,7 @@ public class SelectionInteractor extends CompositeInteractor {
      */
     public boolean accept(LayerEvent e) {
         return _selectionFilter.accept(e) || _toggleFilter.accept(e)
-        || super.accept(e);
+            || super.accept(e);
     }
 
     /**

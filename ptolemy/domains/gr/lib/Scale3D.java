@@ -72,7 +72,7 @@ public class Scale3D extends GRTransform {
      *   actor with this name.
      */
     public Scale3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         scaleInput = new TypedIOPort(this, "scaleInput");
@@ -129,7 +129,7 @@ public class Scale3D extends GRTransform {
 
         Transform3D scaleTransform = new Transform3D();
         scaleTransform.setScale(new Vector3d(_getScaleX(), _getScaleY(),
-                _getScaleZ()));
+                                        _getScaleZ()));
         _transformNode.setTransform(scaleTransform);
     }
 

@@ -84,7 +84,7 @@ public class CIReceiver extends AbstractReceiver {
     public synchronized Token get() throws NoTokenException {
         if (_tokens.size() == 0) {
             throw new NoTokenException(getContainer(),
-                "No more tokens in the CI receiver.");
+                    "No more tokens in the CI receiver.");
         }
 
         return (Token) _tokens.removeFirst();
@@ -151,7 +151,7 @@ public class CIReceiver extends AbstractReceiver {
      *  @exception NoRoomException If the token array cannot be put.
      */
     public synchronized void putArray(Token[] tokenArray, int numberOfTokens)
-        throws NoRoomException {
+            throws NoRoomException {
         for (int i = 0; i < numberOfTokens; i++) {
             _tokens.add(tokenArray[i]);
         }

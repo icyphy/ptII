@@ -50,7 +50,7 @@ public final class GraphUtilities {
      * are self-consistent within a graph.
      */
     public static final boolean checkConsistency(Object composite,
-        GraphModel model) {
+            GraphModel model) {
         for (Iterator i = model.nodes(composite); i.hasNext();) {
             Object node = i.next();
 
@@ -79,7 +79,7 @@ public final class GraphUtilities {
      * are contained with in a graph and are consistent.
      */
     public static final boolean checkContainment(Object composite,
-        GraphModel model) {
+            GraphModel model) {
         if (!checkConsistency(composite, model)) {
             return false;
         }
@@ -151,7 +151,7 @@ public final class GraphUtilities {
      * @param model The graph model.
      */
     public static boolean isContainedNode(Object node, Object composite,
-        GraphModel model) {
+            GraphModel model) {
         if (model.isNode(node)) {
             boolean isOK = false;
             Object parent = model.getParent(node);
@@ -180,7 +180,7 @@ public final class GraphUtilities {
      * @param model The graph model.
      */
     public static boolean isPartiallyContainedEdge(Object edge,
-        Object composite, GraphModel model) {
+            Object composite, GraphModel model) {
         if (model.isEdge(edge)) {
             Object head = model.getHead(edge);
             Object tail = model.getTail(edge);
@@ -202,7 +202,7 @@ public final class GraphUtilities {
      * @param model The graph model.
      */
     public static boolean isTotallyContainedEdge(Object edge, Object composite,
-        GraphModel model) {
+            GraphModel model) {
         if (model.isEdge(edge)) {
             Object head = model.getHead(edge);
             Object tail = model.getTail(edge);
@@ -278,7 +278,7 @@ public final class GraphUtilities {
      * @exception GraphException if the operation fails.
      */
     public static final void purgeNode(Object eventSource, Object node,
-        MutableGraphModel model) throws GraphException {
+            MutableGraphModel model) throws GraphException {
         for (Iterator i = model.outEdges(node); i.hasNext();) {
             model.disconnectEdge(eventSource, i.next());
         }
@@ -297,9 +297,9 @@ public final class GraphUtilities {
      * composite, or a subnode).
      */
     public static final Iterator partiallyContainedEdges(Object composite,
-        GraphModel model) {
+            GraphModel model) {
         return new FilteredIterator(edgeSet(model.getRoot(), model).iterator(),
-            new PartiallyContainedEdgeFilter(model, composite));
+                new PartiallyContainedEdgeFilter(model, composite));
     }
 
     /**
@@ -309,9 +309,9 @@ public final class GraphUtilities {
      * composite, or a subnode).
      */
     public static final Iterator totallyContainedEdges(Object composite,
-        GraphModel model) {
+            GraphModel model) {
         return new FilteredIterator(edgeSet(model.getRoot(), model).iterator(),
-            new TotallyContainedEdgeFilter(model, composite));
+                new TotallyContainedEdgeFilter(model, composite));
     }
 
     /**

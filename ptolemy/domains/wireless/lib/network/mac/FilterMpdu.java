@@ -70,7 +70,7 @@ public class FilterMpdu extends MACActorBase {
      *   an actor already in the container.
      */
     public FilterMpdu(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         fromValidateMpdu = new TypedIOPort(this, "fromValidateMpdu", true, false);
@@ -139,9 +139,9 @@ public class FilterMpdu extends MACActorBase {
                 RecordToken msgout = new RecordToken(RxIndicateMessageFields,
                         new Token[] {
                             new IntToken(RxIndicate), 
-                        //TODO: how to implement this?
-                        //msgout->pdu=pdu->copyEncapMsg();
-                        pdu, msg.get("endRx"), msg.get("rxRate")
+                            //TODO: how to implement this?
+                            //msgout->pdu=pdu->copyEncapMsg();
+                            pdu, msg.get("endRx"), msg.get("rxRate")
                         });
 
                 // send RxIndicate message to the ProtocolControl block
@@ -161,9 +161,9 @@ public class FilterMpdu extends MACActorBase {
                     RecordToken msgout = new RecordToken(RxIndicateMessageFields,
                             new Token[] {
                                 new IntToken(RxIndicate), 
-                            //TODO: how to implement this?
-                            //msgout->pdu=pdu->copyEncapMsg();
-                            pdu, msg.get("endRx"), msg.get("rxRate")
+                                //TODO: how to implement this?
+                                //msgout->pdu=pdu->copyEncapMsg();
+                                pdu, msg.get("endRx"), msg.get("rxRate")
                             });
 
                     // only if it is not a duplicate packet, will it be forwarded
@@ -266,9 +266,9 @@ public class FilterMpdu extends MACActorBase {
 
         // only if no entry is found, will we add a new one
         int[] tuple = new int[] {
-                intFieldValue(pdu, "Addr2"), intFieldValue(pdu, "SeqNum"),
-                intFieldValue(pdu, "FragNum")
-            };
+            intFieldValue(pdu, "Addr2"), intFieldValue(pdu, "SeqNum"),
+            intFieldValue(pdu, "FragNum")
+        };
 
         if (_tupleCache.size() == _TUPLE_CACHE_SIZE) {
             _tupleCache.removeLast();

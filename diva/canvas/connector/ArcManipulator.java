@@ -84,7 +84,7 @@ public class ArcManipulator extends ConnectorManipulator {
 
         if (!(connector instanceof ArcConnector)) {
             throw new IllegalArgumentException(
-                "ArcConnector required by ArcManipulator");
+                    "ArcConnector required by ArcManipulator");
         }
 
         GrabHandleFactory factory = getGrabHandleFactory();

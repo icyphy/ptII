@@ -62,7 +62,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
      *  name that is an empty string.
      */
     public ListenFeedBackDelay()
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super();
     }
 
@@ -71,7 +71,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
      * @param workspace The workspace for this ListenFeedBackDelay actor.
      */
     public ListenFeedBackDelay(Workspace workspace)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
@@ -85,7 +85,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
      *  superclass throws a NameDuplicationException .
      */
     public ListenFeedBackDelay(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -108,7 +108,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new IllegalActionException(this,
-                "InternalError " + "exception during a sleeping thread.");
+                    "InternalError " + "exception during a sleeping thread.");
         }
 
         return super.postfire();
@@ -130,7 +130,7 @@ public class ListenFeedBackDelay extends FeedBackDelay {
             Thread.sleep(100);
         } catch (InterruptedException e) {
             throw new IllegalActionException(this,
-                "InternalError " + "exception during a sleeping thread.");
+                    "InternalError " + "exception during a sleeping thread.");
         }
 
         return super.prefire();

@@ -88,7 +88,7 @@ public class Controller extends CSPActor {
      *  already has an actor with this name.
      */
     public Controller(CompositeEntity cont, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(cont, name);
 
         requestOutput = new TypedIOPort(this, "requestOutput", false, true);
@@ -197,7 +197,7 @@ public class Controller extends CSPActor {
 
             while (continueCDO) {
                 requiredBranches = new ConditionalBranch[_numRequestInChannels
-                    + 1];
+                        + 1];
 
                 for (int i = 0; i < _numRequestInChannels; i++) {
                     requiredBranches[i] = new ConditionalReceive(true,
@@ -221,7 +221,7 @@ public class Controller extends CSPActor {
                                 br, code);
                     } else {
                         _losingPortChannelCodes.add(0,
-                            new PortChannelCode(requestInput, br, code));
+                                new PortChannelCode(requestInput, br, code));
                     }
                 } else if (br == _numRequestInChannels) {
                     //

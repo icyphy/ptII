@@ -43,5 +43,5 @@ public interface ModelWriter {
      * Write the given model to the character stream.
      */
     public void writeModel(Object model, Writer writer)
-        throws IOException;
+            throws IOException;
 }

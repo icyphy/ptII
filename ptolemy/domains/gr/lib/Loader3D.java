@@ -50,7 +50,7 @@ import com.sun.j3d.loaders.objectfile.ObjectFile;
 */
 public class Loader3D extends GRShadedShape {
     public Loader3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         filename = new Parameter(this, "filename",
                 new StringToken("chopper.obj"));

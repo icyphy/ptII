@@ -197,7 +197,7 @@ public class JPanner extends JPanel {
 
             // Also invert the current transform on the canvas.
             AffineTransform current = canvas.getCanvasPane()
-                                            .getTransformContext().getTransform();
+                .getTransformContext().getTransform();
             AffineTransform inverse;
 
             try {
@@ -299,7 +299,7 @@ public class JPanner extends JPanel {
             JCanvas canvas = (JCanvas) _target.getView();
 
             AffineTransform current = canvas.getCanvasPane()
-                                            .getTransformContext().getTransform();
+                .getTransformContext().getTransform();
             current.setTransform(transformOrigin);
             current.translate(scaled.getX(), scaled.getY());
             current.scale(scale, scale);
@@ -315,12 +315,12 @@ public class JPanner extends JPanel {
 
                 JCanvas canvas = ((JCanvas) _target.getView());
                 TransformContext context = canvas.getCanvasPane()
-                                                 .getTransformContext();
+                    .getTransformContext();
 
                 // clone the transform that is in the context, so we can
                 // avoid a lot of repeated scaling of the same transform.
                 transformOrigin = (AffineTransform) context.getTransform()
-                                                           .clone();
+                    .clone();
 
                 // Take the event and first transform it from the panner
                 // coordinates into the view coordinates.
@@ -363,10 +363,10 @@ public class JPanner extends JPanel {
         JFrame f = new JFrame();
         JList l = new JList();
         String[] data = {
-                "oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
-                "twoooooooooooooooooooooooooooooooooooooooo",
-                "threeeeeeeeeeeeeeeee", "fourrrrrrrrrrrrrrrrrrrrrrrrr"
-            };
+            "oneeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "twoooooooooooooooooooooooooooooooooooooooo",
+            "threeeeeeeeeeeeeeeee", "fourrrrrrrrrrrrrrrrrrrrrrrrr"
+        };
         JList dataList = new JList(data);
         JScrollPane p = new JScrollPane(dataList);
         p.setSize(200, 200);

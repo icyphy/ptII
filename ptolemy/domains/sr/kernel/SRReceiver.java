@@ -40,57 +40,57 @@ import ptolemy.kernel.util.InternalErrorException;
 
 /**
 
-   The receiver for the Synchronous Reactive (SR) domain.  This
-   receiver is a mailbox with capacity one.  The status of this
-   receiver can be known (either known to contain a token or known not
-   to contain a token) or unknown.  The isKnown() method returns true
-   if the receiver has known status.  If the receiver has known
-   status, the hasToken() method returns whether the receiver has a
-   token.  If the receiver has unknown status, the hasToken() method
-   will throw an UnknownTokenException.
+The receiver for the Synchronous Reactive (SR) domain.  This
+receiver is a mailbox with capacity one.  The status of this
+receiver can be known (either known to contain a token or known not
+to contain a token) or unknown.  The isKnown() method returns true
+if the receiver has known status.  If the receiver has known
+status, the hasToken() method returns whether the receiver has a
+token.  If the receiver has unknown status, the hasToken() method
+will throw an UnknownTokenException.
 
-   <p> In the course of an iteration in SR, receivers can change from
-   unknown status to known status, but never the other way around, as
-   shown by the transitions in the diagram below.
+<p> In the course of an iteration in SR, receivers can change from
+unknown status to known status, but never the other way around, as
+shown by the transitions in the diagram below.
 
-   <pre>
-   known values:     absent     value (present)
-   ^         ^
-   |         |
-   \       /
-   \     /
-   |   |
-   unknown
-   </pre>
+<pre>
+known values:     absent     value (present)
+^         ^
+|         |
+\       /
+\     /
+|   |
+unknown
+</pre>
 
-   <p> The status is automatically set to known when the put() method
-   or clear() method is called.  Once a receiver becomes known, its
-   value (or lack of a value if it is absent) cannot change until the
-   next call to reset().  The SRDirector calls reset() between
-   iterations.  The hasRoom() method returns true if the state of the
-   receiver is unknown or if it is known but not absent, since only in
-   these circumstances can it accept a token. Attempting to change the
-   status of a receiver from present to absent or from absent to
-   present will result in an exception.  An exception will also be
-   thrown if a receiver has present status and it receives a token
-   that is not the same as the one it already contains (as determined
-   by the isEqualTo() method of the token).  Thus, for an actor to be
-   valid in SR, a firing must produce the same outputs given the same
-   inputs (in a given iteration).
+<p> The status is automatically set to known when the put() method
+or clear() method is called.  Once a receiver becomes known, its
+value (or lack of a value if it is absent) cannot change until the
+next call to reset().  The SRDirector calls reset() between
+iterations.  The hasRoom() method returns true if the state of the
+receiver is unknown or if it is known but not absent, since only in
+these circumstances can it accept a token. Attempting to change the
+status of a receiver from present to absent or from absent to
+present will result in an exception.  An exception will also be
+thrown if a receiver has present status and it receives a token
+that is not the same as the one it already contains (as determined
+by the isEqualTo() method of the token).  Thus, for an actor to be
+valid in SR, a firing must produce the same outputs given the same
+inputs (in a given iteration).
 
-   <p> Since the value of a receiver cannot change (once it is known)
-   in the course of an iteration, tokens need not be consumed.  A
-   receiver retains its token until the director calls the reset()
-   method at the beginning of the next iteration, which resets the
-   receiver to have unknown status.  There is no way for an actor to
-   reset a receiver to have unknown status.
+<p> Since the value of a receiver cannot change (once it is known)
+in the course of an iteration, tokens need not be consumed.  A
+receiver retains its token until the director calls the reset()
+method at the beginning of the next iteration, which resets the
+receiver to have unknown status.  There is no way for an actor to
+reset a receiver to have unknown status.
 
-   @author Paul Whitaker, contributor: Christopher Hylands
-   @version $Id$
-   @since Ptolemy II 2.0
-   @Pt.ProposedRating Green (pwhitake)
-   @Pt.AcceptedRating Green (pwhitake)
-   @see ptolemy.domains.sr.kernel.SRDirector
+@author Paul Whitaker, contributor: Christopher Hylands
+@version $Id$
+@since Ptolemy II 2.0
+@Pt.ProposedRating Green (pwhitake)
+@Pt.AcceptedRating Green (pwhitake)
+@see ptolemy.domains.sr.kernel.SRDirector
 */
 public class SRReceiver extends AbstractReceiver implements StateReceiver {
     /** Construct an SRReceiver with unknown state and the given director.
@@ -114,8 +114,8 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
     public void clear() throws IllegalActionException {
         if (isKnown() && hasToken()) {
             throw new IllegalActionException(
-                "SRReceiver: Cannot transition from a present state "
-                + "to an absent state.");
+                    "SRReceiver: Cannot transition from a present state "
+                    + "to an absent state.");
         }
 
         // Ivan Jeukens: Signal the SR director to increment the
@@ -142,12 +142,12 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
     public Token get() throws NoTokenException {
         if (_token == null) {
             throw new NoTokenException(
-                "SRReceiver: Attempt to get data from an empty receiver.");
+                    "SRReceiver: Attempt to get data from an empty receiver.");
         }
 
         if (!isKnown()) {
             throw new UnknownTokenException(
-                "SRReceiver: get() called on SRReceiver with unknown state.");
+                    "SRReceiver: get() called on SRReceiver with unknown state.");
         }
 
         return _token;
@@ -175,7 +175,7 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
     public boolean hasRoom(int numberOfTokens) throws IllegalArgumentException {
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                "hasRoom() requires a positive argument.");
+                    "hasRoom() requires a positive argument.");
         }
 
         if (numberOfTokens == 1) {
@@ -196,7 +196,7 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
             return (_token != null);
         } else {
             throw new UnknownTokenException(getContainer(),
-                "hasToken() called on SRReceiver with unknown state.");
+                    "hasToken() called on SRReceiver with unknown state.");
         }
     }
 
@@ -220,13 +220,13 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
     public boolean hasToken(int numberOfTokens) throws IllegalArgumentException {
         if (!isKnown()) {
             throw new UnknownTokenException(getContainer(),
-                "hasToken(" + numberOfTokens
-                + ") called on SRReceiver with unknown state.");
+                    "hasToken(" + numberOfTokens
+                    + ") called on SRReceiver with unknown state.");
         }
 
         if (numberOfTokens < 1) {
             throw new IllegalArgumentException(
-                "SRReceiver: hasToken() requires a positive argument.");
+                    "SRReceiver: hasToken() requires a positive argument.");
         }
 
         if (numberOfTokens == 1) {
@@ -288,7 +288,7 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
     public void put(Token token) {
         if (token == null) {
             throw new IllegalArgumentException(
-                "SRReceiver.put(null) is invalid.");
+                    "SRReceiver.put(null) is invalid.");
         }
 
         if (!isKnown()) {
@@ -296,8 +296,8 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
         } else {
             if (!hasToken()) {
                 throw new IllegalOutputException(getContainer(),
-                    "SRReceiver cannot transition from an absent state "
-                    + "to a present state.  Call reset().");
+                        "SRReceiver cannot transition from an absent state "
+                        + "to a present state.  Call reset().");
             } else {
                 try {
                     if ((token.getType().equals(_token.getType()))
@@ -305,14 +305,14 @@ public class SRReceiver extends AbstractReceiver implements StateReceiver {
                         // Do nothing, because this token was already present.
                     } else {
                         throw new IllegalOutputException(getContainer(),
-                            "SRReceiver cannot receive two tokens "
-                            + "that differ.");
+                                "SRReceiver cannot receive two tokens "
+                                + "that differ.");
                     }
                 } catch (IllegalActionException ex) {
                     // Should never happen.
                     throw new InternalErrorException("SRReceiver cannot "
-                        + "determine whether the two tokens received are "
-                        + "equal.");
+                            + "determine whether the two tokens received are "
+                            + "equal.");
                 }
             }
         }

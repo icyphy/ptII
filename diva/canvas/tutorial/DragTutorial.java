@@ -151,7 +151,7 @@ public class DragTutorial {
 
         // Create a green rectangle that stays inside the boundary
         BasicFigure green = new BasicFigure(new Rectangle2D.Double(110.0,
-                    110.0, 50.0, 50.0), Color.green);
+                                                    110.0, 50.0, 50.0), Color.green);
         layer.add(green);
         green.setInteractor(boundedDragger);
     }

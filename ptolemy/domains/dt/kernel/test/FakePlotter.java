@@ -38,10 +38,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 
 /**
-  @author C. Fong
-  @version $Id$
-  @Pt.ProposedRating Red (eal)
-  @Pt.AcceptedRating Red (cxh)
+   @author C. Fong
+   @version $Id$
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (cxh)
 */
 public class FakePlotter extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
@@ -53,7 +53,7 @@ public class FakePlotter extends TypedAtomicActor {
      *   actor with this name.
      */
     public FakePlotter(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // Create the input port and make it a multiport.

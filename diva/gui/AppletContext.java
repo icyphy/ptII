@@ -73,10 +73,10 @@ public class AppletContext extends JApplet implements AppContext {
      */
     public AppletContext() {
         _exitAction = new AbstractAction() {
-                    public void actionPerformed(ActionEvent e) {
-                        //do nothing?
-                    }
-                };
+                public void actionPerformed(ActionEvent e) {
+                    //do nothing?
+                }
+            };
 
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());

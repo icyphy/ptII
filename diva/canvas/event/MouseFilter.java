@@ -56,7 +56,7 @@ public class MouseFilter {
     /** The mouse button mask
      */
     private int _buttonMask = InputEvent.BUTTON1_MASK | InputEvent.BUTTON2_MASK
-        | InputEvent.BUTTON3_MASK;
+    | InputEvent.BUTTON3_MASK;
 
     /** The modifier mask.
      */
@@ -195,11 +195,11 @@ public class MouseFilter {
     public String toString() {
         StringBuffer result = new StringBuffer();
         result.append(super.toString() + "; Button "
-            + MouseEvent.getMouseModifiersText(_buttonMask) + "; Modifiers "
-            + MouseEvent.getMouseModifiersText(_modifierFlags)
-            + "; Modifier mask "
-            + MouseEvent.getMouseModifiersText(_modifierMask)
-            + "; Press Number " + _pressNumber);
+                + MouseEvent.getMouseModifiersText(_buttonMask) + "; Modifiers "
+                + MouseEvent.getMouseModifiersText(_modifierFlags)
+                + "; Modifier mask "
+                + MouseEvent.getMouseModifiersText(_modifierMask)
+                + "; Press Number " + _pressNumber);
         return result.toString();
     }
 }

@@ -57,7 +57,7 @@ public class TestSource extends TypedAtomicActor {
     }
 
     public TestSource(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
@@ -65,9 +65,9 @@ public class TestSource extends TypedAtomicActor {
         output.setTypeEquals(BaseType.DOUBLE);
 
         _attachText("_iconDescription",
-            "<svg>\n" + "<rect x=\"0\" y=\"0\" "
-            + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
-            + "</svg>\n");
+                "<svg>\n" + "<rect x=\"0\" y=\"0\" "
+                + "width=\"60\" height=\"20\" " + "style=\"fill:white\"/>\n"
+                + "</svg>\n");
     }
 
     public TypedIOPort input;

@@ -78,7 +78,7 @@ public class PolyCylinder3D extends GRShadedShape {
      *   actor with this name.
      */
     public PolyCylinder3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
         polygon = new Parameter(this, "polygon");
         polygon.setTypeEquals(new ArrayType(BaseType.DOUBLE));
@@ -116,7 +116,7 @@ public class PolyCylinder3D extends GRShadedShape {
      *  @param attribute The attribute that changed.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (allowRuntimeChanges != null) {
             if (((attribute == polygon) || (attribute == thickness))
                     && _changesAllowedNow && (_containedNode != null)) {

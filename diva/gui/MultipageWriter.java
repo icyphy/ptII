@@ -61,10 +61,10 @@ public class MultipageWriter {
      * given page writer to write out each page in the document.
      */
     public void write(MultipageModel multipage, Writer out)
-        throws IOException {
+            throws IOException {
         writeHeader(out);
         out.write("<" + MultipageParser.MULTIPAGE_TAG + " "
-            + MultipageParser.TITLE_TAG + "=\"");
+                + MultipageParser.TITLE_TAG + "=\"");
         out.write(multipage.getTitle());
         out.write("\">\n");
 
@@ -102,7 +102,7 @@ public class MultipageWriter {
     private void writeHeader(Writer writer) throws IOException {
         writer.write("<?xml version=\"1.0\" standalone=\"no\"?>\n");
         writer.write("<!DOCTYPE " + MultipageParser.MULTIPAGE_TAG
-            + " PUBLIC \"" + MultipageParser.PUBLIC_ID + "\"\n\t\""
-            + MultipageParser.DTD_URL + "\">\n\n");
+                + " PUBLIC \"" + MultipageParser.PUBLIC_ID + "\"\n\t\""
+                + MultipageParser.DTD_URL + "\">\n\n");
     }
 }

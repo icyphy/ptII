@@ -74,7 +74,7 @@ public class DelayLine extends SDFTransformer {
      *   actor with this name.
      */
     public DelayLine(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         initialValues = new Parameter(this, "initialValues");
@@ -106,7 +106,7 @@ public class DelayLine extends SDFTransformer {
      *   allowed on the specified attribute.
      */
     public void attributeTypeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (attribute != initialValues) {
             super.attributeTypeChanged(attribute);
         }

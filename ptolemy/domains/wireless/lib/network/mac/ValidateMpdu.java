@@ -75,7 +75,7 @@ public class ValidateMpdu extends MACActorBase {
      *   an actor already in the container.
      */
     public ValidateMpdu(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // create ports
@@ -130,7 +130,7 @@ public class ValidateMpdu extends MACActorBase {
                 if (((IntToken) msg.get("kind")).intValue() == RxStart) {
                     if (_debugging) {
                         _debug("the msg token received from PHY is : "
-                            + msg.toString());
+                                + msg.toString());
                     }
 
                     IntToken t = (IntToken) msg.get("rxRate");
@@ -166,10 +166,10 @@ public class ValidateMpdu extends MACActorBase {
 
                         // working with record tokens to represent messages
                         Token[] RxMpduvalues = {
-                                new IntToken(RxMpdu), _pdu,
-                                new DoubleToken(_endRx.getDoubleValue()),
-                                new IntToken(_rxRate)
-                            };
+                            new IntToken(RxMpdu), _pdu,
+                            new DoubleToken(_endRx.getDoubleValue()),
+                            new IntToken(_rxRate)
+                        };
                         RecordToken msgout = new RecordToken(RxMpduMsgFields,
                                 RxMpduvalues);
 
@@ -185,9 +185,9 @@ public class ValidateMpdu extends MACActorBase {
 
                     // send UseIfs message to ChannelState process
                     Token[] Ifsvalues = {
-                            new IntToken(UseIfs),
-                            new DoubleToken(_endRx.getDoubleValue())
-                        };
+                        new IntToken(UseIfs),
+                        new DoubleToken(_endRx.getDoubleValue())
+                    };
                     RecordToken msgout = new RecordToken(UseIfsMsgFields,
                             Ifsvalues);
                     toChannelState.send(0, msgout);

@@ -325,7 +325,7 @@ public class UnitUtilities {
     public static String summarizeUnitCategories() {
         synchronized (_indexTable) {
             return "The registered categories are: " + _categories + " "
-            + _categoryList.toString();
+                + _categoryList.toString();
         }
     }
 

@@ -68,7 +68,7 @@ public class NumericalNonconvergeException extends InvalidStateException {
      *  @param detail The message.
      */
     public NumericalNonconvergeException(Nameable obj1, Nameable obj2,
-        String detail) {
+            String detail) {
         super(obj1, obj2, detail);
     }
 }

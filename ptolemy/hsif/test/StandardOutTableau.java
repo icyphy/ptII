@@ -57,7 +57,7 @@ public class StandardOutTableau extends Tableau {
      *   attribute already in the container.
      */
     public StandardOutTableau(StandardOutEffigy container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -89,7 +89,7 @@ public class StandardOutTableau extends Tableau {
          *   an attribute already in the container.
          */
         public Factory(NamedObj container, String name)
-            throws IllegalActionException, NameDuplicationException {
+                throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 

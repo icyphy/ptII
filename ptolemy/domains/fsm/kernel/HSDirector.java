@@ -96,7 +96,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      *   CompositeActor and the name collides with an entity in the container.
      */
     public HSDirector(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -241,7 +241,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
                 if (_debugging && _verbose) {
                     _debug(getName(), " fire refinement",
-                        ((NamedObj) actor).getName());
+                            ((NamedObj) actor).getName());
                 }
 
                 actor.fire();
@@ -296,9 +296,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                         if (transitionActors[i].prefire()) {
                             if (_debugging) {
                                 _debug(getFullName(),
-                                    " fire transition refinement",
-                                    ((ptolemy.kernel.util.NamedObj) transitionActors[i])
-                                    .getName());
+                                        " fire transition refinement",
+                                        ((ptolemy.kernel.util.NamedObj) transitionActors[i])
+                                        .getName());
                             }
 
                             transitionActors[i].fire();
@@ -327,7 +327,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // This should never happen because a modal model with
             // an HSDirector must be used inside a CT model.
             throw new InternalErrorException("A modal model with "
-                + "an HSDirector must be used inside a CT model.");
+                    + "an HSDirector must be used inside a CT model.");
         }
     }
 
@@ -379,7 +379,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // This should never happen because a modal model with
             // an HSDirector must be used inside a CT model.
             throw new InternalErrorException("A modal model with "
-                + "an HSDirector must be used inside a CT model.");
+                    + "an HSDirector must be used inside a CT model.");
         }
     }
 
@@ -428,7 +428,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // This should never happen because a modal model with
             // an HSDirector must be used inside a CT model.
             throw new InternalErrorException("A modal model with "
-                + "an HSDirector must be used inside a CT model.");
+                    + "an HSDirector must be used inside a CT model.");
         }
     }
 
@@ -500,7 +500,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // This should never happen because a modal model with
             // an HSDirector must be used inside a CT model.
             throw new InternalErrorException("A modal model with "
-                + "an HSDirector must be used inside a CT model.");
+                    + "an HSDirector must be used inside a CT model.");
         }
     }
 
@@ -551,7 +551,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             if (enabledTransition != null) {
                 if (_debugging && _verbose) {
                     _debug("Find enabled preemptive transition:  "
-                        + enabledTransition.getGuardExpression());
+                            + enabledTransition.getGuardExpression());
                 }
             } else {
                 // Check if there is any non-preemptive transition enabled.
@@ -561,7 +561,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 if (enabledTransition != null) {
                     if (_debugging && _verbose) {
                         _debug("Find enabled non-preemptive transition:  "
-                            + enabledTransition.getGuardExpression());
+                                + enabledTransition.getGuardExpression());
                     }
                 }
             }
@@ -573,7 +573,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             if (preemptiveTrWithEvent != null) {
                 if (_debugging) {
                     _debug("Detected event for transition:  "
-                        + preemptiveTrWithEvent.getGuardExpression());
+                            + preemptiveTrWithEvent.getGuardExpression());
                 }
             }
 
@@ -585,7 +585,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             if (nonPreemptiveTrWithEvent != null) {
                 if (_debugging) {
                     _debug("Detected event for transition:  "
-                        + nonPreemptiveTrWithEvent.getGuardExpression());
+                            + nonPreemptiveTrWithEvent.getGuardExpression());
                 }
             }
 
@@ -639,9 +639,9 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
                 if (_debugging && _verbose) {
                     _debug("The guard "
-                        + enabledTransition.getGuardExpression()
-                        + " has the biggest difference to boundary as "
-                        + _distanceToBoundary);
+                            + enabledTransition.getGuardExpression()
+                            + " has the biggest difference to boundary as "
+                            + _distanceToBoundary);
                 }
 
                 _outputAccurate = _distanceToBoundary < errorTolerance;
@@ -672,7 +672,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
     public boolean isStateAccurate() {
         boolean result = true;
         CTDirector dir = (CTDirector) (((Actor) getContainer())
-            .getExecutiveDirector());
+                .getExecutiveDirector());
 
         if (_enabledRefinements != null) {
             Iterator refinements = _enabledRefinements.iterator();
@@ -772,14 +772,14 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
         if (tr != null) {
             if (_debugging) {
                 _debug("Postfire deals with enabled transition "
-                    + tr.getGuardExpression());
+                        + tr.getGuardExpression());
             }
 
             // It is important to clear the history information of the
             // relation list since after this breakpoint, no history
             // information is valid.
             Iterator iterator = _currentState.nonpreemptiveTransitionList()
-                                             .listIterator();
+                .listIterator();
 
             while (iterator.hasNext()) {
                 Transition transition = (Transition) iterator.next();
@@ -799,7 +799,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             if (executiveDirector != null) {
                 if (_debugging) {
                     _debug(executiveDirector.getFullName()
-                        + " requests refiring at " + getModelTime());
+                            + " requests refiring at " + getModelTime());
                 }
 
                 // If there is one transition enabled, the HSDirector requests
@@ -837,7 +837,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 // Only commit the current states of the relationlists
                 // of all the transitions during these execution phases.
                 Iterator iterator = _currentState.nonpreemptiveTransitionList()
-                                                 .listIterator();
+                    .listIterator();
 
                 while (iterator.hasNext()) {
                     Transition transition = (Transition) iterator.next();
@@ -845,7 +845,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
                 }
 
                 iterator = _currentState.preemptiveTransitionList()
-                                        .listIterator();
+                    .listIterator();
 
                 while (iterator.hasNext()) {
                     Transition transition = (Transition) iterator.next();
@@ -899,8 +899,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
 
         if (_debugging) {
             _debug(getName(),
-                " find FSMActor " + _ctrl.getName()
-                + " and the current state is " + _currentState.getName());
+                    " find FSMActor " + _ctrl.getName()
+                    + " and the current state is " + _currentState.getName());
         }
 
         Actor[] actors = _currentState.getRefinement();
@@ -956,7 +956,7 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
      */
     public double refinedStepSize() {
         CTDirector director = (CTDirector) (((Actor) getContainer())
-            .getExecutiveDirector());
+                .getExecutiveDirector());
         double result = director.getCurrentStepSize();
 
         if (_enabledRefinements != null) {
@@ -982,8 +982,8 @@ public class HSDirector extends FSMDirector implements CTTransparentDirector {
             // Note the step size is refined such that the distanceToBoundary
             // is half of errorTolerance.
             refinedStepSize = (currentStepSize * (_lastDistanceToBoundary
-                + (errorTolerance / 2))) / (_lastDistanceToBoundary
-                + _distanceToBoundary);
+                                       + (errorTolerance / 2))) / (_lastDistanceToBoundary
+                                               + _distanceToBoundary);
 
             result = Math.min(result, refinedStepSize);
         }

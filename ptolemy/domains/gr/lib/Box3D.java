@@ -73,7 +73,7 @@ public class Box3D extends GRShadedShape {
      *   actor with this name.
      */
     public Box3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         xLength = new Parameter(this, "xLength");
@@ -120,20 +120,20 @@ public class Box3D extends GRShadedShape {
     /** If the dimensions change, then update the box.
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
+            throws IllegalActionException {
         // Check that a box has been previously created.
         if (_changesAllowedNow
                 && ((attribute == xLength) || (attribute == yHeight)
-                || (attribute == zWidth))) {
+                        || (attribute == zWidth))) {
             if (_scaleTransform != null) {
                 float height = (float) (((DoubleToken) yHeight.getToken())
-                    .doubleValue() / 2.0);
+                        .doubleValue() / 2.0);
 
                 float length = (float) (((DoubleToken) xLength.getToken())
-                    .doubleValue() / 2.0);
+                        .doubleValue() / 2.0);
 
                 float width = (float) (((DoubleToken) zWidth.getToken())
-                    .doubleValue() / 2.0);
+                        .doubleValue() / 2.0);
 
                 _scaleTransform.setScale(new Vector3d(length, height, width));
 
@@ -160,8 +160,8 @@ public class Box3D extends GRShadedShape {
     }
 
     /** Return the Java3D box.
-    *  @return The Java3D box.
-    */
+     *  @return The Java3D box.
+     */
     protected Node _getNodeObject() {
         return _containedNode;
     }
@@ -170,8 +170,8 @@ public class Box3D extends GRShadedShape {
     ////                         private methods                   ////
 
     /** Create a box with the current parameter values.
-         *  @exception IllegalActionException If the parameters are malformed.
-         */
+     *  @exception IllegalActionException If the parameters are malformed.
+     */
     private void _createBox() throws IllegalActionException {
         int primitiveFlags = Primitive.GENERATE_NORMALS;
         URL textureURL = texture.asURL();

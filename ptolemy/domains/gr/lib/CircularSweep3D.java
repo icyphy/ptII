@@ -48,23 +48,23 @@ import com.sun.j3d.utils.geometry.Triangulator;
 //// CircularSweep3D
 
 /** This actor contains the geometry and appearance specifications for a
-circularly swept object.  The output port is used to connect this
-actor to the Java3D scene graph. This actor will only have meaning
-in the GR domain.
+    circularly swept object.  The output port is used to connect this
+    actor to the Java3D scene graph. This actor will only have meaning
+    in the GR domain.
 
-<p>The parameter <i>polyline</i> determines the silhouette of the
-object. One will need to enter an array of coordinates in the X-Y
-plane to specify the contour for this silhouette.  The parameter
-<i>angleSpan</i> determines the angle in which the silhouette is
-swept.  The parameter <i>slices</i> determines the number of
-polygonal slices used in the sweep.
+    <p>The parameter <i>polyline</i> determines the silhouette of the
+    object. One will need to enter an array of coordinates in the X-Y
+    plane to specify the contour for this silhouette.  The parameter
+    <i>angleSpan</i> determines the angle in which the silhouette is
+    swept.  The parameter <i>slices</i> determines the number of
+    polygonal slices used in the sweep.
 
 
-@author C. Fong
-@version $Id$
-@since Ptolemy II 1.0
-@Pt.ProposedRating Red (chf)
-@Pt.AcceptedRating Red (chf)
+    @author C. Fong
+    @version $Id$
+    @since Ptolemy II 1.0
+    @Pt.ProposedRating Red (chf)
+    @Pt.AcceptedRating Red (chf)
 */
 public class CircularSweep3D extends GRShadedShape {
     /** Construct an actor with the given container and name.
@@ -76,16 +76,16 @@ public class CircularSweep3D extends GRShadedShape {
      *   actor with this name.
      */
     public CircularSweep3D(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         polyline = new Parameter(this, "polyline",
                 new DoubleMatrixToken(new double[][] {
-                        {
-                            0.5, 0.25, 0.5, -0.25, 0.25, -0.25, 0.25, 0.25, 0.5,
-                            0.25
-                        }
-                    }));
+                    {
+                        0.5, 0.25, 0.5, -0.25, 0.25, -0.25, 0.25, 0.25, 0.5,
+                        0.25
+                    }
+                }));
         angleSpan = new Parameter(this, "angleSpan",
                 new DoubleToken(2 * Math.PI));
         slices = new Parameter(this, "slices", new IntToken(32));

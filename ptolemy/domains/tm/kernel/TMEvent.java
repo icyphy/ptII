@@ -87,7 +87,7 @@ public class TMEvent implements Comparable {
      *   not contained by a port contained by an actor.
      */
     public TMEvent(TMReceiver receiver, Token token, int priority,
-        double processingTime) {
+            double processingTime) {
         _receiver = receiver;
 
         if (receiver != null) {
@@ -247,8 +247,8 @@ public class TMEvent implements Comparable {
      */
     public final String toString() {
         return "TMEvent(token = " + _token + ", priority = " + _priority
-        + ", destination = " + _actor + ", hasStarted = " + _hasStarted
-        + ", processingTime = " + _processingTime + ")";
+            + ", destination = " + _actor + ", hasStarted = " + _hasStarted
+            + ", processingTime = " + _processingTime + ")";
     }
 
     ///////////////////////////////////////////////////////////////////

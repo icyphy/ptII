@@ -71,7 +71,7 @@ public class GraphicalLocator extends Locator {
      *   actor with this name.
      */
     public GraphicalLocator(CompositeEntity container, String name)
-        throws NameDuplicationException, IllegalActionException {
+            throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         outputRange = new Parameter(this, "outputRange");

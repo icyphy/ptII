@@ -69,7 +69,7 @@ public class Refinement extends CTCompositeActor {
      *   an actor already in the container.
      */
     public Refinement(CompositeEntity container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
         // The base class identifies the class name as TypedCompositeActor
@@ -130,7 +130,7 @@ public class Refinement extends CTCompositeActor {
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-                "Refinement.newPort: Internal error: " + ex.getMessage());
+                    "Refinement.newPort: Internal error: " + ex.getMessage());
         } finally {
             _mirrorDisable = false;
             _workspace.doneWriting();
@@ -156,10 +156,10 @@ public class Refinement extends CTCompositeActor {
      *   TypedActor, or if the base class throws it.
      */
     protected void _checkContainer(Entity container)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if (!(container instanceof ModalModel) && (container != null)) {
             throw new IllegalActionException(container, this,
-                "Refinement can only be contained by " + "ModalModel objects.");
+                    "Refinement can only be contained by " + "ModalModel objects.");
         }
     }
 

@@ -64,7 +64,7 @@ public class BaseUnit extends Parameter {
      *   an attribute already in the container.
      */
     public BaseUnit(NamedObj container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 

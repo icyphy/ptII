@@ -74,7 +74,7 @@ public class DECQEventQueue implements DEEventQueue {
      *  @param isAdaptive If the queue changes its number of bins at run time.
      */
     public DECQEventQueue(Director director, int minBinCount,
-        int binCountFactor, boolean isAdaptive) {
+            int binCountFactor, boolean isAdaptive) {
         _director = director;
 
         // Construct a calendar queue _cQueue with the given parameters.
@@ -196,8 +196,8 @@ public class DECQEventQueue implements DEEventQueue {
          */
         public final long getVirtualBinNumber(Object event) {
             long value = (long) ((((DEEvent) event).timeStamp()
-                                   .subtract(_zeroReference.timeStamp()))
-                .getDoubleValue() / _binWidth.timeStamp().getDoubleValue());
+                                         .subtract(_zeroReference.timeStamp()))
+                    .getDoubleValue() / _binWidth.timeStamp().getDoubleValue());
 
             if (value != Long.MAX_VALUE) {
                 return value;
@@ -231,7 +231,7 @@ public class DECQEventQueue implements DEEventQueue {
 
             double[] diff = new double[entryArray.length - 1];
             double average = (((DEEvent) entryArray[entryArray.length - 1]).timeStamp()
-                               .subtract(((DEEvent) entryArray[0]).timeStamp()))
+                    .subtract(((DEEvent) entryArray[0]).timeStamp()))
                 .getDoubleValue() / (entryArray.length - 1);
             double effectiveAverage = 0.0;
             int effectiveSamples = 0;
@@ -242,8 +242,8 @@ public class DECQEventQueue implements DEEventQueue {
 
             for (int i = 0; i < (entryArray.length - 1); ++i) {
                 diff[i] = ((DEEvent) entryArray[i + 1]).timeStamp()
-                           .subtract(((DEEvent) entryArray[i]).timeStamp())
-                           .getDoubleValue();
+                    .subtract(((DEEvent) entryArray[i]).timeStamp())
+                    .getDoubleValue();
 
                 if (diff[i] < (2.0 * average)) {
                     effectiveSamples++;

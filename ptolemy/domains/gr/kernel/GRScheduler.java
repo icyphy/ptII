@@ -89,7 +89,7 @@ public class GRScheduler extends Scheduler {
             setName(_STATIC_NAME);
         } catch (KernelException ex) {
             throw new InternalErrorException(
-                "Internal error when setting name to a GRScheduler");
+                    "Internal error when setting name to a GRScheduler");
         }
     }
 
@@ -107,7 +107,7 @@ public class GRScheduler extends Scheduler {
      *   an attribute already in the container.
      */
     public GRScheduler(Director container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -215,7 +215,7 @@ public class GRScheduler extends Scheduler {
             }
 
             throw new NotSchedulableException(this,
-                "GR graph is not acyclic: " + names.toString());
+                    "GR graph is not acyclic: " + names.toString());
         }
 
         if (dag.top() == null) {
