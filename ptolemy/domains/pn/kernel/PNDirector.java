@@ -1,4 +1,5 @@
-/* Starts all the processes and handles deadlocks
+/* Governs the execution of a CompositeActor with extended Kahn process 
+network semantics.
 
  Copyright (c)  The Regents of the University of California.
  All rights reserved.
@@ -40,7 +41,61 @@ import collections.LinkedList;
 //////////////////////////////////////////////////////////////////////////
 //// PNDirector
 /**
-Handles deadlocks and creates Processes corresponding to all PN actors
+A PNDirector governs the execution of a CompositeActor with
+Kahn process networks (PN) semantics. This model of computation has been 
+extended further by introducing a notion of global time. This also supports
+mutations of graphs in a non-deterministic way. To make a composite actor 
+obey these semantics, call the method setDirector() with an instance of 
+this class.
+<p>
+In the PN domain, the director creates a thread (an instance of 
+ProcessThread), representing a Kahn process, for each actor in the model. 
+The threads are created in initialize() and started in the prefire() method 
+of the ProcessDirector. A process is considered <i>active</i> from its 
+creation until its termination. An active process can either <i>block</i> 
+or <i>delay</i>. A process can block when trying to read from a channel
+(read-blocked) or when trying to write to a channel (write-blocked). A 
+delayed process is a process waiting for time to advance.
+<p>
+This director is responsible for handling legal deadlocks during execution.
+Legal deadlocks are of three sorts, a real deadlock, an artificial deadlock,
+and a timed deadlock. 
+<p>
+A real deadlock is when all the processes are blocked on a read and no 
+process can proceed until it receives new data. The execution can be 
+terminated, if desired, in such a situation. It is decided by the executive 
+director of the container (a composite actor). If the container is the 
+top-level composite actor, then the manager calls wrapup() and terminates 
+the execution.
+<p>
+A timed deadlock is when all the processes under the control of this 
+director are blocked on a read or on a delay. In such a case, the director
+advances time to the time when the first delay-blocked process can be woken 
+up.
+<p>
+An artificial deadlock is when all processes are blocked on a read, on a 
+delay, or a write (atleast one process is blocked on a write). In this 
+case the director chooses a receiver with the smallest capacity amongst all 
+the receivers on which a process is blocked on a write and increases its 
+capacity. This breaks the artificial deadlock and the execution can proceed.
+<p>
+This director is capable of handling mutations of graphs. These mutations can
+be non-deterministic. In PN, since the execution of a model is not centralized,
+it is impossible to define a useful fixed point in the execution of all the 
+active processes where mutations can occur. Due to this, PN permits mutations
+to happen as soon as they occur. Thus as soon as a process queues mutations
+in PN, the director is notified and the director pauses the simulation. Then 
+it performs all the mutations requested, and notifies the topology listeners.
+After this the execution is resumed.
+<p>
+In case of PN, a process can be paused only when it tries to communicate with
+other processes. A pause in PN is defined as a state when all processes are 
+blocked on a read, a write, delayed or are explicitly paused in the get() or
+put() method of the receiver. Thus if a process does not communicate with 
+other processes in the model, then the simulation can never pause in that 
+model.
+<p>
+
 
 @author Mudit Goel
 @version $Id$
@@ -49,7 +104,9 @@ public class PNDirector extends ProcessDirector {
 
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
-     *  the workspace. Increment the version number of the workspace.
+     *  the workspace. Increment the version number of the workspace. A 
+     *  priority queue is created to keep a track of delayed actors. The 
+     *  default capacity of the queues in all the receivers set to 1.
      */
     public PNDirector() {
         super();
@@ -67,7 +124,9 @@ public class PNDirector extends ProcessDirector {
     /** Construct a director in the default workspace with the given name.
      *  If the name argument is null, then the name is set to the empty
      *  string. The director is added to the list of objects in the workspace.
-     *  Increment the version number of the workspace.
+     *  Increment the version number of the workspace. A 
+     *  priority queue is created to keep a track of delayed actors. The 
+     *  default capacity of the queues in all the receivers set to 1.
      *  @param name Name of this object.
      */
     public PNDirector(String name) {
@@ -87,7 +146,9 @@ public class PNDirector extends ProcessDirector {
      *  If the workspace argument is null, use the default workspace.
      *  The director is added to the list of objects in the workspace.
      *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
+     *  empty string. Increment the version number of the workspace. A 
+     *  priority queue is created to keep a track of delayed actors. The 
+     *  default capacity of the queues in all the receivers set to 1.
      *  @param workspace Object for synchronization and version tracking
      *  @param name Name of this director.
      */
@@ -108,33 +169,19 @@ public class PNDirector extends ProcessDirector {
     ////                         public methods                    ////
 
 
-    /** Increments the number of processes blocked on a delay.
-     *  It checks for deadlocks as a consequence of an additional process being
-     *  blocked. If a pause is requested, it even checks if the simulation has
-     *  paused.
-     */
-    public synchronized void delayBlock() {
-	_delayBlockCount++;
-	//System.out.println("Readblocked with count "+_readBlockCount);
-	if (_checkForDeadlock() || _checkForPause()) {
-	    notifyAll();
-	}
-        //if (_pauseRequested) {
-	//_checkForPause();
-        //}
-	return;
-    }
-
-    /** Decreases the number of queues and hence processes blocked on a read.
-     */
-    public synchronized  void delayUnblock() {
-	_delayBlockCount--;
-	return;
-    }
-
-    /** This handles deadlocks in PN. It is responsible for doing mutations,
-     *  and increasing queue capacities in PNQueueReceivers if required.
-     * @exception IllegalActionException It should not be thrown.
+    /** Handles various deadlocks appropriately and performs mutations 
+     *  when requested. It suspends the thread corresponding to the 
+     *  director until it is notified of either a request for mutation 
+     *  or an occurence of a deadlock. On notification, it calls the 
+     *  appropriate methods and returns. In case it is responding to a
+     *  detection of a deadlock and the deadlock detected is a real 
+     *  deadlock, it sets a flag forcing the postfire() method to return
+     *  false whenever it is called next. 
+     *  
+     *  @exception IllegalActionException If any of the called methods throw
+     *  it. 
+     *  @see ptolemy.domains.pn.kernel.PNDirector#_processTopologyRequests()
+     *  @see ptolemy.domains.pn.kernel.PNDirector#_handleDeadlock()
      */
     public void fire()
 	    throws IllegalActionException {
@@ -165,14 +212,18 @@ public class PNDirector extends ProcessDirector {
         //System.out.println("Done firing");
     }
 
-    /** Schedule to be restart execution after a specified delay
-     *  with respect to the current time.
+    /** Schedule a resumption of the given actor at the given time. It 
+     *  suspends the calling thread until the time has sufficiently progressed
+     *  to atleast the given time. It increments the count of the actors 
+     *  blocked on a delay. It also queues the actor in a priority 
+     *  queue with the given time as the index to keep a count of actors 
+     *  blocked at the current time.
      */
     public synchronized void fireAt(Actor actor, double newfiringtime)
             throws IllegalActionException {
         _eventQueue.put(new Double(newfiringtime), actor);
         //FIXME: Blocked on a delay
-        delayBlock();
+        _delayBlock();
         try {
             while (getCurrentTime() < newfiringtime) {
                 wait(); //Should I call workspace().wait(this) ?
@@ -201,12 +252,12 @@ public class PNDirector extends ProcessDirector {
         _currenttime = newTime;
     }
 
-    /** This returns false if the simulation has reached a deadlock and can
+    /** Return false if the simulation has reached a real deadlock and can
      *  be terminated if desired. This flag is set on detection of a deadlock
      *  in the fire() method.
      *  @return false if the director has detected a deadlock and does not
      *  wish to be scheduled.
-     *  @exception IllegalActionException This is never thrown in PN
+     *  @exception IllegalActionException Never thrown in PN
      */
     public boolean postfire() throws IllegalActionException {
         //System.out.println("Postifre printing " +_notdone);
@@ -215,7 +266,8 @@ public class PNDirector extends ProcessDirector {
 
 
     /** Return a new receiver compatible with this director.
-     *  In the PN domain, we use PNQueueReceivers.
+     *  PNQueueReceivers are used in the PN domain. Set the initial capacity
+     *  of the FIFO queue in the receiver.
      *  @return A new PNReceiver.
      */
     public Receiver newReceiver() {
@@ -233,15 +285,16 @@ public class PNDirector extends ProcessDirector {
     }
 
 
-    /** Add a mutation object to the mutation queue. These mutations
-     *  are executed when the _performTopologyChanges() method is called,
-     *  which in this base class is in the prefire() method.  This method
+    /** Add a topology change request to the request queue. These changes 
+     *  are executed when the _performTopologyChanges() method is called.
+     *  After queueing the requests, it notifies the thread responsible
+     *  for the director of pending topology changes. This method
      *  also arranges that all additions of new actors are recorded.
-     *  The prefire() method then invokes the initialize() method of all
-     *  new actors after the mutations have been completed.
      *
-     *  @param request A object with a perform() and update() method that
-     *   performs a mutation and informs any listeners about it.
+     *  @param request An object with commands to perform topology changes
+     *  and to inform the topology listeners of the same.
+     *  @see ptolemy.kernel.event.TopologyChangeRequest
+     *  @see ptolemy.kernel.event.TopologyListener
      */
     public void queueTopologyChangeRequest(TopologyChangeRequest request) {
 	super.queueTopologyChangeRequest(request);
@@ -251,70 +304,15 @@ public class PNDirector extends ProcessDirector {
 	}
     }
 
-    /** Increments the number of queues and hence processes blocked on a read.
-     *  It checks for deadlocks as a consequence of an additional process being
-     *  blocked. If a pause is requested, it even checks if the simulation has
-     *  paused.
-     */
-    public synchronized void readBlock() {
-	_readBlockCount++;
-	//System.out.println("Readblocked with count "+_readBlockCount);
-	if (_checkForDeadlock() || _checkForPause()) {
-	    notifyAll();
-	}
-	return;
-    }
-
-
-    /** Decreases the number of queues and hence processes blocked on a read.
-     */
-    public synchronized  void readUnblock() {
-	_readBlockCount--;
-	return;
-    }
-
-
-    /** Increments the number of actors blocked while writing to a receiver
-     *  and checks for deadlocks. If pause has been requested, it checks
-     *  if the simulation has been paused.
-     *  @param queue Receiver whose size equals capacity resulting in the
-     *  writing process being blocked.
-     */
-    public synchronized void writeBlock(PNQueueReceiver queue) {
-	_writeBlockCount++;
-	_writeblockedQs.insertFirst(queue);
-	//System.out.println("WriteBlockedQ "+_writeBlockCount );
-	if (_checkForDeadlock() || _checkForPause()) {
-	    notifyAll();
-	}
-        //if (_pauseRequested) {
-	//_checkForPause();
-        //}
-	return;
-    }
-
-
-    /** Decrease the number of processes blocked on a write to a receiver.
-     *  If the actor can be blocked on a write, then unblock it and
-     *  decrement the number of stars blocked on write.
-     *  @param recep is the receptionist/queue being unblocked
-     */
-    public synchronized void writeUnblock(PNQueueReceiver queue) {
-	_writeBlockCount--;
-	_writeblockedQs.removeOneOf(queue);
-	return;
-    }
-
 
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                       protected methods                   ////
 
-    // Checks for deadlock(Both artificial and true deadlocks).
-    // noOfStoppedProcess is 0 if the deadlock is being checked for a
-    // blocked queue. 1 if check is being done when a process stopped.
-    // This is not synchronized and thus should be called from a synchronized
-    // method
+    /** Return true if a deadlock(All real, artificial and delayed 
+     *  deadlocks) is detected.
+     *  @return true if a deadlock is detected.
+     */
     protected synchronized boolean _checkForDeadlock() {
 	if (_readBlockCount + _writeBlockCount + _delayBlockCount 
 		>= _getActiveActorsCount()) {
@@ -325,7 +323,9 @@ public class PNDirector extends ProcessDirector {
 	}
     }
 
-    //Check if all threads are either blocked or paused
+    /** Return true if the execution has paused. 
+     *  @return true if a deadlock is detected.
+     */
     protected synchronized boolean _checkForPause() {
 	//System.out.println("aac ="+_activeActorsCount+" wb ="+_writeBlockCount+" rb = "+_readBlockCount+" *PAUSED*"+"pausedcoint = "+_actorsPaused);
 	if (_readBlockCount + _writeBlockCount + _getPausedActorsCount() +
@@ -334,8 +334,196 @@ public class PNDirector extends ProcessDirector {
 	} else {
 	    return false;
 	}
-	//return;
     }
+
+    /** Increments the number of processes blocked on a delay.
+     *  If a deadlock occurs or if the execution is paused as a consequence, 
+     *  the director is notified of the same.
+     */
+    synchronized void _delayBlock() {
+	_delayBlockCount++;
+	//System.out.println("Readblocked with count "+_readBlockCount);
+	if (_checkForDeadlock() || _checkForPause()) {
+	    notifyAll();
+	}
+	return;
+    }
+
+    /** Decreases the number of processes blocked on a delay.
+     */
+    synchronized  void _delayUnblock() {
+	_delayBlockCount--;
+	return;
+    }
+
+    /** Handle real, artificial or timed deadlocks. 
+     *  If a real deadlock is detected, then return true. 
+     *  If a timed deadlock is detected, then advance time to the earliest
+     *  time that a delayed process is waiting for, wake up all the actors
+     *  waiting for time to advance to the new time, and remove them from 
+     *  the priority queue. 
+     *  If an artificial deadlock is detected, then increase the capacity
+     *  of the receiver with the smallest capacity on which a process is 
+     *  blocked.
+     *  
+     *  @return true if a real deadlock is detected.
+     *  @exception IllegalActionException Not thrown in PN.
+     */
+    protected boolean _handleDeadlock()
+	    throws IllegalActionException {
+        if (_writeBlockCount==0) {
+            //Check if there are any events in the future.
+            if (_delayBlockCount ==0) {
+                System.out.println("real deadlock. Everyone would be erased");
+                return true;
+            } else {
+                //Advance time to next possible time.
+                synchronized(this) {
+                    try {
+                        _eventQueue.take();
+                        _currenttime = ((Double)(_eventQueue.getPreviousKey())).doubleValue();
+			_delayUnblock();
+                    } catch (IllegalAccessException e) {
+                        throw new InternalErrorException("Inconsistency"+
+                                " in number of actors blocked on delays count"+
+                                " and the entries in the CalendarQueue");
+                    }
+
+                    boolean sametime = true;
+                    while (sametime) {
+                        if (!_eventQueue.isEmpty()) {
+                            try {
+                                Actor actor = (Actor)_eventQueue.take();
+
+                                double newtime = ((Double)(_eventQueue.getPreviousKey())).doubleValue();
+				if (newtime == _currenttime) {
+				    _delayUnblock();
+				} else {
+                                    _eventQueue.put(new Double(newtime), actor);
+                                    sametime = false;
+                                }
+                            } catch (IllegalAccessException e) {
+                                throw new InternalErrorException(e.toString());
+                            }
+                        } else {
+                            sametime = false;
+                        }
+                    }
+                    //Wake up all delayed actors
+                    notifyAll();
+                }
+            }
+        } else {
+            //its an artificial deadlock;
+            System.out.println("Artificial deadlock");
+            //_deadlock = false;
+            // find the input port with lowest capacity queue;
+            // that is blocked on a write and increment its capacity;
+            _incrementLowestWriteCapacityPort();
+            //System.out.println("Incrementing capacity done");
+        }
+        return false;
+    }
+
+    /** Process the queued topology change requests. Registered topology
+     *  listeners are informed of each change in a series of calls
+     *  after successful completion of each request. If any queued
+     *  request fails, the request is undone, and no further requests
+     *  are processed. Note that change requests processed successfully
+     *  prior to the failed request are <i>not</i> undone.
+     *
+     *  Initialize any new actors created, create receivers for them, 
+     *  initialize them and create new threads for them. After all threads
+     *  are created, resume the execution and start the threads for the 
+     *  newly created actors.
+     *
+     *  @exception IllegalActionException If any of the pending requests have
+     *  already been implemented.
+     *  @exception TopologyChangeFailedException If any of the requests fails.
+     */
+    protected void _processTopologyRequests()
+            throws IllegalActionException, TopologyChangeFailedException {
+	Workspace worksp = workspace();
+	pause();
+	super._processTopologyRequests();
+	LinkedList threadlist = new LinkedList();
+	//FIXME: Where does the type resolution go?
+	Enumeration newactors = _newActors();
+	while (newactors.hasMoreElements()) {
+	    Actor actor = (Actor)newactors.nextElement();
+	    actor.createReceivers();
+	    actor.initialize();
+	    ProcessThread pnt = new ProcessThread(actor, this);
+	    threadlist.insertFirst(pnt);
+	    _addNewThread(pnt);
+	}
+	//Resume the paused actors
+	resume();
+	Enumeration threads = threadlist.elements();
+	//Starting threads;
+	while (threads.hasMoreElements()) {
+	    ProcessThread pnt = (ProcessThread)threads.nextElement();
+	    pnt.start();
+	    //System.out.println("Started a thread for "+((Entity)pnt.getActor()).getName());
+	}
+    }
+
+
+    /** Increment the count of processes blocked on a read.
+     *  It checks for deadlocks or pausing of the simulation, as a 
+     *  consequence of an additional process being blocked. If either of the
+     *  two is detected, it notifies the director of the same.
+     */
+    synchronized void _readBlock() {
+	_readBlockCount++;
+	//System.out.println("Readblocked with count "+_readBlockCount);
+	if (_checkForDeadlock() || _checkForPause()) {
+	    notifyAll();
+	}
+	return;
+    }
+
+
+    /** Decrease the count of processes blocked on a read.
+     */
+    synchronized  void _readUnblock() {
+	_readBlockCount--;
+	return;
+    }
+
+
+    /** Increment the count of actors blocked while writing to a receiver.
+     *  Check for a deadlock or a pausing of the simulation. If either of 
+     *  them is detected, then notify the director.
+     *  @param queue Receiver whose size equals capacity resulting in the
+     *  writing process being blocked.
+     */
+    synchronized void _writeBlock(PNQueueReceiver queue) {
+	_writeBlockCount++;
+	_writeblockedQs.insertFirst(queue);
+	//System.out.println("WriteBlockedQ "+_writeBlockCount );
+	if (_checkForDeadlock() || _checkForPause()) {
+	    notifyAll();
+	}
+	return;
+    }
+
+
+    /** Decrease the count of processes blocked on a write to a receiver.
+     *  @param queue is the receiver on which the process was blocked.
+     */
+    synchronized void _writeUnblock(PNQueueReceiver queue) {
+	_writeBlockCount--;
+	_writeblockedQs.removeOneOf(queue);
+	return;
+    }
+
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+
 
     // Finds the QueueReceiver with the smallest write capacity
     // that is blocked on a write and incrementes its capacity by 1.
@@ -367,7 +555,7 @@ public class PNDirector extends ProcessDirector {
 	        smallestCapacityQueue.setCapacity(smallestCapacityQueue.getCapacity()+1);
                 //System.out.println("Setting capacity of "+smallestCapacityQueue.getContainer().getFullName()+" to "+(smallestCapacityQueue.getCapacity()+1) );
             }
-	    writeUnblock(smallestCapacityQueue);
+	    _writeUnblock(smallestCapacityQueue);
 	    smallestCapacityQueue.setWritePending(false);
             synchronized(smallestCapacityQueue) {
                 System.out.println("Notifying ........ All");
@@ -382,92 +570,6 @@ public class PNDirector extends ProcessDirector {
         return;
     }
 
-    //Handles deadlock, both real and artificial
-    //Returns false only if it detects a mutation.
-    //Returns true for termination
-    //This is not synchronized and should be synchronized in the calling method
-    protected boolean _handleDeadlock()
-	    throws IllegalActionException {
-        if (_writeBlockCount==0) {
-            //Check if there are any events in the future.
-            if (_delayBlockCount ==0) {
-                System.out.println("real deadlock. Everyone would be erased");
-                return true;
-            } else {
-                //Advance time to next possible time.
-                synchronized(this) {
-                    try {
-                        _eventQueue.take();
-                        _currenttime = ((Double)(_eventQueue.getPreviousKey())).doubleValue();
-			delayUnblock();
-                    } catch (IllegalAccessException e) {
-                        throw new IllegalActionException(this, "Inconsistency"+
-                                " in number of actors blocked on delays count"+
-                                " and the entries in the CalendarQueue");
-                    }
-
-                    boolean sametime = true;
-                    while (sametime) {
-                        if (!_eventQueue.isEmpty()) {
-                            try {
-                                Actor actor = (Actor)_eventQueue.take();
-
-                                double newtime = ((Double)(_eventQueue.getPreviousKey())).doubleValue();
-				if (newtime == _currenttime) {
-				    delayUnblock();
-				} else {
-                                    _eventQueue.put(new Double(newtime), actor);
-                                    sametime = false;
-                                }
-                            } catch (IllegalAccessException e) {
-                                throw new InternalErrorException(e.toString());
-                            }
-                        } else {
-                            sametime = false;
-                        }
-                    }
-                    //Wake up all delayed actors
-                    notifyAll();
-                }
-            }
-        } else {
-            //its an artificial deadlock;
-            System.out.println("Artificial deadlock");
-            //_deadlock = false;
-            // find the input port with lowest capacity queue;
-            // that is blocked on a write and increment its capacity;
-            _incrementLowestWriteCapacityPort();
-            //System.out.println("Incrementing capacity done");
-        }
-        return false;
-    }
-
-    protected void _processTopologyRequests()
-            throws IllegalActionException, TopologyChangeFailedException {
-	Workspace worksp = workspace();
-	pause();
-	super._processTopologyRequests();
-	LinkedList threadlist = new LinkedList();
-	//FIXME: Where does the type resolution go?
-	Enumeration newactors = _newActors();
-	while (newactors.hasMoreElements()) {
-	    Actor actor = (Actor)newactors.nextElement();
-	    actor.createReceivers();
-	    actor.initialize();
-	    ProcessThread pnt = new ProcessThread(actor, this);
-	    threadlist.insertFirst(pnt);
-	    _addNewThread(pnt);
-	}
-	//Resume the paused actors
-	resume();
-	Enumeration threads = threadlist.elements();
-	//Starting threads;
-	while (threads.hasMoreElements()) {
-	    ProcessThread pnt = (ProcessThread)threads.nextElement();
-	    pnt.start();
-	    //System.out.println("Started a thread for "+((Entity)pnt.getActor()).getName());
-	}
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -482,3 +584,5 @@ public class PNDirector extends ProcessDirector {
     private CalendarQueue _eventQueue;
     private double _currenttime = 0;
 }
+
+
