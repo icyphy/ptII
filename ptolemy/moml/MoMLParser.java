@@ -836,6 +836,144 @@ public class MoMLParser extends HandlerBase {
 
         throw new XmlException(message, currentExternalEntity, line, column);
     }
+    
+    /** Given a file name or URL description, find a URL on which
+     *  openStream() will work. If a base is given, the URL can
+     *  be found relative to that base.
+     *  If the URL cannot be found relative to this base, then it
+     *  is searched for relative to the current working directory
+     *  (if this is permitted with the current security restrictions),
+     *  and then relative to the classpath. If the URL is external
+     *  and is not relative to a previously defined base, then the
+     *  user will be warned about a security concern and given the
+     *  opportunity to cancel.
+     *  <p>
+     *  NOTE: This may trigger a dialog with the user (about
+     *  security concerns), and hence should be called in the event
+     *  thread.
+     *  @param source A file name or URL description.
+     *  @param base The base URL for relative references, or null if
+     *   there is none.
+     *  @return A URL on which openStream() will succeed.
+     *  @exception Exception If the file or URL cannot be found or
+     *   if the user cancels on being warned of a security concern.
+     */
+    public URL fileNameToURL(String source, URL base)
+            throws Exception {
+        URL result = null;
+        StringBuffer errorMessage = new StringBuffer();
+        InputStream input = null;
+        try {
+            result = new URL(base, source);
+
+            // Security concern here.  Warn if external source.
+            // and we are not running within an applet.
+            // The warning method will throw a CancelException if the
+            // user clicks "Cancel".
+            String protocol = result.getProtocol();
+            if (protocol != null
+                    && protocol.trim().toLowerCase().equals("http")) {
+                SecurityManager security = System.getSecurityManager();
+                boolean withinUntrustedApplet = false;
+                if (security != null) {
+                    try {
+                        // This is sort of arbitrary, but seems to be the
+                        // closest choice.
+                        security.checkCreateClassLoader();
+                    } catch (SecurityException securityException) {
+                        // If we are running under an untrusted applet.
+                        // then a SecurityException will be thrown,
+                        // and we can rely on the Applet protection
+                        // mechanism to protect the user against
+                        // a wayward model.
+
+                        // Note that if the jar files were signed
+                        // for use with Web Start, then we are in a trusted
+                        // applet, so the SecurityException will _not_
+                        // be thrown and withinUntrustedApplet will be false.
+
+                        withinUntrustedApplet = true;
+                    }
+                }
+                if ((security == null || withinUntrustedApplet == false)
+                        && !_approvedRemoteXmlFiles.contains(result)) {
+
+                    // If the result and _base have a common root,
+                    // then the code is ok.
+                    String resultBase =
+                        result.toString() .substring(0,
+                                result.toString().lastIndexOf("/"));
+
+                    if (_base == null
+                            || !resultBase.startsWith(_base.toString())) {
+                        MessageHandler.warning("Security concern:\n"
+                                + "About to look for MoML from the "
+                                + "net at address:\n"
+                                + result.toExternalForm()
+                                + "\nOK to proceed?");
+                    }
+
+                    // If we get to here, the the user did not hit cancel,
+                    // so we cache the file
+                    _approvedRemoteXmlFiles.add(result);
+                }
+            }
+            input = result.openStream();
+        } catch (IOException ioException) {
+            errorMessage.append("-- " + ioException.getMessage() + "\n");
+            // The error messages used to be more verbose, uncomment
+            // the next line if you would like to know what failed and why
+            // errorMessage.append(
+            //        "\n    base: " + base
+            //        + "\n    source: " + source
+            //        + "\n    result: " + result
+            //        + "\n" +KernelException.stackTraceToString(ioException));
+
+            // That failed.  Try opening it relative to the classpath.
+            result = _classLoader.getResource(source);
+            if (result != null) {
+                input = result.openStream();
+            } else {
+                errorMessage.append(
+                        "-- XML file not found relative to classpath.\n");
+
+                // Failed to open relative to the classpath.
+                // Try relative to the current working directory.
+                // NOTE: This is last because it will fail with a
+                // security exception in applets.
+                String cwd = StringUtilities.getProperty("user.dir");
+                if (cwd != null) {
+                    try {
+                        // We have to append a trailing "/" here for this to
+                        // work under Solaris.
+                        base = new URL("file", null, cwd + File.pathSeparator);
+                        result = new URL(base, source);
+                        input = result.openStream();
+                    } catch (Exception exception) {
+                        errorMessage.append(
+                                "-- "
+                                + cwd
+                                + File.pathSeparator
+                                + source
+                                + exception.getMessage()
+                                + "\n");
+                    }
+                }
+            }
+        }
+        if (input == null) {
+            throw new XmlException(
+                    errorMessage.toString(),
+                    _currentExternalEntity(),
+                    _parser.getLineNumber(),
+                    _parser.getColumnNumber());
+        }
+        // If we get here, then result cannot possibly be null.
+        // Close the open stream, which was used only to make
+        // sure it would work.
+        input.close();
+        return result;
+    }
 
     /** Get the error handler to handle parsing errors.
      *  Note that this method is static. The returned error handler
@@ -1130,53 +1268,65 @@ public class MoMLParser extends HandlerBase {
     }
 
     /** Given the name of a MoML class and a source URL, check to see
-     * whether this class has already been instantiated, and if so,
-     * return the previous instance.
-     * @param name The name of the MoML class to search for.
-     * @param source The URL source
-     * @return If the class has already been instantiated, return
-     * the previous instance.
+     *  whether this class has already been instantiated, and if so,
+     *  return the previous instance.  If the source is non-null, then
+     *  this finds an instance that has been previously opened by this
+     *  application from the same URL.  If the source is null and
+     *  the class name is absolute (starting with a period), then
+     *  look for the class in the current top level. If the source
+     *  is null and the class name is relative, then look for
+     *  the class relative to the current context.
+     *  @param name The name of the MoML class to search for.
+     *  @param source The URL source
+     *  @return If the class has already been instantiated, return
+     *   the previous instance, otherwise return null.
      */
     public ComponentEntity searchForClass(String name, String source)
-            throws XmlException {
+            throws Exception {
 
-        // If the name is absolute, the class may refer to an existing
-        // entity.  Check to see whether there is one with a matching source.
-        ComponentEntity candidate;
-        if (name.startsWith(".")) {
-            candidate = _searchForEntity(name);
-            if (candidate != null) {
-                // Check that it's a class.
+        // Use a canonical form of the source.
+        URL sourceURL = null;
+        if (source != null) {
+            sourceURL = fileNameToURL(source, _base);
+        }
+
+        if (_imports != null && source != null) {
+            Object possibleCandidate = _imports.get(source);
+            if (possibleCandidate instanceof ComponentEntity) {
+                ComponentEntity candidate = (ComponentEntity)possibleCandidate;
+                // Check that the candidate is a class.
                 if (candidate.isClassDefinition()) {
-                    // Check that its source matches.
-                    String candidateSource = candidate.getMoMLInfo().source;
-
-                    if (source == null && candidateSource == null) {
-                        return candidate;
-                    } else if (source != null
-                            && source.equals(candidateSource)) {
+                    // Check that the class name matches.
+                    // Only the last part, after any periods has to match.
+                    String realClassName = name;
+                    int lastPeriod = name.lastIndexOf(".");
+                    if (lastPeriod >= 0 && (name.length() > lastPeriod + 1)) {
+                        realClassName = name.substring(lastPeriod + 1);
+                    }
+                
+                    String candidateClassName
+                            = candidate.getMoMLInfo().className;
+                    lastPeriod = candidateClassName.lastIndexOf(".");
+                    if (lastPeriod >= 0
+                            && (candidateClassName.length() > lastPeriod + 1)) {
+                        candidateClassName
+                                = candidateClassName.substring(lastPeriod + 1);
+                    }
+                    if (candidateClassName.equals(realClassName)) {
                         return candidate;
                     }
                 }
             }
         }
-        if (_imports != null) {
-            Iterator entries = _imports.iterator();
-            while (entries.hasNext()) {
-                Object possibleCandidate = entries.next();
-                if (possibleCandidate instanceof ComponentEntity) {
-                    candidate = (ComponentEntity)possibleCandidate;
-                    String candidateClassName
-                        = candidate.getMoMLInfo().className;
-                    if (candidateClassName.equals(name)) {
-                        String candidateSource = candidate.getMoMLInfo().source;
-                        if (source == null && candidateSource == null) {
-                            return candidate;
-                        } else if (source != null
-                                && source.equals(candidateSource)) {
-                            return candidate;
-                        }
-                    }
+
+        // Source has not been previously loaded.
+        // Only if the source is null can we have a matching previous instance.
+        if (source == null) {
+            ComponentEntity candidate = _searchForEntity(name);
+            if (candidate != null) {
+                // Check that it's a class.
+                if (candidate.isClassDefinition()) {
+                    return candidate;
                 }
             }
         }
@@ -1431,16 +1581,22 @@ public class MoMLParser extends HandlerBase {
                     entity.setClassDefinition(true);
                     // Adjust the classname and superclass of the object.
                     NamedObj.MoMLInfo info = entity.getMoMLInfo();
-                    info.className = entity.getFullName();
-                    info.superclass = className;
+                    // NOTE: This used to set the class name to entity.getFullName(),
+                    // and superclass to className.  Now that we've consolidated
+                    // these, we set the class name to the value of "extends"
+                    // attribute that was used to create this.
+                    info.className = className;
                 } else {
                     // If the object is not already a class, then convert
                     // it to one.
                     if (!entity.isClassDefinition()) {
                         entity.setClassDefinition(true);
                         NamedObj.MoMLInfo info = entity.getMoMLInfo();
-                        info.superclass = info.className;
-                        info.className = entity.getFullName();
+                        // className now stays the same, since it provides the
+                        // base class whether its an instance or a class.
+                        // Used to be:
+                        // info.superclass = info.className;
+                        // info.className = entity.getFullName();
                         converted = true;
                     }
                 }
@@ -1664,7 +1820,6 @@ public class MoMLParser extends HandlerBase {
                         entity.setClassDefinition(false);
                         NamedObj.MoMLInfo info = entity.getMoMLInfo();
                         Class entityClass = entity.getClass();
-                        info.superclass = entityClass.getSuperclass().getName();
                         info.className = entityClass.getName();
                         converted = true;
                     }
@@ -2093,23 +2248,15 @@ public class MoMLParser extends HandlerBase {
                                         = (WeakReference)deferrers.next();
                                 Prototype deferrer = (Prototype)reference.get();
                                 if (deferrer != null) {
-                                    // Got a live one.
-                                    // Need to determine whether the name is
-                                    // absolute or relative.
-                                    String replacementName = newName;
-                                    if (deferrer.isClassDefinition()) {
-                                        if (deferrer.getMoMLInfo().superclass.startsWith(".")) {
-                                            replacementName = _current.getFullName();
-                                        }
-                                        deferrer.getMoMLInfo().superclass
-                                                = replacementName;
-                                    } else {
-                                        if (deferrer.getMoMLInfo().className.startsWith(".")) {
-                                            replacementName = _current.getFullName();
-                                        }
-                                        deferrer.getMoMLInfo().className
-                                                = replacementName;
+                                // Got a live one.
+                                // Need to determine whether the name is
+                                // absolute or relative.
+                                String replacementName = newName;
+                                    if (deferrer.getMoMLInfo().className.startsWith(".")) {
+                                        replacementName = _current.getFullName();
                                     }
+                                    deferrer.getMoMLInfo().className
+                                            = replacementName;
                                 }
                             }
                         }
@@ -2355,8 +2502,12 @@ public class MoMLParser extends HandlerBase {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Attempt to find a MoML class.
-    // If there is no source defined, then use the classpath.
+    /** Attempt to find a MoML class from an external file.
+     *  If there is no source defined, then search for the file
+     *  relative to the classpath.
+     *  @param className The class name.
+     *  @param source The source as specified in the XML.
+     */
     private ComponentEntity _attemptToFindMoMLClass(
             String className, String source) throws Exception {
         String classAsFile = null;
@@ -2386,14 +2537,16 @@ public class MoMLParser extends HandlerBase {
 
         NamedObj candidateReference = null;
         try {
-            candidateReference =
-                _parse(newParser, _base, classAsFile);
+            candidateReference
+                    = _findOrParse(newParser, _base, classAsFile,
+                    className, source);
         } catch (Exception ex2) {
             // Try the alternate file, if it's not null.
             if (altClassAsFile != null) {
                 try {
-                    candidateReference =
-                        _parse(newParser, _base, altClassAsFile);
+                    candidateReference
+                            = _findOrParse(newParser, _base,
+                            altClassAsFile, className, source);
                     classAsFile = altClassAsFile;
                 } catch (Exception ex3) {
                     // Cannot find class definition.
@@ -2438,26 +2591,6 @@ public class MoMLParser extends HandlerBase {
                     _parser.getLineNumber(),
                     _parser.getColumnNumber());
         }
-        // Set the classname and source of the import.
-        // NOTE: We have gone back and forth on whether this
-        // is right, because previously, the className field
-        // was overloaded to contain the class name in some
-        // circumstances, and the base class name in others.
-        // We now have a field for the base class, so this can
-        // be done again.  Moreover, it is necessary, or
-        // further instances of this class will not be cloned
-        // from this same reference (which breaks look inside).
-        reference.getMoMLInfo().className = className;
-
-        // NOTE: This might be a relative file reference, which
-        // won't be of much use if a MoML file is moved.
-        reference.getMoMLInfo().source = source;
-
-        // Record the import to avoid repeated reading
-        if (_imports == null) {
-            _imports = new LinkedList();
-        }
-        _imports.add(0, reference);
         
         // Load an associated icon, if there is one
         String iconFile = className.replace('.', '/') + "Icon.xml";
@@ -3056,6 +3189,83 @@ public class MoMLParser extends HandlerBase {
         toDelete.setContainer(null);
 
         return toDelete;
+    }
+    
+    /** Use the specified parser to parse the file or URL,
+     *  which contains MoML, using the specified base to find the URL.
+     *  If the URL has been previously parsed by this application,
+     *  then return the instance that was the result of the previous
+     *  parse. FIXME: unless it has been modified since last loaded?
+     *  If the URL cannot be found relative to this base, then it
+     *  is searched for relative to the current working directory
+     *  (if this is permitted with the current security restrictions),
+     *  and then relative to the classpath.
+     *  @param parser The parser to use.
+     *  @param base The base URL for relative references, or null if
+     *   not known.
+     *  @param file The file or URL from which to read MoML.
+     *  @param className The class name to assign if the file is
+     *   parsed anew.
+     *  @param source The source file to assign if the file is
+     *   parsed anew, or null to not assign one.
+     *  @return The top-level composite entity of the Ptolemy II model.
+     *  @exception Exception If the parser fails.
+     */
+    private NamedObj _findOrParse(
+            MoMLParser parser,
+            URL base, 
+            String file, 
+            String className, 
+            String source)
+            throws Exception {
+        _xmlFile = fileNameToURL(file, base);
+        if (_imports != null) {
+            NamedObj previous = (NamedObj)_imports.get(_xmlFile);
+            if (previous != null) {
+                return previous;
+            }
+        }
+        InputStream input = _xmlFile.openStream();
+        try {
+            NamedObj toplevel = parser.parse(_xmlFile, input);
+            input.close();
+            // Set the classname and source of the import.
+            // NOTE: We have gone back and forth on whether this
+            // is right. For a phase, we had two fields in MoMLInfo,
+            // one for the className and one for the superclass.
+            // The key is to make sure that
+            // further instances of this class will be cloned
+            // from this same reference (otherwise, we break look
+            // inside).
+            toplevel.getMoMLInfo().className = className;
+
+            // NOTE: This might be a relative file reference, which
+            // won't be of much use if a MoML file is moved.
+            // But we don't want absolute file names wired in
+            // either.  So we record the source as originally
+            // specified, since it was sufficient to find this.
+            // Note that the source may be null.
+            toplevel.getMoMLInfo().source = source;
+
+            // Record the import to avoid repeated reading
+            if (_imports == null) {
+                _imports = new HashMap();
+            }
+            // NOTE: The index into the HashMap is the URL, not
+            // its string representation. The URL class overrides
+            // equal() so that it returns true if two URLs refer
+            // to the same file, regardless of whether they have
+            // the same string representation.
+            _imports.put(_xmlFile, toplevel);
+
+            return toplevel;
+        } catch (CancelException ex) {
+            // Parse operation cancelled.
+            return null;
+        } finally {
+            input.close();
+            _xmlFile = null;
+        }
     }
 
     // Construct a string representing the current XML element.
@@ -3663,128 +3873,18 @@ public class MoMLParser extends HandlerBase {
      */
     private NamedObj _parse(MoMLParser parser, URL base, String source)
             throws Exception {
-        URL xmlFile = null;
-        StringBuffer errorMessage = new StringBuffer();
-        InputStream input = null;
+        _xmlFile = fileNameToURL(source, base);
+        InputStream input = _xmlFile.openStream();
         try {
-            xmlFile = new URL(base, source);
-
-            // Security concern here.  Warn if external source.
-            // and we are not running within an applet.
-            // The warning method will throw a CancelException if the
-            // user clicks "Cancel".
-            String protocol = xmlFile.getProtocol();
-            if (protocol != null
-                    && protocol.trim().toLowerCase().equals("http")) {
-                SecurityManager security = System.getSecurityManager();
-                boolean withinUntrustedApplet = false;
-                if (security != null) {
-                    try {
-                        // This is sort of arbitrary, but seems to be the
-                        // closest choice.
-                        security.checkCreateClassLoader();
-                    } catch (SecurityException securityException) {
-                        // If we are running under an untrusted applet.
-                        // then a SecurityException will be thrown,
-                        // and we can rely on the Applet protection
-                        // mechanism to protect the user against
-                        // a wayward model.
-
-                        // Note that if the jar files were signed
-                        // for use with Web Start, then we are in a trusted
-                        // applet, so the SecurityException will _not_
-                        // be thrown and withinUntrustedApplet will be false.
-
-                        withinUntrustedApplet = true;
-                    }
-                }
-                if ((security == null || withinUntrustedApplet == false)
-                        && !_approvedRemoteXmlFiles.contains(xmlFile)) {
-
-                    // If the xmlFile and _base have a common root,
-                    // then the code is ok.
-                    String xmlFileBase =
-                        xmlFile.toString() .substring(0,
-                                xmlFile.toString().lastIndexOf("/"));
-
-                    if (_base == null
-                            || !xmlFileBase.startsWith(_base.toString())) {
-                        MessageHandler.warning("Security concern:\n"
-                                + "About to look for MoML from the "
-                                + "net at address:\n"
-                                + xmlFile.toExternalForm()
-                                + "\nOK to proceed?");
-                    }
-
-                    // If we get to here, the the user did not hit cancel,
-                    // so we cache the file
-                    _approvedRemoteXmlFiles.add(xmlFile);
-                }
-            }
-            input = xmlFile.openStream();
-        } catch (IOException ioException) {
-            errorMessage.append("-- " + ioException.getMessage() + "\n");
-            // The error messages used to be more verbose, uncomment
-            // the next line if you would like to know what failed and why
-            // errorMessage.append(
-            //        "\n    base: " + base
-            //        + "\n    source: " + source
-            //        + "\n    xmlFile: " + xmlFile
-            //        + "\n" +KernelException.stackTraceToString(ioException));
-
-            // That failed.  Try opening it relative to the classpath.
-            xmlFile = _classLoader.getResource(source);
-            if (xmlFile != null) {
-                input = xmlFile.openStream();
-            } else {
-                errorMessage.append(
-                        "-- XML file not found relative to classpath.\n");
-
-                // Failed to open relative to the classpath.
-                // Try relative to the current working directory.
-                // NOTE: This is last because it will fail with a
-                // security exception in applets.
-                String cwd = StringUtilities.getProperty("user.dir");
-                if (cwd != null) {
-                    try {
-                        // We have to append a trailing "/" here for this to
-                        // work under Solaris.
-                        base = new URL("file", null, cwd + File.pathSeparator);
-                        xmlFile = new URL(base, source);
-                        input = xmlFile.openStream();
-                    } catch (Exception exception) {
-                        errorMessage.append(
-                                "-- "
-                                + cwd
-                                + File.pathSeparator
-                                + source
-                                + exception.getMessage()
-                                + "\n");
-                    }
-                }
-            }
-        }
-        if (input == null) {
-            throw new XmlException(
-                    errorMessage.toString(),
-                    _currentExternalEntity(),
-                    _parser.getLineNumber(),
-                    _parser.getColumnNumber());
-        }
-        // If we get here, then xmlFile cannot possibly be null.
-        try {
-            _xmlFile = xmlFile;
-            try {
-                NamedObj toplevel = parser.parse(xmlFile, input);
-                input.close();
-                return toplevel;
-            } finally {
-                _xmlFile = null;
-            }
+            NamedObj toplevel = parser.parse(_xmlFile, input);
+            input.close();
+            return toplevel;
         } catch (CancelException ex) {
             // Parse operation cancelled.
-            input.close();
             return null;
+        } finally {
+            input.close();
+            _xmlFile = null;
         }
     }
 
@@ -4167,6 +4267,8 @@ public class MoMLParser extends HandlerBase {
             // Check that it's a class.
             if (candidate.isClassDefinition()) {
                 // Check that its source matches.
+                // FIXME: This isn't right... Need to check that
+                // it's the same file, not that the string matches.
                 String candidateSource = candidate.getMoMLInfo().source;
 
                 if (source == null && candidateSource == null) {
@@ -4180,9 +4282,14 @@ public class MoMLParser extends HandlerBase {
         return null;
     }
     
-    // Given a name that is either absolute (with a leading period)
-    // or relative to _current, find a component entity with that name.
-    // Return null if it is not found
+    /** Given a name that is either absolute (with a leading period)
+     *  or relative to _current, find a component entity with that name.
+     *  Return null if it is not found.
+     *  @param name The name of the entity.
+     *  @return An entity with the specified name, or null if none is found.
+     *  @throws XmlException If the name refers to an entity in an
+     *   innappropriate context.
+     */
     private ComponentEntity _searchForEntity(String name) throws XmlException {
 
         // If the name is absolute, we first have to find a
@@ -4386,8 +4493,9 @@ public class MoMLParser extends HandlerBase {
     // of this class.
     private static List _filterList = null;
 
-    // List of top-level entities imported via import element.
-    private List _imports;
+    // List of top-level entities imported via import element
+    // and of MoML classes loaded in order to instantiate them.
+    private static Map _imports;
     
     // List of link or unlink requests.
     private List _linkRequests;

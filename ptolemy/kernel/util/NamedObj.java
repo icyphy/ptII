@@ -456,20 +456,6 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
                 // that is the case.  It cannot be done here because
                 // we don't know the name of the new class.
                 newObject._MoMLInfo.className = _MoMLInfo.className;
-                newObject._MoMLInfo.superclass = _MoMLInfo.superclass;
-
-                /* NOTE: This is what we used to do, which isn't right
-                   because we don't know whether the class is being
-                   cloned or extended.
-                   // If the master is a class, then the name of the master
-                   // becomes the class name of the instance.
-                   if (getMoMLInfo().elementName.equals("class")) {
-                   newObject._setDeferMoMLDefinitionTo(this);
-                   newObject._MoMLInfo.className = getFullName();
-                   } else {
-                   newObject._MoMLInfo.className = _MoMLInfo.className;
-                   }
-                */
             }
 
             _cloneFixAttributeFields(newObject);
@@ -1973,14 +1959,15 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
         protected MoMLInfo(NamedObj owner) {
             Class ownerClass = owner.getClass();
             className = ownerClass.getName();
-            superclass = ownerClass.getSuperclass().getName();
         }
 
         ///////////////////////////////////////////////////////////////
         ////                     public members                    ////
 
         /** The MoML class name, which defaults to the Java
-         *  class name of the enclosing class.
+         *  class name of the enclosing class.  This is either the
+         *  class of which this object is an instance, or if this
+         *  object is itself a class, then the class that it extends.
          */
         public String className;
 
@@ -1989,10 +1976,6 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
          *  was defined).
          */
         public String source;
-
-        /** The superclass of this class.
-         */
-        public String superclass;
     }
     
     /** This class is an iterator over all the contained objects
