@@ -30,7 +30,6 @@
 package ptolemy.copernicus.shallow;
 
 import ptolemy.actor.CompositeActor;
-import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.CastAndInstanceofEliminator;
 import ptolemy.copernicus.kernel.KernelMain;
 import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;

@@ -32,7 +32,6 @@ package ptolemy.copernicus.shallow;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIORelation;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.copernicus.kernel.ActorTransformer;
 import ptolemy.copernicus.kernel.EntitySootClass;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
@@ -155,7 +154,8 @@ public class ShallowModelTransformer extends SceneTransformer {
                 + phaseName + ", " + options + ")");
 
         // create a class for the model
-        String modelClassName = ActorTransformer.getInstanceClassName(_model, options);
+        String modelClassName = Options.getString(options, "targetPackage")
+            + ".CG" + SootUtilities.sanitizeName(_model.getName());
 
         EntitySootClass modelClass =
             new EntitySootClass(PtolemyUtilities.compositeActorClass, modelClassName,
