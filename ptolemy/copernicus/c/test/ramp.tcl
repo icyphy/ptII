@@ -96,16 +96,16 @@ test ramp-1.1 {Generate .c, .i.h, and .h files for ramp.xml} {
     list  \
         [file readable $outputDirectory/.CGModelfileTest.c] \
         [file readable $outputDirectory/.CGModelfileTest.h] \
-        [file readable $outputDirectory/.CGModelfileTest.i.h] \
+        [file readable $outputDirectory/.CGModelfileTest_i.h] \
         [file readable $outputDirectory/.CGramp.c] \
         [file readable $outputDirectory/.CGramp.h] \
-        [file readable $outputDirectory/.CGramp.i.h] \
+        [file readable $outputDirectory/.CGramp_i.h] \
         [file readable $outputDirectory/.CGsink.c] \
         [file readable $outputDirectory/.CGsink.h] \
-        [file readable $outputDirectory/.CGsink.i.h] \
+        [file readable $outputDirectory/.CGsink_i.h] \
         [file readable $outputDirectory/.Main.c] \
         [file readable $outputDirectory/.Main.h] \
-        [file readable $outputDirectory/.Main.i.h] \
+        [file readable $outputDirectory/.Main_i.h] \
 } {1 1 1 1 1 1 1 1 1 1 1 1}
 
 

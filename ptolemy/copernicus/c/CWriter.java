@@ -125,7 +125,7 @@ public class CWriter extends SceneTransformer {
             System.out.println("Generating C code files for " + fileName);
             String code = null;
             code = iGenerator.generate(sootClass);
-            FileHandler.write(fileName + ".i.h", code);
+            FileHandler.write(fileName + "_i.h", code);
             code = hGenerator.generate(sootClass);
             FileHandler.write(fileName + ".h", code);
             code = cGenerator.generate(sootClass);
