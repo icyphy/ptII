@@ -290,7 +290,7 @@ public class UtilityFunctions {
      *  @return A new array that is the result of applying the function
      *   repeatedly.
      *  @exception IllegalActionException If the specified function does not
-     * 	 take exactly one argument, or if an error occurs applying the function.
+     *          take exactly one argument, or if an error occurs applying the function.
      */
     public static ArrayToken iterate(
             FunctionToken function, int length, Token initial)
@@ -504,7 +504,7 @@ public class UtilityFunctions {
      *  @return A new array that is the result of applying the function
      *   to the specified array.
      *  @exception IllegalActionException If the specified function does not
-     * 	 take at least one argument, or if an error occurs applying the
+     *          take at least one argument, or if an error occurs applying the
      *   function, or if the number of arguments does not match the subarray
      *   lengths.
      */
@@ -1096,7 +1096,7 @@ public class UtilityFunctions {
      *  This method uses the isCloseTo() method of the first token.
      *  @param token1 The first token.
      *  @param token2 The second token.
-     * 	@param distance The distance criterion.
+     *         @param distance The distance criterion.
      *  @return a true-valued token if the first two arguments are close
      *   enough.
      *  @exception IllegalActionException If the first two arguments cannot

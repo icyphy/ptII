@@ -378,11 +378,11 @@ public class ParseTreeEvaluator extends AbstractParseTreeVisitor {
                     collector.collectFreeVariables(node, _scope);
                 _evaluatedChildToken =
                     MatlabUtilities.evaluate(expression, freeVariables,_scope);
-		return;
+                return;
             } else {
                 throw new IllegalActionException("The function \"matlab\" is" +
                         " reserved for invoking the matlab engine, and takes" +
-		        " a string matlab expression argument followed by" +
+                        " a string matlab expression argument followed by" +
                         " a list of variable names that the matlab expression" +
                         " refers to.");
             }

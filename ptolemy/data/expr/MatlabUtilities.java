@@ -54,7 +54,7 @@ import java.util.StringTokenizer;
 public class MatlabUtilities {
 
     /** Evaluate a Matlab expression within a scope.
-     *	The expression argument is of the form
+     *        The expression argument is of the form
      *  <em>matlab("expression", arg1, arg2, ...)</em>, where
      *  <em>arg1, arg2, ... </em>is a list of Variables appearing in
      *  <em>"expression"</em>. Note that this form of invoking matlab
@@ -84,34 +84,34 @@ public class MatlabUtilities {
     (String expression, Set variableNames, ParserScope scope)
             throws IllegalActionException {
 
-	try {
-	    if (_engineClass == null) {
-		_initialize();
-	    }
-	    ptolemy.data.Token result = null;
+        try {
+            if (_engineClass == null) {
+                _initialize();
+            }
+            ptolemy.data.Token result = null;
 
-	    //MatlabEngineInterface matlabEngine =
-	    //    MatlabEngineFactory.createEngine();
+            //MatlabEngineInterface matlabEngine =
+            //    MatlabEngineFactory.createEngine();
 
-	    // Engine matlabEngine = new Engine();
+            // Engine matlabEngine = new Engine();
 
-	    Object matlabEngine = null;
-	    try {
-		matlabEngine = _engineClass.newInstance();
-	    } catch (InstantiationException ex) {
-		throw new IllegalActionException(null, ex,
+            Object matlabEngine = null;
+            try {
+                matlabEngine = _engineClass.newInstance();
+            } catch (InstantiationException ex) {
+                throw new IllegalActionException(null, ex,
                         "Failed to instantiate ptolemy.matlab.Engine");
-	    }
+            }
 
-	    //long[] engine = matlabEngine.open();
+            //long[] engine = matlabEngine.open();
 
-	    // Opening the matlab engine each time is very slow
-	    _engine = (long []) _engineOpen
-		.invoke(matlabEngine, new Object[0]);
-	
-	    try {
-	    
-		synchronized (
+            // Opening the matlab engine each time is very slow
+            _engine = (long []) _engineOpen
+                .invoke(matlabEngine, new Object[0]);
+        
+            try {
+            
+                synchronized (
                         //matlabEngine.getSemaphore();
                         _engine ) {
                     // matlabEngine is not very good since it is
@@ -122,77 +122,77 @@ public class MatlabUtilities {
                     // Engine every time (see updated javadoc for this
                     // function).
 
-		    String addPathCommand = null;         // Assume none
-		    ptolemy.data.Token previousPath = null;
-		    ptolemy.data.Token packageDirectories = null;
-		    if (scope != null) {
-			packageDirectories =
-			    scope.get("packageDirectories");
-		    }
-		    if (packageDirectories != null &&
+                    String addPathCommand = null;         // Assume none
+                    ptolemy.data.Token previousPath = null;
+                    ptolemy.data.Token packageDirectories = null;
+                    if (scope != null) {
+                        packageDirectories =
+                            scope.get("packageDirectories");
+                    }
+                    if (packageDirectories != null &&
                             packageDirectories instanceof StringToken) {
-			StringTokenizer dirs = new
-			    StringTokenizer
-			    ((String)((StringToken)packageDirectories
-				      ).stringValue(), ",");
-			StringBuffer cellFormat = new StringBuffer(512);
-			cellFormat.append("{");
-			if (dirs.hasMoreTokens()) {
-			    cellFormat.append
-				("'" + UtilityFunctions
+                        StringTokenizer dirs = new
+                            StringTokenizer
+                            ((String)((StringToken)packageDirectories
+                                      ).stringValue(), ",");
+                        StringBuffer cellFormat = new StringBuffer(512);
+                        cellFormat.append("{");
+                        if (dirs.hasMoreTokens()) {
+                            cellFormat.append
+                                ("'" + UtilityFunctions
                                         .findFile(dirs.nextToken()) + "'");
-			}
-			while (dirs.hasMoreTokens()) {
-			    cellFormat.append
-				(",'" + UtilityFunctions
+                        }
+                        while (dirs.hasMoreTokens()) {
+                            cellFormat.append
+                                (",'" + UtilityFunctions
                                         .findFile(dirs.nextToken()) + "'");
-			}
-			cellFormat.append("}");
-		    
-			if (cellFormat.length() > 2) {
-			    addPathCommand = "addedPath_=" +
-				cellFormat.toString()
-				+ ";addpath(addedPath_{:});";
+                        }
+                        cellFormat.append("}");
+                    
+                        if (cellFormat.length() > 2) {
+                            addPathCommand = "addedPath_=" +
+                                cellFormat.toString()
+                                + ";addpath(addedPath_{:});";
 
-			    //matlabEngine.evalString
-			    //    (engine, "previousPath_=path");
-			    _engineEvalString.invoke(matlabEngine,
+                            //matlabEngine.evalString
+                            //    (engine, "previousPath_=path");
+                            _engineEvalString.invoke(matlabEngine,
                                     new Object[] {
                                         _engine, "previousPath_=path"
                                     });
 
-			    //previousPath = matlabEngine.get
-			    //    (engine, "previousPath_");
-			    previousPath = (ptolemy.data.Token)
-			    	_engineGet.invoke(matlabEngine,
+                            //previousPath = matlabEngine.get
+                            //    (engine, "previousPath_");
+                            previousPath = (ptolemy.data.Token)
+                                    _engineGet.invoke(matlabEngine,
                                         new Object[] {
                                             _engine, "previousPath_"
                                         });
 
-			}
-		    }
-		    //matlabEngine.evalString
-		    //    (engine, "clear variables;clear globals");
-		    _engineEvalString.invoke(matlabEngine,
+                        }
+                    }
+                    //matlabEngine.evalString
+                    //    (engine, "clear variables;clear globals");
+                    _engineEvalString.invoke(matlabEngine,
                             new Object[] {
                                 _engine, "clear variables;clear globals"
                             });
 
-		    if (addPathCommand != null) {
-			// matlabEngine.evalString(engine, addPathCommand);
-			_engineEvalString.invoke(matlabEngine,
+                    if (addPathCommand != null) {
+                        // matlabEngine.evalString(engine, addPathCommand);
+                        _engineEvalString.invoke(matlabEngine,
                                 new Object[] {
                                     _engine, addPathCommand
                                 });
-		    }
+                    }
 
-		    // Set matlab variables required for evaluating the
-		    // expression
-		    if (!variableNames.isEmpty()) {
-			Iterator names = variableNames.iterator();
-			while (names.hasNext()) {
+                    // Set matlab variables required for evaluating the
+                    // expression
+                    if (!variableNames.isEmpty()) {
+                        Iterator names = variableNames.iterator();
+                        while (names.hasNext()) {
                             String name = (String)names.next();
-			    ptolemy.data.Token token = scope.get(name);
+                            ptolemy.data.Token token = scope.get(name);
                             if (token != null) {
                                 //matlabEngine.put
                                 //    (engine, name, token);
@@ -200,53 +200,53 @@ public class MatlabUtilities {
                                     (matlabEngine, new Object[]
                                         {_engine, name, token});
                             }
-			}
-		    }
-		    //matlabEngine.evalString(engine,
-		    //        "result__=" + expression);
-		    _engineEvalString.invoke(matlabEngine,
+                        }
+                    }
+                    //matlabEngine.evalString(engine,
+                    //        "result__=" + expression);
+                    _engineEvalString.invoke(matlabEngine,
                             new Object[] {
                                 _engine, "result__=" + expression
                             });
 
-		    //result = matlabEngine.get(engine, "result__");
-		    result = (ptolemy.data.Token)
-			_engineGet.invoke(matlabEngine,
+                    //result = matlabEngine.get(engine, "result__");
+                    result = (ptolemy.data.Token)
+                        _engineGet.invoke(matlabEngine,
                                 new Object[] {
                                     _engine, "result__"
                                 });
 
-		    if (previousPath != null) {
+                    if (previousPath != null) {
                         // Restore the original engine path
                         //matlabEngine.put
                         //    (engine, name, token);
                         _enginePut.invoke
                             (matlabEngine, new Object[]
                                 {_engine, "previousPath_", previousPath});
-			// matlabEngine.evalString(engine, "path(previousPath_)");
-			_engineEvalString.invoke(matlabEngine,
+                        // matlabEngine.evalString(engine, "path(previousPath_)");
+                        _engineEvalString.invoke(matlabEngine,
                                 new Object[] {_engine, "path(previousPath_)" });
-		    }
-		}
-	    }
-	    finally {
-		//matlabEngine.close(engine);
-		_engineClose.invoke(matlabEngine,
+                    }
+                }
+            }
+            finally {
+                //matlabEngine.close(engine);
+                _engineClose.invoke(matlabEngine,
                         new Object[] {
                             _engine
                         });
 
-	    }
-	    return result;
-	} catch (IllegalAccessException ex) {
-	    throw new IllegalActionException(null, ex,
+            }
+            return result;
+        } catch (IllegalAccessException ex) {
+            throw new IllegalActionException(null, ex,
                     "Problem invoking a method on "
                     + "ptolemy.matlab.Engine");
-	} catch (InvocationTargetException ex) {
-	    throw new IllegalActionException(null, ex,
+        } catch (InvocationTargetException ex) {
+            throw new IllegalActionException(null, ex,
                     "Problem invoking a method of "
                     + "ptolemy.matlab.Engine");
-	}
+        }
 
     }
 
@@ -256,56 +256,56 @@ public class MatlabUtilities {
     // Initialize private variables.
     private static void _initialize() throws IllegalActionException {
 
-	// These could be in the constructor, but since the evaluate()
-	// method is a static method, we break out the functionality into
-	// a separate method.
+        // These could be in the constructor, but since the evaluate()
+        // method is a static method, we break out the functionality into
+        // a separate method.
 
-	// Use reflection so that we can compile without
-	// ptolemy.matlab and we check to see if is present at runtime.
+        // Use reflection so that we can compile without
+        // ptolemy.matlab and we check to see if is present at runtime.
 
-	try {
-	    _engineClass = Class.forName("ptolemy.matlab.Engine");
-	} catch (Throwable throwable) {
-	    // UnsatsifiedLinkError is an Error, not an Exception, so
-	    // we catch Throwable
-	    throw new IllegalActionException(null, throwable,
+        try {
+            _engineClass = Class.forName("ptolemy.matlab.Engine");
+        } catch (Throwable throwable) {
+            // UnsatsifiedLinkError is an Error, not an Exception, so
+            // we catch Throwable
+            throw new IllegalActionException(null, throwable,
                     "Failed to load ptolemy.matlab.Engine class");
-	}
+        }
 
-	try {
-	    // Methods of ptolemy.matlab.Engine, in alphabetical order.
+        try {
+            // Methods of ptolemy.matlab.Engine, in alphabetical order.
 
-	    _engineClose = _engineClass.getMethod("close",
+            _engineClose = _engineClass.getMethod("close",
                     new Class[] {
                         long[].class
                     });
 
 
-	    _engineEvalString = _engineClass.getMethod("evalString",
+            _engineEvalString = _engineClass.getMethod("evalString",
                     new Class[] {
                         long[].class,
                         String.class
                     });
 
-	    _engineGet = _engineClass.getMethod("get",
+            _engineGet = _engineClass.getMethod("get",
                     new Class[] {
                         long[].class,
                         String.class
                     });
 
-	    _engineOpen = _engineClass.getMethod("open", new Class[0]);
+            _engineOpen = _engineClass.getMethod("open", new Class[0]);
 
-	    _enginePut = _engineClass.getMethod("put",
+            _enginePut = _engineClass.getMethod("put",
                     new Class[] {
                         long[].class,
                         String.class,
                         ptolemy.data.Token.class
                     });
-	} catch (NoSuchMethodException ex) {
-	    throw new IllegalActionException(null, ex,
+        } catch (NoSuchMethodException ex) {
+            throw new IllegalActionException(null, ex,
                     "Problem finding a method of "
                     + "ptolemy.matlab.Engine");
-	}
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
