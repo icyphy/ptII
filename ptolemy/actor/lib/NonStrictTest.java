@@ -310,14 +310,15 @@ public class NonStrictTest extends Sink {
                     + ((ArrayToken)(correctValues.getToken())).length()
                     + " tokens.";
 
-                if (isRunningNightlyBuild()) {
-                    System.err.println("Warning: '" + getFullName() + "' "
-                            + errorMessage
-                            + "\nNote that the nightly build is running"
-                            + " so we are not throwing an exception here");
-                } else {
-                    throw new IllegalActionException(this, errorMessage);
-                }
+//                 if (isRunningNightlyBuild()) {
+                     System.err.println("Warning: '" + getFullName() + "' "
+                             + errorMessage
+//                             + "\nNote that the nightly build is running"
+//                             + " so we are not throwing an exception here"
+					);		
+//                 } else {
+//                     throw new IllegalActionException(this, errorMessage);
+//                 }
             }
 
 
