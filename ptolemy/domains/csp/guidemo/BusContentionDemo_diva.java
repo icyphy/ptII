@@ -290,20 +290,22 @@ public class BusContentionDemo_diva {
                     public void run () {
                         switch (state) {
                         case 1:
-                            figure.setFillPaint(Color.red);
+                            figure.setFillPaint(Color.yellow);
                             break;
                         
                         case 2:
-                            figure.setFillPaint(Color.yellow);
+                            figure.setFillPaint(Color.green);
                             break;
                         
                         case 3:
-                            figure.setFillPaint(Color.yellow);
+                            figure.setFillPaint(Color.red);
                             break;
 
+			/*
                         case 4:
                             figure.setFillPaint(Color.green);
                             break;
+			*/
 
                         default:
                             System.out.println("Unknown state: " + state);
@@ -344,7 +346,8 @@ public class BusContentionDemo_diva {
             if (isEllipse) {
                 f = new BasicEllipse(0, 0, _size, _size);
             } else {
-                f = new BasicRectangle(0, 0, _size, _size);
+                f = new BasicRectangle(0, 0, _size, _size); 
+		f.setFillPaint(Color.blue);
             }
             String label = actor.getName();
             System.out.println("Actor " + actor + " has label " + label);
