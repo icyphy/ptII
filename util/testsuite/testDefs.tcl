@@ -623,7 +623,8 @@ if ![info exists timeOutSeconds] {
 if {"$isRunningNightlyBuild" == "true" \
 	|| "$timeOutSeconds" != "" } {
     if {"$timeOutSeconds" == ""} {
-       set timeOutSeconds 1500
+	# This timeout should be long enough to run tests in copernicus/c/test
+        set timeOutSeconds 2400
     }
     puts "testDefs.tcl: setting time out to\
 	$timeOutSeconds seconds"
