@@ -47,16 +47,16 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	RampApplet.java \
-	SDFPort.java \
-	SDFRamp.java \
-	SDFPlot.java \
-	SDFPrint.java\
-	SDFStar.java \
-	StatusArrayTest.java \
-	Sample.java \
-	SampleTarget.java \
-	SampleSDFExecutive.java
+#	RampApplet.java \
+#	SDFPort.java \
+#	SDFRamp.java \
+#	SDFPlot.java \
+#	SDFPrint.java\
+#	SDFStar.java \
+#	StatusArrayTest.java \
+#	Sample.java \
+#	SampleTarget.java \
+#	SampleSDFExecutive.java
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
