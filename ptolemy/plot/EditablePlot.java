@@ -314,7 +314,7 @@ public class EditablePlot extends Plot {
             Enumeration listeners = _editListeners.elements();
             while (listeners.hasMoreElements()) {
                 ((EditListener)listeners.nextElement()).
-                    editDataModified(this,dataset);
+                    editDataModified(this, dataset);
             }
         }
     }
