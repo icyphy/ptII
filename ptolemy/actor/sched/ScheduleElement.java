@@ -69,20 +69,22 @@ public abstract class ScheduleElement {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /** Return the actor invocation sequence of the schedule in the 
+    /** Return the actor invocation sequence of the schedule in the 
      *  form of a sequence of actors. For a valid schedule, all of the
-     *  bottem nodes should be an instance of Firing. If not, then
-     *  the returned iterator will contain null elements.
+     *  lowest-level nodes should be an instance of Firing. If the
+     *  schedule is not valid, then the returned iterator will contain 
+     *  null elements.
      *  
      * @return An iterator over a sequence of actors.
      */
     public abstract Iterator actorIterator();
 
-    /** Return the actor invocation sequence of the schedule in the form
-     *  of a sequence of firings.
-     *  Thus, next() will return a firing.
+    /** Return the actor invocation sequence in the form
+     *  of a sequence of firings. For a valid schedule, all of the
+     *  lowest-level nodes must be an instance of Firing. If not, then
+     *  the returned iterator will contain null elements.
      *  
-     *  @return The iterator.
+     *  @return An iterator over a sequence of firings.
      */
     public abstract Iterator firingIterator();
 
@@ -109,5 +111,6 @@ public abstract class ScheduleElement {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // The iteration count for this schedule element.
     private int _iterationCount = 1;
 }

@@ -69,10 +69,12 @@ public class Firing extends ScheduleElement {
     ////                         public methods                    ////
 
     /** Return the actor invocation sequence of the schedule in the 
-     *  form of a sequence of actors.
-     *  Thus, next() will return an actor.
+     *  form of a sequence of actors. For a valid schedule, all of the
+     *  lowest-level nodes should be an instance of Firing. If the
+     *  schedule is not valid, then the returned iterator will contain 
+     *  null elements.
      *  
-     * @return The iterator.
+     * @return An iterator over a sequence of actors.
      */
     public Iterator actorIterator() {
 	// Update the list of actors, if necessary.
@@ -80,12 +82,12 @@ public class Firing extends ScheduleElement {
 	return _actorInvocations.iterator();
     }
 
-    /** Return the actor invocation sequence of the schedule in the form
-     *  of a sequence of firings. Thus, next() will return a firing.
+    /** Return the actor invocation sequence in the form
+     *  of a sequence of firings. 
      *  Since this ScheduleElement is a Firing, the
      *  iterator returned will contain exactly one Firing (this Firing).
      *  
-     *  @return The iterator.
+     *  @return An iterator over a sequence of firings.
      */
     public Iterator firingIterator() {
 	return _firing.iterator();	
@@ -98,16 +100,15 @@ public class Firing extends ScheduleElement {
      * @return The actor associated with this Firing.
      */
     public Executable getActor() {
-	// Or return null?
 	return _actor;
     }
 
-    /** Set the actor that corresponds to this firing. This actor will
+    /** Set the actor associated with this firing. This actor will
      *  then be returned when the getActor() method is invoked. If this
-     *  firing already contains an actor, then that actor will be
-     *  replaced with the new one.
+     *  firing already contains a reference to an actor, then the
+     *  reference will overwritten.
      *
-     * @return The actor associated with this firing.
+     * @param actor The actor to associate with this firing.
      */
     public void setActor(Executable actor) {
 	_actor  = actor;
@@ -117,9 +118,9 @@ public class Firing extends ScheduleElement {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods               ////
 
-    /** Update the list of actor invocations. The list needs to be
-     *  updated when setActor() has been invoked since the last
-     *  invocation of actorIterator().
+    /** Update the list of actor invocations, if necessary. The list 
+     *  needs to be updated when setActor() has been invoked since 
+     *  the last invocation of actorIterator().
      *
      */
     private void _updateActorInvocations() {

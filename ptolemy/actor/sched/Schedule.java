@@ -37,25 +37,36 @@ import java.util.Iterator;
 //////////////////////////////////////////////////////////////////////////
 //// Schedule
 /**
-This class is a schedule. More specifically, this class is a schedule
-element that contains a schedule. This class is 
-used together with Firing to construct a static schedule. A schedule 
+This class is a schedule. A schedule 
 consists of an iteration count and a list of schedule elements.
-A schedule element can contain an actor, or it can contain another 
-schedule. For a valid schedule, all of the lowest-level schedule elements 
-must contain an actor. It is up to the scheduler to enforce this, however. 
-The Schedule class is a schedule element that contains a schedule. The 
-Firing class is a schedule element that contains an actor. Therefore,
-the top-level schedule element must be an instance of Schedule, and all
-of the lowest-level elements must each be an instance of Firing.
+A schedule element can correspond to a single actor, or a schedule
+element can itself be a schedule. This nesting can be arbitrarily deep.
+However, for the schedule to be valid, all of the lowest-level schedule elements 
+must correspond to an actor. If this were not the case, then the actor
+invocation sequence corresponding to the schedule would contain null
+elements. It is up to the scheduler to enforce this requirement.
 <p>
 <h1>Terminology</h1>
-A schedule loop has the form (n,S<sub>1</sub>,S<sub>2</sub>...,S<sub>m</sub>)
+A schedule (or schedule loop) has the form 
+(n,S<sub>1</sub>,S<sub>2</sub>...,S<sub>m</sub>)
 where n is a positive integer called the iteration count, and S<sub>i</sub> 
-is either another schedule loop or an actor. The schedule can be expressed as a sequence gS<sub>1</sub>S<sub>2</sub>...S<sub>m</sub> where 
-S<sub>i</sub> is either an actor or a schedule loop.
+is either another schedule loop or an actor. The schedule can be expressed as 
+a sequence S<sub>1</sub>S<sub>2</sub>...S<sub>m</sub> where 
+S<sub>i</sub> is either an actor or a schedule loop. 
 <p>
 <h1>Usage</h1>
+In this implementation,
+if S<sub>i</sub> corresponds to an actor, then S<sub>i</sub> will be an
+instance of class Firing.
+Otherwise, if S<sub>i</sub> corresponds to a schedule, then S<sub>i</sub>
+will be an instance of Schedule.
+<p>
+The Schedule class is a schedule element that contains an iteration
+count and a list of schedule elements. The 
+Firing class is a schedule element that contains only a reference to
+an actor and an iteration count for that actor. Therefore,
+the top-level schedule element must be an instance of Schedule, and all
+of the lowest-level schedule elements must be an instance of Firing.
 The iteration count is set by the setIterationCount() method. If this
 method is not invoked, a default value of one will be used.
 The add() and remove() methods are used to add or remove schedule elements.
@@ -67,7 +78,7 @@ occur.
 As an example, suppose that we have an SDF graph containing actors
 A, B, C, and D, with the schedule A(3BC)(2D).
 The schedule can written as S = S<sub>1</sub>S<sub>2</sub>S<sub>3</sub>,
-where S<sub>1</sub> = A, S<sub>2</sub> = (3BC), and S<sub>1</sub> = 2D.
+where S<sub>1</sub> = A, S<sub>2</sub> = (3BC), and S<sub>3</sub> = 2D.
 To construct this schedule, create an instance of Schedule called S.
 Then add the schedule elements S<sub>1</sub>, S<sub>2</sub>, S<sub>3</sub>, and
 set an iteration count of 1, which is the default. S<sub>1</sub> will be an instance of Firing with a reference to actor A and an iteration count of 1.
@@ -76,25 +87,42 @@ S<sub>2,1</sub>, S<sub>2,2</sub>, and an iteration count of 3.
 S<sub>2,1</sub>, S<sub>2,2</sub> will each be an instance of Firing
 with an iteration count of 1 and a reference to actors B and C,
 respectively. S<sub>3</sub> will be an instance of Firing with
-a reference to actor D and an iteration count of 2.
+a reference to actor D and an iteration count of 2. The code to create
+this schedule appears below.
 <p>
 <code>
 Schedule S = new Schedule();
+<br>
 Firing S1 = new Firing();
+<br>
 Schedule S2 = new Schedule();
+<br>
 Firing S3 = new Firing();
+<br>
 S.add(S1);
+<br>
 S.add(S2);
+<br>
 S.add(S3);
+<br>
 S1.setActor(A);
+<br>
 S2.setIterationCount(3);
+<br>
 S2_1 = new Firing();
+<br>
 S2_2 = new Firing();
+<br>
 S2_1.setActor(B);
+<br>
 S2_2.setActor(C);
+<br>
 S2.add(S2_1);
+<br>
 S2.add(S2_2);
+<br>
 S3.setIterationCount(2);
+<br>
 S3.setActor(D);
 </code>
 <p>
@@ -123,8 +151,8 @@ public class Schedule extends ScheduleElement {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Append the specified schedule to the end of the schedule list. This
-     *  element will typically be an instance of Schedule or Firing.
+    /** Append the specified schedule element to the end of the schedule 
+     *  list. This element must be an instance of Schedule or Firing.
      *
      * @param sa The schedule element to add.
      */
@@ -132,11 +160,12 @@ public class Schedule extends ScheduleElement {
 	_schedule.add(sa);
     }
 
-    /** Insert the specified schedule at the specified position in the
-     *  List.
+    /** Insert the specified schedule element at the specified position in 
+     *  the schedule list. This element must be an instance of Schedule 
+     *  or Firing.
      *
      *  @param index The index at which the specified element is to be
-     *   inerted.
+     *   inserted.
      *  @param sa The schedule element to add.
      */
     public void add(int index, ScheduleElement sa) {
@@ -145,8 +174,9 @@ public class Schedule extends ScheduleElement {
 
     /** Return the actor invocation sequence of the schedule in the 
      *  form of a sequence of actors. For a valid schedule, all of the
-     *  bottem nodes should be an instance of Firing. If not, then
-     *  the returned iterator will contain null elements.
+     *  lowest-level nodes should be an instance of Firing. If the
+     *  schedule is not valid, then the returned iterator will contain 
+     *  null elements.
      *  
      * @return An iterator over a sequence of actors.
      */
@@ -168,12 +198,12 @@ public class Schedule extends ScheduleElement {
 	return returnActors.iterator();
     }
 
-    /** Return the actor invocation sequence of the schedule in the form
+    /** Return the actor invocation sequence of this schedule in the form
      *  of a sequence of firings. For a valid schedule, all of the
-     *  bottem nodes should be an instance of Firing. If not, then
+     *  lowest-level nodes must be an instance of Firing. If not, then
      *  the returned iterator will contain null elements.
      *  
-     *  @return The iterator.
+     *  @return An iterator over a sequence of firings.
      */
     public Iterator firingIterator() {
 	List returnFirings = new LinkedList();
@@ -193,18 +223,19 @@ public class Schedule extends ScheduleElement {
 	return returnFirings.iterator();
     }
 
-    /** Remove the schedule element at the specified postition in the
+    /** Remove the schedule element at the specified position in the
      *  schedule list.
      *
      *  @param index The index of the schedule element to be removed.
+     *  @return The schedule element that was removed.
      */ 
     public ScheduleElement remove(int index) {
 	return((ScheduleElement)_schedule.remove(index));
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
+    ////                         private variables                 ////
 
-    // The schedule.
+    // The list of schedule elements contained by this schedule.
     private List _schedule;
 }
