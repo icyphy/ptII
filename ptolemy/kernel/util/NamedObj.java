@@ -521,7 +521,7 @@ public class NamedObj implements Nameable, Debuggable,
      *  <pre>
      *  &lt;?xml version="1.0" standalone="no"?&gt;
      *  &lt;!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-     *      "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd"&gt;
+     *      "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd"&gt;
      *  </pre>
      *  <p>
      *  The text that is written is indented according to the specified
@@ -559,7 +559,7 @@ public class NamedObj implements Nameable, Debuggable,
             // Generate header information.
             output.write("<?xml version=\"1.0\" standalone=\"no\"?>\n"
                     + "<!DOCTYPE model PUBLIC \"-//UC Berkeley//DTD MoML 1//EN\"\n"
-                    + "    \"http://ptolemy.eecs.berkeley.edu/archive/moml.dtd\">\n");
+                    + "    \"http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd\">\n");
 
             // Correct the element name, if appropriate.
             if (momlElement.equals("entity")) {

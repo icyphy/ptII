@@ -1,6 +1,6 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="hello world" class="ptolemy.actor.TypedCompositeActor">
     <doc>ramp-recorder...  a good first start</doc>
     <director class="ptolemy.domains.sdf.kernel.SDFDirector">

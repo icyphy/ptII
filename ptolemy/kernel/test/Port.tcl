@@ -513,7 +513,7 @@ test Port-16.0 {Test exportMoML} {
     $a exportMoML
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/archive/moml.dtd">
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <model name="A" class="ptolemy.kernel.Entity">
     <port name="P1" class="ptolemy.kernel.Port">
     </port>
