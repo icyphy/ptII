@@ -1955,7 +1955,7 @@ public class MoMLParser extends HandlerBase {
         }
     }
 
-   // Attempt to find a MoML class.
+    // Attempt to find a MoML class.
     // If there is no source defined, then use the classpath.
     private ComponentEntity _attemptToFindMoMLClass(
             String className, String source) throws Exception {
@@ -1980,7 +1980,7 @@ public class MoMLParser extends HandlerBase {
             // Source is given.
             classAsFile = source;
         }
-       // Read external model definition in a new parser,
+        // Read external model definition in a new parser,
         // rather than in the current context.
         MoMLParser newParser = new MoMLParser(_workspace, _classLoader);
 
@@ -2008,7 +2008,7 @@ public class MoMLParser extends HandlerBase {
                 throw ex2;
             }
         }
-       if (candidateReference instanceof ComponentEntity) {
+        if (candidateReference instanceof ComponentEntity) {
             reference = (ComponentEntity)candidateReference;
         } else {
             throw new XmlException(
@@ -2303,7 +2303,7 @@ public class MoMLParser extends HandlerBase {
                     }
                 }
                 if ((security == null || withinApplet == false)
-		    && !_approvedRemoteXmlFiles.contains(xmlFile)) {
+                        && !_approvedRemoteXmlFiles.contains(xmlFile)) {
 		    // If the user invoked file -> Open URL
 		    // then do not warn for any URLS below the URL
 		    // they entered.
@@ -2314,21 +2314,21 @@ public class MoMLParser extends HandlerBase {
 		    String xmlFileBase = null;
 		    if (Top.getLastOverallURL() != null) {
 			lastOverallURLBase =
-			Top.getLastOverallURL()
-			.substring(0,
-				   Top.getLastOverallURL().lastIndexOf("/"));
+                            Top.getLastOverallURL()
+                            .substring(0,
+                                    Top.getLastOverallURL().lastIndexOf("/"));
 			xmlFileBase =
-			xmlFile.toString()
-			.substring(0,
-				   xmlFile.toString().lastIndexOf("/"));
+                            xmlFile.toString()
+                            .substring(0,
+                                    xmlFile.toString().lastIndexOf("/"));
 		    }
 		    if (Top.getLastOverallURL() == null
-			|| !xmlFileBase.startsWith(lastOverallURLBase)) {
+                            || !xmlFileBase.startsWith(lastOverallURLBase)) {
 			MessageHandler.warning("Security concern:\n"
-                            + "About to look for MoML from the "
-                            + "net at address:\n"
-                            + xmlFile.toExternalForm()
-                            + "\nOK to proceed?");
+                                + "About to look for MoML from the "
+                                + "net at address:\n"
+                                + xmlFile.toExternalForm()
+                                + "\nOK to proceed?");
 		    }
 		    // If we get to here, the the user did not hit cancel,
 		    // so we cache the file
