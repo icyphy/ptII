@@ -377,7 +377,6 @@ public class DDEDirector extends CompositeProcessDirector {
      *   input port.
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
-     */
     public boolean transferInputs(IOPort port) throws IllegalActionException {
         if (!port.isInput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
@@ -406,6 +405,7 @@ public class DDEDirector extends CompositeProcessDirector {
         }
         return trans;
     }
+     */
 
     /** Return true if it
      *  transfers data from an output port of the container to the
@@ -419,7 +419,6 @@ public class DDEDirector extends CompositeProcessDirector {
      *   output port.
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
-     */
     public boolean transferOutputs(IOPort port) throws IllegalActionException {
         if (!port.isOutput() || !port.isOpaque()) {
             throw new IllegalActionException(this, port,
@@ -452,6 +451,7 @@ public class DDEDirector extends CompositeProcessDirector {
         }
         return trans;
     }
+     */
 
     ///////////////////////////////////////////////////////////////////
     ////                        protected methods                  ////

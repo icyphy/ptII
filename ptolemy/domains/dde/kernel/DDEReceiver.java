@@ -130,6 +130,14 @@ public class DDEReceiver extends PrioritizedTimedQueue
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Get a token from the mailbox receiver and specify a null
+     *  Branch to control the execution of this method. 
+     * @return The token contained by this receiver.
+     */
+    public Token get() {
+        return get(null);
+    }
+    
     /** Return a token from the queue. If no token is available,
      *  then throw a NoTokenException. If at any point during
      *  this method this receiver is scheduled for termination,
@@ -146,7 +154,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  hasToken() returns false.
      * @see #hasToken()
      */
-    public Token get() throws NoTokenException {
+    public Token get(Branch branch) throws NoTokenException {
 	if( !_hasTokenCache ) {
             throw new NoTokenException( getContainer(),
                     "Attempt to get token that does not have "
@@ -160,7 +168,8 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    }
 	    Token token = super.get();
 	    if( _writeBlocked ) {
-                director._actorUnBlocked(this);
+                // director._actorUnBlocked(this);
+                wakeUpBlockedPartner();
 		_writeBlocked = false;
 		notifyAll();
 	    }
@@ -185,6 +194,12 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	return true;
     }
 
+    /**
+     */
+    public boolean hasToken() {
+    	return hasToken(null);
+    }
+    
     /** Return true if the get() method of this receiver will return a
      *  token without throwing a NoTokenException. This method will
      *  perform a blocking read if this receiver is empty and has a
@@ -200,7 +215,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      * @return Return true if the get() method of this receiver will
      *  return a token without throwing a NoTokenException.
      */
-    public boolean hasToken() {
+    public boolean hasToken(Branch branch) {
 	Workspace workspace = getContainer().workspace();
         DDEDirector director = (DDEDirector)((Actor)
 		getContainer().getContainer()).getDirector();
@@ -268,7 +283,8 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    ////////////////////////
 	    if( !super.hasToken() && !_terminate && !sendNullTokens ) {
 	        _readBlocked = true;
-                director._actorBlocked(this);
+                prepareToBlock(branch);
+                // director._actorBlocked(this);
 	        while( _readBlocked && !_terminate ) {
 		    workspace.wait( this );
 	        }
@@ -280,7 +296,8 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    if( _terminate ) {
 	        if( _readBlocked ) {
 		    _readBlocked = false;
-		    director._actorBlocked(this);
+                    wakeUpBlockedPartner();
+		    // director._actorBlocked(this);
 	        }
                 throw new TerminateProcessException("");
 	    }
@@ -394,6 +411,27 @@ public class DDEReceiver extends PrioritizedTimedQueue
         return _writeBlocked;
     }
     
+    /**
+     */
+    public synchronized void prepareToBlock(Branch branch) 
+            throws TerminateBranchException {
+        if( branch != null ) {
+            branch.registerRcvrBlocked(this);
+            _otherBranch = branch;
+        } else {
+            DDEDirector director = ((DDEDirector)((Actor)
+        	    (getContainer().getContainer())).getDirector());
+            director._actorBlocked(this);
+            _otherBranch = branch;
+        }
+    }
+            
+    /**
+     */
+    public void put(Token token) {
+    	put(token, null);
+    }
+    
     /** Do a blocking write on the queue. Set the time stamp to be
      *  the current time of the sending actor. If this receiver is
      *  connected to a boundary port, then set the time stamp to
@@ -411,16 +449,22 @@ public class DDEReceiver extends PrioritizedTimedQueue
      *  will cease activity for the actor that contains this receiver.
      * @param token The token to put on the queue.
      */
-    public void put(Token token) {
+    public void put(Token token, Branch branch) {
 	Thread thread = Thread.currentThread();
 	double time = _lastTime;
 	if( thread instanceof DDEThread ) {
 	    TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
 	    time = timeKeeper.getOutputTime();
 	}
-	put( token, time );
+	put( token, time, branch );
     }
 
+    /**
+     */
+    public void put(Token token, double time) {
+    	put(token, time, null);
+    }
+    
     /** Do a blocking write on the queue. If at any point during
      *  this method this receiver is scheduled for termination,
      *  then throw a TerminateProcessException which will cease
@@ -435,7 +479,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      * @param token The token to put on the queue.
      * @param time The time stamp associated with the token.
      */
-    public void put(Token token, double time) {
+    public void put(Token token, double time, Branch branch) {
 	Thread thread = Thread.currentThread();
         Workspace workspace = getContainer().workspace();
         DDEDirector director = null;
@@ -452,7 +496,8 @@ public class DDEReceiver extends PrioritizedTimedQueue
             if( super.hasRoom() && !_terminate ) {
                 super.put(token, time);
 		if( _readBlocked ) {
-		    director._actorUnBlocked(this);
+		    // director._actorUnBlocked(this);
+                    wakeUpBlockedPartner();
 		    _readBlocked = false;
 		    notifyAll();
 		}
@@ -461,7 +506,8 @@ public class DDEReceiver extends PrioritizedTimedQueue
 
             if ( !super.hasRoom() && !_terminate ) {
 		_writeBlocked = true;
-                director._actorBlocked(this);
+                // director._actorBlocked(this);
+                wakeUpBlockedPartner();
 		while( _writeBlocked && !_terminate ) {
 		    workspace.wait( this );
 		}
@@ -470,7 +516,8 @@ public class DDEReceiver extends PrioritizedTimedQueue
             if( _terminate ) {
 		if( _writeBlocked ) {
 		    _writeBlocked = false;
-                    director._actorBlocked(this);
+                    // director._actorBlocked(this);
+                    prepareToBlock(branch);
 		}
                 throw new TerminateProcessException( getContainer(),
                         "This receiver has been terminated "
@@ -478,7 +525,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
             }
 	}
 
-        put(token, time);
+        put(token, time, branch);
     }
 
     /** Schedule this receiver to terminate. After this method is
@@ -504,6 +551,20 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	_boundaryDetector.reset();
     }
 
+    /**
+     */
+    public synchronized void wakeUpBlockedPartner() {
+        if( _otherBranch != null ) {
+            _otherBranch.registerRcvrUnBlocked(this);
+        } else {
+            DDEDirector director = ((DDEDirector)((Actor)
+        	    (getContainer().getContainer())).getDirector());
+            director._actorUnBlocked(this);
+            
+        }
+        notifyAll();
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                     package friendly methods   	   ////
 
@@ -539,5 +600,6 @@ public class DDEReceiver extends PrioritizedTimedQueue
     private boolean _hasTokenCache = false;
 
     private BoundaryDetector _boundaryDetector;
+    private Branch _otherBranch = null;
 
 }
