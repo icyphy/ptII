@@ -65,12 +65,6 @@ public final class CTExecutionPhase {
     public final static CTExecutionPhase CREATINGSTARTINGSTATES_PHASE 
         = new CTExecutionPhase("CREATINGSTARTINGSTATES_PHASE");
 
-//    /** This final static memeber indicates the director is in 
-//     *  a discrete phase execution. 
-//     */
-//    public final static CTExecutionPhase DISCRETE_PHASE 
-//        = new CTExecutionPhase();
-//
     /** This final static memeber indicates the director is firing dynamic
      *  actors. 
      */
@@ -106,6 +100,12 @@ public final class CTExecutionPhase {
      */
     public final static CTExecutionPhase GENERATINGWAVEFORMS_PHASE 
         = new CTExecutionPhase("GENERATINGWAVEFORMS_PHASE");
+
+    /** This final static memeber indicates the director is postfiring event
+     *  generators.
+     */
+    public final static CTExecutionPhase POSTFIRINGEVENTGENERATORS_PHASE
+        = new CTExecutionPhase("POSTFIRINGEVENTGENERATORS_PHASE");
 
     /** This final static memeber indicates the director is prefiring
      *  dynamic actors. 
