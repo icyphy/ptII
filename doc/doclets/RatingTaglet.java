@@ -225,13 +225,6 @@ public class RatingTaglet implements Taglet {
         }
     }
 
-//     private static void _register(Map tagletMap, Taglet taglet) {
-//         Taglet t = (Taglet) tagletMap.get(taglet.getName());
-//         if (t != null) {
-//             tagletMap.remove(taglet.getName());
-//         }
-//         tagletMap.put(taglet.getName(), taglet);
-//     }
 
     // The name of this taglet.
     private String _name;
