@@ -50,9 +50,21 @@ JSRCS = \
 OTHER_FILES_TO_BE_JARED = \
 
 
+C_SRCS = \
+	Blink.c \
+	BlinkMain.c \
+	Ledc.c \
+	Timer.c \
+	VirtualTinyOS.c
+
+H_SRCS = $(C_SRCS:%.c=%.h)
+
 EXTRA_SRCS = \
 	$(JSRCS) \
 	$(OTHER_FILES_TO_BE_JARED) \
+	$(C_SRCS) \
+	$(H_SRCS) \
+	tinyOSTest.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
