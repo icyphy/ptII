@@ -241,7 +241,7 @@ public class Graph implements Cloneable {
      *  @exception IllegalArgumentException If the source or sink node
      *  of the edge is not already in the graph, if the edge is
      *  already in the graph, or if the edge is hidden in the graph.
-     *  @see #hideEdge(Edge).
+     *  @see #hideEdge(Edge)
      */
     public Edge addEdge(Edge edge) {
         if (!containsNode(edge.source())) {
@@ -465,8 +465,8 @@ public class Graph implements Cloneable {
      *  @param edge The specified edge.
      *  @return True if the specified edge exists in the graph and is not
      *  hidden.
-     *  @see #hidden(Edge).
-     *  @see #hideEdge(Edge).
+     *  @see #hidden(Edge)
+     *  @see #hideEdge(Edge)
      */
     public boolean containsEdge(Edge edge) {
         return _edges.contains(edge) && (!hidden(edge));
@@ -560,12 +560,12 @@ public class Graph implements Cloneable {
     }
 
     /** Return an edge in this graph given the edge label;
-     *  the returned edge may be hidden {@see #hideEdge(Edge)}.
+     *  the returned edge may be hidden see {@link #hideEdge(Edge)}.
      *  @param edge The edge label.
      *  @return The edge.
      *  @exception IllegalArgumentException If the label is not associated
      *  with an edge in this graph.
-     *  @see #edgeLabel(Edge).
+     *  @see #edgeLabel(Edge)
      */
     public Edge edge(int label) {
         return (Edge)(_edges.get(label));
@@ -605,7 +605,7 @@ public class Graph implements Cloneable {
      *  @return The edge label.
      *  @exception IllegalArgumentException If the specified weight is not
      *  an edge weight in this graph.
-     *  @see #edgeLabel(Edge).
+     *  @see #edgeLabel(Edge)
      */
     public int edgeLabel(Object weight) throws IllegalArgumentException {
         return _edges.label(edge(weight));
@@ -619,7 +619,7 @@ public class Graph implements Cloneable {
      *  not valid.
      *  @exception IllegalArgumentException If the edge corresponding
      *  to the label is unweighted.
-     *  @see #edgeLabel(Edge).
+     *  @see #edgeLabel(Edge)
      */
     public Object edgeWeight(int label) {
         return ((Edge)(_edges.get(label))).getWeight();
@@ -683,7 +683,7 @@ public class Graph implements Cloneable {
      *  @param collection The specified collection of weights.
      *  @return The edges in this graph whose weights are contained
      *  in the specified collection.
-     *  @see #edges(Object).
+     *  @see #edges(Object)
      */
     public Collection edges(Collection collection) {
         ArrayList edges = new ArrayList();
@@ -696,10 +696,15 @@ public class Graph implements Cloneable {
 
     /** Test if a graph is equal to this one. It is equal
      *  if it is of the same class, and has the same sets of nodes
-     *  and edges.
+     *  and edges. 
+     *  
+     *  <p> Derived graph classes may override this method if
+     *  there is additional information in the graphs (beyond nodes
+     *  and edges) that is relevant to equality. 
      *
      *  @param graph The graph with which to compare this graph.
      *  @return True if the graph is equal to this one.
+     *  @see #hashCode() 
      */
     public boolean equals(Object graph) {
         if (graph == null) {
@@ -728,9 +733,15 @@ public class Graph implements Cloneable {
         return true;
     }
 
-    /** Returns the hash code for this graph.
+    /** Returns the hash code for this graph. The hash code is the
+     *  sum of the hash codes of the nodes and edges.
+     *
+     *  <p> Derived graph classes may override this method if
+     *  there is additional information in the graphs (beyond nodes
+     *  and edges) that is relevant to equality between graphs. 
      *
      *  @return The hash code for this graph.
+     *  @see #equals(Object)
      */
     public int hashCode() {
         int code = getClass().getName().hashCode();
@@ -779,7 +790,7 @@ public class Graph implements Cloneable {
      *  This is an <em>O(1)</em> operation.
      *  @param edge The edge to hide.
      *  @return true If the edge was in the graph and not already hidden.
-     *  @see #restoreEdge(Edge).
+     *  @see #restoreEdge(Edge)
      */
     public boolean hideEdge(Edge edge) {
         if (!containsEdge(edge)) {
@@ -1041,7 +1052,7 @@ public class Graph implements Cloneable {
      *  @return The node.
      *  @exception IndexOutOfBoundsException If the label is not associated with
      *  a node in this graph.
-     *  @see #nodeLabel(Node).
+     *  @see #nodeLabel(Node)
      */
     public Node node(int label) {
         return (Node)(_nodes.get(label));
@@ -1079,7 +1090,7 @@ public class Graph implements Cloneable {
      *  @return The node label.
      *  @exception IllegalArgumentException If the specified weight is not
      *  a node weight in this graph.
-     *  @see #nodeLabel(Node).
+     *  @see #nodeLabel(Node)
      */
     public int nodeLabel(Object weight) {
         return _nodes.label(node(weight));
@@ -1093,7 +1104,7 @@ public class Graph implements Cloneable {
      *  not valid.
      *  @exception IllegalArgumentException If the node corresponding
      *  to the label is unweighted.
-     *  @see #nodeLabel(Node).
+     *  @see #nodeLabel(Node)
      */
     public Object nodeWeight(int label) {
         return ((Node)(_nodes.get(label))).getWeight();
@@ -1155,7 +1166,7 @@ public class Graph implements Cloneable {
      * performed in <em>O(1)</em> time using {@link #hideEdge(Edge)}.
      * @param edge The edge to be removed.
      * @return True if the edge was removed.
-     * @see #hideEdge(Edge).
+     * @see #hideEdge(Edge)
      */
     public boolean removeEdge(Edge edge) {
         if (!_edges.contains(edge)) {
@@ -1204,7 +1215,7 @@ public class Graph implements Cloneable {
      *  @return true If the edge is in the graph and was hidden.
      *  @exception IllegalArgumentException If the source node and sink node
      *  of the given edge are not both in the graph.
-     *  @see #hideEdge(Edge).
+     *  @see #hideEdge(Edge)
      */
     public boolean restoreEdge(Edge edge) {
         if (_hiddenEdgeSet.remove(edge)) {
@@ -1325,8 +1336,8 @@ public class Graph implements Cloneable {
      *  @exception IllegalArgumentException If the argument collections contain
      *  a node or edge that is not in this graph.
      *  @return The subgraph.
-     *  @see #addEdges(Collection).
-     *  @see #addNodes(Collection).
+     *  @see #addEdges(Collection)
+     *  @see #addNodes(Collection)
      */
     public Graph subgraph(Collection nodeCollection,
             Collection edgeCollection) {
@@ -1425,7 +1436,7 @@ public class Graph implements Cloneable {
      *  is not valid, as determined by {@link #validNodeWeight(Object)}.
      *  @exception IllegalArgumentException If the specified node is not in
      *  the graph.
-     *  @see #validateWeight(Node, Object).
+     *  @see #validateWeight(Node, Object)
      */
     public boolean validateWeight(Node node) {
         if (!containsNode(node)) {
@@ -1473,7 +1484,7 @@ public class Graph implements Cloneable {
      *  @param oldWeight The previous weight of the node.
      *  @return True if the node weight has changed, as determined by the equals
      *  method.
-     *  @see #validateWeight(Node).
+     *  @see #validateWeight(Node)
      */
      public boolean validateWeight(Node node, Object oldWeight) {
         if (!containsNode(node)) {
@@ -1633,10 +1644,10 @@ public class Graph implements Cloneable {
      *  overridden to perform additional operations that are necessary
      *  to connect edges in derived graph classes.
      *  @param edge The edge to connect.
-     *  @see #hideEdge(Edge).
-     *  @see #removeEdge(Edge).
-     *  @see #_disconnectEdge(Edge).
-     *  @see #_registerChange().
+     *  @see #hideEdge(Edge)
+     *  @see #removeEdge(Edge)
+     *  @see #_disconnectEdge(Edge)
+     *  @see #_registerChange()
      */
     protected void _connectEdge(Edge edge) {
         _connect(edge, edge.source());
@@ -1673,10 +1684,10 @@ public class Graph implements Cloneable {
      *  overridden to perform additional operations that are necessary
      *  to disconnect edges in derived graph classes.
      *  @param edge The edge to disconnect.
-     *  @see #hideEdge(Edge).
-     *  @see #removeEdge(Edge).
+     *  @see #hideEdge(Edge)
+     *  @see #removeEdge(Edge)
      *  @see #_connectEdge(Edge)
-     *  @see #_registerChange().
+     *  @see #_registerChange()
      */
     protected void _disconnectEdge(Edge edge) {
         _disconnect(edge, edge.source());
@@ -1744,7 +1755,7 @@ public class Graph implements Cloneable {
      *  @param edge The new edge.
      *  @exception IllegalArgumentException If the weight of the given edge is
      *  not valid, as determined by {@link #validEdgeWeight(Object)}.
-     *  @see #_registerNode(Node).
+     *  @see #_registerNode(Node)
      */
     protected void _registerEdge(Edge edge) {
         Object weight = edge.hasWeight() ? edge.getWeight() : null;
@@ -1765,7 +1776,7 @@ public class Graph implements Cloneable {
      *  @param node The new node.
      *  @exception IllegalArgumentException If the weight of the given node is
      *  not valid, as determined by {@link #validNodeWeight(Object)}.
-     *  @see #_registerEdge(Edge).
+     *  @see #_registerEdge(Edge)
      */
     protected void _registerNode(Node node) {
         Object weight = node.hasWeight() ? node.getWeight() : null;
