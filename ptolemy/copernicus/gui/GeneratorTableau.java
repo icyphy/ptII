@@ -225,6 +225,7 @@ public class GeneratorTableau extends Tableau {
 
             JPanel left = new JPanel();
             left.setLayout(new BoxLayout(left, BoxLayout.Y_AXIS));
+            caveatsPanel.setMaximumSize(new Dimension(500, 100));
             left.add(caveatsPanel);
 
             // Panel for push buttons.
@@ -250,6 +251,7 @@ public class GeneratorTableau extends Tableau {
             clearButton.setToolTipText("Clear Log");
             buttonPanel.add(clearButton);
 
+            buttonPanel.setMaximumSize(new Dimension(500, 50));
 	    left.add(buttonPanel);
 
             // Next, put in a panel to configure the code generator.
