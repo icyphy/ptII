@@ -153,6 +153,8 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		// We are processing an annotation and it already
 		// has _hideName
 		_currentlyProcessingAnnotation = false;
+		_currentAnnotationFullName = null;
+		_currentActorFullName = null;
 	    }
 	}
 
@@ -332,12 +334,11 @@ public class FilterBackwardCompatibility implements MoMLFilter {
                     + "</property>");
 
 	} else if ( _currentlyProcessingAnnotation
+                && container != null
                 && container.getFullName()
                 .equals(_currentAnnotationFullName)) {
 	    _currentlyProcessingAnnotation = false;
-
 	    Parameter hideName = new Parameter(container, "_hideName");
-
 	    MoMLParser.setModified(true);
 	} else if (elementName.equals("entity")) {
             _reset();
@@ -372,6 +373,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     // maps here because they are not changed after they are created
     // and initialized.
     private void _reset() {
+        _currentAnnotationFullName = null;
 	_currentlyProcessingActorThatRequiresUpdating = false;
 	_currentlyProcessingActorWithPortNameChanges = false;
 	_currentlyProcessingActorWithPropertyClassChanges = false;
