@@ -115,7 +115,7 @@ topology). These mutations are deterministic and are performed only when a
 timed deadlock occurs and the mutations are pending (topology changes have been
 requested). On requesting a mutation, the process queues the request 
 and suspends (mutation-blocked) until the request for topology changes is 
-processed. The directing thread processes these requests on the next occurence
+processed. The directing thread processes these requests on the next occurrence
 of a timed-deadlock. After this the directing thread awakens the processes 
 blocked on a mutation (mutation-blocked) and the execution resumes.
 <p>
@@ -227,7 +227,7 @@ public class TimedPNDirector extends BasePNDirector {
      *  Create receivers for any new actors created, initialize the new actors,
      *  and create new threads for these actors. After all threads
      *  are created, resume the execution and start the threads for the 
-     *  newly created actors. This method returns only on occurence of a real
+     *  newly created actors. This method returns only on occurrence of a real
      *  deadlock.
      *  
      *  <b>This method is synchronized on the director. This method is normally
