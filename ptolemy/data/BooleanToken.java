@@ -145,7 +145,7 @@ public class BooleanToken extends Token {
 	    return token;
 	} else {
             throw new IllegalActionException("cannot convert from token " +
-		"type: " + token.getClass().getName() + " to a BooleanToken");
+                    "type: " + token.getClass().getName() + " to a BooleanToken");
         }
     }
 
@@ -175,7 +175,7 @@ public class BooleanToken extends Token {
                 return this;
             } else {
                 throw new IllegalArgumentException("BooleanToken: division "
-                + "by false-valued token (analogous to division by zero).");
+                        + "by false-valued token (analogous to division by zero).");
             }
         } else {
             return super.multiply(denominator);
@@ -205,7 +205,7 @@ public class BooleanToken extends Token {
             return converted;
         } else {
             throw new IllegalArgumentException("BooleanToken: division "
-            + "by false-valued token (analogous to division by zero).");
+                    + "by false-valued token (analogous to division by zero).");
         }
     }
 
@@ -227,7 +227,7 @@ public class BooleanToken extends Token {
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         if ( !(token instanceof BooleanToken)) {
             throw new IllegalActionException("Cannot compare a BooleanToken"
-            + " with a non-BooleanToken");
+                    + " with a non-BooleanToken");
         }
         boolean arg = ((BooleanToken)token).booleanValue();
         if ((_value && arg) || !(_value || arg)) {

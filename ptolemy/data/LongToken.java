@@ -270,8 +270,8 @@ public class LongToken extends ScalarToken {
         int typeInfo = TypeLattice.compare(this, arg);
         if (typeInfo == CPO.INCOMPARABLE) {
             throw new IllegalActionException("LongToken.isLessThan: The type" +
-		" of the argument token is incomparable with the type of " +
-		"this token. argType: " + arg.getType());
+                    " of the argument token is incomparable with the type of " +
+                    "this token. argType: " + arg.getType());
 	}
 
 	if (typeInfo == CPO.LOWER) {

@@ -66,7 +66,7 @@ public class ArrayToken extends Token {
 	    	_value[i] = value[i];
 	    } else {
 		throw new IllegalArgumentException("ArrayToken: " +
-		    "Elements of the array do not have the same type.");
+                        "Elements of the array do not have the same type.");
 	    }
 	}
     }
@@ -113,8 +113,8 @@ public class ArrayToken extends Token {
     public static Token convert(Token t)
 	    throws IllegalActionException {
 	throw new IllegalActionException("ArrayToken.convert: " +
-	    "This method cannot be used, use the convert method " +
-	    "in ArrayType.");
+                "This method cannot be used, use the convert method " +
+                "in ArrayType.");
     }
 
     /** Return the element at the specified index.
@@ -232,13 +232,13 @@ public class ArrayToken extends Token {
 	    throws IllegalActionException {
 	if ( !(t instanceof ArrayToken)) {
 	    throw new IllegalActionException("The argument is not " +
-		"an ArrayToken.");
+                    "an ArrayToken.");
 	}
 
 	int length = ((ArrayToken)t).length();
 	if (_value.length != length) {
 	    throw new IllegalActionException("The argument is an " +
-		"ArrayToken of different length.");
+                    "ArrayToken of different length.");
 	}
     }
 

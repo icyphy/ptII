@@ -72,12 +72,12 @@ public class FixToken extends ScalarToken {
     */
     public FixToken(double value, String pre)
             throws IllegalArgumentException {
-                try {
-                    Precision precision = new Precision( pre );
-                    _value = Quantizer.round(value, precision);
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException(e.getMessage());
-                }
+        try {
+            Precision precision = new Precision( pre );
+            _value = Quantizer.round(value, precision);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
     }
 
     /** Construct a FixToken with a value given as a String and a
@@ -91,13 +91,13 @@ public class FixToken extends ScalarToken {
 	precision string is incorrect */
     public FixToken(double value, int numberOfBits, int integerBits)
             throws IllegalArgumentException {
-                try {
-                    Precision precision =
-                        new Precision( numberOfBits, integerBits);
-                    _value = Quantizer.round(value, precision);
-                } catch (NumberFormatException e) {
-                    throw new IllegalArgumentException(e.getMessage());
-                }
+        try {
+            Precision precision =
+                new Precision( numberOfBits, integerBits);
+            _value = Quantizer.round(value, precision);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -294,8 +294,8 @@ public class FixToken extends ScalarToken {
         int typeInfo = TypeLattice.compare(this, arg);
         if (typeInfo == CPO.INCOMPARABLE) {
             throw new IllegalActionException("FixToken.isLessThan: The type" +
-		" of the argument token is incomparable with the type of " +
-		"this token. argType: " + arg.getType());
+                    " of the argument token is incomparable with the type of " +
+                    "this token. argType: " + arg.getType());
 	}
 
 	if (typeInfo == CPO.LOWER) {
@@ -379,7 +379,7 @@ public class FixToken extends ScalarToken {
         return new FixToken( 1.0, _value.getPrecision().toString() );
     }
 
-   /**  Scale the fix point value to the give precision. To fit the
+    /**  Scale the fix point value to the give precision. To fit the
      *  new precision, a rounding error may occur. In that case the
      *  value of the Fixpoint is determined, depending on the overflow
      *  mode selected. The following quantization modes are supported
@@ -472,9 +472,9 @@ public class FixToken extends ScalarToken {
      *  @return A new Token containing the additive identity.
      */
     public Token zero()
-    {
-        return new FixToken( 0.0, _value.getPrecision().toString() );
-    }
+        {
+            return new FixToken( 0.0, _value.getPrecision().toString() );
+        }
 
     /** Set the Rounding mode of the FixPoint number. */
     // FIXME: Currently it is a string, should be come a

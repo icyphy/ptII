@@ -71,8 +71,8 @@ public class Token {
      */
     public Token add(Token rightArg) throws IllegalActionException {
         throw new IllegalActionException("Addition not supported between "
-        + this.getClass().getName() + " and "
-        + rightArg.getClass().getName() + ".");
+                + this.getClass().getName() + " and "
+                + rightArg.getClass().getName() + ".");
     }
 
     /** Return a new token whose value is the value of this
@@ -87,8 +87,8 @@ public class Token {
      */
     public Token addReverse(Token leftArg) throws IllegalActionException {
         throw new IllegalActionException("Addition not supported between "
-        + leftArg.getClass().getName() + " and "
-        + this.getClass().getName() + ".");
+                + leftArg.getClass().getName() + " and "
+                + this.getClass().getName() + ".");
     }
 
     /** Convert the specified token to an instance of this class, if it
@@ -123,8 +123,8 @@ public class Token {
      */
     public Token divide(Token divisor) throws  IllegalActionException {
         throw new IllegalActionException("Division not supported for "
-        + this.getClass().getName() + " divided by "
-        + divisor.getClass().getName() + ".");
+                + this.getClass().getName() + " divided by "
+                + divisor.getClass().getName() + ".");
     }
 
     /** Return a new Token whose value is the value of the argument token
@@ -140,8 +140,8 @@ public class Token {
     public Token divideReverse(Token dividend)
 	    throws  IllegalActionException {
         throw new IllegalActionException("Division not supported for "
-        + dividend.getClass().getName() + " divided by "
-        + this.getClass().getName() + ".");
+                + dividend.getClass().getName() + " divided by "
+                + this.getClass().getName() + ".");
     }
 
     /** Return the type of this token.
@@ -161,8 +161,8 @@ public class Token {
      */
     public BooleanToken isEqualTo(Token token) throws IllegalActionException {
         throw new IllegalActionException("Equality test not supported between "
-        + this.getClass().getName() + " and "
-        + token.getClass().getName() + ".");
+                + this.getClass().getName() + " and "
+                + token.getClass().getName() + ".");
     }
 
     /** Return a new Token whose value is the value of this token
@@ -176,8 +176,8 @@ public class Token {
      */
     public Token modulo(Token rightArg) throws  IllegalActionException {
         throw new IllegalActionException("Modulo operation not supported: "
-        + this.getClass().getName() + " modulo "
-        + rightArg.getClass().getName() + ".");
+                + this.getClass().getName() + " modulo "
+                + rightArg.getClass().getName() + ".");
     }
 
     /** Return a new Token whose value is the value of the argument token
@@ -192,8 +192,8 @@ public class Token {
     public Token moduloReverse(Token leftArg)
             throws IllegalActionException {
         throw new IllegalActionException("Modulo operation not supported on "
-        + leftArg.getClass().getName() + " objects modulo "
-        + this.getClass().getName() + " objects.");
+                + leftArg.getClass().getName() + " objects modulo "
+                + this.getClass().getName() + " objects.");
     }
 
     /** Return a new Token whose value is the value of this Token
@@ -208,8 +208,8 @@ public class Token {
      */
     public Token multiply(Token rightFactor) throws  IllegalActionException {
         throw new IllegalActionException("Multiplication not supported on "
-        + this.getClass().getName() + " by "
-        + rightFactor.getClass().getName() + ".");
+                + this.getClass().getName() + " by "
+                + rightFactor.getClass().getName() + ".");
     }
 
     /** Return a new Token whose value is the value of the argument Token
@@ -225,8 +225,8 @@ public class Token {
     public Token multiplyReverse(Token leftFactor)
 	    throws  IllegalActionException {
         throw new IllegalActionException("Multiplication not supported on "
-        + leftFactor.getClass().getName() + " by "
-        + this.getClass().getName() + ".");
+                + leftFactor.getClass().getName() + " by "
+                + this.getClass().getName() + ".");
     }
 
     /** Returns a new Token representing the multiplicative identity.
@@ -237,8 +237,8 @@ public class Token {
      */
     public Token one() throws IllegalActionException {
         throw new IllegalActionException(
-            "Multiplicative identity not supported on "
-            + this.getClass().getName() + ".");
+                "Multiplicative identity not supported on "
+                + this.getClass().getName() + ".");
     }
 
     /** Return a description of the token as a string.
@@ -261,8 +261,8 @@ public class Token {
      */
     public Token subtract(Token rightArg) throws  IllegalActionException {
         throw new IllegalActionException("Subtraction not supported on "
-        + this.getClass().getName() + " minus "
-        + rightArg.getClass().getName() + ".");
+                + this.getClass().getName() + " minus "
+                + rightArg.getClass().getName() + ".");
     }
 
     /** Return a new Token whose value is the value of this Token
@@ -277,8 +277,8 @@ public class Token {
     public Token subtractReverse(Token leftArg)
 	    throws  IllegalActionException {
         throw new IllegalActionException("Subtraction not supported on "
-        + leftArg.getClass().getName() + " minus "
-        + this.getClass().getName() + ".");
+                + leftArg.getClass().getName() + " minus "
+                + this.getClass().getName() + ".");
     }
 
     /** Return the String "present" to indicate that an event is present.
@@ -298,7 +298,7 @@ public class Token {
      */
     public Token zero() throws IllegalActionException {
         throw new IllegalActionException(
-            "Token.zero: Additive identity not supported on "
-            + this.getClass().getName() + ".");
+                "Token.zero: Additive identity not supported on "
+                + this.getClass().getName() + ".");
     }
 }

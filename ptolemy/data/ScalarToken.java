@@ -96,11 +96,11 @@ public abstract class ScalarToken extends Token {
      *  @return A FixPoint
      *  @exception IllegalActionException Always thrown.
      */
-   public FixPoint fixValue()
+    public FixPoint fixValue()
             throws IllegalActionException {
-       throw new IllegalActionException("Cannot convert the value in " +
-               getClass().getName() + " to a FixPoint losslessly.");
-   }
+        throw new IllegalActionException("Cannot convert the value in " +
+                getClass().getName() + " to a FixPoint losslessly.");
+    }
 
     /** Return the value of this token as an int.
      *  In this base class, we just throw an exception.
