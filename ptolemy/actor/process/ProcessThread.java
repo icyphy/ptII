@@ -37,6 +37,8 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.PtolemyThread;
 import ptolemy.kernel.util.Workspace;
 
+import java.io.InterruptedIOException;
+
 //////////////////////////////////////////////////////////////////////////
 //// ProcessThread
 
@@ -201,6 +203,14 @@ public class ProcessThread extends PtolemyThread {
                 } else if (thrownWhenIterate instanceof InterruptedException) {
                     // Process was terminated by call to stop();
                     _debug("-- Thread was interrupted: " + thrownWhenIterate);
+                } else if (
+                        thrownWhenIterate instanceof InterruptedIOException
+                        || thrownWhenIterate.getCause() instanceof
+                        InterruptedIOException
+                        ) {
+                    // PSDF has problems here when run with JavaScope
+                    _debug("-- IO was interrupted: " + thrownWhenIterate);
+
                 } else if (thrownWhenIterate instanceof IllegalActionException) {
                     _debug("-- Exception: " + thrownWhenIterate);
                     _manager.notifyListenersOfException(
