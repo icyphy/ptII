@@ -8,7 +8,7 @@
 <body>
 <h1><a name="ptplot changes">Ptplot Changes</a></h1>
 
-<H2>The changes between ptplot5.2 and ptplot5.2p1</H2>
+<H2>The changes between ptplot5.2 and ptplot5.3</H2>
 <menu>
 <li> Roger Robins: PlotApplet: Work around problem in Java 1.3.1_08
 where if we create 6 instances of a Plot applet then navigate forward
@@ -25,6 +25,8 @@ setPlotRectangle():
 nside the axes, the 'plot rectangle' of the PlotBox class. I am 
 using this to line up two graphs which share the same time scale. "
 <li> Edward A. Lee: Use a thicker stroke when drawing lines.
+<li> Steve Neuendorffer: Improvements for offscreen buffer support
+so that Ptplot can plot data sets with 20000 points.
 <li> Peter N. Steinmetz: If PlotApplication is called with a "-"
 option, then it reads from standard input.
 <li> Helge Weissig:
