@@ -59,7 +59,7 @@ public class FIFOQueue implements Cloneable {
      */
     public FIFOQueue() {
         _queuelist = new CircularList();
-        _historylist = new CircularList();
+        _historyList = new CircularList();
     }
 
     /** Construct an empty queue with the specified container. The
@@ -81,7 +81,7 @@ public class FIFOQueue implements Cloneable {
         this();
         synchronized(model) {
             _queuelist.appendElements(model.elements());
-            _historylist.appendElements(model.historyElements());
+            _historyList.appendElements(model.historyElements());
         }
     }
 
@@ -135,7 +135,7 @@ public class FIFOQueue implements Cloneable {
             if (offset >= 0) {
                 obj = _queuelist.at(offset);
             } else {
-                obj = _historylist.at(historySize()+offset);
+                obj = _historyList.at(historySize()+offset);
             }
         } catch (NoSuchElementException ex) {
             String str = ".";
@@ -168,7 +168,7 @@ public class FIFOQueue implements Cloneable {
      *  @return The capacity of the history queue.
      */
     public int getHistoryCapacity() {
-        return _historycapacity;
+        return _historyCapacity;
     }
 
     /** Enumerate the objects in the history, which are the N most recent
@@ -181,14 +181,14 @@ public class FIFOQueue implements Cloneable {
      *  @see collections.CircularList#elements()
      */
     public CollectionEnumeration historyElements() {
-        return _historylist.elements();
+        return _historyList.elements();
     }
 
     /** Return the number of objects in the history.
      *  @return The current number of objects in the history.
      */
     public int historySize() {
-        return _historylist.size();
+        return _historyList.size();
     }
 
     /** Put an object in the queue and return true if this will not
@@ -250,16 +250,16 @@ public class FIFOQueue implements Cloneable {
     public void setHistoryCapacity(int capacity)
             throws IllegalActionException {
         if (capacity > 0) {
-            while (_historylist.size() > capacity) {
-                _historylist.take();
+            while (_historyList.size() > capacity) {
+                _historyList.take();
             }
         } else if (capacity == 0) {
-            _historylist.clear();
+            _historyList.clear();
         } else if (capacity != INFINITE_CAPACITY) {
             throw new IllegalActionException(_container,
                     "Cannot set history capacity to " + capacity);
         }
-        _historycapacity = capacity;
+        _historyCapacity = capacity;
     }
 
     /** Return the number of objects in the queue.
@@ -290,11 +290,11 @@ public class FIFOQueue implements Cloneable {
             throw new NoSuchElementException("The FIFOQueue" + str
                     + " is empty!");
         }
-        if (_historycapacity != 0) {
-            if (_historycapacity == _historylist.size()) {
-                _historylist.take();
+        if (_historyCapacity != 0) {
+            if (_historyCapacity == _historyList.size()) {
+                _historyList.take();
             }
-            _historylist.insertLast(obj);
+            _historyList.insertLast(obj);
         }
         return obj;
     }
@@ -320,10 +320,10 @@ public class FIFOQueue implements Cloneable {
     private CircularList _queuelist;
 
     // The capacity of the history queue, defaulting to zero.
-    private int _historycapacity = 0;
+    private int _historyCapacity = 0;
 
     // The list of objects recently removed from the queue.
-    private CircularList _historylist = null;
+    private CircularList _historyList = null;
 
 }
 
