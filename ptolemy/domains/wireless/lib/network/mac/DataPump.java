@@ -173,10 +173,6 @@ public class DataPump extends MACActorBase {
         super.fire();
         
         Director director = getDirector();
-        //THE SDL specification has don-deterministic
-        //transition.However the order does not matter,
-        // so We will pick a particular order.
-        // all states handle UseIfs messages 
         if (fromProtocolTx.hasToken(0)) {
             _inputMessage = (RecordToken) fromProtocolTx.get(0);
             _source = FromProtocolTx;
