@@ -166,7 +166,7 @@ public class URIAttribute extends SingletonAttribute {
         if (_value == null) {
             return null;
         }
-        return new URL(_value.toString())
+        return new URL(_value.toString());
     }
 
     /** Set the value of the URI, and call the attributeChanged() method
