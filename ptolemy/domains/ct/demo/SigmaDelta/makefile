@@ -52,7 +52,14 @@ JSRCS = \
 	DEStatistics.java \
 	SigmaDeltaApplet.java
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS)
+EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) \
+	SDCTPlot.gif \
+	SDDEPlot.gif \
+	SigmaDelta.gif \
+	SigmaDelta.htm \
+	SigmaDelta.vsd \
+	SigmaDelta2.gif \
+	SigmaDelta2.vsd
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
