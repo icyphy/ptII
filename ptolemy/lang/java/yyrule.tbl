@@ -1,0 +1,290 @@
+$accept : Start
+Start : CompilationUnit
+Literal : INT_LITERAL
+Literal : LONG_LITERAL
+Literal : FLOAT_LITERAL
+Literal : DOUBLE_LITERAL
+Literal : TRUE
+Literal : FALSE
+Literal : CHARACTER_LITERAL
+Literal : STRING_LITERAL
+Type : PrimitiveType
+Type : ReferenceType
+ReferenceType : ClassOrInterfaceType
+ReferenceType : ArrayType
+PrimitiveType : BOOLEAN
+PrimitiveType : CHAR
+PrimitiveType : BYTE
+PrimitiveType : SHORT
+PrimitiveType : INT
+PrimitiveType : FLOAT
+PrimitiveType : LONG
+PrimitiveType : DOUBLE
+ClassOrInterfaceType : Name
+ArrayType : Type EMPTY_DIM
+CompilationUnit : PackageDeclarationOpt ImportStatementsOpt TypeDeclarationsOpt
+PackageDeclarationOpt : PACKAGE Name ';'
+PackageDeclarationOpt : empty
+ImportStatementsOpt : empty
+ImportStatementsOpt : ImportStatement ImportStatementsOpt
+TypeDeclarationsOpt : empty
+TypeDeclarationsOpt : TypeDeclaration TypeDeclarationsOpt
+TypeDeclarationsOpt : ';' TypeDeclarationsOpt
+TypeDeclaration : ClassDeclaration
+TypeDeclaration : InterfaceDeclaration
+ImportStatement : TypeImportStatement
+ImportStatement : TypeImportOnDemandStatement
+TypeImportStatement : IMPORT Name ';'
+TypeImportOnDemandStatement : IMPORT Name '.' '*' ';'
+ClassDeclaration : FieldModifiersOpt CLASS SimpleName SuperOpt InterfacesOpt ClassBody
+SuperOpt : EXTENDS ClassOrInterfaceType
+SuperOpt : empty
+InterfacesOpt : IMPLEMENTS TypeNameList
+InterfacesOpt : empty
+ClassBody : '{' FieldDeclarationsOpt '}'
+FieldDeclarationsOpt : FieldDeclarations
+FieldDeclarationsOpt : empty
+FieldDeclarations : FieldDeclaration
+FieldDeclarations : FieldDeclaration FieldDeclarations
+FieldDeclaration : FieldVariableDeclaration
+FieldDeclaration : MethodDeclaration
+FieldDeclaration : ConstructorDeclaration
+FieldDeclaration : StaticInitializer
+FieldDeclaration : InstanceInitializer
+FieldDeclaration : TypeDeclaration
+FieldDeclaration : TypeDeclaration ';'
+FieldVariableDeclaration : FieldModifiersOpt Type VariableDeclarators ';'
+FieldModifiersOpt : FieldModifiers
+FieldModifiersOpt : empty
+FieldModifiers : FieldModifier
+FieldModifiers : FieldModifiers FieldModifier
+FieldModifier : PUBLIC
+FieldModifier : PROTECTED
+FieldModifier : PRIVATE
+FieldModifier : STATIC
+FieldModifier : FINAL
+FieldModifier : ABSTRACT
+FieldModifier : NATIVE
+FieldModifier : SYNCHRONIZED
+FieldModifier : TRANSIENT
+FieldModifier : VOLATILE
+FieldModifier : STRICTFP
+VariableDeclarators : VariableDeclarator
+VariableDeclarators : VariableDeclarators ',' VariableDeclarator
+VariableDeclarator : SimpleName DimsOpt
+VariableDeclarator : SimpleName DimsOpt '=' VariableInitializer
+VariableInitializer : Expression
+VariableInitializer : ArrayInitializer
+MethodDeclaration : FieldModifiersOpt Type SimpleName '(' ParameterListOpt ')' DimsOpt ThrowsOpt MethodBody
+MethodDeclaration : FieldModifiersOpt Void SimpleName '(' ParameterListOpt ')' DimsOpt ThrowsOpt MethodBody
+Void : VOID
+ParameterListOpt : ParameterList
+ParameterListOpt : empty
+ParameterList : Parameter
+ParameterList : Parameter ',' ParameterList
+Parameter : FieldModifiersOpt Type SimpleName DimsOpt
+ThrowsOpt : Throws
+ThrowsOpt : empty
+Throws : THROWS TypeNameList
+TypeNameList : ClassOrInterfaceType
+TypeNameList : ClassOrInterfaceType ',' TypeNameList
+MethodBody : Block
+MethodBody : ';'
+ConstructorDeclaration : FieldModifiersOpt IDENTIFIER '(' ParameterListOpt ')' ThrowsOpt '{' ExplicitConstructorCallStatement BlockStatementsOpt '}'
+ConstructorDeclaration : FieldModifiersOpt IDENTIFIER '(' ParameterListOpt ')' ThrowsOpt '{' BlockStatementsOpt '}'
+ExplicitConstructorCallStatement : THIS '(' ArgumentListOpt ')' ';'
+ExplicitConstructorCallStatement : SUPER '(' ArgumentListOpt ')' ';'
+StaticInitializer : STATIC Block
+InstanceInitializer : Block
+InterfaceDeclaration : FieldModifiersOpt INTERFACE SimpleName ExtendsInterfacesOpt InterfaceBody
+ExtendsInterfacesOpt : ExtendsInterfaces
+ExtendsInterfacesOpt : empty
+ExtendsInterfaces : EXTENDS TypeNameList
+InterfaceBody : '{' InterfaceMemberDeclarationsOpt '}'
+InterfaceMemberDeclarationsOpt : empty
+InterfaceMemberDeclarationsOpt : InterfaceMemberDeclaration InterfaceMemberDeclarationsOpt
+InterfaceMemberDeclaration : ConstantFieldDeclaration
+InterfaceMemberDeclaration : MethodSignatureDeclaration
+InterfaceMemberDeclaration : TypeDeclaration
+InterfaceMemberDeclaration : TypeDeclaration ';'
+ConstantFieldDeclaration : FieldModifiersOpt Type VariableDeclarators ';'
+MethodSignatureDeclaration : FieldModifiersOpt Type SimpleName '(' ParameterListOpt ')' DimsOpt ThrowsOpt ';'
+MethodSignatureDeclaration : FieldModifiersOpt Void SimpleName '(' ParameterListOpt ')' DimsOpt ThrowsOpt ';'
+ArrayInitializer : '{' ElementInitializers '}'
+ArrayInitializer : '{' ElementInitializers ',' '}'
+ArrayInitializer : '{' '}'
+ElementInitializers : Element
+ElementInitializers : ElementInitializers ',' Element
+Element : Expression
+Element : ArrayInitializer
+Block : '{' BlockStatementsOpt '}'
+BlockStatementsOpt : BlockStatements
+BlockStatementsOpt : empty
+BlockStatements : BlockStatement
+BlockStatements : BlockStatements BlockStatement
+BlockStatement : LocalVariableDeclarationStatement
+BlockStatement : Statement
+BlockStatement : ClassDeclaration
+LocalVariableDeclarationStatement : FieldModifiers Type VariableDeclarators ';'
+LocalVariableDeclarationStatement : Type VariableDeclarators ';'
+Statement : EmptyStatement
+Statement : LabeledStatement
+Statement : ExpressionStatement ';'
+Statement : SelectionStatement
+Statement : IterationStatement
+Statement : JumpStatement
+Statement : GuardingStatement
+Statement : Block
+EmptyStatement : ';'
+LabeledStatement : SimpleName ':' Statement
+ExpressionStatement : Assignment
+ExpressionStatement : PreIncrement
+ExpressionStatement : PreDecrement
+ExpressionStatement : PostIncrement
+ExpressionStatement : PostDecrement
+ExpressionStatement : MethodCall
+ExpressionStatement : AllocationExpression
+SelectionStatement : IF '(' Expression ')' Statement
+SelectionStatement : IF '(' Expression ')' Statement ELSE Statement
+SelectionStatement : SWITCH '(' Expression ')' SwitchBlock
+SwitchBlock : '{' SwitchBlockStatementsOpt '}'
+SwitchBlockStatementsOpt : empty
+SwitchBlockStatementsOpt : SwitchLabels BlockStatements SwitchBlockStatementsOpt
+SwitchBlockStatementsOpt : SwitchLabels
+SwitchLabels : SwitchLabel
+SwitchLabels : SwitchLabel SwitchLabels
+SwitchLabel : CASE ConstantExpression ':'
+SwitchLabel : DEFAULT ':'
+IterationStatement : WHILE '(' Expression ')' Statement
+IterationStatement : DO Statement WHILE '(' Expression ')' ';'
+IterationStatement : FOR '(' ForInit Expression ';' ForUpdateOpt ')' Statement
+IterationStatement : FOR '(' ForInit ';' ForUpdateOpt ')' Statement
+ForInit : ExpressionStatementsOpt ';'
+ForInit : LocalVariableDeclarationStatement
+ForUpdateOpt : ExpressionStatements
+ForUpdateOpt : empty
+ExpressionStatementsOpt : ExpressionStatements
+ExpressionStatementsOpt : empty
+ExpressionStatements : ExpressionStatement
+ExpressionStatements : ExpressionStatement ',' ExpressionStatements
+JumpStatement : BREAK LabelOpt ';'
+JumpStatement : CONTINUE LabelOpt ';'
+JumpStatement : RETURN ExpressionOpt ';'
+JumpStatement : THROW Expression ';'
+LabelOpt : SimpleName
+LabelOpt : empty
+GuardingStatement : SYNCHRONIZED '(' Expression ')' Statement
+GuardingStatement : TRY Block Finally
+GuardingStatement : TRY Block Catches
+GuardingStatement : TRY Block Catches Finally
+Catches : Catch
+Catches : Catch Catches
+Catch : CATCH '(' Parameter ')' Block
+Finally : FINALLY Block
+PrimaryExpression : Name
+PrimaryExpression : NotJustName
+PrimaryExpression : Name '.' CLASS
+PrimaryExpression : PrimitiveType '.' CLASS
+PrimaryExpression : Void '.' CLASS
+PrimaryExpression : Name '.' THIS
+PrimaryExpression : Name '.' SUPER
+NotJustName : AllocationExpression
+NotJustName : ComplexPrimary
+ComplexPrimary : Literal
+ComplexPrimary : _NULL
+ComplexPrimary : THIS
+ComplexPrimary : '(' Expression ')'
+ComplexPrimary : '(' Name ')'
+ComplexPrimary : ArrayAccess
+ComplexPrimary : FieldAccess
+ComplexPrimary : MethodCall
+ComplexPrimary : ArrayType '.' CLASS
+Name : SimpleName
+Name : QualifiedName
+SimpleName : IDENTIFIER
+QualifiedName : Name '.' IDENTIFIER
+ArrayAccess : Name '[' Expression ']'
+ArrayAccess : ComplexPrimary '[' Expression ']'
+FieldAccess : PrimaryExpression '.' SimpleName
+FieldAccess : SUPER '.' SimpleName
+MethodCall : Name '(' ArgumentListOpt ')'
+MethodCall : FieldAccess '(' ArgumentListOpt ')'
+ArgumentListOpt : ArgumentList
+ArgumentListOpt : empty
+ArgumentList : Expression
+ArgumentList : Expression ',' ArgumentList
+AllocationExpression : NEW ClassOrInterfaceType '(' ArgumentListOpt ')'
+AllocationExpression : NEW ClassOrInterfaceType '(' ArgumentListOpt ')' ClassBody
+AllocationExpression : NEW ClassOrInterfaceType DimExprs DimsOpt
+AllocationExpression : NEW ClassOrInterfaceType DimsOpt ArrayInitializer
+AllocationExpression : NEW PrimitiveType DimExprs DimsOpt
+AllocationExpression : NEW PrimitiveType DimsOpt ArrayInitializer
+AllocationExpression : PrimaryExpression '.' NEW IDENTIFIER '(' ArgumentListOpt ')'
+AllocationExpression : PrimaryExpression '.' NEW IDENTIFIER '(' ArgumentListOpt ')' ClassBody
+AllocationExpression : Name '.' NEW IDENTIFIER '(' ArgumentListOpt ')'
+AllocationExpression : Name '.' NEW IDENTIFIER '(' ArgumentListOpt ')' ClassBody
+DimExprs : DimExpr
+DimExprs : DimExpr DimExprs
+DimExpr : '[' Expression ']'
+DimsOpt : Dims
+DimsOpt : empty
+Dims : EMPTY_DIM
+Dims : Dims EMPTY_DIM
+PostfixExpression : PrimaryExpression
+PostfixExpression : PostIncrement
+PostfixExpression : PostDecrement
+PostIncrement : PostfixExpression PLUSPLUS
+PostDecrement : PostfixExpression MINUSMINUS
+UnaryExpression : PreIncrement
+UnaryExpression : PreDecrement
+UnaryExpression : '+' UnaryExpression
+UnaryExpression : '-' UnaryExpression
+UnaryExpression : UnaryExpressionNotPlusMinus
+PreIncrement : PLUSPLUS UnaryExpression
+PreDecrement : MINUSMINUS UnaryExpression
+UnaryExpressionNotPlusMinus : PostfixExpression
+UnaryExpressionNotPlusMinus : '~' UnaryExpression
+UnaryExpressionNotPlusMinus : '!' UnaryExpression
+UnaryExpressionNotPlusMinus : CastExpression
+CastExpression : '(' PrimitiveType ')' UnaryExpression
+CastExpression : '(' ReferenceType ')' UnaryExpressionNotPlusMinus
+CastExpression : '(' Name ')' UnaryExpressionNotPlusMinus
+ExpressionOpt : Expression
+ExpressionOpt : empty
+Expression : UnaryExpression
+Expression : Expression '*' Expression
+Expression : Expression '/' Expression
+Expression : Expression '%' Expression
+Expression : Expression '+' Expression
+Expression : Expression '-' Expression
+Expression : Expression LSHIFTL Expression
+Expression : Expression LSHIFTR Expression
+Expression : Expression ASHIFTR Expression
+Expression : Expression '<' Expression
+Expression : Expression '>' Expression
+Expression : Expression LE Expression
+Expression : Expression GE Expression
+Expression : Expression INSTANCEOF ReferenceType
+Expression : Expression EQ Expression
+Expression : Expression NE Expression
+Expression : Expression '&' Expression
+Expression : Expression '|' Expression
+Expression : Expression '^' Expression
+Expression : Expression CAND Expression
+Expression : Expression COR Expression
+Expression : Expression '?' Expression ':' Expression
+Expression : Assignment
+Assignment : UnaryExpression '=' Expression
+Assignment : UnaryExpression MULT_ASG Expression
+Assignment : UnaryExpression DIV_ASG Expression
+Assignment : UnaryExpression REM_ASG Expression
+Assignment : UnaryExpression PLUS_ASG Expression
+Assignment : UnaryExpression MINUS_ASG Expression
+Assignment : UnaryExpression LSHIFTL_ASG Expression
+Assignment : UnaryExpression LSHIFTR_ASG Expression
+Assignment : UnaryExpression ASHIFTR_ASG Expression
+Assignment : UnaryExpression AND_ASG Expression
+Assignment : UnaryExpression XOR_ASG Expression
+Assignment : UnaryExpression OR_ASG Expression
+ConstantExpression : Expression
+empty :
