@@ -138,11 +138,11 @@ public final class SDFIOPort extends TypedIOPort {
         try {
             SDFIOPort newobj = (SDFIOPort)(super.clone(ws));
             newobj.tokenConsumptionRate =
-                (Parameter)newobj.getAttribute("TokenConsumptionRate");
+                (Parameter)newobj.getAttribute("tokenConsumptionRate");
             newobj.tokenInitProduction =
-                (Parameter)newobj.getAttribute("TokenInitProduction");
+                (Parameter)newobj.getAttribute("tokenInitProduction");
             newobj.tokenProductionRate =
-                (Parameter)newobj.getAttribute("TokenProductionRate");
+                (Parameter)newobj.getAttribute("tokenProductionRate");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -463,11 +463,11 @@ public final class SDFIOPort extends TypedIOPort {
      */
     private void _initialize() {
 	try {
-	    tokenConsumptionRate = new Parameter(this, "TokenConsumptionRate",
+	    tokenConsumptionRate = new Parameter(this, "tokenConsumptionRate",
                     new IntToken(0));
-	    tokenInitProduction = new Parameter(this, "TokenInitProduction",
+	    tokenInitProduction = new Parameter(this, "tokenInitProduction",
                     new IntToken(0));
-	    tokenProductionRate = new Parameter(this, "TokenProductionRate",
+	    tokenProductionRate = new Parameter(this, "tokenProductionRate",
                     new IntToken(0));
 	}
 	catch (Exception e) {

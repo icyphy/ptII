@@ -63,9 +63,9 @@ known as "Deadlock".  Deadlock must be prevented in SDF by manually
 inserting delay actors, which represent initial tokens on each
 relation.  Such delay actors are responsible for creating tokens
 during initialization that will prevent deadlock.  Delay actors must
-set their "TokenInitProduction" parameters to represent the number of
+set their "tokenInitProduction" parameters to represent the number of
 tokens they will create during initialization.  The SDFScheduler uses
-the TokenInitProduction parameter to break the dependency in a cyclic
+the tokenInitProduction parameter to break the dependency in a cyclic
 graph.
 
 <p>
@@ -74,13 +74,13 @@ Note that this scheduler only ensures that the number of firings is
 minimal.  Most notably, it does not attempt to minimize the size of
 the buffers that are associated with each relation.  The resulting
 schedule is a linear schedule (as opposed to a looped schedule) and is
-not suitable for Multiprocessing environments.  <p> Any actors may be
+not suitable for multiprocessing environments.  <p> Any actors may be
 scheduled by this scheduler, which will, by default, assume
 homogeneous behavior for each actor.  (i.e. each output port produces
 one token for each firing, and each input port consumes one token on
 each firing, and no tokens are created during initialization.)  If
-this is not the case then the parameters "TokenConsumptionRate",
-"TokenProductionRate", and "TokenInitProduction" must be set.  The
+this is not the case then the parameters "tokenConsumptionRate",
+"tokenProductionRate", and "tokenInitProduction" must be set.  The
 SDFAtomicActor class provides easier access to these parameters.  <p>
 Note that reconstructing the schedule is expensive, so the schedule is
 locally cached for as long as possible, and mutations under SDF should
@@ -132,15 +132,15 @@ public class SDFScheduler extends Scheduler {
 
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor, as supplied by
-     *  by the port's "TokenConsumptionRate" Parameter.   If the parameter
+     *  by the port's "tokenConsumptionRate" Parameter.   If the parameter
      *  does not exist, then assume the actor is homogeneous and return a
      *  rate of 1.
-     *  @exception IllegalActionException If the TokenConsumptionRate
+     *  @exception IllegalActionException If the tokenConsumptionRate
      *   parameter has an invalid expression.
      */
     protected int _getTokenConsumptionRate(IOPort p)
             throws IllegalActionException {
-        Parameter param = (Parameter)p.getAttribute("TokenConsumptionRate");
+        Parameter param = (Parameter)p.getAttribute("tokenConsumptionRate");
         if(param == null) {
             if(p.isInput())
                 return 1;
@@ -153,15 +153,15 @@ public class SDFScheduler extends Scheduler {
     /**
      * Get the number of tokens that are produced on this output port
      * during initialization, as supplied by
-     * by the port's "TokenInitProduction" parameter.   If the parameter
+     * by the port's "tokenInitProduction" parameter.   If the parameter
      * does not exist, then assume the actor is zero-delay and return
      * a value of zero.
-     * @exception IllegalActionException If the TokenInitProduction
+     * @exception IllegalActionException If the tokenInitProduction
      *  parameter has an invalid expression.
      */
     protected int _getTokenInitProduction(IOPort p)
             throws IllegalActionException {
-        Parameter param = (Parameter)p.getAttribute("TokenInitProduction");
+        Parameter param = (Parameter)p.getAttribute("tokenInitProduction");
         if(param == null)
             return 0;
         return ((IntToken)param.getToken()).intValue();
@@ -170,15 +170,15 @@ public class SDFScheduler extends Scheduler {
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor during each firing,
      *  as supplied by
-     *  by the port's "TokenProductionRate" Parameter.   If the parameter
+     *  by the port's "tokenProductionRate" Parameter.   If the parameter
      *  does not exist, then assume the actor is homogeneous and return a
      *  rate of 1.
-     *  @exception IllegalActionException If the TokenProductionRate
+     *  @exception IllegalActionException If the tokenProductionRate
      *   parameter has an invalid expression.
      */
     protected int _getTokenProductionRate(IOPort p)
             throws IllegalActionException {
-        Parameter param = (Parameter)p.getAttribute("TokenProductionRate");
+        Parameter param = (Parameter)p.getAttribute("tokenProductionRate");
         if(param == null) {
             if(p.isOutput())
                 return 1;
@@ -294,12 +294,12 @@ public class SDFScheduler extends Scheduler {
                 port.getName() + " is not contained in Entity " +
                 e.getName());
         Parameter param = (Parameter)
-            port.getAttribute("TokenConsumptionRate");
+            port.getAttribute("tokenConsumptionRate");
         try {
             if(param != null) {
                 param.setToken(new IntToken(rate));
             } else {
-                param = new Parameter(port,"TokenConsumptionRate",
+                param = new Parameter(port,"tokenConsumptionRate",
                         new IntToken(rate));
             }
         } catch (Exception exception) {
@@ -323,12 +323,12 @@ public class SDFScheduler extends Scheduler {
                 port.getName() + " is not contained in Entity " +
                 e.getName());
         Parameter param = (Parameter)
-            port.getAttribute("TokenProductionRate");
+            port.getAttribute("tokenProductionRate");
         try {
             if(param != null) {
                 param.setToken(new IntToken(rate));
             } else {
-                param = new Parameter(port,"TokenProductionRate",
+                param = new Parameter(port,"tokenProductionRate",
                         new IntToken(rate));
             }
         } catch (Exception exception) {
@@ -352,12 +352,12 @@ public class SDFScheduler extends Scheduler {
                 port.getName() + " is not contained in Entity " +
                 e.getName());
         Parameter param = (Parameter)
-            port.getAttribute("TokenInitProduction");
+            port.getAttribute("tokenInitProduction");
         try {
             if(param != null) {
                 param.setToken(new IntToken(rate));
             } else {
-                param = new Parameter(port,"TokenInitProduction",
+                param = new Parameter(port,"tokenInitProduction",
                         new IntToken(rate));
             }
         } catch (Exception exception) {
@@ -1096,19 +1096,19 @@ public class SDFScheduler extends Scheduler {
 	    */
             try {
                 Parameter param;
-                param = (Parameter)port.getAttribute("TokenConsumptionRate");
+                param = (Parameter)port.getAttribute("tokenConsumptionRate");
                 if(param == null)
-                    param = new Parameter(port,"TokenConsumptionRate",
+                    param = new Parameter(port,"tokenConsumptionRate",
                             new IntToken(1));
                 param.setToken(new IntToken(consumptionRate));
-                param = (Parameter)port.getAttribute("TokenProductionRate");
+                param = (Parameter)port.getAttribute("tokenProductionRate");
                 if(param == null)
-                    param = new Parameter(port,"TokenProductionRate",
+                    param = new Parameter(port,"tokenProductionRate",
                             new IntToken(1));
                 param.setToken(new IntToken(productionRate));
-                param = (Parameter)port.getAttribute("TokenInitProduction");
+                param = (Parameter)port.getAttribute("tokenInitProduction");
                 if(param == null)
-                    param = new Parameter(port,"TokenInitProduction",
+                    param = new Parameter(port,"tokenInitProduction",
                             new IntToken(1));
                 param.setToken(new IntToken(initProduction));
             }
@@ -1430,5 +1430,4 @@ public class SDFScheduler extends Scheduler {
 
     private Map _firingvector;
     private boolean _firingvectorvalid;
-
 }

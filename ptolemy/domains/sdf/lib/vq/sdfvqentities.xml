@@ -46,12 +46,6 @@
 </rendition>
 </entity>
 
-<entity name="RateSelector" class="ptolemy.domains.sdf.lib.vq.RateSelector">
-<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
-<configure>generic.transformer</configure>
-</rendition>
-</entity>
-
 <entity name="VQDecode" class="ptolemy.domains.sdf.lib.vq.VQDecode">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.transformer</configure>
