@@ -2,13 +2,13 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="ReflexGame" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="2.1-devel-2">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="3.1-devel">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[817, 635]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, 10]">
     </property>
-    <property name="DE" class="ptolemy.domains.de.kernel.DEDirector">
+    <property name="DE" class="ptolemy.domains.de.kernel.DEEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="1.797693135E308">
@@ -78,10 +78,16 @@ this lag is not extremely significant.
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
     </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, 7, 1032, 753}, maximized=false}">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.Parameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.Parameter" value="{408.5, 317.5}">
+    </property>
     <entity name="SR Composite Actor" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="310.0, 230.0">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 350]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
         </property>
@@ -120,123 +126,155 @@ this lag is not extremely significant.
             <property name="_location" class="ptolemy.kernel.util.Location" value="360.0, 235.0">
             </property>
         </port>
-        <entity name="FSM Composite Actor" class="ptolemy.domains.fsm.kernel.FSMActor">
-            <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="ready">
+        <entity name="modal model" class="ptolemy.domains.fsm.modal.ModalModel">
+            <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.FSMDirector">
             </property>
-            <property name="_nonStrictMarker" class="ptolemy.kernel.util.Attribute">
+            <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
             </property>
-            <property name="_library" class="ptolemy.moml.LibraryAttribute">
-                <configure>
-            <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"></entity></entity>
-          </configure>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="210.0, 185.0">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="212.0, 187.0">
+            <property name="_Director" class="ptolemy.domains.fsm.kernel.FSMDirector">
+                <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
+                </property>
             </property>
-            <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
-            </property>
-            <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute">
-            </property>
-            <property name="savedStartTime" class="ptolemy.data.expr.Parameter" value="4.767">
-            </property>
-            <port name="startTime" class="ptolemy.actor.TypedIOPort">
+            <port name="startTime" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="78.5, 96.0">
-                </property>
             </port>
-            <port name="stopTime" class="ptolemy.actor.TypedIOPort">
+            <port name="stopTime" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="input"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="78.0, 152.0">
-                </property>
             </port>
-            <port name="startOut" class="ptolemy.actor.TypedIOPort">
+            <port name="startOut" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="458.0, 102.0">
-                </property>
             </port>
-            <port name="stopOut" class="ptolemy.actor.TypedIOPort">
+            <port name="stopOut" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="456.5, 156.0">
-                </property>
             </port>
-            <port name="responseTime" class="ptolemy.actor.TypedIOPort">
+            <port name="responseTime" class="ptolemy.domains.fsm.modal.ModalPort">
                 <property name="output"/>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="473.0, 208.0">
-                </property>
             </port>
-            <entity name="ready" class="ptolemy.domains.fsm.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
+            <entity name="_Controller" class="ptolemy.domains.fsm.modal.ModalController">
+                <property name="initialStateName" class="ptolemy.kernel.util.StringAttribute" value="ready">
                 </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="181.0, 191.0">
+                <property name="_library" class="ptolemy.moml.LibraryAttribute">
+                    <configure>
+        <entity name="state library" class="ptolemy.kernel.CompositeEntity"><input source="ptolemy/configs/basicUtilities.xml"></input><entity name="state" class="ptolemy.domains.fsm.kernel.State"><property name="_centerName" class="ptolemy.kernel.util.Attribute"></property><property name="_controllerFactory" class="ptolemy.vergil.fsm.modal.HierarchicalStateControllerFactory"></property></entity></entity>
+      </configure>
                 </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
+                <property name="savedStartTime" class="ptolemy.data.expr.Parameter" value="4.767">
+                    <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+                    </property>
+                    <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                        <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                        </property>
+                    </property>
+                    <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                        <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+                    </property>
+                    <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+                    </property>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="300.0, 90.0">
+                    </property>
+                </property>
+                <port name="startTime" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 125.0">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
                 </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
+                <port name="stopTime" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <property name="input"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 210.0">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
                 </port>
+                <port name="startOut" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="530.0, 95.0">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
+                </port>
+                <port name="stopOut" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="535.0, 155.0">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
+                </port>
+                <port name="responseTime" class="ptolemy.domains.fsm.modal.RefinementPort">
+                    <property name="output"/>
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="545.0, 225.0">
+                    </property>
+                    <property name="_cardinal" class="ptolemy.kernel.util.StringAttribute" value="WEST">
+                    </property>
+                </port>
+                <entity name="stopReceived" class="ptolemy.domains.fsm.kernel.State">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="391.0, 296.0">
+                    </property>
+                </entity>
+                <entity name="startReceived" class="ptolemy.domains.fsm.kernel.State">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="278.0, 265.0">
+                    </property>
+                </entity>
+                <entity name="ready" class="ptolemy.domains.fsm.kernel.State">
+                    <property name="_location" class="ptolemy.kernel.util.Location" value="181.0, 191.0">
+                    </property>
+                </entity>
+                <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="stopTime_isPresent">
+                    </property>
+                    <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="startOut = savedStartTime; stopOut = stopTime; responseTime = stopTime - savedStartTime">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <relation name="relation2" class="ptolemy.domains.fsm.kernel.Transition">
+                    <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="startTime_isPresent">
+                    </property>
+                    <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="savedStartTime = startTime">
+                    </property>
+                    <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                    <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
+                    </property>
+                </relation>
+                <link port="stopReceived.incomingPort" relation="relation"/>
+                <link port="startReceived.incomingPort" relation="relation2"/>
+                <link port="startReceived.outgoingPort" relation="relation"/>
+                <link port="ready.outgoingPort" relation="relation2"/>
             </entity>
-            <entity name="startReceived" class="ptolemy.domains.fsm.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="278.0, 265.0">
-                </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-            </entity>
-            <entity name="stopReceived" class="ptolemy.domains.fsm.kernel.State">
-                <property name="refinementName" class="ptolemy.kernel.util.StringAttribute">
-                </property>
-                <property name="_location" class="ptolemy.kernel.util.Location" value="391.0, 296.0">
-                </property>
-                <port name="incomingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-                <port name="outgoingPort" class="ptolemy.kernel.ComponentPort">
-                </port>
-            </entity>
-            <relation name="relation" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="startTime_isPresent">
-                </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute" value="savedStartTime = startTime">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
+            <relation name="startTimeRelation" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <relation name="relation4" class="ptolemy.domains.fsm.kernel.Transition">
-                <property name="guardExpression" class="ptolemy.kernel.util.StringAttribute" value="stopTime_isPresent">
-                </property>
-                <property name="outputActions" class="ptolemy.domains.fsm.kernel.OutputActionsAttribute" value="startOut = savedStartTime; stopOut = stopTime; responseTime = stopTime - savedStartTime">
-                </property>
-                <property name="setActions" class="ptolemy.domains.fsm.kernel.CommitActionsAttribute">
-                </property>
-                <property name="exitAngle" class="ptolemy.data.expr.Parameter" value="PI/5.0">
-                </property>
-                <property name="gamma" class="ptolemy.data.expr.Parameter" value="0.0">
-                </property>
-                <property name="reset" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="preemptive" class="ptolemy.data.expr.Parameter" value="false">
-                </property>
-                <property name="triggerExpression" class="ptolemy.kernel.util.StringAttribute">
-                </property>
+            <relation name="stopTimeRelation" class="ptolemy.actor.TypedIORelation">
             </relation>
-            <link port="ready.outgoingPort" relation="relation"/>
-            <link port="startReceived.incomingPort" relation="relation"/>
-            <link port="startReceived.outgoingPort" relation="relation4"/>
-            <link port="stopReceived.incomingPort" relation="relation4"/>
+            <relation name="startOutRelation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="stopOutRelation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <relation name="responseTimeRelation" class="ptolemy.actor.TypedIORelation">
+            </relation>
+            <link port="startTime" relation="startTimeRelation"/>
+            <link port="stopTime" relation="stopTimeRelation"/>
+            <link port="startOut" relation="startOutRelation"/>
+            <link port="stopOut" relation="stopOutRelation"/>
+            <link port="responseTime" relation="responseTimeRelation"/>
+            <link port="_Controller.startTime" relation="startTimeRelation"/>
+            <link port="_Controller.stopTime" relation="stopTimeRelation"/>
+            <link port="_Controller.startOut" relation="startOutRelation"/>
+            <link port="_Controller.stopOut" relation="stopOutRelation"/>
+            <link port="_Controller.responseTime" relation="responseTimeRelation"/>
         </entity>
-        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -244,16 +282,16 @@ this lag is not extremely significant.
         </relation>
         <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="startTrigger" relation="relation7"/>
-        <link port="stopTrigger" relation="relation"/>
+        <link port="startTrigger" relation="relation"/>
+        <link port="stopTrigger" relation="relation2"/>
         <link port="startOut" relation="relation3"/>
         <link port="stopOut" relation="relation4"/>
         <link port="responseTime" relation="relation5"/>
-        <link port="FSM Composite Actor.startTime" relation="relation7"/>
-        <link port="FSM Composite Actor.stopTime" relation="relation"/>
-        <link port="FSM Composite Actor.startOut" relation="relation3"/>
-        <link port="FSM Composite Actor.stopOut" relation="relation4"/>
-        <link port="FSM Composite Actor.responseTime" relation="relation5"/>
+        <link port="modal model.startTime" relation="relation"/>
+        <link port="modal model.stopTime" relation="relation2"/>
+        <link port="modal model.startOut" relation="relation3"/>
+        <link port="modal model.stopOut" relation="relation4"/>
+        <link port="modal model.responseTime" relation="relation5"/>
     </entity>
     <entity name="Start Timer" class="ptolemy.domains.de.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -262,9 +300,6 @@ this lag is not extremely significant.
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 110.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="ButtonTime" class="ptolemy.domains.sr.lib.ButtonTime">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click here when you see 'Now!'">
@@ -272,13 +307,6 @@ this lag is not extremely significant.
         <doc>Generate outputs in response to button clicks</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 240.0">
         </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
     </entity>
     <entity name="Display 'Ready' and 'Now!'" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="435.0, 120.0">
@@ -303,27 +331,16 @@ this lag is not extremely significant.
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 225.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-            <property name="title" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 195.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="Ready" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Ready...&quot;">
@@ -331,13 +348,12 @@ this lag is not extremely significant.
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="250.0, 145.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -384,43 +400,20 @@ this lag is not extremely significant.
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 180.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
         </entity>
         <entity name="AddSubtract2" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 255.0">
             </property>
-            <port name="plus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="minus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="AddSubtract3" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 375.0">
             </property>
-            <port name="plus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="minus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Const3" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="&quot; Response time: &quot;">
@@ -428,13 +421,12 @@ this lag is not extremely significant.
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="280.0, 310.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
         </entity>
         <entity name="Const" class="ptolemy.actor.lib.Const">
             <property name="value" class="ptolemy.data.expr.Parameter" value="&quot; Start time: &quot;">
@@ -442,75 +434,41 @@ this lag is not extremely significant.
             <doc>Create a constant sequence</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 75.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+                </property>
+            </property>
         </entity>
         <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-            <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-            <property name="title" class="ptolemy.kernel.util.StringAttribute">
-            </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="539.0, 255.0">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
             <property name="_location" class="ptolemy.kernel.util.Location" value="410.0, 145.0">
             </property>
-            <port name="plus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="minus" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="TimedDelay" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="0.1">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="170.0, 245.0">
             </property>
-            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="TimedDelay2" class="ptolemy.domains.de.lib.TimedDelay">
             <property name="delay" class="ptolemy.data.expr.Parameter" value="0.2">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="190.0, 365.0">
             </property>
-            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <relation name="Copy1:relation22" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="245.0, 245.0">
+            <vertex name="vertex1" value="245.0, 245.0">
             </vertex>
         </relation>
         <relation name="Copy1:relation24" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="Copy2:Copy1:relation22" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="250.0, 365.0">
+            <vertex name="vertex1" value="250.0, 365.0">
             </vertex>
         </relation>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -520,7 +478,7 @@ this lag is not extremely significant.
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="240.0, 135.0">
+            <vertex name="vertex1" value="240.0, 135.0">
             </vertex>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -579,12 +537,6 @@ this lag is not extremely significant.
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 80.0">
             </property>
-            <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="input"/>
-            </port>
-            <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-                <property name="output"/>
-            </port>
         </entity>
         <entity name="Uniform" class="ptolemy.actor.lib.Uniform">
             <property name="seed" class="ptolemy.data.expr.Parameter" value="0">
@@ -596,25 +548,11 @@ this lag is not extremely significant.
             <doc>Create a sequence of uniformly distributed random numbers</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="130.0, 80.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <entity name="WallClockTime" class="ptolemy.actor.lib.WallClockTime">
             <doc>Output the current real time in seconds</doc>
             <property name="_location" class="ptolemy.kernel.util.Location" value="325.0, 80.0">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-            </port>
-            <port name="trigger" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="multiport"/>
-            </port>
         </entity>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
@@ -640,11 +578,11 @@ this lag is not extremely significant.
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="240.0, 170.0">
+        <vertex name="vertex1" value="240.0, 170.0">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="120.0, 110.0">
+        <vertex name="vertex1" value="120.0, 110.0">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
