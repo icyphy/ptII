@@ -1,4 +1,4 @@
-<!-- $Id -->
+<!-- $Id$ -->
 <html>
 <head>
 <META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
@@ -9,9 +9,10 @@
 <H1>Adding An Actor to Ptolemy II</H1>
 Below are instructions for adding an actor to Ptolemy II
 and making it visible in Vergil.  
- <p>Chapter 4 of
-the Ptolemy II Design Document at
-<a href="http://ptolemy.eecs.berkeley.edu/publications/papers/01/HMAD"><CODE>http://ptolemy.eecs.berkeley.edu/publications/papers/01/HMAD</CODE></a>
+ <p>Chapter 5, "Designing Actors," of
+the Volume 1: Introduction to Ptolemy II of the
+Ptolemy II Design Document at
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/designdoc.htm</CODE></a>
 discusses how to design actors, but the design document does
 not discuss compiling the actor and adding it to Vergil.  The reason
 for this omission is because we are hoping to eventually have a cleaner
@@ -29,9 +30,9 @@ that Ptolemy II has been installed, and that <CODE>$PTII/configure</CODE>
 and <CODE>make</CODE> have been run.  For details about the
 installation process, see
 <a href="../install.htm"><CODE>$PTII/doc/install.htm</CODE></a>
- <p>Under Windows 2000 with JDK1.3 and Cygwin, to do the setup, I did:
+ <p>Under Windows XP with JDK1.4 and Cygwin, to do the setup, I did:
 <pre>
-bash-2.04$ PTII=c:\\Program\ Files\\Ptolemy\\Ptolemy\ II\ 2.0.1
+bash-2.04$ PTII=c:/ptII4.0
 bash-2.04$ export PTII
 bash-2.04$ cd "$PTII"
 bash-2.04$ ./configure
@@ -47,7 +48,7 @@ Configure and make usually generate a few warnings.
 	<li> In this case, we are just copying a <CODE>Ramp.java</CODE> to
 	<CODE>Ramp2.java</CODE>
 	<pre>
-	cd "$PTII/ptolemy/actor/lib"	
+	cd $PTII/ptolemy/actor/lib	
 	cp -p Ramp.java Ramp2.java
 	</pre>
 	Note that if we had copied our java code from a <i>different
@@ -233,7 +234,7 @@ There are one or more configuration files for each palette.
 Their filenames, as of May 2002, are shown below.  For the latest
 information, check the configuration file one level above these,
 which is usually named 
-<a href="../../ptolemy/configs/defaultFullConfiguration.xml"><CODE>$PTII/ptolemy/configs/defaultFullConfiguration.xml</CODE></a>
+<a href="../../ptolemy/configs/vergilConfiguration.xml"><CODE>$PTII/ptolemy/configs/vergilConfiguration.xml</CODE></a>
 
 <pre>
 <b>palette</b>            <b>configuration file(s)</b>
