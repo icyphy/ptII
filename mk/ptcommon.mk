@@ -420,7 +420,8 @@ jsrestore:
 
 # Compile the instrumented Java classes and include JavaScope.zip
 jsbuild:
-	$(MAKE) AUXCLASSPATH="$(CLASSPATHSEPARATOR)$(JSCLASSPATH)" fast
+	$(MAKE) AUXCLASSPATH="$(CLASSPATHSEPARATOR)$(JSCLASSPATH)" JFLAGS="$(JFLAGS)" fast
+
 # Run the test_jsimple rule with the proper classpath
 jstest_jsimple:
 	$(MAKE) AUXCLASSPATH="$(CLASSPATHSEPARATOR)$(JSCLASSPATH)" \
