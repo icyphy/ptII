@@ -121,7 +121,7 @@ public class TimedQueueReceiver {
     public Token get() {
 	Thread thread = Thread.currentThread();
 	Token token = null;
-	synchronized( this ) {
+	// synchronized( this ) {
             Event event = (Event)_queue.take();
 	    if (event == null) {
                 throw new NoTokenException(getContainer(),
@@ -154,7 +154,7 @@ public class TimedQueueReceiver {
 	            timeKeeper.updateRcvrList(this);
 		}
 	    }
-	}
+	// }
         return token;
     }
 
@@ -231,29 +231,15 @@ public class TimedQueueReceiver {
 	    if( token instanceof NullToken ) {
 		return;
 	    }
-	    /*
-	    System.out.println("Time in the past: " + time +
-			       "\t_lastTime:" + _lastTime);
-	    */
-	    IOPort port = (IOPort)getContainer();
-	    NamedObj actor = (NamedObj)port.getContainer();
+	    IOPort port = (IOPort)getContainer(); 
+	    NamedObj actor = (NamedObj)port.getContainer(); 
 	    // Note: Maintain the following IllegalArgumentException
 	    // message as it is used by DDEIOPort.send().
 	    throw new IllegalArgumentException(actor.getName() +
 		    " - Attempt to set current time in the past.");
 	}
         Event event;
-        synchronized(this) {
-            /*
-	    String name = ((Nameable)getContainer().getContainer()).getName();
-	    if( token instanceof NullToken ) {
-	        System.out.println(name+": Null token placed in "+name+
-			" at time " +time);
-	    } else if( token instanceof Token ) {
-	        System.out.println(name+": Real token placed in "+name+
-			" at time " +time);
-	    }
-            */
+        // synchronized(this) {
             _lastTime = time;
             event = new Event(token, _lastTime);
 
@@ -265,7 +251,7 @@ public class TimedQueueReceiver {
                 throw new NoRoomException (getContainer(),
                         "Queue is at capacity. Cannot insert token.");
             }
-        }
+	// }
     }
 
     /** Set the queue capacity of this receiver.
@@ -298,27 +284,13 @@ public class TimedQueueReceiver {
      *  oldest queue position; return false otherwise.
      */
     synchronized boolean hasNullToken() {
-	String name = ((Nameable)getContainer().getContainer()).getName();
 	if( _queue.size() > 0 ) {
 	    Event event = (Event)_queue.get(0);
 	    if( event.getToken() instanceof NullToken ) {
 		return true;
 	    }
-	}
+	} 
         return false;
-	/*
-	    System.out.println(name+": hasNullToken() has a size of "
-		    + _queue.size() );
-	if( _queue.size() <= 0 ) {
-	    return false;
-	}
-	System.out.println(name+": Checking for NullToken!!!");
-	if( _queue.get(0) instanceof NullToken ) {
-	    System.out.println("NullToken found!!!");
-	    return true;
-	}
-        return false;
-	*/
     }
 
     /** Set the completion time of this receiver.
