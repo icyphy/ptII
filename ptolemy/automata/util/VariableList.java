@@ -249,12 +249,24 @@ public class VariableList extends Attribute {
             return;
         }
         if (_dependents != null) {
+            LinkedList newlist = new LinkedList();
             Enumeration vars = _dependents.elements();
+            while (vars.hasMoreElements()) {
+                Variable next = (Variable)vars.nextElement();
+                newlist.insertFirst(next);
+            }
+            vars = newlist.elements();
             while (vars.hasMoreElements()) {
                 Variable next = (Variable)vars.nextElement();
                 next.removeFromScope(this);
             }
-            _dependents.clear();
+            // CHECK
+            // here this list should be empty
+            //_dependents.clear();
+            vars = _dependents.elements();
+            if (vars.hasMoreElements()) {
+                throw new InvalidStateException(this, "Dangling dependencies.");
+            }
         }
         super.setContainer(container);
         return;
@@ -345,7 +357,7 @@ public class VariableList extends Attribute {
      *  so notify dependents.
      *  @param attr The attribute to be removed.
      */
-    protected void _removeAttribute(NamedObj param) {
+    protected void _removeAttribute(Attribute param) {
         if (!(param instanceof Variable)) {
             throw new InvalidStateException(this, param, 
                     "VariableList can only have Variable as attribute.");
