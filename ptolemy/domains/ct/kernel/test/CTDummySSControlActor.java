@@ -68,7 +68,7 @@ public class CTDummySSControlActor extends TypedAtomicActor
     /** Return true always.
      */
     public boolean isThisStepAccurate() {
-        return true;
+        return isStateAccurate() && isOutputAccurate();
     }
 
     /** Return java.lang.Double.MAX_VALUE.
@@ -92,4 +92,12 @@ public class CTDummySSControlActor extends TypedAtomicActor
 
     /** @serial The signal output port. */
     public TypedIOPort output;
+
+    public boolean isStateAccurate() {
+        return true;
+    }
+
+    public boolean isOutputAccurate() {
+        return true;
+    }
 }

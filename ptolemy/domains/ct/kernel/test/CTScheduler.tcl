@@ -346,8 +346,6 @@ test CTScheduler-2.6 {event generators and event interpreters} {
 	.CA.A5
     }
     discreteActors {
-	.CA.EG
-	.CA.EI
     }
     dynamicActors {
 	.CA.D2
@@ -435,9 +433,6 @@ test CTScheduler-2.7 {contained in a composite actor} {
 	.CA.A5
     }
     discreteActors {
-	.CA.EG
-	.CA.EI
-	.CA.ED
     }
     dynamicActors {
 	.CA.D2
@@ -512,9 +507,6 @@ test CTScheduler-2.8 {get the schedule again} {
 	.CA.A5
     }
     discreteActors {
-	.CA.EG
-	.CA.EI
-	.CA.ED
     }
     dynamicActors {
 	.CA.D2

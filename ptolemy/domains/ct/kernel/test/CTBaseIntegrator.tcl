@@ -46,7 +46,6 @@ if {[string compare test [info procs test]] == 1} then {
 set ca [java::new ptolemy.actor.TypedCompositeActor]
 set dir [java::new ptolemy.domains.ct.kernel.CTMultiSolverDirector \
 	$ca CTDirector]
-$dir setCurrentStepSize 1.0
 
 
 ######################################################################
@@ -77,6 +76,9 @@ test CTBaseIntegrator-2.1 {Construct a CTBaseIntegrator, get parameters} {
 test CTBaseIntegrator-3.1 {check initialization} {
     $dir preinitialize
     $dir initialize
+    # step size has to be set after preinitialization
+    # since time resolution is not available before that
+    $dir setCurrentStepSize 1.0
     list [$integ getState] [$integ getTentativeState] \
 	    [$integ getDerivative]
 } {1.0 1.0 0.0}

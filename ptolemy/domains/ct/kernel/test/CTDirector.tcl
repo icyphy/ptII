@@ -84,19 +84,19 @@ test CTDirector-2.1 {Get default values} {
     $dir initialize
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
-	    [$dir getCurrentTime] \
-	    [$dir getIterationBeginTime] \
+	    [[$dir getCurrentTime] getTimeValue] \
+	    [[$dir getIterationBeginTime] getTimeValue] \
 	    [$dir getInitialStepSize] \
 	    [$dir getErrorTolerance] \
 	    [$dir getMaxIterations] \
 	    [$dir getMaxStepSize] \
 	    [$dir getMinStepSize] \
-	    [$dir getNextIterationTime] \
-	    [$dir getStopTime] \
+	    [[$dir getNextIterationTime] getTimeValue] \
+	    [[$dir getStopTime] toString] \
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
-} {.System.DIR.CT_Runge_Kutta_2_3_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 Infinity 0.1 1e-10 1e-06}
+} {.System.DIR.CT_Runge_Kutta_2_3_Solver 0.1 0.0 0.0 0.1 0.0001 20 1.0 1e-05 0.1 9.2233720368548E8 0.1 1e-10 1e-06}
 
 
 ######################################################################
@@ -158,15 +158,15 @@ test CTDirector-2.2 {set Parameters by expression} {
 
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
-	    [$dir getCurrentTime] \
-	    [$dir getIterationBeginTime] \
+	    [[$dir getCurrentTime] getTimeValue] \
+	    [[$dir getIterationBeginTime] getTimeValue] \
 	    [$dir getInitialStepSize] \
 	    [$dir getErrorTolerance] \
 	    [$dir getMaxIterations] \
 	    [$dir getMaxStepSize] \
 	    [$dir getMinStepSize] \
-	    [$dir getNextIterationTime] \
-	    [$dir getStopTime] \
+	    [[$dir getNextIterationTime] getTimeValue] \
+	    [[$dir getStopTime] getTimeValue] \
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
@@ -232,15 +232,15 @@ test CTDirector-2.2a {set Parameters} {
     $dir prefire
     list [[$dir getCurrentODESolver] getFullName] \
 	    [$dir getCurrentStepSize] \
-	    [$dir getCurrentTime] \
-	    [$dir getIterationBeginTime] \
+	    [[$dir getCurrentTime] getTimeValue] \
+	    [[$dir getIterationBeginTime] getTimeValue] \
 	    [$dir getInitialStepSize] \
 	    [$dir getErrorTolerance] \
 	    [$dir getMaxIterations] \
 	    [$dir getMaxStepSize] \
 	    [$dir getMinStepSize] \
-	    [$dir getNextIterationTime] \
-	    [$dir getStopTime] \
+	    [[$dir getNextIterationTime] getTimeValue] \
+	    [[$dir getStopTime] getTimeValue] \
 	    [$dir getSuggestedNextStepSize] \
 	    [$dir getTimeResolution] \
 	    [$dir getValueResolution]
@@ -249,9 +249,10 @@ test CTDirector-2.2a {set Parameters} {
 
 test CTDirector-2.3 {sets and gets} {
     #Note: Use above set up.
-    $dir setCurrentTime 0.1
+    set time [[$dir getCurrentTime] {add double} 0.1]
+    $dir setCurrentTime $time
     $dir setCurrentStepSize 0.2
-    list [$dir getCurrentTime] \
+    list [[$dir getCurrentTime] getTimeValue] \
 	    [$dir getCurrentStepSize]
 } {0.1 0.2}
 
@@ -292,20 +293,21 @@ test CTDirector-3.1 {register a breakpoint} {
     # One at the specified time, and one at the specified time minus
     # the time resolution.
     set timeResolution [$dir getTimeResolution]
-    $dir fireAt $sys 0.1
-    $dir fireAt $sys 0.4
-    $dir fireAt $sys 0.2
+    set currentTime [$dir getCurrentTime]
+    $dir fireAt $sys [$currentTime {add double} 0.1]
+    $dir fireAt $sys [$currentTime {add double} 0.4]
+    $dir fireAt $sys [$currentTime {add double} 0.2]
     set bptable [$dir getBreakPoints]
-    set starttime [$bptable first]
+    set starttime [[java::cast ptolemy.actor.util.Time [$bptable first]] getTimeValue]
     $bptable removeFirst
-    set first [$bptable first]
-    set firstAgain [$bptable first]
+    set first [[java::cast ptolemy.actor.util.Time [$bptable first]] getTimeValue]
+    set firstAgain [[java::cast ptolemy.actor.util.Time [$bptable first]] getTimeValue]
     $bptable removeFirst
-    set second [$bptable first]
+    set second [[java::cast ptolemy.actor.util.Time [$bptable first]] getTimeValue]
     $bptable removeFirst
-    set third [$bptable first]
+    set third [[java::cast ptolemy.actor.util.Time [$bptable first]] getTimeValue]
     $bptable removeFirst
-    set stoptime [$bptable first]
+    set stoptime [[java::cast ptolemy.actor.util.Time [$bptable first]] getTimeValue]
     list $starttime $first $firstAgain $second $third $stoptime
 } {0.0 0.1 0.1 0.2 0.4 1.0}
 
