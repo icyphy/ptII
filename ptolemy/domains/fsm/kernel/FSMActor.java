@@ -1027,11 +1027,6 @@ public class FSMActor extends CompositeEntity
         int width = port.getWidth();
 
         if (port.isKnown(channel)) {
-            int portRate = SDFUtilities.getTokenConsumptionRate(port);
-            if (_debugging) {
-                _debug(port.getFullName() + " port rate = " + portRate);
-            }
-
             // If we're in a new iteration, reallocate arrays to keep
             // track of hdf data.
             if (_newIteration && channel == 0) {
@@ -1046,8 +1041,8 @@ public class FSMActor extends CompositeEntity
             List[] tokenListArray = (LinkedList[])_hdfArrays.get(port);
 
             // Update the value variable if there is/are token(s) in
-            // the channel.  FIXME: What if there are not enough tokens?
-            // In HDF(SDF) this shouldn't happen.
+            // the channel. The HDF(SDF) schedule will gurantee there
+            // are always enough tokens.
             while (port.hasToken(channel)) {
                 Token token = port.get(channel);
                 if (_debugging) {
@@ -1061,8 +1056,8 @@ public class FSMActor extends CompositeEntity
                         + port.getFullName() + "  ");
             }
 
-            // FIXME: The "portName_isPresent" should be true only if
-            // there are enough tokens.
+            // FIXME: The "portName_isPresent" is true if there
+            // is at least one token.
             int length = tokenListArray[channel].size();
             if (length > 0) {
                 Token[] tokens = new Token[length];
