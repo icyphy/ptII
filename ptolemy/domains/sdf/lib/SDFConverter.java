@@ -1,4 +1,4 @@
-/* An actor that converts 32 consecutive BooleanTokens to an IntToken
+/* A base class for converters that are SDF actors.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,33 +24,27 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Red (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.Token;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////
-/// BitsToInt
+/// SDFConverter
 /**
-This actor converts a sequence of 32 consecutive BooleanTokens into a
-single IntToken.  The most significant bit is the first boolean
-token received.  The least significant bit is the last boolean token received.
+This actor is a base class for SDF converters. All it does is provide a
+default icon.
 
-@author Michael Leung
+@author Edward A. Lee
 @version $Id$
 */
 
-public class BitsToInt extends SDFConverter {
+public class SDFConverter extends SDFTransformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -60,55 +54,12 @@ public class BitsToInt extends SDFConverter {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public BitsToInt(CompositeEntity container, String name)
+    public SDFConverter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
-
         super(container, name);
-
-        input.setTokenConsumptionRate(32);
-        input.setTypeEquals(BaseType.BOOLEAN);
-
-        output.setTokenProductionRate(1);
-        output.setTypeEquals(BaseType.INT);
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Consume 32 consecutive BooleanTokens on the input.
-     *  Output a single IntToken which is representing by the
-     *  BooleanTokens.
-     *  The first token consumed is the most significant bit.
-     *
-     *  @exception IllegalActionException If there is no director.
-     */
-    public final void fire() throws IllegalActionException  {
-        int i, j;
-        int integer = 0;
-        Token[] bits = new BooleanToken[32];
-
-        bits = input.get(0, 32);
-
-        for (i = 0; i < 32; i++) {
-            integer = integer << 1;
-            if (((BooleanToken)bits[i]).booleanValue())
-                integer += 1;
-        }
-
-        IntToken value = new IntToken(integer);
-        output.send(0, value);
+	_attachText("_iconDescription", "<svg>\n" +
+                "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
+                + "style=\"fill:white\"/>\n" +
+                "</svg>\n");
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-

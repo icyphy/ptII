@@ -63,6 +63,7 @@ JSRCS = \
 	Chop.java \
 	DelayLine.java \
         DotProduct.java \
+	DoubleToMatrix.java \
 	DownSample.java \
 	FIR.java \
 	FFT.java \
@@ -70,8 +71,10 @@ JSRCS = \
 	IntToBits.java \
 	LineCoder.java \
 	LMSAdaptive.java \
+	MatrixToDouble.java \
 	RaisedCosine.java \
 	Repeat.java \
+	SDFConverter.java \
 	SDFTransformer.java \
 	SampleDelay.java \
 	SequenceToArray.java \

@@ -67,6 +67,26 @@ public class SDFTransformer extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** Return true if the number of available tokens on the <i>input</i>
+     *  port is at least the declared consumption rate for the port.
+     *  Otherwise return false.
+     *  @exception IllegalActionException If it is thrown accessing the port.
+     *  @return True if there are enough tokens.
+     */
+    public boolean prefire() throws IllegalActionException  {
+        int required = input.getTokenConsumptionRate();
+        // Derived classes may convert the input port to a multiport.
+        for (int i=0; i<input.getWidth(); i++) {
+            if (!input.hasToken(i, required)) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
     /** The input port.  This base class imposes no type constraints except

@@ -50,7 +50,7 @@ token send out.  The least significant bit is the last boolean token send out.
 @version $Id$
 */
 
-public class IntToBits extends SDFTransformer {
+public class IntToBits extends SDFConverter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -70,7 +70,6 @@ public class IntToBits extends SDFTransformer {
 
         output.setTokenProductionRate(32);
         output.setTypeEquals(BaseType.BOOLEAN);
-
     }
 
     ///////////////////////////////////////////////////////////////////
