@@ -1,4 +1,4 @@
-/* Monitor image inputs (java.awt.Image) by displaying them in the icon.
+/* Display image inputs in the icon.
 
  Copyright (c) 1998-2003 The Regents of the University of California.
  All rights reserved.
@@ -31,7 +31,7 @@
 package ptolemy.vergil.actor.lib;
 
 import ptolemy.actor.lib.Sink;
-import ptolemy.data.ObjectToken;
+import ptolemy.data.ImageToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
@@ -42,7 +42,7 @@ import java.awt.Image;
 //////////////////////////////////////////////////////////////////////////
 //// MonitorImage
 /**
-Monitor image inputs (java.awt.Image) by displaying them in the icon.
+Display image inputs in the icon.
 
 @author Edward A. Lee
 @version $Id$
@@ -69,10 +69,6 @@ public class MonitorImage extends Sink {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
-
-
-    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Read at most one token from the input and record its value.
@@ -82,13 +78,9 @@ public class MonitorImage extends Sink {
      */
     public boolean postfire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            ObjectToken token = (ObjectToken)input.get(0);
-            Object value = token.getValue();
-            if (!(value instanceof Image)) {
-                throw new IllegalActionException(this,
-                        "Received a token that does not contain an image.");
-            }
-            _icon.setImage((Image)value);
+            ImageToken token = (ImageToken)input.get(0);
+            Image value = token.asAWTImage();
+            _icon.setImage(value);
         }
         return true;
     }
