@@ -149,9 +149,9 @@ public class DiscreteRandomSource extends RandomSource {
             Token value = ((MatrixToken) values.getToken())
                 .getElementAsToken(0, 0);
             output.setTypeEquals(value.getType());
-            Director dir = getDirector();
-            if (dir != null) {
-                dir.invalidateResolvedTypes();
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateResolvedTypes();
             }
         } else {
             super.attributeTypeChanged(attribute);

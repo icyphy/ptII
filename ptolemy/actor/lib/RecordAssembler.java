@@ -1,4 +1,4 @@
-/* An actor that assembles multiple intputs to a RecordToken.
+/* An actor that assembles multiple inputs to a RecordToken.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -96,8 +96,8 @@ public class RecordAssembler extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        Director dir = getDirector();
-        if (dir == null) {
+        Director director = getDirector();
+        if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
 
@@ -150,15 +150,15 @@ public class RecordAssembler extends TypedAtomicActor {
 	List constraints = new LinkedList();
 	// since the output port has a clone of the above RecordType, need to
 	// get the type from the output port.
-	RecordType outType = (RecordType)output.getType();
+	RecordType outputType = (RecordType)output.getType();
 
-	Iterator iter = inputPortList().iterator();
-	while (iter.hasNext()) {
-	    TypedIOPort inPort = (TypedIOPort)iter.next();
-	    String label = inPort.getName();
-	    Inequality ineq = new Inequality(inPort.getTypeTerm(),
-	                                     outType.getTypeTerm(label));
-	    constraints.add(ineq);
+	Iterator inputPorts = inputPortList().iterator();
+	while (inputPorts.hasNext()) {
+	    TypedIOPort inputPort = (TypedIOPort)inputPorts.next();
+	    String label = inputPort.getName();
+	    Inequality inequality = new Inequality(inputPort.getTypeTerm(),
+                    outputType.getTypeTerm(label));
+	    constraints.add(inequality);
 	}
 
 	return constraints;

@@ -74,7 +74,7 @@ public class CurrentTime extends TimedSource {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        Director dir = getDirector();
-        output.send(0, new DoubleToken(dir.getCurrentTime()));
+        Director director = getDirector();
+        output.send(0, new DoubleToken(director.getCurrentTime()));
     }
 }

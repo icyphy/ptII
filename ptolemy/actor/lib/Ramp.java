@@ -104,7 +104,7 @@ public class Ramp extends SequenceSource {
     /** Override the base class to reinitialize the state if either
      *  the <i>step</i> or the <i>init</i> parameter is changed.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Not thrown.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -124,9 +124,9 @@ public class Ramp extends SequenceSource {
      *  If there is no director, then do nothing.
      */
     public void attributeTypeChanged(Attribute attribute) {
-        Director dir = getDirector();
-        if (dir != null) {
-            dir.invalidateResolvedTypes();
+        Director director = getDirector();
+        if (director != null) {
+            director.invalidateResolvedTypes();
         }
     }
 
@@ -172,7 +172,7 @@ public class Ramp extends SequenceSource {
 
     /** Invoke a specified number of iterations of this actor. Each
      *  iteration updates the state of the actor by adding the
-     *  value of the <i>setp</i> parameter to the state and sending
+     *  value of the <i>step</i> parameter to the state and sending
      *  the value of the state to the output. The iteration count
      *  is also incremented by the value of <i>count</i>, and if
      *  the result is greater than or equal to <i>firingCountLimit</i>

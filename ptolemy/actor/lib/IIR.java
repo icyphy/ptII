@@ -92,14 +92,14 @@ public class IIR extends Transformer {
     public IIR(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-        // parameters
+        // Parameters
 	double numeratorTaps[][] = {{1.0}};
 	double denominatorTaps[][] = {{1.0}};
-	numerator =
-	    new Parameter(this, "numerator", new DoubleMatrixToken(numeratorTaps));
+	numerator = new Parameter(this, "numerator",
+                new DoubleMatrixToken(numeratorTaps));
 	attributeChanged(numerator);
-	denominator =
-	    new Parameter(this, "denominator", new DoubleMatrixToken(denominatorTaps));
+	denominator = new Parameter(this, "denominator",
+                new DoubleMatrixToken(denominatorTaps));
 	attributeChanged(denominator);
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
@@ -153,8 +153,8 @@ public class IIR extends Transformer {
         }
 	// Initialize filter state.
 	if ((_numerator != null) && (_denominator != null)) {
-	    int stateSize =
-		(int)java.lang.Math.max(_numerator.length, _denominator.length);
+	    int stateSize = (int)java.lang.Math.max(_numerator.length,
+                    _denominator.length);
 	    _stateVector = new double[stateSize];
 	}
     }
@@ -178,7 +178,7 @@ public class IIR extends Transformer {
 	int stateSize =
 	    (int)java.lang.Math.max(_numerator.length, _denominator.length);
 	_stateVector = new double[stateSize];
-	_curTap = 0;
+	_currentTap = 0;
     }
 
     /** Invoke a specified number of iterations of this actor. Each
@@ -204,33 +204,31 @@ public class IIR extends Transformer {
 	    _resultArray = new DoubleToken[count];
 	}
 	// The current input sample.
-	double xCur;
+	double xCurrent;
 	// The current output sample.
-	double yCur;
-	double wn;
+	double yCurrent;
+	double window;
         if (input.hasToken(0, count)) {
 	    // NOTE: inArray.length may be > count, in which case
 	    // only the first count tokens are valid.
             Token[] inArray = input.get(0, count);
 	    for (int i = 0; i < count; i++) {
-		xCur = ((DoubleToken)(inArray[i])).doubleValue();
+		xCurrent = ((DoubleToken)(inArray[i])).doubleValue();
 
-		wn = xCur;
+		window = xCurrent;
 		for (int j = 1; j < _denominator.length; j++) {
-		    wn +=
-			_denominator[j]*_stateVector[(_curTap + j) %
-						     _stateVector.length];
+		    window += _denominator[j]*_stateVector[(_currentTap + j) %
+                            _stateVector.length];
 		}
-		_stateVector[_curTap] = wn;
-		yCur = 0;
+		_stateVector[_currentTap] = window;
+		yCurrent = 0;
 		for (int k = 0; k < _numerator.length; k++) {
-		    yCur +=
-			_numerator[k]*_stateVector[(_curTap +k) %
-						   _stateVector.length];
+		    yCurrent +=	_numerator[k]*_stateVector[(_currentTap +k) %
+                            _stateVector.length];
 		}
-		_resultArray[i] = new DoubleToken(yCur);
+		_resultArray[i] = new DoubleToken(yCurrent);
 		// Update the state vector pointer.
-		if (--_curTap < 0) _curTap = _stateVector.length - 1;
+		if (--_currentTap < 0) _currentTap = _stateVector.length - 1;
 	    }
             output.send(0, _resultArray, count);
             return COMPLETED;
@@ -250,6 +248,7 @@ public class IIR extends Transformer {
 
     // Filter state vector
     private double[] _stateVector;
+
     // State vector pointer
-    private int _curTap;
+    private int _currentTap;
 }

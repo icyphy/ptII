@@ -42,7 +42,7 @@ import ptolemy.data.expr.Parameter;
 /**
 An actor that delays the inputs for a certain duration of real time.
 The delay only happens in postfire(). In the fire() stage of execution,
-the inputs are directly transfered to outputs.
+the inputs are directly transferred to outputs.
 If the width of the input port is less than
 that of the output port, the tokens in the extra channels
 are lost.

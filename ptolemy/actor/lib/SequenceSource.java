@@ -99,7 +99,8 @@ public class SequenceSource extends Source implements SequenceActor {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
 	if (attribute == firingCountLimit) {
-	    _firingCountLimit = ((IntToken)firingCountLimit.getToken()).intValue();
+	    _firingCountLimit =
+                ((IntToken)firingCountLimit.getToken()).intValue();
 	}
     }
 
@@ -134,16 +135,18 @@ public class SequenceSource extends Source implements SequenceActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         protected variables               ////
 
-    // This is the value in parameter
-    // firingCountLimit.
-    // It may be convient for derived classes to read this
-    // variable in the iterate() method.
+    /** This is the value in parameter
+     * firingCountLimit.
+     * It may be convenient for derived classes to read this
+     *  variable in the iterate() method.
+     */
     protected int _firingCountLimit;
 
-    // The current number of elapsed iterations.
-    // It may be convient for derived classes to read/set this
-    // variable in the iterate() method.
+    /** The current number of elapsed iterations.
+     * It may be convenient for derived classes to read/set this
+     * variable in the iterate() method.
+     */
     protected int _iterationCount = 0;
 }

@@ -111,15 +111,15 @@ public class Quantizer extends Transformer {
             throws IllegalActionException {
         if (attribute == levels) {
             // Check nondecreasing property.
-            double[][] lvls =
+            double[][] levelsArray =
                 ((DoubleMatrixToken)levels.getToken()).doubleMatrix();
-            if (lvls.length != 1 || lvls[0].length == 0) {
+            if (levelsArray.length != 1 || levelsArray[0].length == 0) {
                 throw new IllegalActionException(this,
                         "Value of levels is not a row vector.");
             }
-            int length = lvls[0].length;
+            int length = levelsArray[0].length;
             for (int j = 1; j < length; j++) {
-                if (lvls[0][j] <= lvls[0][j-1]) {
+                if (levelsArray[0][j] <= levelsArray[0][j-1]) {
                     throw new IllegalActionException(this,
                             "Value of levels is not increasing ");
                 }
@@ -128,7 +128,8 @@ public class Quantizer extends Transformer {
             // Compute the quantization thresholds.
             _thresholds = new double[length-1];
             for (int j = 0; j < length-1; j++) {
-                _thresholds[j] = (lvls[0][j+1]+lvls[0][j])/2.0;
+                _thresholds[j] = (levelsArray[0][j+1] +
+                        levelsArray[0][j])/2.0;
             }
         } else {
             super.attributeChanged(attribute);

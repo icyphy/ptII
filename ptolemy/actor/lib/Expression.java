@@ -159,15 +159,15 @@ public class Expression extends TypedAtomicActor {
 
     /** Clone the actor into the specified workspace. This calls the
      *  base class and then creates new ports and parameters.
-     *  @param ws The workspace for the new object.
+     *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
      *   an attribute that cannot be cloned.
      */
 
-    public Object clone(Workspace ws)
+    public Object clone(Workspace workspace)
  	    throws CloneNotSupportedException {
-        Expression newObject = (Expression)super.clone(ws);
+        Expression newObject = (Expression)super.clone(workspace);
         newObject._iterationCount = 1;
         newObject._time = (Variable)newObject.getAttribute("time");
         newObject._iteration = (Variable)newObject.getAttribute("iteration");
@@ -180,11 +180,11 @@ public class Expression extends TypedAtomicActor {
      *   yields an incompatible type, or if there is no director.
      */
     public void fire() throws IllegalActionException {
-        Director dir = getDirector();
-        if (dir == null) {
+        Director director = getDirector();
+        if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
-        _time.setToken(new DoubleToken(dir.getCurrentTime()));
+        _time.setToken(new DoubleToken(director.getCurrentTime()));
         Iterator inputPorts = inputPortList().iterator();
         while(inputPorts.hasNext()) {
             IOPort port = (IOPort)(inputPorts.next());

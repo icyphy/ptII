@@ -109,8 +109,8 @@ public class Pulse extends SequenceSource {
 
 	// set type constraint
 	ArrayType valuesArrayType = (ArrayType)values.getType();
-	InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
-	output.setTypeAtLeast(elemTerm);
+	InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+	output.setTypeAtLeast(elementTerm);
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
@@ -184,9 +184,9 @@ public class Pulse extends SequenceSource {
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == values) {
-            Director dir = getDirector();
-            if (dir != null) {
-                dir.invalidateResolvedTypes();
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateResolvedTypes();
             }
             try {
                 ArrayToken valuesArray = (ArrayToken)values.getToken();
@@ -222,8 +222,8 @@ public class Pulse extends SequenceSource {
             newObject.attributeChanged(newObject.repeat);
             // set the type constraints
 	    ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
-	    InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
-	    newObject.output.setTypeAtLeast(elemTerm);
+	    InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+	    newObject.output.setTypeAtLeast(elementTerm);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }

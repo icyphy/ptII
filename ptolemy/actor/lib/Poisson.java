@@ -109,8 +109,8 @@ public class Poisson extends TimedSource {
 
 	// set type constraint
 	ArrayType valuesArrayType = (ArrayType)values.getType();
-	InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
-	output.setTypeAtLeast(elemTerm);
+	InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+	output.setTypeAtLeast(elementTerm);
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
@@ -166,9 +166,9 @@ public class Poisson extends TimedSource {
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == values) {
-            Director dir = getDirector();
-            if (dir != null) {
-                dir.invalidateResolvedTypes();
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateResolvedTypes();
             }
         } else {
             super.attributeTypeChanged(attribute);
@@ -190,8 +190,8 @@ public class Poisson extends TimedSource {
             newObject.attributeChanged(values);
 	    // set the type constraints
 	    ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
-	    InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
-	    newObject.output.setTypeAtLeast(elemTerm);
+	    InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+	    newObject.output.setTypeAtLeast(elementTerm);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
@@ -251,9 +251,9 @@ public class Poisson extends TimedSource {
             double meanTimeValue =
                 ((DoubleToken)meanTime.getToken()).doubleValue();
             double exp = -Math.log((1-Math.random()))*meanTimeValue;
-            Director dir = getDirector();
-            _nextFiringTime = dir.getCurrentTime() + exp;
-            dir.fireAt(this, _nextFiringTime);
+            Director director = getDirector();
+            _nextFiringTime = director.getCurrentTime() + exp;
+            director.fireAt(this, _nextFiringTime);
         }
         return super.postfire();
     }

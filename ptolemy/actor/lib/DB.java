@@ -162,7 +162,7 @@ public class DB extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Return the speified number in decibels,
+    /** Return the specified number in decibels,
      *  but no less than <i>minValue</i>.
      */
     private DoubleToken _doFunction(double number, double minValue)

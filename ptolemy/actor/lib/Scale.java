@@ -92,9 +92,9 @@ public class Scale extends Transformer {
      *  If there is no director, then do nothing.
      */
     public void attributeTypeChanged(Attribute attribute) {
-        Director dir = getDirector();
-        if (dir != null) {
-            dir.invalidateResolvedTypes();
+        Director director = getDirector();
+        if (director != null) {
+            director.invalidateResolvedTypes();
         }
     }
 

@@ -96,16 +96,16 @@ public class RecordDisassembler extends TypedAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-        Director dir = getDirector();
-        if (dir == null) {
+        Director director = getDirector();
+        if (director == null) {
             throw new IllegalActionException(this, "No director!");
         }
 
 	if (input.hasToken(0)) {
 	    RecordToken record = (RecordToken)input.get(0);
-	    Iterator iter = record.labelSet().iterator();
-	    while (iter.hasNext()) {
-	        String label = (String)iter.next();
+	    Iterator labels = record.labelSet().iterator();
+	    while (labels.hasNext()) {
+	        String label = (String)labels.next();
 		Token value = record.get(label);
 		IOPort port = (IOPort)getPort(label);
 		port.send(0, value);
@@ -137,15 +137,16 @@ public class RecordDisassembler extends TypedAtomicActor {
 	List constraints = new LinkedList();
 	// since the input port has a clone of the above RecordType, need to
 	// get the type from the input port.
-	RecordType inType = (RecordType)input.getType();
+	RecordType inputTypes = (RecordType)input.getType();
 
-	Iterator iter = outputPortList().iterator();
-	while (iter.hasNext()) {
-	    TypedIOPort outPort = (TypedIOPort)iter.next();
-	    String label = outPort.getName();
-	    Inequality ineq = new Inequality(inType.getTypeTerm(label),
-	    				     outPort.getTypeTerm());
-	    constraints.add(ineq);
+	Iterator outputPorts = outputPortList().iterator();
+	while (outputPorts.hasNext()) {
+	    TypedIOPort outputPort = (TypedIOPort)outputPorts.next();
+	    String label = outputPort.getName();
+	    Inequality inequality =
+                new Inequality(inputTypes.getTypeTerm(label),
+                        outputPort.getTypeTerm());
+	    constraints.add(inequality);
 	}
 
 	return constraints;

@@ -138,8 +138,8 @@ public class Clock extends TimedSource {
 
 	// set type constraint
 	ArrayType valuesArrayType = (ArrayType)values.getType();
-	InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
-	output.setTypeAtLeast(elemTerm);
+	InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+	output.setTypeAtLeast(elementTerm);
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
@@ -219,9 +219,9 @@ public class Clock extends TimedSource {
     public void attributeTypeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == values) {
-            Director dir = getDirector();
-            if (dir != null) {
-                dir.invalidateResolvedTypes();
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateResolvedTypes();
             }
         } else {
 	    super.attributeTypeChanged(attribute);
@@ -245,8 +245,8 @@ public class Clock extends TimedSource {
 
 	    // Set the type constraints.
 	    ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
-	    InequalityTerm elemTerm = valuesArrayType.getElementTypeTerm();
-	    newObject.output.setTypeAtLeast(elemTerm);
+	    InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+	    newObject.output.setTypeAtLeast(elementTerm);
         } catch (IllegalActionException ex) {
             throw new InternalErrorException(ex.getMessage());
         }
@@ -264,7 +264,7 @@ public class Clock extends TimedSource {
 
         // Get the current time and period.
         double currentTime = getDirector().getCurrentTime();
-        double prd = ((DoubleToken)period.getToken()).doubleValue();
+        double periodValue = ((DoubleToken)period.getToken()).doubleValue();
 
         // In case time has gone backwards since the last call to fire()
         // (something that can occur within an iteration), reinitialize
@@ -281,8 +281,8 @@ public class Clock extends TimedSource {
         // have advanced by more than one period
         // (unless, perhaps, the entire domain has been dormant
         // for some time, as might happen for example in a hybrid system).
-        while (_tentativeCycleStartTime + prd <= currentTime) {
-            _tentativeCycleStartTime += prd;
+        while (_tentativeCycleStartTime + periodValue <= currentTime) {
+            _tentativeCycleStartTime += periodValue;
         }
         double[][] offsts =
             ((DoubleMatrixToken)offsets.getToken()).doubleMatrix();
@@ -301,13 +301,13 @@ public class Clock extends TimedSource {
             if (_tentativePhase >= offsts[0].length) {
                 _tentativePhase = 0;
                 // Schedule the first firing in the next period.
-                _tentativeCycleStartTime += prd;
+                _tentativeCycleStartTime += periodValue;
             }
-            if(offsts[0][_tentativePhase] >= prd) {
+            if(offsts[0][_tentativePhase] >= periodValue) {
                 throw new IllegalActionException(this,
                         "Offset number " + _tentativePhase + " with value "
                         + offsts[0][_tentativePhase] + " must be less than the "
-                        + "period, which is " + prd);
+                        + "period, which is " + periodValue);
             }
             // Schedule the next firing in this period.
             _tentativeNextFiringTime

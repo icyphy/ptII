@@ -112,7 +112,7 @@ public class TimedSource extends Source implements TimedActor {
     }
 
     /** Initialize the actor. Schedule a refiring of this actor at the
-     *  stoptime given by the stopTime parameter.
+     *  stop time given by the <i>stopTime</i> parameter.
      *  @exception IllegalActionException If there is no director.
      */
     public void initialize() throws IllegalActionException {
