@@ -71,9 +71,9 @@ public class GRShadedShape extends GRActor {
         output = new TypedIOPort(this, "output");
         output.setOutput(true);
         output.setTypeEquals(BaseType.GENERAL);
-        redComponent   = new Parameter(this,"redComponent", new DoubleToken(0.7));
-        greenComponent = new Parameter(this,"greenComponent", new DoubleToken(0.7));
-        blueComponent  = new Parameter(this,"blueComponent", new DoubleToken(0.7));
+        rgbColor = new Parameter(this,"RGB color",
+                    new DoubleMatrixToken(new double[][] {{ 0.7, 0.7, 0.7}} ));
+        
         shininess = new Parameter(this,"shininess",new DoubleToken(0.0));
         
         _color = new Color3f(1.0f,1.0f,1.0f);
@@ -87,18 +87,10 @@ public class GRShadedShape extends GRActor {
      */
     public TypedIOPort output;
     
-    /** The red color component of the 3D shape
+    /** The red, green, and blue color components of the 3D shape
      */
-    public Parameter redComponent;
-
-    /** The green color component of the 3D shape
-     */
-    public Parameter greenComponent;
-    
-    /** The blue color component of the 3D shape
-     */
-    public Parameter blueComponent;
-    
+    public Parameter rgbColor;
+   
     /** The shininess of the 3D shape
      */
     public Parameter shininess;
@@ -117,9 +109,7 @@ public class GRShadedShape extends GRActor {
         GRShadedShape newobj = (GRShadedShape)super.clone(workspace);
         
         newobj.output = (TypedIOPort)newobj.getPort("output");
-        newobj.redComponent = (Parameter)newobj.getAttribute("redComponent");
-        newobj.greenComponent = (Parameter)newobj.getAttribute("greenComponent");
-        newobj.blueComponent = (Parameter)newobj.getAttribute("blueComponent");
+        newobj.rgbColor = (Parameter)newobj.getAttribute("rgbColor");
         newobj.shininess = (Parameter) newobj.getAttribute("shininess");
         return newobj;
     }
@@ -149,9 +139,12 @@ public class GRShadedShape extends GRActor {
     protected void _createModel() throws IllegalActionException {
         
         super._createModel();
-        _color.x = (float) ((DoubleToken) redComponent.getToken()).doubleValue();
-        _color.y = (float) ((DoubleToken) greenComponent.getToken()).doubleValue();
-        _color.z = (float) ((DoubleToken) blueComponent.getToken()).doubleValue();
+        
+        DoubleMatrixToken color = (DoubleMatrixToken) rgbColor.getToken();
+       
+        _color.x = (float) color.getElementAt(0,0);
+        _color.y = (float) color.getElementAt(0,1);
+        _color.z = (float) color.getElementAt(0,2);
         _shine = (float) ((DoubleToken) shininess.getToken()).doubleValue();
         
         _createAppearance();
