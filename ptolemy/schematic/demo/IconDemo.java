@@ -118,7 +118,7 @@ public class IconDemo {
         catch (Exception e) {
             System.out.println(e);
         }
-} 
+    } 
 
     /** Create an icon from an XML library
      *  @throws IllegalActionException If the libname can't be found.
