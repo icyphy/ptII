@@ -56,10 +56,6 @@
 <entity name="ViewScreen2D" class="ptolemy.domains.gr.lib.ViewScreen2D">
 </entity>
 
-<entity name="MovieViewScreen2D" class="ptolemy.domains.gr.lib.MovieViewScreen2D">
-</entity>
-
-
       </group>
     ?>
   </configure>
