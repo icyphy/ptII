@@ -6,7 +6,8 @@
     <?moml
       <group>
         <doc>Java Advanced Imaging actors</doc>
-	
+	<entity name="JAIImageReader" class="ptolemy.actor.lib.jai.JAIImageReader">
+	</entity>
       </group>
     ?>
   </configure>

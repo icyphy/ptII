@@ -48,7 +48,8 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = JAIImageReader.java \
+	JAIImageToken.java 
 
 OTHER_FILES_TO_BE_JARED = \
 	jai.xml
