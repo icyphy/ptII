@@ -32,7 +32,6 @@ package ptolemy.domains.sdf.kernel;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.actor.sched.*;
-//import ptolemy.actor.NotSchedulableException;
 import ptolemy.kernel.util.*;
 import ptolemy.data.expr.*;
 import ptolemy.data.*;
@@ -47,11 +46,21 @@ import collections.HashedSet;
 //// SDFScheduler
 /**
 A scheduler than implements scheduling of SDF networks by solving the
-balance equations for SDFActors.
+balance equations for the rates between actors.
+<p>
+Any actors may be scheduled by this scheduler, which will assume
+homogenous behavior for each actor.  (i.e. each output port produces one 
+token for each firing, and each input port consumes one token on each firing,
+and no tokens are created during initialization.)  If this is not the case
+then the parameters "Token Consumption Rate", "Token Production Rate", and
+"Token Init Production" must be set.   The SDFAtomicActor and 
+SDFCompositeActor classes provide easier access to these parameters.
+<p>
 
 FIXME: This class uses CircularList in the collections package. Change it
 to Java collection when update to JDK1.2
 @see ptolemy.actor.Scheduler
+@see ptolemy.domains.sdf.kernel.SDFAtomicActor
 @author Stephen Neuendorffer
 @version $Id$
 */
@@ -88,7 +97,8 @@ public class SDFScheduler extends Scheduler{
 
     /** Return the firing vector, which is a HashedMap associating an Actor
      *  with the number of times that it will fire during an SDF iteration.
-     *  Some entries may be zero, if the Actor has not yet been scheduled.
+     *  The firing vector is only guaraunteed to be valid if the schedule 
+     *  is valid.
      *
      *  @return A HashedMap from ComponentEntity to Integer.
      */
@@ -102,7 +112,7 @@ public class SDFScheduler extends Scheduler{
      *  entry, even if it is zero indicating that the Actor has not yet had
      *  its firings determined.
      *
-     *  @param A HashedMap from ComponentEntity to Integer.
+     *  @param newfiringvector A HashedMap from ComponentEntity to Integer.
      */
     public void setFiringVector(HashedMap newfiringvector) {
         _firingvector = newfiringvector;
@@ -213,6 +223,13 @@ public class SDFScheduler extends Scheduler{
         return ((IntToken)param.getToken()).intValue();
     }
 
+    /** Initialize the local data members of this object.
+     */
+    private void _localMemberInitialize() {
+        HashedMap _firingvector = new HashedMap();
+        _firingvectorvalid = true;
+    }
+
     /** Normalize fractional firing ratios into a firing vector that
      *  corresponds to a single SDF iteration.   Multiplies all of the
      *  fractions by the GCD of their denominators.
@@ -257,13 +274,6 @@ public class SDFScheduler extends Scheduler{
         return Firings;
     }
 
-    /** Initialize the local data members of this object.
-     */
-    private void _localMemberInitialize() {
-        HashedMap _firingvector = new HashedMap();
-        _firingvectorvalid = true;
-    }
-
     /** Propagate the number of fractional firing decided for this actor
      *  through the specified input port.   Set and verify the fractional
      *  firing for each Actor that is connected through this input port.
@@ -277,6 +287,8 @@ public class SDFScheduler extends Scheduler{
      *  fractional firing set.
      *  @param PendingActors The set of actors that have had their rate
      *  set, but have not been propagated onwards.
+     * @exception NotSchedulableException If the CompositeActor is not
+     *  schedulable. 
      */
     protected void _propagateInputPort(IOPort currentPort,
             HashedMap Firings,
@@ -369,6 +381,8 @@ public class SDFScheduler extends Scheduler{
      *  fractional firing set.
      *  @param PendingActors The set of actors that have had their rate
      *  set, but have not been propagated onwards.
+     * @exception NotSchedulableException If the CompositeActor is not
+     *  schedulable. 
      */
     protected void _propagateOutputPort(IOPort currentPort,
             HashedMap Firings,
@@ -448,20 +462,12 @@ public class SDFScheduler extends Scheduler{
             }
     }
 
-    /** Return the scheduling sequence. In this base class, it returns
-     *  the containees of the CompositeActor in the order of construction.
-     *  (Same as calling deepCetEntities()). The derived classes will
-     *  override this method and add their scheduling algorithms here.
-     *  This method should not be called directly, rather the schedule()
-     *  will call it when the schedule is not valid. So it is not
-     *  synchronized on the workspace.
+    /** Return the scheduling sequence. 
      *
-     * @see ptolemy.kernel.CompositeEntity#deepGetEntities()
      * @return An Enumeration of the deeply contained opaque entities
      *  in the firing order.
      * @exception NotSchedulableException If the CompositeActor is not
-     *  schedulable. Not thrown in this base class, but may be needed
-     *  by the derived scheduler.
+     *  schedulable. 
      */
 
      protected Enumeration _schedule() throws NotSchedulableException {
@@ -795,9 +801,9 @@ public class SDFScheduler extends Scheduler{
      *  @param Actors The actors that we are interested in
      *  @return A HashedMap that associates each actor with its fractional
      *  firing.
-     *  @exception NotScheduleableExecption If the graph is not consistant
+     *  @exception NotSchedulableException If the graph is not consistant
      *  under the synchronous dataflow model.
-     *  @exception NotScheduleableException If the graph is not connected.
+     *  @exception NotSchedulableException If the graph is not connected.
      */
     protected HashedMap _solveBalanceEquations(Enumeration Actors)
             throws NotSchedulableException {

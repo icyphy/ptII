@@ -118,14 +118,16 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
         }
     }
 
-   /** Get the number of tokens that are produced or consumed
-     *  on the designated port of this Actor.
+   /** Get the number of tokens that are consumed
+     *  on the designated port of this Actor.   If no explicit rate has been
+     *  set, then attempt to calculate the rate by looking at the 
+     *  contained actors.
      *
-     *  @throw IllegalActionException if port is not contained in this actor,
-     *  or the port is not an Input port.
-     *  @throw IllegalActionException if the Port is not connected on the
-     *  inside and has not been explicitly set, thus the rate cannot be
-     *  determined.
+     *  @exception IllegalActionException if port is not contained 
+     *  in this actor, or the port is not an Input port.
+     *  @exception IllegalActionException if the Port is not connected on the
+     *  inside and the rate has not been explicitly set, 
+     *  thus the rate cannot be determined.
      *  @return The number of tokens consumed on the port.
      */
     public int getTokenConsumptionRate(IOPort p)
@@ -176,12 +178,11 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
         return connectedrate * firing;
     }
 
-    /** Get the number of tokens that are produced or consumed
-     *  on the designated port of this Actor during each firing.
-     *  Return zero if setTokenProductionRate has not been called
-     *   on this IOPort.
+    /** Get the number of tokens that are produced
+     *  on the designated port of this Actor during initilization.
      *
-     *  @throw IllegalActionException if port is not contained in this actor.
+     *  @exception IllegalActionException if port is not contained 
+     *  in this actor.
      *  @return The number of tokens produced on the port, as supplied by
      *  setTokenProductionRate, or zero if setTokenProductionRate has not been
      *  called
@@ -200,14 +201,14 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
         return i.intValue();
     }
 
-    /** Get the number of tokens that are produced or consumed
-     *  on the designated port of this Actor.
+    /** Get the number of tokens that are produced
+     *  on the designated port of this Actor during each firing.
      *
-     *  @throw IllegalActionException if port is not contained in this actor,
-     *  is not an output port.
-     *  @throw IllegalActionException if the Port is not connected on the
-     *  inside and the rate has not been explicitly set, thus the rate cannot
-     *  be determined.
+     *  @exception IllegalActionException if port is not contained 
+     *  in this actor, or is not an output port.
+     *  @exception IllegalActionException if the Port is not connected on the
+     *  inside and the rate has not been explicitly set, 
+     *  thus the rate cannot be determined.
      *  @return The number of tokens produced on the port.
      */
     public int getTokenProductionRate(IOPort p) throws IllegalActionException {
@@ -265,7 +266,8 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
      *  strict dataflow semantics to be encapsulated within strict dataflow
      *  domains.
      *  @param IOPort the number of tokens consumed on the port.
-     *  @throw IllegalActionException if port is not contained in this actor,
+     *  @exception IllegalActionException if port is not contained 
+     *  in this actor,
      *  or the port is not an input port.
      */
     public void setTokenConsumptionRate(IOPort p, int count)
@@ -286,8 +288,9 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
      *  port is connected to, and may be necessary in order to get the SDF
      *  scheduler to create a valid schedule from certain kinds of topologies.
      *
-     *  @throw IllegalActionException if port is not contained in this actor.
-     *  @throw IllegalActionException if port is not an input IOPort.
+     *  @exception IllegalActionException if port is not contained 
+     *  in this actor.
+     *  @exception IllegalActionException if port is not an input IOPort.
      */
     public void setTokenInitProduction(IOPort p,int r)
         throws IllegalActionException {
@@ -310,8 +313,8 @@ public class SDFCompositeActor extends CompositeActor implements DataflowActor {
      *  determine the rate by scheduling the contained domain, and it must be
      *  explicitly declared.)
      *
-     *  @throw IllegalActionException if port is not contained in this actor,
-     *  or is not an output port.
+     *  @exception IllegalActionException if port is not contained
+     *  in this actor, or is not an output port.
      *  @return The number of tokens produced on the port.
      */
     public void setTokenProductionRate(IOPort p, int count)

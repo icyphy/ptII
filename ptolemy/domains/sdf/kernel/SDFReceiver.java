@@ -148,7 +148,11 @@ public final class SDFReceiver implements Receiver {
         }
     }
     
-
+    /** Remove the first tokens (the oldest ones) from the receiver and
+     *  fill the array with them. 
+     *  If there are not enough tokens in the receiver, throw an exception.
+     *  @exception NoTokenException If there is no token in the receiver.
+     */
     public void get(Token t[]) {
        try {
            Object o[] = _queue.take(t.length);
@@ -233,7 +237,7 @@ public final class SDFReceiver implements Receiver {
     }
 
     /** Put an array of tokens in the receiver. 
-     *  If the receiver is full, throw an
+     *  If the receiver has insufficient room, throw an
      *  exception.
      *  @param token The token to be put to the receiver.
      *  @exception NoRoomException If the receiver is full.

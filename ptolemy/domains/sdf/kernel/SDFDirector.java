@@ -97,45 +97,34 @@ public class SDFDirector extends StaticSchedulingDirector {
 
 
     /** Return a new receiver consistant with the SDF domain.
-        All SDF receivers are FIFOQueues.
-        @return A new FIFOQueue
-        */
+     *  @return A new SDFReceiver
+     */
     public Receiver newReceiver() {
         return new SDFReceiver();
     }
 
-    /** Prepare for firing and return true if firing can proceed.
-     *  If there is no container, return false immediately.  Otherwise,
-     *  the first step is to perform any pending mutations, and to initialize
-     *  any actors that are added by those mutations.  This sequence is
-     *  repeated until no more mutations are performed.  This way, the
-     *  initialize() method in actors can perform mutations, and the
-     *  mutations will be fully executed before proceeding. Then,
-     *  if this is the local director of its container, invoke the prefire()
-     *  methods of all its deeply contained actors, and return the logical AND
-     *  of what they return.  If this is the executive director of its
-     *  container, then invoke the prefire() method of the container and
-     *  return what it returns.  Otherwise, return false.
-     *  <p>
-     *  This method should be invoked once per iteration, before any
-     *  invocation of fire() in that iteration. It may produce output data.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *
-     *  @return True if the iteration can proceed.
-     *  @exception CloneNotSupportedException If the prefire() method of the
-     *   container or one of the deeply contained actors throws it.
-     *  @exception IllegalActionException If the prefire() method of the
-     *   container or one of the deeply contained actors throws it, or a
-     *   pending mutation throws it.
+    /** The SDFDirector always assumes that it can be fired.  
+     *  @return True If the Director can be fired.
+     *  @exception CloneNotSupportedException Not Thrown
+     *  @exception IllegalActionException Not Thrown
      */
-    public boolean prefire() throws IllegalActionException {
+    public boolean prefire() throws IllegalActionException, 
+            CloneNotSupportedException {
         return true;
     }
 
+    /** Increment the number of iterations.
+     *  If an iteration limit has been set, then 
+     *  see if the limit has been reached.  If so, return false.
+     *  otherwise return true.
+     *  @return True if the Director wants to be fired again in the 
+     *  future.
+     *  @exception IllegalActionException Not thrown.
+     */
     public boolean postfire() throws IllegalActionException {
         int iterations = ((IntToken) (_parameteriterations.getToken()))
             .intValue();
+        _iteration++;
         if((iterations > 0) && (_iteration >= iterations)) {
             _iteration = 0;
             return false;
@@ -143,14 +132,8 @@ public class SDFDirector extends StaticSchedulingDirector {
         return true;
     }
 
-    /** If this is the local director of the container, then invoke the fire
-     *  methods of all its deeply contained actors.  Otherwise, invoke the
-     *  fire() method of the container.  In general, this may be called more
-     *  than once in the same iteration, where an iteration is defined as one
-     *  invocation of prefire(), any number of invocations of fire(),
-     *  and one invocation of postfire().
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
+    /** Calculate the current schedule, and fire the contained actors
+     *  in the order given by the schedule. 
      *
      *  @exception CloneNotSupportedException If the fire() method of the
      *   container or one of the deeply contained actors throws it.
@@ -158,7 +141,7 @@ public class SDFDirector extends StaticSchedulingDirector {
      *   container or one of the deeply contained actors throws it.
      */
     public void fire()
-            throws IllegalActionException {
+            throws IllegalActionException, CloneNotSupportedException {
         CompositeActor container = ((CompositeActor)getContainer());
 
         if (container == null) {
@@ -181,20 +164,10 @@ public class SDFDirector extends StaticSchedulingDirector {
                 actor.postfire();
             }
         }
-        _iteration++;
     }
 
 
-    /** If this is the local director of its container, invoke the wrapup()
-     *  methods of all its deeply contained actors.  If this is the executive
-     *  director of the container, then invoke the wrapup() method of the
-     *  container.
-     *  <p>
-     *  This method should be invoked once per execution.  None of the other
-     *  action methods should be invoked after it in the execution.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *
+    /** Call wrapup in all the contained actors.
      *  @exception IllegalActionException If the wrapup() method of the
      *   container or one of the deeply contained actors throws it.
      */
@@ -213,7 +186,7 @@ public class SDFDirector extends StaticSchedulingDirector {
     ////                         protected methods                 ////
 
     /** Initialize the object.   In this case, we give the SDFDirector a
-     *  default scheduler
+     *  default scheduler of the class SDFScheduler.
      */
 
     private void _init() {
@@ -253,3 +226,6 @@ public class SDFDirector extends StaticSchedulingDirector {
     // private CircularList _mutationListeners = null;
 //    private ActorListener _actorListener = null;
 }
+
+
+

@@ -49,6 +49,9 @@ capacity is greater than zero (or infinite, by setting the capacity to
 INFINITE_CAPACITY), then objects removed from the queue are transferred
 to a history queue rather than simply removed. By default, the history
 capacity is zero.
+<p>
+This queue is implemented as a circular array.  When the array becomes full, 
+it is transparently doubled in size.
 
 @author Steve Neuendorffer
 @version $Id$
@@ -59,6 +62,7 @@ public final class ArrayFIFOQueue implements Cloneable {
      */
     public ArrayFIFOQueue() {
         _queuearray = new Object[DEFAULT_CAPACITY];
+        _queuecapacity = DEFAULT_CAPACITY;
         _historylist = new LinkedList();
     }
 
@@ -263,7 +267,7 @@ public final class ArrayFIFOQueue implements Cloneable {
     /** Put an array of objects in the queue and return true if this will not
      *  cause the capacity to be exceeded. Otherwise, do not put
      *  the object in the queue and return false.
-     *  @param element An object to be put in the queue.
+     *  @param element An array of objects to be put in the queue.
      *  @return A boolean indicating success.
      */
     public boolean put(Object element[]) {
@@ -418,13 +422,13 @@ public final class ArrayFIFOQueue implements Cloneable {
         return obj;
     }
 
-    /** Remove the oldest object from the queue and return it.
+    /** Remove the count oldest objects from the queue and return them.
      *  If there is no such object in the queue (the queue is empty),
      *  throw an exception. If the history mechanism is enabled,
      *  then put the taken object in the history queue. If the capacity
      *  of the history queue would be exceeded by this, then first remove
      *  the oldest object in the history queue.
-     *  @return An object from the queue.
+     *  @return An array of objects from the queue.
      *  @exception NoSuchElementException If the queue is empty.
      */
     public Object[] take(int count) throws NoSuchElementException {
@@ -484,8 +488,10 @@ public final class ArrayFIFOQueue implements Cloneable {
      */
     public static final int INFINITE_CAPACITY = -1;
     
-    // the default capacity of the queues.
-    public static final int DEFAULT_CAPACITY = 0;
+    /**
+     * the default capacity of the queue.
+     */
+    public static final int DEFAULT_CAPACITY = 10;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -509,7 +515,7 @@ public final class ArrayFIFOQueue implements Cloneable {
     private int _queuesize = 0;
 
     // The capacity of the history queue, defaulting to zero.
-    private int _historycapacity = DEFAULT_CAPACITY;
+    private int _historycapacity = 0;
 
     // The list of objects recently removed from the queue.
     private LinkedList _historylist = null;

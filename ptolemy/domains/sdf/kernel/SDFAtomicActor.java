@@ -96,14 +96,13 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
 
 
     
-    /** Get the number of tokens that are produced or consumed
-     *  on the designated port of this Actor.   Return zero if
-     *  setTokenConsumptionRate has not been called on this port.
+    /** Get the number of tokens that are consumed
+     *  on the designated port of this Actor.   
      *
-     *  @throw IllegalActionException if port is not contained in this actor.
+     *  @exception IllegalActionException if port is not contained in 
+     *  this actor.
      *  @return The number of tokens consumed on the port, as supplied by
-     *  setTokenConsumptionRate, or zero if setTokenConsumptionRate has
-     *  not been called.
+     *  setTokenConsumptionRate.
      */
     public int getTokenConsumptionRate(IOPort p)
         throws IllegalActionException {
@@ -112,21 +111,21 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " +
                 getName());
+        if(!p.isInput()) throw new IllegalActionException("IOPort " +
+                p.getName() + " is not an Input Port.");
 
         Parameter param = (Parameter)p.getAttribute("Token Consumption Rate");
         return ((IntToken)param.getToken()).intValue();
 
     }
 
-    /** Get the number of tokens that are produced or consumed
-     *  on the designated port of this Actor during each firing.
-     *  Return zero if setTokenProductionRate has not been called
-     *   on this IOPort.
+    /** Get the number of tokens that are produced
+     *  on the designated port of this Actor during initialization.
      *
-     *  @throw IllegalActionException if port is not contained in this actor.
+     *  @exception IllegalActionException if port is not contained
+     *  in this actor.
      *  @return The number of tokens produced on the port, as supplied by
-     *  setTokenProductionRate, or zero if setTokenProductionRate has not been
-     *  called
+     *  setTokenProductionRate
      */
     public int getTokenInitProduction(IOPort p)
         throws IllegalActionException {
@@ -141,15 +140,13 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
 
     }
 
-    /** Get the number of tokens that are produced or consumed
+    /** Get the number of tokens that are produced
      *  on the designated port of this Actor during each firing.
-     *  Return zero if setTokenProductionRate has not been called
-     *   on this IOPort.
      *
-     *  @throw IllegalActionException if port is not contained in this actor.
+     *  @exception IllegalActionException if port is not contained 
+     *  in this actor.
      *  @return The number of tokens produced on the port, as supplied by
-      *  setTokenProductionRate, or zero if setTokenProductionRate has not been
-     *  called
+     *  setTokenProductionRate
      */
     public int getTokenProductionRate(IOPort p)
         throws IllegalActionException {
@@ -164,8 +161,10 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
 
     }
 
-    /** Create ports for this object.  SDFIOPorts support getArray() and
-     *  sendArray
+    /** Create ports for this object.  Ports will be of type SDFIOPort, 
+     *  which provides support getArray() and sendArray
+     *  @exception NameDuplicationException if the SDFIOPort constructor
+     *  throws it.
      */
     public Port newPort(String name) throws NameDuplicationException {
         try {
@@ -176,22 +175,26 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
             // This exception should not occur, so we throw a runtime
             // exception.
             throw new InternalErrorException(
-                    "SDFAtomicActor.newPort: Internal error: " + ex.getMessage());
+                    "SDFAtomicActor.newPort: Internal error: " + 
+                    ex.getMessage());
         } finally {
             workspace().doneWriting();
         }
     }
     
 
-    /** Set the number of tokens that are produced or consumed
-     *  on the appropriate port of this Actor.
+    /** Set the number of tokens that are consumed
+     *  on the appropriate port of this Actor during each firing.
      *
-     *  @throw IllegalActionException if port is not contained in this actor.
+     *  @exception IllegalActionException if port is not contained 
+     *  in this actor, the rate is less than one, or the port is
+     *  not an input port.
      */
     public void setTokenConsumptionRate(IOPort p,int r)
         throws IllegalActionException {
 
-        if(r <= 0) throw new IllegalActionException("SetTokenRatePerFirint: Rate must be > 0");
+        if(r <= 0) throw new IllegalActionException(
+                "setTokenConsumptionRate: Rate must be > 0");
         if(!p.isInput()) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not an Input Port.");
          Port pp = getPort(p.getName());
@@ -203,14 +206,15 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
 
     }
 
-    /** Set the number of tokens that are produced or consumed
+    /** Set the number of tokens that are produced
      *  on the appropriate port of this Actor during the initialization phase.
      *  This is usually used to simulate a delay along the relation that the
      *  port is connected to, and may be necessary in order to get the SDF
      *  scheduler to create a valid schedule from certain kinds of topologies.
      *
-     *  @throw IllegalActionException if port is not contained in this actor.
-     *  @throw IllegalActionException if port is not an input IOPort.
+     *  @exception IllegalActionException if port is not contained 
+     *  in this actor, the rate is less than one, or the port is
+     *  not an output port.
      */
     public void setTokenInitProduction(IOPort p,int r)
         throws IllegalActionException {
@@ -227,11 +231,12 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
 
     }
 
-    /** Set the number of tokens that are produced or consumed
-     *   on the appropriate port of this Actor
+    /** Set the number of tokens that are produced
+     *   on the appropriate port of this Actor during each firing.
      *
-     *  @throw IllegalActionException if port is not contained in this actor.
-     *  @throw IllegalActionException if port is not an input IOPort.
+     *  @exception IllegalActionException if port is not contained 
+     *  in this actor, the rate is less than one, or the port is
+     *  not an output port.
      */
     public void setTokenProductionRate(IOPort p,int r)
         throws IllegalActionException {
@@ -250,6 +255,12 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
     ///////////////////////////////////////////////////////////////////
     ////                      private methods                      ////
 
+    /** When a port is added to this object, this method creates
+     *  Parameters are created for use by 
+     *  the above methods, with appropriate default values.
+     *  @exception NameDuplicationException If any contained method throws it.
+     *  @exception IllegalActionException If any contained method throws it.
+     */
     protected void _addPort(Port p)
         throws IllegalActionException, NameDuplicationException {
         super._addPort(p);
@@ -260,8 +271,6 @@ public class SDFAtomicActor extends AtomicActor implements DataflowActor{
                     new IntToken(1));
             param = new Parameter(p,"Token Production Rate",
                     new IntToken(1));
-            //            Parameter param = new Parameter(p,"Token Consumption Rate",
-            //         new IntToken(1));
             param = new Parameter(p,"Token Init Production",
                     new IntToken(0));
         }
