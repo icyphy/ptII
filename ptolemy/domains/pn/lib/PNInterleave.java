@@ -28,6 +28,7 @@
 package pt.domains.pn.kernel;
 import pt.kernel.*;
 import java.util.Enumeration;
+import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PNInterleave
@@ -45,10 +46,13 @@ public class PNInterleave extends PNStar{
         super();
     }
 
-    /** Constructor
-     */
-    public PNInterleave(String name) {
-        super(name);
+    public PNInterleave(Workspace workspace) {
+        super(workspace);
+    }
+ 
+    public PNInterleave(CompositeEntity container, String name)
+             throws NameDuplicationException {
+        super(container, name);
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -61,33 +65,35 @@ public class PNInterleave extends PNStar{
      * @exception GraphException is thrown to indicate that a port with no 
      *  name is being added to the star
      */ 
-    public void initialize(PNExecutive myExecutive) 
-            throws NameDuplicationException, GraphException {
-        _input = addInPort(this, "input");
-        _output = addOutPort(this, "output");
-        _myExecutive = myExecutive;
-        _myExecutive.registerStar(this);
+    public void initialize() 
+            throws NameDuplicationException, IllegalActionException {
+        _input1 = newInPort(this, "input1");
+        _input2 = newInPort(this, "input2");
+        _output = newOutPort(this, "output");
+        super.initialize(this);
     }
 
     /** This reads tokens from each of it's inputs in a circular fashion and
      *  redirects them each to the output 
      */	
     public void run() {
-        int data;
+        Token data;
         int i;
         try {
             for (i=0; _noOfCycles < 0 || i < _noOfCycles; i++) {
-	 	Enumeration relations = _input.enumRelations();
-		while (relations.hasMoreElements()) {
-		    PNFifoRelation nextQueue = (PNFifoRelation)relations.nextElement();
-                    data = readFrom(_input, nextQueue);
-                    writeTo(_output, data);
-                    System.out.println(this.getName()+" writes "+data+" to "+_output.getName());
-		}
+                Enumeration ports = getPorts();
+		while (ports.hasMoreElements()) {
+		    PNPort nextPort = (PNPort)ports.nextElement();
+                    if (nextPort.isInput()) {
+                        data = readFrom(nextPort);
+                        writeTo(_output, data);
+                        System.out.println(this.getName()+" writes "+((IntToken)data).intValue()+" to "+_output.getName());
+                    }
+                }
             }
-            _myExecutive.processStopped();
-        } catch(TerminationException e) {
-	    System.out.println("Terminating "+ this.getName());
+            executive().processStopped();
+        } catch(NoSuchElementException e) {
+            System.out.println("Terminating "+ this.getName());
             return;
         }
     }
@@ -96,7 +102,8 @@ public class PNInterleave extends PNStar{
     ////                         private variables                        ////
 
     /* Input port */
-    private PNInPort _input;
+    private PNInPort _input1;
+    private PNInPort _input2;
     /* Output port */
     private PNOutPort _output;
 
