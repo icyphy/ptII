@@ -188,6 +188,7 @@ public class MoMLChangeRequest extends ChangeRequest {
      *  that are registered with this object via their changeFailed()
      *  method.
      *  @param report False to disable error reporting.
+     *  @since Ptolemy II 3.1
      */
     public void setReportErrorsToHandler(boolean report) {
         _reportToHandler = report;
