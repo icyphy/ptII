@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.vergil.tree;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -169,35 +170,56 @@ public class EntityTreeModel implements TreeModel {
     ////                         inner classes                     ////
 
     public class TreeUpdateListener implements ChangeListener {
-        /** Trigger an update of the entire tree.
+        
+        /** Trigger an update of the tree.  If the change
+         *  request indicates that it is localized, then only
+         *  the relevant portion of the tree is updated.
+         *  Otherwise, the entire tree is modified.
          */
-        public void changeExecuted(ChangeRequest change) {
-            System.out.println("change = " + change);
+        public void changeExecuted(final ChangeRequest change) {
+            // System.out.println("change = " + change);
             // Note that this should be in the swing thread.
             SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        // FIXME it would be nice if there was more
-                        // information in the change about the context
-                        // of the change.
-                        valueForPathChanged(
-                                new TreePath(getRoot()), getRoot());
+                public void run() {
+                    ArrayList path = new ArrayList();
+                    Object root = getRoot();
+                    // If the change request is local, then it
+                    // should return non-null to this method.
+                    NamedObj locality = change.getLocality();
+                    if (locality == null) {
+                        path.add(0, root);
+                    } else {
+                        // The change has a declared locality.
+                        // Construct a path to that locality.
+                        NamedObj container = locality;
+                        while (container != root) {
+                            if (container == null) {
+                                // This should not occur, but if it
+                                // does, we revert to just using the
+                                // root.
+                                path = new ArrayList();
+                                path.add(0, root);
+                                break;
+                            }
+                            path.add(0, container);
+                            container = container.getContainer();
+                        }
                     }
-                });
+                    
+                    valueForPathChanged(
+                            new TreePath(path.toArray()), locality);
+                }
+            });
         }
 
-        /** Trigger an update of the entire tree.
+        /** Trigger an update of the tree.  If the change
+         *  request indicates that it is localized, then only
+         *  the relevant portion of the tree is updated.
+         *  Otherwise, the entire tree is modified.
          */
         public void changeFailed(ChangeRequest change, Exception exception) {
-            // Note that this should be in the swing thread.
-            SwingUtilities.invokeLater(new Runnable() {
-                    public void run() {
-                        // FIXME it would be nice if there was more
-                        // information in the change about the context
-                        // of the change.
-                        valueForPathChanged(
-                                new TreePath(getRoot()), getRoot());
-                    }
-                });
+            // We do the same thing whether the change succeeded or failed.
+            changeExecuted(change);
         }
     }
 
