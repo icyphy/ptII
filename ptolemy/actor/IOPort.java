@@ -469,6 +469,39 @@ public class IOPort extends ComponentPort {
         }
     }
 
+    /** Get an array of tokens from the specified channel.
+     *  If the channel has a group with more than one receiver (something
+     *  that is possible if this is a transparent port), then this method
+     *  calls get() on all receivers, but returns only the first non-null
+     *  token returned by these calls.
+     *  Normally this method is not used on transparent ports.
+     *  If there are not enough tokens to fill the array, then throw 
+     *  an exception.
+     *  <p>
+     *  Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a get,
+     *  it is important that the thread does not hold read access on
+     *  the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling get.
+     *
+     *  @param channelIndex The channel index.
+     *  @param tokenArray A Token array that will contain the requested
+     *   tokens when this method returns.
+     *  @return A token from the specified channel.
+     *  @exception NoTokenException If there is no token.
+     *  @exception IllegalActionException If there is no director, and hence
+     *   no receivers have been created, if the port is not an input port, or
+     *   if the channel index is out of range.
+     */
+    public void get(int channelIndex, Token[] tokenArray)
+            throws NoTokenException, IllegalActionException {
+	// FIXME: This should be optimized to use the array token
+	// get() of the Receiver.
+	for (int i = 0; i < tokenArray.length; i++) {
+	    tokenArray[i] = get(channelIndex);
+	}
+    }
+
     /** If the port is an opaque output port, return the receivers that
      *  receive data from all inside linked relations.
      *  This method is used for opaque, non-atomic entities, which have
@@ -905,6 +938,40 @@ public class IOPort extends ComponentPort {
         return false;
     }
 
+    /** Return true if the specified channel has a token to deliver
+     *  via the get() method.  If this port is not an input, or if the
+     *  channel index is out of range, then throw an exception.
+     *  Note that this does not report any tokens in inside receivers
+     *  of an output port. Those are accessible only through
+     *  getInsideReceivers().
+     *
+     *  @param channelIndex The channel index.
+     *  @param tokens The number of tokens to query the channel for.
+     *  @return True if there is a token in the channel.
+     *  @exception IllegalActionException If the receivers do not support
+     *   this query, if there is no director, and hence no receivers,
+     *   if the port is not an input port, or if the channel index is out
+     *   of range.
+     */
+    public boolean hasToken(int channelIndex, int tokens) throws IllegalActionException {
+        try {
+            // The getReceivers() method throws an IllegalActionException if
+            // there's no director.
+            Receiver[][] recs = getReceivers();
+            if (recs == null || recs[channelIndex] == null) {
+                return false;
+            }
+            for (int j = 0; j < recs[channelIndex].length; j++) {
+                if (recs[channelIndex][j].hasToken(tokens)) return true;
+            }
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            // NOTE: This might be thrown if the port is not an input port.
+            throw new IllegalActionException(this,
+                    "hasToken: channel index is out of range.");
+        }
+        return false;
+    }
+
     /** Return true if the port is an input.  The port is an input
      *  if either setInput() has been called with a <i>true</i> argument, or
      *  it is connected on the inside to an input port, or if it is
@@ -1021,6 +1088,39 @@ public class IOPort extends ComponentPort {
             // NOTE: This may occur if the port is not an output port.
             // Ignore...
         }
+    }
+
+    /** Send the specified token array to all receivers connected to the
+     *  specified channel.  Tokens are in general immutable, so each receiver
+     *  is given a reference to the same token and no clones are made.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, or the channel index is out of
+     *  range, or the port is not an output port,
+     *  then just silently return.  This behavior makes it
+     *  easy to leave output ports unconnected when you are not interested
+     *  in the output.  The transfer is
+     *  accomplished by calling the put() method of the remote receivers.
+     *  If the port is not connected to anything, or receivers have not been
+     *  created in the remote port, then just return.
+     *  <p>
+     *  Some of this method is read-synchronized on the workspace.
+     *  Since it is possible for a thread to block while executing a put,
+     *  it is important that the thread does not hold read access on
+     *  the workspace when it is blocked. Thus this method releases
+     *  read access on the workspace before calling put.
+     *
+     *  @param channelIndex The index of the channel, from 0 to width-1
+     *  @param tokenArray The token array to send
+     *  @exception NoRoomException If there is no room in the receiver.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void send(int channelIndex, Token[] tokenArray)
+            throws IllegalActionException, NoRoomException {
+	// FIXME: This should be optimized to use the array token
+	// put() of the Receiver.
+	for (int i = 0; i < tokenArray.length; i++) {
+	    send(channelIndex, tokenArray[i]);
+	}
     }
 
     /** Override the base class to ensure that the proposed container
