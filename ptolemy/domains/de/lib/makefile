@@ -55,6 +55,7 @@ JSRCS = \
 	Merge.java \
 	PreemptableTask.java \
 	Queue.java \
+	QueueWithNextOut.java \
 	Sampler.java \
 	SamplerWithDefault.java \
 	Server.java \

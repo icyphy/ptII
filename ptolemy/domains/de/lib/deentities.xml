@@ -22,6 +22,9 @@
 <entity name="Queue" class="ptolemy.domains.de.lib.Queue">
 </entity>
 
+<entity name="QueueWithNextOut" class="ptolemy.domains.de.lib.QueueWithNextOut">
+</entity>
+
 <entity name="Sampler" class="ptolemy.domains.de.lib.Sampler">
 </entity>
 
