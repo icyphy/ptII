@@ -294,6 +294,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
      *  further change requests were queued.
      */
     protected boolean _update() {
+        
 	// Go through all the links that currently exist, and remove
         // any that don't have both ends in the model.
 	Iterator links = _linkSet.iterator();
@@ -321,7 +322,8 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
                 links.remove();
                 if (headObj instanceof Port && tailObj instanceof Port &&
                         relation.getContainer() != null) {
-                    NamedObj container = _getChangeRequestParent(relation);
+                    NamedObj container =
+                        _getChangeRequestParent(getPtolemyModel());
                     // remove the relation  This should trigger removing the
                     // other link.  This avoids turning a direct connection
                     // into a half connection with a diamond.
@@ -370,7 +372,7 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
         List linkedPortList = relation.linkedPortList();
 	int allPortCount = linkedPortList.size();
 
-        //        System.out.println("updating links for relation " + relation.getFullName());
+        //  System.out.println("updating links for relation " + relation.getFullName());
         // System.out.println("linkedPorts = " + linkedPortList);
 	// Go through all the links that currently exist, and remove ports
 	// from the linkedPortList that already have a Link object.
