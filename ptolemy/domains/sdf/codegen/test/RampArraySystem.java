@@ -53,6 +53,8 @@ public class RampArraySystem extends TypedCompositeActor {
             setDirector(new SDFDirector(this, "director"));
             //Const ramp = new Const(this, "ramp");
             Ramp ramp = new Ramp(this, "ramp");
+            ramp.init.setExpression("{0,0}");
+            ramp.step.setExpression("{1,1}");
             FileWriter fileWriter = new FileWriter(this, "fileWriter");
             connect(ramp.output, fileWriter.input);
 
