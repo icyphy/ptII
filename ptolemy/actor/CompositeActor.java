@@ -205,6 +205,9 @@ public class CompositeActor extends CompositeEntity implements Actor {
      *  @param port The port that has connection changes.
      */
     public void connectionsChanged(Port port) {
+        if (_debugging) {
+            _debug("Connections changed on port: " + port.getName());
+        }
         super.connectionsChanged(port);
         if (port instanceof ComponentPort) {
             // NOTE: deepInsidePortList() is not the right thing here
@@ -278,7 +281,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public void fire() throws IllegalActionException {
         if (_debugging) {
-            _debug("Invoking fire");
+            _debug("Called fire()");
         }
         try {
             _workspace.getReadAccess();
@@ -380,7 +383,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public void initialize() throws IllegalActionException {
         if (_debugging) {
-            _debug("Invoking initialize");
+            _debug("Called initialize()");
         }
         try {
             _workspace.getReadAccess();
@@ -457,7 +460,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public int iterate(int count) throws IllegalActionException {
         if (_debugging) {
-            _debug("Invoking iterate: " + count);
+            _debug("Called iterate(" + count + ")");
         }
         int n = 0;
         while (n++ < count && !_stopRequested) {
@@ -593,7 +596,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
-            _debug("Invoking postfire");
+            _debug("Called postfire()");
         }
         try {
             _workspace.getReadAccess();
@@ -625,7 +628,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public boolean prefire()
             throws IllegalActionException {
         if (_debugging) {
-            _debug("Invoking prefire");
+            _debug("Called prefire()");
         }
         try {
             _workspace.getReadAccess();
@@ -660,7 +663,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     public void preinitialize() throws IllegalActionException {
         _stopRequested = false;
         if (_debugging) {
-            _debug("Invoking preinitialize");
+            _debug("Called preinitialize()");
         }
         try {
             _workspace.getReadAccess();
@@ -811,7 +814,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public void stop() {
         if (_debugging) {
-            _debug("Requesting stop");
+            _debug("Called stop()");
         }
         try {
             _workspace.getReadAccess();
@@ -832,7 +835,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public void stopFire() {
         if (_debugging) {
-            _debug("Requesting stop of the current iteration");
+            _debug("Called stopFire()");
         }
         try {
             _workspace.getReadAccess();
@@ -851,7 +854,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public void terminate() {
         if (_debugging) {
-            _debug("Terminate");
+            _debug("Called terminate()");
         }
         if (!isOpaque()) return;
         getDirector().terminate();
@@ -866,7 +869,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
      */
     public void wrapup() throws IllegalActionException {
         if (_debugging) {
-            _debug("Invoking wrapup");
+            _debug("Called wrapup()");
         }
         try {
             _workspace.getReadAccess();

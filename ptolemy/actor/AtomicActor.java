@@ -131,6 +131,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @param port The port that has connection changes.
      */
     public void connectionsChanged(Port port) {
+        if (_debugging) {
+            _debug("Connections changed on port: " + port.getName());
+        }
         if (port instanceof IOPort) {
             IOPort castPort = (IOPort)port;
             if (castPort.isInput() && getDirector() != null) {
@@ -151,6 +154,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void fire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Called fire()");
+        }
     }
 
     /** Return the director responsible for the execution of this actor.
@@ -199,6 +205,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void initialize() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Called initialize()");
+        }
     }
 
     /** List all the input ports.
@@ -248,6 +257,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *   permitted, or if prefire(), fire(), or postfire() throw it.
      */
     public int iterate(int count) throws IllegalActionException {
+        if (_debugging) {
+            _debug("Called iterate(" + count + ")");
+        }
         int n = 0;
         while (n++ < count && !_stopRequested) {
             if (prefire()) {
@@ -344,6 +356,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Called postfire()");
+        }
         return !_stopRequested;
     }
 
@@ -357,6 +372,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean prefire() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Called prefire()");
+        }
         return true;
     }
 
@@ -372,6 +390,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void preinitialize() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Called preinitialize()");
+        }
         _stopRequested = false;
         // NOTE:  Receivers are also getting created
         // in connectionChanged().  Perhaps this is here to ensure
@@ -418,6 +439,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      */
     public void stop() {
         _stopRequested = true;
+        if (_debugging) {
+            _debug("Called stop()");
+        }
     }
 
     /** Request that execution of the current iteration complete.
@@ -428,6 +452,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  In this base class, do nothing.
      */
     public void stopFire() {
+        if (_debugging) {
+            _debug("Called stopFire()");
+        }
     }
 
     /** Terminate execution immediately.  In this base class, call stop().
@@ -435,6 +462,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  as terminating any threads they have started.
      */
     public void terminate() {
+        if (_debugging) {
+            _debug("Called terminate()");
+        }
         stop();
     }
 
@@ -446,6 +476,9 @@ public class AtomicActor extends ComponentEntity implements Actor {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public void wrapup() throws IllegalActionException {
+        if (_debugging) {
+            _debug("Called wrapup()");
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
