@@ -211,7 +211,6 @@ public class SDFDirector extends StaticSchedulingDirector {
 		int iterationCount = firing.getIterationCount();
 
 		if(_debugging) {		    
-		  _debug("Iterating " + ((Nameable)actor).getFullName());
 		  _debug(new FiringEvent(this, actor, FiringEvent.ITERATE));
 		}
 
@@ -224,7 +223,8 @@ public class SDFDirector extends StaticSchedulingDirector {
 		// optimum vectorized schedule. I.e., first try to
 		// obtain a single appearance schedule. Then, try
 		// to minimize the number of actor activations.
-		int factor = ((IntToken) (vectorizationFactor.getToken())).intValue();
+		int factor = 
+                    ((IntToken) (vectorizationFactor.getToken())).intValue();
 		if (factor < 1) {
 		    throw new IllegalActionException(this,
 			 "The supplied vectorization factor is invalid " +
