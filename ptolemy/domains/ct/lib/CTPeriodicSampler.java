@@ -88,6 +88,14 @@ public class CTPeriodicSampler extends Transformer
         _samplePeriod = (double)0.1;
         samplePeriod = new Parameter(this,
                 "samplePeriod", new DoubleToken(_samplePeriod));
+
+	_attachText("_iconDescription", "<svg>\n" +
+                "<rect x=\"-30\" y=\"-20\" "
+                + "width=\"60\" height=\"40\" "
+                + "style=\"fill:white\"/>\n"
+                + "<polyline points=\"-30,0 -20,0 -10,0 10,-7\"/>\n"
+                + "<polyline points=\"10,0 30,0\"/>\n"
+                + "</svg>\n");
     }
 
 
