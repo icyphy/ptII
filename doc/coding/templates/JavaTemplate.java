@@ -54,10 +54,10 @@ public class ClassName {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public fields                     ////
+    ////                         public variables                  ////
     
-    /** Desription of the field. */
-    public int aField;
+    /** Desription of the variable. */
+    public int variableName;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -70,7 +70,7 @@ public class ClassName {
      *  @exception ExceptionClass If ... (describe what
      *   causes the exception to be thrown).
      */
-    public int aPublicMethod(ParameterClass parameterName)
+    public int publicMethodName(ParameterClass parameterName)
             throws ExceptionClass {
         return 1;
     }
@@ -85,7 +85,7 @@ public class ClassName {
      *  @exception ExceptionClass If ... (describe what
      *   causes the exception to be thrown).
      */
-    protected int _aProtectedMethod(ParameterClass parameterName)
+    protected int _protectedMethodName(ParameterClass parameterName)
             throws ExceptionClass {
         return 1;
     }
@@ -94,23 +94,23 @@ public class ClassName {
     ////                         protected variables               ////
 
     /** Description of the variable. */
-    protected int _aprotectedvariable;
+    protected int _aProtectedVariable;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    // Private methods need not have JavaDoc comments, although it can
+    // Private methods need not have Javadoc comments, although it can
     // be more convenient if they do, since they may at some point
     // become protected methods.
-    private int _APrivateMethod() {
+    private int _privateMethodName() {
         return 1;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Private variables need not have JavaDoc comments, although it can
+    // Private variables need not have Javadoc comments, although it can
     // be more convenient if they do, since they may at some point
     // become protected variables.
-    private int __aprivatevariable;
+    private int _aPrivateVariable;
 }
