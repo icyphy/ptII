@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy javasound demo
+# Makefile for Ptolemy II Javasound Karplus-Strong Demo
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/javasound/demo
+ME =		ptolemy/actor/lib/javasound/demo/KarplusStrong
 
 DIRS =
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,18 +45,15 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =	$(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS =
-
-PTCLASSALLJAR =
+PTCLASSJAR =
 
 # Keep this list alphabetized.
 JSRCS =
 
 EXTRA_SRCS =	$(JSRCS) \
-	karplusStrong.xml
+	KarplusStrong.htm \
+	KarplusStrongVergil.htm \
+	KarplusStrong.xml
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -75,7 +72,7 @@ all: jclass
 install: jclass jars
 
 demo:
-	vergil karplusStrong.xml
+	vergil KarplusStrong.xml
 
 depend:
 	@echo "no dependencies in this directory"
