@@ -222,13 +222,21 @@ public class FixPoint implements Cloneable, Serializable {
     }
 
     /** Return a new FixPoint with a value equal to the division of
-     *  this FixPoint by the argument. The operation is lossless.
-     *  The precision of the result is equal to the maximum of the
-     *  integer part and fractional part of the fixed point values
-     *  divided. So when a number with precision <i>(6,3)</i> and
-     *  <i>(12.4)</i> are divided, the resulting precision is equal to
-     *  <i>(max(6,12), max(3,4))</i>, which is <i>(12.4)</i>. In case
-     *  of a division, the result always fits the new precision,
+     *  this FixPoint by the argument. The operation is <b>not</b>
+     *  lossless. To realize the division, a trick is used to
+     *  simplify the implementation of division for FixPoint
+     *  values. The FixPoints are converted losslessly into BigDecimals,
+     *  on which the actual division takes place. The result of the
+     *  division is converted back to FixPoint with a precision
+     *  equal to the maximum of the integer part and fractional part
+     *  of the fixed point values divided. Thus when a number with
+     *  precision <i>(6,3)</i> is divided by a FixPoint with precision
+     *  <i>(12.4)</i>, then the resulting FixPoint will have a
+     *  precision equal to <i>(max(6,12), max(3,4))</i>, which is
+     *  <i>(12.4)</i>. If the BigDecimal resulting from the devision
+     *  doesn't fit this precision, then this BigDecimal value is
+     *  quantized to the closest value representable with the
+     *  specified precision.
      *
      *  @param arg A FixPoint.
      *  @return A new FixPoint.

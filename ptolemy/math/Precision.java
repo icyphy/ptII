@@ -190,10 +190,14 @@ public class Precision {
      *  <i>m</i> represents the total number of bits and <i>n</i> the
      *  number of integer bits, this is equal to 2^(n-1) -
      *  1/(2^(m-n)).
+     *  NOTE: This method should be package friendly, not public.
+     *  It is not intended to be used outside this package.
      *  @return The maximum value obtainable for this precision.
      */
     public BigDecimal findMaximum() {
         // FIXME: Why does this return a BigDecimal instead of a FixPoint?
+        // Because it's intended for internal use.
+        // It should be package friendly.
         int ln = getNumberOfBits();
         int ib = getIntegerBitLength();
         BigDecimal tmp = new BigDecimal(_getTwoRaisedTo(ln - ib));
@@ -207,11 +211,14 @@ public class Precision {
     /** Return the minimum obtainable value for this precision. When
      *  <i>m</i> represents the total number of bits and <i>n</i> the
      *  number of integer bits, this is equal to -2^(n-1).
+     *  NOTE: This method should be package friendly, not public.
+     *  It is not intended to be used outside this package.
      *  @return The minimum value obtainable for the given precision..
      */
     public BigDecimal findMinimum() {
         // FIXME: Why does this return a BigDecimal instead of a FixPoint?
-        // FIXME: This suggests the internal representation is twos complement.
+        // Because it's intended for internal use.
+        // It should be package friendly.
         int ib = getIntegerBitLength();
         BigInteger tmp = _twoRaisedTo[ib-1].negate();
         // System.out.println("Find Min: " + tmp.doubleValue());
