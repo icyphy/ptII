@@ -275,13 +275,7 @@ public abstract class TableauFrame extends Top {
                                 MessageHandler.error(
                                         "Could not create new effigy", ex);
                             }
-                            try {
-                                configuration.createPrimaryTableau(effigy);
-                            } catch (Exception ex) {
-                                MessageHandler.error(
-                                        "Could not create tableau " +
-                                        "for new effigy.", ex);
-                            }
+                            configuration.createPrimaryTableau(effigy);
                         }
                     };
                     JMenuItem item = new JMenuItem(name);

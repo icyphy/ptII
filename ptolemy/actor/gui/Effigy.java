@@ -305,11 +305,7 @@ public class Effigy extends CompositeEntity {
         if (!foundOne) {
             // Create a new tableau.
             Configuration configuration = (Configuration)toplevel();
-            try {
-                configuration.createPrimaryTableau(this);
-            } catch (Exception ex) {
-                MessageHandler.error("Unable to create a tableau.", ex);
-            }
+            configuration.createPrimaryTableau(this);
         }
     }
 

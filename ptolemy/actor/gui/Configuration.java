@@ -52,6 +52,7 @@ import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
 
 //////////////////////////////////////////////////////////////////////////
 //// Configuration
@@ -94,22 +95,47 @@ public class Configuration extends CompositeEntity {
 
     /** Create the first tableau for the given effigy, using the
      *  tableau factory.  This is called after an effigy is first opened,
-     *  or when a new effigy is created.
-     *  @exception Exception if an error occurs while creating the tableau.
+     *  or when a new effigy is created.  The body of this method is
+     *  actually executed later, in the event thread, so that it can
+     *  safely interact with the user interface. If the method fails
+     *  to create a tableau, then it removes the effigy from the directory.
+     *  This prevents us from having lingering effigies that have no
+     *  user interface.
      */
-    public void createPrimaryTableau(Effigy effigy) throws Exception {
-        // Create a tableau if there is a tableau factory.
-        TableauFactory factory = (TableauFactory)getEntity("tableauFactory");
-        if (factory != null) {
-            Tableau tableau = factory.createTableau(effigy);
-            if (tableau == null) {
-                throw new Exception("Unable to create a Tableau.");
+    public void createPrimaryTableau(final Effigy effigy) {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+
+                // Create a tableau if there is a tableau factory.
+                TableauFactory factory = (TableauFactory)getEntity(
+                        "tableauFactory");
+                if (factory != null) {
+                    // If this fails, we do not want the effigy to linger
+                    try {
+                        Tableau tableau = factory.createTableau(effigy);
+                        if (tableau == null) {
+                            throw new Exception(
+                                    "Tableau factory returns null.");
+                        }
+                        // The first tableau is a master.
+                        tableau.setMaster(true);
+                        tableau.setEditable(effigy.isModifiable());
+                        tableau.show();
+                    } catch (Exception ex) {
+                        // Note that we can't rethrow the exception here
+                        // because removing the effigy may result in
+                        // the application exiting.
+                        MessageHandler.error("Failed to open tableau for "
+                                + effigy.identifier.getExpression(), ex);
+                        try {
+                            effigy.setContainer(null);
+                        } catch (KernelException e) {
+                            throw new InternalErrorException(e.toString());
+                        }
+                    }
+                }
             }
-            // The first tableau is a master.
-            tableau.setMaster(true);
-            tableau.setEditable(effigy.isModifiable());
-            tableau.show();
-        }
+        });
     }
 
     /** Open the specified URL.
@@ -177,16 +203,7 @@ public class Configuration extends CompositeEntity {
             } else {
                 effigy.setModifiable(false);
             }
-            // If this fails, we do not want the effigy in the directory.
-            try {
-                createPrimaryTableau(effigy);
-            } catch (Exception ex) {
-                // Note that we can't rethrow the exception here because
-                // removing the effigy may result in the application exiting.
-                MessageHandler.error("Attempt to open model from "
-                        + in + " failed.", ex);
-                effigy.setContainer(null);
-            }
+            createPrimaryTableau(effigy);
         } else {
             // Model already exists.
             effigy.showTableaux();
