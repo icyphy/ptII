@@ -56,7 +56,6 @@ JSIMPLE_TESTS = \
 	DirectedAcyclicGraph.tcl \
     Edge.tcl \
 	Graph.tcl \
-	GraphListener.tcl \
     Graphs.tcl \
 	InequalitySolver.tcl \
 	InequalityTerm.tcl \

@@ -699,6 +699,24 @@ public class DirectedGraph extends Graph {
         return result;
     }
 
+	/** Return an acyclic graph if this graph is acyclic.
+	 *
+	 *	@return An acyclic graph in the form of
+	 *			{@link DirectedAcyclicGraph}.
+	 *	@exception IllegalArgumentException This graph is not acyclic.
+     *  FIXME: we need a better exception for this.
+	 */
+	public DirectedAcyclicGraph toDirectedAcyclicGraph() {
+		DirectedAcyclicGraph acyclicGraph;
+		if (isAcyclic()) {
+			acyclicGraph = (DirectedAcyclicGraph)
+					cloneAs(new DirectedAcyclicGraph());
+		} else {
+			throw new IllegalArgumentException("This graph is not acyclic");
+		}
+		return acyclicGraph;
+	}
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -785,8 +803,8 @@ public class DirectedGraph extends Graph {
      */
     protected void _initializeListeners() {
         super._initializeListeners();
-        _sinkNodeListener = new GraphListener(this);
-        _sourceNodeListener = new GraphListener(this);
+        _sinkNodeListener = new Analysis(this);
+        _sourceNodeListener = new Analysis(this);
     }
 
     /** Register a new edge in the graph.
@@ -861,14 +879,14 @@ public class DirectedGraph extends Graph {
     private boolean _isAcyclic;
 
     // The graph listener for computation of sink nodes.
-    private GraphListener _sinkNodeListener;
+    private Analysis _sinkNodeListener;
 
     // The set of sink nodes in this graph. Recomputation requirements
     // of this data structure are tracked by _sinkNodeListener.
     private ArrayList _sinkNodes;
 
     // The graph listener for computation of source nodes.
-    private GraphListener _sourceNodeListener;
+    private Analysis _sourceNodeListener;
 
     // The set of source nodes in this graph. Recomputation requirements
     // of this data structure are tracked by _sourceNodeListener.

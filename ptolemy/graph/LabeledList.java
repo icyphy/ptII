@@ -232,6 +232,7 @@ public class LabeledList implements List {
 
     /** Return an iterator over the elements in the list. The iterator
      *  returned is safe in that it cannot be used to modify the list.
+     *  FIXME: what happens when you try to modify the list.
      *  @return An iterator over the elements in the list;
      */
     public Iterator iterator() {
@@ -241,7 +242,7 @@ public class LabeledList implements List {
     /** Return the label of the specified element.
      *  @return The corresponding label.
      *  @exception IllegalArgumentException If the specified element is not
-     *  not in this list.
+     *  in this list.
      *  @exception NullPointerException If the specified element is null.
      *  @see #indexOf(Object)
      */
@@ -293,6 +294,7 @@ public class LabeledList implements List {
      * by one. All other element labels will remain unchanged.
      * If the specified element is not in the list, the list will be
      * unchanged.
+     * FIXME: leave indices indeterminate after removal.
      * @param element The element.
      * @return True If this list contained the element.
      */
@@ -384,7 +386,7 @@ public class LabeledList implements List {
      *  for separating successive elements, and a flag that indicates
      *  whether element labels should be included in the string.
      *  The string
-     *  representation is constructed by the concatenating
+     *  representation is constructed by concatenating
      *  the string representations of the individual elements,
      *  according to the order of their labels. The element strings
      *  are separated by the specified delimiter, and are optionally
@@ -411,7 +413,7 @@ public class LabeledList implements List {
      *  by new lines, and element labels omitted from the representation.
      *  The string
      *  representation is constructed by the concatenating
-     *  the string representations of the individual elements,
+     *  string representations of the individual elements,
      *  according to the order of their labels. The element strings
      *  are separated by newlines. The element labels are not included
      *  in the string representation.

@@ -379,7 +379,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
      */
     protected void _initializeListeners() {
         super._initializeListeners();
-        _transitiveClosureListener = new GraphListener(this);
+        _transitiveClosureListener = new Analysis(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -718,7 +718,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO {
     private boolean[][] _tranClosureTranspose = null;
 
     // The graph listener for computation of the transitive closure.
-    private GraphListener _transitiveClosureListener;
+    private Analysis _transitiveClosureListener;
 
     private Object _bottom = null;
     private Object _top = null;

@@ -227,7 +227,7 @@ public class Graph implements Cloneable {
      *  listener is not equal to this graph, or if the graph already contains
      *  the listener in its list of listeners.
      */
-    public void addListener(GraphListener listener) {
+    public void addListener(Analysis listener) {
         if (listener.graph() != this) {
             throw new IllegalArgumentException("Invalid associated graph.\n" +
                     "The listener:\n" + listener + "\n");
@@ -295,7 +295,7 @@ public class Graph implements Cloneable {
 
     /** Return the present value of a counter that keeps track
      *  of changes to the graph.
-     *  This counter is monitored by {@link GraphListener}s to determine
+     *  This counter is monitored by {@link Analysis}s to determine
      *  if associated computations are obsolete. Upon overflow, the counter
      *  resets to zero, broadcasts a change to all graph listeners, and
      *  begins counting again.
@@ -1171,11 +1171,11 @@ public class Graph implements Cloneable {
 
     /** Create and register all of the change listeners for this graph, and
      *  initialize the change counter of the graph.
-     *  @see GraphListener.
+     *  @see Analysis.
      */
     protected void _initializeListeners() {
         _listenerList = new ArrayList();
-        _selfLoopListener = new GraphListener(this);
+        _selfLoopListener = new Analysis(this);
         _changeCount = 0;
     }
 
@@ -1183,14 +1183,14 @@ public class Graph implements Cloneable {
      *  This method must be called after any change to the graph
      *  that may affect (invalidate) any of the computations associated with
      *  the change listeners in the graph.
-     *  @see GraphListener.
+     *  @see Analysis.
      */
     protected void _registerChange() {
         if (_changeCount == Long.MAX_VALUE) {
             // Invalidate all of the change listeners.
             Iterator listeners = _listenerList.iterator();
             while (listeners.hasNext()) {
-                ((GraphListener)(listeners.next())).reset();
+                ((Analysis)(listeners.next())).reset();
             }
             _changeCount = 0;
         } else {
@@ -1401,7 +1401,7 @@ public class Graph implements Cloneable {
     private HashMap _incidentEdgeMap;
 
     // A list of objects that track changes to the graph. Each element
-    // is a GraphListener.
+    // is a Analysis.
     private ArrayList _listenerList;
 
     // A mapping from node weights to associated nodes. Unweighted nodes are not
@@ -1415,7 +1415,7 @@ public class Graph implements Cloneable {
     private LabeledList _nodes;
 
     // The graph listener for computation of self loop edges.
-    private GraphListener _selfLoopListener;
+    private Analysis _selfLoopListener;
 
     // The set of self-loop edges in this graph. Recomputation requirements
     // of this data structure are tracked by _selfLoopListener.

@@ -321,3 +321,37 @@ test Graph-6.2 {Test predecessor edges} {
     set result4 [java::call ptolemy.graph.test.Utilities toSortedString $obj 1]
     list $result1 $result2 $result3 $result4
 } {{[(node3, node2, edge5), (node3, node2, edge6)]} {[]} {[(node2, node4, edge7)]} {[(node1, node2, edge1), (node1, node2, edge2)]}}
+
+test DirectedGraph-7.1 {test toDirectedAcyclicGraph} {
+	set dirg [java::new ptolemy.graph.DirectedGraph]
+	set n1 [java::new ptolemy.graph.Node]
+	set n2 [java::new ptolemy.graph.Node]
+	set n3 [java::new ptolemy.graph.Node]
+	set e1 [java::new ptolemy.graph.Edge $n1 $n2]
+	set e2 [java::new ptolemy.graph.Edge $n2 $n3]
+	$dirg addNode $n1
+	$dirg addNode $n2
+	$dirg addNode $n3
+	$dirg addEdge $e1
+	$dirg addEdge $e2
+	set acyg [$dirg toDirectedAcyclicGraph]
+	set ctn1 [$acyg containsNode $n1]
+	set ctn2 [$acyg containsNode $n2]
+	set ctn3 [$acyg containsNode $n3]
+	set cte1 [$acyg containsEdge $e1]
+	set cte2 [$acyg containsEdge $e2]
+	set acycls [$acyg getClass]
+	set acynam [$acycls getName]
+	list $acynam $ctn1 $ctn2 $ctn3 $cte1 $cte2
+} {ptolemy.graph.DirectedAcyclicGraph 1 1 1 1 1}
+
+######################################################################
+####
+#
+test DirectedGraph-7.2 {test toDirectedAcyclicGraph exception} {
+	set e3 [java::new ptolemy.graph.Edge $n3 $n1]
+	$dirg addEdge $e3
+	catch {$dirg toDirectedAcyclicGraph} msg
+	list $msg
+} {{java.lang.IllegalArgumentException: This graph is not acyclic}}
+

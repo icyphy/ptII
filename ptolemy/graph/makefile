@@ -54,7 +54,7 @@ JSRCS = \
 	Edge.java \
 	Graph.java \
 	Graphs.java \
-	GraphListener.java \
+	Analysis.java \
 	LabeledList.java \
 	Inequality.java \
 	InequalitySolver.java \
