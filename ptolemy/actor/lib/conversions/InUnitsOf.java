@@ -42,7 +42,11 @@ import ptolemy.kernel.util.*;
 //////////////////////////////////////////////////////////////////////////
 //// InUnitsOf
 /**
-An actor that converts input tokens to specified units.
+An actor that converts input tokens to specified units by dividing the
+input by the value of the <i>units</i> parameter.  This actor is designed
+to be used with a <i>unit system</i>, which must be included in the
+model (note that some Ptolemy II applications do not include unit systems).
+<p>
 The units are specified by the <i>units</i> parameter, which contains a
 DoubleToken with units. The input tokens and the token in the <i>unit</i>
 parameter must have the same unit category. Otherwise, an exception
