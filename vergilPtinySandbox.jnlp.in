@@ -26,7 +26,7 @@
 	<!-- Start Jars -->
 	<!-- End Jars -->
   </resources>
-  <application-desc main-class="ptolemy.actor.gui.jnlp.PtinyApplication">
+  <application-desc main-class="ptolemy.actor.gui.jnlp.PtinySandboxApplication">
 	<argument>ptolemy/configs/vergilConfigurationPtiny.xml</argument>
 	<argument>ptolemy/configs/introDSP.htm</argument>
   </application-desc>
