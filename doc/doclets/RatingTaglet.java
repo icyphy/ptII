@@ -138,9 +138,17 @@ public class RatingTaglet implements Taglet {
      * @param tag the <code>Tag</code> representation of this custom tag.
      */
     public String toString(Tag tag) {
+        String color = tag.text();
+        // Assume the first thing on the line is the color.
+        int spaceIndex = color.indexOf(' ');
+        if(spaceIndex != -1) {
+            // Deal with the fact that somebody might just have put a
+            // color.
+            color = color.substring(0, spaceIndex);
+        }
         return "<DT><B>" + _tagName + ":</B><DD>"
-            + "<table cellpadding=2 cellspacing=0><tr><td>"
-            + tag.text()
+            + "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\"" 
+            + color.toLowerCase() + "\">" + tag.text()
             + "</td></tr></table></DD>\n";
     }
     
@@ -154,10 +162,16 @@ public class RatingTaglet implements Taglet {
             return null;
         }
         String color = tags[0].text();
-        color = color.substring(0, color.indexOf(' '));
+        // Assume the first thing on the line is the color.
+        int spaceIndex = color.indexOf(' ');
+        if(spaceIndex != -1) {
+            // Deal with the fact that somebody might just have put a
+            // color.
+            color = color.substring(0, spaceIndex);
+        }
         String result = "\n<DT><B>" + _tagName + ":</B><DD>";
-        result += "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\"" +
-            color.toLowerCase() + "\">";
+        result += "<table cellpadding=2 cellspacing=0><tr><td bgcolor=\"" 
+            + color.toLowerCase() + "\">";
         for (int i = 0; i < tags.length; i++) {
             if (i > 0) {
                 result += ", ";
