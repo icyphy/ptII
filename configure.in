@@ -850,7 +850,9 @@ PTJACL_JAR=$PTII/lib/ptjacl.jar
 # vergil/test/VergilConfiguration.tcl test
 # We set the ptolemy.ptII.dir property for use in the 
 # actor.lib.test.auto.FileWriter{1,2}.xml tests
-JTCLSH='["$(JAVA)" $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" tcl.lang.Shell]'
+# JTCLSHFLAGS gets set to -Dptolemy.ptII.isRunningNightlyBuild=true
+# when we are running the nightlybuild
+JTCLSH='["$(JAVA)" $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" $(JTCLSHFLAGS) tcl.lang.Shell]'
 # PTJACL_DIR is set to ptjacl and used in $PTII/ptolemy/actor/gui/makefile
 # if the ptjacl.jar file was found
 PTJACL_DIR= 
@@ -882,7 +884,7 @@ else
 	instead. ptjacl is used by the test suite, so you may be able to
 	ignore this error.])
 		fi
-		JTCLSH='["$(JAVA)" $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" tcl.lang.Shell]'
+		JTCLSH='["$(JAVA)" $(JAVAFLAGS) "-Dptolemy.ptII.dir=$(PTII)" $(JTCLFLAGS tcl.lang.Shell]'
 	fi
     else
 	AC_MSG_WARN([The ptjacl.jar file was not found at '$PTJACL_JAR'
