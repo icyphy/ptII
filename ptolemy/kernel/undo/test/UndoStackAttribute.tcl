@@ -54,3 +54,11 @@ test UndoStackAttribute-1.1 {Create an UndoStackAttribute} {
     set p [java::new ptolemy.kernel.undo.UndoStackAttribute $n P]
     $p getFullName
 } {.N.P}
+
+######################################################################
+####
+#
+test UndoStackAttribute-2.1 {call getUndoInfo } {
+    # Uses 1.1 above
+    [$p getUndoInfo $n] toString
+} {ptolemy.kernel.undo.UndoStackAttribute {.N.P}}
