@@ -27,8 +27,7 @@ that is the directory above this directory
 	<dl>
 	<dt> bash
 	<dd> <pre>
-PTII=c:\\Program\ Files\\Ptolemy\\Ptolemy\ II\ 3.0 
-export PTII
+export PTII=c:/Ptolemy/ptII4.0-alpha
 </pre>
 
 <dt> csh
@@ -45,8 +44,7 @@ rm -f config.*
 ./configure
 </pre>
 
-<li> Ptolemy is shipped with .class and .jar files, but the
-$PTII/bin/scripts needs to be updated.  The safest thing to do is 
+<li> The safest thing to do is 
 to run make fast install on the entire tree:
 <pre>
 make fast install
@@ -96,10 +94,9 @@ The applet tags have been configured to require JDK1.4, so to run the applets
 in Mozilla 1.x, Netscape 4.7 or Internet Explorer 6.0 under Windows, you will need to use
 the Java Plug-in from
 <a href="http://java.sun.com/products/plugin/" target="_top"><CODE>http://java.sun.com/products/plugin/</CODE></a>
-<a href="http://www.javasoft.com/products/plugin/" target="_top">JavaSoft</a>.
 
- <p>Currently, the Java Plug-in 1.4 is included in the JDK1.4 download for
-Windows.
+ <p>Currently, the Java Plug-in 1.4 is included in the JRE and JDK downloads
+for Windows.
  <p>If you are running under Solaris, you can
 <a href="http://www.sun.com/solaris/netscape/" target="_top">download</a>
 a separate plug-in or a complete Netscape installation.
@@ -113,8 +110,10 @@ the applets with the JDK <CODE>appletviewer</CODE> command.
 Diva is a visualization package used by some of the demos and by
 vergil, the Ptolemy II user interface.
 
- <p>The Ptolemy II distribution include <CODE>$PTII/lib/diva.jar</CODE>.
- <p>The Diva sources and documentation are available at
+ <p>The Ptolemy II distribution includes <CODE>$PTII/lib/diva.jar</CODE>.
+ <p>As of Ptolemy II 4.0, the Diva sources and documentation 
+are included in the source release.
+ <p>More information about Diva can be found at
 <a href="http://www.gigascale.org/diva" target="_top"><CODE>http://www.gigascale.org/diva</CODE></a>.
 
 
@@ -125,7 +124,7 @@ The <a name="codeDoc/ptolemy/actor/lib/python/PythonScript.java">PythonScript ac
 <p>Usually, one not need install Jython as 
 all Ptolemy II distributions that include the PythonScript actor
 also include Jython as <code>$PTII/lib/jython.jar<code>.
-The Ptolemy II source distribution also includes <code>$PTII/lib/jython.jar<code>.
+The Ptolemy II source distribution also includes <code>$PTII/lib/jython.jar</code>.
 Jython is covered by a 
 <a href="../ptolemy/actor/lib/python/copyright.htm">Jython specific copyright</a>
 
@@ -192,6 +191,46 @@ size or licensing reasons, we do not include these packages with
 the prebuilt Ptolemy releases, so you may want to install these
 packages if you are interested in using the functionality they provide.
 
+<h3>CaffeineMark</h3>
+The CaffeineMark benchmark is used by the Copernicus C code generator.
+<p>You need not download the CaffeineMark benchmark unless you are 
+interested in benchmarking the Copernicus C code generator.
+<p>The main page for the CaffeineMark is
+<a href="http://www-sor.inria.fr/~java/tools/cmkit" target="_top"><code>http://www-sor.inria.fr/~java/tools/cmkit</code></a>
+To install, do
+<pre>
+cd $PTII/vendors/cm
+# Download http://www-sor.inria.fr/~java/tools/cmkit/embed.zip
+jar -xf embed.zip
+</pre>
+
+<h3>GC</h3>
+The Copernicus C code generator uses the Boehm Garbarge Collector,
+which can be found at
+<a href="http://www.hpl.hp.com/personal/Hans_Boehm/gc/" target="_top"><code>http://www.hpl.hp.com/personal/Hans_Boehm/gc/</code></a>
+<p>You need not download the Garbage Collector unless you are
+planning on using the Copernicus C code generator.
+<p>The configure program looks for the Garbage Collector in
+<code>$PTII/vendors/gc</code>.
+<p>To install the Garbage Collector:
+<ol>
+<li> Download from 
+<a href="http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/" target="_top"><code>http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/</code></a>
+<li> 
+<pre>
+cd $PTII/vendors/gc
+tar -zxf /tmp/gc.tar.gz
+cd gc6.1
+./configure --prefix=$PTII
+make
+make check
+make install
+</pre>
+Note that under Windows, PTII cannot have a backslash in it or
+else make will have problems.
+</ol>
+<p>As of 4/03, we were using version 6.1
+
 <h3>JAI</h3>
 The <a name="codeDoc/ptolemy/actor/lib/jai/package-summary.html">Java Advanced Imaging (JAI) actors</a> require that JAI, which can be  downloaded from
 <a href="http://java.sun.com/products/java-media/jai/" target="_top"><code>http://java.sun.com/products/java-media/jai/</code></a>
@@ -234,7 +273,7 @@ was fixed in Java 3D 1.2.1_04
 <h3>Joystick</h3>
 The <a name="codeDoc/ptolemy/actor/lib/joystick/Joystick.html">Joystick actor</a>
 requires the Joystick interface from
-<a href="http://sourceforge.net/projects/javajoystick/" target="_top"><code>http://sourceforge.net/projects/javajoystick/</code>.
+<a href="http://sourceforge.net/projects/javajoystick/" target="_top"><code>http://sourceforge.net/projects/javajoystick/</code></a>.
 The Joystick interface works under Windows and Linux.
 Joystick is covered by a 
 <a href="../ptolemy/actor/lib/joystick/copyright.htm">Joystick specific copyright</a>
@@ -365,47 +404,6 @@ with Solaris 8 <CODE>/usr/ccs/bin/make</CODE>.
 problems, the workaround is to installed GNU make.
  
 
-<h3>GC</h3>
-The Copernicus C code generator uses the Boehm Garbarge Collector,
-which can be found at
-<a href="http://www.hpl.hp.com/personal/Hans_Boehm/gc/" target="_top"><code>http://www.hpl.hp.com/personal/Hans_Boehm/gc/</code>
-<p>You need not download the Garbage Collector unless you are
-planning on using the Copernicus C code generator.
-<p>The configure program looks for the Garbage Collector in
-<code>$PTII/vendors/gc</code>.
-<p>To install the Garbage Collector:
-<ol>
-<li> Download from 
-<a href="http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/" target="_top"><code>http://www.hpl.hp.com/personal/Hans_Boehm/gc/gc_source/</code></a>
-<li> 
-<pre>
-cd $PTII/vendors/gc
-tar -zxf /tmp/gc.tar.gz
-cd gc6.1
-./configure --prefix=$PTII
-make
-make check
-make install
-</pre>
-Note that under Windows, PTII cannot have a backslash in it or
-else make will have problems.
-
-<p>As of 4/03, we were using version 6.1
-
-<h3>CaffeineMark</h3>
-The CaffeineMark benchmark is used by the Copernicus C code generator.
-<p>You need not download the CaffeineMark benchmark unless you are 
-interested in benchmarking the Copernicus C code generator.
-<p>The main page for the CaffeineMark is
-<a href="http://www-sor.inria.fr/~java/tools/cmkit" target="_top"><code>http://www-sor.inria.fr/~java/tools/cmkit</code></a>
-To install, do
-<pre>
-cd $PTII/vendors/cm
-# Download http://www-sor.inria.fr/~java/tools/cmkit/embed.zip
-jar -xf embed.zip
-</pre>
-
-
 <h3><a name="javacc">JavaCC</a></h3>
 JavaCC is the Java Compiler Compiler, which similar to <CODE>yacc</CODE>
 and <CODE>lex</CODE>.
@@ -429,10 +427,8 @@ cd $PTII; rm config.*; ./configure
 </ol>
 
 
-<h2>Rebuilding</h2>
-The Ptolemy II distribution includes the compiled Java <CODE>.class</CODE>
-files and the <CODE>javadoc</CODE> output, so it is not
-necessary to 'build' or run <CODE>make</CODE> to use Ptolemy II.
+<h2>Rebuilding from source</h2>
+
 
 <h3><a name="Unix">Unix</a></h3>
  If you would like to rebuild from the Java sources under Unix,
