@@ -1,0 +1,1862 @@
+options {
+    JAVA_UNICODE_ESCAPE = true;
+    STATIC = false;
+}
+
+PARSER_BEGIN(JavaFragmentParser)
+    
+package ptolemy.copernicus.kernel;
+
+import soot.*;
+import soot.util.*;
+import soot.jimple.*;
+import java.io.*;
+import java.util.*;
+
+public class JavaFragmentParser {
+    
+    public static void main(String args[]) {
+        JavaFragmentParser parser;
+        if (args.length == 0) {
+            System.out.println("Java Parser Version 1.1:  Reading from standard input . . .");
+            parser = new JavaFragmentParser(System.in);
+        } else if (args.length == 1) {
+            System.out.println("Java Parser Version 1.1:  Reading from file " + args[0] + " . . .");
+            try {
+                parser = new JavaFragmentParser(new java.io.FileInputStream(args[0]));
+            } catch (java.io.FileNotFoundException e) {
+                System.out.println("Java Parser Version 1.1:  File " + args[0] + " not found.");
+                return;
+            }
+        } else {
+            System.out.println("Java Parser Version 1.1:  Usage is one of:");
+            System.out.println("         java JavaFragmentParser < inputfile");
+            System.out.println("OR");
+            System.out.println("         java JavaFragmentParser inputfile");
+            return;
+        }
+        try {
+            parser.ExpressionEntry();
+            System.out.println("Java Parser Version 1.1:  Java program parsed successfully.");
+        } catch (ParseException e) {
+            System.out.println(e.getMessage());
+            System.out.println("Java Parser Version 1.1:  Encountered errors during parse.");
+        }
+    }    
+    public static void add(
+        JimpleBody body, String string) {
+        Stmt insertPoint = Jimple.v().newNopStmt();
+        body.getUnits().add(insertPoint);
+        insertBefore(body, insertPoint, string);
+    }        
+    public static void insertBefore(
+        JimpleBody body, Stmt insertPoint, String string) {
+        Reader reader = new StringReader(string);
+        JavaFragmentParser parser = new JavaFragmentParser(reader);
+        parser.statementEntry(body, insertPoint);
+    }     
+    
+    private void _bindNameToLocal(String name, Local local) {
+        if(_nameToLocal.get(name) != null) {
+            throw new RuntimeException("multiply bound name = " + name);
+        } else {
+            _nameToLocal.put(name, local);
+        }
+    }
+        
+    /** Create a new local in the body being modified with the given
+     * name, initialized to the given value at the current point in
+     * the code.
+     */
+    private Local _createLocal(String name, Value value) {
+        Type type = value.getType();
+        Local local = Jimple.v().newLocal(name, type);
+        _body.getLocals().add(local);          
+        _insert(Jimple.v().newAssignStmt(local, value));
+        return local;
+    }
+    
+    private RefType _findType(String name) {
+        // FIXME: This needs to be smarter... imports?
+        return RefType.v(name);
+    }
+    
+    /** Insert the given statement into the body being processed at
+     * the current point in the code.
+     */
+    private void _insert(Stmt stmt) {
+        _body.getUnits().insertBefore(
+            stmt, _insertPoint);
+    }
+
+    /** 
+     */
+    private Value _processInstanceMethod(
+        Value baseValue, String name, List argList) {
+        
+        int lastDotPosition = name.lastIndexOf(".");
+        if(lastDotPosition == -1) {
+            SootClass refClass;
+            if(baseValue == null) {
+                // No required baseValue..  If method is not static, then 
+                // We can use the thisLocal as the baseValue.
+                refClass = _body.getMethod().getDeclaringClass();
+                if(!_body.getMethod().isStatic()) {
+                    baseValue = _body.getThisLocal();
+                    refClass = _body.getMethod().getDeclaringClass();
+                }
+            } else {
+                Type type = baseValue.getType();
+                if(type instanceof RefType) {
+                    refClass = ((RefType)type).getSootClass();
+                } else {
+                    throw new RuntimeException(
+                        "Attempt to dereference primitive type " + type);
+                }
+            } 
+            
+            SootMethod method = refClass.getMethodByName(name);
+            if(method.isStatic()) {
+                return Jimple.v().newStaticInvokeExpr(method, argList);   
+            } else {
+                if(baseValue == null) {
+                    throw new RuntimeException(
+                        "Attempt to invoke non-static method \"" 
+                        + name + "\" from static context!");
+                } else {
+                    return Jimple.v().newVirtualInvokeExpr(
+                        (Local)baseValue, method, argList);
+                }
+            }
+        } else {
+            // Drop the last part of the name, process the rest as a
+            // field, and then deal with the last part recursively.
+            String firstPart = name.substring(0, lastDotPosition);
+            String methodName = name.substring(lastDotPosition + 1);
+            Value value = _createLocal("$deref", 
+                _processInstanceField(baseValue, firstPart));
+            return _processInstanceMethod(value, methodName, argList);
+        }
+    }
+    
+    /** 
+     */
+    private Value _processInstanceField(Value baseValue, String name) {
+        int lastDotPosition = name.lastIndexOf(".");
+        if(lastDotPosition == -1) {
+            // See if there is a local with the right name.
+            Value value = (Value) _nameToLocal.get(name);
+            if(value != null) {
+                return value;
+            }
+
+            SootClass refClass;
+            if(baseValue == null) {
+                // No required baseValue..  If method is not static, then 
+                // We can use the thisLocal as the baseValue.
+                refClass = _body.getMethod().getDeclaringClass();
+                if(!_body.getMethod().isStatic()) {
+                    baseValue = _body.getThisLocal();
+                    refClass = _body.getMethod().getDeclaringClass();
+                }
+            } else {
+                Type type = baseValue.getType();
+                if(type instanceof RefType) {
+                    refClass = ((RefType)type).getSootClass();
+                } else {
+                    throw new RuntimeException(
+                        "Attempt to dereference primitive type " + type);
+                }
+            }
+            SootField field = refClass.getFieldByName(name);
+            if(field.isStatic()) {
+                return Jimple.v().newStaticFieldRef(field);
+            } else {
+                if(baseValue == null) {
+                    throw new RuntimeException(
+                        "Attempt to reference non-static field \"" 
+                        + name + "\" from static context!");
+                } else {
+                    return Jimple.v().newInstanceFieldRef(
+                        baseValue, field);
+                }
+            }
+        } else {
+            // Drop the last part of the name, process the rest as a
+            // field, and then deal with the last part recursively.
+            String firstPart = name.substring(0, lastDotPosition);
+            String fieldName = name.substring(lastDotPosition + 1);
+            Value value = _createLocal("$deref", 
+                _processInstanceField(baseValue, firstPart));
+            return _processInstanceField(value, fieldName);
+        }
+    }
+    
+    // The current body being manipulated.
+    JimpleBody _body;
+    
+    // The insertion point in the current body. Statements are
+    // inserted *before* this statement.
+    Stmt _insertPoint;
+
+    // A map of local variable bindings for names.  Bindings
+    Map _nameToLocal;
+
+    // List of Stmts corresponding to continue and break points for
+    // loops.  The first element in the list is the innermost binding
+    // for continues and breaks.  Bindings are added to these lists
+    // when loops are entered
+    LinkedList _continueStack;
+    LinkedList _breakStack;
+}
+
+PARSER_END(JavaFragmentParser)
+
+
+/* WHITE SPACE */
+
+SKIP :
+{
+    " " 
+  | "\t"
+  | "\n" 
+  | "\r"
+  | "\f"
+}
+
+/* COMMENTS */
+
+MORE :
+{
+    "//" : IN_SINGLE_LINE_COMMENT
+  | <"/**" ~["/"]> { input_stream.backup(1); } : IN_FORMAL_COMMENT
+  | "/*" : IN_MULTI_LINE_COMMENT
+}
+
+<IN_SINGLE_LINE_COMMENT>
+SPECIAL_TOKEN :
+{
+    <SINGLE_LINE_COMMENT: "\n" | "\r" | "\r\n" > : DEFAULT
+}
+
+<IN_FORMAL_COMMENT>
+SPECIAL_TOKEN :
+{
+    <FORMAL_COMMENT: "*/" > : DEFAULT
+}
+
+<IN_MULTI_LINE_COMMENT>
+SPECIAL_TOKEN :
+{
+    <MULTI_LINE_COMMENT: "*/" > : DEFAULT
+}
+
+<IN_SINGLE_LINE_COMMENT,IN_FORMAL_COMMENT,IN_MULTI_LINE_COMMENT>
+MORE :
+{
+    < ~[] >
+}
+
+/* RESERVED WORDS AND LITERALS */
+
+TOKEN :
+{
+    < ABSTRACT: "abstract" >
+              | < BOOLEAN: "boolean" >
+              | < BREAK: "break" >
+              | < BYTE: "byte" >
+              | < CASE: "case" >
+              | < CATCH: "catch" >
+              | < CHAR: "char" >
+              | < CLASS: "class" >
+              | < CONST: "const" >
+              | < CONTINUE: "continue" >
+              | < _DEFAULT: "default" >
+              | < DO: "do" >
+              | < DOUBLE: "double" >
+              | < ELSE: "else" >
+              | < EXTENDS: "extends" >
+              | < FALSE: "false" >
+              | < FINAL: "final" >
+              | < FINALLY: "finally" >
+              | < FLOAT: "float" >
+              | < FOR: "for" >
+              | < GOTO: "goto" >
+              | < IF: "if" >
+              | < IMPLEMENTS: "implements" >
+              | < IMPORT: "import" >
+              | < INSTANCEOF: "instanceof" >
+              | < INT: "int" >
+              | < INTERFACE: "interface" >
+              | < LONG: "long" >
+              | < NATIVE: "native" >
+              | < NEW: "new" >
+              | < NULL: "null" >
+              | < PACKAGE: "package">
+              | < PRIVATE: "private" >
+              | < PROTECTED: "protected" >
+              | < PUBLIC: "public" >
+              | < RETURN: "return" >
+              | < SHORT: "short" >
+              | < STATIC: "static" >
+              | < SUPER: "super" >
+              | < SWITCH: "switch" >
+              | < SYNCHRONIZED: "synchronized" >
+              | < THIS: "this" >
+              | < THROW: "throw" >
+              | < THROWS: "throws" >
+              | < TRANSIENT: "transient" >
+              | < TRUE: "true" >
+              | < TRY: "try" >
+              | < VOID: "void" >
+              | < VOLATILE: "volatile" >
+              | < WHILE: "while" >
+}
+
+/* LITERALS */
+
+TOKEN :
+{
+    < INTEGER_LITERAL: <DECIMAL_LITERAL> (["l","L"])?
+                      | <HEX_LITERAL> (["l","L"])?
+                      | <OCTAL_LITERAL> (["l","L"])? >
+  | < #DECIMAL_LITERAL: ["1"-"9"] (["0"-"9"])* >
+  | < #HEX_LITERAL: "0" ["x","X"] (["0"-"9","a"-"f","A"-"F"])+ >
+  | < #OCTAL_LITERAL: "0" (["0"-"7"])* >
+  | < FLOATING_POINT_LITERAL:
+    (["0"-"9"])+ "." (["0"-"9"])* (<EXPONENT>)? (["f","F","d","D"])?
+                      | "." (["0"-"9"])+ (<EXPONENT>)? (["f","F","d","D"])?
+       | (["0"-"9"])+ <EXPONENT> (["f","F","d","D"])?
+       | (["0"-"9"])+ (<EXPONENT>)? ["f","F","d","D"]
+         >
+       |
+         < #EXPONENT: ["e","E"] (["+","-"])? (["0"-"9"])+ >
+       |
+         < CHARACTER_LITERAL:
+        "'"
+         (   (~["'","\\","\n","\r"])
+                 | ("\\"
+                         ( ["n","t","b","r","f","\\","'","\""]
+                                 | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )
+      "'"
+  >
+|
+  < STRING_LITERAL:
+      "\""
+      (   (~["\"","\\","\n","\r"])
+        | ("\\"
+            ( ["n","t","b","r","f","\\","'","\""]
+            | ["0"-"7"] ( ["0"-"7"] )?
+            | ["0"-"3"] ["0"-"7"] ["0"-"7"]
+            )
+          )
+      )*
+      "\""
+  >
+}
+
+/* IDENTIFIERS */
+
+TOKEN :
+{
+  < IDENTIFIER: <LETTER> (<LETTER>|<DIGIT>)* >
+|
+  < #LETTER:
+      [
+       "\u0024",
+       "\u0041"-"\u005a",
+       "\u005f",
+       "\u0061"-"\u007a",
+       "\u00c0"-"\u00d6",
+       "\u00d8"-"\u00f6",
+       "\u00f8"-"\u00ff",
+       "\u0100"-"\u1fff",
+       "\u3040"-"\u318f",
+       "\u3300"-"\u337f",
+       "\u3400"-"\u3d2d",
+       "\u4e00"-"\u9fff",
+       "\uf900"-"\ufaff"
+      ]
+  >
+|
+  < #DIGIT:
+      [
+       "\u0030"-"\u0039",
+       "\u0660"-"\u0669",
+       "\u06f0"-"\u06f9",
+       "\u0966"-"\u096f",
+       "\u09e6"-"\u09ef",
+       "\u0a66"-"\u0a6f",
+       "\u0ae6"-"\u0aef",
+       "\u0b66"-"\u0b6f",
+       "\u0be7"-"\u0bef",
+       "\u0c66"-"\u0c6f",
+       "\u0ce6"-"\u0cef",
+       "\u0d66"-"\u0d6f",
+       "\u0e50"-"\u0e59",
+       "\u0ed0"-"\u0ed9",
+       "\u1040"-"\u1049"
+      ]
+  >
+}
+
+/* SEPARATORS */
+
+TOKEN :
+{
+    < LPAREN: "(" >
+            | < RPAREN: ")" >
+            | < LBRACE: "{" >
+            | < RBRACE: "}" >
+            | < LBRACKET: "[" >
+            | < RBRACKET: "]" >
+            | < SEMICOLON: ";" >
+            | < COMMA: "," >
+            | < DOT: "." >
+}
+
+/* OPERATORS */
+
+TOKEN :
+{
+  < ASSIGN: "=" >
+| < GT: ">" >
+| < LT: "<" >
+| < BANG: "!" >
+| < TILDE: "~" >
+| < HOOK: "?" >
+| < COLON: ":" >
+| < EQ: "==" >
+| < LE: "<=" >
+| < GE: ">=" >
+| < NE: "!=" >
+| < SC_OR: "||" >
+| < SC_AND: "&&" >
+| < INCR: "++" >
+| < DECR: "--" >
+| < PLUS: "+" >
+| < MINUS: "-" >
+| < STAR: "*" >
+| < SLASH: "/" >
+| < BIT_AND: "&" >
+| < BIT_OR: "|" >
+| < XOR: "^" >
+| < REM: "%" >
+| < LSHIFT: "<<" >
+| < RSIGNEDSHIFT: ">>" >
+| < RUNSIGNEDSHIFT: ">>>" >
+| < PLUSASSIGN: "+=" >
+| < MINUSASSIGN: "-=" >
+| < STARASSIGN: "*=" >
+| < SLASHASSIGN: "/=" >
+| < ANDASSIGN: "&=" >
+| < ORASSIGN: "|=" >
+| < XORASSIGN: "^=" >
+| < REMASSIGN: "%=" >
+| < LSHIFTASSIGN: "<<=" >
+| < RSIGNEDSHIFTASSIGN: ">>=" >
+| < RUNSIGNEDSHIFTASSIGN: ">>>=" >
+}
+
+
+/*****************************************
+ * THE JAVA LANGUAGE GRAMMAR STARTS HERE *
+ *****************************************/
+
+/*
+ * Program structuring syntax follows.
+ */
+void ExpressionEntry() :
+{}
+{
+    Expression() <EOF>
+}
+void statementEntry(JimpleBody body, Stmt insertPoint) :
+{
+    _body = body;
+    _insertPoint = insertPoint;
+    _nameToLocal = new HashMap();
+    _continueStack = new LinkedList();
+    _breakStack = new LinkedList();
+}
+{
+    StatementOrBlock() <EOF>
+}
+
+void CompilationUnit() :
+{}
+{
+  [ PackageDeclaration() ]
+  ( ImportDeclaration() )*
+  ( TypeDeclaration() )*
+  <EOF>
+}
+
+void PackageDeclaration() :
+{}
+{
+  "package" Name() ";"
+}
+
+void ImportDeclaration() :
+{}
+{
+  "import" Name() [ "." "*" ] ";"
+}
+
+void TypeDeclaration() :
+{}
+{
+  LOOKAHEAD( ( "abstract" | "final" | "public" )* "class" )
+  ClassDeclaration()
+|
+  InterfaceDeclaration()
+|
+  ";"
+}
+
+
+/*
+ * Declaration syntax follows.
+ */
+
+void ClassDeclaration() :
+{}
+{
+  ( "abstract" | "final" | "public" )*
+  UnmodifiedClassDeclaration()
+}
+
+void UnmodifiedClassDeclaration() :
+{}
+{
+  "class" <IDENTIFIER> [ "extends" Name() ] [ "implements" NameList() ]
+  ClassBody()
+}
+
+void ClassBody() :
+{}
+{
+  "{" ( ClassBodyDeclaration() )* "}"
+}
+
+void NestedClassDeclaration() :
+{}
+{
+  ( "static" | "abstract" | "final" | "public" | "protected" | "private" )*
+  UnmodifiedClassDeclaration()
+}
+
+void ClassBodyDeclaration() :
+{}
+{
+  LOOKAHEAD(2)
+  Initializer()
+|
+  LOOKAHEAD( ( "static" | "abstract" | "final" | "public" | "protected" | "private" )* "class" )
+  NestedClassDeclaration()
+|
+  LOOKAHEAD( ( "static" | "abstract" | "final" | "public" | "protected" | "private" )* "interface" )
+  NestedInterfaceDeclaration()
+|
+  LOOKAHEAD( [ "public" | "protected" | "private" ] Name() "(" )
+  ConstructorDeclaration()
+|
+  LOOKAHEAD( MethodDeclarationLookahead() )
+  MethodDeclaration()
+|
+  FieldDeclaration()
+}
+
+// This production is to determine lookahead only.
+void MethodDeclarationLookahead() :
+{}
+{
+  ( "public" | "protected" | "private" | "static" | "abstract" | "final" | "native" | "synchronized" )*
+  ResultType() <IDENTIFIER> "("
+}
+
+void InterfaceDeclaration() :
+{}
+{
+    ( "abstract" | "public" )*
+    UnmodifiedInterfaceDeclaration()
+}
+
+void NestedInterfaceDeclaration() :
+{}
+{
+    ( "static" | "abstract" | "final" | "public" | "protected" | "private" )*
+    UnmodifiedInterfaceDeclaration()
+}
+
+void UnmodifiedInterfaceDeclaration() :
+{}
+{
+    "interface" <IDENTIFIER> [ "extends" NameList() ]
+    "{" ( InterfaceMemberDeclaration() )* "}"
+}
+
+void InterfaceMemberDeclaration() :
+{}
+{
+    LOOKAHEAD( ( "static" | "abstract" | "final" | "public" | "protected" | "private" )* "class" )
+    NestedClassDeclaration()
+  |
+    LOOKAHEAD( ( "static" | "abstract" | "final" | "public" | "protected" | "private" )* "interface" )
+    NestedInterfaceDeclaration()
+  |
+    LOOKAHEAD( MethodDeclarationLookahead() )
+    MethodDeclaration()
+  |
+    FieldDeclaration()
+}
+
+void FieldDeclaration() :
+{Type type;}
+{
+    ( "public" | "protected" | "private" | "static" | "final" | "transient" | "volatile" )*
+    type = Type() FieldDeclarator(type) ( "," FieldDeclarator(type) )* ";"
+}
+
+void FieldDeclarator(Type type) :
+{}
+{
+    FieldDeclaratorId(type) [ "=" VariableInitializer(null) ]
+}
+
+void FieldDeclaratorId(Type type) :
+{String name;}
+{
+    <IDENTIFIER> {name = token.image;} 
+    ( 
+        "[" "]" {type = type.makeArrayType();}
+    )* 
+    { _body.getLocals().add(Jimple.v().newLocal(name, type)); }
+}
+
+void MethodDeclaration() :
+{}
+{
+    ( "public" | "protected" | "private" | "static" | "abstract" | "final" | "native" | "synchronized" )*
+    ResultType() MethodDeclarator() [ "throws" NameList() ]
+    ( Block() | ";" )
+}
+
+void MethodDeclarator() :
+{}
+{
+  <IDENTIFIER> FormalParameters() ( "[" "]" )*
+}
+
+void FormalParameters() :
+{}
+{
+    "(" [ FormalParameter() ( "," FormalParameter() )* ] ")"
+}
+
+Type FormalParameter() :
+{
+    Type type;
+    String name;
+}
+{
+    [ "final" ] type = Type() <IDENTIFIER> {name = token.image;} 
+    ( 
+        "[" "]" {type = type.makeArrayType();}
+    )* {
+        return type;
+    }
+}
+
+void ConstructorDeclaration() :
+{}
+{
+    [ "public" | "protected" | "private" ]
+    <IDENTIFIER> FormalParameters() [ "throws" NameList() ]
+    "{"
+    [ LOOKAHEAD(ExplicitConstructorInvocation()) ExplicitConstructorInvocation() ]
+    ( BlockStatement() )*
+    "}"
+}
+
+void ExplicitConstructorInvocation() :
+{}
+{
+    LOOKAHEAD("this" Arguments() ";") "this" Arguments() ";"
+  | 
+    [ LOOKAHEAD(2) PrimaryExpression() "." ] "super" Arguments() ";"
+}
+
+void Initializer() :
+{}
+{
+    [ "static" ] Block()
+}
+
+
+/*
+ * Type, name and expression syntax follows.
+ */
+
+Type Type() :
+{
+    Type type;
+    String name;
+}
+{
+    ( 
+        type = PrimitiveType()
+      | 
+        name = Name() {
+            type = _findType(name);
+        } 
+    ) 
+    ( 
+        "[" "]" { type = type.makeArrayType(); }
+    )*
+    {
+        return type;
+    }
+}
+
+Type PrimitiveType() :
+{}
+{
+    "boolean" {return IntType.v();}
+  | "char" {return IntType.v();}
+  | "byte" {return IntType.v();}
+  | "short" {return IntType.v();}
+  | "int" {return IntType.v();}
+  | "long" {return LongType.v();}
+  | "float" {return FloatType.v();}
+  | "double" {return DoubleType.v();}
+}
+
+Type ResultType() :
+{
+    Type type;
+}
+{
+    "void" {return VoidType.v();}
+  | type = Type() {return type;}
+}
+
+String Name() :
+/*
+ * A lookahead of 2 is required below since "Name" can be followed
+ * by a ".*" when used in the context of an "ImportDeclaration".
+ */
+{
+    StringBuffer name;
+}
+{
+    <IDENTIFIER> {name = new StringBuffer(token.image);}
+    ( LOOKAHEAD(2) "." <IDENTIFIER> {
+        name.append(".");
+        name.append(token.image);
+    } )* 
+    {return name.toString();}
+}
+
+void NameList() :
+{}
+{
+    Name() ( "," Name() )*
+}
+
+
+/*
+ * Expression syntax follows.
+ */
+
+Value Expression() :
+/*
+ * This expansion has been written this way instead of:
+ *   Assignment() | ConditionalExpression()
+ * for performance reasons.
+ * However, it is a weakening of the grammar for it allows the LHS of
+ * assignments to be any conditional expression whereas it can only be
+ * a primary expression.  Consider adding a semantic predicate to work
+ * around this.
+ */
+{
+    Value result, value1, value2;
+}
+{
+    result = ConditionalExpression()
+    // FIXME!
+  //   [ 
+//         AssignmentOperator() Expression() {throw new RuntimeException();}
+//     ]
+    { return result;}
+}
+
+void AssignmentOperator() :
+{}
+{
+    "=" | "*=" | "/=" | "%=" | "+=" | "-=" | "<<=" | ">>=" | ">>>=" | "&=" | "^=" | "|="
+}
+
+Value ConditionalExpression() :
+{
+    Value result, value1, value2;
+    Stmt stmt = Jimple.v().newNopStmt();
+}
+{
+    result = ConditionalOrExpression() [ 
+        "?" {
+            // Create the jumpto points
+            Stmt falseBranch = Jimple.v().newNopStmt();
+            Stmt continuation = Jimple.v().newNopStmt();
+            // Negate the condition.
+            _insert(Jimple.v().newIfStmt(
+                        Jimple.v().newEqExpr(result, IntConstant.v(0)), 
+                        falseBranch));
+        } value1 = Expression() { 
+            result = _createLocal("$result", value1);
+            _insert(Jimple.v().newGotoStmt(continuation));
+            _insert(falseBranch);
+        } ":" value2 = Expression() {
+            _insert(Jimple.v().newAssignStmt(result, value2));
+            _insert(continuation);
+        }
+    ] { return result;}
+}
+
+Value ConditionalOrExpression() :
+{
+    Value value1, value2;
+}
+{
+    value1 = ConditionalAndExpression() (
+        "||" value2 = ConditionalAndExpression() {
+            value1 = _createLocal(
+                "$booleanOr", Jimple.v().newOrExpr(value1, value2));
+        }
+    )* {return value1;}
+}
+
+Value ConditionalAndExpression() :
+{
+    Value value1, value2;
+}
+{
+    value1 = InclusiveOrExpression() (
+        "&&" value2 = InclusiveOrExpression() {
+            value1 = _createLocal(
+                "$booleanAnd", Jimple.v().newAndExpr(value1, value2));
+        }
+    )* {return value1;}
+}
+
+Value InclusiveOrExpression() :
+{
+    Value value1, value2;
+}
+{
+    value1 = ExclusiveOrExpression() ( 
+        "|" value2 = ExclusiveOrExpression() {
+            value1 = _createLocal(
+                "$or", Jimple.v().newOrExpr(value1, value2));
+        }
+    )* {return value1;}
+}
+
+Value ExclusiveOrExpression() :
+{
+    Value value1, value2;}
+{
+    value1 = AndExpression() ( 
+        "^" value2 = AndExpression() { 
+            value1 = _createLocal(
+                "$xor", Jimple.v().newXorExpr(value1, value2));
+        }
+    )* {return value1;}
+}
+
+Value AndExpression() :
+{
+    Value value1, value2;}
+{
+    value1 = EqualityExpression() ( 
+        "&" value2 = EqualityExpression() {
+            value1 = _createLocal(
+                "$and", Jimple.v().newAndExpr(value1, value2));
+        }
+    )* {return value1;}
+}
+
+Value EqualityExpression() :
+{
+    Value value1, value2;
+}
+{
+    value1 = InstanceOfExpression() ( 
+        "==" value2 = InstanceOfExpression() {
+            value1 = _createLocal(
+                "$eq", Jimple.v().newEqExpr(value1, value2));
+        }
+      | "!=" value2 = InstanceOfExpression() {
+          value1 = _createLocal(
+              "$ne", Jimple.v().newNeExpr(value1, value2));
+      }
+    )* {return value1;}
+}
+
+Value InstanceOfExpression() :
+{
+    Value value;
+    Type type;
+}
+{
+    value = RelationalExpression() [ "instanceof" type = Type() {
+        value = _createLocal(
+            "$instanceof", Jimple.v().newInstanceOfExpr(value, type));
+    }
+    ] {return value;}
+}
+
+Value RelationalExpression() :
+{
+    Value value1, value2;
+}
+{
+    value1 = ShiftExpression() ( 
+            "<" value2 = ShiftExpression() {
+                value1 = _createLocal(
+                    "$lt", Jimple.v().newLtExpr(value1, value2));
+            }
+            | ">" value2 = ShiftExpression() {
+                value1 = _createLocal(
+                    "$gt", Jimple.v().newGtExpr(value1, value2));
+            }
+            | "<=" value2 = ShiftExpression() {
+                value1 = _createLocal(
+                    "$lte", Jimple.v().newLeExpr(value1, value2));
+            }
+            | ">=" value2 = ShiftExpression() {
+                value1 = _createLocal(
+                    "$gte", Jimple.v().newGeExpr(value1, value2));
+            }
+            )* {return value1;}
+}
+
+Value ShiftExpression() :
+{
+    Value value1, value2;
+}
+{
+    value1 = AdditiveExpression() ( 
+            "<<" value2 = AdditiveExpression() {
+                value1 = _createLocal(
+                    "$shiftLeft", Jimple.v().newShlExpr(value1, value2));
+            }
+            | ">>" value2 = AdditiveExpression() {
+                value1 = _createLocal(
+                    "$shiftRight", Jimple.v().newShrExpr(value1, value2));
+            }
+            | ">>>" value2 = AdditiveExpression() {
+                value1 = _createLocal(
+                    "$unsignedShiftRight", 
+                    Jimple.v().newUshrExpr(value1, value2));
+            }
+            )* {return value1;}
+}
+
+Value AdditiveExpression() :
+{
+    Value value1, value2;
+}
+{
+    value1 = MultiplicativeExpression() ( 
+        "+" value2 = MultiplicativeExpression() {
+            value1 = _createLocal(
+                "$add", Jimple.v().newAddExpr(value1, value2));
+        }
+      | "-" value2 = MultiplicativeExpression()  {
+          value1 = _createLocal(
+              "$subtract", Jimple.v().newSubExpr(value1, value2));
+      }
+    )*  { return value1; }
+}
+
+Value MultiplicativeExpression() :
+{
+    Value value1, value2;
+}
+{
+    value1 = UnaryExpression() ( 
+        "*" value2 = UnaryExpression() {
+            value1 = _createLocal(
+                "$multiply", Jimple.v().newMulExpr(value1, value2));
+        }
+      | "/" value2 = UnaryExpression() 
+        {
+            value1 = _createLocal(
+                "$divide", Jimple.v().newDivExpr(value1, value2));
+        }      
+    | "%" value2 = UnaryExpression() 
+        { 
+            value1 = _createLocal(
+                "$divide", Jimple.v().newRemExpr(value1, value2));
+        }
+    )* { return value1; }
+}
+
+Value UnaryExpression() :
+{
+    Value value;
+}
+{
+    "+" value = UnaryExpression() {return value;}
+  | "-" value = UnaryExpression() {return value;} // FIXME!
+  | value = PreIncrementExpression() {return value;}
+  | value = PreDecrementExpression() {return value;}
+  | value = UnaryExpressionNotPlusMinus() {return value;}
+}
+
+Value PreIncrementExpression() :
+{
+    Value value;
+}
+{
+    "++" value = PrimaryExpression() {
+        Local local = _createLocal(
+            "$increment", Jimple.v().newAddExpr(value, IntConstant.v(1)));
+        if(value instanceof Local) {
+            _insert(Jimple.v().newAssignStmt((Local)value, local));
+        } else if(value instanceof FieldRef) {
+            _insert(Jimple.v().newAssignStmt((FieldRef)value, local));
+        } else {
+            throw new RuntimeException("Illegal Increment");
+        }
+        return value;
+    }
+}
+
+Value PreDecrementExpression() :
+{
+    Value value;
+}
+{
+    "--" value = PrimaryExpression() {
+        Local local = _createLocal(
+            "$decrement", Jimple.v().newAddExpr(value, IntConstant.v(-1)));
+        if(value instanceof Local) {
+            _insert(Jimple.v().newAssignStmt((Local)value, local));
+        } else if(value instanceof FieldRef) {
+            _insert(Jimple.v().newAssignStmt((FieldRef)value, local));
+        } else {
+            throw new RuntimeException("Illegal Decrement");
+        }
+        return value;
+    }
+}
+
+Value UnaryExpressionNotPlusMinus() :
+{
+    Value value;
+}
+{
+    "~" value = UnaryExpression() {
+        // FIXME: Not correct?
+        return _createLocal(
+            "$bitwiseNot", Jimple.v().newNegExpr(value));
+    }
+  |
+    "!" value = UnaryExpression() {
+        return _createLocal(
+            "$booleanNot", Jimple.v().newNegExpr(value));
+    }
+  |
+    LOOKAHEAD( CastLookahead() )
+    value = CastExpression() {return value;}
+  |
+    value = PostfixExpression() {return value;}
+}
+
+// This production is to determine lookahead only.  The LOOKAHEAD
+// specifications below are not used, but they are there just to
+// indicate that we know about this.
+void CastLookahead() :
+{}
+{
+    LOOKAHEAD(2)
+    "(" PrimitiveType()
+  |
+    LOOKAHEAD("(" Name() "[")
+    "(" Name() "[" "]"
+  |
+    "(" Name() ")" ( "~" | "!" | "(" | <IDENTIFIER> | "this" | "super" | "new" | Literal() )
+}
+
+Value PostfixExpression() :
+{
+    Value value;
+    Local copyLocal;
+    Local local;
+}
+{
+    value = PrimaryExpression() [ 
+        "++" {
+            // FIXME: may not be correct if used as lvalue.
+            copyLocal = _createLocal("$copy", value);
+            local = _createLocal(
+                "$increment", Jimple.v().newAddExpr(value, IntConstant.v(1)));
+            if(value instanceof Local) {
+                _insert(Jimple.v().newAssignStmt((Local)value, local));
+            } else if(value instanceof FieldRef) {
+                _insert(Jimple.v().newAssignStmt((FieldRef)value, local));
+            } else {
+                throw new RuntimeException("Illegal Increment");
+            }
+            value = copyLocal;
+        } 
+      | 
+        "--" {
+            // FIXME: may not be correct if used as lvalue.
+            copyLocal = _createLocal("$copy", value);
+            local = _createLocal(
+                "$decrement", Jimple.v().newAddExpr(value, IntConstant.v(-1)));
+            if(value instanceof Local) {
+                _insert(Jimple.v().newAssignStmt((Local)value, local));
+            } else if(value instanceof FieldRef) {
+                _insert(Jimple.v().newAssignStmt((FieldRef)value, local));
+            } else {
+                throw new RuntimeException("Illegal Decrement");
+            }
+            value = copyLocal;
+      } 
+    ] {return value;}
+}
+
+Value CastExpression() :
+{
+    Value value;
+    Type type;
+}
+{
+    // FIXME: Do we need to handle primitive types differently?
+    //   LOOKAHEAD("(" PrimitiveType())
+    "(" type = Type() ")" value = UnaryExpression() {
+        return _createLocal(
+            "$cast", Jimple.v().newCastExpr(value, type));
+    }
+    //   | "(" Type() ")" UnaryExpressionNotPlusMinus()
+}
+
+Value PrimaryExpression() :
+{Value value;}
+{
+    value = PrimaryPrefix() 
+    (
+        LOOKAHEAD(2) value = PrimarySuffix(value) 
+    )* 
+    {return value;}
+}
+
+Value PrimaryPrefix() :
+{
+    Value value;
+    String name;
+    Type type;
+    List argList;
+}
+{
+    value = Literal() {return value;}
+  | "this" {return _body.getThisLocal();}
+  | "super" "." <IDENTIFIER> {return null;} // FIXME!
+  | "(" value = Expression() ")" {return value;}
+  | value = AllocationExpression() {return value;}
+  | LOOKAHEAD( ResultType() "." "class" ) type = ResultType() "." "class" {
+      if(type instanceof VoidType) {
+          return VoidClassConstant.v();
+      } else if(type instanceof IntType) {
+          return IntClassConstant.v();
+      } else if(type instanceof LongType) {
+          return LongClassConstant.v();
+      } else if(type instanceof BooleanType) {
+          return BooleanClassConstant.v();
+      } else if(type instanceof ByteType) {
+          return ByteClassConstant.v();
+      } else if(type instanceof CharType) {
+          return CharClassConstant.v();
+      } else if(type instanceof DoubleType) {
+          return DoubleClassConstant.v();
+      } else if(type instanceof FloatType) {
+          return FloatClassConstant.v();
+      } else if(type instanceof ShortType) {
+          return ShortClassConstant.v();
+      } else if(type instanceof NullType) {
+          return VoidClassConstant.v(); // Correct?
+      } else if(type instanceof ArrayType) {
+          throw new RuntimeException("array.class not supported.");
+      } else if(type instanceof RefType) {
+          return ClassConstant.v(type.toString());
+      }
+  }
+  | name = Name() (
+      argList = Arguments() {
+          return _processInstanceMethod(null, name, argList);
+      }
+    |
+      {
+          // FIXME: what about class refs?
+          return _processInstanceField(null, name);
+      }
+  )
+}
+
+Value PrimarySuffix(Value baseValue) :
+{
+    Value value;
+    List argList;
+    String name;
+}
+{
+    LOOKAHEAD(2) "." "this"
+  | LOOKAHEAD(2) "." AllocationExpression()
+  | "[" value = Expression() "]" 
+    {
+        return _createLocal(
+            "$index", Jimple.v().newArrayRef(baseValue, value));
+    }
+  | "." name = Name() 
+    (
+        argList = Arguments() {
+            return _processInstanceMethod(baseValue, name, argList);
+        }
+      |
+        {
+            return _processInstanceField(baseValue, name);
+        }
+    )
+}
+
+Value Literal() :
+{}
+{
+    <INTEGER_LITERAL> {
+        return IntConstant.v(Integer.parseInt(token.image));
+    }
+  | <FLOATING_POINT_LITERAL> {
+      return FloatConstant.v(Float.parseFloat(token.image));
+  }
+  | <CHARACTER_LITERAL> {
+      // Is this correct?
+      return IntConstant.v(Integer.parseInt(token.image));
+  }
+  | <STRING_LITERAL> {
+      String string = token.image;
+      // Snip off the front and back quote.
+      string = string.trim();
+      string = string.substring(1, string.length() - 1);
+      return StringConstant.v(string);
+  }
+  | "true" {return IntConstant.v(1);}
+  | "false" {return IntConstant.v(0);}
+  | "null" {return NullConstant.v();}
+}
+
+List Arguments() :
+{
+    List list = new LinkedList();
+    Value value;
+}
+{
+    "(" [ Argument(list) ( "," Argument(list) )* ] ")" 
+    {return list;}
+}
+void Argument(List list) :
+{
+    Value value;
+}
+{
+    value = Expression() {list.add(value);} 
+}
+
+Value AllocationExpression() :
+{
+    Value value;
+    String name;
+    Type type;
+    List argList;
+}
+{
+    "new" (
+        type = PrimitiveType() value = ArrayDimsAndInits(type) {return value;}
+      |
+        name = Name() { type = _findType(name); } 
+        (
+            argList = Arguments() {
+                SootClass theClass = Scene.v().loadClassAndSupport(name);
+                SootMethod method = SootUtilities.getMatchingMethod(
+                    theClass, "<init>", argList);
+                Local local = _createLocal(
+                    "$new", Jimple.v().newNewExpr((RefType)type));
+                _insert(Jimple.v().newInvokeStmt(
+                            Jimple.v().newSpecialInvokeExpr(
+                                local, method, argList)));
+                return local;
+            }
+          |
+            value = ArrayDimsAndInits(type) {return value;}
+        )
+    )
+                
+            
+ //FIXME!
+//     LOOKAHEAD(2)
+//     "new" PrimitiveType() ArrayDimsAndInits()
+//   | "new" Name()
+//     (
+//         ArrayDimsAndInits()
+//       | Arguments() [ ClassBody() ]
+//     )
+}
+
+/*
+ * The third LOOKAHEAD specification below is to parse to PrimarySuffix
+ * if there is an expression between the "[...]".
+ */
+Value ArrayDimsAndInits(Type type) :
+{
+    Value sizeValue;
+    List sizeValues = new LinkedList();
+}
+{
+    LOOKAHEAD(2)
+    (
+        LOOKAHEAD(2) "[" sizeValue = Expression() "]" {
+            sizeValues.add(sizeValue);
+        }
+    )+ ( 
+        LOOKAHEAD(2) "[" "]" {type = type.makeArrayType();}
+    )* {
+        if(sizeValues.size() == 1) {
+            return Jimple.v().newNewArrayExpr(type, sizeValue);
+        } else {
+            // FIXME: Is this right?
+            for(int i = 0; i < sizeValues.size(); i++) {
+                type = type.makeArrayType();
+            }
+            return Jimple.v().newNewMultiArrayExpr((ArrayType)type, sizeValues);
+        }
+    }
+  |
+    ( "[" "]" )+ ArrayInitializer() 
+    {throw new RuntimeException("Array Initializers not supported!");}
+}
+
+
+/*
+ * Statement syntax follows.
+ */
+
+void StatementOrBlock() :
+{}
+{
+    LOOKAHEAD(";")
+    EmptyStatement()
+  |
+    LOOKAHEAD(2)
+    LabeledStatement()
+  |
+    Block()
+  |
+    StatementExpression() ";"
+  |
+    SwitchStatement()
+  |
+    IfStatement()
+  |
+    WhileStatement()
+  |
+    DoStatement()
+  |
+    ForStatement()
+  |
+    BreakStatement()
+  |
+    ContinueStatement()
+  |
+    ReturnStatement()
+  |
+    ThrowStatement()
+  |
+    SynchronizedStatement()
+  |
+    TryStatement()
+}
+
+void LabeledStatement() :
+{}
+{
+    <IDENTIFIER> ":" StatementOrBlock()
+}
+
+void Block() :
+{}
+{
+    "{" ( BlockStatement() )* "}"
+}
+
+void BlockStatement() :
+{}
+{
+    LOOKAHEAD([ "final" ] Type() <IDENTIFIER>)
+    LocalVariableDeclaration() ";"
+  |
+    StatementOrBlock()
+  |
+    UnmodifiedClassDeclaration()
+  |
+    UnmodifiedInterfaceDeclaration()
+}
+
+void LocalVariableDeclaration() :
+{
+    Type type;
+}
+{
+    [ "final" ] type = Type() VariableDeclarator(type) ( "," VariableDeclarator(type) )*
+}
+
+void VariableDeclarator(Type type) :
+{
+    String name;
+}
+{
+    <IDENTIFIER> {name = token.image;} 
+    ( 
+        "[" "]" { type = type.makeArrayType(); }
+    )* 
+    {
+        Local local = Jimple.v().newLocal(name, type);
+        _body.getLocals().add(local); 
+        _bindNameToLocal(name, local);
+    }
+    [ "=" VariableInitializer(local) ]
+}
+
+void VariableInitializer(Local local) :
+{Value value;}
+{
+    ArrayInitializer()
+  |
+    value = Expression() { 
+        _body.getUnits().insertBefore(
+            Jimple.v().newAssignStmt(local, value),
+            _insertPoint);
+    }
+}
+
+void ArrayInitializer() :
+{}
+{
+    "{" [ VariableInitializer(null) ( LOOKAHEAD(2) "," VariableInitializer(null) )* ] [ "," ] "}"
+}
+
+void EmptyStatement() :
+{}
+{
+    ";" { _insert(Jimple.v().newNopStmt()); }
+}
+
+void StatementExpression() :
+/*
+ * The last expansion of this production accepts more than the legal
+ * Java expansions for StatementExpression.  This expansion does not
+ * use PostfixExpression for performance reasons.
+ */
+{
+    Value lvalue;
+    Value rvalue;
+}
+{
+    lvalue = PreIncrementExpression()
+  | lvalue = PreDecrementExpression()
+  | lvalue = PrimaryExpression()
+    [ 
+        "++" {
+            _insert(Jimple.v().newAssignStmt(
+                        (Local)lvalue,
+                        Jimple.v().newAddExpr(lvalue, IntConstant.v(1))));
+        }
+      |
+        "--" {
+            _insert(Jimple.v().newAssignStmt(
+                        (Local)lvalue,
+                        Jimple.v().newSubExpr(lvalue, IntConstant.v(1))));
+        }
+      |
+        "=" rvalue = Expression() {
+            _insert(Jimple.v().newAssignStmt(
+                        (Local)lvalue, rvalue));
+        }
+      | 
+        "*=" rvalue = Expression() {
+            _insert(Jimple.v().newAssignStmt(
+                        (Local)lvalue, 
+                        Jimple.v().newMulExpr(lvalue, rvalue)));
+        }
+      | 
+        "/=" rvalue = Expression() {
+            _insert(Jimple.v().newAssignStmt(
+                        (Local)lvalue, 
+                        Jimple.v().newDivExpr(lvalue, rvalue)));
+        }
+      | 
+        "%=" rvalue = Expression() {
+            _insert(Jimple.v().newAssignStmt(
+                        (Local)lvalue, 
+                        Jimple.v().newRemExpr(lvalue, rvalue)));
+        }
+      | 
+        "+=" rvalue = Expression() {
+            _insert(Jimple.v().newAssignStmt(
+                        (Local)lvalue, 
+                        Jimple.v().newAddExpr(lvalue, rvalue)));
+        }
+      | 
+        "-=" rvalue = Expression() {
+            _insert(Jimple.v().newAssignStmt(
+                        (Local)lvalue, 
+                        Jimple.v().newSubExpr(lvalue, rvalue)));
+        }
+      | 
+        "<<=" rvalue = Expression() {
+            _insert(Jimple.v().newAssignStmt(
+                        (Local)lvalue, 
+                        Jimple.v().newShlExpr(lvalue, rvalue)));
+        }
+      | 
+        ">>=" rvalue = Expression() {
+            _insert(Jimple.v().newAssignStmt(
+                        (Local)lvalue, 
+                        Jimple.v().newShrExpr(lvalue, rvalue)));
+        }
+      | 
+        ">>>=" rvalue = Expression() {
+            _insert(Jimple.v().newAssignStmt(
+                        (Local)lvalue, 
+                        Jimple.v().newUshrExpr(lvalue, rvalue)));
+        }
+      |
+        "&=" rvalue = Expression() {
+            _insert(Jimple.v().newAssignStmt(
+                        (Local)lvalue, 
+                        Jimple.v().newAndExpr(lvalue, rvalue)));
+        }
+      | 
+        "^=" rvalue = Expression() {
+            _insert(Jimple.v().newAssignStmt(
+                        (Local)lvalue, 
+                        Jimple.v().newXorExpr(lvalue, rvalue)));
+        }
+      | 
+        "|=" rvalue = Expression() {
+            _insert(Jimple.v().newAssignStmt(
+                        (Local)lvalue, 
+                        Jimple.v().newOrExpr(lvalue, rvalue)));
+        }    
+    ]
+    {
+        // No assignment..
+        if(lvalue instanceof InvokeExpr) {
+            _insert(Jimple.v().newInvokeStmt(lvalue));
+        }
+    }
+}
+
+void SwitchStatement() :
+{
+    Value expression;
+    Value value;
+    List valueList = new LinkedList();
+    List targetList = new LinkedList();
+    Stmt defaultBranchTarget = null;
+}
+{
+    {
+        // Jump to the switch.
+        Stmt switchStmt = Jimple.v().newNopStmt();
+        _insert(Jimple.v().newGotoStmt(switchStmt));
+
+        // continuation is the target for breaks:
+        Stmt continuation = Jimple.v().newNopStmt();
+        _breakStack.addFirst(continuation);
+        defaultBranchTarget = continuation;
+    }        
+    "switch" "(" expression = Expression() ")" "{"
+    ( 
+        "case" value = Expression() ":" {
+            valueList.add(value);
+            Stmt branchTarget = Jimple.v().newNopStmt();
+            _insert(branchTarget);
+            targetList.add(branchTarget);
+        } ( BlockStatement() )* 
+      |
+        "default" ":" {
+            defaultBranchTarget = Jimple.v().newNopStmt();
+            _insert(defaultBranchTarget);
+        } ( BlockStatement() )* 
+    )*
+    "}" {
+        // Clear the break.
+        _breakStack.removeFirst();
+        // Default break if we fall through everywhere.
+        _insert(Jimple.v().newGotoStmt(continuation));
+        _insert(switchStmt);
+        // FIXME: What if TableSwitch is better?
+        _insert(Jimple.v().newLookupSwitchStmt(
+                    expression, valueList, targetList, defaultBranchTarget));
+        _insert(continuation);
+    }
+}
+
+void IfStatement() :
+/*
+ * The disambiguating algorithm of JavaCC automatically binds dangling
+ * else's to the innermost if statement.  The LOOKAHEAD specification
+ * is to tell JavaCC that we know what we are doing.
+ */
+{
+    Value condition;
+}
+{
+    "if" "(" condition = Expression() ")" {           
+        // Create the jumpto points
+        Stmt falseBranch = Jimple.v().newNopStmt();
+        Stmt continuation = Jimple.v().newNopStmt();
+        // Negate the condition.
+        _insert(Jimple.v().newIfStmt(
+                    Jimple.v().newEqExpr(condition, IntConstant.v(0)), 
+                    falseBranch));
+    } StatementOrBlock() {
+        _insert(Jimple.v().newGotoStmt(continuation));
+        _insert(falseBranch);
+    } [ LOOKAHEAD(1) "else" StatementOrBlock() ] { _insert(continuation); }
+}
+
+void WhileStatement() :
+{
+    Value condition;
+}
+{
+    "while" "(" {
+        Stmt start = Jimple.v().newNopStmt();
+        Stmt continuation = Jimple.v().newNopStmt();
+        _insert(start);
+    } condition = Expression() ")" {
+        _insert(Jimple.v().newIfStmt(
+                    Jimple.v().newEqExpr(condition, IntConstant.v(0)), 
+                    continuation));  
+        // start is the target for continues:
+        _continueStack.addFirst(start);
+        // continuation is the target for breaks:
+        _breakStack.addFirst(continuation);
+    } StatementOrBlock() {
+        // remove continue and break bindings.
+        _continueStack.removeFirst();
+        _breakStack.removeFirst();
+        _insert(Jimple.v().newGotoStmt(start));
+        _insert(continuation);
+    }
+}
+
+void DoStatement() :
+{
+    Value condition;
+}
+{
+    "do" {
+        Stmt start = Jimple.v().newNopStmt();
+        Stmt continuation = Jimple.v().newNopStmt();  
+        _insert(start);
+        // start is the target for continues:
+        _continueStack.addFirst(start);
+        // continuation is the target for breaks:
+        _breakStack.addFirst(continuation);
+    } StatementOrBlock() {
+        // remove continue and break bindings.
+        _continueStack.removeFirst();
+        _breakStack.removeFirst();
+    } "while" "(" condition = Expression() {
+        _insert(Jimple.v().newIfStmt(
+                    Jimple.v().newNeExpr(condition, IntConstant.v(0)), 
+                    start));  
+    } ")" ";"
+}
+
+void ForStatement() :
+{
+    Value condition;
+}
+{
+    // Note that this generates basic blocks in syntactic order, which
+    // is not necesarily a good implementation order.  Optimization
+    // should remove the extra gotos.
+    "for" "(" [ ForInit() ] ";" {
+        Stmt start = Jimple.v().newNopStmt();
+        Stmt continuation = Jimple.v().newNopStmt();
+        Stmt bodyStart = Jimple.v().newNopStmt();
+        Stmt updateStart = Jimple.v().newNopStmt();
+        _insert(start);
+    }
+    [ condition = Expression() {  
+        _insert(Jimple.v().newIfStmt(
+                    Jimple.v().newEqExpr(condition, IntConstant.v(0)), 
+                    continuation)); 
+    }
+    ] {
+        _insert(Jimple.v().newGotoStmt(bodyStart));
+        _insert(updateStart);
+    }
+    ";" [ ForUpdate() ] ")" {
+        _insert(Jimple.v().newGotoStmt(start));
+        _insert(bodyStart);
+        // updateStart is the target for continues:
+        _continueStack.addFirst(updateStart);
+        // continuation is the target for breaks:
+        _breakStack.addFirst(continuation);
+    } StatementOrBlock() {
+        // Get rid of the continue and break bindings.
+        _continueStack.removeFirst();
+        _breakStack.removeFirst();
+        _insert(Jimple.v().newGotoStmt(updateStart));
+        _insert(continuation);
+    }
+}
+
+void ForInit() :
+{}
+{
+    LOOKAHEAD( [ "final" ] Type() <IDENTIFIER> )
+    LocalVariableDeclaration()
+  |
+    StatementExpressionList()
+}
+
+void StatementExpressionList() :
+{}
+{
+    StatementExpression() ( "," StatementExpression() )*
+}
+
+void ForUpdate() :
+{}
+{
+    StatementExpressionList()
+}
+
+void BreakStatement() :
+{}
+{
+    "break" [ <IDENTIFIER> ] ";" {
+        Stmt stmt = (Stmt)_breakStack.getFirst();
+        _insert(Jimple.v().newGotoStmt(stmt));
+    }
+}
+
+void ContinueStatement() :
+{}
+{
+    "continue" [ <IDENTIFIER> ] ";" {
+        Stmt stmt = (Stmt)_continueStack.getFirst();
+        _insert(Jimple.v().newGotoStmt(stmt));
+    }
+}
+
+void ReturnStatement() :
+{
+    Value value = null;
+}
+{
+    "return" [ value = Expression() ] ";" {
+        if(value == null) {
+            _insert(Jimple.v().newReturnVoidStmt());
+        } else {
+            _insert(Jimple.v().newReturnStmt(value));
+        }
+    }
+}
+
+void ThrowStatement() :
+{
+    Value value;
+}
+{
+    "throw" value = Expression() ";" {
+        _insert(Jimple.v().newThrowStmt(value));
+    }
+}
+
+void SynchronizedStatement() :
+{}
+{
+    "synchronized" "(" Expression() ")" Block()
+}
+
+void TryStatement() :
+/*
+ * Semantic check required here to make sure that at least one
+ * finally/catch is present.
+ */
+{
+    Type type;
+}
+{
+    "try" { 
+        Stmt blockStart = Jimple.v().newNopStmt();
+        _insert(blockStart);
+    } Block() {
+        Stmt blockEnd = Jimple.v().newNopStmt();
+        _insert(blockEnd);
+        
+        Stmt continuation = Jimple.v().newNopStmt();
+        _insert(Jimple.v().newGotoStmt(continuation));
+    }
+    ( 
+        "catch" "(" 
+        { 
+            Stmt trapStart = Jimple.v().newNopStmt();
+            _insert(trapStart);
+        }
+        type = FormalParameter() ")" Block() 
+        {
+            if(!(type instanceof RefType)) {
+                throw new RuntimeException("Cannot catch " + type);
+            }
+            RefType refType = (RefType)type;
+            SootClass exceptionClass = refType.getSootClass();
+            if(!SootUtilities.derivesFrom(
+                   exceptionClass, 
+                   Scene.v().loadClassAndSupport("java.lang.Throwable"))) {
+                throw new RuntimeException("Cannot catch " + type);
+            }
+            Stmt trapEnd = Jimple.v().newNopStmt();
+            _insert(trapEnd);
+            _body.getTraps().add(
+                Jimple.v().newTrap(
+                    exceptionClass, blockStart, blockEnd, trapStart));
+        } 
+    )* 
+    {
+        _insert(continuation);
+    }
+    // FIXME: finally?
+//    [ "finally" Block() ]
+}
+
+//// Local Variables:
+//// c-file-style:"javacc-style"
+//// End:
+
+
+
