@@ -52,6 +52,7 @@ PTCLASSALLJARS = \
 	HierarchicalModel/HierarchicalModel.jar \
 	Inspection/Inspection.jar \
 	ModalModel/ModalModel.jar \
+	SmartSender/SmartSender.jar \
 	TimingParadox/TimingParadox.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
