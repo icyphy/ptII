@@ -1,9 +1,9 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE model PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<model name="" class="ptolemy.actor.TypedCompositeActor">
-    <director name="DT19" class="ptolemy.domains.dt.kernel.DTDirector">
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+<model name="MathFunction" class="ptolemy.actor.TypedCompositeActor">
+    <property name="DT19" class="ptolemy.domains.dt.kernel.DTDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
         </property>
         <property name="vectorizationFactor" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -12,7 +12,7 @@
         <rendition name="_icon" class="ptolemy.vergil.toolbox.EditorIcon">
             <location value="555.0, 340.0"/>
         </rendition>
-    </director>
+    </property>
     <entity name="MathFunction1" class="ptolemy.actor.lib.MathFunction">
         <property name="function" class="ptolemy.kernel.util.StringAttribute" value="exp">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
@@ -39,16 +39,16 @@
         </port>
     </entity>
     <entity name="Pulse2" class="ptolemy.actor.lib.Pulse">
-        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0:1:1]">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[1.0,2.0]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[1.0, 2.0]">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="80.0, 62.0"/>
+            <location value="110.0, 64.0"/>
         </rendition>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -149,7 +149,7 @@
             </property>
         </property>
         <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
-            <location value="262.0, 315.0"/>
+            <location value="259.0, 319.0"/>
         </rendition>
         <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -210,6 +210,91 @@
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="MathFunction2" class="ptolemy.actor.lib.MathFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="sign">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="exp" class="ptolemy.kernel.util.StringAttribute" value="exp">
+                </property>
+                <property name="log" class="ptolemy.kernel.util.StringAttribute" value="log">
+                </property>
+                <property name="remainder" class="ptolemy.kernel.util.StringAttribute" value="remainder">
+                </property>
+                <property name="sign" class="ptolemy.kernel.util.StringAttribute" value="sign">
+                </property>
+                <property name="square" class="ptolemy.kernel.util.StringAttribute" value="square">
+                </property>
+                <property name="sqrt" class="ptolemy.kernel.util.StringAttribute" value="sqrt">
+                </property>
+            </property>
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="251.0, 436.0"/>
+            <configure>generic.transformer</configure>
+        </rendition>
+        <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Pulse5" class="ptolemy.actor.lib.Pulse">
+        <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="6">
+        </property>
+        <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0:1:5]">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[-1.8,3.6, 4.0, 0.0,5,-10008]">
+        </property>
+        <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="134.0, 436.0"/>
+            <configure>generic.source</configure>
+        </rendition>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Clock7" class="ptolemy.actor.lib.Clock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="period" class="ptolemy.data.expr.Parameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="[0.0, 1.0]">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="[1, 0]">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="44.0, 265.0"/>
+            <configure>generic.source</configure>
+        </rendition>
+        <doc>Create a generalized square wave</doc>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
+    <entity name="Test12" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[-1.0,1.0,1.0,0.0,1.0,-1.0]">
+        </property>
+        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <rendition name="_icon" class="ptolemy.vergil.toolbox.LibraryIcon">
+            <location value="413.0, 436.0"/>
+            <configure>generic.sink</configure>
+        </rendition>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+        </port>
+    </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex">
             <location value="163.0, 69.0"/>
@@ -237,12 +322,25 @@
     </relation>
     <relation name="relation30" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex">
-            <location value="328.0, 320.0"/>
+            <location value="360.0, 323.0"/>
+        </vertex>
+    </relation>
+    <relation name="relation1" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex">
+            <location value="324.0, 441.0"/>
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex">
+            <location value="108.0, 270.0"/>
         </vertex>
     </relation>
     <link port="MathFunction1.firstOperand" relation="relation5"/>
     <link port="MathFunction1.output" relation="relation26"/>
     <link port="Pulse2.output" relation="relation5"/>
+    <link port="Pulse2.trigger" relation="relation10"/>
     <link port="MathFunction8.firstOperand" relation="relation5"/>
     <link port="MathFunction8.output" relation="relation27"/>
     <link port="MathFunction9.firstOperand" relation="relation5"/>
@@ -255,4 +353,10 @@
     <link port="Test20.input" relation="relation28"/>
     <link port="Test40.input" relation="relation27"/>
     <link port="Test42.input" relation="relation29"/>
+    <link port="MathFunction2.firstOperand" relation="relation6"/>
+    <link port="MathFunction2.output" relation="relation1"/>
+    <link port="Pulse5.output" relation="relation6"/>
+    <link port="Pulse5.trigger" relation="relation10"/>
+    <link port="Clock7.output" relation="relation10"/>
+    <link port="Test12.input" relation="relation1"/>
 </model>
