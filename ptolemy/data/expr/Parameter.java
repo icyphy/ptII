@@ -68,9 +68,12 @@ in it or it is given a new expression which is evaluated.
 To create a parameter from an expression, create the parameter with the
 appropriate container and name, then call setExpression() to set its value.
 <p>
-FIXME: Need to override the setContainer method so that when the 
-Parameters container is set to null to notifies any registered 
-listeners that it has been removed.
+A Parameter can also be reset. If the Parameter was originally set from a 
+Token, then this Token is placed agin in the Parameter. If the Parameter
+ was originally given an expression, then this expression is placed agian 
+in the Parameter and evaluated. Note that the type of the Token resulting 
+from reset must be compatible the current Parameter type.
+<p>
 FIXME: this class comment needs to be cleaned up.
 <p>
 
@@ -80,6 +83,7 @@ FIXME: this class comment needs to be cleaned up.
 @see ptolemy.data.expr.PtParser
 @see ptolemy.data.Token
 */
+
 public class Parameter extends Attribute implements ParameterListener {
 
     /** Construct a parameter in the default workspace with an empty string
@@ -409,7 +413,47 @@ public class Parameter extends Attribute implements ParameterListener {
         }
     }
 
-    /** Set the expression in this parameter.
+    /** Specify the container NamedObj, adding this Parameter to the
+     *  list of attributes in the container.  If the specified container 
+     *  is null, remove this Parameter from the list of attributes of the 
+     *  NamedObj and also notify all ParameterListeners which are registered 
+     *  with this Parameter that this Parameter has been removed.
+     *  If the container already
+     *  contains an parameter with the same name, then throw an exception
+     *  and do not make any changes.  Similarly, if the container is
+     *  not in the same workspace as this parameter, throw an exception.
+     *  If this parameter is already contained by the NamedObj, do nothing.
+     *  If the parameter already has a container, remove
+     *  this attribute from its attribute list of the NamedObj first.  
+     *  Otherwise, remove it from the directory of the workspace, if it is 
+     *  there. This method is write-synchronized on the
+     *  workspace and increments its version number.
+     *  @param container The container to attach this attribute to..
+     *  @exception IllegalActionException If this attribute is not of the
+     *   expected class for the container, or it has no name,
+     *   or the attribute and container are not in the same workspace, or
+     *   the proposed container would result in recursive containment.
+     *  @exception NameDuplicationException If the container already has
+     *   an parameter with the name of this attribute.
+     */
+    public void setContainer(NamedObj container)
+            throws IllegalActionException, NameDuplicationException {
+        super.setContainer(container);
+        if (container == null) {
+            if (_listeners == null) {
+                // No listeners to notify.
+                return;
+            }
+            ParameterEvent event = new ParameterEvent(this);
+            Enumeration list = _listeners.elements();
+            while (list.hasMoreElements()) {
+                ParameterListener next = (ParameterListener)list.nextElement();
+                next.parameterRemoved(event);
+            }
+        }
+    }
+
+    /** Set the expression in this Parameter.
      *  If the string is null, the token contained by this parameter
      *  is set to null. If it is not null, the expression is stored
      *  to be evaluated at a later stage. To evaluate the expression
