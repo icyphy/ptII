@@ -1,4 +1,4 @@
-# Tests for the FuzzyDoubleComarator class
+# Tests for the FuzzyDoubleComparator class
 #
 # @Author: Jie Liu
 #
