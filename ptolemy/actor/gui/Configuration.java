@@ -300,6 +300,7 @@ public class Configuration extends CompositeEntity {
             // and "reference", all in different parts of the
             // docs.
             // FIXME: Unfinished handling of the fragment.
+            /* NOTE: Apparently, Java now handles fragments.
             String fragment = in.getRef();
             if (fragment != null && !fragment.trim().equals("")) {
                 // Construct a new URL.  It is really silly
@@ -310,6 +311,7 @@ public class Configuration extends CompositeEntity {
                     in = new URL(spec.substring(0, sharp));
                 }
             }
+            */
 
             effigy = factory.createEffigy(directory, base, in);
 
