@@ -216,3 +216,4 @@ public class RemoteManagerImpl extends _RemoteManagerImplBase implements ChangeL
     }
   private CompositeActor _model;
   private boolean _executing = false;
+}
