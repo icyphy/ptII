@@ -35,7 +35,7 @@ package ptolemy.actor;
    That is, whenever a get method is called on this receiver, the 
    current token is always available and returned. Further more, if 
    no put method is called between get methods, the returned tokens are 
-   always the same. Usually, the receivers that implements this interface
+   always the same. Usually, the receivers that implement this interface
    have capacity of 1. 
    <p>
    Receivers that do not implement this marker interface have <i>event</i> 
