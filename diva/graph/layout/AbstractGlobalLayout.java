@@ -28,7 +28,7 @@ package diva.graph.layout;
 /**
  * An abstract implementation of the GlobalLayout interface.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu
+ * @author Steve Neuendorffer
  * @version $Id$
  * @rating Red
  */
