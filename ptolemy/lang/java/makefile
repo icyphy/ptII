@@ -140,10 +140,14 @@ run_GenerateVisitor JavaVisitor.java: NodeTypes.def
 # Note that we DON'T want to run Skeleton in any directory that contain
 # actors, like actor/lib or domains/sdf/lib because the code generator
 # needs to transform the code contained in actors.
-
+# If jskel files are present in actor.lib, then you will end up
+# with the intialize() and fire() methods being declared native, which
+# will result in errors like:
+# cxh@maury 15% java -classpath ../.. cg.orthocom.CG_Main
+# Exception in thread "main" java.lang.UnsatisfiedLinkError: initialize
+#	at cg.orthocom.CG_Main.main(CG_Main.java, Compiled Code)
+#
 SKELETON_DIRS = \
-	ptolemy/actor \
-	ptolemy/actor/lib \
 	ptolemy/actor/sched \
 	ptolemy/actor/util \
 	ptolemy/kernel \
