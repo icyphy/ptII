@@ -109,7 +109,12 @@ public class Ramp extends SequenceSource {
             throws IllegalActionException {
 	if (attribute == step) {
 	    _step = step.getToken();
+	    _stateToken = init.getToken();
 	}
+
+        if (attribute == init) {
+            _stateToken = init.getToken();
+        }
     }
 
     /** Notify the director when type changes in the parameters occur.
@@ -237,3 +242,4 @@ public class Ramp extends SequenceSource {
     private Token _step = null;
     private Token[] _resultArray = new Token[1];
 }
+
