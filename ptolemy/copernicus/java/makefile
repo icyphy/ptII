@@ -105,7 +105,7 @@ JADTARGETPATH =		$(ROOT)/ptolemy/copernicus/java/cg/jad
 
 # Orthocom
 SOURCEPACKAGE = ptolemy.domains.sdf.demo.OrthogonalCom
-MODEL = OrthogonalCom 
+MODEL = OrthogonalCom
 SOURCECLASS = $(SOURCEPACKAGE).$(MODEL)
 #make DEEPSOURCECLASS=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDeepDemo
 
