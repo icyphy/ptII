@@ -209,6 +209,9 @@ public class FSMViewerGraphController extends RunnableGraphController {
         // Create and set up the selection dragger
         _selectionDragger = new SelectionDragger(pane);
         _selectionDragger.addSelectionModel(getSelectionModel());
+        // If the selectionDragger is consuming, then popup menus don't 
+        // disappear properly.
+        _selectionDragger.setConsuming(false);
 
         super.initializeInteraction();
     }

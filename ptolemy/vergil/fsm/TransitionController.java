@@ -48,6 +48,7 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
+import ptolemy.vergil.basic.PopupMouseFilter;
 import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
@@ -114,6 +115,7 @@ public class TransitionController extends BasicEdgeController {
         setEdgeRenderer(new LinkRenderer());
 
         _menuCreator = new MenuCreator(null);
+        _menuCreator.setMouseFilter(new PopupMouseFilter());
         interactor.addInteractor(_menuCreator);
 
         // The contents of the menu is determined by the associated

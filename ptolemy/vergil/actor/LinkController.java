@@ -36,6 +36,7 @@ import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.moml.Vertex;
 import ptolemy.vergil.kernel.Link;
+import ptolemy.vergil.basic.PopupMouseFilter;
 import ptolemy.vergil.toolbox.ConfigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
@@ -100,6 +101,7 @@ public class LinkController extends BasicEdgeController {
         setEdgeRenderer(new LinkRenderer());
 
         _menuCreator = new MenuCreator(null);
+        _menuCreator.setMouseFilter(new PopupMouseFilter());
         interactor.addInteractor(_menuCreator);
 
         // The contents of the menu is determined by the associated
