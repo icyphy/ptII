@@ -132,10 +132,10 @@ cg/cruiseControlECSL:
 		a.xml
 
 run_cg:
-	$(JAVA) \
+	$(JAVA) -verbose \
 	-classpath "$(PTII)/$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
         "-Dptolemy.ptII.dir=c:/cxh/ptII" \
-        "ptolemy.actor.gui.CompositeActorApplication" \
+        "ptolemy.actor.gui.CompositeActorSimpleApplication" \
         "-class" \
         "cruiseControlECSL.CGcruiseControlECSL"
 
@@ -147,7 +147,7 @@ cruiseControl.jar:
 		-main ptolemy.actor.gui.CompositeActorApplication \
 		"$(JAVA)" \
 			-classpath "$(PTII)/$(TARGETPATH)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
-			ptolemy.actor.gui.CompositeActorApplication \
+			ptolemy.actor.gui.CompositeActorSimpleApplication \
 		        "-class" \
 		        "cruiseControlECSL.CGcruiseControlECSL"
 
@@ -167,6 +167,11 @@ run_treeshake: cruiseControl.jar
 			ptolemy.actor.gui.PtExecuteApplication \
 		-class cruiseControlECSL.CGcruiseControlECSL
 
+run_treeshake2: cruiseControl.jar
+	$(JAVA) -classpath cg -jar cruiseControl.jar \
+		-class cruiseControlECSL.CGcruiseControlECSL
+
+
 # Rules to run gcj, the GNU Java -> Native compiler                            
 # This code is very experimental, and not likely to work                       
 GCJ_DIR =       /usr/local
@@ -182,12 +187,12 @@ GCJ_JAR = /usr/local/share/java/libgcj-3.4.2.jar
 #GCJ_FLAGS =    -static                                                        
 #GCJ_FLAGS =    -pg -g0 -O3 -fno-bounds-check --classpath=$(GCJ_JAR)           
 GCJ_FLAGS =     -g -O3 -fno-bounds-check  --classpath=$(GCJ_JAR)
-GCJ_FLAGS =     -g
+GCJ_FLAGS =     -g -Dptolemy.ptII.dir=$(PTII)
 
 gcj:
 	"$(GCJ)" $(GCJ_FLAGS) \
-		--main=ptolemy.actor.gui.MoMLSimpleApplication \
-		-o cruiseControl_gcj -L$(PTII)/ptolemy/moml -LMoML cruiseControl.jar
+		--main=ptolemy.actor.gui.CompositeActorSimpleApplication \
+		-o cruiseControl_gcj cruiseControl.jar
 
 run:
 	$(JAVA) -verbose \
