@@ -10,16 +10,29 @@ To create a PDF File
    Select Distiller Assistant v3.01 as your printer
    Print the file, which will create a PostScript file   
 
-Acrobat distiller has an option that by default "downsamples
-images to 72 dpi."  This seems dumb.  Turning this off fixes
-the printing problems with chapter 3, with no noticable increase
-in file size.  See the file ~eal/TMP/design.pdf.  I've also checked
-in some minor fixes in the domain chapters, and regenerated everything.
+In Acrobat distiller, if you select Screen Optimized, then by default
+images are downsampled to 72 dpi.  This seems dumb.  Turning this off
+fixes the printing problems with chapter 3, with no noticable increase
+in file size.  See the file ~eal/TMP/design.pdf.  I've also checked in
+some minor fixes in the domain chapters, and regenerated everything.
 The pdf file in ~eal/TMP is the latest version.
 
-BTW, in Distiller,
-If you also turn off compression of images, the file size increases
-from about 3.7M to about 8M.  So don't do that!
+BTW, in Distiller, If you also turn off compression of images, the
+file size increases from about 3.7M to about 8M.  So don't do that!
+
+In Distiller, if you select Job Options: Print Optimized, then you
+will see messages:
+
+  %%[ Warning: Helvetica not found, using Font Substitution. Font cannot
+  be embedded.]%%
+  %%[ Warning: Helvetica-Bold not found, using Font Substitution. Font
+  cannot be embedded.]%%
+
+These messages can probably be ignored.
+
+Sizes:
+Screen Optimized, Acrobat 3.0 compatibility: 4.80Mb
+Print Optimized, Acrobat 4.0 compatiblity:   4.96Mb
 
 Figures
 -------
