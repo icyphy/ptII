@@ -79,6 +79,7 @@ public class Quantizer extends Transformer {
         double defaultLevels[][] = {{-1.0, 1.0}};
         levels = new Parameter(this, "levels",
                 new DoubleMatrixToken(defaultLevels));
+	levels.setTypeEquals(BaseType.DOUBLE_MATRIX);
         // Call this so that we don't have to copy its code here...
         attributeChanged(levels);
 

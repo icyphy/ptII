@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
 
@@ -74,6 +75,7 @@ public class SequenceSource extends Source implements SequenceActor {
         super(container, name);
         firingCountLimit = new Parameter(this, "firingCountLimit",
                 new IntToken(0));
+	firingCountLimit.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////

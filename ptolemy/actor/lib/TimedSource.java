@@ -33,6 +33,7 @@ package ptolemy.actor.lib;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 import ptolemy.graph.Inequality;
 
@@ -72,6 +73,7 @@ public class TimedSource extends Source implements TimedActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         stopTime = new Parameter(this, "stopTime", new DoubleToken(0.0));
+	stopTime.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////
