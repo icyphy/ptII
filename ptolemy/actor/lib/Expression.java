@@ -79,8 +79,12 @@ public class Expression extends TypedAtomicActor {
 
         expression = new Parameter(this, "expression", new StringToken(""));
 
-        _time = new PassiveVariable(this, "time", new DoubleToken(0.0));
-        _firing = new PassiveVariable(this, "firing", new IntToken(0));
+        _time = new PassiveVariable(workspace());
+        _time.setName("time");
+        _time.setToken(new DoubleToken(0.0));
+        _firing = new PassiveVariable(workspace());
+        _firing.setName("firing");
+        _firing.setToken(new IntToken(0));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -140,12 +144,14 @@ public class Expression extends TypedAtomicActor {
                     // Have to remove any attribute with the name of the port
                     // first.
                     String portname = port.getName();
-                    Attribute attr = getAttribute(portname);
-                    if (attr != null) {
-                        attr.setContainer(null);
-                    }
+                    // FIXME
+                    // Attribute attr = getAttribute(portname);
+                    // if (attr != null) {
+                    //    attr.setContainer(null);
+                    //}
                     PassiveVariable pvar =
-                        new PassiveVariable(this, portname);
+                        new PassiveVariable(workspace());
+                     pvar.setName(portname);
                     _variables.prepend(pvar);
                 } catch (IllegalActionException ex) {
                     // Not expected because a variable can be added to this
@@ -168,16 +174,8 @@ public class Expression extends TypedAtomicActor {
             } catch (NameDuplicationException ex) {
                 // Ignore to get shadowing.
             }
-            Attribute attr = getAttribute("_expression");
-            try {
-                if (attr != null) {
-                    attr.setContainer(null);
-                }
-                _expression = new PassiveVariable(this, "_expression");
-            } catch (NameDuplicationException ex) {
-                // Can't occur, since we just removed it...
-                throw new InternalErrorException(ex.getMessage());
-            }
+            // Attribute attr = getAttribute("_expression");
+            _expression = new PassiveVariable(workspace());
         } catch (IllegalActionException ex) {
             // Can't occur since these variables have names.
             throw new InternalErrorException(ex.getMessage());
@@ -194,6 +192,17 @@ public class Expression extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         Director dir = getDirector();
         _time.setToken(new DoubleToken(dir.getCurrentTime()));
+        Enumeration inputPorts = inputPorts();
+        while(inputPorts.hasMoreElements()) {
+            TypedIOPort port = (TypedIOPort)(inputPorts.nextElement());
+            // FIXME: Handle multiports
+            if(port.hasToken(0)) {
+                Token inputtoken = port.get(0);
+                PassiveVariable var =
+                        (PassiveVariable)(_variables.get(port.getName()));
+                var.setToken(inputtoken);
+            }
+        }
         _expression.evaluate();
         output.broadcast(_expression.getToken());
     }

@@ -1,4 +1,4 @@
-/* An actor that outputs a random sequence with a Gaussian distribution.
+/* An actor that outputs a random sequence of booleans.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -37,19 +37,20 @@ import ptolemy.data.expr.Parameter;
 import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
-//// Gaussian.
+//// CoinFlip
 /**
-Produce a random sequence with a Gaussian distribution.
-The values that are generated are independent and identically distributed
-with the mean and the variance given by parameters.  In addition, the
-seed can be specified as a parameter to control the sequence that is
+Produce a random sequence of booleans.
+The values that are generated are independent and identically distributed,
+where the probability of <i>true</i> is given by the parameter
+<i>trueProbability</i>.
+The seed can be specified as a parameter to control the sequence that is
 generated.
 
 @author Edward A. Lee
 @version $Id$
 */
 
-public class Gaussian extends TypedAtomicActor {
+public class CoinFlip extends TypedAtomicActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -59,15 +60,15 @@ public class Gaussian extends TypedAtomicActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Gaussian(TypedCompositeActor container, String name)
+    public CoinFlip(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
         output = new TypedIOPort(this, "output", false, true);
-        output.setDeclaredType(DoubleToken.class);
+        output.setDeclaredType(BooleanToken.class);
 
-        mean = new Parameter(this, "mean", new DoubleToken(0.0));
-        stddev = new Parameter(this, "stddev", new DoubleToken(1.0));
+        trueProbability = new Parameter(this, "trueProbability",
+                new DoubleToken(0.5));
         seed = new Parameter(this, "seed", new LongToken(0));
     }
 
@@ -77,15 +78,10 @@ public class Gaussian extends TypedAtomicActor {
     /** The output port. */
     public TypedIOPort output;
 
-    /** The mean of the random number.
-     *  This parameter contains a DoubleToken, initially with value 0.
+    /** The probability of <i>true</i>.
+     *  This parameter contains a DoubleToken, initially with value 0.5.
      */
-    public Parameter mean;
-
-    /** The standard deviation of the random number.
-     *  This parameter contains a DoubleToken, initially with value 1.
-     */
-    public Parameter stddev;
+    public Parameter trueProbability;
 
     /** The seed that controls the random number generation.
      *  A seed of zero is interpreted to mean that no seed is specified,
@@ -99,17 +95,17 @@ public class Gaussian extends TypedAtomicActor {
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports and parameters.
+     *  base class and then sets the public variables.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
     public Object clone(Workspace ws) {
         try {
-            Gaussian newobj = (Gaussian)super.clone(ws);
+            CoinFlip newobj = (CoinFlip)super.clone(ws);
             newobj.output = (TypedIOPort)newobj.getPort("output");
             // newobj.output.setDeclaredType(DoubleToken.class);
-	    newobj.mean = (Parameter)newobj.getAttribute("mean");
-	    newobj.stddev = (Parameter)newobj.getAttribute("stddev");
+	    newobj.trueProbability =
+                    (Parameter)newobj.getAttribute("trueProbability");
 	    newobj.seed = (Parameter)newobj.getAttribute("seed");
             return newobj;
         } catch (CloneNotSupportedException ex) {
@@ -134,12 +130,18 @@ public class Gaussian extends TypedAtomicActor {
     /** Send the next output.
      */
     public void fire() {
-	double mn = ((DoubleToken)(mean.getToken())).doubleValue();
-	double sd = ((DoubleToken)(stddev.getToken())).doubleValue();
-        double rawnum = _random.nextGaussian();
-        double result = (rawnum*sd) + mn;
+	double tp = ((DoubleToken)(trueProbability.getToken())).doubleValue();
+        double rawnum = _random.nextDouble();
+        // Adjust so that 1.0 is not a possible outcome.
+        if (rawnum == 1.0) rawnum -= Double.MIN_VALUE;
+        boolean result;
+        if (rawnum < tp) {
+            result = true;
+        } else {
+            result = false;
+        }
         try {
-            output.broadcast(new DoubleToken(result));
+            output.broadcast(new BooleanToken(result));
         } catch (IllegalActionException ex) {
             // Should not be thrown because this is an output port.
             throw new InternalErrorException(ex.getMessage());
