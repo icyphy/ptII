@@ -823,8 +823,8 @@ test PtParser-15.0 {Test parsing to end of expression.} {
     regsub -all [java::call System getProperty "line.separator"] \
 	        $errmsg "\n" output
     set lines [split $output "\n"]
-    list [lindex $lines 1] [lindex $lines 2]
-} {{Encountered "foo" at line 1, column 7.} {Was expecting one of:}}
+    list [lindex $lines 0] [lindex $lines 1] [lindex $lines 2]
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression "1 + 2 foo"} Because: {Encountered "foo" at line 1, column 7.}}
 
 
 ######################################################################
@@ -962,14 +962,16 @@ test PtParser-18.3 {Test expressions with backslashes.} {
     set p [java::new ptolemy.data.expr.PtParser]
     catch {[set root [ $p {generateParseTree String} "\"\\\""]] toString} res
     list $res
-} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression ""\"":
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression ""\""
+Because:
 Unterminated backslash sequence in string: "\"}}
 
 test PtParser-18.4 {Test expressions with backslashes.} {
     set p [java::new ptolemy.data.expr.PtParser]
     catch {[set root [ $p {generateParseTree String} "\"\\dsdfsdf\""]] toString} res
     list $res
-} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression ""\dsdfsdf"":
+} {{ptolemy.kernel.util.IllegalActionException: Error parsing expression ""\dsdfsdf""
+Because:
 Unknown backslash sequence: \dsdfsdf}}
 
 test PtParser-18.5 {Test expressions with backslashes.} {
