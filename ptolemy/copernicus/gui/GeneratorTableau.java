@@ -366,7 +366,11 @@ public class GeneratorTableau extends Tableau {
 			    if (!directory.isDirectory()) {
 				throw new IllegalActionException(model,
 						 "Not a directory: "
-						 + ptIIUserDirectory + "/" + targetPath);
+						 + ptIIUserDirectory + "/"
+						 + targetPath
+						 + "\n.Try hitting the "
+						 + "Parameters button to "
+						 + "create the directory.");
 			    }
 			    if (!directory.canWrite()) {
 				throw new IllegalActionException(model,
