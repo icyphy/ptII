@@ -49,13 +49,14 @@ object can be shared among different independent queues, since it doesn't
 contain any state information.
 <p>
 Note: If the distribution of the number of entries in the queue
-is known in advance, it's possible to make further adjustment to the queue
+is known in advance, it is possible to make further adjustment to the queue
 parameters. There are two additional arguments to specify in the second
 constructor, namely the minimum number of buckets and the threshold factor.
 The first argument specifies the initial number of buckets and also serves
 as lower bound on the number of buckets. The second specifies by what
-factor the number of bucket will grow and shrink.
-FIXME: some guidelines on how to choose these parameters.
+factor the number of bucket will grow and shrink. For optimum performance,
+choose these additional arguments so that the number of queue resize operations
+is minimized.
 <p>
 Entries are enqueued using the put() method, and dequeued using the take()
 method. The take() method returns the entry associated with the
@@ -130,7 +131,7 @@ public class CalendarQueue {
      *  If the queue is empty, then an IllegalAccessException will be thrown.
      *
      *  NOTE: due to implementation detail, this method is less efficient
-     *  than the similar method getPreviousKey(). Therefore, it's
+     *  than the similar method getPreviousKey(). Therefore, it is
      *  recommended to use getPreviousKey() whenever possible.
      * @return Object The smallest sort-key in the queue.
      * @exception IllegalAccessException If invoked when the queue is empty.
@@ -203,7 +204,7 @@ public class CalendarQueue {
         for (int i = 0; i < _nBuckets; i++) {
             // First check if bucket[i] is empty
             if (_bucket[i].isEmpty()) {
-                // do nothing if it's empty
+                // do nothing if it is empty
             } else {
                 if (!startComparing) {
                     minBucket = i;
@@ -236,7 +237,7 @@ public class CalendarQueue {
      *  also thrown an exception). If take() has never been called, then throw
      *  an exception as well.
      *  NOTE: a typical application would call take() followed
-     *  by getPreviousKey() to get the value and it's corresponding
+     *  by getPreviousKey() to get the value and its corresponding
      *  key, respectively.
      *
      * @return The sort key associated with the last entry dequeued by the
@@ -377,7 +378,7 @@ public class CalendarQueue {
     /** Remove a specific entry (specified by the key and the
      *  value). This method returns true if the entry
      *  is found and successfully removed, and returns false
-     *  if it's either not found or the queue is empty.
+     *  if it is either not found or the queue is empty.
      *  <p>
      *  The equality is tested by doing this operation:
      *  value.equal(value2) && key.equal(key2), with value2 and key2 ranging
@@ -408,7 +409,7 @@ public class CalendarQueue {
 
         // Remove the object by calling the method in
         // inner class CQLinkedList
-        boolean result = _bucket[(int)i].removes(cqEntry);
+        boolean result = _bucket[(int)i].remove(cqEntry);
 
         // if the operation succeeded then reduces the number of
         // element in the queue.
@@ -484,7 +485,7 @@ public class CalendarQueue {
 
                     // Halve calendar size if needed.
                     if (_qSize < _botThreshold) {
-                        // if it's already minimum, then do nothing.
+                        // if it is already minimum, then do nothing.
                         if (_nBuckets != _minNumBucket) {
                             if (_nBuckets/_thresholdFactor > _minNumBucket) {
                                 _resize (_nBuckets/_thresholdFactor);
@@ -625,7 +626,7 @@ public class CalendarQueue {
         return _cqComparator.getBinWidth(sampledKey);
     }
 
-    // FIXME: This is only a macro...
+    // Note: This is basically a macro..
     private long _getBinIndex(Object key) {
         return _cqComparator.getBinIndex(key, _zeroRef, _width);
     }
@@ -786,7 +787,7 @@ public class CalendarQueue {
             // this is the end of one iteration through the whole old buckets
             // set.
 
-            // up to this point, it's either minCell still null, or minCell
+            // up to this point, it is either minCell still null, or minCell
             // equal to the minimum cell of this iteration.
             if (minCell == null) {
                 // Since minCell is still equal to the initialized value,
@@ -867,7 +868,7 @@ public class CalendarQueue {
     ////////////////////////////////////////////////////////////////////////
     ////                 private inner class                            ////
 
-    // CQEntry: encapsulate both the objects and it's priority
+    // CQEntry: encapsulate both the objects and its priority
     // to be inserted into the queue.
     private class CQEntry {
         // Construct a CQEntry with the supplied content (obj)
@@ -915,7 +916,6 @@ public class CalendarQueue {
 
         // I want to make this public, so it'll be more efficient
         // than using method call to access these fields.
-        // FIXME: good enough reasons ?
         public Object value;
         public Object key;
 
@@ -1019,12 +1019,12 @@ public class CalendarQueue {
                 return null;
         }
 
-        // removes a specific element from the queeu.
+        // remove a specific element from the queeu.
         // NOTE: it only removed the first element found from the linked list.
         // More specifically, this element would be the one closest to the
         // head of the linked list.
         // returns true if succeed, false otherwise
-        public boolean removes(CQEntry cqEntry) {
+        public boolean remove(CQEntry cqEntry) {
 
             // two special cases:
             // Case 1: linked-list is empty.. always return false
@@ -1048,7 +1048,6 @@ public class CalendarQueue {
             LLCell currCell = prevCell.next();
 
             do {
-                // FIXME: look at equals operation.. is it expensive ?
                 if (currCell.element().equals(cqEntry)) {
                     // Cool! currCell contains the entry to be removed.
                     // Remove that link and the return true.
@@ -1071,7 +1070,7 @@ public class CalendarQueue {
         }
 
         public Object take() {
-            // removes the head
+            // remove the head
             LLCell oldhead = head;
             head = head.next();
             if (head == null) {
@@ -1080,7 +1079,8 @@ public class CalendarQueue {
             return oldhead.element();
         }
 
-        // FIXME: this is bad.. leaving this to be public.
+        // These fields are public because I can assume that the outer
+        // class know what it is doing.
         // head
         public LLCell head;
         // tail
