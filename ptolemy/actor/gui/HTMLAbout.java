@@ -106,6 +106,10 @@ public class HTMLAbout {
             + "   Open up the .xml files in\n"
             + "   <code>ptolemy/configs/doc/whatsNew"
             + version + ".htm</code>.\n"
+            + "  <li><a href=\"about:demos#ptolemy/configs/doc/whatsNew3.0.2.htm\">"
+            + "   <code>about:demos#ptolemy/configs/doc/whatsNew3.0.2.htm</code></a>\n"
+            + "   Open up the .xml files in\n"
+            + "   <code>ptolemy/configs/doc/whatsNew3.0.2.htm</code>.\n"
             + " </ul>\n"
             // Don't include DSP here, it uses the Ptiny demos anyway.
             + "<li>Hyvisual\n"
