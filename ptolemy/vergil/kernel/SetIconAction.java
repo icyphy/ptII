@@ -131,9 +131,12 @@ public class SetIconAction extends FigureAction {
                         moml.append(temp);
                     }
                     moml.append(" </configure>\n</property>\n</group> ");
-                    ChangeRequest request =
+                    MoMLChangeRequest request =
                         new MoMLChangeRequest(object, object,
                                 moml.toString(), null);
+                    // No need to propagate this library to instances
+                    // that defer to this one.
+                    request.enablePropagation(false);
                     object.requestChange(request);
                 }
                 else
