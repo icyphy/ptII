@@ -198,7 +198,7 @@ public class DoubleToken extends ScalarToken {
      *   a lossless fashion.
      *  @return A new Token containing the result.
      */
-    public Token divideR(ptolemy.data.Token dividend) throws IllegalActionException {
+    public Token divideR(Token dividend) throws IllegalActionException {
         DoubleToken tmp = (DoubleToken)this.convert(dividend);
         double result = tmp.getValue() / _value;
         return new DoubleToken(result);
