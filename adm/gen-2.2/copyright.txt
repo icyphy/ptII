@@ -1,4 +1,4 @@
-Copyright agreement for HyVisual 2.2-beta
+Copyright agreement for HyVisual 2.2-beta-2
 
 Copyright (c) 1995-2003 The Regents of the
 University of California.  All rights reserved.
