@@ -226,7 +226,7 @@ public class SignalProcessing {
      *  This method calls :
      *  downsample(x, n, 0)
      *  @param x An array of doubles.
-     *  @param n An integer sepcifying the downsampling factor.
+     *  @param n An integer specifying the downsampling factor.
      *  @return A new array of doubles of length = floor(L / n), where
      *  L is the size of the input array.
      */
