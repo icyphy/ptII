@@ -204,11 +204,14 @@ public class FSMDirector extends Director implements ModelErrorHandler {
      *   choice action.
      */
     public void fire() throws IllegalActionException {
-        if(_debugging) _debug(getFullName(), "fire at time: "+getCurrentTime());
-
+        if(_debugging) {
+            _debug(getFullName(), "fire at time: " + getCurrentTime());
+        }
         FSMActor ctrl = getController();
         ctrl._setInputVariables();
-        if(_debugging) _debug(getFullName(), " find FSMActor " + ctrl.getName());
+        if(_debugging) {
+            _debug(getFullName(), " find FSMActor " + ctrl.getName());
+        }
         State st = ctrl.currentState();
         Transition tr =
             ctrl._chooseTransition(st.preemptiveTransitionList());
@@ -243,10 +246,11 @@ public class FSMDirector extends Director implements ModelErrorHandler {
             for (int i = 0; i < actors.length; ++i) {
                 if (_stopRequested) break;
                 if (actors[i].prefire()) {
-                    if(_debugging)
+                    if(_debugging) {
                         _debug(getFullName(), " fire refinement",
                                ((ptolemy.kernel.util.NamedObj)
                                 actors[i]).getName());
+                    }
                     actors[i].fire();
                     actors[i].postfire();
                 }
@@ -262,11 +266,12 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                 for (int i = 0; i < actors.length; ++i) {
                     if (_stopRequested) break;
                     if (actors[i].prefire()) {
-                        if(_debugging)
+                        if(_debugging) {
                             _debug(getFullName(),
                                    " fire transition refinement",
                                    ((ptolemy.kernel.util.NamedObj)
                                     actors[i]).getName());
+                        }
                         actors[i].fire();
                         actors[i].postfire();
                     }
@@ -420,7 +425,9 @@ public class FSMDirector extends Director implements ModelErrorHandler {
             }
         }
 
-        if(_debugging) _debug("ModelError: " + exception.getMessage() + " is discarded.");
+        if(_debugging) {
+            _debug("ModelError: " + exception.getMessage() + " is discarded.");
+        }
         return true;
     }
 
@@ -488,8 +495,10 @@ public class FSMDirector extends Director implements ModelErrorHandler {
      */
     public boolean postfire() throws IllegalActionException {
         // FIXME: Changed by liuj, not yet reviewed.
-        if(_debugging) _debug(getFullName(),
-                              "postfire called at time: "+getCurrentTime());
+        if(_debugging) {
+            _debug(getFullName(),
+                    "postfire called at time: " + getCurrentTime());
+        }
         FSMActor controller = getController();
         boolean result = controller.postfire();
         _currentLocalReceiverMap =
@@ -507,9 +516,10 @@ public class FSMDirector extends Director implements ModelErrorHandler {
      *  FIXME: Changed by liuj, not yet reviewed.
      */
     public boolean prefire() throws IllegalActionException {
-        if(_debugging) _debug(getFullName(),
-                              "prefire called at time: "+getCurrentTime());
-
+        if(_debugging) {
+            _debug(getFullName(),
+                    "prefire called at time: "+getCurrentTime());
+        }
         // Clear the inside receivers of all output ports of the container.
         CompositeActor actor = (CompositeActor)getContainer();
         Iterator outputPorts = actor.outputPortList().iterator();
@@ -551,7 +561,7 @@ public class FSMDirector extends Director implements ModelErrorHandler {
     public void setContainer(NamedObj container)
             throws IllegalActionException, NameDuplicationException {
         super.setContainer(container);
-        if (container !=null) {
+        if (container != null) {
             container.setModelErrorHandler(this);
         }
     }
@@ -601,11 +611,13 @@ public class FSMDirector extends Director implements ModelErrorHandler {
                                 insideReceivers[i][j].get();
                             }
                             insideReceivers[i][j].put(t);
-                            if(_debugging) _debug(getFullName(),
-                                "transferring input from " + port.getFullName()
-                                + " to "
-                                + (insideReceivers[i][j]).getContainer()
-                                    .getFullName());
+                            if(_debugging) {
+                                _debug(getFullName(),
+                                        "transferring input from "
+                                        + port.getFullName()
+                                        + " to "
+                                        + (insideReceivers[i][j])
+                                        .getContainer().getFullName());
                         }
                         transferredToken = true;
                     }
