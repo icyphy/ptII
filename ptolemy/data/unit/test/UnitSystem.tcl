@@ -51,8 +51,23 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
+test UnitSystem-0.9 {Construct an empty UnitSystem} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+
+    java::call ptolemy.data.unit.UnitSystem reset
+    set myUnitSystem [java::new ptolemy.data.unit.UnitSystem \
+	    $e0 "myUnitSystem"]
+
+    $myUnitSystem toString
+
+} {ptolemy.data.unit.UnitSystem {..myUnitSystem}
+ contains 0 categories
+[]}
+
 test UnitSystem-1.0 {Construct a UnitSystem add a UnitCategory twice} {
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
+
+    java::call ptolemy.data.unit.UnitSystem reset
     set myUnitSystem [java::new ptolemy.data.unit.UnitSystem \
 	    $e0 "myUnitSystem"]
 
@@ -78,8 +93,34 @@ test UnitSystem-1.0 {Construct a UnitSystem add a UnitCategory twice} {
     set index2 [java::call \
 	    ptolemy.data.unit.UnitSystem getUnitCategoryIndex $length]
     set name2 [java::call \
-	    ptolemy.data.unit.UnitSystem getBaseUnitName $index2]
+  	    ptolemy.data.unit.UnitSystem getBaseUnitName $index2]
+    list [expr {$index1 == $index2}] $name1 $name2 [$myUnitSystem toString]
 
-    list [expr {$index1 == $index2}] $name1 $name2
+} {1 meters meters {ptolemy.data.unit.UnitSystem {..myUnitSystem}
+ contains 1 categories
+[ptolemy.data.unit.UnitCategory {..myUnitSystem.meters.length}]}}
 
-} {1 meters meters}
+
+test UnitSystem-1.0 {Add another UnitCategory twice} {
+    # Uses setup in UnitSystem-1.0 above
+    set seconds [java::new \
+	    ptolemy.data.unit.BaseUnit $myUnitSystem "seconds"]
+    $seconds setExpression 1.0
+    set time [java::new \
+	    ptolemy.data.unit.UnitCategory $seconds "time"]
+
+    set index1 [java::call \
+	    ptolemy.data.unit.UnitSystem getUnitCategoryIndex $time]
+    set name1 [java::call \
+	    ptolemy.data.unit.UnitSystem getBaseUnitName $index1]
+
+    java::call ptolemy.data.unit.UnitSystem addUnitCategory $time
+
+    set index2 [java::call \
+	    ptolemy.data.unit.UnitSystem getUnitCategoryIndex $time]
+    set name2 [java::call \
+  	    ptolemy.data.unit.UnitSystem getBaseUnitName $index2]
+    list [expr {$index1 == $index2}] $name1 $name2 [$myUnitSystem toString]
+} {1 seconds seconds {ptolemy.data.unit.UnitSystem {..myUnitSystem}
+ contains 2 categories
+[ptolemy.data.unit.UnitCategory {..myUnitSystem.meters.length}, ptolemy.data.unit.UnitCategory {..myUnitSystem.seconds.time}]}}

@@ -64,6 +64,7 @@ test UnitUtilities-1.0 { call newUnitArrayInCategory} {
 ####
 # 
 test UnitUtilities-2.0 {call unitsStrings with a unitless arg} {
+    java::call ptolemy.data.unit.UnitSystem reset
     set unitless [java::new {int[]} {5} {0 0 0 0 0 0}]
     java::call ptolemy.data.unit.UnitUtilities unitsString $unitless
 } {}
@@ -73,16 +74,18 @@ test UnitUtilities-2.0 {call unitsStrings with a unitless arg} {
 # 
 test UnitUtilities-2.1 {call unitsStrings an array of length 1} {
 
+    java::call ptolemy.data.unit.UnitSystem reset
+
     set e0 [java::new ptolemy.actor.TypedCompositeActor]
     set myUnitSystem [java::new ptolemy.data.unit.UnitSystem \
 	    $e0 "myUnitSystem"]
 
 
-    set meters [java::new \
+    set meters2 [java::new \
 	    ptolemy.data.unit.BaseUnit $myUnitSystem "meters"]
-    $meters setExpression 1.0
-    set length [java::new \
-	    ptolemy.data.unit.UnitCategory $meters "length"]
+    $meters2 setExpression 1.0
+    set length2 [java::new \
+ 	    ptolemy.data.unit.UnitCategory $meters2 "length"]
 
     set seconds [java::new \
 	    ptolemy.data.unit.BaseUnit $myUnitSystem "seconds"]
@@ -91,7 +94,7 @@ test UnitUtilities-2.1 {call unitsStrings an array of length 1} {
 	    ptolemy.data.unit.UnitCategory $seconds "time"]
 
 
-    set meters [java::new {int[]} {1} {1}]
+    set m [java::new {int[]} {1} {1}]
     set oneOverMeters [java::new {int[]} {1} {-1}]
     set metersOverSeconds [java::new {int[]} {2} {1 1}]
     set a [java::new {int[]} {2} {0 1}]
@@ -101,7 +104,7 @@ test UnitUtilities-2.1 {call unitsStrings an array of length 1} {
     set e [java::new {int[]} {2} {-1 -1}]
     set f [java::new {int[]} {2} {-1 2}]
     list \
-	    [java::call ptolemy.data.unit.UnitUtilities unitsString $meters] \
+	    [java::call ptolemy.data.unit.UnitUtilities unitsString $m] \
 	    [java::call ptolemy.data.unit.UnitUtilities unitsString \
 	    $oneOverMeters] \
 	    [java::call ptolemy.data.unit.UnitUtilities unitsString \
