@@ -49,6 +49,7 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
+import ptolemy.domains.sdf.kernel.SDFUtilities;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.CompositeEntity;
@@ -638,27 +639,16 @@ public class DDFDirector extends Director {
 
                     // The defalult vaule for tokenConsumptionRate is 1.
                     int tokenConsumptionRate = 1;
-                    Parameter rate = null;
+                    Variable rate = null;
                     if (port.isInput()) {
-                        rate = (Parameter)port.
-                                getAttribute("tokenConsumptionRate");
-                        // Ports of opaque SDF composite actors contain 
-                        // parameters named "_tokenConsumptionRate" given 
-                        // by inside scheduler.
-                        if (rate == null) {
-                            rate = (Parameter)port.
-                                    getAttribute("_tokenConsumptionRate");
-                        }
+                        rate = SDFUtilities.getRateVariable(port, 
+                                "tokenConsumptionRate");
                     }
                     // If DDF domain is inside another domain and the 
                     // farReceiver is contained by an opaque output port...
                     if (port.isOutput()) {
-                        rate = (Parameter)port.
-                                getAttribute("tokenProductionRate");
-                        if (rate == null) {
-                            rate = (Parameter)port.
-                                    getAttribute("_tokenProductionRate");
-                        }
+                        rate = SDFUtilities.getRateVariable(port, 
+                                "tokenProductionRate");
                     }    
                     if (rate != null) {
                         Token token = rate.getToken();
@@ -727,14 +717,9 @@ public class DDFDirector extends Director {
 
             //The defalult vaule for tokenConsumptionRate is 1.
             int tokenConsumptionRate = 1;
-            Parameter parameter =
-                    (Parameter)inputPort.getAttribute("tokenConsumptionRate");
-            // Ports of opaque SDF composite actors contain parameters 
-            // named "_tokenConsumptionRate" given by inside scheduler.
-            if (parameter == null) {
-                parameter = (Parameter)inputPort.
-                        getAttribute("_tokenConsumptionRate");
-            }
+            Variable parameter = SDFUtilities.getRateVariable(
+                    inputPort, "tokenConsumptionRate");
+          
             if (parameter != null) {
                 Token token = parameter.getToken();
                 // If token is Arraytoken, then each channel has a 
@@ -782,10 +767,8 @@ public class DDFDirector extends Director {
             throws IllegalActionException {
         int[] rate = new int[port.getWidth()];
         Arrays.fill(rate, 1);
-        Parameter parameter = (Parameter)port
-                .getAttribute("tokenConsumptionRate");
-        if (parameter == null) 
-            parameter = (Parameter)port.getAttribute("_tokenConsumptionRate");  
+        Variable parameter = SDFUtilities.getRateVariable(port, 
+                "tokenConsumptionRate");
         if (parameter != null) {
             Token token = parameter.getToken();
             // If token is Arraytoken, then each channel has a 
@@ -818,10 +801,8 @@ public class DDFDirector extends Director {
         throws IllegalActionException {
         int[] rate = new int[port.getWidthInside()];
         Arrays.fill(rate, 1);
-        Parameter parameter = (Parameter)port
-                .getAttribute("tokenProductionRate");
-        if (parameter == null) 
-            parameter = (Parameter)port.getAttribute("_tokenProductionRate");  
+        Variable parameter = SDFUtilities.getRateVariable(port, 
+                "tokenProductionRate");
         if (parameter != null) {
             Token token = parameter.getToken();
             // If token is Arraytoken, then each channel has a 
