@@ -39,11 +39,11 @@ public class SDFJoin extends SDFAtomicActor {
         
         message=(IntToken)inputport1.get(0);
         System.out.print("Join1 - ");
-        System.out.println(message.getValue());
+        System.out.println(message.intValue());
         outputport.send(0,message);
         message=(IntToken)inputport2.get(0);
         System.out.print("Join2 - ");
-        System.out.println(message.getValue());
+        System.out.println(message.intValue());
         outputport.send(0,message);
             
     }

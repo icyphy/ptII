@@ -40,11 +40,11 @@ public class SDFSplit extends SDFAtomicActor {
 
         message=(IntToken)inputport.get(0);
         System.out.print("Split1 - ");
-        System.out.println(message.getValue());
+        System.out.println(message.intValue());
         outputport1.send(0,message);
         message=(IntToken)inputport.get(0);
         System.out.print("Split2 - ");
-        System.out.println(message.getValue());
+        System.out.println(message.intValue());
         outputport2.send(0,message);
     }
 }

@@ -33,7 +33,7 @@ public class SDFPrint extends SDFAtomicActor {
         
 
         message=(IntToken)inputport.get(0);
-        System.out.println(message.getValue());
+        System.out.println(message.intValue());
 
         
         

@@ -37,7 +37,7 @@ public class SDFDelay extends SDFAtomicActor {
         
         message=(IntToken)inputport.get(0);
         System.out.print("Delay - ");
-        System.out.println(message.getValue());
+        System.out.println(message.intValue());
         outputport.send(0,message);
     }
 }
