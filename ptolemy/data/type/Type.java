@@ -93,9 +93,10 @@ public interface Type {
     public boolean isInstantiable();
 
     /** Return true if the specified type is a substitution instance of this
-     *  type. For the argument to be a substitution instance, this type must
-     *  be a variable, and the argument must be a type that can be obtained
-     *  by replacing the BaseType.NAT component of this type by another type.
+     *  type. For the argument to be a substitution instance, it must be
+     *  either the same as this type, or it must be a type that can be
+     *  obtained by replacing the BaseType.NAT component of this type by
+     *  another type.
      *  @parameter type A Type.
      *  @return True is the argument is a substitution instance of this type.
      */
