@@ -43,7 +43,7 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	doc
-PTVERSION =	3.0
+PTVERSION =	4.0
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR =
 

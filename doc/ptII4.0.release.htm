@@ -1,0 +1,662 @@
+<!-- $Id$ -->
+<html>
+<head>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<title>Ptolemy II 4.0-alpha Release Notes</title>
+<link href="default.css" rel="stylesheet" type="text/css">
+</head>
+<body bgcolor="#faf0e6">
+<h1>Ptolemy II 4.0-alpha Release Notes</h1>
+
+Ptolemy II is a set of Java packages supporting heterogeneous,
+concurrent modeling and design.  Its <code>kernel</code> package
+supports clustered hierarchical graphs, which are collections of
+<I>entities</I> and <I>relations</I> between those entities.  Its
+<code>actor</code> package extends the kernel so that entities have
+functionality and can communicate via the relations.  Its
+<I>domains</I> extend the actor package by imposing <I>models of
+computation</I> on the interaction between entities.  Examples of
+models of computation include discrete-event systems, dataflow,
+process networks, synchronous/reactive systems, and communicating
+sequential processes.
+
+ <p>Ptolemy II includes a number of support packages, such as 
+
+ <br><code>data</code>, providing a type system, data encapsulation and an
+ expression parser,
+
+ <br><code>plot</code>, providing visual display of data,
+
+ <br><code>math</code>, providing matrix and vector math and signal
+processing functions, and
+
+ <br><code>graph</code>, providing graph-theoretic manipulations.
+
+
+ <p>The three volumes of the Ptolemy II Design Document
+describes the Ptolemy II design and
+the implementation of the Java classes.
+<ul>
+ <li><a href="design/ptIIdesign1-intro.pdf">Volume 1: Introduction to Ptolemy II</a> (Local PDF)
+ <li><a href="design/ptIIdesign2-software.pdf">Volume 2: Ptolemy II Software Architecture</a> (Local PDF)
+ <li><a href="design/ptIIdesign3-domains.pdf">Volume 3: Ptolemy II Domains</a> (Local PDF)
+</ul>
+
+ <p>The "Using Vergil" chapter (
+<a href="design/usingVergil/usingVergil.pdf">PDF</a>
+ - <a href="design/usingVergil/index.htm">HTML</a>) describes
+how to use Vergil.
+
+
+<h2>Complete List of Domains in Ptolemy II</h2>
+ <!-- We include this list here since we will be posting the release notes
+to the newsgroups etc.  See also main.htm
+ -->
+<ul>
+<li> <a href="../ptolemy/domains/ci/doc/body.htm" target="body">CI</a>:
+	 component interaction (experimental),
+<li> <a href="../ptolemy/domains/csp/doc/body.htm" target="body">CSP</a>:
+	 communicating sequential processes,
+<li> <a href="../ptolemy/domains/ct/doc/body.htm" target="body">CT</a>:
+	continuous-time modeling,
+<li> <a href="../ptolemy/domains/de/doc/body.htm" target="body">DE</a>:
+	discrete-event modeling,
+<li> <a href="../ptolemy/domains/dde/doc/body.htm" target="body">DDE</a>:
+	distributed discrete events (experimental),
+<li> <a href="../ptolemy/domains/dt/doc/body.htm" target="body">DT</a>:
+	discrete time,
+<li> <a href="../ptolemy/domains/fsm/doc/body.htm" target="body">FSM</a>:
+	finite state machines,
+<li> <a href="../ptolemy/domains/giotto/doc/body.htm" target="body">Giotto</a>:
+	periodic time-driven (experimental),
+<li> <a href="../ptolemy/domains/gr/doc/body.htm" target="body">GR</a>:
+	3-D graphics (experimental),
+ <!-- petrinet ??-->
+<li> <a href="../ptolemy/domains/pn/doc/body.htm" target="body">PN</a>:
+	process networks,
+<li> <a href="../ptolemy/domains/sdf/doc/body.htm" target="body">SDF</a>:
+	synchronous dataflow,
+<li> <a href="../ptolemy/domains/sr/doc/body.htm" target="body">SR</a>:
+	synchronous/reactive,
+<li> <a href="../ptolemy/domains/tm/doc/body.htm" target="body">TM</a>:
+	timed multitasking (experimental), and
+<li> <a href="../ptolemy/domains/wireless/doc/body.htm" target="body">Wireless</a>:
+	 wireless (experimental).
+
+</ul>
+
+<h2>Platforms</h2>
+
+The core of Ptolemy II 4.0 is 100% Java, so it should work on any
+platform that has JDK 1.4 or later
+
+ <p>We developed Ptolemy II 3.0.2 under Solaris 8 and Windows XP sp1 
+and with JDK1.4.2_03
+
+Ptolemy II 3.0.2 will not compile under Java 1.3 because we use the
+java.lang.URI class, which is present only in Java 1.4 and later
+
+<!--whatsnew-->
+<h2>Major Features that are new in Ptolemy II 4.0 </h2>
+Below are new features that were not present in Ptolemy II 3.x
+<menu>
+
+
+<li> Classes and inheritance at the block diagram level
+(Edward A. Lee)
+
+<li> Lifecycle management components
+(Yang Zhao)
+
+<li> Unit system rework
+(Rowland Johnson)
+
+<li> Updates to Vergil, the user interface for building models
+(Steve Neuendorffer, Edward A. Lee)
+	<menu>
+	<li> Decorative elements in block diagrams (boxes, etc.)
+        <li> Much smaller XML files
+	<li> Icon editor (and animated icons)
+	<li> Expert mode parameter editing
+	<li><CODE>vergil -help</CODE> lists available configurations.
+	<li> Full-screen mode for use in presentations.
+        </menu>
+
+<li> Single Window Mode
+(J.  Blanc (Thales),  B. Masson (Thales))
+
+</menu>
+
+<h2>Other Features that are new in Ptolemy II 4.0</h2>
+
+<menu>
+<li> <I>TBA</I>
+</menu>
+
+<h3>New Demonstrations</h3>
+
+
+<menu>
+<li> <I>Domain</I>
+	<menu>
+	<li> <I>Demo</I>
+	</menu>
+
+</menu>
+
+<h3>New Actors</h3>
+
+<ul>
+
+<li> <a href="codeDoc/ptolemy/actor/lib/package-summary.html">ptolemy.actor.lib</a>:
+
+<dl>
+
+<dt> <a href="codeDoc/ptolemy/actor/lib/Exec.html"><code>Exec</code></a>
+<dd> (Christopher Hylands Brooks)
+Execute a subprocess
+
+</dl>
+
+<li>  <a href="codeDoc/ptolemy/actor/lib/security/package-summary.html">ptolemy.actor.lib.security</a>:
+
+<dl>
+<dt> Java Cryptography Actors
+<dd> (Christopher Hylands Brooks, Rakesh Reddy)
+
+</dl>
+
+Most models developed under Ptolemy II 1.0.1,
+2.0.1, 3.0.2  or HyVisual 2.2-beta should run under Ptolemy II 4.0
+The MoMLParser includes a list of backward
+compatibility filters that make certain changes on models
+when read, handling such issues as actors being moved or renamed
+and parameter names being changed.
+The filters themselves are defined in
+<a href="codeDoc/ptolemy/moml/filter/package-summary.html">
+ptolemy.moml.filter</a>.
+If you have developed your own actors under Ptolemy II 2.0.1 by
+writing your own Java files, you should recompile all your java code with
+the new release.  In theory, copying the .class files should work, but
+recompiling is safer.
+<p>
+Not all changes can be handled automatically, since
+some have semantic content. We begin with a description
+of the changes that are not handled, followed by a description
+of changes that are handled.
+
+<h3>Backward compatible issues that are not handled automatically</h3>
+
+<menu>
+<li> The FileWriter and DoubleReader actors have been removed, use
+the LineWriter or ExpressionWriter actors instead of FileWriter
+and use the LineReader and ExpressionReader actors instead of
+DoubleReader.
+<li> In the CT (continuous-time) domain, instances of Clock and
+TriggeredClock very likely should be manually changed to
+ContinuousClock and TriggeredContinuousClock. The reason for this is that
+we have made progress on the semantics of signals with discontinuities
+and have improved the software implementation.
+We created a new set of clocks for the CT domain.
+ContinuousClock and TriggeredContinuousClock generate piecewise
+constant signals with discontinuities.  The discontinuities
+are correctly handled regardless of step sizes, and threshold
+crossing detectors properly identify discrete transitions
+across the threshold.
+In principle, Clock and TriggeredClock can still be used in
+CT models, e.g. to generate a sequence of events, but it is better to use
+the EventSource actor for this purpose.
+
+<li> In hybrid systems models (CT + FSM), the signal types for
+modal models may not be inferred as expected.
+If a modal model has both continuous and discrete signal
+types at its inputs, it may need manual adjustment of the output signal
+types. To do this, right click an output port and
+add a "signalType" parameter; then set the value of the parameter
+to "CONTINUOUS" or "DISCRETE" depending on your needs.
+
+<li> AudioReader now uses a FileAttribute instead of a string valued
+parameter.  The name of this parameter has changed from
+sourceURL to fileOrURL to conform with LineReader and ExpressionReader.
+
+<li> Longs are now printed with a trailing capital <CODE>L</CODE>
+character.
+
+<li> We have improved the way that the SDF (synchronous dataflow) domain
+implements rate propagation. Previously, SDF would infer the rates of
+ports of an SDF model, and create parameters named
+"tokenConsumptionRate" "tokenInitProduction" and
+"tokenConsumptionRate". However, this has two bad side effects:
+<ol>
+<li> 
+ If a port has these parameters already, then the SDF scheduler
+   overrides them.  This may not be correct.
+<li> If a port has these parameters already, then running a model
+   will mark it dirty, resulting in a prompt to save the model
+   on exit.
+</ol>
+We've changed this so that it sets these values only if the parameters
+do not exist already, and stores them in new attributes called
+"_tokenConsumptionRate" "_tokenInitProduction" and
+"_tokenConsumptionRate". These are transient (instances
+of Variable rather than
+Parameter), so they will not trigger a prompt to save.
+</menu>
+
+<h3>Backward compatible issues that are handled automatically</h3>
+
+<menu>
+<li>ptolemy.moml.filter.AddEditorFactory:
+If a parameter has a <code>_location</code>, then
+add a VisibleParameterEditorFactory named <code>_editorFactory</code>.
+This supports double clicking on visible parameters.
+
+<li>ptolemy.moml.filter.AddIcon: Add specialized icons that display
+in Vergil the value of one of the parameters or certain actors.
+The affected actors are:
+        <menu>
+	<li>ptolemy.actor.lib.Const
+	<li>ptolemy.actor.lib.MathFunction
+	<li>ptolemy.actor.lib.TrigFunction
+	<li>ptolemy.actor.lib.Scale
+	<li>ptolemy.actor.lib.Expression
+	</menu>
+
+<li>ptolemy.moml.filter.ClassChanges:
+change class names that have been renamed or moved to a different package.
+The changes are:
+        <menu>
+	<li>ptolemy.kernel.util.VersionAttribute	 -&gt; ptolemy.kernel.attributes.VersionAttribute
+	<li>ptolemy.moml.Location	 -&gt; ptolemy.kernel.util.Location
+	<li>ptolemy.actor.lib.comm.SerialComm	 -&gt; ptolemy.actor.lib.io.comm.SerialComm
+        </menu>
+
+<li>ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
+'annotation1', then add <code>_hideName</code> if necessary.
+This prevents labels from appearing above visible parameters in Vergil.
+
+<li>ptolemy.moml.filter.ParameterNameChanges: Update any Parameter names
+that have been changed.
+Below are the actors that are affected, along with the Parameter name 
+and the new name:	
+       <menu>
+       <li>ptolemy.domains.pn.kernel.PNDirector
+	<br>&nbsp;&nbsp;	Initial_queue_capacity	 -&gt; initialQueueCapacity
+       </menu>
+
+<li>ptolemy.moml.filter.PortNameChanges:
+Update any actor port names that have been changed.
+Below are the actors that are affected, along
+with the old port name and the new port name:
+        <menu>
+	<li>ptolemy.actor.lib.conversions.CartesianToComplex
+	 <br>&nbsp;&nbsp;	imag	 -&gt; y
+	 <br>&nbsp;&nbsp;	real	 -&gt; x
+	<li>ptolemy.actor.lib.Sleep
+	 <br>&nbsp;&nbsp;	delay	 -&gt; sleepTime
+	<li>ptolemy.actor.lib.conversions.ComplexToCartesian
+	 <br>&nbsp;&nbsp;	imag	 -&gt; y
+	 <br>&nbsp;&nbsp;	real	 -&gt; x
+        </menu>
+
+<li>ptolemy.moml.filter.PropertyClassChanges:
+Update any actor port class names that have been changed.
+Below are the actors that are affected, along with the port name
+and the new classname:
+        <menu>
+	<li>ptolemy.domains.sdf.lib.vq.HTVQEncode
+	 <br>&nbsp;&nbsp;	input	 -&gt; ptolemy.actor.TypedIOPort
+	 <br>&nbsp;&nbsp;	output	 -&gt; ptolemy.actor.TypedIOPort
+	<li>ptolemy.domains.sdf.lib.vq.VQDecode
+	 <br>&nbsp;&nbsp;	input	 -&gt; ptolemy.actor.TypedIOPort
+	 <br>&nbsp;&nbsp;	output	 -&gt; ptolemy.actor.TypedIOPort
+	<li>ptolemy.domains.sdf.lib.vq.ImagePartition
+	 <br>&nbsp;&nbsp;	input	 -&gt; ptolemy.actor.TypedIOPort
+	 <br>&nbsp;&nbsp;	output	 -&gt; ptolemy.actor.TypedIOPort
+	<li>ptolemy.domains.sdf.lib.vq.ImageUnpartition
+	 <br>&nbsp;&nbsp;	input	 -&gt; ptolemy.actor.TypedIOPort
+	 <br>&nbsp;&nbsp;	output	 -&gt; ptolemy.actor.TypedIOPort
+	<li>ptolemy.actor.lib.Expression
+	 <br>&nbsp;&nbsp;	expression	 -&gt; ptolemy.kernel.util.StringAttribute
+        </menu>
+</menu>
+
+<!--/whatsnew-->
+
+<h2>Features that were new in previous Ptolemy II releases </h2>
+
+<a href="oldFeatures.htm">Features that were new in previous Ptolemy II releases </a>
+
+
+<!--vergilDocs-->
+<h2><a name="limitations">Limitations</a>
+</h2>
+Version 3.0.2 has the following limitations:
+
+<h3>Release Limitations</h3>
+<ul>
+
+<li> The gzipped tar file that contains the Ptolemy II distribution
+ <B>requires</B> GNU tar or WinZip.  Solaris 2.5.1 tar will fail to
+untar this file with a checksum error because the pathnames are longer
+than 100 characters.  If you do not have GNU tar, you can obtain
+source and selected binaries from 
+ftp://ptolemy.eecs.berkeley.edu/pub/gnu.
+ <p>Note further that some of the .class names are longer than
+31 characters, which may cause problems when downloading zip files
+on the Macintosh and using Stuffit.
+
+<li> The documentation for custom actors used in demonstrations is not
+included in the release.  The source code for the custom actors can be found
+in the source download.
+
+<li> If a URL ends with <CODE>#in_browser</CODE>, then
+Ptolemy II will invoke the User's web browser.  Unfortunately, this
+does not always work, especially under Windows if Netscape is already
+running.  The workaround is to exit Netscape and let Ptolemy II
+start up Netscape for you.
+
+
+<li> Web Start does not work very well if the pathname to the 
+<CODE>vergil.jnlp</CODE> file has spaces in it.  The workaround is
+to place your Ptolemy II tree in a directory that does not have spaces
+in the path name if you plan on using Web Start.
+
+<li> If your user library contains actors that are not present in
+vergil, then you may see a dialog or dialogs asking if you want
+to skip these elements.  This could happen if you had developed custom
+actors and put them into your user library and these custom actors
+are not present in the release.  The work around is to click 'Skip Element'
+and continue with the start up.
+
+
+<li> Ptolemy II has various problems under Mac OS X.  For details,
+see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/mac.htm#in_browser"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/mac.htm</CODE></a>.
+
+<li> Applet issues:
+	<ul>
+
+	<li> We've experienced problems with the browser freezing
+	when between applets.  What happens is that the previous
+	applet gets a InterruptedException and pops up a modal dialog
+	box, which freezed the browser.  We are working on a solution.
+
+	<li> The Ptolemy II Applets require java 1.4.1_02 so as to prevent
+	problems with Windows XP and Radeon displays that causes XP
+	to hang when a Java application is exiting.  For details, see
+
+<a href="http://developer.java.sun.com/developer/bugParade/bugs/4713003.html#in_browser" target="_top"><CODE>http://developer.java.sun.com/developer/bugParade/bugs/4713003.html</CODE></a>
+	 <br>For non-applet situations, we can invoke the browser with
+	<CODE>-Dsun.java2d.d3d=false</CODE> or 
+	<CODE>-Dsun.java2d.noddraw=true</CODE>, but for applets we must
+	require Java 1.4.1_02 or later.  
+	 <br>As a result, the applet html code requires version 1.4.1_02,
+	so if you have 1.4.2 installed, you may need to reinstall the
+	1.4.1_02 JRE for the applets to work.
+
+	<li>Applets seem to run out of memory after about 82Mb.
+
+	<li>There are no Jython or Cal applets 
+
+	<li> Opera has problems viewing applets that are on the local
+	file system.  In particular, it seems to have problems with urls like
+	<CODE>file:///d|/ptII/ptolemy/plot/demo/FourierSeries.htm</CODE>
+	which work fine in Netscape 4.x, IE, Mozilla.
+
+	 <p>However, if I use the following style of URL, then some of the applets
+	work: 
+<CODE>file://localhost/d:/ptII/ptolemy/plot/demo/FourierSeries.htm</CODE>.
+	Unfortunately any applet that accesses a data file will
+	not work with the above URL style because the data file will
+	be outside the codebase.
+
+	 <p> The solution is to install a web server on the local
+	machine and view the applets using 
+	<CODE>http://localhost/</CODE>
+	
+        <li> Opera 6.03/Windows 2000/Java 1.4.0, may have
+        problems running applets that include diva.jar if diva.jar
+	is not downloaded in the first applet.  To reproduce this problem:
+	<ol>
+	<li> Run <a href="../ptolemy/domains/sdf/demo/Butterfly/Butterfly.htm">SDF Butterfly</a>, which does not use diva.jar
+
+	<li> <a href="../ptolemy/domains/sdf/demo/Expression/Expression.htm">SDF Expression</a>, which uses diva.jar
+
+	<li> In Opera, do <CODE>Window</CODE> -&gt; <CODE>Special</CODE>
+	-&gt; <CODE>Java Console</CODE>, and you will see the following
+        stack trace
+<pre>
+java.lang.NoClassDefFoundError: diva/graph/GraphController	
+at java.lang.Class.getDeclaredConstructors0(Native Method)  
+vat java.lang.Class.privateGetDeclaredConstructors(Class.java:1576) 
+at java.lang.Class.getConstructor0(Class.java:1748) 
+at java.lang.Class.newInstance0(Class.java:266)  
+at java.lang.Class.newInstance(Class.java:249) 
+at opera.PluginPanel.run(opera/PluginPanel.java:343) 
+at java.lang.Thread.run(Thread.java:536)  
+</pre>
+
+	</ol>
+	The problem only occurs under Opera.
+
+	<li> Running the Networked demo via an applet on the local
+	file system results in an AccessControlException.
+<pre>
+com.microstar.xml.XmlException: XML element "entity" triggers exception:
+  java.lang.Exception: Attempted to lookup 'Waveform', but got: 
+  java.lang.ClassNotFoundException: Waveform
+Attempted to find as a moml class, but got: 
+             java.security.AccessControlException: access denied
+             (java.net.SocketPermission ptolemy.eecs.berkeley.edu resolve)
+	     in file:/C:/Program Files/Ptolemy/Ptolemy II 3.0 beta2/
+                   ptolemy/moml/demo/Networked/ at line 62 and column 118
+	at ptolemy.moml.MoMLParser.startElement(MoMLParser.java:1341)
+	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:944)
+	at com.microstar.xml.XmlParser.parseContent(XmlParser.java:1117)
+	at com.microstar.xml.XmlParser.parseElement(XmlParser.java:946)
+	at com.microstar.xml.XmlParser.parseDocument(XmlParser.java:495)
+	at com.microstar.xml.XmlParser.doParse(XmlParser.java:175)
+	at com.microstar.xml.XmlParser.parse(XmlParser.java:145)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:492)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:471)
+	at ptolemy.moml.MoMLParser.parse(MoMLParser.java:456)
+	at ptolemy.actor.gui.MoMLApplet._createModel(MoMLApplet.java:188)
+</pre>
+
+	The Network demo does not work as a local applet because the xml file
+	includes a reference to http://ptolemy.eecs.berkeley.edu, which is
+	not on the local file system, so we get a SecurityException.
+	 <br>The workaround is to run the applet by downloading it
+	from the Ptolemy Website:
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/ptII3.0.2/ptolemy/moml/demo/Networked/Networked.htm"><CODE>http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/ptII3.0.2/ptolemy/moml/demo/Networked/Networked.htm</CODE></a>
+	</ul>
+
+<li> Windows Installer Issues:
+ 	<ul>
+
+	<li> The Interface to C actors using the Java Native Interface
+	is not available via the Windows Installer (or Web Start).
+	To use the JNI/Ptolemy II interface, you must download 
+	Ptolemy II as source files and compile.
+
+	<li> Sometimes running a model that uses the Matlab interface
+	will cause Ptolemy II to exit.  Usually this occurs if Vergil
+	has been running for a while and then the Matlab interface is loaded.
+	<br><b>Workaround #1</b>: Run a model that uses the Matlab interface
+	as the first model by doing Quick Tour -&gt; Matlab CT.
+	<br><b>Workaround #2</b>:
+        We believe that the problem has to do with loading the Direct
+	Draw library.
+<a href="http://developer.java.sun.com/developer/bugParade/bugs/4838939.html#in_browser" target="_top"><code>http://developer.java.sun.com/developer/bugParade/bugs/4838939.html</code></a>
+        suggests invoking java with <code>-Dsun.java2d.noddraw=true</code>.
+	<br>The way to do this is to edit <code>vergil-full.<b>lax</b></code>
+	and add the line
+	<pre>
+lax.nl.java.option.additional=-Dsun.java2d.noddraw=true	
+</pre>
+        which we went ahead and did.  Note that because of problems
+	with Radeon displays, setting noddraw to true is not such
+	a bad idea.  See above for details.
+        <br>The way to check if this argument is being used is to
+	hold down the Control key and double click on the
+	<code>vergil-full.<b>exe</b></code> icon.
+	<br>You should see something like:
+	<pre>	
+c:\j2sdk1.4.2\bin\java.exe -Dsun.java2d.noddraw=true com.zerog.lax.LAX C:\\Ptol
+emy\\Ptolemy_II_3.0.2ptiny\\vergil-ptiny.lax C:\\DOCUME~1\\cxh\\LOCALS~1\\Temp
+\\env.prop
+executing java...
+        </pre>
+	Note that to debug the binary, you would use the following line:
+        <pre>
+lax.nl.java.option.additional=-Xdebug -Xrunjdwp:transport=dt_shmem,server=y,suspend=n 
+        </pre>
+
+	<li> The Windows task bar shows a 'Launch Anywhere' icon instead
+	of a Vergil Icon.
+
+	</ul>
+
+<li> Web Start issues:
+	<ul>
+	<li> The Python Ptolemizer demo does not work under Web Start,
+	probably because Jython cannot handle loading classes
+	from the Ptolemy II classes. 
+	<li> Viewing a pdf file may bring up a blank window along with
+	the pdf file.  Running the code generator may bring up
+	a blank window while the java or javac processes are running.
+
+	<li> Some of the links on the GR domain instructions page
+	might not work under Web Start because the files they refer
+	to are not present. 
+        </ul>
+
+<li> Limitations in demonstrations
+        <ul>
+
+	<li> CT CarTracking should be run using View-&gt;Run
+	so that the user can change the fault parameter.
+
+        <li> HTVQ demo: The displays do not go away when
+	the demo is exited.
+
+        <li> GR demos: The ViewScreen actor does not go away when
+	the demo is exited.
+
+
+	<li> GR demos: Under Java 3D 1.3.1-beta, the ViewScreen
+	actor may display a black image when a second GR demo is run.
+	 <br>The workaround is to install Java 3D 1.2.1_04.
+
+        <li> Bouncer demo: If the user drags the bouncing icon, it no
+	longer bounces
+	<li> TM Merged Events: Clicking on the 'Plot Schedule' icon
+	brings up a plot, but the plot remains empty, the schedule
+	never appears
+        </ul>
+</ul>
+
+<h3>Limitations in the Actor Libraries</h3>
+<ul>
+<li>The actor library is far from complete.
+<li>The Expression actor does not properly propagate type constraints in
+an expression-dependent fashion. It works correctly for double-valued
+expressions of double-valued inputs.
+
+<li> The Ptolemy parameter parser uses comma "," to separate elements
+in an array.  This causes problems when Ptolemy is run on
+European machines that use a comma "1,0" instead of a period "1.1"
+in floating point numbers.
+
+<li> The readFile() parameter function does not work with applets.
+
+<!-- If you change the next paragraph update install.htm -->
+
+<li>The Matlab interface works only under Windows and it requires that
+Matlab be installed on the local machine. 
+The Matlab interface should work with version of Matlab from
+R11 (5.3) and up to and including R13 (6.5)
+<p>Didier Mauuary reports that under Windows 98, configure failed
+to set up the <code>MATLAB_DIR</code>, <code>PTCC</code>
+and <code>PTDLLTOOL</code> makefile variables, but after
+he set them by hand:
+<pre>
+ MATLAB_DIR = /cygdrive/c/MATLABR11
+ PTCC = gcc
+ PTDLLTOOL = dlltool
+</pre>
+he was able to get farther with the recompilation of the Matlab interface.
+
+<li> The actor.lib.comm.SerialComm actor requires that Javacomm is installed
+
+<a href="http://java.sun.com/products/javacomm/index.html#in_browser" target="_top"><CODE>http://java.sun.com/products/javacomm/index.html</CODE></a>.
+The SerialComm actor will only work under Windows.
+
+</ul>
+
+<h3>Limitations in the PN Domain</h3>
+The PN domain documents that it locally handles mutations.  However, this
+is currently not true in the implementation.  For the basic PN model, this
+doesn't really matter, since mutations happen pretty much the same as they
+would otherwise.  (i.e. they are non-deterministic in when they execute) 
+However, for timed PN models, there is actually some expressiveness
+lost, since timed PN models can locally execute mutations deterministically.
+
+
+<h3>Limitations in the User Interface</h3>
+
+Below are some of the limitations of Vergil, the Ptolemy II Graphical
+User Interface.
+
+<ul>
+
+<li> If there are multiple windows open for a model, say, the top
+level vergil window and the tree view, or the top level window
+and the inside look of a composite component, when the top
+level window is closed, all other windows are closed, but the
+user is not prompted to save any change to the model.
+
+<li> When setting the type of a port, we should provide a combo
+box that lists the common ports
+
+<li> When creating a Modal Model, use Control-Right-Button to
+drawn arcs between nodes.  One potential workaround would
+be to have an information message in the status bar about this.
+
+<li> You should not change the names of built in ports - The port
+mechanism should disallow port name changes on ports that are
+named in Java.  The UI could recognize this.  The UI should
+not allow the user to remove built in Java defined ports.
+
+<li> Manually setting of the types of actors like ArrayToSequence that
+have constraints on their element types can cause problems.
+<li> HTVQ demo is badly laid out when run under vergil.
+<li>Weak support for multiports in the graph editor.
+<li>It is difficult to control wire routing.
+<li>Cannot have more than one vertex in a connection.
+<li>No mechanism to set the width of a relation.
+<li>The integrated web browser is not a full-featured browser.
+<li>Icon editor not yet integrated.
+<li>Debugger not yet integrated.
+<li>It is difficult to add actors to the libraries.
+<li>No dynamic class reloading.
+</ul>
+
+<h3>Code Generation Limitations</h3>
+Code Generation limitations are covered on the
+<a href="codegen.htm#limitations">Code Generation</a> page. 
+
+<h3>Missing Domains</h3>
+<ul>
+<li>Boolean and integer dataflow.
+<li>Dynamic dataflow
+</ul>
+ <p>For limitations discovered after the release, see the
+<a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII3.0/#in_browser">Ptolemy II 3.0 website</a>
+
+<!--/vergilDocs-->
+<p><font size="2" color="#cc0000">Last Updated: $Date$</font>
+ <!-- Leave a trailing p here so that there is a little space at the bottom -->
+ <p>
+</body>
+</html>
