@@ -40,7 +40,7 @@ Derived class should override the methods that the corresponding
 conversion can be achieved without loss of information.
 
 @author Yuhong Xiong, Mudit Goel
-$Id$
+@version $Id$
 */
 public abstract class ScalarToken extends Token {
 
