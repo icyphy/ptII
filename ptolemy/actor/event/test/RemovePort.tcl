@@ -67,15 +67,15 @@ test RemovePort-1.0 {test removing a port} {
     set m [$e0 getManager]
     $m initialize
     $m iterate
-# FIXME: Uncomment these when we fix expression evaluator.
-#     set c1 [java::new ptolemy.actor.event.RemovePort $e0 $in1]
-#     set c2 [java::new ptolemy.actor.event.RemoveActor $e0 $ramp1]
-#     set c3 [java::new ptolemy.kernel.event.SetParameter $e0 $expression "in2 + 5"]
-#     $m requestChange $c1
-#     $m requestChange $c2
-#     $m requestChange $c3
+    set c1 [java::new ptolemy.actor.event.RemovePort $e0 $in1]
+    set c2 [java::new ptolemy.actor.event.RemoveActor $e0 $ramp1]
+    set c3 [java::new ptolemy.kernel.event.SetParameter \
+            $e0 $expression "in2 + 5"]
+    $m requestChange $c1
+    $m requestChange $c2
+    $m requestChange $c3
     $m iterate
     $m iterate
     $m wrapup
     enumToTokenValues [$rec getRecord 0]
-} {{1 1 1} {0 _ _}}
+} {0 6 7}
