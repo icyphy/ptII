@@ -91,12 +91,11 @@ public class GiottoReceiver extends AbstractReceiver {
         return true;
     }
 
-    /** Return true if the argument is 1, and there is no token in the
-     *  receiver.
-     *  @return True if the argument is 1, and there is room for one token.
+    /** Return true, since writing to this receiver is always allowed.
+     *  @return True.
      */
     public final boolean hasRoom(int numberOfTokens) {
-        return (numberOfTokens == 1 && _token == null);
+        return true;
     }
 
     /** Return true if there is a token available. A token is
@@ -108,11 +107,12 @@ public class GiottoReceiver extends AbstractReceiver {
         return (_token != null);
     }
 
-    /** Return true if the argument is 1, and there is a token available.
-     *  @return True if the argument is 1, and there is a token available.
+    /** Return true if there is a token available. Any number of calls
+     *  to get() is allowed and will return the same available token.
+     *  @return True if there is a token available.
      */
     public final boolean hasToken(int numberOfTokens) {
-        return (numberOfTokens == 1 && _token != null);
+        return (_token != null);
     }
 
     /** Put a token into this receiver. Any token which has been put

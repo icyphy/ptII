@@ -100,9 +100,8 @@ public class GiottoDirector extends StaticSchedulingDirector {
      *  @param name Name of this director.
      *  @exception IllegalActionException If the director is not compatible
      *   with the specified container.
-     *  @exception NameDuplicationException If the container is
-     *   not a CompositeActor or the name collides with an attribute in the
-     *   container.
+     *  @exception NameDuplicationException If the name collides with an
+     *   attribute in the container.
      */
     public GiottoDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -151,7 +150,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
 	return _nextIterationTime;
     }
 
-    /** Return the real-time at which the fire method of this director
+    /** Return the system time at which the fire method of this director
      *  has been called.
      *  @return The real start time in terms of milliseconds counting
      *  from 1/1/1970.
@@ -215,7 +214,6 @@ public class GiottoDirector extends StaticSchedulingDirector {
     /** Return false if the system has finished executing, either by
      *  reaching the iteration limit, or having an actor in the model
      *  return false in postfire.
-     *  Increment the number of iterations.
      *  @return True if the execution is not finished.
      *  @exception IllegalActionException If the iterations parameter does
      *   not have a valid token.
