@@ -148,7 +148,7 @@ public class AbsoluteValue extends Transformer {
 	    if (inputType == BaseType.COMPLEX) {
 	        return BaseType.DOUBLE;
 	    } else if (inputType == BaseType.COMPLEX_MATRIX) {
-	        return BaseType.INT_MATRIX;
+	        return BaseType.DOUBLE_MATRIX;
 	    } else {
 	        return inputType;
 	    }
