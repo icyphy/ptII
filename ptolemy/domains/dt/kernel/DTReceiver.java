@@ -55,11 +55,12 @@ A first-in, first-out (FIFO) queue receiver with variable capacity. Tokens
 are put into the receiver with the put() method, and removed from the
 receiver with the get() method. The token removed is the oldest one in 
 the receiver.  Time is incremented by a fixed amount deltaT everytime the
-get() method is called. We calculate deltaT as "period / (rate * repeats)"
-where:  - period is the execution time of the director per iteration 
-        - rate   is the rate of the port that holds this receiver
-        - repeats is the firing count per iteration of the actor 
-                  that holds this receiver
+get() method is called. Each receiver has its own value of deltaT. 
+We calculate deltaT as "period / (rate * repeats)" where:
+    - period is the execution time of the director per iteration 
+    - rate   is the rate of the port that holds this receiver
+    - repeats is the firing count per iteration of the actor 
+              that holds this receiver
 @author C. Fong
 @version $Id$
 */
@@ -101,8 +102,10 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Calculate _deltaT for this receiver. 
-     *
+    /** Calculate _deltaT for this receiver. This method should only be
+     *  invoked after the preinitialize() stage of the director. Prior to
+     *  that, certain information about the SDF dataflow graph topology 
+     *  is not yet available. 
      *  @exception IllegalActionException If there is an error in
      *  getting attribute information from the ports.
      */
@@ -119,25 +122,25 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     	    Parameter param = (Parameter) 
     	                        _fromPort.getAttribute("tokenProductionRate");
     	    if(param == null) {
-               outrate = 1;
+                _outrate = 1;
             } else {
-               outrate = ((IntToken)param.getToken()).intValue();
+                _outrate = ((IntToken)param.getToken()).intValue();
             }
 
             if ((isCompositeContainer) && (_toPort.isOutput())) {
-                inrate = 1;
+                _inrate = 1;
             } else {
     		    param = (Parameter) _toPort.getAttribute("tokenConsumptionRate");
     	        if(param == null) {
-                    inrate = 1;
+                    _inrate = 1;
                 } else {
-                    inrate = ((IntToken)param.getToken()).intValue();
+                    _inrate = ((IntToken)param.getToken()).intValue();
                 }
             }       		
         	
             repeats = _localDirector.getRepeats(_to);
         	periodValue = _localDirector.getPeriod();
-        	_periodDivider = repeats * inrate; 
+        	_periodDivider = repeats * _inrate; 
         	_deltaT = periodValue / _periodDivider;
         }
     }
@@ -233,9 +236,7 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
     /** Remove the first token (the oldest one) from the receiver and
      *  return it. If there is no token in the receiver, throw an
-     *  exception.  Increment the time of the local director by
-     *  the deltaT.
-     *  
+     *  exception.  Increment the local time by deltaT.
      *  @return The oldest token in the receiver.
      */
     public Token get() {
@@ -257,8 +258,8 @@ public class DTReceiver extends SDFReceiver implements Receiver {
 
    
     /** Remove the first tokens (the oldest ones) from the receiver and
-     *  fill the array with them. Increment the time of the local director
-     *  by the value ' n * _deltaT ' where:
+     *  fill the array with them. Increment the local time by the value
+     *  ' n * _deltaT ' where:
      *    -  n is the length of the token array
      *    -  _deltaT is  period / (rate * repeats)
      *  @param t[]  Array to hold the first n oldest tokens.
@@ -271,10 +272,17 @@ public class DTReceiver extends SDFReceiver implements Receiver {
         
         _localTime = _localTime + t.length * _deltaT;
     }
+    
+    /** Return the port that feeds this Receiver
+     *  @return The port that feeds this receiver.
+     */
+    public TypedIOPort getSourcePort() {
+        return (TypedIOPort) _fromPort;
+    }
+  
 
-
-    /** Put a token to the receiver. If the port feeding is this
-     *  receiver is null, report internal error.
+    /** Put a token to the receiver. If the port feeding this
+     *  receiver is null, report an internal error.
      *  @param token The token to be put to the receiver.
      *  @exception InternalErrorException If the source port is null.
      */
@@ -287,20 +295,14 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     }
     
     
-    /** Return the port that feeds this Receiver
-     *  @return TypedIOPort  The port that feeds this receivers.
-     */
-    public TypedIOPort getSourcePort() {
-        return (TypedIOPort) _fromPort;
-    }
-    
+   
     
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Initialize the DTReceiver.  Set the cached information on source
-     *  and destination actors to null.  Set the local time to zero.  Set
-     *  deltaT to zero.  
+    /** Initialize the DTReceiver.  Set the cached information regarding
+     *  source and destination actors to null.  Set the local time to
+     *  zero.  Set deltaT to zero.  
      */
     private void _init() {
         _from = null;
@@ -320,17 +322,17 @@ public class DTReceiver extends SDFReceiver implements Receiver {
     // The dividing factor to the discrete time period
     private int _periodDivider;
     
-    // The amount of time increment per get() method call
+    // The amount of time increment for every get() method call
     private double _deltaT;
     
     // The local cached time
     private double _localTime;
     
-    // The local cached value of the destination token consumption rate 
-    private int inrate;
+    // The cached value of the destination token consumption rate 
+    private int _inrate;
     
-    // The local cached value of the source token production rate
-    private int outrate;
+    // The cached value of the source token production rate
+    private int _outrate;
     
     // The actor feeding this receiver
     private Actor _from;
