@@ -237,7 +237,7 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
         }
     }
 
-    private FieldRef _getContainerMethodReplacementFieldRef(Local baseLocal,
+    private Value _getContainerMethodReplacementFieldRef(Local baseLocal,
             Unit unit, LocalDefs localDefs) {
           
         // FIXME: This is not enough.
@@ -249,7 +249,19 @@ public class FieldsForEntitiesTransformer extends SceneTransformer {
             Entity container = (Entity)object.getContainer();
             return getFieldRefForEntity(container);
         } else {
-            throw new RuntimeException("unimplemented case");
+            DefinitionStmt stmt = _getFieldDef(baseLocal, unit, localDefs);
+            System.out.println("stmt = " + stmt);
+            FieldRef ref = (FieldRef) stmt.getRightOp();
+            SootField field = ref.getField();
+            ValueTag tag = (ValueTag) field.getTag("_CGValue");
+            if(tag == null) {
+                return NullConstant.v();
+            }
+            object = (NamedObj)tag.getObject();
+            CompositeEntity container = (CompositeEntity)object.getContainer();
+            return getFieldRefForEntity(container);
+
+            //            throw new RuntimeException("unimplemented case");
           //   // Walk back and get the definition of the field.
 //             DefinitionStmt definition =
 //                 _getFieldDef(baseLocal, unit, localDefs);

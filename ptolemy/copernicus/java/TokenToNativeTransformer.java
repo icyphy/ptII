@@ -1788,7 +1788,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                                     replacementValue),
                             stmt);
                 }
-                //                body.getUnits().remove(stmt);
+                //body.getUnits().remove(stmt);
             }
         } else {
             // We have an assignment from one local token to another.
@@ -1818,7 +1818,7 @@ public class TokenToNativeTransformer extends SceneTransformer {
                             stmt);
                 }
                 stmt.getRightOpBox().setValue(NullConstant.v());
-                // body.getUnits().remove(stmt);
+                body.getUnits().remove(stmt);
             }
 
         }

@@ -504,72 +504,72 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
             tokenLocal = returnLocal;
         } else if(returnType.equals(
                           ArrayType.v(PtolemyUtilities.tokenType, 1))) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.arrayTokenClass,
                     PtolemyUtilities.arrayTokenConstructor,
                     returnLocal);
         } else if(returnType.equals(DoubleType.v())) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.doubleTokenClass,
                     PtolemyUtilities.doubleTokenConstructor,
                     returnLocal);
         } else if(returnType.equals(LongType.v())) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.longTokenClass,
                     PtolemyUtilities.longTokenConstructor,
                     returnLocal);
         } else if(returnType.equals(RefType.v("java.lang.String"))) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.stringTokenClass,
                     PtolemyUtilities.stringTokenConstructor,
                     returnLocal);
         } else if(returnType.equals(BooleanType.v())) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.booleanTokenClass,
                     PtolemyUtilities.booleanTokenConstructor,
                     returnLocal);
         } else if(returnType.equals(RefType.v("ptolemy.math.Complex"))) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.complexTokenClass,
                     PtolemyUtilities.complexTokenConstructor,
                     returnLocal);
         } else if(returnType.equals(RefType.v("ptolemy.math.FixPoint"))) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.fixTokenClass,
                     PtolemyUtilities.fixTokenConstructor,
                     returnLocal);
         } else if(returnType.equals(ArrayType.v(BooleanType.v(),2))) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.booleanMatrixTokenClass,
                     PtolemyUtilities.booleanMatrixTokenConstructor,
                     returnLocal);
             
         } else if(returnType.equals(ArrayType.v(IntType.v(),2))) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.intMatrixTokenClass,
                     PtolemyUtilities.intMatrixTokenConstructor,
                     returnLocal);
             
         } else if(returnType.equals(ArrayType.v(LongType.v(),2))) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.doubleMatrixTokenClass,
                     PtolemyUtilities.doubleMatrixTokenConstructor,
                     returnLocal);
             
         } else if(returnType.equals(ArrayType.v(DoubleType.v(),2))) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.doubleMatrixTokenClass,
                     PtolemyUtilities.doubleMatrixTokenConstructor,
                     returnLocal);
             
         } else if(returnType.equals(ArrayType.v(RefType.v("ptolemy.math.Complex"),2))) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.complexMatrixTokenClass,
                     PtolemyUtilities.complexMatrixTokenConstructor,
                     returnLocal);
             
         } else if(returnType.equals(ArrayType.v(RefType.v("ptolemy.math.FixPoint"),2))) {
-            tokenLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+            tokenLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.fixMatrixTokenClass,
                     PtolemyUtilities.fixMatrixTokenConstructor,
                     returnLocal);
@@ -1095,7 +1095,7 @@ public class ParseTreeCodeGenerator implements ParseTreeVisitor {
                 _insertPoint);
 
         // Take the result and turn it back into a BooleanToken
-        Local resultLocal = PtolemyUtilities.addTokenLocal(_body, "token",
+        Local resultLocal = PtolemyUtilities.addTokenLocalBefore(_body, _insertPoint, "token",
                     PtolemyUtilities.booleanTokenClass,
                     PtolemyUtilities.booleanTokenConstructor,
                     conditionLocal);

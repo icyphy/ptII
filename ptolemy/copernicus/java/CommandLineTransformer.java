@@ -520,10 +520,10 @@ public class CommandLineTransformer extends SceneTransformer {
                     Jimple.v().newAddExpr(iterationLocal,
                             IntConstant.v(1))),
                     unit);
-            // If the number of iterations is greater than the limit,
-            // then we're done.
+            // If the number of iterations is greater than, or equal
+            // to the limit, then we're done.
             units.insertBefore(Jimple.v().newIfStmt(
-                    Jimple.v().newGtExpr(iterationLocal,
+                    Jimple.v().newGeExpr(iterationLocal,
                             IntConstant.v(iterationLimit)),
                     iterationEndStmt),
                     unit);
