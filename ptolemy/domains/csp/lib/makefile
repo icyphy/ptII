@@ -60,6 +60,7 @@ JSRCS = \
 	CSPSieve.java \
 	CSPSink.java \
 	CSPSource.java \
+	DisplayBlock.java \
 	PortChannelCode.java
 
 
