@@ -288,7 +288,8 @@ JAVACC =	"@JAVACC@"
 
 # Set to -I$PTII/mescal/include or -I/usr/local/include if gmp.h is found
 # and used in $PTII/mescal/relsat
-PTGMP_INCLUDE = 	"@PTGMP_INCLUDE@"
+# FIXME: There could be problems if PTII have spaces
+PTGMP_INCLUDE = 	@PTGMP_INCLUDE@
 
 # Set to -Wl,-R$PTII/mescal/lib or -Wl,-R/usr/local/lib if the gmp
 # libraries are found and used in $PTII/mescal/relsat
