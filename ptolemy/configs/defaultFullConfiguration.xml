@@ -79,7 +79,6 @@
       <configure>
         <?moml
           <group>
-	        <input source="ptolemy/apps/apps.xml"/>
             <input source="ptolemy/configs/automataActorLibrary.xml"/>
             <input source="ptolemy/chic/chic.xml"/>
 	    <!-- Javacomm serial actors depend on javacomm being present  -->
@@ -90,7 +89,6 @@
             <input source="ptolemy/actor/lib/esoteric.xml"/>
  	    <!-- GR depends on the 3D graphics package of Java being present-->
             <input source="ptolemy/domains/gr/gr.xml"/>
-            <input source="ptolemy/domains/hdf/lib/hdfentities.xml"/>
             <input source="ptolemy/actor/lib/hoc/hoc.xml"/>
             <input source="ptolemy/actor/lib/image/image.xml"/>
             <input source="ptolemy/vergil/actor/lib/interactive.xml"/>

@@ -28,31 +28,6 @@
   <!-- Note that this begins empty. -->
   <entity name="directory" class="ptolemy.actor.gui.ModelDirectory"/>
 
-  <!-- An entity giving alternative state refinements for modal models. -->
-  <entity name="_stateRefinements" class="ptolemy.kernel.CompositeEntity">
-    <entity name="Discrete Event Refinement"
-            class="ptolemy.domains.fsm.modal.Refinement">
-      <property name="DEDirector"
-                class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
-      </property>
-    </entity>
-    <entity name="State Machine Refinement"
-            class="ptolemy.domains.fsm.modal.ModalController">
-    </entity>               
-  </entity>
-
-  <!-- An entity giving alternative transition refinements for modal models. -->
-  <entity name="_transitionRefinements" class="ptolemy.kernel.CompositeEntity">
-    <entity name="Default Refinement"
-            class="ptolemy.domains.fsm.modal.Refinement">
-      <property name="Refinement Director (SDF)"
-                class="ptolemy.domains.sdf.kernel.SDFDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 35.0"/>
-      </property>
-    </entity>
-  </entity>
-
   <!-- The list of effigy factories, which defines what goes in  -->
   <!-- the New menu, and also what sorts of files can be opened. -->
   <!-- These are searched in the order listed here, until one of -->
@@ -127,27 +102,41 @@ to another. Then delete this annotation.</text></svg></configure></property>
     <property name="_libraryMarker"
               class="ptolemy.kernel.util.SingletonAttribute"/>
 
-    <!-- Custom utilities library. -->
-    <entity name="utilities" class="ptolemy.moml.EntityLibrary">
+    <!-- Default utilities library. -->
+    <input source="ptolemy/configs/utilitiesLibrary.xml"/>
+
+    <!-- Default director library. -->
+    <!-- This uses configure so that directors are not instantiated -->
+    <!-- until (and unless) the library is opened. -->
+    <entity name="director library" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
-            <input source="ptolemy/configs/annotation.xml"/>
-            <input source="ptolemy/configs/utilityParameter.xml"/>
-            <input source="ptolemy/configs/utilityIntRangeParameter.xml"/>
-            <input source="ptolemy/configs/utilityPortParameter.xml"/>
-            <input source="ptolemy/configs/utilityCompositeActor.xml"/>
-            <input source="ptolemy/configs/utilityModalModel.xml"/>
+            <input source="ptolemy/configs/basicDirectors.xml"/>
           </group>
         ?>
       </configure>
     </entity>
 
-    <!-- Custom actor library. -->
+    <input source="ptolemy/domains/wireless/wireless.xml"/>
+
+    <!-- Default actor library. -->
     <entity name="actor library" class="ptolemy.moml.EntityLibrary">
       <configure>
         <?moml
           <group>
+            <input source="ptolemy/configs/basicActorLibrary.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+    
+    <entity name="actor library 2" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+
+
 <!-- Sources list is custom. -->
 <input source="ptolemy/configs/hyvisual/sources.xml"/>
 
@@ -187,5 +176,33 @@ to another. Then delete this annotation.</text></svg></configure></property>
       </configure>
     </entity>
   </entity>
+  
+      <!-- Optional packages that may or may not be present  -->
+    <!-- Alphabetize these  -->
+    <entity name="more libraries" class="ptolemy.moml.EntityLibrary">
+      <configure>
+        <?moml
+          <group>
+	    <!-- Javacomm serial actors depend on javacomm being present  -->
+            <input source="ptolemy/actor/lib/io/comm/comm.xml"/>
+            <input source="ptolemy/actor/corba/corba.xml"/>
+            <input source="ptolemy/actor/lib/esoteric.xml"/>
+ 	    <!-- GR depends on the 3D graphics package of Java being present-->
+            <input source="ptolemy/domains/gr/gr.xml"/>
+            <input source="ptolemy/actor/lib/hoc/hoc.xml"/>
+            <input source="ptolemy/actor/lib/image/image.xml"/>
+            <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
+	  		<input source="ptolemy/actor/lib/jai/jai.xml"/>
+	    <!-- matlab depends on Matlab being present -->
+            <input source="ptolemy/matlab/matlab.xml"/>
+            <input source="ptolemy/actor/lib/security/security.xml"/>
+            <input source="ptolemy/actor/lib/python/python.xml"/>
+            <input source="ptolemy/actor/lib/test.xml"/>
+            <input source="ptolemy/actor/lib/xslt/xslt.xml"/>
+          </group>
+        ?>
+      </configure>
+    </entity>
+ 
 
 </entity>
