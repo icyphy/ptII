@@ -92,11 +92,11 @@ public class SignatureVerifier extends SignatureActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        publicKey = new TypedIOPort(this, "publicKey", true, false);
-        publicKey.setTypeEquals(BaseType.OBJECT);
-
         data = new TypedIOPort(this, "data", true, false);
         data.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+
+        publicKey = new TypedIOPort(this, "publicKey", true, false);
+        publicKey.setTypeEquals(BaseType.OBJECT);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -59,6 +59,7 @@ JSRCS = \
 	ServiceInformation.java \
 	SignatureActor.java \
 	SignatureSigner.java \
+	SignatureSignerKeyPort.java \
 	SignatureVerifier.java \
 	SymmetricDecryption.java \
 	SymmetricEncryption.java

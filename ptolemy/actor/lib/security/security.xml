@@ -54,6 +54,12 @@
 	  creates the key to be sent to the signature verifier.</doc>
         </entity>
 
+        <entity name="SignatureSignerKeyPort"
+	        class="ptolemy.actor.lib.security.SignatureSignerKeyPort">
+	  <doc>Reads a public key from a port and creates a signature for
+	  the given piece of data to be sent to the signature verifier.</doc>
+        </entity>
+
         <entity name="SignatureVerifier"
                 class="ptolemy.actor.lib.security.SignatureVerifier">
           <doc>Receives a key from an AsymmetricDecryption actor and

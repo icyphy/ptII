@@ -53,21 +53,14 @@ import java.util.Iterator;
 import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
-//// SignatureSigner
+//// SignatureSignerKeyPort
 /** Sign the input data using a public key.
 
 <p>In cryptography, digital signatures can be used to verify that the
 data was not modified in transit.  However, the data itself is passed
 in cleartext.
 
-<p> In this case, the SignatureSigner actor generates private and
-public keys. 
-
-<p>The public key is passed as an unsigned byte array on the
-<i>publicKey</i> port to the SignatureVerifier actor to verify that
-the data has not been tampered with.
-
-<p>Each time fire() is called, the private key is used to create a
+<p>Each time fire() is called, the <i>privateKey</i> is used to create a
 signature for each block of unsigned byte array read from the
 <i>input</i> port.  The signed data is passed to a SignatureVerifier
 actor on the <i>output</i> port as an unsigned byte array.
@@ -98,7 +91,7 @@ Cryptography Extension (JCE).
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class SignatureSigner extends SignatureActor {
+public class SignatureSignerKeyPort extends SignatureActor {
 
     // TODO: Use cipher streaming to allow for easier file input reading.
 
@@ -110,7 +103,7 @@ public class SignatureSigner extends SignatureActor {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public SignatureSigner(CompositeEntity container, String name)
+    public SignatureSignerKeyPort(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
@@ -126,8 +119,8 @@ public class SignatureSigner extends SignatureActor {
             keyPairGenerator.addChoice(algorithmName);
         }
 
-        publicKey = new TypedIOPort(this, "publicKey", false, true);
-        publicKey.setTypeEquals(BaseType.OBJECT);
+        privateKey = new TypedIOPort(this, "privateKey", true, false);
+        privateKey.setTypeEquals(BaseType.OBJECT);
 
         data = new TypedIOPort(this, "data", false, true);
         data.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
@@ -142,11 +135,11 @@ public class SignatureSigner extends SignatureActor {
      */
     public TypedIOPort data;
 
-    /** The public key to be used by the SignatureVerifier actor
+    /** The private key to be used by the SignatureVerifier actor
      *  to verify the data on the <i>output</i> port.
      *  The type is an ObjectToken containin a java.security.Key.
      */
-    public TypedIOPort publicKey;
+    public TypedIOPort privateKey;
 
     /** The algorithm to be used to generate the key pair.  For
      *  example, using RSAwithMD5 as the signature algorithm in the
@@ -183,24 +176,14 @@ public class SignatureSigner extends SignatureActor {
      *  @exception IllegalActionException If thrown by base class.
      */
     public void fire() throws IllegalActionException {
+        if (privateKey.hasToken(0)) {
+            ObjectToken objectToken = (ObjectToken)privateKey.get(0);
+            _privateKey = (PrivateKey)objectToken.getValue(); 
+        }
         // This method merely calls the super class which eventually
         // calls CryptographicActor.fire() which in turn calls 
-        // SignatureSigner_process().
+        // SignatureSignerKeyPort_process().
         super.fire();
-    }
-
-    /** Create asymmetric keys and place the output the public key.
-     *  decryption.
-     *  @exception IllegalActionException If thrown by base class.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-        // _createAsymmetricKeys uses _keyPairGenerator.
-        KeyPair pair = _createAsymmetricKeys();
-        _publicKey = pair.getPublic();
-        _privateKey = pair.getPrivate();
-        publicKey.send(0, new ObjectToken(_publicKey));
     }
 
     /** Calculate a signature.
