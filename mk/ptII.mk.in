@@ -166,8 +166,11 @@ JDOCBREAKITERATOR = @JDOCBREAKITERATOR@
 # Increase the amount of memory that javadoc uses.
 JDOCMEMORY =	-J-Xmx132m
 
+# Allow @rating tag for use within Diva and other files. 
+JDOCTAG = 	-tag rating
+
 # Flags to pass to javadoc.
-JDOCFLAGS = 	-author -version $(JDOCBREAKITERATOR) $(JDOCMEMORY)
+JDOCFLAGS = 	-author -version $(JDOCBREAKITERATOR) $(JDOCMEMORY) $(JDOCTAG)
 
 # The jar command, used to produce jar files, which are similar to tar files
 JAR =		$(PTJAVA_DIR)/bin/jar
