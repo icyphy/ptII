@@ -56,7 +56,6 @@ SHELL_FILES = \
 	emachine \
 	giottoc \
 	histogram \
-	htmlconverter \
 	jode \
 	mescal \
 	moml \

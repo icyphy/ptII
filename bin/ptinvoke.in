@@ -625,16 +625,6 @@ and run:
 	javastartupclass=ptolemy.plot.plotml.HistogramMLApplication
 	javasourcedir=ptolemy/plot/plotml
 	;;
-    htmlconverter)
-	help="Java Plug-in applet converter"
-	javastartupclass=HTMLConverter
-	jarfile="$PTJAVA_DIR_CLEAN/lib/htmlconverter.jar"
-	if [ ! -f "$jarfile" ]; then
-	    echo "$0: '$jarfile' does not exist or is not a file"
-	    exit 2
-	fi    
-	applicationflags="-template \"$PTII_CLEAN/doc/coding/templates/ptExtend.tpl\""
-	;;
     jode)
 	help="Decompile by calling jode, for example: \
                   $0 ptolemy.util.StringUtilities"
