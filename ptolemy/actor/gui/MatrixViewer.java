@@ -217,7 +217,7 @@ public class MatrixViewer extends Sink implements Placeable {
         */
         public Object getValueAt(int row, int column) {
             return (Object) (_matrix.getElementAsToken( row, column )).
-                stringValue();
+                toString();
         }
 
         /** Get column names of the Matrix.
