@@ -30,10 +30,10 @@
 ##########################################################################
 
 # Root of Tycho directory
-ROOT =		../../..
+ROOT =		../..
 
 # True source directory
-VPATH =		$(ROOT)/java/doc/internals
+VPATH =		$(ROOT)/doc/internals
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/tycho.mk
