@@ -30,12 +30,10 @@
 
 package ptolemy.vergil.basic;
 
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.SVGUtilities;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.NodeRenderer;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.util.ChangeRequest;
@@ -47,12 +45,12 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.icon.XMLIcon;
 import ptolemy.vergil.kernel.AnimationRenderer;
-
-import java.awt.Color;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.SVGUtilities;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.NodeRenderer;
 
 //////////////////////////////////////////////////////////////////////////
 //// IconController
@@ -80,33 +78,6 @@ public class IconController extends ParameterizedNodeController {
         super(controller);
         setNodeRenderer(new IconRenderer());
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Draw the node at its location. This overrides the base class
-     *  to highlight the node if it is defined by the class, and hence
-     *  cannot be deleted.
-     */
-    public Figure drawNode(Object node) {
-        Figure nf = super.drawNode(node);
-        GraphModel model = getController().getGraphModel();
-        Object object = model.getSemanticObject(node);
-        if (object instanceof NamedObj && ((NamedObj)object).isClassElement()) {
-            AnimationRenderer decorator = new AnimationRenderer(
-                    _CLASS_ELEMENT_HIGHLIGHT_COLOR);
-            decorator.renderSelected(nf);
-        }
-        return nf;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    // Fourth argument makes this highlight transluscent, which enables
-    // combination with other highlights.
-    private static Color _CLASS_ELEMENT_HIGHLIGHT_COLOR
-            = new Color(255, 0, 0, 64);
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
