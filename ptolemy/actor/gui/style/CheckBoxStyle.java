@@ -24,33 +24,33 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui.style;
 
-// Ptolemy imports.
+import ptolemy.actor.gui.PtolemyQuery;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
-import ptolemy.gui.Query;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.gui.PtolemyQuery;
-
-// Java imports.
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.UserSettable;
 
 //////////////////////////////////////////////////////////////////////////
 //// CheckBoxStyle
 /**
-This attribute annotates an attribute to suggest an interactive
-mechanism for editing that uses a single checkbox.  This is only
-valid, of course, for boolean valued attributes, which must be
-an instance of Parameter. The EditorPaneFactory class observes the
-presence of this attribute to guide construction of an interactive
-parameter editor.
+This attribute annotates user settable attributes to specify 
+a checkbox style for configuring the containing attribute.  
+This style is only valid for boolean valued attributes, so this class 
+expects that the container will be an instance of Parameter that contains
+a boolean token. 
 
 @see EditorPaneFactory
+@see ParameterEditorStyle
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
@@ -84,9 +84,11 @@ public class CheckBoxStyle extends ParameterEditorStyle {
     ////                         public methods                    ////
 
     /** Return true if this style is acceptable for the given parameter.
-     *  @return True if the argument is a boolean-valued parameter.
+     *  @param param The attribute that this annotates.
+     *  @return True if the argument is a parameter that contains a 
+     *  boolean token.
      */
-    public boolean accept(UserSettable param) {
+    public boolean acceptable(UserSettable param) {
         if (!(param instanceof Parameter)) return false;
 	try {
 	    Token current = ((Parameter)param).getToken();
@@ -100,14 +102,13 @@ public class CheckBoxStyle extends ParameterEditorStyle {
 	}
     }
 
-    /** Create a new entry in the given query for the container of
-     *  this style.  Attach the parameter that
-     *  contains this style to the created entry.  
-     *  This class will create a check box entry.
+    /** Create a new check box entry in the given query associated with the 
+     *  parameter containing this style.  The name of the entry is
+     *  the name of the parameter.  Attach the parameter to the created entry.
      *  
      *  @param query The query into which to add the entry.
      *  @exception IllegalActionException If the containing parameter
-     *   has a value that cannot be edited using this style.
+     *  does not contain a boolean token.
      */
     public void addEntry(PtolemyQuery query) throws IllegalActionException {
         String name = getContainer().getName();

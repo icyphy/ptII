@@ -24,20 +24,27 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui.style;
 
-// Ptolemy imports.
-import ptolemy.kernel.util.*;
-import ptolemy.data.expr.Parameter;
-import ptolemy.gui.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.UserSettable;
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
 
-// Java imports.
 import java.awt.Component;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import javax.swing.BoxLayout;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -46,16 +53,19 @@ import javax.swing.SwingUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// StyleConfigurer
 /**
-This class is an editor for the styles of the parameters of an object. 
-It is very similar to Configurer, except that that class edits the actual
-values of the parameters.
+This class is an editor for the styles of the parameters of an object.
+It allows a user to graphically change the ParameterEditorStyles contained
+within the user settable attributes of a named object. 
+It is very similar in spirit and style to Configurer, which edits the actual
+values of the attributes.
 <p>
 The restore() method restores the values of the parameters of the
 object to their values when this object was created.  This can be used
 in a modal dialog to implement a cancel button, which restores
-the parameter values to those before the dialog was opened.
+the styles to those before the dialog was opened.
 <p>
 @see Configurer
+@see ParameterEditorStyle
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
@@ -65,7 +75,7 @@ public class StyleConfigurer extends Query implements QueryListener {
     /** Construct a configurer for the specified object.
      *  @param object The object to configure.
      *  @exception IllegalActionException If the specified object has
-     *   no editor factories, and refuses to accept as an attribute
+     *   no editor factories, and refuses to acceptable as an attribute
      *   an instance of EditorPaneFactory.
      */
     public StyleConfigurer(NamedObj object) throws IllegalActionException {
@@ -78,13 +88,22 @@ public class StyleConfigurer extends Query implements QueryListener {
 	setTextWidth(25);
 	
 	try {
-	    parameterStyles = new ParameterEditorStyle[3];
+	    // FIXME this list should not be statically specified.
+	    // Note that fixing this will probably move the accept method
+	    // into some sort of factory object (instead of cloning
+	    // existing styles).
+	    parameterStyles = new ParameterEditorStyle[4];
 	    parameterStyles[0] = new LineStyle();
 	    parameterStyles[0].setName("Line");
 	    parameterStyles[1] = new CheckBoxStyle();
 	    parameterStyles[1].setName("Check Box");
+	    // FIXME these never show up because we don't have anyway
+	    // to specify the options!  The style needs their OWN
+	    // configuration.
 	    parameterStyles[2] = new ChoiceStyle();
 	    parameterStyles[2].setName("Choice");
+	    parameterStyles[3] = new EditableChoiceStyle();
+	    parameterStyles[3].setName("EditableChoice");
 	} catch (NameDuplicationException ex) {
 	    throw new InternalErrorException(ex.getMessage());
 	}
@@ -113,16 +132,15 @@ public class StyleConfigurer extends Query implements QueryListener {
 		 if(foundOne &&
 		    parameterStyles[i].getClass() == foundStyle.getClass()) {
 		     defaultIndex = count;
-		     if(foundStyle.accept(param)) {
+		     if(foundStyle.acceptable(param)) {
 			 styleList.add(parameterStyles[i].getName());
 			 count++;
 		     }
-		 } else if(parameterStyles[i].accept(param)) {
+		 } else if(parameterStyles[i].acceptable(param)) {
 		    styleList.add(parameterStyles[i].getName());
 		    count++;
 		}
 	    }
-	    System.out.println("default = " + defaultIndex);
 	    String styleArray[] = 
 		(String[])styleList.toArray(new String[count]);
 	    
@@ -156,7 +174,6 @@ public class StyleConfigurer extends Query implements QueryListener {
 	    }
 	    style = (ParameterEditorStyle)found.clone(_object.workspace());
 	    style.setName(style.uniqueName("style"));
-	    System.out.println("param = " + param.exportMoML());
 	    style.setContainer(param);
 	} catch (Exception ex) {
 	    System.out.println(ex.getMessage());

@@ -24,37 +24,40 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui.style;
 
-// Ptolemy imports.
 import ptolemy.actor.gui.PtolemyQuery;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.Token;
-import ptolemy.gui.Query;
-import ptolemy.kernel.util.*;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.UserSettable;
 
-import java.util.*;
+import java.util.Iterator;
+import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// ChoiceStyle
 /**
-This attribute annotates a user settable attribute to suggest an interactive
-mechanism for editing that uses an uneditable combobox menu.
+This attribute annotates user settable attributes to specify 
+an uneditable combobox style for configuring the containing attribute.  
+An uneditable combobox is restricted to only the values specified as the
+combobox options.  No arbitrary value can be entered.
 For an editable combobox, use EditableChoiceStyle instead.
-The EditorPaneFactory class observes the
-presence of this attribute to guide construction of an interactive
-parameter editor.  The choices that are presented in the combobox
+The choices that are presented in the combobox
 are given by a set of attributes implementing the UserSettable interface,
-such as StringAttribute, contained by this attribute.
+such as StringAttribute, contained by this style.
 
+@see EditableChoiceStyle
+@see EditorPaneFactory
+@see ParameterEditorStyle
+@see StringAttribute
 @author Steve Neuendorffer
 @version $Id$
-@see EditorPaneFactory
-@see StringAttribute
 */
 
 public class ChoiceStyle extends ParameterEditorStyle {
@@ -86,17 +89,18 @@ public class ChoiceStyle extends ParameterEditorStyle {
     ////                         public methods                    ////
 
     /** Return true if this style is acceptable for the given attribute.
+     *  @param param The attribute that this annotates.
      *  @return True if the style contains some attributes representing the
      *   choices.
      */
-    public boolean accept(UserSettable param) {
+    public boolean acceptable(UserSettable param) {
 	return !attributeList(UserSettable.class).isEmpty();
     }
 
-    /** Create a new entry in the given query with the given name
-     *  with this style and attach the attribute that
-     *  contains this style to the created entry.  
-     *  This class will create a choice entry.
+    /** Create a new uneditable 
+     *  combo box entry in the given query associated with the 
+     *  attribute containing this style.  The name of the entry is
+     *  the name of the attribute.  Attach the attribute to the created entry.
      *
      *  @param query The query into which to add the entry.
      *  @exception IllegalActionException If the containing attribute
@@ -114,7 +118,13 @@ public class ChoiceStyle extends ParameterEditorStyle {
 	}
         UserSettable container = (UserSettable)getContainer();
        	String defaultChoice = container.getExpression();
-        query.addChoice(name, name, values, defaultChoice);
+        query.addChoice(name, name, values, defaultChoice, _isEditable);
         query.attachParameter(container, name);
     }
+
+    /** Whether or not the combobox is editable.  EditableComboBox changes
+     *  this to create an editable combo box.  In this base class the 
+     *  value is false.
+     */
+    protected boolean _isEditable = false;
 }

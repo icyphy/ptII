@@ -30,23 +30,22 @@
 
 package ptolemy.actor.gui.style;
 
-// Ptolemy imports.
-import ptolemy.gui.Query;
-import ptolemy.kernel.util.*;
 import ptolemy.actor.gui.PtolemyQuery;
-
-// Java imports.
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.UserSettable;
 
 //////////////////////////////////////////////////////////////////////////
 //// LineStyle
 /**
-This attribute annotates a parameter to suggest an interactive
-mechanism for editing that uses an entry line.
-The EditorPaneFactory class observes the
-presence of this attribute to guide construction of an interactive
-parameter editor.
+This attribute annotates user settable attributes to specify 
+an arbitrary type-in line style for configuring the containing attribute.  
+This style can be used with any UserSettable attribute.
 
 @see EditorPaneFactory
+@see ParameterEditorStyle
 @author Steve Neuendorffer
 @version $Id$
 */
@@ -80,22 +79,21 @@ public class LineStyle extends ParameterEditorStyle {
     ////                         public methods                    ////
 
     /** Return true if this style is acceptable for the given parameter.
-     *  @return True.
+     *  @param param The attribute that this annotates.
+C     *  @return True.
      */
-    public boolean accept(UserSettable param) {
+    public boolean acceptable(UserSettable param) {
 	return true;
     }
 
-    /** Create a new entry in the given query with the given name
-     *  with this style and attach the attribute that
-     *  contains this style to the created entry.  
-     *  This class will create a line entry.
+    /** Create a new type-in line
+     *  entry in the given query associated with the 
+     *  attribute containing this style.  The name of the entry is
+     *  the name of the attribute.  Attach the attribute to the created entry.
      *  
      *  @param query The query into which to add the entry.
-     *  @exception IllegalActionException If the containing attribute
-     *   has a value that cannot be edited using this style.
      */
-    public void addEntry(PtolemyQuery query) throws IllegalActionException {
+    public void addEntry(PtolemyQuery query) {
         UserSettable container = (UserSettable)getContainer();
         String name = container.getName();
         String defaultValue = "";

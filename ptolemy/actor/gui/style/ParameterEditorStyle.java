@@ -24,28 +24,31 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (johnr@eecs.berkeley.edu)
+@ProposedRating Green (neuendor@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui.style;
 
-// Ptolemy imports.
-import ptolemy.gui.Query;
-import ptolemy.kernel.util.*;
 import ptolemy.actor.gui.PtolemyQuery;
-
-// Java imports.
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.UserSettable;
 
 //////////////////////////////////////////////////////////////////////////
 //// ParameterEditorStyle
 /**
-This attribute annotates user settable attributes to suggest an interactive
-mechanism for editing.  The EditorPaneFactory class observes the
-presence of this attribute to guide construction of an interactive
-parameter editor.
+This attribute annotates user settable attributes to specify the style
+used for configuring the containing attribute.  
+The EditorPaneFactory class uses concrete subclasses
+of this base class as a strategy pattern for creating entries in 
+an interactive parameter editor.  This class expects that the container
+will implement the UserSettable interface.
 
 @see EditorPaneFactory
+@see UserSettable
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
@@ -79,14 +82,17 @@ public abstract class ParameterEditorStyle extends Attribute {
     ////                         public methods                    ////
 
     /** Return true if this style is acceptable for the given parameter.
-     *  @param The attribute that this annotates.
+     *  For instance, a check box style would return true if the
+     *  argument was a Parameter that contained a boolean token.
+     *  @param param The attribute that this annotates.
      */
-    public abstract boolean accept(UserSettable param);
+    public abstract boolean acceptable(UserSettable param);
 
-    /** Create a new entry in the given query with the given name
-     *  with this style and attach the attribute that
-     *  contains this style to the created entry so that we are notified
-     *  of changes in value.
+    /** Create a new entry in the given query associated with the 
+     *  attribute containing this style.  The name of the entry should be
+     *  the name of the attribute.  The attribute should be attached to
+     *  the entry so that changes in its value are reflected in the
+     *  query.
      *  
      *  @param query The query into which to add the entry.
      *  @exception IllegalActionException If the containing attribute
