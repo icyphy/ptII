@@ -129,10 +129,10 @@ public class HTVQApplet extends SDFApplet {
 	    ImageDisplay original = new ImageDisplay(_toplevel, "Original");
 	    original.place(originalPanel);
 
-            // Print actor puts the text at the right of the
+            // Display actor puts the text at the right of the
             // applet window. Text Area size is set to be 7*10 (row* column)
             // in order to fit well with the image size.
-            Print prn = new Print(_toplevel, "Print");
+            Display prn = new Display(_toplevel, "Display");
             // To control the position, we put this in its own panel.
             JPanel textPanel = new JPanel();
             prnPanel.add(textPanel, BorderLayout.SOUTH);
