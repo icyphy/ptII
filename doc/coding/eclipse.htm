@@ -1,0 +1,166 @@
+<!-- $Id$ -->
+<!-- W%  11/09/98 -->
+<html>
+<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=iso-8859-1">
+<head>
+<title>Eclipse</title>
+</head>
+<body>
+<h1>Eclipse</h1>
+<h2>Installation</h2>
+
+Download from
+<a href="http://www.eclipse.org"><CODE>http://www.eclipse.org</CODE></a>
+
+<h2>Setting up for Ptolemy II</h2>
+
+JohnR writes
+ <br><I>I added notes in italics -cxh</I>
+<BLOCKQUOTE>
+
+
+If you would like to try these tools:
+
+
+<menu>
+<li> <a href="http://www.eclipse.org"><CODE>http://www.eclipse.org</CODE></a>
+
+<li> <a href="http://www.gentleware.de"><CODE>http://www.gentleware.de</CODE></a>
+</menu>
+
+I will look at the plugin architecture for next week or the week after.
+
+ <p>Here is how I got Pt going under Eclipse. It's probably faster
+if you do:
+<pre>
+make clean
+</pre>
+before setting up Eclipse
+
+<ol>
+ <li> Start Eclipse.
+ <li> Window-&gt;Preferences. Deselect Workbench-&gt;"Perform build automatically
+on resource modification." Deselect Debug-&gt;"Build (if required) before
+launching"
+ <li> File-&gt;New-&gt;Project. Select 'Java project'. Name it PtolemyII.
+Deselect 'Use default' and browse to the PTII directory. Finish.
+ <li> File-&gt;Properties, select Java Build Path, then Libraries tab,
+then press Add Jarfile. Browse to PtolemyII/lib/diva.jar and select it.
+Finish.
+ <li> Project-&gt; <I>Rebuild</I> All.
+ <li> Locate ptolemy/vergil/VergilApplication in the Explorer and
+double click. Place a breakpoint on the first line of main()
+<I>[with Run-&gt;Add/Remove Breakpoint]</I>
+ <li> Run-&gt;Run. On the Main tab, select the Ptolemy II package and
+enter ptolemy.vergil.VergilApplication as Main class.
+ <li> Press the Run button...
+ <li> To debug, quit Vergil, and place a breakpoint in, say, the fire() method
+of ptolemy.domains.ct.kernel.CTBaseIntegrator. Then Run-&gt;Debug, and
+as above. Open the Lorenz CT demo from the Quick Tour and run it.
+
+</ol>
+
+</BLOCKQUOTE>
+
+<h2>Don't use tabs in the editor</h2>
+Before editing any files, adjust the Editor Preference to not use tapbs
+<ol>
+<li> Window -&gt;Preferences: expand the Java tree, select
+'Code Formatter' and then the Style tab.  Uncheck 'Insert tabs for indentaion, not spaces'.
+
+<li> Go back to to the Java tree on the left, select
+'Editor' and then the Type tab.
+Check 'InsertSpace for tabs (see Code Formatter preference page)
+
+<li> Click Ok
+</ol>
+
+<h2>Associating the Text editor with .tcl files</h2>
+In the initial default settings, when you double click on a .tcl file
+it tries to execute it.
+
+ <p>The fix is:
+<ol>
+<li> Window -&gt;Preferences: expand the Workbench tree, select
+'File Associations'
+
+<li> In the 'File types:' section, hit Add and enter 
+<CODE>*.tcl</CODE>, then hit OK
+
+<li> In the 'Associated editors' section, hit Add
+and select the Text editor, then hit OK.
+</ol>
+
+
+<h2>Troubleshooting</h2>
+<h3>Eclipse takes a long time to start up</h3>
+
+If Eclipse takes a long time to start up, then the problem could be that
+
+ <p>Basically, when eclipse starts up, it might try to update
+<CODE>H:/workspace/.metadata</CODE>.  The solution is covered in
+<a href="http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm"><CODE>http://www.eclipse.org/documentation/html/plugins/org.eclipse.platform.doc.user/doc/tasks/running_eclipse.htm</CODE></a>:
+
+<BLOCKQUOTE>
+<B>Running Eclipse</B>
+
+After installing (unzipping) the Eclipse install into a directory
+(e.g., c:\eclipse), the workbench is started by running the Eclipse
+executable found in the top-level install directory.  The file is
+eclipse.exe on Windows systems and simply eclipse on Linux
+systems. Note, the following discussion details the setup on Windows
+systems.  The Linux setup is analogous.
+
+If you don't specify differently, the platform creates a default
+workspace directory as a sibling of the executable (e.g.,
+c:\eclipse\workspace).  This workspace directory is used as the
+default content area for your projects as well as for holding any
+required metadata.  For shared or multi-workspace installs you should
+explicitly state the location of your workspace rather than using the
+default.  There are two ways to control the location of your
+workspace; using the current working directory or using the -data
+command line argument.
+
+ <p>Perhaps the easiest way of using the current working directory is
+to create a shortcut using the following steps:
+
+
+<ol>
+<li>  Navigate to eclipse.exe in the Windows Explorer and using a right button drag, create a shortcut to eclipse.exe.
+
+<li>  Edit the properties of the shortcut such that the "Start in:" box identifies the location of your workspace (e.g., c:\myworkspace).
+
+<li>  Close the properties dialog and double-click on the shortcut.
+</ol>
+
+ <p>Of course you can get the same effect using a command prompt by changing directory to your workspace directory and then running eclipse.exe.
+
+ <p>To use the -data command line argument, simply add -data &lt;your workspace location&gt; (e.g., -data c:\myworkspace) to the "Target:" line in the shortcut or include it explicitly on your command prompt command line. 
+Advanced topics in running Eclipse 
+</BLOCKQUOTE>
+
+
+The way I figured this out was by running Norton Antivirus and
+doing View -&gt; File System Realtime Scan Statistics and then I noticed 
+that my machine was updating H:/workspace/.metadata
+
+ <p>I think I introduced the problem by clicking on the Eclipse.exe
+binary and selecting Pin to Start Menu.  My solution was to remove the
+Eclipse bogus entry in the start menu and then create a shortcut,
+change Start in property and then pin that shortcut to my start menu.
+
+
+<h3>Running Eclipse under JDK1.4 on an IBM T30</h3>
+If you are running on an IBM T30 laptop with JDK1.4, and
+your machine locks up upon exiting an application, then
+you may
+need to invoke java with the <CODE>-Dsun.java2d.d3d=false</CODE> 
+argument.
+
+The way to do this is to do
+<CODE>Run</CODE> 0&gt; <CODE>Debug ...</CODE> -&gt; <CODE>Arguments</CODE>
+and then add <CODE>-Dsun.java2d.d3d=false</CODE>  to the
+<CODE>VM arguments</CODE> text area.
+
+</body>
+</html>

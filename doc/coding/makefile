@@ -51,6 +51,7 @@ EXTRA_SRCS = \
 	buttons.htm \
 	debugging.htm \
 	develsetup.htm \
+	eclipse.htm \
 	index.htm \
 	javalinks.htm \
 	main.htm \
