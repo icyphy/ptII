@@ -34,8 +34,12 @@ package ptolemy.actor;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
+import java.util.List;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Collections;
+
 import java.util.Enumeration;
-import collections.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// IORelation
@@ -166,10 +170,11 @@ public class IORelation extends ComponentRelation {
         try {
             _workspace.getReadAccess();
             Receiver[][] result = new Receiver[0][0];
-            Enumeration inputs = linkedDestinationPorts(except);
+            Iterator inputs = 
+                    linkedDestinationPortList(except).iterator();
             Receiver[][] recvrs = new Receiver[0][0];
-            while(inputs.hasMoreElements()) {
-                IOPort p = (IOPort) inputs.nextElement();
+            while(inputs.hasNext()) {
+                IOPort p = (IOPort) inputs.next();
 
                 if(p.isInsideLinked(this) && !p.isOpaque()) {
                     // if p is a transparent port and this relation links
@@ -230,50 +235,82 @@ public class IORelation extends ComponentRelation {
         return (_width != 0);
     }
 
-    /** Enumerate the input ports that we are linked to from the
-     *  outside, and the output ports that we are linked to from the inside.
+    /** Enumerate the input ports that we are linked to from the outside, 
+     *  and the output ports that we are linked to from the inside.
      *  I.e., enumerate the ports through or to which we could send data.
+     *  This method is deprecated and calls linkedDestinationPortList().
      *  This method read-synchronizes on the workspace.
      *
      *  @see ptolemy.kernel.Relation#linkedPorts
+     *  @deprecated Use linkedDestinationPortList() instead.
      *  @return An enumeration of IOPort objects.
      */
     public Enumeration linkedDestinationPorts() {
         return linkedDestinationPorts(null);
     }
 
+    /** List the input ports that we are linked to from the
+     *  outside, and the output ports that we are linked to from 
+     *  the inside. I.e., list the ports through or to which we 
+     *  could send data. This method read-synchronizes on the workspace.
+     *
+     *  @see ptolemy.kernel.Relation#linkedPorts
+     *  @return An enumeration of IOPort objects.
+     */
+    public List linkedDestinationPortList() {
+        return linkedDestinationPortList(null);
+    }
+ 
     /** Enumerate the input ports that we are linked to from the
      *  outside, and the output ports that we are linked to from
      *  the inside, except the port given as an argument.
      *  I.e., enumerate the ports through or to which we could send data.
+     *  This method is deprecated and calls 
+     *  linkedDestinationPortList(IOPort).
+     *  This method read-synchronizes on the workspace.
+     *
+     *  @see ptolemy.kernel.Relation#linkedPorts(ptolemy.kernel.Port)
+     *  @param except The port not included in the returned Enumeration.
+     *  @deprecated Use linkDestinationPortList(IOPort) instead.
+     *  @return An enumeration of IOPort objects.
+     */
+    public Enumeration linkedDestinationPorts(IOPort except) {
+        return Collections.enumeration( linkedDestinationPortList(except) );
+    }
+
+    /** Enumerate the input ports that we are linked to from the
+     *  outside, and the output ports that we are linked to from
+     *  the inside, except the port given as an argument and return
+     *  a list of list of these ports.
+     *  I.e., list the ports through or to which we could send data.
      *  If the given port is null or is not linked to this relation,
      *  then enumerate all the input ports.
      *  This method read-synchronizes on the workspace.
      *
      *  @see ptolemy.kernel.Relation#linkedPorts(ptolemy.kernel.Port)
      *  @param except The port not included in the returned Enumeration.
-     *  @return An enumeration of IOPort objects.
+     *  @return A list of IOPort objects.
      */
-    public Enumeration linkedDestinationPorts(IOPort except) {
+    public List linkedDestinationPortList(IOPort except) {
         try {
             _workspace.getReadAccess();
             // NOTE: The result could be cached for efficiency, but
             // it would have to be cached in a hashtable indexed by the
             // except argument.  Probably not worth it.
             LinkedList resultPorts = new LinkedList();
-            Enumeration ports = linkedPorts();
-            while(ports.hasMoreElements()) {
-                IOPort p = (IOPort) ports.nextElement();
+            Iterator ports = linkedPortList().iterator();
+            while(ports.hasNext()) {
+                IOPort p = (IOPort) ports.next();
                 if (p != except) {
                     if(p.isInsideLinked(this)) {
                         // Linked from the inside
-                        if(p.isOutput()) resultPorts.insertLast(p);
+                        if(p.isOutput()) resultPorts.addLast(p);
                     } else {
-                        if(p.isInput()) resultPorts.insertLast(p);
+                        if(p.isInput()) resultPorts.addLast(p);
                     }
                 }
             }
-            return resultPorts.elements();
+            return resultPorts;
         } finally {
             _workspace.doneReading();
         }
@@ -282,49 +319,80 @@ public class IORelation extends ComponentRelation {
     /** Enumerate the output ports that we are linked to from the outside
      *  and the input ports that we are linked to from the inside.
      *  I.e. enumerate the ports from or through which we might receive
+     *  data. This method is deprecated and calls
+     *  linkedSourcePortList().
+     *  This method read-synchronizes on the workspace.
+     *
+     *  @see ptolemy.kernel.Relation#linkedPorts
+     *  @deprecated Use linkedSourcePortList() instead.
+     *  @return An enumeration of IOPort objects.
+     */
+    public Enumeration linkedSourcePorts() {
+        return Collections.enumeration( linkedSourcePortList() );
+    }
+
+    /** List the output ports that we are linked to from the outside
+     *  and the input ports that we are linked to from the inside.
+     *  I.e. list the ports from or through which we might receive
      *  data. This method read-synchronizes on the workspace.
      *
      *  @see ptolemy.kernel.Relation#linkedPorts
      *  @return An enumeration of IOPort objects.
      */
-    public Enumeration linkedSourcePorts() {
-        return linkedSourcePorts(null);
+    public List linkedSourcePortList() {
+        return linkedSourcePortList(null);
     }
 
     /** Enumerate the output ports that we are linked to from the outside
      *  and the input ports that we are linked to from the inside.
      *  I.e. enumerate the ports from or through which we might receive
+     *  This method is deprecated and calls 
+     *  linkedSourcePortList(IOPort).
+     *  This method read-synchronizes on the workspace.
+     *  @see ptolemy.kernel.Relation#linkedPorts(ptolemy.kernel.Port)
+     *  @param except The port not included in the returned Enumeration.
+     *  @deprecated Use linkedSourcePortList(IOPort) instead.
+     *  @return An enumeration of IOPort objects.
+     */
+    public Enumeration linkedSourcePorts(IOPort except) {
+        return Collections.enumeration( linkedSourcePortList(except) );
+    }
+
+    /** List the output ports that we are linked to from the outside
+     *  and the input ports that we are linked to from the inside.
+     *  I.e. list the ports from or through which we might receive
      *  If the given port is null or is not linked to this relation,
      *  then enumerate all the output ports.
      *  This method read-synchronizes on the workspace.
      *  @see ptolemy.kernel.Relation#linkedPorts(ptolemy.kernel.Port)
-     *  @param except The port not included in the returned Enumeration.
-     *  @return An enumeration of IOPort objects.
+     *  @param except The port not included in the returned list.
+     *  @return A list of IOPort objects.
      */
-    public Enumeration linkedSourcePorts(IOPort except) {
+    public List linkedSourcePortList(IOPort except) {
         try {
             _workspace.getReadAccess();
             // NOTE: The result could be cached for efficiency, but
             // it would have to be cached in a hashtable indexed by the
             // except argument.  Probably not worth it.
             LinkedList resultPorts = new LinkedList();
-            Enumeration ports = linkedPorts();
-            while(ports.hasMoreElements()) {
-                IOPort p = (IOPort) ports.nextElement();
+            Iterator ports = linkedPortList().iterator();
+            while(ports.hasNext()) {
+                IOPort p = (IOPort) ports.next();
                 if(p != except) {
                     if(p.isInsideLinked(this)) {
                         // Linked from the inside
-                        if(p.isInput()) resultPorts.insertLast(p);
+                        if(p.isInput()) resultPorts.addLast(p);
                     } else {
-                        if(p.isOutput()) resultPorts.insertLast(p);
+                        if(p.isOutput()) resultPorts.addLast(p);
                     }
                 }
             }
-            return resultPorts.elements();
+            return resultPorts;
         } finally {
             _workspace.doneReading();
         }
     }
+
 
     /** Specify the container, adding the relation to the list
      *  of relations in the container.
@@ -389,9 +457,9 @@ public class IORelation extends ComponentRelation {
             }
             if (width != 1) {
                 // Check for non-multiports
-                Enumeration ports = linkedPorts();
-                while(ports.hasMoreElements()) {
-                    IOPort p = (IOPort) ports.nextElement();
+                Iterator ports = linkedPortList().iterator();
+                while(ports.hasNext()) {
+                    IOPort p = (IOPort) ports.next();
                     if (!p.isMultiport()) {
                         throw new IllegalActionException(this, p,
                                 "Cannot make bus because the " +
@@ -531,9 +599,9 @@ public class IORelation extends ComponentRelation {
         long version = _workspace.getVersion();
         if (version != _inferredWidthVersion) {
             _inferredWidth = 1;
-            Enumeration ports = linkedPorts();
-            while(ports.hasMoreElements()) {
-                IOPort p = (IOPort) ports.nextElement();
+            Iterator ports = linkedPortList().iterator();
+            while(ports.hasNext()) {
+                IOPort p = (IOPort) ports.next();
                 if (p.isInsideLinked(this)) {
                     // I am linked on the inside...
                     int piw = p._getInsideWidth(this);
