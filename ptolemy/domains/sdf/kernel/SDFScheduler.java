@@ -68,27 +68,41 @@ to Java collection when update to JDK1.2
 public class SDFScheduler extends Scheduler{
     /** Construct a scheduler with no container(director)
      *  in the default workspace, the name of the scheduler is
-     *  "Basic Scheduler".
-     * @see ptolemy.kernel.util.NamedObj
-     * @return The scheduler
+     *  "SDFScheduler".
+     *  @exception InternalErrorException If an object with name "SDFScheduler"
+     *  already exists.
      */
     public SDFScheduler() {
         super();
+        try {
+            setName(_DEFAULT_SCHEDULER_NAME);
+        } catch (NameDuplicationException ex) {
+            throw new InternalErrorException(
+                    "Object already exists with name " +
+                    _DEFAULT_SCHEDULER_NAME);
+        }
         _localMemberInitialize();
     }
 
     /** Construct a scheduler in the given workspace with the name
-     *  "Basic Scheduler".
+     *  "SDFScheduler".
      *  If the workspace argument is null, use the default workspace.
      *  The scheduler is added to the list of objects in the workspace.
-     *  If the name argument is null, then the name is set to the
-     *  empty string. Increment the version number of the workspace.
+     *  Increment the version number of the workspace.
      *
      *  @param workspace Object for synchronization and version tracking
-     *  @param name Name of this scheduler.
+     *  @exception InternalErrorException If an object with name "SDFScheduler"
+     *  already exists.
      */
     public SDFScheduler(Workspace ws) {
         super(ws);
+        try {
+            setName(_DEFAULT_SCHEDULER_NAME);
+        } catch (NameDuplicationException ex) {
+            throw new InternalErrorException(
+                    "Object already exists with name " +
+                    _DEFAULT_SCHEDULER_NAME);
+        }
         _localMemberInitialize();
     }
 
@@ -138,6 +152,11 @@ public class SDFScheduler extends Scheduler{
             _firingvector.puttingAt(entity, new Integer(count));
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    // The static name
+    protected static String _DEFAULT_SCHEDULER_NAME = "SDFScheduler";
 
     ///////////////////////////////////////////////////////////////////
     ////                        private methods                    ////
