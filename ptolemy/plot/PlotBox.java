@@ -3293,7 +3293,9 @@ public class PlotBox extends JPanel implements Printable {
                 fillPlot();
             } else if (event.getSource() == _printButton) {
                 PrinterJob job = PrinterJob.getPrinterJob();
-                job.setPrintable(PlotBox.this);
+                // rbeyer@LPL.Arizona.EDU: Get the Page Format and use it.
+                PageFormat format = job.pageDialog( job.defaultPage() );
+                job.setPrintable(PlotBox.this, format);
                 if (job.printDialog()) {
                     try {
                         job.print();
