@@ -36,6 +36,7 @@ import ptolemy.kernel.mutation.*;
 import ptolemy.data.*;
 
 import collections.LinkedList;
+import collections.HashedSet;
 import java.util.Enumeration;
 import java.lang.reflect.*;
 
@@ -65,6 +66,7 @@ public class Manager extends NamedObj implements Runnable {
      */
     public Manager() {
         super();
+        _ExecutionListeners = new HashedSet();
     }
 
     /** Construct a manager in the default workspace with the given name.
@@ -75,6 +77,7 @@ public class Manager extends NamedObj implements Runnable {
      */
     public Manager(String name) {
        super(name);
+        _ExecutionListeners = new HashedSet();
     }
 
     /** Construct a manager in the given workspace with the given name.
@@ -88,6 +91,7 @@ public class Manager extends NamedObj implements Runnable {
      */
     public Manager(Workspace workspace, String name) {
         super(workspace, name);
+        _ExecutionListeners = new HashedSet();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -139,6 +143,15 @@ public class Manager extends NamedObj implements Runnable {
          }
          _runningthread = new Thread(this);
          _runningthread.start();
+
+         ExecutionEvent event = new ExecutionEvent(this);
+         Enumeration listeners = _ExecutionListeners.elements();
+         while(listeners.hasMoreElements()) {
+             ExecutionListener l = 
+                 (ExecutionListener) listeners.nextElement();
+             l.executionStarted(event);
+         }
+
      }
          
     /** Invoke one iteration.  In this base class, one iteration consists of
@@ -150,8 +163,16 @@ public class Manager extends NamedObj implements Runnable {
      *  @exception IllegalActionException If any of the called methods
      *   throws it.
      */
-    public boolean iterate() throws IllegalActionException {
+    public boolean iterate(int iteration) throws IllegalActionException {
         CompositeActor actor = (CompositeActor)getContainer();
+
+         ExecutionEvent event = new ExecutionEvent(this,iteration);
+         Enumeration listeners = _ExecutionListeners.elements();
+         while(listeners.hasMoreElements()) {
+             ExecutionListener l = 
+                 (ExecutionListener) listeners.nextElement();
+             l.executionIterationStarted(event);
+         }
 
         // if mutations
         try {
@@ -186,6 +207,10 @@ public class Manager extends NamedObj implements Runnable {
         _isPaused = true;
     }
     
+    public void registerExecutionListener(ExecutionListener el) {
+        _ExecutionListeners.include((Object) el);
+    }
+
     /** Check types on all the connections and resolve undeclared types.
      *  If the container is not an instance of TypedCompositeActor,
      *  do nothing.
@@ -272,47 +297,73 @@ public class Manager extends NamedObj implements Runnable {
     public void run() {
         CompositeActor container = ((CompositeActor)getContainer());
         int count = 0;
-        int iterations;
+        int iterations = 0;
         try {
             try {
                 iterations = _iterations;
                 container.initialize();
                 
                 while (_isRunning && 
-                        ((iterations < 0) || (count++ < iterations)) &&
-                        iterate()) {
-                    
+                        ((iterations < 0) || (count++ < iterations)) 
+                        && iterate(iterations))
+
                     try {
-                        if(_isPaused) _runningthread.wait();
+                        if(_isPaused) {
+                            ExecutionEvent event = 
+                                new ExecutionEvent(this,iterations);
+                            Enumeration listeners = 
+                                _ExecutionListeners.elements();
+                            while(listeners.hasMoreElements()) {
+                                ExecutionListener l = 
+                                    (ExecutionListener) 
+                                    listeners.nextElement();
+                                l.executionPaused(event);
+                            }
+
+                            _runningthread.wait();
+
+                            event = 
+                                new ExecutionEvent(this,iterations);
+                            listeners = 
+                                _ExecutionListeners.elements();
+                            while(listeners.hasMoreElements()) {
+                                ExecutionListener l = 
+                                    (ExecutionListener) 
+                                    listeners.nextElement();
+                                l.executionResumed(event);
+                            }
+                        }
                     }
                     catch (InterruptedException e) {
                         // We don't care if we were interrupted..
                         // Just ignore.
                     }
-                }
             }
             finally {
                 _isRunning = false;
                 _isPaused = false;
+
                 container.wrapup();
+                ExecutionEvent event = 
+                    new ExecutionEvent(this,iterations);
+                Enumeration listeners = 
+                    _ExecutionListeners.elements();
+                while(listeners.hasMoreElements()) {
+                    ExecutionListener l = 
+                        (ExecutionListener) 
+                        listeners.nextElement();
+                    l.executionWrappedup(event);
+                }
             }
         }
         catch (IllegalActionException e) {
-            // I'm not sure exactly what to do in this case.   We used to just
-            // throw these, but we can't since Runnable doesn't throw them.
-            // CT did:
-            //  public void run() throws InvalidStateException {
-            //      try {
-            //        --SNIP--
-            //       } 
-            //       catch(KernelException ex) {
-            //            throw new InvalidStateException(this,
-            //             "Execution failed: "+ex.getMessage());
-            //       }
-            //   }
-            // but this seems pretty vague.
-            System.out.println("IllegalActionException caught in Manager:");
-            e.printStackTrace();
+            ExecutionEvent event = new ExecutionEvent(this,iterations,e);
+            Enumeration listeners = _ExecutionListeners.elements();
+            while(listeners.hasMoreElements()) {
+                ExecutionListener l = 
+                    (ExecutionListener) listeners.nextElement();
+                l.executionError(event);
+            }
         }
     }
 
@@ -336,6 +387,12 @@ public class Manager extends NamedObj implements Runnable {
         _runningthread = null;
         CompositeActor container = ((CompositeActor)getContainer());
         container.terminate();
+        ExecutionEvent event = new ExecutionEvent(this);
+        Enumeration listeners = _ExecutionListeners.elements();
+        while(listeners.hasMoreElements()) {
+            ExecutionListener l = (ExecutionListener) listeners.nextElement();
+            l.executionTerminated(event);
+        }
     }
       
     /** Stop any currently executing simulation and cleanup nicely.
@@ -373,6 +430,7 @@ public class Manager extends NamedObj implements Runnable {
     private int _iterations;
     private Thread _runningthread;
     private CompositeActor _container = null;
+    private HashedSet _ExecutionListeners;
 
 }
 
