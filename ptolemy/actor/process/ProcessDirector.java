@@ -56,7 +56,7 @@ director to control and respond when deadlock is detected (no processes
 can make progress), or to respond to requests from higher in the hierarchy.
 <p>
 The methods that control how the director detects and responds to deadlocks
-are _checkForDeadlock() and _handleDeadlock(). These methods should be
+are _isDeadlocked() and _handleDeadlock(). These methods should be
 overridden in derived classes to get domain-specific behaviour. The
 implementations given here are trivial and suffice only to illustrate
 the approach that should be followed.
@@ -143,7 +143,7 @@ public class ProcessDirector extends Director {
     public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
 	synchronized (this) {
-	    while (!_checkForDeadlock()) {
+	    while (!_isDeadlocked()) {
 		workspace.wait(this);
 	    }
 	    _notdone = !_handleDeadlock();
@@ -157,7 +157,7 @@ public class ProcessDirector extends Director {
      */
     public synchronized void increasePausedCount() {
         _actorsPaused++;
-        if (_checkForPause()) {
+        if (_isPaused()) {
 	    notifyAll();
 	}
     }
@@ -314,7 +314,7 @@ public class ProcessDirector extends Director {
 	}
 
 	synchronized (this) {
-	    while (!_checkForPause()) {
+	    while (!_isPaused()) {
 		workspace.wait(this);
 	    }
 	}
@@ -431,9 +431,11 @@ public class ProcessDirector extends Director {
 	_threadList.insertFirst(thr);
     }
 
-    /** Checks for deadlock. In the base class implementation it
-     *  notifies the director of a deadlock only if there are no active
-     *  processes.
+    /** Return true if the count of active processes in the container is 0.
+     *  Otherwise return true. Derived classes must override this method to 
+     *  return true to any other forms of deadlocks that they might introduce.
+     *  @return true if there are no active processes in the container.
+     *  @deprecated use isDeadlocked() instead.
      */
     protected synchronized boolean _checkForDeadlock() {
         if (_actorsActive == 0) {
@@ -443,9 +445,11 @@ public class ProcessDirector extends Director {
 	}
     }
 
-    /** Checks if all active processes are either blocked or paused.
-     *  Should be overridden in derived classes. In the base class it
-     *  verifies if all the active actors are paused.
+    /** Return true if all active processes in the container are paused. 
+     *  Return false otherwise. 
+     *  Should be overridden in derived classes to return true if all the 
+     *  active processes are either blocked or paused. 
+     *  @deprecated Use isPaused() instead.
      */
     protected synchronized boolean _checkForPause() {
         if (_actorsPaused >= _actorsActive) {
@@ -465,7 +469,7 @@ public class ProcessDirector extends Director {
      */
     protected synchronized void _decreaseActiveCount() {
 	_actorsActive--;
-	if (_checkForDeadlock() || _checkForPause()) {
+	if (_isDeadlocked() || _isPaused()) {
 	    //Wake up the director waiting for a deadlock
 	    notifyAll();
 	}
@@ -530,6 +534,34 @@ public class ProcessDirector extends Director {
     synchronized void _increaseActiveCount() {
 	_actorsActive++;
     }
+
+    /** Return true if the count of active processes in the container is 0.
+     *  Otherwise return true. Derived classes must override this method to 
+     *  return true to any other forms of deadlocks that they might introduce.
+     *  @return true if there are no active processes in the container.
+     */
+    protected synchronized boolean _isDeadlocked() {
+        if (_actorsActive == 0) {
+	    return true;
+	} else {
+	    return false;
+	}
+    }
+
+    /** Return true if all active processes in the container are paused. 
+     *  Return false otherwise. 
+     *  Should be overridden in derived classes to return true if all the 
+     *  active processes are either blocked or paused. 
+     *  @return true only if all active processes are paused.
+     */
+    protected synchronized boolean _isPaused() {
+        if (_actorsPaused >= _actorsActive) {
+	     return true;
+	} else {
+	    return false;
+	}
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
