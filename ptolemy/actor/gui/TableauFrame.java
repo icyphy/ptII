@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (eal@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -85,6 +85,7 @@ public abstract class TableauFrame extends Top {
      *  tableau. After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
      *  It may also be desirable to call centerOnScreen().
+     *  @param tableau The managing tableau.
      */
     public TableauFrame(Tableau tableau) {
         super();
@@ -132,6 +133,7 @@ public abstract class TableauFrame extends Top {
      *  This searches all instances of PtolemyEffigy deeply contained by
      *  the directory, and returns the first one it encounters
      *  that is an effigy for the specified model.
+     *  @param model The model for which an effigy is desired.
      *  @return The effigy for the model, or null if none exists.
      */
     public PtolemyEffigy getEffigy(NamedObj model) {
@@ -143,8 +145,8 @@ public abstract class TableauFrame extends Top {
         }
     }
 
-    /** Get the tableau that created this frame.
-     *  @return The tableau.
+    /** Get the tableau associated with this frame.
+     *  @return The tableau associated with this frame.
      */
     public Tableau getTableau() {
         return _tableau;
@@ -170,7 +172,7 @@ public abstract class TableauFrame extends Top {
      *  this with a true argument, then subsequent attempts to close
      *  the window will trigger a dialog box to confirm the closing.
      *  This overrides the base class to delegate to the effigy.
-     *  @param modified Indicator of whether the data has been modified.
+     *  @param modified True if the data has been modified.
      */
     public void setModified(boolean modified) {
         Effigy effigy = getEffigy();
@@ -181,8 +183,8 @@ public abstract class TableauFrame extends Top {
         }
     }
 
-    /** Set the tableau that represents this frame.
-     *  @param key The key identifying the model.
+    /** Set the tableau associated with this frame.
+     *  @param tableau The tableau associated with this frame.
      */
     public void setTableau(Tableau tableau) {
 	_tableau = tableau;
@@ -191,7 +193,8 @@ public abstract class TableauFrame extends Top {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Override the base class to open the intro.htm splash window.
+    /** Override the base class to open the intro.htm splash window,
+     *  which is in the directory ptolemy/configs.
      */
     protected void _about() {
         // NOTE: We take some care here to ensure that this window is
@@ -351,6 +354,7 @@ public abstract class TableauFrame extends Top {
     /** Close all open tableaux, querying the user as necessary to save data,
      *  and then exit the application.  If the user cancels on any save,
      *  then do not exit.
+     *  @see Tableau#close()
      */
     protected void _exit() {
         ModelDirectory directory = getDirectory();
@@ -385,6 +389,7 @@ public abstract class TableauFrame extends Top {
     /** Return the default icon image, or null if there is none.
      *  Note that Frame.setIconImage(null) will set the image to the
      *  default platform dependent image for us.
+     *  @return The default icon image, or null if there is none.
      */
     protected Image _getDefaultIconImage() {
 	if(_defaultIconImage == null) {
@@ -392,7 +397,8 @@ public abstract class TableauFrame extends Top {
 	    // We place a duplicate copy here to make it easy to ship
 	    // jar files that contain all the appropriate images.
 	    URL url =
-		getClass().getResource("/ptolemy/actor/gui/PtolemyIISmallIcon.gif");
+		getClass().getResource(
+                        "/ptolemy/actor/gui/PtolemyIISmallIcon.gif");
 	    if (url == null) {
 		return null;
 	    }
@@ -403,7 +409,9 @@ public abstract class TableauFrame extends Top {
     }
 
     /** Get the name of this object, which in this class is the URL
-     *  associated with the effigy, or the string "Unnamed" is none.
+     *  associated with the effigy, or the string "Unnamed" if none.
+     *  This overrides the base class to provide a reasonable name
+     *  for the title of the window.
      *  @return The name.
      */
     protected String _getName() {
@@ -436,7 +444,7 @@ public abstract class TableauFrame extends Top {
     }
 
     /** Save the model to the current file, determined by the
-     *  and <i>url</i> parameter of the associated effigy, or if
+     *  <i>url</i> parameter of the associated effigy, or if
      *  that has not been set or is not a writable file, or if the
      *  effigy has been set non-modifiable, then invoke
      *  _saveAs(). This calls _writeFile() to perform the save.
