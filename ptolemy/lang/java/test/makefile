@@ -124,9 +124,6 @@ RegenerateCode:
 		ptolemy.lang.java.RegenerateCode ../nodetypes/IntLitNode.java
 
 
-# FIXME: we can't ship these
-JAVASRC_STUBS=$(PTII)/vendors/sun/src
-
 codegen: $(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.class \
 		generate_codegen compile_codegen run_codegen 
 
@@ -135,10 +132,7 @@ $(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.class: \
 	(cd $(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom; $(MAKE))
 
 generate_codegen:
-	@if [ ! -d $(JAVASRC_STUBS) ]; then \
-		echo "Warning $(JAVASRC_STUBS) does not exist"; \
-	fi
-	CLASSPATH="$(CLASSPATH)$(CLASSPATHSEPARATOR)$(JAVASRC_STUBS)" \
+	CLASSPATH="$(CLASSPATH)" \
 	$(JAVA) -DPTII=$(ROOT) \
 		ptolemy.domains.sdf.codegen.SDFCodeGenerator \
 		-class  ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom \
