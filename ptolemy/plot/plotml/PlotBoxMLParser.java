@@ -158,7 +158,7 @@ public class PlotBoxMLParser extends HandlerBase {
      *  &AElig;lfred will call this method whenever it encounters
      *  a serious error.  This method simply throws an XmlException.
      *  @param message The error message.
-     *  @param systemId The URI of the tntity that caused the error.
+     *  @param systemId The URI of the entity that caused the error.
      *  @param line The approximate line number of the error.
      *  @param column The approximate column number of the error.
      *  @exception XmlException If called.
