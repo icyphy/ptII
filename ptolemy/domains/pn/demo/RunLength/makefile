@@ -53,8 +53,7 @@ JSRCS = ImageDisplay.java \
 	PNImageSource.java \
 	RLDecoder.java \
 	RLEDiva.java \
-	RLEncoder.java \
-	ThreadDemo.java 
+	RLEncoder.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	RLEDiva.htm \
