@@ -74,8 +74,7 @@ JSRCS = \
 	SDFConst.java \
 	SineFM.java \
 	SDFMultiply.java \
-	SDFAdd.java \
-	SDFDelay.java
+	SDFAdd.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	sdfentities.xml
