@@ -82,9 +82,9 @@ import ptolemy.util.StringUtilities;
    this as the end of file marker and exit.
 
    <p>For information about Runtime.exec(), see:
-   <a href="http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html" target="_top">http://jw.itworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>
-   and
-   <a href="http://mindprod.com/jgloss/exec.html" target="_top">http://mindprod.com/jgloss/exec.html</a>
+   <br><a href="http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html" target="_top">http://www.javaworld.com/javaworld/jw-12-2000/jw-1229-traps.html</a>
+   <br>and
+   <br><a href="http://mindprod.com/jgloss/exec.html" target="_top">http://mindprod.com/jgloss/exec.html</a>
 
    @author Christopher Hylands Brooks, Contributor: Edward A. Lee
    @version $Id$
