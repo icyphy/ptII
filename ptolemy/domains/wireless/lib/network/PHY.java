@@ -220,7 +220,8 @@ public class PHY extends NetworkActorBase {
                 if (fromChannel.hasToken(0))
                     {   
                         _data = (RecordToken)fromChannel.get(0);
-
+                        // the input port may not be WirelessIOPort, but the port it is
+                        // connected to is
                         Iterator connectedPorts = fromChannel.sourcePortList().iterator();
                         while (connectedPorts.hasNext()) {
                            IOPort port = (IOPort)connectedPorts.next();
@@ -350,7 +351,10 @@ public class PHY extends NetworkActorBase {
                                  toChannel.send(0, ChMsg);
 
                                  // update the parameter: duration 
-                                 //_setAttribute(_duration, new DoubleToken(_txDuration));
+                                 _duration = (Variable) getContainer().getContainer().
+                                              getAttribute("duration");
+                                 _duration.setToken(new DoubleToken(_txDuration));;
+
                                  setTimer2(TxDone, currentTime+_txDuration, 0.0);
                              }  
                     }
@@ -367,6 +371,11 @@ public class PHY extends NetworkActorBase {
         _currentState = PHY_Idle;
         _interference = 0.0;
         _numBusyTimers =0;
+        // initialize the channel status in the MAC
+        RecordToken ChannelStatusMsg =new RecordToken(SignalMsgFields, 
+            new Token [] {new IntToken(Idle)} );
+        channelStatus.send(0,ChannelStatusMsg);
+
     }
 
 
@@ -492,22 +501,9 @@ public class PHY extends NetworkActorBase {
                     return timer.kind;
                 }
         }
-        return -1;
+        return UNKNOWN;
     }
 
-    // A convenient method for the PHY to set an
-    // attibute of its container.
-    protected void _setAttribute(Attribute attribute, Token token)
-            throws IllegalActionException {
-        if (attribute != null) {
-            if (attribute instanceof Variable) {
-                ((Variable) attribute).setToken(token);
-            } else if (attribute instanceof Settable) {
-                ((Settable) attribute).
-                    setExpression(token.toString());
-            }
-        }
-    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                 ////
@@ -554,8 +550,8 @@ public class PHY extends NetworkActorBase {
     {
             _txRate=((IntToken)msg.get("rate")).intValue(); 
             int length =((IntToken)msg.get("length")).intValue(); 
-            // compute duration of this packet ( with the PHY overhead added)
-            _txDuration=length/_txRate+(_aPreambleLength+
+            // compute the duration of this packet ( with the PHY overhead added)
+            _txDuration=(double)length/_txRate+(_aPreambleLength+
 	                   _aPlcpHeaderLength)*1e-6;
 
             // send TxStartConfirm to the MAC
@@ -600,7 +596,7 @@ public class PHY extends NetworkActorBase {
             ={"rate", "data"};
 
     // time that a packet uses the channel
-    protected Attribute _duration = null;
+    protected Variable _duration = null;
 
 
 
