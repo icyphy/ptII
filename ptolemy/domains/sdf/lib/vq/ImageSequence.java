@@ -218,6 +218,8 @@ public class ImageSequence extends Source {
      *  images, then loop back to the first image in the sequence.
      */
     public void fire() throws IllegalActionException {
+        super.fire();
+
         int i, j, n;
 
         output.send(0, _images[_frameNumber]);
