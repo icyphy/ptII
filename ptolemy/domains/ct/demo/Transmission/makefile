@@ -50,8 +50,8 @@ OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
 	EfficiencyCurve.xml \
 	EfficiencyCurve.htm \
-	EfficiencyCurveVergil.htm \
-	Transmission.xml
+	EfficiencyCurveVergil.htm \
+	Transmissionx.xml
 
 EXTRA_SRCS = \
 	$(OTHER_FILES_TO_BE_JARED) \
