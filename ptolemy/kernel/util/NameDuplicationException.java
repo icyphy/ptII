@@ -37,37 +37,17 @@ objects with identical names in the same container object.
 */
 public class NameDuplicationException extends GraphException {
     /** 
-     * @param duplicateName The name which has been duplicated.
      */	
-    public NameDuplicationException(String duplicateName) {
+    public NameDuplicationException() {
         super();
-        _duplicateName = duplicateName;
     }
 
     /** 
      * @param message The detailed message.
-     * @param duplicateName The name which has been duplicated.
      */	
-    public NameDuplicationException(String message, String duplicateName) {
+    public NameDuplicationException(String message) {
         super(message);
-        _duplicateName = duplicateName;
     }
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
-
-    /** Return the name which has been duplicated.
-     */
-    public String getDuplicateName() {
-        return _duplicateName;
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
-
-    /* The name which has been duplicated
-     */
-    private String _duplicateName;
 }
 
 
