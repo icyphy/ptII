@@ -157,7 +157,7 @@ public class Expression extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** React to a change in the value of an attribute. 
+    /** React to a change in the value of an attribute.
      *  @param attribute The attribute whose type changed.
      *  @exception IllegalActionException Not thrown in this base class.
      */
@@ -315,8 +315,8 @@ public class Expression extends TypedAtomicActor {
             if(token != null) {
                 return token;
             }
-            
-            Variable result = _findVariable(name);     
+
+            Variable result = _findVariable(name);
             if (result != null) {
                 return result.getToken();
             }
@@ -340,7 +340,7 @@ public class Expression extends TypedAtomicActor {
             if(port != null) {
                 return port.getType();
             }
-              
+
             Variable result = _findVariable(name);
             if(result != null) {
                 return result.getType();
@@ -355,7 +355,7 @@ public class Expression extends TypedAtomicActor {
             return null;
         }
     }
-    
+
     // This class implements a monotonic function of the type of
     // the output port.
     // The function value is determined by type inference on the
@@ -382,7 +382,7 @@ public class Expression extends TypedAtomicActor {
                     _parseTree = parser.generateParseTree(
                             expression.getExpression());
                 }
-           
+
                 if(_scope == null) {
                     _scope = new VariableScope();
                 }
@@ -394,7 +394,7 @@ public class Expression extends TypedAtomicActor {
                 return BaseType.UNKNOWN;
             }
         }
-        
+
         /** Return the type variable in this inequality term. If the type
 	 *  of the input port is not declarad, return an one element array
 	 *  containing the inequality term representing the type of the port;
@@ -402,8 +402,8 @@ public class Expression extends TypedAtomicActor {
 	 *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-            // Return an array that contains type terms for all of the 
-            // inputs and all of the parameters that are free variables for 
+            // Return an array that contains type terms for all of the
+            // inputs and all of the parameters that are free variables for
             // the expression.
             try {
                 if(_parseTree == null) {
@@ -411,11 +411,11 @@ public class Expression extends TypedAtomicActor {
                     _parseTree = parser.generateParseTree(
                             expression.getExpression());
                 }
-            
+
                 if(_scope == null) {
                     _scope = new VariableScope();
                 }
-                Set set = 
+                Set set =
                     _variableCollector.collectFreeVariables(_parseTree, _scope);
                 List termList = new LinkedList();
                 for(Iterator elements = set.iterator();
@@ -429,7 +429,7 @@ public class Expression extends TypedAtomicActor {
                     if(port != null && port.getTypeTerm().isSettable()) {
                         termList.add(port.getTypeTerm());
                         continue;
-                    } 
+                    }
                     Variable result = _findVariable(name);
                     if (result != null && result.getTypeTerm().isSettable()) {
                         termList.add(result.getTypeTerm());
@@ -487,7 +487,7 @@ public class Expression extends TypedAtomicActor {
 
 	private ParseTreeTypeInference _typeInference =
         new ParseTreeTypeInference();
-        private ParseTreeFreeVariableCollector _variableCollector = 
+        private ParseTreeFreeVariableCollector _variableCollector =
         new ParseTreeFreeVariableCollector();
     }
 

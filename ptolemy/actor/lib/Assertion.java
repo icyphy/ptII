@@ -69,8 +69,8 @@ import java.util.List;
 //// Assertion
 /**
 The Assertion actor evaluates an assertion that includes references
-to the inputs. The ports are referenced by the variables that have 
-the same name as the port. If the assertion is satisfied, nothing 
+to the inputs. The ports are referenced by the variables that have
+the same name as the port. If the assertion is satisfied, nothing
 happens. If not, an exception will be thrown.
 To use this class, instantiate it, then add ports (instances of TypedIOPort).
 In vergil, you can add ports by right clicking on the icon and selecting
@@ -210,7 +210,7 @@ public class Assertion extends TypedAtomicActor {
     /** Consume tokens in input ports.
      *  @exception IllegalActionException If the evaluation of the assertion
      *   triggers it, or if there is no director, or if a
-     *   connected input has no tokens.    
+     *   connected input has no tokens.
      */
 
     public void fire() throws IllegalActionException {
@@ -406,8 +406,8 @@ public class Assertion extends TypedAtomicActor {
             if(token != null) {
                 return token;
             }
-            
-            Variable result = _findVariable(name);     
+
+            Variable result = _findVariable(name);
             if (result != null) {
                 return result.getToken();
             }
@@ -426,7 +426,7 @@ public class Assertion extends TypedAtomicActor {
             if(port != null) {
                 return port.getType();
             }
-              
+
             Variable result = _findVariable(name);
             if(result != null) {
                 return result.getType();
@@ -448,7 +448,7 @@ public class Assertion extends TypedAtomicActor {
 
     // Parameter, the error tolerance, local copy
     protected double _errorTolerance;
-    
+
     // The local copy of the input tokens.
     private Map _tokenMap;
 
