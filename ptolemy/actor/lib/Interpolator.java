@@ -219,6 +219,7 @@ public class Interpolator extends SequenceSource {
 
     /** Update the iteration counter, then call the super class method.
      *  @return A boolean returned by the super class method.
+     *  @exception IllegalActionException If the super class throws it.
      */
     public boolean postfire() throws IllegalActionException {
         ++_iterationCount;
