@@ -91,7 +91,8 @@ public class SearchPath extends Vector {
      *  a string with path names separated by File.separatorChar.
      *  @param propertyName Name of the property to look for.
      *  @param fallbackPaths Path list to use if propertyName can't be found.
-     *  FIXME: what about separtors for the fallback paths 
+     *  The Path list consists of path names that name directories
+     *  where adjacent path names are separated by File.pathSeparatorChar.
      */
     public SearchPath(String propertyName, String fallbackPaths) {
         if (propertyName != null) {
