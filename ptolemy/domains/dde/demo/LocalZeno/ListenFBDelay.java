@@ -35,7 +35,10 @@ import ptolemy.domains.dde.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
+import ptolemy.domains.dde.kernel.NullToken; // For Javadoc
+
 import java.util.Enumeration;
+
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
