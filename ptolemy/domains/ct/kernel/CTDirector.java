@@ -696,6 +696,10 @@ public abstract class CTDirector extends StaticSchedulingDirector
             throw new IllegalActionException( this,
                     "has no scheduler.");
         }
+
+        // Initialize the local variables except the time objects. 
+        _initializeLocalVariables();
+
         // FIXME: Why do we need this?
         // Force to reconstruct a CT scheduler??
         // Will it be OK to synchronize to workspace version? 
@@ -704,10 +708,22 @@ public abstract class CTDirector extends StaticSchedulingDirector
 
         super.preinitialize();
 
-        // Initialize the local variables. 
-        // The following method must be called after 
-        // the super.preinitialize() method.
-        _initializeLocalVariables();
+        // Time objects can only initialized in the end after 
+        // the time scale and time resolutioin is set.
+        // NOTE: This has to be called in the preinitialize method because
+        // the Time objects (_startTime and _stopTime) need the director
+        // to provide a time resolution. 
+        // NOTE: Time resolution is provided bythe super class (Director)
+        // with the preinitialize method. So, this method must be called 
+        // after the super.preinitialize() is called.
+        // NOTE: _timeBase is not initialized here but in initialize method
+        // instead to provide more accurate real time information.
+        _startTime = new Time(this, _startTimeValue);
+        _stopTime = new Time(this, _stopTimeValue);
+        _iterationBeginTime = _startTime;
+        _iterationEndTime = _stopTime;
+
+
     }
 
     /** Set the current step size. The current step size
@@ -954,26 +970,13 @@ public abstract class CTDirector extends StaticSchedulingDirector
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-    /** Initialize the local variables of the CTDirector. 
-     *  NOTE: This has to be called in the preinitialize method because
-     *  the Time objects (_startTime and _stopTime) need the director
-     *  to provide a time resolution. 
-     *  NOTE: Time resolution is provided bythe super class (Director)
-     *  with the preinitialize method. So, this method must be called 
-     *  after the super.preinitialize() is called.
-     *  NOTE: _timeBase is not initialized here but in initialize method
-     *  instead to provide more accurate real time information.
-     */
+    // Initialize the local variables of the CTDirector. 
+    // NOTE: Time objects are not initialized. They are initialized at
+    // the end of the preinitialize method of this director.
     private void _initializeLocalVariables() throws IllegalActionException {
        _currentSolver = null;
 
        _prefiredActors = new HashSet();
-
-       _startTime = new Time(this, _startTimeValue);
-       _stopTime = new Time(this, _stopTimeValue);
-
-       _iterationBeginTime = _startTime;
-       _iterationEndTime = _stopTime;
 
        _initStepSize = 0.1;
        _minStepSize = 1e-5;
