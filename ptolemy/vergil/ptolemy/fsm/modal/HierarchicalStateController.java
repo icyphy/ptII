@@ -138,7 +138,7 @@ public class HierarchicalStateController extends FSMStateController {
             if (!dialog.buttonPressed().equals("OK")) {
                 return;
             }
-            
+
             final String newName = query.stringValue("Name");
             if (container.getEntity(newName) != null) {
                 MessageHandler.error("There is already a refinement with name "
@@ -293,7 +293,7 @@ public class HierarchicalStateController extends FSMStateController {
             if (!dialog.buttonPressed().equals("OK")) {
                 return;
             }
-            
+
             String refinementName = query.stringValue("Refinement");
             StringBuffer newRefinements = new StringBuffer();
             String currentRefinements
