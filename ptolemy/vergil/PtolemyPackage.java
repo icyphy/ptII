@@ -32,7 +32,7 @@ package ptolemy.vergil;
 
 import ptolemy.actor.*;
 import ptolemy.actor.gui.*;
-import ptolemy.actor.gui.util.*;
+
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.data.expr.Parameter;

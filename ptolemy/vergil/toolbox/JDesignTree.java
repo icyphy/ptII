@@ -34,7 +34,6 @@ import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
 import ptolemy.data.expr.*;
-import ptolemy.actor.gui.util.*;
 import diva.canvas.*;
 import diva.gui.toolbox.*;
 import java.awt.Component;

@@ -43,7 +43,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
-import ptolemy.actor.gui.util.*;
 import ptolemy.moml.Icon;
 import ptolemy.vergil.toolbox.*;
 
