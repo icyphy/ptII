@@ -92,6 +92,7 @@ proc autoShallowCG {autoDirectory} {
 
 # Do a SDF and a DE test just be sure things are working
 test Shallow-1.2 {Compile and run the SDF IIR test} {
+    global PTII
     set result [sootCodeGeneration $PTII \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 	    IIR.xml]]
@@ -101,6 +102,7 @@ test Shallow-1.2 {Compile and run the SDF IIR test} {
 
 
 test Shallow-1.3 {Compile and run the DE Counter test} {
+    global PTII
     set result [sootCodeGeneration $PTII \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 	    Counter.xml]]
@@ -109,6 +111,7 @@ test Shallow-1.3 {Compile and run the DE Counter test} {
 } {{}}
  
 test Shallow-1.3 {Compile and run the MathFunction test, which tends to hang} {
+    global PTII
     set result [sootCodeGeneration $PTII \
 	    [file join $relativePathToPTII ptolemy actor lib test auto \
 	    MathFunction.xml]]
