@@ -107,6 +107,7 @@ public abstract class MatrixToken extends Token {
      *  @return A 2-D long array.
      *  @exception IllegalActionException If the token cannot be represented
      *   as requested (always thrown in this base class).
+     */
     public long[][] longMatrix() throws IllegalActionException {
         throw new IllegalActionException(this.getClass().getName() +
         " cannot be converted to a long matrix.");
