@@ -76,4 +76,7 @@
       <configure>generic.transformer</configure>
     </rendition>
   </entity>
+
+  <import source="conversions/conversions.xml"/>
+  <entity name="converions" class=".conversions"/>
 </class>
