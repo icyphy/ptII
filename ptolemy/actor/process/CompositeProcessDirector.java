@@ -289,11 +289,8 @@ public class CompositeProcessDirector extends ProcessDirector {
         return new MailboxBoundaryReceiver();
     }
 
-    /** Start threads for all actors that have not had threads started
-     *  already (this might include actors initialized since the last
-     *  invocation of prefire). This starts the threads, corresponding
-     *  to all of the actors that were created in the initialize() method.
-     *
+    /** If there are input or output ports, and this is the first iteration,
+     *  then start threads to handle the inputs and outputs.
      *  @return True.
      *  @exception IllegalActionException If a derived class throws it.
      */
@@ -301,6 +298,8 @@ public class CompositeProcessDirector extends ProcessDirector {
         super.prefire();
 
         Thread thread = null;
+        // FIXME: This will not support dynamically changing
+        // connections on the outside of a composite.
         if ( _inputBranchController.hasBranches() && _onFirstIteration ) {
             thread = new Thread(_inputBranchController);
             thread.start();
