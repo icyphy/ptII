@@ -50,9 +50,9 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 5, 815, 571}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 5, 845, 571}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 453]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[630, 453]">
     </property>
     <property name="level1" class="ptolemy.data.expr.Parameter" value="0.5">
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -136,7 +136,7 @@ from transient states.
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{300.0, 226.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{315.0, 226.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
@@ -147,7 +147,7 @@ from transient states.
         </property>
     </property>
     <entity name="SignalWithGlitches" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
                 </property>
@@ -155,12 +155,6 @@ from transient states.
                 </property>
                 <property name="style2" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
                 </property>
-            </property>
-        </property>
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
@@ -483,9 +477,9 @@ The final state (state4) simply connects the input to the output.</text></svg></
         </property>
         <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="3.0">
         </property>
-        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 210, 815, 518}, maximized=false}">
@@ -516,9 +510,9 @@ The final state (state4) simply connects the input to the output.</text></svg></
         </property>
         <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="3.0">
         </property>
-        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 210, 815, 516}, maximized=false}">
@@ -549,9 +543,9 @@ The final state (state4) simply connects the input to the output.</text></svg></
         </property>
         <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="3.0">
         </property>
-        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+        </property>
+        <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="LevelCrossingDetectorIcon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={145, 210, 815, 516}, maximized=false}">
@@ -611,7 +605,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
             </property>
         </port>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="Integral of the Signal" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={607, 504, 413, 252}, maximized=false}">
@@ -632,14 +626,14 @@ The final state (state4) simply connects the input to the output.</text></svg></
 </plot>?>
         </configure>
     </entity>
-    <entity name="TimedPlotter2" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="Detected Threshold Crossings" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={606, 252, 413, 252}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[405, 197]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 205.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -654,7 +648,7 @@ The final state (state4) simply connects the input to the output.</text></svg></
 </plot>?>
         </configure>
     </entity>
-    <entity name="TimedPlotter3" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="Piecewise Continuous Signal" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={607, 0, 413, 252}, maximized=false}">
@@ -675,6 +669,26 @@ The final state (state4) simply connects the input to the output.</text></svg></
 </plot>?>
         </configure>
     </entity>
+    <entity name="Detected Events" class="ptolemy.actor.lib.gui.SequencePlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={173, 506, 432, 236}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[424, 181]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[520.0, 125.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Detected Events</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="15.0" max="55.0"/>
+<yRange min="0.5" max="0.5"/>
+<default connected="no" marks="dots" stems="yes"/>
+</plot>?>
+        </configure>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -685,16 +699,18 @@ The final state (state4) simply connects the input to the output.</text></svg></
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[435.0, 125.0]">
+        </vertex>
+    </relation>
     <link port="SignalWithGlitches.input" relation="relation"/>
     <link port="SignalWithGlitches.output" relation="relation3"/>
     <link port="Const.output" relation="relation"/>
-    <link port="LevelCrossingDetector1.output" relation="relation2"/>
+    <link port="LevelCrossingDetector1.output" relation="relation7"/>
     <link port="LevelCrossingDetector1.trigger" relation="relation3"/>
     <link port="LevelCrossingDetector2.output" relation="relation4"/>
     <link port="LevelCrossingDetector2.trigger" relation="relation3"/>
@@ -704,9 +720,10 @@ The final state (state4) simply connects the input to the output.</text></svg></
     <link port="Integrator.output" relation="relation5"/>
     <link port="PeriodicSampler.input" relation="relation5"/>
     <link port="PeriodicSampler.output" relation="relation11"/>
-    <link port="TimedPlotter.input" relation="relation11"/>
-    <link port="TimedPlotter2.input" relation="relation2"/>
-    <link port="TimedPlotter2.input" relation="relation4"/>
-    <link port="TimedPlotter2.input" relation="relation6"/>
-    <link port="TimedPlotter3.input" relation="relation3"/>
+    <link port="Integral of the Signal.input" relation="relation11"/>
+    <link port="Detected Threshold Crossings.input" relation="relation4"/>
+    <link port="Detected Threshold Crossings.input" relation="relation6"/>
+    <link port="Detected Threshold Crossings.input" relation="relation7"/>
+    <link port="Piecewise Continuous Signal.input" relation="relation3"/>
+    <link port="Detected Events.input" relation="relation7"/>
 </entity>
