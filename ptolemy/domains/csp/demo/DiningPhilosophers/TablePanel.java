@@ -129,6 +129,13 @@ class TablePanel extends Panel {
      * Constructs the new panel. Initializes the objects and the display.
      */
     protected TablePanel(Philosopher[] philosophers) {
+        initialize(philosophers);
+    }
+    
+    /**
+     * Initializes the objects and the display.
+     */
+    protected void initialize(Philosopher[] philosophers) {
         _philosophers = philosophers;
         for (int i = 0; i < 5; i++) {
             philsLoc[i] = new PhilosopherCoords();

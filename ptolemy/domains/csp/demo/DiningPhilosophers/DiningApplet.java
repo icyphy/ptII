@@ -276,7 +276,7 @@ public class DiningApplet extends Applet
             ctt = new CurrentTimeThread();
             //ctt = new CurrentTimeThread(this);
             ctt.start();
-
+            
             // Start the simulation.
             _manager.run();
         } catch (Exception ex) {
@@ -291,6 +291,7 @@ public class DiningApplet extends Applet
      *  the "Go" button is depressed.
      */
     public void start() {
+        _table.initialize( _philosophers );
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -323,11 +324,16 @@ public class DiningApplet extends Applet
 
 
     // Show simulation progress.
-    // FIXME: due to an applet bug, these inner classes are public.
+    // NOTE: due to an applet bug, these inner classes are public.
     public class CurrentTimeThread extends Thread {
         NumberFormat nf = NumberFormat.getNumberInstance();
         public void run() {
-            while ((simulationThread != null) || simulationThread.isAlive()) {
+            while( true ) {
+            	if( simulationThread == null ) {
+                    return;
+                } else if( !simulationThread.isAlive() ) {
+                    return;
+                }
                 // get the current time from director.
                 double currentTime = _localDirector.getCurrentTime();
                 _currentTimeLabel.setText("Current time = " +
@@ -344,6 +350,7 @@ public class DiningApplet extends Applet
             try {
                 if (simulationThread == null) {
                     simulationThread = new Thread(DiningApplet.this);
+                    simulationThread.start();
                 }
                 if (!(simulationThread.isAlive())) {
                     simulationThread = new Thread(DiningApplet.this);
@@ -362,6 +369,7 @@ public class DiningApplet extends Applet
         public void actionPerformed(ActionEvent evt) {
             try {
                 _manager.finish();
+                _manager.wrapup();
                 simulationThread = null;
                 init();
                 repaint();

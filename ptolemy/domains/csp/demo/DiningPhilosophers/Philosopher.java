@@ -1,4 +1,4 @@
-/* Philosopher in the Dining Philosophers demo.
+/* A philosopher in the Dining Philosophers demo.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -103,13 +103,46 @@ public class Philosopher extends CSPActor {
 	leftOut.setTypeEquals(BaseType.INT);
 	rightOut.setTypeEquals(BaseType.INT);
 
-        _eating = new Parameter(this, "eatingRate");
-        _eating.setExpression("1.0");
+        eating = new Parameter(this, "eatingRate");
+        eating.setExpression("1.0");
 
-        _thinking = new Parameter(this, "thinkingRate");
-        _thinking.setExpression("1.0");
+        thinking = new Parameter(this, "thinkingRate");
+        thinking.setExpression("1.0");
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The port through which this philosopher
+     *  is granted access to the left chopstick.
+     */
+    public TypedIOPort leftIn;
+    
+    /** The port through which this philosopher
+     *  releases access to the left chopstick.
+     */
+    public TypedIOPort leftOut;
+    
+    /** The port through which this philosopher
+     *  is granted access to the right chopstick.
+     */
+    public TypedIOPort rightIn;
+    
+    /** The port through which this philosopher
+     *  releases access to the right chopstick.
+     */
+    public TypedIOPort rightOut;
+
+    /** This parameter determines the rate at which
+     *  this philosopher will spend time eating.
+     */
+    public Parameter eating;
+    
+    /** This parameter determines the rate at which
+     *  this philosopher will spend time thinking.
+     */
+    public Parameter thinking;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -130,7 +163,7 @@ public class Philosopher extends CSPActor {
         int count = 0;
         try {
             while (count < 20 ) {
-                rate = ((DoubleToken)_thinking.getToken()).doubleValue();
+                rate = ((DoubleToken)thinking.getToken()).doubleValue();
                 interval = (int)(rand.nextDouble()*rate*1000);
                 interval = interval/1000;
                 System.out.println(getName() + count + ": thinking for "
@@ -159,7 +192,7 @@ public class Philosopher extends CSPActor {
                     waitingLeft = false;
                     _notifyListeners();
                 }
-                rate = ((DoubleToken)_eating.getToken()).doubleValue();
+                rate = ((DoubleToken)eating.getToken()).doubleValue();
                 interval = (int)(rand.nextDouble()*rate*2000);
                 interval = interval/1000;
                 System.out.println(getName() + ": eating for " + interval);
@@ -186,6 +219,10 @@ public class Philosopher extends CSPActor {
         }
     }
 
+    /** Return true if this actor is enabled to proceed with additional
+     *  iterations; return false otherwise.
+     * @return True if continued execution is enabled; false otherwise.
+     */
     public boolean postfire() {
         return false;
     }
@@ -223,13 +260,6 @@ public class Philosopher extends CSPActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private TypedIOPort leftIn;
-    private TypedIOPort leftOut;
-    private TypedIOPort rightIn;
-    private TypedIOPort rightOut;
-
     private LinkedList _listeners;
-    private Parameter _eating;
-    private Parameter _thinking;
 
 }

@@ -1,4 +1,4 @@
-/* Chopstick in the Dining Philosophers demo.
+/* A Chopstick in the Dining Philosophers demo.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -119,6 +119,29 @@ public class Chopstick extends CSPActor {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /** The port through which the left philosopher
+     *  releases access to this chopstick.
+     */
+    public TypedIOPort leftIn;
+    
+    /** The port through which the left philosopher
+     *  receives access to this chopstick.
+     */
+    public TypedIOPort leftOut;
+
+    /** The port through which the right philosopher
+     *  releases access to this chopstick.
+     */
+    public TypedIOPort rightIn;
+    
+    /** The port through which the right philosopher
+     *  receives access to this chopstick.
+     */
+    public TypedIOPort rightOut;
+    
+    ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Executes the code in this actor. This actor uses a CDO
@@ -167,11 +190,4 @@ public class Chopstick extends CSPActor {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    private TypedIOPort leftIn;
-    private TypedIOPort leftOut;
-    private TypedIOPort rightIn;
-    private TypedIOPort rightOut;
 }

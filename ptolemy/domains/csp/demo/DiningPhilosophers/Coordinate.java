@@ -1,4 +1,4 @@
-/* Class to store a simple Cartesian Coordinate.
+/* A class for storing cartesian coordinates.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -29,7 +29,7 @@
 */
 
 /**
- * Class to store a simple Cartesian Coordinate.
+ * A class for storing cartesian coordinates.
  *
  * @author John Hall
  * @version $Id$
