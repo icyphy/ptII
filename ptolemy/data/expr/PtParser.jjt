@@ -1,36 +1,10 @@
-/* This file implements an expression parser for Ptolemy II using the Jacc
- * parser generator. It can handle all the basic arithmetic operators
- * (*, /, +, -) and, using reflection, all of the funcionality available
- * in the java.lang.Math package.
- * 
- * Jacc by itself simply generates a file ( and support files) that allow an 
- * input to be parsed, it does not return a parse tree. For the purposes of 
- * type checking we require a parse tree, and this is obtained using JJTree, a 
- * preprocesssor for Jacc. 
-
- * JJtree operates by annotating the grammer file to support the generation
- * of the parse tree. Thus the process is
- *
- *            --------                 ------
- *  X.jjt -> | JJTREE | --> X.jj  --> | JACC | --> X.java + support files
- *            --------                 ------
- *
- * The parser can also be parsed a symbol table of Params on which the 
- * expression to be passed can depend.
- * 
- * The parser assumes any identifiers it does not recognise are strings.
- * Also anything between quotes(") is taken to be one string.
- *
- * The expressions recognized follow as close as possible the syntax of Java.
- *
- */
+/* Input file to JJTree and JavaCC to generate Ptolemy II Parser */
 
 options {
 LOOKAHEAD=1;
 //DEBUG_PARSER = true;
 //DEBUG_TOKEN_MANAGER = true;
 MULTI = true;
-//NODE_SCOPE_HOOK = true;
 STATIC = false;
 }
 
@@ -70,15 +44,22 @@ Created : May 1998
 /** //////////////////////////////////////////////////////////////////////
  *  //// PTParser.jjt
  *  
- * This file implements an expression parser for Ptolemy II using the Jacc
- * parser generator. It can handle all the basic arithmetic operators
+ * This file implements an expression parser for Ptolemy II using the 
+ * JavaCC parser generator. It can handle all the basic arithmetic operators
  * (*, /, +, -,, %), relational operators (<, <=, >, >=, == !=), logical 
- * operators(&&, ||, !),  and, using reflection, all of the funcionality 
- * available in the java.lang.Math package. By editing the ASTFunctionNode
- * file it is also relatively easy to allow refernces to functions in other
- * math packages as well as passing strings to Matlab and Tcl to be evaluated.
+ * operators(&&, ||, !), bitwise operators (&, |, ^, ~)  and, using 
+ * reflection, all of the funcionality available in the java.lang.Math 
+ * package. By editing the ASTFunctionNode file it is also relatively 
+ * easy to allow refernces to functions in other math packages as well 
+ * as passing strings to Matlab and Tcl to be evaluated.
+ *  
+ * Functional if is supported via the following sytnax:
+ *         (boolean) ? (value1) : (value2)
+ * Extensibility is supported by allowing method calls on the Tokens,
+ * the syntax is 
+ *         (value1).method(comma seperated arguments)
  * 
- * Jacc by itself simply generates a file ( and support files) that allow an 
+ * JavaCC by itself simply generates a file ( and support files) that allow an 
  * input to be parsed, it does not return a parse tree. For the purposes of 
  * type checking we require a parse tree, and this is obtained using JJTree, a 
  * preprocesssor for Jacc. 
@@ -93,22 +74,26 @@ Created : May 1998
  * The parser can also be parsed a symbol table of Params on which the 
  * expression to be passed can depend.
  * 
- * The parser assumes any identifiers it does not recognise are strings.
- * Also anything between quotes(") is taken to be one string.
+ * Anything between quotes(") is taken to be one string.
  *
  * The expressions recognized follow as close as possible the syntax of Java.
  * In particular the operator precedences implemented here follow exactly 
  * those in Java. Any type conversions that are performed are lossless. If 
  * the user wants lossy conversions, explicit casts will be neccessary.
+ * 
+ * For a more thorough description of what the Parser is designed to do, 
+ * please consult the Ptolemy II design document (or contact nsmyth@eecs)
  *
  * 
  * @author Neil Smyth
  * @version $Id$
- * @see pt.data.parser.ASTPtSimpleNode
+ 
  * @see pt.data.parser.ASTPtFunctionNode
  * @see pt.data.parser.ASTPtLogicalNode
+ * @see pt.data.parser.ASTPtMiscNode
  * @see pt.data.parser.ASTPtProductNodeI
  * @see pt.data.parser.ASTPtRelationalNode
+ * @see pt.data.parser.ASTPtSimpleNode
  * @see pt.data.parser.ASTPtSumNode
  * @see pt.data.parser.ASTPtUnaryNode
  * @see pt.data.Token 
@@ -124,8 +109,12 @@ import pt.data.*;
 import java.io.*;
 
 public class PtParser {
+    // This variable stores the result of the parse
     pt.data.Token _ptToken;
+    // Stores the Params to which the input String can reference
     NamedList _scope;
+    // The Param storing the Token, used to register its interest with
+    // other Params it references
     pt.data.Param _param;
     
   public PtParser() {
@@ -172,9 +161,9 @@ public class PtParser {
      } catch (ParseException x) {
           str = "parse of " + stringIn + " failed: " + x.getMessage();
           throw new IllegalArgumentException(str);
-     } catch (IllegalActionException ex) {
-         str = "evaluation of parse tree of " + stringIn;
-         throw new IllegalArgumentException(str);
+     } catch (IllegalArgumentException ex) {
+         str = "evaluation of parse tree of " + stringIn + " failed: ";
+         throw new IllegalArgumentException(str + ex.getMessage());
       } catch (Exception x) {
           str = "evaluation of parse tree of " + stringIn;
           str = str + " failed : " + x.getMessage();
@@ -186,10 +175,17 @@ public class PtParser {
     public pt.data.Token parseExpression(String stringIn, NamedList scope, pt.data.Param param) throws IllegalArgumentException {
         _scope = scope;
         _param = param;
-        _ptToken = parseExpression(stringIn);
-        _scope = null;
-        _param = null;
-        return _ptToken;
+        try {
+            _ptToken = parseExpression(stringIn);
+            _scope = null;
+            _param = null;
+            return _ptToken;
+        } catch (IllegalArgumentException ex) {
+            // need to make sure Parser state is reset
+            _scope = null;
+            _param = null;
+            throw ex;
+        }
     }
 
     // FIXME: this method needs to be added
@@ -265,14 +261,17 @@ TOKEN : /* Relational operators */
   |     < EQUALS: "==" >
 }
 
-TOKEN : /* Boolean operators */
+TOKEN : /* Boolean & bitwise operators */
 {
-	< AND: "&&" >
-  |	< OR: "||" >
-  |     < NOT: "!" >
+	< COND_AND: "&&" >
+  |	< COND_OR: "||" >
+  |     < BOOL_NOT: "!" >
+  |     < BITWISE_NOT: "~" >                          
+  |	< AND: "&" >
+  |     < OR: "|" >
+  |     < XOR: "^" >  
+
 }
-
-
 
 TOKEN : /* Numeric literals */
 {
@@ -305,7 +304,7 @@ TOKEN : /*Boolean literals */
 
 TOKEN : /* Function names */
 {
-	< ID: ( <LETTER> )+ ( ["0"-"9", "$", "@", "#"] | <LETTER> )* >
+	< ID: ( <LETTER> )+ (["0"-"9", "$", "@", "#", "[", "]" ] | <LETTER> )* >
   | 	< #LETTER: ["a"-"z", "A"-"Z", "_"] > 		
 } 
 
@@ -327,7 +326,7 @@ void logicalOr() #void :
 {
    (
            logicalAnd() ( 
-                   x = <OR> logicalAnd()
+                   x = <COND_OR> logicalAnd()
                    {  jjtThis._tokenList.insertLast(x); }
            )*
    ) #PtLogicalNode(>1)
@@ -337,11 +336,44 @@ void logicalAnd() #void :
 {Token x;}
 {
    (
-           logicalEquals() ( 
-                   x = <AND> logicalEquals()
+           bitwiseOr() ( 
+                   x = <COND_AND> bitwiseOr()
                    {  jjtThis._tokenList.insertLast(x); }
            )*
    ) #PtLogicalNode(>1)
+}
+
+void bitwiseOr() #void :
+{Token x;}
+{
+   (
+           bitwiseXor() ( 
+                   x = <OR> bitwiseXor()
+                   {  jjtThis._tokenList.insertLast(x); }
+           )?
+   ) #PtBitwiseOpNode(>1)
+}
+
+void bitwiseXor() #void :
+{Token x;}
+{
+   (
+           bitwiseAnd() ( 
+                   x = <XOR> bitwiseAnd()
+                   {  jjtThis._tokenList.insertLast(x); }
+           )?
+   ) #PtBitwiseOpNode(>1)
+}
+
+void bitwiseAnd() #void :
+{Token x;}
+{
+   (
+           logicalEquals() ( 
+                   x = <AND> logicalEquals()
+                   {  jjtThis._tokenList.insertLast(x); }
+           )?
+   ) #PtBitwiseOpNode(>1)
 }
 
 void logicalEquals() #void :
@@ -408,8 +440,13 @@ void unary() #void :
 
  |  
    (
-           <NOT> element()
+           <BOOL_NOT> element()
            { jjtThis.isNot = true;} 
+   ) #PtUnaryNode
+ |  
+   (
+           <BITWISE_NOT> element()
+           { jjtThis.isBitwiseNot = true;} 
    ) #PtUnaryNode
 
  |  element()
@@ -428,10 +465,8 @@ String tidied, x;
                 x = token.image.toLowerCase();
                 len = x.length();
                 if ( x.endsWith("f") ) {                   
-                    Float value = new Float(x.substring(0, len-1 ));
-                    // FIXME: need to add a FLOATTOKEN
-                    jjtThis._ptToken = new DoubleToken(value.floatValue());
-                } else if ( x.endsWith("d") ) {                   
+                } else if ( x.endsWith("d") || x.endsWith("f") ) {   
+                    // all floating point numbers are double
                     Double value = new Double(x.substring(0, len-1 ));
                     jjtThis._ptToken = new DoubleToken(value.doubleValue());
                 } else {
@@ -474,7 +509,6 @@ String tidied, x;
         len = token.image.length();
         tidied = token.image.substring(1, (len -1));
         jjtThis._ptToken = new StringToken(tidied);
-        //System.out.println("encountered a string \"" + tidied + "\"");    
       }
    ) #PtSimpleNode
 
@@ -517,11 +551,11 @@ String tidied, x;
         if (_scope != null) {
             pt.data.Param xx = (pt.data.Param)_scope.get(token.image);
             if (xx != null) {
-                jjtThis._ptToken = xx.getToken();
+                // the param is stored in the node so that the tree does not 
+                // have to be reparsed
+                jjtThis._param   = xx; 
+                //register the calling Param as an Observer of this ID
                 xx.getToken().getPublisher().addObserver(_param);
-                // FIXME: eventually we'll want to store the param in the
-                // node so that can _just_ reevaluate the tree each time
-                // ie the token may change, but the param won't!
             } else { 
                 String str = " Param " + token.image + " not visible in ";
                 throw new ParseException(str + "current scope");
@@ -540,10 +574,7 @@ String tidied, x;
 
 
 void function() #PtFunctionNode :
-{   
-  java.util.Stack funcArgStack = new java.util.Stack();
-  ASTPtSimpleNode aa, bb; 
-}
+{}
 {    <ID> {jjtThis.funcName = token.image;} 
     "(" [  logicalOr() ( ","  logicalOr()  )* ]  ")"
 }
