@@ -194,7 +194,7 @@ public class Type extends SDFApplet {
 
 	// add execution listener for type conflict
 	MyTypeConflictListener conflictListener =
-		new MyTypeConflictListener();
+            new MyTypeConflictListener();
 	_manager.addExecutionListener(conflictListener);
     }
 
@@ -307,14 +307,14 @@ public class Type extends SDFApplet {
         model.addNode(n10);
 
         /* 
-        nodeMap.put(a1,n1);
-        nodeMap.put(a2,n2);
-        nodeMap.put(a3,n3);
-        nodeMap.put(a4,n4);
-        nodeMap.put(a5,n5);
-        nodeMap.put(a6,n6);
-        nodeMap.put(a7,n7);
-        nodeMap.put(a8,n8);
+           nodeMap.put(a1,n1);
+           nodeMap.put(a2,n2);
+           nodeMap.put(a3,n3);
+           nodeMap.put(a4,n4);
+           nodeMap.put(a5,n5);
+           nodeMap.put(a6,n6);
+           nodeMap.put(a7,n7);
+           nodeMap.put(a8,n8);
         */
 
         // Edges
@@ -355,7 +355,7 @@ public class Type extends SDFApplet {
         try {
             SwingUtilities.invokeLater(new Runnable() {
                 public void run () {
-                     // Layout is a bit stupid
+                    // Layout is a bit stupid
                     gv.setLayoutPercentage(0.7);
                     LevelLayout staticLayout = new LevelLayout();
                     staticLayout.setOrientation(LevelLayout.VERTICAL);
@@ -578,27 +578,27 @@ public class Type extends SDFApplet {
 	    // draw actors
 	    graph.setColor(Color.black);
 	    graph.drawRoundRect(RAMP1_X, RAMP1_Y, ACTOR_WIDTH, ACTOR_HEIGHT,
-				ARC_WIDTH, ARC_HEIGHT);
+                    ARC_WIDTH, ARC_HEIGHT);
 	    graph.drawRoundRect(RAMP2_X, RAMP2_Y, ACTOR_WIDTH, ACTOR_HEIGHT,
-				ARC_WIDTH, ARC_HEIGHT);
+                    ARC_WIDTH, ARC_HEIGHT);
 	    graph.drawRoundRect(EXPR_X, EXPR_Y, ACTOR_WIDTH, ACTOR_HEIGHT,
-				ARC_WIDTH, ARC_HEIGHT);
+                    ARC_WIDTH, ARC_HEIGHT);
 	    graph.drawRoundRect(PLOT_X, PLOT_Y, ACTOR_WIDTH, ACTOR_HEIGHT,
-				ARC_WIDTH, ARC_HEIGHT);
+                    ARC_WIDTH, ARC_HEIGHT);
 
 	    graph.setColor(new Color(0.6F, 0.9F, 1.0F));
 	    graph.fillRoundRect(RAMP1_X+FILL_OFFSET, RAMP1_Y+FILL_OFFSET,
-			ACTOR_WIDTH-FILL_OFFSET, ACTOR_HEIGHT-FILL_OFFSET,
-			ARC_WIDTH, ARC_HEIGHT);
+                    ACTOR_WIDTH-FILL_OFFSET, ACTOR_HEIGHT-FILL_OFFSET,
+                    ARC_WIDTH, ARC_HEIGHT);
 	    graph.fillRoundRect(RAMP2_X+FILL_OFFSET, RAMP2_Y+FILL_OFFSET,
-			ACTOR_WIDTH-FILL_OFFSET, ACTOR_HEIGHT-FILL_OFFSET,
-			ARC_WIDTH, ARC_HEIGHT);
+                    ACTOR_WIDTH-FILL_OFFSET, ACTOR_HEIGHT-FILL_OFFSET,
+                    ARC_WIDTH, ARC_HEIGHT);
 	    graph.fillRoundRect(EXPR_X+FILL_OFFSET, EXPR_Y+FILL_OFFSET,
-			ACTOR_WIDTH-FILL_OFFSET, ACTOR_HEIGHT-FILL_OFFSET,
-			ARC_WIDTH, ARC_HEIGHT);
+                    ACTOR_WIDTH-FILL_OFFSET, ACTOR_HEIGHT-FILL_OFFSET,
+                    ARC_WIDTH, ARC_HEIGHT);
 	    graph.fillRoundRect(PLOT_X+FILL_OFFSET, PLOT_Y+FILL_OFFSET,
-			ACTOR_WIDTH-FILL_OFFSET, ACTOR_HEIGHT-FILL_OFFSET,
-			ARC_WIDTH, ARC_HEIGHT);
+                    ACTOR_WIDTH-FILL_OFFSET, ACTOR_HEIGHT-FILL_OFFSET,
+                    ARC_WIDTH, ARC_HEIGHT);
 
 	    // draw triangle in ramp1
 	    int[] xPoints = new int[3];
@@ -638,14 +638,14 @@ public class Type extends SDFApplet {
 
 	    graph.setColor(Color.white);
 	    graph.fillRect(PLOT_X+10, PLOT_Y+10,
-				ACTOR_WIDTH-20, ACTOR_HEIGHT-20);
+                    ACTOR_WIDTH-20, ACTOR_HEIGHT-20);
 	    graph.setColor(Color.black);
 	    if (_plotterBox.getState() == true) {
 		// draw the axis
 		graph.drawLine(PLOT_X+20, PLOT_Y+ACTOR_HEIGHT-20,
-				PLOT_X+20, PLOT_Y+20);
+                        PLOT_X+20, PLOT_Y+20);
 		graph.drawLine(PLOT_X+20, PLOT_Y+ACTOR_HEIGHT-20,
-				PLOT_X+ACTOR_WIDTH-20, PLOT_Y+ACTOR_HEIGHT-20);
+                        PLOT_X+ACTOR_WIDTH-20, PLOT_Y+ACTOR_HEIGHT-20);
 		// draw the plot line
 		int x1 = PLOT_X+25; int y1 = PLOT_Y+ACTOR_HEIGHT-25;
 		int x2 = x1+ACTOR_WIDTH/4; int y2 = PLOT_Y+ACTOR_HEIGHT/2;
@@ -667,26 +667,26 @@ public class Type extends SDFApplet {
 	    graph.setColor(Color.red);
 	    int rad = 5;
 	    graph.fillOval(RAMP1_X+ACTOR_WIDTH-rad,
-				RAMP1_Y+ACTOR_HEIGHT/2-rad, rad*2, rad*2);
+                    RAMP1_Y+ACTOR_HEIGHT/2-rad, rad*2, rad*2);
 	    graph.fillOval(RAMP2_X+ACTOR_WIDTH-rad,
-				RAMP2_Y+ACTOR_HEIGHT/2-rad, rad*2, rad*2);
+                    RAMP2_Y+ACTOR_HEIGHT/2-rad, rad*2, rad*2);
 	    graph.fillOval(EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT/3-rad-5,
-				rad*2, rad*2);
+                    rad*2, rad*2);
 	    graph.fillOval(EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT*2/3-rad+5,
-				rad*2, rad*2);
+                    rad*2, rad*2);
 	    graph.fillOval(EXPR_X+ACTOR_WIDTH-rad, EXPR_Y+ACTOR_HEIGHT/2-rad,
-				rad*2, rad*2);
+                    rad*2, rad*2);
 	    graph.fillOval(PLOT_X-rad, PLOT_Y+ACTOR_HEIGHT/2-rad,
-				rad*2, rad*2);
+                    rad*2, rad*2);
 
 	    // draw connections
 	    graph.setColor(new Color(1.0F, 0.4F, 0.0F));
 	    graph.drawLine(RAMP1_X+ACTOR_WIDTH+rad-1, RAMP1_Y+ACTOR_HEIGHT/2+1,
-			   EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT/3-rad-2);
+                    EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT/3-rad-2);
 	    graph.drawLine(RAMP2_X+ACTOR_WIDTH+rad-1, RAMP2_Y+ACTOR_HEIGHT/2-1,
-			   EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT*2/3-rad+8);
+                    EXPR_X-rad, EXPR_Y+ACTOR_HEIGHT*2/3-rad+8);
 	    graph.drawLine(EXPR_X+ACTOR_WIDTH+rad-1, EXPR_Y+ACTOR_HEIGHT/2,
-			   PLOT_X-rad, PLOT_Y+ACTOR_HEIGHT/2);
+                    PLOT_X-rad, PLOT_Y+ACTOR_HEIGHT/2);
 
 	    // draw types
 	    graph.setColor(Color.red);
@@ -818,81 +818,81 @@ public class Type extends SDFApplet {
             
             _schemPanel.repaint();
 
-              // Figure out which color to draw
-              Class typeObj = newtype;
-              int color = 7;
-              String label = "UNKNOWN";
-              if (typeObj == null || typeObj == Void.TYPE) {
-                  color = 7;
-              } else if (typeObj == IntToken.class) {
-                  color = 4;
-              } else if (typeObj == DoubleToken.class) {
-                  color = 8;
-              } else if (typeObj == ComplexToken.class) {
-                  color = 3;
-              } else if (typeObj == StringToken.class) {
-                  color = 5;
-              } else if (typeObj == Token.class) {
-                  color = 0;
-              } else if (typeObj == BooleanToken.class) {
-                  color = 9;
-              } else if (typeObj == ObjectToken.class) {
-                  color = 2;
-              } else if (typeObj == ScalarToken.class) {
-                  color = 6;
-              } else if (typeObj == LongToken.class) {
-                  color = 1;
-              }
+            // Figure out which color to draw
+            Class typeObj = newtype;
+            int color = 7;
+            String label = "UNKNOWN";
+            if (typeObj == null || typeObj == Void.TYPE) {
+                color = 7;
+            } else if (typeObj == IntToken.class) {
+                color = 4;
+            } else if (typeObj == DoubleToken.class) {
+                color = 8;
+            } else if (typeObj == ComplexToken.class) {
+                color = 3;
+            } else if (typeObj == StringToken.class) {
+                color = 5;
+            } else if (typeObj == Token.class) {
+                color = 0;
+            } else if (typeObj == BooleanToken.class) {
+                color = 9;
+            } else if (typeObj == ObjectToken.class) {
+                color = 2;
+            } else if (typeObj == ScalarToken.class) {
+                color = 6;
+            } else if (typeObj == LongToken.class) {
+                color = 1;
+            }
 
-              // Get the trace and element figure
-              TraceModel model = _tracePane.getTraceView().getTraceModel();
-              TraceModel.Trace trace = model.getTrace(id);
+            // Get the trace and element figure
+            TraceModel model = _tracePane.getTraceView().getTraceModel();
+            TraceModel.Trace trace = model.getTrace(id);
 
-              // Create the new element
-              double currentTime = (double) (_counter);
-	      _counter++;
+            // Create the new element
+            double currentTime = (double) (_counter);
+            _counter++;
 
-              // Make the elements look large in case they're the
-              // last one
-              final TraceModel.Element element = new TraceModel.Element(
-                      currentTime, currentTime+1, color);
-              element.closure = TraceModel.Element.OPEN_END;
-              trace.add(element);
+            // Make the elements look large in case they're the
+            // last one
+            final TraceModel.Element element = new TraceModel.Element(
+                    currentTime, currentTime+1, color);
+            element.closure = TraceModel.Element.OPEN_END;
+            trace.add(element);
             
-              // Close the current element
-              final TraceModel.Element current = _currentElement[id];
-              current.closure = 0;
+            // Close the current element
+            final TraceModel.Element current = _currentElement[id];
+            current.closure = 0;
 
-              // Update all elements
-              final int msize = model.size();
-              final TraceModel.Element temp[] = new TraceModel.Element[msize];
-              for (int i = 0; i < msize; i++) {
-                  _currentElement[i].stopTime = currentTime+1;
-                  temp[i] = _currentElement[i];
-              }
+            // Update all elements
+            final int msize = model.size();
+            final TraceModel.Element temp[] = new TraceModel.Element[msize];
+            for (int i = 0; i < msize; i++) {
+                _currentElement[i].stopTime = currentTime+1;
+                temp[i] = _currentElement[i];
+            }
 
-              try {
-                  SwingUtilities.invokeAndWait(new Runnable() {
-                      public void run () {
-                          TraceView v = _tracePane.getTraceView();
-                          for (int i = 0; i < msize; i++) {
-                              v.updateTraceElement(temp[i]);
-                          }
-                          v.drawTraceElement(element);
-                      }
-                  });
-              }
-              catch (Exception e) {
-                  System.out.println(e);
-              }
+            try {
+                SwingUtilities.invokeAndWait(new Runnable() {
+                    public void run () {
+                        TraceView v = _tracePane.getTraceView();
+                        for (int i = 0; i < msize; i++) {
+                            v.updateTraceElement(temp[i]);
+                        }
+                        v.drawTraceElement(element);
+                    }
+                });
+            }
+            catch (Exception e) {
+                System.out.println(e);
+            }
 
-              // Update
-              _currentElement[id] = element;
+            // Update
+            _currentElement[id] = element;
             
         }
     }
 
-// FIXME: The following error handling should be done by PtolemyApplet.
+    // FIXME: The following error handling should be done by PtolemyApplet.
 
     /** Execution listener for type conflict.
      */

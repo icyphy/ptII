@@ -132,7 +132,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  parameter does not exist.
      */
     public int getTokenConsumptionRate(IOPort p)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         Port pp = getPort(p.getName());
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
@@ -159,7 +159,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  parameter does not exist.
      */
     public int getTokenInitProduction(IOPort p)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         Port pp = getPort(p.getName());
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
@@ -187,7 +187,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  parameter does not exist.
      */
     public int getTokenProductionRate(IOPort p)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         Port pp = getPort(p.getName());
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
@@ -236,13 +236,13 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  not an input port.
      */
     public void setTokenConsumptionRate(IOPort p, int r)
-        throws IllegalActionException {
+            throws IllegalActionException {
 
         if(r <= 0) throw new IllegalActionException(
                 "Rate must be > 0");
         if(!p.isInput()) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not an Input Port.");
-         Port pp = getPort(p.getName());
+        Port pp = getPort(p.getName());
         if(!p.equals(pp)) throw new IllegalActionException("IOPort " +
                 p.getName() + " is not contained in Actor " +
                 getName());
@@ -272,7 +272,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  not an output port.
      */
     public void setTokenInitProduction(IOPort p, int r)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if(r < 0) throw new IllegalActionException(
                 "Rate must be >= 0");
         Port pp = getPort(p.getName());
@@ -286,7 +286,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
             param.setToken(new IntToken(r));
         else {
             try {
-            param = new Parameter(p, "TokenInitProduction",
+                param = new Parameter(p, "TokenInitProduction",
                         new IntToken(r));
             } 
             catch (NameDuplicationException e) {
@@ -304,7 +304,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
      *  not an output port.
      */
     public void setTokenProductionRate(IOPort p, int r)
-        throws IllegalActionException {
+            throws IllegalActionException {
         if(r <= 0) throw new IllegalActionException(
                 "Rate must be > 0");
         Port pp = getPort(p.getName());
@@ -318,7 +318,7 @@ public class SDFAtomicActor extends TypedAtomicActor {
             param.setToken(new IntToken(r));
         else {
             try {
-            param = new Parameter(p, "TokenProductionRate",
+                param = new Parameter(p, "TokenProductionRate",
                         new IntToken(r));
             } 
             catch (NameDuplicationException e) {
