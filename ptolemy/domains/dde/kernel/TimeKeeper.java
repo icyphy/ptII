@@ -278,7 +278,7 @@ public class TimeKeeper {
 
     /** Print the contents of the receiver list contained by
      *  this actor.
-     * @deprecated Use for testing purposes only.
+     *  Use for testing purposes only.
      synchronized void printReceiverList() {
      String name = ((NamedObj)_actor).getName();
      System.out.println("\n###Print "+name+"'s ReceiverList.");
