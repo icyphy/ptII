@@ -41,6 +41,7 @@ import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.Placeable;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleMatrixToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
@@ -53,6 +54,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 
 import javax.media.j3d.AmbientLight;
+import javax.media.j3d.Background;
 import javax.media.j3d.BoundingSphere;
 import javax.media.j3d.Bounds;
 import javax.media.j3d.BranchGroup;
@@ -121,6 +123,8 @@ public class ViewScreen extends GRActor implements Placeable {
         showAxes = new Parameter(this,"showAxes",new BooleanToken(false));
         iterationSynchronized = new Parameter(this,
                 "iterationSynchronized",new BooleanToken(false));
+        backgroundColor = new Parameter(this, "backgroundColor", new 
+        	DoubleMatrixToken(new double[][] {{ 0.0, 0.0, 0.0}} ));
 
 
         _lastTransform = new Transform3D();
@@ -172,6 +176,12 @@ public class ViewScreen extends GRActor implements Placeable {
     public Parameter verticalResolution;
 
 
+	/** The background color, given as a 3-element array representing
+	 *  rgb color
+	 */
+	public Parameter backgroundColor;
+	 
+
     public void place(Container container) {
         GraphicsConfiguration config =
             SimpleUniverse.getPreferredConfiguration();
@@ -195,23 +205,23 @@ public class ViewScreen extends GRActor implements Placeable {
             _canvas.setSize(new Dimension(horizontalDimension,
                     verticalDimension));
             _frame.setSize(horizontalDimension+50,verticalDimension);
-            if (simpleUniverse == null) {
-                simpleUniverse = new SimpleUniverse(_canvas);
+            if (_simpleUniverse == null) {
+                _simpleUniverse = new SimpleUniverse(_canvas);
             }
-            simpleUniverse.getViewingPlatform().setNominalViewingTransform();
+            _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
             _frame.setVisible(true);
         } else {
             container.add("Center",_canvas);
             _canvas.setSize(new Dimension(horizontalDimension,
                     verticalDimension));
-            if (simpleUniverse == null) {
-                simpleUniverse = new SimpleUniverse(_canvas);
+            if (_simpleUniverse == null) {
+                _simpleUniverse = new SimpleUniverse(_canvas);
             }
-            simpleUniverse.getViewingPlatform().setNominalViewingTransform();
+            _simpleUniverse.getViewingPlatform().setNominalViewingTransform();
 
             /* FIXME: experimental code for changing views.
                TransformGroup VPTG = new TransformGroup();
-               VPTG = simpleUniverse.getViewingPlatform()
+               VPTG = _simpleUniverse.getViewingPlatform()
                .getMultiTransformGroup().getTransformGroup(0);
                Transform3D VPT3D = new Transform3D();
                //VPT3D.lookAt(new Point3d(0.0, 0.0, 10.0),
@@ -244,7 +254,7 @@ public class ViewScreen extends GRActor implements Placeable {
     }
 
     public BranchGroup getBranchGroup() {
-        return branchRoot;
+        return _branchRoot;
     }
 
 	
@@ -265,52 +275,58 @@ public class ViewScreen extends GRActor implements Placeable {
         if (_frame != null) {
             _frame.setVisible(true);
         }
-        if (simpleUniverse == null) {
-            simpleUniverse = new SimpleUniverse(_canvas);
+        if (_simpleUniverse == null) {
+            _simpleUniverse = new SimpleUniverse(_canvas);
         }
-        Enumeration branches = simpleUniverse.getLocale().getAllBranchGraphs();
+        Enumeration branches = _simpleUniverse.getLocale().getAllBranchGraphs();
 
         while (branches.hasMoreElements()) {
             BranchGroup branchGroup = (BranchGroup) branches.nextElement();
             if (branchGroup.getCapability(BranchGroup.ALLOW_DETACH)) {
                 if (!(branchGroup instanceof
                             com.sun.j3d.utils.universe.ViewingPlatform)) {
-                    simpleUniverse.getLocale().removeBranchGraph(branchGroup);
+                    _simpleUniverse.getLocale().removeBranchGraph(branchGroup);
                 }
             }
         }
 
-        branchRoot = new BranchGroup();
-        branchRoot.setCapability(BranchGroup.ALLOW_DETACH);
+        _branchRoot = new BranchGroup();
+        _branchRoot.setCapability(BranchGroup.ALLOW_DETACH);
 
 
         _userTransformation = new TransformGroup(_lastTransform);
         _userTransformation.setCapability(
                 TransformGroup.ALLOW_TRANSFORM_WRITE);
         _userTransformation.setCapability(TransformGroup.ALLOW_TRANSFORM_READ);
-        branchRoot.addChild(_userTransformation);
+        _branchRoot.addChild(_userTransformation);
 
-        bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
+
+        _bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0), 100.0);
+
+		Background backg = _makeBackground();
+		backg.setApplicationBounds(_bounds);
+		_branchRoot.addChild(backg);
+
 
         if (_isRotatable()) {
-            mouseRotate = new MouseRotateView(this);
-            mouseRotate.setTransformGroup(_userTransformation);
-            mouseRotate.setSchedulingBounds(bounds);
-            branchRoot.addChild(mouseRotate);
+            __mouseRotate = new MouseRotateView(this);
+            __mouseRotate.setTransformGroup(_userTransformation);
+            __mouseRotate.setSchedulingBounds(_bounds);
+            _branchRoot.addChild(__mouseRotate);
         }
 
         if (_isScalable()) {
             MouseZoom mouseZoom = new MouseZoom();
             mouseZoom.setTransformGroup(_userTransformation);
-            mouseZoom.setSchedulingBounds(bounds);
-            branchRoot.addChild(mouseZoom);
+            mouseZoom.setSchedulingBounds(_bounds);
+            _branchRoot.addChild(mouseZoom);
         }
 
         if (_isTranslatable()) {
     	    MouseTranslate mouseTranslate = new MouseTranslate();
             mouseTranslate.setTransformGroup(_userTransformation);
     	    _userTransformation.addChild(mouseTranslate);
-            mouseTranslate.setSchedulingBounds(bounds);
+            mouseTranslate.setSchedulingBounds(_bounds);
         }
 
         // FIXME: should implement this so that user can dynamically
@@ -353,22 +369,23 @@ public class ViewScreen extends GRActor implements Placeable {
         	BranchGroup lightRoot = new BranchGroup();
 	
 	        AmbientLight lightA = new AmbientLight(new Color3f(0.8f, 0.8f, 0.8f));
-	        lightA.setInfluencingBounds(bounds);
+	        lightA.setInfluencingBounds(_bounds);
 	        lightRoot.addChild(lightA);
 	
 	        DirectionalLight lightD1 = new DirectionalLight();
-	        lightD1.setInfluencingBounds(bounds);
+	        lightD1.setInfluencingBounds(_bounds);
 	        Vector3f direction = new Vector3f(0.0f, -1.0f, -1.0f);
 	        direction.normalize();
 	        lightD1.setDirection(direction);
 	        lightD1.setColor(new Color3f(1.0f, 1.0f, 1.0f));
 	        lightRoot.addChild(lightD1);
-	
-	
-	        simpleUniverse.getViewer().getView().setLocalEyeLightingEnable(true);
-	        simpleUniverse.addBranchGraph(lightRoot);
+
+	        _simpleUniverse.getViewer().getView().setLocalEyeLightingEnable(true);
+	        _simpleUniverse.addBranchGraph(lightRoot);
 	        
 	    }
+	    
+	    
 
         if (_iterationSynchronized) {
             if (_canvas != null) _canvas.stopRenderer();
@@ -382,7 +399,7 @@ public class ViewScreen extends GRActor implements Placeable {
         if (_iterationSynchronized) {
             _canvas.stopRenderer();
             _canvas.swap();
-            if (mouseRotate != null) mouseRotate.stopped();
+            if (__mouseRotate != null) __mouseRotate.stopped();
             _canvas.startRenderer();
         }
         _isSceneGraphInitialized = false;
@@ -420,8 +437,8 @@ public class ViewScreen extends GRActor implements Placeable {
             Node node = (Node) objectToken.getValue();
             _addChild(node);
         }
-        branchRoot.compile();
-        simpleUniverse.addBranchGraph(branchRoot);
+        _branchRoot.compile();
+        _simpleUniverse.addBranchGraph(_branchRoot);
     }
 
 
@@ -440,6 +457,23 @@ public class ViewScreen extends GRActor implements Placeable {
         if (_iterationSynchronized) {
             _canvas.stopRenderer();
         }
+    }
+    
+    /** Makes the background for the viewScreen
+     *
+     *  @return javax.media.j3d.Background
+     *  @exception IllegalActionException If unable to read the color parameter;
+     */
+    protected Background _makeBackground() throws IllegalActionException {
+    	DoubleMatrixToken colorVector = 
+    		(DoubleMatrixToken) backgroundColor.getToken();
+    	Color3f color = new Color3f();
+    	
+        color.x = (float) colorVector.getElementAt(0, 0);
+        color.y = (float) colorVector.getElementAt(0, 1);
+        color.z = (float) colorVector.getElementAt(0, 2);
+
+    	return new Background(color);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -533,16 +567,16 @@ public class ViewScreen extends GRActor implements Placeable {
         ViewScreen _viewContainer;
     }
 
-    private MouseRotateView mouseRotate;
+    private MouseRotateView __mouseRotate;
     private Canvas3D _canvas;
-    private SimpleUniverse simpleUniverse;
+    private SimpleUniverse _simpleUniverse;
     private boolean _iterationSynchronized = false;
     // The main connection branch that connects to the universe
-    private BranchGroup branchRoot;
+    private BranchGroup _branchRoot;
     private Transform3D _lastTransform = new Transform3D();
     private TransformGroup _userTransformation = new TransformGroup();
     private Container _container;
     private JFrame _frame;
-    private BoundingSphere bounds;
+    private BoundingSphere _bounds;
     GRDebug debug = new GRDebug(false);
 }
