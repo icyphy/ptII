@@ -97,21 +97,22 @@ depend:
 # The -d $(ROOT) is necessary for the rmic that ships with JDK1.3
 
 CarInformationSubscriber_Stub.class: CarInformationSubscriber.java
-	$(RMIC) -d $(ROOT) -classpath $(CLASSPATH) \
+	$(RMIC) -d $(ROOT) -classpath "$(CLASSPATH)" \
 		ptolemy.domains.ct.demo.$(PTPACKAGE).CarInformationSubscriber
 
 CTSubscriber_Stub.class: CTSubscriber.java
-	$(RMIC) -d $(ROOT) -classpath $(CLASSPATH) \
+	$(RMIC) -d $(ROOT) -classpath "$(CLASSPATH)" \
 		ptolemy.domains.ct.demo.$(PTPACKAGE).CTSubscriber
 
 DERealTimeSubscriber_Stub.class: DERealTimeSubscriber.java
-	$(RMIC) -d $(ROOT) -classpath $(CLASSPATH) \
+	$(RMIC) -d $(ROOT) -classpath "$(CLASSPATH)" \
 		ptolemy.domains.ct.demo.$(PTPACKAGE).DERealTimeSubscriber
 
 demo:
-	$(MAKE) LeadingCar &
-	$(MAKE) FollowingCar &
-	$(MAKE) Monitor &
+	@echo "Before running this demo, run $PTII/bin/startjini"
+	$(MAKE) runLeadingCar &
+	$(MAKE) runFollowingCar &
+	$(MAKE) runMonitor &
 
 # This command is common to all the JINI commands
 DEMO_CMD = $(JAVA) -Djava.security.policy=./policy.all \
@@ -122,15 +123,15 @@ DEMO_CMD = $(JAVA) -Djava.security.policy=./policy.all \
 		ptolemy.actor.gui.PtolemyApplication
 
 # $(DEMO_CMD) LeadingCar.xml
-LeadingCar:
+runLeadingCar:
 	$(PTII)/bin/ptjini LeadingCar.xml
 
 # $(DEMO_CMD) FollowingCar.xml
-FollowingCar:
+runFollowingCar:
 	$(PTII)/bin/ptjini FollowingCar.xml
 
 # $(DEMO_CMD) Monitor.xml
-Monitor:
+runMonitor:
 	$(PTII)/bin/ptjini Monitor.xml
 
 
