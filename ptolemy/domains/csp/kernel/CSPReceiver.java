@@ -79,6 +79,14 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Get a token from the mailbox receiver and specify a null
+     *  Branch to control the execution of this method. 
+     * @return The token contained by this receiver.
+     */
+    public Token get() {
+        return get(null);
+    }
+    
     /** Retrieve a Token from the receiver by rendezvous. This method
      *  does not return until the rendezvous has been completed.
      *  If a put has already been reached, it notifies the waiting put
@@ -94,7 +102,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   has been requested, or if the execution is abruptly terminated
      *   from the outside (via an InterruptedException).
      */
-    public synchronized Token get() {
+    public synchronized Token get(Branch branch) {
         Token tmp = null;
         boolean blocked = false;
         try {
@@ -123,7 +131,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 }
                 
         	_checkFlags();
-                _getDirector()._actorBlocked(this);
+                prepareToBlock(branch);
+                // _getDirector()._actorBlocked(this);
                 blocked = true;
                 while (_isGetWaiting()) {
                     _checkFlagsAndWait();
@@ -134,7 +143,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 // lead to a deadlock false alarm. This should
                 // be done as soon as setGetWaiting(false) is
                 // called.
-                _getDirector()._actorUnBlocked(this);
+                wakeUpBlockedPartner();
+                // _getDirector()._actorUnBlocked(this);
                 blocked = false;
                 tmp = _token;
                 _setRendezvousComplete(true);
@@ -147,7 +157,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             if (blocked) {
                 // process was blocked, woken up and terminated.
                 // register process as being unblocked
-                _getDirector()._actorUnBlocked(this);
+                wakeUpBlockedPartner();
+                // _getDirector()._actorUnBlocked(this);
             }
         }
         return tmp;
@@ -278,6 +289,30 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 	 return _boundaryDetector.isOutsideBoundary();
      }
 
+    /**
+     */
+    public synchronized void prepareToBlock(Branch branch) 
+            throws TerminateBranchException {
+        if( branch != null ) {
+            branch.registerRcvrBlocked(this);
+            _otherBranch = branch;
+        } else {
+            /*
+            CSPDirector director = ((CSPDirector)((Actor)
+        	    (getContainer().getContainer())).getDirector());
+            */
+            _getDirector()._actorBlocked(this);
+            _otherBranch = branch;
+        }
+    }
+            
+    /** Put a token into the mailbox receiver and specify a null
+     *  Branch to control the execution of this method. 
+     */
+    public void put(Token token) {
+        put(token, null);
+    }
+            
     /** Place a Token into the receiver via rendezvous. This method
      *  does not return until the rendezvous has been completed.
      *  If get has already been reached, it notifies the waiting get
@@ -294,7 +329,7 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
      *   has been requested, or if the execution is abruptly terminated
      *   from the outside (via an InterruptedException).
      */
-    public synchronized void put(Token t) {
+    public synchronized void put(Token t, Branch branch) {
         boolean blocked = false;
         try {
             _token = t; // perform transfer
@@ -323,7 +358,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 }
 
         	_checkFlags();
-                _getDirector()._actorBlocked(this);
+                prepareToBlock(branch);
+                // _getDirector()._actorBlocked(this);
                 blocked = true;
                 while(_isPutWaiting()) {
                     _checkFlagsAndWait();
@@ -334,7 +370,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
                 // lead to a deadlock false alarm. This should
                 // be done as soon as setGetWaiting(false) is
                 // called.
-                _getDirector()._actorUnBlocked(this);
+                wakeUpBlockedPartner();
+                // _getDirector()._actorUnBlocked(this);
                 blocked = false;
                 _setRendezvousComplete(true);
                 notifyAll();
@@ -347,7 +384,8 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
             if (blocked) {
                 // process was blocked, awakened and terminated.
                 // register process as being unblocked
-                _getDirector()._actorUnBlocked(this);
+                wakeUpBlockedPartner();
+                // _getDirector()._actorUnBlocked(this);
             }
         }
     }
@@ -378,6 +416,22 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
 	_boundaryDetector.reset();
     }
 
+    /**
+     */
+    public synchronized void wakeUpBlockedPartner() {
+        if( _otherBranch != null ) {
+            _otherBranch.registerRcvrUnBlocked(this);
+        } else {
+            /*
+            CSPDirector director = ((CSPDirector)((Actor)
+        	    (getContainer().getContainer())).getDirector());
+            */
+            _getDirector()._actorUnBlocked(this);
+            
+        }
+        notifyAll();
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -599,4 +653,6 @@ public class CSPReceiver extends AbstractReceiver implements ProcessReceiver {
     private Token _token;
 
     private BoundaryDetector _boundaryDetector;
+    
+    private Branch _otherBranch = null;
 }

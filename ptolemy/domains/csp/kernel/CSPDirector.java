@@ -100,7 +100,7 @@ reached. The director carries out any changes that have been queued
 with it. Note that the result of the topology changes may remove the
 deadlock that caused the changes to be carried out.
 <p>
-@author Neil Smyth, Mudit Goel
+@author Neil Smyth, Mudit Goel, John S. Davis II
 @version $Id$
 @see ptolemy.actor.Director
 */

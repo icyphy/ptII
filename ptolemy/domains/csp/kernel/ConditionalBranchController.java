@@ -406,6 +406,7 @@ public class ConditionalBranchController {
     private void _resetConditionalState() {
         synchronized(_internalLock) {
             _blocked = false;
+            _blockedBranchRcvrs.clear();
             _branchesActive = 0;
 	    _branchesBlocked = 0;
             _branchesStarted = 0;
@@ -422,6 +423,9 @@ public class ConditionalBranchController {
     // as blocked while in the midst of a CDO or CIF.
     boolean _blocked = false;
 
+    // A list of receivers associated with blocked branches.
+    private LinkedList _blockedBranchRcvrs = new LinkedList();
+
     // Contains the number of conditional branches that are still
     // active.
     private int _branchesActive = 0;
@@ -433,7 +437,7 @@ public class ConditionalBranchController {
     // Contains the number of branches that were actually started for
     // the most recent conditional rendezvous.
     private int _branchesStarted = 0;
-
+    
     // Contains the ID of the branch currently trying to rendezvous. It
     // is -1 if no branch is currently trying.
     private int _branchTrying = -1;
