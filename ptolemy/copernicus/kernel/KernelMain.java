@@ -46,6 +46,8 @@ import ptolemy.moml.MoMLParser;
 import com.microstar.xml.XmlException;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -219,7 +221,8 @@ public class KernelMain {
 	    toplevel.getName(),
 	    "-d", directoryName,
 	    "-p", "wjtp.at", "targetPackage:ptolemy.copernicus.java.test.cg",
-	    "-p" ,"wjtp.mt", "targetPackage:ptolemy.copernicus.java.test.cg"
+	    "-p" ,"wjtp.mt", "targetPackage:ptolemy.copernicus.java.test.cg",
+	    "-p" ,"wjtp.umr", "disabled"
 	};
 
 	KernelMain main = new KernelMain(args[0]);
@@ -287,23 +290,51 @@ public class KernelMain {
         // Call the MOML parser on the test file to generate a Ptolemy II
         // model.
 	_momlClassName = momlClassName;
-       	CompositeActor toplevel;
+       	CompositeActor toplevel = null;
+	// First, try it as a top level model
+	String source = "<entity name=\"ToplevelModel\""
+	    + "class=\"" + momlClassName + "\"/>\n";
         try {
-	    // First, try it as a top level model
-	    String source = "<entity name=\"ToplevelModel\""
-	        + "class=\"" + momlClassName + "\"/>\n";
             toplevel = (CompositeActor)_parser.parse(source);
 
         } catch (Exception exception) {
-        
+	    StringBuffer errorMessage = new StringBuffer();
+	    errorMessage.append("1. Failed to parse '" + momlClassName
+				+ "' as a top level model in\n"
+				+ source + "\nException was: "
+				+ exception); 
 	    try {
 		// Then try it as an xml file
 		toplevel = (CompositeActor)_parser.parseFile(momlClassName);
 	    } catch (Exception exceptionTwo) {
-		throw new
-		    IllegalActionException("Failed to parse '"
-                            + momlClassName
-                            + "': " + exceptionTwo);
+		errorMessage.append("2. Failed to parse '" + momlClassName
+				    + "' as an xml file: "
+				    + exceptionTwo); 
+		try {
+		    URL momlURL = new URL(momlClassName); 
+		    try {
+			// Then try it as a URL file
+			toplevel = (CompositeActor)_parser.parse(null,
+								 momlURL);
+		    } catch (Exception exceptionThree) {
+			errorMessage.append("3. Failed to parse '"
+					    + momlClassName
+					    + "' as a URL '"
+					    + momlURL + "': "
+					    + exceptionThree
+					    + momlClassName
+					    + "': " + exceptionThree);
+			throw new IllegalActionException(errorMessage
+							 .toString());
+		    
+		    }
+		} catch (MalformedURLException malformed) {
+		    throw new IllegalActionException(errorMessage + ": "
+						     + malformed);
+		}
+	    }
+	    if (toplevel == null) {
+		throw new IllegalActionException(errorMessage.toString());
 	    }
         }
 	return toplevel;
