@@ -38,9 +38,10 @@ import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.PtolemyFrame;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
-import ptolemy.copernicus.c.Main;
-import ptolemy.copernicus.java.Main;
-import ptolemy.copernicus.jhdl.Main;
+//import ptolemy.copernicus.c.Main;
+//import ptolemy.copernicus.java.Main;
+//import ptolemy.copernicus.jhdl.Main;
+
 import ptolemy.data.BooleanToken;
 import ptolemy.gui.JTextAreaExec;
 import ptolemy.gui.MessageHandler;
