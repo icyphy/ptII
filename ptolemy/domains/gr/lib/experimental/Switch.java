@@ -34,7 +34,6 @@ import ptolemy.actor.*;
 import ptolemy.actor.lib.*;
 import ptolemy.data.*;
 import ptolemy.data.type.*;
-import ptolemy.domains.dd3d.kernel.*;
 import ptolemy.kernel.util.*;
 
 
