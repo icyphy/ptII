@@ -54,13 +54,13 @@ import java.util.StringTokenizer;
 //////////////////////////////////////////////////////////////////////////
 //// UtilityFunctions
 /**
-This class providess additional functions for use in the Ptolemy II
+This class provides additional functions for use in the Ptolemy II
 expression language.  All of the methods in this class are static
 and return an instance of Token.  The expression language identifies
 the appropriate method to use by using reflection, matching the
 types of the arguments.
 
-@author  Neil Smyth, Christopher Hyland, Bart Kienhuis, Edward A. Lee
+@author  Neil Smyth, Christopher Hylands, Bart Kienhuis, Edward A. Lee
 @version $Id$
 */
 public class UtilityFunctions {
@@ -127,14 +127,20 @@ public class UtilityFunctions {
     /** Get the specified property from the environment. An empty string
      *  is returned if the argument environment variable does not exist.
      *  See the javadoc page for java.util.System.getProperties() for
-     *  a list of system properties.  An example property is
-     *  "java.version", which returns the version of the JDK.
-     *
+     *  a list of system properties.  Example properties include:
+     *  <dl>
+     *  <dt> "java.version"
+     *  <dd> the version of the JDK.
+     *  <dt> "ptolemy.ptII.dir"
+     *  <dd> vergil usually sets the ptolemy.ptII.dir property to the
+     *  value of $PTII.
+     *  </dl> 
+     *  
      *  @param propertyName The name of property.
      *  @return A token containing the string value of the property.
      */
-    public static StringToken property(String envName) {
-        return new StringToken(System.getProperty(envName));
+    public static StringToken property(String propertyName) {
+        return new StringToken(System.getProperty(propertyName));
     }
 
     /** Get the string text contained in the specified file. For
@@ -163,15 +169,15 @@ public class UtilityFunctions {
     public static StringToken readFile(String filename)
             throws IllegalActionException {
 
-        File fileT = new File(filename);
-        //System.out.println("Trying to open file: " + fileT.toString());
+        File file = new File(filename);
+        //System.out.println("Trying to open file: " + file.toString());
         BufferedReader fin = null;
         String line;
         String result = "";
         String newline = System.getProperty("line.separator");
         try {
-            if (fileT.exists()) {
-                fin = new BufferedReader(new FileReader(fileT));
+            if (file.exists()) {
+                fin = new BufferedReader(new FileReader(file));
                 while (true) {
                     try {
                         line = fin.readLine();
@@ -205,7 +211,7 @@ public class UtilityFunctions {
 
         DoubleMatrixToken returnMatrix = null;
 
-        File fileT = new File(filename);
+        File file = new File(filename);
         FileReader fin = null;
 
         // Vector containing the matrix
@@ -215,15 +221,15 @@ public class UtilityFunctions {
         int row = -1;
         int column = -1;
 
-        int posRow = 0;
-        int posColumn = 0;
+        int rowPosition = 0;
+        int columnPosition = 0;
         double[][] mtr = null;
 
-        if (fileT.exists()) {
+        if (file.exists()) {
 
             try {
                 // Open the matrix file
-                fin = new FileReader(fileT);
+                fin = new FileReader(file);
             } catch (FileNotFoundException e) {
                 throw new IllegalActionException("FIle Not FOUND");
             }
@@ -260,10 +266,10 @@ public class UtilityFunctions {
                 Iterator j = l.iterator();
                 while( j.hasNext() ) {
                     Double s = (Double) j.next();
-                    mtr[posColumn][posRow++] = s.doubleValue();
+                    mtr[columnPosition][rowPosition++] = s.doubleValue();
                 }
-                posRow=0;
-                posColumn++;
+                rowPosition = 0;
+                columnPosition++;
             }
 
             // Vectors have now become obsolete, data is stored
@@ -299,12 +305,14 @@ public class UtilityFunctions {
 	    // This should not happen since the elements of the array always
 	    // have the same type.
 	    throw new InternalErrorException("UtilityFunctions.repeat: "
-	        + "Cannot construct ArrayToken. " + illegalAction.getMessage());
+                    + "Cannot construct ArrayToken. "
+                    + illegalAction.getMessage());
 	} catch (IllegalArgumentException illegalArgument) {
 	    // This should not happen since the elements of the array always
 	    // have the same type.
 	    throw new InternalErrorException("UtilityFunctions.repeat: "
-	        + "Cannot construct ArrayToken. " + illegalArgument.getMessage());
+                    + "Cannot construct ArrayToken. "
+                    + illegalArgument.getMessage());
         }
         return arrayToken;
     }
@@ -325,25 +333,26 @@ public class UtilityFunctions {
      * @return Canonical absolute path if file/directory was found, otherwise
      * returns unchanged name. */
     public static String findFile(String name) {
-        File fileT = new File(name);
-        if (!fileT.exists()) {
+        File file = new File(name);
+        if (!file.exists()) {
             String curDir = System.getProperty("user.dir");
-            fileT = new File(curDir, name);
+            file = new File(curDir, name);
         }
-        if (!fileT.exists()) {
+        if (!file.exists()) {
             String cp = System.getProperty("java.class.path");
-            StringTokenizer tokens = new StringTokenizer(cp, System.getProperty("path.separator"));
+            StringTokenizer tokens = new StringTokenizer(cp,
+                    System.getProperty("path.separator"));
             while (tokens.hasMoreTokens()) {
                 String token = tokens.nextToken();
-                fileT = new File(token,name);
-                if (fileT.exists()) break;
+                file = new File(token, name);
+                if (file.exists()) break;
             }
         }
-        if (fileT.exists()) {
+        if (file.exists()) {
             try {
-                return fileT.getCanonicalPath();
+                return file.getCanonicalPath();
             } catch (java.io.IOException ex) {
-                return fileT.getAbsolutePath();
+                return file.getAbsolutePath();
             }
         }
         else
