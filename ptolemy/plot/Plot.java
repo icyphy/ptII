@@ -289,8 +289,10 @@ public class Plot extends PlotBox {
     }
 
     /** Parse pxgraph style command line arguments.
-     * This method only for backward compatibility with the X11 pxgraph
-     * program 
+     * This method exists only for backward compatibility with the X11 pxgraph
+     * program.
+     * @exception plot.CmdLineArgException if there is a problem parsing
+     * the command line arguments passed in.
      */	
     public int parseArgs(String args[])
 	throws CmdLineArgException
