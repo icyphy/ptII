@@ -206,6 +206,57 @@ public class ComplexToken extends ScalarToken {
         return new ComplexToken(result);
     }
 
+    /** Returns a token representing the bitwise AND of this token and
+     *  the given token.
+     *  @return The bitwise AND.
+     *  @exception IllegalActionException If the given token is not
+     *  compatible for this operation, or the operation does not make
+     *  sense for this type.
+     */
+    protected ScalarToken _bitwiseAnd(ScalarToken rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseAnd", this, rightArgument));
+    }
+
+    /** Returns a token representing the bitwise NOT of this token.
+     *  @return The bitwise NOT of this token.
+     *  @exception IllegalActionException If the given token is not
+     *  compatible for this operation, or the operation does not make
+     *  sense for this type.
+     */
+    protected ScalarToken _bitwiseNot()
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseNot", this, this));
+    }
+
+    /** Returns a token representing the bitwise OR of this token and
+     *  the given token.
+     *  @return The bitwise OR.
+     *  @exception IllegalActionException If the given token is not
+     *  compatible for this operation, or the operation does not make
+     *  sense for this type.
+     */
+    protected ScalarToken _bitwiseOr(ScalarToken rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseOr", this, rightArgument));
+    }
+
+    /** Returns a token representing the bitwise XOR of this token and
+     *  the given token.
+     *  @return The bitwise XOR.
+     *  @exception IllegalActionException If the given token is not
+     *  compatible for this operation, or the operation does not make
+     *  sense for this type.
+     */
+    protected ScalarToken _bitwiseXor(ScalarToken rightArgument)
+            throws IllegalActionException {
+        throw new IllegalActionException(
+                notSupportedMessage("bitwiseXor", this, rightArgument));
+    }
+
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
      *  the type of the argument is an ComplexToken

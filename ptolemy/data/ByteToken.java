@@ -278,6 +278,41 @@ public class ByteToken extends ScalarToken {
         return new ByteToken(sum);
     }
 
+    /** Returns a token representing the bitwise AND of this token and
+     *  the given token.
+     *  @return The bitwise AND.
+     */
+    protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
+        byte sum = (byte)(_value & ((ByteToken)rightArgument).byteValue());
+        return new ByteToken(sum);
+    }
+
+   /** Returns a token representing the bitwise NOT of this token.
+     *  @return The bitwise NOT of this token.
+     */
+    protected ScalarToken _bitwiseNot() {
+        ByteToken result = new ByteToken((byte)~_value);
+        return result;
+    }
+
+    /** Returns a token representing the bitwise OR of this token and
+     *  the given token.
+     *  @return The bitwise OR.
+     */
+    protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
+        byte sum = (byte)(_value | ((ByteToken)rightArgument).byteValue());
+        return new ByteToken(sum);
+    }
+
+    /** Returns a token representing the bitwise XOR of this token and
+     *  the given token.
+     *  @return The bitwise XOR.
+     */
+    protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
+        byte sum = (byte)(_value ^ ((ByteToken)rightArgument).byteValue());
+        return new ByteToken(sum);
+    }
+
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
      *  the type of the argument is an ByteToken. If two bytes are

@@ -58,6 +58,7 @@ JSRCS = \
 	AbstractConvertibleToken.java \
 	AbstractNotConvertibleToken.java \
 	ArrayToken.java \
+	BitwiseOperationToken.java \
 	BooleanMatrixToken.java \
 	BooleanToken.java \
         ByteToken.java \

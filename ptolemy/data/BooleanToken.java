@@ -50,7 +50,8 @@ the constructor that takes a boolean argument.
 @since Ptolemy II 0.2
 */
 
-public class BooleanToken extends AbstractConvertibleToken {
+public class BooleanToken extends AbstractConvertibleToken 
+    implements BitwiseOperationToken {
 
     /** Construct a token with value false
      */
@@ -183,6 +184,60 @@ public class BooleanToken extends AbstractConvertibleToken {
      */
     public Token one() {
         return TRUE;
+    }
+
+    /** Returns a token representing the bitwise AND of this token and
+     *  the given token.
+     *  @return The boolean AND.
+     */
+    public BitwiseOperationToken bitwiseAnd(Token rightArgument) 
+            throws IllegalActionException {
+        if(!(rightArgument instanceof BooleanToken)) {
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("bitwiseXor",
+                            this, rightArgument));
+        }
+        return (BooleanToken)_multiply(rightArgument);
+    }
+
+    /** Returns a token representing the bitwise NOT of this token.
+     *  @return The boolean negation.
+     */
+    public BitwiseOperationToken bitwiseNot() {
+        return not();
+    }
+
+    /** Returns a token representing the bitwise OR of this token and
+     *  the given token.
+     *  @return The boolean OR.
+     */
+    public BitwiseOperationToken bitwiseOr(Token rightArgument)
+            throws IllegalActionException {
+        if(!(rightArgument instanceof BooleanToken)) {
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("bitwiseOr",
+                            this, rightArgument));
+        }
+        boolean rightValue = ((BooleanToken)rightArgument).booleanValue();
+        if (_value || rightValue) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+    }
+
+    /** Returns a token representing the bitwise XOR of this token and
+     *  the given token.
+     *  @return The boolean XOR.
+     */
+    public BitwiseOperationToken bitwiseXor(Token rightArgument)
+            throws IllegalActionException {
+        if(!(rightArgument instanceof BooleanToken)) {
+            throw new IllegalActionException(
+                    notSupportedIncomparableMessage("bitwiseXor",
+                            this, rightArgument));
+        }
+        return (BooleanToken)_add(rightArgument);
     }
 
     /** Return the value of this token as a string that can be parsed

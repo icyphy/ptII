@@ -237,6 +237,41 @@ public class IntToken extends ScalarToken {
         return new IntToken(sum);
     }
 
+    /** Returns a token representing the bitwise AND of this token and
+     *  the given token.
+     *  @return The bitwise AND.
+     */
+    protected ScalarToken _bitwiseAnd(ScalarToken rightArgument) {
+        int sum = _value & ((IntToken)rightArgument).intValue();
+        return new IntToken(sum);
+    }
+
+    /** Returns a token representing the bitwise NOT of this token.
+     *  @return The bitwise NOT of this token.
+     */
+    protected ScalarToken _bitwiseNot() {
+        IntToken result = new IntToken(~_value);
+        return result;
+    }
+
+    /** Returns a token representing the bitwise OR of this token and
+     *  the given token.
+     *  @return The bitwise OR.
+     */
+    protected ScalarToken _bitwiseOr(ScalarToken rightArgument) {
+        int sum = _value | ((IntToken)rightArgument).intValue();
+        return new IntToken(sum);
+    }
+
+    /** Returns a token representing the bitwise XOR of this token and
+     *  the given token.
+     *  @return The bitwise XOR.
+     */
+    protected ScalarToken _bitwiseXor(ScalarToken rightArgument) {
+        int sum = _value ^ ((IntToken)rightArgument).intValue();
+        return new IntToken(sum);
+    }
+
     /** Return a new token whose value is the value of this token
      *  divided by the value of the argument token. It is assumed that
      *  the type of the argument is an IntToken
