@@ -1610,8 +1610,8 @@ public class IOPort extends ComponentPort {
         _invalidate();
     }
 
-    /** Return a list of the ports connected to this port on the
-     *  inside that can accept data from this port.  This includes
+    /** Return a list of the ports that can accept data from this port
+     *  when it sends on the inside.  This includes
      *  both input ports and opaque output ports that are
      *  connected on the inside to this port. This port must
      *  be an opaque input port, otherwise return an empty list.
@@ -1646,8 +1646,8 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Return a list of the ports connected to this port on the
-     *  inside that can send data to this port.  This includes
+    /** Return a list of the ports that can send data to this port
+     *  from the inside.  This includes
      *  both output ports and opaque input ports that are
      *  connected on the inside to this port. This port must
      *  be an opaque output port, otherwise return an empty list.
@@ -2344,8 +2344,8 @@ public class IOPort extends ComponentPort {
         _workspace.doneWriting();
     }
 
-    /** Return a list of the ports connected to this port on the
-     *  outside that can accept data from this port.  This includes
+    /** Return a list of the ports that can accept data from this port when
+     *  it sends on the outside.  This includes
      *  opaque input ports that are connected on the outside to this port
      *  and opaque output ports that are connected on the inside to this one.
      *  @return A list of IOPort objects.
@@ -2373,8 +2373,8 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Return a list of ports connected to this port on the
-     *  outside that can send data to this port.  This includes all
+    /** Return a list of ports that can send data to this port from the
+     *  outside.  This includes all
      *  opaque output ports that are connected on the outside to this port,
      *  and opaque input ports that are connected on the inside to this port.
      *  @return A list of IOPort objects, or an empty list if there are none.
