@@ -58,6 +58,7 @@ JSRCS = \
 	Distributor.java \
 	Expression.java \
 	Gaussian.java \
+	Print.java \
 	Pulse.java \
 	Ramp.java \
 	Sin.java \
