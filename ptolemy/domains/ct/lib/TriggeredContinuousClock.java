@@ -47,8 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    are received simultaneously, then the clock will be stopped.
    <p>
    This <i>start</i> and <i>stop</i> ports can are declared DISCRETE, and they
-   should be connected to an event generator.  Other domains ignore this
-   declaration.
+   only accept discrete events as inputs.  
    <p>
    @see ptolemy.domains.ct.lib.ContinuousClock
 
@@ -87,10 +86,6 @@ public class TriggeredContinuousClock extends ContinuousClock
         // type is undeclared.
         // Annotate DISCRETE, for the benefit of CT.
         new Parameter(stop, "signalType", new StringToken("DISCRETE"));
-
-        // To prevent type inference from doing the wrong thing, we have
-        // to declare the output to be CONTINUOUS.
-        new Parameter(output, "signalType", new StringToken("CONTINUOUS"));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -117,11 +112,10 @@ public class TriggeredContinuousClock extends ContinuousClock
         _cycleCount = 0;
     }
 
-    /** Copy values committed in initialize() or in the last postfire()
-     *  into the corresponding tentative variables. In effect, this loads
-     *  the last known good value for these variables, which is particularly
-     *  important if time has gone backwards. This overrides the base class
-     *  to check whether the <i>start</i> or <i>stop</i> inputs have values.
+    /** Call the _updateTentativeValues method of super class.
+     *  Override the super class 
+     *  to check whether the <i>start</i> or <i>stop</i> inputs have values
+     *  and update the affected variables.
      *  @exception IllegalActionException If thrown accessing start or stop
      *   input data.
      */

@@ -32,9 +32,10 @@ import ptolemy.actor.lib.Clock;
 import ptolemy.actor.util.Time;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.domains.ct.kernel.CTDirector;
-import ptolemy.domains.ct.kernel.CTEventGenerator;
+import ptolemy.domains.ct.kernel.CTWaveformGenerator;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -42,9 +43,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 //////////////////////////////////////////////////////////////////////////
 //// ContinuousClock
 /**
-   This is a clock source used in continuous-time domain.
+   This is a clock source used in continuous-time (CT) domain.
    It extends the clock actor in ptolemy/actor/lib directory
-   but overrides the fire() method and postfire() method.
+   but overrides the fire, initialize, preinitialize and postfire method.
+   This actor serves as a wave form generator in CT domain.
    <p>
    The actor uses the fireAt() method of the director to request
    firings at the beginning of each period plus each of the offsets,
@@ -53,13 +55,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    one at t_plus phase. The time does not advance at these two phases.
    For example, with the default settings, at time 1.0, the actor
    produces 0 at t_minus phase and 1 at t_plus phase. Note, at
-   the breakpoint, we treat the output of this actor as any
-   value between 0 and 1.
-   <p>
-   There is a defaultValue parameter which is used as output after the
-   clock reachs the number of cycles. In the triggered continuous clock which
-   extends this class, the defaultValue parameter is also used as output before
-   the clock starts. The default value is 0.
+   time t, which is between t_minus and t_plus, the possible output of 
+   this actor can be any value between 0 and 1.
    <p>
    The clock has a stopTime parameter and a numberOfCycles parameter. 
    The whole model will stop execution when the
@@ -75,8 +72,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    @Pt.AcceptedRating Red (hyzheng)
 */
 
-public class ContinuousClock extends Clock //implements CTEventGenerator 
-    {
+public class ContinuousClock extends Clock implements CTWaveformGenerator {
 
     /** Construct an actor with the specified container and name.
      *  @param container The container.
@@ -91,6 +87,10 @@ public class ContinuousClock extends Clock //implements CTEventGenerator
         super(container, name);
         defaultValue = new Parameter(this, "defaultValue");
         defaultValue.setExpression("0");
+        // Override the signal type to be CONTINUOUS to indicate
+        // that this actor produce outputs with state semantics.
+        ((Parameter)output.getAttribute("signalType"))
+            .setToken(new StringToken("CONTINUOUS"));
     }
 
     ///////////////////////////////////////////////////////////////////
