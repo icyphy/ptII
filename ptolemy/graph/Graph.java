@@ -557,10 +557,11 @@ public class Graph implements Cloneable {
 
     /** Return the total number of edges in this graph.  Multiple
      *  connections between two nodes are counted multiple times.
+     *  Hidden edges are not included in this count.
      *  @return The total number of edges in this graph.
      */
     public int edgeCount() {
-        return _edges.size();
+        return _edges.size() - _hiddenEdgeSet.size();
     }
 
     /** Return the edge label of the specified edge.
@@ -1380,7 +1381,7 @@ public class Graph implements Cloneable {
     }
 
     /** Validate the weight of a node. This method checks the validity of
-     *  of the given node weight, using {@link #validNodeWeight(Object)}, and
+     *  the node weight (using {@link #validateNodeWeight(Object)}, and
      *  updates, if necessary, the internal mapping of weights into
      *  their associated nodes.
      *  This updating operation is necessary for correct operation of
@@ -1403,7 +1404,8 @@ public class Graph implements Cloneable {
      */
     public boolean validateWeight(Node node) {
         // FIXME:  @see #validateWeight(Node, Object).
-        if (!validNodeWeight(node.getWeight())) {
+        Object weightArgument = node.hasWeight() ? node.getWeight() : null;
+        if (!validNodeWeight(weightArgument)) {
             throw new IllegalStateException("Invalid weight associated with a "
                     + "node in the graph." +  _nodeDump(node));
         }
