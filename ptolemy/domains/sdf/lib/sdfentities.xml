@@ -90,6 +90,7 @@
 </rendition>
 </entity>
 
+<!--
 <entity name="AudioSource" class="ptolemy.domains.sdf.lib.javasound.AudioSource">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.source</configure>
@@ -101,6 +102,7 @@
 <configure>generic.sink</configure>
 </rendition>
 </entity>
+-->
 
 </class>
 
