@@ -80,6 +80,10 @@ OPTIONAL_FILES = \
 	lib \
 	test \
 	$(PTCLASSJAR) \
+	'MoMLViewerApplet$$GetDocumentationAction.class' \
+	'MoMLViewerApplet$$ObjectContextMenuFactory.class' \
+	'MoMLViewerApplet$$PortContextMenuFactory$$PortDescriptionFactory.class' \
+	'MoMLViewerApplet$$PortContextMenuFactory.class' \
 	'VergilApplication$$1.class' \
 	'VergilApplication$$2.class' \
 	'VergilApplication$$3.class' \

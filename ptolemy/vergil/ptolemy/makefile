@@ -71,6 +71,17 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
+	'AbstractPtolemyGraphModel$$1.class' \
+	'AbstractPtolemyGraphModel$$GraphChangeListener.class' \
+	'EditorDropTarget$$1.class' \
+	'EditorDropTarget$$2.class' \
+	'EditorDropTarget$$3.class' \
+	'EditorDropTarget$$4.class' \
+	'EditorDropTarget$$DTListener.class' \
+	'GraphFrame$$DeletionListener.class' \
+	'GraphFrame$$GetDocumentationAction.class' \
+	'GraphFrame$$ImportLibraryAction.class' \
+	'GraphFrame$$SaveInLibraryAction.class \
 	'Ptolemy.properties' \
 	'GraphFrame$$CopyAction.class' \
 	'GraphFrame$$CutAction.class' \
