@@ -85,7 +85,7 @@ public abstract class DEDirector extends Director {
 	super(workspace, name);
         try {
             _stopTime = new Parameter(this, 
-                    "stop time", 
+                    "StopTime", 
                     new DoubleToken(0.0));
         } catch (IllegalActionException e) {
             // shouldn't happen, because we know the Parameter class is an
