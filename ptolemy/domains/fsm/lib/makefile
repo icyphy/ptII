@@ -51,7 +51,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	DEFSMActor.java \
         HSController.java \
         HSDirector.java \
 	HSInit.java
