@@ -1,4 +1,4 @@
-/* An actor that computes the dot product of two double arrays.
+/* An actor that computes the dot product of two arrays.
 
  Copyright (c) 1997-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,33 +24,32 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (ctsay@eecs.berkeley.edu)
+@ProposedRating Yellow (pwhitake@eecs.berkeley.edu)
+@AcceptedRating Yellow (pwhitake@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.lib;
 
-import ptolemy.actor.*;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.*;
 import ptolemy.data.type.*;
-import ptolemy.domains.sdf.kernel.*;
+import ptolemy.graph.InequalityTerm;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.math.DoubleArrayMath;
 
 //////////////////////////////////////////////////////////////////////////
 //// DotProduct
 /**
-An actor that computes the dot product of two arrays.
-This actor has two input ports, from which it receives two MatrixTokens.
-The output is the dot product of the two matrices, assuming that each
-matrix only has one row.
+Compute the dot product of two arrays. This actor has two 
+input ports, from which it receives two ArrayTokens. The elements of the 
+ArrayTokens must be of type ScalarToken. The output is the dot product of 
+the two arrays.
 <p>
-This actor is strict. That is, it requires that each input
-port have a token upon firing. It always sends one DoubleToken as
-its output.
+This actor requires that each input port have a token upon firing. On each 
+firing, it produces exactly one token, which is of type ScalarToken.
 
-@author Jeff Tsay
+@author Jeff Tsay, Paul Whitaker
 @version $Id$
 */
 
@@ -59,7 +58,7 @@ public class DotProduct extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
      *  name.
      *  @param container The container.
-     *  @param name The name of this adder within the container.
+     *  @param name The name of this actor within the container.
      *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the name coincides with
@@ -68,59 +67,99 @@ public class DotProduct extends TypedAtomicActor {
     public DotProduct(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-      	input1 = new TypedIOPort(this, "input1", true, false);
-        input1.setTypeAtMost(BaseType.DOUBLE_MATRIX);
 
+        input1 = new TypedIOPort(this, "input1", true, false);
         input2 = new TypedIOPort(this, "input2", true, false);
-        input2.setTypeAtMost(BaseType.DOUBLE_MATRIX);
-
         output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(BaseType.DOUBLE);
+
+        // set input types to array
+        ArrayType unknownArrayType = new ArrayType(BaseType.UNKNOWN);
+        input1.setTypeEquals(unknownArrayType);
+        input2.setTypeEquals(unknownArrayType);
+        
+        // set input types to be scalar arrays. This allows the input
+        // types to be int array, double array, etc.
+        ArrayType scalarArrayType = new ArrayType(BaseType.SCALAR);
+        input1.setTypeAtMost(scalarArrayType);
+        input2.setTypeAtMost(scalarArrayType);
+
+        // set the output type to be no less than the element type of the
+        // input arrays.
+        ArrayType input1Type = (ArrayType)input1.getType();
+        InequalityTerm elemTerm1 = input1Type.getElementTypeTerm();
+        output.setTypeAtLeast(elemTerm1);
+
+        ArrayType input2Type = (ArrayType)input2.getType();
+        InequalityTerm elemTerm2 = input2Type.getElementTypeTerm();
+        output.setTypeAtLeast(elemTerm2);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The first input port. This has type MatrixToken, and should be
-     *  given matrices with only one row.
+    /** The first input port. This has type ArrayToken. The elements of
+     *  the ArrayToken must be of type ScalarToken.
      */
     public TypedIOPort input1 = null;
 
-    /** The second input port. This has type MatrixToken, and should be
-     *  given matrices with only one row.
+    /** The second input port. This has type ArrayToken. The elements of
+     *  the ArrayToken must be of type ScalarToken.
      */
     public TypedIOPort input2 = null;
 
-    /** The output port. This has type DoubleToken.
+    /** The output port, which has type ScalarToken.
      */
     public TypedIOPort output = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read a token each of the input ports, converting them into
-     *  DoubleMatrixTokens, and output a DoubleToken representing the
-     *  dot product. The input matrix tokens are assumed to have only one
-     *  row, representing vector operands.
-     *
-     *  @exception IllegalActionException If there is no director, if
-     *  an input port does not have a token of the correct type, or if
-     *  the input token(s) are not row vectors.
+    /** Read an ArrayToken from each of the input ports, and output the 
+     *  dot product.
+     *  @exception IllegalActionException If there is no director, if 
+     *  the input arrays have unequal widths, or if the input arrays
+     *  have no elements..
      */
     public void fire() throws IllegalActionException {
-        MatrixToken token1 = (MatrixToken) input1.get(0);
-        MatrixToken token2 = (MatrixToken) input2.get(0);
+        ArrayToken token1 = (ArrayToken) input1.get(0);
+        ArrayToken token2 = (ArrayToken) input2.get(0);
 
-        double[][] doubleMatrix1 = token1.doubleMatrix();
-        double[][] doubleMatrix2 = token2.doubleMatrix();
+        Token[] array1 = token1.arrayValue();
+        Token[] array2 = token2.arrayValue();
 
-        if ((doubleMatrix1.length != 1) || (doubleMatrix2.length != 1)) {
-            throw new IllegalActionException("Input to DotProduct is not " +
-                    "a matrix with one row.");
+        if (array1.length != array2.length) {
+            throw new IllegalActionException("Inputs to DotProduct have " +
+                    "unequal lengths: " + array1.length + " and " +
+                    array2.length + ".");
         }
 
-        output.send(0, new DoubleToken(DoubleArrayMath.dotProduct(
-                doubleMatrix1[0], doubleMatrix2[0])));
+        if (array1.length < 1) {
+            throw new IllegalActionException("Inputs to DotProduct have " +
+                    "no elements.");
+        }
+
+        Token dotProd = null;
+        ScalarToken currentTerm;
+
+        for (int i = 0; i < array1.length; i++) {
+            currentTerm = (ScalarToken)array1[i].multiply(array2[i]);
+            if (dotProd == null) {
+                dotProd = currentTerm;
+            } else {
+                dotProd = dotProd.add(currentTerm);
+            }
+        }
+        output.broadcast(dotProd);
+    }
+
+    /** If both of the input ports have at least one token, return
+     *  what the superclass returns (presumably true).  Otherwise return 
+     *  false.
+     *  @exception IllegalActionException If there is no director.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (!input1.hasToken(0)) return false;
+        if (!input2.hasToken(0)) return false;
+        return super.prefire();
     }
 }
-
