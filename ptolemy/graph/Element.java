@@ -92,9 +92,9 @@ public abstract class Element {
     }
 
     /** Make the element unweighted. This method should be used with
-     *  caution since it may make the element incompatible with graphs that 
+     *  caution since it may make the element incompatible with graphs that
      *  already contain it. The method has no effect if the element is already
-     *  unweighted. 
+     *  unweighted.
      *  @see Graph#validEdgeWeight(Object)
      *  @see Graph#validNodeWeight(Object)
      *  @see Graph#validateWeight(Node)
@@ -102,11 +102,11 @@ public abstract class Element {
     public final void removeWeight() {
         // FIXME: add @see Graph#validateWeight(Edge)
         _weight = null;
-    } 
+    }
 
     /** Set or change the weight of an element. This method should be used with
-     *  caution since it may make the element incompatible with graphs that 
-     *  already contain it. 
+     *  caution since it may make the element incompatible with graphs that
+     *  already contain it.
      *  @param weight The new weight.
      *  @see Graph#validEdgeWeight(Object)
      *  @see Graph#validNodeWeight(Object)
@@ -121,7 +121,7 @@ public abstract class Element {
         } else {
             _weight = weight;
         }
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////

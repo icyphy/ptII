@@ -636,7 +636,7 @@ public class Graph implements Cloneable {
      *  @return The edges in this graph that have the specified weight.
      */
     public Collection edges(Object weight) {
-        // Hidden edges will not be included since their weights are 
+        // Hidden edges will not be included since their weights are
         // disassociated in the element list.
         return _edges.elements(weight);
     }

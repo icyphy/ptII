@@ -333,7 +333,7 @@ public class InequalitySolver {
 	    try {
 	        variable.initialize(init);
 	    } catch (IllegalActionException ex) {
-		throw new InvalidStateException(null, null, ex, 
+		throw new InvalidStateException(null, null, ex,
                         "Cannot initialize variable.");
 	    }
 	}

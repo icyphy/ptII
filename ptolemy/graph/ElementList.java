@@ -39,7 +39,7 @@ import java.util.List;
 //ElementList
 /**
 A list of graph elements. This class manages the storage and weight
-information associated with a list of unique graph elements. 
+information associated with a list of unique graph elements.
 This class is normally for use internally within graph classes.
 
 @author Shuvra S. Bhattacharyya
@@ -86,7 +86,7 @@ public class ElementList extends LabeledList {
      *  @return True if the weight information was disassociated.
      */
     public boolean cancelWeight(Element element) {
-        // FIXME: needs better documentation 
+        // FIXME: needs better documentation
         boolean removed = false;
         if (element.hasWeight()) {
             Object weight = element.getWeight();
@@ -105,7 +105,7 @@ public class ElementList extends LabeledList {
     }
 
     /** Given an element in this list, check if the weight has
-     *  changed (since the element was added to the graph or was 
+     *  changed (since the element was added to the graph or was
      *  last validated, whichever is more recent), and if so,
      *  change the current mapping of a weight to the element or
      *  remove the element from the set of unweighted elements.
