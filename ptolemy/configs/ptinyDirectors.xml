@@ -6,7 +6,8 @@
       <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector"/>
       <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector"/>
       <!-- No DT -->
-      <!-- No PN -->
+      <property name="PN Director" class="ptolemy.domains.pn.kernel.PNDirector"/>
+
       <property name="FSM Director" class="ptolemy.domains.fsm.kernel.FSMDirector"/>
       <!-- No Giotto -->
       <!-- No TM -->
