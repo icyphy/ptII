@@ -108,7 +108,7 @@ public class PitchShiftModel extends TypedCompositeActor {
 
 	    // Begin debug.
 	    StreamListener sa2 = new StreamListener();
-	    _sdfDirector.addDebugListener(sa2);
+	    //_sdfDirector.addDebugListener(sa2);
 	    // End debug.
 
             SDFScheduler scheduler = new SDFScheduler(_workspace);
@@ -156,7 +156,7 @@ public class PitchShiftModel extends TypedCompositeActor {
 
 	    AudioSource soundSource = new AudioSource(this, "soundSource");
 	    // Specify where to get the sound file.
-	    soundSource.pathName.setToken(new StringToken("welcome_pt.wav"));
+	    soundSource.pathName.setToken(new StringToken("1-welcome.wav"));
 	    
             // Read audio data from a local file instread of a URL.
             soundSource.isURL.setToken(new BooleanToken(false));

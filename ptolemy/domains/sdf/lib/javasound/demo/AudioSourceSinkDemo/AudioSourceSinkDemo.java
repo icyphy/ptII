@@ -71,8 +71,9 @@ import ptolemy.plot.*;
 A simple model demonstrating the use of the AudioSource and 
 AudioSink actors. The model consists of an AudioSource connected
 to an AudioSink.
-Note that AudioSource will not work unless the Java 1.3 SDK
-is used.
+<p>
+Note: AudioSource will not work unless Java 1.3.0 RC1
+ or later is used.
 // FIXME: currently requies that a soundfile with name 
 // "1-welcome.wav", mono, 11 kHz sample rate, be in
 // current directory.
@@ -112,6 +113,9 @@ public class AudioSourceSinkDemo extends TypedCompositeActor {
             _sdfDirector.setScheduler(scheduler);
             _sdfDirector.setScheduleValid(false);
 
+	    // ********** FOR DEBUF ONLY ************
+	    _sdfDirector.iterations.setToken(new IntToken(100));
+
 	    // Set the sampling rate to use.
 	    int sampleRate = 22050;
 
@@ -140,9 +144,12 @@ public class AudioSourceSinkDemo extends TypedCompositeActor {
 	    soundSource.sampleRate.setToken(new IntToken(sampleRate));
 
             AudioSink soundSink = new AudioSink(this, "soundSink");
-	  soundSink.fileName.setToken(new StringToken("outputFile.au"));  // FIXME: Does nothing.
-         
-	  soundSink.sampRate.setToken(new IntToken(sampleRate));
+	  soundSink.pathName.setToken(new StringToken("outputFile.wav"));
+	  //soundSink.sink.setToken(new StringToken("speaker"));
+	  soundSink.sink.setToken(new StringToken("file"));
+	  soundSink.sampleRate.setToken(new IntToken(sampleRate));
+	  soundSink.sampleSizeInBits.setToken(new IntToken(16));
+	  soundSink.tokenConsumptionRate.setToken(new IntToken(cPRate));
 
             this.connect(soundSource.output, soundSink.input);
 	   

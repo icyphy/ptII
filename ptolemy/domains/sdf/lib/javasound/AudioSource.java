@@ -125,7 +125,7 @@ public class AudioSource extends SDFAtomicActor {
         output.setTypeEquals(BaseType.DOUBLE);
 	
 	pathName = new Parameter(this, "pathName",
-                new StringToken("http://localhost/soundFile.au"));
+                new StringToken("soundFile.wav"));
 	source = new Parameter(this, "source", new StringToken("mic"));
 	source.setTypeEquals(BaseType.STRING);
 
@@ -160,7 +160,7 @@ public class AudioSource extends SDFAtomicActor {
      *  default behavior.
      *  <p>(2) A soundfile loaded from a URL. To capture from
      *  this source, set <i>source</i> to "URL"
-     *  <p>(3) A soundfile loaded from the local filesystem. To
+     *  <p>(3) A soundfile loaded from the native file system. To
      *  capture from this source, set <i>source</i> to "file"
      *  <p>
      *  For cases (1) and (2) above, parameter <i>pathName</i>
@@ -170,6 +170,8 @@ public class AudioSource extends SDFAtomicActor {
 
     /** The name of the file to read from. This can be a URL or a
      *  file on the file system on which the code is run.
+     *  If no value is specified,
+     *  the default vaule of "soundFile.wav" will be used.
      *  <p> If a URL
      *  is given, parameter <i>source</i> must be set to "URL" and
      *  <i>pathName</i> must be set a a fully qualified URL.
@@ -180,7 +182,7 @@ public class AudioSource extends SDFAtomicActor {
      *  a microphone or line-in.
      *  <p>
      *  Note: For a list of allowable audio file formats, refer to the
-     *  ptolemy.media package documentation.
+     *  ptolemy.media.javasound package documentation.
      */
     public Parameter pathName;
 
@@ -407,7 +409,9 @@ public class AudioSource extends SDFAtomicActor {
     public void wrapup() throws IllegalActionException {
 	//System.out.println("AudioSource: wrapup(): invoked");
 	// Stop capturing audio.
-	_soundCapture.stopCapture();
+	if (_soundCapture != null) {
+	    _soundCapture.stopCapture();
+	}
 	
     }
 

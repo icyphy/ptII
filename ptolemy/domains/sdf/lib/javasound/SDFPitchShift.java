@@ -47,7 +47,7 @@ import java.util.Enumeration;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 
-import javax.media.sound.sampled.*;
+//import javax.media.sound.sampled.*;
 
 import ptolemy.domains.sdf.kernel.*;
 

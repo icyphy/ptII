@@ -45,10 +45,8 @@ import java.io.*;
 import java.net.*;
 import java.util.*;
 import java.util.Enumeration;
-//import collections.LinkedList;
 
-//import ptolemy.media.*;
-import javax.media.sound.sampled.*;
+import ptolemy.media.javasound.*;
 import ptolemy.domains.sdf.kernel.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -63,18 +61,20 @@ single-channel audio is supported.
 This actor will play the accumulated audio data on wrapup if the
 <i>playAudio</i> parameter is true. It is true by default. This actor
 will save the accumulated audio data to the file specified by the
-<i>fileName</i> parameter if <i>saveAudio</i> is true. It is true
+<i>pathName</i> parameter if <i>saveAudio</i> is true. It is true
 by default. The audio file format to use is inferred from the
 <i>fileName</i> parameter. Refer to the Java Sound API documentation
 for a list of supported file formats (or just look at this code).
 <p>
-The sampling rate to use can be specified by the <i>sampRate</i>
+The sampling rate to use can be specified by the <i>sampleRate</i>
 parameter. The default sampling rate is 22050 Hz. The number of
 bits/sample can be specified by the <i>sampleSizeInBits</i>
 parameter. The default sample size is 16 bits.
 
 @author  Brian K. Vogel
-@version
+@version  $Id$
+@see ptolemy.media.javasound.SoundPlayback
+@see ptolemy.domains.sdf.lib.javasound.AudioSource
 */
 public class AudioSink extends SDFAtomicActor {
 
@@ -83,24 +83,29 @@ public class AudioSink extends SDFAtomicActor {
         super(container, name);
         input = new SDFIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.DOUBLE);
-	// FIXME: Allow this to be set as parameter.
-	consumptionRate = 512;
-	input.setTokenConsumptionRate(consumptionRate);
 
-        fileName = new Parameter(this, "fileName", new StringToken("audioFile.au"));
-        fileName.setTypeEquals(BaseType.STRING);
+	pathName = new Parameter(this, "pathName",
+                new StringToken("soundFile.wav"));
 
-        sampRate = new Parameter(this, "sampRate", new IntToken(22050));
-        sampRate.setTypeEquals(BaseType.INT);
+	sink = new Parameter(this, "sink",
+                new StringToken("speaker"));
 
-        playAudio = new Parameter(this, "playAudio", new BooleanToken(true));
-        playAudio.setTypeEquals(BaseType.BOOLEAN);
-
-        saveAudio = new Parameter(this, "saveAudio", new BooleanToken(true));
-        saveAudio.setTypeEquals(BaseType.BOOLEAN);
+        sampleRate = new Parameter(this, "sampleRate", new IntToken(22050));
+        sampleRate.setTypeEquals(BaseType.INT);
 
         sampleSizeInBits = new Parameter(this, "sampleSizeInBits", new IntToken(16));
         sampleSizeInBits.setTypeEquals(BaseType.INT);
+
+	channels = new Parameter(this, "channels",
+				 new IntToken(1));
+	channels.setTypeEquals(BaseType.INT);
+
+	bufferSize = new Parameter(this, "bufferSize",
+				   new IntToken(4096));
+	bufferSize.setTypeEquals(BaseType.INT);
+
+	tokenConsumptionRate = new Parameter(this, "tokenConsumptionRate",
+					    new IntToken(512));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -109,32 +114,85 @@ public class AudioSink extends SDFAtomicActor {
     /** The input port. */
     public SDFIOPort input;
 
-    /** The name of the file to write to. This parameter contains
-     *  a StringToken.
+    /** The destination of the audio samples that are read in
+     *  by this actor. Possible choices are:
+     *  <p>(1) The speaker. Audio samples are sent to the speaker.
+     *  To use this mode, <i>sink</i> must be set to "speaker". The
+     *  latency between when the samples are recieved by this actor
+     *  and when they actually make it to the speaker roughly
+     *  corresponds to the size of the internal audio buffer.
+     *  If this mode is used, than it is important to call the
+     *  fire() method of this actor often enough to prevent
+     *  underflow of the internal audio buffer.
+     *  <p>(2)  A sound file. Audio samples are sent to
+     *  the sound file specified by parameter <i>pathName</i>.
+     *  To use this mode, <i>sink</i> must be set to "file".
+     *  <p> The default value of <i>sink</i> is "speaker".
      */
-    public Parameter fileName;
+    public Parameter sink;
 
-    /** The sampling rate to use, in Hz.
+    /** The name of the file to write to. If no value is specified,
+     *  the default vaule of "soundFile.wav" will be used. Note
+     *  that audio will only be written to a sound file if
+     *  parameter <i>sink</i> is set to "file" or "both".
+     *  <p>
+     *  For a list of allowable audio file formats, refer to the
+     *  ptolemy.media.javasound package documentation.
      */
-    public Parameter sampRate;
+    public Parameter pathName;
 
-    /** Play the accumulated audio data on wrapup if true.
+    /** The desired sample rate to use, in Hz.
+     *  The default value of the sample rate is 44100 Hz.
      */
-    public Parameter playAudio;
+    public Parameter sampleRate;
 
-    /** Save the accumulated audio data on wrapup if true.
-     */
-    public Parameter saveAudio;
-
-    /** Number of bits to use for each sample.
+    /** The number desired number of bits per sample.
+     *  The default value is 16.
      */
     public Parameter sampleSizeInBits;
+
+    /** The number of audio channels to use. 1 for mono,
+     *  2 for stereo, etc.
+     *  The default vaule is 1 (mono).
+     */
+    // FIXME: Currently, only single channel audio is allowed, so
+    // do not set this!
+    public Parameter channels;
+
+    /** Requested size of the internal audio input
+     *  buffer in samples. This controls the latency. Ideally, the
+     *  smallest value that gives acceptable performance (no overflow)
+     *  should be used. The value should be chosen larger than the
+     *  production rate of this actor.
+     *  The defulat value is 4096.
+     *  <p>
+     *  Note that it is only necessary to set this parameter for the
+     *  case where audio data is sent to the speaker in real-time.
+     *  This parameter has no effect when the audio data is only
+     *  saved to a file.
+     */
+    public Parameter bufferSize;
+
+    /** The token consumption rate of this actor. The value of
+     *  the consumption rate affects performance only. It is
+     *  semantically meaningless. Semantically, only one token
+     *  is consumed when this actor is fired. However, choosing
+     *  a large production rate value can improve performance,
+     *  since consumption rate many tokens are processed when
+     *  this actor is fired.
+     *  This parameter
+     *  also affects the latency, since consumption rate tokens
+     *  must be available before this actor can fire.
+     *  <p>
+     *  The default value is 512.
+     */
+    public Parameter tokenConsumptionRate;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then creates new ports.
+     *  base class and then creates new ports and parameters.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
      */
@@ -142,11 +200,13 @@ public class AudioSink extends SDFAtomicActor {
         try {
             AudioSink newobj = (AudioSink)super.clone(ws);
             newobj.input = (SDFIOPort)newobj.getPort("input");
-            newobj.fileName = (Parameter)newobj.getAttribute("fileName");
-            newobj.sampRate = (Parameter)newobj.getAttribute("sampRate");
-            newobj.playAudio = (Parameter)newobj.getAttribute("playAudio");
-            newobj.saveAudio = (Parameter)newobj.getAttribute("saveAudio");
+	    newobj.sink = (Parameter)newobj.getAttribute("sink");
+            newobj.pathName = (Parameter)newobj.getAttribute("pathName");
+            newobj.sampleRate = (Parameter)newobj.getAttribute("sampleRate");
             newobj.sampleSizeInBits = (Parameter)newobj.getAttribute("sampleSizeInBits");
+	    newobj.channels = (Parameter)newobj.getAttribute("channels");
+	    newobj.bufferSize = (Parameter)newobj.getAttribute("bufferSize");
+	    newobj.tokenConsumptionRate = (Parameter)newobj.getAttribute("tokenConsumptionRate");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -161,30 +221,18 @@ public class AudioSink extends SDFAtomicActor {
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        // FIXME: This currently ignores the width (reads only from input channel 0).
-        //int width = input.getWidth();
-	/*
-          for (int i = 0; i < width; i++) {
-          if (input.hasToken(i)) {
-          Token token = input.get(i);
-          String value = token.stringValue();
-          System.out.println(value + "\n");
-          }
-          }
-	*/
-        DoubleToken[] audioTokenArray = new DoubleToken[consumptionRate];
+	//System.out.println("AudioSink: postfire(): invoked");
+        DoubleToken[] audioTokenArray = new DoubleToken[_consumptionRate];
         input.getArray(0, audioTokenArray);
         // Convert to double[].
-        double[] audioInDoubleArray = new double[consumptionRate];
+        double[] audioInDoubleArray = new double[_consumptionRate];
         int i;
-        for (i = 0; i < consumptionRate; i++) {
+        for (i = 0; i < _consumptionRate; i++) {
             audioInDoubleArray[i] = audioTokenArray[i].doubleValue();
         }
-        // Now write the array to output device/file.
-        audioOutByteArray = _doubleArrayToByteArray(audioInDoubleArray,
-                frameSizeInBytes);
 
-        sourceLine.write(audioOutByteArray, 0, consumptionRate);
+	// write out samples to speaker and/or file.
+	_soundPlayback.putSamples(audioInDoubleArray);
 
 	return true;
     }
@@ -196,135 +244,84 @@ public class AudioSink extends SDFAtomicActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        double samplingRate = ((IntToken)sampRate.getToken()).intValue();
-        int sampleSizeInBitsInt = ((IntToken)sampleSizeInBits.getToken()).intValue();
-        int channels = 1; // If change this, then need to change
-        // frameSizeInBits and frameRate accordingly.
-        boolean signed = true;
-        boolean bigEndian = true;
+	System.out.println("AudioSink: initialize(): invoked");
+	if (((StringToken)sink.getToken()).toString() == "file") {
+	    // Write audio data to a file.
+	    System.out.println("AudioSink: initialize(): playback to file");
+	    String pathNameString = 
+		((StringToken)pathName.getToken()).stringValue();
+	    int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
+	    int sampleSizeInBitsInt = ((IntToken)sampleSizeInBits.getToken()).intValue();
+	    int channelsInt = ((IntToken)channels.getToken()).intValue();
+	    int bufferSizeInt = ((IntToken)bufferSize.getToken()).intValue();
 
-        AudioFormat format = new AudioFormat((float)samplingRate,
-                sampleSizeInBitsInt,
-                channels, signed, bigEndian);
-        frameSizeInBytes = format.getFrameSize();
+	    _soundPlayback = new SoundPlayback(pathNameString,
+					       sampleRateInt, 
+					       sampleSizeInBitsInt,
+					       channelsInt, 
+					       bufferSizeInt,
+					       _consumptionRate);
+	} else if (((StringToken)sink.getToken()).toString() == "speaker") {
+	    // Send audio data to the speaker.
+	    System.out.println("AudioSink: initialize(): playback to speaker");
+	     int sampleRateInt = ((IntToken)sampleRate.getToken()).intValue();
+	     int sampleSizeInBitsInt = ((IntToken)sampleSizeInBits.getToken()).intValue();
+	     int channelsInt = ((IntToken)channels.getToken()).intValue();
+	     int bufferSizeInt = ((IntToken)bufferSize.getToken()).intValue();
 
-        DataLine.Info sourceInfo = new DataLine.Info(SourceDataLine.class,
-                null, null,
-                new Class[0], format,
-                AudioSystem.NOT_SPECIFIED);
+	     _soundPlayback = new SoundPlayback(sampleRateInt, 
+						sampleSizeInBitsInt,
+						channelsInt, 
+						bufferSizeInt,
+						_consumptionRate);
+	     System.out.println("AudioSink: initialize(): SoundPlayback created");
 
-        // get and open the source data line for playback.
-	try {
-	    sourceLine = (SourceDataLine) AudioSystem.getLine(sourceInfo);
-            // Request a JavaSound internal buffer size of 8*consumptionRate
-            // sample frames. Will write to the buffer in consumptionRate
-            // size chunks.
-	    sourceLine.open(format, consumptionRate*8);
-	} catch (LineUnavailableException ex) {
-            System.err.println("LineUnavailableException " + ex);
-	    return;
+	} else if (((StringToken)sink.getToken()).toString() == "both") {
+	    // Write audio data to a file.
+	    // *AND*
+	    // Send audio data to the speaker.
+
+	} else {
+	    throw new IllegalActionException("Parameter " +
+				  sink.getFullName() +
+			          " is not set to a valid string." +
+				  " Valid choices are \"speaker\", " +
+				  "\"file\", and \"both\"");
 	}
-
-        // start the source data line
-	sourceLine.start();
+	
+	// Start audio playback.
+	_soundPlayback.startPlayback();
+	System.out.println("AudioSink: initialize(): return");
     }
 
+    /** Set up the input port's consumption rate.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void preinitialize() throws IllegalActionException {
+	super.preinitialize();
+
+	_consumptionRate =
+	    ((IntToken)tokenConsumptionRate.getToken()).intValue();
+	input.setTokenConsumptionRate(_consumptionRate);
+	input.setMultiport(true);
+    }
 
     /** Close the specified file, if any.
      */
     public void wrapup() throws IllegalActionException {
-
-
-        sourceLine.stop();
-        sourceLine.close();
-        sourceLine = null;
-
-        /*
-          try {
-	  String fileToSave = ((StringToken)fileName.getToken()).stringValue();
-
-          if (((BooleanToken)saveAudio.getToken()).booleanValue()) {
-          // Save the file in the appropriate format determined by
-          // the file extension.
-          // Separate the extension from the file using a period.
-          StringTokenizer st = new StringTokenizer(fileToSave, ".");
-
-          // Do error checking:
-          if (st.countTokens() != 2) {
-          System.err.println("Error: Incorrect file name format. Format: filname.extension");
-          }
-
-          st.nextToken(); // Advance to the file extension.
-
-          String fileExtension = st.nextToken();
-
-          if (fileExtension.equalsIgnoreCase("au")) {
-          na.saveAs(fileToSave, FileStream.FileType.AU);  // Save the file.
-          } else if (fileExtension.equalsIgnoreCase("aiff")) {
-          na.saveAs(fileToSave, FileStream.FileType.AIFF);  // Save the file.
-          } else if (fileExtension.equalsIgnoreCase("wave")) {
-          na.saveAs(fileToSave, FileStream.FileType.WAVE);  // Save the file.
-          } else if (fileExtension.equalsIgnoreCase("wav")) {
-          na.saveAs(fileToSave, FileStream.FileType.WAVE);  // Save the file.
-          } else if (fileExtension.equalsIgnoreCase("aifc")) {
-          na.saveAs(fileToSave, FileStream.FileType.AIFC);  // Save the file.
-          } else {
-          System.err.println("Error saving file: Unknown file format: " + fileExtension);
-          }
-
-
-
-          na.saveAs(fileToSave, FileStream.FileType.AU);  // Save the file.
-          }
-          if (((BooleanToken)playAudio.getToken()).booleanValue()) {
-          na.startPlayback();  // Play the audio data.
-          }
-
-          } catch (IOException e) {
-	  System.err.println("AudioSink: error saving" +
-          " file: " + e);
-          } catch (AudioUnavailableException e) {
-          System.err.println("Audio is Unavailable" + e);
-          }
-        */
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methodes                  ////
-
-    /* Convert a double array of audio samples in linear signed pcm big endian
-     * format into a byte array of audio samples (-1,1) range.
-     * FIXME: This method only works for mono (single channel) audio.
-     */
-    private byte[] _doubleArrayToByteArray(double[] doubleArray,
-            int _bytesPerSample) {
-
-	//System.out.println("_bytesPerSample = " + _bytesPerSample);
-	int lengthInSamples = doubleArray.length;
-	double mathDotPow = Math.pow(2, 8 * _bytesPerSample - 1);
-	byte[] byteArray = new byte[lengthInSamples * _bytesPerSample];
-	for (int currSamp = 0; currSamp < lengthInSamples; currSamp++) {
-	    long l = Math.round((doubleArray[currSamp] * mathDotPow));
-	    byte[] b = new byte[_bytesPerSample];
-	    for (int i = 0; i < _bytesPerSample; i += 1, l >>= 8)
-		b[_bytesPerSample - i - 1] = (byte) l;
-	    for (int i = 0; i < _bytesPerSample; i += 1) {
-		//if (_isBigEndian)
-                byteArray[currSamp*_bytesPerSample + i] = b[i];
-                //else put(b[_bytesPerSample - i - 1]);
-	    }
+	System.out.println("AudioSink: wrapup(): invoked");
+	// Stop playback. Close any open sound files. Free
+	// up audio system resources.
+	if (_soundPlayback != null) {
+	    _soundPlayback.stopPlayback();
 	}
-	return byteArray;
     }
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    private int frameSizeInBytes;
 
-    private SourceDataLine sourceLine;
+    private int _consumptionRate;
 
-    private byte[] audioOutByteArray;
-
-    private int consumptionRate;
+    private SoundPlayback _soundPlayback;
 }

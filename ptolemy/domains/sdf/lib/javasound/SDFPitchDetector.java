@@ -45,10 +45,7 @@ import ptolemy.graph.Inequality;
 import java.io.*;
 import java.net.*;
 import java.util.Enumeration;
-//import collections.LinkedList;
 
-//import ptolemy.media.*;
-import javax.media.sound.sampled.*;
 
 import ptolemy.domains.sdf.kernel.*;
 
@@ -58,7 +55,7 @@ import ptolemy.domains.sdf.kernel.*;
 
 
 @author Brian K. Vogel
-@version
+@version  $Id$
 */
 
 public class SDFPitchDetector extends SDFAtomicActor {
