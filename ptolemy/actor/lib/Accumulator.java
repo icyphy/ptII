@@ -77,9 +77,9 @@ public class Accumulator extends Transformer {
 
         init = new Parameter(this, "init", new IntToken(0));
 
-	// set the type constraints.
-	output.setTypeAtLeast(init);
-	output.setTypeAtLeast(input);
+        // set the type constraints.
+        output.setTypeAtLeast(init);
+        output.setTypeAtLeast(input);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -107,11 +107,11 @@ public class Accumulator extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         Accumulator newObject = (Accumulator)super.clone(workspace);
-	// set the type constraints.
-	newObject.output.setTypeAtLeast(newObject.init);
-	newObject.output.setTypeAtLeast(newObject.input);
+        // set the type constraints.
+        newObject.output.setTypeAtLeast(newObject.init);
+        newObject.output.setTypeAtLeast(newObject.input);
         return newObject;
     }
 

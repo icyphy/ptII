@@ -70,8 +70,8 @@ public class Sleep extends Transformer {
         super(container, name);
         sleepTime = new Parameter(this, "sleepTime",
                 new LongToken(0));
-	sleepTime.setTypeEquals(BaseType.LONG);
-	// Data type polymorphic, multiports.
+        sleepTime.setTypeEquals(BaseType.LONG);
+        // Data type polymorphic, multiports.
         input.setMultiport(true);
         output.setMultiport(true);
     }
@@ -99,29 +99,29 @@ public class Sleep extends Transformer {
      *  are lost.
      *  @exception IllegalActionException Not thrown in this base class */
     public void fire() throws IllegalActionException {
-	if (!_wasSleepCalledInFireYet) {
-	    try {
-		long sleepTimeValue =
-		    ((LongToken)sleepTime.getToken()).longValue();
-		if (_debugging) _debug(getName() + ": Wait for " +
+        if (!_wasSleepCalledInFireYet) {
+            try {
+                long sleepTimeValue =
+                    ((LongToken)sleepTime.getToken()).longValue();
+                if (_debugging) _debug(getName() + ": Wait for " +
                         sleepTimeValue + " milliseconds.");
-		Thread.sleep(sleepTimeValue);
-	    } catch (InterruptedException e) {
-		// Ignore...
-	    }
-	    // Pull these out of the loop so we do not call them
-	    // more than once.
-	    int inputWidth = input.getWidth();
-	    int outputWidth = output.getWidth();
-	    for (int i = 0; i < inputWidth; i++) {
-		if (input.hasToken(i)) {
-		    Token inToken = input.get(i);
-		    if ( i < outputWidth) {
-			output.send(i, inToken);
-		    }
-		}
-	    }
-	}
+                Thread.sleep(sleepTimeValue);
+            } catch (InterruptedException e) {
+                // Ignore...
+            }
+            // Pull these out of the loop so we do not call them
+            // more than once.
+            int inputWidth = input.getWidth();
+            int outputWidth = output.getWidth();
+            for (int i = 0; i < inputWidth; i++) {
+                if (input.hasToken(i)) {
+                    Token inToken = input.get(i);
+                    if ( i < outputWidth) {
+                        output.send(i, inToken);
+                    }
+                }
+            }
+        }
     }
 
     /** Reset the flag that fire() checks so that fire() only sleeps once.
@@ -129,7 +129,7 @@ public class Sleep extends Transformer {
      *  @return Whatever the superclass returns (probably true).
      */
     public boolean postfire() throws IllegalActionException {
-	_wasSleepCalledInFireYet = false;
+        _wasSleepCalledInFireYet = false;
         return super.postfire();
     }
 
@@ -138,7 +138,7 @@ public class Sleep extends Transformer {
      *  @return Whatever the superclass returns (probably true).
      */
     public boolean prefire() throws IllegalActionException {
-	_wasSleepCalledInFireYet = false;
+        _wasSleepCalledInFireYet = false;
         return super.prefire();
     }
 

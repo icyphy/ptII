@@ -131,18 +131,18 @@ public class ArrayElement extends Transformer {
      *  @see ptolemy.actor.TypedAtomicActor#typeConstraintList
      */
     public List typeConstraintList() {
-	Type inputType = input.getType();
+        Type inputType = input.getType();
         if (inputType == BaseType.UNKNOWN) {
-	    input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+            input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         } else if ( !(inputType instanceof ArrayType)) {
-	    throw new IllegalStateException("ArrayElement.typeConstraintList: "
-	            + "The input type, " + inputType.toString() + " is not an "
-		    + "array type.");
-	}
+            throw new IllegalStateException("ArrayElement.typeConstraintList: "
+                    + "The input type, " + inputType.toString() + " is not an "
+                    + "array type.");
+        }
 
         // NOTE: superclass will put in type constraints for
         // the input and output, so we can't invoke the superclass.
-	List result = new LinkedList();
+        List result = new LinkedList();
 
         // collect constraints from contained Typeables
         Iterator ports = portList().iterator();
@@ -158,12 +158,12 @@ public class ArrayElement extends Transformer {
         }
 
         // Add type constraint for the input.
-	ArrayType inputArrayType = (ArrayType)input.getType();
-	InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
-	Inequality inequality = new Inequality(elementTerm,
+        ArrayType inputArrayType = (ArrayType)input.getType();
+        InequalityTerm elementTerm = inputArrayType.getElementTypeTerm();
+        Inequality inequality = new Inequality(elementTerm,
                output.getTypeTerm());
 
         result.add(inequality);
-	return result;
+        return result;
     }
 }

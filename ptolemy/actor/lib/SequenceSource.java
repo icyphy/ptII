@@ -77,7 +77,7 @@ public class SequenceSource extends Source implements SequenceActor {
         super(container, name);
         firingCountLimit = new Parameter(this, "firingCountLimit",
                 new IntToken(0));
-	firingCountLimit.setTypeEquals(BaseType.INT);
+        firingCountLimit.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -99,10 +99,10 @@ public class SequenceSource extends Source implements SequenceActor {
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
-	if (attribute == firingCountLimit) {
-	    _firingCountLimit =
+        if (attribute == firingCountLimit) {
+            _firingCountLimit =
                 ((IntToken)firingCountLimit.getToken()).intValue();
-	}
+        }
     }
 
     /** Initialize the iteration counter.  A derived class must call
@@ -126,13 +126,13 @@ public class SequenceSource extends Source implements SequenceActor {
      *   an invalid expression.
      */
     public boolean postfire() throws IllegalActionException {
-	if (_firingCountLimit != 0) {
-	    _iterationCount++;
-	    if (_iterationCount == _firingCountLimit) {
-		return false;
-	    }
-	}
-	return true;
+        if (_firingCountLimit != 0) {
+            _iterationCount++;
+            if (_iterationCount == _firingCountLimit) {
+                return false;
+            }
+        }
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////

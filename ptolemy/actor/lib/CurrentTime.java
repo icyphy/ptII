@@ -79,7 +79,7 @@ public class CurrentTime extends TimedSource {
     public void fire() throws IllegalActionException {
         // For domain polymorphism getCurrentTime(channel_number) has
         // to be called before get(channel_number).  Currently,
-	// the only domain in which the two versions of getCurrentTime
+        // the only domain in which the two versions of getCurrentTime
         // are different is in DT... getCurrentTime() on the director
         // returns the "start of iteration" time, whereas getCurrentTime()
         // on the channel returns the time of the current sample.

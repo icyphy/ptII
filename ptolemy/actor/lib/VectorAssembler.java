@@ -93,15 +93,15 @@ public class VectorAssembler extends Transformer {
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
-	int size = input.getWidth();
+        int size = input.getWidth();
 
-	double[][] data = new double[size][1];
+        double[][] data = new double[size][1];
 
-	for (int i = 0; i < size; i++) {
+        for (int i = 0; i < size; i++) {
             data[i][0] = ((DoubleToken)input.get(i)).doubleValue();
-	}
+        }
 
-	DoubleMatrixToken result = new DoubleMatrixToken(data);
+        DoubleMatrixToken result = new DoubleMatrixToken(data);
 
         output.send(0, result);
     }
@@ -114,12 +114,12 @@ public class VectorAssembler extends Transformer {
      *  @see ptolemy.actor.IOPort#hasToken(int)
      */
     public boolean prefire() throws IllegalActionException {
-	for (int i = 0; i < input.getWidth(); i++) {
-	    if ( !input.hasToken(i)) {
-	        return false;
-	    }
+        for (int i = 0; i < input.getWidth(); i++) {
+            if ( !input.hasToken(i)) {
+                return false;
+            }
         }
-	return true;
+        return true;
     }
 }
 

@@ -70,8 +70,8 @@ public class ArrayAppend extends Transformer {
         // The input is a multiport.
         input.setMultiport(true);
 
-	// Set type constraints.
-	input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        // Set type constraints.
+        input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         output.setTypeAtLeast(input);
     }
 
@@ -86,7 +86,7 @@ public class ArrayAppend extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         ArrayAppend newObject = (ArrayAppend)(super.clone(workspace));
 
         // Set the type constraints.
@@ -104,7 +104,7 @@ public class ArrayAppend extends Transformer {
         // NOTE: This is efficient for 2 or 3 input channels, but for
         // many channels it ends up copying each array twice.
         Token array[] = null;
-	for (int i = 0; i < input.getWidth(); i++) {
+        for (int i = 0; i < input.getWidth(); i++) {
             if (input.hasToken(i)) {
                 ArrayToken token = (ArrayToken)input.get(i);
                 if (array == null) {

@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Yellow (celaine@eecs.berkeley.edu)
 @AcceptedRating Yellow (celaine@eecs.berkeley.edu)
 */
@@ -114,7 +114,7 @@ public class LinearDifferenceEquationSystem extends Transformer {
         _x = new DoubleMatrixToken(zero);
         _initialStateChanged = true;
         // icon
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-75\" y=\"-30\" "
                 + "width=\"150\" height=\"60\" "
                 + "style=\"fill:white\"/>\n"

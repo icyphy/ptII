@@ -93,11 +93,11 @@ public class AddSubtract extends TypedAtomicActor {
     public AddSubtract(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	plus = new TypedIOPort(this, "plus", true, false);
-	plus.setMultiport(true);
-	minus = new TypedIOPort(this, "minus", true, false);
-	minus.setMultiport(true);
-	output = new TypedIOPort(this, "output", false, true);
+        plus = new TypedIOPort(this, "plus", true, false);
+        plus.setMultiport(true);
+        minus = new TypedIOPort(this, "minus", true, false);
+        minus.setMultiport(true);
+        output = new TypedIOPort(this, "output", false, true);
 
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-20\" y=\"-20\" "
@@ -151,28 +151,28 @@ public class AddSubtract extends TypedAtomicActor {
      *   available tokens.
      */
     public void fire() throws IllegalActionException {
-	Token sum = null;
-	for (int i = 0; i < plus.getWidth(); i++) {
-	    if (plus.hasToken(i)) {
-		if (sum == null) {
-		    sum = plus.get(i);
-		} else {
-		    sum = sum.add(plus.get(i));
-		}
-	    }
-	}
-	for (int i = 0; i < minus.getWidth(); i++) {
-	    if (minus.hasToken(i)) {
+        Token sum = null;
+        for (int i = 0; i < plus.getWidth(); i++) {
+            if (plus.hasToken(i)) {
+                if (sum == null) {
+                    sum = plus.get(i);
+                } else {
+                    sum = sum.add(plus.get(i));
+                }
+            }
+        }
+        for (int i = 0; i < minus.getWidth(); i++) {
+            if (minus.hasToken(i)) {
                 Token in = minus.get(i);
-		if (sum == null) {
-		    sum = in.zero();
-		}
+                if (sum == null) {
+                    sum = in.zero();
+                }
                 sum = sum.subtract(in);
             }
-	}
+        }
 
-	if (sum != null) {
-	    output.send(0, sum);
-	}
+        if (sum != null) {
+            output.send(0, sum);
+        }
     }
 }

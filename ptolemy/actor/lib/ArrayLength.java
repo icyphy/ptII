@@ -64,9 +64,9 @@ public class ArrayLength extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	// set type constraints.
-	input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-	output.setTypeEquals(BaseType.INT);
+        // set type constraints.
+        input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        output.setTypeEquals(BaseType.INT);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -122,7 +122,7 @@ public class TrigFunction extends Transformer {
         input.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-30\" y=\"-15\" "
                 + "width=\"60\" height=\"30\" "
                 + "style=\"fill:white\"/>\n" +
@@ -199,19 +199,19 @@ public class TrigFunction extends Transformer {
      *  performed.
      */
     public int iterate(int count) throws IllegalActionException {
-	// Check whether we need to reallocate the output token array.
-	if (count > _resultArray.length) {
-	    _resultArray = new DoubleToken[count];
-	}
+        // Check whether we need to reallocate the output token array.
+        if (count > _resultArray.length) {
+            _resultArray = new DoubleToken[count];
+        }
 
         if (input.hasToken(0, count)) {
-	    // NOTE: inArray.length may be > count, in which case
-	    // only the first count tokens are valid.
+            // NOTE: inArray.length may be > count, in which case
+            // only the first count tokens are valid.
             Token[] inArray = input.get(0, count);
-	    for (int i = 0; i < count; i++) {
-		double inputValue = ((DoubleToken)(inArray[i])).doubleValue();
-		_resultArray[i] = new DoubleToken(_doFunction(inputValue));
-	    }
+            for (int i = 0; i < count; i++) {
+                double inputValue = ((DoubleToken)(inArray[i])).doubleValue();
+                _resultArray[i] = new DoubleToken(_doFunction(inputValue));
+            }
             output.send(0, _resultArray, count);
             return COMPLETED;
         } else {

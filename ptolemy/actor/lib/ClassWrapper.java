@@ -129,13 +129,13 @@ public class ClassWrapper extends TypedAtomicActor {
      *  @exception IllegalActionException If the method invocation fails.
      */
     public void fire() throws IllegalActionException {
-	Iterator inPorts = inputPortList().iterator();
-	while (inPorts.hasNext()) {
-	    IOPort inPort = (IOPort)inPorts.next();
-	    if (inPort.hasToken(0)) {
-		_invoke(inPort, inPort.get(0));
-	    }
-	}
+        Iterator inPorts = inputPortList().iterator();
+        while (inPorts.hasNext()) {
+            IOPort inPort = (IOPort)inPorts.next();
+            if (inPort.hasToken(0)) {
+                _invoke(inPort, inPort.get(0));
+            }
+        }
     }
 
     /** Get the Class object of the specified class. Gather method
@@ -147,59 +147,59 @@ public class ClassWrapper extends TypedAtomicActor {
      *   port, or an instance of the class cannot be created.
      */
     public void preinitialize() throws IllegalActionException {
-	try {
-	    _class = Class.forName(className.getExpression());
-	} catch (ClassNotFoundException ex) {
-	    throw new IllegalActionException(this, "Cannot find specified "
-		    + "class " + className.getExpression() + "\n"
-		    + ex.getMessage());
-	}
+        try {
+            _class = Class.forName(className.getExpression());
+        } catch (ClassNotFoundException ex) {
+            throw new IllegalActionException(this, "Cannot find specified "
+                    + "class " + className.getExpression() + "\n"
+                    + ex.getMessage());
+        }
 
-	_methodTable = new Hashtable();
-	Method[] methods = _class.getMethods();
-	Iterator inPorts = inputPortList().iterator();
-	boolean needInstance = false;
-	while (inPorts.hasNext()) {
-	    IOPort inPort = (IOPort)inPorts.next();
-	    String portName = inPort.getName();
-	    Method m = null;
-	    for (int i = 0; i < methods.length; ++i) {
-		if (methods[i].getName().equals(portName)) {
-		    m = methods[i];
-		    break;
-		}
-	    }
-	    if (m == null) {
-		throw new IllegalActionException(this, "The specified class "
-			+ "does not have a method of the same name as input "
-			+ "port " + portName);
-	    }
-	    Object[] methodInfo = new Object[3];
-	    methodInfo[0] = m;
-	    methodInfo[1] = m.getParameterTypes();
-	    IOPort outPort = (IOPort)getPort(portName + "Result");
-	    if (outPort != null && outPort.isOutput()) {
-		methodInfo[2] = outPort;
-	    } else {
-		methodInfo[2] = null;
-	    }
-	    _methodTable.put(inPort, methodInfo);
-	    if (!Modifier.isStatic(m.getModifiers())) {
-		needInstance = true;
-	    }
-	}
-	_instance = null;
-	if (needInstance) {
-	    try {
-		// FIXME: here only try to use a constructor with no argument
-		Constructor constructor = _class.getConstructor(new Class[0]);
-		_instance = constructor.newInstance(new Object[0]);
-	    } catch (Exception ex) {
-		throw new IllegalActionException(this, "Cannot create an "
-			+ "instance of the specified class.\n"
-			+ ex.getMessage());
-	    }
-	}
+        _methodTable = new Hashtable();
+        Method[] methods = _class.getMethods();
+        Iterator inPorts = inputPortList().iterator();
+        boolean needInstance = false;
+        while (inPorts.hasNext()) {
+            IOPort inPort = (IOPort)inPorts.next();
+            String portName = inPort.getName();
+            Method m = null;
+            for (int i = 0; i < methods.length; ++i) {
+                if (methods[i].getName().equals(portName)) {
+                    m = methods[i];
+                    break;
+                }
+            }
+            if (m == null) {
+                throw new IllegalActionException(this, "The specified class "
+                        + "does not have a method of the same name as input "
+                        + "port " + portName);
+            }
+            Object[] methodInfo = new Object[3];
+            methodInfo[0] = m;
+            methodInfo[1] = m.getParameterTypes();
+            IOPort outPort = (IOPort)getPort(portName + "Result");
+            if (outPort != null && outPort.isOutput()) {
+                methodInfo[2] = outPort;
+            } else {
+                methodInfo[2] = null;
+            }
+            _methodTable.put(inPort, methodInfo);
+            if (!Modifier.isStatic(m.getModifiers())) {
+                needInstance = true;
+            }
+        }
+        _instance = null;
+        if (needInstance) {
+            try {
+                // FIXME: here only try to use a constructor with no argument
+                Constructor constructor = _class.getConstructor(new Class[0]);
+                _instance = constructor.newInstance(new Object[0]);
+            } catch (Exception ex) {
+                throw new IllegalActionException(this, "Cannot create an "
+                        + "instance of the specified class.\n"
+                        + ex.getMessage());
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -212,103 +212,103 @@ public class ClassWrapper extends TypedAtomicActor {
     // to this port when invocation fails.
     private void _invoke(IOPort port, Token argv)
             throws IllegalActionException {
-	// assert port.isInput()
+        // assert port.isInput()
         Object[] methodInfo = (Object[])_methodTable.get(port);
-	// when _methodTable is built, an entry for each input port is
-	// guaranteed
-	Method m = (Method)methodInfo[0];
-	Class[] argTypes = (Class[])methodInfo[1];
-	int args = argTypes.length;
-	IOPort outPort = (IOPort)methodInfo[2];
+        // when _methodTable is built, an entry for each input port is
+        // guaranteed
+        Method m = (Method)methodInfo[0];
+        Class[] argTypes = (Class[])methodInfo[1];
+        int args = argTypes.length;
+        IOPort outPort = (IOPort)methodInfo[2];
 
-	// The following code is mostly copied from data.expr.ASTPtFunctionNode
+        // The following code is mostly copied from data.expr.ASTPtFunctionNode
 
-	Object[] argValues = new Object[args];
-	if (args > 0) {
-	    RecordToken argRecord = null;
-	    if (argv instanceof RecordToken) {
-		argRecord = (RecordToken)argv;
-	    } else if (args > 1) {
-		throw new IllegalActionException(this, "cannot convert "
-		        + "input token to method call arguments.");
-	    }
-	    for (int i = 0; i < args; ++i) {
-		Token arg = null;
-		if (argRecord != null) {
-		    arg = argRecord.get("arg" + (i + 1));
-		} else {
-		    // this is the case when the method takes one argument
-		    // and the input token is not a record token
-		    arg = argv;
-		}
-		if (argTypes[i].isAssignableFrom(arg.getClass())) {
-		    argValues[i] = arg;
-		} else if (arg instanceof DoubleToken) {
-		    argValues[i] =
+        Object[] argValues = new Object[args];
+        if (args > 0) {
+            RecordToken argRecord = null;
+            if (argv instanceof RecordToken) {
+                argRecord = (RecordToken)argv;
+            } else if (args > 1) {
+                throw new IllegalActionException(this, "cannot convert "
+                        + "input token to method call arguments.");
+            }
+            for (int i = 0; i < args; ++i) {
+                Token arg = null;
+                if (argRecord != null) {
+                    arg = argRecord.get("arg" + (i + 1));
+                } else {
+                    // this is the case when the method takes one argument
+                    // and the input token is not a record token
+                    arg = argv;
+                }
+                if (argTypes[i].isAssignableFrom(arg.getClass())) {
+                    argValues[i] = arg;
+                } else if (arg instanceof DoubleToken) {
+                    argValues[i] =
                         new Double(((DoubleToken)arg).doubleValue());
-		} else if (arg instanceof IntToken) {
-		    argValues[i] =
+                } else if (arg instanceof IntToken) {
+                    argValues[i] =
                         new Integer(((IntToken)arg).intValue());
-		} else if (arg instanceof LongToken) {
-		    argValues[i] =
+                } else if (arg instanceof LongToken) {
+                    argValues[i] =
                         new Long(((LongToken)arg).longValue());
-		} else if (arg instanceof StringToken) {
-		    argValues[i] = ((StringToken)arg).stringValue();
-		} else if (arg instanceof BooleanToken) {
-		    argValues[i] =
+                } else if (arg instanceof StringToken) {
+                    argValues[i] = ((StringToken)arg).stringValue();
+                } else if (arg instanceof BooleanToken) {
+                    argValues[i] =
                         new Boolean(((BooleanToken)arg).booleanValue());
-		} else if (arg instanceof ComplexToken) {
-		    argValues[i] = ((ComplexToken)arg).complexValue();
-		} else if (arg instanceof FixToken) {
-		    argValues[i] = ((FixToken)arg).fixValue();
-		} else {
-		    argValues[i] = arg;
-		}
-	    }
-	}
-	Object result = null;
-	try {
-	    result = m.invoke(_instance, argValues);
-	} catch (InvocationTargetException ex) {
-	    // get the exception produced by the invoked function
-	    ex.getTargetException().printStackTrace();
-	    throw new IllegalActionException(this,
+                } else if (arg instanceof ComplexToken) {
+                    argValues[i] = ((ComplexToken)arg).complexValue();
+                } else if (arg instanceof FixToken) {
+                    argValues[i] = ((FixToken)arg).fixValue();
+                } else {
+                    argValues[i] = arg;
+                }
+            }
+        }
+        Object result = null;
+        try {
+            result = m.invoke(_instance, argValues);
+        } catch (InvocationTargetException ex) {
+            // get the exception produced by the invoked function
+            ex.getTargetException().printStackTrace();
+            throw new IllegalActionException(this,
                     "Error invoking method " + m.getName() + "\n" +
                     ex.getTargetException().getMessage());
-	} catch (Exception ex)  {
-	    new IllegalActionException(ex.getMessage());
-	}
+        } catch (Exception ex)  {
+            new IllegalActionException(ex.getMessage());
+        }
 
-	Token resultToken = null;
-	if (result == null) {
-	    // the method does not return value
-	    return;
-	} else if (result instanceof Token) {
-	    resultToken = (Token)result;
-	} else if (result instanceof Double) {
-	    resultToken = new DoubleToken(((Double)result).doubleValue());
-	} else if (result instanceof Integer) {
-	    resultToken = new IntToken(((Integer)result).intValue());
-	} else if (result instanceof Long) {
-	    resultToken = new LongToken(((Long)result).longValue());
-	} else if (result instanceof String) {
-	    resultToken = new StringToken((String)result);
-	} else if (result instanceof Boolean) {
-	    resultToken = new BooleanToken(((Boolean)result).booleanValue());
-	} else if (result instanceof Complex) {
-	    resultToken = new ComplexToken((Complex)result);
-	} else if (result instanceof FixPoint) {
-	    resultToken = new FixToken((FixPoint)result);
-	} else {
-	    throw new IllegalActionException(this, "Result of method call "
-	            + port.getName() + " is not a supported type: boolean, "
-		    + "complex, fixpoint, double, int, long  and String, "
-		    + "or a Token.");
-	}
+        Token resultToken = null;
+        if (result == null) {
+            // the method does not return value
+            return;
+        } else if (result instanceof Token) {
+            resultToken = (Token)result;
+        } else if (result instanceof Double) {
+            resultToken = new DoubleToken(((Double)result).doubleValue());
+        } else if (result instanceof Integer) {
+            resultToken = new IntToken(((Integer)result).intValue());
+        } else if (result instanceof Long) {
+            resultToken = new LongToken(((Long)result).longValue());
+        } else if (result instanceof String) {
+            resultToken = new StringToken((String)result);
+        } else if (result instanceof Boolean) {
+            resultToken = new BooleanToken(((Boolean)result).booleanValue());
+        } else if (result instanceof Complex) {
+            resultToken = new ComplexToken((Complex)result);
+        } else if (result instanceof FixPoint) {
+            resultToken = new FixToken((FixPoint)result);
+        } else {
+            throw new IllegalActionException(this, "Result of method call "
+                    + port.getName() + " is not a supported type: boolean, "
+                    + "complex, fixpoint, double, int, long  and String, "
+                    + "or a Token.");
+        }
 
-	if (outPort != null) {
-	    outPort.send(0, resultToken);
-	}
+        if (outPort != null) {
+            outPort.send(0, resultToken);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

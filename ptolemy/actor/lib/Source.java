@@ -84,8 +84,8 @@ public abstract class Source extends TypedAtomicActor {
     public Source(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-    	output = new TypedIOPort(this, "output", false, true);
-    	trigger = new TypedIOPort(this, "trigger", true, false);
+            output = new TypedIOPort(this, "output", false, true);
+            trigger = new TypedIOPort(this, "trigger", true, false);
         // NOTE: It used to be that trigger was set to GENERAL, but this
         // isn't really what we want.  What we want is an undeclared type
         // that can resolve to anything.  EAL 12/31/02

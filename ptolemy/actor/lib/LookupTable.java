@@ -87,12 +87,12 @@ public class LookupTable extends Transformer {
         table = new Parameter(this, "table");
         table.setExpression("{0, 1}");
 
-	// Set type constraints.
+        // Set type constraints.
         input.setTypeEquals(BaseType.INT);
-	table.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
-	ArrayType tableType = (ArrayType)table.getType();
-	InequalityTerm elemTerm = tableType.getElementTypeTerm();
-	output.setTypeAtLeast(elemTerm);
+        table.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        ArrayType tableType = (ArrayType)table.getType();
+        InequalityTerm elemTerm = tableType.getElementTypeTerm();
+        output.setTypeAtLeast(elemTerm);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -114,11 +114,11 @@ public class LookupTable extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         LookupTable newObject = (LookupTable)(super.clone(workspace));
 
         // One of the Parameters contains ArrayTokens, so we need
-	// to handle cloning it.
+        // to handle cloning it.
         ArrayType tableType = (ArrayType)newObject.table.getType();
         InequalityTerm elemTerm = tableType.getElementTypeTerm();
         newObject.output.setTypeAtLeast(elemTerm);
@@ -136,11 +136,11 @@ public class LookupTable extends Transformer {
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
             ArrayToken token = (ArrayToken)table.getToken();
-	    if (token != null) {
-		int indexValue = ((IntToken)input.get(0)).intValue();
-		if (indexValue >= 0 && indexValue < token.length()) {
-		    output.broadcast(token.getElement(indexValue));
-		}
+            if (token != null) {
+                int indexValue = ((IntToken)input.get(0)).intValue();
+                if (indexValue >= 0 && indexValue < token.length()) {
+                    output.broadcast(token.getElement(indexValue));
+                }
             }
         }
     }

@@ -177,11 +177,11 @@ public class NonStrictTest extends Transformer {
      *   the required value or if the width of the input is not 1.
      */
     public boolean postfire() throws IllegalActionException {
-	if (input.getWidth() != 1) {
-	    throw new IllegalActionException(this,
+        if (input.getWidth() != 1) {
+            throw new IllegalActionException(this,
                     "Width of input is " + input.getWidth()
                     + "but NonStrictTest only supports a width of 1.");
-	}
+        }
         boolean training = ((BooleanToken)trainingMode.getToken())
                 .booleanValue();
         if (training) {
@@ -189,42 +189,42 @@ public class NonStrictTest extends Transformer {
                 _trainingTokens = new ArrayList();
             }
             if (input.hasToken(0)) {
-		_trainingTokens.add(input.get(0));
-	    }
+                _trainingTokens.add(input.get(0));
+            }
             return true;
         }
-	if (_numberOfInputTokensSeen
+        if (_numberOfInputTokensSeen
                 >= ((ArrayToken)(correctValues.getToken())).length()) {
-	    // Consume and discard input values.  We are beyond the end
-	    // of the correctValues array.
-	    if (input.hasToken(0)) {
-		input.get(0);
-	    }
-	    return true;
-	}
+            // Consume and discard input values.  We are beyond the end
+            // of the correctValues array.
+            if (input.hasToken(0)) {
+                input.get(0);
+            }
+            return true;
+        }
 
-	Token referenceToken
-	    = ((ArrayToken)(correctValues.getToken()))
-	    .getElement(_numberOfInputTokensSeen);
-	if (referenceToken instanceof ArrayToken) {
-	    throw new IllegalActionException(this,
+        Token referenceToken
+            = ((ArrayToken)(correctValues.getToken()))
+            .getElement(_numberOfInputTokensSeen);
+        if (referenceToken instanceof ArrayToken) {
+            throw new IllegalActionException(this,
                     "Reference is an ArrayToken, "
                     + "but NonStrictTest only supports a width of 1.");
-	}
+        }
 
-	if (input.hasToken(0)) {
-	    Token token = input.get(0);
-	    _numberOfInputTokensSeen++;
-	    if (token.isCloseTo(referenceToken, _tolerance).booleanValue()
+        if (input.hasToken(0)) {
+            Token token = input.get(0);
+            _numberOfInputTokensSeen++;
+            if (token.isCloseTo(referenceToken, _tolerance).booleanValue()
                     == false)
-		throw new IllegalActionException(this,
+                throw new IllegalActionException(this,
                         "Test fails in iteration " + _iteration
                         + ".\n"
                         + "Value was: " + token
-		        + ". Should have been: " + referenceToken);
+                        + ". Should have been: " + referenceToken);
 
-	}
-	_iteration++;
+        }
+        _iteration++;
         return true;
     }
 

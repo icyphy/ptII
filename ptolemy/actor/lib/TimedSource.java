@@ -79,9 +79,9 @@ public class TimedSource extends Source implements TimedActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         stopTime = new Parameter(this, "stopTime", new DoubleToken(0.0));
-	stopTime.setTypeEquals(BaseType.DOUBLE);
+        stopTime.setTypeEquals(BaseType.DOUBLE);
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-20\" y=\"-20\" "
                 + "width=\"40\" height=\"40\" "
                 + "style=\"fill:lightGrey\"/>\n"

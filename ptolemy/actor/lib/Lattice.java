@@ -105,8 +105,8 @@ public class Lattice extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	input.setTypeEquals(BaseType.DOUBLE);
-	output.setTypeEquals(BaseType.DOUBLE);
+        input.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.DOUBLE);
 
         reflectionCoefficients = new Parameter(this, "reflectionCoefficients");
         // Note that setExpression() will call attributeChanged().

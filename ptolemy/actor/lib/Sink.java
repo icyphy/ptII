@@ -63,7 +63,7 @@ public abstract class Sink extends TypedAtomicActor {
     public Sink(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
-    	input = new TypedIOPort(this, "input", true, false);
+            input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
     }
 

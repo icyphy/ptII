@@ -93,9 +93,9 @@ public class Quantizer extends Transformer {
         // Call this so that we don't have to copy its code here...
         attributeChanged(levels);
 
-	// Set the type constraints.
-	input.setTypeEquals(BaseType.DOUBLE);
-	output.setTypeEquals(BaseType.DOUBLE);
+        // Set the type constraints.
+        input.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////

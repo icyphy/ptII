@@ -117,10 +117,10 @@ public class Minimum extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         Minimum newObject = (Minimum)super.clone(workspace);
         newObject.minimumValue.setTypeAtMost(BaseType.SCALAR);
-	newObject.minimumValue.setTypeAtLeast(newObject.input);
+        newObject.minimumValue.setTypeAtLeast(newObject.input);
         newObject.channelNumber.setTypeEquals(BaseType.INT);
         return newObject;
     }

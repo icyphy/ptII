@@ -71,8 +71,8 @@ public class Limiter extends Transformer {
         top = new Parameter(this, "top", new DoubleToken(1.0));
         top.setTypeEquals(BaseType.DOUBLE);
 
-	input.setTypeEquals(BaseType.DOUBLE);
-	output.setTypeEquals(BaseType.DOUBLE);
+        input.setTypeEquals(BaseType.DOUBLE);
+        output.setTypeEquals(BaseType.DOUBLE);
     }
 
     ///////////////////////////////////////////////////////////////////

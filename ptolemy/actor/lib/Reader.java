@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
@@ -221,7 +221,7 @@ public class Reader extends Source {
      *  @exception IllegalActionException Not thrown in this base class
      */
     public void initialize() throws IllegalActionException {
-	System.out.println("actor.lib.Reader is obsolete, "
+        System.out.println("actor.lib.Reader is obsolete, "
                 + "use actor.lib.DoubleReader instead");
         _dataSize = output.getWidth();
         _data = new double[_dataSize];

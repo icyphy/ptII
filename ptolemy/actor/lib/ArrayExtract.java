@@ -73,8 +73,8 @@ public class ArrayExtract extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	// Set type constraints.
-	input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        // Set type constraints.
+        input.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
         output.setTypeAtLeast(input);
 
         // Set parameters.
@@ -128,7 +128,7 @@ public class ArrayExtract extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         ArrayExtract newObject = (ArrayExtract)(super.clone(workspace));
 
         // Set the type constraints.

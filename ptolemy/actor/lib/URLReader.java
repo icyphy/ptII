@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
@@ -198,8 +198,8 @@ public abstract class URLReader extends Source {
     public void wrapup() throws IllegalActionException {
         try {
             if (_reader != null && _reader != _stdIn) {
-		_reader.close();
-	    }
+                _reader.close();
+            }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex, "Failed to close");
         }
@@ -217,8 +217,8 @@ public abstract class URLReader extends Source {
             throws IllegalActionException {
         try {
             if (_reader != null && _reader != _stdIn) {
-		_reader.close();
-	    }
+                _reader.close();
+            }
         } catch (IOException ex) {
             throw new IllegalActionException(this, ex, "Failed to close");
         }

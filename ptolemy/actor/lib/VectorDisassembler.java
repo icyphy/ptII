@@ -103,8 +103,8 @@ public class VectorDisassembler extends Transformer {
      */
     public void fire() throws IllegalActionException {
 
-	if (input.hasToken(0)) {
-	    DoubleMatrixToken vector = (DoubleMatrixToken)input.get(0);
+        if (input.hasToken(0)) {
+            DoubleMatrixToken vector = (DoubleMatrixToken)input.get(0);
 
             if (vector.getColumnCount() != 1) {
                 throw new IllegalActionException(this, "The input must "
@@ -116,7 +116,7 @@ public class VectorDisassembler extends Transformer {
             for (int i = 0; i < min; i++) {
                 output.send(i, vector.getElementAsToken(i, 0));
             }
-	}
+        }
     }
 }
 

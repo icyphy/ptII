@@ -155,19 +155,19 @@ public class AbsoluteValue extends Transformer {
         }
 
         /** Return the variables in this term. If the type of the input port
-	 *  is a variable, return a one element array containing the
-	 *  InequalityTerm of that port; otherwise, return an array of zero
-	 *  length.
+         *  is a variable, return a one element array containing the
+         *  InequalityTerm of that port; otherwise, return an array of zero
+         *  length.
          *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-	    if (_port.getTypeTerm().isSettable()) {
+            if (_port.getTypeTerm().isSettable()) {
                 InequalityTerm[] variable = new InequalityTerm[1];
                 variable[0] = _port.getTypeTerm();
                 return variable;
-	    } else {
-		return new InequalityTerm[0];
-	    }
+            } else {
+                return new InequalityTerm[0];
+            }
         }
 
         /** Throw an Exception.

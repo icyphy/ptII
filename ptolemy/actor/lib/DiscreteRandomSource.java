@@ -84,18 +84,18 @@ public class DiscreteRandomSource extends RandomSource {
         pmf.setExpression("{0.5, 0.5}");
         pmf.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
-	// set the values parameter
-	IntToken[] defaultValues = new IntToken[2];
-	defaultValues[0] = new IntToken(0);
-	defaultValues[1] = new IntToken(1);
-	ArrayToken defaultValueToken = new ArrayToken(defaultValues);
-	values = new Parameter(this, "values", defaultValueToken);
-	values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        // set the values parameter
+        IntToken[] defaultValues = new IntToken[2];
+        defaultValues[0] = new IntToken(0);
+        defaultValues[1] = new IntToken(1);
+        ArrayToken defaultValueToken = new ArrayToken(defaultValues);
+        values = new Parameter(this, "values", defaultValueToken);
+        values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
-	// set type constraint
-	ArrayType valuesArrayType = (ArrayType)values.getType();
-	InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-	output.setTypeAtLeast(elementTerm);
+        // set type constraint
+        ArrayType valuesArrayType = (ArrayType)values.getType();
+        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+        output.setTypeAtLeast(elementTerm);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -153,7 +153,7 @@ public class DiscreteRandomSource extends RandomSource {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         DiscreteRandomSource newObject =
             (DiscreteRandomSource)super.clone(workspace);
         ArrayType valuesArrayType = (ArrayType)newObject.values.getType();

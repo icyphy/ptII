@@ -115,7 +115,7 @@ public class MathFunction extends TypedAtomicActor {
         firstOperand.setTypeEquals(BaseType.DOUBLE);
         output.setTypeEquals(BaseType.DOUBLE);
 
-	_attachText("_iconDescription", "<svg>\n" +
+        _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-30\" y=\"-15\" "
                 + "width=\"60\" height=\"30\" "
                 + "style=\"fill:white\"/>\n" +
@@ -236,7 +236,7 @@ public class MathFunction extends TypedAtomicActor {
      *  @exception IllegalActionException Not thrown in this base class
      */
     public int iterate(int count) throws IllegalActionException {
-	// Check whether we need to reallocate the output token array.
+        // Check whether we need to reallocate the output token array.
 
         Token[] inArray1;
         Token[] inArray2;

@@ -93,7 +93,7 @@ public class RecordUpdater extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         input = new TypedIOPort(this, "input", true, false);
 
-	output.setTypeAtLeast(new FunctionTerm(this));
+        output.setTypeAtLeast(new FunctionTerm(this));
 
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"0\" y=\"0\" width=\"6\" " +
@@ -121,9 +121,9 @@ public class RecordUpdater extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         RecordUpdater newObject = (RecordUpdater)super.clone(workspace);
-	newObject.output.setTypeAtLeast(new FunctionTerm(newObject));
+        newObject.output.setTypeAtLeast(new FunctionTerm(newObject));
         return newObject;
     }
 
@@ -151,28 +151,28 @@ public class RecordUpdater extends TypedAtomicActor {
         }
 
         List inputPorts = inputPortList();
-	Iterator inputPortsIterator = inputPorts.iterator();
-	while (inputPortsIterator.hasNext()) {
-	    TypedIOPort inputPort = (TypedIOPort)inputPortsIterator.next();
-	    if (inputPort != input) {
+        Iterator inputPortsIterator = inputPorts.iterator();
+        while (inputPortsIterator.hasNext()) {
+            TypedIOPort inputPort = (TypedIOPort)inputPortsIterator.next();
+            if (inputPort != input) {
                 outputMap.put(inputPort.getName(), inputPort.get(0));
-	    }
-	}
+            }
+        }
 
- 	// Construct a RecordToken and fill it with the values
+         // Construct a RecordToken and fill it with the values
         // in the HashMap.
-	String[] labels = new String[outputMap.size()];
-	Token[] values = new Token[outputMap.size()];
+        String[] labels = new String[outputMap.size()];
+        Token[] values = new Token[outputMap.size()];
 
         int j = 0;
-	for (Iterator i = outputMap.entrySet().iterator(); i.hasNext(); ) {
+        for (Iterator i = outputMap.entrySet().iterator(); i.hasNext(); ) {
             Map.Entry entry = (Map.Entry)i.next();
-	    labels[j] = (String)entry.getKey();
-	    values[j] = (Token)entry.getValue();
+            labels[j] = (String)entry.getKey();
+            values[j] = (Token)entry.getValue();
             j++;
-	}
+        }
 
-	RecordToken result = new RecordToken(labels, values);
+        RecordToken result = new RecordToken(labels, values);
         output.send(0, result);
     }
 
@@ -185,13 +185,13 @@ public class RecordUpdater extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
         Iterator ports = inputPortList().iterator();
-	while (ports.hasNext()) {
-	    IOPort port = (IOPort)ports.next();
-	    if ( !port.hasToken(0)) {
-	        return false;
-	    }
+        while (ports.hasNext()) {
+            IOPort port = (IOPort)ports.next();
+            if ( !port.hasToken(0)) {
+                return false;
+            }
         }
-	return true;
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -211,94 +211,94 @@ public class RecordUpdater extends TypedAtomicActor {
     // of the function is computed as described above.
     private class FunctionTerm implements InequalityTerm {
 
-	// The constructor takes a reference to the RecordUpdater actor
-	// so that the clone() method can construct an instance of this
-	// class.
-	private FunctionTerm(RecordUpdater updater) {
-	    _updater = updater;
-	}
+        // The constructor takes a reference to the RecordUpdater actor
+        // so that the clone() method can construct an instance of this
+        // class.
+        private FunctionTerm(RecordUpdater updater) {
+            _updater = updater;
+        }
 
-	///////////////////////////////////////////////////////////////
-	////                       public inner methods            ////
+        ///////////////////////////////////////////////////////////////
+        ////                       public inner methods            ////
 
-	/** Return null.
-	 *  @return null.
-	 */
-	public Object getAssociatedObject() {
-	    return null;
-	}
+        /** Return null.
+         *  @return null.
+         */
+        public Object getAssociatedObject() {
+            return null;
+        }
 
-	/** Return the function result.
-	 *  @return A Type.
-	 */
-	public Object getValue() {
+        /** Return the function result.
+         *  @return A Type.
+         */
+        public Object getValue() {
             TypedIOPort recordInput = (TypedIOPort)_updater.getPort("input");
-	    Type inputType = recordInput.getType();
-	    if (inputType == BaseType.UNKNOWN) {
-	        return BaseType.UNKNOWN;
-	    }
+            Type inputType = recordInput.getType();
+            if (inputType == BaseType.UNKNOWN) {
+                return BaseType.UNKNOWN;
+            }
 
-	    if ( !(inputType instanceof RecordType)) {
-	        throw new InvalidStateException(_updater, "RecordUpdater: "
-		        + "The type of the input port must be record, \n"
-			+ "but the connection forces it to be "
-			+ inputType);
-	    }
+            if ( !(inputType instanceof RecordType)) {
+                throw new InvalidStateException(_updater, "RecordUpdater: "
+                        + "The type of the input port must be record, \n"
+                        + "but the connection forces it to be "
+                        + inputType);
+            }
 
             RecordType recordType = (RecordType)inputType;
             Map outputMap = new HashMap();
-	    Set recordLabels = recordType.labelSet();
-	    Iterator iterator = recordLabels.iterator();
-	    while (iterator.hasNext()) {
-	        String label = (String)iterator.next();
-		Type type = recordType.get(label);
-		outputMap.put(label, type);
-	    }
+            Set recordLabels = recordType.labelSet();
+            Iterator iterator = recordLabels.iterator();
+            while (iterator.hasNext()) {
+                String label = (String)iterator.next();
+                Type type = recordType.get(label);
+                outputMap.put(label, type);
+            }
 
-	    List inputPorts = _updater.inputPortList();
-	    iterator = inputPorts.iterator();
-	    while (iterator.hasNext()) {
-	        TypedIOPort port = (TypedIOPort)iterator.next();
-		if (port != recordInput) {
-		    outputMap.put(port.getName(), port.getType());
-		}
-	    }
+            List inputPorts = _updater.inputPortList();
+            iterator = inputPorts.iterator();
+            while (iterator.hasNext()) {
+                TypedIOPort port = (TypedIOPort)iterator.next();
+                if (port != recordInput) {
+                    outputMap.put(port.getName(), port.getType());
+                }
+            }
 
- 	    // Construct the RecordType
-	    Object[] labelsObj = outputMap.keySet().toArray();
-	    String[] labels = new String[labelsObj.length];
-	    Type[] types = new Type[labelsObj.length];
+             // Construct the RecordType
+            Object[] labelsObj = outputMap.keySet().toArray();
+            String[] labels = new String[labelsObj.length];
+            Type[] types = new Type[labelsObj.length];
 
             for (int i = 0; i < labels.length; i++) {
-	        labels[i] = (String)labelsObj[i];
-		types[i] = (Type)outputMap.get(labels[i]);
-	    }
+                labels[i] = (String)labelsObj[i];
+                types[i] = (Type)outputMap.get(labels[i]);
+            }
 
-	    return new RecordType(labels, types);
+            return new RecordType(labels, types);
         }
 
         /** Return all the InequalityTerms for all input ports in an array.
-	 *  @return An array of InequalityTerm.
+         *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-	    List inputPorts = _updater.inputPortList();
-	    Object[] portsObj = inputPorts.toArray();
-	    InequalityTerm[] variables = new InequalityTerm[portsObj.length];
+            List inputPorts = _updater.inputPortList();
+            Object[] portsObj = inputPorts.toArray();
+            InequalityTerm[] variables = new InequalityTerm[portsObj.length];
 
-	    for (int i = 0; i < variables.length; i++) {
-	        TypedIOPort port = (TypedIOPort)portsObj[i];
-	        variables[i] = port.getTypeTerm();
-	    }
-	    return variables;
+            for (int i = 0; i < variables.length; i++) {
+                TypedIOPort port = (TypedIOPort)portsObj[i];
+                variables[i] = port.getTypeTerm();
+            }
+            return variables;
         }
 
         /** Throw an Exception. This function InequalityTerm cannot be
-	 *  initialized.
+         *  initialized.
          *  @exception IllegalActionException Always thrown in this class.
          */
         public void initialize(Object e)
-		throws IllegalActionException {
-	    throw new IllegalActionException("RecordUpdater$FunctionTerm." +
+                throws IllegalActionException {
+            throw new IllegalActionException("RecordUpdater$FunctionTerm." +
                     "initialize: Cannot initialize a function term.");
         }
 
@@ -306,7 +306,7 @@ public class RecordUpdater extends TypedAtomicActor {
          *  @return false.
          */
         public boolean isSettable() {
-	    return false;
+            return false;
         }
 
         /** Return true.
@@ -321,9 +321,9 @@ public class RecordUpdater extends TypedAtomicActor {
          *  @exception IllegalActionException Always thrown in this class.
          */
         public void setValue(Object e) throws IllegalActionException {
-	    throw new IllegalActionException(
+            throw new IllegalActionException(
                     "RecordUpdater$FunctionTerm.setValue: This function "
-		    + "InequalityTerm is not settable.");
+                    + "InequalityTerm is not settable.");
         }
 
         /** Override the base class to give a description of this term.
@@ -336,7 +336,7 @@ public class RecordUpdater extends TypedAtomicActor {
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
 
-	private RecordUpdater _updater;
+        private RecordUpdater _updater;
     }
 }
 

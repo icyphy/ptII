@@ -109,9 +109,9 @@ public class Uniform extends RandomSource {
      *  @return Whatever the superclass returns (probably true).
      */
     public boolean prefire() throws IllegalActionException {
-	double lowerValue = ((DoubleToken)
+        double lowerValue = ((DoubleToken)
                 (lowerBound.getToken())).doubleValue();
-	double upperValue = ((DoubleToken)
+        double upperValue = ((DoubleToken)
                 (upperBound.getToken())).doubleValue();
         if (lowerValue > upperValue) {
             throw new IllegalActionException(this,

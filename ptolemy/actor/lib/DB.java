@@ -135,20 +135,20 @@ public class DB extends Transformer {
      *  performed.
      */
     public int iterate(int count) throws IllegalActionException {
-	// Check whether we need to reallocate the output token array.
-	if (count > _resultArray.length) {
-	    _resultArray = new DoubleToken[count];
-	}
+        // Check whether we need to reallocate the output token array.
+        if (count > _resultArray.length) {
+            _resultArray = new DoubleToken[count];
+        }
 
         if (input.hasToken(0, count)) {
             double minValue = ((DoubleToken)min.getToken()).doubleValue();
-	    // NOTE: inArray.length may be > count, in which case
-	    // only the first count tokens are valid.
+            // NOTE: inArray.length may be > count, in which case
+            // only the first count tokens are valid.
             Token[] inArray = input.get(0, count);
-	    for (int i = 0; i < count; i++) {
-		double input = ((DoubleToken)(inArray[i])).doubleValue();
-		_resultArray[i] = _doFunction(input, minValue);
-	    }
+            for (int i = 0; i < count; i++) {
+                double input = ((DoubleToken)(inArray[i])).doubleValue();
+                _resultArray[i] = _doFunction(input, minValue);
+            }
             output.send(0, _resultArray, count);
             return COMPLETED;
         } else {

@@ -94,32 +94,32 @@ public class Interpolator extends SequenceSource {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-	_interpolation = new Interpolation();
+        _interpolation = new Interpolation();
 
-	// Initialize the parameters with the default settings of the
-	// Interpolation class. This is not required for this class to
-	// function. But since these parameters are public, other objects
-	// in the system may use them.
+        // Initialize the parameters with the default settings of the
+        // Interpolation class. This is not required for this class to
+        // function. But since these parameters are public, other objects
+        // in the system may use them.
 
         indexes = new Parameter(this, "indexes");
         indexes.setExpression("{0, 1}");
         // Call this so that we don't have to copy its code here...
         attributeChanged(indexes);
 
-	// set values parameter
+        // set values parameter
         values = new Parameter(this, "values");
         values.setExpression("{1.0, 0.0}");
-	values.setTypeEquals(new ArrayType(BaseType.DOUBLE));
+        values.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
-	int defOrder = _interpolation.getOrder();
-	IntToken defOrderToken = new IntToken(defOrder);
+        int defOrder = _interpolation.getOrder();
+        IntToken defOrderToken = new IntToken(defOrder);
         order = new Parameter(this, "order", defOrderToken);
         order.setTypeEquals(BaseType.INT);
 
-	int defPeriod = _interpolation.getPeriod();
-	IntToken defPeriodToken = new IntToken(defPeriod);
-	period = new Parameter(this, "period", defPeriodToken);
-	period.setTypeEquals(BaseType.INT);
+        int defPeriod = _interpolation.getPeriod();
+        IntToken defPeriodToken = new IntToken(defPeriod);
+        period = new Parameter(this, "period", defPeriodToken);
+        period.setTypeEquals(BaseType.INT);
 
         output.setTypeEquals(BaseType.DOUBLE);
     }

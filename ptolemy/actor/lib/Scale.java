@@ -86,11 +86,11 @@ public class Scale extends Transformer {
         scaleOnLeft = new Parameter(this, "scaleOnLeft",
                 new BooleanToken(true));
 
-	// set the type constraints.
-	output.setTypeAtLeast(new PortParameterFunction(input, factor));
+        // set the type constraints.
+        output.setTypeAtLeast(new PortParameterFunction(input, factor));
 
         // icon
-	_attachText("_iconDescription", "<svg>\n"
+        _attachText("_iconDescription", "<svg>\n"
                 + "<polygon points=\"-30,-20 30,-4 30,4 -30,20\" "
                 + "style=\"fill:white\"/>\n"
                 + "</svg>\n");
@@ -125,9 +125,9 @@ public class Scale extends Transformer {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         Scale newObject = (Scale)super.clone(workspace);
-	PortParameterFunction function =
+        PortParameterFunction function =
             new PortParameterFunction(newObject.input, newObject.factor);
         newObject.output.setTypeAtLeast(function);
         return newObject;
@@ -205,53 +205,53 @@ public class Scale extends Transformer {
     // the port type to be an array or array, for example.
     private class PortParameterFunction implements InequalityTerm {
 
-	private PortParameterFunction(TypedIOPort port, Parameter param) {
-	    _port = port;
-	    _param = param;
-	}
+        private PortParameterFunction(TypedIOPort port, Parameter param) {
+            _port = port;
+            _param = param;
+        }
 
-	///////////////////////////////////////////////////////////////
-	////                       public inner methods            ////
+        ///////////////////////////////////////////////////////////////
+        ////                       public inner methods            ////
 
-	/** Return null.
-	 *  @return null.
-	 */
-	public Object getAssociatedObject() {
-	    return null;
-	}
+        /** Return null.
+         *  @return null.
+         */
+        public Object getAssociatedObject() {
+            return null;
+        }
 
-	/** Return the function result.
-	 *  @return A Type.
-	 */
-	public Object getValue() {
-	    Type portType = _port.getType();
-	    Type paramType = _param.getType();
-	    return compute(portType, paramType);
+        /** Return the function result.
+         *  @return A Type.
+         */
+        public Object getValue() {
+            Type portType = _port.getType();
+            Type paramType = _param.getType();
+            return compute(portType, paramType);
         }
 
         /** Return the type variable in this inequality term. If the type
-	 *  of the input port is not declarad, return an one element array
-	 *  containing the inequality term representing the type of the port;
-	 *  otherwise, return an empty array.
-	 *  @return An array of InequalityTerm.
+         *  of the input port is not declarad, return an one element array
+         *  containing the inequality term representing the type of the port;
+         *  otherwise, return an empty array.
+         *  @return An array of InequalityTerm.
          */
         public InequalityTerm[] getVariables() {
-	    InequalityTerm portTerm = _port.getTypeTerm();
-	    if (portTerm.isSettable()) {
-	        InequalityTerm[] variable = new InequalityTerm[1];
-	        variable[0] = portTerm;
-	        return variable;
-	    }
-	    return (new InequalityTerm[0]);
+            InequalityTerm portTerm = _port.getTypeTerm();
+            if (portTerm.isSettable()) {
+                InequalityTerm[] variable = new InequalityTerm[1];
+                variable[0] = portTerm;
+                return variable;
+            }
+            return (new InequalityTerm[0]);
         }
 
         /** Throw an Exception. This method cannot be called on a function
-	 *  term.
+         *  term.
          *  @exception IllegalActionException Always thrown.
          */
         public void initialize(Object e)
-		throws IllegalActionException {
-	    throw new IllegalActionException(getClass().getName()
+                throws IllegalActionException {
+            throw new IllegalActionException(getClass().getName()
                     + ": Cannot initialize a function term.");
         }
 
@@ -259,7 +259,7 @@ public class Scale extends Transformer {
          *  @return false.
          */
         public boolean isSettable() {
-	    return false;
+            return false;
         }
 
         /** Return true.
@@ -273,7 +273,7 @@ public class Scale extends Transformer {
          *  @exception IllegalActionException Always thrown.
          */
         public void setValue(Object e) throws IllegalActionException {
-	    throw new IllegalActionException(getClass().getName()
+            throw new IllegalActionException(getClass().getName()
                     + ": The type is not settable.");
         }
 
@@ -284,28 +284,28 @@ public class Scale extends Transformer {
             return "(" + getClass().getName() + ", " + getValue() + ")";
         }
 
-	///////////////////////////////////////////////////////////////
-	////                      private inner methods            ////
+        ///////////////////////////////////////////////////////////////
+        ////                      private inner methods            ////
 
-	// compute the function value based on the types of the port
-	// and the parameter.
-	private Object compute(Type portType, Type paramType) {
-	    if (portType == BaseType.UNKNOWN) {
-	        return BaseType.UNKNOWN;
-	    } else if (portType instanceof ArrayType) {
-	        Type elementType = ((ArrayType)portType).getElementType();
+        // compute the function value based on the types of the port
+        // and the parameter.
+        private Object compute(Type portType, Type paramType) {
+            if (portType == BaseType.UNKNOWN) {
+                return BaseType.UNKNOWN;
+            } else if (portType instanceof ArrayType) {
+                Type elementType = ((ArrayType)portType).getElementType();
                 Type newElementType = (Type)compute(elementType, paramType);
-		return new ArrayType(newElementType);
-	    } else {
-	        CPO lattice = TypeLattice.lattice();
-		return lattice.leastUpperBound(portType, paramType);
-	    }
+                return new ArrayType(newElementType);
+            } else {
+                CPO lattice = TypeLattice.lattice();
+                return lattice.leastUpperBound(portType, paramType);
+            }
         }
 
         ///////////////////////////////////////////////////////////////
         ////                       private inner variable          ////
 
-	private TypedIOPort _port;
-	private Parameter _param;
+        private TypedIOPort _port;
+        private Parameter _param;
     }
 }

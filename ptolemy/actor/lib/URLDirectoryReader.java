@@ -23,8 +23,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Red (liuj@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
@@ -102,12 +102,12 @@ public class URLDirectoryReader extends URLReader {
 
         // Set the endsWith String.
         endsWith = new Parameter(this, "endsWith", new StringToken(""));
-	endsWith.setTypeEquals(BaseType.STRING);
+        endsWith.setTypeEquals(BaseType.STRING);
         attributeChanged(endsWith);
 
         // Set the repeat Flag.
         repeat = new Parameter(this, "repeat", new BooleanToken(false));
-	repeat.setTypeEquals(BaseType.BOOLEAN);
+        repeat.setTypeEquals(BaseType.BOOLEAN);
         attributeChanged(repeat);
     }
 
@@ -116,12 +116,12 @@ public class URLDirectoryReader extends URLReader {
 
     /** If non-null and non-empty, then only output file names and sub
      *  directories that end with this String value.
-     *	The default value of this parameter is the empty String "".
+     *        The default value of this parameter is the empty String "".
      */
     public Parameter endsWith;
 
     /** Repeat after outputting all elements of the directory.
-     *	The default value of this parameter is a false BooleanToken.
+     *        The default value of this parameter is a false BooleanToken.
      */
     public Parameter repeat;
 
@@ -139,13 +139,13 @@ public class URLDirectoryReader extends URLReader {
         if (attribute == repeat) {
             _repeatFlag = ((BooleanToken)repeat.getToken()).booleanValue();
         } else if (attribute == endsWith) {
-	    StringToken endsWithToken = (StringToken)endsWith.getToken();
-	    if (endsWithToken == null) {
-		_endsWithValue = null;
-	    } else {
-		_endsWithValue = endsWithToken.stringValue();
-	    }
-	}
+            StringToken endsWithToken = (StringToken)endsWith.getToken();
+            if (endsWithToken == null) {
+                _endsWithValue = null;
+            } else {
+                _endsWithValue = endsWithToken.stringValue();
+            }
+        }
         super.attributeChanged(attribute);
     }
 
@@ -154,14 +154,14 @@ public class URLDirectoryReader extends URLReader {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-	output.broadcast(new StringToken(_data[_iterationCount]));
+        output.broadcast(new StringToken(_data[_iterationCount]));
     }
 
     /** Open the file at the URL, and set the width of the output.
      *  @exception IllegalActionException Not thrown in this base class
      */
     public void initialize() throws IllegalActionException {
-	super.initialize();
+        super.initialize();
         _iterationCount = 0;
     }
 
@@ -175,18 +175,18 @@ public class URLDirectoryReader extends URLReader {
      *  @exception IllegalActionException If the sourceURL is not valid.
      */
     public boolean postfire() throws IllegalActionException {
-	_iterationCount++;
-	if (_iterationCount >= _data.length) {
-	    if (!_repeatFlag) {
-		return false;
-	    } else {
-		_iterationCount = 0;
-		if (_refreshFlag) {
-		    _data = _list(_source, _endsWithValue);
-		}
-	    }
-	}
-	return super.postfire();
+        _iterationCount++;
+        if (_iterationCount >= _data.length) {
+            if (!_repeatFlag) {
+                return false;
+            } else {
+                _iterationCount = 0;
+                if (_refreshFlag) {
+                    _data = _list(_source, _endsWithValue);
+                }
+            }
+        }
+        return super.postfire();
     }
 
     /** Read one row from the input and prepare for output them.
@@ -194,7 +194,7 @@ public class URLDirectoryReader extends URLReader {
      */
     public boolean prefire() throws IllegalActionException {
         try {
-	    _data = _list(_source, _endsWithValue);
+            _data = _list(_source, _endsWithValue);
             return super.prefire();
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex.getMessage());
@@ -220,18 +220,18 @@ public class URLDirectoryReader extends URLReader {
      */
     private String [] _list(String source, String endsWith)
             throws IllegalActionException {
-	if (source.startsWith("file:")) {
-	    return _listFile(source, endsWith);
-	} else {
-	    try {
-		return _listFileOrURL(source, endsWith);
-	    } catch (Exception ex) {
-		throw new IllegalActionException("Could not open '" + source
+        if (source.startsWith("file:")) {
+            return _listFile(source, endsWith);
+        } else {
+            try {
+                return _listFileOrURL(source, endsWith);
+            } catch (Exception ex) {
+                throw new IllegalActionException("Could not open '" + source
                         + ": "
                         + KernelException
                         .stackTraceToString(ex));
             }
-	}
+        }
     }
 
     /** Return files and directories contained in the source url.
@@ -248,45 +248,45 @@ public class URLDirectoryReader extends URLReader {
      */
     private String [] _listFile(String source, String endsWith)
             throws IllegalActionException {
-	try {
-	    URL sourceURL = new URL(source);
+        try {
+            URL sourceURL = new URL(source);
 
-	    if (sourceURL.getProtocol().equals("file")) {
-		// First, try opening the source as a file.
-		File file = new File(sourceURL.getFile());
-		if (file.isDirectory()) {
-		    if (!source.endsWith("/")) {
-			source = source + "/";
-		    }
-		    // Note: we could use listFiles(FileFilter) here.
-		    // but since the filter is fairly simple, we don't
-		    File [] files = file.listFiles();
-		    List resultsList = new LinkedList();
-		    for (int i = 0; i < files.length; i++) {
-			String filename = files[i].getName();
-			if (endsWith == null || endsWith.length() == 0
+            if (sourceURL.getProtocol().equals("file")) {
+                // First, try opening the source as a file.
+                File file = new File(sourceURL.getFile());
+                if (file.isDirectory()) {
+                    if (!source.endsWith("/")) {
+                        source = source + "/";
+                    }
+                    // Note: we could use listFiles(FileFilter) here.
+                    // but since the filter is fairly simple, we don't
+                    File [] files = file.listFiles();
+                    List resultsList = new LinkedList();
+                    for (int i = 0; i < files.length; i++) {
+                        String filename = files[i].getName();
+                        if (endsWith == null || endsWith.length() == 0
                                 || filename.endsWith(endsWith)) {
-			    resultsList.add(source + filename);
-			}
-		    }
-		    String [] results = new String[resultsList.size()];
-		    return (String [])(resultsList.toArray(results));
-		} else if (file.isFile()) {
-		    return new String[] {file.toString()};
-		} else {
-		    throw new IllegalActionException("'" + source
+                            resultsList.add(source + filename);
+                        }
+                    }
+                    String [] results = new String[resultsList.size()];
+                    return (String [])(resultsList.toArray(results));
+                } else if (file.isFile()) {
+                    return new String[] {file.toString()};
+                } else {
+                    throw new IllegalActionException("'" + source
                             + "' is neither a file "
                             + "or a directory?");
-		}
-	    } else {
-		// FIXME: handle urls here.
-		throw new IllegalActionException("'" + source + "' does not "
+                }
+            } else {
+                // FIXME: handle urls here.
+                throw new IllegalActionException("'" + source + "' does not "
                         + "have the file: protocol");
-	    }
-	} catch (Exception ex) {
-	    throw new IllegalActionException("Could not open '" + source
+            }
+        } catch (Exception ex) {
+            throw new IllegalActionException("Could not open '" + source
                     + "' :" + ex);
-	}
+        }
     }
 
     /** Return files and directories contained in the source url.
@@ -310,92 +310,92 @@ public class URLDirectoryReader extends URLReader {
      *  nor a directory, or if there is some other problem.  */
     private static String [] _listFileOrURL(String source, String endsWith)
             throws MalformedURLException, IOException {
-	URL url = new URL(source);
-	URLConnection urlConnection = url.openConnection();
-	String contentType = urlConnection.getContentType();
-	if (!contentType.startsWith("text/html")
+        URL url = new URL(source);
+        URLConnection urlConnection = url.openConnection();
+        String contentType = urlConnection.getContentType();
+        if (!contentType.startsWith("text/html")
                 && !contentType.startsWith("text/plain") ) {
-	    throw new RuntimeException("Could not parse '" + source
+            throw new RuntimeException("Could not parse '" + source
                     + "', it is not \"text/html\", "
                     + "or \"text/plain\", it is: "
                     + urlConnection.getContentType());
-	}
-	BufferedReader in =
-	    new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
-	if (!contentType.startsWith("text/plain")
+        }
+        BufferedReader in =
+            new BufferedReader(new InputStreamReader(urlConnection.getInputStream()));
+        if (!contentType.startsWith("text/plain")
                 && !urlConnection.getURL().toString().endsWith("/")) {
-	    // text/plain urls need not end with /, but
-	    // text/html urls _must_ end with / since the web server
-	    // will rewrite them for us.
-	    throw new RuntimeException("Could not parse '" + source
+            // text/plain urls need not end with /, but
+            // text/html urls _must_ end with / since the web server
+            // will rewrite them for us.
+            throw new RuntimeException("Could not parse '" + source
                     + "', it does not end with '/'");
 
-	}
+        }
 
-	if (!source.endsWith("/")) {
-	    source += "/";
-	}
+        if (!source.endsWith("/")) {
+            source += "/";
+        }
 
 
-	// Parse the contents in a haphazard fashion.
-	// The idea is that we look for the <BODY> line and
-	// then looks for lines that contain HREF
-	// If we find a line like HREF="foo">foo, then we report
-	// foo as being a file.
-	// A more robust way would be to use a spider, see
-	// http://www.acme.com/java/software/WebList.html
-	List resultsList = new LinkedList();
-	String line;
-	String target = null;
-	boolean sawBody = false, sawHREF = false;
-	while ((line = in.readLine()) != null) {
-	    line = line.trim();
-	    if (line.startsWith("<BODY")
+        // Parse the contents in a haphazard fashion.
+        // The idea is that we look for the <BODY> line and
+        // then looks for lines that contain HREF
+        // If we find a line like HREF="foo">foo, then we report
+        // foo as being a file.
+        // A more robust way would be to use a spider, see
+        // http://www.acme.com/java/software/WebList.html
+        List resultsList = new LinkedList();
+        String line;
+        String target = null;
+        boolean sawBody = false, sawHREF = false;
+        while ((line = in.readLine()) != null) {
+            line = line.trim();
+            if (line.startsWith("<BODY")
                     || line.startsWith("<body")) {
-		sawBody = true;
-	    } else {
-		if (sawBody) {
-		    StringTokenizer tokenizer =
-			new StringTokenizer(line, "<\" >=");
-		    while (tokenizer.hasMoreTokens()) {
-			String token = tokenizer.nextToken();
-			if (token.compareToIgnoreCase("HREF") == 0) {
-			    sawHREF = true;
-			    target = null;
-			} else {
-			    if (sawHREF) {
-				if (target == null) {
-				    // Here, we should check that target
-				    // is a relative pathname.
-				    target = token;
-				} else {
-				    // Check to see if the token is
-				    // the same as the last token.
-				    if (token.compareTo(target) != 0) {
-					sawHREF = false;
-				    } else {
-					// If we were really brave, we
-					// could try opening a connection
-					// here to verify that the target
-					// exists.
-					if (endsWith == null
+                sawBody = true;
+            } else {
+                if (sawBody) {
+                    StringTokenizer tokenizer =
+                        new StringTokenizer(line, "<\" >=");
+                    while (tokenizer.hasMoreTokens()) {
+                        String token = tokenizer.nextToken();
+                        if (token.compareToIgnoreCase("HREF") == 0) {
+                            sawHREF = true;
+                            target = null;
+                        } else {
+                            if (sawHREF) {
+                                if (target == null) {
+                                    // Here, we should check that target
+                                    // is a relative pathname.
+                                    target = token;
+                                } else {
+                                    // Check to see if the token is
+                                    // the same as the last token.
+                                    if (token.compareTo(target) != 0) {
+                                        sawHREF = false;
+                                    } else {
+                                        // If we were really brave, we
+                                        // could try opening a connection
+                                        // here to verify that the target
+                                        // exists.
+                                        if (endsWith == null
                                                 || endsWith.length() == 0
                                                 || target.endsWith(endsWith)) {
-					    resultsList.add(source
+                                            resultsList.add(source
                                                     + target);
-					}
-					sawHREF = false;
-				    }
-				}
-			    }
-			}
-		    }
-		}
-	    }
-	}
-	in.close();
-	String [] results = new String[resultsList.size()];
-	return (String [])(resultsList.toArray(results));
+                                        }
+                                        sawHREF = false;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        in.close();
+        String [] results = new String[resultsList.size()];
+        return (String [])(resultsList.toArray(results));
     }
 
     ///////////////////////////////////////////////////////////////////

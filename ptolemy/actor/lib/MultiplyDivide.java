@@ -88,11 +88,11 @@ public class MultiplyDivide extends TypedAtomicActor {
     public MultiplyDivide(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-	multiply = new TypedIOPort(this, "multiply", true, false);
-	multiply.setMultiport(true);
-	divide = new TypedIOPort(this, "divide", true, false);
-	divide.setMultiport(true);
-	output = new TypedIOPort(this, "output", false, true);
+        multiply = new TypedIOPort(this, "multiply", true, false);
+        multiply.setMultiport(true);
+        divide = new TypedIOPort(this, "divide", true, false);
+        divide.setMultiport(true);
+        output = new TypedIOPort(this, "output", false, true);
         _attachText("_iconDescription", "<svg>\n" +
                 "<rect x=\"-20\" y=\"-20\" "
                 + "width=\"40\" height=\"40\" "
@@ -142,25 +142,25 @@ public class MultiplyDivide extends TypedAtomicActor {
      *   available tokens.
      */
     public void fire() throws IllegalActionException {
-	Token numerator = null;
-	for (int i = 0; i < multiply.getWidth(); i++) {
-	    if (multiply.hasToken(i)) {
-		if (numerator == null) {
-		    numerator = multiply.get(i);
-		} else {
-		    numerator = numerator.multiply(multiply.get(i));
-		}
-	    }
-	}
+        Token numerator = null;
+        for (int i = 0; i < multiply.getWidth(); i++) {
+            if (multiply.hasToken(i)) {
+                if (numerator == null) {
+                    numerator = multiply.get(i);
+                } else {
+                    numerator = numerator.multiply(multiply.get(i));
+                }
+            }
+        }
         Token denominator = null;
-	for (int i = 0; i < divide.getWidth(); i++) {
-	    if (divide.hasToken(i)) {
-		if (denominator == null) {
-		    denominator = divide.get(i);
-		} else {
-		    denominator = denominator.multiply(divide.get(i));
-		}
-	    }
+        for (int i = 0; i < divide.getWidth(); i++) {
+            if (divide.hasToken(i)) {
+                if (denominator == null) {
+                    denominator = divide.get(i);
+                } else {
+                    denominator = denominator.multiply(divide.get(i));
+                }
+            }
         }
         if (numerator == null) {
             if (denominator == null) {
@@ -170,7 +170,7 @@ public class MultiplyDivide extends TypedAtomicActor {
         }
         if (denominator != null) {
             numerator = numerator.divide(denominator);
-	}
+        }
         output.send(0, numerator);
     }
 }

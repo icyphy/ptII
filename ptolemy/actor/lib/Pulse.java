@@ -98,20 +98,20 @@ public class Pulse extends SequenceSource {
         // Call this so that we don't have to copy its code here...
         attributeChanged(indexes);
 
-	// set values parameter
+        // set values parameter
         values = new Parameter(this, "values");
         values.setExpression("{1, 0}");
-	values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
         // Set the Repeat Flag.
         repeat = new Parameter(this, "repeat", new BooleanToken(false));
-	repeat.setTypeEquals(BaseType.BOOLEAN);
+        repeat.setTypeEquals(BaseType.BOOLEAN);
         attributeChanged(repeat);
 
-	// set type constraint
-	ArrayType valuesArrayType = (ArrayType)values.getType();
-	InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-	output.setTypeAtLeast(elementTerm);
+        // set type constraint
+        ArrayType valuesArrayType = (ArrayType)values.getType();
+        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+        output.setTypeAtLeast(elementTerm);
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
@@ -188,7 +188,7 @@ public class Pulse extends SequenceSource {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         Pulse newObject = (Pulse)super.clone(workspace);
         ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();

@@ -81,11 +81,11 @@ public class Ramp extends SequenceSource {
         init = new Parameter(this, "init", new IntToken(0));
         step = new PortParameter(this, "step", new IntToken(1));
 
-	// set the type constraints.
-	output.setTypeAtLeast(init);
-	output.setTypeAtLeast(step);
+        // set the type constraints.
+        output.setTypeAtLeast(init);
+        output.setTypeAtLeast(step);
 
-	_attachText("_iconDescription", "<svg>\n"
+        _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" "
                 + "width=\"60\" height=\"40\" "
                 + "style=\"fill:white\"/>\n"
@@ -132,11 +132,11 @@ public class Ramp extends SequenceSource {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         Ramp newObject = (Ramp)super.clone(workspace);
-	// set the type constraints.
-	newObject.output.setTypeAtLeast(newObject.init);
-	newObject.output.setTypeAtLeast(newObject.step);
+        // set the type constraints.
+        newObject.output.setTypeAtLeast(newObject.init);
+        newObject.output.setTypeAtLeast(newObject.step);
         _resultArray = new Token[1];
         return newObject;
     }
@@ -183,29 +183,29 @@ public class Ramp extends SequenceSource {
      *  performed.
      */
     public int iterate(int count) throws IllegalActionException {
-	// Check whether we need to reallocate the output token array.
-	if (count > _resultArray.length) {
-	    _resultArray = new Token[count];
-	}
-	for (int i = 0; i < count; i++) {
-	    _resultArray[i] = _stateToken;
-	    try {
+        // Check whether we need to reallocate the output token array.
+        if (count > _resultArray.length) {
+            _resultArray = new Token[count];
+        }
+        for (int i = 0; i < count; i++) {
+            _resultArray[i] = _stateToken;
+            try {
                 step.update();
-		_stateToken = _stateToken.add(step.getToken());
-	    } catch (IllegalActionException ex) {
-		// Should not be thrown because
-		// we have already verified that the tokens can be added.
-		throw new InternalErrorException(ex.getMessage());
-	    }
-	}
-	output.send(0, _resultArray, count);
-	if (_firingCountLimit != 0) {
-	    _iterationCount += count;
-	    if (_iterationCount >= _firingCountLimit) {
-		return STOP_ITERATING;
-	    }
-	}
-	return COMPLETED;
+                _stateToken = _stateToken.add(step.getToken());
+            } catch (IllegalActionException ex) {
+                // Should not be thrown because
+                // we have already verified that the tokens can be added.
+                throw new InternalErrorException(ex.getMessage());
+            }
+        }
+        output.send(0, _resultArray, count);
+        if (_firingCountLimit != 0) {
+            _iterationCount += count;
+            if (_iterationCount >= _firingCountLimit) {
+                return STOP_ITERATING;
+            }
+        }
+        return COMPLETED;
     }
 
     /** Update the state of the actor by adding the value of the

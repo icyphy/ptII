@@ -52,6 +52,6 @@ we create these wrapper classes that call the appropriate main class.
 */
 public class PtinySandboxApplication {
     public static void main(String [] args) {
-	ptolemy.actor.gui.MoMLApplication.main(args);
+        ptolemy.actor.gui.MoMLApplication.main(args);
     }
 }

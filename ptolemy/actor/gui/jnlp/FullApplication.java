@@ -52,19 +52,19 @@ we create these wrapper classes that call the appropriate main class.
 */
 public class FullApplication {
     public static void main(String [] args) {
-	// We set the security manager to null for two reasons
+        // We set the security manager to null for two reasons
 
-	// 1) Get rid of the following message when we open the file browser:
-	// "There is no disk in the drive. Please insert a disk into drive A"
-	// with the standard Abort/Retry/Ignore buttons.
-	// See:
-	// http://forum.java.sun.com/thread.jsp?forum=38&thread=71610
+        // 1) Get rid of the following message when we open the file browser:
+        // "There is no disk in the drive. Please insert a disk into drive A"
+        // with the standard Abort/Retry/Ignore buttons.
+        // See:
+        // http://forum.java.sun.com/thread.jsp?forum=38&thread=71610
 
-	// 2)Speed things up, see
-	// http://forums.java.sun.com/thread.jsp?forum=38&thread=134393
+        // 2)Speed things up, see
+        // http://forums.java.sun.com/thread.jsp?forum=38&thread=134393
 
-	System.setSecurityManager(null);
+        System.setSecurityManager(null);
 
-	ptolemy.vergil.VergilApplication.main(args);
+        ptolemy.vergil.VergilApplication.main(args);
     }
 }

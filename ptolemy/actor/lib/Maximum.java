@@ -80,7 +80,7 @@ public class Maximum extends TypedAtomicActor {
         maximumValue = new TypedIOPort(this, "maximumValue", false, true);
         maximumValue.setMultiport(true);
         maximumValue.setTypeAtMost(BaseType.SCALAR);
-	maximumValue.setTypeAtLeast(input);
+        maximumValue.setTypeAtLeast(input);
 
         channelNumber = new TypedIOPort(this, "channelNumber", false, true);
         channelNumber.setMultiport(true);
@@ -117,10 +117,10 @@ public class Maximum extends TypedAtomicActor {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         Maximum newObject = (Maximum)super.clone(workspace);
         newObject.maximumValue.setTypeAtMost(BaseType.SCALAR);
-	newObject.maximumValue.setTypeAtLeast(newObject.input);
+        newObject.maximumValue.setTypeAtLeast(newObject.input);
         newObject.channelNumber.setTypeEquals(BaseType.INT);
         return newObject;
     }

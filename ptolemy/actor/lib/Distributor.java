@@ -109,7 +109,7 @@ public class Distributor extends Transformer implements SequenceActor {
      *   attributes that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         Distributor newObject = (Distributor)super.clone(workspace);
         newObject.input_tokenConsumptionRate = (Parameter)
             (newObject.input.getAttribute("tokenConsumptionRate"));

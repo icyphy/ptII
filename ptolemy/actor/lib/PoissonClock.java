@@ -104,18 +104,18 @@ public class PoissonClock extends TimedSource {
         meanTime = new Parameter(this, "meanTime", new DoubleToken(1.0));
         meanTime.setTypeEquals(BaseType.DOUBLE);
 
-	// set the values parameter
-	IntToken[] defaultValues = new IntToken[2];
-	defaultValues[0] = new IntToken(1);
-	defaultValues[1] = new IntToken(0);
-	ArrayToken defaultValueToken = new ArrayToken(defaultValues);
+        // set the values parameter
+        IntToken[] defaultValues = new IntToken[2];
+        defaultValues[0] = new IntToken(1);
+        defaultValues[1] = new IntToken(0);
+        ArrayToken defaultValueToken = new ArrayToken(defaultValues);
         values = new Parameter(this, "values", defaultValueToken);
-	values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
+        values.setTypeEquals(new ArrayType(BaseType.UNKNOWN));
 
-	// set type constraint
-	ArrayType valuesArrayType = (ArrayType)values.getType();
-	InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
-	output.setTypeAtLeast(elementTerm);
+        // set type constraint
+        ArrayType valuesArrayType = (ArrayType)values.getType();
+        InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();
+        output.setTypeAtLeast(elementTerm);
 
         // Call this so that we don't have to copy its code here...
         attributeChanged(values);
@@ -168,7 +168,7 @@ public class PoissonClock extends TimedSource {
      *   an attribute that cannot be cloned.
      */
     public Object clone(Workspace workspace)
-	    throws CloneNotSupportedException {
+            throws CloneNotSupportedException {
         PoissonClock newObject = (PoissonClock)super.clone(workspace);
         ArrayType valuesArrayType = (ArrayType)newObject.values.getType();
         InequalityTerm elementTerm = valuesArrayType.getElementTypeTerm();

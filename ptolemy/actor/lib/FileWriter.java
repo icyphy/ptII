@@ -22,8 +22,8 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-						PT_COPYRIGHT_VERSION 2
-						COPYRIGHTENDKEY
+                                                PT_COPYRIGHT_VERSION 2
+                                                COPYRIGHTENDKEY
 @ProposedRating Yellow (yuhong@eecs.berkeley.edu)
 @AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */

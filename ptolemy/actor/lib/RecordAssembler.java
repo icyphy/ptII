@@ -101,19 +101,19 @@ public class RecordAssembler extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         Object[] portArray = inputPortList().toArray();
-	int size = portArray.length;
+        int size = portArray.length;
 
-	// construct the RecordToken and to output
-	String[] labels = new String[size];
-	Token[] values = new Token[size];
+        // construct the RecordToken and to output
+        String[] labels = new String[size];
+        Token[] values = new Token[size];
 
-	for (int i = 0; i < size; i++) {
-	    IOPort port = (IOPort)portArray[i];
-	    labels[i] = port.getName();
-	    values[i] = port.get(0);
-	}
+        for (int i = 0; i < size; i++) {
+            IOPort port = (IOPort)portArray[i];
+            labels[i] = port.getName();
+            values[i] = port.get(0);
+        }
 
-	RecordToken result = new RecordToken(labels, values);
+        RecordToken result = new RecordToken(labels, values);
 
         output.send(0, result);
     }
@@ -127,14 +127,14 @@ public class RecordAssembler extends TypedAtomicActor {
      */
     public boolean prefire() throws IllegalActionException {
         Iterator ports = inputPortList().iterator();
-	while (ports.hasNext()) {
-	    IOPort port = (IOPort)ports.next();
-	    if ( !port.hasToken(0)) {
-	        return false;
-	    }
+        while (ports.hasNext()) {
+            IOPort port = (IOPort)ports.next();
+            if ( !port.hasToken(0)) {
+                return false;
+            }
         }
 
-	return true;
+        return true;
     }
 
     /** Return the type constraints of this actor. The type constraint is
@@ -144,35 +144,35 @@ public class RecordAssembler extends TypedAtomicActor {
      */
     public List typeConstraintList() {
         Object[] portArray = inputPortList().toArray();
-	int size = portArray.length;
-	String[] labels = new String[size];
-	Type[] types = new Type[size];
+        int size = portArray.length;
+        String[] labels = new String[size];
+        Type[] types = new Type[size];
 
-	// form the declared type for the output port
-	for (int i = 0; i < size; i++) {
-	    labels[i] = ((Port)portArray[i]).getName();
-	    types[i] = BaseType.UNKNOWN;
-	}
-	RecordType declaredType = new RecordType(labels, types);
+        // form the declared type for the output port
+        for (int i = 0; i < size; i++) {
+            labels[i] = ((Port)portArray[i]).getName();
+            types[i] = BaseType.UNKNOWN;
+        }
+        RecordType declaredType = new RecordType(labels, types);
 
-	output.setTypeEquals(declaredType);
+        output.setTypeEquals(declaredType);
 
-	// set the constraints between record fields and input ports
-	List constraints = new LinkedList();
-	// since the output port has a clone of the above RecordType, need to
-	// get the type from the output port.
-	RecordType outputType = (RecordType)output.getType();
+        // set the constraints between record fields and input ports
+        List constraints = new LinkedList();
+        // since the output port has a clone of the above RecordType, need to
+        // get the type from the output port.
+        RecordType outputType = (RecordType)output.getType();
 
-	Iterator inputPorts = inputPortList().iterator();
-	while (inputPorts.hasNext()) {
-	    TypedIOPort inputPort = (TypedIOPort)inputPorts.next();
-	    String label = inputPort.getName();
-	    Inequality inequality = new Inequality(inputPort.getTypeTerm(),
+        Iterator inputPorts = inputPortList().iterator();
+        while (inputPorts.hasNext()) {
+            TypedIOPort inputPort = (TypedIOPort)inputPorts.next();
+            String label = inputPort.getName();
+            Inequality inequality = new Inequality(inputPort.getTypeTerm(),
                     outputType.getTypeTerm(label));
-	    constraints.add(inequality);
-	}
+            constraints.add(inequality);
+        }
 
-	return constraints;
+        return constraints;
     }
 }
 
