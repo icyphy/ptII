@@ -44,9 +44,9 @@ import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.sched.Scheduler;
 import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.actor.util.ConstVariableModelAnalysis;
+import ptolemy.actor.util.DFUtilities;
 import ptolemy.actor.util.DependencyDeclaration;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
@@ -55,10 +55,7 @@ import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
-import ptolemy.domains.sdf.kernel.SDFScheduler;
-import ptolemy.actor.util.DFUtilities;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
@@ -199,45 +196,37 @@ public class HDFFSMDirector extends FSMDirector {
     public State chooseStateTransition(State state)
             throws IllegalActionException {
 
-        // FIXME: This should allow preemptive transitions
-        // out of states with no refinement.  Fix code and
-        // documentation above.
-        
         FSMActor controller = getController();
         State destinationState;
-        Transition transition =
-            _chooseTransition(state.nonpreemptiveTransitionList());
-
+        Transition transition = null;
+        if (state.getRefinement() != null 
+                && state.preemptiveTransitionList().size() != 0) {
+            throw new IllegalActionException(this,
+                    state.getName() + " cannot have outgoing preemptive " +
+                    "transitions because the state has a refinement.");
+        }
+        if (state.getRefinement() == null) {
+            transition = _chooseTransition(state.preemptiveTransitionList());
+        }
+        if (transition == null) {
+            // No preemptiveTransition enabled. Choose nonpreemptiveTransition.
+            transition = _chooseTransition(state.nonpreemptiveTransitionList());
+        }
         if (transition != null) {
             destinationState = transition.destinationState();
             TypedActor[] trRefinements = (transition.getRefinement());
 
             Actor[] actors = transition.getRefinement();
             if (actors != null) {
-                //throw new IllegalActionException(this,
-                //      "HDF does not support transition refinements.");
-                
-                for (int i = 0; i < actors.length; ++i) {
-                    if (_stopRequested) break;
-                    if (actors[i].prefire()) {
-                        if (_debugging) {
-                            _debug(getFullName(),
-                            " fire transition refinement",
-                            ((ptolemy.kernel.util.NamedObj)
-                            actors[i]).getName());
-                        }
-                        actors[i].fire();
-                        actors[i].postfire();
-                    }
-                }
-                _readOutputsFromRefinement();
-                //execute the output actions
-                Iterator actions = transition.choiceActionList().iterator();
-                while (actions.hasNext()) {
-                    Action action = (Action)actions.next();
-                    action.execute();
-                }
-                _readOutputsFromRefinement();
+                throw new IllegalActionException(this,
+                      "HDFFSM Director does not support transition refinements.");
+            }
+            _readOutputsFromRefinement();
+            //execute the output actions
+            Iterator actions = transition.choiceActionList().iterator();
+            while (actions.hasNext()) {
+                Action action = (Action)actions.next();
+                action.execute();
             }
         } else {
             destinationState = state;
@@ -379,7 +368,7 @@ public class HDFFSMDirector extends FSMDirector {
             // this call, we can assume the state has a refinement.
             currentState = transientStateTransition();
             TypedActor[] curRefinements = currentState.getRefinement();
-            if (curRefinements.length > 1) {
+            if (curRefinements == null || curRefinements.length != 1) {
                 throw new IllegalActionException(this,
                         "Multiple refinements are not supported."
                         + " Found multiple refinements in: "
@@ -426,7 +415,7 @@ public class HDFFSMDirector extends FSMDirector {
         if (lastChosenTransition  == null) {
             // No transition enabled. Remain in the current state.
             TypedActor[] actors = currentState.getRefinement();
-            if (actors.length != 1) {
+            if (actors == null || actors.length != 1) {
                 throw new IllegalActionException(this,
                         "Current state is required to have exactly one refinement: "
                         + currentState.getName());
@@ -442,7 +431,7 @@ public class HDFFSMDirector extends FSMDirector {
             currentState = newState;
             // Get the new current refinement actor.
             TypedActor[] actors = currentState.getRefinement();
-            if (actors.length != 1) {
+            if (actors == null || actors.length != 1) {
                 throw new IllegalActionException(this,
                         "Current state is required to have exactly one refinement: "
                         + currentState.getName());
@@ -548,7 +537,7 @@ public class HDFFSMDirector extends FSMDirector {
         _setCurrentState(_nextIntransientState);
         TypedActor[] currentRefinements
                 = _nextIntransientState.getRefinement();
-        if (currentRefinements.length != 1) {
+        if (currentRefinements == null || currentRefinements.length != 1) {
             throw new IllegalActionException(this,
                     "Current state is required to have exactly one refinement: "
                     + controller.currentState().getName());
@@ -915,7 +904,6 @@ public class HDFFSMDirector extends FSMDirector {
                     // of the refinement.
                     int portRateToSet = DFUtilities
                         .getTokenConsumptionRate(refineInPort);
-                        //System.out.println("port rate = " + portRateToSet);
                     DFUtilities.setTokenConsumptionRate
                         (inputPortOutside, portRateToSet);
                 } else {
