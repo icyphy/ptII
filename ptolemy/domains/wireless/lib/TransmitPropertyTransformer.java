@@ -30,33 +30,27 @@
 
 package ptolemy.domains.wireless.lib;
 
-import java.net.URL;
 import java.util.Iterator;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
-import ptolemy.actor.Manager;
-import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.RunCompositeActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.hoc.ModelUtilities;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.FileParameter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.domains.wireless.kernel.PropertyTransformer;
 import ptolemy.domains.wireless.kernel.WirelessChannel;
 import ptolemy.domains.wireless.kernel.WirelessIOPort;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLParser;
 
 //////////////////////////////////////////////////////////////////////////
 //// TransmitPropertyTransformer
@@ -89,9 +83,8 @@ from it.
 @author Yang Zhao, Edward Lee
 @version $Id$
 */
-public class TransmitPropertyTransformer extends TypedAtomicActor 
+public class TransmitPropertyTransformer extends RunCompositeActor 
         implements PropertyTransformer {
-
     /** Construct an actor with the specified container and name.
      *  @param container The container.
      *  @param name The name.
@@ -108,12 +101,25 @@ public class TransmitPropertyTransformer extends TypedAtomicActor
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeSameAs(input);
         // Create and configure the parameters.
-        modelFileOrURL = new FileParameter(this, "modelFileOrURL");
+        senderLocation = new Parameter(this, "senderLocation");
+        //senderLocation.setTypeEquals(BaseType.GENERAL);
+        senderLocation.setExpression("{0.0, 0.0}");
+        
+        receiverLocation = new Parameter(this, "receiverLocation");
+        //receiverLocation.setTypeEquals(BaseType.GENERAL);
+        receiverLocation.setExpression("{0.0, 0.0}");
+        
+        property = new Parameter(this, "property");
+        //property.setTypeEquals(BaseType.GENERAL);
+        property.setExpression("{power = 0.0, range = 0.0}");
+        
+        //modelFileOrURL = new FileParameter(this, "modelFileOrURL");
         // Create the icon.
         _attachText("_iconDescription", "<svg>\n" +
                 "<polygon points=\"-15,-15 15,15 15,-15 -15,15\" "
                 + "style=\"fill:white\"/>\n" +
                 "</svg>\n");
+        getMoMLInfo().className = "ptolemy.domains.wireless.lib.TransmitPropertyTransformer";
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -128,58 +134,20 @@ public class TransmitPropertyTransformer extends TypedAtomicActor
      *  to be the same as the input.
      */
     public TypedIOPort output;
+    
+    public Parameter senderLocation;
+    
+    public Parameter receiverLocation;
+    
+    public Parameter property;
 
     /** The file name or URL of the model that this actor invokes to 
      *  transform properties.
      */
-    public FileParameter modelFileOrURL;
+    //public FileParameter modelFileOrURL;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Override the base class to parse the model specified if the
-     *  attribue is modelFileOrURL.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container (not thrown in this base class).
-     */
-    public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
-        if (attribute == modelFileOrURL) {
-            // Open the file and read the MoML to create a model.
-            URL url = modelFileOrURL.asURL();
-            if (url != null) {
-                // By specifying no workspace argument to the parser, we
-                // are asking it to create a new workspace for the referenced
-                // model.  This is necessary because the execution of that
-                // model will proceed through its own sequences, and it
-                // will need to get write permission on the workspace. (this
-                // documentation is copied from ModelReference.java)
-                MoMLParser parser = new MoMLParser();
-                try {
-                     _model = parser.parse(null, url);
-                     if (_model instanceof CompositeActor) {
-                         _executable = (CompositeActor) _model;
-                     } else {
-                         throw new IllegalActionException(
-                             this,
-                             "the modelFileOrURL doesn't parse to a" +
-                             "CompositeActor");
-                     }
-                } catch (Exception ex) {
-                    throw new IllegalActionException(
-                        this,
-                        ex,
-                        "Failed to read model.");
-                }
-            } else {
-                // URL is null... delete the current model.
-                _model = null;
-            }
-        } else {
-            super.attributeChanged(attribute);
-        }
-    }
  
     /** Clone the actor into the specified workspace. This calls the
      *  base class and dissociates itself with the specified model.
@@ -193,13 +161,6 @@ public class TransmitPropertyTransformer extends TypedAtomicActor
         TransmitPropertyTransformer newObject = (TransmitPropertyTransformer)(super.clone(workspace));
         
         newObject._model = null;
-        // Force instantiation of the model.
-        try {
-            newObject.attributeChanged(newObject.modelFileOrURL);
-        } catch (IllegalActionException ex) {
-            throw new InternalErrorException(ex);
-        }
-        
         // set the type constraints
         newObject.output.setTypeSameAs(newObject.input);
         return newObject;
@@ -211,7 +172,6 @@ public class TransmitPropertyTransformer extends TypedAtomicActor
      */
     public void fire() throws IllegalActionException {
 
-        super.fire();
         if (input.hasToken(0)) {
             Token inputValue = input.get(0);
             if (_debugging) {
@@ -225,7 +185,10 @@ public class TransmitPropertyTransformer extends TypedAtomicActor
      *  for its connected wireless output port.
      */
     public void initialize() throws IllegalActionException {
-        super.initialize();
+        if (_debugging) {
+            _debug("Called initialize()");
+        }
+        _isSubclassOfThis = true;
         Iterator connectedPorts = output.sinkPortList().iterator();
         while (connectedPorts.hasNext()) {
             IOPort port = (IOPort)connectedPorts.next();
@@ -255,33 +218,13 @@ public class TransmitPropertyTransformer extends TypedAtomicActor
             }
         }
     }
-
-
-    /** Override the base class to call stop() on the referenced model.
+    
+    /** Return true, indicating that execution can continue.
+     *  @exception IllegalActionException Not thrown, but declared
+     *   so the subclasses can throw it.
      */
-    public void stop() {
-        if(_executable != null){
-            _executable.stop();
-        }
-        super.stop();
-    }
-
-    /* Override the base class to call stopFire() on the referenced model.
-     */
-    public void stopFire() {
-        if(_executable != null){
-            _executable.stopFire();
-        }
-        super.stopFire();
-    }
-
-    /** Override the base class to call terminate() on the referenced model.
-     */
-    public void terminate() {
-        if(_executable != null){
-            _executable.terminate();
-        }
-        super.terminate();
+    public boolean postfire() throws IllegalActionException {
+        return true;
     }
 
     /** Invoke the execution of the specified model and return the result.
@@ -294,52 +237,89 @@ public class TransmitPropertyTransformer extends TypedAtomicActor
     public RecordToken transformProperties(RecordToken properties, 
             WirelessIOPort sender, WirelessIOPort destination) 
             throws IllegalActionException {
-        if (_executable!= null) {
-            double[] p1 = _locationOf(sender);
-            double[] p2 = _locationOf(destination);
-            //FIXME: can we provide a more generic way to specify 
-            //the labels?
-            // create the RecordToken used to set the parameter of the
-            // specified model.
-            String[] labels = {"SenderLocation", 
-                               "ReceiverLocation",
-                               "Properties"
-                              };
-            DoubleToken[] t1 = new DoubleToken[p1.length];
-            DoubleToken[] t2 = new DoubleToken[p2.length];
-            for(int i=0; i<p1.length; i++) {
-                t1[i] = new DoubleToken(p1[i]);
-            }
-            for(int i=0; i<p2.length; i++) {
-                t2[i] = new DoubleToken(p2[i]);
-            }
-            Token[] value = {new ArrayToken(t1),
-                             new ArrayToken(t2),
-                             properties };
-            RecordToken args = new RecordToken(labels, value);
-            
-            RecordToken results;
-            String[] resultLabels = {"Properties"}; 
-            try {
-                results = ModelUtilities.executeModel
-                        ((CompositeActor)_executable, args, resultLabels);
-            } catch (Exception ex) {
-                throw new IllegalActionException(this, ex,
-                "Execution failed.");
-            }
-            return (RecordToken)results.get("Properties");
+        double[] p1 = _locationOf(sender);
+        double[] p2 = _locationOf(destination);
+
+        DoubleToken[] t1 = new DoubleToken[p1.length];
+        DoubleToken[] t2 = new DoubleToken[p2.length];
+        for(int i=0; i<p1.length; i++) {
+            t1[i] = new DoubleToken(p1[i]);
         }
-        //if _executable is null, we assume no modification.
-        return properties;
+        for(int i=0; i<p2.length; i++) {
+            t2[i] = new DoubleToken(p2[i]);
+        }
+        senderLocation.setToken(new ArrayToken(t1));
+        receiverLocation.setToken(new ArrayToken(t2));
+        property.setToken(properties);
+        
+        if (_debugging) {
+            _debug("----transformProperties is called, " +
+                "execute the subsystem.");
+        }
+
+        try {
+            setDeferChangeRequests(true);
+            // FIXME: Should preinitialize() also be called?
+            // FIXME: Reset time to zero.
+            // NOTE: Use the superclass initialize() because this method overrides
+            // initialize() and does not initialize the model.
+            super.initialize();
+            // Call iterate() until finish() is called or postfire()
+            // returns false.
+            _debug("-- RunCompositeActor beginning to iterate.");
+
+            // FIXME: This result is not used... Should it be to determine postfire() result?
+            _lastIterateResult = COMPLETED;
+            while (!_stopRequested) {
+                executeChangeRequests();
+                if (super.prefire()) {
+                    super.fire();
+                    if (!super.postfire()) {
+                        _lastIterateResult = STOP_ITERATING;
+                        break;
+                    }
+                } else {
+                    _lastIterateResult = NOT_READY;
+                    break;
+                }
+            }
+        } finally {
+            try {
+                super.wrapup();
+                if (_debugging) {
+                    _debug("---- Firing of RunCompositeActor is complete.");
+                }
+            } finally {
+                // Indicate that it is now safe to execute
+                // change requests when they are requested.
+                setDeferChangeRequests(false);
+            }
+        }
+        RecordToken result = (RecordToken)property.getToken();
+        if (_debugging) {
+            _debug("---- the modified property is. " +
+             result.toString());
+        }
+        return result;
     }
     
     /** Override the base class to call wrap up to unregister this with the
-     *  channel.
+     *  channel and do nothing else.
+     *  @exception IllegalActionException Not thrown, but declared
+     *   so the subclasses can throw it.
      */
     public void wrapup() throws IllegalActionException{
-        super.wrapup();
-        _channel.unregisterPropertyTransformer(this,
-                _wirelessIOPort);
+        if (_debugging) {
+            _debug("Called wrapup()");
+        }
+        //setDeferChangeRequests(false);
+        if (_channel != null) {
+            if (_debugging) {
+                _debug("unregister property transformer in wrapup()");
+            }
+            _channel.unregisterPropertyTransformer(this,
+                    _wirelessIOPort);
+        }
     }
     
     /** Return the location of the given WirelessIOPort. 
@@ -368,6 +348,8 @@ public class TransmitPropertyTransformer extends TypedAtomicActor
     private NamedObj _model;
     private WirelessChannel _channel;
     private WirelessIOPort _wirelessIOPort; 
+    /** Indicator of what the last call to iterate() returned. */
+    private int _lastIterateResult = NOT_READY;
     // Name of the location attribute.
     private static final String LOCATION_ATTRIBUTE_NAME = "_location";
 }
