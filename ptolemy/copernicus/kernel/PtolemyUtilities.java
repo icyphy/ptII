@@ -1301,6 +1301,8 @@ public class PtolemyUtilities {
 
     // SootClass representing ptolemy.graph.InequalityTerm.
     public static SootClass inequalityTermClass;
+    // SootClass representing ptolemy.actor.util.ExplicitChangeContext;
+    public static SootClass explicitChangeContextClass;
 
     // SootMethod representing ptolemy.kernel.ComponentPort.insertLink().
     public static SootMethod insertLinkMethod;
@@ -1865,6 +1867,8 @@ public class PtolemyUtilities {
 
         inequalityTermClass =
             Scene.v().loadClassAndSupport("ptolemy.graph.InequalityTerm");
+        explicitChangeContextClass =
+            Scene.v().loadClassAndSupport("ptolemy.actor.util.ExplicitChangeContext");
 
         functionTokenClass =
             Scene.v().loadClassAndSupport("ptolemy.data.FunctionToken");

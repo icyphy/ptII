@@ -497,7 +497,12 @@ public class NamedObjEliminator extends SceneTransformer implements HasPhaseOpti
             for (Iterator interfaces = theClass.getInterfaces().snapshotIterator();
                  interfaces.hasNext();) {
                 SootClass theInterface = (SootClass)interfaces.next();
-                if (theInterface.equals(PtolemyUtilities.inequalityTermClass)) {
+                if (theInterface.equals(
+                            PtolemyUtilities.inequalityTermClass)) {
+                    theClass.getInterfaces().remove(theInterface);
+                }
+                if (theInterface.equals(
+                            PtolemyUtilities.explicitChangeContextClass)) {
                     theClass.getInterfaces().remove(theInterface);
                 }
             }
