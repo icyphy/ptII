@@ -143,7 +143,7 @@ public class SignatureVerifier extends SignatureActor {
     ///////////////////////////////////////////////////////////////////
     ////                         Protected Methods                 ////
     protected byte[] _process(byte[] signatureData)throws IllegalActionException{
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
 
         try{
             _signature.initVerify(_publicKey);

@@ -291,11 +291,11 @@ public class CryptographyActor extends TypedAtomicActor {
      * @exception IllegalActionException if IOException occurs.
      */
     protected byte[] _keyToBytes(Key key) throws IllegalActionException {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try{
-            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            ObjectOutputStream oos = new ObjectOutputStream(byteArrayOutputStream);
             oos.writeObject(key);
-            return baos.toByteArray();
+            return byteArrayOutputStream.toByteArray();
         }catch (IOException e){
             e.printStackTrace();
             throw new IllegalActionException(this.getName() + e.getMessage());

@@ -189,12 +189,12 @@ public class SymmetricDecryption extends CipherActor {
      * @exception IllegalBockSizeException if illegal block size.
      */
     protected byte[] _process(byte[] dataBytes)throws IllegalActionException{
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try{
 
             _cipher.init(Cipher.DECRYPT_MODE, _secretKey, _algParams);
-            baos.write(_cipher.doFinal(dataBytes));
-            return baos.toByteArray();
+            byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
+            return byteArrayOutputStream.toByteArray();
 
         } catch (IOException e){
             e.printStackTrace();

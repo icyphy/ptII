@@ -149,7 +149,7 @@ public class SymmetricEncryption extends CipherActor {
         }
 
         //            if(FIRST_RUN == true){
-        //                _baos = new ByteArrayOutputStream();
+        //                _byteArrayOutputStream = new ByteArrayOutputStream();
         //                try {
         //
         //                    _cipher.init(Cipher.ENCRYPT_MODE, _secretKey, _algParams);
@@ -161,7 +161,7 @@ public class SymmetricEncryption extends CipherActor {
         //                    // TODO Auto-generated catch block
         //                    e.printStackTrace();
         //                }
-        //                _cos = new CipherOutputStream(_baos, _cipher);
+        //                _cos = new CipherOutputStream(_byteArrayOutputStream, _cipher);
         //                FIRST_RUN = false;
         //            }
         //        //} catch (NoRoomException e) {
@@ -239,8 +239,8 @@ public class SymmetricEncryption extends CipherActor {
      * @exception IllegalBockSizeException if illegal block size.
      */
     protected byte[] _process(byte[] dataBytes)throws IllegalActionException{
-        //      ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        _baos.reset();
+        //      ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        _byteArrayOutputStream.reset();
         //        bais = new ByteArrayInputStream(initialData);
         //        int length = 0;
         //        byte [] buffer = new byte [BUFFER_SIZE];
@@ -256,7 +256,7 @@ public class SymmetricEncryption extends CipherActor {
 
         try {
 
-            _baos.write(_cipher.doFinal(dataBytes));
+            _byteArrayOutputStream.write(_cipher.doFinal(dataBytes));
 
         } catch (IllegalStateException e) {
             // TODO Auto-generated catch block
@@ -272,7 +272,7 @@ public class SymmetricEncryption extends CipherActor {
             e.printStackTrace();
         }
 
-        return _baos.toByteArray();
+        return _byteArrayOutputStream.toByteArray();
 
     }
 
@@ -294,7 +294,7 @@ public class SymmetricEncryption extends CipherActor {
 
     //    private CipherOutputStream _cos;
 
-    private ByteArrayOutputStream _baos;
+    private ByteArrayOutputStream _byteArrayOutputStream;
 
     private ByteArrayInputStream bais;
 }

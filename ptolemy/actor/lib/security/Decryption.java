@@ -382,13 +382,13 @@ public class Decryption extends TypedAtomicActor {
      * @exception IllegalBockSizeException for illegal blcok sizes.
      */
     protected byte[] _crypt(byte[] initialData)throws IllegalActionException{
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         Key key;
         try{
             if (_keyMode == _SYMMETRIC){
                 key = _secretKey;
                 _cipher.init(Cipher.DECRYPT_MODE, key);
-                baos.write(_cipher.doFinal(initialData));
+                byteArrayOutputStream.write(_cipher.doFinal(initialData));
             } else if (_keyMode == _ASYMMETRIC){
                 key = _privateKey;
                 _cipher.init(Cipher.DECRYPT_MODE, key);
@@ -400,10 +400,10 @@ public class Decryption extends TypedAtomicActor {
                     } else{
                         length = blockSize;
                     }
-                    baos.write(_cipher.doFinal(initialData, i, length));
+                    byteArrayOutputStream.write(_cipher.doFinal(initialData, i, length));
                 }
-                baos.flush();
-                baos.close();
+                byteArrayOutputStream.flush();
+                byteArrayOutputStream.close();
             }
         } catch (IOException e){
             e.printStackTrace();
@@ -418,7 +418,7 @@ public class Decryption extends TypedAtomicActor {
             e.printStackTrace();
             throw new IllegalActionException(this.getName()+e.getMessage());
         }
-        return baos.toByteArray();
+        return byteArrayOutputStream.toByteArray();
     }
 
     /** Take an array of unsigned bytes and convert it to an ArrayToken.

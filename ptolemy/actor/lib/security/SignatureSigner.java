@@ -164,7 +164,7 @@ public class SignatureSigner extends SignatureActor {
      * @exception IllegalBockSizeException for illegal block sizes.
      */
     protected byte[] _process(byte[] dataBytes)throws IllegalActionException{
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
         try{
             data.send(0, _unsignedByteArrayToArrayToken(dataBytes));
             _signature.initSign(_privateKey);
