@@ -90,9 +90,9 @@ public class PythonScript extends TypedAtomicActor {
      *  the script to provide an empty template.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @throws NameDuplicationException If the container already
+     *  @exception NameDuplicationException If the container already
      *   has an actor with this name.
-     *  @throws IllegalActionException If the actor cannot be contained
+     *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      */
     public PythonScript(CompositeEntity container, String name)
@@ -131,7 +131,7 @@ public class PythonScript extends TypedAtomicActor {
     /** If <i>script</i> is changed, invoke the python interpreter to
      *  evaluate the script.
      *  @param attribute The attribute that changed.
-     *  @throws IllegalActionException If there is any error in evaluating
+     *  @exception IllegalActionException If there is any error in evaluating
      *   the script.
      */
     public void attributeChanged(Attribute attribute)
@@ -152,7 +152,7 @@ public class PythonScript extends TypedAtomicActor {
     }
 
     /** Invoke the fire() method if defined in the script.
-     *  @throws IllegalActionException If there is any error in calling the
+     *  @exception IllegalActionException If there is any error in calling the
      *   fire() method defined by the script.
      */
     public void fire() throws IllegalActionException {
@@ -161,7 +161,7 @@ public class PythonScript extends TypedAtomicActor {
     }
 
     /** Invoke the initialize() method if defined in the script.
-     *  @throws IllegalActionException If there is any error in calling the
+     *  @exception IllegalActionException If there is any error in calling the
      *   initialize() method defined by the script.
      */
     public void initialize() throws IllegalActionException {
@@ -174,7 +174,7 @@ public class PythonScript extends TypedAtomicActor {
      *  return a value, or the method is not defined in the script.
      *  @return False if postfire() is defined in the script and returns 0,
      *   true otherwise.
-     *  @throws IllegalActionException If there is any error in calling the
+     *  @exception IllegalActionException If there is any error in calling the
      *   postfire() method defined by the script.
      */
     public boolean postfire() throws IllegalActionException {
@@ -191,7 +191,7 @@ public class PythonScript extends TypedAtomicActor {
      *  return a value, or the method is not defined in the script.
      *  @return False if prefire() is defined in the script and returns 0,
      *   true otherwise.
-     *  @throws IllegalActionException If there is any error in calling the
+     *  @exception IllegalActionException If there is any error in calling the
      *   prefire() method.
      */
     public boolean prefire() throws IllegalActionException {
@@ -207,7 +207,7 @@ public class PythonScript extends TypedAtomicActor {
      *  Add all parameters and ports of this actor as attributes of
      *  the object, so that they become accessible to the methods
      *  defined in the script.
-     *  @throws IllegalActionException If there is any error in creating
+     *  @exception IllegalActionException If there is any error in creating
      *   an instance of the Main class defined in the script.
      */
     public void preinitialize() throws IllegalActionException {
@@ -256,7 +256,7 @@ public class PythonScript extends TypedAtomicActor {
 
     /** Invoke the wrapup() method if defined in the script. Ignore any error
      *  in calling the method.
-     *  @throws IllegalActionException If there is any error in calling the
+     *  @exception IllegalActionException If there is any error in calling the
      *   wrapup() method defined in the script.
      */
     public void wrapup() throws IllegalActionException {
