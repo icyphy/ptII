@@ -222,6 +222,20 @@ public class ComponentPort extends Port {
         String results = new String();
         switch (verbose) {
         case pt.kernel.Nameable.CONTENTS:
+            // Note that the results of description(CONTENTS) in
+            // pt.kernel.ComponentPort may the name of a Relation more
+            // than once. 
+            //
+            // The reason is that each CompositePort is connected to a
+            // Relation, so we report the Relation for each port.  If
+            // two CompositePorts are connected to a Relation, then
+            // the relation is returned twice. 
+            //
+            // The fix for this would be to modify all of the
+            // description(PRETTYPRINT) code so that it
+            // post-processes the description(CONTENTS)
+            // output and removed any duplicate Relations.
+
             results = toString() + "\n";
             Enumeration enum = getInsideRelations();
             while (enum.hasMoreElements()) {
