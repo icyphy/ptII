@@ -49,7 +49,6 @@ import ptolemy.gui.SwingWorker;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringUtilities;
@@ -554,10 +553,9 @@ public class GeneratorTableau extends Tableau {
   	try {
   	    temporaryMoMLURL = temporaryMoMLFile.toURL();
   	} catch (MalformedURLException malformedURL) {
-            throw new InternalErrorException("Failed to convert '"
-  					   + temporaryMoMLFile + "' to a URL: "
-					   + KernelException
-                                             .stackTraceToString(malformedURL));
+            throw new InternalErrorException(this, malformedURL,
+                                           "Failed to convert '"
+  					   + temporaryMoMLFile + "' to a URL");
   	}
 
 //  	String temporaryMoMLCanonicalPath = null;
@@ -589,13 +587,12 @@ public class GeneratorTableau extends Tableau {
 	    // NOTE: This property is set by the vergil startup script.
 	    home = System.getProperty("ptolemy.ptII.dir");
         } catch (SecurityException security) {
-            throw new InternalErrorException("Could not find "
+            throw new InternalErrorException(this, security,
+                                           "Could not find "
                                            + "'ptolemy.ptII.dir'"
 					   + " property.  Vergil should be "
 					   + "invoked with -Dptolemy.ptII.dir"
-					   + "=\"$PTII\":\n"
-					   + KernelException
-                                             .stackTraceToString(security));
+					   + "=\"$PTII\"");
         }
 	return home;
     }

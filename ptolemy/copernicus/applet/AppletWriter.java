@@ -34,7 +34,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.copernicus.kernel.SootUtilities;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.StringUtilities;
 
 import soot.*;
@@ -182,13 +181,12 @@ public class AppletWriter extends SceneTransformer {
 	    // NOTE: This property is set by the vergil startup script.
 	    _ptIIDirectory = System.getProperty("ptolemy.ptII.dir");
         } catch (SecurityException security) {
-            throw new InternalErrorException("Could not find "
+            throw new InternalErrorException(this, security,
+                                           "Could not find "
                                            + "'ptolemy.ptII.dir'"
 					   + " property.  Vergil should be "
 					   + "invoked with -Dptolemy.ptII.dir"
-					   + "=\"$PTII\":\n"
-					   + KernelException
-                                             .stackTraceToString(security));
+					   + "=\"$PTII\"");
         }
 
 	// If the targetPackage is foo.bar, and the model is Bif,
