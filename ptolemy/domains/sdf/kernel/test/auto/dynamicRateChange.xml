@@ -59,6 +59,10 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="85.0, 75.0">
             </property>
         </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 129, 815, 509}}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+        </property>
         <port name="rate" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="_location" class="ptolemy.kernel.util.Location" value="275.0, 50.0">
@@ -73,15 +77,9 @@
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="blockSize">
-                </property>
             </port>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="numberOfTimes*blockSize">
-                </property>
-                <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
-                </property>
             </port>
         </entity>
         <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -110,7 +108,7 @@
             </property>
             <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
             </property>
-            <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+            <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="305.0, 205.0">
             </property>
