@@ -394,7 +394,7 @@ public class TimedQueueReceiver {
 
 
         ///////////////////////////////////////////////////////////
-	////                     public methods                ////
+	////                     public inner methods          ////
 
 	// Return the destination receiver of this event.
 	public Receiver getReceiver() {
@@ -412,7 +412,7 @@ public class TimedQueueReceiver {
 	}
 
         ///////////////////////////////////////////////////////////
-        ////                     private variables             ////
+        ////                     private inner variables       ////
 
 	double _timeStamp = 0.0;
 	Token _token = null;
