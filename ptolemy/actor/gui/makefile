@@ -58,7 +58,8 @@ JSRCS = \
 	Plotter.java \
 	SequencePlotter.java \
 	Show.java \
-	TimePlotter.java
+	TimePlotter.java\
+	TimeXYPlotter.java
 
 EXTRA_SRCS =	$(JSRCS)
 
