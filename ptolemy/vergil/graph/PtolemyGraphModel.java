@@ -53,31 +53,30 @@ import java.util.*;
 // uses of public methods.  This is probably not the right exception
 // to throw.  Also, the error messages are quite poor.
 
-// FIXME: Many of these methods have two versions, but it seems
+// FIXME: Many of these methods have multiple versions, but it seems
 // unnecessary.  Avoid the instanceof tests, just do a cast, and document
 // that a ClassCastException will occur if the classes aren't right.
-
-// FIXME: Methods are not listed in alphabetical order.
 
 //////////////////////////////////////////////////////////////////////////
 //// PtolemyGraphModel
 /**
-A graph for basic Ptolemy II models.  This model is useful for visual notations
-that expose all of the kernel objects (ports, relations, links and entities).
+This class represents one level of hierarchy of a Ptolemy II model.
+The graph model represents ports, entities and relations as nodes.  Entities
+are represented in the model by the icon that is used to visually
+depict them.  Relations are represented in the model by its vertices
+(which are visual elements that generally exist in multiple
+places in a visual rendition).  Ports represent themselves in the model.
+In the terminology of diva, the graph elements are "nodes" (icons,
+vertices, and ports), and the "edges" that link them.  Edges
+are represented in the model by instances of the Link class.
 <p>
-This graph model represents ports, entities and relations as nodes.  Entities
-are proxied in the model by the icon that represents them.  Relations are
-proxied in the model by its vertices (which generally exist in multiple
-places).  Ports represent themselves in the model.  
-<p>
-Edges may be connected between a port and a vertex, or between a port and
+Edges may link a port and a vertex, or a port and
 another port.  For visual simplicity, both types of edges are represented by
 an instance of the Link class.  If an edge is placed between a port 
-and a vertex
-then the Link represents a proxy for a single link between the port and the 
-vertex's Relation.  However, if an edge is placed between two ports, then 
-it proxies a Relation (with no vertex) and links from the relation to each 
-port.
+and a vertex then the Link represents a Ptolemy II link between
+the port and the vertex's Relation.  However, if an edge is placed between
+two ports, then it represents a Relation (with no vertex) and links from
+the relation to each port (in Ptolemy II, this is called a "connection").
 
 @author Steve Neuendorffer
 @version $Id$
@@ -273,14 +272,6 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	dispatchGraphEvent(e);
     }
 
-    /** Return the root graph of this graph model.
-     *  @return The root of this graph model, which is an instance of
-     *   CompositeEntity.
-     */
-    public Object getRoot() {
-        return _root;
-    }
-
     /** Return the head node of the given edge.
      *  @param link The edge, which must be an instance of Link or an
      *   InternalErrorException will be thrown.
@@ -303,7 +294,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
     public Object getHead(Link link) {
 	return link.getHead();
     }
-	
+
     /** Return the number of nodes contained in the specified composite node.
      *  If the argument is a composite entity, then return the number of
      *  ports, plus the number of entities, plus the number of vertices
@@ -350,9 +341,8 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	return ((ComponentEntity)icon.getContainer()).portList().size();
     }
 	
-    /**
-     * Return the parent graph of this node, return
-     * null if there is no parent.
+    /** Return the parent node of this node, or null if there is no parent.
+     *  @return The node that contains the specified node.
      */
     public Object getParent(Object node) {	
 	if(node instanceof Icon) {
@@ -368,25 +358,27 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}       
     }
 
-    /**
-     * Return the parent graph of this node, return
-     * null if there is no parent.
+    /** Return the container of the container of the specified icon, or null
+     *  if there is none.
+     *  @return The node that contains the specified node.
      */
     public Object getParent(Icon icon) {	
         return icon.getContainer().getContainer();
     }
 
-    /**
-     * Return the parent graph of this node, return
-     * null if there is no parent.
+    /** Return the container of the container of the specified vertex, or null
+     *  if there is none.
+     *  @return The node that contains the specified node. 
      */
     public Object getParent(Vertex vertex) {
         return vertex.getContainer().getContainer();
     }
 
-    /**
-     * Return the parent graph of this node, return
-     * null if there is no parent.
+    /** If the specified port belongs to the root node, then return the
+     *  composite entity that is the root node.  Otherwise, return the
+     *  the icon belonging to the entity that contains the port.
+     *  If there is no such icon, then throw an InternalErrorException.
+     *  @return The node that contains the specified node. 
      */
     public Object getParent(Port port) {	
         ComponentEntity entity = (ComponentEntity)port.getContainer();
@@ -403,8 +395,18 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}
     }
 
-    /**
-     * Return the tail node of this edge.
+    /** Return the root graph of this graph model.
+     *  @return The root of this graph model, which is an instance of
+     *   CompositeEntity.
+     */
+    public Object getRoot() {
+        return _root;
+    }
+
+    /** Return the tail node of the specified edge, which must be
+     *  an instance of Link or an InternalErrorException will be thrown.
+     *  @param link A link representing an edge in the graph.
+     *  @return The node that is the tail of the specified edge.
      */
     public Object getTail(Object link) {
 	if(link instanceof Link) {
@@ -416,62 +418,69 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}       
     }
 
-    /**
-     * Return the tail node of this edge.
+    /** Return the tail node of the specified edge.
+     *  @param link A link representing an edge in the graph.
+     *  @return The node that is the tail of the specified edge.
      */
     public Object getTail(Link link) {
 	return link.getTail();
     }
 
-    /**
-     * Return the semantic object correspoding
-     * to the given node, edge, or composite.
+    /** Return the semantic object correspoding to the given node, edge,
+     *  or composite.  A "semantic object" is an object associated with
+     *  a node in the graph.  In this case, if the node is icon, the
+     *  semantic object is an entity.  If it is a vertex or a link, the
+     *  semantic object is a relation.  If it is a port, then the
+     *  semantic object is the port itself.
+     *  @param element A graph element.
+     *  @return The semantic object associated with this element.
      */
-    public Object getSemanticObject(Object o) {
-	if(o instanceof Port) {
-	    return o;
-	} else if(o instanceof Vertex) {
-	    return getSemanticObject((Vertex)o);
-	} else if(o instanceof Icon) {
-	    return getSemanticObject((Icon)o);
-	} else if(o instanceof Link) {
-	    return getSemanticObject((Link)o);
+    public Object getSemanticObject(Object element) {
+	if(element instanceof Port) {
+	    return element;
+	} else if(element instanceof Vertex) {
+	    return getSemanticObject((Vertex)element);
+	} else if(element instanceof Icon) {
+	    return getSemanticObject((Icon)element);
+	} else if(element instanceof Link) {
+	    return getSemanticObject((Link)element);
 	} else {
 	    throw new InternalErrorException(
                     "Ptolemy Graph Model does not recognize the " +
-		    "given graph objects. object= " + o);
+		    "given graph objects. object= " + element);
 	}       
     }
 
-    /**
-     * Return the semantic object correspoding
-     * to the given node, edge, or composite.
+    /** Return the container of the vertex, which is a relation.
+     *  @param vertex A vertex in the graph.
+     *  @return An instance of ComponentRelation.
      */
     public Object getSemanticObject(Vertex vertex) {
 	return vertex.getContainer();
     }
 
-    /**
-     * Return the semantic object correspoding
-     * to the given node, edge, or composite.
+    /** Return the container of the icon, which is a component entity.
+     *  @param An icon.
+     *  @return An instance of ComponentEntity.
      */
     public Object getSemanticObject(Icon icon) {
 	return icon.getContainer();
     }
 
-    /**
-     * Return the semantic object correspoding
-     * to the given node, edge, or composite.
+    /** Return the relation associated with the specified link.
+     *  @param link A link representing an edge in the graph.
+     *  @return An instance of ComponentRelation.
      */
     public Object getSemanticObject(Link link) {
 	return link.getRelation();
     }
     
-    /**
-     * Return an iterator over the <i>in</i> edges of this
-     * node. This iterator does not support removal operations.
-     * If there are no in-edges, an iterator with no elements is
-     * returned.
+    /** Return an iterator over the links representing <i>in</i> edges
+     *  of the given node.  An <i>in</i> edge is one for which this node is
+     *  the head. If there are no in-edges, return an iterator with no 
+     *  elements. The returned iterator does not support removal operations.
+     *  @param node A node in the graph.
+     *  @return An iterator over <i>in</i> edges of the node.
      */
     public Iterator inEdges(Object node) {
 	if(node instanceof Port) {
@@ -487,18 +496,19 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}       
     }
     
-    /**
-     * Return an iterator over the <i>in</i> edges of this
-     * node. This iterator does not support removal operations.
-     * If there are no in-edges, an iterator with no elements is
-     * returned.
+    /** Return an iterator over the links representing <i>in</i> edges
+     *  of the given port.  An <i>in</i> edge is one for which this port is
+     *  the head. If there are no in-edges, return an iterator with no 
+     *  elements. The returned iterator does not support removal operations.
+     *  @param port A port.
+     *  @return An iterator over <i>in</i> edges of the node.
      */
-    public Iterator inEdges(Port object) {
+    public Iterator inEdges(Port port) {
 	// make sure that the links to relations that we are connected to
 	// are up to date.
 	// FIXME inefficient if we are conneted to the same relation more
 	// than once.
-	List relationList = object.linkedRelationList();
+	List relationList = port.linkedRelationList();
 	Iterator relations = relationList.iterator();
 	while(relations.hasNext()) {
 	    ComponentRelation relation = (ComponentRelation)relations.next();
@@ -513,9 +523,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	while(links.hasNext()) {
 	    Link link = (Link)links.next();
 	    Object head = link.getHead();
-	    if(head != null && head.equals(object)) {
-		//System.out.println("OutEdges(" + object +
-		//		   ") includes " + link);
+	    if(head != null && head.equals(port)) {
 		portLinkList.add(link);
 	    }
 	}
@@ -523,14 +531,15 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	return portLinkList.iterator();
     }	
 
-    /**
-     * Return an iterator over the <i>out</i> edges of this
-     * node.  This iterator does not support removal operations.
-     * If there are no out-edges, an iterator with no elements is
-     * returned.
+    /** Return an iterator over the links representing <i>in</i> edges
+     *  of the given vertex.  An <i>in</i> edge is one for which this vertex is
+     *  the head. If there are no in-edges, return an iterator with no 
+     *  elements. The returned iterator does not support removal operations.
+     *  @param vertex A vertex in the graph.
+     *  @return An iterator over <i>in</i> edges of the node.
      */
-    public Iterator inEdges(Vertex object) {
-	ComponentRelation relation = (ComponentRelation)object.getContainer();
+    public Iterator inEdges(Vertex vertex) {
+	ComponentRelation relation = (ComponentRelation)vertex.getContainer();
 	_updateLinks(relation);
 
 	// Go through all the links, creating a list of those we are connected
@@ -541,7 +550,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	while(links.hasNext()) {
 	    Link link = (Link)links.next();
 	    Object head = link.getHead();
-	    if(head != null && head.equals(object)) {
+	    if(head != null && head.equals(vertex)) {
 		vertexLinkList.add(link);
 	    }
 	}
@@ -549,8 +558,9 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	return vertexLinkList.iterator();
     }	
 
-    /**
-     * Return whether or not this edge is directed.
+    /** Return true if this edge is directed.  In this model, none of edges
+     *  are directed, so this always returns false.
+     *  @return False.
      */
     public boolean isDirected(Object edge) {
         return false;
@@ -566,29 +576,39 @@ public class PtolemyGraphModel extends AbstractGraphModel
         return(node instanceof Icon) || getRoot().equals(node);
     }
 
-    /**
-     * Return true if the given object is a 
-     * edge in this model.
+    /** Return true if the given object is an edge in this model.
+     *  That is, return true if is an instance of Link.
+     *  @param element An object.
+     *  @return True if is a link representing an edge.
      */
-    public boolean isEdge(Object o) {
-        return (o != null) && (o instanceof Link);
+    public boolean isEdge(Object element) {
+        // FIXME: This doesn't seem like a correct implementation.
+        // What if it's a link that has nothing to do with this model?
+        return (element instanceof Link);
     }
 
-    /**
-     * Return true if the given object is a 
-     * node in this model.
+    /** Return true if the given object is an element of this model.
+     *  This method returns true if the specified element is an instance
+     *  of Icon, Vertex, or Port.
+     *  @param element An object.
+     *  @return True if the object is of the right type to be an element
+     *   of this model.
      */
-    public boolean isNode(Object o) {
-        return (o != null) && 
-	    ((o instanceof Icon) || 
-	     (o instanceof Vertex) ||
-	     (o instanceof Port));
+    public boolean isNode(Object element) {
+        // FIXME: This doesn't seem like a correct implementation.
+        // What if it has nothing to do with this model?
+        return (element != null) && 
+	    ((element instanceof Icon) || 
+	     (element instanceof Vertex) ||
+	     (element instanceof Port));
     }
 
-    /**
-     * Provide an iterator over the nodes in the
-     * given graph or composite node.  This iterator
-     * does not necessarily support removal operations.
+    /** Return an iterator over the nodes in the given node.
+     *  If the specified node is an Icon, then the iterator contains ports.
+     *  If the specified node is a composite entity, then the iterator
+     *  contains icons.
+     *  @param object A node in the graph.
+     *  @return An iterator over the nodes contained by the specified node.
      */
     public Iterator nodes(Object object) {
 	if(object instanceof CompositeEntity) {
@@ -602,20 +622,23 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}       
     }
 
-    /**
-     * Provide an iterator over the nodes in the
-     * given graph or composite node.  This iterator
-     * does not necessarily support removal operations.
+    /** Return an iterator over the ports in the entity represented
+     *  by the specified icon.
+     *  @param icon A icon in the graph.
+     *  @return An iterator over ports.
      */
     public Iterator nodes(Icon icon) {
 	ComponentEntity entity = (ComponentEntity) icon.getContainer();
 	return entity.portList().iterator();
     }
 
-    /**
-     * Provide an iterator over the nodes in the
-     * given graph or composite node.  This iterator
-     * does not necessarily support removal operations.
+    /** Return an iterator over the icons of entities inside the
+     *  specified composite entity.  Normally, the specified composite
+     *  entity is the top level, since that is the only entity in
+     *  the graph that is represented as a composite entity
+     *  rather than an icon.
+     *  @param toplevel A composite entity.
+     *  @return An iterator over icons.
      */
     public Iterator nodes(CompositeEntity toplevel) {
 	Set nodes = new HashSet();
@@ -626,7 +649,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	    if(icons.size() > 0) {
 		nodes.add(icons.get(0));
 	    } else {
-		// FIXME this is pretty minimal
+		// FIXME this is pretty minimal for an icon.
 		try {
 		    Icon icon = new EditorIcon(entity, "_icon");
 		    nodes.add(icon);
@@ -680,12 +703,12 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	return nodes.iterator();
     }
 
-
-    /**
-     * Return an iterator over the <i>out</i> edges of this
-     * node.  This iterator does not support removal operations.
-     * If there are no out-edges, an iterator with no elements is
-     * returned.
+    /** Return an iterator over the links representing <i>out</i> edges
+     *  of the given node.  An <i>out</i> edge is one for which the given node is
+     *  the tail. If there are no out edges, return an iterator with no 
+     *  elements. The returned iterator does not support removal operations.
+     *  @param node A node in the graph.
+     *  @return An iterator over <i>out</i> edges (instances of Link) of the node.
      */
     public Iterator outEdges(Object node) {
 	if(node instanceof Port) {
@@ -701,18 +724,19 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	}       
     }
 
-    /**
-     * Return an iterator over the <i>out</i> edges of this
-     * node.  This iterator does not support removal operations.
-     * If there are no out-edges, an iterator with no elements is
-     * returned.
+    /** Return an iterator over the links representing <i>out</i> edges
+     *  of the given port.  An <i>out</i> edge is one for which the given port is
+     *  the tail. If there are no out edges, return an iterator with no 
+     *  elements. The returned iterator does not support removal operations.
+     *  @param port A port.
+     *  @return An iterator over instances of Link.
      */
-    public Iterator outEdges(Port object) {
+    public Iterator outEdges(Port port) {
 	// make sure that the links to relations that we are connected to
 	// are up to date.
 	// FIXME inefficient if we are conneted to the same relation more
 	// than once.
-	List relationList = object.linkedRelationList();
+	List relationList = port.linkedRelationList();
 	Iterator relations = relationList.iterator();
 	while(relations.hasNext()) {
 	    ComponentRelation relation = (ComponentRelation)relations.next();
@@ -727,9 +751,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	while(links.hasNext()) {
 	    Link link = (Link)links.next();
 	    Object tail = link.getTail();
-	    if(tail != null && tail.equals(object)) {
-		//System.out.println("OutEdges(" + object + 
-		//		   ") includes " + link);
+	    if(tail != null && tail.equals(port)) {
 		portLinkList.add(link);
 	    }
 	}
@@ -737,14 +759,15 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	return portLinkList.iterator();
     }	
 
-    /**
-     * Return an iterator over the <i>out</i> edges of this
-     * node.  This iterator does not support removal operations.
-     * If there are no out-edges, an iterator with no elements is
-     * returned.
+    /** Return an iterator over the links representing <i>out</i> edges
+     *  of the given vertex.  An <i>out</i> edge is one for which the given vertex is
+     *  the tail. If there are no out edges, return an iterator with no 
+     *  elements. The returned iterator does not support removal operations.
+     *  @param vertex A vertex.
+     *  @return An iterator over instances of Link.
      */
-    public Iterator outEdges(Vertex object) {
-	ComponentRelation relation = (ComponentRelation)object.getContainer();
+    public Iterator outEdges(Vertex vertex) {
+	ComponentRelation relation = (ComponentRelation)vertex.getContainer();
 	_updateLinks(relation);
 
 	// Go through all the links, creating a list of those we are connected
@@ -755,7 +778,7 @@ public class PtolemyGraphModel extends AbstractGraphModel
 	while(links.hasNext()) {
 	    Link link = (Link)links.next();
 	    Object tail = link.getTail();
-	    if(tail != null && tail.equals(object)) {
+	    if(tail != null && tail.equals(vertex)) {
 		vertexLinkList.add(link);
 	    }
 	}
@@ -965,7 +988,10 @@ public class PtolemyGraphModel extends AbstractGraphModel
         public void changeFailed(ChangeRequest change, Exception exception) {
             ExceptionHandler.show("Change failed", exception);
         }
-    }    
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     // Remove all the edges connected to the given port.
     private void _removeConnectedEdges(Object eventSource, 
