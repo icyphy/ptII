@@ -32,12 +32,14 @@ package ptolemy.actor.lib.x10;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.ChoiceAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 import x10.Command;
 
 //////////////////////////////////////////////////////////////////////////
@@ -89,7 +91,7 @@ public class CommandListener extends Receiver {
         detected.setTypeEquals(BaseType.BOOLEAN);
         
         // Identify the command to detect.
-        command = new ChoiceAttribute(this, "command");
+        command = new StringParameter(this, "command");
         command.addChoice("ON");
         command.addChoice("OFF");
         command.addChoice("ALL_LIGHTS_ON");
@@ -98,10 +100,11 @@ public class CommandListener extends Receiver {
         command.setExpression("ON");
         
         // Parameters.        
-		houseCode = new StringAttribute(this, "houseCode");
-        unitCode = new StringAttribute(this, "unitCode");
-        
-		houseCode.setExpression("A");
+		houseCode = new StringParameter(this, "houseCode");
+        houseCode.setExpression("A");
+
+        unitCode = new Parameter(this, "unitCode");
+        unitCode.setTypeEquals(BaseType.INT);
         unitCode.setExpression("1");
 	}
 	
@@ -112,7 +115,7 @@ public class CommandListener extends Receiver {
      *  that is one of ALL_LIGHTS_OFF, ALL_LIGHTS_ON, ALL_UNITS_OFF,
      *  OFF, or ON.  The default is ON.
      */
-    public ChoiceAttribute command;
+    public StringParameter command;
     
 	/** An output with value true is produced on this port when the specified
      *  X10 command is detected for the specified house and unit codes.
@@ -122,12 +125,12 @@ public class CommandListener extends Receiver {
 	/** This string is the house code for the command that this
      *  actor listens for. The default value is "A".
 	 */
-	public StringAttribute houseCode;
+	public StringParameter houseCode;
     
-    /** This string is the unit code for the command that this
-     *  actor listens for. The default value is "1".
+    /** This parameter is the unit code for the command that this
+     *  actor listens for. This is an integer that defaults to 1.
      */
-    public StringAttribute unitCode;
+    public Parameter unitCode;
     
 	///////////////////////////////////////////////////////////////////
 	////                         public methods                    ////
@@ -144,7 +147,7 @@ public class CommandListener extends Receiver {
             Command sensedCommand = _getCommand();
             byte function = sensedCommand.getFunctionByte();
             byte functionOfInterest = Command.ON;
-            String commandValue = command.getExpression();
+            String commandValue = ((StringToken)command.getToken()).stringValue();
             if (commandValue.equals("OFF")) {
                 functionOfInterest = Command.OFF;
             } else if (commandValue.equals("ALL_LIGHTS_ON")) {
@@ -154,10 +157,15 @@ public class CommandListener extends Receiver {
             } else if (commandValue.equals("ALL_UNITS_OFF")) {
                 functionOfInterest = Command.ALL_UNITS_OFF;
             }
-            // String comparison seems easiest here...
-            String code = "" + sensedCommand.getHouseCode() + sensedCommand.getUnitCode();
-            if((houseCode.getExpression() + unitCode.getExpression()).equals(code)
-                    & (function == functionOfInterest)){
+            String sensedHouseCode = "" + sensedCommand.getHouseCode();
+            int sensedUnitCode = sensedCommand.getUnitCode();
+            
+            String houseCodeValue = ((StringToken)houseCode.getToken()).stringValue();
+            int unitCodeValue = ((IntToken)unitCode.getToken()).intValue();
+            
+            if (sensedHouseCode.equals(houseCodeValue)
+                    && sensedUnitCode == unitCodeValue
+                    && function == functionOfInterest) {
                 detected.send(0, BooleanToken.TRUE);
             } else {
                 detected.send(0, BooleanToken.FALSE);

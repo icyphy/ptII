@@ -32,12 +32,13 @@ package ptolemy.actor.lib.x10;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.ChoiceAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 import x10.Command;
 
 //////////////////////////////////////////////////////////////////////////
@@ -78,16 +79,17 @@ public class LevelListener extends Receiver {
         level.setTypeEquals(BaseType.INT);
         
         // Identify the command to detect.
-        command = new ChoiceAttribute(this, "command");
+        command = new StringParameter(this, "command");
         command.addChoice("BRIGHT");
         command.addChoice("DIM");
         command.setExpression("BRIGHT");
         
         // Parameters.        
-        houseCode = new StringAttribute(this, "houseCode");
-        unitCode = new StringAttribute(this, "unitCode");
-        
+        houseCode = new StringParameter(this, "houseCode");
         houseCode.setExpression("A");
+
+        unitCode = new Parameter(this, "unitCode");
+        unitCode.setTypeEquals(BaseType.INT);        
         unitCode.setExpression("1");
     }
     
@@ -97,7 +99,7 @@ public class LevelListener extends Receiver {
     /** The X10 command to listen for.  This is a string with a value
      *  that is one of BRIGHT or DIM. The default is BRIGHT.
      */
-    public ChoiceAttribute command;
+    public Parameter command;
     
     /** An output with value 0-100, inclusive, is produced on this port
      *  when the specified X10 command is detected for the specified
@@ -108,12 +110,12 @@ public class LevelListener extends Receiver {
     /** This string is the house code for the command that this
      *  actor listens for. The default value is "A".
      */
-    public StringAttribute houseCode;
+    public StringParameter houseCode;
     
-    /** This string is the unit code for the command that this
-     *  actor listens for. The default value is "1".
+    /** This parameter is the unit code for the command that this
+     *  actor listens for. It is an integer that defaults to 1.
      */
-    public StringAttribute unitCode;
+    public Parameter unitCode;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -132,14 +134,20 @@ public class LevelListener extends Receiver {
             Command sensedCommand = _getCommand();
             byte function = sensedCommand.getFunctionByte();
             byte functionOfInterest = Command.BRIGHT;
-            String commandValue = command.getExpression();
+            String commandValue = ((StringToken)command.getToken()).stringValue();
             if (!commandValue.equals("BRIGHT")) {
                 functionOfInterest = Command.DIM;
             }
-            // String comparison seems easiest here...
-            String code = "" + sensedCommand.getHouseCode() + sensedCommand.getUnitCode();
-            if((houseCode.getExpression() + unitCode.getExpression()).equals(code)
-                    & (function == functionOfInterest)){
+            
+            String sensedHouseCode = "" + sensedCommand.getHouseCode();
+            int sensedUnitCode = sensedCommand.getUnitCode();
+            
+            String houseCodeValue = ((StringToken)houseCode.getToken()).stringValue();
+            int unitCodeValue = ((IntToken)unitCode.getToken()).intValue();
+            
+            if (sensedHouseCode.equals(houseCodeValue)
+                    && sensedUnitCode == unitCodeValue
+                    && function == functionOfInterest) {
                 level.send(0, new IntToken(sensedCommand.getLevel()));
             } else {
                 level.send(0, _NO_COMMAND_TOKEN);

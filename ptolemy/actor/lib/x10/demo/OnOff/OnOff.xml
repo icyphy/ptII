@@ -105,13 +105,13 @@ on and off every 5 seconds.</text></svg></configure>
         </port>
     </entity>
     <entity name="ApplianceController" class="ptolemy.actor.lib.x10.ApplianceController">
-        <property name="x10Interface" class="ptolemy.kernel.attributes.ChoiceAttribute" value="CM17A">
+        <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM17A">
         </property>
-        <property name="serialPort" class="ptolemy.kernel.attributes.ChoiceAttribute" value="COM1">
+        <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
         </property>
-        <property name="houseCode" class="ptolemy.kernel.util.StringAttribute" value="A">
+        <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="A">
         </property>
-        <property name="unitCode" class="ptolemy.kernel.util.StringAttribute" value="1">
+        <property name="unitCode" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Serial-port command dispatcher for x10 Appliance devices</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="415.0, 160.0">
@@ -146,9 +146,9 @@ on and off every 5 seconds.</text></svg></configure>
         </port>
     </entity>
     <entity name="Listener" class="ptolemy.actor.lib.x10.Listener">
-        <property name="x10Interface" class="ptolemy.kernel.attributes.ChoiceAttribute" value="CM17A">
+        <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM17A">
         </property>
-        <property name="serialPort" class="ptolemy.kernel.attributes.ChoiceAttribute" value="COM1">
+        <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
         </property>
         <doc>Serial-port command listener for x10 devices</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="100.0, 275.0">

@@ -33,10 +33,11 @@ package ptolemy.actor.lib.x10;
 import ptolemy.actor.NoTokenException;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.StringAttribute;
 import x10.Command;
 
 //////////////////////////////////////////////////////////////////////////
@@ -64,8 +65,8 @@ public class Sender extends X10Interface {
         super(container, name);
 
 		// Create input ports and port parameters.    
-    	houseCode = new StringAttribute(this, "houseCode");
-        unitCode = new StringAttribute(this, "unitCode");
+    	houseCode = new StringParameter(this, "houseCode");
+        unitCode = new StringParameter(this, "unitCode");
         
     	// The default value for the house code is A while the default value
         // for the unit code is 1. This is the normal x10 default address
@@ -79,11 +80,11 @@ public class Sender extends X10Interface {
     
 	/** This string stores the destination-housecode address.
      */
-    public StringAttribute houseCode;
+    public StringParameter houseCode;
     
     /** This string stores the destination-unitcode address.
      */ 
-    public StringAttribute unitCode;
+    public StringParameter unitCode;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -96,8 +97,8 @@ public class Sender extends X10Interface {
     public void fire() throws IllegalActionException {
         super.fire();
 
-        _destination = houseCode.getExpression() + unitCode.getExpression();
-        
+        _destination = ((StringToken)houseCode.getToken()).stringValue()
+                + ((StringToken)unitCode.getToken()).stringValue();
     }
 	
     ///////////////////////////////////////////////////////////////////
@@ -140,5 +141,4 @@ public class Sender extends X10Interface {
 	/** This string is the address of a given module on the x10 network.
 	 */
 	protected String _destination;
-
 }

@@ -27,15 +27,15 @@
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
     </property>
     <entity name="CommandListener" class="ptolemy.actor.lib.x10.CommandListener">
-        <property name="x10Interface" class="ptolemy.kernel.attributes.ChoiceAttribute" value="CM17A">
+        <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM17A">
         </property>
-        <property name="serialPort" class="ptolemy.kernel.attributes.ChoiceAttribute" value="COM1">
+        <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
         </property>
-        <property name="command" class="ptolemy.kernel.attributes.ChoiceAttribute" value="ON">
+        <property name="command" class="ptolemy.data.expr.StringParameter" value="ON">
         </property>
-        <property name="houseCode" class="ptolemy.kernel.util.StringAttribute" value="A">
+        <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="A">
         </property>
-        <property name="unitCode" class="ptolemy.kernel.util.StringAttribute" value="1">
+        <property name="unitCode" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Serial-port command listener for x10 devices</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 205.0">
@@ -61,9 +61,9 @@
         </port>
     </entity>
     <entity name="Listener" class="ptolemy.actor.lib.x10.Listener">
-        <property name="x10Interface" class="ptolemy.kernel.attributes.ChoiceAttribute" value="CM17A">
+        <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM17A">
         </property>
-        <property name="serialPort" class="ptolemy.kernel.attributes.ChoiceAttribute" value="COM1">
+        <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
         </property>
         <doc>Serial-port command listener for x10 devices</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 270.0">
@@ -123,15 +123,15 @@
         </port>
     </entity>
     <entity name="LevelListener" class="ptolemy.actor.lib.x10.LevelListener">
-        <property name="x10Interface" class="ptolemy.kernel.attributes.ChoiceAttribute" value="CM17A">
+        <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM17A">
         </property>
-        <property name="serialPort" class="ptolemy.kernel.attributes.ChoiceAttribute" value="COM1">
+        <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
         </property>
-        <property name="command" class="ptolemy.kernel.attributes.ChoiceAttribute" value="DIM">
+        <property name="command" class="ptolemy.data.expr.StringParameter" value="DIM">
         </property>
-        <property name="houseCode" class="ptolemy.kernel.util.StringAttribute" value="A">
+        <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="A">
         </property>
-        <property name="unitCode" class="ptolemy.kernel.util.StringAttribute" value="1">
+        <property name="unitCode" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Serial-port level command listener for x10 devices</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="65.0, 340.0">
@@ -189,13 +189,13 @@
         </port>
     </entity>
     <entity name="LampController2" class="ptolemy.actor.lib.x10.LampController">
-        <property name="x10Interface" class="ptolemy.kernel.attributes.ChoiceAttribute" value="CM17A">
+        <property name="x10Interface" class="ptolemy.data.expr.StringParameter" value="CM17A">
         </property>
-        <property name="serialPort" class="ptolemy.kernel.attributes.ChoiceAttribute" value="COM1">
+        <property name="serialPort" class="ptolemy.data.expr.StringParameter" value="COM1">
         </property>
-        <property name="houseCode" class="ptolemy.kernel.util.StringAttribute" value="A">
+        <property name="houseCode" class="ptolemy.data.expr.StringParameter" value="A">
         </property>
-        <property name="unitCode" class="ptolemy.kernel.util.StringAttribute" value="1">
+        <property name="unitCode" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <doc>Serial-port command dispatcher for x10 Lamp devices</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="520.0, 120.0">

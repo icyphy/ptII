@@ -35,8 +35,9 @@ import java.util.HashMap;
 import javax.comm.CommPortIdentifier;
 
 import ptolemy.actor.TypedAtomicActor;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.ChoiceAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import x10.CM11ASerialController;
@@ -102,8 +103,8 @@ public class X10Interface extends TypedAtomicActor {
         super(container, name);
 
         // Create input ports and port parameters.    
-        x10Interface = new ChoiceAttribute(this, "x10Interface");
-        serialPort = new ChoiceAttribute(this, "serialPort");
+        x10Interface = new StringParameter(this, "x10Interface");
+        serialPort = new StringParameter(this, "serialPort");
         
         // The x10 interface is selectable, e.g. CM11A or CM17A. The x10 
         // parameter allows the user to choose an interface.
@@ -140,7 +141,7 @@ public class X10Interface extends TypedAtomicActor {
      *  <li> CM17A
      *  <ul>
      */
-    public ChoiceAttribute x10Interface;
+    public StringParameter x10Interface;
     
     /** Attribute giving the serial port to use. This is a string with
      *  the default being the first serial port listed by the
@@ -149,7 +150,7 @@ public class X10Interface extends TypedAtomicActor {
      *  is not installed properly), then the value of the string will
      *  be "no ports available".
      */
-    public ChoiceAttribute serialPort;
+    public StringParameter serialPort;
     
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
@@ -166,8 +167,8 @@ public class X10Interface extends TypedAtomicActor {
         // NOTE: using private variables here ensures that if the parameter
         // values are changed while the model is running, the same port
         // and controller are taken down in wrapup() as are opened here.
-        _controllerName = x10Interface.getExpression();
-        _portName = serialPort.getExpression();
+        _controllerName = ((StringToken)x10Interface.getToken()).stringValue();
+        _portName = ((StringToken)serialPort.getToken()).stringValue();
         // The interface should only be opened ONCE during initialization.
         try {
             _interface = _openInterface(_portName, _controllerName);
