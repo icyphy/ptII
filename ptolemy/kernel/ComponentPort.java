@@ -94,8 +94,8 @@ public class ComponentPort extends Port {
         } catch (IllegalActionException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(
-                "Internal error in ComponentPort constructor!"
-                + ex.getMessage());
+                    "Internal error in ComponentPort constructor!"
+                    + ex.getMessage());
         }
     }
 
@@ -114,8 +114,8 @@ public class ComponentPort extends Port {
         } catch (IllegalActionException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(
-                "Internal error in ComponentPort constructor!"
-                + ex.getMessage());
+                    "Internal error in ComponentPort constructor!"
+                    + ex.getMessage());
         }
     }
 
@@ -141,8 +141,8 @@ public class ComponentPort extends Port {
         } catch (IllegalActionException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(
-                "Internal error in ComponentPort constructor!"
-                + ex.getMessage());
+                    "Internal error in ComponentPort constructor!"
+                    + ex.getMessage());
         }
     }
 
@@ -165,8 +165,8 @@ public class ComponentPort extends Port {
         } catch (IllegalActionException ex) {
             // This exception should not be thrown.
             throw new InternalErrorException(
-                "Internal error in ComponentPort clone() method!"
-                + ex.getMessage());
+                    "Internal error in ComponentPort clone() method!"
+                    + ex.getMessage());
         }
         return newobj;
     }
