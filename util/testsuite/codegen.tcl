@@ -510,7 +510,7 @@ proc sootCodeGeneration {{PTII} modelPath {codeGenType Shallow} \
 	            0 %"
         }    
     } else {
-
+	puts "Running "make MODEL=$modelName ... $command"
 	set timeout 1200000
 	puts "codegen.tcl: Setting watchdog for [expr {$timeout / 1000}]\
 	      seconds at [clock format [clock seconds]]"
