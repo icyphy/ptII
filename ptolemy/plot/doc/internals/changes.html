@@ -9,6 +9,10 @@
 <menu>
 <li> <CODE>pxgraph =500x500-0-0</CODE> was throwing
 a numeric exception.
+<li> Added <CODE>ReuseDataSets: on</CODE> file directive, which
+causes datasets with the same name to be merged into one dataset
+when plotted.  This is useful for combining multiple files
+that plot the same datasets.
 <li> Fixed compatibility problem with X11 version of pxgraph.
 The old version of pxgraph allowed blank lines to denote the
 start of a new dataset.  The problem is that we want to ignore
