@@ -87,11 +87,13 @@ public class TimedPlotter extends Plotter implements TimedActor {
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {
-        double currentTime = ((Director)getDirector()).getCurrentTime();
+    
+        double currentTime;
         int width = input.getWidth();
         int offset = ((IntToken)startingDataset.getToken()).intValue();
         for (int i = width - 1; i >= 0; i--) {
             if (input.hasToken(i)) {
+                currentTime = input.getCurrentTime(i);
                 DoubleToken currentToken = (DoubleToken)input.get(i);
                 double currentValue = currentToken.doubleValue();
                 plot.addPoint(i + offset, currentTime, currentValue, true);
