@@ -56,7 +56,7 @@ centered at zero frequency.</text>
         </property>
         <property name="indexes" class="ptolemy.data.expr.Parameter" value="[0, 1]">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="[1, -1]">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, -1}">
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="true">
         </property>
