@@ -25,7 +25,7 @@
         </property>
         <property name="repeat" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="100.0, 125.0">
+        <property name="_location" class="ptolemy.moml.Location" value="109.0, 125.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -52,7 +52,7 @@
         </property>
         <port name="motion control" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="location1" class="ptolemy.moml.Location" value="75.0, 125.0">
+            <property name="location1" class="ptolemy.moml.Location" value="75.0, 126.0">
             </property>
             <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
             </property>
@@ -98,11 +98,11 @@
                 <property name="style0" class="ptolemy.actor.gui.style.CheckBoxStyle">
                 </property>
             </property>
-            <property name="one frame per iteration" class="ptolemy.data.expr.Parameter" value="false">
+            <property name="one frame per iteration" class="ptolemy.data.expr.Parameter" value="true">
             </property>
             <property name="scale" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="638.9999847412109, 211.0">
+            <property name="_location" class="ptolemy.moml.Location" value="654.9999847412109, 148.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -4614,7 +4614,7 @@
             </property>
             <property name="zTranslation" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="566.0, 147.0">
+            <property name="_location" class="ptolemy.moml.Location" value="566.0, 148.0">
             </property>
             <port name="sceneGraphIn" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
@@ -4633,7 +4633,7 @@
                 <property name="input"/>
             </port>
         </entity>
-        <class name="Copy1:key_input_controller" extends="ptolemy.actor.TypedCompositeActor">
+        <class name="key_input_controller" extends="ptolemy.actor.TypedCompositeActor">
             <property name="DE" class="ptolemy.domains.de.kernel.DEDirector">
                 <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
@@ -4652,7 +4652,7 @@
                 <property name="_location" class="ptolemy.moml.Location" value="92.71429443359375, 28.0">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.moml.Location" value="265.0, 124.0">
+            <property name="_location" class="ptolemy.moml.Location" value="248.0, 125.0">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute">
             </property>
@@ -5253,7 +5253,7 @@
         <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="159.0, 130.0">
+            <vertex name="vertex1" class="ptolemy.moml.Vertex" value="131.0, 131.0">
             </vertex>
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
@@ -5321,11 +5321,11 @@
         <link port="Switch3D2.select" relation="relation17"/>
         <link port="Translate3D0.sceneGraphIn" relation="relation2"/>
         <link port="Translate3D0.sceneGraphOut" relation="relation18"/>
-        <link port="Copy1:key_input_controller.out0" relation="relation"/>
-        <link port="Copy1:key_input_controller.out1" relation="relation4"/>
-        <link port="Copy1:key_input_controller.out2" relation="relation3"/>
-        <link port="Copy1:key_input_controller.out3" relation="relation5"/>
-        <link port="Copy1:key_input_controller.port4" relation="relation11"/>
+        <link port="key_input_controller.out0" relation="relation"/>
+        <link port="key_input_controller.out1" relation="relation4"/>
+        <link port="key_input_controller.out2" relation="relation3"/>
+        <link port="key_input_controller.out3" relation="relation5"/>
+        <link port="key_input_controller.port4" relation="relation11"/>
     </entity>
     <entity name="arm hold states" class="ptolemy.actor.TypedCompositeActor">
         <property name="FSMDirector" class="ptolemy.domains.fsm.kernel.FSMDirector">
