@@ -46,11 +46,16 @@ ptolemy/automata
 ptolemy/filter/*
 ptolemy/filter
 ptolemy/com
+ptolemy/data/expr/TVariable.java
+ptolemy/gui/JPanelTest.java
 ptolemy/domains/ct/demo/Saber
 ptolemy/domains/ct/demo/Corba
+ptolemy/domains/ct/demo/SigmaDelta/DEStatistics.java
 ptolemy/domains/dde/kernel/test/DDEDirector.tcl
 ptolemy/domains/dde/kernel/test/test.tcl
 ptolemy/domains/dde/kernel/DEThreadActor.java
+ptolemy/domains/de/kernel/DETheadActor.java
+ptolemy/domains/dt/kernel/test/bugs
 ptolemy/domains/dt/kernel/test/chf
 ptolemy/domains/dfm
 ptolemy/domains/fsm/demo/Hysteresis
@@ -68,6 +73,9 @@ ptolemy/domains/sdf/test/pitchshift
 ptolemy/kernel/util/LibraryMarkerAttribute.java
 ptolemy/kernel/util/UserSettable.java
 ptolemy/math/filter
+ptolemy/media/AudioQueue.java
+ptolemy/media/ByteArrayAudioQueue.java
+ptolemy/media/DoubleArrayAudioQueue.java
 ptolemy/plot/adm
 ptolemy/schematic
 ptolemy/system
