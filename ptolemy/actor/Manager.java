@@ -32,7 +32,7 @@ package ptolemy.actor;
 import ptolemy.graph.*;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.mutation.*;
+//import ptolemy.kernel.mutation.*;
 import ptolemy.data.*;
 
 import collections.LinkedList;

@@ -30,7 +30,6 @@ package ptolemy.actor;
 
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.kernel.mutation.*;
 
 import java.util.Enumeration;
 

@@ -28,7 +28,6 @@
 package ptolemy.domains.pn.lib;
 import ptolemy.domains.pn.kernel.*;
 import ptolemy.kernel.*;
-import ptolemy.kernel.mutation.*;
 import ptolemy.kernel.event.*;
 import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
