@@ -147,7 +147,7 @@ test CTDirector-2.2 {set Parameters by expression} {
     $param getToken
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute timeScale]]
+	    [$dir getAttribute timePrecisionInDigits]]
     $param setExpression 11
     $param getToken
 
@@ -221,7 +221,7 @@ test CTDirector-2.2a {set Parameters} {
     $param setToken $token
 
     set param [java::cast ptolemy.data.expr.Parameter \
-	    [$dir getAttribute timeScale]]
+	    [$dir getAttribute timePrecisionInDigits]]
     set token [java::new ptolemy.data.IntToken 11]
     $param setToken $token
 
