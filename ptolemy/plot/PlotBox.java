@@ -2292,7 +2292,6 @@ public class PlotBox extends JPanel implements Printable {
                     int color = dataset % _colors.length;
                     graphics.setColor(_colors[color]);
                 }
-                // FIXME: The following fails when printing.
                 _drawPoint(graphics, dataset, urx-3, ypos-3, false);
 
                 graphics.setColor(_foreground);
