@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II Continuous Time domain demos
+# Makefile for Ptolemy II Continuous Time domain Corba demo
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -50,7 +50,10 @@ JSRCS = \
 	NonlinearClientApplication.java \
 	NonlinearServant.java	
 
-EXTRA_SRCS =	$(JSRCS) NonlinearClient NonlinearClient.htm
+EXTRA_SRCS =	$(JSRCS) \
+	NonlinearClient \
+	NonlinearClient.htm \
+	NonlinearClientApplication
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -68,11 +71,18 @@ JCLASS = $(JSRCS:%.java=%.class)
 # to run 'make demos' to run the tests.
 all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
+	@echo " or 'make demo_applet'"
+	@echo " or 'make demo_application'"
 
 install: all
 
-demo: $(PTCLASSJAR)
+demo: demo_applet demo_application
+
+demo_applet: $(PTCLASSJAR)
 	./NonlinearClient
+
+demo_application: $(PTCLASSJAR)
+	./NonlinearClientApplication
 
 depend:
 	@echo "no dependencies in this directory"
