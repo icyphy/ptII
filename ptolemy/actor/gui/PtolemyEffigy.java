@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
-@AcceptedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -49,8 +49,15 @@ import javax.swing.JPanel;
 //// PtolemyEffigy
 /**
 An effigy for a Ptolemy II model.
+An effigy represents model metadata, and is contained by the
+model directory or by another effigy.  This class adds to the base
+class an association with a Ptolemy II model. The model, strictly
+speaking, is any Ptolemy II object (an instance of NamedObj).
+The Effigy class extends CompositeEntity, so an instance of Effigy
+can contain entities.  By convention, an effigy contains all
+open instances of Tableau associated with the model.
 
-@author Steve Neuendorffer
+@author Steve Neuendorffer and Edward A. Lee
 @version $Id$
 */
 public class PtolemyEffigy extends Effigy implements ChangeListener {
@@ -66,6 +73,10 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
     /** Create a new effigy in the given container with the given name.
      *  @param container The container that contains this effigy.
      *  @param name The name of this effigy.
+     *  @exception IllegalActionException If the entity cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
      */
     public PtolemyEffigy(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -88,6 +99,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
      */
     public void changeFailed(ChangeRequest change, Exception exception) {
         // Do not report if it has already been reported.
+        // NOTE: This method assumes that the context of the error handler
+        // has been set so that there is an owner for the error window.
         if (change == null) {
             MessageHandler.error("Change failed: ", exception);
         } else if (!change.isErrorReported()) {
@@ -188,7 +201,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
-    /** A factory for creating new ptolemy effigies.
+    /** A factory for creating new Ptolemy effigies.
      */
     public static class Factory extends EffigyFactory {
 
@@ -217,7 +230,8 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
         }
 
         /** Create a new effigy in the given container by reading the specified
-         *  URL. If the specified URL is null, then create a blank effigy.
+         *  (input) URL. If the specified URL (<i>input</i>
+         *  is null, then create a blank effigy.
          *  The blank effigy will have a new model associated with it.
          *  If this effigy factory contains an entity named "blank", then
          *  the new model will be a clone of that entity.  Otherwise,
@@ -230,16 +244,16 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
          *  @param container The container for the effigy.
          *  @param base The base for relative file references, or null if
          *   there are no relative file references.
-         *  @param in The input URL.
+         *  @param input The input URL.
          *  @return A new instance of PtolemyEffigy, or null if the URL
          *   does not specify a Ptolemy II model.
          *  @exception Exception If the URL cannot be read, or if the data
          *   is malformed in some way.
          */
         public Effigy createEffigy(
-                CompositeEntity container, URL base, URL in)
+                CompositeEntity container, URL base, URL input)
                 throws Exception {
-	    if (in == null) {
+	    if (input == null) {
                 // Create a blank effigy.
                 PtolemyEffigy effigy = new PtolemyEffigy(
                         container, container.uniqueName("effigy"));
@@ -260,7 +274,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                 effigy.setModel(newModel);
                 return effigy;
             } else {
-                String extension = getExtension(in);
+                String extension = getExtension(input);
                 if (!extension.equals("xml") && !extension.equals("moml")) {
                     return null;
                 }
@@ -274,14 +288,14 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 		    try {
 			// If the following fails, we should remove the effigy.
 			try {
-			    toplevel = parser.parse(base, in.openStream());
+			    toplevel = parser.parse(base, input.openStream());
 			} catch (IOException io) {
 			    // If we are running under Web Start, we
 			    // might have a URL that refers to another
 			    // jar file.
 			    URL anotherURL =
 				MoMLApplication
-				.jarURLEntryResource(in.toString());
+				.jarURLEntryResource(input.toString());
 			    if (anotherURL != null) {
 				toplevel = parser.parse(base,
                                         anotherURL.openStream());
@@ -297,11 +311,11 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
 			    // and the effigy.
 			    URLAttribute url =
                                 new URLAttribute(toplevel, "_url");
-			    url.setURL(in);
+			    url.setURL(input);
 
 			    // This is used by TableauFrame in its
 			    //_save() method.
-			    effigy.url.setURL(in);
+			    effigy.url.setURL(input);
 
 			    return effigy;
 			} else {
@@ -320,7 +334,7 @@ public class PtolemyEffigy extends Effigy implements ChangeListener {
                         // itself, which does not prevent exiting the app.
                         // Hence, we handle the error if there are 2 or fewer.
                         if (effigies.size() <= 2) {
-                            MessageHandler.error("Failed to read " + in, e);
+                            MessageHandler.error("Failed to read " + input, e);
                         } else {
                             // Let the caller handle the error.
                             throw e;

@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -231,8 +231,8 @@ public class ModelPane extends JPanel implements CloseListener {
 
     /** Set the container for model displays.  This method sets the
      *  background of the specified pane to match that of this panel.
-     *  @return A container for graphical displays.
-     *  @deprecated setting the model automatically places the objects.
+     *  @deprecated It is no longer necessary to specify a display pane.
+     *   The displays are handled by setModel().
      */
     public void setDisplayPane(Container pane) {
         if (_displays != null) {
@@ -361,7 +361,7 @@ public class ModelPane extends JPanel implements CloseListener {
     }
 
     /** If the model has a manager and is executing, then
-     *  stop execution by calling the finish() method of the manager.
+     *  resume execution by calling the resume() method of the manager.
      *  If there is no manager, do nothing.
      */
     public void resumeRun() {
@@ -407,10 +407,10 @@ public class ModelPane extends JPanel implements CloseListener {
     public static int DIRECTOR_PARAMETERS = 4;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                       protected methods                   ////
 
-    /** Place the placeable objects in the model to the display pane.
-     *  This method place all placeables vertically. Derived classes
+    /** Place the placeable objects in the model in the display pane.
+     *  This method places all placeables vertically. Derived classes
      *  may override this method if the placeable objects are to be
      *  placed differently.
      *  @param model The model that contains the placeable objects.
@@ -442,7 +442,7 @@ public class ModelPane extends JPanel implements CloseListener {
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
 
-    // A panel into which to place model displays.
+    /** A panel into which to place model displays. */
     protected Container _displays;
 
     ///////////////////////////////////////////////////////////////////

@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (janneck@eecs.berkeley.edu)
 */
 
 // FIXME: To do:
@@ -60,7 +60,8 @@ import javax.swing.JMenuItem;
 /**
 ModelFrame is a top-level window containing a Ptolemy II model control panel.
 It contains a ModelPane, and has a menu bar and a status bar for
-message reporting.
+message reporting.  This class is intended to be used with
+composite actors, which are executable models.
 
 @see ModelPane
 @author Edward A. Lee
@@ -68,10 +69,16 @@ message reporting.
 */
 public class ModelFrame extends PtolemyFrame implements ExecutionListener {
 
+    // FIXME: Possibly this class could also handle atomic actors.
+    // This might be useful for code generation.
+
     /** Construct a frame to control the specified Ptolemy II model.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
      *  This creates an instance of ModelPane and puts it in a top-level window.
+     *  This is typically done by calling show() on the controlling tableau.
+     *  @see ModelPane
+     *  @see Tableau#show()
      *  @see ModelPane
      *  @param model The model to put in this frame, or null if none.
      */
@@ -126,7 +133,7 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     }
 
     /** Report that a manager state has changed.
-     *  This is method is called by the specified manager.
+     *  This method is called by the specified manager.
      *  @param manager The manager calling this method.
      */
     public void managerStateChanged(Manager manager) {
@@ -138,6 +145,8 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     }
 
     /** Return the container into which to place placeable objects.
+     *  These are objects in a Ptolemy II model that have their own
+     *  user interface, such as plotters.
      *  @return A container for graphical displays.
      */
     public ModelPane modelPane() {
@@ -156,7 +165,9 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
         if (_pane != null) _pane.setBackground(background);
     }
 
-    /** Set the associated model.
+    /** Set the associated model. This overrides the base class to add
+     *  this object as an execution listener to the manager, if there is
+     *  one.
      *  @param model The associated model.
      */
     public void setModel(CompositeActor model) {
@@ -177,6 +188,8 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
      *  the contents have been modified, and if so, then prompt the user
      *  to save them.  A return value of false
      *  indicates that the user has canceled the action.
+     *  Then, if the user does not cancel, replace the model with a
+     *  new, blank composite actor.
      *  @return False if the user cancels the clear.
      */
     protected boolean _clear() {
@@ -212,6 +225,9 @@ public class ModelFrame extends PtolemyFrame implements ExecutionListener {
     }
 
     /** Display more detailed information than given by _about().
+     *  This class displays information contained by Documentation
+     *  attributes in the associated model.
+     *  @see Documentation
      */
     protected void _help() {
         String message = "Ptolemy II model.";
