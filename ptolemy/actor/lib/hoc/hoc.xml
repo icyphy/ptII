@@ -7,19 +7,23 @@
       <group>
       <doc>Higher-Order Computation Infrastructure.</doc>
 
-      <input source="ptolemy/configs/utilityModalModel.xml"/>
-
-	  <entity name="RunCompositeActor" class="ptolemy.actor.RunCompositeActor"/>
-      
-      <entity name="ModelReference" class="ptolemy.actor.lib.hoc.ModelReference"/>
-      
-      <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference"/>
-        
       <entity name="IterateOverArray" class="ptolemy.actor.lib.hoc.IterateOverArray">
         <doc>Iterate a contained actor over input arrays</doc>
         <property name="_icon" class="ptolemy.vergil.icon.CopyCatIcon"/>
         <property name="_configurer" class="ptolemy.actor.gui.InsideEntityEditorPaneFactory"/>
       </entity>
+
+      <entity name="MobileFunction" class="ptolemy.actor.lib.hoc.MobileFunction">
+        <doc>The function it applied to its input data can be dynamically defined.</doc>
+      </entity>
+
+      <entity name="MobileModel" class="ptolemy.actor.lib.hoc.MobileModel">
+        <doc>The inside model of this composite actor can be dynamically defined.</doc>
+      </entity>
+
+      <input source="ptolemy/configs/utilityModalModel.xml"/>
+
+      <entity name="ModelReference" class="ptolemy.actor.lib.hoc.ModelReference"/>
 
       <entity name="MultiInstanceComposite" class="ptolemy.actor.lib.hoc.MultiInstanceComposite">
         <doc>Creates multiple instances of itself</doc>
@@ -45,13 +49,9 @@
          </property>
       </entity>
 
-      <entity name="MobileFunction" class="ptolemy.actor.lib.hoc.MobileFunction">
-        <doc>The function it applied to its input data can be dynamically defined.</doc>
-      </entity>
-
-      <entity name="MobileModel" class="ptolemy.actor.lib.hoc.MobileModel">
-        <doc>The inside model of this composite actor can be dynamically defined.</doc>
-      </entity>
+	  <entity name="RunCompositeActor" class="ptolemy.actor.RunCompositeActor"/>
+            
+      <entity name="VisualModelReference" class="ptolemy.vergil.actor.lib.VisualModelReference"/>
       
       </group>
     ?>
