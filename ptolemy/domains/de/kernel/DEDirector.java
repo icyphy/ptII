@@ -621,7 +621,7 @@ public class DEDirector extends Director {
      *  Note that when the
      *  <i>stopWhenQueueIsEmpty</i> parameter is false, and the queue is
      *  empty, the stall happens in the fire() method.
-     *  @exception IllegalActionException Not thrown in this class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public boolean postfire() throws IllegalActionException {
 
@@ -936,7 +936,8 @@ public class DEDirector extends Director {
                 currentEvent = nextEvent;
                 actorToFire = currentEvent.actor();
 
-                if (_disabledActors != null && _disabledActors.contains(actorToFire)) {
+                if (_disabledActors != null &&
+                        _disabledActors.contains(actorToFire)) {
                     // This actor has requested that it not be fired again.
                     if (_debugging) _debug("Skipping actor: ",
                             ((Nameable)actorToFire).getFullName());
@@ -1077,7 +1078,8 @@ public class DEDirector extends Director {
 
                 // Find the successor of the port.
                 Iterator triggers =
-                    ((Actor)inputPort.getContainer()).outputPortList().iterator();
+                    ((Actor)inputPort.getContainer()).
+                    outputPortList().iterator();
                 while (triggers.hasNext()) {
                     IOPort outPort = (IOPort) triggers.next();
 
@@ -1228,7 +1230,8 @@ public class DEDirector extends Director {
     // Return true if this director is embedded inside an opaque composite
     // actor contained by another composite actor.
     private boolean _isEmbedded() {
-        return (getContainer() != null && getContainer().getContainer() != null);
+        return (getContainer() != null &&
+                getContainer().getContainer() != null);
     }
 
     ///////////////////////////////////////////////////////////////////

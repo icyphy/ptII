@@ -235,7 +235,8 @@ public class DEIOPort extends TypedIOPort {
                 if (farReceivers[channelindex] == null) return;
                 for (int j = 0; j < farReceivers[channelindex].length; j++) {
                     try {
-                        ((DEReceiver)farReceivers[channelindex][j]).setDelay(_delay);
+                        ((DEReceiver)farReceivers[channelindex][j]).
+                            setDelay(_delay);
                     } catch (ClassCastException e) {
                         throw new InvalidStateException("DEIOPort.send() " +
                                 "expects to connect to receivers of type " +

@@ -38,10 +38,6 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.SequenceActor;
 import ptolemy.actor.lib.TimedActor;
-import ptolemy.domains.de.kernel.*;
-//import ptolemy.kernel.util.*;
-
-
 
 
 //////////////////////////////////////////////////////////////////////////
