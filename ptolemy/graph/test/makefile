@@ -59,6 +59,7 @@ JSIMPLE_TESTS = \
 	GraphListener.tcl \
 	InequalitySolver.tcl \
 	InequalityTerm.tcl \
+    LabeledList.tcl \
     Node.tcl
 
 # Graphical Java tests that use Tcl.

@@ -36,6 +36,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
 //////////////////////////////////////////////////////////////////////////
 //// LabeledList
@@ -53,9 +54,12 @@ More generally, element labels can be used to maintain arbitrary
 (via the associated element labels).
 
 <p> Element labels maintain their consistency (remain constant) during periods
-when no elements are removed from the list. When elements are removed, the
-labels assigned to the remaining elements may change
-(see {@link #remove(Object)} for details.
+when no elements are removed from the list, and the list is not modified
+through a sub list (i.e., by using a list obtained through {@link #subList(int,
+int)}. When elements are removed, the labels assigned to the remaining elements
+may change (see {@link #remove(Object)} for details.  When a sub list is used
+to modify the list, the effect on the labels of the list is unpredictable, and
+to be safe, it should be assumed that all labels have changed.
 
 <p> Elements themselves must be non-null and distinct, as determined by the
 <code>equals</code> method.
@@ -69,7 +73,8 @@ public class LabeledList implements List {
     /** Construct an empty list.
      */
     public LabeledList() {
-        clear();
+        _elements = new ArrayList(0);
+        _labels = new HashMap(0);
     }
 
     /** Construct an empty list with enough storage allocated to hold
@@ -107,21 +112,21 @@ public class LabeledList implements List {
         }
     }
 
-    /*  Unsupported method of the list interface.
+    /*  Unsupported optional method of the list interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public void add(int index, Object element) {
         throw new UnsupportedOperationException();
     }
 
-    /*  Unsupported method of the list interface.
+    /*  Unsupported optional method of the list interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean addAll(Collection collection) {
         throw new UnsupportedOperationException();
     }
 
-    /*  Unsupported method of the list interface.
+    /*  Unsupported optional method of the list interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean addAll(int index, Collection collection) {
@@ -131,8 +136,12 @@ public class LabeledList implements List {
     /** Clear all of the elements in this list.
      */
     public void clear() {
-        _elements = new ArrayList();
-        _labels = new HashMap();
+        // Invoke the remove(int) and size() methods, which get overridden in
+        // sub lists.
+        int elements = size();
+        for (int i = 0; i < elements; i++) {
+            remove(0);
+        }
     }
 
     /* Return true if the specified object is an element of this list.
@@ -315,21 +324,21 @@ public class LabeledList implements List {
         return removed;
     }
 
-    /**  Unsupported method of the list interface.
+    /**  Unsupported optional method of the list interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean removeAll(Collection c) {
         throw new UnsupportedOperationException();
     }
 
-    /**  Unsupported method of the list interface.
+    /**  Unsupported optional method of the list interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public boolean retainAll(Collection c) {
         throw new UnsupportedOperationException();
     }
 
-    /**  Unsupported method of the list interface.
+    /**  Unsupported optional method of the list interface.
      *  @exception UnsupportedOperationException Always thrown.
      */
     public Object set(int index, Object element)  {
@@ -343,12 +352,18 @@ public class LabeledList implements List {
         return _elements.size();
     }
 
-    /**  Unsupported method of the list interface.
-     *  @exception UnsupportedOperationException Always thrown.
+    /** Return a view of the portion of this list between fromIndex, inclusive,
+     *  and toIndex, exclusive.
+     *  @param fromIndex The low endpoint (inclusive) of the subList.
+     *  @param toIndex The high endpoint (exclusive) of the subList.
+     *  @return A view of the specified range within this list.
+     *  @exception IndexOutOfBoundsException If an endpoint index value is out
+     *  of range (fromIndex < 0 || toIndex > size).
+     *  @exception IllegalArgumentException If endpoint indices are out of order
+     *  (fromIndex > toIndex).
      */
     public List subList(int fromIndex, int toIndex) {
-        // FIXME: this is not an optional operation, it must be supported.
-        throw new UnsupportedOperationException();
+        return new SubList(this, fromIndex, toIndex);
     }
 
     /** Returns an array containing all of the elements in this list in
@@ -406,7 +421,139 @@ public class LabeledList implements List {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         inner class                     ////
+
+    private class SubList extends LabeledList {
+        private LabeledList l;
+        private int offset;
+        private int size;
+
+        SubList(LabeledList list, int fromIndex, int toIndex) {
+            if (fromIndex < 0) {
+                throw new IndexOutOfBoundsException("fromIndex = " + fromIndex);
+            } else if (toIndex > list.size()) {
+                throw new IndexOutOfBoundsException("toIndex = " + toIndex);
+            } else if (fromIndex > toIndex) {
+                throw new IllegalArgumentException("fromIndex(" + fromIndex +
+                        ") > toIndex(" + toIndex + ")");
+            } else {
+                l = list;
+                offset = fromIndex;
+                size = toIndex - fromIndex;
+            }
+        }
+
+        public boolean add(Object element) {
+            add(size, element);
+            return true;
+        }
+
+        public Object get(int index) {
+            _rangeCheck(index);
+            return l.get(index+offset);
+        }
+
+        public int size() {
+            return size;
+        }
+
+        public void add(int index, Object element) {
+            if (index < 0 || index > size)
+                throw new IndexOutOfBoundsException();
+            l._add(index+offset, element);
+            size++;
+        }
+
+        public Object remove(int index) {
+            _rangeCheck(index);
+            Object result = l.remove(index+offset);
+            size--;
+            return result;
+        }
+
+        public Iterator iterator() {
+            return listIterator(0);
+        }
+
+        public ListIterator listIterator(final int index) {
+            if (index < 0 || index > size)
+                throw new IndexOutOfBoundsException(
+                    "Index: "+index+", Size: "+size);
+
+            return new ListIterator() {
+                private ListIterator i = l.listIterator(index+offset);
+
+                public boolean hasNext() {
+                    return nextIndex() < size;
+                }
+
+                public Object next() {
+                    if (hasNext()) {
+                        return i.next();
+                    }
+                    else {
+                        throw new NoSuchElementException();
+                    }
+                }
+
+                public boolean hasPrevious() {
+                    return previousIndex() >= 0;
+                }
+
+                public Object previous() {
+                        if (hasPrevious()) {
+                            return i.previous();
+                        }
+                        else {
+                            throw new NoSuchElementException();
+                        }
+                }
+
+                public int nextIndex() {
+                    return i.nextIndex() - offset;
+                }
+
+                public int previousIndex() {
+                    return i.previousIndex() - offset;
+                }
+
+                public void remove() {
+                    i.remove();
+                    size--;
+                }
+
+                public void set(Object o) {
+                    i.set(o);
+                }
+
+                public void add(Object o) {
+                    i.add(o);
+                    size++;
+                }
+            };
+        }
+
+        public List subList(int fromIndex, int toIndex) {
+            return new SubList(this, fromIndex, toIndex);
+        }
+
+        private void _rangeCheck(int index) {
+            if (index < 0 || index >= size)
+                throw new IndexOutOfBoundsException("Index: "+index+
+                                                ",Size: "+size);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    // This method is provide to provide support for sub lists, as specified
+    // by the list interface. It adds an element at a given index, and
+    // re-labels the list elements accordingly.
+    private void _add(int index, Object element) {
+        _elements.add(index, element);
+        _labelElements(index);
+    }
 
     // Return a dump of a list element that is suitable for inclusion
     // in an error message.
@@ -423,6 +570,8 @@ public class LabeledList implements List {
         }
     }
 
+    private SubList l;
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -435,5 +584,4 @@ public class LabeledList implements List {
     // This translation can also be
     // done with indexOf(), but a HashMap is faster.
     private HashMap _labels;
-
 }
