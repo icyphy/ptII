@@ -39,6 +39,7 @@ import ptolemy.copernicus.kernel.ImprovedDeadAssignmentEliminator;
 import ptolemy.copernicus.kernel.InstanceEqualityEliminator;
 import ptolemy.copernicus.kernel.InvocationBinder;
 import ptolemy.copernicus.kernel.JimpleWriter;
+import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.copernicus.kernel.SideEffectFreeInvocationRemover;
 import ptolemy.copernicus.kernel.TransformerAdapter;
 import ptolemy.copernicus.kernel.UnusedFieldRemover;
@@ -107,6 +108,10 @@ public class Main extends KernelMain {
 	// -p wjtp.watchDog time:30000
         Scene.v().getPack("wjtp").add(new Transform("wjtp.watchDog",
                                               WatchDogTimer.v()));
+
+	// Generate the makefile files in outDir
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.makefileWriter",
+                MakefileWriter.v(_toplevel)));
 
         // Sanitize names of objects in the model.
         // We change the names to all be valid java identifiers

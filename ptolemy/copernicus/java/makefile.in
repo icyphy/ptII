@@ -29,12 +29,8 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/copernicus/java
-
-DIRS =		test
-
 # Root of the Java directory
-ROOT =		../../..
+ROOT =		@ptIIDirectory@
 
 CLASSPATH = 	$(ROOT)$(CLASSPATHSEPARATOR)$(ROOT)/vendors/soot/1.2.2/soot/classes$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
 
@@ -43,95 +39,43 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	java
+PTPACKAGE = 	@sanitizedModelName@
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	ActorTransformer.java \
-	CodeGenerationScope.java \
-	CommandLineTemplate.java \
-	CommandLineTransformer.java \
-	ConstantLoopUnroller.java \
-	ConstVariableModelAnalysis.java \
-	DeadObjectEliminator.java \
-	ExceptionEliminator.java \
-	FieldsForAttributesTransformer.java \
-	FieldsForEntitiesTransformer.java \
-	FieldsForPortsTransformer.java \
-	FieldOptimizationTransformer.java \
-	FreeVariableModelAnalysis.java \
-	HSPortInliner.java \
-	InlineDirectorTransformer.java \
-	InlineParameterTransformer.java \
-	InlinePortTransformer.java \
-	InlineTokenTransformer.java \
-	Main.java \
-	ModelTransformer.java \
-	NamedObjEliminator.java \
-	NamedObjEqualityEliminator.java \
-	ParseTreeCodeGenerator.java \
-	PortInliner.java \
-	SDFPortInliner.java \
-	TestApplication.java \
-	TokenConstructorAnalysis.java \
-	TokenInstanceofEliminator.java \
-	TokenToNativeTransformer.java \
-	TokenTypeAnalysis.java \
-	TypeSpecializer.java \
-	TypeSpecializerAnalysis.java \
-	TypeTag.java \
-	UnreachableMethodRemover.java \
-	ValueTag.java
-
-#	NamedObjConstructorAnalysis.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	compileCommandTemplate.txt \
-	makefile.in \
-	runCommandTemplate.txt
+	$(JSRCS)
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS) \
-	Orthocom.jos \
-	NamedObjConstructorAnalysis.java
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc \
-	cg \
-	'CommandLineTemplate$$1.class' \
-	'TypeSpecializer$$ConstantTerm.class' \
-	'TypeSpecializer$$VariableTerm.class' \
-	'TypeSpecializerAnalysis$$ConstantTerm.class' \
-	'TypeSpecializerAnalysis$$VariableTerm.class'
+	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
 	@echo "To run the demo, run 'make demo'"
 
-install: jclass $(PTCLASSJAR)
+install: all $(PTCLASSJAR)
 
 demo: compileDemo runDemo
 timeDemo: compileDemo timeOrthoCommDemo
 
-# OrthogonalCom
-MODEL =			OrthogonalCom
-MODELPATH =		$(ROOT)/ptolemy/domains/sdf/demo/OrthogonalCom/OrthogonalCom.xml
 
-# Usually, we run code gen on OrthogonalCom, to run on the IIR model, use:
-#  make MODELPATH=../../../ptolemy/actor/lib/test/auto/CommDistDiscard.xml MODEL=CommDistDiscard compileDemo runDemo 
-# To run on ArrayAppend:
-#  make MODELPATH=../../../ptolemy/actor/lib/test/auto/ArrayAppend.xml MODEL=ArrayAppend compileDemo runDemo
+MODEL =			@sanitizedModelName@
+MODELPATH =		@outdir@
 
 # Location where we create code that we are generating
-TARGETPACKAGE = 	ptolemy.copernicus.java.cg.$(MODEL)
-TARGETPATH =		ptolemy/copernicus/java/cg/$(MODEL)
+TARGETPACKAGE = 	@targetpackage@
+TARGETPATH =		@outdir@
 
 TARGETCLASS = $(TARGETPACKAGE).$(MODEL)
 
