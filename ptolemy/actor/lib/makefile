@@ -141,9 +141,11 @@ JSRCS = \
 	Sink.java \
 	Sleep.java \
 	Source.java \
+	Stop.java \
 	Switch.java \
 	Synchronizer.java \
 	Test.java \
+	ThrowException.java \
 	TimedActor.java \
 	TimedSource.java \
 	Transformer.java \
