@@ -71,8 +71,12 @@ JSRCS = \
 	Main.java \
         MainFileGenerator.java \
 	MakeFileGenerator.java \
+	MethodCodeGenerator.java \
 	MethodListGenerator.java \
-	RequiredFileGenerator.java
+	NativeMethodGenerator.java \
+	OverriddenMethodGenerator.java \
+	RequiredFileGenerator.java \
+	Utilities.java
 
 OTHER_FILES_TO_BE_JARED = \
 	compileCommandTemplate.txt \
