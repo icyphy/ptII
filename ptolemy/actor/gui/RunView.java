@@ -29,12 +29,14 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Debuggable;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.actor.CompositeActor;
+import ptolemy.actor.Manager;
 import ptolemy.gui.CancelException;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Top;
@@ -73,36 +75,30 @@ public class RunView extends View {
             throw new IllegalActionException(this,
             "Cannot run a model that is not a CompositeActor.");
         }
-	ModelFrame frame = new RunFrame((CompositeActor)model);
+	CompositeActor actor = (CompositeActor)model;
+	
+	// Create a manager.
+        Manager manager = actor.getManager();
+        if (manager == null) {
+	    actor.setManager(new Manager(actor.workspace(), "manager"));
+	    manager = actor.getManager();
+        }
+
+	ModelFrame frame = new RunFrame(actor);
 	frame.setBackground(BACKGROUND_COLOR);
 	setFrame(frame);
+	frame.setView(this);
 	frame.setVisible(true);
 	frame.pack();
     }
 
-    /** Create a new run control panel for the given model with the given 
-     *  name and make it visible.  This view is managed by the given model
-     *  directory.
+    /** Return the title of this view.  This class returns the 
+     *  string RunView: followed by the full name of the ptolemy
+     *  model.
      */
-    public RunView(PtolemyModelProxy container,
-		   String name,
-		   JPanel displayPanel) 
-            throws IllegalActionException, NameDuplicationException {
-	this(container, name);
-	ModelFrame frame = (ModelFrame)getFrame();
-	frame.setView(this);
-       	if (displayPanel != null) {
-	    frame.modelPane().setDisplayPane(displayPanel);
-	    
-	    // Calculate the size.
-	    Dimension frameSize = frame.getPreferredSize();
-	    
-	    // Swing classes produce a preferred size that is too small...
-	    frameSize.height += 30;
-	    frameSize.width += 30;
-	    frame.setSize(frameSize);
-	    frame.validate();
-	}
+    public String getViewTitle() {
+	PtolemyModelProxy proxy = (PtolemyModelProxy)getContainer();
+	return "RunView: " + proxy.getModel().getFullName();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -168,7 +164,25 @@ public class RunView extends View {
 
     /** A factory that creates run control panel views for Ptolemy models.
      */
-    public class RunViewFactory extends ViewFactory {
+    public static class RunViewFactory extends ViewFactory {
+	/** Create an factory with the given name and container.
+	 *  The container argument must not be null, or a
+	 *  NullPointerException will be thrown.  This entity will use the
+	 *  workspace of the container for synchronization and version counts.
+	 *  If the name argument is null, 
+	 *  then the name is set to the empty string.
+	 *  Increment the version of the workspace.
+	 *  @param container The container entity.
+	 *  @param name The name of the entity.
+	 *  @exception IllegalActionException If the container is incompatible
+	 *   with this entity.
+	 *  @exception NameDuplicationException If the name coincides with
+	 *   an entity already in the container.
+	 */
+	public RunViewFactory(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+	    super(container, name);
+	}
 	/** Create a view in the default workspace with no name for the 
 	 *  given ModelProxy.  The view will created with a new unique name
 	 *  in the given model proxy.  If this factory cannot create a view

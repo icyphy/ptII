@@ -1,4 +1,4 @@
-/* An object that can create a view fora model proxy.
+/* An object that can create a view for a model proxy.
 
  Copyright (c) 1997-2000 The Regents of the University of California.
  All rights reserved.
@@ -32,6 +32,8 @@
 package ptolemy.actor.gui;
 
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
 import java.io.InputStream;
 import java.io.IOException;
 import java.net.URL;
@@ -52,6 +54,24 @@ and create a View appropriate with a given subclass of model proxy.
 @version $Id$
 */
 public class ViewFactory extends CompositeEntity {
+
+    /** Create an factory with the given name and container.
+     *  The container argument must not be null, or a
+     *  NullPointerException will be thrown.  This entity will use the
+     *  workspace of the container for synchronization and version counts.
+     *  If the name argument is null, then the name is set to the empty string.
+     *  Increment the version of the workspace.
+     *  @param container The container entity.
+     *  @param name The name of the entity.
+     *  @exception IllegalActionException If the container is incompatible
+     *   with this entity.
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
+    public ViewFactory(CompositeEntity container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

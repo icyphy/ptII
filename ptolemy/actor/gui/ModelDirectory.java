@@ -120,9 +120,9 @@ public class ModelDirectory extends CompositeEntity {
      */
     protected void _removeEntity(ComponentEntity entity) {
 	super._removeEntity(entity);
-        if (entityList().size() == 0) {
+	if (entityList(ModelProxy.class).size() == 0) {
             try {
-                setContainer(null);
+		setContainer(null);
             } catch (KernelException ex) {
                 throw new InternalErrorException("Cannot remove directory!");
             }

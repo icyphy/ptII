@@ -101,6 +101,10 @@ public class PtolemyApplication extends Application {
         // Invoke the base class constructor with null arguments to prevent
         // the base class from running any specified models.
         super(null);
+	new ModelDirectory(this, "directory");
+	new RunView.RunViewFactory(this, "factory");
+	new ModelReader(this, "reader");
+
 	if (args.length == 0) {
             // FIXME: We need a better initial default model,
             // perhaps something with a console that we can type

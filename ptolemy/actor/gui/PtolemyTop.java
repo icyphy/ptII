@@ -74,8 +74,7 @@ public abstract class PtolemyTop extends Top {
         return _view;
     }
 
-    /** Set the key used to identify this window, and display a string
-     *  representation of this key in the titlebar.
+    /** Set the view that represents this frame.
      *  @param key The key identifying the model.
      */
     public void setView(View view) {

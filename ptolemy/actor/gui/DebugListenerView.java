@@ -81,6 +81,7 @@ public class DebugListenerView extends View {
 			     final Debuggable debug)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+	_debug = debug;
         final DebugListenerFrame frame = new DebugListenerFrame();
 	setFrame(frame);
 	frame.setView(this);
@@ -91,9 +92,16 @@ public class DebugListenerView extends View {
 		debug.removeDebugListener(frame);
 	    }
 	});
-	// FIXME.. Create a text model to save.
 	frame.setVisible(true);
 	frame.pack();
+    }
+
+    /** Return the title of this view.  This class returns the string
+     *  DebugView: followed by the name of the debug object we are
+     *  attached to.
+     */
+    public String getViewTitle() {
+	return "DebugView: " + _debug.getFullName();
     }
 
     public class DebugListenerFrame extends TextEditor
@@ -130,4 +138,6 @@ public class DebugListenerView extends View {
 	    scrollToEnd();
 	}
     }
+
+    private Debuggable _debug;
 }

@@ -83,6 +83,14 @@ public class View extends ComponentEntity {
 	return _frame;
     }
     
+    /** Return the title of this view.  Subclasses should override this to
+     *  provide a better description of themselves.  This base class
+     *  returns the full name of the model.
+     */
+    public String getViewTitle() {
+	return "View";
+    }
+
     /** Return true if the window associated with this attribute
      *  is a master, which means that if that window is closed, then
      *  all windows associated with the model are closed.
@@ -124,13 +132,6 @@ public class View extends ComponentEntity {
 		// other views.
 		oldContainer.setContainer(null);
             }
-	    // FIXME this should be handled in the model directory.
-	    /* List attrList = 
-	       oldcontainer.attributeList(WindowAttribute.class);
-	       if (attrList.size() == 0) {
-	       ModelDirectory.remove(_frame.getKey());
-            }
-	    */
 	} else if(container instanceof ModelProxy) {	
 	    super.setContainer(container);
 	} else {
@@ -146,13 +147,15 @@ public class View extends ComponentEntity {
     public void setFrame(JFrame frame) {
         _frame = frame;
 
+	frame.setTitle(getViewTitle());
+
         // Set up a listener for window closing events.
         frame.addWindowListener(new WindowAdapter() {
             // This is invoked if the window is closed
             // via the window manager.
             public void windowClosing(WindowEvent e) {
                 try {
-                    setContainer(null);
+		    setContainer(null);
                 } catch (KernelException ex) {
 		    try {
 			MessageHandler.warning(

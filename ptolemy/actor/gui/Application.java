@@ -29,6 +29,8 @@
 
 package ptolemy.actor.gui;
 
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
@@ -92,13 +94,18 @@ public class Application extends CompositeEntity {
                 throw new InternalErrorException("No model reader!");
             }
             model = reader.read(base, in, identifier);
-            model.setName(identifier);
-            model.setContainer(directory);
+	    Parameter parameter = new Parameter(model, "identifier");
+	    parameter.setToken(new StringToken(identifier));
+            model.setName(directory.uniqueName("model"));
+	    model.setContainer(directory);
 
             // Create a view.
             ViewFactory factory = (ViewFactory)getEntity("factory");
             View view = factory.createView(model);
+	    view.setName(model.uniqueName("view"));
             view.setContainer(model);
+	    // The first view is a master.
+	    view.setMaster(true);
         } else {
             // Model already exists.
             model.showViews();
@@ -120,7 +127,7 @@ public class Application extends CompositeEntity {
      */
     protected void _removeEntity(ComponentEntity entity) {
 	super._removeEntity(entity);
-        if (entity.getName().equals("directory")) {
+	if (entity.getName().equals("directory")) {
             System.exit(0);
         }
     }

@@ -51,6 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	Application.java \
 	Configurer.java \
 	DebugListenerView.java \
 	Documentation.java \

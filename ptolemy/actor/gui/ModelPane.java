@@ -190,6 +190,7 @@ public class ModelPane extends JPanel {
     /** Set the container for model displays.  This method sets the
      *  background of the specified pane to match that of this panel.
      *  @return A container for graphical displays.
+     *  @deprecated setting the model automatically places the objects.
      */
     public void setDisplayPane(Container pane) {
         if (_displays != null) {
@@ -202,6 +203,7 @@ public class ModelPane extends JPanel {
 
     /** Set the associated model and add a query box with its top-level
      *  parameters, and those of its director, if it has one.
+     *  All placeable objects in the hierarchy will get placed.
      *  @param model The associated model.
      */
     public void setModel(CompositeActor model) {
@@ -214,7 +216,11 @@ public class ModelPane extends JPanel {
             _controlPanel.remove(_directorQuery);
             _directorQuery = null;
         }
-        if (model != null) {
+	if (_displays != null) {
+            remove(_displays);
+	    _displays = null;
+        }
+	if (model != null) {
             _manager = _model.getManager();
 
             List paramList = _model.attributeList(Parameter.class);
@@ -224,7 +230,8 @@ public class ModelPane extends JPanel {
                 pTitle.setForeground(new Color(0, 0, 128));
                 _controlPanel.add(pTitle);
                 _controlPanel.add(Box.createRigidArea(new Dimension(0, 8)));
-                _paramQuery = new PtolemyQuery(model);
+		// FIXME: use a configurer.
+		_paramQuery = new PtolemyQuery(model);
                 _paramQuery.setAlignmentX(LEFT_ALIGNMENT);
                 _paramQuery.setBackground(getBackground());
                 Iterator params = paramList.iterator();
@@ -247,7 +254,8 @@ public class ModelPane extends JPanel {
                     _controlPanel.add(pTitle);
                     _controlPanel.add(
                             Box.createRigidArea(new Dimension(0, 8)));
-                    _directorQuery = new PtolemyQuery(model);
+		    // FIXME: use a configurer.
+		    _directorQuery = new PtolemyQuery(model);
                     _directorQuery.setAlignmentX(LEFT_ALIGNMENT);
                     _directorQuery.setBackground(getBackground());
                     Iterator params = dirParamList.iterator();
@@ -275,6 +283,22 @@ public class ModelPane extends JPanel {
                     }
                 }
             }
+
+	    // place the placeable objects in the model
+	    _displays = new JPanel();
+	    _displays.setBackground(getBackground());
+	    add(_displays);
+	    _displays.setLayout(new BoxLayout(_displays,
+					      BoxLayout.Y_AXIS));
+    
+	    // Put placeable objects in a reasonable place
+	    for(Iterator i = _model.deepEntityList().iterator();
+		i.hasNext();) {
+		Object o = i.next();
+		if(o instanceof Placeable) {
+		    ((Placeable) o).place(_displays);
+		}
+	    }
 
             // Why they call this glue is beyond me, but what it does
             // is make extra space to fill in the bottom.

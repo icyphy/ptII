@@ -104,14 +104,13 @@ public class ModelProxy extends CompositeEntity {
             throws IllegalActionException, NameDuplicationException {
 	if (container == null) {
 	    // Remove all views.
-	    CompositeEntity oldcontainer = (CompositeEntity)getContainer();
-	    super.setContainer(container);
-	    List viewList = oldcontainer.entityList();
-	    Iterator views = viewList.iterator();
+	    Iterator views = entityList(View.class).iterator();
 	    while (views.hasNext()) {
 		ComponentEntity view = (ComponentEntity)views.next();
 		view.setContainer(null);
-	    }
+	    }  
+	    super.setContainer(container);
+	   
 	} else if(container instanceof ModelDirectory) {
 	    super.setContainer(container);
 	} else {
@@ -148,7 +147,7 @@ public class ModelProxy extends CompositeEntity {
      */
     protected void _removeEntity(ComponentEntity entity) {
 	super._removeEntity(entity);
-       	if(entityList().size() == 0) {
+       	if(entityList(View.class).size() == 0) {
 	    try {
 		setContainer(null);
 	    } catch (Exception ex) {

@@ -84,6 +84,7 @@ public class ModelReader extends CompositeEntity {
      *  @param key The key to use to uniquely identify the model.
      *  @exception Exception If the stream cannot be read.
      */
+    // FIXME remove key.
     public ModelProxy read(URL base, URL in, String key) throws Exception {
         MoMLParser parser = new MoMLParser(new Workspace(), null);
         NamedObj toplevel = parser.parse(base, in.openStream());
