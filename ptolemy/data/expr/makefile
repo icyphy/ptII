@@ -123,6 +123,7 @@ OPTIONAL_FILES =  \
 	'PtParser$$JJCalls.class' \
 	'Variable$$1.class' \
 	'Variable$$TypeTerm.class' \
+	'Variable$$VariableScope.class' \
 	JJMatrixParserState.class \
 	MatrixParser.jj \
 	MatrixParser.java
