@@ -149,8 +149,7 @@ public class PortConfigurerDialog extends ComponentDialog
                     configuration.openModel(
                             null,  toRead, toRead.toExternalForm());
                 } catch (Exception ex) {
-                    MessageHandler.error("Help screen failure: "
-                            + ex.toString());
+                    MessageHandler.error("Help screen failure", ex);
                 }
             } else {
                 MessageHandler.error("No help available.");
