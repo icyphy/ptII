@@ -80,12 +80,6 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	'AbstractCase$$CaseDirector.class' \
-	'IterateOverArray$$1.class' \
-	'IterateOverArray$$2.class' \
-	'IterateOverArray$$3.class' \
-	'IterateOverArray$$IterateComposite.class' \
-	'IterateOverArray$$IterateDirector.class' \
-	'IterateOverArray$$IteratePort.class' \
 	'ModelReference$$1.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
