@@ -84,11 +84,11 @@ public class EditorDropTarget extends DropTarget {
 
             if(dtde.isDataFlavorSupported(SchematicPalette.nodeFlavor)) {
                 try {
-		    System.out.println(SchematicPalette.nodeFlavor);
+		    // System.out.println(SchematicPalette.nodeFlavor);
                     dtde.acceptDrop(DnDConstants.ACTION_COPY_OR_MOVE);
 		    data = (CompositeNode)dtde.getTransferable().
 			getTransferData(SchematicPalette.nodeFlavor);
-                    System.out.println("Data is [" + data + "]");//DEBUG
+		    // System.out.println("Data is [" + data + "]");//DEBUG
                 }
                 catch(Exception e) {
                     System.out.println(e);//DEBUG
@@ -105,7 +105,7 @@ public class EditorDropTarget extends DropTarget {
             }
             else {
                 Point p = dtde.getLocation();
-                System.out.println("Dropping at " + p); //DEBUG
+                //System.out.println("Dropping at " + p); //DEBUG
                 GraphController gc = 
 		    ((JGraph)getComponent()).getGraphPane().getGraphController();
                 NamedObj semanticObject = (NamedObj) data.getSemanticObject();

@@ -69,6 +69,64 @@ public class EditorGraphImpl extends BasicGraphImpl {
     }
 
     /**
+     * Return a new instance of a BasicGraph with the given semantic
+     * object.
+     */
+    public Graph createGraph(Object semanticObject) {
+	Graph g = new BasicGraph();
+        g.setSemanticObject(semanticObject);
+	if(semanticObject instanceof CompositeEntity) {
+	    CompositeEntity toplevel = (CompositeEntity) semanticObject;
+	    Enumeration entities = toplevel.getEntities();
+	    while(entities.hasMoreElements()) {
+		Entity entity = (Entity)entities.nextElement();
+		addNode(createCompositeNode(entity), g);
+	    }
+	    
+	    Enumeration relations = toplevel.getRelations();
+	    while(relations.hasMoreElements()) {
+		Relation relation = (Relation)relations.nextElement();
+		// Create a node for each vertex.
+		Enumeration attributes = relation.getAttributes();
+		Node rootVertex = null;
+		while(attributes.hasMoreElements()) {
+		    Attribute a = (Attribute)attributes.nextElement();
+		    if(a instanceof Vertex) {
+			Node n = createNode(a);
+			if(((Vertex)a).getLinkedVertex() == null) {
+			    rootVertex = n;
+			}
+			addNode(n, g);
+		    }
+		}
+		// If there are no vertecies, then do something
+		if(rootVertex == null) 
+		    throw new RuntimeException("no root vertex found in relation.");
+		
+		// FIXME connect everything to the root for now.
+		Enumeration links = relation.linkedPorts();	
+		while(links.hasMoreElements()) {
+		    Port port = (Port)links.nextElement();
+		    // Figure out which node to put the edge to.  
+		    // this is a little ugly.
+		    Node foundNode = null;
+		    Iterator nodes = g.nodes();		    
+		    while(nodes.hasNext() && foundNode != null) {
+			Node node = (Node)nodes.next();
+			if(node.getSemanticObject().equals(port)) {
+			    foundNode = node;
+			}
+		    }
+		    Edge newEdge = createEdge(null);
+		    setEdgeHead(newEdge, foundNode);
+		    setEdgeTail(newEdge, rootVertex);
+		}
+	    }
+	}
+        return g;
+    }
+    
+    /**
      * Set the edge's head to the given node.
      */
     public void setEdgeHead(Edge e, Node head) {

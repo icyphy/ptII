@@ -75,7 +75,9 @@ public class EntityPortController extends NodeController {
     public EntityPortController(GraphController controller) {
 	super(controller);
 	setNodeRenderer(new EntityPortRenderer());
-	NodeInteractor interactor = (NodeInteractor)getNodeInteractor();
+	SelectionModel sm = controller.getSelectionModel();
+	NodeInteractor interactor = new NodeInteractor(sm);
+	setNodeInteractor(interactor);
 	_menuCreator = new MenuCreator(interactor);
     }
     

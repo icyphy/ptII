@@ -77,7 +77,9 @@ public class EntityController extends NodeController {
 	super(controller);
 	setNodeRenderer(new EntityRenderer());
 	setPortController(new EntityPortController(controller));
-	NodeInteractor interactor = (NodeInteractor)getNodeInteractor();
+	SelectionModel sm = controller.getSelectionModel();
+	NodeInteractor interactor = new NodeInteractor(sm);
+	setNodeInteractor(interactor);
 	_menuCreator = new MenuCreator(interactor);
     }
     
@@ -206,11 +208,6 @@ public class EntityController extends NodeController {
     EntityPortController _portController;
     MenuCreator _menuCreator;
 }
-
-
-
-
-
 
 
 

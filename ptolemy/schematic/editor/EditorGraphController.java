@@ -126,53 +126,10 @@ public class EditorGraphController extends GraphController {
      * terminal and edge interactors.
      */
     public EditorGraphController () {
-	setGraphImpl(new EditorGraphImpl());
 	_portController = new PortController(this);
 	_entityController = new EntityController(this);
 	_relationController = new RelationController(this);
 	_linkController = new LinkController(this);
-
-	/*
-        // The interactors attached to terminals and edges
-	SelectionModel sm = getSelectionModel();
-        NodeInteractor ni = new NodeInteractor(sm);
-	//ni.setSelectionManipulator(new BoundsManipulator());
-        EdgeInteractor ei = new EdgeInteractor(sm);
-        setNodeInteractor(ni);
-        setEdgeInteractor(ei);
-
-        NodeRenderer nr = new EditorNodeRenderer(this);
-        setNodeRenderer(nr);
-
-        // Create and set up the target for connectors
-        ConnectorTarget ct = new PerimeterTarget() {
-	    public boolean accept (Figure f) {
-    //		System.out.println(f.getUserObject().toString());
-                System.out.println("targetfigure = " + f);
-		Object object = f.getUserObject();
-                if(object instanceof Node) {
-		    Node node = (Node) object;
-		    object = node.getSemanticObject();
-                    System.out.println("target = " + node);
-		    if(object instanceof Port) return true;
-		    if(object instanceof Vertex) return true;
-		}
-		return false;
-            }
-	};
-        setConnectorTarget(ct);
-
-        // Create and set up the manipulator for connectors
-        ConnectorManipulator manipulator = new ConnectorManipulator();
-        manipulator.setSnapHalo(4.0);
-        manipulator.setConnectorTarget(ct);
-        manipulator.addConnectorListener(new EdgeDropper());
-        ei.setPrototypeDecorator(manipulator);
-
-        // The mouse filter needs to accept regular click or control click
-        MouseFilter handleFilter = new MouseFilter(1, 0, 0);
-        manipulator.setHandleFilter(handleFilter);
-	*/
     }
 
     /** Add an edge to this graph editor and render it
@@ -218,9 +175,15 @@ public class EditorGraphController extends GraphController {
         GraphPane pane = getGraphPane();
 
         // Create and set up the selection dragger
-	//   SelectionDragger _selectionDragger = new SelectionDragger(pane);
-	// _selectionDragger.addSelectionInteractor(getEdgeInteractor());
-	// _selectionDragger.addSelectionInteractor(getNodeInteractor());
+	SelectionDragger _selectionDragger = new SelectionDragger(pane);
+	_selectionDragger.addSelectionInteractor(
+	    (SelectionInteractor)_entityController.getNodeInteractor());
+	_selectionDragger.addSelectionInteractor(
+	    (SelectionInteractor)_relationController.getNodeInteractor());
+	_selectionDragger.addSelectionInteractor(
+	    (SelectionInteractor)_portController.getNodeInteractor());
+	_selectionDragger.addSelectionInteractor(
+	    (SelectionInteractor)_linkController.getEdgeInteractor());
 
         // Create a listener that creates new relations
         _relationCreator = new RelationCreator();
@@ -235,9 +198,9 @@ public class EditorGraphController extends GraphController {
         // Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
 	_linkCreator.setMouseFilter(_controlFilter);
-	_portController.getNodeInteractor().addInteractor(_linkCreator);
-        _entityController.getPortController().getNodeInteractor().addInteractor(_linkCreator);
-	_relationController.getNodeInteractor().addInteractor(_linkCreator);
+	((CompositeInteractor)_portController.getNodeInteractor()).addInteractor(_linkCreator);
+        ((CompositeInteractor)_entityController.getPortController().getNodeInteractor()).addInteractor(_linkCreator);
+	((CompositeInteractor)_relationController.getNodeInteractor()).addInteractor(_linkCreator);
 	
         /*
         // Create the interactor that drags new edges.
@@ -492,7 +455,7 @@ public class EditorGraphController extends GraphController {
 		CompositeEntity object = 
 		    (CompositeEntity) graph.getSemanticObject();
 		JPopupMenu menu = 
-		    new BasicContextMenu(object);
+		    new SchematicContextMenu(object);
 		menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
 		e.consume();
 	    }
@@ -502,7 +465,7 @@ public class EditorGraphController extends GraphController {
     public class SchematicContextMenu extends BasicContextMenu {
 	public SchematicContextMenu(CompositeEntity target) {
 	    super(target);
-	    /*
+	    
 	    Action action;
 	    action = new AbstractAction ("Get Director Parameters") {
 		public void actionPerformed(ActionEvent e) {
@@ -538,149 +501,7 @@ public class EditorGraphController extends GraphController {
 	    add(domain);
 	    JLabel director = new JLabel("Director");
 	    add(director);
-*/
-        }
-    }
 
-    public class RelationController extends NodeController {
-	public RelationController(GraphController controller) {
-	    super(controller);
-	    setNodeRenderer(new RelationRenderer());
-	    NodeInteractor interactor = (NodeInteractor)getNodeInteractor();
-	    new MenuCreator(interactor);
-	}
-
-	/** An interactor that creates context-sensitive menus.
-	 */
-	protected class MenuCreator extends AbstractInteractor {
-	    public MenuCreator(CompositeInteractor interactor) {
-		interactor.addInteractor(this);
-		setMouseFilter(new MouseFilter(3));
-	    }
-	    
-	    public void mousePressed(LayerEvent e) {
-		Figure source = e.getFigureSource();
-		Node sourcenode = (Node) source.getUserObject();
-		NamedObj object = (NamedObj) sourcenode.getSemanticObject();
-		JPopupMenu menu = 
-		    new RelationContextMenu(object);
-		menu.show(getController().getGraphPane().getCanvas(),
-			  e.getX(), e.getY());
-	    }
-	}
-    }
-
-    public class RelationContextMenu extends BasicContextMenu {
-	public RelationContextMenu(NamedObj target) {
-	    super(target);
-	}
-    }
-
-    public class RelationRenderer implements NodeRenderer {
-	public Figure render(Node n) {
-            double h = 12.0;            
-            double w = 12.0;
-
-            Polygon2D.Double polygon = new Polygon2D.Double();
-            polygon.moveTo(w/2, 0);
-            polygon.lineTo(0, h/2);
-            polygon.lineTo(-w/2, 0);
-            polygon.lineTo(0, -h/2);
-            polygon.closePath();
-            //	    Figure figure = new BasicRectangle(-4, -4, 8, 8, Color.black);
-	    Figure figure = new BasicFigure(polygon, Color.black);
-            figure.setUserObject(n);
-	    n.setVisualObject(figure);
-	    return figure;
-	}
-    }
-    
-    // FIXME this should be PerimeterTarget, but it doesn't support non-
-    // rectangular shapes yet.
-    public class LinkTarget extends CenterTarget {
-        public boolean accept (Figure f) {
-            Object object = f.getUserObject();
-            if(object instanceof Node) {
-                Node node = (Node) object;
-                object = node.getSemanticObject();
-                if(object instanceof Port) return true;
-                if(object instanceof Vertex) return true;
-            }
-            return false;
-        }
-        
-        public Site getHeadSite (Figure f, double x, double y) {
-            if(f instanceof StraightTerminal) {
-		return ((Terminal)f).getConnectSite();
-            } else {
-                return super.getHeadSite(f, x, y);
-            }
-        }        
-        ConnectorTarget _vertexTarget;
-    }
-                
-    public class LinkController extends EdgeController {
-	public LinkController(GraphController controller) {
-	    super(controller);
-	    // Create and set up the target for connectors
-	    // This is wierd...  we want 2 targets, one for head and port, 
-	    // one for tail and vertex.
-	    ConnectorTarget ct = new LinkTarget();
-
-            setEdgeRenderer(new LinkRenderer());
-
-	    // Create and set up the manipulator for connectors
-	    BasicSelectionRenderer selectionRenderer = (BasicSelectionRenderer)
-		getEdgeInteractor().getSelectionRenderer();
-	    ConnectorManipulator manipulator = (ConnectorManipulator) 
-		selectionRenderer.getDecorator();
-	    manipulator.setConnectorTarget(ct);
-	    //	    manipulator.addConnectorListener(new EdgeDropper());
-	    //getEdgeInteractor().setPrototypeDecorator(manipulator);
-	    
-	    //    MouseFilter handleFilter = new MouseFilter(1, 0, 0);
-	    //manipulator.setHandleFilter(handleFilter);
-
-	    // FIXME links should have context menus as well
-	    //	    EdgeInteractor interactor = 
-	    //(EdgeInteractor)getEdgeInteractor();
-	    //new MenuCreator(interactor);
-	}
-
-	/** An interactor that creates context-sensitive menus.
-	 */
-	protected class MenuCreator extends AbstractInteractor {
-	    public MenuCreator(CompositeInteractor interactor) {
-		interactor.addInteractor(this);
-		setMouseFilter(new MouseFilter(3));
-	    }
-	    
-	    public void mousePressed(LayerEvent e) {
-		Figure source = e.getFigureSource();
-	        Edge sourcenode = (Edge) source.getUserObject();
-		NamedObj object = (NamedObj) sourcenode.getSemanticObject();
-		JPopupMenu menu = 
-		    new RelationContextMenu(object);
-		menu.show(getController().getGraphPane().getCanvas(),
-			  e.getX(), e.getY());
-	    }
-	}
-    }
-    
-    public class LinkRenderer implements EdgeRenderer {
-        /**
-         * Render a visual representation of the given edge.
-         */
-        public Connector render(Edge edge, Site tailSite, Site headSite) {
-            StraightConnector c = new StraightConnector(tailSite, headSite);
-            c.setUserObject(edge);
-            //            Arrowhead arrow = new Arrowhead(
-            //        headSite.getX(), headSite.getY(), headSite.getNormal());
-            //c.setHeadEnd(arrow);
-            // Add to the view and model
-            c.setUserObject(edge);
-            edge.setVisualObject(c);
-            return c;
         }
     }
 

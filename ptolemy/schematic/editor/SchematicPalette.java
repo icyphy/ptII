@@ -136,9 +136,7 @@ public class SchematicPalette extends JGraph {
 	    _portController = new PortController(this);
 	    _entityController = new EntityController(this);
 	    DragInteractor di = new NodeDnDInteractor(palette);
-	    NodeInteractor ni = _entityController.getNodeInteractor();
-	    ni.setDragInteractor(di);
-	    ni.setConsuming(false);
+	    _entityController.setNodeInteractor(di);
 	    di.setConsuming(false);
 	}
 
@@ -153,8 +151,6 @@ public class SchematicPalette extends JGraph {
 	    GraphPane pane = getGraphPane();    
       	}
 	
-        // FIXME there is probably a better way to do this, rather than 
-        // using a drag interactor that doesn't do any dragging.
 	public class NodeDnDInteractor extends DragInteractor {
 	    /** The Palette that this interactor is a part of.
 	     */

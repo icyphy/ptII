@@ -75,6 +75,9 @@ public class PortController extends NodeController {
     public PortController(GraphController controller) {
 	super(controller);
 	setNodeRenderer(new PortRenderer());
+	SelectionModel sm = controller.getSelectionModel();
+	NodeInteractor interactor = new NodeInteractor(sm);
+	setNodeInteractor(interactor);	
     }
     
 

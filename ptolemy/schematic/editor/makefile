@@ -56,7 +56,9 @@ JSRCS = \
 	EntityPortController.java \
 	GraphDocument.java \
 	GraphEditor.java \
+	LinkController.java \
 	PortController.java \
+	RelationController.java \
 	SchematicPalette.java
 
 EXTRA_SRCS =	$(JSRCS)

@@ -115,7 +115,8 @@ public class GraphEditor extends AbstractApplication {
         super();
 
         // Create local objects
-        _applicationFrame = new DesktopFrame(this, new JTreePane(""));
+	JTreePane treepane = new JTreePane("");	
+        _applicationFrame = new DesktopFrame(this, treepane);
         _documentFactory = new GraphDocument.Factory();
         // _incrementalLayout = new LevelLayout();
 
@@ -168,8 +169,10 @@ public class GraphEditor extends AbstractApplication {
         GraphController controller = 
 	    jgraph.getGraphPane().getGraphController();
         
-        Graph graph = (Graph) d.getSheet(0).getModel();
-
+	CompositeEntity entity = (CompositeEntity) d.getSheet(0).getModel();
+	GraphImpl impl = controller.getGraphImpl();
+	Graph graph = impl.createGraph(entity);
+	
         // Set and draw the new graph
         controller.setGraph(graph);
 
@@ -262,6 +265,7 @@ public class GraphEditor extends AbstractApplication {
         // FIXME Get the right library.
         CompositeEntity lib = getEntityLibrary();
         /*
+	// This is a bunch of test code in case XML loding breaks.
         CompositeEntity lib = new CompositeEntity();
         try {
         
@@ -286,21 +290,14 @@ public class GraphEditor extends AbstractApplication {
             throw new RuntimeException(e.getMessage());
         }
         */
-	//System.out.println("library = " + lib.description());
-//	System.out.println("library = " + getEntityLibrary().description());
-//        JTabbedPane pane = createPaneFromComposite(lib);	
-	//        JTabbedPane pane = createPaneFromComposite(getEntityLibrary());
-        /*	DefaultMutableTreeNode top = 
-	    new DefaultMutableTreeNode("Entity Library");
-	createTreeNodes(top, lib);
-	final JTree tree = new JTree(top);       
-	JScrollPane pane = new JScrollPane(tree);*/
-        //JTreePane pane = new JTreePane("EntityLibrary");
+
 	// We have "" because that is the name that was given in the
 	// treepane constructor.
-        createTreeNodes(pane, "", lib);
-	// s.addShade("Entity Library", null, pane, "The Default entity library");
-        //       pane.setSelectedTitle(lib.getFullName());
+        createTreeNodes(pane, "", lib);	
+	// FIXME proportion is broken.
+	pane.setDividerLocation(150);
+	JSplitPane splitPane = _applicationFrame.getSplitPane();
+	splitPane.setDividerLocation(150);
     }
     
     public void createTreeNodes(JTreePane pane,
@@ -452,9 +449,9 @@ public class GraphEditor extends AbstractApplication {
                     return;
                 } 
                 try {
-                    Graph graph = (Graph)d.getCurrentSheet().getModel();
-                    CompositeActor toplevel = 
-		    (CompositeActor) graph.getSemanticObject();
+		    CompositeActor toplevel = 
+		    (CompositeActor) d.getCurrentSheet().getModel();
+
                     // FIXME set the Director.  This is a hack, but it's the 
                     // Simplest hack.
 		    ptolemy.domains.sdf.kernel.SDFDirector director = 

@@ -33,6 +33,7 @@ package ptolemy.schematic.editor;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.schematic.util.*;
+import ptolemy.moml.*;
 
 import diva.graph.model.*;
 import diva.graph.toolbox.GraphParser;
@@ -96,15 +97,20 @@ public class GraphDocument extends AbstractDocument {
 	URL schematicURL = new URL(urlbase,  filename);
 	    
         System.out.println("Parsing " + schematicURL);
+	MoMLParser parser = new MoMLParser();
+	CompositeEntity toplevel =
+	    (CompositeEntity) parser.parse(schematicURL,
+					   schematicURL.openStream());
+	
         //        Schematic schematic = 
 	//    PTMLObjectFactory.parseSchematic(schematicURL,
 	//	((GraphEditor)getApplication()).getIconLibrary(),
         //	((GraphEditor)getApplication()).getEntityLibrary());
 
-        CompositeEntity toplevel = new CompositeEntity();
+	// CompositeEntity toplevel = new CompositeEntity();
         // FIXME populate
 
-        Sheet s = new BasicSheet(this, "main", new BasicGraph(toplevel));
+        Sheet s = new BasicSheet(this, "main", toplevel);
         addSheet(s);
     }
 
@@ -152,7 +158,7 @@ public class GraphDocument extends AbstractDocument {
             + "title = " + getTitle()
             + ", file = " + getFile()
             + ", url = " + getURL()
-            + "]\n" + ((CompositeEntity)((BasicGraph)getCurrentSheet().getModel()).getSemanticObject()).description();
+            + "]\n" + ((CompositeEntity)getCurrentSheet().getModel()).description();
     }
  
     /** GraphDocument.Factory is a factory for graph documents.  We
@@ -167,8 +173,7 @@ public class GraphDocument extends AbstractDocument {
             //
             TypedCompositeActor toplevel = new TypedCompositeActor();
 
-            d.addSheet(new BasicSheet(d, "New graph", 
-                    new BasicGraph(toplevel)));
+            d.addSheet(new BasicSheet(d, "New graph", toplevel));
             return d;
         }
 

@@ -40,6 +40,8 @@ import ptolemy.schematic.xml.XMLElement;
 import diva.canvas.*;
 import diva.canvas.toolbox.*;
 import java.awt.*;
+import java.awt.geom.*;
+import javax.swing.SwingConstants;
 
 //////////////////////////////////////////////////////////////////////////
 //// EditorIcon
@@ -80,11 +82,18 @@ public class EditorIcon extends Icon {
      * as its background.  
      */
     public Figure createFigure() {
-        Figure figure = new CompositeFigure(createBackgroundFigure());
+	Figure background = createBackgroundFigure();
+	Rectangle2D backBounds = background.getBounds();
+        Figure figure = new CompositeFigure(background);
         Entity entity = (Entity) getContainer();
         LabelFigure label = new LabelFigure(entity.getName());
         label.setSize(10);
+	label.setPadding(1);
+	label.setAnchor(SwingConstants.SOUTH_WEST);
+	
+	label.translateTo(backBounds.getX(),backBounds.getY());
         ((CompositeFigure)figure).add(label);
+	//label.update();
         return figure;
     }
 

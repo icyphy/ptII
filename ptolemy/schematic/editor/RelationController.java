@@ -1,4 +1,4 @@
-/* A Dialog box for editing PTMLObject parameters
+ /* The controller for relation node
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -30,11 +30,14 @@
 
 package ptolemy.schematic.editor;
 
+import ptolemy.actor.*;
+import ptolemy.actor.gui.*;
+import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
-import ptolemy.data.expr.Parameter;
 import ptolemy.schematic.util.*;
 import ptolemy.schematic.xml.*;
 import ptolemy.gui.*;
+import ptolemy.moml.*;
 import diva.gui.*;
 import diva.gui.toolbox.*;
 import diva.graph.*; 
@@ -46,6 +49,8 @@ import diva.canvas.interactor.*;
 import diva.canvas.toolbox.*;
 import java.awt.geom.Rectangle2D;
 import diva.util.Filter;
+import java.awt.*;
+import diva.util.java2d.Polygon2D;
 import java.awt.event.InputEvent;
 import java.awt.event.ActionEvent;
 import java.util.HashMap;
@@ -56,46 +61,64 @@ import javax.swing.*;
 import javax.swing.event.*;
 
 //////////////////////////////////////////////////////////////////////////
-//// ParameterQuery
-/** This query contains parameters from the given target.  
- *  When a change is made in the query, the target's parameters 
- *  are updated.
+//// RelationController
+/**
+ * A Controller for relation nodes.
+ *
  * @author Steve Neuendorffer 
  * @version $Id$
  */
-
-public class ParameterQuery extends Query implements QueryListener {
-    public ParameterQuery(NamedObj target) 
-        throws IllegalActionException {
-        _target = target;
-        Enumeration parameters = target.getAttributes();
-        setTextWidth(20);
-        while(parameters.hasMoreElements()) {
-            Attribute attribute = (Attribute)parameters.nextElement();
-            if(attribute instanceof Parameter) {
-                Parameter param = 
-                    (Parameter) attribute;
-                addLine(param.getName(), param.getName(), 
-                        param.getToken().stringValue());
-            }
-        }
-        addQueryListener(this);
+public class RelationController extends NodeController {
+    public RelationController(GraphController controller) {
+	super(controller);
+	setNodeRenderer(new RelationRenderer());
+	SelectionModel sm = controller.getSelectionModel();
+	NodeInteractor interactor = new NodeInteractor(sm);
+	setNodeInteractor(interactor);	
+	new MenuCreator(interactor);
     }
     
-    /** Called to notify that one of the entries has changed.
-     *  The name of the entry is passed as an argument.
-     *  @param name The name of the entry.
+    /** An interactor that creates context-sensitive menus.
      */
-    public void changed(String name) {
-        String value = stringValue(name);
-	System.out.println("name=" + name + ", value=" + value);
-        Attribute attribute = _target.getAttribute(name);
-        if(attribute instanceof Parameter) {
-            Parameter param = (Parameter) attribute;
-	    System.out.println("parem = " + param);
-            param.setExpression(value);
-        }
+    protected class MenuCreator extends AbstractInteractor {
+	public MenuCreator(CompositeInteractor interactor) {
+	    interactor.addInteractor(this);
+	    setMouseFilter(new MouseFilter(3));
+	}
+	
+	public void mousePressed(LayerEvent e) {
+	    Figure source = e.getFigureSource();
+	    Node sourcenode = (Node) source.getUserObject();
+	    NamedObj object = (NamedObj) sourcenode.getSemanticObject();
+	    JPopupMenu menu = 
+		new RelationContextMenu(object);
+	    menu.show(getController().getGraphPane().getCanvas(),
+		      e.getX(), e.getY());
+	}
     }
-    Query _query;
-    NamedObj _target;
+    
+    public static class RelationContextMenu extends BasicContextMenu {
+	public RelationContextMenu(NamedObj target) {
+	    super(target);
+	}
+    }
+    
+    public class RelationRenderer implements NodeRenderer {
+	public Figure render(Node n) {
+	    double h = 12.0;            
+	    double w = 12.0;
+	    
+	    Polygon2D.Double polygon = new Polygon2D.Double();
+	    polygon.moveTo(w/2, 0);
+	    polygon.lineTo(0, h/2);
+	    polygon.lineTo(-w/2, 0);
+	    polygon.lineTo(0, -h/2);
+	    polygon.closePath();
+	    //	    Figure figure = new BasicRectangle(-4, -4, 8, 8, Color.black);
+	    Figure figure = new BasicFigure(polygon, Color.black);
+            figure.setUserObject(n);
+	    n.setVisualObject(figure);
+	    return figure;
+	}
+    }
 }
