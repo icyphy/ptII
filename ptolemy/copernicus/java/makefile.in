@@ -120,6 +120,8 @@ treeShake:
 
 runTreeShake:
 	@echo "Run the final codegen version"
+	@echo "Note that you can run the codegen version by hand with"
+	@echo "  java -jar $(TREESHAKE_PREFIX)_codegen.jar"
 	@rm -f  $(STATSFILE)
 	@for repeat in 1 2 3 4; \
 	do \
