@@ -52,11 +52,11 @@ import com.sun.j3d.utils.geometry.Primitive;
     The parameters <i>xLength</i>, <i>yHeight</i>, and <i>zWidth</i>
     determine the dimensions of box.
 
-    @author C. Fong, Edward A. Lee
+    @author Chamberlain Fong, Edward A. Lee
     @version $Id$
     @since Ptolemy II 1.0
-    @Pt.ProposedRating Red (chf)
-    @Pt.AcceptedRating Red (chf)
+    @Pt.ProposedRating Green (eal)
+    @Pt.AcceptedRating Green (liuxj)
 */
 public class Box3D extends GRShadedShape {
 
@@ -113,9 +113,9 @@ public class Box3D extends GRShadedShape {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the shape and appearance of the encapsulated box
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+    /** Create the shape and appearance of the box.
+     *  @exception IllegalActionException If the value of some
+     *   parameters can't be obtained.
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
@@ -125,54 +125,33 @@ public class Box3D extends GRShadedShape {
         if (textureURL != null) {
             primitiveFlags = primitiveFlags | Primitive.GENERATE_TEXTURE_COORDS;
         }
+        
+        // Although it is completely undocument in Java3D, the "dimension"
+        // parameters of the box are more like radii than like width,
+        // length, and height. So we have to divide by two.
+        float height = (float)(((DoubleToken)
+                yHeight.getToken()).doubleValue()/2.0);
 
-        _containedNode = new Box((float)_getLength(), (float) _getHeight(),
-                (float) _getWidth(), primitiveFlags, _appearance);
+        float length = (float)(((DoubleToken)
+                xLength.getToken()).doubleValue()/2.0);
+
+        float width = (float)(((DoubleToken)
+                zWidth.getToken()).doubleValue()/2.0);
+
+        _containedNode = new Box(length, height, width,
+                primitiveFlags, _appearance);
     }
 
-    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
-     *  node for this actor is a Java3D box.
-     *  @return the Java3D box.
+    /** Return the Java3D box.
+     *  @return The Java3D box.
      */
     protected Node _getNodeObject() {
-        return (Node) _containedNode;
+        return _containedNode;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
+    ////                         private variables               ////
 
-    protected Box _containedNode;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Return the value of the height parameter
-     *  @return the height of the box
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
-     */
-    private double _getHeight() throws IllegalActionException  {
-        double value = ((DoubleToken) yHeight.getToken()).doubleValue();
-        return value / 2.0;
-    }
-
-    /** Return the value of the length parameter
-     *  @return the length of the box
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
-     */
-    private double _getLength() throws IllegalActionException {
-        double value = ((DoubleToken) xLength.getToken()).doubleValue();
-        return value / 2.0;
-    }
-
-    /** Return the value of the width parameter
-     *  @return the width of the box
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
-     */
-    private double _getWidth() throws IllegalActionException {
-        double value = ((DoubleToken) zWidth.getToken()).doubleValue();
-        return value / 2.0;
-    }
+    /** The box. */
+    private Box _containedNode;
 }

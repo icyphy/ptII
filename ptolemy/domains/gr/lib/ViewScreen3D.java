@@ -1,4 +1,4 @@
-/* A GR scene viewer
+/* A GR 3D scene viewer
 
 Copyright (c) 1998-2004 The Regents of the University of California.
 All rights reserved.
@@ -70,7 +70,7 @@ import com.sun.j3d.utils.geometry.Sphere;
 import com.sun.j3d.utils.universe.SimpleUniverse;
 
 //////////////////////////////////////////////////////////////////////////
-//// ViewScreen
+//// ViewScreen3D
 
 /** A sink actor that renders the GR geometry into a display screen
 
@@ -80,7 +80,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
 @Pt.ProposedRating Red (chf)
 @Pt.AcceptedRating Red (chf)
 */
-public class ViewScreen extends GRActor3D
+public class ViewScreen3D extends GRActor3D
     implements Placeable, ViewScreenInterface {
 
     /** Construct a ViewScreen in the given container with the given name.
@@ -95,7 +95,7 @@ public class ViewScreen extends GRActor3D
      *  @exception NameDuplicationException If the container not a
      *   CompositeActor and the name collides with an entity in the container.
      */
-    public ViewScreen(CompositeEntity container, String name)
+    public ViewScreen3D(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -556,7 +556,7 @@ public class ViewScreen extends GRActor3D
     }
 
     private class MouseRotateView extends MouseRotate {
-        public MouseRotateView(ViewScreen viewContainer) {
+        public MouseRotateView(ViewScreen3D viewContainer) {
             super();
             _viewContainer = viewContainer;
         }
@@ -602,7 +602,7 @@ public class ViewScreen extends GRActor3D
            }*/
 
         boolean stopped = false;
-        ViewScreen _viewContainer;
+        ViewScreen3D _viewContainer;
     }
 
     protected BoundingSphere _bounds;

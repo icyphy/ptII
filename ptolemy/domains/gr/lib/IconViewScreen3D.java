@@ -63,7 +63,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
    @Pt.ProposedRating Red (chf)
    @Pt.AcceptedRating Red (chf)
 */
-public class IconViewScreen3D extends ViewScreen {
+public class IconViewScreen3D extends ViewScreen3D {
 
     /** Construct a ViewScreen2D in the given container with the given name.
      *  If the container argument is null, a NullPointerException will

@@ -28,7 +28,7 @@ package ptolemy.domains.gr.kernel;
 
 import javax.media.j3d.Node;
 
-import ptolemy.domains.gr.lib.ViewScreen;
+import ptolemy.domains.gr.lib.ViewScreen3D;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -39,7 +39,7 @@ import ptolemy.kernel.util.NameDuplicationException;
    A base class for all GR actors. This is an abstract class that is never
    used as a standalone actor in a Ptolemy model. Subclasses of this actor
    include Geometry actors, Transform actors, Interaction actors, and the
-   ViewScreen display actor.
+   ViewScreen3D display actor.
 
    @see ptolemy.domains.gr.lib
 
@@ -93,15 +93,15 @@ abstract public class GRActor3D extends GRActor {
 
     /** Set the view screen that this actor is connected to.
      *  @exception IllegalActionException If the given actor is not a
-     *  ViewScreen2D.
+     *  ViewScreen3D.
      */
     protected void _setViewScreen(GRActor actor)
             throws IllegalActionException {
-        if (actor instanceof ViewScreen) {
-            _viewScreen = (ViewScreen)actor;
+        if (actor instanceof ViewScreen3D) {
+            _viewScreen = (ViewScreen3D)actor;
         } else {
             throw new RuntimeException("Actor " + getClass().getName() +
-                    " can only be used with a ViewScreen");
+                    " can only be used with a ViewScreen3D");
         }
     }
 
@@ -121,5 +121,5 @@ abstract public class GRActor3D extends GRActor {
     ////                         protected variables               ////
 
     // The actor displaying the scene, if there is one
-    protected ViewScreen _viewScreen;
+    protected ViewScreen3D _viewScreen;
 }

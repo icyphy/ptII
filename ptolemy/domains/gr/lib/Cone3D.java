@@ -43,17 +43,17 @@ import com.sun.j3d.utils.geometry.Cone;
 import com.sun.j3d.utils.geometry.Primitive;
 
 //////////////////////////////////////////////////////////////////////////
-////Cone3D
+//// Cone3D
 
 /** This actor contains the geometry and appearance specifications for a
     cone.  The output port is used to connect this actor to the Java3D scene
     graph. This actor will only have meaning in the GR domain.
 
-    @author C. Fong, Edward A. Lee
+    @author Chamberlain Fong, Edward A. Lee
     @version $Id$
     @since Ptolemy II 1.0
-    @Pt.ProposedRating Red (chf)
-    @Pt.AcceptedRating Red (chf)
+    @Pt.ProposedRating Green (eal)
+    @Pt.AcceptedRating Green (liuxj)
 */
 public class Cone3D extends GRShadedShape {
 
@@ -109,8 +109,8 @@ public class Cone3D extends GRShadedShape {
 
     /** The number of divisions on the side of the cone.
      *  This is an integer with default value "1". This parameter
-     *  probably only needs to change when the <i>wire</i> option
-     *  is set to true.
+     *  probably only needs to change when the <i>wireFrame</i>
+     *  parameter is set to true.
      */
     public Parameter sideDivisions;
 
@@ -120,22 +120,11 @@ public class Cone3D extends GRShadedShape {
     public Parameter radius;
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
-
-    /** Return the encapsulated Java3D node of this 3D actor. The encapsulated
-     *  node for this actor is a cone.
-     *  @return the Java3D cone.
-     */
-    public Node _getNodeObject() {
-        return (Node) _containedNode;
-    }
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Create the shape and appearance of the encapsulated cone
-     *  @exception IllegalActionException If the value of some parameters can't
-     *   be obtained
+    /** Create the shape and appearance of the cone.
+     *  @exception IllegalActionException If the value of some
+     *   parameters can't be obtained.
      */
     protected void _createModel() throws IllegalActionException {
         super._createModel();
@@ -147,37 +136,30 @@ public class Cone3D extends GRShadedShape {
         }
 
         int circleDivisionsValue
-            = ((IntToken)circleDivisions.getToken()).intValue();
+                = ((IntToken)circleDivisions.getToken()).intValue();
         int sideDivisionsValue
-            = ((IntToken)circleDivisions.getToken()).intValue();
-        _containedNode = new Cone((float)_getRadius(), (float) _getHeight(),
+                = ((IntToken)sideDivisions.getToken()).intValue();
+        
+        float heightValue 
+                = (float)((DoubleToken) height.getToken()).doubleValue();
+        float radiusValue
+                = (float)((DoubleToken) radius.getToken()).doubleValue();
+        
+        _containedNode = new Cone(radiusValue, heightValue,
                 primitiveFlags, circleDivisionsValue,
                 sideDivisionsValue, _appearance);
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /** Return the value of the height parameter.
-     *  @return The height of the cone.
-     *  @exception IllegalActionException If the parameter cannot
-     *   be obtained (e.g. the expression doesn't parse).
+    /** Return the cone.
+     *  @return The Java3D cone.
      */
-    private double _getHeight() throws IllegalActionException  {
-        return ((DoubleToken) height.getToken()).doubleValue();
-    }
-
-    /** Return the value of the radius parameter.
-     *  @return The radius of the base of the cone.
-     *  @exception IllegalActionException If the parameter cannot
-     *   be obtained (e.g. the expression doesn't parse).
-     */
-    private double _getRadius() throws IllegalActionException {
-        return ((DoubleToken) radius.getToken()).doubleValue();
+    protected Node _getNodeObject() {
+        return (Node) _containedNode;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The cone. */
     private Cone _containedNode;
 }

@@ -30,19 +30,21 @@ package ptolemy.domains.gr.lib.quicktime;
 import java.awt.Dimension;
 import java.awt.Frame;
 import java.awt.Graphics;
+import java.awt.GraphicsConfiguration;
+import java.awt.Point;
 import java.awt.Rectangle;
-import javax.media.j3d.*;
-import java.awt.*;
-import javax.vecmath.Point3f;
 import java.awt.image.BufferedImage;
-import javax.swing.JFrame;
+
+import javax.media.j3d.Canvas3D;
+import javax.media.j3d.ImageComponent;
+import javax.media.j3d.ImageComponent2D;
 
 import ptolemy.data.IntToken;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.gr.lib.ViewScreen;
+import ptolemy.domains.gr.lib.ViewScreen3D;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import quicktime.Errors;
@@ -81,7 +83,7 @@ import com.sun.j3d.utils.universe.SimpleUniverse;
    @Pt.ProposedRating Red (chf)
    @Pt.AcceptedRating Red (chf)
 */
-public class MovieViewScreen3D extends ViewScreen
+public class MovieViewScreen3D extends ViewScreen3D
     implements StdQTConstants, Errors {
 
     /** Construct a ViewScreen2D in the given container with the given name.

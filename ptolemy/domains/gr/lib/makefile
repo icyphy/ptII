@@ -89,7 +89,7 @@ JSRCS = \
 	Torus3D.java \
 	Translate2D.java \
 	Translate3D.java \
-	ViewScreen.java \
+	ViewScreen3D.java \
 	ViewScreen2D.java
 
 

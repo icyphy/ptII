@@ -298,7 +298,7 @@ abstract public class GRShadedShape extends GRActor3D {
     /** Override the base class to set the texture, if one is specified,
      *  now that the view screen is known.
      *  @exception IllegalActionException If the given actor is not a
-     *   ViewScreen2D or if an invalid texture is specified.
+     *   ViewScreen3D or if an invalid texture is specified.
      */
     protected void _setViewScreen(GRActor actor)
             throws IllegalActionException {
