@@ -153,12 +153,12 @@ proc _testPortLinkedRelations {args} {
 }
 
 ######################################################################
-#### _testRelationGetLinkedEntities
+#### _testRelationLinkedEntities
 # Given one or more Entities, return a Tcl list containing 
 # a list of lists of the Entities that each Relation is connected to.
 #
-proc _testRelationGetLinkedEntities {args} {
-    eval _testEnums getLinkedEntities $args
+proc _testRelationLinkedEntities {args} {
+    eval _testEnums linkedEntities $args
 }
 
 ######################################################################
