@@ -400,7 +400,8 @@ public class ModalModel extends CTCompositeActor implements ChangeListener {
         // problematic because it causes the Vergil library
         // to close when you first open a sublibrary containing
         // an instance of ModalModel.
-        new FSMDirector(this, "_Director");
+        FSMDirector defaultFSMDirector = new FSMDirector(this, "_Director");
+        defaultFSMDirector.controllerName.setExpression("_Controller");
 
         // NOTE: If there is a container for this ModalModel, and it
         // has a director, then we get the default value from that
