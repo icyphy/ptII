@@ -59,6 +59,7 @@ PTCLASSALLJARS =
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	FigureCompositor.java \
 	FigureSource.java
 
 EXTRA_SRCS =	$(JSRCS)

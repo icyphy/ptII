@@ -79,7 +79,7 @@ public class FigureSource extends Source implements Configurable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-   /** Configure the object with data from the specified input source
+    /** Configure the object with data from the specified input source
      *  (a URL) and/or textual data.  The object should interpret the 
      *  source first, if it is specified, followed by the literal text,
      *  if that is specified.  The new configuration should usually 
@@ -102,7 +102,7 @@ public class FigureSource extends Source implements Configurable {
         _base = base;
         _source = source;
         _text = text;
-        System.out.println("text = " + text);
+    
         try {
             // FIXME: Do we need a base here?
             // FIXME: ignoring source.
@@ -114,7 +114,7 @@ public class FigureSource extends Source implements Configurable {
             _paintedList = SVGParser.createPaintedList(root);
         } catch (Exception ex) {
             // If we fail, then we'll just get a default figure.
-            ex.printStackTrace();
+            //    ex.printStackTrace();
             _paintedList = null;
         }
     }
@@ -155,14 +155,14 @@ public class FigureSource extends Source implements Configurable {
     ////                         private members                   ////
 
     // The base specified in the configure() method.
-    private URL _base;
+    private URL _base = null;
 
     // The list of painted objects contained in this icon.
     private PaintedList _paintedList;
 
     // The URL from which configure data is read.
-    private String _source;
+    private String _source = null;
 
     // The text in the body of the configure.
-    private String _text;   
+    private String _text = null;   
 }

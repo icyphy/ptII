@@ -86,11 +86,11 @@ public class MetaEdgeController extends CompositeEntity
      * generally attaches to the perimeter of nodes, except that it is 
      * smart enough to properly handle terminals.
      */
-    public MetaEdgeController(MetaGraphController container, String name)
+    public MetaEdgeController(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
        
-	SelectionModel sm = getController().getSelectionModel();
+	//SelectionModel sm = getController().getSelectionModel();
 	setEdgeInteractor(new MetaInteractor(this, "_interactor"));
 	
         // Create and set up the manipulator for connectors

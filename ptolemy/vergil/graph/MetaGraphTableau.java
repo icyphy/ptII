@@ -37,6 +37,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
 import ptolemy.moml.*;
 import ptolemy.vergil.ptolemy.GraphFrame;
+import ptolemy.vergil.ptolemy.kernel.PtolemyGraphModel;
 
 import java.awt.Color;
 import java.net.*;
@@ -50,6 +51,13 @@ import java.net.*;
 @version $Id$
 */
 public class MetaGraphTableau extends Tableau {
+
+    /** 
+     */
+    public MetaGraphTableau(Workspace workspace) 
+            throws IllegalActionException, NameDuplicationException {
+        super(workspace);
+    }
 
     public MetaGraphTableau(PtolemyEffigy container,
             String name)
@@ -159,13 +167,9 @@ public class MetaGraphTableau extends Tableau {
                 _controller = (GraphController)
                     getTableau().getEntity("graphController");
                 
-                diva.graph.basic.BasicGraphModel graphModel = 
-                    new diva.graph.basic.BasicGraphModel();
-                Object node = graphModel.createNode(new Object());
-                graphModel.addNode(this, node, graphModel.getRoot());
-                node = graphModel.createNode(new Object());
-                graphModel.addNode(this, node, graphModel.getRoot());
-                
+                final PtolemyGraphModel graphModel = 
+                    new PtolemyGraphModel(getModel());
+               
                 GraphPane pane = new GraphPane(_controller, graphModel);
                 return pane;
             } catch (Exception ex) {

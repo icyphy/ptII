@@ -74,7 +74,7 @@ public class MetaNodeController extends CompositeEntity
     public MetaNodeController(CompositeEntity container, String name) 
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        SelectionModel sm = getController().getSelectionModel();
+        //        SelectionModel sm = getController().getSelectionModel();
         //       setNodeInteractor(new NodeInteractor(getController(), sm));
         setNodeInteractor(new MetaInteractor(this, "_interactor"));    
         setNodeRenderer(new MetaNodeRenderer(this, "_renderer"));

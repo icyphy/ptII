@@ -279,8 +279,7 @@ public class MetaGraphController extends CompositeEntity
      * This should be called when changes to renderers are made.
      */
     public void rerender () {
-        System.out.println("starting render");
-        System.out.println("model = " + _model);
+        
 	// FIXME: it would be nice to be able to do this without all 
 	// stupid business with the selection model.
 	List selectedEdges = new LinkedList();
@@ -312,8 +311,7 @@ public class MetaGraphController extends CompositeEntity
 		}
 	    }
 	}
-        System.out.println("_model = " + _model);
-	    
+     	    
 	// Save the selected edges.
 	Iterator edges = GraphUtilities.totallyContainedEdges(
                 _model.getRoot(), _model);
@@ -358,7 +356,6 @@ public class MetaGraphController extends CompositeEntity
 		_selectionModel.addSelection(getFigure(edge));
 	    }
         }          
-        System.out.println("ending render");
     }
        
     /**
@@ -447,12 +444,9 @@ public class MetaGraphController extends CompositeEntity
         _model = model;
 
         if(_model != null) {
-            System.out.println("model = " + _model);
             _model.addGraphListener(_localListener);
 	    Object root = _model.getRoot();
             GraphEvent evt = new GraphEvent(new Object(), GraphEvent.STRUCTURE_CHANGED, root);
-            System.out.println("outsidemodel = " + _model);
-            System.out.println("This = " + this);
             _localListener.structureChanged(evt);
         }
     }
@@ -591,11 +585,8 @@ public class MetaGraphController extends CompositeEntity
          * of that graph from model.
          */
         public void structureChanged(GraphEvent e) {
-            System.out.println("insidemodel = " + MetaGraphController.this._model);
-            System.out.println("This = " + MetaGraphController.this);
             if(e.getSource() != MetaGraphController.this) {
-                System.out.println("_model = " + _model);
-		rerender();
+    		rerender();
 		/* Object root = e.getTarget();
                 
                 //FIXME - this could be optimized--
