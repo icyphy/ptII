@@ -64,16 +64,14 @@ public class SpaceFinder {
      *   found.
      */
     public static JavaSpace getSpace(String name)
-	    throws IllegalActionExcaption {
+	    throws IllegalActionException {
         try {
             if (System.getSecurityManager() == null) {
                 System.setSecurityManager(
                     new RMISecurityManager());
             }
                       
-            if (System.getProperty("com.sun.jini.use.registry") 
-                == null) 
-            {
+            if (System.getProperty("com.sun.jini.use.registry") == null) {
                 Locator locator =
                     new com.sun.jini.outrigger.DiscoveryLocator();
                 Finder finder =
@@ -84,10 +82,9 @@ public class SpaceFinder {
                 return (JavaSpace)rh.proxy();
             }
         } catch (Exception ex) {
-            throws IllegalActionException("Cannot find JavaSpace. " +
+            throw new IllegalActionException("Cannot find JavaSpace. " +
 					ex.getMessage());
         }
-        return null;
     }
     
     /** Return a JavaSpace with the default name "JavaSpaces".
@@ -95,7 +92,7 @@ public class SpaceFinder {
      *  @exception IllegalActionException If a JavaSpace cannot be
      *   found.
      */
-    public static JavaSpace getSpace() {
+    public static JavaSpace getSpace() throws IllegalActionException {
         return getSpace("JavaSpaces");
     }
 }

@@ -38,7 +38,10 @@ DIRS = 		conversions test logic
 # Root of the Java directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+JINI_JAR_PATH = $(ROOT)/vendors/sun/jini/lib
+JINI_JAR =	$(JINI_JAR_PATH)/jini-ext.jar$(CLASSPATHSEPARATOR)$(JINI_JAR_PATH)/mahalo.jar$(CLASSPATHSEPARATOR)$(JINI_JAR_PATH)/space-examples.jar
+
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JINI_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
