@@ -187,7 +187,7 @@ public class FIR extends SDFTransformer {
             _dec = token.intValue();
             if (_dec <= 0) {
                 throw new IllegalActionException(this,
-                        "Invalid decimation: " + _interp
+                        "Invalid decimation: " + _dec
                         + ". Must be positive.");
             }
             input.setTokenConsumptionRate(_dec);
@@ -201,7 +201,7 @@ public class FIR extends SDFTransformer {
             _decPhase = token.intValue();
             if (_decPhase < 0) {
                 throw new IllegalActionException(this,
-                        "Invalid decimation: " + _interp
+                        "Invalid decimationPhase: " + _decPhase
                         + ". Must be nonnegative.");
             }
             _reinitializeNeeded = true;
@@ -353,8 +353,14 @@ public class FIR extends SDFTransformer {
      */
     protected int _phaseLength;
 
-    /** Control variables for the FIR main loop. */
-    protected int _dec, _interp, _decPhase;
+    /** Decimation value. */
+    protected int _dec = 1;
+
+    /** Interpolation value. */
+    protected int _interp = 1;
+
+    /** DecimationPhase value. */
+    protected int _decPhase = 0;
 
     /** Indicator that at least one attribute has been changed
      *  since the last initialization.
