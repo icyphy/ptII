@@ -592,7 +592,6 @@ public class DTDirector extends SDFDirector {
         return true;
     }
 
-
     /** Set the local time of an actor in the  model under
      *  this director. This method is called by the DTReceiver
      *  class and doesn't need to be called by any other classes.
@@ -605,7 +604,6 @@ public class DTDirector extends SDFDirector {
         dtActor._localTime = newTime;
     }
 
-
     /** Set the current time of the model under this director.
      *  Setting the time back to the past is allowed in DT.
      *
@@ -615,7 +613,6 @@ public class DTDirector extends SDFDirector {
         // _currentTime is inherited from base Director
         _currentTime = newTime;
     }
-
 
     /** Override the base class method to make sure that enough tokens
      *  are available to complete one iteration.
@@ -638,7 +635,6 @@ public class DTDirector extends SDFDirector {
         }
     }
 
-
     /** This is called by the outside director to get tokens
      *  from an opaque composite actor. Return true if data is
      *  transferred from an output port of the container to the
@@ -656,7 +652,6 @@ public class DTDirector extends SDFDirector {
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
      */
-
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
         TypedCompositeActor container = (TypedCompositeActor) getContainer();
@@ -671,15 +666,12 @@ public class DTDirector extends SDFDirector {
                 // We probably have something like DE on the outside...
                 // Transfer one token and wait for refiring to transfer
                 // the others.
-                return port.transferOutputs();
+                return domainPolymorphicTransferOutputs(port);
             }
         } else {
             return false;
         }
     }
-
-
-
 
     /**  Reset this director to an uninitialized state.
      *
