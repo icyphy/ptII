@@ -158,9 +158,7 @@ public class Reader extends Source {
                     }
                 }
             } catch (IOException ex) {
-                System.out.println("URL not found..." + ex.getMessage());
-                //throw new IllegalActionException(this, ex.getMessage());
-                sourceURL.setToken(new StringToken(""));
+                throw new IllegalActionException(this, ex.getMessage());
             }
         }
         super.attributeChanged(attribute);
