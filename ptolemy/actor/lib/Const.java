@@ -49,7 +49,7 @@ public class Const extends TypedAtomicActor {
      *  null, it is set to the default value "0".
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @param expr The expression of the constant output.
+     *  @param expr The String expression of the constant output.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
