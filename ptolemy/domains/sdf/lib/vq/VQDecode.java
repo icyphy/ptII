@@ -69,7 +69,6 @@ public final class VQDecode extends SDFAtomicActor {
 
     }
 
-
     public void fire() throws IllegalActionException {
         int j;
         int numpartitions =
@@ -124,20 +123,20 @@ public final class VQDecode extends SDFAtomicActor {
                     } catch (MalformedURLException e) {
                         System.err.println(e.toString());
                     } catch (FileNotFoundException e) {
-                        System.err.println("RLEncodingApplet: " +
-                                "file not found: " +e);
+                        System.err.println("VQDecode: " +
+                                "file not found: " + e);
                     } catch (IOException e) {
                         System.err.println(
-                                "RLEncodingApplet: error reading"+
-                                " input file: " +e);
+                                "VQDecode: error reading"+
+                                " input file: " + e);
                     }
                 } else {
                     File sourcefile = new File(filename);
                     if(!sourcefile.exists() || !sourcefile.isFile())
-                        throw new IllegalActionException("Image file " +
+                        throw new IllegalActionException("Codebook file " +
                                 filename + " does not exist!");
                     if(!sourcefile.canRead())
-                        throw new IllegalActionException("Image file " +
+                        throw new IllegalActionException("Codebook file " +
                                 filename + " is unreadable!");
                     source = new FileInputStream(sourcefile);
                 }
@@ -157,9 +156,13 @@ public final class VQDecode extends SDFAtomicActor {
                         _codebook[i][j][x] = temp[x] & 255;
                 }
 
-               // skip over the lookup tables.
-                source.skip(65536);
-
+		// skip over the lookup tables.
+		
+                temp = new byte[65536];
+                // read in the lookup table.
+                if(_fullread(source, temp) != 65536)
+                    throw new IllegalActionException("Error reading " +
+                            "codebook file!");
            }
         }
         catch (Exception e) {

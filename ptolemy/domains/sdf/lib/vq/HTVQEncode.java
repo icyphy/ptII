@@ -80,10 +80,9 @@ public final class HTVQEncode extends SDFAtomicActor {
         for(j = 0; j < numpartitions; j++) {
            _codewords[j] = new IntToken(
                 _encode(_tokens[j].intArray(), _xpartsize * _ypartsize));
-        }
+	}
 
         ((SDFIOPort) getPort("index")).sendArray(0, _codewords);
-
     }
 
     public void initialize() throws IllegalActionException {
@@ -119,20 +118,20 @@ public final class HTVQEncode extends SDFAtomicActor {
                     } catch (MalformedURLException e) {
                         System.err.println(e.toString());
                     } catch (FileNotFoundException e) {
-                        System.err.println("RLEncodingApplet: " +
+                        System.err.println("HTVQEncode: " +
                                 "file not found: " +e);
                     } catch (IOException e) {
                         System.err.println(
-                                "RLEncodingApplet: error reading"+
+                                "HTVQEncode: error reading"+
                                 " input file: " +e);
                     }
                 } else {
                     File sourcefile = new File(filename);
                     if(!sourcefile.exists() || !sourcefile.isFile())
-                        throw new IllegalActionException("Image file " +
+                        throw new IllegalActionException("Codebook file " +
                                 filename + " does not exist!");
                     if(!sourcefile.canRead())
-                        throw new IllegalActionException("Image file " +
+                        throw new IllegalActionException("Codebook file " +
                                 filename + " is unreadable!");
                     source = new FileInputStream(sourcefile);
                 }
