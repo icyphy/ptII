@@ -119,10 +119,10 @@ under hierarchical DT has no meaning; and hence will be ignored.
  @version
 */
 /* Fixme (known bugs)
- 1.) What happens when events come in faster than the period of a DT composite actor
-     (e.g clock feeding DT)
- 2.) What happens to time when DT composite actor doesn't fire because there aren't
-     enough tokens
+ 1.) Put more tests on this case: when events come in faster than the period of a DT 
+     composite actor (e.g clock feeding DT)
+ 2.) Put more tests on this case: when DT composite actor doesn't fire because there aren't
+     enough tokens. 
  
 */
 public class DTDirector extends SDFDirector {
@@ -172,9 +172,9 @@ public class DTDirector extends SDFDirector {
      *  DoubleToken.  Its default value is 1.0 .
      *  For homogeneous hierarchical DT (i.e. DT inside DT) , the period
      *  of the inside director cannot be set explicitly by the user.
-     *  Instead, it will have a fixed value: "outsidePeriod / repeats ",
+     *  Instead, it will have a fixed value: "outsidePeriod / repetitions ",
      *  where 'outsidePeriod' is the period of the outside director; and
-     *  'repeats' is the firing count of the composite actor that contains
+     *  'repetitions' is the firing count of the composite actor that contains
      *  the inside director.
      *  For heterogeneous hierarchical DT (i.e. DT inside DE or CT), the
      *  period parameter is used to determine how often the fireAt()
@@ -354,10 +354,10 @@ public class DTDirector extends SDFDirector {
      */
     public double getPeriod() throws IllegalActionException {
     //  -getPeriod-
-    //  FIXME: This method is very inefficient. You should cache a private local
-    //  _period variable instead. Also you might need to update the inside DT
-    //  director's period value 
-    //  FIXME: It is really inefficient to calculate and set the inside 
+    //  FIXME: This method is very inefficient. Implementation should cache a 
+    //  private local _period variable instead. Also the implementation might 
+    //  need to update the inside DT director's period value 
+    //  FIXME: It is inefficient to calculate and set the inside 
     //  DT director's period value at every call to this function
         Token periodToken;
         double periodValue = 0.0;
@@ -396,15 +396,12 @@ public class DTDirector extends SDFDirector {
 
 
     /** Initialize all the actors associated with this director by calling
-     *  super.initialize().  Create a cached table of all the actors
-     *  associated with this director.  Determine which actors need to generate
+     *  super.initialize(). Determine which actors need to generate
      *  initial tokens for causality. All actors with nonhomogeneous input
      *  ports will need to generate initial tokens for all its output ports.
      *  For example, if actor A has a nonhomogeneous input port and an output
      *  port with production rate 'm' then actor A needs to produce 'm' initial
-     *  tokens on the output port.  The director will handle the production of
-     *  initial tokens if the actor does not have a parameter 'initialOutputs'
-     *  on its output ports.
+     *  tokens on the output port.  
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
      */
@@ -420,7 +417,7 @@ public class DTDirector extends SDFDirector {
         _buildOutputPortTable();
         super.initialize();
 
-        // This portion figures out which actors should generate initial tokens
+      // This portion figures out which actors should generate initial tokens
         ListIterator receiverIterator = _receiverTable.listIterator();
         while(receiverIterator.hasNext()) {
             DTReceiver currentReceiver = (DTReceiver) receiverIterator.next();
@@ -511,9 +508,6 @@ public class DTDirector extends SDFDirector {
      */
     public void invalidateSchedule() {
     //  -invalidateSchedule-
-        // FIXME: is reset needed here? If so, Vergil calls
-        // invalidateSchedule very often
-        //_reset();
         super.invalidateSchedule();
     }
 
@@ -526,12 +520,11 @@ public class DTDirector extends SDFDirector {
     }
 
 
-    /** Set current time to zero. Invoke the preinitialize() methods of
-     *  all actors deeply contained by the container by calling
-     *  super.preinitialize(). This method is invoked once per execution,
-     *  before any iteration; i.e. every time the GO button is pressed.
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
+    /** Invoke the preinitialize() methods of all actors deeply contained
+     *  by the container by calling super.preinitialize(). This method is
+     *  invoked once per execution, before any iteration; i.e. every time
+     *  the GO button is pressed. This method is <i>not</i> synchronized 
+     *  on the workspace, so the caller should be.
      *
      *  @exception IllegalActionException If the preinitialize() method
      *   of the container or one of the deeply contained actors throws it.
@@ -539,9 +532,6 @@ public class DTDirector extends SDFDirector {
     public void preinitialize() throws IllegalActionException {
     //  -preinitialize-
 
-        // FIXME:  creating a new ArrayList() may not be the way to go
-        //         for hierarchical topologies.  Maybe this should be
-        //         moved to wrapup()
         super.preinitialize();
     }
     
