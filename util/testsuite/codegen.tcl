@@ -201,7 +201,7 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow} \
 	{defaultIterations {}} \
         {statsOnly 0} \
 	{speedComparison 0} \
-	{runCommand "runDemo"}} {
+	{runCommand "longTest"}} {
     global relativePathToPTII
 
     if {[file extension $modelPath] == ""} {
