@@ -37,7 +37,7 @@ import ptolemy.actor.sched.*;
 import ptolemy.data.expr.*;
 import ptolemy.data.*;
 import java.util.*;
-import collections.LinkedList;
+//import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// CTEmbeddedDirector
