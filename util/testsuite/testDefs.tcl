@@ -221,21 +221,13 @@ proc doneTests {args} {
     # to run jsinstr with JSINTRFLAGS=-IFLUSHCLASS=true 
     catch {java::call COM.sun.suntest.javascope.database.js\$ flush}
 
-    # Keep these lower case so that the nightly build can seach for
-    # 'Total tests'
-    puts "total tests:  [expr $PASSED + $FAILED + $KNOWN_FAILED]"
-    puts "passed:       $PASSED"
-    puts "newly passed: $NEWLY_PASSED"
-    puts "failed:       $FAILED"
-    puts "known failed: $KNOWN_FAILED"
-    puts "directory:    [pwd]"
-
     # This line must exist so that we can easily parse the results
     # it is all on one line so that the nightly build scripts can search
     # for 'Total Tests'
-    puts "Total Tests: [expr $PASSED + $FAILED + $KNOWN_FAILED] \
+    puts "Failed: $Failed \
+	    Total Tests: [expr $PASSED + $FAILED + $KNOWN_FAILED] \
 	    ((Passed: $PASSED, Newly Passed: $NEWLY_PASSED) \
-    Failed: $FAILED Known Failed: $KNOWN_FAILED) [pwd]"
+	    Known Failed: $KNOWN_FAILED) [pwd]"
     flush stderr
     update
     if {![info exists reallyExit] || $reallyExit == 1} {
