@@ -178,6 +178,24 @@ public class AtomicActor extends ComponentEntity implements Actor {
         return getDirector();
     }
 
+    /** Return the IODependency object associated with this 
+     *  atomic actor.
+     *  @return the IODependency object.
+     *  @see IODependency
+     */
+    public IODependency getIODependencies() {
+        // If the _ioDependency object is not constructed, 
+        // construct an IODependencyOfAtomicActor object.
+        if (_ioDependency == null) {
+            _ioDependency = new IODependencyOfAtomicActor(this);
+        }
+        // Note, we don't guarantee the validity of this 
+        // _ioDependency in this method. Any further access of
+        // the details of the _ioDependency will check the 
+        // validity.
+        return _ioDependency;
+    }
+
     /** Return the Manager responsible for execution of this actor,
      *  if there is one. Otherwise, return null.
      *  @return The manager.
@@ -406,9 +424,23 @@ public class AtomicActor extends ComponentEntity implements Actor {
 
     /** Explicitly declare which inputs and outputs are not dependent.
      *  In this base class, this method does nothing. Subclasses should
-     *  implement the details. @see ptolemy.domains.de.lib.TimedDelay.
+     *  implement the details. 
+     *  <p>
+     *  To declare a pair, input and output, independent, use the <i>
+     *  removeDependency(IOPort IOPort)</i> method. 
+     *  
+     *  @see ptolemy.domains.de.lib.TimedDelay
+     *  @see #removeDependency(IOPort IOPort)
      */
-    public void removeDependencies() throws IllegalActionException {
+    public void removeDependencies() {
+    }
+
+    /** Explicitly declare a pair, input and output, are independent.
+     *  @param input the input port
+     *  @param output the output port
+     */
+    public void removeDependency(IOPort input, IOPort output) {
+        _ioDependency.removeDependency(input, output);
     }
 
     /** Override the base class to invalidate the schedule and
@@ -546,4 +578,7 @@ public class AtomicActor extends ComponentEntity implements Actor {
     private transient List _cachedInputPorts;
     private transient long _outputPortsVersion = -1;
     private transient List _cachedOutputPorts;
+    
+    // Cached ioDependency object.
+    private IODependencyOfAtomicActor _ioDependency;
 }

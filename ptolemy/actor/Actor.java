@@ -46,7 +46,7 @@ functionality in AtomicActor and CompositeActor.
 @see ptolemy.actor.CompositeActor
 @see ptolemy.actor.AtomicActor
 */
-public interface Actor extends Executable {
+public interface Actor extends Executable, HasIODependencies {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

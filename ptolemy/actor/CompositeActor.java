@@ -116,7 +116,8 @@ newRelation(), _addRelation(), and _addEntity().
 @see ptolemy.actor.Director
 @see ptolemy.actor.Manager
 */
-public class CompositeActor extends CompositeEntity implements Actor {
+public class CompositeActor extends CompositeEntity 
+    implements Actor, HasIODependencies {
 
     /** Construct a CompositeActor in the default workspace with no container
      *  and an empty string as its name. Add the actor to the workspace
@@ -344,6 +345,24 @@ public class CompositeActor extends CompositeEntity implements Actor {
         }
     }
 
+    /** Return the IODependency object associated with this 
+     *  composite actor.
+     *  @return the IODependency object.
+     *  @see IODependency
+     */
+    public IODependency getIODependencies() {
+        // If the _ioDependency object is not constructed, 
+        // construct an IODependencyOfCompositeActor object.
+        if (_ioDependency == null) {
+            _ioDependency = new IODependencyOfCompositeActor(this);
+        }
+        // Note, we don't guarantee the validity of this 
+        // _ioDependency in this method. Any further access of
+        // the details of the _ioDependency will check the 
+        // validity.
+        return _ioDependency;
+    }
+    
     /** Get the manager responsible for execution of this composite actor.
      *  If this is the toplevel composite actor, then return what was
      *  set with setManager().
@@ -1087,4 +1106,7 @@ public class CompositeActor extends CompositeEntity implements Actor {
     private transient List _cachedInputPorts;
     private transient long _outputPortsVersion = -1;
     private transient List _cachedOutputPorts;
+    
+    // Cached IODependency object.
+    private IODependencyOfCompositeActor _ioDependency;
 }
