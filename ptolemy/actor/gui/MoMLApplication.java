@@ -87,6 +87,11 @@ import ptolemy.util.StringUtilities;
    ptolemy foo.xml -a 5 -y.b 10
    </pre>
    would set the values of the two parameters.
+   <p>Note that strings need to be carefully backslashed, it might
+   be necessary to do something like
+   <pre>
+   ptolemy foo.xml -a 5 -y.b 10 -c \"bar\"
+   </pre>
    <p>
    Derived classes may provide default configurations. In particular, the
    protected method _createDefaultConfiguration() is called before any
@@ -157,8 +162,6 @@ public class MoMLApplication {
 
         MessageHandler.setMessageHandler(new GraphicalMessageHandler());
 
-        _parseArgs(args);
-
         // Even if the user is set up for foreign locale, use the US locale.
         // This is because certain parts of Ptolemy (like the expression
         // language) are not localized.
@@ -181,6 +184,33 @@ public class MoMLApplication {
             // FIXME: If the application is run under Web Start, then this
             // exception will be thrown.
         }
+
+        try {
+            _parseArgs(args);
+        } catch (Exception ex) {
+            // Make sure that we do not eat the exception if there are
+            // problems parsing.  For example, "ptolemy -FOO bar bif.xml"
+            // will crash if bar is not a variable.  Instead, use
+            // "ptolemy -FOO \"bar\" bif.xml"
+
+            // Accumulate the arguments into a StringBuffer
+            StringBuffer argsStringBuffer = new StringBuffer();
+            try {
+                for (int i = 0; i < args.length; i++) {
+                    if (argsStringBuffer.length() > 0) {
+                        argsStringBuffer.append(" ");
+                    }
+                    argsStringBuffer.append(args[i]);
+                }
+            } catch (Exception ex2) {
+                //Ignored
+            }                
+            String errorMessage = "Failed to parse \""
+                + argsStringBuffer.toString() + "\"";
+
+            MessageHandler.error(errorMessage, ex);
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -619,8 +649,9 @@ public class MoMLApplication {
                 if (arg.trim().startsWith("-")) {
                     if (i >= args.length - 1) {
                         throw new IllegalActionException("Cannot set " +
-                                "parameter " + arg + " when no value is " +
-                                "given.");
+                            "parameter " + arg + " when no value is " +
+                            "given.");
+
                     }
                     // Save in case this is a parameter name and value.
                     _parameterNames.add(arg.substring(1));
