@@ -9,7 +9,7 @@
 
 <entity name="StateSampler" class="ptolemy.domains.hde.lib.StateSampler">
 </entity>
-<entity name="ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
+<entity name="ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
 </entity>
       </group>
     ?>

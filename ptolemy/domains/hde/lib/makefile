@@ -49,7 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
 	StateSampler.java \
-        ArrayMem.java \
+        ArrayMemory.java \
          
 
 	OTHER_FILES_TO_BE_JARED = \

@@ -137,7 +137,7 @@
             </property>
         </port>
     </entity>
-    <entity name="ArrayMem" class="ptolemy.domains.hde.lib.ArrayMem">
+    <entity name="ArrayMemory" class="ptolemy.domains.hde.lib.ArrayMemory">
         <property name="length" class="ptolemy.data.expr.Parameter" value="3">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="340.0, 120.0">
@@ -145,21 +145,21 @@
         <port name="index" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="dataInPar" class="ptolemy.actor.TypedIOPort">
+        <port name="dataInParallel" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="dataOutPar" class="ptolemy.actor.TypedIOPort">
+        <port name="dataOutParallel" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="{int}">
             </property>
         </port>
-        <port name="dataInSer" class="ptolemy.actor.TypedIOPort">
+        <port name="dataInSerial" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
-        <port name="dataOutSer" class="ptolemy.actor.TypedIOPort">
+        <port name="dataOutSerial" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="serPar" class="ptolemy.actor.TypedIOPort">
+        <port name="serialOrParallel" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
         <port name="read" class="ptolemy.actor.TypedIOPort">
@@ -199,11 +199,11 @@
     <link port="3:SingleEvent.output" relation="relation7"/>
     <link port="1:3:SingleEvent.output" relation="relation6"/>
     <link port="Test.input" relation="relation2"/>
-    <link port="ArrayMem.index" relation="relation8"/>
-    <link port="ArrayMem.dataInPar" relation="relation10"/>
-    <link port="ArrayMem.dataOutPar" relation="relation2"/>
-    <link port="ArrayMem.dataInSer" relation="relation8"/>
-    <link port="ArrayMem.serPar" relation="relation7"/>
-    <link port="ArrayMem.read" relation="relation13"/>
-    <link port="ArrayMem.write" relation="relation"/>
+    <link port="ArrayMemory.index" relation="relation8"/>
+    <link port="ArrayMemory.dataInParallel" relation="relation10"/>
+    <link port="ArrayMemory.dataOutParallel" relation="relation2"/>
+    <link port="ArrayMemory.dataInSerial" relation="relation8"/>
+    <link port="ArrayMemory.serialOrParallel" relation="relation7"/>
+    <link port="ArrayMemory.read" relation="relation13"/>
+    <link port="ArrayMemory.write" relation="relation"/>
 </entity>
