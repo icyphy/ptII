@@ -263,16 +263,16 @@ public class PtolemyQuery extends Query
      *  @param variable The variable that has changed.
      */
     public void valueChanged(Variable variable) {
-	System.out.println("PtolemyQuery: valueChanged: invoked");
+	//System.out.println("PtolemyQuery: valueChanged: invoked");
         // Check that variable is attached to at least one entry.
         if (_parameters.containsValue(variable)) {
             
             //System.out.println("PtolemyQuery: valueChanged(): " +
             //	       "getFullName of var" +
             //	       variable.getFullName() + ".");
-            System.out.println("PtolemyQuery: valueChanged(): " +
-            	       "stringRepresentation " + 
-                    variable.stringRepresentation());
+            //System.out.println("PtolemyQuery: valueChanged(): " +
+            //	       "stringRepresentation " + 
+            //        variable.stringRepresentation());
             
             // Get the list of entry names that variable is
             // attached to.
@@ -285,7 +285,7 @@ public class PtolemyQuery extends Query
                 // Check if entryName is in the list. If not, add it.
                 String name = (String)entryNames.next();
                 
-                System.out.println("setting " + name);
+                //System.out.println("setting " + name);
                 // Set the entry name's value to the variable's
                 // value.
                 // FIXME
@@ -301,9 +301,9 @@ public class PtolemyQuery extends Query
             }
         } else {
             // FIXME: throw exception?
-            System.out.println("PtolemyQuery: valueChanged(): " +
-                    "No entry attached to variable " +
-                    variable.getFullName());
+            //System.out.println("PtolemyQuery: valueChanged(): " +
+            //        "No entry attached to variable " +
+            //        variable.getFullName());
         }
     }
 
