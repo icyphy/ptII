@@ -514,7 +514,6 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/moml \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/ct \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/fsm/kernel \
-	$(REMOTE1PTIIDIST)/ptolemy/domains/hdf/kernel \
 	$(REMOTE1PTIIDIST)/com/JLex \
 	$(REMOTE1PTIIDIST)/ptolemy/plot \
 	$(REMOTE1PTIIDIST)/ptolemy/copernicus/kernel \
