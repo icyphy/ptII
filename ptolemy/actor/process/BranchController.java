@@ -169,8 +169,21 @@ public class BranchController implements Runnable {
             // If the port lacks either producer or consumer
             // receivers, then there is no point in creating a branch.
             if (producerReceivers.length > i && consumerReceivers.length > i) {
-                producerReceiver = (ProcessReceiver)producerReceivers[i][0];
+                try {
+                    producerReceiver =
+                        (ProcessReceiver)producerReceivers[i][0];
+                } catch (ClassCastException ex) {
+                    // pn/test/auto/decspbug.xml is a DE model with
+                    // a PN composite that fails with a ClassCastException
+                    // error, so we give a better message.
+                    throw new ClassCastException("Failed to cast '"
+                            + producerReceivers[i][0] + "', which is a '"
+                            + producerReceivers[i][0].getClass().getName()
+                            + "' to a ProcessReceiver.");
+
+                }
                 consumerReceiver = (ProcessReceiver)consumerReceivers[i][0];
+
                 branch = new Branch( producerReceiver, consumerReceiver, this );
                 _branches.add(branch);                
             }
