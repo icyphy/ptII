@@ -471,6 +471,28 @@ test BackwardCompatibility-7.2 {Expression: Property Class Change} {
 </entity>
 }}
 
+
+######################################################################
+####
+#
+
+set expressionMoml  "$header 
+<entity name=\"ViewScreenProperty\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <entity name=\"ViewScreen\" class=\"ptolemy.domains.gr.lib.ViewScreen\">
+        <property name=\"backgroundColor\" class=\"ptolemy.data.expr.Parameter\" value=\"\[0.0, 0.0, 0.0\]\">
+        </property>
+    </entity>
+</entity>"
+
+test BackwardCompatibility-7.3 {ViewScreen: Property Class Change} { 
+    set parser [java::new ptolemy.moml.MoMLParser]
+    # Note that 1.1 added the filter for all the parsers
+    set toplevel [$parser parse $expressionMoml]
+    set newMoML [$toplevel exportMoML]
+    list $newMoML
+} {}
+
+
 ######################################################################
 ####
 #
@@ -631,6 +653,28 @@ test BackwardCompatiblity-11.2 {Call BackwardCompatibility.toString} {
     # it is more than 1000 chars.
     expr {[string length [$bc toString]] > 1000}
 } {1}
+
+set testMoML "$header
+<entity name=\"testMoML\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <entity name=\"test\" class=\"ptolemy.actor.lib.Test\">
+        <port name=\"input\" class=\"ptolemy.actor.TypedIOPort\">
+            <property name=\"input\"/>
+            <property name=\"multiport\"/>
+        </port>
+    </entity>
+</entity>"
+
+test BackwardCompatibility-12.1 {Setting a multiport can result in a null container}  {
+    # The MoML fragment above came from actor/lib/test/Test.tcl,
+    # where we created a model that had a Ramp connected to a Test actor
+    # exporting the MoML and then importing it resulted in a null pointer
+    # exception in GRColorChanges.  
+    set parser [java::new ptolemy.moml.MoMLParser]
+    # Note that 1.1 added the filter for all the parsers
+    set toplevel [$parser parse $testMoML]
+    set newMoML [$toplevel exportMoML]
+    list $newMoML
+} {}
 
 test BackwardCompatiblity-20.1 {Try running old models, first check that the makefile created the compat/ directory} { 
     if {! [file exists compat]} {
