@@ -63,25 +63,35 @@ import javax.sound.sampled.*;
    <p>
    <h2>Usage</h2>
    Two constructors are provided. One constructor creates a sound capture
-   object that captures from the line-in or microphone port. If this
+   object that captures from the line-in or microphone port.
+   The operating system must be used
+   to select between the microphone and line-in. This cannot be
+   done using Java. If this
    constructor is used, there will be a small
    delay between the time that the audio enters the microphone or
    line-in and the time that the corresponding audio samples are
-   available via getSamples().
+   available via getSamples() or getSamplesInt(). 
    This latency can be adjusted by setting the <i>bufferSize</i>
    constructor parameter. Another constructor creates a sound capture
    object that captures audio from a sound file.
    <p>
    After calling the appropriate constructor, startCapture()
    must be called to initialize the audio system for capture.
-   The getSamples() method should then be repeatedly
+   The getSamples() or getSamplesInt() method should then be repeatedly
    invoked to obtain audio data in the form of a multidimensional
-   array of audio sample values. The returned audio samples will
-   have values in the range [-1, 1]. For the case where
+   array of audio sample values. getSamples() will return audio
+   sample values in the range [-1, 1]. getSamplesInt() will return
+   audio samples in the range 
+   (-2^(bits_per_sample/2), 2^(bits_per_sample/2)), where
+   bits_per_sample is the number of bits per sample.
+   For the case where
    audio is captured from the mic or line-in, it is important to
-   invoke getSamples() often enough to prevent overflow of
+   invoke getSamples() or getSamplesInt() often enough to prevent 
+   overflow of
    the internal audio buffer. The size of the internal buffer is
-   set in the constructor.
+   set in the constructor. Note that it is possible (but probably
+   not useful) to interleave calls to getSamples() and
+   getSamplesInt().
    Finally, after no more audio data is desired, stopCapture()
    should be called to free up audio system resources.
    <p>
@@ -187,69 +197,83 @@ public class SoundCapture {
     ///////////////////////////////////////////////////////////////
     ///  Public Methods                                         ///
 
-    /** Begin capturing audio. This method must be invoked prior
-     *  to the first invocation of getSamples(). If this is not
-     *  done, then getSamples() will throw an exception when
-     *  it is invoked. It is safe
-     *  to call getSamples() immediately after this method returns.
-     *  This method must not be called more than 
-     *  once between invocations of stopCapture(). Calling
-     *  this method more than once between invocations of 
-     *  stopCapture() will cause this method to throw an exception.
-     *  
-     *  @exception IOException If there is a problem setting up
-     *  the system for audio capture. This will occur if the
-     *  a URL cannot be oppened or if the audio in port cannot
-     *  be accessed.
+
+    /** Return the number of audio channels. This method will
+     *  return the number of audio channels, regardless of
+     *  which constructor was used. However, this method is
+     *  really only useful when the constructor that causes
+     *  audio to be catpured from a file is used, since
+     *  the number of channels is unknown until the file
+     *  is opened.
+     *  <p>
+     *  This method should
+     *  be called while audio capture is active, i.e., after
+     *  startCapture() is called and before stopCapture()
+     *  is called.
+     *
+     *  @return The number of audio channels. Return null if
+     *   this method is called before startCapture().
+     *
      *  @exception IllegalStateException If this method is called
-     *  more than once between invocations of stopCapture().
+     *   before startCapture() is called or after stopCapture()
+     *   is called.
      */
-    public void startCapture() throws IOException, 
-                               IllegalStateException {
-	if (_isAudioCaptureActive == false) {
-	    // FIXME: check and throw Exceptions
-	    if (_isRealTime == true) {
-		_startCaptureRealTime();
-	    } else {
-		_startCaptureFromFile();
-	    }
-	    _isAudioCaptureActive = true;
+    public int getChannels() throws IllegalStateException {
+	if (_isAudioCaptureActive == true) {
+	    return _channels;	    
 	} else {
 	    throw new IllegalStateException("SoundCapture: " +
-	    "startCapture() was called while audio capture was" +
-	    " already active (startCapture() was called " +
-            "more than once between invocations of stopCapture()).");
+	    "getChannels() was called while audio capture was" +
+	    " innactive (startCapture() was never called).");
 	}
     }
 
-    /** Stop capturing audio. This method should be called when
-     *  no more calls to getSamples(). are required, so
-     *  that the system resources involved in the audio capture
-     *  may be freed.
+    /** Return the sampling rate in Hz. This method will
+     *  return the sampling rate, regardless of
+     *  which constructor was used. However, this method is
+     *  really only useful when the constructor that causes
+     *  audio to be catpured from a file is used, since
+     *  the sampling rate is unknown until the file
+     *  is opened.
+     *  <p>
+     *  This method should
+     *  be called while audio capture is active, i.e., after
+     *  startCapture() is called and before stopCapture()
+     *  is called.
      *
-     *  @exception IOException If there is a problem closing the
-     *  audio resources.
+     *  @return The sample rate in Hz. Return null if
+     *   this method is called before startCapture().
+     *
+     *  @exception IllegalStateException If this method is called
+     *   before startCapture() is called or after stopCapture()
+     *   is called.
      */
-    public void stopCapture() throws IOException {
-	_isAudioCaptureActive = false;
-	// Free up audio system resources.
-	// For capture from file:
-	if (_audioInputStream != null) {
-	    _audioInputStream.close();
-	}
-	if (_properFormatAudioInputStream != null) {
-	    _properFormatAudioInputStream.close();
-	}
-	// For real-time capture:
-	if (_targetLine != null) {
-	    _targetLine.close();
+    public float getSampleRate() throws IllegalStateException {
+	if (_isAudioCaptureActive == true) {
+	    return _sampleRate;
+	} else {
+	    throw new IllegalStateException("SoundCapture: " +
+	    "getSampleRate() was called while audio capture was" +
+	    " innactive (startCapture() was never called).");
 	}
     }
 
     /** Return an array of captured audio samples. This method
-     *  should be repeatedly called to obtain audio data. The
-     *  returned audio samples will have values in the range
-     *  [-1, 1]. The  array size
+     *  should be repeatedly called to obtain audio data.
+     *  The returned audio samples will have values in the range
+     *  [-1, 1], regardless of the audio bit resolution (bits per
+     *  sample). When
+     *  capturing from the computer's audio input port (mic or
+     *  line-in), this method should be called often enough to
+     *  prevent overflow of the internal audio buffer. If
+     *  overflow occurs, some audio data will be lost but no
+     *  exception or other error condition will occur. If
+     *  the audio data is not yet available, then this method
+     *  will block until the data is available. When capturing
+     *  from a sound file, it is not possible for overflow to
+     *  occur.
+     *  <p>
+     *   The array size
      *  is set by the <i>getSamplesSize</i> parameter in the
      *  constructor. For the case where audio is captured from
      *  the computer's audio-in port (mic or line-in), this
@@ -323,8 +347,21 @@ public class SoundCapture {
      *  the use of this method is recommended when integer
      *  valued audio samples are sufficient. The
      *  returned audio samples will have values in the range
-     *  (-2^(bits_per_sample/2), 2^(bits_per_sample/2)). The  
-     *  array size
+     *  (-2^(bits_per_sample/2), 2^(bits_per_sample/2)). The
+     *  range of sample values returned is therfore dependent
+     *  on the bit resolution of the audio data. If this is not
+     *  desired, then use getSamples() instead.
+     *  <p>
+     *  When capturing from the computer's audio input port (mic or
+     *  line-in), this method should be called often enough to
+     *  prevent overflow of the internal audio buffer. If
+     *  overflow occurs, some audio data will be lost but no
+     *  exception or other error condition will occur. If
+     *  the audio data is not yet available, then this method
+     *  will block until the data is available. When capturing
+     *  from a sound file, it is not possible for overflow to
+     *  occur.
+     *  <p> The  array size
      *  is set by the <i>getSamplesSize</i> parameter in the
      *  constructor. For the case where audio is captured from
      *  the computer's audio-in port (mic or line-in), this
@@ -391,34 +428,62 @@ public class SoundCapture {
 	}
     }
 
-
-    /** Return the number of audio channels. This method will
-     *  return the number of audio channels, regardless of
-     *  which constructor was used. However, this method is
-     *  really only useful when the constructor that causes
-     *  audio to be catpured from a file is used, since
-     *  the number of channels is unknown until the file
-     *  is opened.
-     *  <p>
-     *  This method should
-     *  be called while audio capture is active, i.e., after
-     *  startCapture() is called and before stopCapture()
-     *  is called.
-     *
-     *  @return The number of audio channels. Return null if
-     *   this method is called before startCapture().
-     *
+    /** Begin capturing audio. This method must be invoked prior
+     *  to the first invocation of getSamples(). If this is not
+     *  done, then getSamples() will throw an exception when
+     *  it is invoked. It is safe
+     *  to call getSamples() immediately after this method returns.
+     *  This method must not be called more than 
+     *  once between invocations of stopCapture(). Calling
+     *  this method more than once between invocations of 
+     *  stopCapture() will cause this method to throw an exception.
+     *  
+     *  @exception IOException If there is a problem setting up
+     *  the system for audio capture. This will occur if the
+     *  a URL cannot be oppened or if the audio in port cannot
+     *  be accessed.
      *  @exception IllegalStateException If this method is called
-     *   before startCapture() is called or after stopCapture()
-     *   is called.
+     *  more than once between invocations of stopCapture().
      */
-    public int getChannels() throws IllegalStateException {
-	if (_isAudioCaptureActive == true) {
-	    return _channels;	    
+    public void startCapture() throws IOException, 
+                               IllegalStateException {
+	if (_isAudioCaptureActive == false) {
+	    // FIXME: check and throw Exceptions
+	    if (_isRealTime == true) {
+		_startCaptureRealTime();
+	    } else {
+		_startCaptureFromFile();
+	    }
+	    _isAudioCaptureActive = true;
 	} else {
 	    throw new IllegalStateException("SoundCapture: " +
-	    "getChannels() was called while audio capture was" +
-	    " innactive (startCapture() was never called).");
+	    "startCapture() was called while audio capture was" +
+	    " already active (startCapture() was called " +
+            "more than once between invocations of stopCapture()).");
+	}
+    }
+
+    /** Stop capturing audio. This method should be called when
+     *  no more calls to getSamples(). are required, so
+     *  that the system resources involved in the audio capture
+     *  may be freed.
+     *
+     *  @exception IOException If there is a problem closing the
+     *  audio resources.
+     */
+    public void stopCapture() throws IOException {
+	_isAudioCaptureActive = false;
+	// Free up audio system resources.
+	// For capture from file:
+	if (_audioInputStream != null) {
+	    _audioInputStream.close();
+	}
+	if (_properFormatAudioInputStream != null) {
+	    _properFormatAudioInputStream.close();
+	}
+	// For real-time capture:
+	if (_targetLine != null) {
+	    _targetLine.close();
 	}
     }
 
@@ -438,9 +503,9 @@ public class SoundCapture {
      * @return The sample size in bits. Return null if
      *  this method is called before startCapture().
      *
-     *  @exception IllegalStateException If this method is called
-     *   before startCapture() is called or after stopCapture()
-     *   is called.
+     * @exception IllegalStateException If this method is called
+     *  before startCapture() is called or after stopCapture()
+     *  is called.
      */
     public int getSampleSizeInBits() throws IllegalStateException {
 	if (_isAudioCaptureActive == true) {
@@ -448,36 +513,6 @@ public class SoundCapture {
 	} else {
 	    throw new IllegalStateException("SoundCapture: " +
 	    "getSampleSizeInBits() was called while audio capture was" +
-	    " innactive (startCapture() was never called).");
-	}
-    }
-
-    /** Return the sampling rate in Hz. This method will
-     *  return the sampling rate, regardless of
-     *  which constructor was used. However, this method is
-     *  really only useful when the constructor that causes
-     *  audio to be catpured from a file is used, since
-     *  the sampling rate is unknown until the file
-     *  is opened.
-     *  <p>
-     *  This method should
-     *  be called while audio capture is active, i.e., after
-     *  startCapture() is called and before stopCapture()
-     *  is called.
-     *
-     *  @return The sample rate in Hz. Return null if
-     *   this method is called before startCapture().
-     *
-     *  @exception IllegalStateException If this method is called
-     *   before startCapture() is called or after stopCapture()
-     *   is called.
-     */
-    public float getSampleRate() throws IllegalStateException {
-	if (_isAudioCaptureActive == true) {
-	    return _sampleRate;
-	} else {
-	    throw new IllegalStateException("SoundCapture: " +
-	    "getSampleRate() was called while audio capture was" +
 	    " innactive (startCapture() was never called).");
 	}
     }

@@ -53,10 +53,10 @@ import javax.sound.sampled.*;
    it one desires to playback audio samples in an audio format independent 
    way.
    <p>
-   Depending on available
-   system resources, it may be possible to run an instance of this
-   class and an instance of SoundCapture concurrently. This allows
-   for the concurrent capture, signal processing, and playback of audio data.
+   Depending on available system resources, it may be possible to 
+   run an instance of this class and an instance of SoundCapture 
+   concurrently. This allows for the concurrent capture, signal 
+   processing, and playback of audio data.
    <p>
    <h2>Usage</h2>
    Two constructors are provided. One constructor creates a sound playback
@@ -71,10 +71,17 @@ import javax.sound.sampled.*;
    <p>
    After calling the appropriate constructor, startPlayback()
    must be called to initialize the audio system.
-   The putSamples() method should then be repeatedly
+   The putSamples() or putSamplesInt() method should then be repeatedly
    called to deliver the audio data to the audio output device
    (speaker or file). The audio samples delivered to putSamples()
-   should be in the range (-1,1), or clipping will occur.
+   should be in the proper range, or clipping will occur.
+   putSamples() expects the samples to be in the range (-1,1).
+   putSamplesInt() expects the samples to be in the range
+   (-2^(bits_per_sample/2), 2^(bits_per_sample/2)), where
+   bits_per_sample is the number of bits per sample.
+   Note that it is possible (but probably
+   not useful) to interleave calls to putSamples() and
+   putSamplesInt().
    Finally, after no more audio playback is desired, stopPlayback()
    should be called to free up audio system resources.
    <p>
@@ -165,9 +172,8 @@ public class SoundPlayback {
      *  @param channels Number of audio channels. 1 for mono, 2 for
      *  stereo, etc.
      *  @param putSamplesSize Size of the array parameter of
-     *   putSamples(). For performance reasons, the size should
-     *   be chosen smaller than <i>bufferSize</i>. Typical values
-     *   are 1/2 to 1/16 th of <i>bufferSize</i>.
+     *   putSamples(). There is no restriction on the value of
+     *   this parameter, but typical values are 64-2024.
      */
     public SoundPlayback(String fileName,
             float sampleRate, int sampleSizeInBits,
@@ -198,75 +204,6 @@ public class SoundPlayback {
     ///////////////////////////////////////////////////////////////
     ///  Public Methods                                         ///
 
-    /** Perform initialization for the playback of audio data.
-     *  This method must be invoked prior
-     *  to the first invocation of putSamples(). This method
-     *  must not be called more than once between invocations of
-     *  stopPlayback(), or an exception will be thrown.
-     *
-     *  @exception IOException If there is a problem setting up
-     *  the system for audio playback. This will occur if
-     *  a file cannot be oppened or if the audio out port cannot
-     *  be accessed.
-     *  @exception IllegalStateException If this method is called
-     *  more than once between invocations of stopCapture().
-     */
-    public void startPlayback() throws IOException, 
-                               IllegalStateException {
-	//System.out.println("SoundPlayback: startPlayback(): invoked");
-	if (_isAudioPlaybackActive == false) {
-	    if (_playbackMode == "speaker") {
-		// Real time playback to speaker.
-		_startPlaybackRealTime();
-	    } else if (_playbackMode == "file") {
-		// Record data to sound file.
-		_startPlaybackToFile();
-	    } else  {
-		// FIXME: IOException is probably not the
-		// best exception to throw here.
-		throw new IOException("SoundPlayback: " +
-                "startPlayback(): unknown playback mode: " +
-                _playbackMode);
-	    }
-	    _bytesPerSample = _sampleSizeInBits/8;
-	    _isAudioPlaybackActive = true;
-	} else {
-	    throw new IllegalStateException("SoundPlayback: " +
-	    "startPlayback() was called while audio playback was" +
-	    " already active (startPlayback() was called " +
-            "more than once between invocations of stopPlayback()).");
-	}
-    }
-
-    /** Stop playing/writing audio. This method should be called when
-     *  no more calls to putSamples(). are required, so
-     *  that the system resources involved in the audio playback
-     *  may be freed.
-     *  <p>
-     *  If the "write audio data to file" constructor was used, then
-     *  the sound file specified by the constructor is saved and
-     *  closed.
-     *
-     *  @exception IOException If there is a problem closing the
-     *   audio resources, or if the "write audio data 
-     *   to file" constructor was used  and the soundfile has an
-     *   unsupported format.
-     */
-    public void stopPlayback() throws IOException {
-	_isAudioPlaybackActive = false;
-	if (_playbackMode == "speaker") {
-	    // Stop real-time playback to speaker.
-	    _sourceLine.stop();
-	    _sourceLine.close();
-	    _sourceLine = null;
-	} else if (_playbackMode == "file") {
-	    // Record data to sound file.
-	    _stopPlaybackToFile();
-	} else  {
-	    // Should not happen.
-	}
-    }
-
     /** If the "play audio to speaker" constructor was called,
      *  then queue the array of audio samples in
      *  <i>putSamplesArray</i> for playback. There will be a
@@ -278,10 +215,16 @@ public class SoundPlayback {
      *  seconds. If the "play audio to speaker" mode is
      *  used, then this method should be invoked often
      *  enough to prevent underflow of the internal audio buffer.
+     *  Underflow is undesirable since it will cause audible gaps
+     *  in audio playback, but no exception or error condition will
+     *  occur. If the caller attempts to write more data than can
+     *  be written, this method blocks until the data can be
+     *  written to the internal audio buffer.
      *  <p>
      *  If the "write audio to file" constructor was used,
      *  then append the audio data contained in <i>putSamplesArray</i>
-     *  to the sound file specified in the constructor.
+     *  to the sound file specified in the constructor. Note that
+     *  underflow cannot occur for this case.
      *  <p>
      *  The samples should be in the range (-1,1).
      *  @param putSamplesArray A two dimensional array containing
@@ -420,6 +363,74 @@ public class SoundPlayback {
 	}
     }
 
+    /** Perform initialization for the playback of audio data.
+     *  This method must be invoked prior
+     *  to the first invocation of putSamples(). This method
+     *  must not be called more than once between invocations of
+     *  stopPlayback(), or an exception will be thrown.
+     *
+     *  @exception IOException If there is a problem setting up
+     *  the system for audio playback. This will occur if
+     *  a file cannot be oppened or if the audio out port cannot
+     *  be accessed.
+     *  @exception IllegalStateException If this method is called
+     *  more than once between invocations of stopCapture().
+     */
+    public void startPlayback() throws IOException, 
+                               IllegalStateException {
+	//System.out.println("SoundPlayback: startPlayback(): invoked");
+	if (_isAudioPlaybackActive == false) {
+	    if (_playbackMode == "speaker") {
+		// Real time playback to speaker.
+		_startPlaybackRealTime();
+	    } else if (_playbackMode == "file") {
+		// Record data to sound file.
+		_startPlaybackToFile();
+	    } else  {
+		// FIXME: IOException is probably not the
+		// best exception to throw here.
+		throw new IOException("SoundPlayback: " +
+                "startPlayback(): unknown playback mode: " +
+                _playbackMode);
+	    }
+	    _bytesPerSample = _sampleSizeInBits/8;
+	    _isAudioPlaybackActive = true;
+	} else {
+	    throw new IllegalStateException("SoundPlayback: " +
+	    "startPlayback() was called while audio playback was" +
+	    " already active (startPlayback() was called " +
+            "more than once between invocations of stopPlayback()).");
+	}
+    }
+
+    /** Stop playing/writing audio. This method should be called when
+     *  no more calls to putSamples(). are required, so
+     *  that the system resources involved in the audio playback
+     *  may be freed.
+     *  <p>
+     *  If the "write audio data to file" constructor was used, then
+     *  the sound file specified by the constructor is saved and
+     *  closed.
+     *
+     *  @exception IOException If there is a problem closing the
+     *   audio resources, or if the "write audio data 
+     *   to file" constructor was used  and the soundfile has an
+     *   unsupported format.
+     */
+    public void stopPlayback() throws IOException {
+	_isAudioPlaybackActive = false;
+	if (_playbackMode == "speaker") {
+	    // Stop real-time playback to speaker.
+	    _sourceLine.stop();
+	    _sourceLine.close();
+	    _sourceLine = null;
+	} else if (_playbackMode == "file") {
+	    // Record data to sound file.
+	    _stopPlaybackToFile();
+	} else  {
+	    // Should not happen.
+	}
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
