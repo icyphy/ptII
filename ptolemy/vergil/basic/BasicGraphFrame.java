@@ -322,7 +322,10 @@ public abstract class BasicGraphFrame extends PtolemyFrame
         // but do update the graph panner.
         if (change != null) {
             persistent = change.isPersistent();
-            setModified(persistent);
+            // Note that we don't want to accidently reset to false here.
+            if(persistent) {
+                setModified(persistent);
+            }
         }
         _graphPanner.repaint();
     }
