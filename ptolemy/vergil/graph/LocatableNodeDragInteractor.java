@@ -70,7 +70,7 @@ public class LocatableNodeDragInteractor extends NodeDragInteractor {
     /** Drag all selected nodes and move any attached edges.
      *  Update the locatable with the current location.
      */
-    public void translate (LayerEvent e, double x, double y) {
+    public void translate(LayerEvent e, double x, double y) {
         super.translate(e, x, y);
         //FIXME this works only because all the nodes that allow
         //dragging are locatable nodes.  If nodes can be dragged that
