@@ -106,8 +106,8 @@ public class EditorGraphController extends ViewerGraphController {
         // Create the interactor that drags new edges.
 	_linkCreator = new LinkCreator();
 	_linkCreator.setMouseFilter(_controlFilter);
-	//((CompositeInteractor)getPortController().getNodeInteractor()).addInteractor(_linkCreator);
-        //((CompositeInteractor)getEntityController().getPortController().getNodeInteractor()).addInteractor(_linkCreator);
+	((CompositeInteractor)getPortController().getNodeInteractor()).addInteractor(_linkCreator);
+        ((CompositeInteractor)getEntityController().getPortController().getNodeInteractor()).addInteractor(_linkCreator);
 	((CompositeInteractor)getRelationController().getNodeInteractor()).addInteractor(_linkCreator);
 
 	LinkCreator linkCreator2 = new LinkCreator();

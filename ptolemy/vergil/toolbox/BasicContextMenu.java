@@ -81,57 +81,17 @@ this menu.
 */
 public class BasicContextMenu extends JPopupMenu {
 
+    /**
+     * Create a new context menu with a reference to the given application.
+     * The context of the menu, which is used to alter the functions of this 
+     * menu is the given named object.  Call the initialize method to populate
+     * this menu.
+     */
     public BasicContextMenu(Application application, NamedObj target) {
 	super(target.getFullName());
 	_target = target;
 	_application = application;
-
-	Action action;
-	action = new AbstractAction("Edit Parameters") {
-	    public void actionPerformed(ActionEvent e) {
-
-		// Create a dialog for configuring the object.
-                try {
-                    Configurer panel = new Configurer(_target);
-                    // FIXME: First argument below should be a parent window
-                    // (a JFrame).
-                    ComponentDialog dialog = new ComponentDialog(
-                            null,
-                            "Edit parameters for " + _target.getName(),
-                            panel);
-                    if (!(dialog.buttonPressed().equals("OK"))) {
-                        // Restore original parameter values.
-                        panel.restore();
-                    }
-                } catch (IllegalActionException ex) {
-                    _application.showError("Edit Parameters failed", ex);
-                }
-	    }
-	};
-	add(action, "Edit Parameters");
-
-	action = new AbstractAction("Configure Parameter") {
-	    public void actionPerformed(ActionEvent e) {
-
-		// Create a dialog for configuring the object.
-                try {
-                    StyleConfigurer panel = new StyleConfigurer(_target);
-                    // FIXME: First argument below should be a parent window
-                    // (a JFrame).
-                    ComponentDialog dialog = new ComponentDialog(
-                            null,
-                            "Edit parameter styles for " + _target.getName(),
-                            panel);
-                    if (!(dialog.buttonPressed().equals("OK"))) {
-                        // Restore original parameter values.
-                        panel.restore();
-                    }
-                } catch (IllegalActionException ex) {
-		    _application.showError("Configure Parameters failed", ex);
-                }
-	    }
-	};
-	add(action, "Configure Parameters");
+	initialize();
     }
 
     /** Add an action to this menu and return the menu item created.  If
@@ -173,6 +133,61 @@ public class BasicContextMenu extends JPopupMenu {
 
     public NamedObj getTarget() {
 	return _target;
+    }
+
+    /** Populate this menu with items appropriate to its target.  This method
+     * is intended to be overridden by subclasses to change the items in the
+     * menu.  It is called automatically by the constructor in thie base class.
+     */
+    protected void initialize() {
+	Action action;
+	String name = "Edit Parameters";
+	action = new AbstractAction(name) {
+	    public void actionPerformed(ActionEvent e) {
+
+		// Create a dialog for configuring the object.
+                try {
+                    Configurer panel = new Configurer(_target);
+                    // FIXME: First argument below should be a parent window
+                    // (a JFrame).
+                    ComponentDialog dialog = new ComponentDialog(
+                            null,
+                            "Edit parameters for " + _target.getName(),
+                            panel);
+                    if (!(dialog.buttonPressed().equals("OK"))) {
+                        // Restore original parameter values.
+                        panel.restore();
+                    }
+                } catch (IllegalActionException ex) {
+                    _application.showError("Edit Parameters failed", ex);
+                }
+	    }
+	};
+	add(action, name);
+
+	name = "Edit Parameter Styles";
+	action = new AbstractAction(name) {
+	    public void actionPerformed(ActionEvent e) {
+
+		// Create a dialog for configuring the object.
+                try {
+                    StyleConfigurer panel = new StyleConfigurer(_target);
+                    // FIXME: First argument below should be a parent window
+                    // (a JFrame).
+                    ComponentDialog dialog = new ComponentDialog(
+                            null,
+                            "Edit parameter styles for " + _target.getName(),
+                            panel);
+                    if (!(dialog.buttonPressed().equals("OK"))) {
+                        // Restore original parameter values.
+                        panel.restore();
+                    }
+                } catch (IllegalActionException ex) {
+		    _application.showError("Edit Parameter Style failed", ex);
+                }
+	    }
+	};
+	add(action, name);
     }
 
     final private Application _application;

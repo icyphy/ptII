@@ -87,13 +87,7 @@ public class LinkController extends EdgeController {
 	ConnectorManipulator manipulator = (ConnectorManipulator)
 	    selectionRenderer.getDecorator();
 	manipulator.setConnectorTarget(ct);
-	
-	//manipulator.addConnectorListener(new EdgeDropper());
-	//getEdgeInteractor().setPrototypeDecorator(manipulator);
-
-	//    MouseFilter handleFilter = new MouseFilter(1, 0, 0);
-	//manipulator.setHandleFilter(handleFilter);
-
+		
 	_menuCreator = new MenuCreator(new LinkContextMenuFactory());
 	interactor.addInteractor(_menuCreator);
     }

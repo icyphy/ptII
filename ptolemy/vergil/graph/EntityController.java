@@ -208,7 +208,11 @@ public class EntityController extends LocatableNodeController {
 	public class Menu extends BasicContextMenu {
 	    public Menu(Application application, NamedObj target) {
 		super(application, target);		
-	
+	    } 
+	    
+	    protected void initialize() {
+		super.initialize();
+		NamedObj target = getTarget();
 		if(target instanceof CompositeEntity) {
 		    Action action;
 		    final CompositeEntity entity = (CompositeEntity)target;

@@ -225,12 +225,19 @@ public class ViewerGraphController extends CompositeGraphController {
         public class Menu extends BasicContextMenu {
 	    public Menu(Application application, CompositeEntity target) {
 		super(application, target);
-		//FIXME -- implement this.
-		JLabel domain = new JLabel("Domain");
-		add(domain);
-		JLabel director = new JLabel("Director");
-		add(director);
+	    }
 
+	    protected void initialize() {
+		super.initialize();
+		NamedObj target = getTarget();
+		Action action;
+		final CompositeEntity entity = (CompositeEntity)target;
+		action = new AbstractAction("New External Port") {
+		    public void actionPerformed(ActionEvent e) {
+			Application app = getApplication();
+			PtolemyDocument doc = new PtolemyDocument(app);
+		};
+		add(action, "New External Port");
 	    }
 	}
     }

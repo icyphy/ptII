@@ -142,16 +142,37 @@ public class EntityPortController extends NodeController {
 	public class Menu extends BasicContextMenu {
 	    public Menu(Application application, NamedObj target) {
 		super(application, target);
+	    }
+
+	    protected void initialize() {
+		NamedObj target = getTarget();
 		if(target instanceof IOPort) {
 		    IOPort port = (IOPort)target;
-		    JCheckBox checkBox;
-		    checkBox = new JCheckBox("Input", port.isInput());
-		    add(checkBox);
-		    checkBox = new JCheckBox("Output", port.isOutput());
-		    add(checkBox);
-		    checkBox = new JCheckBox("Multiport", port.isMultiport());
-		    add(checkBox);
+		    String string = "";
+		    int count = 0;
+		    if(port.isInput()) {
+			string += "Input";
+			count++;
+		    }
+		    if(port.isOutput()) {
+			if(count > 0) {
+			    string += ", ";
+			}
+			string += "Output";
+			count++;
+		    }
+		    if(port.isMultiport()) {
+			if(count > 0) {
+			    string += ", ";
+			}
+			string += "Multiport";
+			count++;
+		    }
+		    if(count > 0) {
+			add(new JLabel("   " + string));
+		    }
 		}
+		super.initialize();
 	    }
 	}
     }
