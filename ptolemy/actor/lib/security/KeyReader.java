@@ -95,7 +95,7 @@ public class KeyReader extends KeyStoreActor {
         trigger = new TypedIOPort(this, "trigger", true, false);
         // NOTE: It used to be that trigger was set to GENERAL, but this
         // isn't really what we want.  What we want is an undeclared type
-        // that can resolve to anything.  EAL 12/31/02
+        // that can resolve to anything.
         // trigger.setTypeEquals(BaseType.GENERAL);
         trigger.setMultiport(true);
 
@@ -175,7 +175,8 @@ public class KeyReader extends KeyStoreActor {
         }
     }
 
-    /** Output the java.security.Key that was read in
+    /** Output the java.security.Key that was read in.
+     *   
      *  Read at most one input token from each channel of the trigger
      *  input and discard it.  If the trigger input is not connected,
      *  then this method does nothing.  Derived classes should be
@@ -186,7 +187,7 @@ public class KeyReader extends KeyStoreActor {
      */
     public void fire() throws IllegalActionException {
         // Call super.fire() so that the password PortParameters get updated
-        // before we access _keyStore;
+        // before we access _keyStore.
         super.fire();
         _updateKey();
         for (int i = 0; i < trigger.getWidth(); i++) {
@@ -195,18 +196,6 @@ public class KeyReader extends KeyStoreActor {
             }
         }
         output.broadcast(new KeyToken(_key));
-    }
-
-    /** Read in or initialize the keyStore.
-     *
-     * @exception IllegalActionException If there is a problem with
-     *  the keyStore.
-     */
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        // We do this in initialize so that derived classes can
-        // access _keyStore.
-        //_updateKey();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -235,9 +224,9 @@ public class KeyReader extends KeyStoreActor {
                 } else {
                     Certificate certificate = _keyStore.getCertificate(_alias);
                     if (certificate == null) {
-                        throw new KeyStoreException("Failed to get certificate "
-                                + "for alias '" + _alias + "' from  keystore '"
-                                + fileOrURL.asURL() +
+                        throw new KeyStoreException("Failed to get certificate"
+                                + " for alias '" + _alias
+                                + "' from  keystore '" + fileOrURL.asURL() +
                                 "', keyStore: " + _keyStore);
                     }
                     PublicKey publicKey = certificate.getPublicKey();
