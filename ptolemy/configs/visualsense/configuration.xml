@@ -145,25 +145,12 @@ to another. Then delete this annotation.</text></svg></configure></property>
       <configure>
         <?moml
           <group>
-	    <!-- Javacomm serial actors depend on javacomm being present  -->
-            <!--input source="ptolemy/actor/lib/io/comm/comm.xml"/-->
-
-	    <!-- CORBA Actors are not ready for primetime -->
-            <!-- input source="ptolemy/actor/corba/corba.xml"/ -->
-
-	    <!-- esoteric includes caltrop -->	    
-            <!--input source="ptolemy/actor/lib/esoteric.xml"/-->
-
- 	    <!-- GR depends on the 3D graphics package of Java being present-->
-            <!-- input source="ptolemy/domains/gr/gr.xml"/ -->
-
             <input source="ptolemy/vergil/actor/lib/interactive.xml"/>
-
 	    <!-- matlab depends on Matlab being present -->
             <input source="ptolemy/matlab/matlab.xml"/>
-            <input source="ptolemy/actor/lib/security/security.xml"/>
             <input source="ptolemy/actor/lib/python/python.xml"/>
             <input source="ptolemy/actor/lib/test.xml"/>
+            <input source="ptolemy/actor/lib/security/security.xml"/>
             <input source="ptolemy/actor/lib/xslt/xslt.xml"/>
           </group>
         ?>

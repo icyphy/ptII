@@ -9,7 +9,7 @@
 
   <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
   </property>
-  <entity name="Directors for Nodes" class="ptolemy.moml.EntityLibrary">
+  <entity name="MoreDirectors" class="ptolemy.moml.EntityLibrary">
     <configure>
     <?moml
       <group>
