@@ -1,4 +1,4 @@
-/* An actor that delays the input for a certain real time.
+/* An actor that delays the input for a certain amount of real time.
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -38,7 +38,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
 
 //////////////////////////////////////////////////////////////////////////
-//// RealTimeDelay
+//// Sleep
 /**
 An actor that delays the inputs for a certain duration of real time.
 The delay only happens in postfire(). In the fire() stage of execution,
@@ -51,7 +51,7 @@ are lost.
 @version $Id$
 */
 
-public class RealTimeDelay extends Transformer {
+public class Sleep extends Transformer {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -61,7 +61,7 @@ public class RealTimeDelay extends Transformer {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public RealTimeDelay(CompositeEntity container, String name)
+    public Sleep(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         delay = new Parameter(this, "delay",
