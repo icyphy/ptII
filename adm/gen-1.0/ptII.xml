@@ -1,4 +1,4 @@
-<isjeProject name="Ptolemy II" class="com.installshield.isje.product.TypicalProductProject" framework="com.installshield.isje.product.ProductWizardFramework">
+<isjeProject name="Ptolemy II 1.0 beta (Ptiny Version)" class="com.installshield.isje.product.TypicalProductProject" framework="com.installshield.isje.product.ProductWizardFramework">
 <section name="projectProperties" class="com.installshield.isje.project.ProjectPropertiesSection">
     <property name="authorName" displayName="Author Name" category="Author Info">Ptolemy Project, UC Berkeley EECS Dept.</property>
     <property name="authorEmail" displayName="Author Email" category="Author Info">ptolemy@eecs.berkeley.edu</property>
@@ -87,11 +87,11 @@ Berkeley, CA 94706</property>
         <built>19691131 160000.000-0800</built>
         <name>product1</name>
         <displayName>Ptolemy II 1.0 beta</displayName>
-        <localizedDisplayName>Ptolemy II</localizedDisplayName>
+        <localizedDisplayName>Ptolemy II 1.0 beta</localizedDisplayName>
         <vendor>University of California EECS Dept.  Ptolemy Project</vendor>
         <website>http:/ptolemy.eecs.berkeley.edu/ptolemyII</website>
-        <number>1.0 beta</number>
-        <location>$D(install)/Ptolemy/$P(displayName) $P(productNumber)</location>
+        <number>1.0ptiny beta</number>
+        <location>$D(install)/Ptolemy/$P(displayName)</location>
         <shareable>false</shareable>
         <active>true</active>
         <installStatus>0</installStatus>
@@ -147,18 +147,88 @@ Berkeley, CA 94706</property>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32JVMResolutionExtra">
                         <property name="bundledJVMResource"/>
-                        <property name="useCurrentJVM">True</property>
+                        <property name="useCurrentJVM">False</property>
                         <property array="True" length="0" name="JVMFileResources" type="string"/>
-                        <property array="True" length="1" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+                        <property array="True" length="3" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\ibm_win32_130.jvm</property>
+                            </arrayItem>
                             <arrayItem type="com.installshield.util.jvm.JVMFile">
                                 <property name="fullSearch">True</property>
-                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13.jvm</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13001.jvm</property>
+                            </arrayItem>
+                        </property>
+                        <property name="timeout">10</property>
+                        <property name="JVMResolution">2</property>
+                        <property name="bundledJVMSource">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13.jvm</property>
+                        <property name="bundledJVMArguments"/>
+                    </extendedProperty>
+                    <extendedProperty name="solaris.jvm.resolution" type="com.installshield.wizard.platform.solaris.extra.SolarisJVMResolutionExtra">
+                        <property name="bundledJVMResource"/>
+                        <property name="useCurrentJVM">False</property>
+                        <property array="True" length="0" name="JVMFileResources" type="string"/>
+                        <property array="True" length="2" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\solaris\sun.jdk.1.3.solaris.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\solaris\sun.jdk.1.2.2.solaris.jvm</property>
                             </arrayItem>
                         </property>
                         <property name="timeout">120</property>
-                        <property name="JVMResolution">1</property>
+                        <property name="JVMResolution">2</property>
                         <property name="bundledJVMSource"/>
-                        <property name="bundledJVMArguments"/>
+                        <property name="bundledJVMArguments">-qq -o</property>
+                    </extendedProperty>
+                    <extendedProperty name="linux.jvm.resolution" type="com.ibm.wizard.platform.linux.LinuxJVMResolutionExtra">
+                        <property name="bundledJVMResource"/>
+                        <property name="useCurrentJVM">False</property>
+                        <property array="True" length="0" name="JVMFileResources" type="string"/>
+                        <property array="True" length="8" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\sunjdk13.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\sunjre13.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\ibmjdk13.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\blackdownjdk13.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\blackdownjre13.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\sunjre122.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\blackdownjre122.jvm</property>
+                            </arrayItem>
+                            <arrayItem type="com.installshield.util.jvm.JVMFile">
+                                <property name="fullSearch">False</property>
+                                <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\linux\blackdownjdk12.jvm</property>
+                            </arrayItem>
+                        </property>
+                        <property name="timeout">120</property>
+                        <property name="JVMResolution">2</property>
+                        <property name="bundledJVMSource"/>
+                        <property name="bundledJVMArguments">-qq -o</property>
                     </extendedProperty>
                     <property name="JVMId">jvm</property>
                     <property name="installLocation">_jvm</property>
@@ -169,18 +239,19 @@ Berkeley, CA 94706</property>
                     <displayName>Vergil Launcher</displayName>
                     <active>true</active>
                     <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32LauncherExtra">
-                        <property name="showConsole">True</property>
+                        <property name="showConsole">False</property>
                         <property name="launcherUIDisplayTime">10</property>
                         <property name="fileName">vergil.exe</property>
                     </extendedProperty>
-                    <property name="title">Launching Vergil</property>
+                    <property name="title">Vergil Launcher</property>
                     <property name="mainClass">ptolemy.vergil.VergilApplication</property>
                     <property name="mainClassArguments"/>
-                    <property array="True" length="6" name="classPath" type="string">
+                    <property array="True" length="7" name="classPath" type="string">
                         <arrayItem>./</arrayItem>
                         <arrayItem>./ptolemy/vergil/vergil.jar</arrayItem>
                         <arrayItem>./ptolemy/ptolemy.jar</arrayItem>
-                        <arrayItem>./ptolemy/configs/configsPtiny.jar</arrayItem>
+                        <arrayItem>./ptolemy/actor/lib/javasound/javasound.jar</arrayItem>
+                        <arrayItem>./ptolemy/media/javasound/javasound.jar</arrayItem>
                         <arrayItem>./lib/diva.jar</arrayItem>
                         <arrayItem/>
                     </property>
@@ -197,28 +268,9 @@ Berkeley, CA 94706</property>
                         <property name="iconFileType">1</property>
                         <property name="folderContext">$AllUsersPrograms$</property>
                     </extendedProperty>
-                    <property name="folder">Ptolemy/$P(productBean1.displayName) $P(productBean1.productNumber)</property>
+                    <property name="folder">Ptolemy/$P(productBean1.displayName)</property>
                     <property name="name">Vergil</property>
                     <property name="target">vergil.exe</property>
-                    <property name="args"/>
-                    <property name="workingDirectory"/>
-                    <property name="itemOwner"/>
-                    <property name="itemGroup"/>
-                    <property name="folderOwner"/>
-                    <property name="folderGroup"/>
-                </action>
-                <action class="com.installshield.product.actions.DesktopIcon" id="bean6">
-                    <displayName>Documentation</displayName>
-                    <active>true</active>
-                    <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32DesktopIconExtra">
-                        <property name="iconFile"/>
-                        <property name="platformSpecificTarget"/>
-                        <property name="iconFileType">1</property>
-                        <property name="folderContext">$AllUsersPrograms$</property>
-                    </extendedProperty>
-                    <property name="folder">Ptolemy/$P(productBean1.displayName) $P(productBean1.productNumber)</property>
-                    <property name="name">Documentation</property>
-                    <property name="target">doc/index.htm</property>
                     <property name="args"/>
                     <property name="workingDirectory"/>
                     <property name="itemOwner"/>
@@ -251,9 +303,9 @@ Berkeley, CA 94706</property>
                         <property name="iconFile">ptolemy\plot\doc\img\ptplot.ico</property>
                         <property name="platformSpecificTarget">ptplot.exe</property>
                         <property name="iconFileType">1</property>
-                        <property name="folderContext">$UserPrograms$</property>
+                        <property name="folderContext">$AllUsersPrograms$</property>
                     </extendedProperty>
-                    <property name="folder">Ptolemy/$P(productBean1.displayName) $P(productNumber)</property>
+                    <property name="folder">Ptolemy/$P(productBean1.displayName)</property>
                     <property name="name">Ptplot</property>
                     <property name="target"/>
                     <property name="args"/>
@@ -263,38 +315,48 @@ Berkeley, CA 94706</property>
                     <property name="folderOwner"/>
                     <property name="folderGroup"/>
                 </action>
+                <action class="com.installshield.product.actions.DesktopIcon" id="bean6">
+                    <displayName>Vergil Doc Icon</displayName>
+                    <active>true</active>
+                    <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32DesktopIconExtra">
+                        <property name="iconFile"/>
+                        <property name="platformSpecificTarget"/>
+                        <property name="iconFileType">1</property>
+                        <property name="folderContext">$UserPrograms$</property>
+                    </extendedProperty>
+                    <property name="folder">Ptolemy/$P(productBean1.displayName)</property>
+                    <property name="name">Vergil Documentation</property>
+                    <property name="target">doc/design/usingVergil.pdf</property>
+                    <property name="args"/>
+                    <property name="workingDirectory"/>
+                    <property name="itemOwner"/>
+                    <property name="itemGroup"/>
+                    <property name="folderOwner"/>
+                    <property name="folderGroup"/>
+                </action>
             </component>
         </feature>
-        <feature id="bean62">
+        <feature id="bean30">
             <key>
-                <uid>39030fba0bc50e900b817e850de9ce4a</uid>
+                <uid>a8e3b0f5c6e1a090a3309cd56cd5b302</uid>
                 <version/>
             </key>
             <built>19691131 160000.000-0800</built>
-            <name>feature4</name>
+            <name>feature2</name>
             <displayName>Application</displayName>
-            <localizedDisplayName>Source code and Build Environment</localizedDisplayName>
             <shareable>false</shareable>
             <active>true</active>
             <installStatus>0</installStatus>
             <replaceOption>0</replaceOption>
             <removeOption>0</removeOption>
             <installFailureOption>1</installFailureOption>
-            <required>
+            <component id="bean36">
                 <key>
-                    <uid>04abadde0ff8f128c0c17d21ccf2f7f3</uid>
-                    <version/>
-                </key>
-                <resolution>2</resolution>
-                <displayName>ref_316026</displayName>
-            </required>
-            <component id="bean68">
-                <key>
-                    <uid>3ce244d5b6d01b92c644cd1c09f35aec</uid>
+                    <uid>3842f0ea333338e75c52ac656bb441e6</uid>
                     <version/>
                 </key>
                 <built>19691131 160000.000-0800</built>
-                <name>component3</name>
+                <name>component2</name>
                 <displayName>Application Files</displayName>
                 <shareable>false</shareable>
                 <active>true</active>
@@ -303,55 +365,38 @@ Berkeley, CA 94706</property>
                 <removeOption>0</removeOption>
                 <installFailureOption>3</installFailureOption>
                 <onFailSummaryMessage/>
-                <action class="com.installshield.product.actions.Files" id="bean69">
+                <action class="com.installshield.product.actions.Files" id="bean37">
                     <displayName>Files</displayName>
                     <active>true</active>
-                    <property array="True" length="1" name="files" type="com.installshield.product.actions.SourceFile">
-                        <arrayItem type="com.installshield.product.actions.SourceFile">
-                            <property name="usingGNUPattern">False</property>
-                            <property name="type">4</property>
-                            <property name="pattern"/>
-                            <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\app</property>
-                        </arrayItem>
-                    </property>
+                    <property array="True" length="0" name="files" type="com.installshield.product.actions.SourceFile"/>
                     <property name="totalBytes">-1</property>
                     <property name="owner"/>
                     <property name="group"/>
                 </action>
             </component>
         </feature>
-        <feature id="bean119">
+        <feature id="bean44">
             <key>
-                <uid>2d631328dd6765f5330e8203faffe007</uid>
+                <uid>0a2b997222e730fa0e7410018c5f8260</uid>
                 <version/>
             </key>
             <built>19691131 160000.000-0800</built>
-            <name>product3</name>
-            <displayName>Documentation</displayName>
-            <localizedDisplayName>Javadoc Documentation</localizedDisplayName>
-            <description>Documentation for Ptolemy II Java Classes</description>
+            <name>feature3</name>
+            <displayName>Class Documentation</displayName>
             <shareable>false</shareable>
             <active>true</active>
             <installStatus>0</installStatus>
             <replaceOption>0</replaceOption>
             <removeOption>0</removeOption>
             <installFailureOption>1</installFailureOption>
-            <required>
+            <component id="bean60">
                 <key>
-                    <uid>04abadde0ff8f128c0c17d21ccf2f7f3</uid>
-                    <version/>
-                </key>
-                <resolution>2</resolution>
-                <displayName>ref_977815</displayName>
-            </required>
-            <component id="bean125">
-                <key>
-                    <uid>e1cafdf2cc11c53fe0b078d18f80f704</uid>
+                    <uid>34aaa622549259a4cde66d36a837f67c</uid>
                     <version/>
                 </key>
                 <built>19691131 160000.000-0800</built>
-                <name>component4</name>
-                <displayName>Documentation Files</displayName>
+                <name>component3</name>
+                <displayName>Class Documentation Files</displayName>
                 <shareable>false</shareable>
                 <active>true</active>
                 <installStatus>0</installStatus>
@@ -359,30 +404,23 @@ Berkeley, CA 94706</property>
                 <removeOption>0</removeOption>
                 <installFailureOption>3</installFailureOption>
                 <onFailSummaryMessage/>
-                <action class="com.installshield.product.actions.Files" id="bean126">
+                <action class="com.installshield.product.actions.Files" id="bean61">
                     <displayName>Files</displayName>
                     <active>true</active>
-                    <property array="True" length="1" name="files" type="com.installshield.product.actions.SourceFile">
-                        <arrayItem type="com.installshield.product.actions.SourceFile">
-                            <property name="usingGNUPattern">False</property>
-                            <property name="type">4</property>
-                            <property name="pattern"/>
-                            <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\doc</property>
-                        </arrayItem>
-                    </property>
+                    <property array="True" length="0" name="files" type="com.installshield.product.actions.SourceFile"/>
                     <property name="totalBytes">-1</property>
                     <property name="owner"/>
                     <property name="group"/>
                 </action>
             </component>
         </feature>
-        <feature id="bean262">
+        <feature id="bean47">
             <key>
-                <uid>d9bc0b04a4b9c9fd8da79ccd1d082814</uid>
+                <uid>967109f7b62fcbab8468bc17e20525c3</uid>
                 <version/>
             </key>
             <built>19691131 160000.000-0800</built>
-            <name>feature13</name>
+            <name>feature4</name>
             <displayName>Design Document</displayName>
             <shareable>false</shareable>
             <active>true</active>
@@ -390,21 +428,13 @@ Berkeley, CA 94706</property>
             <replaceOption>0</replaceOption>
             <removeOption>0</removeOption>
             <installFailureOption>1</installFailureOption>
-            <required>
+            <component id="bean75">
                 <key>
-                    <uid>04abadde0ff8f128c0c17d21ccf2f7f3</uid>
-                    <version/>
-                </key>
-                <resolution>2</resolution>
-                <displayName>ref_700311</displayName>
-            </required>
-            <component id="bean268">
-                <key>
-                    <uid>3215a8129cebee993bfc50c4dede73e2</uid>
+                    <uid>a7ccdccf607f0d0cad455870f2f7e7a2</uid>
                     <version/>
                 </key>
                 <built>19691131 160000.000-0800</built>
-                <name>component13</name>
+                <name>component4</name>
                 <displayName>Design Document Files</displayName>
                 <shareable>false</shareable>
                 <active>true</active>
@@ -413,30 +443,42 @@ Berkeley, CA 94706</property>
                 <removeOption>0</removeOption>
                 <installFailureOption>3</installFailureOption>
                 <onFailSummaryMessage/>
-                <action class="com.installshield.product.actions.Files" id="bean269">
+                <action class="com.installshield.product.actions.DesktopIcon" id="bean8">
+                    <displayName>Design Document Icon</displayName>
+                    <active>true</active>
+                    <extendedProperty name="win32ppk" type="com.installshield.wizard.platform.win32.Win32DesktopIconExtra">
+                        <property name="iconFile"/>
+                        <property name="platformSpecificTarget"/>
+                        <property name="iconFileType">1</property>
+                        <property name="folderContext">$UserPrograms$</property>
+                    </extendedProperty>
+                    <property name="folder">Ptolemy/$P(productBean1.displayName)</property>
+                    <property name="name">Design Document</property>
+                    <property name="target">doc/design/design.pdf</property>
+                    <property name="args"/>
+                    <property name="workingDirectory"/>
+                    <property name="itemOwner"/>
+                    <property name="itemGroup"/>
+                    <property name="folderOwner"/>
+                    <property name="folderGroup"/>
+                </action>
+                <action class="com.installshield.product.actions.Files" id="bean76">
                     <displayName>Files</displayName>
                     <active>true</active>
-                    <property array="True" length="1" name="files" type="com.installshield.product.actions.SourceFile">
-                        <arrayItem type="com.installshield.product.actions.SourceFile">
-                            <property name="usingGNUPattern">False</property>
-                            <property name="type">4</property>
-                            <property name="pattern"/>
-                            <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\designdoc</property>
-                        </arrayItem>
-                    </property>
+                    <property array="True" length="0" name="files" type="com.installshield.product.actions.SourceFile"/>
                     <property name="totalBytes">-1</property>
                     <property name="owner"/>
                     <property name="group"/>
                 </action>
             </component>
         </feature>
-        <feature id="bean280">
+        <feature id="bean50">
             <key>
-                <uid>351aed7d79635c78e19a7a025d8963b6</uid>
+                <uid>9a9f9cb7f8136448134acf30c9fcd008</uid>
                 <version/>
             </key>
             <built>19691131 160000.000-0800</built>
-            <name>feature14</name>
+            <name>feature5</name>
             <displayName>Experimental Features</displayName>
             <shareable>false</shareable>
             <active>true</active>
@@ -444,22 +486,14 @@ Berkeley, CA 94706</property>
             <replaceOption>0</replaceOption>
             <removeOption>0</removeOption>
             <installFailureOption>1</installFailureOption>
-            <required>
+            <component id="bean86">
                 <key>
-                    <uid>04abadde0ff8f128c0c17d21ccf2f7f3</uid>
-                    <version/>
-                </key>
-                <resolution>2</resolution>
-                <displayName>ref_278818</displayName>
-            </required>
-            <component id="bean286">
-                <key>
-                    <uid>0ac3397eba4ae5515229d52cf1915902</uid>
+                    <uid>a543b6022fce43280ca810fbc5129867</uid>
                     <version/>
                 </key>
                 <built>19691131 160000.000-0800</built>
-                <name>component14</name>
-                <displayName>Experimental Files</displayName>
+                <name>component5</name>
+                <displayName>Experimental Features Files</displayName>
                 <shareable>false</shareable>
                 <active>true</active>
                 <installStatus>0</installStatus>
@@ -467,17 +501,10 @@ Berkeley, CA 94706</property>
                 <removeOption>0</removeOption>
                 <installFailureOption>3</installFailureOption>
                 <onFailSummaryMessage/>
-                <action class="com.installshield.product.actions.Files" id="bean287">
+                <action class="com.installshield.product.actions.Files" id="bean87">
                     <displayName>Files</displayName>
                     <active>true</active>
-                    <property array="True" length="1" name="files" type="com.installshield.product.actions.SourceFile">
-                        <arrayItem type="com.installshield.product.actions.SourceFile">
-                            <property name="usingGNUPattern">False</property>
-                            <property name="type">4</property>
-                            <property name="pattern"/>
-                            <property name="fileName">c:\users\cxh\ptII\adm\gen-1.0\installshield\experimental</property>
-                        </arrayItem>
-                    </property>
+                    <property array="True" length="0" name="files" type="com.installshield.product.actions.SourceFile"/>
                     <property name="totalBytes">-1</property>
                     <property name="owner"/>
                     <property name="group"/>
@@ -572,45 +599,6 @@ Berkeley, CA 94706</property>
             <property name="title"/>
             <property name="description">$L(com.installshield.product.i18n.ProductResources, DestinationPanel.description, $P(displayName))</property>
             <property name="navigationOptions">0</property>
-        </wizardBean>
-        <wizardBean class="com.installshield.product.wizardbeans.SetupTypePanel" id="setupTypes">
-            <property name="displayName">Setup Types</property>
-            <property name="active">True</property>
-            <property name="title"/>
-            <property name="description">$L(com.installshield.product.i18n.ProductResources, SetupTypePanel.description)</property>
-            <property name="navigationOptions">0</property>
-            <property array="True" length="3" name="setupTypes" type="com.installshield.product.wizardbeans.SetupType">
-                <arrayItem type="com.installshield.product.wizardbeans.SetupType">
-                    <property name="displayName">$L(com.installshield.product.i18n.ProductResources, SetupTypePanel.typicalDisplayName)</property>
-                    <property array="True" length="5" name="features" type="string">
-                        <arrayItem>bean62</arrayItem>
-                        <arrayItem>bean119</arrayItem>
-                        <arrayItem>bean262</arrayItem>
-                        <arrayItem>bean280</arrayItem>
-                        <arrayItem>bean866</arrayItem>
-                    </property>
-                    <property name="description">$L(com.installshield.product.i18n.ProductResources, SetupTypePanel.typicalDescription)</property>
-                    <property name="id">typical</property>
-                </arrayItem>
-                <arrayItem type="com.installshield.product.wizardbeans.SetupType">
-                    <property name="displayName">$L(com.installshield.product.i18n.ProductResources, SetupTypePanel.customDisplayName)</property>
-                    <property array="True" length="2" name="features" type="string">
-                        <arrayItem>bean62</arrayItem>
-                        <arrayItem>bean866</arrayItem>
-                    </property>
-                    <property name="description">$L(com.installshield.product.i18n.ProductResources, SetupTypePanel.customDescription)</property>
-                    <property name="id">custom</property>
-                </arrayItem>
-                <arrayItem type="com.installshield.product.wizardbeans.SetupType">
-                    <property name="displayName">Ptiny Core</property>
-                    <property array="True" length="1" name="features" type="string">
-                        <arrayItem>bean866</arrayItem>
-                    </property>
-                    <property name="description">The minimum setup to create models</property>
-                    <property name="id">ptiny core</property>
-                </arrayItem>
-            </property>
-            <property name="selectedSetupTypeId">typical</property>
         </wizardBean>
         <wizardBean class="com.installshield.product.wizardbeans.SetupTypeSequence" id="customize">
             <property name="displayName">Customize Sequence</property>
@@ -733,13 +721,6 @@ Berkeley, CA 94706</property>
             <property name="includeLocalizedFiles">False</property>
             <property name="contentType">2</property>
         </wizardBean>
-        <wizardBean class="com.installshield.product.wizardbeans.UninstallFeaturePanel" id="features">
-            <property name="displayName">Features</property>
-            <property name="active">True</property>
-            <property name="title"/>
-            <property name="description">$L(com.installshield.product.i18n.ProductResources, UninstallFeaturePanel.description, $P(displayName))</property>
-            <property name="navigationOptions">0</property>
-        </wizardBean>
         <wizardBean class="com.installshield.product.wizardbeans.SummaryPanel" id="preview">
             <property name="displayName">Uninstall Preview</property>
             <property name="active">True</property>
@@ -772,8 +753,10 @@ Berkeley, CA 94706</property>
     <property name="archiveType">1</property>
     <property array="True" length="3" name="support" type="com.installshield.isje.build.BuildConfigurationSupport">
         <arrayItem type="com.installshield.isje.wizard.PlatformSupport">
-            <property array="True" length="1" name="builders" type="com.installshield.isje.build.ExtendedWizardBuilder">
+            <property array="True" length="3" name="builders" type="com.installshield.isje.build.ExtendedWizardBuilder">
                 <arrayItem type="com.installshield.wizard.platform.win32.Win32Builder"/>
+                <arrayItem type="com.installshield.wizard.platform.solaris.SolarisBuilder"/>
+                <arrayItem type="com.ibm.wizard.platform.linux.LinuxBuilder"/>
             </property>
         </arrayItem>
         <arrayItem type="com.installshield.isje.build.LanguageSupport">
@@ -782,7 +765,47 @@ Berkeley, CA 94706</property>
             <property array="True" length="0" name="additionalResourceBundles" type="string"/>
         </arrayItem>
         <arrayItem type="com.installshield.isje.build.DistributionSupport">
-            <property array="True" length="0" name="distributions" type="com.installshield.isje.build.Distribution"/>
+            <property array="True" length="2" name="distributions" type="com.installshield.isje.build.Distribution">
+                <arrayItem type="com.installshield.wizard.platform.win32.Win32LauncherDistribution">
+                    <property name="enabled">True</property>
+                    <property name="fileName">ptIIsetup.exe</property>
+                    <property array="True" length="3" name="JVMFileSources" type="com.installshield.util.jvm.JVMFile">
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\ibm_win32_130.jvm</property>
+                        </arrayItem>
+                        <arrayItem type="com.installshield.util.jvm.JVMFile">
+                            <property name="fullSearch">False</property>
+                            <property name="fileName">C:\Program Files\InstallShield\ISMPP40\jvms\win32\sun_win32_13001.jvm</property>
+                        </arrayItem>
+                    </property>
+                    <property name="bundledJVMSource"/>
+                    <property array="True" length="0" name="embeddedJARs" type="string"/>
+                    <property array="True" length="0" name="additionalClassPaths" type="string"/>
+                    <property name="embedArchive">True</property>
+                    <property name="externalArchivePath"/>
+                    <property name="launcherUIDisplayTime">0</property>
+                    <property name="javaArguments"/>
+                    <property name="wizardArguments"/>
+                    <property array="True" length="0" name="systemProperties" type="string"/>
+                    <property name="showConsole">False</property>
+                </arrayItem>
+                <arrayItem type="com.installshield.wizard.platform.web.distribution.AppletDistribution">
+                    <property name="enabled">True</property>
+                    <property name="targetDirectory">applet</property>
+                    <property name="htmlFileName">setup.htm</property>
+                    <property name="systemNotSupportedPage">sys_not_supported.htm</property>
+                    <property name="pageFont">helvetica</property>
+                    <property name="pageFontSize">12</property>
+                    <property name="pageBackground">ffffff</property>
+                    <property name="installAutomatically">1</property>
+                    <property name="iconImage">wizard.gif</property>
+                </arrayItem>
+            </property>
         </arrayItem>
     </property>
     <property name="projectDirectory">C:\users\cxh\ptII\adm\gen-1.0\installshield</property>
