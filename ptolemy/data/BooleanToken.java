@@ -39,7 +39,7 @@ import ptolemy.data.type.BaseType;
 /**
  * A token that contains a boolean variable. Arithmetic on
  * booleans is that of a two-element Galois field (modulo two
- * arithmetic). Thus, add() is logical or, multiply() is logical
+ * arithmetic). Thus, add() is logical xor, multiply() is logical
  * and, zero() is false, one() is true.
  *
  * @author Neil Smyth, Yuhong Xiong, Edward A. Lee
