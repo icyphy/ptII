@@ -23,10 +23,7 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-
-@ProposedRating Red (eal@eecs.berkeley.edu) 
-	Added getComponent(), previousStringValue(),  _updatePrevious() 
-	for use by actor/gui/PortLocationConfigurer.java 11/02
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (eal@eecs.berkeley.edu)
 
 */
@@ -506,24 +503,6 @@ public class Query extends JPanel {
         }
     }
 
-    /**  Get the gui component by name.
-     *   @param name The name of the item to look up.
-     *   @return The corresponding Component
-     *   @exception NoSuchElementException If there is no item with the
-     *   specified name.  Note that this is a runtime exception, so it
-     *   need not be declared explicitly.
-     *   @since Ptolemy 2.1
-     */
-    public Component getComponent(String name)
-            throws NoSuchElementException {
-        Component result = (Component)_entries.get(name);
-        if (result == null) {
-            throw new NoSuchElementException("No item named \""
-                    + name + " \" in the query box.");
-        }
-        return result;
-    }
-
     /** Get the current value in the entry with the given name
      *  and return as a double value.  If the entry is not a line,
      *  then throw an exception.  If the value of the entry is not
@@ -740,28 +719,6 @@ public class Query extends JPanel {
         }
     }
 
-    /** Get the previous value in the entry with the given name,
-     *  and return as a String.  If it is called from another thread, there is no
-     *  assurance that the value returned will be the current value.
-     *  @return The value currently in the entry as a String.
-     *  @exception NoSuchElementException If there is no item with the
-     *   specified name.  Note that this is a runtime exception, so it
-     *   need not be declared explicitly.
-     *  @exception IllegalArgumentException If the entry type does not
-     *   have a string representation (this should not be thrown).
-     *  @see #_updatePrevious(String, String)
-     *  @since Ptolemy 2.1   
-     */
-    public 
-    String previousCachedStringValue(String name) throws NoSuchElementException {
-        String result = (String)_previousCached.get(name);
-        if (result == null) {
-            throw new NoSuchElementException("No item named \""
-                    + name + " \" in the query box.");
-        }
-        return result;
-    }
-
     /** Remove a listener.  If the listener has not been added, then
      *  do nothing.
      *  @param listener The listener to remove.
@@ -835,8 +792,6 @@ public class Query extends JPanel {
         // value.  Thus, any future change from this value will trigger
         // notification.
         _previous.put(name, value);
-        // Record the value in a cache that we can access from the listeners.
-        _previousCached.put(name, value);
     }
 
     /** Set the value in the entry with the given name and notify listeners.
@@ -1135,11 +1090,7 @@ public class Query extends JPanel {
 
         _entries.put(name, entry);
         _labels.put(name, label);
-
         _previous.put(name, getStringValue(name));
-        // Record the value in a cache that we can access from the listeners.
-        _previousCached.put(name, getStringValue(name));
-
 
         Dimension preferredSize = _entryPanel.getPreferredSize();
         // Add some slop to the width to take in to account
@@ -1163,18 +1114,6 @@ public class Query extends JPanel {
         _entryPanel.revalidate();
     }
 
-    /** Update the hashtable of previous names and values.
-     *  @param name The name of the entry.
-     *  @param value The value of the entry
-     *  @see #previousStringValue(String)
-     *  @since Ptolemy 2.1   
-     */
-//     protected void _updatePrevious(String name, String value ) {
-//        if (name != null && value != null) {
-//            _previous.put(name, value);
-//            _previousCache.put(name, value);
-//        }
-//     }
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -1224,7 +1163,6 @@ public class Query extends JPanel {
                     (QueryListener)(listeners.nextElement());
                 queryListener.changed(name);
             }
-            _previousCached.put(name, newValue);
         }
     }
 
@@ -1265,19 +1203,7 @@ public class Query extends JPanel {
     private Insets _noPadding = new Insets(0, 0, 0, 0);
 
     // The hashtable of previous values, indexed by entry name.
-    // _previous is used to avoid duplicate notifications of
-    // the same data values.
-    // _previous is updated in _notifyListeners() right before
-    // we notify the listeners.  Thus, _previous cannot
-    // be used by the listeners to see what the previous value was.
     private Map _previous = new HashMap();
-
-    // The hashtable of previous values, indexed by entry name.
-    // _previousCached is not updated _notifyListeners() until
-    // after all the listeners have been notified.  
-    // _previousCached can be accessed by calling 
-    // previousCachedStringValue().  
-    private Map _previousCached = new HashMap();
 
     // The sum of the height of the widgets added using _addPair
     // If you adjust this, try the GR/Pendulum demo, which has
