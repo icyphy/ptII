@@ -1,6 +1,6 @@
 # Tests for the IntToken class
 #
-# @Author: Mudit Goel, Neil Smyth
+# @Author: Neil Smyth
 #
 # @Version $Id$
 #
@@ -112,6 +112,7 @@ test IntToken-2.3 {Create a non-empty instance and query its value as a string} 
 #    set p [java::new {ptolemy.data.IntToken int} 12]
 #    $p complexValue
 #} {12}
+
 ######################################################################
 ####
 # 
