@@ -31,6 +31,7 @@
 package pt.actors;
 
 import pt.kernel.*;
+import pt.data.*;
 
 import java.util.Enumeration;
 import java.util.NoSuchElementException;
@@ -224,17 +225,15 @@ public abstract class IOPort extends ComponentPort {
             throw new IllegalActionException(this,
                    "Attempt to send data from a port that is not an output.");
         }
-        Enumeration ports = deepConnectedPorts();
+        Enumeration ports = deepConnectedInputPorts();
         boolean first = true;
         while( ports.hasMoreElements() ) {
             IOPort port = (IOPort)ports.nextElement();
-            if (port.isInput()) {
-                if (first) {
-                    port.receive(token, this);
-                    first = false;
-                } else {
-                    port.receive((Token)(token.clone()), this);
-                }
+            if (first) {
+                port.receive(token, this);
+                first = false;
+            } else {
+                port.receive((Token)(token.clone()), this);
             }
         }
     }
