@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
    record fields may be removed or added. The channel should merge the
    returned transmission properties with its <i>defaultProperties<i> to
    make sure that the transmission properties contains at least all the
-   fields of the defaultProperties.
+   fields of the <i>defaultProperties</i>.
    <p>
    Anything that needs to know the locations of the sender and receiver
    to alter the transmit properties should implement this interface.
@@ -58,11 +58,9 @@ import ptolemy.kernel.util.IllegalActionException;
    to receivers, it needs to know each receiver's position and its own
    position to calculator the antenna gain. To do so, the sender can
    implement this interface and register itself with the wireless channel
-   it uses. The channel will call the <i>transformProperties</I> methods
-   later and provides the required information for the sender to calculate
-   the antenna gain to a specific receiver(@see TransformProperties).
-
-   The modified property transformer
+   it uses. The channel will call the <i>transformProperties</I> method
+   later and provide the required information for the sender to calculate,
+   for example, the antenna gain to a specific receiver.
 
    @see WirelessChannel
    @author Yang Zhao and Edward Lee
