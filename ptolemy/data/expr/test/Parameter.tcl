@@ -400,15 +400,15 @@ test Parameter-14.0 {Test the mechanism for extending scope} {
     catch {$p4 getToken} msg2
 
     list [$r1 toString] [$r2 toString] [$r3 toString] $msg1 $msg2
-} {5 0 5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+} {5 0 5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
 The ID p is undefined.
 -------------- and --------------
-Error evaluating expression "p"
+Error evaluating expression: p
   in .<Unnamed Object>.e2.p4
 Because:
-The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.e2.p4
 Because:
 The ID p is undefined.}}
@@ -522,10 +522,10 @@ test Parameter-15.4 {Changing container of parameter that depends on scope to an
     catch {set msg3 [[$p3 getToken] toString]} msg3
     
     list $msg1 $msg2 $msg3
-} {5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+} {5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
-The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
 The ID p is undefined.}}
@@ -552,7 +552,7 @@ test Parameter-15.5 {Changing container of parameter depends on scope.} {
     catch {set msg3 [[$p3 getToken] toString]} msg3
     
     list $msg1 $msg2 $msg3
-} {5 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+} {5 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .p3
 Because:
 The ID p is undefined.}}
@@ -598,10 +598,10 @@ test Parameter-15.7 {Removing parameter invalidate dependants.} {
     catch {set msg3 [[$p3 getToken] toString]} msg3
 
     list $msg1 $msg2 $msg3
-} {5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+} {5 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
-The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
 The ID p is undefined.}}
@@ -626,10 +626,10 @@ test Parameter-15.8 {Changing container of container of parameter that depends o
     catch {set msg3 [[$p3 getToken] toString]} msg3
 
     list $msg1 $msg2 $msg3
-} {7 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+} {7 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
-The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+The ID p is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .<Unnamed Object>.p3
 Because:
 The ID p is undefined.}}
@@ -654,7 +654,7 @@ test Parameter-15.9 {Changing container of container of parameter that depends o
     catch {set msg3 [[$p3 getToken] toString]} msg3
 
     list $msg1 $msg2 $msg3
-} {7 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p"
+} {7 {} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p
   in .p3
 Because:
 The ID p is undefined.}}
@@ -679,10 +679,10 @@ test Parameter-16.0 {Test array and matrix references} {
     $p2 setExpression "p1(4, 5)"
     catch {$p2 getToken} msg2
     list $r1 $r2 $msg1 $msg2
-} {1 1 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p1(10)"
+} {1 1 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p1(10)
   in .<Unnamed Object>.e2.p2
 Because:
-The index '10' is out of bounds on the array '{1, 2, 3}'.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "p1(4, 5)"
+The index '10' is out of bounds on the array '{1, 2, 3}'.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p1(4, 5)
   in .<Unnamed Object>.e2.p2
 Because:
 The index (4,5) is out of bounds on the matrix '[1, 2; 3, 4]'.}}

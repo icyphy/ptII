@@ -578,10 +578,10 @@ test PtParser-10.2 {Test for reasonable error messages on type problems} {
     $v1 setExpression "cos(\"foo\")"
     catch {$v1 getToken} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression "cos("foo")"
+} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression: cos("foo")
   in .E.v1
 Because:
-No matching function cos( "foo" ).}}
+No matching function: cos( "foo" ).}}
 
 ######################################################################
 ####

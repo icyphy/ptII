@@ -151,16 +151,16 @@ test Variable-2.5 {Check that dependency cycles are flagged as an error} {
     catch {set errormsg1 [[$p1 getToken] toString]} errormsg1
     catch {set errormsg1 [[$p3 getToken] toString]} errormsg2
     list $value1 $value2 $value3 $errormsg1 $errormsg2
-} {1.1 9.9 11.0 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "P3"
+} {1.1 9.9 11.0 {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: P3
   in .E.P1
 Because:
-Error evaluating expression "P1 + P2"
+Error evaluating expression: P1 + P2
   in .E.P3
 Because:
-There is a dependency loop.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "P1 + P2"
+There is a dependency loop.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: P1 + P2
   in .E.P3
 Because:
-Error evaluating expression "P3"
+Error evaluating expression: P3
   in .E.P1
 Because:
 There is a dependency loop.}}
@@ -176,7 +176,7 @@ test Variable-3.0 {First check for no error message} {
 test Variable-3.1 {Next check for reasonable error message} {
     catch {$p1 getToken} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression "P2"
+} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression: P2
   in .E.P1
 Because:
 The ID P2 is undefined.}}
@@ -334,7 +334,7 @@ test Variable-5.4 {Check setting expression to null} {
 #     catch {[[$v2 getToken] toString]} r2
 #     list $r1 $r2
 # } {{"cb"} {ptolemy.kernel.util.IllegalActionException: Object name: .V2:
-# Error evaluating expression: "P1+P2"
+# Error evaluating expression: P1+P2
 # In variable: .V2
 # Caused by:
 #  ptolemy.kernel.util.IllegalActionException: The ID P1 is undefined.}}
@@ -430,10 +430,10 @@ test Variable-10.0 {Check setContainer} {
     catch {$p2 setContainer $e2} msg2
     catch {set r3 [[$p2 getToken] toString]} r3
     list $r1 $msg1 $r2 $msg2 $r3
-} {{"a"} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "P1"
+} {{"a"} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: P1
   in .E1.P2
 Because:
-The ID P1 is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression "P1"
+The ID P1 is undefined.} {ptolemy.kernel.util.IllegalActionException: Error evaluating expression: P1
   in .E1.P2
 Because:
 The ID P1 is undefined.} {} {"a"}}

@@ -1332,9 +1332,8 @@ public class Variable extends Attribute
         } catch (IllegalActionException ex) {
             _needsEvaluation = true;
             throw new IllegalActionException(this, ex,
-                    "Error evaluating expression \""
-                    + _currentExpression
-                    + "\"");
+                    "Error evaluating expression: "
+                    + _currentExpression);
         } finally {
             _dependencyLoop = false;
             workspace().doneReading();
