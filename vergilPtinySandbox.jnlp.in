@@ -22,7 +22,20 @@
      <!-- Run in the sandbox -->
   </security> 
   <resources>
-  	<j2se version="1.4+"/>
+        <!-- Bump maximum heap size to 128Mb, use JVM Props. to confirm -->
+  	<j2se version="1.4+" max-heap-size="128m" />
+
+        <!-- There is a bug under JDK1.4.1 XP with Radeon display cards
+        that causes XP to hang when exiting.  For details, see
+        http://developer.java.sun.com/developer/bugParade/bugs/4713003.html
+        The workaround is to start the java interpreter with 
+        -Dsun.java2d.d3d=false 
+        or
+        -Dsun.java2d.noddraw=true
+        T30's seem to be happier with noddraw than with only d3d, at least
+	under 1.4.1-beta-b14 -->
+        <property name="sun.java2d.noddraw" value="true"/>
+
 	<!-- Start Jars -->
 	<!-- End Jars -->
   </resources>
