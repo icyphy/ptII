@@ -81,5 +81,7 @@ public class CTReceiver extends Mailbox {
             get();
         }
         super.put(token);
+        //System.out.println(getContainer().getFullName() + 
+        //        " received " + token);
     }
 }

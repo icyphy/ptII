@@ -495,7 +495,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
     public void initialize() throws IllegalActionException {
         if(_debugging) {
             _debug(getFullName(), " initializing");
-            _debug(getFullName(), " get state Time parameter " +
+            _debug(getFullName(), " get start Time parameter " +
                     ((DoubleToken)startTime.getToken()).doubleValue());
         }
         CompositeActor containersContainer =
@@ -642,7 +642,7 @@ public abstract class CTDirector extends StaticSchedulingDirector {
      */
     protected void _initParameters() {
         try {
-            _stopTime = 1.0;
+            _stopTime = java.lang.Double.MAX_VALUE;
             _startTime = 0.0;
             _initStepSize = 0.1;
             _minStepSize = 1e-5;
