@@ -31,6 +31,7 @@ package ptolemy.domains.ct.kernel;
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.sched.ScheduleElement;
 import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
@@ -377,20 +378,11 @@ public class CTMultiSolverDirector extends CTDirector {
                 }
             }
             
-            // There is a discrete event detected, no need to 
-            // check breakpoints any more. 
-            if (hasDiscreteEvents) return true;
-            
+            // There is a discrete event detected. 
             // Also check breakpoint table for explicit requests from discrete
-            // actors.
-            if (getBreakPoints().contains(getModelTime())) {
-                if (_debugging) {
-                    _debug(
-                        " <<< First breakpoint in the break-point list is at "
-                        + getBreakPoints().first());
-                }
-                hasDiscreteEvents = true;
-            }
+            // actors. 
+            hasDiscreteEvents |= _processBreakpoints();
+            
             return hasDiscreteEvents;
         } catch (IllegalActionException ex) {
             throw new InternalErrorException (
@@ -786,7 +778,7 @@ public class CTMultiSolverDirector extends CTDirector {
 
     // FIXME: priviate methods?
 
-    protected void _iterateDiscreteActors(CTSchedule schedule) 
+    protected void _iteratePurelyDiscreteActors(CTSchedule schedule) 
         throws IllegalActionException {
         _setExecutionPhase(CTExecutionPhase.FIRINGPURELYDISCRETE_PHASE);
         _iterateSchedule(schedule.get(CTSchedule.DISCRETE_ACTORS));
@@ -875,7 +867,14 @@ public class CTMultiSolverDirector extends CTDirector {
             Actor actor = (Actor)actors.next();
             if (_debugging) _debug("Prefire dynamic actor: "
                     + ((Nameable)actor).getName());
-            boolean ready = actor.prefire();
+            boolean ready;
+            // for atomic actor, call 
+            if (actor instanceof AtomicActor) {
+                ready = actor.prefire();
+            } else {
+                actor.fire();
+                ready = true;
+            }
             if (!ready) {
                 _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
                 throw new IllegalActionException((Nameable)actor,
@@ -1036,27 +1035,7 @@ public class CTMultiSolverDirector extends CTDirector {
         
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
 
-        // If there is no event at the current time, 
-        // a fix point is already reached. 
-        if(!hasCurrentEvent()) {
-            if (_debugging) {
-                _debug(" >>> The fix point of the current discrete " +
-                    "phase execution is reached.");
-            }
-            discreteFixPointReached = true;
-            _setDiscretePhase(false);
-            return;
-        }
-
-        // The while loop will not end until one more iteration is performed
-        // after the current time breakpoint is handled.
-        // FIXME: the || hasCurrentEvent will be removed if the next two 
-        // FIXMES are fixed.
-        while ((!discreteFixPointReached || hasCurrentEvent()) &&
-            _postfireReturns) {
-            // Current time is a break point, remove it from the break points
-            // table.
-            _processBreakpoints();
+        while (hasCurrentEvent() && _postfireReturns) {
             
             if (_debugging) {
                 _debug("     Iterate the discrete phase execution once ...");
@@ -1065,9 +1044,10 @@ public class CTMultiSolverDirector extends CTDirector {
             // may be necessary to accelerate the process to reach a fix point.
             // As a side effect, actors have state won't be invoked more than 
             // necessary.
+
             if (_debugging) _debug("  ---> " + getName(), 
                 ": iterating pure discrete actors (discrete -> discrete)");
-            _iterateDiscreteActors(schedule);
+            _iteratePurelyDiscreteActors(schedule);
             
             if (_debugging) _debug("  ---> " + getName(), 
                 ": iterating waveform generators (discrete -> continuous)");
@@ -1109,17 +1089,16 @@ public class CTMultiSolverDirector extends CTDirector {
             // FIXME: make all event generators call fireAt when events are
             // to be generated. The events are only generated at discrete phase.
             // FIXME: the above statement is wrong.
-            discreteFixPointReached = !_processBreakpoints();
-            if (discreteFixPointReached && _debugging) {
-                _debug(
-                    "     >>> The next breakpoint is at " 
-                    + getBreakPoints().first() + ", which is in the future.");
-                _debug("     >>> So, the fix point of the current discrete " +
-                    "phase execution is reached.");
-            }
         }
         
+        if (_debugging) {
+            _debug(" >>> The next breakpoint is at " 
+                + getBreakPoints().first() + ", which is in the future.");
+            _debug(" >>> The fix point of the current discrete " +
+                "phase execution is reached.");
+        }
         // We are leaving discrete phase execution...
+        discreteFixPointReached = true;
         _setDiscretePhase(false);
     }
 
@@ -1147,19 +1126,27 @@ public class CTMultiSolverDirector extends CTDirector {
         prefireClear();
         // prefire dynamic actors (intergrators actually) to produce temporary
         // inputs for state transition actors.
+        _setExecutionPhase(CTExecutionPhase.PREFIRINGDYNAMICACTORS_PHASE);
         _prefireDynamicActors();
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
 
-        // FIXME: the following statement is abandoned.
-        // solver.resolveStates();
+        _setExecutionPhase(CTExecutionPhase.FIRINGSTATETRANSITIONACTORS_PHASE);
         solver.fireStateTransitionActors();
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
         // build history information. In particular, the derivative.
+        _setExecutionPhase(CTExecutionPhase.FIRINGDYNAMICACTORS_PHASE);
         solver.fireDynamicActors();
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
         
         // Iterate output actors. 
+        _setExecutionPhase(CTExecutionPhase.PRODUCINGOUTPUTS_PHASE);
         produceOutput();
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
 
         // postfire all the continuous actors.
+        _setExecutionPhase(CTExecutionPhase.UPDATINGCONTINUOUSSTATES_PHASE);
         updateContinuousStates();
+        _setExecutionPhase(CTExecutionPhase.UNKNOWN_PHASE);
 
         // calculate a possible next step size.
         setSuggestedNextStepSize(_predictNextStepSize());
