@@ -195,11 +195,12 @@ public class Clock extends TimedSource {
                 previous = offsetsValue[0][j];
             }
         } else if (attribute == period) {
-            double prd = ((DoubleToken)period.getToken()).doubleValue();
-            if (prd <= 0.0) {
+            double periodValud =
+                ((DoubleToken)period.getToken()).doubleValue();
+            if (periodValue <= 0.0) {
                 throw new IllegalActionException(this,
                         "Period is required to be positive.  " +
-                        "Period given: " + prd);
+                        "Period given: " + periodValue);
             }
         } else {
             super.attributeChanged(attribute);
