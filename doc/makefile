@@ -32,7 +32,7 @@
 ME =		ptII/doc
 
 # Sub directories to run make in.
-DIRS =		 coding design #internals #usersGuides
+DIRS =		 coding design tutorial #internals #usersGuides
 
 # Root of Ptolemy II directory
 ROOT =		..
@@ -46,6 +46,7 @@ EXTRA_SRCS = \
 	banner.htm \
 	body.htm \
 	buttons.htm \
+	codegen.htm \
 	contents.css \
 	contentsheader.htm \
 	default.css \
@@ -58,6 +59,7 @@ EXTRA_SRCS = \
 	help.htm \
 	index.htm \
 	install.htm \
+	kvm.htm \
 	main.htm \
 	mainheader.htm \
 	ptII0.4.release.htm \
