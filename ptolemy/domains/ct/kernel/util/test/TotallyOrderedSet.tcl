@@ -73,7 +73,7 @@ test TotallyOrderedSet-2.2 {Construct an empty set and check emptiness} {
 ######################################################################
 #### get the comparator
 #
-test TotallyOrderedSet-2.2 {get the comparator} {
+test TotallyOrderedSet-3.1 {get the comparator} {
     #Note: use the above setup.
     set comp [java::cast ptolemy.domains.ct.kernel.util.FuzzyDoubleComparator \
 	    [$toset getComparator]]
@@ -107,7 +107,7 @@ test TotallyOrderedSet-2.2 {get the comparator} {
 ######################################################################
 ####
 #
-test TotallyOrderedSet-3.0 {insert 5 random elements in the set} {
+test TotallyOrderedSet-4.1 {insert 5 random elements in the set} {
     $toset insert $p4
     $toset insert $p6
     $toset insert $p3
@@ -123,7 +123,7 @@ test TotallyOrderedSet-3.0 {insert 5 random elements in the set} {
 ######################################################################
 ####
 #
-test TotallyOrderedSet-3.1 {try to insert a duplicated one} {
+test TotallyOrderedSet-4.2 {try to insert a duplicated one} {
     $toset insert $p3again
     list [$toset size] [$toset at 0] \
             [$toset at 1] \
@@ -135,42 +135,50 @@ test TotallyOrderedSet-3.1 {try to insert a duplicated one} {
 ######################################################################
 ####
 #
-test TotallyOrderedSet-4.1 {contains} {
+test TotallyOrderedSet-5.1 {contains} {
     $toset contains $p1
 } {1}
 
 ######################################################################
 ####
 #
-test TotallyOrderedSet-4.1 {contains a duplication} {
+test TotallyOrderedSet-5.2 {contains: does not contain p5 } {
+    $toset contains $p5
+} {1}
+
+
+######################################################################
+####
+#
+test TotallyOrderedSet-5.3 {contains a duplication} {
     $toset contains $p1again
 } {1}
 
 ######################################################################
 ####
 #
-test TotallyOrderedSet-5.1 {get the first from the set and test size} {
+test TotallyOrderedSet-6.1 {get the first from the set and test size} {
     list [$toset first] [$toset size]
 } {0.0 5}
 
 ######################################################################
 ####
 #
-test TotallyOrderedSet-5.2 { index of an existing element} {
+test TotallyOrderedSet-7.1 { index of an existing element} {
     list [$toset indexOf $p6]
 } {3}
 
 ######################################################################
 ####
 #
-test TotallyOrderedSet-5.2 { index of a duplicated element } {
+test TotallyOrderedSet-7.2 { index of a duplicated element } {
     list [$toset indexOf $p6again]
 } {3}
 
 ######################################################################
 ####
 #
-test TotallyOrderedSet-6.1 { remove the first element } {
+test TotallyOrderedSet-8.1 { remove the first element } {
     $toset removeFirst
     list [$toset size] [$toset at 0]  \
             [$toset at 1] \
@@ -181,7 +189,7 @@ test TotallyOrderedSet-6.1 { remove the first element } {
 ######################################################################
 ####
 #
-test TotallyOrderedSet-6.2 { remove the second element } {
+test TotallyOrderedSet-8.2 { remove the second element } {
     $toset removeAt 2
     list [$toset size] [$toset at 0] \
             [$toset at 1] \
@@ -191,7 +199,7 @@ test TotallyOrderedSet-6.2 { remove the second element } {
 ######################################################################
 ####  Take
 #
-test TotallyOrderedSet-6.3 { take the first element } {
+test TotallyOrderedSet-9.1 { take the first element } {
     set f [$toset removeFirst]
     list [$toset size] $f [$toset at 0] \
             [$toset at 1]
@@ -199,7 +207,7 @@ test TotallyOrderedSet-6.3 { take the first element } {
 ######################################################################
 ####  To String
 #
-test TotallyOrderedSet-6.3a { toString } {
+test TotallyOrderedSet-10.1 { toString } {
     $toset insert $p7
     $toset insert $p8
     $toset insert $p9
@@ -216,7 +224,7 @@ test TotallyOrderedSet-6.3a { toString } {
 ######################################################################
 ####  remove all less than
 #
-test TotallyOrderedSet-6.4 { remove all less than } {
+test TotallyOrderedSet-11.1 { remove all less than } {
     
     #now we have: 3.0 8.9 50.0 999.1 999.3 999.8 1001.0 1002.1 1002.2 
     # 1002.3 
@@ -226,7 +234,7 @@ test TotallyOrderedSet-6.4 { remove all less than } {
             [$toset at 1]
 } {4 1001.0 1002.1}
 
-test TotallyOrderedSet-6.5 { remove all (strictly) less than } {
+test TotallyOrderedSet-11.2 { remove all (strictly) less than } {
     #now we have:  1001.0 1002.1 1002.2 1002.3 
     set l2 [java::new {Double double} 1002.1 ]
     $toset removeAllLessThan $l2
@@ -237,7 +245,7 @@ test TotallyOrderedSet-6.5 { remove all (strictly) less than } {
 ######################################################################
 #### elements()
 #
-test TotallyOrderedSet-7.2 { Call elements() event though it is deprecated, so that we get 100 % code coverage } {
+test TotallyOrderedSet-12.1 { Call elements() event though it is deprecated, so that we get 100 % code coverage } {
     set enum [$toset elements]
     enumToObjects $enum
 } {1002.1 1002.2 1002.3}
@@ -245,7 +253,7 @@ test TotallyOrderedSet-7.2 { Call elements() event though it is deprecated, so t
 ######################################################################
 #### Clear the set.
 #
-test TotallyOrderedSet-7.1 { clear the set } {
+test TotallyOrderedSet-13.1 { clear the set } {
     $toset clear
     list [$toset size]
 } {0}
@@ -253,8 +261,10 @@ test TotallyOrderedSet-7.1 { clear the set } {
 ######################################################################
 #### get first from an empty set
 #
-test TotallyOrderedSet-7.2 { get first from an empty set } {
+test TotallyOrderedSet-14.1 { get first from an empty set } {
     set f [$toset first]
     list [expr {$f == [java::null]}]
 } {1}
+
+
 
