@@ -39,13 +39,92 @@ if {[string compare test [info procs test]] == 1} then {
 # set VERBOSE 1
 
 
+set header {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
+
+
+set hideMoml  "$header 
+<entity name=\"FilterOutGraphicalClassesHide\" class=\"ptolemy.actor.TypedCompositeActor\">
+    <property name=\"annotation1\" class=\"ptolemy.kernel.util.Attribute\">
+        <property name=\"_iconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">
+            <configure><svg><text x=\"20\" y=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\">A simple example that has an annotation
+and some actors with icons.
+This example is used to test
+out MoMLFilter and
+FilterOutGraphicalClasses.</text></svg></configure>
+        </property>
+        <property name=\"_smallIconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">
+            <configure>
+      <svg>
+        <text x=\"20\" style=\"font-size:14; font-family:SansSerif; fill:blue\" y=\"20\">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name=\"_controllerFactory\" class=\"ptolemy.vergil.basic.NodeControllerFactory\">
+        </property>
+        <property name=\"_editorFactory\" class=\"ptolemy.vergil.toolbox.AnnotationEditorFactory\">
+        </property>
+        <property name=\"_location\" class=\"ptolemy.moml.Location\" value=\"190.0, 5.0\">
+        </property>
+        <property name=\"_hideName\" class=\"ptolemy.data.expr.Parameter\">
+        </property>
+    </property>
+</entity>"
+
 ######################################################################
 ####
 #
-test FilterOutGraphicalClasses-1.1 {filterAttributeValue} { 
+test FilterOutGraphicalClasses-1.1 {This annotation already has a _hideName} { 
     set parser [java::new ptolemy.moml.MoMLParser]
-    $parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
+    set filter [java::new ptolemy.moml.FilterOutGraphicalClasses]
+
+    # ptolemy.copernicus.kernel.KernelMain does this
+    $filter put "ptolemy.copernicus.kernel.GeneratorAttribute" [java::null]
+
+    $parser addMoMLFilter $filter
     $parser addMoMLFilter [java::new ptolemy.moml.FilterHideAnnotationNames]
+    set toplevel [$parser parse $hideMoml]
+    set newMoML [$toplevel exportMoML]
+    list $newMoML
+} {{<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="FilterOutGraphicalClassesHide" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.util.VersionAttribute" value="2.1-devel"/>
+    <property name="annotation1" class="ptolemy.kernel.util.Attribute">
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">A simple example that has an annotation
+and some actors with icons.
+This example is used to test
+out MoMLFilter and
+FilterOutGraphicalClasses.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="190.0, 5.0">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.Parameter">
+        </property>
+    </property>
+</entity>
+}}
+
+######################################################################
+####
+#
+test FilterOutGraphicalClasses-1.2 {filterAttributeValue} { 
+    set parser [java::new ptolemy.moml.MoMLParser]
+    # Note that 1.1 added the filter for all the parsers
     set toplevel [$parser parseFile "./FilterOutGraphicalClasses.xml"]
     set newMoML [$toplevel exportMoML]
     list $newMoML
@@ -153,98 +232,3 @@ FilterOutGraphicalClasses.</text></svg></configure>
     <link port="Test.input" relation="relation2"/>
 </entity>
 }}
-
-test FilterOutGraphicalClasses-2.2 {Try running old models, first check that the makefile created the compat/ directory} { 
-    if {! [file exists compat]} {
-	error "compat directory does not exist.  This could happen\
-		If you do not have access to old Ptolemy II tests"
-    } else {
-	list 1
-    }
-} {1}
-
-if {[info procs jdkStackTrace] == 1} then {
-    source [file join $PTII util testsuite jdkTools.tcl]
-}
-# createAndExecute a file with a MoMLFilter
-proc createAndExecute {file} {
-    global KNOWN_FAILED
-    if { "$file" == "compat/testAudioReaderAudioPlayer.xml" \
-	    || "$file" == "compat/testAudioReader.xml" \
-	    || "$file" == "compat/testAudioPlayer.xml" \
-	    || "$file" == "compat/testAudioCapture_AudioPlayer.xml" \
-	    || "$file" == "compat/testAudioCapture.xml" \
-	    || "$file" == "compat/MaximumEntropySpectrum.xml" \
-	    || "$file" == "compat/ArrayAppend.xml" } {
-	puts "$file: Skipping Known Failure"
-	incr KNOWN_FAILED
-	return
-    }
-
-    
-    #java::new ptolemy.actor.gui.MoMLSimpleApplication $file
-    set parser [java::new ptolemy.moml.MoMLParser]
-    $parser addMoMLFilter [java::new ptolemy.moml.FilterOutGraphicalClasses]
-    $parser addMoMLFilter [java::new ptolemy.moml.FilterBackwardCompatibility]
-    set namedObj [$parser parseFile $file]
-    set toplevel [java::cast ptolemy.actor.CompositeActor $namedObj]
-
-    # DT is a mess, don't bother testing it
-    set compositeActor [java::cast ptolemy.actor.CompositeActor $toplevel]
-    set director [$compositeActor getDirector]
-    if [java::instanceof \
-	    $director ptolemy.domains.dt.kernel.DTDirector] {
-	puts "$file: Skipping DT tests, marking as Known Failure"
-	incr KNOWN_FAILED
-	return
-    }
-
-    # Look for comp
-    set deepEntityList [$compositeActor deepEntityList]
-    for {set i 0} {$i < [$deepEntityList size]} {incr i} {
-	set containedActor [$deepEntityList get $i]
-	if [java::instanceof $containedActor \
-		ptolemy.actor.TypedCompositeActor] {
-	    set compositeActor [java::cast ptolemy.actor.CompositeActor \
-		    $containedActor]
-	    set director [$compositeActor getDirector]
-	    if [java::instanceof \
-		    $director ptolemy.domains.dt.kernel.DTDirector] {
-		puts "$file: Skipping tests with DT inside, marking as Known Failure"
-		incr KNOWN_FAILED
-		return
-	    }
-	}
-    }
-
-
-    #set newMoML [$toplevel exportMoML]
-    #puts $newMoML
-
-    set workspace [$toplevel workspace]
-    set manager [java::new ptolemy.actor.Manager \
-	    $workspace "compatibilityChecking"]
-    
-    $toplevel setManager $manager
-    $manager execute
-
-}
-
-
-# Find all the files in the compat directory
-
-
-#foreach file [list compat/ComplexToCartesianAndBack.xml compat/testAudioReaderAudioPlayer.xml compat/test1.xml compat/FIR1.xml] {
-foreach file [lsort [glob compat/*.xml]] {
-    puts "------------------ testing $file"
-    test "Auto" "Automatic test in file $file" {
-        set application [createAndExecute $file]
-        list {}
-    } {{}}
-    #test "Auto-rerun" "Automatic test rerun in file $file" {
-    #	$application rerun
-    #	list {}
-    #} {{}}
-}
-#doneTests
-
