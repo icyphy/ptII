@@ -68,6 +68,7 @@ UI_FILES_TO_BE_JARED = \
 	codegen.htm \
 	default.css \
 	expressions.htm \
+	sandbox.htm \
 	webStartHelp.htm \
 	whatsnew.htm \
 	whatsnewVergil.htm
@@ -96,7 +97,6 @@ EXTRA_SRCS = \
 	ptII$(PTVERSION).release.htm \
 	ptIIfaq.htm \
 	removeasd \
-	sandbox.htm \
 	toc.css \
 	toc.htm \
 	troubleshooting.htm \
