@@ -51,7 +51,6 @@ import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.domains.fsm.kernel.FSMDirector;
 import ptolemy.domains.fsm.kernel.State;
 import ptolemy.domains.fsm.kernel.Transition;
-import ptolemy.domains.hdf.kernel.HDFFSMActor;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.domains.sdf.kernel.SDFReceiver;
 import ptolemy.domains.sdf.kernel.SDFScheduler;
@@ -250,16 +249,6 @@ public class HDFFSMDirector extends FSMDirector {
         return new SDFReceiver();
     }
 
-    /** Return true if the mode controller is ready to fire.
-     *
-     *  @exception IllegalActionException If there is no controller.
-     */
-    public boolean prefire() throws IllegalActionException {
-        if (_debug_info) System.out.println(getName() +
-                                  " prefire() invoked.");
-        return getController().prefire();
-    }
-
     /** Return true if the mode controller wishes to be scheduled for
      *  another iteration. Postfire the refinement of the current state
      *  of the mode controller. If a type B firing has occurred and exactly
@@ -312,6 +301,7 @@ public class HDFFSMDirector extends FSMDirector {
         // been fired the number of times specified by the current
         // static schedule of the HDF/SDF graph in which this FSM
         // refines.
+        /*
         if (_firingsPerScheduleIteration == -1) {
             // Get the firing count for the HDF actor (the container
             // of this director) in the current schedule.
@@ -324,9 +314,10 @@ public class HDFFSMDirector extends FSMDirector {
                ", _firingsPerScheduleIteration = " +
                                _firingsPerScheduleIteration);
         }
+        */
         // Check if the fire() has been called the number of
         // times specified in the static schedule.
-        if (_firingsSoFar == _firingsPerScheduleIteration) {
+        //if (_firingsSoFar == _firingsPerScheduleIteration) {
             // The current refinement has been fired the number
             // of times specified by the current static schedule.
             // A state transition can now occur.
@@ -394,13 +385,24 @@ public class HDFFSMDirector extends FSMDirector {
                 }
                 // Get the firing count for the HDF actor (the container
                 // of this director) in the current schedule.
-                _firingsPerScheduleIteration =
-                    _getFiringsPerSchedulIteration();
+                //_firingsPerScheduleIteration =
+                  //  _getFiringsPerSchedulIteration();
             }
-        }
+        //}
         if (_debug_info) System.out.println(getName() +
                              " :  postfire(): returning now.");
-        return postfireReturn;
+        return super.postfire();
+        //return postfireReturn;
+    }
+
+    /** Return true if the mode controller is ready to fire.
+     *
+     *  @exception IllegalActionException If there is no controller.
+     */
+    public boolean prefire() throws IllegalActionException {
+        if (_debug_info) System.out.println(getName() +
+                                  " prefire() invoked.");
+        return getController().prefire();
     }
 
     /** Create receivers and invoke the preinitialize() methods
@@ -490,7 +492,7 @@ public class HDFFSMDirector extends FSMDirector {
             //((HDFFSMActor)ctrl)._setInputVariables(_firingsSoFar, _getFiringsPerSchedulIteration());
         //ctrl._setInputVariables(_firingsSoFar, _getFiringsPerSchedulIteration());
         //} else {
-           super._setInputVariables();
+        super._setInputVariables();
         //}
     }
 
@@ -575,6 +577,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  @param port The port to transfer tokens from.
      *  @return True if data are transferred.
      */
+
     public boolean transferOutputs(IOPort port)
             throws IllegalActionException {
         if (_debug_info) System.out.println(getName() +
@@ -731,6 +734,7 @@ public class HDFFSMDirector extends FSMDirector {
      *  in the current schedule.
      *  @exception IllegalActionException If FIXME.
      */
+    /*
     private int _getFiringsPerSchedulIteration()
         throws IllegalActionException {
         if (_debug_info) System.out.println(getName() +
@@ -805,6 +809,7 @@ public class HDFFSMDirector extends FSMDirector {
                 "should be either an SDFDirector or an HDFDirector.");
         }
     }
+    */
 
     /** Get the number of tokens that are produced or consumed
      *  on the designated port of this Actor, as supplied by
@@ -1105,8 +1110,8 @@ public class HDFFSMDirector extends FSMDirector {
     // iteration of the SDF graph containing this FSM.
     private int _firingsSoFar;
     // Set to true to enable debugging.
-    //private boolean _debug_info = true;
-    private boolean _debug_info = false;
+    private boolean _debug_info = true;
+    //private boolean _debug_info = false;
     // The firing count for the HDF actor (the container
     // of this director) in the current schedule.
     private int _firingsPerScheduleIteration = -1;
