@@ -1,6 +1,6 @@
 /* Huffman code base class.
 
-Copyright (c) 2003-2004 The Regents of the University of California.
+Copyright (c) 2004 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -58,7 +58,7 @@ import ptolemy.math.SignalProcessing;
     
    @author Rachel Zhou
    @version $Id$
-   @since Ptolemy II 3.0
+   @since Ptolemy II 4.1
    @Pt.ProposedRating Red (zhouye)
    @Pt.AcceptedRating Red (cxh)
 */
