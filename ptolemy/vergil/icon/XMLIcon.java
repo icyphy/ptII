@@ -93,8 +93,8 @@ public class XMLIcon extends EditorIcon implements ValueListener {
 
         // Get the description.
         NamedObj container = (NamedObj)getContainer();
-        SingletonConfigurableAttribute description =
-            (SingletonConfigurableAttribute)container.getAttribute(
+        ConfigurableAttribute description =
+            (ConfigurableAttribute)container.getAttribute(
                     "_iconDescription");
         // If the description has changed...
         if (_description != description) {
@@ -143,8 +143,8 @@ public class XMLIcon extends EditorIcon implements ValueListener {
         // No cached object, so rerender the icon.
         // Get the description.
         NamedObj container = (NamedObj)getContainer();
-        SingletonConfigurableAttribute description =
-            (SingletonConfigurableAttribute)container.getAttribute(
+        ConfigurableAttribute description =
+            (ConfigurableAttribute)container.getAttribute(
                     "_smallIconDescription");
         // If there is no separate small icon description, return
         // a scaled version of the background figure, as done by the base

@@ -122,7 +122,7 @@ public class AnnotationEditorFactory extends EditorFactory {
     public Component createEditorPane() {
         _textArea = new JTextArea();
         _iconDescription =
-            (SingletonConfigurableAttribute)_container
+            (ConfigurableAttribute)_container
             .getAttribute("_iconDescription");
         if (_iconDescription == null) {
             try {
@@ -207,7 +207,7 @@ public class AnnotationEditorFactory extends EditorFactory {
     private String _fontColor = "blue";
 
     /** The attribute containing the icon description. */
-    private SingletonConfigurableAttribute _iconDescription;
+    private ConfigurableAttribute _iconDescription;
 
     /** The text area of the editor. */
     private JTextArea _textArea;
