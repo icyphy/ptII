@@ -52,6 +52,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	AbstractCase.java \
+	ApplyFilterOverArray.java \
 	ApplyFunction.java \
 	ApplyFunctionOverSequence.java \
 	Case.java \
@@ -61,6 +62,7 @@ JSRCS = \
 	MobileFunction.java \
 	MobileModel.java \
 	ModelReference.java \
+	ModelUtilities.java \
 	MultiInstanceComposite.java \
 	RunCompositeActor.java
 
