@@ -172,6 +172,10 @@ JINI_LIB =	$(JINI_DIR)/lib
 # because we end up with a classpath with an empty element ::
 JINI_JARS =     $(JINI_LIB)/jini-core.jar$(CLASSPATHSEPARATOR)$(JINI_LIB)/jini-jspaces.jar
 
+# Jar file that contains Joystick interface,
+# see http://sourceforge.net/projects/javajoystick/
+JOYSTICK_JAR =	@JOYSTICK_JAR@
+
 # JXTA home directory that contains jxta.jar, see http://www.jxta.org
 JXTA_DIR =	@JXTA_DIR@
 
@@ -249,7 +253,10 @@ PTJHDL_DIR =    @PTJHDL_DIR@
 # PTJMF_DIR is set to jmf if the JMF directory is found
 PTJMF_DIR =     @PTJMF_DIR@
 
-# Set to jxta ans used in
+# Set to joystick if Joystick.jar was found.
+PTJOYSTICK_DIR =     @PTJOYSTICK_DIR@
+
+# Set to jxta and used in
 # $PTII/actor/lib/makefile if jxta.jar was found
 PTJXTA_DIR =	@PTJXTA_DIR@
 

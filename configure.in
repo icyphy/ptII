@@ -619,6 +619,50 @@ fi
 
 
 #--------------------------------------------------------------------
+#       The Joystick interface is a Java interface to Joysticks, see
+#	http://sourceforge.net/projects/javajoystick/
+#       See if there was a command-line option for where Joystick interface is
+#       If not, look for $PTII/vendors/misc/joystick
+#--------------------------------------------------------------------
+
+# PTJOYSTICK_DIR is set to joystick and used in
+# $PTII/ptolemy/actor/lib/makefile if Joystick.jar was found
+PTJOYSTICK_DIR=
+
+# Joystick Jar file
+JOYSTICK_JAR='${PTII}/vendors/misc/joystick/Joystick.jar'
+
+# We only need to look for jhdl if $PTII/ptolemy/actor/lib/joystick exists
+if test ! -d "$PTII/ptolemy/actor/lib/joystick"; then
+    AC_MSG_RESULT([$PTII/ptolemy/actor/lib/joystick is not present,
+	so we need not find the Joystick interface.])
+else
+    AC_MSG_CHECKING([for joystick jar file])
+    AC_ARG_WITH(jhdl_jar, [  --with-jhdl-jar=JARFILE       use JOYSTICK from JARFILE,
+                          defaults to \$PTII/vendors/misc/joystick/Joystick.jar],
+	JOYSTICK_JAR=$withval,
+	JOYSTICK_JAR=$PTII/vendors/misc/joystick/Joystick.jar)
+
+    if test -f "$JOYSTICK_JAR"; then
+	AC_MSG_RESULT([$JOYSTICK_JAR])
+	# Set to joystick and used in
+	# $PTII/ptolemy/actor/lib/joystick if joystick was found
+	PTJOYSTICK_DIR=joystick
+    fi	
+
+    if test "$PTJOYSTICK_DIR" = ""; then
+        AC_MSG_WARN(['Failed to find $JOYSTICK_JAR
+    perhaps the Joystick is not installed?
+    You need not download the Joystick interface unless you
+    plan on using a Joystick with Ptolemy II. 
+    The Joystick interface can be downloaded from
+    http://sourceforge.net/projects/javajoystick/'])
+	# Note that we don't substitute in the ${PTII} here
+	JOYSTICK_JAR='${PTII}/vendors/misc/joystick/Joystick.jar'
+    fi
+fi
+
+#--------------------------------------------------------------------
 #	"JXTA technology is a set of open protocols that allow any
 #	connected device on the network ranging from cell phones and wireless
 #	PDAs to PCs and servers to communicate and collaborate in a P2P
@@ -1434,6 +1478,10 @@ AC_SUBST(JINI_DIR)
 # If Jini is present, the set to yes, otherwise, set to no
 AC_SUBST(JINI_PRESENT)
 
+# Jar file that contains Joystick interface,
+# see http://sourceforge.net/projects/javajoystick/
+AC_SUBST(JOYSTICK_JAR)
+
 # jtclsh script, used for test suites
 AC_SUBST(JTCLSH)
 
@@ -1505,6 +1553,9 @@ AC_SUBST(PTJHDL_DIR)
 
 # Set to jmf if jmf.jar was found
 AC_SUBST(PTJMF_DIR)
+
+# Set to joystick if Joystick.jar was found
+AC_SUBST(PTJOYSTICK_DIR)
 
 # Set to jspaces and used in
 # $PTII/ptolemy/actor/lib/makefile if jini was found
