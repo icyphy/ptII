@@ -149,8 +149,8 @@ public class ClassDecl extends TypeDecl implements JavaStaticSemanticConstants {
             String fileName = fullName(File.separatorChar);
             File file = _pickLibrary(_container).openSource(fileName);
 
-            ApplicationUtility.trace(">Reading in user type : " + fullName() +
-                    " from " + fileName);
+            ApplicationUtility.trace("ClassDecl: Reading in user type : " +
+				     fullName() + " from " + fileName);
 
             StaticResolution.load(file, 0); // should set the source
 
