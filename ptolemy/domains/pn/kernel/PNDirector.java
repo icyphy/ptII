@@ -78,6 +78,7 @@ public class PNDirector extends Director {
                 temp.start();
                 //System.out.println("Started star "+star.getName());
             }
+            _mutate = false;
             if (_debug > 5) System.out.println(
                     "PNExecutive: execute(): after while ");
             return true;
@@ -131,6 +132,14 @@ public class PNDirector extends Director {
         }
     }
 
+    /** This is obsolete. Should go. Please donot use it anymore. */
+    public void setMutate(boolean mutate) {
+        synchronized(workspace()) {
+            _mutate = mutate;
+            workspace().notifyAll();
+        }
+    }
+    
     /** The action to start terminating all processes due to a deadlock begins
      *	here.
      */
@@ -278,7 +287,8 @@ public class PNDirector extends Director {
                            " !_terminate");
                 }
                 // Wait for a deadlock to occur.
-                while (!hasNewActors() && !_terminate && !_deadlock) {
+                while (!hasNewActors() &&!_mutate && !_terminate && !_deadlock) {
+                //while (!_mutate && !_terminate && !_deadlock) {
                    try {
                        if (_debug > 7 ) {
                            System.out.println("PNExecutive: " +
@@ -297,7 +307,8 @@ public class PNDirector extends Director {
                 //FIXME: IS this the best way to check for mutation?
 		// Maybe it should check for workspace version number.
 		//FIXME: Should the flags be reset? 
-		if (hasNewActors()) { 
+		if (hasNewActors() || _mutate) { 
+                    //if (_mutate) {
 		    //_terminate = false;
 		    //_deadlock = false;
 		    return false;
@@ -349,7 +360,8 @@ public class PNDirector extends Director {
     
     //////////////////////////////////////////////////////////////////////////
     ////                         private variables                        ////
-
+    
+    private boolean _mutate = true;
     // Container is the CompositeEntity the executive is responsible for
     private CompositeEntity _container;
     // Is set when a deadlock occurs
