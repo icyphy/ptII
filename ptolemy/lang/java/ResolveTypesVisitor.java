@@ -113,10 +113,10 @@ public class ResolveTypesVisitor extends JavaVisitor {
     /** Resolve the name of the type. */
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
         PackageDecl pkgDecl = (PackageDecl) args.get(0);
-        Environ fileEnv = (Environ) args.get(1);
+        Environ env = (Environ) args.get(1);
 
-        NameNode newName = (NameNode) StaticResolution.resolveAName(node.getName(),
-         fileEnv, null, false, pkgDecl, JavaDecl.CG_USERTYPE);
+        NameNode newName = (NameNode) StaticResolution.resolveAName(
+         node.getName(), env, null, false, pkgDecl, JavaDecl.CG_USERTYPE);
 
         // this is not necessary, but by convention ...
         node.setName(newName);
@@ -131,11 +131,20 @@ public class ResolveTypesVisitor extends JavaVisitor {
     /** Visit the types defined in this file. */
     public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
         LinkedList childArgs = new LinkedList();
-        childArgs.addLast(node.getDefinedProperty("thePackage"));
+        childArgs.addLast(node.getDefinedProperty("thePackage"));  // package decl
         childArgs.addLast(node.getDefinedProperty("environ"));
 
         TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
+        
         return null;
+    }
+
+    public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
+        return _visitUserTypeNode(node, args);
+    }
+
+    public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
+        return _visitUserTypeNode(node, args);
     }
 
     public Object visitEmptyStmtNode(EmptyStmtNode node, LinkedList args) {
@@ -163,6 +172,16 @@ public class ResolveTypesVisitor extends JavaVisitor {
      */
     protected Object _defaultVisit(TreeNode node, LinkedList args) {
         TNLManip.traverseList(this, node, args, node.children());
+        return null;
+    }
+
+    protected Object _visitUserTypeNode(UserTypeDeclNode node, LinkedList args) {
+        LinkedList childArgs = new LinkedList();
+        childArgs.addLast(args.get(0)); // package decl
+        childArgs.addLast(node.getDefinedProperty("environ"));
+
+        TNLManip.traverseList(this, node, childArgs, node.getMembers());
+
         return null;
     }
 }

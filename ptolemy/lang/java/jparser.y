@@ -335,8 +335,8 @@ TypeImportOnDemandStatement :
 
 ClassDeclaration :
 	  FieldModifiersOpt CLASS SimpleName SuperOpt InterfacesOpt ClassBody
-		{ $$ = new ClassDeclNode($1, (NameNode) $3, (TreeNode) $4, (LinkedList) $5,
-           (LinkedList) $6); }
+		{ $$ = new ClassDeclNode($1, (NameNode) $3, (LinkedList) $5,
+           (LinkedList) $6, (TreeNode) $4); }
  ;
 
 
@@ -559,7 +559,7 @@ ParameterList :
 Parameter :
 	  FieldModifiersOpt Type SimpleName DimsOpt
    {
-     Modifiers.checkParameterModifiers($1); 
+     Modifier.checkParameterModifiers($1); 
      $$ = new ParameterNode($1, makeArrayType((TypeNode) $2, $4),
           (NameNode) $3);
    }
@@ -908,7 +908,7 @@ SwitchBlockStatementsOpt :
    }
    /* Handle labels at the end without any statements */
  | SwitchLabels
-   { $$ = cons(new SwitchBranchNode((LinkedList) $1, new LinkedList()); }
+   { $$ = cons(new SwitchBranchNode((LinkedList) $1, new LinkedList())); }
  ;
 
 SwitchLabels :

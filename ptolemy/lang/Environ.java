@@ -171,6 +171,37 @@ public class Environ {
     return more.getValue();
   }
 
+  public String toString() {
+    return toString(true);
+  }
+
+  public String toString(boolean recursive) {
+    ListIterator declItr = _declList.listIterator();
+
+    StringBuffer retval = new StringBuffer("[");
+
+    while (declItr.hasNext()) {
+      Decl d = (Decl) declItr.next();
+      retval.append(d.toString());
+      if (declItr.hasNext()) {
+         retval.append(", ");
+      }
+    }
+
+    retval.append("] ");
+
+    if (_parent != null) {
+       retval.append("has parent\n");
+
+       if (recursive) {
+          retval.append(_parent.toString(true));
+       }
+    } else {
+       retval.append("no parent\n");
+    }
+    return retval.toString();
+  }
+
   protected Environ _parent;
   protected LinkedList _declList;
 }

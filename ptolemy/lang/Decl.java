@@ -69,6 +69,13 @@ public abstract class Decl extends PropertyMap {
   }
 
   public final boolean matches(String name, int mask) {
+    if (name.equals("Enumeration") &&
+        _name.equals("Enumeration")) {
+       System.out.println("matching Enumeration : mask = " + mask +
+        " category = " + category);
+    }
+
+
     if ((category & mask) != 0) {
        return (name.equals(ANY_NAME) || name.equals(_name));
     }
@@ -78,6 +85,24 @@ public abstract class Decl extends PropertyMap {
   public final String getName() { return _name; }
 
   public final void setName(String name) { _name = name; }
+
+  public boolean equals(Object o) {
+    if (o == this) {
+       return true;
+    }
+
+    if (!(o instanceof Decl)) {
+       return false;
+    }
+
+    Decl d = (Decl) o;
+
+    return ((category == d.category) && _name.equals(d.getName())); 
+  }
+
+  public String toString() {
+    return "{" + _name + ", " + category + "}";
+  }
 
   public final int category;
 

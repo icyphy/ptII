@@ -41,6 +41,17 @@ public class ResolveImportsVisitor extends JavaVisitor {
         super(TM_CUSTOM);
     }
 
+    public Object visitCompileUnitNode(CompileUnitNode node, LinkedList args) {
+        LinkedList childArgs = new LinkedList();
+        childArgs.addLast(node);                               // compile unit
+        childArgs.addLast(node.getDefinedProperty("environ")); // file environment
+
+        TNLManip.traverseList(this, node, childArgs, node.getImports());
+
+        return null;
+    }
+
+
     public Object visitImportNode(ImportNode node, LinkedList args) {
 
         Environ fileEnv = (Environ) args.get(1);
@@ -59,6 +70,8 @@ public class ResolveImportsVisitor extends JavaVisitor {
                old.getName());
            }
 	     }
+        fileEnv.add((ClassDecl) name.getDefinedProperty("decl"));
+
         return null;
     }
 
@@ -71,7 +84,7 @@ public class ResolveImportsVisitor extends JavaVisitor {
          StaticResolution.SYSTEM_PACKAGE.getEnviron(), null, false,
          null, JavaDecl.CG_PACKAGE);
 
-        PackageDecl decl = (PackageDecl) name.getProperty("decl");
+        PackageDecl decl = (PackageDecl) name.getDefinedProperty("decl");
 
         StaticResolution.importOnDemand(file, decl);
         return null;

@@ -88,14 +88,14 @@ CPlusPlusStyleComment=("//".*[\n\r])
 "while"        { return parser.WHILE; }
 "strictfp"     { return parser.STRICTFP; }
 
-"const"|"goto"	{ throw new RuntimeException("reserved keyword " +
+"const"|"goto"	{ ApplicationUtility.error("reserved keyword " +
                   yytext() + " ignored"); }
 
 "true"	 { return parser.TRUE; }
 "false" { return parser.FALSE; }
 
 {Letter}{AlphaNum}* {
-     System.out.println("got " + yytext());
+     ApplicationUtility.trace(yytext());
      retval = new parserval(0);
      retval.sval = yytext();
 		  return parser.IDENTIFIER;
@@ -168,7 +168,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
 		  return parser.STRING_LITERAL;
 		}
 
-["(){}];,."]	{ System.out.println("got " + yytext()); return yytext().charAt(0); }
+["(){}];,."]	{ ApplicationUtility.trace(yytext()); return yytext().charAt(0); }
 
 "["([ \t\n]|{C_StyleComment}|{CPlusPlusStyleComment})*"]"?  {
      String s = yytext();
@@ -180,7 +180,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
      }
 		}
 
-["-=><!~?:+*/&|^%"]   { System.out.println("got " + yytext()); return yytext().charAt(0); }
+["-=><!~?:+*/&|^%"]   { ApplicationUtility.trace(yytext()); return yytext().charAt(0); }
 
 "&&"		{ return parser.CAND; }
 "||"		{ return parser.COR; }
@@ -206,7 +206,7 @@ CPlusPlusStyleComment=("//".*[\n\r])
 "--"		{ return parser.MINUSMINUS; }
 
 .	{
-      throw new RuntimeException("Lexical error : Line " + (1 + yyline) +
+      ApplicationUtility.error("Lexical error : Line " + (1 + yyline) +
 "Unmatched input : " + yytext());
 		}
 

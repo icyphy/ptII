@@ -49,13 +49,9 @@ public class SearchPath extends Vector {
 
        ApplicationUtility.trace("envalue = " + envalue);
 
-
-
        if (envalue != null) {
           _addPaths(envalue);
-       }
-
-       else {
+       } else {
           _addPaths(fallbacks);
        }
     }

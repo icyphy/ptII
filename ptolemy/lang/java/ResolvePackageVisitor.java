@@ -48,34 +48,59 @@ public class ResolvePackageVisitor extends JavaVisitor {
         PackageDecl pkgDecl = (PackageDecl) node.getDefinedProperty("thePackage");
 
         LinkedList childArgs = new LinkedList();
-        childArgs.addLast(pkgDecl);
-        childArgs.addLast(environ);
+        childArgs.addLast(pkgDecl);            // package declaration
+        childArgs.addLast(environ);            // enclosing environment =
+                                               // file environment
+        childArgs.addLast(new Boolean(false)); // inner class = false
+        childArgs.addLast(environ.parent());   // package environment
 
         TNLManip.traverseList(this, node, childArgs, node.getDefTypes());
 
+        /*
         LinkedList rivArgs = new LinkedList();
         rivArgs.addLast(node);
         rivArgs.addLast(environ);
 
         TNLManip.traverseList(new ResolveImportsVisitor(), node,
          rivArgs, node.getImports());
+        */
+        node.accept(new ResolveImportsVisitor(), null);
+
         return null;
     }
 
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
+        return _visitUserTypeDeclNode(node, args, true);
+    }
+
+    public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
+        return _visitUserTypeDeclNode(node, args, false);
+    }
+
+    /** The default visit method. */
+    protected Object _defaultVisit(TreeNode node, LinkedList args) {
+        return null;
+    }
+
+    protected Object _visitUserTypeDeclNode(UserTypeDeclNode node,
+     LinkedList args, boolean isClass) {
         PackageDecl pkgDecl = (PackageDecl) args.get(0);
-        Environ fileEnv = (Environ) args.get(1);
+        Environ encEnv = (Environ) args.get(1);
+
+        // inner class change
+        boolean isInner = ((Boolean) args.get(2)).booleanValue();
+        Environ pkgEnv  = (Environ) args.get(3);
 
         String className = ((NameNode) node.getName()).getIdent();
 
-        Decl other = fileEnv.lookupProper(className);
+        Decl other = encEnv.lookupProper(className);
 
         if (other != null) {
            ApplicationUtility.error("attempt to redefine " + other.getName() +
            " as a class");
         }
 
-        Environ pkgEnv = fileEnv.parent();
+        // Environ pkgEnv = encEnv.parent();
 
         ClassDecl ocl = (ClassDecl) pkgEnv.lookupProper(className);
 
@@ -86,76 +111,51 @@ public class ResolvePackageVisitor extends JavaVisitor {
            ocl.setSource(node);
            ocl.setModifiers(node.getModifiers());
         } else {
-           ClassDecl cl = new ClassDecl(className, JavaDecl.CG_CLASS,
-            NullTypeNode.instance, node.getModifiers(), node, pkgDecl);
+           int modifiers = node.getModifiers();
+           JavaDecl encDecl;
+           // boolean topLevel = !isInner || (modifiers & Modifier.STATIC_MOD);
+
+           //if (topLevel) {
+           if (!isInner) {
+              encDecl = pkgDecl;
+           } else {
+              encDecl = (ClassDecl) args.get(4); // decl of enclosing class
+           }
+
+           ClassDecl cl = new ClassDecl(className,
+            isClass ? JavaDecl.CG_CLASS : JavaDecl.CG_INTERFACE,
+            NullTypeNode.instance, node.getModifiers(), node, encDecl);
 
            if (ocl != null)  { // Redefinition in same package.
-              ApplicationUtility.error("class name " + className +
-              " conflicts with " + ocl.getName() + " in same package");
-           } else {
-	           pkgEnv.add(cl);
-           }
-
-           ocl = cl;
-        }
-        ocl.setEnviron(new Environ(fileEnv));
-        fileEnv.add(ocl);
-
-        node.getName().setProperty("decl", ocl);
-
-        return null;
-    }
-
-    public Object visitInterfaceDeclNode(InterfaceDeclNode node, LinkedList args) {
-        PackageDecl pkgDecl = (PackageDecl) args.get(0);
-        Environ fileEnv = (Environ) args.get(1);
-
-        String interfaceName = ((NameNode) node.getName()).getIdent();
-
-        Decl other = fileEnv.lookupProper(interfaceName);
-
-        if (other != null) {
-           ApplicationUtility.error("attempt to redefine " + other.getName() +
-           " as an interface");
-        }
-
-        Environ pkgEnv = fileEnv.parent();
-
-        ClassDecl ocl = (ClassDecl) pkgEnv.lookupProper(interfaceName);
-
-        if ((ocl != null) &&
-            ((ocl.getSource() == null) ||
-             (ocl.getSource() == AbsentTreeNode.instance))) {
-           // Assume this is the definition of 'other'
-           ocl.setSource(node);
-           ocl.setModifiers(node.getModifiers());
-
-           // should make sure it's an interface
-        } else {
-           ClassDecl cl = new ClassDecl(interfaceName, JavaDecl.CG_INTERFACE,
-            NullTypeNode.instance, node.getModifiers(), node, pkgDecl);
-
-           if (ocl != null)  {// Redefinition in same package.
-              ApplicationUtility.error("interface name " + interfaceName +
+              ApplicationUtility.error("user type name " + className +
                " conflicts with " + ocl.getName() + " in same package");
-           } else {
-	           pkgEnv.add(cl);
+           }
+
+           //if (topLevel) {
+           if (!isInner) {
+  	           pkgEnv.add(cl);
            }
 
            ocl = cl;
         }
-        ocl.setEnviron(new Environ(fileEnv));
-        fileEnv.add(ocl);
+
+        Environ env = new Environ(encEnv);
+        node.setProperty("environ", env);
+
+        ocl.setEnviron(env);
+        encEnv.add(ocl);
 
         node.getName().setProperty("decl", ocl);
 
-        return null;
-    }
+        // additions for inner classes
+        LinkedList memberArgs = new LinkedList();
+        memberArgs.addLast(pkgDecl);              // package declaration
+        memberArgs.addLast(env);                  // environment for this class
+        memberArgs.addLast(new Boolean(true));    // inner class = true
+        memberArgs.addLast(pkgEnv);               // package environment
+        memberArgs.addLast(ocl);                  // last class decl
+        TNLManip.traverseList(this, node, memberArgs, node.getMembers());
 
-    /** The default visit method. */
-    protected Object _defaultVisit(TreeNode node, LinkedList args) {
-        ApplicationUtility.error("ResolvePackage not defined on node type : " +
-         node.getClass().getName());
         return null;
     }
 }

@@ -165,38 +165,41 @@ public abstract class TreeNode extends PropertyMap {
     _childList = childList;
   }
 
-  protected Object acceptHere(IVisitor v, LinkedList visitorArgs) {
-    Class myClass = getClass();
-    String myClassName = StringManip.unqualifiedPart(myClass.getName());
+  protected Object acceptHere(IVisitor v, LinkedList visitArgs) {
+    if (_myClass == null) {
+       _myClass = getClass();
 
-    Class visitorClass = v.getClass();
-    String methodName = "visit" + myClassName;
-    Class[] paramTypes = new Class[2];
-    paramTypes[0] = myClass;
-    paramTypes[1] = _linkedListClass;
+       String myClassName = StringManip.unqualifiedPart(_myClass.getName());
+       _visitMethodName = "visit" + myClassName;
+
+       _visitParamTypes[0] = _myClass;
+       _visitParamTypes[1] = _linkedListClass;
+
+       _visitArgs[0] = (Object) this;
+    }
 
     Method method;
+    Class visitorClass = v.getClass();
 
     try {
-      method = visitorClass.getMethod(methodName, paramTypes);
+      method = visitorClass.getMethod(_visitMethodName, _visitParamTypes);
     } catch (NoSuchMethodException e) {
       throw new RuntimeException(e.toString());
     }
 
-    Object[] args = new Object[2];
-    args[0] = (Object) this;
-    args[1] = (Object) visitorArgs;
+    _visitArgs[1] = (Object) visitArgs;
 
     try {
-      return method.invoke(v, args);
+      return method.invoke(v, _visitArgs);
     } catch (IllegalAccessException iae) {
-      throw new RuntimeException("Illegal access exception invoking method "
-       + methodName);
+      ApplicationUtility.error("Illegal access exception invoking method "
+       + _visitMethodName);
     } catch (InvocationTargetException ite) {
-      throw new RuntimeException("Invocation target exception invoking method "
-       + methodName + " : target = " +
+      ApplicationUtility.error("Invocation target exception invoking method "
+       + _visitMethodName + " : target = " +
        ite.getTargetException().toString());
     }
+    return null;
   }
 
   public Object childReturnValueAt(int index) {
@@ -214,10 +217,16 @@ public abstract class TreeNode extends PropertyMap {
       }
       index++;
     }
-    throw new IllegalArgumentException("Child not found");
+    ApplicationUtility.error("Child not found");
+    return null;
   }
 
   protected LinkedList _childList = new LinkedList();
+
+  protected Class _myClass = null;
+  protected String _visitMethodName = null;
+  protected final Class[] _visitParamTypes = new Class[2];
+  protected final Object[] _visitArgs = new Object[2];
 
   protected static final Class _linkedListClass = (new LinkedList()).getClass();
 }

@@ -120,6 +120,10 @@ public class PackageDecl extends JavaDecl {
                  }
 
       	          if (className != null) {
+
+                    ApplicationUtility.trace("adding class/interface " +
+                     className + " from " + dirName);
+
                     _environ.add(new ClassDecl(className, this));
 
 	                 empty = false;

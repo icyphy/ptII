@@ -117,7 +117,7 @@ public class ClassDecl extends TypeDecl {
            String fileName = fullName(File.separatorChar);
            File file = _pickLibrary(_container).openSource(fileName);
 
-           ApplicationUtility.trace(">Reading in class " + fullName() +
+           ApplicationUtility.trace(">Reading in user type : " + fullName() +
             " from " + fileName);
 
            StaticResolution.load(fileName, file);
@@ -127,25 +127,25 @@ public class ClassDecl extends TypeDecl {
                " doesn't contain class or interface " + fullName());
            }
 
-          ApplicationUtility.trace(">Done reading class " + fullName());
+           ApplicationUtility.trace(">Done reading class " + fullName());
         }
     }
 
     protected void _buildEnviron() {
-       ApplicationUtility.trace(">Building env for class " + fullName());
-       // ApplicationUtility.assert(!allshouldbeloaded && canbuildenv);
+        ApplicationUtility.trace(">Building env for class " + fullName());
+        // ApplicationUtility.assert(!allshouldbeloaded && canbuildenv);
 
-       loadSource();
+        loadSource();
 
-       // builds environments for all recently loaded classes, including this one
-       StaticResolution.buildEnvironments();
+        // builds environments for all recently loaded classes, including this one
+        StaticResolution.buildEnvironments();
 
-       // If class didn't load, give it a dummy environment, etc
-       if (_environ == null) {
-          _environ = new Environ(StaticResolution.SYSTEM_PACKAGE.getEnviron());
+        // If class didn't load, give it a dummy environment, etc
+        if (_environ == null) {
+           _environ = new Environ(StaticResolution.SYSTEM_PACKAGE.getEnviron());
 
-          // superClass(ObjectDecl);
-       }
+           // superClass(ObjectDecl);
+        }
     }
 
     protected static TypeNameNode _invalidType(ClassDecl self, String name) {

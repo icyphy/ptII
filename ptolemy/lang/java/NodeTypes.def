@@ -45,6 +45,7 @@ import ptolemy.lang.TreeNode;
 
 NamedNode I <none> m NameNode getName m m void setName NameNode name m
 ModifiedNode I <none> m int getModifiers m m void setModifiers int modifiers m
+UserTypeDeclNode I NamedNode m LinkedList getInterfaces m m void setInterfaces LinkedList interfaceList m m LinkedList getMembers m m void setMembers LinkedList memberList m
 
 NameNode C TreeNode k 0 TreeNode qualifier String ident k
 TypeNode A TreeNode c 0 c
@@ -70,6 +71,8 @@ BitwiseNode A BinaryArithNode c 2 ExprNode expr1 ExprNode expr2 c
 BitwiseAssignNode A BinaryArithAssignNode c 2 ExprNode expr1 ExprNode expr2 c
 LogCondNode A BinaryArithNode c 2 ExprNode expr1 ExprNode expr2 c
 OuterClassAccessNode A ExprNode k 0 TypeNameNode type k
+UserTypeDeclNode C ReferenceTypeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name LinkedList interfaces LinkedList members k
+
 
 // literals
 LiteralNode A ExprNode k 0 String literal k
@@ -111,7 +114,7 @@ ImportNode C TreeNode i NamedNode i k 0 NameNode name k
 ImportOnDemandNode C TreeNode i NamedNode i k 0 NameNode name k
 
 // may not work for anonymous classes
-ClassDeclNode C ReferenceTypeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name TreeNode superClass LinkedList interfaces LinkedList members k
+ClassDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name LinkedList interfaces LinkedList members TreeNode superClass k
 
 FieldDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
 VarDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name TreeNode initExpr k
@@ -125,7 +128,7 @@ ConstructorDeclNode C TreeNode i ModifiedNode i k 0 int modifiers String ident L
 ThisConstructorCallNode C TreeNode k 0 LinkedList args k
 StaticInitNode C TreeNode k 0 BlockNode block k
 InstanceInitNode C TreeNode k 0 BlockNode block k
-InterfaceDeclNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers NameNode name LinkedList interfaces LinkedList members k
+InterfaceDeclNode C UserTypeDeclNode i NamedNode ModifiedNode i k 4 int modifiers NameNode name LinkedList interfaces LinkedList members k
 ArrayInitNode C ExprNode k 0 LinkedList initializers k
 ParameterNode C TreeNode i NamedNode ModifiedNode i k 0 int modifiers TypeNode dtype NameNode name k
 SuperConstructorCallNode C TreeNode k 0 LinkedList args k
