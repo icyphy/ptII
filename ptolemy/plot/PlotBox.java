@@ -286,7 +286,7 @@ public class PlotBox extends Applet {
         _lry = drawRect.height-labelheight-_bottomPadding-3; 
         int height = _lry-_uly;
         _yscale = height/(_yMax - _yMin);
-        _ytickscale = height/(_yMax - __yMin);
+        _ytickscale = height/(_yMax - _yMin);
 
         ///////////////////// vertical axis
 
@@ -294,7 +294,7 @@ public class PlotBox extends Applet {
         // NOTE: subjective spacing factor.
         int ny = 2 + height/(labelheight+10);
         // Compute y increment.
-        double yStep=_roundUp((_yMax-__yMin)/(double)ny);
+        double yStep=_roundUp((_yMax-_yMin)/(double)ny);
         
         // Compute y starting point so it is a multiple of yStep.
         double yStart=yStep*Math.ceil(_yMin/yStep);
@@ -365,7 +365,7 @@ public class PlotBox extends Applet {
         _lrx = drawRect.width-legendwidth-_rightPadding;
         int width = _lrx-_ulx;
         _xscale = width/(_xMax - _xMin);
-        _xtickscale = width/(_xMax - __xMin);
+        _xtickscale = width/(_xMax - _xMin);
         
         // White background for the plotting rectangle
         graphics.setColor(Color.white);
@@ -448,7 +448,7 @@ public class PlotBox extends Applet {
             // NOTE: 5 additional pixels between labels.
             int nx = 2 + width/(maxlabelwidth+5);
             // Compute x increment.
-            double xStep=_roundUp((_xMax-__xMin)/(double)nx);
+            double xStep=_roundUp((_xMax-_xMin)/(double)nx);
         
             // Compute x starting point so it is a m_ultiple of xStep.
             double xStart=xStep*Math.ceil(_xMin/xStep);
@@ -707,7 +707,7 @@ public class PlotBox extends Applet {
             if (_zoomin == true){   
                 graphics.setXORMode(Color.white);
                 // Erase the previous box if necessary.
-                if ((_zoomxn != -1 || _zoomyn != -1) && (__drawn == true)) {
+                if ((_zoomxn != -1 || _zoomyn != -1) && (_drawn == true)) {
                     int minx = Math.min(_zoomx, _zoomxn);
                     int maxx = Math.max(_zoomx, _zoomxn);
                     int miny = Math.min(_zoomy, _zoomyn);
@@ -730,7 +730,7 @@ public class PlotBox extends Applet {
             } else if (_zoomout == true){
                 graphics.setXORMode(Color.white);
                 // Erase previous box if necessary.
-                if ((_zoomxn != -1 || _zoomyn != -1) && (__drawn == true)) {
+                if ((_zoomxn != -1 || _zoomyn != -1) && (_drawn == true)) {
                     int x_diff = Math.abs(_zoomx-_zoomxn);
                     int y_diff = Math.abs(_zoomy-_zoomyn);
                     graphics.drawRect(_zoomx-15-x_diff, _zoomy-15-y_diff,
@@ -815,7 +815,7 @@ public class PlotBox extends Applet {
         }
         _drawn = false;
         _zoomin = _zoomout = false;
-        _zoomxn = _zoomyn = __zoomx = __zoomy = -1;
+        _zoomxn = _zoomyn = _zoomx = _zoomy = -1;
         return handled;
     }
 
@@ -1252,7 +1252,7 @@ public class PlotBox extends Applet {
     private boolean _binary = false;
 
     // The range of the plot as labeled (multiply by 10^exp for actual range.
-    private double _yMax, __yMin, __xMax, __xMin;
+    private double _yMax, _yMin, _xMax, _xMin;
     // The power of ten by which the range numbers should be multiplied.
     private int _yExp, _xExp;
 
@@ -1268,14 +1268,14 @@ public class PlotBox extends Applet {
     private String _errorMsg[];
     
     // The title and label strings.
-    private String _xlabel, _ylabel, __title;
+    private String _xlabel, _ylabel, _title;
     
     // Legend information.
     private Vector _legendStrings;
     private Vector _legendDatasets;
     
     // If XTicks or YTicks are given
-    private Vector _xticks, _xticklabels, __yticks, __yticklabels;
+    private Vector _xticks, _xticklabels, _yticks, _yticklabels;
 
     // A button for filling the plot
     private Button _fillButton;

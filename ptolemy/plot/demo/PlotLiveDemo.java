@@ -55,7 +55,7 @@ public class PlotLiveDemo extends PlotLive {
             addPoint(0, Math.sin(Math.PI*_count/45),
 		     Math.cos(Math.PI * _count/70), true);
             addPoint(1, Math.sin(Math.PI*_count/45),
-		     Math.cos(Math.PI * _count/70), !__first);
+		     Math.cos(Math.PI * _count/70), !_first);
             _first = false;
             _count += 1.0;
         }
