@@ -159,12 +159,13 @@ public class ChannelState extends MACActorBase {
         _currentTime = director.getCurrentTime();
         int kind=whoTimeout();
         // if a timer is processed, should not consume the message token
-        // kind = -1 means no timer event.
-        if (kind == -1) {
+        // kind = UNKNOWN means no timer event.
+        if (kind == UNKNOWN) {
             //THE SDL specification has don-deterministic
-            //transition.However the order does not matter,
-            // so We will pick a particular order.
-            // all states handle UseIfs messages
+            //transition.However the order does not matter here,
+            // so we will pick a particular order.
+
+            // UseIfs messages are handled in all states 
             if (fromValidateMpdu.hasToken(0)) {
                 _inputMessage = (RecordToken) fromValidateMpdu.get(0);
                 _messageType = ((IntToken)_inputMessage.
@@ -183,7 +184,7 @@ public class ChannelState extends MACActorBase {
                         DoubleToken t = (DoubleToken) _inputMessage.get("tRxEnd");
                         double tRxEnd = t.doubleValue();
                         if (_IfsTimer != null ) cancelTimer(_IfsTimer);
-                        _IfsTimer=setTimer(IfsTimeOut, _currentTime + tRxEnd + _dIfs*1e-6);
+                        _IfsTimer=setTimer(IfsTimeOut, tRxEnd + _dIfs*1e-6);
                     }
             } else if (channelStatus.hasToken(0)) {
                 _inputMessage = (RecordToken) channelStatus.get(0);
@@ -334,13 +335,13 @@ public class ChannelState extends MACActorBase {
 
         switch(_messageType) {
         case SetNav:
-
+            // new NAV
             tNew = ((DoubleToken)_inputMessage.get("tRef")).doubleValue()
                 +((IntToken)_inputMessage.get("dNav")).intValue()*1e-6;
+            // if the new NAV is larger than the existing one, use it instead
             if (tNew > _NavTimer.expirationTime) {
                 _NavTimer.expirationTime = tNew;
                 _setAttribute(_tNavEnd, new DoubleToken(tNew));
-                //curSrc=((SetNavMsg *)msg)->src;
                 _curSrc=((IntToken)_inputMessage.get("src")).intValue();
             }
             break;

@@ -48,6 +48,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+
 ////////////////////////////////////////////////////////////////////////=
 //
 //// PHY
@@ -220,7 +221,7 @@ public class PHY extends NetworkActorBase {
                 if (fromChannel.hasToken(0))
                     {   
                         _data = (RecordToken)fromChannel.get(0);
-                        // the input port may not be WirelessIOPort, but the port it is
+                        // the input port may not be a WirelessIOPort, but the port it is
                         // connected to is
                         Iterator connectedPorts = fromChannel.sourcePortList().iterator();
                         while (connectedPorts.hasNext()) {
@@ -237,9 +238,10 @@ public class PHY extends NetworkActorBase {
                         // let us be a little picky about receiving a message
                         if (power > _sensitivity && ( (_interference == 0.0) || 
                               (power / _interference > _SNRThresholdInDB) )  )
-
-                        //if (power > _sensitivity ) 
                           { 
+                            if (_debugging) {
+                                Token dbg=new DoubleToken(power / _interference );
+                                _debug(getFullName()+"Receiving a message."+dbg.toString());}
                             // The PHY will receive this message
                             setTimer2(RxDone, currentTime+duration, power); 
 
