@@ -72,7 +72,6 @@ public class SchematicPalette extends JGraph {
 	GraphPane pane = new GraphPane(_controller, new BasicGraphImpl());
 	setGraphPane(pane);
 	makeDraggable(this);
-
     }
 
     public void addNode(Node n, double x, double y) {
@@ -108,22 +107,27 @@ public class SchematicPalette extends JGraph {
 	_draggedNode = node;
     }
 
-    public void triggerLayout() {
-        int delay = 1000;
-        Timer timer = new Timer(delay, new LayoutListener());
-        timer.setRepeats(false);
-        timer.start();
+    public void validate() {
+	super.validate();
+	int delay = 100;
+	if(_timer == null) {
+	    Timer timer = new Timer(delay, new LayoutListener());
+	    timer.setRepeats(false);
+	    timer.start();
+	}
     }
+
     /////////////////////////////////////////////////////////////
     //                    Inner Classes                        //
     
     public class LayoutListener implements ActionListener {
-        public void actionPerformed(ActionEvent event) {
-            LayoutTarget target = new BasicLayoutTarget(_controller);
+        public void actionPerformed(ActionEvent event) {	   
+	    LayoutTarget target = new BasicLayoutTarget(_controller);
             Graph graph = _controller.getGraph();
             GlobalLayout layout = new GridAnnealingLayout();
             layout.layout(target, graph);
             repaint();
+	    _timer = null;
         }
     }
 
@@ -289,6 +293,8 @@ public class SchematicPalette extends JGraph {
 
     private Node _draggedNode;
     private PaletteController _controller;
+    private Timer _timer;
+
 
 }
 

@@ -247,8 +247,8 @@ public class EditorGraphController extends GraphController {
         */
         // MenuCreator 	
         _menuCreator = new MenuCreator();
-	_menuCreator.setMouseFilter(new MouseFilter(3));
 	pane.getBackgroundEventLayer().addInteractor(_menuCreator);
+	pane.getBackgroundEventLayer().setConsuming(true);
          
     }
 
@@ -480,23 +480,29 @@ public class EditorGraphController extends GraphController {
 	
     /** An interactor that creates context-sensitive menus.
      */
-    protected class MenuCreator extends AbstractInteractor {
+    public class MenuCreator extends AbstractInteractor {
+	public MenuCreator() {
+	    setMouseFilter(new MouseFilter(3));
+	}
+	
 	public void mousePressed(LayerEvent e) {
-	    System.out.println("Menu Creator");
 	    Figure source = e.getFigureSource();
-	    Graph graph = getGraph();
-	    CompositeEntity object = 
-		(CompositeEntity) graph.getSemanticObject();
-	    JPopupMenu menu = 
-		new SchematicContextMenu(object);
-	    menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
+	    if(source == null) {
+		Graph graph = getGraph();
+		CompositeEntity object = 
+		    (CompositeEntity) graph.getSemanticObject();
+		JPopupMenu menu = 
+		    new BasicContextMenu(object);
+		menu.show(getGraphPane().getCanvas(), e.getX(), e.getY());
+		e.consume();
+	    }
 	}
     }
         
     public class SchematicContextMenu extends BasicContextMenu {
 	public SchematicContextMenu(CompositeEntity target) {
 	    super(target);
-	    
+	    /*
 	    Action action;
 	    action = new AbstractAction ("Get Director Parameters") {
 		public void actionPerformed(ActionEvent e) {
@@ -525,7 +531,14 @@ public class EditorGraphController extends GraphController {
             action.putValue("tooltip", "Get Director Parameters");
             JMenuItem item = add(action);
             item.setToolTipText("Get Director Parameters");
-            action.putValue("menuItem", item);           
+            action.putValue("menuItem", item);  
+
+	    //FIXME
+	    JLabel domain = new JLabel("Domain");
+	    add(domain);
+	    JLabel director = new JLabel("Director");
+	    add(director);
+*/
         }
     }
 
@@ -597,8 +610,8 @@ public class EditorGraphController extends GraphController {
         }
         
         public Site getHeadSite (Figure f, double x, double y) {
-            if(f instanceof Terminal) {
-                return ((Terminal)f).getConnectSite();
+            if(f instanceof StraightTerminal) {
+		return ((Terminal)f).getConnectSite();
             } else {
                 return super.getHeadSite(f, x, y);
             }

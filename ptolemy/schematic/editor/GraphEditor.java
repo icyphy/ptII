@@ -115,7 +115,7 @@ public class GraphEditor extends AbstractApplication {
         super();
 
         // Create local objects
-        _applicationFrame = new DesktopFrame(this);
+        _applicationFrame = new DesktopFrame(this, new JTreePane(""));
         _documentFactory = new GraphDocument.Factory();
         // _incrementalLayout = new LevelLayout();
 
@@ -254,7 +254,7 @@ public class GraphEditor extends AbstractApplication {
     /** Initialize the palette in the.
      */
     public void initializePalette () {
-        JShadePane s =_applicationFrame.getShadePane();
+        JTreePane pane = (JTreePane)_applicationFrame.getPalettePane();
 
         parseLibraries();
 	//System.out.println("Icons = " + _iconLibrary.description());
@@ -295,9 +295,11 @@ public class GraphEditor extends AbstractApplication {
 	createTreeNodes(top, lib);
 	final JTree tree = new JTree(top);       
 	JScrollPane pane = new JScrollPane(tree);*/
-        JTreePane pane = new JTreePane("EntityLibrary");
-        createTreeNodes(pane, "EntityLibrary", lib);
-        s.addShade("Entity Library", null, pane, "The Default entity library");
+        //JTreePane pane = new JTreePane("EntityLibrary");
+	// We have "" because that is the name that was given in the
+	// treepane constructor.
+        createTreeNodes(pane, "", lib);
+	// s.addShade("Entity Library", null, pane, "The Default entity library");
         //       pane.setSelectedTitle(lib.getFullName());
     }
     
@@ -321,8 +323,10 @@ public class GraphEditor extends AbstractApplication {
                         (CompositeEntity)entity);
             }
         }	
+	//palette.triggerLayout();
     }
 
+    /*
     public JTabbedPane createPaneFromComposite(CompositeEntity library) {
         Enumeration enum;
         JTabbedPane pane = new JTabbedPane();
@@ -353,7 +357,7 @@ public class GraphEditor extends AbstractApplication {
         }
         return pane;
     }
-    
+    */
     /** Initialize the given menubar. Currently, all strings are
      * hard-wired, but maybe we should be getting them out of the
      * ApplicationResources.

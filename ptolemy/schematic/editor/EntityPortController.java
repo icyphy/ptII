@@ -83,7 +83,9 @@ public class EntityPortController extends NodeController {
     public class EntityPortRenderer implements NodeRenderer {
 	public Figure render(Node n) {
             Port port = (Port) n.getSemanticObject();
-            StraightTerminal figure = new StraightTerminal();
+          
+	    /*
+	    StraightTerminal figure = new StraightTerminal();
             ConnectorEnd end = null;
             if(port instanceof IOPort) {
                 IOPort ioport = (IOPort) port;
@@ -100,7 +102,9 @@ public class EntityPortController extends NodeController {
             }
 
 	    figure.setEnd(end);
-	    //Figure figure = new BasicRectangle(-2, -2, 4, 4, Color.black);
+	    */
+	   
+	    Figure figure = new BasicRectangle(-2, -2, 4, 4, Color.black);
 	    
             figure.setUserObject(n);
 	    n.setVisualObject(figure);
@@ -114,13 +118,14 @@ public class EntityPortController extends NodeController {
 			double fraction) {
         // Create a figure for it
 	//System.out.println("adding port");
-	StraightTerminal nf = (StraightTerminal)getNodeRenderer().render(node);
+	Figure nf = getNodeRenderer().render(node);
         nf.setInteractor(getNodeInteractor());
 	CompositeFigure parentFigure = 
 	    (CompositeFigure)parentNode.getVisualObject();
 	BoundsSite site = 
 	    new BoundsSite(parentFigure, 0, direction, fraction);
-        nf.setAttachSite(site);
+        //nf.setAttachSite(site);
+	nf.translate(site.getX(), site.getY());
 	parentFigure.add(nf);
         
         // Add to the graph
@@ -154,8 +159,18 @@ public class EntityPortController extends NodeController {
      * of an object.  
      */
     public class PortContextMenu extends BasicContextMenu {
-        public PortContextMenu(NamedObj target) {
+        public PortContextMenu(NamedObj target) {	    
             super(target);
+	    if(target instanceof IOPort) {
+		IOPort port = (IOPort)target;
+		JCheckBox checkBox;
+		checkBox = new JCheckBox("Input", port.isInput());
+		add(checkBox);
+		checkBox = new JCheckBox("Output", port.isOutput());
+		add(checkBox);
+		checkBox = new JCheckBox("Multiport", port.isMultiport());
+		add(checkBox);		
+	    }
         }
     }
 
