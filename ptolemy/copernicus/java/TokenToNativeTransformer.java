@@ -484,10 +484,6 @@ public class TokenToNativeTransformer extends SceneTransformer implements HasPha
                         Collections.EMPTY_SET, debug);
             }
 
-            // InvokeGraph invokeGraph = ClassHierarchyAnalysis.newInvokeGraph();
-            //Scene.v().setActiveInvokeGraph(invokeGraph);
-            //VariableTypeAnalysis vta = new VariableTypeAnalysis(invokeGraph);
-
             // Now run the type specialization algorithm...  This
             // allows us to resolve the methods that we are inlining
             // with better precision.

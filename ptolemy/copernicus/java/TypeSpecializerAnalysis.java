@@ -27,12 +27,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.copernicus.java;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
+import java.util.*;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.copernicus.kernel.PtolemyUtilities;
 import ptolemy.copernicus.kernel.SootUtilities;
@@ -115,7 +110,8 @@ public class TypeSpecializerAnalysis {
         // System.out.println("Starting type specialization");
         _unsafeLocals = unsafeLocals;
 
-        _solver = new InequalitySolver(TypeLattice.lattice());
+        _solver = new InequalitySolver(new JavaTypeLattice());
+        //TypeLattice.lattice());
         _objectToInequalityTerm = new HashMap();
 
         _collectConstraints(theClass, _debug);
@@ -164,7 +160,7 @@ public class TypeSpecializerAnalysis {
         //        System.out.println("Starting type specialization list");
         _unsafeLocals = unsafeLocals;
 
-        _solver = new InequalitySolver(TypeLattice.lattice());
+        _solver = new InequalitySolver(new JavaTypeLattice());//TypeLattice.lattice());
         _objectToInequalityTerm = new HashMap();
 
         for (Iterator classes = list.iterator();
@@ -342,10 +338,12 @@ public class TypeSpecializerAnalysis {
             throw new RuntimeException(
                     "attempt to inline unhandled typeLattice method: " + unit);
         }
-        //   System.out.println("specializer");
-        //         System.out.println("type1 = " + type1);
-        //         System.out.println("type2 = " + type2);
-        //         System.out.println("result = " + TypeLattice.compare(type1, type2));
+
+        System.out.println("specializer");
+        System.out.println("type1 = " + type1);
+        System.out.println("type2 = " + type2);
+        System.out.println("result = " + TypeLattice.compare(type1, type2));
+        
         // Only inline if both are concrete types.
         if (type1.isInstantiable() && type2.isInstantiable()) {
             box.setValue(IntConstant.v(TypeLattice.compare(type1, type2)));
@@ -579,7 +577,7 @@ public class TypeSpecializerAnalysis {
             if (!(r.getBase().getType() instanceof RefType)) {
                 return null;
             }
-            // System.out.println("invokeExpr = " + r);
+            //    System.out.println("invokeExpr = " + r);
             SootClass baseClass = ((RefType)r.getBase().getType()).getSootClass();
             InequalityTerm baseTerm =
                 (InequalityTerm)objectToInequalityTerm.get(r.getBase());
@@ -634,21 +632,49 @@ public class TypeSpecializerAnalysis {
                         methodName.equals("bitwiseXor")) {
                     // The return value is greater than the base and
                     // the argument.
-                    InequalityTerm returnValueTerm = new VariableTerm(
-                            PtolemyUtilities.getTokenTypeForSootType(
-                                    (RefType)r.getMethod().getReturnType()),
-                            r.getMethod());
-                    InequalityTerm firstArgTerm = (InequalityTerm)
+                   //  InequalityTerm returnValueTerm = new VariableTerm(
+//                             PtolemyUtilities.getTokenTypeForSootType(
+//                                     (RefType)r.getMethod().getReturnType()),
+//                             r.getMethod());
+                    final InequalityTerm firstArgTerm = (InequalityTerm)
                         objectToInequalityTerm.get(
                                 r.getArg(0));
-                    _addInequality(debug, solver, firstArgTerm,
-                            returnValueTerm);
-                    _addInequality(debug, solver, baseTerm,
-                            returnValueTerm);
+                    final InequalityTerm finalBaseTerm = baseTerm;
+                    final InstanceInvokeExpr finalExpression = r;
+                    //                     _addInequality(debug, solver, firstArgTerm,
+                    //                             returnValueTerm);
+                    //                     _addInequality(debug, solver, baseTerm,
+                    //                             returnValueTerm);
+                    InequalityTerm returnValueTerm = new MonotonicFunction() {
+                            public Object getValue() 
+                                    throws IllegalActionException{
+                                return TypeLattice.lattice().leastUpperBound(
+                                        firstArgTerm.getValue(),
+                                        finalBaseTerm.getValue());
+                            }
+                            public InequalityTerm[] getVariables() {
+                                ArrayList list = new ArrayList();
+                                if(firstArgTerm.isSettable()) {
+                                    list.add(firstArgTerm);
+                                }
+                                if(finalBaseTerm.isSettable()) {
+                                    list.add(finalBaseTerm);
+                                }
+                                InequalityTerm terms[] = 
+                                    (InequalityTerm []) list.toArray(
+                                            new InequalityTerm[list.size()]);
+                                return terms;
+                            }
+                            public Object getAssociatedObject() {
+                                return finalExpression;
+                            }
+                        };
                     return returnValueTerm;
                 } else if (methodName.equals("convert")) {
-                    // The return value type is equal to the base type.
-                    // The first argument type is less than or equal to the base type.
+                    System.out.println("convert method!");
+                    // The return value type is equal to the base
+                    // type.  The first argument type is less than or
+                    // equal to the base type.
                     InequalityTerm firstArgTerm = (InequalityTerm)
                         objectToInequalityTerm.get(
                                 r.getArg(0));
@@ -1047,6 +1073,235 @@ public class TypeSpecializerAnalysis {
         private ptolemy.data.type.Type _currentType;
         private Object _object;
         private boolean _fixed = false;
+    }
+
+    public static class JavaTypeLattice 
+        implements ptolemy.graph.CPO {
+        
+        /** Return the bottom element of this CPO.  The bottom element
+         *  is the element in the CPO that is lower than all the other
+         *  elements.
+         *  @return An Object representing the bottom element, or
+         *   <code>null</code> if the bottom does not exist.
+         */
+        public Object bottom() {
+            return BaseType.UNKNOWN;
+        }
+
+        /** Compare two elements in this CPO.
+         *  @param e1 An Object representing a CPO element.
+         *  @param e2 An Object representing a CPO element.
+         *  @return One of <code>CPO.LOWER, CPO.SAME,
+         *   CPO.HIGHER, CPO.INCOMPARABLE</code>.
+         *  @exception IllegalArgumentException If at least one of the
+         *   specified Objects is not an element of this CPO.
+         */
+        public int compare(Object e1, Object e2) {
+            if(e1.equals(e2)) { 
+                return SAME;
+            } else if(((ptolemy.data.type.Type)e1).isInstantiable() &&
+                    !((ptolemy.data.type.Type)e1).equals(BaseType.GENERAL) &&
+                    ((ptolemy.data.type.Type)e2).isInstantiable() &&
+                    !((ptolemy.data.type.Type)e2).equals(BaseType.GENERAL)) {
+                return INCOMPARABLE;
+            } else {
+                return TypeLattice.lattice().compare(e1, e2);
+            }
+        }
+        
+        /** Compute the down-set of an element in this CPO.
+         *  The down-set of an element is the subset consisting of
+         *  all the elements lower than or the same as the specified element.
+         *  @param e An Object representing an element in this CPO.
+         *  @return An array of Objects representing the elements in the
+         *   down-set of the specified element.
+         *  @exception IllegalArgumentException If the specified Object is not
+         *   an element in this CPO, or the resulting set is infinite.
+         */
+        public Object[] downSet(Object e) {
+            throw new RuntimeException("not supported");
+        }
+        
+        /** Compute the greatest element of a subset.
+         *  The greatest element of a subset is an element in the
+         *  subset that is higher than all the other elements in the
+         *  subset.
+         *  @param subset An array of Objects representing the subset.
+         *  @return An Object representing the greatest element of the subset,
+         *   or <code>null</code> if the greatest element does not exist.
+         *  @exception IllegalArgumentException If at least one Object in the
+         *   specified array is not an element of this CPO.
+         */
+        public Object greatestElement(Object[] subset) {
+            // Compare each element with all of the other elements to search
+            // for the greatest one. This is a simple, brute force algorithm,
+            // but may be inefficient. A more efficient one is used in
+            // the graph package, but more complex.
+            for (int i = 0; i < subset.length; i++) {
+                boolean isGreatest = true;
+                for (int j = 0; j < subset.length; j++) {
+                    int result = compare(subset[i], subset[j]);
+                    if (result == LOWER || result == INCOMPARABLE) {
+                        isGreatest = false;
+                        break;
+                    }
+                }
+
+                if (isGreatest == true) {
+                    return subset[i];
+                }
+            }
+            return null;
+        }
+
+        
+        /** Compute the greatest lower bound (GLB) of two elements.
+         *  The GLB of two elements is the greatest element in the CPO
+         *  that is lower than or the same as both of the two elements.
+         *  @param e1 An Object representing an element in this CPO.
+         *  @param e2 An Object representing an element in this CPO.
+         *  @return An Object representing the GLB of the two specified
+         *   elements, or <code>null</code> if the GLB does not exist.
+         *  @exception IllegalArgumentException If at least one of the
+         *   specified Objects is not an element of this CPO.
+         */
+        public Object greatestLowerBound(Object e1, Object e2) {
+            if(e1.equals(e2)) { 
+                return e1;
+            } else if(((ptolemy.data.type.Type)e1).isInstantiable() &&
+                    !((ptolemy.data.type.Type)e1).equals(BaseType.GENERAL) &&
+                    ((ptolemy.data.type.Type)e2).isInstantiable() &&
+                    !((ptolemy.data.type.Type)e2).equals(BaseType.GENERAL)) {
+                return bottom();
+            } else {
+                return TypeLattice.lattice().greatestLowerBound(e1, e2);
+            }
+        }
+
+        /** Compute the greatest lower bound (GLB) of a subset.
+         *  The GLB of a subset is the greatest element in the CPO that
+         *  is lower than or the same as all the elements in the
+         *  subset.
+         *  @param subset An array of Objects representing the subset.
+         *  @return An Object representing the GLB of the subset, or
+         *   <code>null</code> if the GLB does not exist.
+         *  @exception IllegalArgumentException If at least one Object
+         *   in the specified array is not an element of this CPO.
+         */
+        public Object greatestLowerBound(Object[] subset) {
+            Object returnValue = null;
+            for(int i = 0; i < subset.length; i++) {
+                if(returnValue == null) {
+                    returnValue = subset[i];
+                } else {
+                    returnValue = greatestLowerBound(returnValue, subset[i]);
+                }
+            }
+            return returnValue;
+        }
+
+        /** Return true.
+         *  @return true.
+         */
+        public boolean isLattice() {
+            return true;
+        }
+
+        /** Return the least type of a set of types, or null if the
+         *  least one does not exist.
+         *  @param subset an array of Types.
+         *  @return A Type or null.
+         */
+        public Object leastElement(Object[] subset) {
+            // Compare each element with all of the other elements to search
+            // for the least one. This is a simple, brute force algorithm,
+            // but may be inefficient. A more efficient one is used in
+            // the graph package, but more complex.
+            for (int i = 0; i < subset.length; i++) {
+                boolean isLeast = true;
+                for (int j = 0; j < subset.length; j++) {
+                    int result = compare(subset[i], subset[j]);
+                    if (result == HIGHER || result == INCOMPARABLE) {
+                        isLeast = false;
+                        break;
+                    }
+                }
+
+                if (isLeast == true) {
+                    return subset[i];
+                }
+            }
+            return null;
+        }
+        
+        /** Compute the least upper bound (LUB) of two elements.
+         *  The LUB of two elements is the least element in the CPO
+         *  that is greater than or the same as both of the two elements.
+         *  @param e1 An Object representing an element in this CPO.
+         *  @param e2 An Object representing an element in this CPO.
+         *  @return An Object representing the LUB of the two specified
+         *   elements, or <code>null</code> if the LUB does not exist.
+         *  @exception IllegalArgumentException If at least one of the
+         *   specified Objects is not an element of this CPO.
+         */
+        public Object leastUpperBound(Object e1, Object e2) {
+            if(e1.equals(e2)) { 
+                return e1;
+            } else if(((ptolemy.data.type.Type)e1).isInstantiable() &&
+                    !((ptolemy.data.type.Type)e1).equals(BaseType.GENERAL) &&
+                    ((ptolemy.data.type.Type)e2).isInstantiable() &&
+                    !((ptolemy.data.type.Type)e2).equals(BaseType.GENERAL)) {
+                return top();
+            } else {
+                return TypeLattice.lattice().leastUpperBound(e1, e2);
+            }
+        }
+
+        /** Compute the least upper bound (LUB) of a subset.
+         *  The LUB of a subset is the least element in the CPO that
+         *  is greater than or the same as all the elements in the
+         *  subset.
+         *  @param subset An array of Objects representing the subset.
+         *  @return An Object representing the LUB of the subset, or
+         *   <code>null</code> if the LUB does not exist.
+         *  @exception IllegalArgumentException If at least one Object
+         *   in the specified array is not an element of this CPO.
+         */
+        public Object leastUpperBound(Object[] subset) {
+            Object returnValue = null;
+            for(int i = 0; i < subset.length; i++) {
+                if(returnValue == null) {
+                    returnValue = subset[i];
+                } else {
+                    returnValue = leastUpperBound(returnValue, subset[i]);
+                }
+            }
+            return returnValue;
+        }
+        
+        /** Return the top element of this CPO.
+         *  The top element is the element in the CPO that is higher than
+         *  all the other elements.
+         *  @return An Object representing the top element, or
+         *   <code>null</code> if the top does not exist.
+         */
+        public Object top() {
+            return TypeLattice.lattice().top();
+        }
+        
+        /** Compute the up-set of an element in this CPO.
+         *  The up-set of an element is the subset consisting of
+         *  all the elements higher than or the same as the specified element.
+         *  @param e An Object representing an element in this CPO.
+         *  @return An array of Objects representing the elements in the
+         *   up-set of the specified element.
+         *  @exception IllegalArgumentException If the specified Object is not
+         *   an element of this CPO, or the resulting set is infinite.
+         */
+        public Object[] upSet(Object e) {
+            throw new RuntimeException("not supported");
+        }
+        
     }
 
     private InequalitySolver _solver;

@@ -44,6 +44,7 @@ import ptolemy.data.MatrixToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.UnsignedByteToken;
+import ptolemy.data.type.*;
 import ptolemy.data.type.Typeable;
 import ptolemy.math.Complex;
 import ptolemy.math.FixPoint;
@@ -789,6 +790,10 @@ public class PtolemyUtilities {
                 if (depth > maxDepth) maxDepth = depth;
             }
             return maxDepth + 1;
+        } else if (type.equals(BaseType.UNKNOWN) ||
+                type.equals(BaseType.GENERAL) ||
+                !type.isInstantiable()) {
+            return Integer.MIN_VALUE;
         } else {
             return 1;
         }

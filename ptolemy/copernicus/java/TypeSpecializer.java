@@ -282,11 +282,15 @@ public class TypeSpecializer extends SceneTransformer implements HasPhaseOptions
                             PtolemyUtilities.tokenClass)) {
                 Type type = typeAnalysis.getSpecializedSootType(field);
 
-                Type replacementType =
-                    SootUtilities.createIsomorphicType(field.getType(),
-                            type);
                 if (debug) System.out.println("replacing with " + type);
                 field.setType(type);
+                TypeTag tag = (TypeTag)field.getTag("_CGType");
+                if (tag == null) {
+                    field.addTag(
+                            new TypeTag(
+                                    typeAnalysis.getSpecializedType(field)));
+                }
+
                 map.put(field, typeAnalysis.getSpecializedType(field));
             }
         }
