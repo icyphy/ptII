@@ -14,11 +14,11 @@ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
 THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
 SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES, 
 INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
 MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
 PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES, 
 ENHANCEMENTS, OR MODIFICATIONS.
 
 PT_COPYRIGHT_VERSION_2
@@ -40,35 +40,37 @@ import org.eclipse.jdt.core.dom.ASTNode;
 //////////////////////////////////////////////////////////////////////////
 //// Type
 /**
- *  During AST analysis, a type is assigned to each expression or
- *  sub-expression (which can be as simple as reference to a local variable)
- *  in a Java program. This class represents the type objects to be assigned
- *  to those expressions.
- *  <p>
- *  This class represents primitive Java types (<tt>boolean</tt>, <tt>byte</tt>,
- *  <tt>char</tt>, <tt>double</tt>, <tt>float</tt>, <tt>int</tt>, <tt>long</tt>,
- *  and <tt>short</tt>) as well as object types (including arrays). It
- *  treats <tt>null</tt> and </tt>void</tt> (the "return value" of a
- *  <tt>void</tt> method) as </tt>null</tt> type, which is also considered as
- *  primitive.
- *  <p>
- *  Manipulation can also be done on those types by means of the given operations.
- *  <p>
- *  This class cannot be directed instantiated with "<tt>new</tt>". Users should
- *  use {@link #createType(String)} to create a type object with a name. If the
- *  name refers to a class, it must be a full name (including the package).
- *  <p>
- *  Objects of this class can also be associated with AST nodes during AST
- *  analysis. When the analyzer resolves the type of a node representing an
- *  expression or sub-expression in the Java program, it creates a type and
- *  associates it with that node with {@link #setType(ASTNode, Type)}. This
- *  information can be extracted with {@link #getType(ASTNode)}.
- *
- *  @author Thomas Feng
- *  @version $Id$
- *  @since Ptolemy II 4.1
- *  @Pt.ProposedRating Red (tfeng)
- */
+   During AST analysis, a type is assigned to each expression or
+   sub-expression (which can be as simple as reference to a local variable)
+   in a Java program. This class represents the type objects to be assigned
+   to those expressions.
+   <p>
+   This class represents primitive Java types (<tt>boolean</tt>, <tt>byte</tt>, 
+   <tt>char</tt>, <tt>double</tt>, <tt>float</tt>, <tt>int</tt>, <tt>long</tt>, 
+   and <tt>short</tt>) as well as object types (including arrays). It
+   treats <tt>null</tt> and </tt>void</tt> (the "return value" of a
+   <tt>void</tt> method) as </tt>null</tt> type, which is also considered as
+   primitive.
+   <p>
+   Manipulation can also be done on those types by means of the given
+   operations.
+   <p>
+   This class cannot be directed instantiated with "<tt>new</tt>". Users should
+   use {@link #createType(String)} to create a type object with a name. If the
+   name refers to a class, it must be a full name (including the package).
+   <p>
+   Objects of this class can also be associated with AST nodes during AST
+   analysis. When the analyzer resolves the type of a node representing an
+   expression or sub-expression in the Java program, it creates a type and
+   associates it with that node with {@link #setType(ASTNode, Type)}. This
+   information can be extracted with {@link #getType(ASTNode)}.
+ 
+   @author Thomas Feng
+   @version $Id$
+   @since Ptolemy II 5.1
+   @Pt.ProposedRating Red (tfeng)
+   @Pt.AcceptedRating Red (tfeng)
+*/
 public class Type {
 
     ///////////////////////////////////////////////////////////////////
@@ -114,7 +116,7 @@ public class Type {
      *   and the interfaces that they implement, if necessary.
      *  @return The compatibility rating as an integer larger than or equal to
      *   -1.
-     *  @throws ClassNotFoundException Thrown when a class cannot be loaded.
+     *  @exception ClassNotFoundException If a class cannot be loaded.
      */
     public int compatibility(Type formalType, ClassLoader loader)
             throws ClassNotFoundException {
@@ -216,7 +218,7 @@ public class Type {
                         return i;
                     handledSet.add(c);
                     Class[] interfaces = c.getInterfaces();
-                    for (int k=0; k<interfaces.length; k++)
+                    for (int k = 0; k < interfaces.length; k++)
                         if (!handledSet.contains(interfaces[k]))
                             workList.add(interfaces[k]);
                 }
@@ -288,7 +290,7 @@ public class Type {
      *  expression. The following rules are followed:
      *  <ol>
      *    <li>
-     *    <li>Two object types cannot be computed in an expression,
+     *    <li>Two object types cannot be computed in an expression, 
      *      unless one of them is {@link String}, in which case the
      *      result type is {@link String}, or they are the same
      *      type.
@@ -317,9 +319,11 @@ public class Type {
             else if (type2.getName().equals("java.lang.String"))
                 return type2;
             else if (type1.isPrimitive() && type2.isPrimitive())
-                if (type1.compatibility(type2, ClassLoader.getSystemClassLoader()) >= 0)
+                if (type1.compatibility(type2, 
+                        ClassLoader.getSystemClassLoader()) >= 0)
                     return type2;
-                else if (type2.compatibility(type1, ClassLoader.getSystemClassLoader()) >= 0)
+                else if (type2.compatibility(type1, 
+                        ClassLoader.getSystemClassLoader()) >= 0)
                     return type1;
         } catch (ClassNotFoundException e) {
         }
@@ -354,8 +358,8 @@ public class Type {
         return _fullName.indexOf("[") >= 0;
     }
 
-    /** Test if this type is primitive (<tt>boolean</tt>,
-     *  <tt>byte</tt>, <tt>char</tt>, <tt>double</tt>, <tt>float</tt>,
+    /** Test if this type is primitive (<tt>boolean</tt>, 
+     *  <tt>byte</tt>, <tt>char</tt>, <tt>double</tt>, <tt>float</tt>, 
      *  <tt>int</tt>, <tt>long</tt>, <tt>short</tt>, and
      *  <tt>null</tt>).
      *
@@ -367,9 +371,9 @@ public class Type {
     }
 
     /** Test if the type given by the name is primitive. Name of
-     *  primitive types include ("<tt>boolean</tt>",
-     *  "<tt>byte</tt>", "<tt>char</tt>", "<tt>double</tt>", "<tt>float</tt>",
-     *  "<tt>int</tt>", "<tt>long</tt>", "<tt>short</tt>", "<tt>null</tt>",
+     *  primitive types include ("<tt>boolean</tt>", 
+     *  "<tt>byte</tt>", "<tt>char</tt>", "<tt>double</tt>", "<tt>float</tt>", 
+     *  "<tt>int</tt>", "<tt>long</tt>", "<tt>short</tt>", "<tt>null</tt>", 
      *  and "<tt>void</tt>").
      *
      *  @param typeName The name of the type.
@@ -395,7 +399,7 @@ public class Type {
      *  @return The array type with the one dimension removed. If this
      *   type is not an array type, this function returns this type
      *   itself.
-     *  @throws ClassNotFoundException Thrown when this type is an
+     *  @exception ClassNotFoundException If this type is an
      *   array type, but the type with one dimension less cannot be
      *   resolved as a class.
      *  @see #addOneDimension()
@@ -415,7 +419,8 @@ public class Type {
                 if (value.equals(newName))
                     return createType(key);
             }
-        } else if (length > 2 && newName.charAt(0) == 'L' && newName.charAt(length - 1) == ';')
+        } else if (length > 2 && newName.charAt(0) == 'L' &&
+                newName.charAt(length - 1) == ';')
             return createType(newName.substring(1, length - 1));
         else if (length > 1 && newName.charAt(0) == '[')
             return createType(newName);
@@ -478,7 +483,8 @@ public class Type {
                 if (elementType.equals("null"))
                     return "null";
                 else
-                    buffer.replace(dims, length, (String)PRIMITIVE_ARRAY_TYPES.get(elementType));
+                    buffer.replace(dims, length, 
+                            (String)PRIMITIVE_ARRAY_TYPES.get(elementType));
             } else {
                 buffer.insert(dims, 'L');
                 buffer.append(';');
@@ -492,13 +498,14 @@ public class Type {
      *  @param loader The {@link ClassLoader} object to be used to resolve
      *   the type.
      *  @return The class object.
-     *  @throws ClassNotFoundException Thrown when the class with
+     *  @exception ClassNotFoundException If the class with
      *   the same name as this type cannot be loaded with the given
      *   class loader.
      */
     public Class toClass(ClassLoader loader) throws ClassNotFoundException {
         if (isPrimitive())
-            if (equals(NULL))   // Impossible to load "null" type, though primitive.
+            if (equals(NULL))
+                // Impossible to load "null" type, though primitive.
                 throw new ClassNotFoundException("null");
             else
                 return (Class)PRIMITIVE_CLASSES.get(_fullName);
@@ -609,7 +616,7 @@ public class Type {
      *
      *  @param primitiveNum The integer identifier of primitive types;
      *   -1 if the type to be obtained is not primitive.
-     *  @param fullName The full name of the type. If it is an array,
+     *  @param fullName The full name of the type. If it is an array, 
      *   it must be converted to the run-time representation (with
      *   leading "[").
      */
@@ -624,7 +631,7 @@ public class Type {
      *  primitive, even if the full name is a primitive name by
      *  mistake.
      *
-     *  @param fullName The full name of the type. If it is an array,
+     *  @param fullName The full name of the type. If it is an array, 
      *   it must be converted to the run-time representation (with
      *   leading "[").
      */
