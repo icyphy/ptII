@@ -67,7 +67,8 @@ public class VariableDelay extends DETransformer {
                 "defaultDelay", new DoubleToken(1.0));
         defaultDelay.setTypeEquals(BaseType.DOUBLE);
         input.delayTo(output);
-        delay = new TypedIOPort(this, "delay", true, false);
+        delay = new DEIOPort(this, "delay", true, false);
+        delay.delayTo(output);
         delay.setTypeEquals(BaseType.DOUBLE);
     }
 
@@ -84,7 +85,7 @@ public class VariableDelay extends DETransformer {
 
     /** The input port for specifing delay.
      */
-    public TypedIOPort delay;
+    public DEIOPort delay;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

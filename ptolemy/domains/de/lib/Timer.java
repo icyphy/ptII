@@ -1,4 +1,4 @@
-/* An actor that sets a time bomb and fires when the time is up.
+/* An actor that produces an event with a time delay specified by the input.
 
  Copyright (c) 1998-2000 The Regents of the University of California.
  All rights reserved.
@@ -24,68 +24,89 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (liuj@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.lib;
 
-import ptolemy.domains.de.kernel.*;
+import ptolemy.actor.Director;
 import ptolemy.domains.de.lib.DETransformer;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.*;
-import ptolemy.data.*;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.expr.Parameter;
-import ptolemy.math.Complex;
-
-import java.util.Hashtable;
 
 //////////////////////////////////////////////////////////////////////////
-//// TimeBomb
+//// Timer
 /**
-This actor works similar to a Delay actor, but the amount of delay
-(or the firing time in the future) is computed from the input token
-rather than a parameter.
-The actor has an input port that taks a double number which is a future
-time. When that time is reached, a token is produced from the output.
-The produced token is set by the parameter "bombValue".
-<p>
-The behavior on each firing is to read a token from the input,
-if there is one, and registers a refire to the director at that time.
-When the time is reached, it produces the token specified in the
-parameter.
+Given an input time value, this actor produces an output event at
+the time of the input plus the value of the input.  That is, it sets
+a timer, and when the timer goes off, it produces an output.
+The output value is given by the <i>value</i> parameter.
+Note that the actor queues output events on the event queue
+immediately, but with a future time stamp, so that even if the
+actor no longer exists after the time delay elapses, the
+destination actor will still see the token. If there is no
+input token, then no output token is produced.
+@see Delay
 
-@author Jie Liu
+@author Jie Liu and Edward A. Lee
 @version $Id$
 */
-public class TimeBomb extends DETransformer {
+public class Timer extends DETransformer {
 
     /** Construct an actor with the specified container and name.
-     *  @param container The composite actor to contain this one.
+     *  @param container The container.
      *  @param name The name of this actor.
      *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public TimeBomb(CompositeEntity container, String name)
+    public Timer(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         input.delayTo(output);
-        input.setTypeEquals(BaseType.COMPLEX);
-        output.setTypeEquals(BaseType.DOUBLE);
+        input.setTypeEquals(BaseType.DOUBLE);
+        value = new Parameter(this, "value", new BooleanToken(true));
+        output.setTypeSameAs(value);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                      ports and parameters                 ////
 
+    /** The value produced at the output.  This can have any type,
+     *  and it defaults to a boolean token with value <i>true</i>.
+     */
+    public Parameter value;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Allow type changes on the <i>value</i> parameter, and notify
+     *  the director that resolved types are invalid.
+     *  @param attribute The attribute whose type changed.
+     *  @exception IllegalActionException If the parent class throws it.
+     */
+    public void attributeTypeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == value) {
+            Director director = getDirector();
+            if (director != null) {
+                director.invalidateResolvedTypes();
+            }
+        } else {
+            super.attributeTypeChanged(attribute);
+        }
+    }
+
     /** Clone the actor into the specified workspace. This calls the
-     *  base class and then sets the parameter.
+     *  base class and then links the type of the <i>value</i> parameter
+     *  to the output.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class has
@@ -93,9 +114,8 @@ public class TimeBomb extends DETransformer {
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
-        TimeBomb newObject = (TimeBomb)super.clone(workspace);
-        newObject.input.setTypeEquals(BaseType.COMPLEX);
-        newObject.output.setTypeEquals(BaseType.DOUBLE);
+        Timer newObject = (Timer)super.clone(workspace);
+        newObject.output.setTypeSameAs(value);
         try {
             newObject.input.delayTo(newObject.output);
         } catch (IllegalActionException ex) {
@@ -104,38 +124,31 @@ public class TimeBomb extends DETransformer {
         return newObject;
     }
 
-    /** Read one token from the input and register for future firing.
+    /** Read one token from the input and save it so that the
+     *  postfire method can produce an output.
      *  @exception IllegalActionException If there is no director.
      */
     public void fire() throws IllegalActionException {
         if (input.hasToken(0)) {
-            //System.out.println(getName() + " firing.");
-            Complex currentInput = ((ComplexToken)input.get(0)).complexValue();
-            double time = currentInput.real;
-            Double bombTime = new Double(time);
-            DoubleToken bombValue = new DoubleToken(currentInput.imag);
-            if (time > getDirector().getCurrentTime()) {
-                _tokens.put(bombTime, bombValue);
-                getDirector().fireAt(this, time);
-            } else {
-                _tokens.put(new Double(getDirector().getCurrentTime()),
-                        bombValue);
-            }
+            _currentInput = input.get(0);
+        } else {
+            _currentInput = null;
         }
     }
 
-    /** If the current time is one of the time bomb triggering time,
-     *  produces the corresponding data.
-     *
+    /** If the token read in the most recent fire() invocation was
+     *  nonnegative, then produce an output with a time stamp in
+     *  the future.  The time delay is equal to the value of the
+     *  input.  If there was no input token, or if its value is
+     *  negative, then no output is produced.
      *  @exception IllegalActionException If there is no director.
      */
     public boolean postfire() throws IllegalActionException {
-        double time = getDirector().getCurrentTime();
-        Double currentTime = new Double(time);
-        if (_tokens.containsKey(currentTime)) {
-            Token t = (Token)_tokens.remove(currentTime);
-            output.send(0, t);
-            //System.out.println(getName() + " output token " + t);
+        if (_currentInput != null) {
+            double delay = ((DoubleToken)_currentInput).doubleValue();
+            if (delay >= 0.0) {
+                output.send(0, value.getToken(), delay);
+            }
         }
         return super.postfire();
     }
@@ -143,6 +156,6 @@ public class TimeBomb extends DETransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // The hashtable stores all the setted time bombs.
-    private Hashtable _tokens = new Hashtable();
+    // Current input.
+    private Token _currentInput;
 }

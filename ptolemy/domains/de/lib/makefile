@@ -54,10 +54,11 @@ JSRCS = \
 	Merge.java \
 	Sampler.java \
 	Server.java \
-	TimeBomb.java \
+	SingleEvent.java \
+	TimeGap.java \
+	Timer.java \
 	VariableDelay.java \
-	WaitingTime.java \
-	WaitingTime1.java
+	WaitingTime.java
 
 EXTRA_SRCS =	$(JSRCS) \
 	deentities.xml

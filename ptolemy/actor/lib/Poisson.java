@@ -161,6 +161,7 @@ public class Poisson extends TimedSource {
      *  by the director's change request mechanism, so they are implemented
      *  when it is safe to redo type resolution.
      *  If there is no director, then do nothing.
+     *  @param attribute The attribute whose type changed.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void attributeTypeChanged(Attribute attribute)

@@ -53,7 +53,7 @@ next arrival of an event at <i>waitee</i>.  When one or more events arrive
 at <i>waitee</i>, then all events that have arrived at <i>waiter</i> since
 the last <i>waitee</i> (or since the start of the execution) trigger an
 output.  The value of each output is the time that the <i>waiter</i> event
-waited for <i>waitee</i>.  The inputs are of type Token, so anything
+waited for <i>waitee</i>.  The inputs have undeclared type, so anything
 is acceptable.  The output is always a DoubleToken.
 
 @author Lukito Muliadi, Edward A Lee
@@ -77,9 +77,7 @@ public class WaitingTime extends DEActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
         waiter = new TypedIOPort(this, "waiter", true, false);
-        waiter.setTypeEquals(BaseType.GENERAL);
         waitee = new TypedIOPort(this, "waitee", true, false);
-        waitee.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -91,13 +89,13 @@ public class WaitingTime extends DEActor {
     public TypedIOPort output;
 
     /** An input event here waits for the next event at the <i>waitee</i>
-     *  input.  The type of this port is Token, so any input is acceptable.
+     *  input.  The type of this port is undeclared, so any input is acceptable.
      */
     public TypedIOPort waiter;
 
     /** An input event here triggers an output event for each <i>waiter</i>
      *  input that arrived since the last input here.  The type of this
-     *  port is Token, so any input is acceptable.
+     *  port is undeclared, so any input is acceptable.
      */
     public TypedIOPort waitee;
 

@@ -19,16 +19,19 @@
 <entity name="Server" class="ptolemy.domains.de.lib.Server">
 </entity>
 
-<entity name="VirtualTimeBomb" class="ptolemy.domains.de.lib.TimeBomb">
+<entity name="SingleEvent" class="ptolemy.domains.de.lib.SingleEvent">
+</entity>
+
+<entity name="TimeGap" class="ptolemy.domains.de.lib.TimeGap">
+</entity>
+
+<entity name="Timer" class="ptolemy.domains.de.lib.Timer">
 </entity>
 
 <entity name="VariableDelay" class="ptolemy.domains.de.lib.VariableDelay">
 </entity>
 
 <entity name="WaitingTime" class="ptolemy.domains.de.lib.WaitingTime">
-</entity>
-
-<entity name="WaitingTime1" class="ptolemy.domains.de.lib.WaitingTime1">
 </entity>
 
       </group>

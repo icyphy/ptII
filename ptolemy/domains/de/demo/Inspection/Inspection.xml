@@ -105,8 +105,7 @@ same.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Arrival Times and Waiting Times</title>
@@ -117,8 +116,7 @@ same.</text>
 <noGrid/>
 <default connected="no" marks="dots" stems="yes"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="histplot" class="ptolemy.actor.lib.gui.HistogramPlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -134,8 +132,7 @@ same.</text>
             <property name="input"/>
             <property name="multiport"/>
         </port>
-        <configure><?plotml
-<!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+        <configure><?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
 <title>Waiting Time Histogram</title>
@@ -147,8 +144,7 @@ same.</text>
 <barGraph width="0.5" offset="0.15"/>
 <bin width="0.2" offset="0.1"/>
 </plot>?>
-        </configure>
-    </entity>
+                </configure>    </entity>
     <entity name="Clock1" class="ptolemy.actor.lib.Clock">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -180,18 +176,6 @@ same.</text>
         </port>
         <port name="waitee" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-        </port>
-    </entity>
-    <entity name="Delay2" class="ptolemy.domains.de.lib.Delay">
-        <property name="delay" class="ptolemy.data.expr.Parameter" value="executionTime">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="211.0, 295.0">
-        </property>
-        <port name="input" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.domains.de.kernel.DEIOPort">
-            <property name="output"/>
         </port>
     </entity>
     <entity name="typed composite actor12" class="ptolemy.actor.TypedCompositeActor">
@@ -416,6 +400,17 @@ same.</text>
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="SingleEvent0" class="ptolemy.domains.de.lib.SingleEvent">
+        <property name="time" class="ptolemy.data.expr.Parameter" value="executionTime">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="216.0, 299.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="_R1" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex0" class="ptolemy.moml.Vertex" value="119.0, 363.0">
         </vertex>
@@ -437,7 +432,7 @@ same.</text>
         </vertex>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="274.0, 300.0">
+        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="287.0, 365.0">
         </vertex>
     </relation>
     <relation name="relation26" class="ptolemy.actor.TypedIORelation">
@@ -459,8 +454,6 @@ same.</text>
     <link port="WaitingTime3.output" relation="relation10"/>
     <link port="WaitingTime3.waiter" relation="_R1"/>
     <link port="WaitingTime3.waitee" relation="relation2"/>
-    <link port="Delay2.input" relation="relation2"/>
-    <link port="Delay2.output" relation="relation15"/>
     <link port="typed composite actor12.data" relation="_R2"/>
     <link port="typed composite actor12.trigger" relation="relation15"/>
     <link port="typed composite actor12.report" relation="relation27"/>
@@ -469,4 +462,5 @@ same.</text>
     <link port="16:typed composite actor12.report" relation="relation26"/>
     <link port="Display17.input" relation="relation26"/>
     <link port="Display17.input" relation="relation27"/>
+    <link port="SingleEvent0.output" relation="relation15"/>
 </entity>

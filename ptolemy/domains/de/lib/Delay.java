@@ -164,6 +164,6 @@ public class Delay extends DETransformer {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // Current inputs.
+    // Current input.
     private Token _currentInput;
 }
