@@ -569,6 +569,17 @@ public class PetriNetDirector extends Director {
                 }
             }
 
+    /** Return false, indicating that the director does not wish
+     *  to be scheduled for another iteration. FIXME: This is provisional
+     *  since there is currently no way to stop the execution of a
+     *  Petri net model, so we just run once.
+     *  @return False.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public boolean postfire() throws IllegalActionException {
+        return false;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
