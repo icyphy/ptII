@@ -47,7 +47,7 @@ Created : May 1998
  * @version$Id$
  * @see pt.data.expr.ASTPTRootNode
  * @see pt.data.expr.PtParser 
- * @see pt.data.Token 
+ * @see pt.data..Token 
 */
 
 
@@ -65,7 +65,7 @@ public class ASTPtLeafNode extends ASTPtRootNode {
      *  parameter changes, by reevaluating the parse tree we get the 
      *  correct result.
      */
-   protected pt.data.Parameter _param;  
+   protected pt.data.expr.Parameter _param;  
 
     /** If this leaf node represents a reference to a parameter, return the
      *  PtToken contained in that parameter. Otherwise return the PtToken

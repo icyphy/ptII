@@ -28,11 +28,12 @@
 
 */
 
-package pt.data;
+package pt.data.expr;
 
 import pt.kernel.*;
 import pt.kernel.util.*;
-import pt.data.expr.*;
+import pt.data.*;
+
 import java.util.*;
 
 //////////////////////////////////////////////////////////////////////////
@@ -69,11 +70,11 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
      *  @param name The name of this object, given to the superclass
      *  @param token The Token contained by this Parameter.
      */
-     public Parameter(NamedObj container, String name, Token token) {
+     public Parameter(NamedObj container, String name, pt.data.Token token) {
          super(container.workspace(), name);
          _container = container;
          try {
-             _origToken = (Token)token.clone();
+             _origToken = (pt.data.Token)token.clone();
          } catch (CloneNotSupportedException c) {
              _origToken = token;
          }
@@ -187,7 +188,7 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
         
      /** Get the Token this Parameter contains
      */
-    public Token getToken() {
+    public pt.data.Token getToken() {
         return _token;
     }
    
@@ -205,7 +206,7 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
         if (_origToken != null) {
             _token = _origToken;
         } else {
-            Token oldToken = _token;
+            pt.data.Token oldToken = _token;
             _parseTreeRoot = _parser.generateParseTree(_initialValue, getScope());
             _token = _parseTreeRoot.evaluateParseTree();
             _checkType(_token);
@@ -223,9 +224,9 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
      *  @param token The new Token to be stored in this Parameter.
      * FIXME: synchronization needs to be looked at.
      */
-    public void setToken(Token token) {
+    public void setToken(pt.data.Token token) {
         _parseTreeRoot = null;
-        Token oldToken = _token;
+        pt.data.Token oldToken = _token;
         _token = token;
         _checkType(_token);
         // Now transfer the TokenPublisher between the old & new tokens
@@ -244,7 +245,7 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
         if (_parser == null) {
             _parser = new PtParser(this);
         }
-        Token oldToken = _token;
+        pt.data.Token oldToken = _token;
         synchronized(workspace()) {
             _parseTreeRoot = _parser.generateParseTree(str, getScope());
             _token = _parseTreeRoot.evaluateParseTree();
@@ -277,7 +278,7 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
      */
     public void update(Observable o, Object t) throws IllegalArgumentException {
         if ( _parseTreeRoot != null) {
-            Token oldToken = _token;
+            pt.data.Token oldToken = _token;
             _token = _parseTreeRoot.evaluateParseTree();
             _checkType(_token);
             TokenPublisher publisher = oldToken.getPublisher();
@@ -298,7 +299,7 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
      *  @exception IllegalArgumentException thrown if incompatible types
      *  FIXME: currently this just checks if they are the same type!!
      */
-    protected void _checkType(Token t) {
+    protected void _checkType(pt.data.Token t) {
         String type1 = this.getToken().getClass().getName();
         if( !(type1.equals(t.getClass().getName()))) {
             String str = "Cannot store a Token of type ";
@@ -320,8 +321,8 @@ public class Parameter extends NamedObj implements Observer, Cloneable {
     ////                         private variables                        ////
 
     private NamedObj _container;
-    private Token _token;
-    private Token _origToken;
+    private pt.data.Token _token;
+    private pt.data.Token _origToken;
     private String _initialValue;
     private PtParser _parser;
     private ASTPtRootNode _parseTreeRoot;

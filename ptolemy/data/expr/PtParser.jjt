@@ -538,7 +538,8 @@ String tidied, x;
      <ID>
      { 
         if (_scope != null) {
-            pt.data.Parameter xx = (pt.data.Parameter)_scope.get(token.image);
+            pt.data.expr.Parameter xx =
+		 (pt.data.expr.Parameter)_scope.get(token.image);
             if (xx != null) {
                 // the param is stored in the node so that the tree does not 
                 // have to be reparsed
