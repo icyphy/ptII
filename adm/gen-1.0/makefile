@@ -117,7 +117,7 @@ PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar.$(SUFFIX)
 all: $(PTII_FULL) $(PTII_SRC) #$(PTII_FULL_ZIP) #$(PTII_DEVEL_SRC)
 
 # Rebuild the distributions
-# rm unixPtiny.xml; make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0 PTIIADM=/home/eecs/cxh/ptII/adm  rebuildptiny
+# rm unixPtII.xml; make USER=cxh PTIIHOME=/home/eecs/cxh/ptII/adm/trees/ptII1.0 PTIIADM=/home/eecs/cxh/ptII/adm  rebuildptII
 rebuild: clean all codeDocPtiny installshield_app 
 rebuildptiny: rebuild build_unixPtiny
 rebuildptII: rebuild build_unixPtII
@@ -1078,11 +1078,11 @@ $(INSTALLSHIELD_EXPERIMENTAL):
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/giotto $@/ptolemy/domains
 	 mv $(INSTALLSHIELD_APP)/ptolemy/domains/gr $@/ptolemy/domains
 
-ISPMP_LIB=/users/ptII/vendors/installshield/ispmp40/lib/
+ISPMP_LIB=/users/ptII/vendors/installshield/ispmp401/lib/
 
-ISPMP_DEBUG_CLASSPATH=/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/classes/src: 
+ISPMP_DEBUG_CLASSPATH=/vol/maury/maury1/ptII/vendors/installshield/ispmp401/lib/classes/src: 
 
-ISPMP_CLASSPATH=/vol/maury/maury1/ptII/vendors/installshield/ispmp40:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/help.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/icebrowserbean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/icebrowserlitebean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/ide.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/jhall.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/parser.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/product.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/swing.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/wizard.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/lib/xt.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/win32ppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/solarisppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/webppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp40/ppk/linuxppk.jar
+ISPMP_CLASSPATH=/vol/maury/maury1/ptII/vendors/installshield/ispmp401:/vol/maury/maury1/ptII/vendors/installshield/ispmp401/lib/help.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp401/lib/icebrowserbean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp401/lib/icebrowserlitebean.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp401/lib/ide.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp401/lib/jhall.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp401/lib/parser.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp401/lib/product.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp401/lib/swing.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp401/lib/wizard.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp401/lib/xt.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp401/ppk/win32ppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp401/ppk/solarisppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp401/ppk/webppk.jar:/vol/maury/maury1/ptII/vendors/installshield/ispmp401/ppk/linuxppk.jar
 
 ptiny.xml: ptII.xml ptiny.xsl
 	java -classpath $(ISPMP_CLASSPATH) \
@@ -1095,10 +1095,10 @@ ptiny.xml: ptII.xml ptiny.xsl
 unixPtiny.xml: ptiny.xml
 	sed -e 's@[cC]:\\users\\cxh\\ptII\\adm\\gen-1.0\\installshield\\@$(GENDIR)/installshield/@' \
 	    -e 's@designdoc\\doc\\design\\@designdoc/doc/design/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\win32\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/win32/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\solaris\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/solaris/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\linux\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/linux/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\images\\InstallShield Images\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/images/InstallShield Images/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\IPMP401\\jvms\\win32\\@/vol/maury/maury1/ptII/vendors/installshield/ipmp401/jvms/win32/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\IPMP401\\jvms\\solaris\\@/vol/maury/maury1/ptII/vendors/installshield/ipmp401/jvms/solaris/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\IPMP401\\jvms\\linux\\@/vol/maury/maury1/ptII/vendors/installshield/ipmp401/jvms/linux/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\IPMP401\\images\\InstallShield Images\\@/vol/maury/maury1/ptII/vendors/installshield/ipmp401/images/InstallShield Images/@' \
 	    -e 's@<property name="outputDirectory">default</property>@<property name="outputDirectory">$(GENDIR)/installshield</property>@' \
 	    -e 's@ptiny\\copyright@ptiny/copyright@' \
 		 $< > $@
@@ -1114,10 +1114,10 @@ build_unixPtiny: unixPtiny.xml
 unixPtII.xml: ptII.xml
 	sed -e 's@[cC]:\\users\\cxh\\ptII\\adm\\gen-1.0\\installshield\\@$(GENDIR)/installshield/@' \
 	    -e 's@designdoc\\doc\\design\\@designdoc/doc/design/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\win32\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/win32/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\solaris\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/solaris/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\jvms\\linux\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/jvms/linux/@' \
-	    -e 's@C:\\Program Files\\InstallShield\\ISMPP40\\images\\InstallShield Images\\@/vol/maury/maury1/ptII/vendors/installshield/ispmp40/images/InstallShield Images/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\IPMP401\\jvms\\win32\\@/vol/maury/maury1/ptII/vendors/installshield/ipmp401/jvms/win32/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\IPMP401\\jvms\\solaris\\@/vol/maury/maury1/ptII/vendors/installshield/ipmp401/jvms/solaris/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\IPMP401\\jvms\\linux\\@/vol/maury/maury1/ptII/vendors/installshield/ipmp401/jvms/linux/@' \
+	    -e 's@C:\\Program Files\\InstallShield\\IPMP401\\images\\InstallShield Images\\@/vol/maury/maury1/ptII/vendors/installshield/ipmp401/images/InstallShield Images/@' \
 	    -e 's@<property name="outputDirectory">default</property>@<property name="outputDirectory">$(GENDIR)/installshield</property>@' \
 	    -e 's@ptiny\\copyright@ptiny/copyright@' \
 		 $< > $@
