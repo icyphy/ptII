@@ -68,6 +68,16 @@ processed (mutation-blocked) or when waiting for time to progress
 progress for an active process in this model of computation only when the
 process is  blocked.
 <p>
+This director also permits pausing of the execution. An execution is paused
+when all active processes are blocked or paused (at least one process is
+paused). In case of PN, a process can be paused only when it tries to
+communicate with other processes. Thus a process can be paused in the get()
+or put() methods of the receivers alone. In case a pause is requested, the
+process does not return from the call to the get() or the put() method of the
+receiver until the execution is resumed. If there is a process that does
+not communicate with other processes in the model, then the simulation can
+never pause in that model.
+<p>
 A <i>deadlock</i> is when all the active processes are blocked.
 The director is responsible for handling deadlocks during execution.
 This director handles three different sorts of deadlocks, real deadlock, timed
@@ -108,6 +118,13 @@ and suspends (mutation-blocked) until the request for topology changes is
 processed. The directing thread processes these requests on the next occurrence
 of a timed-deadlock. After this the directing thread awakens the processes
 blocked on a mutation (mutation-blocked) and the execution resumes.
+<p>
+In case of PN, a process can be paused only when it tries to communicate with
+other processes. A pause in PN is defined as a state when all processes are
+blocked or are explicitly paused in the get() or
+put() method of the receiver. Thus if there is a process that does not
+communicate with other processes in the model, then the simulation may
+never pause in that model.
 <p>
 Though this class defines and uses a event-listener mechanism for notifying
 the listeners of the various states a process is in, this mechanism is expected
@@ -282,6 +299,42 @@ public class TimedPNDirector extends BasePNDirector {
 	}
     }
 
+    /** Add a topology change request to the request queue and suspend the
+     *  calling thread until the requests are processed. These changes
+     *  are executed in the fire() method of the director.
+     *  After queuing the requests, increment the count of processes blocked
+     *  while waiting for the topology change requests to be processed
+     *  (mutation-blocked). On detecting a timed-deadlock,
+     *  the directing thread processes the queued topology change requests in
+     *  the fire() method
+     *  of the director. After the directing thread processes all the requests,
+     *  it notifies the all the processes blocked on a mutation (including the
+     *  calling process) to resume. The count of mutation-blocked processes
+     *  is decreased by the directing thread.
+     *  This method is synchronized on the director.
+     *
+     *  @param request An object with commands to perform topology changes
+     *  and to inform the topology listeners of the same.
+     *  @see ptolemy.kernel.event.ChangeRequest
+     *  @see ptolemy.kernel.event.ChangeListener
+     *  @see #fire
+     */
+    public void requestChange(ChangeRequest request) {
+	synchronized(this) {
+	    _mutationsRequested = true;
+	    _informOfMutationBlock();
+            super.requestChange(request);
+	    while(_mutationsRequested) {
+		try {
+		    wait();
+		} catch (InterruptedException e) {
+		    System.err.println(e.toString());
+		}
+	    }
+	}
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -292,7 +345,8 @@ public class TimedPNDirector extends BasePNDirector {
      *  by this thread have stopped or are blocked; otherwise return false.
      */
     protected synchronized boolean _areAllThreadsStopped() {
- 	if(_getStoppedProcessesCount() + _readBlockCount + _delayBlockCount +
+ 	if(_getStoppedProcessesCount() + _readBlockCount + 
+                _writeBlockCount + _delayBlockCount +
                 _mutationBlockCount == _getActiveActorsCount()) {
  	    return (_getStoppedProcessesCount() != 0);
  	}
