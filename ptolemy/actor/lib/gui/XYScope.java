@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.gui;
@@ -47,24 +47,28 @@ An X-Y plotter that plots with finite persistence.
 This plotter contains an instance of the Plot class
 from the Ptolemy plot package as a public member.
 Data at <i>inputX</i> and <i>inputY</i> are plotted on this instance.
-Both <i>inputX</i> and <i>inputY</i> are multiports with type DOUBLE.
+Both <i>inputX</i> and <i>inputY</i> are multiports that
+take a DoubleToken.
 When plotted, the first channel of <i>inputX</i> and the first channel
 of <i>inputY</i> are together considered the first signal,
 then the second channel of <i>inputX</i> and the second channel
 of <i>inputY</i> are considered the second signal, and so on.
 This requires that <i>inputX</i> and
-<i>inputY</i> have the same width. The actor
+<i>inputY</i> have the same width. 
+<p>
+This actor
 assumes that there is at least one token available on each channel
 when it fires. The horizontal axis is given by the value of the
 input from <i>inputX</i> and vertical axis is given by <i>inputY</i>.
+<p>
 If the <i>persistence</i> parameter is positive, then it specifies
 the number of points that are shown.
 It defaults to 100, so any point older than 100 samples is
-erased and forgotten. The inputs are of type DoubleToken.
+erased and forgotten.
 
 @author  Edward A. Lee
 @version $Id$
- */
+*/
 public class XYScope extends XYPlotter {
 
     /** Construct an actor with the given container and name.
@@ -95,9 +99,11 @@ public class XYScope extends XYPlotter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notification that an attribute has changed.
+    /** Notify this that an attribute has changed.  If either parameter
+     *  is changed, then this actor updates the configuration of the 
+     *  visible plot.
      *  @exception IllegalActionException If the expression of the
-     *   attribute cannot be parsed or cannot be evaluated.
+     *  attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -124,10 +130,12 @@ public class XYScope extends XYPlotter {
         }
     }
 
-    /** Call the base class postfire() method, then yield so that the
-     *  event thread gets a chance.
+    /** Call the base class postfire() method, then yield this
+     *  thread so that the event thread gets a chance.  This is necessary,
+     *  because otherwise the swing thread may be starved and accumulate a 
+     *  large number of points waiting to be plotted.  
      *  @exception IllegalActionException If there is no director,
-     *   or if the base class throws it.
+     *  or if the base class throws it.
      *  @return True if it is OK to continue.
      */
     public boolean postfire() throws IllegalActionException {

@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.gui;
@@ -97,9 +97,11 @@ public class TimedScope extends TimedPlotter {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Notification that an attribute has changed.
+    /** Notify this that an attribute has changed.  If either parameter
+     *  is changed, then this actor updates the configuration of the 
+     *  visible plot.
      *  @exception IllegalActionException If the expression of the
-     *   attribute cannot be parsed or cannot be evaluated.
+     *  attribute cannot be parsed or cannot be evaluated.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
@@ -115,7 +117,8 @@ public class TimedScope extends TimedPlotter {
         }
     }
 
-    /** Configure the plotter using the current parameter values.
+    /** Initialize this actor.  This method configures the plotter 
+     *  using the current parameter values.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
@@ -132,8 +135,10 @@ public class TimedScope extends TimedPlotter {
         }
     }
 
-    /** Call the base class postfire() method, then yield so that the
-     *  event thread gets a chance.
+    /** Call the base class postfire() method, then yield this
+     *  thread so that the event thread gets a chance.  This is necessary,
+     *  because otherwise the swing thread may be starved and accumulate a 
+     *  large number of points waiting to be plotted.
      *  @exception IllegalActionException If there is no director,
      *   or if the base class throws it.
      *  @return True if it is OK to continue.
