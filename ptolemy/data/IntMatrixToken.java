@@ -35,7 +35,7 @@ import ptolemy.graph.CPO;
 import ptolemy.math.Complex;
 
 //////////////////////////////////////////////////////////////////////////
-//// ImageToken
+//// IntMatrixToken
 /**
 A token that contains a 2-D integer array.
 
