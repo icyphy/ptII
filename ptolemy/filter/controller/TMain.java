@@ -22,7 +22,7 @@ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 ENHANCEMENTS, OR MODIFICATIONS.
 
-$Id$ %S%
+$Id$
  
 */
  
@@ -32,34 +32,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.util.*;
 import java.io.*;
+import ptolemy.math.Complex;
 
-
-// Dialog ask user to enter the type and name of the filter
-
-class FiltTypeSet extends Dialog {
-
-    public FiltTypeSet(Frame parent, TMain p, String title){
-        super(parent, title, false);
-        this.setLayout(new BorderLayout(5, 5));
-        _panel = new FiltTypeSetup(p); 
-        this.add("Center", _panel);
-        this.pack();
-        this.show();
-    }
-
-    /** 
-     * Dispose the dialog.  Called by Tmain.
-     */
-    public void kil(){
-       this.setVisible(false);
-       this.dispose();
-    }
-
-    FiltTypeSetup _panel;
-}
-
-//////////////////////////////////////////////////////////////////////////
-//// TMain 
 /**
  * Main object for the filter program.  It handles the creation of manager,
  * initial user input on design the filter, save filter to files, and load
@@ -339,8 +313,8 @@ System.out.println("second comma "+comma);
        String name = new String("Wow");
        String buffer;
        double gain;
-       double [] num;
-       double [] denom;
+       Complex [] num;
+       Complex [] denom;
 
      if (_smode == 0){ // regular save
        fileT = new File(_curDir, _curFile);
@@ -355,8 +329,8 @@ System.out.println("second comma "+comma);
            return;
        }
 
-
        type = _man.getfilter(v1,v2,v3,name);     
+
        if (type >= 0 ){
              ptstream.println("Name: "+name);
              if (type == 1) ptstream.println("Type: "+"IIR");
@@ -391,7 +365,7 @@ System.out.println("second comma "+comma);
        } catch (IOException e) {
            return;
        }
-       gain = _man.getfilterGain();
+       gain = _man.getfilterGain().real;
        ptstream.println(gain); 
        ptstream.close(); 
 
@@ -407,7 +381,7 @@ System.out.println("second comma "+comma);
        }
        num = _man.getfilterNumerator();
        for (int i=0;i<num.length;i++){
-           ptstream.print(num[i]+" ");
+           ptstream.print(num[i].real+" ");
        }
        ptstream.close(); 
 
@@ -423,7 +397,7 @@ System.out.println("second comma "+comma);
        }
        denom = _man.getfilterDenominator();
        for (int i=0;i<denom.length;i++){
-           ptstream.print(denom[i]+" ");
+           ptstream.print(denom[i].real+" ");
        }
        ptstream.close(); 
      }
@@ -471,3 +445,30 @@ System.out.println("second comma "+comma);
    private String _curFile;
    private String _newline;
 }
+
+// Dialog ask user to enter the type and name of the filter
+
+class FiltTypeSet extends Dialog {
+
+    public FiltTypeSet(Frame parent, TMain p, String title){
+        super(parent, title, false);
+        this.setLayout(new BorderLayout(5, 5));
+        _panel = new FiltTypeSetup(p); 
+        this.add("Center", _panel);
+        this.pack();
+        this.show();
+    }
+
+    /** 
+     * Dispose the dialog.  Called by Tmain.
+     */
+    public void kil(){
+       this.setVisible(false);
+       this.dispose();
+    }
+
+    FiltTypeSetup _panel;
+}
+
+//////////////////////////////////////////////////////////////////////////
+//// TMain 
