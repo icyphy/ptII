@@ -63,6 +63,7 @@ JARFILE = 	$(TYPACKAGE).jar
 
 JSRCS = \
 	Actor.java \
+	AtomicIOPort.java \
 	AutonomousActor.java \
 	CompositeActor.java \
 	ControlledActor.java \
@@ -74,9 +75,11 @@ JSRCS = \
 	IOPort.java \
 	IORelation.java \
 	Mailbox.java \
+	MailboxPort.java \
 	NoTokenAvailableException.java \
-	Puttable.java \
-	TokenHolderFullException.java
+	Receptionist.java \
+	TokenHolderFullException.java \
+	TransparentIOPort.java
 
 EXTRA_SRCS =	$(JSRCS)
 

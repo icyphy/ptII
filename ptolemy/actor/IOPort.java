@@ -1,4 +1,4 @@
-/* Abstract class for a port that can serve as an input, output, or both.
+/* Interface for port with notion of input/output.
 
  Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
@@ -24,258 +24,79 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Red (liuj@eecs.berkeley.edu)
 
 */
 
 package pt.actors;
-
-import pt.kernel.*;
-import pt.data.*;
-
-import java.util.Enumeration;
-import java.util.NoSuchElementException;
-import collections.LinkedList;
+import pt.kernel.InvalidStateException;
 
 //////////////////////////////////////////////////////////////////////////
 //// IOPort
 /** 
 Abstract class for a port that can serve as an input, output, or both.
 This class defines the interface for exchanging data between entities.
-It implements sending of data (the output mechanism), but not receiving
-of data (the input mechanism).  The input mechanism is implemented in
-derived classes in various ways that support distinct communication
-styles.  Sending data is accomplished via the broadcast() method, which 
-simply invokes the put() method of all ports that are connected to this 
-port and that identify themselves as input ports.  Sending data to a 
-specific port is accomplished by directly calling the put() method of the
-port. A port identifies itself as an input port by returning true
-in its isInput() method.  When sending data, if more than one input
-port is found, then the token being sent is cloned so that each
-recipient gets a distinct copy of the token.
+An IOPort can have width, so that multiple connections to another IOPort
+can be acheived via one relation with the same width.
+A key method defined in IOPort is deepReceptionist, which plays a role
+in the propagation of Receptionist arrays. Create Receptionist array and
+propagate these arrays throw Entities is an important part of the data
+transfer mechanism. For more information about the data transfer, see
+the Design Document.
 
-@author Edward A. Lee
+@author Jie Liu
 @version $Id$
 */
-public abstract class IOPort extends ComponentPort {
-
-    /** Construct a port with no containing entity, no name, that is
-     *  neither an input nor an output.
-     */	
-    public IOPort() {
-        super();
-    }
-
-    /** Construct a port with a containing entity and a name that is
-     *  neither an input nor an output.
-     *  @param container
-     *  @param name
-     *  @exception NameDuplicationException Name coincides with
-     *   an element already on the port list of the parent.
-     */	
-    public IOPort(ComponentEntity container, String name) 
-             throws NameDuplicationException {
-	super(container,name);
-    }
-
-    /** Construct a port with a containing entity and a name that is
-     *  either an input or an output or both, depending on the third
-     *  and fourth arguments.
-     *  @param container
-     *  @param name
-     *  @param isinput
-     *  @param isoutput
-     *  @exception NameDuplicationException Name coincides with
-     *   an element already on the port list of the parent.
-     */	
-    public IOPort(ComponentEntity container, String name,
-             boolean isinput, boolean isoutput) 
-             throws NameDuplicationException {
-	this(container,name);
-        makeInput(isinput);
-        makeOutput(isoutput);
-    }
+public interface IOPort {
 
     //////////////////////////////////////////////////////////////////////////
     ////                         public methods                           ////
 
-    /** Deeply enumerate the input ports connected to this port. Use the 
-     *  cached result if it is still valid.
-     *  @see ComponentPort#deepConnectedPorts.
-     */	
-    public Enumeration deepConnectedInputPorts() {
-        synchronized(workspace()) {
-            if (_deepConnectedInputPortsVersion == workspace().getVersion()) {
-                // Cache is valid.  Use it.
-                return _deepConnectedInputPorts.elements();
-            }
-            LinkedList result = new LinkedList();
-            Enumeration ports = deepConnectedPorts();
-            while(ports.hasMoreElements()) {
-                IOPort port = (IOPort)ports.nextElement();
-                if(port.isInput()){
-                    result.insertLast(port);
-                }
-            }
-            _deepConnectedInputPorts = result;
-            _deepConnectedInputPortsVersion = workspace().getVersion();
-            return _deepConnectedInputPorts.elements();
-        }
-    }
-                    
-    /** Deeply enumerate the output ports connected to this port. Use the 
-     *  cached result if it is still valid.
-     *  @see ComponentPort#deepConnectedPorts.
-     */	
-    public Enumeration deepConnectedOutputPorts() {
-        synchronized(workspace()) {
-            if (_deepConnectedOutputPortsVersion == workspace().getVersion()) {
-                // Cache is valid.  Use it.
-                return _deepConnectedOutputPorts.elements();
-            }
-            LinkedList result = new LinkedList();
-            Enumeration ports = deepConnectedPorts();
-            while(ports.hasMoreElements()) {
-                IOPort port = (IOPort)ports.nextElement();
-                if(port.isOutput()){
-                    result.insertLast(port);
-                }
-            }
-            _deepConnectedOutputPorts = result;
-            _deepConnectedOutputPortsVersion = workspace().getVersion();
-            return _deepConnectedOutputPorts.elements();
-        }
-    }    
+    /** Key method for propage Receptionist array.
+     *  Implementation may differ for different IOPorts.
+     *  An input AtomicIOPort should create/return the Receptionist array
+     *  correspoding to the given relation.
+     *  An TransparentIOPort should concatinate the Receptionist array
+     *  from the other side of the given relation and return the 
+     *  sun array corresponding to the given relation.
+     *  @see AtomicIOPort
+     *  @see TransparentIOPort
+     *  @param relation The linked relation ased for Receptionists.
+     *  @return The Receptionist array corresponding to the given relation.
+     *  @exception If the Port/Relation connection is inconsistent, eg. 
+     *             unmatched width.
+     */
+    public Receptionist[][] deepReceptionists(IORelation relation)
+           throws InvalidStateException;
 
-    /** Get all tokens from the port. The tokens must have been
-     *  previously received via the receive() method. Different 
-     *  implementations of this method will react differently if no token
-     *  is available.  Implementations should throw an exception
-     *  if the port is not an input port.
-     *  @exception IllegalActionException Port is not an input.
-     *  @exception NoSuchElementException No token to get.
+ 
+    /** Return true if the port is an input. 
      */	
-    public abstract Token[] get() throws NoSuchElementException, 
-	    IllegalActionException;
+    public boolean isInput(); 
 
-    /** Get a token received from a particular output port. The token
-     *  must have been previously received via the receive() method. 
-     *  The output port must be connected to this port, otherwise an 
-     *  Exception is thrown. Different implementations 
-     *  of this method will react differently if no token
-     *  is available.  Implementations should throw an exception
-     *  if the port is not an input port.
-     *  @exception IllegalActionException Port is not an input.
-     *  @exception NoSuchElementException No token to get.
+    /** Return true if the port is an output. 
      */	
-    public abstract Token get(IOPort fromport) throws NoSuchElementException, 
-	    IllegalActionException;
-
-    /** Return true if the port is an input.  An input port is one
-     *  that is capable of receiving tokens from another port 
-     *  via the receive() method and delivering the tokens to an
-     *  entity via the get() method.
-     */	
-    public boolean isInput() {
-        return _isinput;
-    }
-
-    /** Return true if the port is an output.  An output port is one
-     *  that is capable of sending tokens to another port 
-     *  via the put() method.
-     */	
-    public boolean isOutput() {
-        return _isoutput;
-    }
+    public boolean isOutput() ;
 
     /** If the argument is true, make the port an input port.
-     *  That is, make it capable of receiving tokens from another port 
-     *  via the receive() method and delivering the tokens to an
-     *  entity via the get() method.  If the argument is false,
+     *  If the argument is false,
      *  make the port not an input port.
      */	
-    public void makeInput(boolean isinput) {
-        _isinput = isinput;
-    }
+    public void makeInput(boolean isinput); 
 
     /** If the argument is true, make the port an output port.
-     *  That is, make it capable of sending tokens to another port 
-     *  via the send() method.  If the argument is false,
+     *  If the argument is false,
      *  make the port not an output port.
      */	
-    public void makeOutput(boolean isoutput) {
-        _isoutput = isoutput;
-    }
+    public void makeOutput(boolean isoutput);
+    
+    /** Return the width of the port. It will check the version of the 
+     *  workspace. If the version is obsoleted, use updateWidth to find
+     *  the new width.
+     * @return The width of the port.
+     */
+    public int getWidth(); 
 
-    /** Send a token to all connected ports that identify themselves as
-     *  input ports.  The transfer is accomplished by calling the put()
-     *  method of the destination ports.  If there is more than one
-     *  destination port, then clone the token so that each destination
-     *  receives a distinct instance of the token.  The first recipient
-     *  will receive the instance that is passed as an argument here.
-     *  @param token The token to send
-     *  @exception CloneNotSupportedException The token cannot be cloned
-     *   and there is more than one destination.
-     *  @exception IllegalActionException The port is not an output port.
-     */	
-    public void broadcast(Token token) throws 
-	    CloneNotSupportedException, IllegalActionException {
-        if (!isOutput()) {
-            throw new IllegalActionException(this,
-                   "Attempt to send data from a port that is not an output.");
-        }
-        Enumeration ports = deepConnectedInputPorts();
-        boolean first = true;
-        while( ports.hasMoreElements() ) {
-            IOPort port = (IOPort)ports.nextElement();
-            if (first) {
-                port.put(token, this);
-                first = false;
-            } else {
-                port.put((Token)(token.clone()), this);
-            }
-        }
-    }
-
-    /** Receive a token from another port and put it in the input port.  
-     *  The mechanism would be specified in domain specific implementations.
-     *  Different implementations of this method will react differently if, 
-     *  for example, there is no room for the token, or the owning entity 
-     *  is not ready to receive a token.  Implementations should throw an 
-     *  exception if the port is not an input port.
-     * @exception IllegalActionException Port is not an input.
-     */	
-    public abstract void put(Token token, IOPort sendport)
-                    throws IllegalActionException;
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
-
-    /** Do nothing if the specified relation is compatible with this port.
-     *  Otherwise, throw an exception.
-     *  @param relation
-     *  @exception IllegalActionException Incompatible relation.
-     */	
-    public void _checkRelation(Relation relation) 
-            throws IllegalActionException {
-        if (!(relation instanceof IORelation)) {
-            throw new IllegalActionException(this,
-                   "Attempt to link to an incompatible relation.");
-        }
-    }
-
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
-
-    // Indicate whether the port is an input, an output, or both.
-    private boolean _isinput, _isoutput;
-    // A cache of the deeply connected Input/Output ports, and the version
-    // used to construct it.
-    // 'transient' means that the variable will not be serialized.
-    private transient LinkedList _deepConnectedInputPorts;
-    private long _deepConnectedInputPortsVersion = -1;
-    private transient LinkedList _deepConnectedOutputPorts;
-    private long _deepConnectedOutputPortsVersion = -1;
 }
 
 

@@ -29,23 +29,24 @@
 
 package pt.actors;
 import pt.data.*;
+import pt.kernel.Nameable;
 
 //////////////////////////////////////////////////////////////////////////
 //// Mailbox
 /** 
-The Token holder with capacity one. Used in MailboxPort to hold incoming 
-token. Implement the Puttable interface.
+The Receptionist with capacity one. Used in MailboxPort to hold incoming 
+token. Implement the Receptionist interface.
 
 @author Jie Liu
 @version $Id$
 */
-public class Mailbox implements Puttable {
+public class Mailbox implements Receptionist {
     /** Construct an empty Mailbox. The Mailbox must have a container, 
      * which is an IOPort. The container, once set, can't be changed.
      * FIXME: what if container = null?
      * @param container 
      */	
-    public Mailbox(IOPort container) {
+    public Mailbox(AtomicIOPort container) {
         _container = container;
         _isEmpty = true;
     }
@@ -70,7 +71,7 @@ public class Mailbox implements Puttable {
     /** return the IOPort that contains this Mailbox
      * @return container
      */	
-    public IOPort getContainer() {
+    public Nameable getContainer() {
         return _container;
     }
 
@@ -102,7 +103,7 @@ public class Mailbox implements Puttable {
     // have regular C++ comments.
 
     // container is not changable.
-    private final IOPort _container;
+    private final AtomicIOPort _container;
     // the token held.
     private Token _token;
     private boolean _isEmpty;
