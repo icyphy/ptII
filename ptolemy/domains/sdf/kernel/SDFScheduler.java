@@ -30,6 +30,13 @@
 
 package ptolemy.domains.sdf.kernel;
 
+import java.util.Comparator;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -44,28 +51,21 @@ import ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
 import ptolemy.data.Token;
-import ptolemy.data.expr.NotEditableParameter;
 import ptolemy.data.expr.Variable;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.Fraction;
-import ptolemy.moml.MoMLChangeRequest;
-
-import java.util.Comparator;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 
 ///////////////////////////////////////////////////////////
 //// SDFScheduler
@@ -1608,36 +1608,25 @@ public class SDFScheduler extends Scheduler {
      *  @param minimumBufferSizes A map from relation
      *  to the minimum possible buffer size of that relation.
      */
-    private void _saveBufferSizes(Map minimumBufferSizes) {
+    private void _saveBufferSizes(final Map minimumBufferSizes) {
         Director director = (Director) getContainer();
         final CompositeActor container =
             (CompositeActor)director.getContainer();
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("<group>\n");
-
-        Iterator relations = container.relationList().iterator();
-        while (relations.hasNext()) {
-            Relation relation = (Relation)relations.next();
-            int bufferSize =
-                ((Integer)minimumBufferSizes.get(relation)).intValue();
-            buffer.append("<relation name=\"");
-            buffer.append(relation.getName(container));
-            buffer.append("\">\n");
-            // Use Variable rather than Parameter so that the change
-            // is not persistent.
-            buffer.append("<property name=\"bufferSize\" "
-                    + "class=\"ptolemy.data.expr.NotEditableParameter\" "
-                    +  "value=\"" + bufferSize + "\"/>\n");
-            buffer.append("</relation>\n");
-
-            if (_debugging) {
-                _debug("Relation " + relation.getName() +
-                        " has bufferSize = " + bufferSize);
+        ChangeRequest request = new ChangeRequest(this, "Record buffer sizes") {
+            protected void _execute() throws KernelException {
+                Iterator relations = container.relationList().iterator();
+                while (relations.hasNext()) {
+                    Relation relation = (Relation)relations.next();
+                    int bufferSize =
+                            ((Integer)minimumBufferSizes.get(relation)).intValue();
+                    _setOrCreate(relation, "bufferSize", bufferSize);
+                    if (_debugging) {
+                        _debug("Adding bufferSize parameter to " + relation.getName() +
+                                " with value " + bufferSize);
+                    }
+                }
             }
-        }
-        buffer.append("</group>");
-        MoMLChangeRequest request = new MoMLChangeRequest(
-                this, container, buffer.toString());
+        };
         // Indicate that the change is non-persistent, so that
         // the UI doesn't prompt to save.
         request.setPersistent(false);
@@ -1726,39 +1715,28 @@ public class SDFScheduler extends Scheduler {
 
     /** Create and set a parameter in each actor according
      *  to the number of times it will fire in one execution of the schedule.
-     *  @param minimumBufferSizes A map from actor
-     *  to firing count.
+     *  @param entityToFiringsPerIteration A map from actor to firing count.
      */
-    private void _saveFiringCounts(Map entityToFiringsPerIteration) {
+    private void _saveFiringCounts(final Map entityToFiringsPerIteration) {
         Director director = (Director) getContainer();
         final CompositeActor container =
-            (CompositeActor)director.getContainer();
-        StringBuffer buffer = new StringBuffer();
-        buffer.append("<group>\n");
-
-        Iterator entities = entityToFiringsPerIteration.keySet().iterator();
-        while (entities.hasNext()) {
-            Entity entity = (Entity) entities.next();
-            int firingCount =
-                ((Integer)entityToFiringsPerIteration.get(entity)).intValue();
-            buffer.append("<entity name=\"");
-            buffer.append(entity.getName(container));
-            buffer.append("\">\n");
-            // Use NotEditableParameter rather than Parameter so that
-            // the change is not persistent.
-            buffer.append("<property name=\"firingsPerIteration\" "
-                    + "class=\"ptolemy.data.expr.NotEditableParameter\" "
-                    +  "value=\"" + firingCount + "\"/>\n");
-            buffer.append("</entity>\n");
-
-            if (_debugging) {
-                _debug("Entity " + entity.getName() +
-                        " has firingCount = " + firingCount);
+                (CompositeActor)director.getContainer();
+            
+        ChangeRequest request = new ChangeRequest(this, "Record firings per iteration") {
+            protected void _execute() throws KernelException {
+                Iterator entities = entityToFiringsPerIteration.keySet().iterator();
+                while (entities.hasNext()) {
+                    Entity entity = (Entity) entities.next();
+                    int firingCount =
+                            ((Integer)entityToFiringsPerIteration.get(entity)).intValue();
+                    _setOrCreate(entity, "firingsPerIteration", firingCount);
+                    if (_debugging) {
+                        _debug("Adding firingsPerIteration parameter to " + entity.getName() +
+                                " with value " + firingCount);
+                    }
+                }
             }
-        }
-        buffer.append("</group>");
-        MoMLChangeRequest request = new MoMLChangeRequest(
-                this, container, buffer.toString());
+        };
         // Indicate that the change is non-persistent, so that
         // the UI doesn't prompt to save.
         request.setPersistent(false);
@@ -1767,7 +1745,8 @@ public class SDFScheduler extends Scheduler {
 
     /** If the specified Variable does not exist, then create a variable
      *  with the same name preceded by an underscore and set the value
-     *  of that variable to the specified value.
+     *  of that variable to the specified value. The resulting variable
+     *  is not persistent and not editable, but will be visible to the user.
      *  @param port The port.
      *  @param name Name of the variable.
      *  @param value The value.
@@ -1779,8 +1758,9 @@ public class SDFScheduler extends Scheduler {
             rateParameter = (Variable)port.getAttribute(altName);
             try {
                 if (rateParameter == null) {
-                    // Use Variable, not Parameter so that it's transient.
-                    rateParameter = new NotEditableParameter(port, altName);
+                    rateParameter = new Variable(port, altName);
+                    rateParameter.setVisibility(Settable.NOT_EDITABLE);
+                    rateParameter.setPersistent(false);
                 }
                 rateParameter.setToken(new IntToken(value));
             } catch (KernelException ex) {
@@ -1803,6 +1783,32 @@ public class SDFScheduler extends Scheduler {
         _firingVectorValid = true;
     }
 
+    /** If the specified container does not contain a variable with the specified
+     *  name, then create such a variable and set its value to the specified integer.
+     *  The resulting variable is not persistent and
+     *  not editable, but will be visible to the user.
+     *  If the variable does exist, then just set its value.
+     *  @param port The port.
+     *  @param name Name of the variable.
+     *  @param value The value.
+     *  @exception If the variable exists and its value cannot be set.
+     */
+    private static void _setOrCreate(NamedObj container, String name, int value)
+            throws IllegalActionException {
+        Variable rateParameter = (Variable)container.getAttribute(name);
+        if (rateParameter == null) {
+            try {
+                rateParameter = new Variable(container, name);
+                rateParameter.setVisibility(Settable.NOT_EDITABLE);
+                rateParameter.setPersistent(false);
+            } catch (KernelException ex) {
+                // Should not occur.
+                throw new InternalErrorException(ex.toString());
+            }
+        }
+        rateParameter.setToken(new IntToken(value));
+    }
+
     /** Set the rate variable with the specified name to the specified
      *  value.  If it doesn't exist, create it.
      *  @param port The port.
@@ -1822,7 +1828,9 @@ public class SDFScheduler extends Scheduler {
             try {
                 // Use Variable rather than Parameter so the
                 // value is transient.
-                parameter = new NotEditableParameter(port, name, new IntToken(rate));
+                parameter = new Variable(port, name, new IntToken(rate));
+                parameter.setVisibility(Settable.NOT_EDITABLE);
+                parameter.setPersistent(false);
             } catch (KernelException exception) {
                 // This should never happen.
                 throw new InternalErrorException(exception.getMessage());
