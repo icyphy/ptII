@@ -48,39 +48,45 @@ import java.util.Random;
 */
 
 public class CSPSource extends CSPActor {
-  public CSPSource() {
+    public CSPSource() {
         super();
     }
     
     public CSPSource(CSPCompositeActor cont, String name) 
-        throws IllegalActionException, NameDuplicationException {
-        super(cont, name);
-        output = new IOPort(this, "output", false, true);
+            throws IllegalActionException, NameDuplicationException {
+         super(cont, name);
+         output = new IOPort(this, "output", false, true);
     }
-
-  ////////////////////////////////////////////////////////////////////////
-  ////                         protected methods                      ////
- 
-    protected void _run() {
-    try {
-	Random rand = new Random();
-	int count = 0;
-	while (count < 15 ) {
-            //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
-	  Token t = new IntToken(count);
-	  output.send(0,t);
-	  System.out.println(getName() + " sent Token: " + t.toString());
-	  count++;
-	}
-	return;
-      } catch (IllegalActionException ex) {
-	System.out.println("CSPSource: illegalActionException, exiting");
-      }  catch (CloneNotSupportedException ex) {
+    
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public methods                         ////
+            
+    public void fire() {
+        try {
+            Random rand = new Random();
+            int count = 0;
+            while (count < 15 ) {
+                //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
+                Token t = new IntToken(count);
+                output.send(0,t);
+                System.out.println(getName() + " sent Token: " + t.toString());
+                count++;
+            }
+            return;
+        } catch (IllegalActionException ex) {
+            System.out.println("CSPSource: illegalActionException, exiting");
+        }  catch (CloneNotSupportedException ex) {
 	System.out.println(getName() + ": cannot clone  token, bug in DATA");
         /*} catch (InterruptedException ex) {
 	System.out.println(getName() + ": interupted while sleeping");
         */}
     }
+
+    public boolean prefire() {
+        returns _again;
+    }
+    
     
     public IOPort output;
-}
+    private boolean again = true;
+}}

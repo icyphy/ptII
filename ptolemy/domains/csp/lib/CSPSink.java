@@ -57,28 +57,31 @@ public class CSPSink extends CSPActor {
         input = new IOPort(this, "input", true, false);
     }
 
-    public void _run() {
+    public boolean prefire() {
+        returns _again;
+    }
+
+    public void fire() {
       Random rand = new Random();
       int times = 0;
       int count = 0;
       try {
 	while (count < 10 ) {
-	  //System.out.println("about to get");
-	  Token t = input.get(0);
-	  //System.out.println("got");
-	  //Token t = receiver.get();
-	  if (t instanceof NullToken ) {
-	    System.out.println("\n" + getName() + ": fired " + times + " times.");
-	    ((CSPDirector)getDirector()).terminateSimulation();
-	    return;
-	  }
-	  System.out.println(getName() + " received Token: " + t.toString());
-	  count++;
-	  times++;
-	  Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
+            Token t = input.get(0);
+            if (t == null) {
+                System.out.println("CSPSink(" + getName() + "): finished " + 
+                        "due to receiving a null token. Fired " + times + 
+                        " times.");
+                again = false;
+                return;
+            }
+            System.out.println(getName() + " received Token: " + t.toString());
+            count++;
+            times++;
+            //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
 	}
-	((CSPDirector)getDirector()).terminateSimulation();
-	return;
+        System.out.println("CSPSink(" + getName() + "): finished normally.");
+        return;
       } catch (InterruptedException ex) {
 	System.out.println("CSPSink interrupted, exiting...");
       } catch (IllegalActionException ex) {
@@ -89,4 +92,5 @@ public class CSPSink extends CSPActor {
     }
     
     public IOPort input;
+    private boolean again = true;
 }
