@@ -80,9 +80,9 @@ test DDEReceiver-2.1 {Send three tokens between two actors} {
 
     $mgr run
 
-    set time0 [$actorRcvr getThreadTime 0]
-    set time1 [$actorRcvr getThreadTime 1]
-    set time2 [$actorRcvr getThreadTime 2]
+    set time0 [$actorRcvr getAfterTime 0]
+    set time1 [$actorRcvr getAfterTime 1]
+    set time2 [$actorRcvr getAfterTime 2]
 
     list $time0 $time1 $time2
 
@@ -113,11 +113,51 @@ test DDEReceiver-2.2 {Send a real token, an ignore token and a real token.} {
 
     $mgr run
 
-    set time0 [$actorRcvr getThreadTime 0]
+    set time0 [$actorRcvr getAfterTime 0]
+    set time1 [$actorRcvr getAfterTime 1]
 
-    list $time0
+    list $time0 $time1
 
-} {5.0}
+} {5.0 25.0}
+
+######################################################################
+####
+#
+test DDEReceiver-2.3 {Send a NullTokens through FlowThru.} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $toplevel "director"]
+    set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
+    $toplevel setDirector $dir
+    $toplevel setManager $mgr
+    
+    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGetNToken $toplevel "actorRcvr" 2]
+    set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPutToken $toplevel "actorSend" 3]
+    set actorThru [java::new ptolemy.domains.dde.kernel.test.FlowThru $toplevel "actorThru"]
+
+    set tok1 [java::new ptolemy.data.Token]
+    set nullTok [java::new ptolemy.domains.dde.kernel.NullToken]
+
+    $actorSend setToken $nullTok 5.0 0 
+    $actorSend setToken $tok1 7.0 1
+    $actorSend setToken $tok1 9.5 2
+
+    set rcvrInPort [$actorRcvr getPort "input"]
+    set sendOutPort [$actorSend getPort "output"]
+    set thruInPort [$actorThru getPort "input"]
+    set thruOutPort [$actorThru getPort "output"]
+
+    $toplevel connect $sendOutPort $thruInPort "rel1"
+    $toplevel connect $thruOutPort $rcvrInPort "rel2"
+
+    $mgr run
+
+    set time0 [$actorRcvr getAfterTime 0]
+    set time1 [$actorRcvr getAfterTime 1]
+
+    list $time0 $time1
+
+} {7.0 9.5}
 
 
 
