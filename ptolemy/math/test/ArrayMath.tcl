@@ -85,19 +85,6 @@ test ArrayMath-1.2 {add} {
 } {{0.75 + 2.4i} {2.75 - 3.6i} {-5.15 - 5.6i} {-7.25 + 8.4i}}
 
 ####################################################################
-test ArrayMath-2.1 {addR} {
-    java::call ptolemy.math.ArrayMath addR $ca0 $c5
-    javaPrintArray $ca0
-} {}
-
-####################################################################
-test ArrayMath-2.2 {addR} {
-    java::call ptolemy.math.ArrayMath addR $ca2 $c5
-    epsilonDiff [javaPrintArray $ca2] \
-	    {{0.5 + 2.8i} {2.5 - 3.2i} {-5.4 - 5.2} {-7.5 + 8.8i}}
-} {}
-
-####################################################################
 test ArrayMath-3.1 {conjugate} {
     set ca2 [java::call ptolemy.math.ArrayMath conjugate $ca0]
     javaPrintArray $ca2
@@ -107,19 +94,6 @@ test ArrayMath-3.1 {conjugate} {
 test ArrayMath-3.2 {conjugate} {
     set ca2 [java::call ptolemy.math.ArrayMath conjugate $ca1]
     epsilonDiff [javaPrintArray $ca2] {{1.0 - 2.0i} {3.0 + 4.0i} {-4.9 + 6.0i} {-7.0 - 8.0i}}
-} {}
-
-####################################################################
-test ArrayMath-4.1 {conjugateR} {
-    java::call ptolemy.math.ArrayMath conjugateR $ca0
-    javaPrintArray $ca0
-} {}
-
-####################################################################
-test ArrayMath-4.2 {conjugateR} {
-    set ca2 [java::call ptolemy.math.ArrayMath add $ca1 $c5]
-    java::call ptolemy.math.ArrayMath conjugateR $ca2
-    epsilonDiff [javaPrintArray $ca2] {{0.75 - 2.4i} {2.75 + 3.6i} {-5.15 + 5.6i} {-7.25 - 8.4i}}
 } {}
 
 ####################################################################
@@ -218,29 +192,6 @@ test ArrayMath-7.6 {limit: Infinity top} {
     $da2 getrange 0
 } {1.0 2.0 -0.5 4.1 0.0 -0.0 0.0 Infinity -0.5 NaN 4.94065645841e-324 1.79769313486e+308}
 
-
-####################################################################
-test ArrayMath-8.1 {limitR: empty array} {
-    set da0tmp [java::new {double[]} 0]
-    java::call ptolemy.math.ArrayMath limitR $da0tmp 0 0
-    $da0tmp getrange 0
-} {}
-
-####################################################################
-test ArrayMath-8.2 {limitR} {
-    set l [list 1 2 -3 4.1 0.0 -0.0 +0.0 \
-	    [java::field java.lang.Double POSITIVE_INFINITY] \
-	    [java::field java.lang.Double NEGATIVE_INFINITY] \
-	    [java::field java.lang.Double NaN] \
-	    [java::field java.lang.Double MIN_VALUE] \
-	    [java::field java.lang.Double MAX_VALUE] \
-	    ]
-    set da3tmp [java::new {double[]} [llength $l] $l]
-
-    java::call ptolemy.math.ArrayMath limitR $da3tmp -0.5 1.25
-    $da3tmp getrange 0
-} {1.0 1.25 -0.5 1.25 0.0 -0.0 0.0 1.25 -0.5 NaN 4.94065645841e-324 1.25}
-
 ####################################################################
 test ArrayMath-9.0 {polynomial: null array} {
     set ca2 [java::call ptolemy.math.ArrayMath polynomial $ca0]
@@ -268,7 +219,7 @@ test ArrayMath-10.1 {product: empty array} {
     set ca0 [java::new {ptolemy.math.Complex[]} 0]
     set result [java::call ptolemy.math.ArrayMath product $ca0]
     $result toString
-} {}
+} {0.0 + 0.0i}
 
 ####################################################################
 test ArrayMath-11.2 {product} {
@@ -287,16 +238,3 @@ test ArrayMath-12.2 {subtract} {
     set ca2 [java::call ptolemy.math.ArrayMath subtract $ca1 $c5]
     javaPrintArray $ca2
 } {{1.25 + 1.6i} {3.25 - 4.4i} {-4.65 - 6.4i} {-6.75 + 7.6i}}
-
-####################################################################
-test ArrayMath-13.1 {subtractR} {
-    java::call ptolemy.math.ArrayMath subtractR $ca0 $c5
-    javaPrintArray $ca0
-} {}
-
-####################################################################
-test ArrayMath-13.2 {subtractR} {
-    java::call ptolemy.math.ArrayMath subtractR $ca2 $c5
-    epsilonDiff [javaPrintArray $ca2] \
-	    {{1.5 + 1.2i} {3.5 - 4.8i} {-4.4 - 6.8} {-6.5 + 7.2i}}
-} {}

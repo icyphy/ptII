@@ -42,6 +42,14 @@ if {[string compare test [info procs test]] == 1} then {
 
 set PI [java::field java.lang.Math PI]
 
+proc javaPrintArray {javaArrayObj} {
+    set result {}
+    for {set i 0} {$i < [$javaArrayObj length]} {incr i} {
+	lappend result [[$javaArrayObj get $i] toString]
+    }
+    return $result
+}
+
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -91,3 +99,10 @@ test SignalProcessing-1.1 {close} {
     return $results
 } {1 1 1 1 1 0 0 0 0 0 0 0 0 0 1 1 1 1 1}
 
+####################################################################
+test SignalProcessing-2.1 {fft} {
+    # Real array
+    set impulse [java::new {double[]} 5 [list 1.0 0.0 0.0 0.0 0.0]]
+    set result [java::call ptolemy.math.SignalProcessing {fft double[]} $impulse]
+    javaPrintArray $result
+} {{1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i} {1.0 + 0.0i}}
