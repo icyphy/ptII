@@ -50,6 +50,7 @@ JSRCS = \
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	ClassUtilities.tcl \
+	MessageHandler.tcl \
 	StringUtilities.tcl \
 	XSLTUtilities.tcl
 
