@@ -372,6 +372,7 @@ public abstract class TableauFrame extends Top {
      */
     protected void _exit() {
         ModelDirectory directory = getDirectory();
+        if (directory == null) return;
         Iterator effigies = directory.entityList(Effigy.class).iterator();
         while (effigies.hasNext()) {
             Effigy effigy = (Effigy)effigies.next();
