@@ -28,7 +28,7 @@
         <property name="_location" class="ptolemy.moml.Location" value="105.0, 40.0">
         </property>
     </property>
-    <property name="0:0:annotation1" class="ptolemy.kernel.util.Attribute">
+    <property name="13:0:0:annotation1" class="ptolemy.kernel.util.Attribute">
         <property name="_location" class="ptolemy.moml.Location" value="409.0, 129.0">
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
