@@ -33,11 +33,11 @@ import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.FileParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.FileParameter;
 
 import java.util.StringTokenizer;
 
@@ -55,7 +55,7 @@ gradient, and the theta gradient, given the current x, y, and theta
 value.
 
 The function file should be stored in
-$PTII/ptolemy/apps/softwalls/surfaces.  Its name is a parameter.
+$PTII/ptolemy/apps/softwalls/surfaces.  Its name is a FileParameter.
 
 @author Adam Cataldo
 @version $Id$
@@ -85,15 +85,15 @@ public class ImplicitSurface extends TypedAtomicActor {
         dy = new TypedIOPort(this, "dy", false, true);
         dtheta = new TypedIOPort(this, "dz", false, true);
 
-        // Create and configure parameters
+        // Create and configure FileParameters
         functionFile =
-            new Parameter(this, "functionFile", new StringToken("plane.data"));
+            new FileParameter(this, "functionFile");
         dxFile =
-            new Parameter(this, "dxFile", new StringToken("plane.data"));
+            new FileParameter(this, "dxFile");
         dyFile =
-            new Parameter(this, "dyFile", new StringToken("plane.data"));
+            new FileParameter(this, "dyFile");
         dthetaFile =
-            new Parameter(this , "dthetaFile", new StringToken("plane.data"));
+            new FileParameter(this , "dthetaFile");
 
         /** This flag will become true after initialize() is first
          * called, to avoid reloading the surface function.
@@ -102,13 +102,13 @@ public class ImplicitSurface extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     ports and parameters                  ////
+    ////                     ports and FileParameters                  ////
 
     /** File name for implicit surface functions and gradients*/
-    public Parameter functionFile;
-    public Parameter dxFile;
-    public Parameter dyFile;
-    public Parameter dthetaFile;
+    public FileParameter functionFile;
+    public FileParameter dxFile;
+    public FileParameter dyFile;
+    public FileParameter dthetaFile;
 
     /** Current x position */
     public TypedIOPort x;
@@ -175,39 +175,20 @@ public class ImplicitSurface extends TypedAtomicActor {
         }
 
         String ptII, functionName, dxName, dyName, dthetaName;
-        String path = "/ptolemy/apps/softwalls/surfaces/";
-        StringToken functionToken, dxToken, dyToken, dthetaToken;
-
-        /** Get the full path name for the implicit surface function
-         * file.
-         */
-        ptII = System.getProperty("ptolemy.ptII.dir");
-
-        /** Extract the file names.
-         */
-        functionToken = (StringToken)functionFile.getToken();
-        functionName = functionToken.stringValue();
-        dxToken = (StringToken)dxFile.getToken();
-        dxName = dxToken.stringValue();
-        dyToken = (StringToken)dyFile.getToken();
-        dyName = dyToken.stringValue();
-        dthetaToken = (StringToken)dthetaFile.getToken();
-        dthetaName = dthetaToken.stringValue();
 
         /** Make the file names relative to the correct path.
          */
-        path = ptII.concat(path);
-        functionName = path.concat(functionName);
-        dxName = path.concat(dxName);
-        dyName = path.concat(dyName);
-        dthetaName = path.concat(dthetaName);
+        functionName = functionFile.asFile().getAbsolutePath();
+        dxName = dxFile.asFile().getAbsolutePath();
+        dyName = dyFile.asFile().getAbsolutePath();
+        dthetaName = dthetaFile.asFile().getAbsolutePath();
 
         try {
             // FIXME: The above code doesn't work... Hardwire in the names.
-            _surfaceFunction = new ThreeDFunction("c:\\ptII\\ptolemy\\apps\\softwalls\\surfaces\\softwall.final.dense.data");
-            _xGradientFunction = new ThreeDFunction("c:\\ptII\\ptolemy\\apps\\softwalls\\surfaces\\softwall.final.gradx.data");
-            _yGradientFunction = new ThreeDFunction("c:\\ptII\\ptolemy\\apps\\softwalls\\surfaces\\softwall.final.grady.data");
-            _thetaGradientFunction = new ThreeDFunction("c:\\ptII\\ptolemy\\apps\\softwalls\\surfaces\\softwall.final.gradz.data");
+            _surfaceFunction = new ThreeDFunction(functionName);
+            _xGradientFunction = new ThreeDFunction(dxName);
+            _yGradientFunction = new ThreeDFunction(dyName);
+            _thetaGradientFunction = new ThreeDFunction(dthetaName);
         }
         catch (IllegalActionException a) {
             throw a;
