@@ -24,18 +24,27 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
-@ProposedRating Red (neuendor@eecs.berkeley.edu)
+@ProposedRating Yellow (neuendor@eecs.berkeley.edu)
 @AcceptedRating Red (liuj@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.conversions;
 
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.ASTPtRootNode;
+import ptolemy.data.expr.ModelScope;
+import ptolemy.data.expr.ParseTreeEvaluator;
+import ptolemy.data.expr.ParserScope;
+import ptolemy.data.expr.PtParser;
 import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+
+import java.util.Set;
 
 //////////////////////////////////////////////////////////////////////////
 //// ExpressionToToken
@@ -64,8 +73,7 @@ public class ExpressionToToken extends Converter {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         input.setTypeEquals(BaseType.STRING);
-        output.setTypeEquals(BaseType.UNKNOWN);
-        _expressionEvaluator = new Variable(this, "_expressionEvaluator");
+        output.setTypeEquals(BaseType.GENERAL);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -78,8 +86,35 @@ public class ExpressionToToken extends Converter {
      */
     public void fire() throws IllegalActionException {
         String string = ((StringToken)input.get(0)).stringValue();
-        _expressionEvaluator.setExpression(string);
-        output.broadcast(_expressionEvaluator.getToken());
+        Token result;
+        try {
+            // Note that the parser is NOT retained, since in most
+            // cases the expression doesn't change, and the parser
+            // requires a large amount of memory.
+            if(_parser == null) {
+                _parser = new PtParser();
+            }
+            ASTPtRootNode parseTree = _parser.generateParseTree(string);
+            
+            if (_parseTreeEvaluator == null) {
+                _parseTreeEvaluator = new ParseTreeEvaluator();
+            }
+            if (_scope == null) {
+                _scope = new ExpressionScope();
+            }
+            result = _parseTreeEvaluator.evaluateParseTree(
+                    parseTree, _scope);
+        } catch (IllegalActionException ex) {
+            // Chain exceptions to get the actor that threw the exception.
+            throw new IllegalActionException(this, ex, "Expression invalid.");
+        }
+        
+        if (result == null) {
+            throw new IllegalActionException(this,
+                    "Expression yields a null result: " +
+                    string);
+        }
+        output.broadcast(result);
     }
 
     /** Return true if and only if an input is present.
@@ -94,9 +129,54 @@ public class ExpressionToToken extends Converter {
         }
     }
 
+    /** Wrapup execution of this actor.  This method overrides the
+     *  base class to discard the internal parser to save memory.
+     */
+    public void wrapup() { 
+        _parser = null; 
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
-    /** Variable used to evaluate expressions. */
-    private Variable _expressionEvaluator;
+    private class ExpressionScope extends ModelScope {
+
+        /** Look up and return the attribute with the specified name in the
+         *  scope. Return null if such an attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         */
+        public Token get(String name) throws IllegalActionException {
+            Variable result = getScopedVariable(null, 
+                    ExpressionToToken.this, name);
+            if (result != null) {
+                return result.getToken();
+            }
+            return null;
+        }
+
+        /** Look up and return the type of the attribute with the
+         *  specified name in the scope. Return null if such an
+         *  attribute does not exist.
+         *  @return The attribute with the specified name in the scope.
+         */
+        public Type getType(String name) throws IllegalActionException {
+            Variable result = 
+                getScopedVariable(null, ExpressionToToken.this, name);
+            if (result != null) {
+                return (Type)result.getTypeTerm().getValue();
+            }
+            return null;
+        }
+
+        /** Return the list of identifiers within the scope.
+         *  @return The list of identifiers within the scope.
+         */
+        public Set identifierSet() {
+            return getAllScopedVariableNames(null, ExpressionToToken.this);
+        }
+    }
+
+    private PtParser _parser = null;
+    private ParseTreeEvaluator _parseTreeEvaluator = null;
+    private ParserScope _scope = null;
 }
