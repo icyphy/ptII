@@ -57,7 +57,9 @@ EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	$(DIRS)
+# Don't include DIRS here, since demo is in DIRS, so 'make sources' will
+# try to run 'make demo', which is wrong.
+MISC_FILES =	#$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
