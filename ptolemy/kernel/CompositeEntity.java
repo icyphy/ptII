@@ -1242,11 +1242,24 @@ public class CompositeEntity extends ComponentEntity {
         _containedRelations.append(relation);
     }
 
-    /** Adjust the deferrals in this object.
-     *  Specifically, if this object has a class name that refers
-     *  to a class in scope, then replace the current parent with
-     *  that object. Override the base class to also call the same method
-     *  on all contained class definitions and ordinary entities.
+    /** Adjust the deferrals in this object. This method should
+     *  be called on any newly created object that is created by
+     *  cloning. While cloning, parent relations are set to null.
+     *  That is, no object in the clone has a parent. This method
+     *  identifies the correct parent for any object in the clone.
+     *  To do this, it uses the class name. Specifically, if this
+     *  object has a class name that refers to a class in scope,
+     *  then it replaces the current parent with that object.
+     *  To look for a class in scope, we go up the hierarchy, but
+     *  no more times than the return value of getDerivedLevel().
+     *  The reason for this is that if the class from which this
+     *  object is defined is above that level, then we do not want
+     *  to establish a parent relationship with that class. This
+     *  object is implied, and the parent relationship of the object
+     *  from which it is implied is sufficient.
+     *  <p>
+     *  Derived classes that contain other objects should recursively
+     *  call this method on contained objects.
      *  @exception IllegalActionException If the class found in scope
      *   cannot be set.
      */
