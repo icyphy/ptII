@@ -479,7 +479,15 @@ $1 ~ /<\/entity>/ {
                            addRelationsFullName = addRelationsContainer[addRelation] "_" addRelations[addRelation] "_multiPort"
                            if (link == addRelationsFullName) {
                                addRelationsHack = 1
+                               # Now we write sed commands to a file
+                               # for processing in the next step.
+ 
+                               # Delete the creation of the relation
+                               print "s/[ 	]*<relation name=\"" relations[i] "\".*$//" >"ecsl2moml.relations"
+
+                               # Substitute our relation in 
                                print "s/relation=\"" relations[i] "\"/relation=\"" addRelationsFullName "\"/" >"ecsl2moml.relations"
+
                            }
                        }
                   } 
