@@ -76,14 +76,14 @@ public class EditorNodeRenderer implements NodeRenderer {
 	    SchematicEntity entity = (SchematicEntity) n;
 	    Icon icon = entity.getIcon();	    
             Figure background = icon.createFigure();
-	    figure = new IconFigure(background);
+	    figure = new IconFigure(background, entity.getName());
 	    figure.setUserObject(n);
 	    
 	    Enumeration terminals = entity.terminals();
 	    // FIXME this needs to do the right thing. 
 	    while(terminals.hasMoreElements()) {
-		ptolemy.schematic.util.SchematicTerminal terminal = 
-	    	    (ptolemy.schematic.util.SchematicTerminal) terminals.nextElement();
+		SchematicTerminal terminal = 
+	    	    (SchematicTerminal) terminals.nextElement();
 		StraightTerminal terminalFigure = new StraightTerminal();
 		terminalFigure.setUserObject(terminal);
 		((IconFigure)figure).addTerminal(

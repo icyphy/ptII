@@ -52,7 +52,10 @@ if {[string compare test [info procs test]] == 1} then {
 #
 test PTMLObjectFactory-2.1 {Constructor tests} {
     set parser [java::new ptolemy.schematic.xml.PTMLParser]
-    set xmllib [$parser parse "file:/users/neuendor/ptII/ptolemy/schematic/util/test/exampleIconLibrary.ptml"]   
+    set fileend [file join $PTII ptolemy schematic util test exampleIconLibrary.ptml]
+    set filename "file:/"
+    append filename $fileend
+    set xmllib [$parser parse $filename]
     set iconlib [java::call ptolemy.schematic.util.PTMLObjectFactory \
 	    createIconLibrary $xmllib]
     $iconlib description
@@ -123,10 +126,16 @@ test PTMLObjectFactory-2.1 {Constructor tests} {
 #
 test PTMLObjectFactory-2.2 {Constructor tests} {
     set parser [java::new ptolemy.schematic.xml.PTMLParser]
-    set xmllib [$parser parse "file:/users/neuendor/ptII/ptolemy/schematic/util/test/exampleRootIconLibrary.ptml"]
+    set fileend [file join $PTII ptolemy schematic util test exampleRootIconLibrary.ptml]
+    set filename "file:/"
+    append filename $fileend
+    set xmllib [$parser parse $filename]
     set iconroot [java::call ptolemy.schematic.util.PTMLObjectFactory createIconLibrary $xmllib]
 
-    set xmllib [$parser parse "file:/users/neuendor/ptII/ptolemy/schematic/util/test/exampleEntityLibrary.ptml"]   
+    set fileend [file join $PTII ptolemy schematic util test exampleEntityLibrary.ptml]
+    set filename "file:/"
+    append filename $fileend
+    set xmllib [$parser parse $filename]
     set entitylib [java::call ptolemy.schematic.util.PTMLObjectFactory \
 	    createEntityLibrary $xmllib $iconroot]
     $entitylib description
@@ -208,11 +217,17 @@ test PTMLObjectFactory-2.2 {Constructor tests} {
 test PTMLObjectFactory-2.3 {Constructor tests} {
     set parser [java::new ptolemy.schematic.xml.PTMLParser]
 
-    set xmllib [$parser parse "file:/users/neuendor/ptII/ptolemy/schematic/util/test/exampleRootEntityLibrary.ptml"]   
+    set fileend [file join $PTII ptolemy schematic util test exampleRootEntityLibrary.ptml]
+    set filename "file:/"
+    append filename $fileend
+    set xmllib [$parser parse $filename]
     set entityroot [java::call ptolemy.schematic.util.PTMLObjectFactory \
 	    createEntityLibrary $xmllib $iconroot]
 
-    set xmllib [$parser parse "file:/users/neuendor/ptII/ptolemy/schematic/util/test/exampleschematic.ptml"]   
+    set fileend [file join $PTII ptolemy schematic util test exampleschematic.ptml]
+    set filename "file:/"
+    append filename $fileend
+    set xmllib [$parser parse $filename]
     set schematic [java::call ptolemy.schematic.util.PTMLObjectFactory createSchematic $xmllib $entityroot]
 
     $schematic description

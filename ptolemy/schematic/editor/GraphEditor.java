@@ -122,14 +122,14 @@ public class GraphEditor extends AbstractApplication {
         _applicationFrame.setIconImage(iconImage);
 
         // Create and initialize the storage policy
-      _storagePolicy = new DefaultStoragePolicy();
-      JFileChooser fc = _storagePolicy.getFileChooser();
-      FileFilter ff = new FileFilter() {
-          public boolean accept (File file) {
-              return GUIUtilities.getFileExtension(file).toLowerCase().equals(
-                      "xml");
-          }
-          public String getDescription () {
+	_storagePolicy = new DefaultStoragePolicy();
+	JFileChooser fc = _storagePolicy.getFileChooser();
+	FileFilter ff = new FileFilter() {
+	    public boolean accept (File file) {
+		return GUIUtilities.getFileExtension(file).toLowerCase().equals(
+										"xml");
+	    }
+	    public String getDescription () {
               return "XML files";
           }
       };
@@ -216,6 +216,18 @@ public class GraphEditor extends AbstractApplication {
         return _documentFactory;
     }
     
+    /** Return the entity library associated with this GraphEditor
+     */
+    public EntityLibrary getEntityLibrary () {
+	return _entityLibrary;
+    }
+
+    /** Return the icon library associated with this GraphEditor
+     */
+    public IconLibrary getIconLibrary () {
+	return _iconLibrary;
+    }
+
     /** Get the storage policy of this application.
      */
     public StoragePolicy getStoragePolicy () {
@@ -390,7 +402,7 @@ public class GraphEditor extends AbstractApplication {
             iconlibURL = new URL(urlbase, 
                     "ptII/ptolemy/schematic/util/test/exampleRootIconLibrary.ptml");
             entitylibURL = new URL(urlbase, 
-                    "ptII/ptolemy/schematic/util/test/exampleEntityLibrary.ptml");
+                    "ptII/ptolemy/schematic/util/test/exampleRootEntityLibrary.ptml");
         }
         catch (Exception ex) {
             System.out.println("Couldn't construct url");
@@ -461,7 +473,7 @@ public class GraphEditor extends AbstractApplication {
         }
     }
  
-   /** Show an error that occurred in this class.
+    /** Show an error that occurred in this class.
      */
     private void showError(String op, Exception e) {
         // Show the stack trace in a scrollable text area.

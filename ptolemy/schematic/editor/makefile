@@ -53,6 +53,7 @@ JSRCS = \
 	EditorDropTarget.java \
 	EditorGraphController.java \
 	EditorNodeRenderer.java \
+	GraphDocument.java \
 	GraphEditor.java \
 	SchematicPalette.java
 
