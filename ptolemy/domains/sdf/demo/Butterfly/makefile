@@ -74,7 +74,8 @@ all: jclass $(PTCLASSJAR)
 install: all
 
 # Run the demo in all its different formats
-demo: demo_applet demo_application demo_CompositeActorApplication demo_ptolemy
+# Run demo_application first so that we generate Butterfly.xml
+demo: demo_application demo_applet demo_CompositeActorApplication demo_ptolemy
 
 demo_applet: $(PTCLASSJAR)
 	CLASSPATH=$(CLASSPATH) appletviewer Butterfly.htm
