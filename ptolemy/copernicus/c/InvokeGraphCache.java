@@ -64,7 +64,7 @@ public class InvokeGraphCache{
     public LinkedList getTargetsOf(SootMethod method) {
         LinkedList targets = new LinkedList();
         LinkedList methodNameList = (LinkedList)_data.map
-                .get(method.getSignature());
+            .get(method.getSignature());
         Iterator methodNames =  methodNameList.iterator();
 
         while (methodNames.hasNext()) {

@@ -316,8 +316,8 @@ public class DataUtilities {
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(containerLocal,
                                 Jimple.v().newVirtualInvokeExpr(
-                                            thisLocal,
-                                            PtolemyUtilities.toplevelMethod)),
+                                        thisLocal,
+                                        PtolemyUtilities.toplevelMethod)),
                         _insertPoint);
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(attributeLocal,
@@ -335,8 +335,8 @@ public class DataUtilities {
                 _units.insertBefore(
                         Jimple.v().newAssignStmt(tokenLocal,
                                 Jimple.v().newVirtualInvokeExpr(
-                                            attributeLocal,
-                                            PtolemyUtilities.variableGetTokenMethod)),
+                                        attributeLocal,
+                                        PtolemyUtilities.variableGetTokenMethod)),
                         _insertPoint);
                 
                 return tokenLocal;

@@ -112,15 +112,15 @@ public class CWriter extends SceneTransformer {
             String fileName;
             /* FIXME: Changed this to enable code generation in correct
              * directory.
-            if (!outDir.equals("")) {
-                File outDirFile = new File(outDir);
-                if (!outDirFile.isDirectory()) {
-                    outDirFile.mkdirs();
-                }
-                fileName = outDir + System.getProperty("file.separator");
-            } else {
-                fileName = "";
-            }
+             if (!outDir.equals("")) {
+             File outDirFile = new File(outDir);
+             if (!outDirFile.isDirectory()) {
+             outDirFile.mkdirs();
+             }
+             fileName = outDir + System.getProperty("file.separator");
+             } else {
+             fileName = "";
+             }
             */
             fileName = CNames.classNameToFileName(sootClass.getName());
             //fileName += sootClass.getName();

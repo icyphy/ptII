@@ -124,7 +124,7 @@ public class InterfaceLookupGenerator {
     public static HashMap getLookupMethods(SootClass source) {
         HashMap interfaceMethodMap = new HashMap();
         Iterator interfaces = AnalysisUtilities.getAllInterfacesOf(source)
-                .iterator();
+            .iterator();
 
 
         while (interfaces.hasNext()){

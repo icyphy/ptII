@@ -104,7 +104,7 @@ public class MakeFileGenerator {
         code.append("DEPEND = gcc -Wno-trigraphs -MM -I $(RUNTIME) -I $(LIB) "
                 + "-I $(NATIVE_BODIES) -I $(OVER_BODIES)");
         if (gc) {
-                 code.append(" -I $(GC_DIR)");
+            code.append(" -I $(GC_DIR)");
         }
         code.append("\n\n");
 
@@ -149,7 +149,7 @@ public class MakeFileGenerator {
         code.append("\tgcc $(CFLAGS) -c  -I $(RUNTIME) -I $(LIB) "
                 + "-I $(NATIVE_BODIES)");
         if (gc) {
-                 code.append(" -I $(GC_DIR)");
+            code.append(" -I $(GC_DIR)");
         }
         code.append(" $< -o $@ \n\n");
 

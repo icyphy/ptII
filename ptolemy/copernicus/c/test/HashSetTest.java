@@ -54,12 +54,12 @@ public class HashSetTest{
 
         // Check that Object.hashCode works.
         /* Cannot be checked by a script.
-        Object object= new Object();
-        System.out.println(object.hashCode());
+           Object object= new Object();
+           System.out.println(object.hashCode());
         */
 
         System.out.println(
-            "Checking that strings have consistent HashCodes...");
+                "Checking that strings have consistent HashCodes...");
         // Check that String.hashCode is consistent.
         String string1 = new String("abcdef");
         String string2 = new String("abcdef");
@@ -78,7 +78,7 @@ public class HashSetTest{
         System.out.println(set.size());
 
         System.out.println(
-            "\nChecking that HashSets work with LinkedLists.");
+                "\nChecking that HashSets work with LinkedLists.");
         LinkedList list = new LinkedList();
         list.add("1");
         list.add("1");

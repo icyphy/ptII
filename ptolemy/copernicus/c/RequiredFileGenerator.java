@@ -341,15 +341,15 @@ public class RequiredFileGenerator {
 
         // Generate the stub header file.
         if (FileHandler.exists(fileName
-                    + StubFileGenerator.stubFileNameSuffix())) {
+                + StubFileGenerator.stubFileNameSuffix())) {
             code = sGenerator.generate(sootClass);
             String name = fileName
-                    + StubFileGenerator.stubFileNameSuffix();
+                + StubFileGenerator.stubFileNameSuffix();
 
             FileHandler.write(name, code);
 
             if(verbose) System.out.println( "\texists: " + fileName
-                + StubFileGenerator.stubFileNameSuffix());
+                    + StubFileGenerator.stubFileNameSuffix());
         }
         else {
             code = sGenerator.generate(sootClass);

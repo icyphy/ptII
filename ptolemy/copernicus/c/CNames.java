@@ -251,8 +251,8 @@ public class CNames {
                 ||(className.startsWith("com."))
                 ||(className.startsWith("javax."))
             ){
-                return (true);
-            }
+            return (true);
+        }
         else {
             return(false);
         }

@@ -186,13 +186,13 @@ public class  InstanceStructureGenerator extends CodeGenerator {
             if (field.isPrivate()
                     && !(Modifier.isStatic(field.getModifiers()))
                     && (!_doneFields.contains(field.getName()))) {
-                    if (insertedFields == 0) {
-                        fieldCode.append(header);
-                    }
-
-                    fieldCode.append(_generateField(field));
-                    insertedFields++;
+                if (insertedFields == 0) {
+                    fieldCode.append(header);
                 }
+
+                fieldCode.append(_generateField(field));
+                insertedFields++;
+            }
         }
 
         return fieldCode.toString();

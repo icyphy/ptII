@@ -76,8 +76,8 @@ public class InvokeGraphPruner {
      * pruning strategy to it, tailored for C code generation.
      * @param source The class to use as the root for the pruned tree.
      */
-   public InvokeGraphPruner(SootClass source) {
-      _verbose = Options.v().getBoolean("verbose");
+    public InvokeGraphPruner(SootClass source) {
+        _verbose = Options.v().getBoolean("verbose");
         _cache = new InvokeGraphCache();
         if (!_cache.isPrecomputed()) {
             _setAllClassesAsLibrary();
@@ -274,7 +274,7 @@ public class InvokeGraphPruner {
      * @return The set of nodes unambiguously referenced in the statements
      * comprising its body.
      */
-     protected HashSet _getNodesAccessedInBodyOf(SootMethod method) {
+    protected HashSet _getNodesAccessedInBodyOf(SootMethod method) {
         HashSet nodes = new HashSet();
         Scene.v().loadClassAndSupport(method.getDeclaringClass().getName());
 
@@ -439,7 +439,7 @@ public class InvokeGraphPruner {
                 targets = _cache.getTargetsOf(method);
                 _add(targets);
             }
-         }
+        }
 
 
         // Add the nodes called in the body of the method.
@@ -525,7 +525,7 @@ public class InvokeGraphPruner {
 
         if (_verbose) {
             System.out.println(
-                "Setting all classes to library classes ...");
+                    "Setting all classes to library classes ...");
         }
 
         Iterator classes = Scene.v().getClasses().iterator();

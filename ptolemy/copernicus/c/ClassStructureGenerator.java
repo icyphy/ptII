@@ -168,14 +168,14 @@ public class  ClassStructureGenerator extends CodeGenerator {
         // The size of a instances of this class. This needed for cloning
         // objects of this class.
         code.append(_indent(1)
-            +_comment("The memory needed by instances of this class."));
+                +_comment("The memory needed by instances of this class."));
         code.append(_indent(1) + "long instance_size;\n\n");
 
         // Pointer to superclass structure.
         code.append(_indent(1));
         if (source.hasSuperclass()
-            && !_context.getSingleClassMode()
-            && RequiredFileGenerator.isRequired(source.getSuperclass())) {
+                && !_context.getSingleClassMode()
+                && RequiredFileGenerator.isRequired(source.getSuperclass())) {
             code.append(_comment("Pointer to superclass structure"));
             code.append(_indent(1));
             code.append(CNames.classNameOf(source.getSuperclass()));

@@ -1278,7 +1278,7 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
             if (elementType instanceof ArrayType) {
                 dimensions = ((ArrayType)elementType).numDimensions;
                 elementType = ((ArrayType)elementType).baseType;
-                            }
+            }
             if (elementType instanceof RefType) {
                 elementClass = CNames.typeNameOf(elementType);
             }

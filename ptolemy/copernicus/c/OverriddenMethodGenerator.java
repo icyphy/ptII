@@ -269,13 +269,13 @@ public class OverriddenMethodGenerator {
                 "<java.text.AttributedCharacterIterator$Attribute: "
                 + "void <clinit>()>");
         _forceOverriddenMethods.add(
-            "<java.text.MessageFormat$Field: void <clinit>()>");
+                "<java.text.MessageFormat$Field: void <clinit>()>");
         _forceOverriddenMethods.add(
-            "<java.text.DateFormat$Field: void <clinit>()>");
+                "<java.text.DateFormat$Field: void <clinit>()>");
         _forceOverriddenMethods.add(
-            "<java.io.FilePermission: void <clinit>()>");
+                "<java.io.FilePermission: void <clinit>()>");
         _forceOverriddenMethods.add(
-            "<java.util.Random: void <clinit>()>");
+                "<java.util.Random: void <clinit>()>");
         // Causes segfault.
 
         ///////// Methods replaced with actual code ////////
@@ -300,9 +300,9 @@ public class OverriddenMethodGenerator {
                 "<java.io.PrintStream: void write(java.lang.String)>");
 
         /* FIXME: Remove this.
-        _forceOverriddenMethods.add(
-                "<java.lang.String: void <init>(char[])>");
-        // Overridden because java.lang.Object.clone() is not implemented yet.
+           _forceOverriddenMethods.add(
+           "<java.lang.String: void <init>(char[])>");
+           // Overridden because java.lang.Object.clone() is not implemented yet.
         */
 
         _forceOverriddenMethods.add(

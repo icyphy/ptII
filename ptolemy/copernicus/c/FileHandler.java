@@ -66,7 +66,7 @@ public class FileHandler {
      * @return The object in this file.
      */
     public static Object readObject(String fileName) {
-         try {
+        try {
             FileInputStream file = new FileInputStream(fileName);
             ObjectInputStream in = new ObjectInputStream(file);
 

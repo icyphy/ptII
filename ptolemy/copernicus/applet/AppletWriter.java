@@ -382,9 +382,9 @@ public class AppletWriter extends SceneTransformer {
 		    // Ptolemy II development trees will have jar files
 		    // if 'make install' was run.
 		    _copyFile(_ptIIDirectory + File.separator
-			      + (String)classMap.get(className),
-			      _outputDirectory,
-			      (String)classMap.get(className));
+                            + (String)classMap.get(className),
+                            _outputDirectory,
+                            (String)classMap.get(className));
 		}
             } else {
                 // Under Web Start, the resource that contains a class
@@ -410,25 +410,25 @@ public class AppletWriter extends SceneTransformer {
                     UtilityFunctions.findFile(_ptIIDirectory);
                 if (canonicalClassResource.equals(canonicalPtIIDirectory)) {
 		    String warning = "Looking up '" + className
-                            + "' returned the $PTII directory '"
-                            + _ptIIDirectory + "' instead of a jar file. "
-                            + " Perhaps you need to run 'make install'"
-                            + "to create the jar files?";
+                        + "' returned the $PTII directory '"
+                        + _ptIIDirectory + "' instead of a jar file. "
+                        + " Perhaps you need to run 'make install'"
+                        + "to create the jar files?";
 		    if (_codeBase.equals(".")) {
 			// We only need print an error message if
 			// we are actually trying to copy the file
 			throw new IOException(warning 
-					      + "\nIf the jar files are not "
-					      + "present, then we cannot copy "
-					      + "them to the new location.");
+                                + "\nIf the jar files are not "
+                                + "present, then we cannot copy "
+                                + "them to the new location.");
 		    } else {
 			// Print it so that the user knows that running
 			// make install would be a good job
 			System.out.println("Warning: " + warning
-					   + "\nIf the jar files are not "
-					   + "present, then the archive "
-					   + "applet parameter will not "
-					   + "include all of the jar files.");
+                                + "\nIf the jar files are not "
+                                + "present, then the archive "
+                                + "applet parameter will not "
+                                + "include all of the jar files.");
 			fixJarFiles = true;
 			continue;
 		    }
@@ -446,7 +446,7 @@ public class AppletWriter extends SceneTransformer {
 		    // If the codeBase is equal to the current directory,
 		    // we copy the jar file.
 		    _copyFile(classResource, _outputDirectory,
-			      (String)classMap.get(className));
+                            (String)classMap.get(className));
 		} 
             }
         }
