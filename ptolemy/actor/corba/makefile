@@ -1,4 +1,4 @@
-# Makefile for Java Ptolemy concurrent functional classes
+# Makefile for Ptolemy II Corba Actor classes
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
@@ -28,16 +28,6 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-
-# This directory contains classes used for dataflow and pn channels that
-# should _not_ go into the kernel so that we can keep the kernel free
-# of the notion of dataflow.  These classes are concurrent functional
-# classes:
-#  FIFOQueue
-#  Star
-#  Galaxy
-#  Universe
-# Note that none of these classes would be relevant to FSMs, for example.
 
 # Note: To compile the CorbaActor.idl, use:
 # prompt> idltojava -p ptolemy.actor.corba -j ../../.. CorbaActor.idl
@@ -75,7 +65,7 @@ EXTRA_SRCS =	$(JSRCS) \
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
