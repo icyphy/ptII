@@ -122,7 +122,7 @@ public class ParameterizedNodeController extends NamedObjController {
 
         interactor.addInteractor(doubleClickInteractor);
         // NOTE: This dance is so that the
-        // doubleclickinteractor gets the events before the drag interactor.
+        // doubleClickInteractor gets the events before the drag interactor.
         interactor.setDragInteractor(interactor.getDragInteractor());
 
         // Set the selection model to allow this to be independently selected.
