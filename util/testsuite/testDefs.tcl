@@ -140,7 +140,6 @@ proc print_verbose {test_name test_description contents_of_test code answer {tes
 
 proc test {test_name test_description contents_of_test passing_results {testtype "NORMAL"}} {
 
-puts "----------- $test_name"
     global VERBOSE
     # Define TY_TESTING in the global context so that we can check to
     # see if it is set inside functions that use dialog boxes.
