@@ -31,10 +31,11 @@
 package ptolemy.domains.csp.lib;
 
 import ptolemy.domains.csp.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.IOPort;
-import ptolemy.data.*;
+import ptolemy.actor.*;
+//import ptolemy.kernel.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.data.Token;
 import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,51 +47,46 @@ import java.util.Random;
 @version $Id$
 
  */
-public class CSPSink extends CSPActor {
+public class CSPSink extends AtomicActor {
     public CSPSink() {
         super();
     }
     
-    public CSPSink(CSPCompositeActor cont, String name) 
+    public CSPSink(CompositeActor cont, String name) 
         throws IllegalActionException, NameDuplicationException {
         super(cont, name);
         input = new IOPort(this, "input", true, false);
     }
 
-    public boolean prefire() {
-        returns _again;
-    }
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public methods                         ////
 
     public void fire() {
-      Random rand = new Random();
-      int times = 0;
-      int count = 0;
-      try {
-	while (count < 10 ) {
-            Token t = input.get(0);
-            if (t == null) {
-                System.out.println("CSPSink(" + getName() + "): finished " + 
-                        "due to receiving a null token. Fired " + times + 
-                        " times.");
-                again = false;
-                return;
+        Random rand = new Random();
+        int count = 0;
+        try {
+            while (count < 10 ) {
+                //System.out.println(getName() + " getting...");
+                Token t = input.get(0);
+                System.out.println(getName() + " received Token: " + 
+                      t.toString());
+                count++;
+                //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
             }
-            System.out.println(getName() + " received Token: " + t.toString());
-            count++;
-            times++;
-            //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
-	}
-        System.out.println("CSPSink(" + getName() + "): finished normally.");
-        return;
-      } catch (InterruptedException ex) {
-	System.out.println("CSPSink interrupted, exiting...");
-      } catch (IllegalActionException ex) {
-	System.out.println("CSPSink invalid get, exiting...");
-      } catch (NoSuchItemException ex) {
-	System.out.println("CSPSink invalid get, exiting...");
-      } 
+            System.out.println("CSPSink(" + getName() + "):finished normally.");
+            _again = false;
+            return;
+        } catch (IllegalActionException ex) {
+            System.out.println("CSPSink invalid get, exiting...");
+        } catch (NoTokenException ex) {
+            System.out.println("CSPSink invalid get, exiting...");
+        } 
     }
     
-    public IOPort input;
-    private boolean again = true;
+    public boolean prefire() {
+        return _again;
+    }
+
+   public IOPort input;
+   private boolean _again = true;
 }

@@ -31,16 +31,18 @@
 package ptolemy.domains.csp.lib;
 
 import ptolemy.domains.csp.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
-import ptolemy.data.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.data.Token;
+import ptolemy.data.IntToken;
 import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSource
 /** 
-    FIXME: add description!!
+Waits to send a Token on any arc connected to its output port.
+FIXME: add longer description!!    
 
 @author Neil Smyth
 @version $Id$
@@ -51,14 +53,17 @@ public class CSPMultiSource extends CSPActor {
         super();
     }
     
-    public CSPMultiSource  (CSPCompositeActor cont, String name)
+    public CSPMultiSource  (CompositeActor cont, String name)
        throws IllegalActionException, NameDuplicationException {
 	 super(cont, name);
 	 output = new IOPort(this, "output", false, true);
 	 output.makeMultiport(true);
     }
 
-    public void _run() {
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public methods                         ////
+   
+    public void fire() {
         try {
             int count = 0;
             int size = output.getWidth();
@@ -83,7 +88,8 @@ public class CSPMultiSource extends CSPActor {
                 boolean flag = false;
                 for (i=0; i<size; i++) {
                     if (successfulBranch == i) {
-                        System.out.println(getName() + ": sent Token: " + t.toString() + " to receiver " + i);
+                        System.out.println(getName() + ": sent Token: " + 
+                                t.toString() + " to receiver " + i);
                         flag = true;
                     }
                 }
@@ -91,13 +97,17 @@ public class CSPMultiSource extends CSPActor {
                     System.out.println("Error: branch id not valid!");
                 }
                 count++;
-      }
-            
+            }
         } catch (IllegalActionException ex) {
-            String str = "Error: could not create ConditionalSend branch";
-            System.out.println(str);
+            System.out.println( "Error: could not create ConditionalSend " +
+                    "branch");
         }
+        _again = false;
         return;
+    }
+    
+    public boolean prefire() {
+        return _again;
     }
 
     public void wrapup() {
@@ -109,5 +119,13 @@ public class CSPMultiSource extends CSPActor {
     }
 
     public IOPort output;
+    
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private methods                        ////
+
+    // Flag indicating if this actor should be fired again.
+    private boolean _again = true;
+
+    // Array storing the number of times each brach rendezvoused.
     private int[] _branchCount;
 }

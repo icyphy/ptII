@@ -31,16 +31,17 @@
 package ptolemy.domains.csp.lib;
 
 import ptolemy.domains.csp.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
-import ptolemy.data.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.data.Token;
 import java.util.Random;
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPMultiSink
 /** 
-    FIXME: add description!!
+    Waits to receive a Token on any arc connected to its input port.
+FIXME: add longer description!!
 
 @author Neil Smyth
 @version $Id$
@@ -51,14 +52,17 @@ public class CSPMultiSink extends CSPActor {
         super();
     }
     
-    public CSPMultiSink  (CSPCompositeActor cont, String name)
+    public CSPMultiSink  (CompositeActor cont, String name)
        throws IllegalActionException, NameDuplicationException {
 	 super(cont, name);
 	 input = new IOPort(this, "input", true, false);
 	 input.makeMultiport(true);
     }
 
-    public void _run() {
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public methods                         ////
+   
+    public void fire() {
         try {
             int count = 0;
             int size = input.getWidth();
@@ -81,7 +85,8 @@ public class CSPMultiSink extends CSPActor {
                 boolean flag = false;
                 for (i=0; i<size; i++) {
                     if (successfulBranch == i) {
-                        System.out.println(getName() + ": received Token: " + getToken().toString() + " from receiver " + i);
+                        System.out.println(getName() + ": received Token: " +
+                                getToken().toString() + " from receiver " + i);
                         flag = true;
                     }
                 }
@@ -89,13 +94,17 @@ public class CSPMultiSink extends CSPActor {
                     System.out.println("Error: branch id not valid!");
                 }
                 count++;
-      }
-            
+            }
         } catch (IllegalActionException ex) {
             String str = "Error: could not create ConditionalReceive branch";
             System.out.println(str);
         }
+        _again = false;
         return;
+    }
+
+    public boolean prefire() {
+        return _again;
     }
 
     public void wrapup() {
@@ -107,5 +116,13 @@ public class CSPMultiSink extends CSPActor {
     }
 
     public IOPort input;
+
+    ////////////////////////////////////////////////////////////////////////
+    ////                         private methods                        ////
+
+    // Flag indicating if this actor should be fired again.
+    private boolean _again = true;
+
+    // Array storing the number of times each brach rendezvoused.
     private int[] _branchCount;
 }

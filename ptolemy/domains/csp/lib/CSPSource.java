@@ -31,11 +31,13 @@
 package ptolemy.domains.csp.lib;
 
 import ptolemy.domains.csp.kernel.*;
-import ptolemy.kernel.*;
-import ptolemy.kernel.util.*;
-import ptolemy.actor.IOPort;
-import ptolemy.data.*;
+import ptolemy.actor.*;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.data.Token;
+import ptolemy.data.IntToken;
 import java.util.Random;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// CSPSource
@@ -47,12 +49,12 @@ import java.util.Random;
 
 */
 
-public class CSPSource extends CSPActor {
+public class CSPSource extends AtomicActor {
     public CSPSource() {
         super();
     }
     
-    public CSPSource(CSPCompositeActor cont, String name) 
+    public CSPSource(CompositeActor cont, String name) 
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
          output = new IOPort(this, "output", false, true);
@@ -68,25 +70,26 @@ public class CSPSource extends CSPActor {
             while (count < 15 ) {
                 //Thread.currentThread().sleep((long)(rand.nextDouble()*1000));
                 Token t = new IntToken(count);
+                //System.out.println(getName() + " sending...");
                 output.send(0,t);
                 System.out.println(getName() + " sent Token: " + t.toString());
                 count++;
             }
+            System.out.println("CSP(" + getName() + "):finished normally.");
+            _again = false;
             return;
         } catch (IllegalActionException ex) {
             System.out.println("CSPSource: illegalActionException, exiting");
-        }  catch (CloneNotSupportedException ex) {
-	System.out.println(getName() + ": cannot clone  token, bug in DATA");
-        /*} catch (InterruptedException ex) {
-	System.out.println(getName() + ": interupted while sleeping");
-        */}
+        }  
     }
 
     public boolean prefire() {
-        returns _again;
+        return _again;
     }
     
+    ////////////////////////////////////////////////////////////////////////
+    ////                         public variables                       ////
     
     public IOPort output;
-    private boolean again = true;
-}}
+    private boolean _again = true;
+}
