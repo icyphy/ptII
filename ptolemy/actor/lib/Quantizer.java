@@ -1,4 +1,4 @@
-/* An actor that outputs a quantization version of the input.
+/* An actor that outputs a quantized version of the input.
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -39,23 +39,23 @@ import ptolemy.data.expr.Parameter;
 //// Quantizer
 /**
 Produce an output token on each firing with a value that is
-the quantization version of the input.  The actor is NOT type
-polymorphic in that it only support DoubleToken input and
-DoubleToken output.
-Note: This may be changed in the future.
+a quantized version of the input.  The input and output types
+are both DoubleToken.
 <P>
-The <i>levels</i> parameter contains a DoubleMatrixToken,
-which controls the quantization levels. The DoubleMatrix can
-only has one row, and the elements in this row should be in
-an increasing order, otherwise an exception will be thrown.
-The default value of levels is [-1.0, 1.0].
+The <i>levels</i> parameter contains a DoubleMatrixToken
+specifying the quantization levels. The matrix must be a row vector
+(having only one row), and the elements in this row should be in
+an increasing order, or an exception will be thrown.
+The default value of <i>levels</I> is [-1.0, 1.0].
 <P>
-Suppose u is the input, and levels = [a, b, c], a<b<c,
-then the output of the actor will be:<BR>
-y = a, for u <= (b+a)/2;<BR>
-y = b, for (b+a)/2 < u <= (c+b)/2;<BR>
-y = c, for u > (c+b)/2;<BR>
-We do not require the quantization intervals to be equal,
+Suppose u is the input, and levels = [a, b, c], where a &lt; b &lt; c,
+then the output of the actor will be:
+<P>
+y = a, for u &lt;= (b+a)/2;<BR>
+y = b, for (b+a)/2 &lt; u &lt;= (c+b)/2;<BR>
+y = c, for u &gt; (c+b)/2;<BR>
+<p>
+We do not require that the quantization intervals be equal,
 i.e. we allow that (c-b) != (b-a).
 
 @author Jie Liu
