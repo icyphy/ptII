@@ -57,9 +57,9 @@ proc autoShallowCG {autoDirectory} {
 	    set elapsedTime [time {set results [sootCodeGeneration $file]}]]
 	    puts "soot took [expr {[lindex $elapsedTime 0] / 1000000.0}] seconds for $file"
 	    puts "$results"
-	    incr builtinPercentageSum [lindex $results 7]
-	    incr execPercentageSum [lindex $results 11]
-	    incr numberOfModels
+	    #incr builtinPercentageSum [lindex $results 7]
+	    #incr execPercentageSum [lindex $results 11]
+	    #incr numberOfModels
 	    list {}
 	} {{}}
 	java::call System gc
