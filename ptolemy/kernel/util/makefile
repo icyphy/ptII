@@ -106,6 +106,8 @@ OPTIONAL_FILES = \
 	'CrossRefList$$CrossRef.class' \
 	'CrossRefList$$CrossRefEnumeration.class' \
 	'NamedList$$NamedListEnumeration.class' \
+	'NamedObj$$1.class' \
+	'NamedObj$$SerializableObject.class' \
 	'NamedObj$$MoMLInfo.class' \
 	'NamedObj$$ContainedObjectsIterator.class' \
 	'Settable$$Visibility.class' \
