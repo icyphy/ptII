@@ -64,7 +64,6 @@ public abstract class DETransformer extends DEActor {
 
         input = new TypedIOPort(this, "input", true, false);
         output = new TypedIOPort(this, "output", false, true);
-        output.setTypeAtLeast(input);
     }
 
     ///////////////////////////////////////////////////////////////////
