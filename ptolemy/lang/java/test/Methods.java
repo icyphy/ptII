@@ -1,4 +1,4 @@
-/* Test out inner interfaces
+/* A class that contains methods to be used by the UseMethods class
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -29,18 +29,40 @@
 
 package ptolemy.lang.java.test;
 //////////////////////////////////////////////////////////////////////////
-//// InnerIFace
+//// Methods
 
-/** Test out inner interfaces
+/** A class that contains methods to be used by the UseMethods class
 
 @author Jeff Tsay, Christopher Hylands
 @version $Id$
 */
-class InnerIFace {
+public class Methods {
 
-    interface IFace {
-        public int ack();
+    public void m(int dummy) {
+    }
 
-        public char ugh(char c);
+    public void m(int dummy, char c) {
+    }
+
+    public int m(String dummy) {
+        return 1;
+    }
+
+    public int m(Object dummy) {
+        return 2;
+    }
+
+    public static Methods yo() {
+        return new Methods();
+    }
+
+    public static void syo(String dummy) {
+    }
+
+    public int h(String [] dummy) {
+        return 3;
     }
 }
+
+
+    

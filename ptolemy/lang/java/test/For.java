@@ -1,4 +1,4 @@
-/* Test out inner interfaces
+/* Test out for loops
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -29,18 +29,28 @@
 
 package ptolemy.lang.java.test;
 //////////////////////////////////////////////////////////////////////////
-//// InnerIFace
+//// For
 
-/** Test out inner interfaces
+/** Test out for loops
 
 @author Jeff Tsay, Christopher Hylands
 @version $Id$
 */
-class InnerIFace {
+class For {
 
-    interface IFace {
-        public int ack();
+    For() {
 
-        public char ugh(char c);
+        int j = 0;
+        int k;
+
+        for (int i = 0; i < 7; i++) {
+            j = 3;
+        }
+
+        for (int i = 0, c = 3; c < 5; c++) {
+            k = i + j;
+        }
+
+        for (j = 5, k = 6; j > 3; j--);
     }
 }

@@ -1,4 +1,4 @@
-/* Test out inner interfaces
+/* Test out superclasses
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -29,18 +29,24 @@
 
 package ptolemy.lang.java.test;
 //////////////////////////////////////////////////////////////////////////
-//// InnerIFace
+//// Super
 
-/** Test out inner interfaces
+/** Test out superclasses
 
 @author Jeff Tsay, Christopher Hylands
 @version $Id$
 */
-class InnerIFace {
+public class Super {
 
-    interface IFace {
-        public int ack();
+    public Super() { i = 3; }
 
-        public char ugh(char c);
-    }
+    public Super(int _i) { i = _i; }
+
+    public int i;
+
+    public String stupor(int j) { return "stupor"; }
+
+    public static double myIQ(String name) { return 4.0; }
+
 }
+

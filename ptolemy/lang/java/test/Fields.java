@@ -1,4 +1,4 @@
-/* Test out inner interfaces
+/* A class that contains only fields
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -29,18 +29,14 @@
 
 package ptolemy.lang.java.test;
 //////////////////////////////////////////////////////////////////////////
-//// InnerIFace
+//// Fields
 
-/** Test out inner interfaces
+/** A class that contains only fields
 
 @author Jeff Tsay, Christopher Hylands
 @version $Id$
 */
-class InnerIFace {
-
-    interface IFace {
-        public int ack();
-
-        public char ugh(char c);
-    }
+public class Fields {
+    public static int a = 1;
+    public static int b = 2;
 }

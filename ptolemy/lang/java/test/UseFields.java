@@ -42,5 +42,5 @@ public class UseFields {
 
     int ugh(Fields f) { return f.a; }
 
-    int ni() { return Double.NEGATIVE_INFINITY; }
+    double ni() { return Double.NEGATIVE_INFINITY; }
 }

@@ -1,4 +1,4 @@
-/* Test out inner interfaces
+/* Child class for use in testing superclasses
 
  Copyright (c) 2000 The Regents of the University of California.
  All rights reserved.
@@ -29,18 +29,25 @@
 
 package ptolemy.lang.java.test;
 //////////////////////////////////////////////////////////////////////////
-//// InnerIFace
+//// Child
 
-/** Test out inner interfaces
+/** Child class for use in testing superclasses
 
 @author Jeff Tsay, Christopher Hylands
 @version $Id$
 */
-class InnerIFace {
 
-    interface IFace {
-        public int ack();
+public class Child extends Super {
 
-        public char ugh(char c);
+    public Child() {}
+
+    public Child(int _i) {
+        super(_i);
+    }
+
+    public String stupor(int j) { return "stuporkid"; }
+
+    public void test() {
+        stupor(8);
     }
 }

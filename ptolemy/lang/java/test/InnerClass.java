@@ -36,12 +36,12 @@ package ptolemy.lang.java.test;
 @author Jeff Tsay, Christopher Hylands
 @version $Id$
 */
-class Outer {
-    public Outer() {
+class InnerClass {
+    public InnerClass() {
     }
 
-    public class Inner {
-        public Inner() {
+    public class InnerInnerClass {
+        public InnerInnerClass() {
 
         }
 
