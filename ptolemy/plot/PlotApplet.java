@@ -112,6 +112,7 @@ public class PlotApplet extends JApplet {
         if (colorspec != null) background = PlotBox.getColorByName(colorspec);
         setBackground(background);
         plot().setBackground(background);
+        getContentPane().setBackground(background);
 
         // Process the foreground parameter.
         Color foreground = Color.black;
