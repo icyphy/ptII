@@ -207,34 +207,36 @@ public class LiveSound {
 
     /** Flush queued data from the capture buffer.  The flushed data is
      *  discarded.  It is only legal to flush the capture buffer after
-     *  startCapture() is called, [(FIXME is the following statement correct)
-     *  and only makes sense to do so (but is
-     *  not required) before getSamples() is called].  Flushing an active audio
-     *  buffer is likely to cause a discontinuity in the data, resulting in a
-     *  perceptible click.
+     *  startCapture() is called.  Flushing an active audio buffer is likely to
+     *  cause a discontinuity in the data, resulting in a perceptible click.
      *  <p>
      *  Note that only the object with the exclusive lock on the capture audio
      *  resources is allowed to invoke this method. An exception will occur if
      *  the specified object does not have the lock on the playback audio
      *  resources.
      *
-     *  @param producer The object that has an exclusive lock on
-     *   the playback audio resources.
+     *  @param consumer The object that has an exclusive lock on
+     *   the capture audio resources.
      *
-     *  @exception IllegalStateException If audio playback is currently
-     *  inactive. That is, If startPlayback() has not yet been called
-     *  or if stopPlayback() has already been called.  FIXME - I don't think
-     *  this exception documentation agrees with the code.  Figure out the
-     *  correct behavior and fix the docs and code.
+     *  @exception IllegalStateException If audio capture is currently
+     *  inactive. That is, if startCapture() has not yet been called
+     *  or if stopCapture() has already been called.
+     *
+     *  @exception IOException If the calling program does not have permission
+     *  to access the audio capture resources.
      */
     public static void flushCaptureBuffer(Object consumer)
             throws IOException, IllegalStateException {
+        if (!isCaptureActive()) {
+            throw new IllegalStateException("Object: " + consumer.toString() +
+                    "attempted to call LiveSound.flushCaptureBuffer(), but " +
+                    "capture is inactive.  Try to startCapture().");
+        }
         if (!_soundConsumers.contains(consumer)) {
             throw new IOException("Object: " + consumer.toString() +
                     "attempted to call LiveSound.flushCaptureBuffer(), but " +
-                    "this object never called startCapture() and does " +
-                    "not have permission to access the audio capture " +
-                    "resource.");
+                    "this object does not have permission to access the " +
+                    "audio capture resource.");
         }
         if (_debug) {
             System.out.println("LiveSound: flushCaptureBuffer(): invoked");
@@ -258,19 +260,24 @@ public class LiveSound {
      *   the playback audio resources.
      *
      *  @exception IllegalStateException If audio playback is currently
-     *  inactive. That is, If startPlayback() has not yet been called
-     *  or if stopPlayback() has already been called.  FIXME - I don't think
-     *  this exception documentation agrees with the code.  Figure out the
-     *  correct behavior and fix the docs and code.
+     *  inactive. That is, if startPlayback() has not yet been called
+     *  or if stopPlayback() has already been called.
+     * 
+     *  @exception IOException If the calling program does not have permission
+     *  to access the audio playback resources.
      */
     public static void flushPlaybackBuffer(Object producer)
             throws IOException, IllegalStateException {
+        if (!isPlaybackActive()) {
+            throw new IllegalStateException("Object: " + producer.toString() +
+                    "attempted to call LiveSound.flushPlaybackBuffer(), but " +
+                    "playback is inactive.  Try to startPlayback().");
+        }
         if (!_soundProducers.contains(producer)) {
             throw new IOException("Object: " + producer.toString() +
                     "attempted to call LiveSound.flushPlaybackBuffer(), but " +
-                    "this object never called startPlayback() and does " +
-                    "not have permission to access the audio playback " +
-                    "resource.");
+                    "this object does not have permission to access the " +
+                    "audio playback resource.");
         }
         if (_debug) {
             System.out.println("LiveSound: flushPlaybackBuffer(): invoked");
@@ -393,20 +400,25 @@ public class LiveSound {
      *
      *  @return Two dimensional array of captured audio samples.
      *
-     *  @exception IOException If there is a problem capturing
-     *   audio.
-     *  @exception IllegalStateException If audio capture is
-     *   currently inactive, or if the specified object does
-     *   not hold the lock on the captured audio resources.
+     *  @exception IllegalStateException If audio capture is currently
+     *  inactive.  That is, if startCapture() has not yet been called or if
+     *  stopCapture() has already been called.
+     *
+     *  @exception IOException If the calling program does not have permission
+     *  to access the audio capture resources.
      */
     public static double[][] getSamples(Object consumer)
             throws IOException,  IllegalStateException {
+        if (!isCaptureActive()) {
+            throw new IllegalStateException("Object: " + consumer.toString() +
+                    "attempted to call LiveSound.getSamples(), but " +
+                    "capture is inactive.  Try to startCapture().");
+        }
         if (!_soundConsumers.contains(consumer)) {
             throw new IOException("Object: " + consumer.toString() +
                     "attempted to call LiveSound.getSamples(), but " +
-                    "this object never called startCapture() and does " +
-                    "not have permission to access the audio capture " +
-                    "resource.");
+                    "this object does not have permission to access the " +
+                    "audio capture resource.");
         }
 
         if (_debug) {
@@ -528,20 +540,25 @@ public class LiveSound {
      *  @param samplesArray A two dimensional array containing
      *  the samples to play or write to a file.
      *
-     *  @exception IOException If there is a problem playing audio.
+     *  @exception IOException If the calling program does not have permission
+     *  to access the audio playback resources.
+     *
      *  @exception IllegalStateException If audio playback is currently
      *  inactive. That is, If startPlayback() has not yet been called
      *  or if stopPlayback() has already been called.
      */
-    public static void putSamples(Object producer,
-            double[][] samplesArray)
+    public static void putSamples(Object producer, double[][] samplesArray)
             throws IOException, IllegalStateException {
+        if (!isPlaybackActive()) {
+            throw new IllegalStateException("Object: " + producer.toString() +
+                    "attempted to call LiveSound.putSamples(), but " +
+                    "playback is inactive.  Try to startPlayback().");
+        }
         if (!_soundProducers.contains(producer)) {
             throw new IOException("Object: " + producer.toString() +
                     "attempted to call LiveSound.putSamples(), but " +
-                    "this object never called startPlayback() and does " +
-                    "not have permission to access the audio playback " +
-                    "resource.");
+                    "this object does not have permission to access the " +
+                    "audio playback resource.");
         }
         if (_debug) {
             System.out.println("LiveSound: putSamples(): invoked");
@@ -840,7 +857,7 @@ public class LiveSound {
         if (_debug) {
             System.out.println("LiveSound: " +
                     "setTransferSize(transferSize) " +
-                    " invoked with transferSize = " +
+                    "invoked with transferSize = " +
                     transferSize);
         }
         if ((_captureIsActive) || (_playbackIsActive)) {
@@ -872,21 +889,20 @@ public class LiveSound {
      */
     public static void startCapture(Object consumer)
             throws IOException, IllegalStateException {
-        // FXIME: consider allowing several object to
+        // FIXME: consider allowing several object to
         // share the captured audio resources.
-        if (_soundConsumers.size() > 1) {
+        if (_soundConsumers.size() > 0) {
             throw new IOException("Object: " + consumer.toString() +
                     " is not allowed to start audio capture because " +
-                    " another object currently has access to the audio" +
-                    " capture resources.");
+                    "another object currently has access to the audio " +
+                    "capture resources.");
         }
         if (!_soundConsumers.contains(consumer)) {
             _soundConsumers.add(consumer);
         } else {
-            throw new IOException("Object: " + consumer.toString() +
-                    "attempted to call LiveSound.startCapture() while " +
-                    "audio capture was active. Only one object may " +
-                    "access the audio capture resources at a time.");
+            throw new IllegalStateException("Object: " + consumer.toString() +
+                    " attempted to call LiveSound.startCapture() while " +
+                    "audio capture was active.");
         }
         if (_debug) {
             System.out.println("LiveSound: startCapture(): invoked");
@@ -925,17 +941,17 @@ public class LiveSound {
      */
     public static void startPlayback(Object producer)
             throws IOException, IllegalStateException {
-        if (_soundProducers.size() > 1) {
+        if (_soundProducers.size() > 0) {
             throw new IOException("Object: " + producer.toString() +
                     " is not allowed to start audio playback because " +
-                    " another object currently has access to the audio" +
-                    " playback resources.");
+                    "another object currently has access to the audio " +
+                    "playback resources.");
         }
         if (!_soundProducers.contains(producer)) {
             _soundProducers.add(producer);
         } else {
             throw new IOException("Object: " + producer.toString() +
-                    "attempted to call LiveSound.startPlayback() while " +
+                    " attempted to call LiveSound.startPlayback() while " +
                     "audio playback was active. Only one object may " +
                     "access the audio playback resources at a time.");
         }
@@ -1039,7 +1055,8 @@ public class LiveSound {
         if (bytesPerSample == 2) {
             // 1 / 32768
             maxSampleReciprocal = 3.0517578125e-5;
-        } else if (bytesPerSample == 1) {            // 1 / 128
+        } else if (bytesPerSample == 1) {
+            // 1 / 128
             maxSampleReciprocal = 7.8125e-3;
         } else if (bytesPerSample == 3) {
             // 1 / 8388608
@@ -1282,7 +1299,7 @@ public class LiveSound {
     private static int _bytesPerSample;
     // true is audio capture is currently active
     private static boolean _captureIsActive = false;
-    private static int _channels;
+    private static int _channels = 1;
     // Array of audio samples in byte format.
     private static byte[] _data;
 
