@@ -683,7 +683,7 @@ remote1distjsrestore:
 		    fi ; \
 		done ; \
 	fi
-	( cd ptolemy/copernicus/applet ; \
+	( cd $(REMOTE1PTIIDIST)/ptolemy/copernicus/applet; \
 		echo making jsrestore in ptolemy/copernicus/applet ; \
 		$(MAKE) $(MFLAGS) $(MAKEVARS) jsrestore)
 
