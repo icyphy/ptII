@@ -35,6 +35,10 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+# Load up the test definitions.
+if {[string compare test [info procs removeGraphicalClasses]] == 1} then {
+    source [file join $PTII util testsuite removeGraphicalClasses.tcl]
+}
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
@@ -238,3 +242,27 @@ RemoveGraphicalClasses.</text></svg></configure>
     <link port="Test.input" relation="relation2"/>
 </entity>
 }}
+
+######################################################################
+####
+#
+set hideMoml  "$header 
+<entity name=\"configuration\" class=\"ptolemy.actor.gui.Configuration\">
+  <entity name=\"sources\" class=\"ptolemy.moml.EntityLibrary\">
+    <configure>
+      <group>
+        <entity name=\"SketchedSource2\"
+	        class=\"ptolemy.actor.lib.gui.SketchedSource\"/>
+      </group>
+    </configure>
+  </entity>
+</entity>
+"
+test RemoveGraphicalClasses-1.3 {Try a configuration has a class that we are going to remove but is <entity name= class=\> instead of <entity name= class=>...</entity>} { 
+    set parser [java::new ptolemy.moml.MoMLParser]
+    # Note that 1.1 added the filter for all the parsers
+    removeGraphicalClasses $parser
+    set toplevel [$parser parse $hideMoml]
+    set newMoML [$toplevel exportMoML]
+    list $newMoML
+} {}
