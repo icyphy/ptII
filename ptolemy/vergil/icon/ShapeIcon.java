@@ -106,12 +106,47 @@ public class ShapeIcon extends EditorIcon {
             newFigure = new PathFigure(new Rectangle2D.Double(
                    0.0, 0.0, 20.0, 20.0));
         }
+        // By default, the origin should be the upper left.
+        newFigure.setCentered(_centered);
         newFigure.setLineWidth(_lineWidth);
         newFigure.setStrokePaint(_lineColor);
         newFigure.setFillPaint(_fillColor);
         _figures.add(new WeakReference(newFigure));
         
         return newFigure;
+    }
+    
+    /** Specify whether the figure should be centered or not.
+     *  By default, the origin of the figure is the center.
+     *  This is deferred and executed in the Swing thread.
+     *  @param centered False to make the figure's origin at the
+     *   upper left.
+     */
+    public void setCentered(boolean centered) {
+        _centered = centered;
+        
+        // Update the shapes of all the figures that this icon has
+        // created (which may be in multiple views). This has to be
+        // done in the Swing thread.  Assuming that createBackgroundFigure()
+        // is also called in the Swing thread, there is no possibility of
+        // conflict here where that method is trying to add to the _figures
+        // list while this method is traversing it.
+        Runnable doSet = new Runnable() {
+            public void run() {
+                ListIterator figures = _figures.listIterator();
+                while (figures.hasNext()) {
+                    Object figure = ((WeakReference)figures.next()).get();
+                    if (figure == null) {
+                        // The figure has been garbage collected, so we
+                        // remove it from the list.
+                        figures.remove();
+                    } else {
+                        ((PathFigure)figure).setCentered(_centered);
+                    }
+                }
+            }
+        };
+        SwingUtilities.invokeLater(doSet);
     }
     
     /** Specify the fill color to use.  This is deferred and executed
@@ -241,6 +276,9 @@ public class ShapeIcon extends EditorIcon {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    // Indicator of whether the figure should be centered on its origin.
+    private boolean _centered = false;
+    
     // A list of weak references to figures that this has created.
     private List _figures = new LinkedList();
     

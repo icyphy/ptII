@@ -30,6 +30,7 @@
 
 package ptolemy.vergil.actor.lib;
 
+import java.awt.Shape;
 import java.awt.geom.Rectangle2D;
 import java.awt.geom.RoundRectangle2D;
 
@@ -92,29 +93,62 @@ public class RectangleAttribute extends FilledShapeAttribute {
      */
     public void attributeChanged(Attribute attribute)
         throws IllegalActionException {
-        if (attribute == width
-            || attribute == height
-            || attribute == rounding) {
-            double widthValue = ((DoubleToken) width.getToken()).doubleValue();
-            double heightValue =
-                ((DoubleToken) height.getToken()).doubleValue();
+        if (attribute == rounding) {
+            // Make sure that the new rounding value is valid.
             double roundingValue =
-                ((DoubleToken) rounding.getToken()).doubleValue();
-            if (roundingValue == 0.0) {
-                _icon.setShape(
-                    new Rectangle2D.Double(0.0, 0.0, widthValue, heightValue));
-            } else {
-                _icon.setShape(
-                    new RoundRectangle2D.Double(
-                        0.0,
-                        0.0,
-                        widthValue,
-                        heightValue,
-                        roundingValue,
-                        roundingValue));
+                    ((DoubleToken) rounding.getToken()).doubleValue();
+            if (roundingValue < 0.0) {
+                throw new IllegalActionException(this,
+                "Invalid rounding value. Required to be non-negative.");
+            }
+            if (roundingValue != _roundingValue) {
+                _roundingValue = roundingValue;
+                _icon.setShape(_newShape());
             }
         } else {
             super.attributeChanged(attribute);
         }
     }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+    
+    /** Return the a new ellipse given a new width and height.
+     *  @param width The new width.
+     *  @param height The new height.
+     *  @return A new shape. 
+     */
+    protected Shape _newShape() {
+        double roundingValue = 0.0;
+        try {
+            roundingValue = ((DoubleToken) rounding.getToken()).doubleValue();
+        } catch (IllegalActionException ex) {
+            // Ignore and use default.
+        }
+        double x = 0.0;
+        double y = 0.0;
+        double width = _widthValue;
+        double height = _heightValue;
+        if (_centeredValue) {
+            x = -width*0.5;
+            y = -height*0.5;
+        }
+        if (roundingValue == 0.0) {
+            return new Rectangle2D.Double(x, y, width, height);
+        } else {
+            return new RoundRectangle2D.Double(
+                    x,
+                    y,
+                    width,
+                    height,
+                    roundingValue,
+                    roundingValue);
+        }
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected members                  ////
+
+    /** Most recent value of the rounding parameter. */
+    protected double _roundingValue = 0.0;
 }

@@ -31,8 +31,11 @@
 package ptolemy.vergil.actor.lib;
 
 import java.awt.Color;
+import java.awt.Shape;
 
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Attribute;
@@ -78,7 +81,11 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
         height = new Parameter(this, "height");
         height.setTypeEquals(BaseType.DOUBLE);
         height.setExpression("100.0");
-        
+
+        centered = new Parameter(this, "centered");
+        centered.setTypeEquals(BaseType.BOOLEAN);
+        centered.setExpression("false");
+                
         fillColor = new ColorAttribute(this, "fillColor");
         fillColor.setExpression("none");
 
@@ -90,6 +97,12 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
 
+    /** Indicator of whether the shape should be centered on the location.
+     *  This is a boolean that defaults to false, which means that the
+     *  location is the upper left corner.
+     */
+    public Parameter centered;
+    
     /** The line color.  This is a string representing an array with
      *  four elements, red, green, blue, and alpha, where alpha is
      *  transparency. The default is "{0.0, 0.0, 0.0, 1.0}", which
@@ -117,8 +130,34 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
      *   to this container (should not be thrown).
      */
     public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
-        if (attribute == fillColor) {
+            throws IllegalActionException {
+        if ((attribute == width || attribute == height) && !_inAttributeChanged) {
+            try {
+                // Prevent redundant actions here... When we evaluate the
+                // _other_ atribute here (whichever one did _not_ trigger
+                // this call, it will likely trigger another call to
+                // attributeChanged(), which will result in this action
+                // being performed twice.
+                _inAttributeChanged = true;
+                double widthValue = ((DoubleToken) width.getToken()).doubleValue();
+                double heightValue =
+                        ((DoubleToken) height.getToken()).doubleValue();
+                if (widthValue != _widthValue || heightValue != _heightValue) {
+                    _widthValue = widthValue;
+                    _heightValue = heightValue;
+                    _icon.setShape(_newShape());
+                }
+            } finally {
+                _inAttributeChanged = false;
+            }
+        } else if (attribute == centered) {
+            boolean centeredValue
+                    = ((BooleanToken)centered.getToken()).booleanValue();
+            if (centeredValue != _centeredValue) {
+                _centeredValue = centeredValue;
+                _icon.setCentered(_centeredValue);
+            }
+        } else if (attribute == fillColor) {
             Color fillColorValue = fillColor.asColor();
             if (fillColorValue.getAlpha() == 0f) {
                 _icon.setFillColor(null);
@@ -129,4 +168,33 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
             super.attributeChanged(attribute);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected methods                  ////
+    
+    /** Return the a new shape given a new width and height. This class
+     *  guarantees that the protected variables _centeredValue, _widthValue,
+     *  and _heightValue are up to date when this method is called.
+     *  Derived classes should override this to return an appropriate shape.
+     *  @return A new shape. 
+     */
+    protected abstract Shape _newShape();
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                        protected variables                ////
+
+    /** Most recently set value of the centered parameter. */
+    protected boolean _centeredValue = false;
+    
+    /** Most recently set value of the height parameter. */
+    protected double _heightValue;
+
+    /** Most recently set value of the width parameter. */
+    protected double _widthValue;
+        
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
+    
+    // Variable used to prevent re-entry into attributeChanged().
+    private boolean _inAttributeChanged = false;
 }

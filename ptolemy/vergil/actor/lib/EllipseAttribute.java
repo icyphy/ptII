@@ -30,12 +30,9 @@
 
 package ptolemy.vergil.actor.lib;
 
+import java.awt.Shape;
 import java.awt.geom.Ellipse2D;
 
-import ptolemy.data.DoubleToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.BaseType;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -44,6 +41,7 @@ import ptolemy.kernel.util.NamedObj;
 //// EllipseAttribute
 /**
 This is an attribute that is rendered as an ellipse.
+Unlike the base class, by default, an ellipse is centered on its origin.
 <p>
 @author Edward A. Lee
 @version $Id$
@@ -66,27 +64,28 @@ public class EllipseAttribute extends FilledShapeAttribute {
     public EllipseAttribute(NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        centered.setExpression("true");
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public methods                    ////
+    ////                        protected methods                  ////
 
-    /** React to a changes in the attributes by changing
-     *  the icon.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the change is not acceptable
-     *   to this container (should not be thrown).
+    /** Return the a new ellipse given a new width and height.
+     *  @param width The new width.
+     *  @param height The new height.
+     *  @return A new shape. 
      */
-    public void attributeChanged(Attribute attribute)
-        throws IllegalActionException {
-        if (attribute == width || attribute == height) {
-            double widthValue = ((DoubleToken) width.getToken()).doubleValue();
-            double heightValue =
-                ((DoubleToken) height.getToken()).doubleValue();
-            _icon.setShape(
-                new Ellipse2D.Double(0.0, 0.0, widthValue, heightValue));
+    protected Shape _newShape() {
+        if (_centeredValue) {
+            double halfWidth = _widthValue * 0.5;
+            double halfHeight = _heightValue * 0.5;
+            return new Ellipse2D.Double(
+                -halfWidth,
+                -halfHeight,
+                _widthValue,
+                _heightValue);
         } else {
-            super.attributeChanged(attribute);
+            return new Ellipse2D.Double(0.0, 0.0, _widthValue, _heightValue);
         }
     }
 }
