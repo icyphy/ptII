@@ -87,7 +87,7 @@ public class StringToken extends ObjectToken {
      */
     public BooleanToken equality(Token a) throws IllegalActionException {
         if (a instanceof StringToken) {
-            if( !(_value.compareTo(a.toString()))) {
+            if ( _value.compareTo(a.toString()) == 0) {
                 return new BooleanToken(true);
             } else {
                 return new BooleanToken(false);
@@ -112,19 +112,14 @@ public class StringToken extends ObjectToken {
         }
     }
 
-    /** Return the value of the token.
-     * @returns A reference to a String.
-     */	
-    public String getValue() {
-        return _value;
-    }
+  
 
     /** Set the value of the token to be a reference to the specified string.
      *  If the argument is null, then the value is set to an empty string
      *  rather than null.
      *  @exceptions IllegalActionException Argument is not a String.
      */	
-    public void setValue(String value) 
+    public void setStringValue(String value) 
             throws IllegalActionException {
         if (value != null) {
             if (!(value instanceof String)) {
