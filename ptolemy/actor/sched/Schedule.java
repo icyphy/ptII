@@ -157,7 +157,7 @@ public class Schedule extends ScheduleElement {
      */
     public void add(ScheduleElement element) {
 	// Give element a reference to this schedule so that it can
-	// notify this schedule (via _incrementVerions()) when
+	// notify this schedule (via _incrementVersions()) when
 	// element is modified.
 	element._setParent(this);
 	_incrementVersion();
@@ -177,7 +177,7 @@ public class Schedule extends ScheduleElement {
      */
     public void add(int index, ScheduleElement element) {
 	// Give element a reference to this schedule so that it can
-	// notify this schedule (via _incrementVerions()) when
+	// notify this schedule (via _incrementVersions()) when
 	// element is modified.
 	element._setParent(this);
 	_incrementVersion();
@@ -305,10 +305,10 @@ public class Schedule extends ScheduleElement {
 		throw new ConcurrentModificationException(
                         "Schedule structure changed while iterator is active.");
 	    } else if (_advance == true) {
-		boolean returnVal;
+		boolean returnValue;
 		if (_currentFiring == null) {
-		    returnVal = _firingIterator.hasNext();
-		    if (returnVal == true) {
+		    returnValue = _firingIterator.hasNext();
+		    if (returnValue == true) {
 			_currentFiring = (Firing)_firingIterator.next();
 			_currentActor = _currentFiring.getActor();
 			_currentIteration++;
@@ -329,8 +329,8 @@ public class Schedule extends ScheduleElement {
 			return _lastHasNext;
 		    } else {
 			_currentIteration = 0;
-			returnVal = _firingIterator.hasNext();
-			if (returnVal == true) {
+			returnValue = _firingIterator.hasNext();
+			if (returnValue == true) {
 			    _currentFiring = (Firing)_firingIterator.next();
 			    _currentActor = _currentFiring.getActor();
 			    _currentIteration++;
@@ -369,7 +369,7 @@ public class Schedule extends ScheduleElement {
 	}
 
 	/** Throw an exception, since removal is not allowed. It really
-	 *  dosn't make sense to remove an actor from an actor invocation
+	 *  doesn't make sense to remove an actor from an actor invocation
 	 *  sequence anyway.
 	 */
 	public void remove() {
@@ -403,7 +403,7 @@ public class Schedule extends ScheduleElement {
 	    // the schedule tree.
 	    _currentNode = schedule;
 	    // The depth of _currentNode in the schedule tree.
-	    // Depth 0 corrosponds to the level of the root node
+	    // Depth 0 corresponds to the level of the root node
 	    // of the tree.
 	    _currentDepth = 0;
 	    // These state arrays are dynamically increased
@@ -446,7 +446,7 @@ public class Schedule extends ScheduleElement {
 		    // in the iteration.
 		    _currentNode = _findLeafNode((Schedule)_currentNode);
                     if (_currentNode == null) {
-                        // Throw runtime exeption.
+                        // Throw runtime exception.
                         throw new InternalErrorException(
                                 "Encountered a schedule leaf node that is " +
                                 "not an instance of Firing.");
@@ -485,7 +485,7 @@ public class Schedule extends ScheduleElement {
 	}
 
 	/** Throw an exception, since removal is not allowed. It really
-	 *  dosn't make sense to remove a firing from the firing
+	 *  doesn't make sense to remove a firing from the firing
 	 *  sequence anyway, since there is not a 1-1 correspondence
 	 *  between the firing in a firing iterator and a firing in the
 	 *  schedule.
@@ -497,7 +497,7 @@ public class Schedule extends ScheduleElement {
 	///////////////////////////////////////////////////////////////////
 	////                         private methods                 ////
 
-	/** Start at the specified node in the shedule tree and
+	/** Start at the specified node in the schedule tree and
 	 *  move up the tree (towards the root node) until we
 	 *  find a node the has children we have not iterated through
 	 *  yet or children that we have not iterated through enough
