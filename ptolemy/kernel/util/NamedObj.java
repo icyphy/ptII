@@ -56,7 +56,7 @@ public class NamedObj {
      */	
     public NamedObj(String newName) {
         super();
-	_name = newName;
+	setName(newName);
     }
 
     //////////////////////////////////////////////////////////////////////////
@@ -70,7 +70,11 @@ public class NamedObj {
 
    /** Set the name of the object
      */	
-    public void setName(String newName) {
+    public void setName(String newName) throws IllegalArgumentException {
+        if (newName.indexOf('.') >= 0) { 
+	  throw new IllegalArgumentException
+	    ("NamedObj name (" + newName + ") has illegal embedded dot (.)");
+	}
         _name = newName;
     }
 
