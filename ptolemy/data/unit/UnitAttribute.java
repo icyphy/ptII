@@ -129,14 +129,18 @@ public class UnitAttribute extends Attribute implements Settable {
      */
     public String getExpression() {
         switch (_type) {
-        case _EXPRESSION :
-            {
-                return getUnitExpr().descriptiveForm();
-            }
-        case _CONSTRAINTS :
-            {
-                return getUnitConstraints().descriptiveForm();
-            }
+            case _EXPRESSION :
+                {
+                    if (_unitExpr == null)
+                        return "";
+                    return _unitExpr.descriptiveForm();
+                }
+            case _CONSTRAINTS :
+                {
+                    if (_unitConstraints == null)
+                        return "";
+                    return getUnitConstraints().descriptiveForm();
+                }
         }
         return null;
     }
