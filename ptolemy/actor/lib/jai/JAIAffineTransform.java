@@ -48,27 +48,25 @@ import javax.media.jai.RenderedOp;
 
 //////////////////////////////////////////////////////////////////////////
 //// JAIAffineTransform
-
 /**
- Compute an affine transformation on an image.  The parameter
- affineMatrix must be a two by three matrix.  If the matrix is
- <p>
+Compute an affine transformation on an image.  The parameter
+affineMatrix must be a two by three matrix.  If the matrix is
+<pre>
  a b c
  d e f
- <p>
- the output is determined by the following two equations.
- <p>
+</pre>
+the output is determined by the following two equations.
+<pre>
  x' = a*x + b*y + c;
  y' = d*x + e*y + f;
- <p>
- Note that the c and f terms do not show up when the output is directly
- displayed
+</pre>
+Note that the c and f terms do not show up when the output is directly
+displayed.
 
- @author James Yeh
- @version $Id$
- @since Ptolemy II 3.0
- */
-
+@author James Yeh
+@version $Id$
+@since Ptolemy II 3.0
+*/
 public class JAIAffineTransform extends Transformer {
 
     /** Construct an actor with the given container and name.
@@ -194,7 +192,8 @@ public class JAIAffineTransform extends Transformer {
                         "Invalid value for interpolationType");
         }
         RenderedOp newImage =
-                JAI.create("affine", oldImage, _affineTransform, _interpolation);
+                JAI.create("affine", oldImage,
+                        _affineTransform, _interpolation);
         output.send(0, new JAIImageToken(newImage));
     }
 

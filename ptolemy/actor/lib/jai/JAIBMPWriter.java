@@ -24,6 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
                                                 PT_COPYRIGHT_VERSION 2
                                                 COPYRIGHTENDKEY
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib.jai;
@@ -54,26 +56,25 @@ import ptolemy.gui.MessageHandler;
 //////////////////////////////////////////////////////////////////////////
 //// JAIBMPWriter
 /**
-   Write a javax.media.jai.RenderedOp to a specified BMP file.
-   <p>
-   The file is specified by the <i>fileName</i> attribute
-   using any form acceptable to FileAttribute.
-   <p>
-   If the <i>storeTopDown</i> parameter has value true, then the data
-   will be stored from the top on down.  Usually, bitmap files are stored
-   from the bottom on up.
-   <p>
-   If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
-   then this actor will overwrite the specified file if it exists
-   without asking.  If <i>true</i> (the default), then if the file
-   exists, then this actor will ask for confirmation before overwriting.
+Write a javax.media.jai.RenderedOp to a specified BMP file.
+<p>
+The file is specified by the <i>fileName</i> attribute
+using any form acceptable to FileAttribute.
+<p>
+If the <i>storeTopDown</i> parameter has value true, then the data
+will be stored from the top on down.  Usually, bitmap files are stored
+from the bottom on up.
+<p>
+If the <i>confirmOverwrite</i> parameter has value <i>false</i>,
+then this actor will overwrite the specified file if it exists
+without asking.  If <i>true</i> (the default), then if the file
+exists, then this actor will ask for confirmation before overwriting.
 
-   @see FileAttribute
-   @author James Yeh
-   @version $Id$
-   @since Ptolemy II 3.0
- */
-
+@see FileAttribute
+@author James Yeh
+@version $Id$
+@since Ptolemy II 3.0
+*/
 public class JAIBMPWriter extends Sink {
 
     /** Construct an actor with the given container and name.
@@ -135,7 +136,8 @@ public class JAIBMPWriter extends Sink {
         super.initialize();
         _file = fileName.asFile();
         _fileRoot = _file.toString();
-        boolean storeTopDownValue = ((BooleanToken)storeTopDown.getToken()).booleanValue();
+        boolean storeTopDownValue
+            = ((BooleanToken)storeTopDown.getToken()).booleanValue();
         _bmpEncodeParameters = new BMPEncodeParam();
         _bmpEncodeParameters.setVersion(_bmpEncodeParameters.VERSION_3);
         _bmpEncodeParameters.setTopDown(storeTopDownValue);
