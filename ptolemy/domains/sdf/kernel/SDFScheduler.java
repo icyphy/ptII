@@ -421,8 +421,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
 
     /** Normalize fractional firing ratios into a firing vector that
      *  corresponds to a single SDF iteration. Multiply all of the
-     *  fractions by the least common multiple (LCM) of their
-     *  denominators and by the given vectorizationFactor.  This factor
+     *  fractions by the given vectorizationFactor.  This factor
      *  is normally the integer value of the vectorizationFactor
      *  parameter of the director.  Also multiply the production and
      *  consumption rates of the external ports of the model by the
@@ -439,15 +438,21 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
      */
     protected void _normalizeFirings(int vectorizationFactor,
             Map entityToFiringsPerIteration, Map externalRates) {
-        int lcm = 1;
+        // Note: after we have called the _solveBalanceEquations(),
+        // all the fractual firings and external rates have been
+        // normalized to integers, but we still represent them
+        // as fractions. After the _normalizeFirings(), they
+        // are saved as integers.
+        
+        //int lcm = 1;
 
         if (_debugging && VERBOSE) {
             _debug("Normalizing Firings");
             _debug("vectorizationFactor = " + vectorizationFactor);
         }
-
         // First find the lcm of all the denominators of all the
         // computed firingsPerIteration.
+        /*
         for (Iterator unnormalizedFirings =
                  entityToFiringsPerIteration.values().iterator();
              unnormalizedFirings.hasNext();) {
@@ -459,8 +464,10 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
         if (_debugging && VERBOSE) {
             _debug("lcm = " + (new Integer(lcm)).toString());
         }
-
-        Fraction lcmFraction = new Fraction(lcm * vectorizationFactor);
+        
+        */
+        
+        Fraction lcmFraction = new Fraction(vectorizationFactor);
 
         // Go back through and multiply by the lcm we just found, which
         // should normalize all the fractions to integers.
@@ -474,15 +481,16 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             Fraction repetitions =
                 (Fraction)entityToFiringsPerIteration.get(actor);
             repetitions = repetitions.multiply(lcmFraction);
+            /* We don't need to check this because we have
+             *  already checked it in _solveBalanceEquations().
             if (repetitions.getDenominator() != 1) {
                 throw new InternalErrorException(
                         "Failed to properly perform " +
                         "fraction normalization");
-            }
+            }*/
             entityToFiringsPerIteration.put(actor,
                     new Integer(repetitions.getNumerator()));
         }
-
         // Go through the ports and normalize the external production
         // and consumption rates by the same factor.
         for (Iterator ports = externalRates.keySet().iterator();
@@ -494,11 +502,12 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             }
             Fraction rate = (Fraction) externalRates.get(port);
             rate = rate.multiply(lcmFraction);
+            /*
             if (rate.getDenominator() != 1) {
                 throw new InternalErrorException(
                         "Failed to properly perform " +
                         "fraction normalization");
-            }
+            } */
             externalRates.put(port, new Integer(rate.getNumerator()));
         }
     }
@@ -506,8 +515,9 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
     /** Solve the balance equations for the list of connected Actors.
      *  For each actor, determine the ratio that determines the rate at
      *  which it should fire relative to the other actors for the graph to
-     *  be live and operate within bounded memory. This ratio is known as the
-     *  fractional firing of the actor.
+     *  be live and operate within bounded memory. Normalize this ratio
+     *  into integer, which is the minimum number of firings of the actor
+     *  to satisfy the balance equations.
      *
      *  @param container The container that is being scheduled.
      *  @param actorList The actors that we are interested in.
@@ -640,7 +650,7 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
                     externalPorts.hasNext();) {
                 IOPort port = (IOPort)externalPorts.next();
                 Fraction rate = ((Fraction) externalRates.get(port))
-                .multiply(lcmFraction);
+                    .multiply(lcmFraction);
                 if (rate.getDenominator() != 1) {
                     throw new InternalErrorException(
                             "Failed to properly perform"
@@ -681,7 +691,6 @@ public class SDFScheduler extends BaseSDFScheduler implements ValueListener {
             }
             throw new NotSchedulableException(messageBuffer.toString());
         }
-
         return entityToFiringsPerIteration;
     }
 
