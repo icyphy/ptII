@@ -78,23 +78,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  * format for run-time reading and writing of icons.
  */
 
-public class IconEditor extends JCanvas {
+public class IconEditor {
 
     // Control begins here.
     public static void main(String argv[]) 
         throws NameDuplicationException, IllegalActionException {
-	// Make a new instance of the IconEditor class.
-	new IconEditor();
-    }
-  
-    public IconEditor () 
-        throws NameDuplicationException, IllegalActionException {
-        this (new XMLIcon (new NamedObj (), null));
-    }
-
-    public IconEditor (XMLIcon icon) 
-        throws NameDuplicationException, IllegalActionException {
-        // Setup the window for the icon editor application.  This 
+	// Setup the window for the icon editor application.  This 
         // window will include a toolbar of different shapes, a toolbar 
         // of different thicknesses, a button to choose the color, 
         // and the main drawing window.
@@ -102,14 +91,26 @@ public class IconEditor extends JCanvas {
         // which tells BasicFrame not to set the size of the window or 
         // make it visible.  The string "Edit Icon" is the name of the 
         // window.
-        _drawingFrame = new BasicFrame ("Edit Icon", false);
+        AppContext context = new BasicFrame ("Edit Icon", false);
   
+	// Make a new instance of the IconEditor class.
+	new IconEditor(context);
+    }
+  
+    public IconEditor (AppContext context) 
+        throws NameDuplicationException, IllegalActionException {
+        this (context, new XMLIcon (new NamedObj(), "icon"));
+    }
+
+    public IconEditor (AppContext context, XMLIcon icon) {
+
+	_context = context;
         // Instantiate the color chooser for the color button.
         _colorChooser = new JColorChooser ();
       
-        // Make a _canvas for the _drawingFrame to use for drawing.
+        // Make a _canvas for the _context to use for drawing.
         _canvas = new JCanvas ();
-	_drawingFrame.getContentPane ().add ("Center", _canvas);
+	_context.getContentPane ().add ("Center", _canvas);
 
 
 	// Register the delete keyboard key press from the user and 
@@ -140,20 +141,20 @@ public class IconEditor extends JCanvas {
 	_canvas.setRequestFocusEnabled (true);
 
 	// Make a toolbar for the color, thicknesses, and shapes windows and 
-	// add them to the _drawingFrame frame.
+	// add them to the _context frame.
 
 	JToolBar thicknessToolBar = new JToolBar (JToolBar.VERTICAL);
-	_drawingFrame.getContentPane ().add ("East", thicknessToolBar);
+	_context.getContentPane ().add ("East", thicknessToolBar);
 	JToolBar shapesToolBar = new JToolBar (JToolBar.HORIZONTAL);
-	_drawingFrame.getContentPane ().add ("North", shapesToolBar);
+	_context.getContentPane ().add ("North", shapesToolBar);
 	_colorButton = new JButton ("Colors");
 	_colorButton.addActionListener (colorAction);
 	_colorButton.setBackground ( (Color) _strokeColor);
-	_drawingFrame.getContentPane ().add ("West", _colorButton);
+	_context.getContentPane ().add ("West", _colorButton);
 
 	// Add "New", "Open", and "Save" to the file menu.  "Exit" is already 
 	// created by the default BasicFrame class.
-	JMenu menuFile = _drawingFrame.getJMenuBar ().getMenu(0);
+	JMenu menuFile = _context.getJMenuBar ().getMenu(0);
 	JMenuItem itemNew = menuFile.insert (newIconAction, 0);
 	itemNew.setMnemonic ('N');
 	itemNew.setToolTipText ("Create a new icon and discard this one");
@@ -169,7 +170,7 @@ public class IconEditor extends JCanvas {
 
 	// Create an edit menu and add "Cut", "Copy", and "Paste" functions 
 	// to that menu.
-	JMenuBar menuBar = _drawingFrame.getJMenuBar ();
+	JMenuBar menuBar = _context.getJMenuBar ();
 	JMenu menuEdit = new JMenu ("Edit");
 	menuEdit.setMnemonic ('E');
 	menuBar.add (menuEdit);
@@ -262,17 +263,17 @@ public class IconEditor extends JCanvas {
 	// f.setInteractor (_interactor1);
 
 	// Sets the size of the main window in pixels.
-	_drawingFrame.setSize (WINDOW_SIZE_HORIZONTAL, WINDOW_SIZE_VERTICAL);
+	_context.setSize (WINDOW_SIZE_HORIZONTAL, WINDOW_SIZE_VERTICAL);
 
 	// This layout makes the windows appear in the top-left corner of the screen.
-	_drawingFrame.setLocation (0, 75);
+	_context.setLocation (0, 75);
 	
 	// There is no need for the user to be able to resize the window.
-	_drawingFrame.setResizable (WINDOW_RESIZABLE);
+	_context.setResizable (WINDOW_RESIZABLE);
 	
 	// Only set the window visible now so the user doesn't see it being 
 	// constructed.
-	_drawingFrame.setVisible (true);
+	_context.setVisible (true);
 	
 	// Set-up the possible file extensions for opening and saving icons.
 	_filter.addExtension (FILE_FORMAT_EXTENSION);
@@ -314,9 +315,9 @@ public class IconEditor extends JCanvas {
     ///////////////////      Private variables.       /////////////////////
 
 
-    // The main frame of the icon editor application.
-    private BasicFrame _drawingFrame;
-  
+    // The context of the icon editor application.
+    private AppContext _context;
+
     // Create the file chooser for the "Open" and "Save As" commands.
     private JFileChooser _fileChooser = new JFileChooser ();
     private ExtensionFileFilter _filter = new ExtensionFileFilter ("xml");
@@ -526,7 +527,8 @@ public class IconEditor extends JCanvas {
     };
     Action openIconAction = new AbstractAction ("Open   CTRL+O") {
         public void actionPerformed (ActionEvent e) {
-	    int choice = _fileChooser.showOpenDialog (_drawingFrame);
+	    int choice = 
+	    _fileChooser.showOpenDialog (_context.makeComponent());
 	    
 	    if (choice == JFileChooser.CANCEL_OPTION) {
 	        System.out.println ("You have cancelled your open file choice");
@@ -546,7 +548,8 @@ public class IconEditor extends JCanvas {
 
     Action saveIconAsAction = new AbstractAction ("Save As...") {
         public void actionPerformed (ActionEvent e) {
-	    int choice = _fileChooser.showSaveDialog (_drawingFrame);
+	    int choice = 
+	    _fileChooser.showSaveDialog (_context.makeComponent());
 	    
 	    if (choice == JFileChooser.CANCEL_OPTION) {
 	        System.out.println ("You have cancelled your save file as choice");

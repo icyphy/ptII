@@ -219,6 +219,7 @@ public class EntityController extends LocatableNodeController {
 	    addMenuItemFactory(new EditParametersFactory());
 	    addMenuItemFactory(new EditParameterStylesFactory());
 	    addMenuItemFactory(new MenuActionFactory(VergilApplication.getInstance().getAction("Look Inside")));
+	    addMenuItemFactory(new MenuActionFactory(VergilApplication.getInstance().getAction("Edit Icon")));
 	}
     }
     
