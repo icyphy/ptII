@@ -206,11 +206,14 @@ public class HierarchicalStateController extends FSMStateController {
                                          ((RefinementPort)newPort)
                                                   .setMultiport(true);
                                      }
+                                     /* No longer needed since Yuhong modified
+                                      * the type system to allow UNKNOWN. EAL
                                      if (port instanceof TypedIOPort
                                             && newPort instanceof TypedIOPort) {
                                          ((TypedIOPort)newPort).setTypeSameAs(
                                                  (TypedIOPort)port);
                                      }
+                                     */
                                  } finally {
                                      ((RefinementPort)newPort)
                                              ._mirrorDisable = false;
