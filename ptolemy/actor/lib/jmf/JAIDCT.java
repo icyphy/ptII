@@ -50,42 +50,15 @@ public class JAIDCT extends Transformer {
 
     }
     
-    public void initialize() throws IllegalActionException {
-	super.initialize();
-	//dctParameters = new ParameterBlock();
-    }
-    
     public void fire() throws IllegalActionException {
 	super.fire();
 	dctParameters = new ParameterBlock();
 	ObjectToken objectToken = (ObjectToken) input.get(0);
 	image = (RenderedOp) objectToken.getValue();
-	if (_debugging) {
-	    _debug("debugging");
-	    if (image == imageOld) {
-		_debug("same picture");
-	    }
-	}
 	dctParameters.addSource(image);
 	RenderedOp Dct = JAI.create("dct", dctParameters, null);
-	//if(_debugging) {
-	//    if(DCT == null) {
-	//	_debug("it's null");
-	//	    }}
-	//width = Dct.getWidth();
-	//height = Dct.getHeight();
-	//dctData = Dct.getData().getPixels(0, 0, width, height, (double[])null);
-	//bufferedImage = createBI(colorImage, width, height, pixels); 
 	output.send(0, new ObjectToken(Dct));
-	RenderedOp imageOld = image;
     }
-    private RenderedOp image;
-    private RenderedOp imageOld = null;
-    private ParameterBlock dctParameters;
-    private ParameterBlock otherParameters;
-    private double[] dctData;
-    private double[] pixels;
-    private int width;
-    private int height;
-    // private BufferedImage bufferedImage;
+    public RenderedOp image;
+    public ParameterBlock dctParameters;
 }

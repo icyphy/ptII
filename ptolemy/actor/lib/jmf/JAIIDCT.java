@@ -49,22 +49,18 @@ public class JAIIDCT extends Transformer {
         output.setTypeEquals(BaseType.OBJECT); 
 
     }
-
-    public void initialize() throws IllegalActionException {
-	super.initialize();
-	//parameters = new ParameterBlock();
-    }
     
     public void fire() throws IllegalActionException {
 	super.fire();
 	parameters = new ParameterBlock();
 	ObjectToken objectToken = (ObjectToken) input.get(0);
-	RenderedOp image = (RenderedOp) objectToken.getValue();
+	image = (RenderedOp) objectToken.getValue();
 	parameters.addSource(image);
 	RenderedOp IDCT = JAI.create("idct", parameters, null);
 	output.send(0, new ObjectToken(IDCT));
     }
     
-    private ParameterBlock parameters;
+    public RenderedOp image;
+    public ParameterBlock parameters;
 
 }
