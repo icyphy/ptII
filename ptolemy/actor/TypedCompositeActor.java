@@ -297,77 +297,80 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         }
     }
 
-    /** Return the type constraints of this typed composite actor, if it
-     *  is opaque.
-     *  The constraints have the form of a list of inequalities.
-     *  The constraints come from three sources, the topology, the
-     *  contained actors and the contained Typeables. To generate the
-     *  constraints based on the topology, this method scans all the
-     *  connections within this composite between opaque TypedIOPorts.
-     *  If the type of the ports on one or both ends of a connection is
-     *  not declared, a type constraint is formed that requires the
-     *  type of the port at the source end of the connection to be less
-     *  than or equal to the type at the destination port.
-     *  To collect the type constraints from the contained actors,
-     *  This method recursively calls the typeConstraintList() method of the
-     *  deeply contained actors and combine all the constraints together.
-     *  The type constraints from contained Typeables (ports and
-     *  parameters) are collected by calling the typeConstraintList() method
-     *  of all the contained Typeables.
-     *  <p>
-     *  This method is read-synchronized on the workspace.
+    /** Return the type constraints of this typed composite actor.
+     *  The constraints have the form of a list of inequalities.  The
+     *  constraints come from three sources, the contained actors, the
+     *  contained Typeables, and (for opaque actors) the topology of
+     *  connections between actors. To generate the constraints based
+     *  on the topology, this method scans all the connections within
+     *  this composite between opaque TypedIOPorts.  If the type of
+     *  the ports on one or both ends of a connection is not declared,
+     *  a type constraint is formed that requires the type of the port
+     *  at the source end of the connection to be less than or equal
+     *  to the type at the destination port.  To collect the type
+     *  constraints from the contained actors, This method recursively
+     *  calls the typeConstraintList() method of the contained actors
+     *  and combine all the constraints together.  The type
+     *  constraints from contained Typeables (ports and parameters)
+     *  are collected by calling the typeConstraintList() method of
+     *  all the contained Typeables.  <p> This method is
+     *  read-synchronized on the workspace.
      *  @return a list of instances of Inequality.
-     *  @exception IllegalActionException If this composite actor is not
-     *   opaque.
+     *  @exception IllegalActionException If the typeConstraintList
+     *  of one of the deeply contained objects throws it.
      *  @see ptolemy.graph.Inequality
      */
     public List typeConstraintList() throws IllegalActionException {
         try {
             workspace().getReadAccess();
 
-            if (!isOpaque()) {
-                throw new IllegalActionException(this,
-                        "Cannot check types on a non-opaque actor.");
-            }
-
             List result = new LinkedList();
-            Iterator entities = deepEntityList().iterator();
-            while (entities.hasNext()) {
-                // Collect type constraints from contained actors.
-                TypedActor actor = (TypedActor)entities.next();
-                result.addAll(actor.typeConstraintList());
-
-                // Collect constraints on all the ports in the contained
-                // actor to the ports that the actor can send data to.
-                Iterator ports = ((Entity)actor).portList().iterator();
-                while (ports.hasNext()) {
-                    TypedIOPort sourcePort = (TypedIOPort)ports.next();
-                    Receiver[][] receivers = sourcePort.getRemoteReceivers();
-
+            if (isOpaque()) {
+                Iterator entities = deepEntityList().iterator();
+                while (entities.hasNext()) {
+                    // Collect type constraints from contained actors.
+                    TypedActor actor = (TypedActor)entities.next();
+                    
+                    // Collect constraints on all the ports in the contained
+                    // actor to the ports that the actor can send data to.
+                    Iterator ports = ((Entity)actor).portList().iterator();
+                    while (ports.hasNext()) {
+                        TypedIOPort sourcePort = (TypedIOPort)ports.next();
+                        Receiver[][] receivers = sourcePort.getRemoteReceivers();
+                        
+                        List destinationPorts = _receiverToPort(receivers);
+                        result.addAll(_typeConstraintsFromTo(sourcePort,
+                                              destinationPorts));
+                    }
+                }
+                // Also need to check connection from the input ports on
+                // this composite actor to input ports of contained actors.
+                Iterator boundaryPorts = portList().iterator();
+                while (boundaryPorts.hasNext()) {
+                    TypedIOPort sourcePort = (TypedIOPort)boundaryPorts.next();
+                    Receiver[][] receivers = sourcePort.deepGetReceivers();
                     List destinationPorts = _receiverToPort(receivers);
                     result.addAll(_typeConstraintsFromTo(sourcePort,
-                            destinationPorts));
+                                          destinationPorts));
                 }
             }
-
-            // Also need to check connection from the input ports on
-            // this composite actor to input ports of contained actors.
-            Iterator boundaryPorts = portList().iterator();
-            while (boundaryPorts.hasNext()) {
-                TypedIOPort sourcePort = (TypedIOPort)boundaryPorts.next();
-                Receiver[][] receivers = sourcePort.deepGetReceivers();
-                List destinationPorts = _receiverToPort(receivers);
-                result.addAll(_typeConstraintsFromTo(sourcePort,
-                        destinationPorts));
+               
+            // Collect type constraints from contained actors.
+            Iterator entities = entityList().iterator();
+            while (entities.hasNext()) {
+                TypedActor actor = (TypedActor)entities.next();
+                result.addAll(actor.typeConstraintList());
             }
 
-            // Collect constraints from contained Typeables
+
+            // Collect constraints from contained ports.
             Iterator ports = portList().iterator();
             while (ports.hasNext()) {
                 Typeable port = (Typeable)ports.next();
                 result.addAll(port.typeConstraintList());
             }
 
+            // Collect constraints from contained attributes.
             Iterator typeables = attributeList(Typeable.class).iterator();
             while (typeables.hasNext()) {
                 Typeable typeable = (Typeable)typeables.next();
