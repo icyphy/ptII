@@ -56,7 +56,7 @@
   </entity>
 
   <!-- Main default library -->
-  <entity name="library" class="ptolemy.kernel.CompositeEntity">
+  <entity name="actor library" class="ptolemy.kernel.CompositeEntity">
 
     <!-- Marker so that tree view expands the library. -->
     <property name="_libraryMarker" class="ptolemy.kernel.util.SingletonAttribute"/>
