@@ -1,9 +1,33 @@
-/*
- * $Id$
- *
- * Copyright (c) 1998 The Regents of the University of California.
- * All rights reserved.  See the file COPYRIGHT for details.
- */
+/* A CSP application.
+
+ Copyright (c) 1999 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
+*/
+
 package ptolemy.domains.csp.demo.BusContention;
 
 import diva.graph.*;
@@ -34,16 +58,50 @@ import javax.swing.SwingUtilities;
 //////////////////////////////////////////////////////////////////////////
 //// BusContentionApplication
 
-/**
- * This demo shows a CSP universe with thread states.
+/** A model of hardware subsystems accessing a shared resource using
+ *  rendezvous. The model shows the use of timed CSP to
+ *  deterministically handle nondeterministic events. 
+ *  <p>
+ *  The applet consists of a controller, three processors and a memory
+ *  block. At randomly selected points in time, each processor can
+ *  request permission from the controller to access the memory. The
+ *  processors each have priorities associated with them, and in cases
+ *  where there is a simultaneous memory access request, the controller
+ *  grants permission to the processor with the highest priority. 
+ *  <p>
+ *  All communication between actors in a CSP model of computation
+ *  occurs via rendezvous. Rendezvous is an atomic form of
+ *  communication. This model uses a timed extension to CSP, so each
+ *  rendezvous logically occurs at a specific point in time. 
+ *  <p>
+ *  Because of the atomic nature of rendezvous, when the controller
+ *  receives a request for access, it cannot know whether there is
+ *  another, higher priority request pending at the same time. To
+ *  overcome this difficulty, an alarm is employed. The alarm is started
+ *  by the controller immediately following the first request for memory
+ *  access. It is awakened when time is ready to advance (the model
+ *  blocks on delays). This indicates to the controller that no more
+ *  memory requests will occur at the given point in time. Hence, the
+ *  alarm uses centralized time to make deterministic an inherently
+ *  non-deterministic activity. 
+ *  <p>
+ *  In the applet, each of the initially blue processors (the circular
+ *  nodes) can be in one of three states. The color yellow indicates
+ *  that a processor is in state 1 and is waiting for the controller to
+ *  give it permission to access memory. The color green indicates that
+ *  a processor has been granted permission to access memory. The color
+ *  red indicates that the processor has been denied memory access.
  *
- * @author John S. Davis II (davisj@eecs.berkeley.edu)
- * @author Michael Shilman  (michaels@eecs.berkeley.edu)
- * @version $Id$
- * @rating Red
+ *  @author John S. Davis II (davisj@eecs.berkeley.edu)
+ *  @author Michael Shilman  (michaels@eecs.berkeley.edu)
+ *  @version $Id$
  */
 public class BusContentionApplication implements ActionListener {
 
+    /** Create an empty model with the specified manager and top-level
+     *  composite actor.  The model is actually created by the
+     *  initializeDemo() method.
+     */
     public BusContentionApplication(Manager manager, 
 	    TypedCompositeActor topLevel) {
 	_manager = manager;
@@ -60,14 +118,9 @@ public class BusContentionApplication implements ActionListener {
 	try {
             topLevel.setName("topLevel"); 
             topLevel.setManager(manager);
-	} catch( NameDuplicationException e ) {
-	    System.err.println("NameDuplicationException thrown in "
-		    + "the main \n method. Stack trace: \n");
-            e.printStackTrace();
-	} catch( IllegalActionException e ) {
-	    System.err.println("IllegalActionException thrown in the "
-		    + "main \n method. Stack trace: \n");
-            e.printStackTrace();
+	} catch( KernelException e ) {
+            // This should not occur.
+	    throw new InternalErrorException(e.toString());
 	}
 
         BusContentionApplication app = 
@@ -80,7 +133,7 @@ public class BusContentionApplication implements ActionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
+    /** Respond to button pushes.
      */
     public void actionPerformed(ActionEvent event) {
 	String action = event.getActionCommand();

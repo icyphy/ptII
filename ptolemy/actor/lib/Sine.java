@@ -39,19 +39,20 @@ import ptolemy.data.expr.Parameter;
 //// Sine
 /**
 Produce an output token on each firing with a value that is
-equal to the sine of the input. The input and output types
+equal to the sine of the input, scaled and shifted according to the
+parameters. The input and output types
 are DoubleToken. The actor implements the function:
 <br>
-y = A*Sin(w*x+p)
+y = A*sin(w*x+p)
 <br>
 where: <br>
 x is the input;<br>
 y is the output; <br>
-A is the amplitude, with default value 1; <br>
-w is the radian frequency, with default value 1; <br>
-p is the phase, with default value 0.<br>
-
-A Cos function can be implemented using this actor by setting
+A is the amplitude, which has default value 1; <br>
+w is the frequency, which has default value 1; <br>
+p is the phase, which has default value 0.<br>
+<p>
+A cosine function can be implemented using this actor by setting
 the phase to pi/2.
 
 @author Edward A. Lee, Jie Liu
@@ -74,7 +75,7 @@ public class Sine extends Transformer {
 
         // parameters
         amplitude = new Parameter(this, "amplitude", new DoubleToken(1.0));
-        radianFreq = new Parameter(this, "radianFreq", new DoubleToken(1.0));
+        frequency = new Parameter(this, "frequency", new DoubleToken(1.0));
         phase = new Parameter(this, "phase", new DoubleToken(0.0));
 
 
@@ -83,17 +84,18 @@ public class Sine extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
     /** The magnitude.
      *  The default value of this parameter is the double 1.0.
      */
     public Parameter amplitude;
 
-    /** The (angle) frequency.
+    /** The frequency (in radians).  Note that this is a frequency
+     *  only if the input is time.
      *  The default value of this parameter is the double 1.0.
      */
-    public Parameter radianFreq;
+    public Parameter frequency;
 
     /** The phase.
      *  The default value of this parameter is the double 0.0.
@@ -112,7 +114,7 @@ public class Sine extends Transformer {
         if (input.hasToken(0)) {
             DoubleToken in = (DoubleToken)input.get(0);
             double A = ((DoubleToken)amplitude.getToken()).doubleValue();
-            double w = ((DoubleToken)radianFreq.getToken()).doubleValue();
+            double w = ((DoubleToken)frequency.getToken()).doubleValue();
             double p = ((DoubleToken)phase.getToken()).doubleValue();
 
             double result = A*Math.sin(w*in.doubleValue()+p);

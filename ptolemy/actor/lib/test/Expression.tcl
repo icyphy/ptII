@@ -76,7 +76,7 @@ test Expression-2.1 {run with default empty expression} {
 
 test Expression-3.1 {run with a simple expression} {
     set expression [java::field $expr expression]
-    $expression setExpression "firing + 5"
+    $expression setExpression "iteration + 5"
     $m execute
     enumToTokenValues [$rec getRecord 0]
 } {6 7 8}

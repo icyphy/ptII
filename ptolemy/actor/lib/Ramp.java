@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
@@ -80,7 +80,7 @@ public class Ramp extends SequenceSource {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
     /** The value produced by the ramp on its first iteration.
      *  The default value of this parameter is the integer 0.
@@ -125,6 +125,18 @@ public class Ramp extends SequenceSource {
         return newobj;
     }
 
+    /** Send the current value of the state of this actor to the output.
+     */
+    public void fire() {
+        try {
+            super.fire();
+            output.broadcast(_stateToken);
+        } catch (IllegalActionException ex) {
+            // Should not be thrown because this is an output port.
+            throw new InternalErrorException(ex.getMessage());
+        }
+    }
+
     /** Set the state to equal the value of the <i>init</i> parameter.
      *  The state is incremented by the value of the <i>step</i>
      *  parameter on each iteration (in the postfire() method).
@@ -138,18 +150,6 @@ public class Ramp extends SequenceSource {
         } catch (IllegalActionException ex) { 
             // This should never happen.  SequenceSource documents that 
             // it never throws IllegalActionException
-            throw new InternalErrorException(ex.getMessage());
-        }
-    }
-
-    /** Send the current value of the state of this actor to the output.
-     */
-    public void fire() {
-        try {
-            super.fire();
-            output.broadcast(_stateToken);
-        } catch (IllegalActionException ex) {
-            // Should not be thrown because this is an output port.
             throw new InternalErrorException(ex.getMessage());
         }
     }

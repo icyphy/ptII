@@ -65,7 +65,7 @@ public class FileWrite extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public members                    ////
+    ////                     ports and parameters                  ////
 
     /** Input port, which has type StringToken. */
     public TypedIOPort input;

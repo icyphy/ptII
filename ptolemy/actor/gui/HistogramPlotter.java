@@ -69,7 +69,7 @@ public class HistogramPlotter extends TypedAtomicActor implements Placeable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public members                    ////
+    ////                     ports and parameters                  ////
 
     /** If true, fill the histogram when wrapup is called.
      *  This parameter has type BooleanToken, and default value true.

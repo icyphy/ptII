@@ -131,7 +131,7 @@ public class Clock extends TimedSource {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
     /** The offsets at which the specified values will be produced.
      *  This parameter must contain a DoubleMatrixToken.

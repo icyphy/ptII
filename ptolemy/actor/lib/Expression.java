@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -54,6 +54,16 @@ tokens with the type of the output.
 The <i>expression</i> parameter should be set using its
 setExpression() method.  By default, it is empty, and attempting
 to execute the actor without setting it triggers an exception.
+<p>
+The expression language understood by this actor is documented
+in the Data chapter of the Ptolemy II design document.
+The expressions evaluated by this actor can refer to the current
+time by the variable name "time" and to the current iteration count
+by the variable named "iteration."
+<p>
+This actor could be used instead of many of the arithmetic actors,
+such as AddSubtract, MultiplyDivide, and Sine.  However, those actors
+will be more efficient, and sometimes more convenient to use.
 <p>
 NOTE: There are a number of limitations in the current implementation.
 First, the type constaints on the ports are the default, that input
@@ -89,16 +99,16 @@ public class Expression extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         expression = new Parameter(this, "expression");
         _time = new Variable(this, "time", new DoubleToken(0.0));
-        _firing = new Variable(this, "firing", new IntToken(1));
+        _iteration = new Variable(this, "iteration", new IntToken(1));
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         ports and parameters              ////
+    ////                     ports and parameters                  ////
 
     /** The output port. */
     public TypedIOPort output;
 
-    /** The value produced by the ramp on its first firing.
+    /** The value produced by the ramp on its first iteration.
      *  This parameter contains a DoubleToken, initially with value 0.
      */
     public Parameter expression;
@@ -120,11 +130,11 @@ public class Expression extends TypedAtomicActor {
     public Object clone(Workspace ws) {
         try {
             Expression newobj = (Expression)super.clone(ws);
-            newobj._firingCount = 1;
+            newobj._iterationCount = 1;
             newobj.output = (TypedIOPort)newobj.getPort("output");
             newobj.expression = (Parameter)newobj.getAttribute("expression");
 	    newobj._time = (Variable)newobj.getAttribute("time");
-	    newobj._firing = (Variable)newobj.getAttribute("firing");
+	    newobj._iteration = (Variable)newobj.getAttribute("iteration");
             return newobj;
         } catch (CloneNotSupportedException ex) {
             // Errors should not occur here...
@@ -133,13 +143,13 @@ public class Expression extends TypedAtomicActor {
         }
     }
 
-    /** Initialize the firing count to 1.
+    /** Initialize the iteration count to 1.
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _firingCount = 1;
-        _firing.setToken(new IntToken(_firingCount));
+        _iterationCount = 1;
+        _iteration.setToken(new IntToken(_iterationCount));
     }
 
     /** Evaluate the expression and broadcast its result to the output.
@@ -172,12 +182,12 @@ public class Expression extends TypedAtomicActor {
         output.broadcast(result);
     }
 
-    /** Increment the firing count.
+    /** Increment the iteration count.
      *  @IllegalActionException If the superclass throws it.
      */
     public boolean postfire() throws IllegalActionException {
-        _firingCount++;
-        _firing.setToken(new IntToken(_firingCount));
+        _iterationCount++;
+        _iteration.setToken(new IntToken(_iterationCount));
         // This actor never requests termination.
         return true;
     }
@@ -210,7 +220,7 @@ public class Expression extends TypedAtomicActor {
         Attribute there = getAttribute(portName);
         if (there == null) {
             // FIXME: Have to initialize with a token or type
-            // resolution failse.
+            // resolution fails.
             new Variable(this, portName, new IntToken(1));
         } else if ((there instanceof Parameter)
                 || !(there instanceof Variable)) {
@@ -244,6 +254,6 @@ public class Expression extends TypedAtomicActor {
     ////                         private variables                 ////
 
     private Variable _time;
-    private Variable _firing;
-    private int _firingCount = 1;
+    private Variable _iteration;
+    private int _iterationCount = 1;
 }

@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -64,7 +64,7 @@ public class Plotter extends TypedAtomicActor implements Placeable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public members                    ////
+    ////                     ports and parameters                  ////
 
     /** The plot object. */
     public Plot plot;

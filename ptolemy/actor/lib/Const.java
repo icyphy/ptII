@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
@@ -64,12 +64,12 @@ public class Const extends Source {
         super(container, name);
     	value = new Parameter(this, "value", new IntToken(1));
 
-	// set the type constraint.
+	// Set the type constraint.
 	output.setTypeAtLeast(value);
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
     /** The value produced by this constant source.
      *  By default, it contains an IntToken with value 1.  If the
@@ -104,14 +104,14 @@ public class Const extends Source {
     public Object clone(Workspace ws) {
         Const newobj = (Const)super.clone(ws);
         newobj.value = (Parameter)newobj.getAttribute("value");
-	// set the type constraint.
+	// Set the type constraint.
 	newobj.output.setTypeAtLeast(newobj.value);
         return newobj;
     }
 
     /** Send the token in the <i>value</i> parameter to the output.
-     *  @exception IllegalActionException If it is thrown by the method
-     *   sending out the token.
+     *  @exception IllegalActionException If it is thrown by the
+     *   broadcast() method sending out the token.
      */
     public void fire() throws IllegalActionException {
         super.fire();

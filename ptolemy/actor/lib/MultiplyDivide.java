@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -95,21 +95,21 @@ public class MultiplyDivide extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public  variables                 ////
+    ////                     ports and parameters                  ////
 
     /** Input for tokens to be divided.  This is a multiport, and its
      *  type is inferred from the connections.
      */
-    public TypedIOPort divide = null;
+    public TypedIOPort divide;
 
     /** Output port.  The type is inferred from the connections.
      */
-    public TypedIOPort output = null;
+    public TypedIOPort output;
 
     /** Input for tokens to be multiplied.  This is a multiport, and its
      *  type is inferred from the connections.
      */
-    public TypedIOPort multiply = null;
+    public TypedIOPort multiply;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -141,47 +141,43 @@ public class MultiplyDivide extends TypedAtomicActor {
      *  rest are left for future firings.  If none of the input
      *  channels has a token, do nothing.  If none of the multiply channels
      *  have tokens, then the tokens on the divide channels are divided into
-     *  a one token of the same type as the first token encountered
-     *  on the divide channels.
+     *  a one token of the same type as the denominator.
      *
      *  @exception IllegalActionException If there is no director,
      *   or if multiplication and division are not supported by the
      *   available tokens.
      */
     public void fire() throws IllegalActionException {
-	Token result = null;
+	Token numerator = null;
 	for (int i = 0; i < multiply.getWidth(); i++) {
 	    if (multiply.hasToken(i)) {
-		if (result == null) {
-		    result = multiply.get(i);
+		if (numerator == null) {
+		    numerator = multiply.get(i);
 		} else {
-		    result = result.multiply(multiply.get(i));
+		    numerator = numerator.multiply(multiply.get(i));
 		}
 	    }
 	}
         Token denominator = null;
-        Token in = null, firstin = null;
 	for (int i = 0; i < divide.getWidth(); i++) {
 	    if (divide.hasToken(i)) {
-                in = divide.get(i);
 		if (denominator == null) {
-		    denominator = in;
-                    firstin = in;
+		    denominator = divide.get(i);
 		} else {
-		    denominator = denominator.multiply(in);
+		    denominator = denominator.multiply(divide.get(i));
 		}
 	    }
         }
-        if (result == null) {
+        if (numerator == null) {
             if (denominator == null) {
                 return;
             }
-            result = firstin.one();
+            numerator = denominator.one();
         }
         if (denominator != null) {
-            result = result.divide(denominator);
+            numerator = numerator.divide(denominator);
 	}
-        output.broadcast(result);
+        output.broadcast(numerator);
     }
 }
 

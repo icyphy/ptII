@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
@@ -83,7 +83,7 @@ public class SequenceSource extends Source implements SequenceActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
     /** If greater than zero, then the number of iterations before the
      *  actor indicates to the scheduler that it is finished by returning
@@ -116,7 +116,7 @@ public class SequenceSource extends Source implements SequenceActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _iterCount = 0;
+        _iterationCount = 0;
     }
 
     /** Increment the iteration counter, and if it equals the
@@ -126,8 +126,9 @@ public class SequenceSource extends Source implements SequenceActor {
      *  value.
      */
     public boolean postfire() {
-        _iterCount++;
-        if (_iterCount == ((IntToken)firingCountLimit.getToken()).intValue()) {
+        _iterationCount++;
+        if (_iterationCount ==
+                ((IntToken)firingCountLimit.getToken()).intValue()) {
             return false;
         }
         return true;
@@ -136,5 +137,5 @@ public class SequenceSource extends Source implements SequenceActor {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private int _iterCount = 0;
+    private int _iterationCount = 0;
 }

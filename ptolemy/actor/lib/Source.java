@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
 @AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
@@ -75,7 +75,7 @@ public abstract class Source extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
     /** The output port.  The type of this port is unspecified.
      *  Derived classes may set it.

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -63,12 +63,14 @@ public class Transformer extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
-    /** The input port. */
+    /** The input port.  This base class imposes no type constraints. */
     public TypedIOPort input;
 
-    /** The output port. */
+    /** The output port. By default, the type of this output is constrained
+     *  to be at least that of the input.
+     */
     public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
@@ -78,18 +80,14 @@ public class Transformer extends TypedAtomicActor {
      *  base class and then sets the ports.
      *  @param ws The workspace for the new object.
      *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class has
+     *   has an attribute that cannot be cloned.
      */
-    public Object clone(Workspace ws) {
-        try {
-            Transformer newobj = (Transformer)super.clone(ws);
-            newobj.input = (TypedIOPort)newobj.getPort("input");
-            newobj.output = (TypedIOPort)newobj.getPort("output");
-            return newobj;
-        } catch (CloneNotSupportedException ex) {
-            // Errors should not occur here...
-            throw new InternalErrorException(
-                    "Clone failed: " + ex.getMessage());
-        }
+    public Object clone(Workspace ws) throws CloneNotSupportedException {
+        Transformer newobj = (Transformer)super.clone(ws);
+        newobj.input = (TypedIOPort)newobj.getPort("input");
+        newobj.output = (TypedIOPort)newobj.getPort("output");
+        return newobj;
     }
 }
 

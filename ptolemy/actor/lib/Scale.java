@@ -72,7 +72,7 @@ public class Scale extends Transformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
     /** The gain.  The default value of this parameter is the integer 1.
      */

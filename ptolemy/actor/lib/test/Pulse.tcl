@@ -86,15 +86,11 @@ test Pulse-2.3 {test with two-dimensional output values} {
     set values [java::new {double[][]} {2 2} \
             [list [list 1 2] [list 3 4]]]
     set valuesParam [getParameter $pulse values]
-    $valuesParam setToken [java::new ptolemy.data.DoubleMatrixToken $values]
-    
-    set indexes [java::new {int[][]} {2 2} [list [list 0 1] [list 2 3]]]
-    set indexesParam [getParameter $pulse indexes]
-    $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
-
-    [$e0 getManager] execute
-    enumToTokenValues [$rec getRecord 0]
-} {1.0 2.0 3.0 4.0 0.0}
+    catch {
+        $valuesParam setToken [java::new ptolemy.data.DoubleMatrixToken $values]
+    } msg
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: .top.pulse: Cannot set values parameter to a non-row vector.}}
 
 ######################################################################
 #### Test error conditions
@@ -121,9 +117,12 @@ test Pulse-3.3 {test values and indexes of different dimensions} {
     set indexes [java::new {int[][]} {1 3} [list [list 1 2 3]]]
     set indexesParam [getParameter $pulse indexes]
     $indexesParam setToken [java::new ptolemy.data.IntMatrixToken $indexes]
+    set values [java::new {int[][]} {1 2} [list [list 0 3]]]
+    set valuesParam [getParameter $pulse values]
+    $valuesParam setToken [java::new ptolemy.data.IntMatrixToken $values]
     catch {
         [$e0 getManager] execute
     } msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: .top.pulse: Parameters values and indexes must be arrays of the same dimension.}}
+} {{ptolemy.kernel.util.IllegalActionException: .top.pulse: Parameters values and indexes have different lengths.}}
 

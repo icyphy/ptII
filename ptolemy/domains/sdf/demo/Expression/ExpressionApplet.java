@@ -23,8 +23,8 @@
 
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.demo.Expression;
@@ -53,9 +53,9 @@ import ptolemy.plot.*;
 //// ExpressionApplet
 /**
 A demonstration of the Expression actor.  This applet feeds two ramp
-signals, on slowly rising and one quickly rising, into two inputs
+signals, one slowly rising and one quickly rising, into two inputs
 named "slow" and "fast" of an Expression actor.  That actor evaluates
-whatever expression you give it in the on-screen dialog, and sends
+whatever expression you give it in the on-screen entry box and sends
 the result to a plotter.
 
 @author Edward A. Lee
@@ -67,7 +67,7 @@ public class ExpressionApplet extends SDFApplet {
     ////                         public methods                    ////
 
     /** After invoking super.init(), create and connect the actors.
-     *  Also, create an on-screen dialog for the expression to evaluate.
+     *  Also, create an on-screen entry box for the expression to evaluate.
      */
     public void init() {
         super.init();
@@ -121,7 +121,7 @@ public class ExpressionApplet extends SDFApplet {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Execute the system.  This overrides the base class to read the
+    /** Execute the model.  This overrides the base class to read the
      *  values in the query box first.
      *  @exception IllegalActionException Not thrown.
      */

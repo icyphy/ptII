@@ -40,7 +40,7 @@ import java.util.Enumeration;
 import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// Ramp
+//// CurrentTime
 /**
 Produce an output token on each firing with a value that is
 the current time. The output is of Type Double.

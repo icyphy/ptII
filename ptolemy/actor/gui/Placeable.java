@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 
 */
 
@@ -54,6 +54,3 @@ public interface Placeable {
      */
     public void setPanel(Panel panel);
 }
-
-
-

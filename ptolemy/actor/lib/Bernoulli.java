@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -45,6 +45,7 @@ where the probability of <i>true</i> is given by the parameter
 <i>trueProbability</i>.
 The seed can be specified as a parameter to control the sequence that is
 generated.
+This actor uses the class java.util.Random to generate random numbers.
 
 @author Edward A. Lee
 @version $Id$
@@ -71,7 +72,7 @@ public class Bernoulli extends RandomSource {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
     /** The probability of <i>true</i>.
      *  This parameter contains a DoubleToken, initially with value 0.5.
@@ -114,8 +115,6 @@ public class Bernoulli extends RandomSource {
     public boolean prefire() throws IllegalActionException {
 	double tp = ((DoubleToken)(trueProbability.getToken())).doubleValue();
         double rawNum = _random.nextDouble();
-        // Adjust so that 1.0 is not a possible outcome.
-        if (rawNum == 1.0) rawNum -= Double.MIN_VALUE;
         if (rawNum < tp) {
             _current = true;
         } else {

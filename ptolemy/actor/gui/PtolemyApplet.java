@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (jorhr@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -225,7 +225,7 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
      *  created.  If its value is greater than zero, then a "Go" button
      *  created.  If its value is greater than one, then a "Stop" button
      *  is also created.  Derived classes may override this method to add
-     *  additional controls.
+     *  additional controls, or to create a panel with a different layout.
      *  @param numberOfButtons How many buttons to create.
      */
     protected Panel _createRunControls(int numberOfButtons) {
@@ -241,6 +241,15 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
             _stopButton.addActionListener(new StopButtonListener());
         }
         return panel;
+    }
+
+    /** Get the background color as set by the "background" applet parameter.
+     *  This is protected so that derived classes can find out what the
+     *  background color is. Derived classes may wish to know the
+     *  color so they can match it in some of their components.
+     */
+    protected Color _getBackground() {
+        return _background;
     }
 
     /** Execute the model.
@@ -259,14 +268,6 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected variables                    ////
 
-    /** The background color as set by the "background" applet parameter.
-     *  This is protected so that derived classes can find out what the
-     *  background color is.  The Applet base class does not provide
-     *  a getBackground() method.  Derived classes may wish to know the
-     *  color so they can match it in some of their components.
-     */
-    protected Color _background;
-
     /** The workspace that the applet is built in. Each applet has 
      *  it own workspace.
      */
@@ -280,6 +281,14 @@ public class PtolemyApplet extends Applet implements ExecutionListener {
 
     ////////////////////////////////////////////////////////////////////////
     ////                         private variables                      ////
+
+    /*  The background color as set by the "background" applet parameter.
+     *  This is protected so that derived classes can find out what the
+     *  background color is.  The Applet base class does not provide
+     *  a getBackground() method.  Derived classes may wish to know the
+     *  color so they can match it in some of their components.
+     */
+    private Color _background;
 
     private Button _goButton;
     private Button _stopButton;

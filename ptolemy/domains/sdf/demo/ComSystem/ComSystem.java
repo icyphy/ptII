@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.demo.ComSystem;
@@ -51,7 +51,7 @@ import ptolemy.plot.*;
 //////////////////////////////////////////////////////////////////////////
 //// ComSystem
 /**
-This applet displays the eye diagram of a simple basedband communication
+This applet displays the eye diagram of a simple baseband communication
 system.  The transmit pulse is a 100% excess-bandwidth square-root
 raised-cosine pulse.  The channel adds Gaussian noise.  The receiver
 consists of a matched filter.  The eye diagram for the signal after

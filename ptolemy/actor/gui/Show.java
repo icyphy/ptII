@@ -70,7 +70,7 @@ public class Show extends TypedAtomicActor implements Placeable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public members                    ////
+    ////                     ports and parameters                  ////
 
     /** Input port, which has type StringToken. */
     public TypedIOPort input;

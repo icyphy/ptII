@@ -72,7 +72,7 @@ public class XYPlotter extends Plotter implements Placeable {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public members                    ////
+    ////                     ports and parameters                  ////
 
     /** Input port for data stream X, which has type DoubleToken. */
     public TypedIOPort inputX;

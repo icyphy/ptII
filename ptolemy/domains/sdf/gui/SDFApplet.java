@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.sdf.gui;
@@ -123,11 +123,11 @@ public class SDFApplet extends PtolemyApplet {
      *  parameter "iterations," then create
      *  an entry box for that number to be entered. 
      *  Derived classes may override this method to add additional controls.
-     *  @param numbuttons The number of buttons to create.
+     *  @param numberOfButtons The number of buttons to create.
      *  @return The panel containing the controls.
      */
-    protected Panel _createRunControls(int numbuttons) {
-        Panel panel = super._createRunControls(numbuttons);
+    protected Panel _createRunControls(int numberOfButtons) {
+        Panel panel = super._createRunControls(numberOfButtons);
         if (!_iterationsgiven) {
             // To keep the label and entry box together, put them
             // in a new panel.
@@ -194,12 +194,16 @@ public class SDFApplet extends PtolemyApplet {
     protected SDFDirector _director;
 
     /** True if the number of iterations has been given via an applet
-     *  parameter.  Note that this is set by the init() method.
+     *  parameter.  Note that this is set by the init() method.  This
+     *  is protected in case a derived class overrides _createRunControls()
+     *  and wants access to this variable.
      */
     protected boolean _iterationsgiven = false;
 
     /** The entry box containing the number of iterations, or null if
-     *  there is none.
+     *  there is none. This
+     *  is protected in case a derived class overrides _createRunControls()
+     *  and wants access to this variable.
      */
     protected TextField _iterationsbox;
 

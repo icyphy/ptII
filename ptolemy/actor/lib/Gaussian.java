@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -72,7 +72,7 @@ public class Gaussian extends RandomSource {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
     /** The mean of the random number.
      *  This parameter contains a DoubleToken, initially with value 0.
@@ -120,10 +120,11 @@ public class Gaussian extends RandomSource {
      *  @return True if it is ok to continue.
      */
     public boolean prefire() throws IllegalActionException {
-	double mn = ((DoubleToken)(mean.getToken())).doubleValue();
-	double sd = ((DoubleToken)(standardDeviation.getToken())).doubleValue();
+	double meanValue = ((DoubleToken)(mean.getToken())).doubleValue();
+	double standardDeviationValue =
+                ((DoubleToken)(standardDeviation.getToken())).doubleValue();
         double rawNum = _random.nextGaussian();
-        _current = (rawNum*sd) + mn;
+        _current = (rawNum*standardDeviationValue) + meanValue;
         return super.prefire();
     }
 

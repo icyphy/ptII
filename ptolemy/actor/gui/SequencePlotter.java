@@ -24,8 +24,8 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 						PT_COPYRIGHT_VERSION 2
 						COPYRIGHTENDKEY
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.gui;
@@ -70,7 +70,7 @@ public class SequencePlotter extends Plotter
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public members                    ////
+    ////                     ports and parameters                  ////
 
     /** Input port, which has type DoubleToken. */
     public TypedIOPort input;

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Yellow (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (johnr@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.de.demo.Inspection;
@@ -63,7 +63,7 @@ waits for a bus (more precisely, the expected value).  If the busses
 arrive at regular intervals with interarrival time equal to <i>T</i>,
 then the expected waiting time is <i>T</i>/2, which is perfectly
 intuitive.  Counterintuitively, however, if the busses arrive
-according to a Poisson process with mean interarrival time equal
+according to a Poisson process with mean interarrival time equal to
 <i>T</i>, the expected waiting time is <i>T</i>, not <i>T</i>/2.
 These expected waiting times are approximated in this applet by
 the average waiting time.  The applet also shows that actual
@@ -180,7 +180,7 @@ public class InspectionApplet extends DEApplet {
     ////////////////////////////////////////////////////////////////////////
     ////                         protected methods                      ////
 
-    /** Execute the system.  This overrides the base class to read the
+    /** Execute the model.  This overrides the base class to read the
      *  values in the query box first and set parameters.
      *  @exception IllegalActionException If type constraints of the
      *   parameters have somehow been set.

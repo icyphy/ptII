@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating red (cxh@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -43,33 +43,29 @@ Produce a pulse with a shape specified by the parameters.
 The <i>values</i> parameter specifies the sequence of values
 to produce at the output.  The <i>indexes</i> parameter specifies
 when those values should be produced.  These two parameters
-must both contain matrices with the same dimensions or an
+must both contain row vectors of the same length or an
 exception will be thrown by the fire() method.
+The value of these parameters must be a MatrixToken with one row.
 <p>
-The <i>values</i> and <i>indexes</i> parameters are two-dimensional
-matrices.  They are read row first; i.e., the first row is read,
-then the second, etc.  This actor counts iterations, and when the
-iterations match a value in the <i>indexes</i> matrix, then
-the corresponding value (at the same position in the matrix)
-from the <i>values</i> array is produced at the output.
-<p>
-The <i>indexes</i> array must be increasing and non-negative,
+The <i>indexes</i> vector must be increasing and non-negative,
 or an exception will be thrown when it is set.
 <p>
 Eventually, this actor will support various kinds of interpolation.
 For now, it outputs a zero (of the same type as the values) whenever
 the iteration count does not match an index in <i>indexes</i>.
 <p>
-The <i>values</i> parameter must be set to
-a MatrixToken value, or an exception will be thrown.
-If it is not set, then by default it has a value that is
-an IntMatrix of form {{1,0}} (one row, two columns, with
-values 1 and 0).  The default indexes matrix is {{0,1}}.
+The default for the <i>values</i> parameter is
+an integer vector of form [1,0].
+The default indexes matrix is [0,1].
 Thus, the default output sequence will be 1, 0, 0, ...
 <p>
 The type of the output can be any token type that has a corresponding
 matrix token type.  The type is inferred from the type of the
 <i>values</i> parameter.
+<p>
+NOTE: A reset input for this actor would be useful.  This would reset
+the iterations count, to cause the pulse to emerge again.  Also,
+perhaps it should have a periodicity parameter.
 
 @author Edward A. Lee
 @version $Id$
@@ -102,14 +98,15 @@ public class Pulse extends SequenceSource {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
     /** The indexes at which the specified values will be produced.
-     *  This parameter must contain an IntMatrixToken.
+     *  This parameter must contain an IntMatrixToken with one row.
      */
     public Parameter indexes;
 
     /** The values that will be produced at the specified indexes.
+     *  This parameter must contain a MatrixToken with one row.
      */
     public Parameter values;
 
@@ -117,26 +114,41 @@ public class Pulse extends SequenceSource {
     ////                         public methods                    ////
 
     /** If the attribute being changed is <i>indexes</i>, then check
-     *  that it is increasing and nonnegative.
-     *  @exception IllegalActionException If the indexes array is not
-     *   increasing and nonnegative.
+     *  that it is increasing and nonnegative, and that it has exactly
+     *  one row.  If the attribute being changed is <i>values</i>, then
+     *  check that it has exactly one row.
+     *  @exception IllegalActionException If the indexes vector is not
+     *   increasing and nonnegative, or either indexes or values is not
+     *   a row vector.
      */
-// FIXME: Change this so it only accepts row vectors...
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == indexes) {
             int[][] idx =
                    ((IntMatrixToken)indexes.getToken()).intMatrix();
+            if (idx.length != 1) {
+                throw new IllegalActionException(this,
+                "Cannot set indexes parameter to a non-row vector.");
+            }
             int previous = -1;
-            for (int i=0; i<idx.length; i++) {
-                for (int j=0; j<idx[i].length; j++) {
-                    if (idx[i][j] <= previous) {
-                        throw new IllegalActionException(this,
-                        "Value of indexes must be an array of nonnegative "
-                        + "integers increasing in value.");
-                    }
-                    previous = idx[i][j];
+            for (int j=0; j<idx[0].length; j++) {
+                if (idx[0][j] <= previous) {
+                    throw new IllegalActionException(this,
+                    "Value of indexes must be an array of nonnegative "
+                    + "integers increasing in value.");
                 }
+                previous = idx[0][j];
+            }
+        } else if (attribute == values) {
+            Token contents = values.getToken();
+            if (!(contents instanceof MatrixToken)) {
+                throw new IllegalActionException(this,
+                "Cannot set values parameter to a non-matrix.");
+            }
+            int rowCount = ((MatrixToken)contents).getRowCount();
+            if (rowCount != 1) {
+                throw new IllegalActionException(this,
+                "Cannot set values parameter to a non-row vector.");
             }
         } else {
             super.attributeChanged(attribute);
@@ -222,25 +234,16 @@ public class Pulse extends SequenceSource {
     public void fire() throws IllegalActionException {
         super.fire();
         MatrixToken val = (MatrixToken)values.getToken();
-        int[][] idx =
-               ((IntMatrixToken)indexes.getToken()).intMatrix();
-        if (val.getRowCount() != idx.length) {
-            throw new IllegalActionException(this,
-            "Parameters values and indexes must be arrays "
-            + "of the same dimension.");
-        }
-        if (_indexRowCount < idx.length &&
-                _indexColCount < idx[_indexRowCount].length) {
-            if (val.getColumnCount() != idx[_indexRowCount].length) {
+        int[][] idx = ((IntMatrixToken)indexes.getToken()).intMatrix();
+        if (_indexColCount < idx[0].length) {
+            if (val.getColumnCount() != idx[0].length) {
                 throw new IllegalActionException(this,
-                "Parameters values and indexes must be arrays "
-                + "of the same dimension.");
+                "Parameters values and indexes have different lengths.");
             }
-            int currentIndex = idx[_indexRowCount][_indexColCount];
+            int currentIndex = idx[0][_indexColCount];
             if (_iterationCount == currentIndex) {
                 // Got a match with an index.
-                output.broadcast(val.getElementAsToken(
-                    _indexRowCount,_indexColCount));
+                output.broadcast(val.getElementAsToken(0,_indexColCount));
                 _match = true;
                 return;
             }
@@ -255,26 +258,26 @@ public class Pulse extends SequenceSource {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _iterationCount = 0;
-        _indexRowCount = 0;
         _indexColCount = 0;
     }
 
-    /** Update the iteration counters.
+    /** Update the iteration counters until they exceed the values
+     *  in the indexes vector.
      */
     public boolean postfire() {
-        MatrixToken val = (MatrixToken)values.getToken();
-        ++_iterationCount;
+        int[][] idx = ((IntMatrixToken)indexes.getToken()).intMatrix();
+        // We stop incrementing after reaching the top of the indexes
+        // vector to avoid possibility of overflow.
+        if (_iterationCount <= idx[0][idx[0].length-1]) {
+            ++_iterationCount;
+        }
         if (_match) {
             ++_indexColCount;
-            if (_indexColCount >= val.getColumnCount()) {
-                _indexColCount = 0;
-                ++_indexRowCount;
-            }
         }
         return super.postfire();
     }
 
-    /** Start an interation.
+    /** Start an iteration.
      *  @exception IllegalActionException If the base class throws it.
      */
     public boolean prefire() throws IllegalActionException {
@@ -285,30 +288,41 @@ public class Pulse extends SequenceSource {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    // FIXME: What happens when these overflow?
+    // Count of the iterations.  This stops incrementing when
+    // we exceed the top of the indexes vector.
     private int _iterationCount = 0;
-    private int _indexRowCount = 0;
+
+    // Index of the next output in the values array.
     private int _indexColCount = 0;
 
+    // Zero token of the same type as in the values array.
     private Token _zero;
+
+    // Indicator of whether the iterations count matches one of the indexes.
     private boolean _match = false;
 
+    // Default value of the indexes.
     private int defaultIndexes[][] = {
         {0, 1}
     };
 
+    // Default value of the indexes parameter.
     private IntMatrixToken defaultIndexToken =
             new IntMatrixToken(defaultIndexes);
 
+    // Default value of the values array.
     private int defaultValues[][] = {
         {1,0}
     };
 
+    // Default value of the values parameter.
     private IntMatrixToken defaultValueToken =
             new IntMatrixToken(defaultValues);
 
     // Dummy variable which reflects the type of the elements of the
     // values parameter, so that the output type can be related to it.
+    // FIXME: When the type system handles aggregate types, this should
+    // go away.
     private Variable _dummy;
 }
 

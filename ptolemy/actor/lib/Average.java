@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -40,12 +40,14 @@ import ptolemy.data.*;
 Output the average of the inputs so far.
 One output is produced each time the actor fires.
 The inputs and outputs can be any token type that
-supports addition and division.  The output type is constrained
-to be the same as the input type.
+supports addition and division by an integer.  The output type is 
+constrained to be the same as the input type.
 <p>
 Note that the type system will fail to catch some errors. Static type
 checking may result in a resolved type that does not support addition
 and division.  In this case, a run-time error will occur.
+<p>
+NOTE: It would be nice if this actor had a reset input.
 
 @author Edward A. Lee
 @version $Id$
@@ -81,7 +83,8 @@ public class Average extends Transformer {
         return newobj;
     }
 
-    /** Compute the average of the input tokens so far and send the
+    /** Consume exactly one token from the the input
+     *  and compute the average of the input tokens so far. Send the
      *  result to the output.  It is assumed that there is at least
      *  one input token available, or a NoTokenException will be thrown.
      *  This is a runtime exception, so it need not be declared explicitly.
@@ -114,6 +117,7 @@ public class Average extends Transformer {
     public void initialize() throws IllegalActionException {
         super.initialize();
         _count = 1;
+        _accum = null;
     }
 
     /** Record the most recent input as part of the running average.

@@ -24,8 +24,8 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (cxh@eecs.berkeley.edu)
+@ProposedRating Green (eal@eecs.berkeley.edu)
+@AcceptedRating Yellow (mudit@eecs.berkeley.edu)
 */
 
 package ptolemy.actor.lib;
@@ -39,8 +39,9 @@ import java.util.Random;
 //////////////////////////////////////////////////////////////////////////
 //// RandomSource
 /**
-A base class for sources of random numbers.  This base class manages the
-seed.
+A base class for sources of random numbers.
+It uses the class java.util.Random.
+This base class manages the seed.
 
 @author Edward A. Lee
 @version $Id$
@@ -63,7 +64,7 @@ public abstract class RandomSource extends Source {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
     /** The seed that controls the random number generation.
      *  A seed of zero is interpreted to mean that no seed is specified,
