@@ -51,7 +51,7 @@ public class ModelServer {
     public static void main(String[] args) {
         try {
             // Initialize the ORB.
-            org.omg.CORBA.ORB orb = org.omg.CORBA.ORB.init(args,null);
+            org.omg.CORBA.ORB orb = org.omg.CORBA.ORB.init(args, null);
 
             //create a GoodDay obj
             NonlinearServant impl = new NonlinearServant();
