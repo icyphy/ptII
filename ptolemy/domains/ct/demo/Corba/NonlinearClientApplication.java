@@ -71,7 +71,7 @@ public class NonlinearClientApplication {
             Workspace workspace = new Workspace("NonlinearClient");
             _toplevel = new TypedCompositeActor(workspace);
             _toplevel.setName( "system");
-            Manager man = new Manager(ws, "Manager");
+            Manager man = new Manager(workspace, "Manager");
             _toplevel.setManager(man);
             _dir = new CTMultiSolverDirector(
                     _toplevel, "DIR");

@@ -108,7 +108,7 @@ public class SimpleModalController extends CTCompositeActor {
            
         State normal = new State(controller, "normal");
         State erroneous = new State(controller, "erroneous");
-        controller.initialStateName.setExpression("\"normal\"");
+        controller.initialStateName.setExpression("normal");
         
         Transition goWrong = new Transition(controller, "goWrong");
         normal.outgoingPort.link(goWrong);
@@ -125,14 +125,14 @@ public class SimpleModalController extends CTCompositeActor {
         
         // create director.
         HSDirector modalDirector = new HSDirector(this, "modalDirector");
-        modalDirector.controllerName.setExpression("\"Controller\"");
+        modalDirector.controllerName.setExpression("Controller");
         StreamListener dbl = new StreamListener();
         //modalDirector.addDebugListener(dbl);
 
         // create normal state refinement.
         CTCompositeActor normalRefinement = new
             CTCompositeActor(this, "normalRefinement");
-        normal.refinementName.setExpression("\"normalRefinement\"");
+        normal.refinementName.setExpression("normalRefinement");
 
         TypedIOPort normalLeadingInput = new 
             TypedIOPort(normalRefinement, "normalLeadingInput", true, false);
@@ -183,7 +183,7 @@ public class SimpleModalController extends CTCompositeActor {
         // erroneous state refinement
         CTCompositeActor erroRefinement = new
             CTCompositeActor(this, "erroRefinement");
-        erroneous.refinementName.setExpression("\"erroRefinement\"");
+        erroneous.refinementName.setExpression("erroRefinement");
 
         TypedIOPort erroForceOutput = new 
             TypedIOPort(erroRefinement, "erroForceOutput", false, true);

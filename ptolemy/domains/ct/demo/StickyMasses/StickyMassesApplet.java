@@ -128,7 +128,7 @@ public class StickyMassesApplet extends CTApplet {
             FSMActor ctrl = new FSMActor(hs, "Controller");
             State ctrlInc = new State(ctrl, "Separate");
             State ctrlDec = new State(ctrl, "Together");
-            ctrl.initialStateName.setToken(new StringToken("Separate"));
+            ctrl.initialStateName.setExpression("Separate");
             TypedIOPort ctrlInV1 = new TypedIOPort(ctrl, "V1");
             ctrlInV1.setInput(true);
             ctrlInV1.setTypeEquals(BaseType.DOUBLE);
@@ -155,18 +155,18 @@ public class StickyMassesApplet extends CTApplet {
             // HSInit hsinit1 = new HSInit(ctrlTr1, "P1", "P1");
             SetRefinementVariable hsinit1 =
                     new SetRefinementVariable(ctrlTr1, "act1");
-            hsinit1.variableName.setToken(new StringToken("P1.initialState"));
-            hsinit1.expression.setToken(new StringToken("P1_V"));
+            hsinit1.variableName.setExpression("P1.initialState");
+            hsinit1.expression.setExpression("P1_V");
             // HSInit hsinit4 = new HSInit(ctrlTr1, "V1", "(V1*1.0+V2*1.0)/2.0");
             SetRefinementVariable hsinit4 =
                     new SetRefinementVariable(ctrlTr1, "act4");
-            hsinit4.variableName.setToken(new StringToken("V1.initialState"));
-            hsinit4.expression.setToken(new StringToken("(V1_V*1.0+V2_V*1.0)/2.0"));
+            hsinit4.variableName.setExpression("V1.initialState");
+            hsinit4.expression.setExpression("(V1_V*1.0+V2_V*1.0)/2.0");
             // HSInit hsinit0 = new HSInit(ctrlTr1, "STI", "10.0");
             SetRefinementVariable hsinit0 =
                     new SetRefinementVariable(ctrlTr1, "act0");
-            hsinit0.variableName.setToken(new StringToken("STI.initialState"));
-            hsinit0.expression.setToken(new StringToken("10.0"));
+            hsinit0.variableName.setExpression("STI.initialState");
+            hsinit0.expression.setExpression("10.0");
             ResetRefinement reset1 = new ResetRefinement(ctrlTr1, "reset1");
 
             Transition ctrlTr2 = new Transition(ctrl, "Tr2");
@@ -177,30 +177,30 @@ public class StickyMassesApplet extends CTApplet {
             // HSInit hsinit2 = new HSInit(ctrlTr2, "P1", "P1");
             SetRefinementVariable hsinit2 =
                     new SetRefinementVariable(ctrlTr2, "act2");
-            hsinit2.variableName.setToken(new StringToken("P1.initialState"));
-            hsinit2.expression.setToken(new StringToken("P1_V"));
+            hsinit2.variableName.setExpression("P1.initialState");
+            hsinit2.expression.setExpression("P1_V");
             // HSInit hsinit3 = new HSInit(ctrlTr2, "P2", "P1");
             SetRefinementVariable hsinit3 =
                     new SetRefinementVariable(ctrlTr2, "act3");
-            hsinit3.variableName.setToken(new StringToken("P2.initialState"));
-            hsinit3.expression.setToken(new StringToken("P1_V"));
+            hsinit3.variableName.setExpression("P2.initialState");
+            hsinit3.expression.setExpression("P1_V");
             // HSInit hsinit5 = new HSInit(ctrlTr2, "V1", "V1");
             SetRefinementVariable hsinit5 =
                     new SetRefinementVariable(ctrlTr2, "act5");
-            hsinit5.variableName.setToken(new StringToken("V1.initialState"));
-            hsinit5.expression.setToken(new StringToken("V1_V"));
+            hsinit5.variableName.setExpression("V1.initialState");
+            hsinit5.expression.setExpression("V1_V");
             // HSInit hsinit6 = new HSInit(ctrlTr2, "V2", "V1");
             SetRefinementVariable hsinit6 =
                     new SetRefinementVariable(ctrlTr2, "act6");
-            hsinit6.variableName.setToken(new StringToken("V2.initialState"));
-            hsinit6.expression.setToken(new StringToken("V1_V"));
+            hsinit6.variableName.setExpression("V2.initialState");
+            hsinit6.expression.setExpression("V1_V");
             ResetRefinement reset2 = new ResetRefinement(ctrlTr2, "reset2");
 
             // the hybrid system director
             HSDirector hsdir = new HSDirector(hs, "HSDirector");
             //hs.setDirector(hsdir);
             //hsdir.setController(ctrl);
-            hsdir.controllerName.setToken(new StringToken("Controller"));
+            hsdir.controllerName.setExpression("Controller");
 
             //StreamListener dbl = new StreamListener();
             //hsdir.addDebugListener(dbl);
@@ -370,8 +370,8 @@ public class StickyMassesApplet extends CTApplet {
             //ctDecDir.addDebugListener(new StreamListener());
 
             // connect the hybrid system
-            ctrlInc.refinementName.setToken(new StringToken("Separate"));
-            ctrlDec.refinementName.setToken(new StringToken("Together"));
+            ctrlInc.refinementName.setExpression("Separate");
+            ctrlDec.refinementName.setExpression("Together");
             hs.connect(hsin1, ctIncF1);
             hs.connect(hsin2, ctIncF2);
             Relation hsR1 = hs.connect(ctIncOP1, ctDecOP1);

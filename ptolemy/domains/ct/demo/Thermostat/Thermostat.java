@@ -131,7 +131,7 @@ public void init() {
         //ctrl.addDebugListener(dbl);
         State ctrlInc = new State(ctrl, "Increasing");
         State ctrlDec = new State(ctrl, "Decreasing");
-        ctrl.initialStateName.setExpression("\"Increasing\"");
+        ctrl.initialStateName.setExpression("Increasing");
         Transition ctrlTr1 = new Transition(ctrl, "ctrlTr1");
         ctrlInc.outgoingPort.link(ctrlTr1);
         ctrlDec.incomingPort.link(ctrlTr1);
@@ -139,8 +139,8 @@ public void init() {
         // ctrlTr1.setInitEntry(true);
         SetRefinementVariable act0 =
             new SetRefinementVariable(ctrlTr1, "act0");
-        act0.expression.setToken(new StringToken("state_V"));
-        act0.variableName.setExpression("\"Integrator.initialState\"");
+        act0.expression.setExpression("state_V");
+        act0.variableName.setExpression("Integrator.initialState");
         ResetRefinement act1 =
             new ResetRefinement(ctrlTr1, "act1");
 
@@ -151,8 +151,8 @@ public void init() {
         //ctrlTr2.setInitEntry(true);
         SetRefinementVariable act2 =
             new SetRefinementVariable(ctrlTr2, "act2");
-        act2.expression.setToken(new StringToken("state_V"));
-        act2.variableName.setExpression("\"Integrator.initialState\"");
+        act2.expression.setExpression("state_V");
+        act2.variableName.setExpression("Integrator.initialState");
         ResetRefinement act3 =
             new ResetRefinement(ctrlTr2, "act3");
 
@@ -164,7 +164,7 @@ public void init() {
         // the hybrid system director
         HSDirector hsdir = new HSDirector(hs, "HSDirector");
         //hs.setDirector(hsdir);
-        hsdir.controllerName.setExpression("\"Controller\"");
+        hsdir.controllerName.setExpression("Controller");
         //hsdir.addDebugListener(dbl);
 
         CTCompositeActor ctInc = new CTCompositeActor(hs, "Increasing");
@@ -264,8 +264,8 @@ public void init() {
                 ctDec, "CTDecDir");
         //ctDecDir.addDebugListener(dbl);
 
-        ctrlInc.refinementName.setExpression("\"Increasing\"");
-        ctrlDec.refinementName.setExpression("\"Decreasing\"");
+        ctrlInc.refinementName.setExpression("Increasing");
+        ctrlDec.refinementName.setExpression("Decreasing");
 
         // connect hs
         TypedIORelation hsr1 = (TypedIORelation)hs.newRelation("HSr1");

@@ -155,7 +155,7 @@ public class HelicopterApplet extends CTApplet {
             suboutVz.setOutput(true);
 
             FSMActor hsctrl = new FSMActor(sub, "HSController");
-            _hsdir.controllerName.setToken(new StringToken("HSController"));
+            _hsdir.controllerName.setExpression("HSController");
 
             TypedIOPort hscInAct = new TypedIOPort(hsctrl, "inputAction");
             hscInAct.setInput(true);
@@ -175,17 +175,17 @@ public class HelicopterApplet extends CTApplet {
             State cruise1State = new State(hsctrl, "Cruise1State");
             State climbState = new State(hsctrl, "ClimbState");
             State cruise2State = new State(hsctrl, "Cruise2State");
-            hsctrl.initialStateName.setToken(new StringToken("HoverState"));
+            hsctrl.initialStateName.setExpression("HoverState");
             CTCompositeActor linHover = _createLinearizer(sub, 0);
             CTCompositeActor linAccel = _createLinearizer(sub, 1);
             CTCompositeActor linCruise1 = _createLinearizer(sub, 2);
             CTCompositeActor linClimb = _createLinearizer(sub, 3);
             CTCompositeActor linCruise2 = _createLinearizer(sub, 4);
-            hoverState.refinementName.setToken(new StringToken("HoverCTSub"));
-            accelState.refinementName.setToken(new StringToken("AccelCTSub"));
-            cruise1State.refinementName.setToken(new StringToken("Cruise1CTSub"));
-            climbState.refinementName.setToken(new StringToken("ClimbCTSub"));
-            cruise2State.refinementName.setToken(new StringToken("Cruise2CTSub"));
+            hoverState.refinementName.setExpression("HoverCTSub");
+            accelState.refinementName.setExpression("AccelCTSub");
+            cruise1State.refinementName.setExpression("Cruise1CTSub");
+            climbState.refinementName.setExpression("ClimbCTSub");
+            cruise2State.refinementName.setExpression("Cruise2CTSub");
             Transition tr1 = new Transition(hsctrl, "tr1");
             hoverState.outgoingPort.link(tr1);
             accelState.incomingPort.link(tr1);
