@@ -80,9 +80,11 @@ public class MainFileGenerator extends CodeGenerator {
                 + "Ptolemy C Code Generator. */\n\n");
         headerCode.append("/*Required include files. */\n");
         headerCode.append("#include <stdlib.h>\n");
+        headerCode.append("#include <stdio.h>\n");
         headerCode.append("#include <setjmp.h>\n");
         headerCode.append("#include \"name_defs.h\"\n");
         headerCode.append("#include \"strings.h\"\n");
+        headerCode.append("#include \"pccg_runtime.h\"\n");
         headerCode.append("#include \""
                 + CNames.classNameToFileName(source.getName())
                 + ".h\"\n");
@@ -100,6 +102,9 @@ public class MainFileGenerator extends CodeGenerator {
                     + "\"\n");
         }
         headerCode.append("\n");
+
+        // Define custom memory allocation routine.
+        headerCode.append("\n#define malloc(x) PCCG_malloc(x)\n\n");
 
         headerCode.append("#ifndef A_DEF_iA1_i1195259493_String\n"
                 + "#define A_DEF_iA1_i1195259493_String\n"
@@ -221,7 +226,8 @@ public class MainFileGenerator extends CodeGenerator {
         bodyCode.append("\n" + _indent(1) + "classStructInit();\n");
 
         // Call static initializers for required classes.
-        if (Options.v().getInt("pruneLevel") > 0) {
+        if ((Options.v().getInt("pruneLevel") > 0)
+            && (!Options.v().get("target").equals("C6000"))){
             bodyCode.append(_indent(1) + "staticInit();\n");
         }
         else {

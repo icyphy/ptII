@@ -47,7 +47,7 @@ key-value string pairs. Possible options are:
 
 <p>
 <b> pruneLevel </b> <br>
-<i> 0 </i> no code pruning done.
+<i> 0 </i> no code pruning done. <br>
 <i> 1 </i> Code Pruning done by InvokeGraphPruner.
 
 <p>
@@ -57,8 +57,15 @@ stored.
 </DL>
 
 <p>
-<b> gc </b>
-<i>true/false</i> Turns garbage collection on or off.
+<b> gcDir </b> <br>
+stores the path to the directory containing the garbage colloector. Not
+using this option turns the collector off.
+
+<p>
+<b> target </b> <br>
+<i> C6000 </i> The TMS320C6xxx series of processors. <br>
+The target platform. A blank refers to a generic unix-like system. This
+includes Cygwin installations on windows.
 
 @author Ankush Varma
 @version $Id$
@@ -73,7 +80,8 @@ public class Options {
         _optionTable.put("compileMode", "full");
         _optionTable.put("pruneLevel", "1");
         _optionTable.put("lib", "j2c_lib");
-        _optionTable.put("gc", "false");
+        _optionTable.put("gcDir", "");
+        _optionTable.put("target", "");
     }
 
 

@@ -66,8 +66,15 @@ public class MakeFileGenerator {
      *  The makefile will have the name <i>className</i>.make.
      */
     public static void generateMakeFile(String classPath, String className) {
+        // Check for special targets.
+        if (Options.v().get("target").equals("C6000")) {
+            MakefileGenerator_C6000.generateMakeFile(classPath, className);
+            return;
+        }
+
         // Garbage collection.
-        boolean gc = Options.v().getBoolean("gc");
+        String gcDir = Options.v().get("gcDir");
+        boolean gc = !(gcDir.equals(""));
 
         StringBuffer code = new StringBuffer();
 
@@ -90,13 +97,21 @@ public class MakeFileGenerator {
         if (gc) {
             code.append("\n# Garbage Collector.\n");
             code.append("GC_LIB = $(PTII)/lib/libgc.a\n");
-            code.append("GC_DIR = $(PTII)/vendors/gc/gc\n\n");
+            code.append("GC_DIR = " + gcDir + "\n\n");
         }
 
         // The -g flag is for gdb debugging.
-        //code.append("CFLAGS = -g -Wall -pedantic\n");
-        code.append("CFLAGS = -g -Wall -pedantic -Wno-trigraphs\n");
-        code.append("DEPEND = gcc -Wno-trigraphs -MM -I $(RUNTIME) -I $(LIB) "
+        //code.append("CFLAGS = -O2 -static -s -Wall -pedantic");
+        code.append("CFLAGS = -g -static -Wall -pedantic");
+        if (gc) {
+            code.append(" -DGC");
+        }
+        else {
+            code.append(" -UGC");
+        }
+        code.append("\n");
+
+        code.append("DEPEND = gcc -MM -I $(RUNTIME) -I $(LIB) "
                 + "-I $(NATIVE_BODIES) -I $(OVER_BODIES)");
         if (gc) {
             code.append(" -I $(GC_DIR)");
@@ -133,7 +148,7 @@ public class MakeFileGenerator {
         // Main Target.
         code.append("\n"+ className + ".exe : $(OBJECTS) $(LIB_FILE)\n");
 
-        code.append("\tgcc -g $(OBJECTS) $(LIB_FILE) ");
+        code.append("\tgcc $(CFLAGS) $(OBJECTS) $(LIB_FILE) ");
         if (gc) {
             code.append("$(GC_LIB) ");
         }
@@ -147,6 +162,7 @@ public class MakeFileGenerator {
             code.append(" -I $(GC_DIR)");
         }
         code.append(" $< -o $@ \n\n");
+
 
 
         // Library generation.

@@ -298,10 +298,9 @@ public class OverriddenMethodGenerator {
         _forceOverriddenMethods.add(
                 "<java.io.PrintStream: void write(java.lang.String)>");
 
-        /* FIXME: Remove this.
-           _forceOverriddenMethods.add(
-           "<java.lang.String: void <init>(char[])>");
-           // Overridden because java.lang.Object.clone() is not implemented yet.
+        /*_forceOverriddenMethods.add(
+                "<java.lang.String: void <init>(char[])>");
+        // Overridden because C needs \0 at the end of a string.
         */
 
         _forceOverriddenMethods.add(

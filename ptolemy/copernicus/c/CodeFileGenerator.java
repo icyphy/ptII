@@ -81,8 +81,16 @@ public class CodeFileGenerator extends CodeGenerator {
         _context.addIncludeFile("<setjmp.h>");
         _context.addIncludeFile("<stdlib.h>");
         _context.addIncludeFile("<stdio.h>");
-        _context.addIncludeFile("<sys/time.h>");
         _context.addIncludeFile("<math.h>");
+
+        // The location of time.h is different for the C6000
+        if (Options.v().get("target").equals("C6000")) {
+            _context.addIncludeFile("<time.h>");
+        }
+        else {
+            _context.addIncludeFile("<sys/time.h>");
+        }
+
 
         // This file cannot be auto-detected because its called from a
         // runtime method.
@@ -99,7 +107,7 @@ public class CodeFileGenerator extends CodeGenerator {
         }
 
         // Include file for garbage collection.
-        if (Options.v().getBoolean("gc")) {
+        if (!Options.v().get("gcDir").equals("")) {
             _context.addIncludeFile("\"include/gc.h\"");
         }
 
@@ -160,10 +168,8 @@ public class CodeFileGenerator extends CodeGenerator {
         bodyCode.append(_generateClassInitialization(source));
 
         headerCode.append(_generateIncludeDirectives() + "\n");
-        // Define memory allocation routine for garbage collection.
-        if (Options.v().getBoolean("gc")) {
-            headerCode.append("#define malloc(x) GC_MALLOC(x)\n");
-        }
+        // Define custom memory allocation routine.
+        headerCode.append("#define malloc(x) PCCG_malloc(x)\n");
 
         headerCode.append(_declareConstants() + "\n");
 

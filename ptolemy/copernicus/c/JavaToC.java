@@ -161,7 +161,8 @@ public class JavaToC {
                         || args[i].equals("-verbose")
                         || args[i].equals("-compileMode")
                         || args[i].equals("-pruneLevel")
-                        || args[i].equals("-gc")) {
+                        || args[i].equals("-gcDir")
+                        || args[i].equals("-target")) {
                     if (i<args.length-1) {
                         i++;
                         Options.v().put(args[i-1].substring(1), args[i]);
@@ -176,6 +177,20 @@ public class JavaToC {
             else {
                 // Its the name of a class to convert.
                 className=args[i];
+
+                // Autodetection of garbage collector.
+                // If the gcDir option is specified, check that it exists.
+                // If it does not exist, set it to "" in order to turn off
+                // garbage collection.
+                String gcDir = Options.v().get("gcDir");
+                if (!gcDir.equals("")) {
+                    if (!FileHandler.exists(gcDir)) {
+                        System.out.println("NO GC\n");
+                        Options.v().put("gcDir", "");
+                    }
+                }
+
+                // Process the class.
                 convert(classPath, className);
             }
         }

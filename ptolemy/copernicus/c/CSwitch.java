@@ -748,7 +748,9 @@ public class CSwitch implements JimpleValueSwitch, StmtSwitch {
                     + _pop());
         }
         else {
-            _push("\n" +indent + "return " + _pop());
+            _push("\n" + indent + "return "
+            + "(" + CNames.typeNameOf(_returnType) + ")"
+            + _pop());
         }
     }
 
