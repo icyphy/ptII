@@ -283,6 +283,15 @@ if [ "$PTJXTA_DIR" = "jxta" ]; then
     JXTA_JFLAG= 
 fi
 
+#### PSDF is Parameterized Synchronous Data Flow
+# PTPSDF_DIR is set to psdf if configure found synthesis.jar
+PTPSDF_DIR=@PTPSDF_DIR@
+PSDF_JARS=""
+if [ "$PTPSDF_DIR" = "psdf" ]; then 
+    PSDF_DIR="@PSDF_DIR@"
+    PSDF_JARS="${CLASSPATHSEPARATOR}${PSDF_DIR}/synthesis.jar"
+fi
+
 #### X10 is the interface library for power line communication, see
 # http://x10.homelinux.org/download.html
 # PTX10_DIR is set to x10 if configure found x10
@@ -309,7 +318,7 @@ fi
 # Note that CALTROP_JARS should be before SOOT_JARS because
 # CALTROP_JARS contains java_cup.jar and jasminclasses.jar contains
 # a version of java cup
-ALL_JAR="${DIVA_JAR}${JINI_JARS}${CALTROP_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${X10_JARS}${CHIC_JARS}"
+ALL_JAR="${DIVA_JAR}${JINI_JARS}${CALTROP_JARS}${COMMAPI_JARS}${SOOT_JARS}${PTJACL_JARS}${JOYSTICK_JARS}${JYTHON_JARS}${JXTA_JARS}${GIOTTO_JARS}${QTJAVA_JARS}${PSDF_JARS}${X10_JARS}${CHIC_JARS}"
 ALL_JFLAG="${DIVA_JFLAG} ${JINI_JFLAG}"
 
 #### Sandbox

@@ -370,6 +370,10 @@ PTMATLAB_DIR =	@PTMATLAB_DIR@
 # if $PTII/mescal was found
 PTMESCAL_DIR=	@PTMESCAL_DIR@
 
+# Set to psdf and used in $PTII/ptolemy/domains/makefile if
+# $PTII/lib/synthesis.jar was found
+PTPSDF_DIR =	@PTPSDF_DIR@
+
 # Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
 # QuickTime for Java was found.
 PTQUICKTIME_DIR =	@PTQUICKTIME_DIR@
