@@ -209,7 +209,7 @@ public abstract class Token implements Cloneable {
 
       public void setValue(String value) throws IllegalArgumentException {
           try {
-              Token result = getParser().parse(value);
+              Token result = getParser().parseExpression(value);
               this.fromString(result.toString());
           } catch (Exception ex) {
               throw new IllegalArgumentException("Cannot parse argument " + value);
@@ -226,7 +226,7 @@ public abstract class Token implements Cloneable {
 
       public void setValue(String value, NamedList params) throws IllegalArgumentException {
           try {
-              Token result = getParser().parse(value, params, null);
+              Token result = getParser().parseExpression(value, params, null);
               this.fromString(result.toString());
           } catch (Exception ex) {
               throw new IllegalArgumentException("Cannot parse argument "+value);
