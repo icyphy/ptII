@@ -28,7 +28,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-# This domain uses Java 3D, which can be downloaded from
+# This domain uses Java3D, which can be downloaded from
 # http://java.sun.com/products/java-media/3D/download.html
 
 ME =		ptolemy/domains/gr
