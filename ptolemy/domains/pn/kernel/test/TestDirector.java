@@ -64,6 +64,13 @@ public class TestDirector extends AtomicActor {
         output = new IOPort(this, "output", false, true);
     }
 
+    /** Clear the profile accumulated till now.
+     */
+    public void clearProfile() {
+        profile = "";
+    }
+
+
     /** Start a thread for an instance of the inner class "Notification", 
      *  obtain read access on the workspace 3 times, call wait(obj) on the 
      *  workspace, ask the inner class to get a write access on the workspace
@@ -94,6 +101,7 @@ public class TestDirector extends AtomicActor {
     public synchronized String getProfile() {
         return profile;
     }
+
 
     public IOPort output;
     public String profile = "";
