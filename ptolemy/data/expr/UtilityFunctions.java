@@ -76,7 +76,7 @@ public class UtilityFunctions {
     /** Get the string text contained in the specified file. For
      *  now this just looks in the directory where the parser
      *  is located, but will eventually (hopefully!) be able
-     *  to use environment variable, user names etc. in
+     *  to use environment variables, user names etc. in
      *  creating a file path. An empty string
      *  is returned if the specified file could not be located.
      *  FIXME: what do with format of file?, e.g. if file is

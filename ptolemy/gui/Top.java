@@ -68,7 +68,7 @@ line like:
 Derived classes may wish to modify the menus.  The File
 and Help menus are exposed as protected members.
 The File menu items in the _fileMenuItems protected array are,
-in order, Open, New, Save, SaveAs, Print, Close, and Exit.
+in order, Open File, Open URL, New, Save, SaveAs, Print, Close, and Exit.
 The Help menu items in the _helpMenuItems protected array are,
 in order, About and Help.
 <p>
@@ -87,16 +87,16 @@ example, violates this principle with adaptive menus).
 Instead of removing items from the menu, they can be disabled.
 For example, to disable the "Save" item in the File menu, do
 <pre>
-    _fileMenuItems[2].setEnabled(false);
+    _fileMenuItems[3].setEnabled(false);
 </pre>
 <p>
 Some menu items are provided, but are disabled by default.
 The "New" item, for example, can be enabled with
 <pre>
-    _fileMenuItems[1].setEnabled(true);
+    _fileMenuItems[2].setEnabled(true);
 </pre>
 A derived class that enables this menu item can populate the menu with
-submenu items.  This particular entry in the _fileMenuItems[1]
+submenu items.  This particular entry in the _fileMenuItems[2]
 is a JMenu, not just a JMenuItem, so it can have menu items
 added to it.
 <p>
@@ -181,7 +181,7 @@ public abstract class Top extends JFrame {
      */
     public void report(String message, Exception ex) {
         _statusBar.setMessage("Exception. " + message);
-        MessageHandler.error("Exception thrown.", ex);
+        MessageHandler.error(message, ex);
     }
 
     /** Set background color.  This overrides the base class to set the
@@ -226,28 +226,28 @@ public abstract class Top extends JFrame {
 
             // The mnemonic isn't set in the static initializer because
             // JMenu doesn't have an appropriate constructor.
-            _fileMenuItems[1].setMnemonic(KeyEvent.VK_N);
+            _fileMenuItems[2].setMnemonic(KeyEvent.VK_N);
             // New button disabled by default.
-            _fileMenuItems[1].setEnabled(false);
+            _fileMenuItems[2].setEnabled(false);
 
             // Save button = ctrl-s.
-            _fileMenuItems[2].setAccelerator(
+            _fileMenuItems[3].setAccelerator(
                     KeyStroke.getKeyStroke(KeyEvent.VK_S, Event.CTRL_MASK));
 
             // Print button = ctrl-p.
-            _fileMenuItems[4].setAccelerator(
+            _fileMenuItems[5].setAccelerator(
                     KeyStroke.getKeyStroke(KeyEvent.VK_P, Event.CTRL_MASK));
             // Print button disabled by default, unless this class implements
 	    // one of the JDK1.2 printing interfaces.
             if(this instanceof Printable ||
                     this instanceof Pageable) {
-		_fileMenuItems[4].setEnabled(true);
+		_fileMenuItems[5].setEnabled(true);
 	    } else {
-		_fileMenuItems[4].setEnabled(false);
+		_fileMenuItems[5].setEnabled(false);
 	    }
 
             // Close button = ctrl-w.
-            _fileMenuItems[5].setAccelerator(
+            _fileMenuItems[6].setAccelerator(
                     KeyStroke.getKeyStroke(KeyEvent.VK_W, Event.CTRL_MASK));
 
             FileMenuListener fml = new FileMenuListener();
@@ -298,7 +298,8 @@ public abstract class Top extends JFrame {
 
     /** Items in the file menu. */
     protected JMenuItem[] _fileMenuItems = {
-        new JMenuItem("Open", KeyEvent.VK_O),
+        new JMenuItem("Open File", KeyEvent.VK_O),
+        new JMenuItem("Open URL", KeyEvent.VK_U),
         new JMenu("New"),
         new JMenuItem("Save", KeyEvent.VK_S),
         new JMenuItem("SaveAs", KeyEvent.VK_A),
@@ -430,11 +431,11 @@ public abstract class Top extends JFrame {
     }
 
     /** Open a file dialog to identify a file to be opened, and then call
-     *  _read() to open the file.x
+     *  _read() to open the file.
      */
     protected void _open() {
         JFileChooser fileDialog = new JFileChooser();
-        fileDialog.setDialogTitle("Select a model file");
+        fileDialog.setDialogTitle("Select a model file.");
 
         if (_directory != null) {
             fileDialog.setCurrentDirectory(_directory);
@@ -452,10 +453,33 @@ public abstract class Top extends JFrame {
         if (returnVal == JFileChooser.APPROVE_OPTION) {
 	    _directory = fileDialog.getCurrentDirectory();
             try {
+                // NOTE: It would be nice if it were possible to enter
+                // a URL in the file chooser, but Java's file chooser does
+                // not permit this, regrettably.  So we have a separate
+                // menu item for this.
                 File file = fileDialog.getSelectedFile().getCanonicalFile();
                 _read(file.toURL());
             } catch (Exception ex) {
                 report("Error reading input", ex);
+            }
+        }
+    }
+
+    /** Open a dialog to enter a URL, and then invoke
+     *  _read() to open the URL.
+     */
+    protected void _openURL() {
+        Query query = new Query();
+        query.setTextWidth(60);
+        query.addLine("url", "URL", _lastURL);
+        ComponentDialog dialog = new ComponentDialog(this, "Open URL", query);
+        if (dialog.buttonPressed().equals("OK")) {
+            _lastURL = query.stringValue("url");
+            try {
+                URL url = new URL(_lastURL);
+                _read(url);
+            } catch (Exception ex) {
+                report("Error reading URL:\n" + _lastURL, ex);
             }
         }
     }
@@ -569,6 +593,9 @@ public abstract class Top extends JFrame {
     // The input file.
     private File _file = null;
 
+    // The most recently entered URL in Open URL.
+    private String _lastURL = "http://ptolemy.eecs.berkeley.edu/";
+
     // Indicator that the data represented in the window has been modified.
     private boolean _modified = false;
 
@@ -612,7 +639,8 @@ public abstract class Top extends JFrame {
         public void actionPerformed(ActionEvent e) {
             JMenuItem target = (JMenuItem)e.getSource();
             String actionCommand = target.getActionCommand();
-            if (actionCommand.equals("Open")) _open();
+            if (actionCommand.equals("Open File")) _open();
+            else if (actionCommand.equals("Open URL")) _openURL();
             else if (actionCommand.equals("Save")) _save();
             else if (actionCommand.equals("SaveAs")) _saveAs();
             else if (actionCommand.equals("Print")) _print();

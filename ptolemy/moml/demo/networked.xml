@@ -25,7 +25,7 @@ by a higher frequency one (the carrier).</doc>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
            <svg>
-           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model forms the product of two sinusoids.</text>
+           <text x="20" style="font-size:14; font-family:sanserif; fill:blue" y="20">This model forms the product of two signals.</text>
            </svg>
            </configure>
         </property>
@@ -39,7 +39,8 @@ by a higher frequency one (the carrier).</doc>
            <text x="20" style="font-size:12; font-family:sanserif; fill:black" y="20">The models with the red outlines
 are hierarchical.  Right click and
 select "Look Inside" to see their
-inner definition.</text>
+inner definition. The upper one
+is defined remotely.</text>
            </svg>
            </configure>
         </property>

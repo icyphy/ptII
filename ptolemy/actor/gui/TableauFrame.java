@@ -288,12 +288,12 @@ public abstract class TableauFrame extends Top {
                     item.setActionCommand(name);
                     item.setMnemonic(name.charAt(0));
                     item.addActionListener(menuListener);
-                    ((JMenu)_fileMenuItems[1]).add(item);
+                    ((JMenu)_fileMenuItems[2]).add(item);
                 }
             }
             if (canCreateBlank) {
 		// Enable the "New" item in the File menu.
-		_fileMenuItems[1].setEnabled(true);
+		_fileMenuItems[2].setEnabled(true);
 	    }
 
             // Next do the View menu.
