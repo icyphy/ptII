@@ -259,25 +259,9 @@ public class ProcessDirector extends Director {
             }
             
             // Now wake up all the receivers.
-            try {
-                NotifyThread obj = new NotifyThread(_pausedReceivers);
-                //FIXME FIXME FIXME: Maybe NotifyThread should be derived 
-                //from thread
-                Thread thre = new Thread(obj);
-                synchronized(obj) {
-                    thre.start();
-                    obj.wait();
-                }
-            } catch (InterruptedException ex) {
-                System.out.println("ProcessDirector: unable to pause all " +
-                        "paused receivers due to interruption.");
-            }
-            
-            // A linked list of pausedreceivers is returned as it might not be 
-            // possible to resume these receivers otherwise if they have been
-            // removed from the hierarchy. They still need to be awakened so 
-            // that the deadlocks can be detected and threads terminated.
-	    return; 
+            (new NotifyThread(_pausedReceivers)).start();
+
+            return; 
 	} finally {
 	    workspace().doneReading();
 	}
@@ -285,12 +269,11 @@ public class ProcessDirector extends Director {
 
     /** Resumes the simulation. If the simulation is not paused do nothing.
      */
-    public void setResumeRequested() {
-        synchronized(this) {
-            if (!_pauseRequested) {
-                return;
-            }
+    public synchronized void setResumeRequested() {
+        if (!_pauseRequested) {
+            return;
         }
+       
 	Enumeration receivers = _pausedReceivers.elements();
 	while (receivers.hasMoreElements()) {
 	    ProcessReceiver rec = (ProcessReceiver)receivers.nextElement();
@@ -298,24 +281,11 @@ public class ProcessDirector extends Director {
 	}
 
         // Now wake up all the receivers.
-        try {
-            NotifyThread obj = new NotifyThread(_pausedReceivers);
-            //FIXME:
-            Thread thre = new Thread(obj);
-            synchronized(obj) {
-                thre.start();
-                obj.wait();
-            }
-        } catch (InterruptedException ex) {
-            System.out.println("ProcessDirector: unable to resume all " +
-                    "paused receivers due to interruption.");
-        }
-        synchronized (this) {
-            _pausedReceivers.clear();
-            _actorsPaused= 0;
-            _pauseRequested = false;
-        }
-        // FIXME: notify receivers.
+        (new NotifyThread(_pausedReceivers)).start();
+      
+        _pausedReceivers.clear();
+        _actorsPaused= 0;
+        _pauseRequested = false;
     }
 
     /** Terminate all threads under control of this director immediately.
@@ -351,7 +321,7 @@ public class ProcessDirector extends Director {
      **  @exception IllegalActionException if a method accessing the topology
      *   throws it.
      */
-    public void wrapup() throws IllegalActionException {
+    public synchronized void wrapup() throws IllegalActionException {
 	CompositeActor cont = (CompositeActor)getContainer();
         Enumeration allMyActors = cont.deepGetEntities();
         
@@ -361,53 +331,40 @@ public class ProcessDirector extends Director {
         LinkedList recs = new LinkedList();
 
         while (allMyActors.hasMoreElements()) {
-            try {
-                Actor actor = (Actor)allMyActors.nextElement();
-                actorPorts = actor.inputPorts();
-                while (actorPorts.hasMoreElements()) {
-                    IOPort port = (IOPort)actorPorts.nextElement();
-                    // Setting finished flag in the receivers.
-                    Receiver[][] receivers = port.getReceivers();
-                    for (int i=0; i<receivers.length; i++) {
-                        for (int j=0; j<receivers[i].length; j++) {
-                            nextRec = (ProcessReceiver)receivers[i][j];
-                            nextRec.setFinish();
-                            recs.insertFirst(nextRec);
-                        }
+            Actor actor = (Actor)allMyActors.nextElement();
+            actorPorts = actor.inputPorts();
+            while (actorPorts.hasMoreElements()) {
+                IOPort port = (IOPort)actorPorts.nextElement();
+                // Setting finished flag in the receivers.
+                Receiver[][] receivers = port.getReceivers();
+                for (int i=0; i<receivers.length; i++) {
+                    for (int j=0; j<receivers[i].length; j++) {
+                        nextRec = (ProcessReceiver)receivers[i][j];
+                        nextRec.setFinish();
+                        recs.insertFirst(nextRec);
                     }
                 }
-            
-                // If this director is controlling a CompositeActor with 
-                // output ports, need to set the simulationFinished flag 
-                // there as well. 
-                actorPorts  = cont.outputPorts();
-                while (actorPorts.hasMoreElements()) {
-                    IOPort port = (IOPort)actorPorts.nextElement();
-                    // Terminating the ports and hence the star
-                    Receiver[][] receivers = port.getReceivers();
-                    for (int i=0; i<receivers.length; i++) {
-                        for (int j=0; j<receivers[i].length; j++) {
-                            nextRec = (ProcessReceiver)receivers[i][j];
-                            nextRec.setFinish();
-                            recs.insertFirst(nextRec);
-                        }
-                    }
-                }
-
-                // Now wake up all the receivers.
-                NotifyThread obj = new NotifyThread(recs);
-                //FIXME:
-                Thread thre = new Thread(obj);
-                synchronized(obj) {
-                    thre.start();
-                    obj.wait();
-                }
-            } catch (InterruptedException ex) {
-                // FIXME: should not catch general exception
-                System.out.println("ProcessDirector: unable to terminate " +
-                        "all actors because: " + ex.getClass().getName() +
-                        ", message: " + ex.getMessage());
             }
+            
+            // If this director is controlling a CompositeActor with 
+            // output ports, need to set the simulationFinished flag 
+            // there as well. 
+            actorPorts  = cont.outputPorts();
+            while (actorPorts.hasMoreElements()) {
+                IOPort port = (IOPort)actorPorts.nextElement();
+                // Terminating the ports and hence the star
+                Receiver[][] receivers = port.getReceivers();
+                for (int i=0; i<receivers.length; i++) {
+                    for (int j=0; j<receivers[i].length; j++) {
+                        nextRec = (ProcessReceiver)receivers[i][j];
+                        nextRec.setFinish();
+                        recs.insertFirst(nextRec);
+                        }
+                }
+            }
+            
+            // Now wake up all the receivers.
+            (new NotifyThread(recs)).start();
         }
         return;
     } 
