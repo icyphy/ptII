@@ -132,43 +132,40 @@ public class SDFScheduler extends Scheduler{
     ////                        private methods                    ////
 
     /** Get the number of tokens that are produced or consumed 
-     *  on the designated port of this Actor.   Return zero if
-     *  setTokenConsumptionRate has not been called on this port.
-     *
-     *  @return The number of tokens consumed on the port, as supplied by 
-     *  setTokenConsumptionRate, or zero if setTokenConsumptionRate has 
-     *  not been called.
+     *  on the designated port of this Actor, as supplied by 
+     *  by the port's "Token Consumption Rate" Parameter.   If the parameter
+     *  does not exist, then assume the actor is homogenous and return a
+     *  rate of 1.
      */
     protected int _getTokenConsumptionRate(IOPort p) {
         Parameter param = (Parameter)p.getAttribute("Token Consumption Rate");
+        if(param == null) return 1;
         return ((IntToken)param.getToken()).intValue();
     }
 
-    /** Get the number of tokens that are produced or consumed 
-     *  on the designated port of this Actor during each firing.   
-     *  Return zero if _setTokenProductionRate has not been called
-     *   on this IOPort.
-     *
-     *  @return The number of tokens produced on the port, as supplied by 
-     *  _setTokenProductionRate, or zero if _setTokenProductionRate has not been
-     *  called
+    /** 
+     * Get the number of tokens that are produced on this output port
+     * during initialization, as supplied by 
+     * by the port's "Token Init Production" parameter.   If the parameter
+     * does not exist, then assume the actor is zero-delay and return
+     * a value of zero.
      */
     protected int _getTokenInitProduction(IOPort p) {
         Parameter param = (Parameter)p.getAttribute("Token Init Production");
+        if(param == null) return 0;
         return ((IntToken)param.getToken()).intValue();
     }
 
     /** Get the number of tokens that are produced or consumed 
-     *  on the designated port of this Actor during each firing.   
-     *  Return zero if _setTokenProductionRate has not been called
-     *   on this IOPort.
-     *
-     *  @return The number of tokens produced on the port, as supplied by 
-     *  _setTokenProductionRate, or zero if _setTokenProductionRate has not been
-     *  called
+     *  on the designated port of this Actor during each firing, 
+     *  as supplied by 
+     *  by the port's "Token Consumption Rate" Parameter.   If the parameter
+     *  does not exist, then assume the actor is homogenous and return a
+     *  rate of 1..   
      */
     protected int _getTokenProductionRate(IOPort p) {
         Parameter param = (Parameter)p.getAttribute("Token Production Rate");
+        if(param == null) return 1;
         return ((IntToken)param.getToken()).intValue();
     }
 
