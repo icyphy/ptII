@@ -775,7 +775,7 @@ public class Manager extends NamedObj implements Runnable {
      *  execution stop and exit gracefully and immediately.  The
      *  result of this is non-deterministic and determining the
      *  exact state of the model after this method is called is difficult.
-     *  However, it is guaraunteed that the model will be be in a
+     *  However, it is guaranteed that the model will be be in a
      *  state where it can be executed again.  Because of this, it
      *  is not generally useful to call this method from within an actor.
      *  This method will result in stop() being called on the top level

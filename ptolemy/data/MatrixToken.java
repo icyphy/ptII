@@ -893,7 +893,7 @@ public abstract class MatrixToken extends Token {
     ////                         protected methods                 ////
 
     /** Return a new token whose value is the value of the argument
-     *  Token added to the value of this Token.  It is guaraunteed by
+     *  Token added to the value of this Token.  It is guaranteed by
      *  the caller that the type of the argument is the same as the
      *  type of this class, and that the matrices have appropriate
      *  dimensions.  This method should be overridden in derived
@@ -912,7 +912,7 @@ public abstract class MatrixToken extends Token {
 
     /** Return a new token whose value is the value of the argument
      *  Token added to the value of each element of this Token. It is
-     *  guaraunteed by the caller that the type of the argument is the same as the type
+     *  guaranteed by the caller that the type of the argument is the same as the type
      *  of each element of this class.
      *  @param rightArgument The token to add to this token.
      *  @exception IllegalActionException If this operation is not
@@ -926,7 +926,7 @@ public abstract class MatrixToken extends Token {
     }
 
     /** Test for closeness of the values of this Token and the
-     *  argument Token.  It is guaraunteed by the caller that the type
+     *  argument Token.  It is guaranteed by the caller that the type
      *  and dimensions of the argument is the same as the type of this
      *  class.  This method should be overridden in derived classes to
      *  provide type-specific operation and return a token of the
@@ -944,7 +944,7 @@ public abstract class MatrixToken extends Token {
     }
 
     /** Test for equality of the values of this Token and the argument
-     *  Token.  It is guaraunteed by the caller that the type and
+     *  Token.  It is guaranteed by the caller that the type and
      *  dimensions of the argument is the same as the type of this
      *  class.  This method should be overridden in derived classes to
      *  provide type-specific operation and return a token of the
@@ -962,7 +962,7 @@ public abstract class MatrixToken extends Token {
 
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.  It is
-     *  guaraunteed by the caller that the type of the argument is the
+     *  guaranteed by the caller that the type of the argument is the
      *  same as the type of this class, and that the matrices have
      *  appropriate dimensions.  This method should be overridden in
      *  derived classes to provide type-specific operation and return
@@ -996,7 +996,7 @@ public abstract class MatrixToken extends Token {
 
     /** Return a new token whose value is the value of the argument
      *  token subtracted from the value of this token.  It is
-     *  guaraunteed by the caller that the type of the argument is the
+     *  guaranteed by the caller that the type of the argument is the
      *  same as the type of this class, and that the matrices have
      *  appropriate dimensions.  This method should be overridden in
      *  derived classes to provide type-specific operation and return
@@ -1014,7 +1014,7 @@ public abstract class MatrixToken extends Token {
 
     /** Return a new token whose value is the value of the argument
      *  Token subtracted from the value of each element of this
-     *  Token. It is guaraunteed by the caller that the type of the
+     *  Token. It is guaranteed by the caller that the type of the
      *  argument is the same as the type of each element of this
      *  class.
      *  @param rightArgument The token to subtract from this token.
@@ -1030,7 +1030,7 @@ public abstract class MatrixToken extends Token {
 
     /** Return a new token whose value is the value of each element of
      *  this Token subtracted from the value the argument Token. It is
-     *  guaraunteed by the caller that the type of the argument is the
+     *  guaranteed by the caller that the type of the argument is the
      *  same as the type of each element of this class.
      *  @param rightArgument The token to subtract this token from.
      *  @exception IllegalActionException If this operation is not
@@ -1047,7 +1047,7 @@ public abstract class MatrixToken extends Token {
     ////                         private methods                   ////
 
     /** Return a new token whose value is the value of the argument
-     *  Token added to the value of this Token. It is guaraunteed by
+     *  Token added to the value of this Token. It is guaranteed by
      *  the caller that the type of the argument is the same as the
      *  type of this class.  This method defers to the _add method
      *  that takes a MatrixToken.  Derived classes should override
@@ -1072,7 +1072,7 @@ public abstract class MatrixToken extends Token {
     }
 
     /** Test for closeness of the values of this Token and the
-     *  argument Token.  It is guaraunteed by the caller that the type
+     *  argument Token.  It is guaranteed by the caller that the type
      *  of the argument is the same as the type of this class.  This
      *  class overrides the base class to return BooleanToken.FALSE if
      *  the dimensions of this token and the given token are not
@@ -1097,7 +1097,7 @@ public abstract class MatrixToken extends Token {
     }
 
     /** Test for equality of the values of this Token and the argument
-     *  Token.  It is guaraunteed by the caller that the type of the
+     *  Token.  It is guaranteed by the caller that the type of the
      *  argument is the same as the type of this class.  This class
      *  overrides the base class to return BooleanToken.FALSE if the
      *  dimensions of this token and the given token are not
@@ -1122,7 +1122,7 @@ public abstract class MatrixToken extends Token {
 
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.  It is
-     *  guaraunteed by the caller that the type of the argument is the
+     *  guaranteed by the caller that the type of the argument is the
      *  same as the type of this class.  This method defers to the
      *  _multiply method that takes a MatrixToken.  Derived classes
      *  should override that method instead to provide type-specific
@@ -1148,7 +1148,7 @@ public abstract class MatrixToken extends Token {
 
     /** Return a new token whose value is the value of the argument
      *  token subtracted from the value of this token.  It is
-     *  guaraunteed by the caller that the type of the argument is the
+     *  guaranteed by the caller that the type of the argument is the
      *  same as the type of this class and has the same units as this
      *  token.  This method defers to the _subtract method that takes
      *  a MatrixToken.  Derived classes should override that method

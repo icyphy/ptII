@@ -467,7 +467,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
     ////                         protected methods                 ////
 
     /** Return a new token whose value is the value of the argument
-     *  token added to the value of this token.  It is guaraunteed by
+     *  token added to the value of this token.  It is guaranteed by
      *  the caller that the type of the argument is the same as the
      *  type of this class.  This method should be overridden in
      *  derived classes to provide type specific actions for add.
@@ -482,7 +482,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
             throws IllegalActionException;
 
     /** Return a new token whose value is the value of this token
-     *  divided by the value of the argument token.  It is guaraunteed
+     *  divided by the value of the argument token.  It is guaranteed
      *  by the caller that the type of the argument is the same as the
      *  type of this class.  This method should be overridden in
      *  derived classes to provide type specific actions for divide.
@@ -496,7 +496,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
             throws IllegalActionException;
 
     /** Test for closeness of the values of this token and the
-     *  argument token.  It is guaraunteed by the caller that the type
+     *  argument token.  It is guaranteed by the caller that the type
      *  of the argument is the same as the type of this class.  This
      *  method should be overridden in derived classes to provide type
      *  specific actions for divide.
@@ -510,7 +510,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
             throws IllegalActionException;
 
     /** Test for equality of the values of this token and the argument
-     *  token.  It is guaraunteed by the caller that the type of the
+     *  token.  It is guaranteed by the caller that the type of the
      *  argument is the same as the type of this class.  This method
      *  should be overridden in derived classes to provide type
      *  specific actions for divide.
@@ -523,7 +523,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
             throws IllegalActionException;
 
     /** Return a new token whose value is the value of this token
-     *  modulo the value of the argument token.  It is guaraunteed by
+     *  modulo the value of the argument token.  It is guaranteed by
      *  the caller that the type of the argument is the same as the
      *  type of this class.  This method should be overridden in
      *  derived classes to provide type specific actions for modulo.
@@ -538,7 +538,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
 
     /** Return a new token whose value is the value of this token
      *  multiplied by the value of the argument token.  It is
-     *  guaraunteed by the caller that the type of the argument is the
+     *  guaranteed by the caller that the type of the argument is the
      *  same as the type of this class.  This method should be
      *  overridden in derived classes to provide type specific actions
      *  for multiply.
@@ -553,7 +553,7 @@ public abstract class AbstractNotConvertibleToken extends Token {
 
     /** Return a new token whose value is the value of the argument
      *  token subtracted from the value of this token.  It is
-     *  guaraunteed by the caller that the type of the argument is the
+     *  guaranteed by the caller that the type of the argument is the
      *  same as the type of this class.  This method should be
      *  overridden in derived classes to provide type specific actions
      *  for subtract.
