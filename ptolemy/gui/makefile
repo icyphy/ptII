@@ -51,8 +51,7 @@ JSRCS = \
 	BasicJApplet.java \
 	Message.java \
 	Query.java \
-	QueryListener.java \
-	Slider.java 
+	QueryListener.java
 
 EXTRA_SRCS =	$(JSRCS)
 

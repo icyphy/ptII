@@ -35,12 +35,8 @@ import java.awt.event.*;
 import java.util.*;
 import java.lang.IllegalArgumentException;
 import javax.swing.*;
-
-import ptolemy.kernel.*;
-import ptolemy.kernel.event.*;
-import ptolemy.kernel.util.*;
-import ptolemy.data.*;
-import ptolemy.data.expr.*;
+import javax.swing.event.*;
+import javax.swing.event.ChangeListener;
 
 import collections.LinkedList;
 
@@ -133,23 +129,23 @@ public class Query extends JPanel {
     }
 
     /** FIXME: Create a slider with the specified name, label, and default 
-     *  value.  To set the label alignment use setAlignment().
+     *  value.
      *  @param name The name used to identify the slider.
      *  @param label The label to attach to the slider.
      *  @param defaultValue Default value of slider.
      */
     public void addSlider(String name, String label, int defaultValue) {
-        JLabel lbl = new JLabel(label, _alignment);
-        Slider slider = new Slider();
-        try {
-            slider.setNewValue(defaultValue);
-        } catch (ChangeFailedException ex) {}
+        JLabel lbl = new JLabel(label + ": ");
+        JSlider slider = new JSlider();
+        slider.setValue(defaultValue);
+        _addPair(lbl, slider);
+        _entries.put(name, slider);
+        slider.addChangeListener(new SliderListener(name));
     }
 
     /** FIXME: Create a slider with the specified name, label, default 
      *  value, maximum, and minimum.  To set the minimum or maximum value 
-     *  of the slider, or the label alignment, use setNewMin(), 
-     *  setNewMax(), and setAlignment().
+     *  of the slider,  use setMinimum() or setMaximum().
      *  @param name The name used to identify the slider.
      *  @param label The label to attach to the slider.     
      *  @param defaultValue Default value of slider.
@@ -157,14 +153,12 @@ public class Query extends JPanel {
      *  @param min Minimum value of slider.
      */
     public void addSlider(String name, String label, int defaultValue,
-            int max, int min) {
-        JLabel lbl = new JLabel(label, _alignment);
-        Slider slider = new Slider();
-        try {
-            slider.setNewMax(max);
-            slider.setNewMin(min);
-            slider.setNewValue(defaultValue);
-        } catch (ChangeFailedException ex) {}
+            int min, int max) {
+        JLabel lbl = new JLabel(label + ": ");
+        JSlider slider = new JSlider(min, max, defaultValue);
+        _addPair(lbl, slider);
+        _entries.put(name, slider);
+        slider.addChangeListener(new SliderListener(name));
     }
 
     /** Get the current value in the entry with the given name
@@ -250,19 +244,14 @@ public class Query extends JPanel {
         }
         if (result instanceof JTextField) {
             return (new Integer(((JTextField)result).getText())).intValue();
+        } else if (result instanceof JSlider) {
+            return (new Integer(((JSlider)result).getValue())).intValue();
         } else {
             throw new IllegalArgumentException("Item named \"" +
             name + "\" is not a text line or slider, and hence "
             + "cannot be converted to "
             + "an integer value.");
         }
-    }
-
-    /** FIXME: Specify the preferred alignment of the slider's label.
-     *  @param max The preferred alignment.
-     */
-    public void setAlignment(int num) {
-        _alignment = num;
     }
 
     /** Set the background color for all the widgets.
@@ -348,6 +337,8 @@ public class Query extends JPanel {
             } else {
                 return "false";
             }
+        } else if (result instanceof JSlider) {
+            return (new Integer(((JSlider)result).getValue())).toString();
         } else {
             throw new IllegalArgumentException("Query class cannot generate"
             + " a string representation for entries of type "
@@ -359,9 +350,6 @@ public class Query extends JPanel {
     ////                         public variables                  ////
 
     public static final int DEFAULT_ENTRY_WIDTH = 12;
-
-    // FIXME
-    public static final int DEFAULT_ALIGNMENT = JLabel.CENTER;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -423,9 +411,6 @@ public class Query extends JPanel {
     // The width of the text boxes.
     private int _width = DEFAULT_ENTRY_WIDTH;
 
-    // FIXME: The alignment of the slider's label.
-    private int _alignment = DEFAULT_ALIGNMENT;  
-
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
@@ -451,6 +436,19 @@ public class Query extends JPanel {
 
         /** Call all registered QueryListeners. */
         public void itemStateChanged(ItemEvent e) {
+            _notifyListeners(_name);
+        }
+        private String _name;
+    }
+
+    /** Listener for changes in slider.
+     */
+    class SliderListener implements ChangeListener {
+        public SliderListener(String name) {
+            _name = name;
+        }
+        /** Call all registered QueryListeners. */
+        public void stateChanged(ChangeEvent event) {
             _notifyListeners(_name);
         }
         private String _name;
