@@ -33,6 +33,7 @@ import ptolemy.domains.ct.kernel.util.*;
 import ptolemy.kernel.util.*;
 import ptolemy.kernel.*;
 import ptolemy.actor.*;
+import ptolemy.actor.sched.*;
 import ptolemy.data.expr.*;
 import ptolemy.data.*;
 import java.util.*;
