@@ -47,15 +47,15 @@ if {[info procs enumToObjects] == "" } then {
 ######################################################################
 ####
 #
-test CSPActor-2.1 {} {
+test CSPActor-2.1 {ConditionalReceive() } {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
     set manager [java::new ptolemy.actor.Manager $wspc "manager"]
     set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
     $topLevel setDirector $dir
     $topLevel setManager $manager
-    set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPut $topLevel "actorA" 1] 
-    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPPut $topLevel "actorB" 1] 
+    set actorA [java::new ptolemy.domains.csp.kernel.test.CSPPutToken $topLevel "actorA" 1] 
+    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPPutToken $topLevel "actorB" 1] 
     set actorC [java::new ptolemy.domains.csp.kernel.test.CSPCondGet $topLevel "actorC" 2] 
 
     set portA [$actorA getPort "output"]
@@ -79,6 +79,44 @@ test CSPActor-2.1 {} {
     list $winner 
 
 } {1}
+
+######################################################################
+####
+#
+test CSPActor-2.2 {ConditionalSend() } {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set manager [java::new ptolemy.actor.Manager $wspc "manager"]
+    set dir [java::new ptolemy.domains.csp.kernel.CSPDirector $wspc "director"]
+    $topLevel setDirector $dir
+    $topLevel setManager $manager
+    set actorA [java::new ptolemy.domains.csp.kernel.test.CSPCondPut $topLevel "actorA" 1 2] 
+    set actorB [java::new ptolemy.domains.csp.kernel.test.CSPGetToken $topLevel "actorB" 1] 
+    set actorC [java::new ptolemy.domains.csp.kernel.test.CSPGetToken $topLevel "actorC" 1] 
+
+    set portA [$actorA getPort "output"]
+    set portB [$actorB getPort "input"]
+    set portC [$actorC getPort "input"]
+
+    set token [java::new ptolemy.data.Token]
+
+    $actorA setToken $token 0 
+    $actorA setTruth 1 true
+
+    set rel [$topLevel connect $portA $portB]
+    set rel [$topLevel connect $portA $portC]
+
+    $manager run
+
+    set winner [$actorA isWinner 1]
+
+    list $winner 
+
+} {1}
+
+
+
+
 
 
 
