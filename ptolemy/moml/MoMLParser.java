@@ -2414,7 +2414,7 @@ public class MoMLParser extends HandlerBase {
                 attr.appendMoMLDescription(
                         "<delete" + type + " name=\"" + deleted + "\"/>");
             } catch (KernelException ex) {
-                throw new InternalErrorException(container, ex
+                throw new InternalErrorException(container, ex,
                         "Unable to record deletion from class!");
             }
         }
@@ -2506,7 +2506,7 @@ public class MoMLParser extends HandlerBase {
                 }
             } catch (KernelException ex) {
                 throw new InternalErrorException(container, ex,
-                        "Unable to record extension to class!);
+                        "Unable to record extension to class!");
             }
         }
     }

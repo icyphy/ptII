@@ -283,7 +283,7 @@ public class MoMLWriter extends Writer {
      *  the given object defers to.
      */
     public NamedObj _findDeferredInstance(NamedObj object) {
-        // System.out.println("findDeferred =" + object.getFullName());
+        // System.out.println("findDeferred = " + object.getFullName());
         NamedObj deferredObject = null;
         NamedObj.MoMLInfo info = object.getMoMLInfo();
         if (info.deferTo != null) {
@@ -359,7 +359,7 @@ public class MoMLWriter extends Writer {
                     // It really would be nice if all of
                     // our actors had workspace constructors,
                     // but version 1.0 only specified the
-                    // (container,name) constructor, and
+                    // (container, name) constructor, and
                     // now we're stuck with it.
                     String source = "<entity name=\"parsedClone\""
                         + "class=\"ptolemy.kernel.CompositeEntity\">\n"
@@ -444,11 +444,11 @@ public class MoMLWriter extends Writer {
             }
             context = (NamedObj)context.getContainer();
         }
-        // System.out.println("parserAttribute =" + attribute);
+        // System.out.println("parserAttribute = " + attribute);
 
         if (attribute != null) {
             MoMLParser parser = attribute.getParser();
-            return parser._searchForClass(deferredClass,
+            return parser.searchForClass(deferredClass,
                     source);
         }
         return null;
@@ -565,7 +565,8 @@ public class MoMLWriter extends Writer {
                             // first clone it, since we are going to have to
                             // run configure on this object.
                             try {
-                                deferredObject = (NamedObj)deferredObject.clone();
+                                deferredObject =
+                                    (NamedObj)deferredObject.clone();
                             } catch (CloneNotSupportedException ex) {
                             }
                             Configurable deferredContainer =
@@ -735,7 +736,7 @@ public class MoMLWriter extends Writer {
                 Entity deferredEntity =
                     deferredContainer.getEntity(entityName);
                 list.remove(deferredEntity);
-                // System.out.println("deferEntity= " +
+                // System.out.println("deferEntity = " +
                 //        deferredEntity);
                 wroteAnything |=
                     _writeForDeferred(entity, deferredEntity,
@@ -1133,7 +1134,8 @@ public class MoMLWriter extends Writer {
                 ComponentRelation relation
                     = (ComponentRelation)relations.next();
                 write(_getIndentPrefix(depth));
-                write("<deleteRelation name=\"" + relation.getName() + "\"/>\n");
+                write("<deleteRelation name=\""
+                        + relation.getName() + "\"/>\n");
             }
         }
         return wroteAnything;

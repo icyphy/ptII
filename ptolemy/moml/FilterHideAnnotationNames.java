@@ -64,10 +64,6 @@ public class FilterHideAnnotationNames implements MoMLFilter {
      */
     public String filterAttributeValue(NamedObj container,
             String attributeName, String attributeValue) {
-
-        //_debug("filterAttributeValue: " + container + "\t"
-        //        +  attributeName + "\t" + attributeValue);
-
         if (attributeValue == null) {
 	    // attributeValue == null is fairly common, so we check for
 	    // that first
@@ -83,15 +79,11 @@ public class FilterHideAnnotationNames implements MoMLFilter {
 		_currentlyProcessingAnnotation = true;
 		_currentAnnotationFullName = container.getFullName()
 		    + "." + attributeValue;
-		//_debug("filterAttributeValue: saw annotation1: "
-                //        + _currentAnnotationFullName);
-
 	    } else if (_currentlyProcessingAnnotation &&
                     attributeValue.equals("_hideName")) {
 		// We are processing an annotation and it already
 		// has _hideName
 		_currentlyProcessingAnnotation = false;
-		//_debug("filterAttributeValue: saw _hideName");
 	    }
 	}
 	if ( _currentlyProcessingAnnotation
@@ -106,9 +98,6 @@ public class FilterHideAnnotationNames implements MoMLFilter {
 	    // We found another class in a different container
 	    // while handling an annotation.
 
-	    //_debug("filterAttributeValue: return3 a different container "
-            //        + container.getFullName() + " "
-            //        + _currentAnnotationFullName);
 	    _currentlyProcessingAnnotation = false;
 	}
 	return attributeValue;
@@ -124,7 +113,6 @@ public class FilterHideAnnotationNames implements MoMLFilter {
      */
     public String filterEndElement(NamedObj container, String elementName)
             throws Exception {
-	//_debug("filterEndElement: " + container + "\t" + elementName);
 	if (!elementName.equals("property")) {
 	    return elementName;
 	}
@@ -133,28 +121,16 @@ public class FilterHideAnnotationNames implements MoMLFilter {
                 .equals(_currentAnnotationFullName)) {
 	    _currentlyProcessingAnnotation = false;
 
-	    //<property name="_hideName" class="ptolemy.data.expr.Parameter">
-	    //</property>
 	    Parameter hideName = new Parameter(container, "_hideName");
 
-	    //_debug("filterEndElement: added " + hideName + "\n"
-            //     + hideName.exportMoML());
 	    MoMLParser.setModified(true);
 	}
 	return elementName;
     }
 
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // FIXME: this should go away
-    //private void _debug(String printString) {
-	//System.out.println(printString);
-    //}
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
 
     // True if we are currently processing an annotation.
     private boolean _currentlyProcessingAnnotation = false;

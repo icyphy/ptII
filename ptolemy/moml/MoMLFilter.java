@@ -41,6 +41,9 @@ It can be used to
 <li> Remove graphical classes for use in a non-graphical environment
 <li> Change the names of actors and ports for backward compatibility.
 <menu>
+@author Christopher Hylands, Edward A. Lee
+@version $Id$
+@since Ptolemy II 2.0
 */
 public interface MoMLFilter {
     /** Given the container, attribute name and attribute value,

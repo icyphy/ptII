@@ -66,9 +66,6 @@ public class FilterBackwardCompatibility implements MoMLFilter {
     public String filterAttributeValue(NamedObj container,
             String attributeName, String attributeValue) {
 
-        //_debug("filterAttributeValue: " + container + "\t"
-        //        +  attributeName + "\t" + attributeValue);
-
         // This method gets called many times by the MoMLParser,
         // so we try to be smart about the number of comparisons
         // and we try to group comparisons together so that we
@@ -89,7 +86,6 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		// We are processing an annotation and it already
 		// has _icon
 		_currentlyProcessingActorThatMayNeedAnIcon = false;
-		//_debug("filterAttributeValue: saw _icon");
 	    } else if (_currentlyProcessingActorWithPortNameChanges
                     && _portMap != null
                     && _portMap.containsKey(attributeValue)) {
@@ -109,10 +105,6 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		_containerPortMap.put(containerName + "." + attributeValue,
                     containerName + "." + newPort
 				  );
-		//_debug("filterAttributeValue: return1 ("
-		//       + containerName + "." + attributeValue + ", "
-		//       +  containerName + "." + newPort + ") "
-		//       + newPort);
 		MoMLParser.setModified(true);
 		return newPort;
             } else if (_currentlyProcessingActorWithPropertyClassChanges) {
@@ -120,12 +112,7 @@ public class FilterBackwardCompatibility implements MoMLFilter {
                     // We will do the above checks only if we found a
                     // class that had property class changes.
                     _newClass = (String)_propertyMap.get(attributeValue);
-                    //_debug("filterAttributeValue: not return _newClass ="
-                    //       + _newClass);
                 } else {
-                    //_debug("filterAttributeValue: not return '"
-                    //       + attributeValue + "' did not match");
-
                     // Saw a name that did not match.
                     // However, we might have other names that
                     // did match, so keep looking
@@ -153,9 +140,6 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	// can get averages with:
 	// sh c:/tmp/timeit | awk '{sum+=$4; print sum, sum/NR, $0}'
 
-	//_debug("filterAttributeValue: " + attributeName + "\t"
-	//       + attributeValue );
-
 	if (attributeName.equals("class")) {
 	    // Look for lines like:
 	    // <entity name="ComplexToCartesian1"
@@ -170,9 +154,6 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    // updating.
 	    if (_currentlyProcessingActorThatRequiresUpdating
 		|| _actorsThatRequireUpdating.contains(attributeValue)) {
-		//_debug("filterAttributeValue: class " + attributeValue
-		//       + _currentActorFullName);
-
 		if (_actorsWithPortNameChanges.containsKey(attributeValue)) {
 		    // We found a class with a port name change.
 		    _currentlyProcessingActorThatRequiresUpdating = true;
@@ -181,8 +162,6 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    _currentActorFullName = container.getFullName()
 			+ "." + _lastNameSeen;
 		    _portMap = (HashMap) _actorsWithPortNameChanges.get(attributeValue);
-		    //_debug("filterAttributeValue: not return saw1 "
-		    //	   + _currentActorFullName);
 		} else if (_actorsWithPropertyClassChanges
 			   .containsKey(attributeValue)) {
 		    // We found a class with a property class change.
@@ -194,8 +173,6 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    _propertyMap =
 			(HashMap) _actorsWithPropertyClassChanges
 			.get(attributeValue);
-		    //_debug("filterAttributeValue: not return saw2 "
-		    //	   + _currentActorFullName);
 		} else if (_actorsThatShouldHaveIcons
 			   .containsKey(attributeValue)) {
 		    // We found a class that needs an icon
@@ -210,19 +187,12 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    _iconMoML = (String) _actorsThatShouldHaveIcons
 			.get(attributeValue);
 
-		    //_debug("filterAttributeValue: need _icon saw class: "
-		    //	   + _currentActorFullName + "\n"
-		    //	   + attributeValue + "\n"
-		    //	   + _actorsThatShouldHaveIcons + "\n"
-		    //	   + _iconMoML);
 		} else if (_currentlyProcessingActorWithPropertyClassChanges
 			   && _newClass != null) {
 
 		    // We found a property class to change, and now we
 		    // found the class itself that needs changing.
 
-		    //_debug("filterAttributeValue: return0 "
-                    //    + _newClass);
 		    // Only return the new class once, but we might
 		    // have other properties that need changing
 		    //_currentlyProcessingActorWithPropertyClassChanges = false;
@@ -245,10 +215,6 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    // set _doneProcessingActorWithPortNameChanges so we
 		    // can handle any port changes later.
 
-		    //_debug("filterAttributeValue: return3 saw class, "
-		    //     + "resetting: "
-		    //	   + container.getFullName() + " "
-		    //	   + _currentActorFullName);
 		    _currentlyProcessingActorThatRequiresUpdating = false;
 		    _currentlyProcessingActorWithPortNameChanges = false;
 		    _currentlyProcessingActorWithPropertyClassChanges = false;
@@ -277,8 +243,6 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		newPort =
 		    newPort.substring(container.getFullName().length() + 1);
 
-		//_debug("filterAttributeValue: return2 "
-		//       + newPort);
 		MoMLParser.setModified(true);
 		return newPort;
 	}
@@ -295,13 +259,9 @@ public class FilterBackwardCompatibility implements MoMLFilter {
      */
     public String filterEndElement(NamedObj container, String elementName)
             throws Exception {
-	//_debug("filterEndElement: " + container + "\t" + elementName);
 	if (!elementName.equals("entity")) {
 	    return elementName;
 	}
-	//_debug("filterEndElement2: "
-	//       + _currentlyProcessingActorThatMayNeedAnIcon + " "
-	//       + _currentActorFullName);
 
 	if ( _currentlyProcessingActorThatMayNeedAnIcon
 	     && container != null
@@ -316,21 +276,8 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    }
 	    _parser.setContext(container);
 	    try {
-		//_debug("filterEndElement: container.getAttribute(_icon)"
-		//       + container.getAttribute("_icon"));
 		NamedObj icon = _parser.parse(_iconMoML);
 		MoMLParser.setModified(true);
-		//MoMLChangeRequest request = new MoMLChangeRequest(
-		// this, container, _iconMoML);
-		// Indicate that the change is non-persistent, so that
-		// the UI doesn't prompt to save.
-	    //request.setPersistent(false);
-	    //container.requestChange(request);
-
-		//_debug("filterEndElement: added\n" + _iconMoML
-		//       + "\ncontainer: " +  container
-		//       + "\nicon: " + icon
-		//       + "\n" + icon.exportMoML());
 	    } catch (Exception ex) {
 		throw new IllegalActionException(null, ex, "Failed to parse\n"
 						 + _iconMoML);
@@ -338,15 +285,6 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	}
 	return elementName;
     }
-
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    // FIXME: this should go away
-    //private void _debug(String printString) {
-	//System.out.println(printString);
-    //}
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -517,9 +455,5 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    .addAll(_actorsWithPropertyClassChanges.keySet());
 	_actorsThatRequireUpdating
 	    .addAll(_actorsThatShouldHaveIcons.keySet());
-
-	//System.out.println("_actorsThatRequireUpdating: "
-	//		   + _actorsThatRequireUpdating.size() + " "
-	//		   +_actorsThatRequireUpdating);
     }
 }

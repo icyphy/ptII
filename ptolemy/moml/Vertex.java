@@ -40,7 +40,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj; // for javadoc
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
-import java.io.*;
+
+import java.io.IOException;
+import java.io.Writer;
 
 //////////////////////////////////////////////////////////////////////////
 //// Vertex
