@@ -134,6 +134,21 @@ import java.util.*;
  * <pre>
  * Color: on
  * </pre>
+ * Finally, the rather specialized command
+ * <pre>
+ * Wrap: on
+ * </pre>
+ * enables wrapping of the X (horizontal) axis, which means that if
+ * a point is added with X out of range, its X value will be modified
+ * modulo the range so that it lies in range. This command only has an
+ * effect if the X range has been set explicitly. It is designed specifically
+ * to support oscilloscope-like behavior, where the X value of points is
+ * increasing, but the display wraps it around to left. A point that lands
+ * on the right edge of the X range is repeated on the left edge to give
+ * a better sense of continuity. The feature works best when points do land
+ * precisely on the edge, and are plotted from left to right, increasing
+ * in X.
+ * <p>
  * All of the above commands can also be invoked directly by calling the
  * the corresponding public methods from some Java procedure.
  * <p>
@@ -248,9 +263,11 @@ public class PlotBox extends Panel {
             _xMin = 0;
             _xRangeGiven = false;
             _yRangeGiven = false;
+            _rangesGivenByZooming = false;
             _xlog = false;
             _ylog = false;
             _grid = true;
+            _wrap = false;
             _usecolor = true;
 
             // Private members next...
@@ -568,6 +585,14 @@ public class PlotBox extends Panel {
         }
     }
 
+    /** Read a single line command provided as a string.
+     *  The commands can be any of those in the ASCII file format.
+     *  @param command A command.
+     */
+    public void read(String command) {
+        _parseLine(command);
+    }
+
     /** Do nothing in this base class. Derived classes might want to override 
      *  this class to give an example of their use.
      */
@@ -696,6 +721,15 @@ public class PlotBox extends Panel {
         _titleFontMetrics = getFontMetrics(_titlefont);
     }
 
+    /** Control whether the X axis is wrapped.
+     *  If it is, then X values that are out of range are remapped
+     *  to be in range using modulo arithmetic.
+     *  @param wrap If true, wrapping of the X axis is enabled.
+     */
+    public void setWrap(boolean wrap) {
+        _wrap = wrap;
+    }
+
     /** Set the label for the X (horizontal) axis.
      *  @param label The label.
      */
@@ -789,8 +823,8 @@ public class PlotBox extends Panel {
      */
     public synchronized void zoom(double lowx, double lowy,
             double highx, double highy) {
-        setXRange(lowx, highx);
-        setYRange(lowy, highy);
+        _setXRange(lowx, highx);
+        _setYRange(lowy, highy);
         repaint();
     }
 
@@ -1443,6 +1477,13 @@ public class PlotBox extends Panel {
                 _grid = true;
             }
             return true;
+        } else if (lcLine.startsWith("wrap:")) {
+            if (lcLine.indexOf("off",5) >= 0) {
+                _wrap = false;
+            } else {
+                _wrap = true;
+            }
+            return true;
         } else if (lcLine.startsWith("color:")) {
             if (lcLine.indexOf("off",6) >= 0) {
                 _usecolor = false;
@@ -1500,6 +1541,7 @@ public class PlotBox extends Panel {
         if (_xlog) output.println("XLog: on");
         if (_ylog) output.println("YLog: on");
         if (!_grid) output.println("Grid: off");
+        if (_wrap) output.println("Wrap: on");
         if (!_usecolor) output.println("Color: off");
     }
 
@@ -1515,6 +1557,14 @@ public class PlotBox extends Panel {
     // Whether the ranges have been given.
     protected transient boolean _xRangeGiven = false;
     protected transient boolean _yRangeGiven = false;
+    protected transient boolean _rangesGivenByZooming = false;
+
+    // If they have been given the top and bottom of the x and y ranges.
+    // This is different from _xMin and _xMax, which actually represent
+    // the range of data that is plotted.  This represents the range
+    // specified (which may be different due to zooming).
+    /** @serial The given X and Y ranges. */
+    protected double _xlowgiven, _xhighgiven, _ylowgiven, _yhighgiven;
 
     // The minimum and maximum values registered so far, for auto ranging.
     protected double _xBottom = Double.MAX_VALUE;
@@ -1530,6 +1580,9 @@ public class PlotBox extends Panel {
 
     // Whether to draw a background grid.
     protected boolean _grid = true;
+
+    // Whether to wrap the X axis
+    protected boolean _wrap = false;
 
     /** @serial Color of the background, settable from HTML. */
     protected Color _background = Color.white;
@@ -2046,12 +2099,12 @@ public class PlotBox extends Panel {
                 if ((Math.abs(_zoomx-x) > 5) && (Math.abs(_zoomy-y) > 5)) {
                     double a = _xMin + (_zoomx - _ulx)/_xscale;
                     double b = _xMin + (x - _ulx)/_xscale;
-                    if (a < b) setXRange(a, b);
-                    else setXRange(b, a);
+                    if (a < b) _setXRange(a, b);
+                    else _setXRange(b, a);
                     a = _yMax - (_zoomy - _uly)/_yscale;
                     b = _yMax - (y - _uly)/_yscale;
-                    if (a < b) setYRange(a, b);
-                    else setYRange(b, a);
+                    if (a < b) _setYRange(a, b);
+                    else _setYRange(b, a);
                 }
                 repaint();
                 handled = true;
@@ -2205,9 +2258,6 @@ public class PlotBox extends Panel {
 
     /** @serial The file to be opened. */
     private String _filespec = null;
-
-    /** @serial The given X and Y ranges. */
-    private double _xlowgiven, _xhighgiven, _ylowgiven, _yhighgiven;
 
     /** @serial Set to true if we are reading in pxgraph format binary data.
      * @deprecated
