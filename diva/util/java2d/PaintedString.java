@@ -302,7 +302,7 @@ public class PaintedString implements PaintedObject {
         // Since we are generating a shape and drawing that, it makes
         // no difference what the values of the flags are
         FontRenderContext frc = new FontRenderContext(null, true, false);
-        // Return the delimeters, so that we get the right line count.
+        // Return the delimiters, so that we get the right line count.
         StringTokenizer lines = new StringTokenizer(_string, "\n", true);
         double dy = _font.getMaxCharBounds(frc).getHeight();
 
