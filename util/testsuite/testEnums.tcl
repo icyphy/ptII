@@ -58,6 +58,7 @@
 # the other procs below.
 # This proc returns a list consisting of the names of all of the
 # elements in the enum returned by calling the method named by enummethod.
+# If an element is null, then it return java::null.
 #
 # enummethod is the name of the method to be called on the object to get
 # the enum.
@@ -82,7 +83,7 @@ proc _testEnums {enummethod args} {
                                  $enumelement]
 		    lappend lresults [$enumelement getName]
 		} else {
-		    lappend lresults $enumElement
+		    lappend lresults $enumelement
 		}
 	    }
 	    lappend results $lresults
