@@ -50,7 +50,7 @@ public class ExceptionTracker {
 
     /** A dummy initializer method.
      */
-    public void ExceptionTracker() {
+    public ExceptionTracker() {
         //do nothing
 
     }
