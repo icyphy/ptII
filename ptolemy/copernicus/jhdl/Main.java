@@ -62,7 +62,7 @@ public class Main extends KernelMain {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
-    /** Read in a MoML mode and generate JHDL classes for that model.
+    /** Read in a MoML model.
      *  @params args The first element of the array is the MoML class
      *  name or file name, subsequent optional arguments are Soot
      *  command line options, see the superclass documentation for details.
@@ -71,11 +71,11 @@ public class Main extends KernelMain {
     public Main(String [] args) throws IllegalActionException {
 	// args[0] contains the MoML class name.
 	super(args[0]);
+    }
 
-	// Parse the model, initialize it and create instance classes
-	// for the actors.
-	_initialize();
-
+    /** Add transforms to the Scene.
+     */
+    public void addTransforms() {
         // Add a transformer to convert each actor class to JHDL.
         // "wjtp" means "whole java tranformation package"
         // This transformer is required to be a scene transformer,
@@ -101,14 +101,19 @@ public class Main extends KernelMain {
                 CopyPropagator.v()));
         Scene.v().getPack("jtp").add(new Transform("jtp.dae",
                 DeadAssignmentEliminator.v()));
-
-	_callSootMain(args);
     }
 
     /** Read in a MoML model, generate .class files for use with JHDL */
     public static void main(String[] args) throws IllegalActionException {
-	// We do most of the work in the constructor so that we
-	// can more easily test this class
 	Main main = new Main(args);
+
+	// Parse the model, initialize it and create instance classes
+	// for the actors.
+	main.initialize();
+
+	// Add Transforms to the Scene.
+	main.addTransforms();
+	    
+	main.generateCode(args); 
     }
 }

@@ -58,20 +58,22 @@ looks like:
 public class Main extends KernelMain {
     public Main(String [] args) {
 	super(args[0]);
-	_initialize();
-
-	// Process args
-	// Do transformations
-	_callSootMain(args);
     }
+
     public static void main(String[] args) {
 	Main main = new Main(args);
+
+	// Parse the model, initialize it and create instance classes
+	// for the actors.
+	main.initialize();
+
+	// Add Transforms to the Scene.
+	main.addTransforms();
+	    
+	main.generateCode(args);
     }
 }
 </pre>
-
-We do the bulk of the work in the constructor so that we can easily
-test these classes.
 
 @author Stephen Neuendorffer, Christopher Hylands
 @version $Id$
@@ -87,52 +89,37 @@ public class KernelMain {
 	_momlClassName = momlClassName;
     }
 
-    /** Sample main() method that parses a MoML class, initializes
-     *  the model and creates actor instances.  In this class,
-     *  this method does not do much, it is only a sample.
-     *
-     *  @param args The first element of the array is the MoML class
-     *  name or file name, subsequent optional arguments are Soot
-     *  command line options.
-     *  <p>The most common option is <code>-d ../../..</code>, which
-     *  will store the generated files in ../../..
-     *  <p>Another common option is
-     *  <code> -p <i>phase-name</i> <i>key1[</i>:<i>value1]</i>,<i>key2[</i>:<i>value2]</i>,<i>...</i>,<i>keyn[</i>:<i>valuen]</i></code>
-     *  which will set the run time option <i>key</i> to <i>value</i> for
-     *  <i>phase-name</i> (default for <i>value</i> is true)
-     *  <p>An example is:<br>
-     *  <code>-p wjtp.at deep,targetPackage:ptolemy.copernicus.jhdl.cg</code>
-     *  <p>For a complete list of Soot Options, pass in "-h", or run
-     *  <code>$PTII/bin/soot -h<code>, or see
-     *  <a href="http://www.sable.mcgill.ca/soot/tutorial/usage">http://www.sable.mcgill.ca/soot/tutorial/usage</a>
-     *
-     *  @exception IllegalActionException If the model cannot be parsed.
-     */
-    public static void main(String[] args) throws IllegalActionException {
-	KernelMain kernelMain = new KernelMain(args[0]);
-	kernelMain._initialize();
-	kernelMain._callSootMain(args);
-    }
-
-    /** Return the model that we are generating code for.
-     */
-    public CompositeActor toplevel() {
-        return _toplevel;
-    }
-
     ///////////////////////////////////////////////////////////////////
-    ////                         protected methods                 ////
+    ////                         public methods                    ////
 
-    /** Call soot.Main.main(), which does command line argument processing
-     *  and then starts the transformation.  This method should be called
-     *  after calling _initialize() and setting
-     *  up the transformations.
+    /** Add transforms to the Scene.
+     */
+    public void addTransforms() {
+        // A Hack to ignore the class we specify on the command
+	// line. This is a soot problem that requires this hack.
+	// We will provide soot with java.lang.Object as its
+	// only application class in Main. The first transformation
+	// will ignore all application classes (i.e. set them to
+	// library classes)
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.hack",
+                new _IgnoreAllApplicationClasses(), ""));
+
+        // Create instance classes for actors.
+	// This transformer takes no input as far as soot is concerned
+	// (i.e. no application classes) and creates application
+	// classes from the model.
+        Scene.v().getPack("wjtp").add(new Transform("wjtp.at",
+                ActorTransformer.v(_toplevel)));
+    }
+
+    /** Call soot.Main.main(), which does command line argument
+     *  processing and then starts the transformation.  This method
+     *  should be called after calling initialize() and addTransforms()
      *
      *  @param args Soot command line arguments to be passed
      *  to soot.Main.main().  this method changes the first element of the
-     *  args array to "java.lang.Object"and then call soot.Main.main(args).
-     */
-    protected void _callSootMain(String [] args) {
+     *  args array to "java.lang.Object"and then call soot.Main.main(args).  */
+    public void generateCode(String [] args) {
         // This is rather ugly.  The moml Class is not a Java class, so
         // soot won't recognize it.  However, if we give soot nothing, then
         // it won't run.  Note that later we will call setLibraryClass() on
@@ -159,7 +146,7 @@ public class KernelMain {
      *  </ol>
      *  @exception IllegalActionException If the model cannot be parsed.
      */
-    protected void _initialize()
+    public void initialize()
             throws IllegalActionException {
 
         // Call the MOML parser on the test file to generate a Ptolemy II
@@ -219,23 +206,40 @@ public class KernelMain {
             throw new RuntimeException("Could not initialize "
                     + "composite actor: " + e);
         }
+    }
 
-        // A Hack to ignore the class we specify on the command
-	// line. This is a soot problem that requires this hack.
-	// We will provide soot with java.lang.Object as its
-	// only application class in Main. The first transformation
-	// will ignore all application classes (i.e. set them to
-	// library classes)
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.hack",
-                new _IgnoreAllApplicationClasses(), ""));
+    /** Sample main() method that parses a MoML class, initializes
+     *  the model and creates actor instances.  In this class,
+     *  this method does not do much, it is only a sample.
+     *
+     *  @param args The first element of the array is the MoML class
+     *  name or file name, subsequent optional arguments are Soot
+     *  command line options.
+     *  <p>The most common option is <code>-d ../../..</code>, which
+     *  will store the generated files in ../../..
+     *  <p>Another common option is
+     *  <code> -p <i>phase-name</i> <i>key1[</i>:<i>value1]</i>,<i>key2[</i>:<i>value2]</i>,<i>...</i>,<i>keyn[</i>:<i>valuen]</i></code>
+     *  which will set the run time option <i>key</i> to <i>value</i> for
+     *  <i>phase-name</i> (default for <i>value</i> is true)
+     *  <p>An example is:<br>
+     *  <code>-p wjtp.at deep,targetPackage:ptolemy.copernicus.jhdl.cg</code>
+     *  <p>For a complete list of Soot Options, pass in "-h", or run
+     *  <code>$PTII/bin/soot -h<code>, or see
+     *  <a href="http://www.sable.mcgill.ca/soot/tutorial/usage">http://www.sable.mcgill.ca/soot/tutorial/usage</a>
+     *
+     *  @exception IllegalActionException If the model cannot be parsed.
+     */
+    public static void main(String[] args) throws IllegalActionException {
+	KernelMain kernelMain = new KernelMain(args[0]);
+	kernelMain.initialize();
+	kernelMain.addTransforms();
+	kernelMain.generateCode(args);
+    }
 
-        // Create instance classes for actors.
-	// This transformer takes no input as far as soot is concerned
-	// (i.e. no application classes) and creates application
-	// classes from the model.
-        Scene.v().getPack("wjtp").add(new Transform("wjtp.at",
-                ActorTransformer.v(_toplevel)));
-
+    /** Return the model that we are generating code for.
+     */
+    public CompositeActor toplevel() {
+        return _toplevel;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -268,5 +272,4 @@ public class KernelMain {
             }
         }
     }
-
 }

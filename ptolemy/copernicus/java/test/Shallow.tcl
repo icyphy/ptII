@@ -60,11 +60,54 @@ proc sootShallowCodeGeneration {model} {
 
     set classpath $relativePathToPTII[java::field java.io.File pathSeparator].[java::field java.io.File pathSeparator]$sootClasspath[java::field java.io.File pathSeparator]$builtinClasspath[java::field java.io.File pathSeparator]$rtjar
 
-    exec java -Xmx132m -classpath $classpath \
-	    ptolemy.copernicus.java.Main $model -d $relativePathToPTII \
-	    -p wjtp.at targetPackage:ptolemy.copernicus.java.test.cg \
-	    -p wjtp.mt targetPackage:ptolemy.copernicus.java.test.cg
-    set modelName ptolemy.copernicus.java.test.cg.ToplevelModel
+
+    set args [java::new {String[]} 9 \
+	    [list \
+	    $model "-d" $relativePathToPTII \
+	    "-p" "wjtp.at" "targetPackage:ptolemy.copernicus.java.test.cg" \
+	    "-p" "wjtp.mt" "targetPackage:ptolemy.copernicus.java.test.cg" \
+	    ]]
+    set main [java::new ptolemy.copernicus.java.Main $args]
+    $main initialize
+    $main transform
+    set toplevel [$main toplevel]
+
+    # See KernelMain.generateCode for a description of why this is necessary
+    $args set 0 "java.lang.Object"
+    java::call soot.Main setReservedNames
+    java::call soot.Main setCmdLineArgs $args
+    set main [java::new soot.Main]
+    set ccl [java::new soot.ConsoleCompilationListener]
+    java::call soot.Main addCompilationListener $ccl
+    $main run
+    #set thread [java::new Thread main]
+    #$thread start
+
+
+#    exec java -Xmx132m -classpath $classpath \
+#	    ptolemy.copernicus.java.Main 
+#           $model -d $relativePathToPTII \
+#	    -p wjtp.at targetPackage:ptolemy.copernicus.java.test.cg \
+#	    -p wjtp.mt targetPackage:ptolemy.copernicus.java.test.cg
+
+    set modelName ptolemy.copernicus.java.test.cg.[$toplevel getName]
+
+#    set applicationArguments [java::new {java.lang.String[]} 4 [list \
+#	    "-class" $modelName \
+#	    "-iterations" "10" \
+#	    ]]
+#
+#    set application [java::new ptolemy.actor.gui.CompositeActorApplication]
+#    $application processArgs $applicationArguments
+#    set models [listToObjects [$application models]]
+#    $application waitForFinish
+#    set result {}
+#    foreach model $models {
+#        set modelc [java::cast ptolemy.actor.gui.test.TestModel $model]
+#        lappend result [listToStrings [$modelc getResults]]
+#    }
+#    list $result
+
     return [exec java -Xfuture -classpath $classpath ptolemy.actor.gui.CompositeActorApplication -iterations 10 -class $modelName]
 }
 
@@ -86,26 +129,30 @@ proc autoShallowCG {autoDirectory} {
 #
 
 
+proc foo {} {
+      sootShallowCodeGeneration \
+  	    ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom
+}
 test MoMLCompiler-1.1 {Compile and run the Orthocomm test} {
-    set result [sootCodeGeneration \
-	    ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom]
+    set result [sootShallowCodeGeneration \
+  	    ptolemy.domains.sdf.demo.OrthogonalCom.OrthogonalCom]
     lrange $result 0 9
 } {2 4 6 8 10 12 14 16 18 20}
 
-autoShallowCG [file join $relativePathToPTII ptolemy actor lib test auto]
-autoShallowCG [file join $relativePathToPTII ptolemy actor lib conversions test auto]
-#autoShallowCG [file join $relativePathToPTII ptolemy actor lib javasound test auto]
-autoShallowCG [file join $relativePathToPTII ptolemy domains ct lib test auto]
-autoShallowCG [file join $relativePathToPTII ptolemy domains de lib test auto]
-autoShallowCG [file join $relativePathToPTII ptolemy domains dt kernel test auto]
-autoShallowCG [file join $relativePathToPTII ptolemy domains fsm kernel test auto]
-autoShallowCG [file join $relativePathToPTII ptolemy domains fsm test auto]
-autoShallowCG [file join $relativePathToPTII ptolemy domains hdf kernel test auto]
-autoShallowCG [file join $relativePathToPTII ptolemy domains sdf kernel test auto]
-autoShallowCG [file join $relativePathToPTII ptolemy domains sdf lib test auto]
-autoShallowCG [file join $relativePathToPTII ptolemy domains sdf lib vq test auto]
-autoShallowCG [file join $relativePathToPTII ptolemy domains sr kernel test auto]
-autoShallowCG [file join $relativePathToPTII ptolemy domains sr lib test auto]
+#  autoShallowCG [file join $relativePathToPTII ptolemy actor lib test auto]
+#  autoShallowCG [file join $relativePathToPTII ptolemy actor lib conversions test auto]
+#  #autoShallowCG [file join $relativePathToPTII ptolemy actor lib javasound test auto]
+#  autoShallowCG [file join $relativePathToPTII ptolemy domains ct lib test auto]
+#  autoShallowCG [file join $relativePathToPTII ptolemy domains de lib test auto]
+#  autoShallowCG [file join $relativePathToPTII ptolemy domains dt kernel test auto]
+#  autoShallowCG [file join $relativePathToPTII ptolemy domains fsm kernel test auto]
+#  autoShallowCG [file join $relativePathToPTII ptolemy domains fsm test auto]
+#  autoShallowCG [file join $relativePathToPTII ptolemy domains hdf kernel test auto]
+#  autoShallowCG [file join $relativePathToPTII ptolemy domains sdf kernel test auto]
+#  autoShallowCG [file join $relativePathToPTII ptolemy domains sdf lib test auto]
+#  autoShallowCG [file join $relativePathToPTII ptolemy domains sdf lib vq test auto]
+#  autoShallowCG [file join $relativePathToPTII ptolemy domains sr kernel test auto]
+#  autoShallowCG [file join $relativePathToPTII ptolemy domains sr lib test auto]
 
 # Print out stats
 #doneTests

@@ -70,17 +70,18 @@ C code generation yet.
 
 public class Main extends KernelMain {
 
-
-    /** Read in a MoML mode and generate Java classes for that model.
+    /** Read in a MoML model and generate Java classes for that model.
      *  @param args An array of Strings that control the transformation
      */
     public Main(String [] args) throws IllegalActionException {
 	// args[0] contains the MoML class name.
 	super(args[0]);
+    }
 
-	// Parse the model, initialize it and create instance classes
-	// for the actors.
-	_initialize();
+    /** Add transforms to the Scene.
+     */
+    public void addTransforms() {
+	super.addTransforms();
 
         // Add a transformer to convert each actor class to C
         // "wjtp" means "whole java transformation package"
@@ -106,8 +107,6 @@ public class Main extends KernelMain {
                 CopyPropagator.v()));
         Scene.v().getPack("jtp").add(new Transform("jtp.dae",
                 DeadAssignmentEliminator.v()));
-
-        _callSootMain(args);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -115,9 +114,15 @@ public class Main extends KernelMain {
 
     /** Read in a MoML model, generate .class files for use with JHDL */
     public static void main(String[] args) throws IllegalActionException {
-	// We do most of the work in the constructor so that we
-	// can more easily test this class
 	Main main = new Main(args);
-    }
 
+	// Parse the model, initialize it and create instance classes
+	// for the actors.
+	main.initialize();
+
+	// Add Transforms to the Scene.
+	main.addTransforms();
+	    
+	main.generateCode(args);
+    }
 }

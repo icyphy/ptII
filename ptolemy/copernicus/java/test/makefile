@@ -35,7 +35,7 @@ ME =		ptolemy/copernicus/java/test
 # Root of the Ptolemy II directory
 ROOT =		../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
@@ -86,6 +86,9 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl
 
 depend:
 	@echo "no dependencies in this directory"
+ptjacl:
+	CLASSPATH="$(ROOT)$(CLASSPATHSEPARATOR)$(SOOT_CLASSES)" \
+		sh -x "$(PTII)/bin/ptjacl"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
