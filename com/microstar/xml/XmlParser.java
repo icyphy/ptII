@@ -1356,7 +1356,7 @@ public class XmlParser {
   {
     String name;
     int type;
-    String enum = null;
+    String enumeration = null;
 
 				// Read the attribute name.
     name = readNmtoken(true);
@@ -1368,12 +1368,12 @@ public class XmlParser {
 				// Get the string of enumerated values
 				// if necessary.
     if (type == ATTRIBUTE_ENUMERATED || type == ATTRIBUTE_NOTATION) {
-      enum = dataBufferToString();
+      enumeration = dataBufferToString();
     }
 
 				// Read the default value.
     requireWhitespace();
-    parseDefault(elementName, name, type, enum);
+    parseDefault(elementName, name, type, enumeration);
   }
 
 
@@ -1459,7 +1459,7 @@ public class XmlParser {
     * Parse the default value for an attribute.
     * [62] Default ::= '#REQUIRED' | '#IMPLIED' | ((%'#FIXED' S)? %AttValue
     */
-  void parseDefault (String elementName, String name, int type, String enum)
+  void parseDefault (String elementName, String name, int type, String enumeration)
     throws java.lang.Exception
   {
     int valueType = ATTRIBUTE_DEFAULT_SPECIFIED;
@@ -1484,7 +1484,7 @@ public class XmlParser {
       value = readLiteral(LIT_CHAR_REF);
       context = CONTEXT_DTD;
     }
-    setAttribute(elementName, name, type, enum, value, valueType);
+    setAttribute(elementName, name, type, enumeration, value, valueType);
   }
 
 

@@ -355,14 +355,14 @@ public class ActorController extends AttributeController {
         // re-order the ports according to _ordinal property
         private void _reOrderPorts( Vector ports ) {
             int size = ports.size();
-            Enumeration enum = ports.elements();
+            Enumeration enumeration = ports.elements();
             Port port;
             StringAttribute ordinal = null;
             int number = 0;
             int index  = 0;
 
-            while ( enum.hasMoreElements() ) {
-                port = (Port)enum.nextElement();
+            while ( enumeration.hasMoreElements() ) {
+                port = (Port)enumeration.nextElement();
                 ordinal = (StringAttribute)port.getAttribute("_ordinal");
 
                 if ( ordinal != null ) {

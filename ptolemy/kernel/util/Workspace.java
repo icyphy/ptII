@@ -597,9 +597,9 @@ public final class Workspace implements Nameable, Serializable {
                 result += " ";
             }
             result += "directory {\n";
-            Enumeration enum = directory();
-            while (enum.hasMoreElements()) {
-                NamedObj obj = (NamedObj)enum.nextElement();
+            Enumeration enumeration = directory();
+            while (enumeration.hasMoreElements()) {
+                NamedObj obj = (NamedObj)enumeration.nextElement();
                 // If deep is not set, then zero-out the contents flag
                 // for the next round.
                 if ((detail & NamedObj.DEEP) == 0) {
