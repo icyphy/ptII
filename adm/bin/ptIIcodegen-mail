@@ -25,7 +25,7 @@ fi
 # ptII/adm/bin/ptIInightly
 # ptII/adm/gen-xxx/makefile
 # buildmaster/web/adm/makefile
-GENVERSION=gen-4.0
+GENVERSION=gen-4.1
 GENDIR=$ADMDIR/$GENVERSION
 cd $GENDIR
 
@@ -60,7 +60,7 @@ echo "" >> $mailmsg
 # Shell proc that parses the log file for us.
 parseLog() {  
 
-awk '
+gawk '
       sawFailed == 1 {
 			    if ( $1 != "Because:" ) {
 				sawFailed--
@@ -204,7 +204,7 @@ awk '
     $0  ~/Caused by/ {	      
 			    # DifferentialSystem.xml needs this
 			    if (sawTestGeneratedErrorAndWatchDogTimer == 1 && sawTestGeneratedError == 0) {
-				sawTestGeneratedErrorAndWatchDogTimer == 0
+				sawTestGeneratedErrorAndWatchDogTimer = 0
     			        sawTestGeneratedError=3
                            }
                      }
@@ -222,7 +222,7 @@ awk '
 			    files = errors[error]
 			    nf = split(files, f, " ")
 			    for(i = 1; i <= nf; i++) {
-				// Remove duplicates
+				# Remove duplicates
 				sawItAlready = 0
 				for(j = 1; j < i; j++) {
 				    if ( f[i] == f[j]) {

@@ -1,4 +1,4 @@
-#!/bin/sh
+m#!/bin/sh
 # @(#)ptIInightly	1.18 03/08/99
 # Script to build Ptolemy II tar files and run the tests and generate
 # code coverage stats.
@@ -12,7 +12,7 @@ if [ $USER != ptII ]; then
 fi
 
 ADMDIR=/users/ptII/adm
-cd $ADMDIR/gen-4.0
+cd $ADMDIR/gen-4.1
 
 # Make sure that only ptII can write to the log files
 chmod g-w $ADMDIR/test

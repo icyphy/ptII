@@ -48,14 +48,14 @@ do
     echo "$file does not have an @since tag"
     awk '{  if ($0 ~ /@version/) {
 	       print $0
-	       print "@since Ptolemy II 4.0"
+	       print "@since Ptolemy II 4.1"
 	    } else {
 	       print $0
             }
          }' <$file >$tmpfile
   else
     echo $file  
-    sed -e 's/@since.*/@since Ptolemy II 4.0/' \
+    sed -e 's/@since.*/@since Ptolemy II 4.1/' \
 	$file > $tmpfile
 
   fi
@@ -64,5 +64,5 @@ do
 	< $tmpfile > $tmpfile2
     diff $file $tmpfile2
   cp $tmpfile2 $file
-  cvs commit -m "This file is new since Ptolemy 3.1, so the copyright and @since tag should reflect that" $file
+  cvs commit -m "This file is new since Ptolemy 4.1, so the copyright and @since tag should reflect that" $file
 done
