@@ -397,7 +397,8 @@ remote1distjavadocs:
 # $PTII/doc/makefile in two places so that we automatically generate docs.
 # Tests in actor/lib use DE, so actor/lib should be after de/lib
 # Tests in actor/lib/auto use vergil and moml
-# dt/kernel should be run after sdfes
+# de/test should be run after sdf
+# dt/kernel should be run after sdf
 # We include the following directories so that they will appear in the
 # code coverage stats even though they are graphical: gui actor/gui
 #
@@ -441,6 +442,7 @@ JSALLDIRS = \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf/lib/vq \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sdf \
+	$(REMOTE1PTIIDIST)/ptolemy/domains/de \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/dt/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/petrinet/kernel \
 	$(REMOTE1PTIIDIST)/ptolemy/domains/sr/kernel \
