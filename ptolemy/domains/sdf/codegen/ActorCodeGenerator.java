@@ -123,10 +123,16 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
 
         String filename = sourceFile.toString();
         
-        List[] listArray = _makeUnitList(filename, sourceName);
+        System.out.println("pass2() : sourceName = " + sourceName + ", filename = " + 
+         filename);
+                        
+        List[] listArray = 
+         _makeUnitList(filename, StringManip.unqualifiedPart(sourceName));
        
         List unitList = listArray[0];
-                                                                                        
+        
+        System.out.println("pass2() : unitList has length " + unitList.size());
+                                                                                                
         Iterator unitItr = unitList.iterator();
         
         CompileUnitNode unitNode;
@@ -227,6 +233,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
         LinkedList classNameList = new LinkedList();
         classNameList.addLast(className);       
         
+        System.out.println("_makeUnitList() : className = " + className);
+        
         boolean moreSuperClasses = true;
         do {
         
@@ -237,8 +245,16 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
                (superDecl == ActorTransformerVisitor._TYPED_ATOMIC_ACTOR_DECL) ||
                (superDecl == StaticResolution.OBJECT_DECL) || // just to be sure
                (superDecl == null)) {                         // just to be sure
+               
+              System.out.println("_makeUnitList() : super class = " + superDecl +
+               " stopping.");
+                              
               moreSuperClasses = false;                 
            } else {
+
+              System.out.println("_makeUnitList() : super class = " + superDecl +
+               " continuing.");           
+           
               fileName = superDecl.fullName(File.separatorChar);
               
               // assume we are using the named package
@@ -248,7 +264,8 @@ public class ActorCodeGenerator implements JavaStaticSemanticConstants {
               
               retval.addLast(unitNode);
               
-              classNameList.addLast(superDecl.getName());      
+              className = superDecl.getName();
+              classNameList.addLast(className);      
            }                                     
         } while (moreSuperClasses);
         

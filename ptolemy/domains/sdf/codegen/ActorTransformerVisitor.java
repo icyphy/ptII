@@ -56,13 +56,19 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     public ActorTransformerVisitor(PerActorCodeGeneratorInfo actorInfo) {
         super(TM_CUSTOM);
         
-        _actorInfo = actorInfo;
-        _typeVisitor = new PtolemyTypeVisitor(actorInfo);
+       _actorInfo = actorInfo;
+       _typeVisitor = new PtolemyTypeVisitor(actorInfo);
+
+       _actorName = actorInfo.actor.getName();
     }
 
     public Object visitTypeNameNode(TypeNameNode node, LinkedList args) {
         switch (_typeVisitor.kindOfTypeNameNode(node)) {
-        
+
+          // replace remaining Token types with int
+          case PtolemyTypeVisitor.TYPE_KIND_TOKEN:
+          return IntTypeNode.instance;   
+          
           case PtolemyTypeVisitor.TYPE_KIND_BOOLEAN_TOKEN:
           return BoolTypeNode.instance;
                     
@@ -119,18 +125,29 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     public Object visitClassDeclNode(ClassDeclNode node, LinkedList args) {
         // check if this is the actor, transform only the actor
         String className = node.getName().getIdent();
-        String actorClassName = StringManip.unqualifiedPart(
-         _actorInfo.actor.getClass().getName());
                
-        if (className.equals("CG_" + actorClassName + "_" + _actorInfo.actor.getName())) {
+        // we assume class names beginning with "CG_" and ending with the
+        // Ptolemy name of the actor are actor classes created in the first pass 
+        // to be modified with the code generator        
+        if (className.startsWith("CG_") && className.endsWith("_" + _actorName)) {
+           
+           // if the class derives from TypedAtomicActor or SDFAtomicActor,
+           // replace the superclass with Object
                       
+           TypeNameNode superTypeNode = (TypeNameNode) node.getSuperClass();
+           
+           ClassDecl superClassDecl = 
+            (ClassDecl) JavaDecl.getDecl((NamedNode) superTypeNode);
+           
+           if ((superClassDecl == _TYPED_ATOMIC_ACTOR_DECL) ||
+               (superClassDecl == _SDF_ATOMIC_ACTOR_DECL)) {
+              node.setSuperClass((TypeNameNode) StaticResolution.OBJECT_TYPE.clone());                 
+              _isBaseClass = true;
+           } 
+                                 
            List memberList = node.getMembers();
-                    
-           // memberList.addAll(_flattenedMembers(node));
-           
-           memberList = TNLManip.traverseList(this, node, null, memberList);                  
-           
-           // not necessary ...
+                               
+           memberList = TNLManip.traverseList(this, node, null, memberList);                             
            node.setMembers(memberList);
                                             
            Iterator memberItr = memberList.iterator();
@@ -145,8 +162,12 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                  newMemberList.add(memberObj);           
               }        
            }
+
+           if (_isBaseClass) {
+              _addDefaultExecutionMethods(newMemberList);                                
+           } 
         
-           node.setMembers(newMemberList);           
+           node.setMembers(newMemberList);                      
         }
         
         return node;
@@ -214,8 +235,9 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     public Object visitMethodDeclNode(MethodDeclNode node, LinkedList args) {
         String methodName = node.getName().getIdent();
-                
-        if (methodName.equals("clone") || methodName.equals("attributeTypeChanged")) {
+                        
+        if (methodName.equals("clone") || methodName.equals("attributeChanged") ||
+            methodName.equals("attributeTypeChanged")) {
            // get rid of this method
            return NullValue.instance;        
         }         
@@ -223,15 +245,31 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
     }
 
     public Object visitConstructorDeclNode(ConstructorDeclNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        // allow only one constructor
+        
+        if (_constructorCount++ > 1) {
+           ApplicationUtility.error("only 1 constructor allowed in each actor");
+        }
+        
+        // get rid of all parameters
+        node.setParams(new LinkedList());
+                
+        node.setBody((BlockNode) node.getBody().accept(this, null));
+        node.setConstructorCall((ConstructorCallNode) 
+         node.getConstructorCall().accept(this, null));
+         
+        return node;
     }
 
     public Object visitThisConstructorCallNode(ThisConstructorCallNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        ApplicationUtility.error("this() constructor call found in actor");
+        return null;
     }
 
     public Object visitSuperConstructorCallNode(SuperConstructorCallNode node, LinkedList args) {
-        return _defaultVisit(node, args);
+        // set the constructor call to super() with no arguments
+        node.setArgs(new LinkedList());
+        return node;
     }
 
     public Object visitStaticInitNode(StaticInitNode node, LinkedList args) {
@@ -264,10 +302,17 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
 
     public Object visitExprStmtNode(ExprStmtNode node, LinkedList args) {
         // eliminate unwanted method calls and assigments
+        // also eliminate expressions that are not statement expressions
         
         Object exprObj = node.getExpr().accept(this, null);
         
-        if (exprObj == NullValue.instance) {
+        if ((exprObj == NullValue.instance)) { 
+           return new EmptyStmtNode();
+        }
+        
+        ExprNode exprNode = (ExprNode) exprObj;
+        
+        if (!ExprUtility.isStatementExpression(exprNode)) {
            return new EmptyStmtNode();
         }
         
@@ -358,8 +403,24 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         MethodDecl methodDecl = (MethodDecl) JavaDecl.getDecl((NamedNode) fieldAccessNode);        
         String methodName = methodDecl.getName();        
         
-        if (methodName.equals("attributeTypeChanged")) {
+        // eliminate the following method calls no matter what
+        if (methodName.equals("attributeTypeChanged") || 
+            methodName.equals("attributeChanged")) {
            return NullValue.instance;        
+        }
+        
+        // eliminate the following method calls if this is the most basic actor class
+        // and an invocation of super.XXX() occurs
+        if (_isBaseClass && (fieldAccessNode.classID() == SUPERFIELDACCESSNODE_ID)) {         
+           if (methodName.equals("initialize") || methodName.equals("fire") ||
+               methodName.equals("preinitialize") || methodName.equals("wrapup")) {
+              return NullValue.instance;                                             
+           }
+           
+           // return true for prefire() and postfire() which is the default
+           if (methodName.equals("prefire") || methodName.equals("postfire")) {
+              return new BoolLitNode("true");
+           }           
         }
                                                 
         ExprNode firstArg = null;
@@ -435,11 +496,6 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
            } else if (methodName.equals("moduloReverse")) {
               return new RemNode(firstArg, accessedObj);                  
            } else if (methodName.equals("convert")) {
-              // this requires that name, field, and type resolution be redone to avoid
-              // abstract types
-              
-              // what if the accessed object is of type Token, from a return value of
-              // a method??
               return new CastNode(_typeVisitor.typeNodeForKind(accessedObjKind), firstArg);
            } else if (methodName.equals("zero")) {
               if (accessedObjIsBoolean) {
@@ -757,7 +813,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
           } 
                     
           if ((constructorTypes.length == 1) && 
-              _typeVisitor.compareTypes(constructorTypes[0], PtolemyTypeVisitor.COMPLEX_TYPE)) {
+              _typeVisitor.compareTypes(constructorTypes[0], 
+               PtolemyTypeVisitor.COMPLEX_TYPE)) {
              // new ComplexToken(Complex)          
              return ((ExprNode) constructorArgs.get(0)).accept(this, null);
           } 
@@ -776,7 +833,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
           } 
                  
           if ((constructorTypes.length == 1) && 
-              _typeVisitor.compareTypes(constructorTypes[0], PtolemyTypeVisitor.FIX_POINT_TYPE)) {
+              _typeVisitor.compareTypes(constructorTypes[0], 
+               PtolemyTypeVisitor.FIX_POINT_TYPE)) {
              // new FixToken(Fix)          
              return ((ExprNode) constructorArgs.get(0)).accept(this, null);
           } else {
@@ -792,7 +850,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
                            
           case PtolemyTypeVisitor.TYPE_KIND_OBJECT_TOKEN:           
           if ((constructorTypes.length == 1) && 
-              _typeVisitor.compareTypes(constructorTypes[0], StaticResolution.OBJECT_TYPE)) {
+              _typeVisitor.compareTypes(constructorTypes[0], 
+               StaticResolution.OBJECT_TYPE)) {
              // new ObjectToken(Object)          
              return ((ExprNode) constructorArgs.get(0)).accept(this, null);
           } 
@@ -810,7 +869,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
           } 
                     
           if ((constructorTypes.length == 1) && 
-              _typeVisitor.compareTypes(constructorTypes[0], StaticResolution.STRING_TYPE)) {
+              _typeVisitor.compareTypes(constructorTypes[0], 
+               StaticResolution.STRING_TYPE)) {
              // new StringToken(String)          
              return ((ExprNode) constructorArgs.get(0)).accept(this, null);
           } 
@@ -896,7 +956,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
           
           if ((constructorTypes.length == 1) && 
               _typeVisitor.compareTypes(constructorTypes[0], 
-               TypeUtility.makeArrayType(PtolemyTypeVisitor.COMPLEX_TYPE, 2))) {
+               TypeUtility.makeArrayType(
+                (TypeNode) PtolemyTypeVisitor.COMPLEX_TYPE.clone(), 2))) {
              // new ComplexMatrixToken(Complex[][])          
              return ((ExprNode) constructorArgs.get(0)).accept(this, null);
           } 
@@ -913,7 +974,8 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
           
           if ((constructorTypes.length == 1) && 
               _typeVisitor.compareTypes(constructorTypes[0], 
-               TypeUtility.makeArrayType(PtolemyTypeVisitor.FIX_POINT_TYPE, 2))) {
+               TypeUtility.makeArrayType(
+                (TypeNode) PtolemyTypeVisitor.FIX_POINT_TYPE.clone(), 2))) {
              // new FixMatrixToken(FixPoint[][])          
              return ((ExprNode) constructorArgs.get(0)).accept(this, null);
           } 
@@ -1011,7 +1073,7 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
           case PtolemyTypeVisitor.TYPE_KIND_LONG_TOKEN:
           {
             long val = ((LongToken) token).longValue();
-            return new DoubleLitNode(String.valueOf(val) + "L");
+            return new LongLitNode(String.valueOf(val) + "L");
           }
            
           case PtolemyTypeVisitor.TYPE_KIND_COMPLEX_TOKEN:
@@ -1110,13 +1172,111 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         ApplicationUtility.error("unexpected type for dummy() : " + type);        
         return null;        
     }       
+    
+    
+    /** Given a list of members of the most basic actor class, add 
+     *  preinitialize(), initialize(), prefire(), fire(), postfire(), and
+     *  wrapup() method declarations, which do the default behavior, if these
+     *  methods do not already appear in the member list.
+     */
+    protected void _addDefaultExecutionMethods(List memberList) {
+        boolean foundPreinit = false;
+        boolean foundInit = false;
+        boolean foundPrefire = false;
+        boolean foundFire = false;
+        boolean foundPostfire = false;
+        boolean foundWrapup = false;
+        
+        Iterator memberItr = memberList.iterator();
+        
+        while (memberItr.hasNext()) {
+           TreeNode member = (TreeNode) memberItr.next();
+           
+           if (member.classID() == METHODDECLNODE_ID) {
+              String methodName = ((MethodDeclNode) member).getName().getIdent();
+              
+              if (methodName.equals("preinitialize")) {
+                 foundPreinit = true;
+              } else if (methodName.equals("initialize")) {
+                 foundInit = true;
+              } else if (methodName.equals("prefire")) {
+                 foundPrefire = true;
+              } else if (methodName.equals("fire")) {
+                 foundFire = true;
+              } else if (methodName.equals("postfire")) {
+                 foundPostfire = true;
+              } else if (methodName.equals("wrapup")) {
+                 foundWrapup = true;
+              }
+           }                      
+        }
+        
+        if (!foundPreinit) {
+           memberList.add(new MethodDeclNode(PUBLIC_MOD, 
+            new NameNode(AbsentTreeNode.instance, "preinitialize"),
+            new LinkedList(), new LinkedList(),
+            new BlockNode(new LinkedList()), VoidTypeNode.instance));
+        }
+
+        if (!foundInit) {
+           memberList.add(new MethodDeclNode(PUBLIC_MOD, 
+            new NameNode(AbsentTreeNode.instance, "initialize"),
+            new LinkedList(), new LinkedList(),
+            new BlockNode(new LinkedList()), VoidTypeNode.instance));
+        }
+        
+        if (!foundPrefire) {
+           List blockList = TNLManip.cons(
+            new ReturnNode(new BoolLitNode("true")));        
+           memberList.add(new MethodDeclNode(PUBLIC_MOD, 
+            new NameNode(AbsentTreeNode.instance, "prefire"),
+            new LinkedList(), new LinkedList(),
+            new BlockNode(blockList), BoolTypeNode.instance));
+        }
+
+        if (!foundFire) {
+           memberList.add(new MethodDeclNode(PUBLIC_MOD, 
+            new NameNode(AbsentTreeNode.instance, "fire"),
+            new LinkedList(), new LinkedList(),
+            new BlockNode(new LinkedList()), VoidTypeNode.instance));
+        }
+        
+        if (!foundPostfire) {
+           List blockList = TNLManip.cons(
+            new ReturnNode(new BoolLitNode("true")));        
+           memberList.add(new MethodDeclNode(PUBLIC_MOD, 
+            new NameNode(AbsentTreeNode.instance, "postfire"),
+            new LinkedList(), new LinkedList(),
+            new BlockNode(blockList), BoolTypeNode.instance));
+        }
+        
+        if (!foundWrapup) {
+           memberList.add(new MethodDeclNode(PUBLIC_MOD, 
+            new NameNode(AbsentTreeNode.instance, "wrapup"),
+            new LinkedList(), new LinkedList(),
+            new BlockNode(new LinkedList()), VoidTypeNode.instance));
+        }                            
+    }
        
     protected PerActorCodeGeneratorInfo _actorInfo = null;    
     protected PtolemyTypeVisitor _typeVisitor = null;
-
+    
+    /** The Ptolemy name of the instance of the actor. */
+    protected final String _actorName;
+    
+    /** A count of how many constructors in the "actor" class that have been
+     *  found so far.
+     */
+    protected int _constructorCount = 0;
+    
+    /** A flag indicating that actor class inherits from object, so super.XXX()
+     *  method calls must be eliminated.
+     */      
+    protected boolean _isBaseClass = false;
+    
     public static final ClassDecl _TYPED_ATOMIC_ACTOR_DECL;
     public static final ClassDecl _SDF_ATOMIC_ACTOR_DECL;
-        
+                             
     static {
         /*
         CompileUnitNode namedObjUnit = StaticResolution.load(
@@ -1157,5 +1317,5 @@ public class ActorTransformerVisitor extends ReplacementJavaVisitor
         _SDF_ATOMIC_ACTOR_DECL = (ClassDecl) StaticResolution.findDecl(
          sdfAtomicActorUnit, "SDFAtomicActor", CG_CLASS, null, null);        
     }     
- }
+}
  
