@@ -47,7 +47,13 @@ include $(CONFIG)
 # Used to build jar files
 PTPACKAGE = 	gui
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTCLASSJAR =
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	style/style.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 # Except: NOTE: HTMLEffigy has to come before Configuration
@@ -141,7 +147,7 @@ all: jclass
 
 TableauFrame.class: HTMLEffigy.class
 
-install: jclass $(PTCLASSJAR)
+install: jclass jars
 
 demo: all demo_ptolemy demo_vergil demo_caa
 demo_ptolemy: all
