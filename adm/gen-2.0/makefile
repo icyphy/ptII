@@ -31,7 +31,7 @@
 #  If you change the version number, then edit ptII/adm/bin/ptIInightly-mail
 #  and ptolemy/web/nightly/toc.htm on the website
 MAJOR_VERSION = 	2.0
-MINOR_VERSION =		-beta
+MINOR_VERSION =		.1
 
 VERSION=	$(MAJOR_VERSION)$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
@@ -159,9 +159,9 @@ $(PTIIDIST):
 	@echo "  tar -X does not seem to work under Cygwin"
 	-find $(PTIIDIST) -name codeDoc -exec rm -rf {} \;
 	-find $(PTIIDIST) -name CVS -exec rm -rf {} \;
-	#@echo "Regenerate the documentation with gr and javasound"
+	#@echo "Regenerate the documentation with gr and comm"
 	@echo "  This requires JDK1.3, so run it on doppler"
-	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc JDOCFLAGS="-author -version -J-Xmx132m" GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm")
+	(cd $(PTIIDIST)/doc; make JAVADOC=javadoc JDOCFLAGS="-author -version -J-Xmx132m" GRPACKAGES="ptolemy.domains.gr.kernel ptolemy.domains.gr.lib" COMMPACKAGES="ptolemy.actor.lib.comm" install)
 	#@echo "Do make realclean to clean up any trash"
 	#cd $(PTIIDIST); make clean
 	#cd $(PTIIDIST); make
