@@ -54,6 +54,10 @@ representation of a resource, without any assurance or indication of a
 file, stream, or other associated network resource.  To access a URI,
 it is common to create a URL from its specification.
 
+<p>Unfortunately, URLs are not necessarily valid URIs.  For example, a
+URL that has a space in it is not a valid URI, the space must be
+quoted (converted) to <code>%20</code>.
+
 @author Edward A. Lee
 @version $Id$
 @since Ptolemy II 1.0
