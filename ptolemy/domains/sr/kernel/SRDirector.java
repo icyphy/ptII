@@ -165,13 +165,6 @@ public class SRDirector extends StaticSchedulingDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Increment the count of known receivers.  Called by a receiver when
-     *  it changes from unknown to known status.
-     */
-    public void incrementKnownReceiverCount() {
-        _currentNumOfKnownReceivers++;
-    }
-
     /** Fire contained actors until the iteration converges.  This method
      *  also calls the prefire() method of an actor before it is fired for
      *  the first time, and at the end, calls the postfire() methods of all 
@@ -241,6 +234,13 @@ public class SRDirector extends StaticSchedulingDirector {
         return ((IntToken) iterations.getToken()).intValue();
     }
 
+    /** Increment the count of known receivers.  Called by a receiver when
+     *  it changes from unknown to known status.
+     */
+    public void incrementKnownReceiverCount() {
+        _currentNumOfKnownReceivers++;
+    }
+
     /** Initialize the director and invoke the initialize() methods of all 
      *  actors deeply contained by the container.
      *  @exception IllegalActionException If the superclass throws it.
@@ -249,6 +249,9 @@ public class SRDirector extends StaticSchedulingDirector {
         super.initialize();
         _iteration = 0;
         _actorsNotAllowedToIterate = null;
+
+        _resetAllReceivers();
+
         // Force the schedule to be computed.
         _getSchedule();
     }
@@ -278,6 +281,11 @@ public class SRDirector extends StaticSchedulingDirector {
         _debug("SRDirector: Instant",
                 String.valueOf(_iteration-1), 
                 "is complete.");
+
+        // All receivers must be reset before any actors are executed in the 
+        // next iteration.  By doing this at the end of each iteration, all 
+        // receivers are guaranteed to be reset, even in a heterogeneous model.
+        _resetAllReceivers();
 
         if((numberOfIterations > 0) && (_iteration >= numberOfIterations)) {
             _iteration = 0;
@@ -535,8 +543,8 @@ public class SRDirector extends StaticSchedulingDirector {
         _lastNumOfActorsAllowedToFire = -1;
         _lastNumOfKnownReceivers = -1;
 
-        _resetAllReceivers();
-        _currentNumOfKnownReceivers = 0;
+        //_resetAllReceivers();
+        //_currentNumOfKnownReceivers = 0;
     }
 
     /** Return true if the specified actor is finished firing.  An actor 
@@ -624,6 +632,7 @@ public class SRDirector extends StaticSchedulingDirector {
     /** Reset all receivers to allow a new firing of the director.
      */
     private void _resetAllReceivers() {
+        _currentNumOfKnownReceivers = 0;
         Iterator i = _receivers.iterator();
         while (i.hasNext()) {
             ((SRReceiver) i.next()).reset();
