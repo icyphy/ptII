@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =            ptolemy/domains/fsm/kernel/util
+ME =            ptolemy/domains/hs/kernel/util
 
 # Root of the ptII directory
 ROOT =		../../../../..
@@ -46,7 +46,7 @@ CLASSPATH =	../../../../..
 # Used to build zip files
 PTPACKAGE = 	util
 PTPACKAGE_ROOTDIR = $(CLASSPATH)
-PTPACKAGE_DIR = ptolemy/domains/fsm/kernel/util
+PTPACKAGE_DIR = ptolemy/domains/hs/kernel/util
 PTERSION =	1.0
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSZIP =	$(PTPACKAGE_DIR)/$(PTPACKAGE).zip

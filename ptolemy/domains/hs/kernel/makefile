@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =            ptolemy/domains/fsm/kernel
+ME =            ptolemy/domains/hs/kernel
 
 # Root of the ptII directory
 ROOT =		../../../..
