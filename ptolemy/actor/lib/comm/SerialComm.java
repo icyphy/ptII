@@ -117,11 +117,6 @@ call, the serialEvent() callback only notifys the fire() method
 and does not call fireAt*() again until the actor has completed a
 firing since the last time fireAt*() was called.
 
-@param baudRate the baud rate (integer such as 19200) to use (applies
-to both input and output)
-@param serialPortName the name (string such as "COM2") of the serial
-port to use
-
 @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
 (Based on my RxDatagram, and on the IRLink class writen by Xiaojun Liu)
 @version $Id$
