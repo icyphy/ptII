@@ -252,7 +252,8 @@ public class ComplexArrayMath {
     /** Return a new array containing the angles of the elements of the
      *  specified complex array.
      *  @param array A array of Complex's.
-     *  @return An array of angles in the range of <em>-pi < /em> to <em>pi</em>.
+     *  @return An array of angles in the range of
+     *  <em>-pi</em> to <em>pi</em>.
      */
     public static final double[] phase(Complex[] array) {
         double[] angles = new double[array.length];
@@ -443,7 +444,8 @@ public class ComplexArrayMath {
 
         if ((startIdx >= array.length) && (copySize >= 0)) {
             throw new IllegalArgumentException(
-                    "resize() :  input array size is less than the start index");
+                    "resize() :  input array size is less than " +
+                    "the start index");
         }
 
         if (copySize > 0) {
@@ -627,9 +629,9 @@ public class ComplexArrayMath {
 
         if (array1.length != array2.length) {
             throw new IllegalArgumentException("ptolemy.math." + methodName +
-                    "() : input arrays must have the same length, but the first " +
-                    "array has length " + array1.length + " and the second array " +
-                    "has length " + array2.length + ".");
+                    "() : input arrays must have the same length, " +
+                    "but the first array has length " + array1.length + 
+                    " and the second array has length " + array2.length + ".");
         }
 
         return array1.length;
