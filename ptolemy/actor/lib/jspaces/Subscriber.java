@@ -139,7 +139,7 @@ public class Subscriber extends Source implements RemoteEventListener {
      *  cache of the parameter value, otherwise pass the call to
      *  the super class.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Not thrown in this class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
