@@ -64,8 +64,8 @@ public class EllipseAttribute extends FilledShapeAttribute {
     public EllipseAttribute(NamedObj container, String name)
         throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        //NOTE: This used to be calling setExpression(), but the change
-        //does not take effect when the icon is created.
+        // NOTE: This used to be calling setExpression(), but the change
+        // does not take effect when the icon is created.
         centered.setToken("true");
     }
 
@@ -75,7 +75,7 @@ public class EllipseAttribute extends FilledShapeAttribute {
     /** Return a circle.
      *  @return A Circle.
      */
-    public Shape _getDefaultShape() {
+    protected Shape _getDefaultShape() {
         return new Ellipse2D.Double(0.0, 0.0, 20.0, 20.0);
     }
 

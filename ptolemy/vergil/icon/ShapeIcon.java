@@ -104,7 +104,8 @@ public class ShapeIcon extends EditorIcon {
             throws CloneNotSupportedException {
         ShapeIcon newObject = (ShapeIcon)super.clone(workspace);
         newObject._figures = new LinkedList();
-        newObject._shape = _defaultShape;
+        // NOTE: Do not set back to the default shape!
+        // newObject._shape = _defaultShape;
         return newObject;
     }
 

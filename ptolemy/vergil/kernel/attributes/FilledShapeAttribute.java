@@ -182,10 +182,7 @@ public abstract class FilledShapeAttribute extends ShapeAttribute {
             throws CloneNotSupportedException {
         FilledShapeAttribute newObject
                 = (FilledShapeAttribute)super.clone(workspace);
-        newObject._centeredValue = false;
-        newObject._heightValue = 0.0;
         newObject._inAttributeChanged = false;
-        newObject._widthValue = 0.0;
         return newObject;
     }
  

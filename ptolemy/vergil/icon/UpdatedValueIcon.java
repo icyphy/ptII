@@ -118,6 +118,12 @@ public class UpdatedValueIcon extends AttributeValueIcon {
             throws CloneNotSupportedException {
         UpdatedValueIcon newObject = (UpdatedValueIcon)super.clone(workspace);
         newObject._associatedAttribute = null;
+        // Find the new associated attribute for the clone.
+        try {
+            newObject.attributeChanged(newObject.attributeName);
+        } catch (IllegalActionException e) {
+            throw new InternalErrorException(e);
+        }
         return newObject;
     }
 

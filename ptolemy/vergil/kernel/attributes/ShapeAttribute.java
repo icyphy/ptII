@@ -153,6 +153,7 @@ public abstract class ShapeAttribute extends Attribute {
         // The base class clones the icon, but since this is a protected
         // member, it doesn't automatically get updated by NamedObj!
         newObject._icon = (ShapeIcon)newObject.getAttribute("_icon");
+        newObject._none = (Variable)newObject.getAttribute("_none");
         return newObject;
     }
 
@@ -165,7 +166,7 @@ public abstract class ShapeAttribute extends Attribute {
      *  of the derived class because they will not have been constructed.
      *  @return The default shape for this attribute.
      */
-    public Shape _getDefaultShape() {
+    protected Shape _getDefaultShape() {
         // NOTE: In an ideal world, this would not be necessary, because
         // setShape() would override the default shape.  Unfortunately,
         // without this, icons are rendered before setShape() has been called,
