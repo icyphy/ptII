@@ -76,12 +76,12 @@ the desktop, usually in the upper left hand corner of the screen.
 When this JFrame has the focus (such as when it has been clicked on)
 it is capable of sensing keystrokes.  <p>
 
-This actor senses only the four non-memeric-pad arrow-key keystrokes.
+This actor senses only the four non-numeric-pad arrow-key keystrokes.
 This actor is almost identical to KeystrokeSensor.java.  One
 difference is the different set of keystrokes sensed.  The other
 difference, is that this actor responds to key releases as well as key
 presses.  Upon each key press, the integer 1 is broadcast from the
-coresponding output.  Upon each key release, the integer 0 is
+corresponding output.  Upon each key release, the integer 0 is
 output.<p>
 
 This actor contains a private inner class which generated the JFrame.
@@ -89,7 +89,7 @@ The frame sets up callbacks which react to the keystrokes.  When called,
 these call the director's fireAtCurrentTime() method.  This causes
 the director to call fire() on the actor.   The actor then broadcasts
 tokens from one or both outputs depending on which keystroke(s) have
-occured since the actor was last fired.  <p>
+occurred since the actor was last fired.  <p>
 
 @author Winthrop Williams
 @version $Id$
