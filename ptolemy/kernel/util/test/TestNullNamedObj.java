@@ -96,7 +96,7 @@ public class TestNullNamedObj extends NamedObj {
     // Instance of a workspace that can be used if no other is specified.
     private static Workspace _defaultWorkspace = new Workspace();
 
-    // The name
+    /** @serial The name. */
     private String _name;
 }
 
