@@ -50,7 +50,6 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =	Documentation.java \
 	EntityLibrary.java \
 	ErrorHandler.java \
-	FilterAddIcons.java \
 	FilterBackwardCompatibility.java \
 	FilterOutGraphicalClasses.java \
 	FilterHideAnnotationNames.java \

@@ -104,8 +104,8 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	// can get averages with:
 	// sh c:/tmp/timeit | awk '{sum+=$4; print sum, sum/NR, $0}'	
 
-	_debug("filterAttributeValue: " + attributeName + "\t"
-	       + attributeValue );
+	//_debug("filterAttributeValue: " + attributeName + "\t"
+	//       + attributeValue );
 
 	if (attributeName.equals("class")) {
 	    // Look for lines like:
@@ -121,8 +121,8 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    // updating.
 	    if (_currentlyProcessingActorThatRequiresUpdating
 		|| _actorsThatRequireUpdating.contains(attributeValue)) {
-		_debug("filterAttributeValue: class " + attributeValue
-		       + _currentActorFullName);
+		//_debug("filterAttributeValue: class " + attributeValue
+		//       + _currentActorFullName);
 		
 		if (_actorsWithPortNameChanges.containsKey(attributeValue)) {
 		    // We found a class with a port name change.
@@ -161,11 +161,11 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 		    _iconMoML = (String) _actorsThatShouldHaveIcons
 			.get(attributeValue);
 
-		    _debug("filterAttributeValue: need _icon saw class: "
-			   + _currentActorFullName + "\n"
-			   + attributeValue + "\n" 
-			   + _actorsThatShouldHaveIcons + "\n"
-			   + _iconMoML);
+		    //_debug("filterAttributeValue: need _icon saw class: "
+		    //	   + _currentActorFullName + "\n"
+		    //	   + attributeValue + "\n" 
+		    //	   + _actorsThatShouldHaveIcons + "\n"
+		    //	   + _iconMoML);
 		} else if (_currentlyProcessingActorWithPropertyClassChanges
 			   && _newClass != null) {
 
@@ -288,13 +288,13 @@ public class FilterBackwardCompatibility implements MoMLFilter {
      */
     public String filterEndElement(NamedObj container, String elementName)
             throws Exception {
-	_debug("filterEndElement: " + container + "\t" + elementName);
+	//_debug("filterEndElement: " + container + "\t" + elementName);
 	if (!elementName.equals("entity")) {
 	    return elementName;
 	}
-	_debug("filterEndElement2: "
-	       + _currentlyProcessingActorThatMayNeedAnIcon + " " 
-	       + _currentActorFullName);
+	//_debug("filterEndElement2: "
+	//       + _currentlyProcessingActorThatMayNeedAnIcon + " " 
+	//       + _currentActorFullName);
 
 	if ( _currentlyProcessingActorThatMayNeedAnIcon
 	     && container != null
@@ -319,10 +319,10 @@ public class FilterBackwardCompatibility implements MoMLFilter {
 	    //request.setPersistent(false);
 	    //container.requestChange(request);
 		
-		_debug("filterEndElement: added\n" + _iconMoML
-		       + "\ncontainer: " +  container
-		       + "\nicon: " + icon
-		       + "\n" + icon.exportMoML());
+		//_debug("filterEndElement: added\n" + _iconMoML
+		//       + "\ncontainer: " +  container
+		//       + "\nicon: " + icon
+		//       + "\n" + icon.exportMoML());
 	    } catch (Exception ex) {
 		throw new IllegalActionException(null, ex, "Failed to parse\n"
 						 + _iconMoML);

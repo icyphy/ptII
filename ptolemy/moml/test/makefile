@@ -50,6 +50,7 @@ JSRCS =
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
+	FilterBackwardCompatibility.tcl \
 	FilterOutGraphicalClasses.tcl \
 	EntityLibrary.tcl \
 	Location.tcl \
