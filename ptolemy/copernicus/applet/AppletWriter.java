@@ -34,6 +34,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.copernicus.kernel.GeneratorAttribute;
+import ptolemy.copernicus.kernel.MakefileWriter;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.InternalErrorException;
@@ -155,45 +156,6 @@ public class AppletWriter extends SceneTransformer {
 	// _ptIIDirectory, then we will need to copy jar files around
 	boolean copyJarFiles = false;
 
-	// Convert _targetPackage "foo/bar" to _codeBase
-	// "../../.."  There is something a little bit strange
-	// here, since we actually create the code in a sub
-	// package of _targetPackage We could rename the
-	// targetPackage parameter to parentTargetPackage but I'd
-	// rather keep things uniform with the other generators?
-
-	int start = _targetPackage.indexOf('.');
-	// _codeBase has one more level than _targetPackage.
-	StringBuffer buffer = new StringBuffer("..");
-	while (start != -1) {
-	    buffer.append("/..");
-	    start = _targetPackage.indexOf('.', start + 1);
-	}
-	_codeBase = buffer.toString();
-
-        if (JNLPUtilities.isRunningUnderWebStart()) {
-            // If we are under WebStart, we always copy jar files 
-            // because under WebStart the jar files have munged names,
-            // and the applet will not find them even if
-            copyJarFiles = true;
-            _codeBase = ".";
-        } else {
-            try {
-                if (!_isSubdirectory(_ptIIDirectory, _outputDirectory)) {
-                    System.out.println("'" + _outputDirectory + "' is not a "
-                            + "subdirectory of '" + _ptIIDirectory + "', so "
-                            + "we copy the jar files and set the "
-                            + "codebase to '.'");
-                    copyJarFiles = true;
-                    _codeBase = ".";
-                }
-            } catch (IOException ex) {
-                System.out.println("_isSubdirectory threw an exception: "
-                        + ex);
-                ex.printStackTrace();
-            }
-        }
-
 
 	// Determine the value of _domainJar, which is the
 	// path to the domain specific jar, e.g. "ptolemy/domains/sdf/sdf.jar"
@@ -223,13 +185,15 @@ public class AppletWriter extends SceneTransformer {
 	_sanitizedModelName = StringUtilities.sanitizeName(_model.getName());
 
 
+        _codeBase = MakefileWriter.codeBase(_targetPackage,
+                _outputDirectory, _ptIIDirectory);
+
 	// Create the directory where we will create the files.
 	File outDirFile = new File(_outputDirectory);
 	if (!outDirFile.isDirectory()) {
             // MakefileWriter should have already created the directory
             outDirFile.mkdirs();
 	}
-
 
 	// Set up the HashMap we will use when we read in files like
 	// model.htm.in and search for strings like @codebase@ and
@@ -289,7 +253,7 @@ public class AppletWriter extends SceneTransformer {
 				    _outputDirectory + "/"
 				    + _sanitizedModelName
 				    + "Vergil.htm");
-	    if (copyJarFiles) {
+	    if (_codeBase.equals(".")) {
 		_copyJarFiles(director);
 	    }
 	} catch (IOException ex) {
@@ -422,28 +386,6 @@ public class AppletWriter extends SceneTransformer {
 
 	in.close();
 	out.close();
-    }
-
-    // Return true if possibleSubdirectory is a subdirectory of parent.
-    private boolean _isSubdirectory(String parent,
-				    String possibleSubdirectory)
-	throws IOException {
-	System.out.println("_isSubdirectory: start \n\t" + parent + "\n\t" +
-			   possibleSubdirectory);
-	File parentFile = new File(parent);
-	File possibleSubdirectoryFile = new File(possibleSubdirectory);
-	if (parentFile.isFile() || possibleSubdirectoryFile.isFile()) {
-	    throw new IOException ("'" + parent + "' or '" 
-				   + possibleSubdirectory + "' is a file, "
-				   + "it should be a directory");
-	}
-	String parentCanonical = parentFile.getCanonicalPath();
-	String possibleSubdirectoryCanonical =
-	    possibleSubdirectoryFile.getCanonicalPath();
-	System.out.println("\n\n_isSubdirectory: \n\t"
-			   + parentCanonical + "\n\t"
-			   + possibleSubdirectoryCanonical);
-	return possibleSubdirectoryCanonical.startsWith(parentCanonical);
     }
 
     ///////////////////////////////////////////////////////////////////

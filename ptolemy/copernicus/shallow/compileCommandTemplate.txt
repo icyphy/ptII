@@ -13,4 +13,7 @@
  -p wjtp.mt targetPackage:@targetPackage@
  -p wjtp.writeJimple1 "outDir:@ptIIUserDirectory@/@targetPath@/jimple1"
  -p wjtp.writeJimple2 "outDir:@ptIIUserDirectory@/@targetPath@/jimple2"
+ -p wjtp.makefileWriter 
+ "targetPackage:@targetPackage@,outDir:@ptIIUserDirectory@/@targetPath@,templateDirectory:ptolemy/copernicus/shallow"
+
  @compileOptions@
