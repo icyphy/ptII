@@ -6,17 +6,12 @@
     <property name="stockName" value="&quot;YHOO&quot;"
         class="ptolemy.data.expr.Parameter">	
     </property>
-    <property name="numberOfHistoryEntries" value="0"
-        class="ptolemy.data.expr.Parameter">	
-    </property>
     <director class="ptolemy.domains.sdf.kernel.SDFDirector">
     </director>
 
     <entity name="subscriber" class="ptolemy.actor.lib.jspaces.Subscriber">
       <property name="jspaceName" value="&quot;JavaSpaces&quot;"></property>
       <property name="entryName" value="stockName"></property>
-      <property name="numberOfHistory" value="numberOfHistoryEntries">
-      </property>
       <property name="blocking" value="true"></property>
       <port name="output"></port>
     </entity>
