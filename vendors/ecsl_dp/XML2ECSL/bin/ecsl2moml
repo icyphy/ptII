@@ -98,8 +98,9 @@ awk ' {
 # Convert <Annotation to MoML Annotation
 awk ' {
     if ($0 ~ /<Annotation/) {
-       text=""
+
        # Get the value of the Text field
+       text=""
        nf = split($0, f, "\"")   
        for (i = 1; i <= nf; i++) {
            if ( f[i] ~ /Text=$/) {
@@ -110,7 +111,7 @@ awk ' {
        if (length(text) > 0) {
            indent = substr($0, 0, index($0,"<") - 1)  
            annotationCount++
-           print indent "<property name=\"annotation" annotationCount "\" class=\"ptolemy.kernel.util.Attribute\""
+           print indent "<property name=\"annotation" annotationCount "\" class=\"ptolemy.kernel.util.Attribute\">"
            print indent "    <property name=\"_hideName\" class=\"ptolemy.kernel.util.SingletonAttribute\">"
            print indent "    </property>"
            print indent "    <property name=\"_iconDescription\" class=\"ptolemy.kernel.util.SingletonConfigurableAttribute\">" 
@@ -122,6 +123,170 @@ awk ' {
         print $0
     }
 } ' < $tmpfile2 > $tmpfile1
+
+
+# Convert <Line to <relation
+awk ' {
+    if ( $1 ~ /<Line/) {
+       # Get the value of the _id field
+       id=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /_id=$/) {
+               id = f[i+1]
+               break;
+           }
+       }
+       indent = substr($0, 0, index($0,"<") - 1)  
+       print indent "<relation name=\"" id "\" class=\"ptolemy.actor.TypedIORelation\"/>"
+    } else {
+        print $0
+    }
+}' < $tmpfile1 > $tmpfile2
+
+
+# Convert <Line to <relation
+awk 'BEGIN {
+    map["Abs"] = "ptolemy.actor.lib.Abs"
+    map["Clock"] = "ptolemy.actor.lib.Clock"
+    map["Constant"] = "ptolemy.actor.lib.Constant"
+    map["Demux"] = "ptolemy.actor.lib.Demux"
+    map["DiscreteFilter"] = "ptolemy.actor.lib.DiscreteFilter"
+    map["DiscretePulseGenerator"] = "ptolemy.actor.lib.DiscretePulseGenerator"
+    map["Display"] = "ptolemy.actor.lib.Display"
+    map["From"] = "ptolemy.actor.lib.From"
+    map["Gain"] = "ptolemy.actor.lib.Gain"
+    map["Goto"] = "ptolemy.actor.lib.Goto"
+    map["Ground"] = "ptolemy.actor.lib.Ground"
+    map["Integrator"] = "ptolemy.actor.lib.Integrator"
+    map["Logic"] = "ptolemy.actor.lib.Logic"
+    map["Merge"] = "ptolemy.actor.lib.Merge"
+    map["MinMax"] = "ptolemy.actor.lib.MinMax"
+    map["MultiPortSwitch"] = "ptolemy.actor.lib.MultiPortSwitch"
+    map["Mux"] = "ptolemy.actor.lib.Mux"
+    map["Product"] = "ptolemy.actor.lib.Product"
+    map["RelationalOperator"] = "ptolemy.actor.lib.RelationalOperator"
+    map["S-Function"] = "ptolemy.actor.lib.S-Function"
+    map["Saturate"] = "ptolemy.actor.lib.Saturate"
+    map["Signum"] = "ptolemy.actor.lib.Signum"
+    map["Sin"] = "ptolemy.actor.lib.Sin"
+    map["Step"] = "ptolemy.actor.lib.Step"
+    map["Sum"] = "ptolemy.actor.lib.Sum"
+    map["Switch"] = "ptolemy.actor.lib.Switch"
+    map["Terminator"] = "ptolemy.actor.lib.Terminator"
+    map["ToWorkspace"] = "ptolemy.actor.lib.ToWorkspace"
+    map["UnitDelay"] = "ptolemy.actor.lib.UnitDelay"
+    map["ZeroOrderHold"] = "ptolemy.actor.lib.ZeroOrderHold"
+}
+{
+    if ($1 ~ /<Primitive/) {
+       # Get the value of the name field
+       name=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /name=$/) {
+               name = f[i+1]
+               break;
+           }
+       }
+
+       # Get the value of the BlockType field
+       blockType=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /BlockType=$/) {
+               blockType = f[i+1]
+               break;
+           }
+       }
+       indent = substr($0, 0, index($0,"<") - 1)  
+       print indent "<entity name=\"" name "\" class=\"" map[blockType] "\">"
+    } else if ($1 ~ /<\/Primitive>/) {
+        print indent "</entity>"
+    } else {
+        print $0
+    }
+} ' < $tmpfile2 > $tmpfile1
+
+
+# OutputPort
+awk '{
+    if ($1 ~ /<OutputPort/ || $1 ~ /<InputPort/) {
+       # Get the value of the name field
+       name=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /name=$/) {
+               name = f[i+1]
+               break;
+           }
+       }
+       indent = substr($0, 0, index($0,"<") - 1)  
+       print indent "<port name=\"" name "\" class=\"ptolemy.actor.TypedIOPort\">"
+       print indent "</port>"
+
+ 
+       if ($1 ~ /<OutputPort/) {
+           # Get the value of the dstLine field
+           relation=""
+           nf = split($0, f, "\"")   
+           for (i = 1; i <= nf; i++) {
+               if ( f[i] ~ /dstLine=$/) {
+                   relation = f[i+1]
+                   break;
+               }
+            }
+       }  else {
+           # Get the value of the srcLine field
+           relation=""
+           nf = split($0, f, "\"")   
+           for (i = 1; i <= nf; i++) {
+               if ( f[i] ~ /srcLine=$/) {
+                   relation = f[i+1]
+                   break;
+               }
+            }
+       }
+       # FIXME: need the container here
+       print indent "<link port=\"" name "\" relation=\"" relation "\"/>" 
+    } else {
+        print $0
+    }
+
+}' < $tmpfile1 > $tmpfile2
+
+
+
+# Parameter
+awk '{
+    if ($1 ~ /<Parameter/) {
+       # Get the value of the name field
+       name=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /name=$/) {
+               name = f[i+1]
+               break;
+           }
+       }
+
+       # Get the value of the value field
+       value=""
+       nf = split($0, f, "\"")   
+       for (i = 1; i <= nf; i++) {
+           if ( f[i] ~ /Value=$/) {
+               value = f[i+1]
+               break;
+           }
+       }
+       indent = substr($0, 0, index($0,"<") - 1)  
+       # FIXME: do more with types?
+       print indent "<property name=\"" name "\" class=\"ptolemy.data.expr.Parameter\" value=\"" value "\">"
+    } else {
+       print $0
+    } 
+} ' < $tmpfile2 > $tmpfile1
+
 
 cp $tmpfile1 $output
 
