@@ -52,7 +52,21 @@ PTDIST =	ptplot$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Jar file consisting of classes used by an applet.
-PTAUXJAR = plotapplet.jar
+PTAUXJAR = 		plotapplet.jar
+
+# Jar file consisting of classes used by pxgraph applets.
+# The pxgraph classes appear in this jar file and in the plot.jar
+PXGRAPHAPPLETJAR =	pxgraphapplet.jar
+
+# Jar file consisting of classes used by an application, including the
+# com/microstar/xml classes.  Note that this jar file does not include
+# the pxgraph classes.
+PLOTMLAPPLETJAR = plotmlapplet.jar
+
+# Jar file consisting of classes used by an application, including the
+# ptolemy/gui and com/microstar/xml classes.  Note that this
+# jar file does not include the pxgraph classes.
+PLOTAPPLICATIONJAR = plotapplication.jar
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
@@ -85,9 +99,11 @@ EXTRA_SRCS = $(JSRCS) \
 	PtolemyGraphics1_1.java.in \
 	PtolemyGraphics1_2.java.in \
 	copyright.txt \
+	histogram.bat \
 	index.htm \
+	ptplot.bat \
 	ptplot.in \
-	pxgraph.bat
+	pxgraph.bat \
 
 # Non-source files such as README files and subdirectories
 MISC_FILES = test #bean
@@ -102,10 +118,19 @@ OPTIONAL_FILES = \
 	ptplot \
 	pxgraph \
 	$(PTCLASSJAR) \
+	'EditablePlot$$EditMouseListener.class' \
+	'EditablePlot$$ModifyListener.class' \
+	'EditablePlot$$UndoListener.class' \
+	'PlotFrame$$1.class' \
+	'PlotFrame$$2.class' \
+	'PlotFrame$$FormatListener.class' \
 	$(PTCLASSZIP)\
 	ptolemy.plot$(JVERSION).tar.gz \
 	ptolemy.plot$(JVERSION).zip \
 	$(PTAUXJAR) \
+	$(PXGRAPHAPPLETJAR) \
+	$(PLOTMLAPPLETJAR) \
+	$(PLOTAPPLICATIONJAR) \
 	PtolemyGraphics.java \
 	'Message$$1.class' \
 	'Message$$2.class' \
@@ -132,7 +157,9 @@ all: sources ptplot jclass
 	ln -s ptplot pxgraph
 	rm -f histogram
 	ln -s ptplot histogram
-install: all $(PTCLASSZIP) $(PTCLASSJAR) $(PTAUXJAR) jars bin_install_dir
+install: all $(PTCLASSZIP) $(PTCLASSJAR) $(PTAUXJAR) \
+		$(PXGRAPHAPPLETJAR) $(PLOTMLAPPLETJAR) $(PLOTAPPLICATIONJAR) \
+		jars bin_install_dir
 	-chmod a+x ptplot
 	rm -f pxgraph
 	ln -s ptplot pxgraph
@@ -209,33 +236,89 @@ ptplot: ptplot.in ../../config.status
 ../../config.status: ../../configure
 	(cd ../..; /bin/sh ./configure)
 
-$(PTAUXJAR): $(JSRCS) $(JCLASS)
-	rm -f $@
-	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
+# Class files used in all applets and applications
+BASECLASSFILES = \
 		$(ME)/CmdLineArgException.class \
 		$(ME)/EPSGraphics.class \
 		$(ME)/Histogram.class \
 		$(ME)/HistogramApplet.class \
 		$(ME)/Message.class \
 		$(ME)/Plot.class \
-		$(ME)/PlotApplet.class \
 		$(ME)/PlotBox.class \
 		$(ME)/PlotDataException.class \
-		$(ME)/PlotLive.class \
-		$(ME)/PlotLiveApplet.class \
 		$(ME)/PlotPoint.class \
 		$(ME)/PtolemyGraphics.class \
-		'$(ME)/Plot$$Format.class' \
 		'$(ME)/Plot$$Format.class' \
 		'$(ME)/PlotBox$$CommandListener.class' \
 		'$(ME)/PlotBox$$DragListener.class' \
 		'$(ME)/PlotBox$$FillButtonListener.class' \
 		'$(ME)/PlotBox$$ZoomListener.class' \
+
+# Class files used in applets
+APPLETCLASSFILES = \
+		$(ME)/PlotApplet.class \
+		$(ME)/PlotLive.class \
+		$(ME)/PlotLiveApplet.class \
 		'$(ME)/PlotLive$$StartButtonListener.class' \
 		'$(ME)/PlotLive$$StopButtonListener.class' \
+
+# Class files used in applications
+APPLICATIONCLASSFILES = \
+		'$(ME)/EditablePlot$$EditMouseListener.class' \
+		'$(ME)/EditablePlot$$ModifyListener.class' \
+		'$(ME)/EditablePlot$$UndoListener.class' \
+		$(ME)/EditablePlot.class \
+		$(ME)/Histogram.class \
+		$(ME)/HistogramApplet.class \
+		'$(ME)/PlotApplication$$1.class' \
+		$(ME)/PlotApplication.class \
+		'$(ME)/PlotFrame$$1.class' \
+		'$(ME)/PlotFrame$$2.class' \
+		'$(ME)/PlotFrame$$FileMenuListener.class' \
+		'$(ME)/PlotFrame$$FormatListener.class' \
+		'$(ME)/PlotFrame$$SpecialMenuListener.class' \
+		$(ME)/PlotFrame.class
+
+# Jar file for simple applets
+$(PTAUXJAR): $(JSRCS) $(JCLASS)
+	rm -f $@
+	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
+		$(BASECLASSFILES) \
+		$(APPLETCLASSFILES) \
             )
 
 
+# Class files used in pxgraph applets
+$(PXGRAPHAPPLETJAR): $(JSRCS) $(JCLASS)
+	rm -f $@
+	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
+		$(BASECLASSFILES) \
+		$(APPLETCLASSFILES) \
+		$(ME)/compat/PxgraphApplet.class \
+		$(ME)/compat/PxgraphApplication.class \
+		$(ME)/compat/PxgraphParser.class \
+            )
+
+# Jar file for PlotML applets, including xml classes
+$(PLOTMLAPPLETJAR): $(JSRCS) $(JCLASS)
+	rm -f $@
+	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
+		$(BASECLASSFILES) \
+		$(APPLETCLASSFILES) \
+		$(ME)/plotml/*.class \
+		com/microstar/xml/*.class \
+            )
+
+# Jar file for applications, including ptolemy/gui and xml classes
+$(PLOTAPPLICATIONJAR): $(JSRCS) $(JCLASS)
+	rm -f $@
+	(cd $(ROOT); $(JAR) cf $(ME)/$@ \
+		$(BASECLASSFILES) \
+		$(APPLICATIONCLASSFILES) \
+		ptolemy/gui/*.class \
+		$(ME)/plotml/*.class \
+		com/microstar/xml/*.class \
+            )
 
 depend:
 	@echo "no dependencies in this directory"
