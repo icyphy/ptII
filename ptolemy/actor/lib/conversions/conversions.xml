@@ -22,12 +22,12 @@
           class="ptolemy.actor.lib.conversions.CartesianToPolar">
   </entity>
 
-  <entity name="ComplexToPolar"
-          class="ptolemy.actor.lib.conversions.ComplexToPolar">
-  </entity>
-
   <entity name="ComplexToCartesian"
           class="ptolemy.actor.lib.conversions.ComplexToCartesian">
+  </entity>
+
+  <entity name="ComplexToPolar"
+          class="ptolemy.actor.lib.conversions.ComplexToPolar">
   </entity>
 
   <entity name="DoubleToFix"
