@@ -56,7 +56,6 @@ SHELL_FILES = \
 	ptinvoke \
 	ptjacl \
 	ptjaclapp \
-	ptjini \
 	ptplot \
 	ptstartjini \
 	ptolemy \
