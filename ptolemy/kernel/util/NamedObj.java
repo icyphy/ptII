@@ -550,6 +550,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     /** React to the given debug event by relaying to any registered
      *  debug listeners.
      *  @param event The event.
+     *  @since Ptolemy II 2.3
      */
     public void event(DebugEvent event) {
         if (_debugging) {
@@ -1013,6 +1014,7 @@ public class NamedObj implements Nameable, Debuggable, DebugListener,
     /** React to a debug message by relaying it to any registered
      *  debug listeners.
      *  @param message The debug message.
+     *  @since Ptolemy II 2.3
      */
     public void message(String message) {
         if (_debugging) {
