@@ -311,7 +311,7 @@ public class PlotBoxMLParser extends HandlerBase {
 
     /** If the argument is null, throw an exception with the given message.
      *  @param object The reference to check for null.
-     *  @param message The message to issue if the referece is null.
+     *  @param message The message to issue if the reference is null.
      */
     protected void _checkForNull(Object object, String message)
             throws XmlException {
