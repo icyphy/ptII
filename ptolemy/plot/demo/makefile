@@ -36,11 +36,27 @@ ROOT =		../../..
 CONFIG =	$(ROOT)/mk/tycho.mk
 include $(CONFIG)
 
+JPACKAGE = 	ptplot.demo
+JPACKAGE_DIR =	ptplot/demo
+JVERSION =	1.1
+JDIST =		$(JPACKAGE)$(JVERSION)
+JZIP =		ptplot/demo/$(JPACKAGE).zip
+
 DIRS = 		audio #doc test
 
-CLASSPATH =	.
+CLASSPATH =	../..
+
 # Order matters here.
-JSRCS =
+JSRCS1_0 = \
+	PlotDemo.java \
+	PlotFourierSeries.java \
+	PlotLiveDemo.java \
+	PlotLiveDemoApplet.java \
+
+# Sources that require JDK1.1 and later.
+JSRCS1_1 = \
+
+JSRCS = $(JSRCS1_0) $(JSRCS1_1)
 
 EXTRA_SRCS = $(JSRCS) \
 	BarGraph.html \
@@ -58,10 +74,17 @@ EXTRA_SRCS = $(JSRCS) \
 # into sccs.
 MISC_FILES = data $(DIRS) #doc test 
 
-JCLASS =
+JCLASS1_0 = $(JSRCS1_0:%.java=%.class)
+JCLASS1_1 = $(JSRCS1_1:%.java=%.class)
+
+JCLASS = $(JCLASS1_0) $(JCLASS1_1)
+
+all: sources jclass $(JZIP)
+install: sources jclass javadocs $(JZIP) 
+docs: javadocs
 
 tests:: $(EXTRA_SRCS)
 	echo "Sorry no automatic Java tests yet"
 
-# We don't include common.mk since we don't use the compiler here
-include $(ROOT)/mk/no-compile.mk
+# Get the rest of the rules
+include $(ROOT)/mk/tycommon.mk
