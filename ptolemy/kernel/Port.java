@@ -164,7 +164,7 @@ public class Port extends NamedObj {
 
     /* The Entity which owns this port.
      */
-    private Entity _entity;
+    private Entity _entity = null;
 
     /* The list of relations for this port.
      */
