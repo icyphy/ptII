@@ -64,9 +64,10 @@ both computation and communication are considered to happen instantaneously.
 In models with cycles, this introduces interesting issues involving 
 instantaneous feedback.
 <p>
-Time in SR is defined as a series of instants.  An instant is one iteration 
-of the director.  The <i>period</i> method of the director determines the 
-amount of time between instants, in which no activity occurs.
+SR is an untimed domain, so it has no notion of the passage of time.  
+Computation happens in a series of instants.  An instant is one iteration of 
+the director.  If SR is embedded inside a timed domain, the SR director will 
+inherit the current time of the outside director.
 <p>
 In SR, each iteration begins with the values on all channels being unknown.  
 To ensure that an iteration converges to final values in finite time, it is 
@@ -149,11 +150,6 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     public Parameter iterations;
 
-    /** The period of an iteration. The type must be less than or equal to
-     *  DoubleToken, and it defaults to 1.
-     */
-    public Parameter period;
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -169,7 +165,6 @@ public class SRDirector extends StaticSchedulingDirector {
             throws CloneNotSupportedException {
         SRDirector newObject = (SRDirector)(super.clone(workspace));
         newObject.iterations = (Parameter)newObject.getAttribute("iterations");
-        newObject.period = (Parameter)newObject.getAttribute("period");
         return newObject;
     }
 
@@ -239,15 +234,6 @@ public class SRDirector extends StaticSchedulingDirector {
         return ((IntToken) iterations.getToken()).intValue();
     }
 
-    /** Return the period.
-     *  @return The period.
-     *  @exception IllegalActionException If the period parameter does
-     *   not have a valid token.
-     */
-    public double getPeriod() throws IllegalActionException {
-        return ((DoubleToken) period.getToken()).doubleValue();
-    }
-
     /** Initialize the director by initializing state variables and invoke
      *  the initialize() methods of all actors deeply contained by the
      *  container.
@@ -280,12 +266,10 @@ public class SRDirector extends StaticSchedulingDirector {
      */
     public boolean postfire() throws IllegalActionException {
 
-        _advanceCurrentTime(getPeriod());
-
         int numberOfIterations = getIterations();
         _iteration++;
 
-        _debug("SRDirector: Time instant",
+        _debug("SRDirector: Instant",
                 String.valueOf(_iteration-1), 
                 "is complete.");
 
@@ -310,13 +294,6 @@ public class SRDirector extends StaticSchedulingDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The static default SR period is 1 second.
-     */
-    protected static int _DEFAULT_SR_PERIOD = 1;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
     /** Override the base class to indicate that this director does not
@@ -329,12 +306,6 @@ public class SRDirector extends StaticSchedulingDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Advance the current time by the specified amount.
-     */
-    private void _advanceCurrentTime(double amount) {
-        _currentTime = getCurrentTime() + amount;
-    }
 
     /** Return true if all the inputs of the specified actor are known.
      */
@@ -531,9 +502,6 @@ public class SRDirector extends StaticSchedulingDirector {
         }
 
 	try {
-	    period = new Parameter(this, "period",
-                    new IntToken(_DEFAULT_SR_PERIOD));
-            period.setTypeEquals(BaseType.DOUBLE);
 	    iterations = new Parameter(this, "iterations", new IntToken(0));
             iterations.setTypeEquals(BaseType.INT);
 	    setCurrentTime(0.0);

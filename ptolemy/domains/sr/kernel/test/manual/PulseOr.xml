@@ -4,12 +4,12 @@
 <entity name="SR model" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[177, 132]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRScheduler">
         </property>
-        <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="4">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="56.0, 48.0">
         </property>
@@ -79,42 +79,42 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+    <entity name="NonStrictDisplay" class="ptolemy.domains.sr.lib.NonStrictDisplay">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="446.0, 130.0">
+        <property name="_location" class="ptolemy.moml.Location" value="434.0, 46.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+    <entity name="NonStrictDisplay2" class="ptolemy.domains.sr.lib.NonStrictDisplay">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="468.0, 253.0">
+        <property name="_location" class="ptolemy.moml.Location" value="485.0, 197.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="Display3" class="ptolemy.actor.lib.gui.Display">
+    <entity name="NonStrictDisplay3" class="ptolemy.domains.sr.lib.NonStrictDisplay">
         <property name="rowsDisplayed" class="ptolemy.data.expr.Parameter" value="10">
         </property>
         <property name="columnsDisplayed" class="ptolemy.data.expr.Parameter" value="40">
         </property>
         <property name="title" class="ptolemy.kernel.util.StringAttribute">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="470.0, 351.0">
+        <property name="_location" class="ptolemy.moml.Location" value="505.0, 366.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -129,14 +129,14 @@
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="255.0, 234.0">
         </vertex>
     </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Pulse.output" relation="relation5"/>
     <link port="Pulse2.output" relation="relation6"/>
     <link port="LogicFunction.input" relation="relation5"/>
     <link port="LogicFunction.input" relation="relation6"/>
-    <link port="LogicFunction.output" relation="relation"/>
-    <link port="Display.input" relation="relation5"/>
-    <link port="Display2.input" relation="relation6"/>
-    <link port="Display3.input" relation="relation"/>
+    <link port="LogicFunction.output" relation="relation4"/>
+    <link port="NonStrictDisplay.input" relation="relation5"/>
+    <link port="NonStrictDisplay2.input" relation="relation6"/>
+    <link port="NonStrictDisplay3.input" relation="relation4"/>
 </entity>

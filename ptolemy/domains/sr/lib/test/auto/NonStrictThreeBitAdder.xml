@@ -4,10 +4,10 @@
 <entity name="SR model" class="ptolemy.actor.TypedCompositeActor">
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[98, 42]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRScheduler">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -101,42 +101,13 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="SequenceTest2" class="ptolemy.domains.sr.lib.SequenceTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="540.0, 335.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="TriggeredTime" class="ptolemy.domains.sr.lib.TriggeredTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="407.0, 303.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="436.0, 150.0">
-        </vertex>
     </relation>
     <link port="NonStrictThreeBitAdder.inputBits" relation="relation6"/>
     <link port="NonStrictThreeBitAdder.inputBits" relation="relation3"/>
@@ -146,7 +117,4 @@
     <link port="Ramp.output" relation="relation3"/>
     <link port="Const = 1.output" relation="relation5"/>
     <link port="SequenceTest.input" relation="relation"/>
-    <link port="SequenceTest2.input" relation="relation4"/>
-    <link port="TriggeredTime.output" relation="relation4"/>
-    <link port="TriggeredTime.trigger" relation="relation"/>
 </entity>

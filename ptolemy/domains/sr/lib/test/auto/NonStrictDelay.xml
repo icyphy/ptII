@@ -7,7 +7,7 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="1">
+        <property name="Scheduler" class="ptolemy.domains.sr.kernel.SRScheduler">
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="12">
         </property>
@@ -74,75 +74,12 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="TriggeredTime" class="ptolemy.domains.sr.lib.TriggeredTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="266.0, 95.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="TriggeredTime5" class="ptolemy.domains.sr.lib.TriggeredTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="424.0, 228.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="TriggeredTime6" class="ptolemy.domains.sr.lib.TriggeredTime">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="455.0, 352.0">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <entity name="SequenceTest7" class="ptolemy.domains.sr.lib.SequenceTest">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0,1,2}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="422.0, 158.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="SequenceTest8" class="ptolemy.domains.sr.lib.SequenceTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0,2.0,3.0}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="538.0, 231.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
-    <entity name="SequenceTest9" class="ptolemy.domains.sr.lib.SequenceTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{2.0,3.0,4.0}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="552.0, 353.0">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -161,55 +98,24 @@
             <property name="multiport"/>
         </port>
     </entity>
-    <entity name="SequenceTest14" class="ptolemy.domains.sr.lib.SequenceTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0,1.0,2.0}">
-        </property>
-        <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.0E-9">
-        </property>
-        <property name="_location" class="ptolemy.moml.Location" value="396.0, 90.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="multiport"/>
-        </port>
-    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="139.0, 219.0">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="381.0, 354.0">
-        </vertex>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" class="ptolemy.moml.Vertex" value="337.0, 218.0">
-        </vertex>
-    </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Ramp.output" relation="relation"/>
     <link port="NonStrictDelay.input" relation="relation"/>
-    <link port="NonStrictDelay.output" relation="relation4"/>
+    <link port="NonStrictDelay.output" relation="relation2"/>
     <link port="NonStrictDelay2.input" relation="relation"/>
     <link port="NonStrictDelay2.output" relation="relation6"/>
     <link port="NonStrictDelay3.input" relation="relation6"/>
     <link port="NonStrictDelay3.output" relation="relation3"/>
     <link port="SequenceTest.input" relation="relation"/>
-    <link port="TriggeredTime.output" relation="relation15"/>
-    <link port="TriggeredTime.trigger" relation="relation"/>
-    <link port="TriggeredTime5.output" relation="relation12"/>
-    <link port="TriggeredTime5.trigger" relation="relation4"/>
-    <link port="TriggeredTime6.output" relation="relation13"/>
-    <link port="TriggeredTime6.trigger" relation="relation3"/>
-    <link port="SequenceTest7.input" relation="relation4"/>
-    <link port="SequenceTest8.input" relation="relation12"/>
-    <link port="SequenceTest9.input" relation="relation13"/>
+    <link port="SequenceTest7.input" relation="relation2"/>
     <link port="SequenceTest10.input" relation="relation3"/>
-    <link port="SequenceTest14.input" relation="relation15"/>
 </entity>

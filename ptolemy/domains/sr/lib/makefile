@@ -61,7 +61,6 @@ JSRCS = \
 	SequenceTest.java \
 	Server.java \
 	SingleTokenDistributor.java \
-	TriggeredTime.java \
 	Undefined.java
 
 OTHER_FILES_TO_BE_JARED = \

@@ -7,14 +7,12 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="6">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="56.0, 48.0">
         </property>
     </property>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
@@ -93,7 +91,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="Copy2:TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="Copy2:SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
@@ -119,7 +117,7 @@
 </plot>?>
         </configure>
     </entity>
-    <entity name="Copy3:TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="Copy3:SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="legend" class="ptolemy.kernel.util.StringAttribute">
@@ -155,12 +153,12 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="TimedPlotter.input" relation="relation5"/>
+    <link port="SequencePlotter.input" relation="relation5"/>
     <link port="Pulse.output" relation="relation5"/>
     <link port="Pulse2.output" relation="relation6"/>
     <link port="AddSubtract.plus" relation="relation5"/>
     <link port="AddSubtract.plus" relation="relation6"/>
     <link port="AddSubtract.output" relation="relation"/>
-    <link port="Copy2:TimedPlotter.input" relation="relation6"/>
-    <link port="Copy3:TimedPlotter.input" relation="relation"/>
+    <link port="Copy2:SequencePlotter.input" relation="relation6"/>
+    <link port="Copy3:SequencePlotter.input" relation="relation"/>
 </entity>

@@ -7,8 +7,6 @@
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 100]">
     </property>
     <property name="SR" class="ptolemy.domains.sr.kernel.SRDirector">
-        <property name="period" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="56.0, 48.0">

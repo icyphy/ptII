@@ -79,9 +79,6 @@ public class NonStrictDisplay extends Display implements NonStrictActor {
      */
     public boolean postfire() throws IllegalActionException {
         int width = input.getWidth();
-        String time = "Time "
-            + String.valueOf(getDirector().getCurrentTime())
-            + ": ";
         for (int i = 0; i < width; i++) {
             String value;
             if (input.hasToken(i)) {
@@ -98,7 +95,6 @@ public class NonStrictDisplay extends Display implements NonStrictActor {
                 value = UNDEFINED_STRING;
             }
 
-            textArea.append(time);
             textArea.append(value);
 
             // Append a newline character.
