@@ -604,7 +604,7 @@ public class StaticResolution implements JavaStaticSemanticConstants {
      *  FIXME: Update the above description with shallow loading becomes stable.
      *  FIXME: Is there a better place for this flag?
      */
-     public static boolean enableShallowLoading = true;
+     public static boolean enableShallowLoading = false;
 
      /** A flag that indicates whether or not we should allow deep loading
       *  of ASTs for user-defined classes (classes that are not core ptolemy
