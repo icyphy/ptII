@@ -44,11 +44,11 @@ zero-order holds and impulses.
 */
 public interface CTEventInterpreter extends Actor{
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Consume the discrete event that happens at the current time. If there
-     *  is nosuch events, do nothing.
+     *  are no such events, do nothing.
      */
     public void consumeCurrentEvents();
 

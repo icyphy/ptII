@@ -45,8 +45,8 @@ implementations of event generator are samplers, event detectors, etc.
 */
 public interface CTEventGenerator extends Actor{
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Emit the discrete event that happens at the current time. If there
      *  is nosuch events, do nothing.
