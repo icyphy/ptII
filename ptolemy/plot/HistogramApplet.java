@@ -36,11 +36,11 @@ import ptolemy.plot.*;
 //////////////////////////////////////////////////////////////////////////
 //// HistogramApplet
 /**
- * A Histogram.  Data can be given in ASCII format at a URL.
- * If none is given, then a sample histogram is generated.
- *
- * @author Edward A. Lee
- * @version $Id$
+A Histogram.  Data can be given in ASCII format at a URL.
+If none is given, then a sample histogram is generated.
+
+@author Edward A. Lee
+@version $Id$
  */
 public class HistogramApplet extends PlotApplet {
 

@@ -44,17 +44,17 @@ import java.net.MalformedURLException;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotApplet
+/**
+An Applet that can plot data from a URL.
+The URL should be specified using the dataurl applet parameter.
+The formatting commands are included in the file with the
+the data.
+If no URL is given, then a sample plot is generated.
 
-/** An Applet that can plot data from a URL.
- *  The URL should be specified using the dataurl applet parameter.
- *  The formatting commands are included in the file with the
- *  the data.
- *  If no URL is given, then a sample plot is generated.
- *
- *  @author Edward A. Lee, Christopher Hylands
- *  @version $Id$
- *  @see PlotBox
- *  @see Plot
+@author Edward A. Lee, Christopher Hylands
+@version $Id$
+@see PlotBox
+@see Plot
  */
 public class PlotApplet extends JApplet {
 

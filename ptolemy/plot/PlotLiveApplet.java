@@ -33,12 +33,12 @@ package ptolemy.plot;
 
 //////////////////////////////////////////////////////////////////////////
 //// PlotLiveApplet
+/**
+An Applet for the PlotLive class.  Derived classes should redefine
+newPlot() to return a concrete instance of PlotLive.
 
-/** An Applet for the PlotLive class.  Derived classes should redefine
- *  newPlot() to return a concrete instance of PlotLive.
- *
- *  @author Edward A. Lee, Christopher Hylands
- *  @version $Id$
+@author Edward A. Lee, Christopher Hylands
+@version $Id$
  */
 public class PlotLiveApplet extends PlotApplet {
 

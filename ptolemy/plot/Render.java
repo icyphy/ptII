@@ -38,10 +38,8 @@ import java.util.ListIterator;
 //////////////////////////////////////////////////////////////////////////
 //// Render
 /**
- * FIXME
- *
- * @author Neil Turner
- * @version $Id$
+@author Neil Turner
+@version $Id$
  */
 public class Render extends PlotBox {
 

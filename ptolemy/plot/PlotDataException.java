@@ -29,12 +29,14 @@ ENHANCEMENTS, OR MODIFICATIONS.
 */
 package ptolemy.plot;
 
+//////////////////////////////////////////////////////////////////////////
+//// PlotDataException
 /**
- * Exception thrown by plot classes if there are format
- * problems with the data to be plotted.
- *
- * @author Christopher Hylands
- * @version $Id$
+Exception thrown by plot classes if there are format
+problems with the data to be plotted.
+
+@author Christopher Hylands
+@version $Id$
  */
 class PlotDataException extends Throwable {
     public PlotDataException() { super(); }

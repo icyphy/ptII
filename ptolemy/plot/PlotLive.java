@@ -36,28 +36,28 @@ import javax.swing.JButton;
 //////////////////////////////////////////////////////////////////////////
 //// PlotLive
 /**
- * Plot signals dynamically, where points can be added at any time
- * and the display will be updated.  This should be normally used
- * with some finite persistence so that old points are erased as new
- * points are added.  Unfortunately, the most efficient way to erase
- * old points is to draw graphics using the "exclusive or" mode, which
- * introduces quite a number of artifacts.  When lines are drawn
- * between points, where they overlap the points the line becomes
- * white. Moreover, if two lines or points overlap completely, they
- * disappear.
- * <p>
- * This class is abstract, so it must be used by creating a derived
- * class.  To use it, create a derived class with an
- * addPoints() method. Your class may also set graph parameters like
- * titles and axis labels in the constructor by calling
- * methods in the Plot or PlotBox classes (both of which are base classes).
- * The addPoints() method should call addPoint() of the Plot base
- * class to dynamically add points to the plot.  This method is called
- * within a thread separate from the applet thread, so the zooming
- * mechanism and buttons remain live.
- *
- * @author Edward A. Lee, Christopher Hylands
- * @version $Id$
+Plot signals dynamically, where points can be added at any time
+and the display will be updated.  This should be normally used
+with some finite persistence so that old points are erased as new
+points are added.  Unfortunately, the most efficient way to erase
+old points is to draw graphics using the "exclusive or" mode, which
+introduces quite a number of artifacts.  When lines are drawn
+between points, where they overlap the points the line becomes
+white. Moreover, if two lines or points overlap completely, they
+disappear.
+<p>
+This class is abstract, so it must be used by creating a derived
+class.  To use it, create a derived class with an
+addPoints() method. Your class may also set graph parameters like
+titles and axis labels in the constructor by calling
+methods in the Plot or PlotBox classes (both of which are base classes).
+The addPoints() method should call addPoint() of the Plot base
+class to dynamically add points to the plot.  This method is called
+within a thread separate from the applet thread, so the zooming
+mechanism and buttons remain live.
+
+@author Edward A. Lee, Christopher Hylands
+@version $Id$
  */
 public abstract class PlotLive extends Plot implements Runnable {
 
