@@ -10,6 +10,18 @@
 <li> The major change is that the classes were moved from
 the <CODE>ptplot</CODE> package to the <CODE>pt.plot</CODE> package.
 
+</menu>
+
+<H2>The changes between ptplot1.3 and ptplot1.3p1</H2>
+<menu>
+
+<li> The plotting region is now always white.  Formerly, the <CODE>-bg</CODE>
+option would change the color of the plotting region and the region
+around the plotting region where the legend is.  Now <CODE>-bg</CODE>
+only changed the region around the plotting region.  The reason for 
+this change is that the colors of the data sets were designed to be
+used on a white background.
+
 <li> Ignore the <CODE>-bb</CODE> command line argument.  In the X11
 version of <CODE>pxgraph</CODE>, <CODE>-bb</CODE> drew a bounding box
 around the data region. Formerly, the Java version printed a message about
@@ -17,11 +29,9 @@ around the data region. Formerly, the Java version printed a message about
 <CODE>pxgraph</CODE>, the region where plots appear is a different
 color than the surround region, which makes <CODE>-bb</CODE> useless.
 
-</menu>
+<li> Various minor cleanups to the comments.  Stripped out trailing spaces at
+the end of lines.   
 
-<H2>The changes between ptplot1.3 and ptplot1.3p1</H2>
-<menu>
-<li> Various minor cleanups to the comments.
 <li> Added <CODE>fillPlot()</CODE> method back in so that client
 programs can call it.  Reported by Stephan Puchegger &lt;a9127383@unet.univie.ac.at&gt;
 <li> If <CODE>JAVAHOME</CODE> is not set, and <CODE>pxgraph</CODE> cannot
