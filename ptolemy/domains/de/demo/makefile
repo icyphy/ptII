@@ -34,7 +34,7 @@ ME =		ptolemy/domains/de/demo
 # Root of the Java directory
 ROOT =		../../../..
 
-DIRS =		Interrupt
+DIRS =		Inspection
 
 CLASSPATH =	$(ROOT)
 
