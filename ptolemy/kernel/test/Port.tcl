@@ -95,11 +95,9 @@ test Port-3.1.1 {Test connectToRelation with one port, one relation twice} {
     set p1 [java::new pt.kernel.Port "My Port"]
     set r1 [java::new pt.kernel.test.RelationTest "My Relation"]
     $p1 connectToRelation $r1
-    # This should throw an exception
-    set errmsg {}
-    catch {$p1 connectToRelation $r1} errmsg
-    list $errmsg [_testPortEnumRelations $p1]
-} {{pt.kernel.GraphException} {{{My Relation}}}}
+    $p1 connectToRelation $r1
+    list [_testPortEnumRelations $p1]
+} {{{{My Relation} {My Relation}}}}
 
 ######################################################################
 ####
