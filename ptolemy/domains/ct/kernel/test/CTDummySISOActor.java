@@ -1,4 +1,4 @@
-/* One line description of file.
+/* For testing schedules. 
 
  Copyright (c) 1998-2001 The Regents of the University of California.
  All rights reserved.
@@ -24,7 +24,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 @ProposedRating Red (cxh@eecs.berkeley.edu)
-@AcceptedRating red(reviewmoderator@eecs.berkeley.edu)
+@AcceptedRating Red (reviewmoderator@eecs.berkeley.edu)
 
 */
 package ptolemy.domains.ct.kernel.test;
