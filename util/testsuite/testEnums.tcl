@@ -76,7 +76,7 @@ proc _testEnums {enummethod args} {
 		    [$enum hasMoreElements] == 1} \
 		    {} {
 		set enumelement [$enum nextElement]
-		if [ java::instanceof $enumelement pt.kernel.NamedObj] {
+		if [ java::instanceof $enumelement pt.kernel.util.NamedObj] {
 		    lappend lresults [$enumelement getName]
 		} else {
 		    lappend lresults $enumElement

@@ -52,10 +52,10 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test KernelException-1.1 {Get information about an instance of KernelException} {
     # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.KernelException]
+    set n [java::new pt.kernel.util.KernelException]
     list [getJavaInfo $n]
 } {{
-  class:         pt.kernel.KernelException
+  class:         pt.kernel.util.KernelException
   fields:        
   methods:       {equals java.lang.Object} fillInStackTrace getClass get
     LocalizedMessage getMessage hashCode notify notifyAll p
@@ -63,12 +63,14 @@ test KernelException-1.1 {Get information about an instance of KernelException} 
     rintStackTrace java.io.PrintWriter} toString wait {wait
      long} {wait long int}
     
-  constructors:  pt.kernel.KernelException {pt.kernel.KernelException ja
-    va.lang.String} {pt.kernel.KernelException pt.kernel.Na
-    meable} {pt.kernel.KernelException pt.kernel.Nameable j
-    ava.lang.String} {pt.kernel.KernelException pt.kernel.N
-    ameable pt.kernel.Nameable} {pt.kernel.KernelException 
-    pt.kernel.Nameable pt.kernel.Nameable java.lang.String}
+  constructors:  pt.kernel.util.KernelException {pt.kernel.util.KernelEx
+    ception java.lang.String} {pt.kernel.util.KernelExcepti
+    on pt.kernel.util.Nameable} {pt.kernel.util.KernelExcep
+    tion pt.kernel.util.Nameable java.lang.String} {pt.kern
+    el.util.KernelException pt.kernel.util.Nameable pt.kern
+    el.util.Nameable} {pt.kernel.util.KernelException pt.ke
+    rnel.util.Nameable pt.kernel.util.Nameable java.lang.St
+    ring}
     
   properties:    class localizedMessage message
     
@@ -80,7 +82,7 @@ test KernelException-1.1 {Get information about an instance of KernelException} 
 ####
 # 
 test KernelException-2.1 {Create a KernelException} {
-    set pe [java::new pt.kernel.KernelException]
+    set pe [java::new pt.kernel.util.KernelException]
     list [$pe getMessage] [$pe getLocalizedMessage]
 } {{} {}}
 
@@ -88,7 +90,7 @@ test KernelException-2.1 {Create a KernelException} {
 ####
 # 
 test KernelException-3.1 {Create a KernelException with a detail message} {
-    set pe [java::new {pt.kernel.KernelException String} "A message"]
+    set pe [java::new {pt.kernel.util.KernelException String} "A message"]
     list [$pe getMessage] [$pe getLocalizedMessage]
 } {{A message} {A message}}
 
@@ -96,7 +98,7 @@ test KernelException-3.1 {Create a KernelException with a detail message} {
 ####
 # 
 test KernelException-3.2 {Create a KernelException with a null detail message} {
-    set pe [java::new {pt.kernel.KernelException String} [java::null]]
+    set pe [java::new {pt.kernel.util.KernelException String} [java::null]]
     list [$pe getMessage]
 } {{}}
 
@@ -104,11 +106,11 @@ test KernelException-3.2 {Create a KernelException with a null detail message} {
 ####
 test KernelException-3.3 {Create a KernelException with a detail message \
  	that is not a String} {
-    set n1 [java::new pt.kernel.NamedObj]
+    set n1 [java::new pt.kernel.util.NamedObj]
     # We can't check the error message here because Tcl Blend returns
     # a hex number that changes:
-    # expected object of type java.lang.String but got "java0x248" (pt.kernel.NamedObj)
-    catch {set pe [java::new {pt.kernel.KernelException String} $n1]}
+    # expected object of type java.lang.String but got "java0x248" (pt.kernel.util.NamedObj)
+    catch {set pe [java::new {pt.kernel.util.KernelException String} $n1]}
 } {1}
 
 ######################################################################
@@ -116,8 +118,8 @@ test KernelException-3.3 {Create a KernelException with a detail message \
 # 
 test KernelException-4.1 {Create a KernelException with a Nameable \
 	that has no name} {
-    set n1 [java::new pt.kernel.NamedObj]
-    set pe [java::new {pt.kernel.KernelException pt.kernel.Nameable} $n1]
+    set n1 [java::new pt.kernel.util.NamedObj]
+    set pe [java::new {pt.kernel.util.KernelException pt.kernel.util.Nameable} $n1]
     list [$pe getMessage]
 } {.}
 
@@ -126,8 +128,8 @@ test KernelException-4.1 {Create a KernelException with a Nameable \
 # 
 test KernelException-4.2 {Create a KernelException with a NamedObj \
 	that has a name} {
-    set n1 [java::new pt.kernel.NamedObj "My NamedObj"]
-    set pe [java::new {pt.kernel.KernelException pt.kernel.Nameable} $n1]
+    set n1 [java::new pt.kernel.util.NamedObj "My NamedObj"]
+    set pe [java::new {pt.kernel.util.KernelException pt.kernel.util.Nameable} $n1]
     list [$pe getMessage]
 } {{.My NamedObj}}
 
@@ -135,7 +137,7 @@ test KernelException-4.2 {Create a KernelException with a NamedObj \
 ####
 # 
 test KernelException-4.3 {Create a KernelException with a null NamedObj} {
-    set pe [java::new {pt.kernel.KernelException pt.kernel.Nameable} \
+    set pe [java::new {pt.kernel.util.KernelException pt.kernel.util.Nameable} \
 	    [java::null]]
     list [$pe getMessage]
 } {{}}
@@ -145,8 +147,8 @@ test KernelException-4.3 {Create a KernelException with a null NamedObj} {
 # 
 test KernelException-5.1 {Create a KernelException with a NamedObj \
 	that has no name and a detail string} {
-    set n1 [java::new pt.kernel.NamedObj]
-    set pe [java::new {pt.kernel.KernelException pt.kernel.Nameable String} $n1 "Detail String"]
+    set n1 [java::new pt.kernel.util.NamedObj]
+    set pe [java::new {pt.kernel.util.KernelException pt.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
 } {{.: Detail String}}
 
@@ -155,8 +157,8 @@ test KernelException-5.1 {Create a KernelException with a NamedObj \
 # 
 test KernelException-5.2 {Create a KernelException with a NamedObj \
 	that has a name  and a detail string} {
-    set n1 [java::new pt.kernel.NamedObj "My NamedObj"]
-    set pe [java::new {pt.kernel.KernelException pt.kernel.Nameable String} $n1 "Detail String"]
+    set n1 [java::new pt.kernel.util.NamedObj "My NamedObj"]
+    set pe [java::new {pt.kernel.util.KernelException pt.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
 } {{.My NamedObj: Detail String}}
 
@@ -165,10 +167,10 @@ test KernelException-5.2 {Create a KernelException with a NamedObj \
 # 
 test KernelException-6.1 {Create a KernelException with an unamed NamedObj \
 	and an unamed NamedObj} {
-    set n1 [java::new pt.kernel.NamedObj]
-    set n2 [java::new pt.kernel.NamedObj]
+    set n1 [java::new pt.kernel.util.NamedObj]
+    set n2 [java::new pt.kernel.util.NamedObj]
     set pe [java::new \
-	    {pt.kernel.KernelException pt.kernel.Nameable pt.kernel.Nameable}\
+	    {pt.kernel.util.KernelException pt.kernel.util.Nameable pt.kernel.util.Nameable}\
 	    $n1 $n2]
     list [$pe getMessage]
 } {{. and .}}
@@ -178,10 +180,10 @@ test KernelException-6.1 {Create a KernelException with an unamed NamedObj \
 # 
 test KernelException-6.2 {Create a KernelException with a named NamedObj \
 	and an unamed NamedObj} {
-    set n1 [java::new pt.kernel.NamedObj "NamedObj 1"]
-    set n2 [java::new pt.kernel.NamedObj]
+    set n1 [java::new pt.kernel.util.NamedObj "NamedObj 1"]
+    set n2 [java::new pt.kernel.util.NamedObj]
     set pe [java::new \
-	    {pt.kernel.KernelException pt.kernel.Nameable pt.kernel.Nameable}\
+	    {pt.kernel.util.KernelException pt.kernel.util.Nameable pt.kernel.util.Nameable}\
 	    $n1 $n2]
     list [$pe getMessage]
 } {{.NamedObj 1 and .}}
@@ -191,10 +193,10 @@ test KernelException-6.2 {Create a KernelException with a named NamedObj \
 # 
 test KernelException-6.3 {Create a KernelException with an unamed NamedObj \
 	and a named NamedObj} {
-    set n1 [java::new pt.kernel.NamedObj]
-    set n2 [java::new pt.kernel.NamedObj "NamedObj 2"]
+    set n1 [java::new pt.kernel.util.NamedObj]
+    set n2 [java::new pt.kernel.util.NamedObj "NamedObj 2"]
     set pe [java::new \
-	    {pt.kernel.KernelException pt.kernel.Nameable pt.kernel.Nameable}\
+	    {pt.kernel.util.KernelException pt.kernel.util.Nameable pt.kernel.util.Nameable}\
 	    $n1 $n2]
     list [$pe getMessage]
 } {{. and .NamedObj 2}}
@@ -204,10 +206,10 @@ test KernelException-6.3 {Create a KernelException with an unamed NamedObj \
 # 
 test KernelException-6.4 {Create a KernelException with a named NamedObj \
 	and a named NamedObj} {
-    set n1 [java::new pt.kernel.NamedObj "NamedObj 1"]
-    set n2 [java::new pt.kernel.NamedObj "NamedObj 2"]
+    set n1 [java::new pt.kernel.util.NamedObj "NamedObj 1"]
+    set n2 [java::new pt.kernel.util.NamedObj "NamedObj 2"]
     set pe [java::new \
-	    {pt.kernel.KernelException pt.kernel.Nameable pt.kernel.Nameable}\
+	    {pt.kernel.util.KernelException pt.kernel.util.Nameable pt.kernel.util.Nameable}\
 	    $n1 $n2]
     list [$pe getMessage]
 } {{.NamedObj 1 and .NamedObj 2}}
@@ -218,9 +220,9 @@ test KernelException-6.4 {Create a KernelException with a named NamedObj \
 # 
 test KernelException-7.1 {Create a KernelException with an unamed NamedObj \
 	and an unamed NamedObj and a detail message} {
-    set n1 [java::new pt.kernel.NamedObj]
-    set n2 [java::new pt.kernel.NamedObj]
-    set pe [java::new pt.kernel.KernelException $n1 $n2 "Detail Message"]
+    set n1 [java::new pt.kernel.util.NamedObj]
+    set n2 [java::new pt.kernel.util.NamedObj]
+    set pe [java::new pt.kernel.util.KernelException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
 } {{. and .: Detail Message}}
 
@@ -229,9 +231,9 @@ test KernelException-7.1 {Create a KernelException with an unamed NamedObj \
 # 
 test KernelException-7.2 {Create a KernelException with a named NamedObj \
 	and an unamed NamedObj and a detail Message} {
-    set n1 [java::new pt.kernel.NamedObj "NamedObj 1"]
-    set n2 [java::new pt.kernel.NamedObj]
-    set pe [java::new pt.kernel.KernelException $n1 $n2 "Detail Message"]
+    set n1 [java::new pt.kernel.util.NamedObj "NamedObj 1"]
+    set n2 [java::new pt.kernel.util.NamedObj]
+    set pe [java::new pt.kernel.util.KernelException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
 } {{.NamedObj 1 and .: Detail Message}}
 
@@ -240,9 +242,9 @@ test KernelException-7.2 {Create a KernelException with a named NamedObj \
 # 
 test KernelException-7.3 {Create a KernelException with an unamed NamedObj \
 	and a named NamedObj and a detail message} {
-    set n1 [java::new pt.kernel.NamedObj]
-    set n2 [java::new pt.kernel.NamedObj "NamedObj 2"]
-    set pe [java::new pt.kernel.KernelException $n1 $n2 "Detail Message"]
+    set n1 [java::new pt.kernel.util.NamedObj]
+    set n2 [java::new pt.kernel.util.NamedObj "NamedObj 2"]
+    set pe [java::new pt.kernel.util.KernelException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
 } {{. and .NamedObj 2: Detail Message}}
 
@@ -251,9 +253,9 @@ test KernelException-7.3 {Create a KernelException with an unamed NamedObj \
 # 
 test KernelException-7.4 {Create a KernelException with a named NamedObj \
 	and a named NamedObj and a detail message} {
-    set n1 [java::new pt.kernel.NamedObj "NamedObj 1"]
-    set n2 [java::new pt.kernel.NamedObj "NamedObj 2"]
-    set pe [java::new pt.kernel.KernelException $n1 $n2 "Detail Message"]
+    set n1 [java::new pt.kernel.util.NamedObj "NamedObj 1"]
+    set n2 [java::new pt.kernel.util.NamedObj "NamedObj 2"]
+    set pe [java::new pt.kernel.util.KernelException $n1 $n2 "Detail Message"]
     list [$pe getMessage]
 } {{.NamedObj 1 and .NamedObj 2: Detail Message}}
 

@@ -52,10 +52,10 @@ if {[string compare test [info procs test]] == 1} then {
 # 
 test NoSuchItemException-1.1 {Get information about an instance of NoSuchItemException} {
     # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.NoSuchItemException dummy]
+    set n [java::new pt.kernel.util.NoSuchItemException dummy]
     list [getJavaInfo $n]
 } {{
-  class:         pt.kernel.NoSuchItemException
+  class:         pt.kernel.util.NoSuchItemException
   fields:        
   methods:       {equals java.lang.Object} fillInStackTrace getClass get
     LocalizedMessage getMessage hashCode notify notifyAll p
@@ -63,13 +63,13 @@ test NoSuchItemException-1.1 {Get information about an instance of NoSuchItemExc
     rintStackTrace java.io.PrintWriter} toString wait {wait
      long} {wait long int}
     
-  constructors:  {pt.kernel.NoSuchItemException java.lang.String} {pt.ke
-    rnel.NoSuchItemException pt.kernel.Nameable java.lang.S
-    tring}
+  constructors:  {pt.kernel.util.NoSuchItemException java.lang.String} {
+    pt.kernel.util.NoSuchItemException pt.kernel.util.Namea
+    ble java.lang.String}
     
   properties:    class localizedMessage message
     
-  superclass:    pt.kernel.KernelException
+  superclass:    pt.kernel.util.KernelException
     
 }}
 
@@ -77,7 +77,7 @@ test NoSuchItemException-1.1 {Get information about an instance of NoSuchItemExc
 ####
 # 
 test NoSuchItemException-3.1 {Create a NoSuchItemException with a detail message} {
-    set pe [java::new {pt.kernel.NoSuchItemException String} "A message"]
+    set pe [java::new {pt.kernel.util.NoSuchItemException String} "A message"]
     list [$pe getMessage] [$pe getLocalizedMessage]
 } {{A message} {A message}}
 
@@ -85,7 +85,7 @@ test NoSuchItemException-3.1 {Create a NoSuchItemException with a detail message
 ####
 # 
 test NoSuchItemException-3.2 {Create a NoSuchItemException with a null detail message} {
-    set pe [java::new {pt.kernel.NoSuchItemException String} [java::null]]
+    set pe [java::new {pt.kernel.util.NoSuchItemException String} [java::null]]
     list [$pe getMessage]
 } {{}}
 
@@ -94,11 +94,11 @@ test NoSuchItemException-3.2 {Create a NoSuchItemException with a null detail me
 # 
 test NoSuchItemException-3.3 {Create a NoSuchItemException with a \
 	detail message that is not a String} {
-    set n1 [java::new pt.kernel.NamedObj]
+    set n1 [java::new pt.kernel.util.NamedObj]
     # We can't check the error message here because Tcl Blend returns
     # a hex number that changes:
-    # expected object of type java.lang.String but got "java0x2c4" (pt.kernel.NamedObj)
-    catch {set pe [java::new {pt.kernel.NoSuchItemException String} $n1]}
+    # expected object of type java.lang.String but got "java0x2c4" (pt.kernel.util.NamedObj)
+    catch {set pe [java::new {pt.kernel.util.NoSuchItemException String} $n1]}
 } {1}
 
 ######################################################################
@@ -106,8 +106,8 @@ test NoSuchItemException-3.3 {Create a NoSuchItemException with a \
 # 
 test NoSuchItemException-5.1 {Create a NoSuchItemException with a NamedObj \
 	that has no name and a detail string} {
-    set n1 [java::new pt.kernel.NamedObj]
-    set pe [java::new {pt.kernel.NoSuchItemException pt.kernel.Nameable String} $n1 "Detail String"]
+    set n1 [java::new pt.kernel.util.NamedObj]
+    set pe [java::new {pt.kernel.util.NoSuchItemException pt.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
 } {{.: Detail String}}
 
@@ -116,7 +116,7 @@ test NoSuchItemException-5.1 {Create a NoSuchItemException with a NamedObj \
 # 
 test NoSuchItemException-5.2 {Create a NoSuchItemException with a NamedObj \
 	that has a name  and a detail string} {
-    set n1 [java::new pt.kernel.NamedObj "My NamedObj"]
-    set pe [java::new {pt.kernel.NoSuchItemException pt.kernel.Nameable String} $n1 "Detail String"]
+    set n1 [java::new pt.kernel.util.NamedObj "My NamedObj"]
+    set pe [java::new {pt.kernel.util.NoSuchItemException pt.kernel.util.Nameable String} $n1 "Detail String"]
     list [$pe getMessage]
 } {{.My NamedObj: Detail String}}

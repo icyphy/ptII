@@ -56,22 +56,22 @@ if {[info procs enumToObjects] == "" } then {
 # 
 test NamedObj-1.1 {Get information about an instance of NamedObj} {
     # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.NamedObj]
+    set n [java::new pt.kernel.util.NamedObj]
     list [getJavaInfo $n]
 } {{
-  class:         pt.kernel.NamedObj
+  class:         pt.kernel.util.NamedObj
   fields:        
-  methods:       {addParameter pt.kernel.Nameable} clone {clone pt.kerne
-    l.Workspace} {description int} {equals java.lang.Object
-    } getClass getContainer getFullName getName {getParamet
-    er java.lang.String} getParameters hashCode notify noti
-    fyAll {removeParameter java.lang.String} {setName java.
-    lang.String} toString wait {wait long} {wait long int} 
-    workspace
+  methods:       {addParameter pt.kernel.util.Nameable} clone {clone pt.
+    kernel.util.Workspace} {description int} {equals java.l
+    ang.Object} getClass getContainer getFullName getName {
+    getParameter java.lang.String} getParameters hashCode n
+    otify notifyAll {removeParameter java.lang.String} {set
+    Name java.lang.String} toString wait {wait long} {wait 
+    long int} workspace
     
-  constructors:  pt.kernel.NamedObj {pt.kernel.NamedObj java.lang.String
-    } {pt.kernel.NamedObj pt.kernel.Workspace java.lang.Str
-    ing}
+  constructors:  pt.kernel.util.NamedObj {pt.kernel.util.NamedObj java.l
+    ang.String} {pt.kernel.util.NamedObj pt.kernel.util.Wor
+    kspace java.lang.String}
     
   properties:    class container fullName name parameters
     
@@ -83,7 +83,7 @@ test NamedObj-1.1 {Get information about an instance of NamedObj} {
 ####
 # 
 test NamedObj-2.1 {Create a NamedObj, set the name, change it} {
-    set n [java::new pt.kernel.NamedObj]
+    set n [java::new pt.kernel.util.NamedObj]
     set result1 [$n getName]
     $n setName "A Named Obj"
     set result2 [$n getName]
@@ -98,7 +98,7 @@ test NamedObj-2.1 {Create a NamedObj, set the name, change it} {
 ####
 # 
 test NamedObj-2.2 {Create a NamedObj, set the name, change it} {
-    set n [java::new pt.kernel.NamedObj "name set in constructor"]
+    set n [java::new pt.kernel.util.NamedObj "name set in constructor"]
     set result1 [$n getName]
     $n setName "A Named Obj"
     set result2 [$n getName]
@@ -116,7 +116,7 @@ test NamedObj-2.2 {Create a NamedObj, set the name, change it} {
 test NamedObj-2.3 { Check names with dots} {
     # In early versions of the kernel, we prohibited names with dots
     # Now, dots are permitted.
-    set n [java::new pt.kernel.NamedObj "This.name.has.dots"]
+    set n [java::new pt.kernel.util.NamedObj "This.name.has.dots"]
     list [ $n getName]
 } {This.name.has.dots}
 
@@ -124,7 +124,7 @@ test NamedObj-2.3 { Check names with dots} {
 ####
 # FIXME:  test addParam, removeParam, getParam, getParams
 # test NamedObj-3.1 {Experiment with Parameters} {
-#     set n [java::new pt.kernel.NamedObj]
+#     set n [java::new pt.kernel.util.NamedObj]
 #     set a1 [java::new pt.data.Parameter A1 1]
 #     set a2 [java::new pt.data.Parameter A2 2]
 #     $n addParameter $a1
@@ -135,7 +135,7 @@ test NamedObj-2.3 { Check names with dots} {
 ####
 # 
 test NamedObj-4.1 {Set the name to null in the constructor} {
-    set n [java::new pt.kernel.NamedObj [java::null]]
+    set n [java::new pt.kernel.util.NamedObj [java::null]]
     $n getName
 } {}
 
@@ -143,7 +143,7 @@ test NamedObj-4.1 {Set the name to null in the constructor} {
 ####
 # 
 test NamedObj-4.2 {Set the name to null after construction} {
-    set n [java::new pt.kernel.NamedObj "foo"]
+    set n [java::new pt.kernel.util.NamedObj "foo"]
     $n setName [java::null]
     $n getName
 } {}
@@ -152,8 +152,8 @@ test NamedObj-4.2 {Set the name to null after construction} {
 ####
 # 
 test NamedObj-5.1 {Test getFullName} {
-    set n [java::new pt.kernel.Workspace "foo"]
-    set b [java::new pt.kernel.NamedObj $n "bar"]
+    set n [java::new pt.kernel.util.Workspace "foo"]
+    set b [java::new pt.kernel.util.NamedObj $n "bar"]
     list [$n getFullName] [$b getFullName]
 } {foo foo.bar}
 
@@ -161,21 +161,21 @@ test NamedObj-5.1 {Test getFullName} {
 ####
 # 
 test NamedObj-6.1 {Test toString} {
-    set n [java::new pt.kernel.Workspace "foo"]
-    set a [java::new pt.kernel.NamedObj]
-    set b [java::new pt.kernel.NamedObj $n ""]
-    set c [java::new pt.kernel.NamedObj $n "car" ]
+    set n [java::new pt.kernel.util.Workspace "foo"]
+    set a [java::new pt.kernel.util.NamedObj]
+    set b [java::new pt.kernel.util.NamedObj $n ""]
+    set c [java::new pt.kernel.util.NamedObj $n "car" ]
     list [$a toString] [$b toString] [$c toString]
-} {{pt.kernel.NamedObj {.}} {pt.kernel.NamedObj {foo.}} {pt.kernel.NamedObj {foo.car}}}
+} {{pt.kernel.util.NamedObj {.}} {pt.kernel.util.NamedObj {foo.}} {pt.kernel.util.NamedObj {foo.car}}}
 
 ######################################################################
 ####
 # 
 test NamedObj-6.2 {Test description} {
-    set n [java::new pt.kernel.Workspace "foo"]
-    set a [java::new pt.kernel.NamedObj]
-    set b [java::new pt.kernel.NamedObj $n ""]
-    set c [java::new pt.kernel.NamedObj $n "car" ]
+    set n [java::new pt.kernel.util.Workspace "foo"]
+    set a [java::new pt.kernel.util.NamedObj]
+    set b [java::new pt.kernel.util.NamedObj $n ""]
+    set c [java::new pt.kernel.util.NamedObj $n "car" ]
     list "[$a description [java::field pt.kernel.Nameable NAME]]\n\
 	    [$b description [java::field pt.kernel.Nameable NAME]]\n\
 	    [$c description [java::field pt.kernel.Nameable NAME]]\n\
@@ -186,36 +186,36 @@ test NamedObj-6.2 {Test description} {
  {foo}}}
 
 test NamedObj-6.3 {Test description} {
-    set n [java::new pt.kernel.Workspace "foo"]
-    set a [java::new pt.kernel.NamedObj]
-    set b [java::new pt.kernel.NamedObj $n ""]
-    set c [java::new pt.kernel.NamedObj $n "car" ]
+    set n [java::new pt.kernel.util.Workspace "foo"]
+    set a [java::new pt.kernel.util.NamedObj]
+    set b [java::new pt.kernel.util.NamedObj $n ""]
+    set c [java::new pt.kernel.util.NamedObj $n "car" ]
     list "[$a description 3]\n\
 	    [$b description 3]\n\
 	    [$c description 3]\n\
 	    [$n description 3]"
-} {{pt.kernel.NamedObj {.}
- pt.kernel.NamedObj {foo.}
- pt.kernel.NamedObj {foo.car}
- pt.kernel.Workspace {foo}}}
+} {{pt.kernel.util.NamedObj {.}
+ pt.kernel.util.NamedObj {foo.}
+ pt.kernel.util.NamedObj {foo.car}
+ pt.kernel.util.Workspace {foo}}}
 
 ######################################################################
 ####
 # 
 test NamedObj-7.1 {Test clone} {
-    set n [java::new pt.kernel.Workspace "N"]
-    set a [java::new pt.kernel.NamedObj $n "A" ]
+    set n [java::new pt.kernel.util.Workspace "N"]
+    set a [java::new pt.kernel.util.NamedObj $n "A" ]
     set b [$a clone]
     $b description 3
-} {pt.kernel.NamedObj {N.A}}
+} {pt.kernel.util.NamedObj {N.A}}
 
 ######################################################################
 ####
 # 
 test NamedObj-8.1 {Test Parameters} {
-    set n [java::new pt.kernel.Workspace "N"]
-    set a [java::new pt.kernel.NamedObj $n "A" ]
-    set p [java::new {pt.data.Parameter pt.kernel.NamedObj java.lang.String java.lang.String} $a "P" 1]
+    set n [java::new pt.kernel.util.Workspace "N"]
+    set a [java::new pt.kernel.util.NamedObj $n "A" ]
+    set p [java::new {pt.data.Parameter pt.kernel.util.NamedObj java.lang.String java.lang.String} $a "P" 1]
     $a addParameter $p
     set c [$a getParameter "P"]
     expr {$c == $p}
@@ -223,7 +223,7 @@ test NamedObj-8.1 {Test Parameters} {
 
 # NOTE: Builds on previous example.
 test NamedObj-8.2 {Test Parameters} {
-    set q [java::new {pt.data.Parameter pt.kernel.NamedObj java.lang.String java.lang.String} $a "Q" 2]
+    set q [java::new {pt.data.Parameter pt.kernel.util.NamedObj java.lang.String java.lang.String} $a "Q" 2]
     $a addParameter $q
     enumToFullNames [$a getParameters]
 } {N.A.P N.A.Q}

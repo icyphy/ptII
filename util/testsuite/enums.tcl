@@ -127,7 +127,7 @@ proc mapProc {procname args} {
 proc objectsToNames {objlist} {
     set results {}
     foreach obj $objlist {
-        if [ java::instanceof $obj pt.kernel.Nameable] {
+        if [ java::instanceof $obj pt.kernel.util.Nameable] {
             lappend results [$obj getName]
         } else {
             lappend results NOT_NAMEABLE.
@@ -147,7 +147,7 @@ proc objectsToNames {objlist} {
 proc objectsToFullNames {objlist} {
     set results {}
     foreach obj $objlist {
-        if [ java::instanceof $obj pt.kernel.Nameable] {
+        if [ java::instanceof $obj pt.kernel.util.Nameable] {
             lappend results [$obj getFullName]
         } else {
             lappend results NOT_NAMEABLE.

@@ -57,22 +57,24 @@ if {[info procs _testEnums] == "" } then {
 # 
 test NamedList-1.1 {Get information about an instance of NamedObj} {
     # If anything changes, we want to know about it so we can write tests.
-    set n [java::new pt.kernel.NamedList]
+    set n [java::new pt.kernel.util.NamedList]
     list [getJavaInfo $n]
 } {{
-  class:         pt.kernel.NamedList
+  class:         pt.kernel.util.NamedList
   fields:        
-  methods:       {append pt.kernel.Nameable} clone {equals java.lang.Obj
-    ect} first {get java.lang.String} getClass getElements 
-    hashCode {includes pt.kernel.Nameable} {insertAfter jav
-    a.lang.String pt.kernel.Nameable} {insertBefore java.la
-    ng.String pt.kernel.Nameable} last notify notifyAll {pr
-    epend pt.kernel.Nameable} {remove java.lang.String} {re
-    move pt.kernel.Nameable} removeAll size toString wait {
-    wait long} {wait long int}
+  methods:       {append pt.kernel.util.Nameable} clone {equals java.lan
+    g.Object} first {get java.lang.String} getClass getElem
+    ents hashCode {includes pt.kernel.util.Nameable} {inser
+    tAfter java.lang.String pt.kernel.util.Nameable} {inser
+    tBefore java.lang.String pt.kernel.util.Nameable} last 
+    notify notifyAll {prepend pt.kernel.util.Nameable} {rem
+    ove java.lang.String} {remove pt.kernel.util.Nameable} 
+    removeAll size toString wait {wait long} {wait long int
+    }
     
-  constructors:  pt.kernel.NamedList {pt.kernel.NamedList pt.kernel.Name
-    able} {pt.kernel.NamedList pt.kernel.NamedList}
+  constructors:  pt.kernel.util.NamedList {pt.kernel.util.NamedList pt.k
+    ernel.util.Nameable} {pt.kernel.util.NamedList pt.kerne
+    l.util.NamedList}
     
   properties:    class elements
     
@@ -84,10 +86,10 @@ test NamedList-1.1 {Get information about an instance of NamedObj} {
 ####
 # 
 test NamedList-2.1 {Construct a list, call get} {
-    set dir [java::new pt.kernel.NamedList]
-    set n1 [java::new pt.kernel.NamedObj "n1"]
-    set n2 [java::new pt.kernel.NamedObj "n2"]
-    set n3 [java::new pt.kernel.NamedObj "n3"]
+    set dir [java::new pt.kernel.util.NamedList]
+    set n1 [java::new pt.kernel.util.NamedObj "n1"]
+    set n2 [java::new pt.kernel.util.NamedObj "n2"]
+    set n3 [java::new pt.kernel.util.NamedObj "n3"]
     $dir prepend $n1
     set result1 [expr {$n1 == [$dir get "n1"]}]
     $dir prepend $n2
@@ -101,10 +103,10 @@ test NamedList-2.1 {Construct a list, call get} {
 ####
 # 
 test NamedList-4.1 {Test insertAt and last} {
-    set dir [java::new pt.kernel.NamedList]
-    set n1 [java::new pt.kernel.NamedObj "n1"]
-    set n2 [java::new pt.kernel.NamedObj "n2"]
-    set n3 [java::new pt.kernel.NamedObj "n3"]
+    set dir [java::new pt.kernel.util.NamedList]
+    set n1 [java::new pt.kernel.util.NamedObj "n1"]
+    set n2 [java::new pt.kernel.util.NamedObj "n2"]
+    set n3 [java::new pt.kernel.util.NamedObj "n3"]
     $dir prepend $n1
     $dir prepend $n2 
     $dir prepend $n3 
@@ -118,10 +120,10 @@ test NamedList-4.1 {Test insertAt and last} {
 ####
 # 
 test NamedList-5.1 {Test prepend} {
-    set dir [java::new pt.kernel.NamedList]
-    set n1 [java::new pt.kernel.NamedObj "n1"]
-    set n2 [java::new pt.kernel.NamedObj "n2"]
-    set n3 [java::new pt.kernel.NamedObj "n3"]
+    set dir [java::new pt.kernel.util.NamedList]
+    set n1 [java::new pt.kernel.util.NamedObj "n1"]
+    set n2 [java::new pt.kernel.util.NamedObj "n2"]
+    set n3 [java::new pt.kernel.util.NamedObj "n3"]
     $dir prepend $n1
     $dir prepend $n2 
     $dir prepend $n3 
@@ -132,20 +134,20 @@ test NamedList-5.1 {Test prepend} {
 ####
 # 
 test NamedList-5.2 {prepend with duplicate names} {
-    set dir [java::new pt.kernel.NamedList]
-    set n1 [java::new pt.kernel.NamedObj "n1"]
-    set n2 [java::new pt.kernel.NamedObj "n1"]
+    set dir [java::new pt.kernel.util.NamedList]
+    set n1 [java::new pt.kernel.util.NamedObj "n1"]
+    set n2 [java::new pt.kernel.util.NamedObj "n1"]
     $dir prepend $n1
     catch {$dir prepend $n2} errMsg4
     list $errMsg4
-} {{pt.kernel.NameDuplicationException: Attempt to insert object named "n1" into a container that already contains an object with that name.}}
+} {{pt.kernel.util.NameDuplicationException: Attempt to insert object named "n1" into a container that already contains an object with that name.}}
 
 ######################################################################
 ####
 # 
 test NamedList-5.3 {prepend with a node with a null name} {
-    set dir [java::new pt.kernel.NamedList]
-    set n0 [java::new pt.kernel.NamedObj]
+    set dir [java::new pt.kernel.util.NamedList]
+    set n0 [java::new pt.kernel.util.NamedObj]
     $dir prepend $n0
     list [expr {$n0 == [$dir {get String} {}]}]
 } {1}
@@ -154,22 +156,22 @@ test NamedList-5.3 {prepend with a node with a null name} {
 ####
 # 
 test NamedList-5.4 {prepend two nodes with null names} {
-    set dir [java::new pt.kernel.NamedList]
-    set n0 [java::new pt.kernel.NamedObj]
-    set n00 [java::new pt.kernel.NamedObj]
+    set dir [java::new pt.kernel.util.NamedList]
+    set n0 [java::new pt.kernel.util.NamedObj]
+    set n00 [java::new pt.kernel.util.NamedObj]
     $dir prepend $n0
     catch {$dir prepend $n00} errMsg1
     list [expr {$n0 == [$dir {get String} ""]}] $errMsg1
-} {1 {pt.kernel.NameDuplicationException: Attempt to insert object named "<Unnamed Object>" into a container that already contains an object with that name.}}
+} {1 {pt.kernel.util.NameDuplicationException: Attempt to insert object named "<Unnamed Object>" into a container that already contains an object with that name.}}
 
 ######################################################################
 ####
 # 
 test NamedList-6.1 {Test insertAfter} {
-    set dir [java::new pt.kernel.NamedList]
-    set n1 [java::new pt.kernel.NamedObj "n1"]
-    set n2 [java::new pt.kernel.NamedObj "n2"]
-    set n3 [java::new pt.kernel.NamedObj "n3"]
+    set dir [java::new pt.kernel.util.NamedList]
+    set n1 [java::new pt.kernel.util.NamedObj "n1"]
+    set n2 [java::new pt.kernel.util.NamedObj "n2"]
+    set n3 [java::new pt.kernel.util.NamedObj "n3"]
     $dir prepend $n1
     $dir insertAfter [$n1 getName] $n2
     $dir insertAfter [$n2 getName] $n3
@@ -180,21 +182,21 @@ test NamedList-6.1 {Test insertAfter} {
 ####
 # 
 test NamedList-6.2 {insertAfter with duplicate names} {
-    set dir [java::new pt.kernel.NamedList]
-    set n1 [java::new pt.kernel.NamedObj "n1"]
-    set n2 [java::new pt.kernel.NamedObj "n1"]
+    set dir [java::new pt.kernel.util.NamedList]
+    set n1 [java::new pt.kernel.util.NamedObj "n1"]
+    set n2 [java::new pt.kernel.util.NamedObj "n1"]
     $dir prepend $n1
     catch {$dir insertAfter [$n1 getName] $n2} errMsg4
     list $errMsg4
-} {{pt.kernel.NameDuplicationException: Attempt to insert object named "n1" into a container that already contains an object with that name.}}
+} {{pt.kernel.util.NameDuplicationException: Attempt to insert object named "n1" into a container that already contains an object with that name.}}
 
 ######################################################################
 ####
 # 
 test NamedList-6.3 {insertAfter with a node with a null name} {
-    set dir [java::new pt.kernel.NamedList]
-    set n1 [java::new pt.kernel.NamedObj "n1"]
-    set n0 [java::new pt.kernel.NamedObj]
+    set dir [java::new pt.kernel.util.NamedList]
+    set n1 [java::new pt.kernel.util.NamedObj "n1"]
+    set n0 [java::new pt.kernel.util.NamedObj]
     $dir prepend $n1
     $dir insertAfter [$n1 getName] $n0
 } {}
@@ -203,29 +205,29 @@ test NamedList-6.3 {insertAfter with a node with a null name} {
 ####
 # 
 test NamedList-6.4 {insertAfter with two nodes with a null names} {
-    set dir [java::new pt.kernel.NamedList]
-    set n0 [java::new pt.kernel.NamedObj]
-    set n00 [java::new pt.kernel.NamedObj]
+    set dir [java::new pt.kernel.util.NamedList]
+    set n0 [java::new pt.kernel.util.NamedObj]
+    set n00 [java::new pt.kernel.util.NamedObj]
     $dir prepend $n0
     catch {$dir insertAfter [$n1 getName] $n00} errMsg1
     list $errMsg1
-} {{pt.kernel.NameDuplicationException: Attempt to insert object named "<Unnamed Object>" into a container that already contains an object with that name.}}
+} {{pt.kernel.util.NameDuplicationException: Attempt to insert object named "<Unnamed Object>" into a container that already contains an object with that name.}}
 
 ######################################################################
 ####
 # 
 test NamedList-8.1 {Test remove} {
-    set dir [java::new pt.kernel.NamedList]
-    set n1 [java::new pt.kernel.NamedObj "n1"]
-    set n2 [java::new pt.kernel.NamedObj "n2"]
-    set n3 [java::new pt.kernel.NamedObj "n3"]
+    set dir [java::new pt.kernel.util.NamedList]
+    set n1 [java::new pt.kernel.util.NamedObj "n1"]
+    set n2 [java::new pt.kernel.util.NamedObj "n2"]
+    set n3 [java::new pt.kernel.util.NamedObj "n3"]
     $dir prepend $n1
     $dir insertAfter [$n1 getName] $n2
     $dir insertAfter [$n2 getName] $n3
     set result1 [_testEnums getElements $dir]
     $dir {remove String} n2
     set result2 [_testEnums getElements $dir]
-    $dir {remove pt.kernel.Nameable} $n3
+    $dir {remove pt.kernel.util.Nameable} $n3
     set result3 [_testEnums getElements $dir]
     $dir {remove String} n1
     set result4 [_testEnums getElements $dir]
@@ -236,14 +238,14 @@ test NamedList-8.1 {Test remove} {
 ####
 # 
 test NamedList-8.2 {Test remove} {
-    set dir [java::new pt.kernel.NamedList]
+    set dir [java::new pt.kernel.util.NamedList]
     # Remove something that does not exist from an empty NamedList
     set result1 [expr {[java::null] == [$dir {remove String} n1]}]
-    set n1 [java::new pt.kernel.NamedObj "n1"]
-    set n2 [java::new pt.kernel.NamedObj "n2"]
+    set n1 [java::new pt.kernel.util.NamedObj "n1"]
+    set n2 [java::new pt.kernel.util.NamedObj "n2"]
     $dir append $n1
     $dir insertAfter [$n1 getName] $n2
-    $dir {remove pt.kernel.Nameable} $n1
+    $dir {remove pt.kernel.util.Nameable} $n1
     # Remove something that has already been removed. 
     set result2 [expr {[java::null] == [$dir {remove String} n1]}]
     list $result1 $result2
@@ -253,17 +255,17 @@ test NamedList-8.2 {Test remove} {
 ####
 # 
 test NamedList-9.1 {Test copy constructor} {
-    set dir [java::new pt.kernel.NamedList]
-    set n1 [java::new pt.kernel.NamedObj "n1"]
-    set n2 [java::new pt.kernel.NamedObj "n2"]
-    set n3 [java::new pt.kernel.NamedObj "n3"]
+    set dir [java::new pt.kernel.util.NamedList]
+    set n1 [java::new pt.kernel.util.NamedObj "n1"]
+    set n2 [java::new pt.kernel.util.NamedObj "n2"]
+    set n3 [java::new pt.kernel.util.NamedObj "n3"]
     $dir prepend $n1
     $dir prepend $n2 
     $dir prepend $n3 
     set result1 [_testEnums getElements $dir]
-    set clone [java::new {pt.kernel.NamedList pt.kernel.NamedList} $dir]
+    set clone [java::new {pt.kernel.util.NamedList pt.kernel.util.NamedList} $dir]
     set result2 [_testEnums getElements $clone]
-    $dir {remove pt.kernel.Nameable} $n2
+    $dir {remove pt.kernel.util.Nameable} $n2
     set result3 [_testEnums getElements $dir]
     list $result1 $result2 $result3
 } {{{n3 n2 n1}} {{n3 n2 n1}} {{n3 n1}}}
