@@ -71,9 +71,7 @@ JSRCS = \
 #	Port.java \
 #	DGToJHDLCircuit.java \
 
-OTHER_FILES_TO_BE_JARED = \
-	compileCommandTemplate.txt \
-	runCommandTemplate.txt
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
 	JHDLClass.java
