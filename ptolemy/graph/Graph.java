@@ -1381,7 +1381,7 @@ public class Graph implements Cloneable {
     }
 
     /** Validate the weight of a node. This method checks the validity of
-     *  the node weight (using {@link #validateNodeWeight(Object)}, and
+     *  the node weight (using {@link #validNodeWeight(Object)}, and
      *  updates, if necessary, the internal mapping of weights into
      *  their associated nodes.
      *  This updating operation is necessary for correct operation of
@@ -1435,26 +1435,23 @@ public class Graph implements Cloneable {
      *  that achieves such a weight change with proper notification to the
      *  containing graphs.
      *
-     * <pre>
-     * Object oldWeight = node.weight();
-     * node.setWeight(newWeight);
-     * graph1.validateWeight(node, oldWeight);
-     * graph2.validateWeight(node, oldWeight);
-     * </pre>
+     *  <pre>
+     *  Object oldWeight = node.weight();
+     *  node.setWeight(newWeight);
+     *  graph1.validateWeight(node, oldWeight);
+     *  graph2.validateWeight(node, oldWeight);
+     *  </pre>
      *
-     * <p>In this example, #validateWeight(Node) could be used
-     * (e.g., if the previous weight <em>oldWeight</em> was not available)
-     * in place of #validateNodeWeight(Node, Object),
-     * but the efficiency would be lower.
-     *
-     * <p>A similar example can be used to demostrate the use of
-     * {@link #validateWeight(Edge)} and {@link #validateWeight(Edge, Object)}.
+     *  <p>In this example, #validateWeight(Node) could be used
+     *  (e.g., if the previous weight <em>oldWeight</em> was not available)
+     *  in place of #validateNodeWeight(Node, Object),
+     *  but the efficiency would be lower.
      *
      *  @param node The node whose weight is to be validated.
      *  @param oldWeight The previous weight of the node.
      *  @return True if the node weight has changed, as determined by the equals
      *  method.
-     * @see #validateWeight(Node).
+     *  @see #validateWeight(Node).
      */
      public boolean validateWeight(Node node, Object oldWeight) {
         if (!containsNode(node)) {
