@@ -110,6 +110,28 @@ public class EditIconTableau extends Tableau {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** Override the base class to return a more reasonable title.
+     *  @return The string "Icon editor for name", where name is the
+     *   name of the object whose icon this is editing.
+     */
+    public String getTitle() {
+        NamedObj container = getContainer();
+        if (container instanceof PtolemyEffigy) {
+            NamedObj model = ((PtolemyEffigy)container).getModel();
+            if (model != null) {
+                NamedObj modelContainer = model.getContainer();
+                if (modelContainer != null) {
+                    return "Icon editor for " + modelContainer.getName();
+                }
+            }
+        }
+        // If anything goes wrong, just defer to the base class.
+        return super.getTitle();
+    }
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
     // The background color.
@@ -157,7 +179,6 @@ public class EditIconTableau extends Tableau {
                 if (tableau == null) {
                     // Check to see whether this factory contains a
                     // default library.
-                    // FIXME: It probabaly should!
                     LibraryAttribute library = (LibraryAttribute)getAttribute(
                             "_library", LibraryAttribute.class);
                     tableau = new EditIconTableau(
