@@ -352,7 +352,7 @@ public class PlotBox extends Panel {
         if (_yticks == null) {
             Vector ygrid = null;
             if (_ylog) {
-                ygrid = _gridInit(yStart, yStep);
+                ygrid = _gridInit(yStart, yStep, true, null);
             }
 
             // automatic ticks
@@ -452,7 +452,7 @@ public class PlotBox extends Panel {
             Vector ygrid = null;
             double yTmpStart = yStart;
             if (_ylog) {
-                ygrid = _gridInit(yStart, yStep);
+                ygrid = _gridInit(yStart, yStep, true, null);
                 yTmpStart = _gridStep(ygrid, yStart, yStep, _ylog);
                 if (_debug == 5) 
                     System.out.println("PlotBox: drawPlot: YAXIS ind="+ind+
@@ -495,6 +495,29 @@ public class PlotBox extends Panel {
             }
 
             if (_ylog) {
+                // Draw in grid lines that don't have labels.
+                Vector unlabeledgrid  = _gridInit(yStart,yStep,false,ygrid);
+                if (unlabeledgrid.size() > 0) {
+                    // If the step is greater than 1, clamp it to 1 so that
+                    // we draw the unlabeled grid lines for each
+                    //integer interval.
+                    double tmpStep = (yStep > 1.0)? 1.0 : yStep;
+
+                    for (double ypos = _gridStep(unlabeledgrid , yStart,
+                            tmpStep, _ylog);
+                         ypos <= _ytickMax;
+                         ypos = _gridStep(unlabeledgrid, ypos,
+                                 tmpStep, _ylog)) {
+                        int yCoord1 = _lry - 
+                            (int)((ypos-_ytickMin)*_ytickscale);
+                        if (_grid && yCoord1 != _uly && yCoord1 != _lry) {
+                            graphics.setColor(Color.lightGray);
+                            graphics.drawLine(_ulx+1,yCoord1,_lrx-1,yCoord1);
+                            graphics.setColor(_foreground);
+                        }                    
+                    }
+                }
+
                 if (needExponent) {
                     // We zoomed in, so we need the exponent
                     _yExp = (int)Math.floor(yTmpStart);
@@ -589,12 +612,14 @@ public class PlotBox extends Panel {
             Vector xgrid = null;
             double xTmpStart = xStart;
             if (_xlog) {
-                xgrid = _gridInit(xStart, xStep);
-                //xTmpStart = _gridStep(xgrid, xStart, xStep, _xlog);
+                xgrid = _gridInit(xStart, xStep, true, null);
+                //xgrid = _gridInit(xStart, xStep);
+                xTmpStart = _gridRoundUp(xgrid, xStart);
                 if (_debug == 5) 
                     System.out.println("PlotBox: drawPlot: XAXIS "+
                             " xStart="+xStart+" nx="+nx+" xStep="+xStep+
-                            " xTmpStart="+xTmpStart);
+                            " xTmpStart="+xTmpStart+
+                            " xgrid.size()="+xgrid.size());
             }
 
             // Set to false if we don't need the exponent  
@@ -602,7 +627,8 @@ public class PlotBox extends Panel {
 
             // Label the x axis.  The labels are quantized so that
             // they don't have excess resolution.
-            for (double xpos=xTmpStart; xpos <= _xtickMax;
+            for (double xpos = xTmpStart;
+                 xpos <= _xtickMax;
                  xpos = _gridStep(xgrid, xpos, xStep, _xlog)) {
                 String xticklabel;
                 if (_xlog) {
@@ -630,7 +656,38 @@ public class PlotBox extends Panel {
                 graphics.drawString(xticklabel, labxpos,
                         _lry + 3 + labelheight);
             }
+
             if (_xlog) {
+                // Draw in grid lines that don't have labels.
+
+                // If the step is greater than 1, clamp it to 1 so that
+                // we draw the unlabeled grid lines for each
+                // integer interval.
+                double tmpStep = (xStep > 1.0)? 1.0 : xStep;
+
+                // Recalculate the start using the new step.
+                xTmpStart=tmpStep*Math.ceil(_xtickMin/tmpStep);
+
+                Vector unlabeledgrid  = _gridInit(xTmpStart, tmpStep,
+                        false, xgrid);
+                if (unlabeledgrid.size() > 0 ) {
+                    if (_debug == 5) 
+                        System.out.println("PlotBox: drawPlot: tmpStep = "+
+                                tmpStep+" xTmpStart="+xTmpStart);
+                    for (double xpos = _gridStep(unlabeledgrid, xTmpStart, 
+                            tmpStep, _xlog);
+                         xpos <= _xtickMax;
+                         xpos = _gridStep(unlabeledgrid, xpos,
+                                 tmpStep, _xlog)) {
+                        xCoord1 = _ulx + (int)((xpos-_xtickMin)*_xtickscale);
+                        if (_grid && xCoord1 != _ulx && xCoord1 != _lrx) {
+                            graphics.setColor(Color.lightGray);
+                            graphics.drawLine(xCoord1,_uly+1,xCoord1,_lry-1);
+                            graphics.setColor(_foreground);
+                        }                    
+                    }
+                }
+
                 if (needExponent) {
                     _xExp = (int)Math.floor(xTmpStart);
                     graphics.setFont(_superscriptfont);
@@ -1718,11 +1775,8 @@ public class PlotBox extends Panel {
      * Determine what values to use for log axes.
      * Based on initGrid() from xgraph.c by David Harrison.
      */
-    private Vector _gridInit(double low, double step) {
-        double ratio = Math.pow(10.0, step);
-        double x = 0;
-        // Vector containing axes tick values that we return.
-        Vector grid = new Vector(101); // 101 comes from xgraph.c
+    private Vector _gridInit(double low, double step, boolean labeled,
+            Vector oldgrid) {
 
         // How log axes work:
         // _gridInit() creates a vector with the values to use for the
@@ -1742,67 +1796,120 @@ public class PlotBox extends Panel {
         // as ratio gets closer to 1.0, we need to add more and more
         // grid marks.
 
-        _gridCurJuke = 0;
-        grid.addElement(new Double(0.0));
+        Vector grid = new Vector(10);
+        //grid.addElement(new Double(0.0));
+        double ratio = Math.pow(10.0, step);
+        int ngrid = 1;
+        if (labeled) {
+            // Set up the number of grid lines that will be labeled
+            if (ratio <= 3.5) {
+                if (ratio > 2.0)
+                    ngrid = 2;
+                else if (ratio > 1.26)
+                    ngrid = 5;
+                else if (ratio > 1.125)
+                    ngrid = 10;
+                else
+                    ngrid = (int)Math.rint(1.0/step);
 
-	_gridBase = Math.floor(low);
-	
-	if (ratio <= 3.0) {
-	    if (ratio > 2.0) {
-                grid.addElement(new Double(_LOG10SCALE*Math.log(3.0)));
-	    } else if (ratio > 1.333) {
-                grid.addElement(new Double(_LOG10SCALE*Math.log(2.0)));
-                grid.addElement(new Double(_LOG10SCALE*Math.log(5.0)));
-	    } else if (ratio > 1.25) {
-                grid.addElement(new Double(_LOG10SCALE*Math.log(1.5)));
-                grid.addElement(new Double(_LOG10SCALE*Math.log(2.0)));
-                grid.addElement(new Double(_LOG10SCALE*Math.log(3.0)));
-                grid.addElement(new Double(_LOG10SCALE*Math.log(5.0)));
-                grid.addElement(new Double(_LOG10SCALE*Math.log(7.0)));
-	    } else {
-                // FIXME: If ratio is close to 1.0, then these values are wrong
-		for (x = 1.0; x < 10.0 && (x+.5)/(x+.4) >= ratio; x += .5) {
-                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + .1)));
-                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + .2)));
-                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + .3)));
-                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + .4)));
-                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + .5)));
-		}
-		if (Math.floor(x) != x) {
-                    grid.addElement(new Double(_LOG10SCALE*Math.log(x += .5)));
-                }
-		for ( ; x < 10.0 && (x+1.0)/(x+.5) >= ratio; x += 1.0) {
-                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + .5)));
-                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + 1.0)));
-		}
-		for ( ; x < 10.0 && (x+1.0)/x >= ratio; x += 1.0) {
-                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + 1.0)));
-		}
-		if (x == 7.0) {
-		    x = 6.0;
-                    grid.removeElement(grid.lastElement());
-		}
-		if (x < 7.0) {
-                    grid.addElement(new Double(_LOG10SCALE*Math.log(x + 2.0)));
-		}
-		if (x == 10.0) {
-                    grid.removeElement(grid.lastElement());
-                }
-	    }
-	    x = low - _gridBase;
-            // Set gridCurJuke so that the value in grid is greater than
-            // or equal to x.  This sets us up to process the first point.
-            for (_gridCurJuke = -1;
-                 (_gridCurJuke+1) < grid.size() && x >= 
-                     ((Double)grid.elementAt(_gridCurJuke+1)).doubleValue();
-                 _gridCurJuke++){
             }
-	}
-        if (_debug == 5 )
-            System.out.println("PlotBox: _gridInit("+low+","+step+
-                    ": ratio = "+ratio+" _gridCurJuke = "+_gridCurJuke+
-                    " grid.size()"+grid.size()+grid.toString());
+        } else {
+            // Set up the number of grid lines that will not be labeled
+            if (ratio > 3.0)
+                ngrid = 5;
+            else if (ratio > 1.125)
+                ngrid = 10;
+            else
+                ngrid = 100;
+            // Note: we should keep going here, but this increases the
+            // size of the grid array and slows everything down.
+        }        
+
+        if (_debug == 5) 
+            System.out.println("PlotBox: gridInit2: low="+low+" step="+step+
+                    " labeled="+labeled+" ratio="+ratio+" ngrid="+ngrid);
+
+        int oldgridi = 0;
+        for (int i = 0; i < ngrid; i++) {
+            double gridval = i * 1.0/ngrid * 10;
+            double logval = _LOG10SCALE*Math.log(gridval);
+            if (logval == Double.NEGATIVE_INFINITY)
+              logval = 0.0;
+
+            // If oldgrid is not null, then do not draw lines that
+            // were already drawn in oldgrid.  This is necessary
+            // so we avoid obliterating the tick marks on the plot borders. 
+            if (oldgrid != null && oldgridi < oldgrid.size() ) {
+                if (_debug == 5) 
+                    System.out.println("PlotBox: gridInit2: oldgrid="+
+                           ((Double)oldgrid.elementAt(oldgridi)).doubleValue()+
+                            " oldgridi="+oldgridi+
+                            " oldgrid.size()="+oldgrid.size()+
+                            " oldgrid="+oldgrid+
+                            " gridval ="+gridval+" logval="+logval); 
+                
+                // Cycle through the oldgrid until we find an element
+                // that is equal to or greater than the element we are
+                // trying to add.
+                while (oldgridi < oldgrid.size() &&
+                        ((Double)oldgrid.elementAt(oldgridi)).doubleValue() <
+                        logval) {
+                    oldgridi++;
+                }
+
+                if (oldgridi < oldgrid.size()) {
+                    // Using == on doubles is bad if the numbers are close,
+                    // but not exactly equal.
+                    if (Math.abs(
+                          ((Double)oldgrid.elementAt(oldgridi)).doubleValue() -
+                          logval) > 0.00001) {
+                        grid.addElement(new Double(logval));
+                    }
+                } else {
+                    grid.addElement(new Double(logval));
+                }
+            } else {
+                if (_debug == 5) 
+                    System.out.println("PlotBox: gridInit2: no oldgrid "+
+                            " gridval ="+gridval+" logval="+logval); 
+                grid.addElement(new Double(logval));
+            }
+        }
+        
+        // _gridCurJuke and _gridBase are used in _gridStep();
+        _gridCurJuke = 0;
+        if (low == -0.0)
+            low = 0.0;
+        _gridBase = Math.floor(low);
+        double x = low - _gridBase;
+
+        // Set gridCurJuke so that the value in grid is greater than
+        // or equal to x.  This sets us up to process the first point.
+        for (_gridCurJuke = -1;
+             (_gridCurJuke+1) < grid.size() && x >= 
+                 ((Double)grid.elementAt(_gridCurJuke+1)).doubleValue();
+             _gridCurJuke++){
+        }
+        if (_debug == 5) 
+            System.out.println("PlotBox: gridInit2: grid="+grid+
+                    " _gridBase="+_gridBase+" _gridCurJuke="+_gridCurJuke);
+
         return grid;
+    }
+
+    /*
+     * Round pos up to the nearest value in the grid.
+     */
+    private double _gridRoundUp(Vector grid, double pos) {
+        double x = pos - Math.floor(pos);
+        int i;
+        for(i = 0; i < grid.size() &&  
+                x >= ((Double)grid.elementAt(i)).doubleValue();
+            i++){}
+        if (i >= grid.size())
+            return pos;
+        else 
+            return Math.floor(pos) + ((Double)grid.elementAt(i)).doubleValue();
     }
 
     /*
@@ -1825,11 +1932,13 @@ public class PlotBox extends Panel {
                     System.out.println("PlotBox: _gridStep: pos = "+pos+
                             " _roundUp("+step+") = "+_roundUp(step));
             }
+            if (_gridCurJuke >= grid.size())
+                return pos + step;
             if (_debug == 5)
                     System.out.println("PlotBox: _gridStep: pos="+pos+
                             " step="+step+" "+" _gridCurJuke="+
                             _gridCurJuke+" results="+_gridBase+"+"+
-                          ((Double)grid.elementAt(_gridCurJuke)).doubleValue());
+                            ((Double)grid.elementAt(_gridCurJuke)).doubleValue());
             return _gridBase +
                 ((Double)grid.elementAt(_gridCurJuke)).doubleValue();
         } else {
