@@ -52,7 +52,6 @@ JSRCS = \
 	AttributeValueIcon.java \
 	BoxedValueIcon.java \
 	AnnotationEditorFactory.java \
-	EditorIcon.java \
 	EditParametersFactory.java \
 	FigureAction.java \
 	GraphicElement.java \
@@ -63,8 +62,6 @@ JSRCS = \
 	PtolemyMenuFactory.java \
 	PtolemyTransferable.java \
 	SnapConstraint.java \
-	ValueIcon.java \
-	XMLIcon.java
 
 
 EXTRA_SRCS =	$(JSRCS)

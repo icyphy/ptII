@@ -30,6 +30,8 @@
 
 package ptolemy.vergil.toolbox;
 
+import ptolemy.vergil.icon.XMLIcon;
+import ptolemy.vergil.icon.XMLIcon;
 import diva.canvas.CompositeFigure;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.LabelFigure;

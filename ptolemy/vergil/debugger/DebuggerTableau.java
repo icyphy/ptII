@@ -30,6 +30,8 @@
 
 package ptolemy.vergil.debugger;
 
+import ptolemy.vergil.actor.ActorGraphTableau;
+import ptolemy.vergil.actor.ActorGraphTableau;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -143,7 +145,7 @@ public class DebuggerTableau extends Tableau {
 	 *  for the given proxy (perhaps because the proxy is not of the
 	 *  appropriate subclass) then return null.
 	 *  @param proxy The model proxy.
-	 *  @return A new KernelGraphTableau, if the proxy is a
+	 *  @return A new ActorGraphTableau, if the proxy is a
 	 *  PtolemyEffigy, or null otherwise.
 	 *  @exception Exception If an exception occurs when creating the
 	 *  tableau.

@@ -103,7 +103,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.toolbox.GraphicElement;
-import ptolemy.vergil.toolbox.XMLIcon;
+import ptolemy.vergil.icon.XMLIcon;
 
 //////////////////////////////////////////////////////////////////////////
 //// IconEditorPane

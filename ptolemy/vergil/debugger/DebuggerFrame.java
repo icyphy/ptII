@@ -67,8 +67,6 @@ import ptolemy.gui.*;
 import ptolemy.moml.*;
 import ptolemy.vergil.*;
 import ptolemy.vergil.toolbox.*;
-import ptolemy.vergil.debugger.*;
-import ptolemy.vergil.ptolemy.*;
 
 //////////////////////////////////////////////////////////////////////////
 //// DebuggerFrame

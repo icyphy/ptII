@@ -51,13 +51,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 # Except: NOTE: HTMLEffigy has to come before Configuration
 # because its inner class, HTMLEffigy$Factory, is referenced.
 JSRCS = \
-	HierarchicalStateController.java \
-	HierarchicalStateControllerFactory.java \
-	ModalController.java \
-	ModalModel.java \
-	ModalPort.java \
-	Refinement.java \
-	RefinementPort.java
 
 # Files to be included in the jar file
 OTHER_FILES_TO_BE_JARED =

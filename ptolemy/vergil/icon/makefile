@@ -49,6 +49,9 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
+	XMLIcon.java \
+	ValueIcon.java \
+	EditorIcon.java \
 	IconEditor.java \
 	IconEditorPane.java \
 	SimpleSelection.java

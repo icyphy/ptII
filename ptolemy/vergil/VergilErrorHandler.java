@@ -108,7 +108,8 @@ public class VergilErrorHandler implements ErrorHandler {
            // Top-level object, so continuing is not an option.
            messageArray[0] = message
                    + "\nThis is a top-level element, so cannot continue.";
-           Object[] options = {"Cancel"};
+           Object[] options = {"Display stack trace",
+			       "Cancel"};
 
            // Show the MODAL dialog
            int selected = JOptionPane.showOptionDialog(
@@ -121,12 +122,18 @@ public class VergilErrorHandler implements ErrorHandler {
                     options,
                     options[0]);
 
+	   if (selected == 0) {
+	       GraphicalMessageHandler.showStackTrace(parentWindow,
+						      exception,
+						      message);
+	   }
            return CANCEL;
        } else {
            if (_skippingEnabled) {
                Object[] options = {
                        "Skip element",
                        "Skip remaining errors",
+		       "Display stack trace and skip element",
                        "Cancel"};
 
                // Show a MODAL dialog
@@ -140,15 +147,21 @@ public class VergilErrorHandler implements ErrorHandler {
                         options,
                         options[0]);
 
-               if (selected == 2) {
+	       if (selected == 3) {
                    return CANCEL;
+               } else if (selected == 2) {
+		   GraphicalMessageHandler.showStackTrace(parentWindow,
+							  exception,
+							  message);
                } else if (selected == 1) {
                    _skipping = true;
                }
                return CONTINUE;
            } else {
                // Skipping is not enabled.
-               Object[] options = {"Skip element", "Cancel"};
+               Object[] options = {"Skip element",
+				   "Display stack trace and skip element",
+				   "Cancel"};
 
                // Show the MODAL dialog
                int selected = JOptionPane.showOptionDialog(
@@ -161,7 +174,11 @@ public class VergilErrorHandler implements ErrorHandler {
                         options,
                         options[0]);
 
-               if (selected == 1) {
+               if (selected == 2) {
+		   GraphicalMessageHandler.showStackTrace(parentWindow,
+							  exception,
+							  message);
+	       } else if (selected == 1) {
                    return CANCEL;
                }
                return CONTINUE;

@@ -48,26 +48,6 @@ PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS = \
-	AnimationRenderer.java \
-	AttributeController.java \
-	EditorGraphController.java \
-	EntityController.java \
-	EntityPortController.java \
-	IconController.java \
-	KernelGraphFrame.java \
-	KernelGraphTableau.java \
-	Link.java \
-	LinkController.java \
-	NodeControllerFactory.java \
-	ParameterizedNodeController.java \
-	PortController.java \
-	PortDialogFactory.java \
-	PtolemyGraphModel.java \
-	PtolemyNodeController.java \
-	PtolemyGraphController.java \
-	RelationController.java \
-	RenameDialogFactory.java \
-	ViewerGraphController.java
 
 EXTRA_SRCS =	$(JSRCS)
 

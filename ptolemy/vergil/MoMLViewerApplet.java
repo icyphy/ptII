@@ -30,6 +30,14 @@
 
 package ptolemy.vergil;
 
+import ptolemy.vergil.fsm.FSMGraphModel;
+import ptolemy.vergil.fsm.FSMGraphController;
+import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.actor.ActorViewerGraphController;
+import ptolemy.vergil.fsm.FSMGraphModel;
+import ptolemy.vergil.fsm.FSMGraphController;
+import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.actor.ActorViewerGraphController;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 
@@ -41,10 +49,10 @@ import ptolemy.actor.gui.MoMLApplet;
 import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.domains.fsm.kernel.FSMActor;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.vergil.ptolemy.fsm.FSMGraphController;
-import ptolemy.vergil.ptolemy.fsm.FSMGraphModel;
-import ptolemy.vergil.ptolemy.kernel.PtolemyGraphModel;
-import ptolemy.vergil.ptolemy.kernel.ViewerGraphController;
+import ptolemy.vergil.fsm.FSMGraphController;
+import ptolemy.vergil.fsm.FSMGraphModel;
+import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.actor.ActorViewerGraphController;
 
 //////////////////////////////////////////////////////////////////////////
 //// MoMLViewerApplet
@@ -144,11 +152,11 @@ public class MoMLViewerApplet extends MoMLApplet {
         } else {
             // top level is not an FSM actor.
 
-            ViewerGraphController controller = new ViewerGraphController();
+            ActorViewerGraphController controller = new ActorViewerGraphController();
             // FIXME: To get things like open documentation to work, have
             // to specify a configuration.  But currently, there isn't one.
             // controller.setConfiguration(getConfiguration());
-            GraphModel model = new PtolemyGraphModel(
+            GraphModel model = new ActorGraphModel(
                     (CompositeEntity)_toplevel);
 
             pane = new GraphPane(controller, model);

@@ -30,6 +30,8 @@
 
 package ptolemy.vergil.tree;
 
+import ptolemy.vergil.icon.EditorIcon;
+import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.actor.Director;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
@@ -38,7 +40,7 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.gui.MessageHandler;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.MoMLParser;
-import ptolemy.vergil.toolbox.EditorIcon;
+import ptolemy.vergil.icon.EditorIcon;
 
 import java.net.URL;
 import java.util.Iterator;

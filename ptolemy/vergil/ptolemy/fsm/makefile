@@ -52,17 +52,6 @@ PTCLASSALLJARS = \
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
-	Arc.java \
-	FSMGraphController.java \
-	FSMGraphModel.java \
-	FSMGraphFrame.java \
-	FSMGraphTableau.java \
-	FSMStateController.java \
-	FSMTransitionController.java \
-	FSMViewerController.java \
-	InterfaceAutomatonGraphController.java \
-	InterfaceAutomatonGraphFrame.java \
-	InterfaceAutomatonGraphTableau.java
 
 # FIXME: Needs to be converted to a tableau?
 #	PtolemyFSMNotation.java
