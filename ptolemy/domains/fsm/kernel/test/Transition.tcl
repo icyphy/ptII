@@ -146,7 +146,7 @@ test Transition-3.1 {test scope of guard and trigger expressions} {
     set scope1 [[$guard getScope] elementList]
     set scope2 [[$trigger getScope] elementList]
     list [listToNames $scope1] [listToNames $scope2]
-} {{preemptive _trigger p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1} {preemptive _guard p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1}}
+} {{preemptive _trigger _actions p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1} {preemptive _guard _actions p0_isPresent p0 p1_0_isPresent p1_0 p1_1_isPresent p1_1}}
 
 test Transition-3.2 {test setting guard and trigger expression} {
     $t0 setGuardExpression "p0 > 0"
@@ -206,4 +206,4 @@ test Transition-5.1 {test listing choice and commit actions} {
     $act0 setContainer [java::null]
     set re4 [listToNames [$t0 choiceActionList]]
     list $re0 $re1 $re2 $re3 $re4
-} {{} {} {act0 act1} act2 act1}
+} {{} actions {act0 act1} {actions act2} act1}

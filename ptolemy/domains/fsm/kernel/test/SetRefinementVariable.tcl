@@ -97,7 +97,7 @@ test SetRefinementVariable-2.1 {test scope of evaluation variable} {
             $t0 act0]
     set v2 [java::cast ptolemy.data.expr.Variable [$t0 getAttribute _act0]]
     listToNames [[$v2 getScope] elementList]
-} {preemptive _guard _trigger v0 v1}
+} {preemptive _guard _trigger _actions v0 v1}
 
 ######################################################################
 ####

@@ -402,17 +402,16 @@ public class FSMDirector extends Director {
         _currentTime = newTime;
     }
 
-    /** Return true if data are transferred from the input port of
-     *  the container to the ports connected to the inside of the input
-     *  port and on the mode controller or the refinement of its current
-     *  state. This method will transfer exactly one token on each
-     *  input channel that has at least one token available. The port
-     *  argument must be an opaque input port. If any channel of the
-     *  input port has no data, then that channel is ignored. Any token
-     *  left not consumed in the ports to which data are transferred is
-     *  discarded.
+    /** Transfer data from the input port of the container to the ports
+     *  connected to the inside of the input port and on the mode controller
+     *  or the refinement of its current state. This method will transfer
+     *  exactly one token on each input channel that has at least one token
+     *  available. The port argument must be an opaque input port. If any
+     *  channel of the input port has no data, then that channel is ignored.
+     *  Any token left not consumed in the ports to which data are transferred
+     *  is discarded.
      *  @param port The input port to transfer tokens from.
-     *  @return True if data are tranferred.
+     *  @return True if at least one data token is tranferred.
      *  @exception IllegalActionException If the port is not an opaque
      *   input port.
      */
