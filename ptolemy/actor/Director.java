@@ -179,14 +179,6 @@ public class Director extends NamedObj implements Executable {
      *  This method is <i>not</i> synchronized on the workspace, so the
      *  caller should be.
      *
-     *  @exception CloneNotSupportedException If the fire() method of the
-     *   container or o the container.  In general, this may be called more
-     *  than once in the same iteration, where an iteration is defined as one
-     *  invocation of prefire(), any number of invocations of fire(),
-     *  and one invocation of postfire().
-     *  This method is <i>not</i> synchronized on the workspace, so the
-     *  caller should be.
-     *
      *  @exception IllegalActionException If the fire() method of the
      *   container or one of the deeply contained actors throws it.
      */
