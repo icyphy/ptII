@@ -103,7 +103,7 @@ test CompositeEntity-8.1 {Build a simple tree consiting of a Ramp and a Print En
     set print [java::new pt.kernel.CompositeEntity "Print"]
     set out [java::new pt.kernel.Port "Ramp out"]
     set in [java::new pt.kernel.Port "Print in"]
-    set arc [java::new pt.kernel.test.RelationTest "Arc"]
+    set arc [java::new pt.kernel.Relation "Arc"]
 
     # Connect
     $out setEntity $ramp
