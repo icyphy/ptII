@@ -59,7 +59,9 @@ set baseModel {<?xml version="1.0" standalone="no"?>
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLChangeRequest-1.1 {Test adding an entity} {
     # Create a base model.
     set parser [java::new ptolemy.moml.MoMLParser]
@@ -100,7 +102,9 @@ test MoMLChangeRequest-1.1 {Test adding an entity} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLChangeRequest-1.2 {Test adding another entity} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <entity name=".top">
@@ -113,7 +117,9 @@ test MoMLChangeRequest-1.2 {Test adding another entity} {
     $recorder getFullName
 } {.top.rec}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLChangeRequest-1.3 {Test adding a relation} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <entity name=".top">
@@ -125,7 +131,9 @@ test MoMLChangeRequest-1.3 {Test adding a relation} {
     $r getFullName
 } {.top.r}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLChangeRequest-1.4 {Test adding a pair of links} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <entity name=".top">
@@ -138,7 +146,9 @@ test MoMLChangeRequest-1.4 {Test adding a pair of links} {
     enumToTokenValues [$recorder getRecord 0]
 } {1 1}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLChangeRequest-1.5 {Test changing a parameter} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <entity name=".top">
@@ -155,7 +165,9 @@ test MoMLChangeRequest-1.5 {Test changing a parameter} {
     enumToTokenValues [$recorder getRecord 0]
 } {1 2}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLChangeRequest-1.5 {Test deleting an entity} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <entity name=".top">
@@ -188,7 +200,9 @@ test MoMLChangeRequest-1.5 {Test deleting an entity} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLChangeRequest-1.6 {Test deleting a relation} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <entity name=".top">
@@ -218,7 +232,9 @@ test MoMLChangeRequest-1.6 {Test deleting a relation} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLChangeRequest-1.6 {Test deleting a port, using a new parser and context} {
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
         <deletePort name="rec.input"/>
@@ -242,7 +258,9 @@ test MoMLChangeRequest-1.6 {Test deleting a port, using a new parser and context
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLChangeRequest-1.7 {Test deleting a property using a lower context} {
     set rec [$toplevel getEntity "rec"]
     set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $rec {
@@ -267,9 +285,9 @@ test MoMLChangeRequest-1.7 {Test deleting a property using a lower context} {
 
 # FIXME:  delete links
 
-#----------------------------------------------------------------------
-#----------------------------------------------------------------------
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 
 # Test propagation of changes from a class to instances.
 
@@ -345,9 +363,9 @@ test MoMLChangeRequest-2.2 {Test propagation} {
 } relations {
 }}
 
-#----------------------------------------------------------------------
-#----------------------------------------------------------------------
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 
 # Test propagation of changes from a class to class to instances.
 

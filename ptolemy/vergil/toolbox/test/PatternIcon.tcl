@@ -52,7 +52,9 @@ set header {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_1 "$header
 <class name=\"generic\" extends=\"ptolemy.actor.TypedCompositeActor\">
 </class>
@@ -69,7 +71,9 @@ test PatternIcon-1.2  {test getLocation when not parsed} {
     java::isnull [$icon getLocation]
 } {1}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_2 "$header
 <class name=\"generic\" extends=\"ptolemy.actor.TypedCompositeActor\">
 </class>
@@ -103,7 +107,9 @@ test PatternIcon-2.6 {test contained graphics} {
     $icon toString
 } {(ptolemy.vergil.toolbox.PatternIcon, Location = (144.0, 93.0))(null)}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test PatternIcon-3.1 {test pattern methods} {
     set container [java::new ptolemy.kernel.util.NamedObj]
     set pattern [java::new ptolemy.vergil.toolbox.EditorIcon $container "pattern"]

@@ -49,7 +49,9 @@ if {[string compare test [info procs test]] == 1} then {
 ####
 #
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_1 {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">

@@ -56,7 +56,9 @@ set classheader {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_lib "$classheader
 <class name=\"\" extends=\"ptolemy.actor.TypedCompositeActor\">
   <entity name=\"generic\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -93,7 +95,9 @@ test LibraryIcon-1.2  {test getLocation when not parsed} {
     java::isnull [$icon getLocation]
 } {1}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_2 "$header
 <class name=\"generic\" extends=\"ptolemy.actor.TypedCompositeActor\">
 </class>
@@ -127,7 +131,9 @@ test LibraryIcon-2.6 {test contained graphics} {
     $icon toString
 } {(ptolemy.vergil.toolbox.LibraryIcon, Location = (144.0, 93.0))(null)}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test LibraryIcon-3.1 {test setIconName, getIconName methods} {
     set str1 [$icon getPatternName]
     $icon setPatternName "generic.transformer"

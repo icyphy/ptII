@@ -55,7 +55,9 @@ proc checkSubstitute {string old new} {
     string compare $newstring $checkstring
 } 
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test StringUtilities-1.1 {substitution checks} {
     checkSubstitute "The quick brown fox jumped over the lazy dog" "fox" "antelope"
 } {0}

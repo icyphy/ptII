@@ -46,7 +46,9 @@ set header {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test EntityLibrary-1.1 {Test EntityLibrary class with configure element} {
     set moml_1 "$header
 <entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">

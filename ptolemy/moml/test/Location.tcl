@@ -46,7 +46,9 @@ set header {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test Location-1.1 {} {
     set n0 [java::new ptolemy.kernel.util.NamedObj]
     $n0 setName N0

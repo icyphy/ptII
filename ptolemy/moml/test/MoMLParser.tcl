@@ -57,7 +57,9 @@ set classheader {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE class PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-1.1 {parse tolerated incorrect MoML} {
     set moml_1 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -69,7 +71,9 @@ test MoMLParser-1.1 {parse tolerated incorrect MoML} {
     $toplevel getFullName
 } {.top}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_2 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <doc>xxx</doc>
@@ -81,7 +85,9 @@ test MoMLParser-1.2 {parse simple model with doc only} {
     $toplevel exportMoML
 } $moml_2
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_2_1 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <doc><?html <H1>HTML Markup</H1><I>italics</I>.?></doc>
@@ -93,7 +99,9 @@ test MoMLParser-1.2.1 {parse simple model with HTML markup in processing instruc
     $toplevel exportMoML
 } $moml_2_1
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_2_1 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <doc><H1>HTML Markup</H1><I>italics</I>.</doc>
@@ -105,7 +113,9 @@ test MoMLParser-1.2.2 {parse simple model with HTML markup} {
     $toplevel exportMoML
 } $moml_2_1
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 # NOTE: If no name is given to the inside doc element, then it will
 # be assigned the MoML default name "_doc".
 set moml_2_1 "$header
@@ -120,7 +130,9 @@ test MoMLParser-1.2.3 {parse simple model with nested doc tag} {
 } $moml_2_1
 
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_3 "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <doc>xxx</doc>
@@ -132,7 +144,9 @@ test MoMLParser-1.3 {parse simple class with doc only} {
     $toplevel exportMoML
 } $moml_3
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_3_1 "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <doc>xxx</doc>
@@ -145,7 +159,9 @@ test MoMLParser-1.3.1 {parse simple class with two doc tags} {
     $toplevel exportMoML
 } $moml_3_1
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_3_2 "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <property name=\"xxx\"/>
@@ -164,7 +180,9 @@ test MoMLParser-1.3.2 {parse class with a property with no class} {
 </class>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_3_3 "$header
 <entity name=\"lib\" class=\"ptolemy.actor.TypedCompositeActor\">
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
@@ -190,7 +208,9 @@ test MoMLParser-1.3.3 {check overriding class definition} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_3_4 "$header
 <entity name=\"lib\" class=\"ptolemy.actor.TypedCompositeActor\">
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -215,7 +235,9 @@ test MoMLParser-1.3.4 {check overriding class definition} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_3_5 "$header
 <entity name=\"lib\" class=\"ptolemy.actor.TypedCompositeActor\">
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -240,7 +262,9 @@ test MoMLParser-1.3.5 {check multiple reference with absolute name} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_3_6 "$header
 <entity name=\"lib\" class=\"ptolemy.actor.TypedCompositeActor\">
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -259,7 +283,9 @@ test MoMLParser-1.3.6 {check multiple reference with absolute name} {
     string range $msg 0 29
 } {com.microstar.xml.XmlException}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml_4 {    <class name="top" extends="ptolemy.actor.TypedCompositeActor">
         <doc>xxx</doc>
     </class>
@@ -272,7 +298,9 @@ test MoMLParser-1.4 {produce class without header} {
     $output toString
 } $moml_4
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml "$header
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
@@ -307,7 +335,9 @@ test MoMLParser-1.5 {test with an actor} {
     $toplevel exportMoML
 } $result
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
@@ -323,7 +353,9 @@ test MoMLParser-1.6 {test with a pre-existing parameter given, with class} {
     $toplevel exportMoML
 } $result
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
@@ -339,7 +371,9 @@ test MoMLParser-1.7 {test with a pre-existing port given, without class} {
     $toplevel exportMoML
 } $result
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
@@ -355,7 +389,9 @@ test MoMLParser-1.8 {test with a pre-existing port given, with wrong class} {
     string range $msg 0 29
 } {com.microstar.xml.XmlException}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <entity name=\"a\" class=\"ptolemy.actor.lib.Ramp\">
@@ -392,7 +428,9 @@ test MoMLParser-1.9 {test with changed parameter value from default} {
     $toplevel exportMoML
 } $result
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml {
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
@@ -442,7 +480,9 @@ test MoMLParser-1.10 {test with hierarchy} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="a" extends="ptolemy.kernel.CompositeEntity">
@@ -483,7 +523,9 @@ test MoMLParser-1.11 {test instantiation of a class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="b" class="ptolemy.moml.test.testClass"/>
@@ -509,7 +551,9 @@ test MoMLParser-1.12 {test instantiation of a class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="b" class="ptolemy.moml.test.testClass"/>
@@ -536,7 +580,9 @@ test MoMLParser-1.12.1 {test instantiation of a class} {
 </entity>
 }}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="b" class="ptolemy.moml.test.testClass"/>
@@ -563,7 +609,9 @@ test MoMLParser-1.12.2 {test import with a relative source } {
 </entity>
 }}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="b" class="testClass" source="testClass.xml"/>
@@ -590,7 +638,9 @@ test MoMLParser-1.12.3 {test import with a relative source } {
 </entity>
 }}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.ComponentEntity">
@@ -624,7 +674,9 @@ test MoMLParser-1.13.1 {test mutation after class instantiation} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.ComponentEntity">
@@ -659,7 +711,9 @@ test MoMLParser-1.13.2 {test extension of a class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <entity name="master" class="ptolemy.kernel.ComponentEntity">
@@ -677,7 +731,9 @@ test MoMLParser-1.14 {test that instantiation of an entity fails} {
     string range $msg 0 29
 } {com.microstar.xml.XmlException}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.CompositeEntity">
@@ -712,7 +768,9 @@ test MoMLParser-1.15 {test extension of a composite class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.CompositeEntity">
@@ -747,7 +805,9 @@ test MoMLParser-1.16 {test instatiation of a composite class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <class name="master" extends="ptolemy.kernel.CompositeEntity">
@@ -778,7 +838,9 @@ test MoMLParser-1.17 {test extension of a composite class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <property name="dir" class="ptolemy.actor.Director"/>
@@ -800,7 +862,9 @@ test MoMLParser-1.18 {test property persistence} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
@@ -830,7 +894,9 @@ test MoMLParser-1.18.1 {test property persistence in instatiation of a class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
@@ -860,7 +926,9 @@ test MoMLParser-1.18.2 {test relation persistence in instatiation of a class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
@@ -892,7 +960,9 @@ test MoMLParser-1.18.3 {test deletion persistence in instatiation of a class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
@@ -924,7 +994,9 @@ test MoMLParser-1.18.4 {test deletion persistence in instatiation of a class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
@@ -961,7 +1033,9 @@ test MoMLParser-1.18.5 {test deletion persistence in instatiation of a class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
@@ -993,7 +1067,9 @@ test MoMLParser-1.18.6 {test deletion persistence in instatiation of a class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
@@ -1028,7 +1104,9 @@ test MoMLParser-1.18.7 {test link persistence in instatiation of a class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
@@ -1063,7 +1141,9 @@ test MoMLParser-1.18.8 {test link persistence in instatiation of a class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
@@ -1100,7 +1180,9 @@ test MoMLParser-1.18.9 {test unlink persistence in instatiation of a class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <entity name="master" class="ptolemy.actor.CompositeActor">
@@ -1131,7 +1213,9 @@ test MoMLParser-1.18.9.1 {test unlink inside by relation} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
@@ -1168,7 +1252,9 @@ test MoMLParser-1.18.10 {test unlink persistence in instatiation of a class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.actor.CompositeActor">
     <class name="master" extends="ptolemy.actor.CompositeActor">
@@ -1209,7 +1295,9 @@ test MoMLParser-1.18.11 {test unlink persistence in instatiation of a class} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
     <property name=\"a\" class=\"ptolemy.data.expr.Parameter\"
@@ -1244,7 +1332,9 @@ test MoMLParser-1.21 {test quote resolution in reverse} {
 </property>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.CompositeActor\">
     <entity name=\"a\" class=\"ptolemy.actor.AtomicActor\">
@@ -1261,7 +1351,9 @@ test MoMLParser-1.22 {test with an actor} {
 } $moml
 
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set moml "$classheader
 <class name=\"top\" extends=\"ptolemy.actor.TypedCompositeActor\">
     <entity name=\"Sender\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -1306,7 +1398,9 @@ test MoMLParser-1.23 {Simulate a problem we found with FSM, where pure propertie
     $toplevel exportMoML
 } $moml
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.1 {Test incremental parsing: add entity} {
     set incMomlBase "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -1331,7 +1425,9 @@ test MoMLParser-2.1 {Test incremental parsing: add entity} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.2 {Test incremental parsing: add entity deeper} {
     set incMoml_2 "<entity name=\".top.inside\">
 <property name=\"prop\" class=\"ptolemy.data.expr.Parameter\"/>
@@ -1350,7 +1446,9 @@ test MoMLParser-2.2 {Test incremental parsing: add entity deeper} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.3 {Test incremental parsing: add port} {
     set incMoml_2_3 "<entity name=\".top.inside\">
 <port name=\"input\" class=\"ptolemy.actor.TypedIOPort\"/>
@@ -1371,7 +1469,9 @@ test MoMLParser-2.3 {Test incremental parsing: add port} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.4 {Test incremental parsing: add another port, relation, and link} {
     set incMoml_2_4 "<entity name=\".top\">
     <entity name=\"a\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -1405,7 +1505,9 @@ test MoMLParser-2.4 {Test incremental parsing: add another port, relation, and l
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.5 {Test incremental parsing: remove an entity} {
     set incMoml_2_5 "<entity name=\".top\">
     <deleteEntity name=\"a\"/>
@@ -1429,7 +1531,9 @@ test MoMLParser-2.5 {Test incremental parsing: remove an entity} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.5.1 {Test incremental parsing: remove a link} {
     set incMoml_2_5_1 {<entity name=".top">
     <unlink port="inside.input" relation="r"/>
@@ -1451,7 +1555,9 @@ test MoMLParser-2.5.1 {Test incremental parsing: remove a link} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.6 {Test incremental parsing: remove nonexistent entity} {
     set incMoml_2_6 "<entity name=\".top\">
     <deleteEntity name=\"a\"/>
@@ -1461,7 +1567,9 @@ test MoMLParser-2.6 {Test incremental parsing: remove nonexistent entity} {
     string range $msg 0 52
 } {com.microstar.xml.XmlException: No such entity to del}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.7 {Test incremental parsing: remove a relation} {
     set incMoml_2_7 "<entity name=\".top\">
     <deleteRelation name=\"r\"/>
@@ -1485,7 +1593,9 @@ test MoMLParser-2.7 {Test incremental parsing: remove a relation} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.8 {Test incremental parsing: remove a port} {
     set incMoml_2_8 {<entity name=".top">
     <deletePort name="inside.input"/>
@@ -1506,7 +1616,9 @@ test MoMLParser-2.8 {Test incremental parsing: remove a port} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.9 {Test link with insertAt attribute, inside links} {
     $parser reset
     set toplevel [$parser parse {
@@ -1536,7 +1648,9 @@ test MoMLParser-2.9 {Test link with insertAt attribute, inside links} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.10 {Test link with insertAt attribute, inside links} {
    $parser parse {
 <entity name="top">
@@ -1561,7 +1675,9 @@ test MoMLParser-2.10 {Test link with insertAt attribute, inside links} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.11 {Test link with insertAt attribute} {
    $parser parse {
 <entity name=".top">
@@ -1587,7 +1703,9 @@ test MoMLParser-2.11 {Test link with insertAt attribute} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.12 {Test link with insertAt attribute} {
    $parser parse {
 <entity name=".top">
@@ -1614,7 +1732,9 @@ test MoMLParser-2.12 {Test link with insertAt attribute} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.13 {Test unlink with index} {
    $parser parse {
 <entity name=".top">
@@ -1640,7 +1760,9 @@ test MoMLParser-2.13 {Test unlink with index} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.14 {Test unlink with index} {
    $parser parse {
 <entity name=".top">
@@ -1665,7 +1787,9 @@ test MoMLParser-2.14 {Test unlink with index} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.15 {Test unlink with index} {
    $parser parse {
 <entity name=".top">
@@ -1689,7 +1813,9 @@ test MoMLParser-2.15 {Test unlink with index} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.16 {Test unlink with index} {
    $parser parse {
 <entity name=".top">
@@ -1713,7 +1839,9 @@ test MoMLParser-2.16 {Test unlink with index} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.17 {Test unlink with index} {
    $parser parse {
 <entity name=".top">
@@ -1737,7 +1865,9 @@ test MoMLParser-2.17 {Test unlink with index} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-2.18 {Test unlink with index} {
    $parser parse {
 <entity name=".top">
@@ -1760,7 +1890,9 @@ test MoMLParser-2.18 {Test unlink with index} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-3.1 {Test invalid containment} {
     set incMoml_3_1 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -1777,7 +1909,9 @@ test MoMLParser-3.1 {Test invalid containment} {
     string range $msg 0 51
 } {com.microstar.xml.XmlException: Reference to an exis}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-3.2 {Test invalid containment} {
     set incMoml_3_2 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -1793,7 +1927,9 @@ test MoMLParser-3.2 {Test invalid containment} {
     string range $msg 0 51
 } {com.microstar.xml.XmlException: Reference to an exis}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-3.3 {Test invalid containment} {
     set incMoml_3_3 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -1809,7 +1945,9 @@ test MoMLParser-3.3 {Test invalid containment} {
     string range $msg 0 51
 } {com.microstar.xml.XmlException: Reference to an exis}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-3.4 {Test invalid containment} {
     set incMoml_3_4 "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -1826,7 +1964,9 @@ test MoMLParser-3.4 {Test invalid containment} {
     string range $msg 0 51
 } {com.microstar.xml.XmlException: Reference to an exis}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-4.1 {Test doc element addition} {
     set incMomlBase "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -1844,7 +1984,9 @@ test MoMLParser-4.1 {Test doc element addition} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-4.2 {Test doc element modifications} {
     $parser parse {<entity name=".top"><doc name="foo">yyy</doc></entity>}
     $toplevel exportMoML
@@ -1856,7 +1998,9 @@ test MoMLParser-4.2 {Test doc element modifications} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-4.3 {Test doc element removal} {
     $parser parse {<entity name=".top"><doc name="foo"/></entity>}
     $toplevel exportMoML
@@ -1867,7 +2011,9 @@ test MoMLParser-4.3 {Test doc element removal} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-4.4 {Test doc element removal with default name} {
     $parser parse {<entity name=".top"><doc>zzz</doc></entity>}
     $parser parse {<entity name=".top"><doc></doc></entity>}
@@ -1879,7 +2025,9 @@ test MoMLParser-4.4 {Test doc element removal with default name} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-5.1 {Test property deletion} {
     set incMomlBase "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -1898,7 +2046,9 @@ test MoMLParser-5.1 {Test property deletion} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-5.2 {Test property deletion} {
     $parser parse {<entity name=".top"><deleteProperty name="foo"/></entity>}
     $toplevel exportMoML
@@ -1909,7 +2059,9 @@ test MoMLParser-5.2 {Test property deletion} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-6.1 {Test indexed I/O with actor model.} {
     set incMomlBase "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -1947,7 +2099,9 @@ test MoMLParser-6.1 {Test indexed I/O with actor model.} {
     enumToTokenValues [$recorder getRecord 0]
 } {0}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-6.1 {Test indexed I/O with actor model.} {
     set incMomlBase "$header
 <entity name=\"top\" class=\"ptolemy.actor.TypedCompositeActor\">
@@ -1985,7 +2139,9 @@ test MoMLParser-6.1 {Test indexed I/O with actor model.} {
     enumToTokenValues [$recorder getRecord 0]
 } {0}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-6.2 {Straight with blocksize 2.} {
     $parser parse {
 <entity name=".top">
@@ -2003,7 +2159,9 @@ test MoMLParser-6.2 {Straight with blocksize 2.} {
     enumToTokenValues [$recorder getRecord 0]
 } {0 1}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-6.3 {Reverse with blocksize 2.} {
     $parser parse {
 <entity name=".top">
@@ -2017,7 +2175,9 @@ test MoMLParser-6.3 {Reverse with blocksize 2.} {
     enumToTokenValues [$recorder getRecord 0]
 } {1 0}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-6.4 {Reverse with blocksize 3.} {
     $parser parse {
 <entity name=".top">
@@ -2030,7 +2190,9 @@ test MoMLParser-6.4 {Reverse with blocksize 3.} {
     enumToTokenValues [$recorder getRecord 0]
 } {2 1 0}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-6.5 {Reverse with blocksize 4 and gaps.} {
     $parser parse {
 <entity name=".top">
@@ -2043,7 +2205,9 @@ test MoMLParser-6.5 {Reverse with blocksize 4 and gaps.} {
     enumToTokenValues [$recorder getRecord 0]
 } {3 2 1 0}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-6.6 {Delete the gaps, having no effect.} {
     $parser parse {
 <entity name=".top">
@@ -2054,7 +2218,9 @@ test MoMLParser-6.6 {Delete the gaps, having no effect.} {
     enumToTokenValues [$recorder getRecord 0]
 } {3 2 1 0}
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-7.1 {Test setContext()} {
     set incMomlBase "$header
 <entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
@@ -2082,7 +2248,9 @@ test MoMLParser-7.1 {Test setContext()} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <!-- Note that here, we are searching using the classpath -->
@@ -2107,7 +2275,9 @@ test MoMLParser-8.1 {test input with a relative source } {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
     <!-- Note that here, we are searching relative to the cwd -->
@@ -2132,7 +2302,9 @@ test MoMLParser-8.2 {test input with a relative source } {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.CompositeEntity">
   <group name="a">
@@ -2160,7 +2332,9 @@ test MoMLParser-9.1 {test namespaces} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.actor.TypedCompositeActor">
    <entity name="A" class="ptolemy.actor.TypedAtomicActor">
@@ -2227,7 +2401,9 @@ test MoMLParser-10.1 {test vertex} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.util.NamedObj">
    <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
@@ -2252,7 +2428,9 @@ test MoMLParser-11.1 {test configuration} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.util.NamedObj">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
@@ -2283,7 +2461,9 @@ test MoMLParser-11.2 {test configuration with embedded HTML} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.util.NamedObj">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
@@ -2316,7 +2496,9 @@ test MoMLParser-11.3 {test configuration with embedded configure tag} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-11.4 {test configuration value() method} {
     set attr [java::cast  ptolemy.kernel.util.ConfigurableAttribute \
              [$toplevel getAttribute p]]
@@ -2327,7 +2509,9 @@ test MoMLParser-11.4 {test configuration value() method} {
 <p>Paragraph.</p>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 set body {
 <entity name="top" class="ptolemy.kernel.util.NamedObj">
     <property name="p" class="ptolemy.kernel.util.ConfigurableAttribute">
@@ -2356,7 +2540,9 @@ test MoMLParser-11.5 {test configuration with external source} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
     set incMomlBase "$header
 <entity name=\"top\" class=\"ptolemy.kernel.ComponentEntity\">
 </entity>
@@ -2376,7 +2562,9 @@ test MoMLParser-12.1 {test rename} {
 </entity>
 }
 
-#----------------------------------------------------------------------
+######################################################################
+####
+#
 test MoMLParser-13.1 {test parse moml of ConfigurableAttribute} {
     set moml_1 "$header
 <entity name=\"top\" class=\"ptolemy.kernel.CompositeEntity\">
