@@ -90,9 +90,9 @@ tests:: $(EXTRA_SRCS) jclass test_java test_jsimple
 	# Tcl Blend 1.1 with JDK1.1.6 gets StackOverflowErrors when
 	# we call writeObject() on the ExampleSystem object.  JDK1.2
 	# does not have this problem.
-	CLASSPATH=$(CLASSPATH) \
-		$(JAVA) ptolemy.kernel.test.TestSerializable write
-	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.kernel.test.TestSerializable
+	CLASSPATH="$(CLASSPATH)" \
+		"$(JAVA)" ptolemy.kernel.test.TestSerializable write
+	CLASSPATH="$(CLASSPATH)" "$(JAVA)" ptolemy.kernel.test.TestSerializable
 
 test_java: jclass
 
