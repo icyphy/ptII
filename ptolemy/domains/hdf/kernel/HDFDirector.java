@@ -167,16 +167,6 @@ public class HDFDirector extends SDFDirector {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the number of firings of current director per global
-     *  iteration. 
-     *  Note: This method is used only for HDFActors and maybe removed.
-     *  @return The number of firings of current director per global
-     *  iteration.
-     */
-    /*public int getDirectorFiringsPerIteration() {
-        return _directorFiringsPerIteration;
-    }*/
-
     /** Return the scheduling sequence as an instance of Schedule.
      *  For efficiency, this method maintains a schedule cache and
      *  will attempt to return a cached version of the schedule.
@@ -281,8 +271,8 @@ public class HDFDirector extends SDFDirector {
         return schedule;
     }
 
-    /** Request to get the HDF schedule to the manager, since schedule
-     *  may change when a state transition is made.
+    /** Send a request to the manager to get the HDF schedule.
+     *  The schedule may change when a state transition is made.
      *  @exception IllegalActionException If no schedule can be found,
      *  or if the super class method throws it.
      */
@@ -297,105 +287,24 @@ public class HDFDirector extends SDFDirector {
             new ChangeRequest(this, "reschedule") {
             protected void _execute() throws KernelException {
                 getSchedule();
-                CompositeActor container = (CompositeActor)getContainer();
-                Director director = container.getDirector();
-                if (_debugInfo) {
-                    System.out.println(director.getFullName() +
-                    " request exed: get new HDF schedule");
-                }
-                //Director exeDirector = container.getExecutiveDirector();
             }
         };
-        //setDeferChangeRequests(true);
-        /*
-        getSchedule();
-        CompositeActor container = (CompositeActor)getContainer();
-        Director exeDirector = container.getExecutiveDirector();
-        if (exeDirector == null
-            || ((! (exeDirector instanceof SDFDirector))
-                 && (! (exeDirector instanceof HDFFSMDirector))
-                 && (! (exeDirector instanceof HDFDirector)))) {
-            //getSchedule();
-            _directorFiringsPerIteration = 1;
-            updateFiringsPerIteration(1);
-        }*/
         request.setPersistent(false);
         container.requestChange(request); 
         return super.postfire();
     }
 
     /** Preinitialize the actors associated with this director.
-     *  The super class method will compute the schedule. If this
-     *  HDF director is at the top level, then update the number
-     *  of firings per global iteration for each actor from the
-     *  top level down to the bottom level.
+     *  The super class method will compute the schedule.
      *  @exception IllegalActionException If the super class
-     *  preinitialize throws it, or if the updateFiringPerIteration
-     *  method throws it.
+     *  preinitialize throws it.
      */
     public void preinitialize() throws IllegalActionException {
         // FIXME
         //_scheduleKeyList.clear();
         _mostRecentRates = "";
         super.preinitialize();
-        //_preinitializeFlag = true;
-        CompositeActor container = (CompositeActor)getContainer();
-        Director exeDirector = container.getExecutiveDirector();
-        /*if (exeDirector == null) {
-            _directorFiringsPerIteration = 1;
-            updateFiringsPerIteration(1);
-        }*/
     }
-
-    /** Set the number of firings per global iteration of the
-     *  current director.
-     *  @param firingsPerIteration Number of firings per global
-     *  iteration of the current director to be set.
-     */
-    /*
-    public void setDirectorFiringsPerIteration(int firingsPerIteration) {
-        _directorFiringsPerIteration = firingsPerIteration;
-    }*/
-
-    /** Update the number of firings per global iteration of
-     *  each actor in the current director.
-     *  @param directorFiringsPerIteration The number of firings
-     *  per global iteration of the container that contains this
-     *  director.
-     *  @exception IllegalActionException If no schedule can be found,
-     *  or if the updateFiringsPerIteration method in HDFFSMDirector
-     *  throws it.
-     */
-    /*
-    public void updateFiringsPerIteration (int directorFiringsPerIteration)
-            throws IllegalActionException {
-        CompositeActor container = (CompositeActor)getContainer();
-        Scheduler scheduler = ((SDFDirector)this).getScheduler();
-        for (Iterator entities = container.deepEntityList().iterator();
-                     entities.hasNext();) {
-            ComponentEntity entity = (ComponentEntity)entities.next();
-            int firingCount =
-                ((SDFScheduler)scheduler).getFiringCount(entity);
-            if (entity instanceof CompositeActor) {
-                Director director = ((CompositeActor)entity).getDirector();
-                if (director instanceof HDFFSMDirector) {
-                    firingCount =
-                        firingCount * directorFiringsPerIteration;
-                    ((HDFFSMDirector)director)
-                        .setFiringsPerIteration(firingCount);
-                    ((HDFFSMDirector)director).
-                        updateFiringsPerIteration(firingCount);
-                } else if (director instanceof HDFDirector) {
-                    firingCount =
-                        firingCount * directorFiringsPerIteration;
-                    ((HDFDirector)director)
-                        .setDirectorFiringsPerIteration(firingCount);
-                    ((HDFDirector)director).
-                        updateFiringsPerIteration(firingCount);
-                }
-            }
-        }
-    }*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

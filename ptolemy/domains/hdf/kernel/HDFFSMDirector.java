@@ -175,8 +175,8 @@ public class HDFFSMDirector extends FSMDirector {
         CompositeActor container = (CompositeActor)getContainer();
         FSMActor ctrl = getController();
         ctrl.setNewIteration(_sendRequest);
-        //ctrl.setFiringsPerIteration(_firingsPerIteration);
-        _setInputVariables();
+        //_setInputVariables();
+        _readInputs();
         State st = ctrl.currentState();
         // FIXME
         //Actor ref = ctrl.currentState().getRefinement();
@@ -199,9 +199,9 @@ public class HDFFSMDirector extends FSMDirector {
             //ref.fire();
             ref[0].fire();
             //ref[0].postfire();
-            _setInputsFromRefinement();
+            //_setInputsFromRefinement();
+            _readOutputsFromRefinement();
         }
-        //if (_embeddedInSDF || _firingsSoFar == _firingsPerIteration - 1) {
         if (_embeddedInSDF) {
             _chooseTransition(st.nonpreemptiveTransitionList());
         }
@@ -246,7 +246,6 @@ public class HDFFSMDirector extends FSMDirector {
             // Reinitialize all the refinements in the sub-layer
             // HDFFSMDirector and recompute the schedule.
             super.initialize();
-            //_firingsSoFar = 0;
             _sendRequest = true;
             FSMActor controller = getController();
             controller.setNewIteration(_sendRequest);
@@ -263,7 +262,6 @@ public class HDFFSMDirector extends FSMDirector {
                     Scheduler refinmentSched = ((StaticSchedulingDirector)
                             refinementDir).getScheduler();
                     refinmentSched.setValid(false);
-                    //refinmentSched.getSchedule();
                     ((HDFDirector)refinementDir).getSchedule();
                 } else if (refinementDir instanceof SDFDirector) {
                     Scheduler refinmentSched = ((StaticSchedulingDirector)
@@ -344,10 +342,6 @@ public class HDFFSMDirector extends FSMDirector {
         // FIXME
         //TypedActor currentRefinement =
         TypedActor[] currentRefinement = curState.getRefinement();
-        // One global iteration has finished.
-        // A state transition can now occur.
-        // Set firing count back to zero for next iteration.
-        //_firingsSoFar = 0;
         Transition lastChosenTr = _getLastChosenTransition();
         TypedCompositeActor actor;
         Director refinementDir;
@@ -446,18 +440,7 @@ public class HDFFSMDirector extends FSMDirector {
         // FIXME
         //boolean postfireReturn = currentRefinement.postfire();
         boolean postfireReturn = currentRefinement[0].postfire();
-        //boolean superPostfire;
-        //_firingsSoFar++;
-        /*
-        ChangeRequest request =
-            new ChangeRequest(this, "commit transition") {
-            protected void _execute() throws KernelException {   
-            }
-        };
-        request.setPersistent(false);
-        //container.requestChange(request);
-        container.requestChange(request);
-        */
+        
         if (_sendRequest && !_embeddedInSDF) {
             _sendRequest = false;
             ChangeRequest request =
@@ -467,17 +450,12 @@ public class HDFFSMDirector extends FSMDirector {
                     makeStateTransition();   
                 }
             };
-            //setDeferChangeRequests(true);
             request.setPersistent(false);
             container.requestChange(request);
         }
         if (_embeddedInSDF) {
-            //_firingsSoFar = 0;
             makeStateTransition();
-        } //else if (_firingsSoFar == _firingsPerIteration) {
-            //_firingsSoFar = 0;
-            //makeStateTransition();
-        //}
+        }
 
         return postfireReturn;
     }
@@ -499,8 +477,6 @@ public class HDFFSMDirector extends FSMDirector {
      *  is no controller.
      */
     public void preinitialize() throws IllegalActionException {
-        //_firingsPerIteration = 1;
-        //_firingsSoFar = 0;
         _sendRequest = true;
         _reinitialize = false;
         _getHighestFSM();
@@ -534,14 +510,6 @@ public class HDFFSMDirector extends FSMDirector {
                     "current refinement is null.");
         }
     }
-
-    /** Set the number of firings per iteration of this director.
-     *  @param firings Number of firings per iteration of this director.
-     */
-    /*
-    public void setFiringsPerIteration(int firings) {
-        _firingsPerIteration = firings;
-    }*/
 
     /** Return true if data are transferred from the input port of
      *  the container to the connected ports of the controller and
@@ -647,43 +615,6 @@ public class HDFFSMDirector extends FSMDirector {
         }
         return trans;
     }
-
-    /** Update the number of firings per global iteration of
-     *  each actor in the current refinment.
-     *  @param directorFiringsPerIteration Number of firings per global
-     *  iteration of the current director. It is also the number of
-     *  firings per global iteration of the current refinement.
-     *  @exception IllegalActionException If no controller or current
-     *  refinement can be found, or if the HDFDirector
-     *  updateFiringsPerIteration method throws it.
-     */
-    /*
-    public void updateFiringsPerIteration (int directorFiringsPerIteration)
-            throws IllegalActionException {
-        FSMActor ctrl = getController();
-        State currentState;
-
-        TypedCompositeActor currentRefinement;
-        
-        currentState = ctrl.currentState();
-        currentRefinement =
-            // FIXME
-            //(TypedCompositeActor)currentState.getRefinement();
-        (TypedCompositeActor)(currentState.getRefinement())[0];
-        if (currentRefinement != null) {
-            Director refinementDir = currentRefinement.getDirector();
-            if (refinementDir instanceof HDFFSMDirector) {
-                ((HDFFSMDirector)refinementDir).updateFiringsPerIteration(
-                        directorFiringsPerIteration);
-            } else if (refinementDir instanceof HDFDirector) {
-                ((HDFDirector)refinementDir).
-                    setDirectorFiringsPerIteration(
-                            directorFiringsPerIteration);
-                ((HDFDirector)refinementDir).updateFiringsPerIteration(
-                        directorFiringsPerIteration);
-            }
-        }
-    }*/
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -929,18 +860,10 @@ public class HDFFSMDirector extends FSMDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-
-    // The number of times fire() has been called in the global
-    // iteration of the SDF graph containing this FSM.
-    //private int _firingsSoFar;
     
     // A flag indicating whether the FSM can send a change request.
     // An FSM in HDF can only send one request per global iteration.
     private boolean _sendRequest;
-    
-    // The number of firings of this HDFFSM controller per
-    // global iteration.
-    //private int _firingsPerIteration = 1;
 
     // A flag indicatiing whether this FSM is embedded in SDF.
     // FIXME: It should function as a flag indicating whether
