@@ -107,7 +107,7 @@ public class MoMLChangeRequest extends ChangeRequest {
      */
     public MoMLChangeRequest(
             Object originator, NamedObj context, String request) {
-	this(originator, null, context, request, null);
+	this(originator, _staticParser, context, request, null);
     }
 
      /** Construct a mutation request to be executed in the specified context.
