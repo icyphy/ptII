@@ -24,6 +24,9 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
+
 */
 
 package ptolemy.graph;
@@ -85,8 +88,8 @@ public class Graph {
     public Graph() {
         _nodes = new ArrayList();
         _edges = new ArrayList();
-        _nodeIdTable= new HashMap();
-        _nodeTable= new HashMap();
+        _nodeIdTable = new HashMap();
+        _nodeTable = new HashMap();
         _recomputeIdentifiers = true;
     }
 
@@ -99,8 +102,8 @@ public class Graph {
     public Graph(int nodeCount) {
         _nodes = new ArrayList(nodeCount);
         _edges = new ArrayList();
-        _nodeIdTable= new HashMap(nodeCount);
-        _nodeTable= new HashMap(nodeCount);
+        _nodeIdTable = new HashMap(nodeCount);
+        _nodeTable = new HashMap(nodeCount);
         _recomputeIdentifiers = true;
     }
 
@@ -114,8 +117,8 @@ public class Graph {
     public Graph(int nodeCount, int edgeCount) {
         _nodes = new ArrayList(nodeCount);
         _edges = new ArrayList(edgeCount);
-        _nodeIdTable= new HashMap(nodeCount);
-        _nodeTable= new HashMap(nodeCount);
+        _nodeIdTable = new HashMap(nodeCount);
+        _nodeTable = new HashMap(nodeCount);
         _recomputeIdentifiers = true;
     }
 
@@ -133,23 +136,23 @@ public class Graph {
      *  possible node weights by the <code>equals</code> method. Doing
      *  so may generate unexpected results.
      *
-     *  @param o the Object ("node weight") representing a graph node
-     *  @exception IllegalArgumentException if a
-     *  node weight equal to the specified one is already associated with a
-     *  node in this graph.
-     *  @exception NullPointerException if the specified node weight is
+     *  @param object the Object ("node weight") representing a graph node
+     *  @exception IllegalArgumentException If a node weight equal to
+     *  the specified one is already associated with a node in this
+     *  graph.
+     *  @exception NullPointerException If the specified node weight is
      *  <code>null</code>.
      */
-    public void add(Object o) {
-        if (contains(o)) {
+    public void add(Object object) {
+        if (contains(object)) {
             throw new IllegalArgumentException("Graph.add: Object is " +
                     "already in the graph.");
         }
-        Node node = new Node(o);
+        Node node = new Node(object);
         _nodes.add(node);
 
         // Add the node to the node table with key equal to the node weight.
-        _nodeTable.put(o, node);
+        _nodeTable.put(object, node);
 
         _recomputeIdentifiers = true;
     }
@@ -171,20 +174,20 @@ public class Graph {
 
     /** Add an edge between two nodes.  If the edge is subsequently
      *  operated on as a directed edge, its orientation will be taken
-     *  to be directed <em>from</em> the first (<em>o1</em>) node
-     *  <em>to</em> the second (<em>o2</em>) node. Multiple edges
+     *  to be directed <em>from</em> the first (<em>object1</em>) node
+     *  <em>to</em> the second (<em>object2</em>) node. Multiple edges
      *  between the same nodes are allowed, and are considered
      *  different edges.  Self loops are also allowed.
      *
-     *  @param o1 an Object (node weight) representing a graph node.
-     *  @param o2 an Object (node weight) representing a graph node.
-     *  @exception IllegalArgumentException if at least one of the
+     *  @param object1 an Object (node weight) representing a graph node.
+     *  @param object2 an Object (node weight) representing a graph node.
+     *  @exception IllegalArgumentException If at least one of the
      *   arguments is not a node weight, i.e., the argument is not equal
      *   to an Object specified in a successful <code>add</code> call.
      *   Equality is determined by the <code>equals</code> method.
      */
-    public void addEdge(Object o1, Object o2) {
-        Edge edge = new Edge(getNode(o1), getNode(o2), new Object());
+    public void addEdge(Object object1, Object object2) {
+        Edge edge = new Edge(getNode(object1), getNode(object2), new Object());
         _edges.add(edge);
     }
 
@@ -192,20 +195,20 @@ public class Graph {
      *  can be assigned as the edge weight. If the edge is
      *  subsequently operated on as a directed edge, its orientation
      *  will be taken to be directed <em>from</em> the first
-     *  (<em>o1</em>) node <em>to</em> the second (<em>o2</em>)
+     *  (<em>object1</em>) node <em>to</em> the second (<em>object2</em>)
      *  node. Multiple edges between the same nodes are allowed, and
      *  are considered different edges.  Self loops are also allowed.
      *
-     *  @param o1 an Object (node weight) representing a graph node
-     *  @param o2 an Object (node weight) representing a graph node
+     *  @param object1 an Object (node weight) representing a graph node
+     *  @param object2 an Object (node weight) representing a graph node
      *  @param weight the Object (edge weight) representing the edge.
-     *  @exception IllegalArgumentException if at least one of the
+     *  @exception IllegalArgumentException If at least one of the
      *   arguments is not a node weight, i.e., the argument is not equal
      *   to an Object specified in a successful <code>add</code> call.
      *   Equality is determined by the <code>equals</code> method.
      */
-    public void addEdge(Object o1, Object o2, Object weight) {
-        Edge edge = new Edge(getNode(o1), getNode(o2), weight);
+    public void addEdge(Object object1, Object object2, Object weight) {
+        Edge edge = new Edge(getNode(object1), getNode(object2), weight);
         _edges.add(edge);
     }
 
@@ -218,8 +221,8 @@ public class Graph {
      *  @return <code>true</code> if the specified Object is a node weight
      *   in this graph; <code>false</code> otherwise.
      */
-    public boolean contains(Object o) {
-        return _nodeTable.containsKey(o);
+    public boolean contains(Object object) {
+        return _nodeTable.containsKey(object);
     }
 
     /** Return a description of this graph. The form of the description is:<p>
@@ -304,20 +307,20 @@ public class Graph {
     /** Return the node that has a specified weight.
      *  @param o an Object representing the weight of a graph node.
      *  @return the node.
-     *  @exception IllegalArgumentException if the specified Object is
+     *  @exception IllegalArgumentException If the specified Object is
      *   not a node weight in this graph (that is, there is no node in
      *   the graph whose weight is equal to the specified Object, as
      *   determined by the <code>equals()</code> method).
      */
-    public final Node getNode(Object o) {
-        Object associatedObject = _nodeTable.get(o);
+    public final Node getNode(Object object) {
+        Object associatedObject = _nodeTable.get(object);
         if (associatedObject == null)
             throw new IllegalArgumentException("Graph.getNode(): " +
-                    "the weight \"" + o.toString() +
+                    "the weight \"" + object.toString() +
                     "\" is not associated with a node in this graph.");
         else if (!(associatedObject instanceof Node))
             throw new IllegalArgumentException("Graph.getNode: " +
-                    "the weight \"" + o.toString() +
+                    "the weight \"" + object.toString() +
                     "\" maps to an object of type " +
                     associatedObject.getClass().getName() +
                     "\n(it should map to a Node)");
@@ -464,20 +467,20 @@ public class Graph {
         if (_recomputeIdentifiers) {
             _nodeIdTable.clear();
             int i;
-            for (i=0; i<_nodes.size(); i++) {
+            for (i = 0; i < _nodes.size(); i++) {
                 _nodeIdTable.put(_nodes.get(i), new Integer(i));
             }
            _recomputeIdentifiers = false;
         }
     }
 
-    /** Return a node in the graph given the node identifer.
+    /** Return a node in the graph given the node identifier.
      *  The node set of the graph should not have changed since the
      *  last invocation of {@link #_enumerateNodes()} (otherwise, the
      *  node identifier might not be valid).
      *  @param node the node identifier.
      *  @return the node.
-     *  @exception IllegalArgumentException if the node is not contained
+     *  @exception IllegalArgumentException If the node is not contained
      *  in this graph.
      */
     protected final Node _getNode(int identifier) {
@@ -492,12 +495,12 @@ public class Graph {
      *  @exception IllegalArgumentException If the specified Object is
      *   not a node weight in this graph.
      */
-    protected final int _getNodeId(Object o) {
+    protected final int _getNodeId(Object object) {
        _enumerateNodes();
-       Integer v = (Integer)(_nodeIdTable.get(getNode(o)));
+       Integer v = (Integer)(_nodeIdTable.get(getNode(object)));
        if (v == null) {
            throw new IllegalArgumentException("Graph._getNodeId: " +
-                   "the object \"" + o.toString() +
+                   "the object \"" + object.toString() +
                    "\" is not a node weight in this graph, or a node " +
                    "identifier has not yet been determined for it.\n");
        }
@@ -508,7 +511,7 @@ public class Graph {
     /** Return the weight of a given node in the graph.
      *  @param node the graph node.
      *  @return the weight of the node.
-     *  @exception IllegalArgumentException if the node is not contained
+     *  @exception IllegalArgumentException If the node is not contained
      *  in this graph.
      */
     protected final Object _getNodeObject(Node node) {
@@ -519,7 +522,7 @@ public class Graph {
     }
 
     /** Return the weight of a given node in the graph given the node
-     *  identifer.  The node set of the graph should not have changed
+     *  identifier.  The node set of the graph should not have changed
      *  since the last invocation of {@link #_enumerateNodes()}
      *  (otherwise, the node identifier might not be valid).
      *

@@ -30,9 +30,16 @@
 */
 
 package ptolemy.graph;
-import java.util.*;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
+
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.HashSet;
+import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
 //// InequalitySolver
@@ -136,7 +143,7 @@ public class InequalitySolver {
 	    InequalityTerm variable = (InequalityTerm)e.nextElement();
 	    results.append("{"
 			   + ((variable == null) ?
-			      "variable==null" : variable.toString())
+			      "variable == null" : variable.toString())
 			   + "}\n ");
 	}
 	results.append("}\n");

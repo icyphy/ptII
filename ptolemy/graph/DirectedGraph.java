@@ -37,8 +37,9 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 
-import java.util.*;
-
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// DirectedGraph
@@ -90,8 +91,8 @@ public class DirectedGraph extends Graph {
      *  @exception NullPointerException If the specified Object is
      *   <code>null</code>.
      */
-    public void add(Object o) {
-        super.add(o);
+    public void add(Object object) {
+        super.add(object);
 	    _transitiveClosure = null;
     }
 
@@ -100,15 +101,15 @@ public class DirectedGraph extends Graph {
      *  between two nodes are allowed, and are considered different
      *  edges. Self loop is also allowed.
      *
-     *  @param o1 the Object representing the lower node
-     *  @param o2 the Object representing the higher node
+     *  @param object1 the Object representing the lower node
+     *  @param object2 the Object representing the higher node
      *  @exception IllegalArgumentException If at least one of the arguments
      *   is not a graph node, i.e., the argument is not equal to an Object
      *   specified in a successful <code>add</code> call. Equality
      *   is determined by the <code>equals</code> method.
      */
-    public void addEdge(Object o1, Object o2) {
-        super.addEdge(o1, o2);
+    public void addEdge(Object object1, Object object2) {
+        super.addEdge(object1, object2);
 	    _transitiveClosure = null;
     }
 
@@ -123,14 +124,14 @@ public class DirectedGraph extends Graph {
      *  @exception IllegalActionException If any two nodes are strongly
      *   connected.
      */
-    public Object[] attemptTopologicalSort(Object[] objs)
+    public Object[] attemptTopologicalSort(Object[] objects)
             throws IllegalActionException {
         _computeTransitiveClosure();
 
-        int N = objs.length;
+        int N = objects.length;
         int[] ids = new int[N];
         for (int i = 0; i < N; i++) {
-            ids[i] = _getNodeId(objs[i]);
+            ids[i] = _getNodeId(objects[i]);
         }
         for (int i = 0; i < N-1; i++) {
             for (int j = i+1; j < N; j++) {
@@ -170,10 +171,10 @@ public class DirectedGraph extends Graph {
      *  @exception IllegalArgumentException If the specified Object is
      *   not a node in this graph.
      */
-    public Object[] backwardReachableNodes(Object o) {
+    public Object[] backwardReachableNodes(Object object) {
 	_computeTransitiveClosure();
 
-	int id = _getNodeId(o);
+	int id = _getNodeId(object);
 	ArrayList nodes = new ArrayList(_transitiveClosure.length);
         // Look at the corresponding column.
 	for (int i = 0; i < _transitiveClosure.length; i++) {
@@ -200,13 +201,13 @@ public class DirectedGraph extends Graph {
      *  @exception IllegalArgumentException If the specified Object is
      *   not a node in this graph.
      */
-    public Object[] backwardReachableNodes(Object[] objs) {
+    public Object[] backwardReachableNodes(Object[] objects) {
 	_computeTransitiveClosure();
 
-        int N = objs.length;
+        int N = objects.length;
         int ids[] = new int[N];
         for (int i = 0; i < N; i++) {
-            ids[i] = _getNodeId(objs[i]);
+            ids[i] = _getNodeId(objects[i]);
         }
 	ArrayList nodes = new ArrayList(_transitiveClosure.length);
         // Or the corresponding rows.
@@ -294,10 +295,10 @@ public class DirectedGraph extends Graph {
      *  @exception IllegalArgumentException If the specified Object is
      *   not a node in this graph.
      */
-    public Object[] reachableNodes(Object o) {
+    public Object[] reachableNodes(Object object) {
 	_computeTransitiveClosure();
 
-	int id = _getNodeId(o);
+	int id = _getNodeId(object);
 	ArrayList nodes = new ArrayList(_transitiveClosure.length);
 	for (int i = 0; i < _transitiveClosure.length; i++) {
 	    if (_transitiveClosure[id][i]) {
@@ -322,13 +323,13 @@ public class DirectedGraph extends Graph {
      *  @exception IllegalArgumentException If the specified Object is
      *   not a node in this graph.
      */
-    public Object[] reachableNodes(Object[] objs) {
+    public Object[] reachableNodes(Object[] objects) {
 	_computeTransitiveClosure();
 
-	int N = objs.length;
+	int N = objects.length;
         int ids[] = new int[N];
         for (int i = 0; i < N; i++) {
-            ids[i] = _getNodeId(objs[i]);
+            ids[i] = _getNodeId(objects[i]);
         }
 	ArrayList nodes = new ArrayList(_transitiveClosure.length);
         // Or the corresponding rows.
@@ -454,11 +455,11 @@ public class DirectedGraph extends Graph {
     /** Compute the successor set of a given node.
      *  @return An array of the nodes of the successor set.
      */
-    public Object[] successorSet(Object obj) {
+    public Object[] successorSet(Object object) {
 
-        Object objs[] = new Object[1];
-        objs[0] = obj;
-        return successorSet(objs);
+        Object objects[] = new Object[1];
+        objects[0] = object;
+        return successorSet(objects);
     }
 
     /** Compute the successor set of a given set of nodes.

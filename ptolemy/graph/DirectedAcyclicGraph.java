@@ -32,8 +32,11 @@
 package ptolemy.graph;
 
 import ptolemy.kernel.util.InvalidStateException;
-import java.util.*;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.ListIterator;
 //////////////////////////////////////////////////////////////////////////
 //// DirectedAcyclicGraph.java
 /**
@@ -109,8 +112,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  @exception NullPointerException If the specified Object is
      *   <code>null</code>.
      */
-    public void add(Object o) {
-        super.add(o);
+    public void add(Object object) {
+        super.add(object);
 
         _invalidate();
     }
@@ -122,20 +125,20 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  connections between the same nodes are redundant and have no
      *  effects on CPO operations. Self loop is not allowed.
      *
-     *  @param o1 the Object representing the lower node.
-     *  @param o2 the Object representing the higher node.
+     *  @param object1 the Object representing the lower node.
+     *  @param object2 the Object representing the higher node.
      *  @exception IllegalArgumentException If the two nodes are equal,
      *   as determined by the <code>equals</code> method.
      *  @exception NullPointerException If at least one of the specified
      *   Objects is <code>null</code>.
      */
-    public void addEdge(Object o1, Object o2) {
-        if (o1.equals(o2)) {
+    public void addEdge(Object object1, Object object2) {
+        if (object1.equals(object2)) {
             throw new IllegalArgumentException("DirectedAcyclicGraph.addEdge: "
                     + "Cannot add a self loop in acyclic graph.");
         }
 
-        super.addEdge(o1, o2);
+        super.addEdge(object1, object2);
         _invalidate();
     }
 
@@ -336,7 +339,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
             }
             if(finished && active) {
                 throw new InvalidStateException(
-                        "DirectedAcyclicGraph.topologicalSort: Graph is cyclic.");
+                        "DirectedAcyclicGraph.topologicalSort: Graph is "
+                        + "cyclic.");
             }
         }
         return result;
@@ -350,12 +354,12 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
      *  implementation, so the complexity is n^2.
      *  @return The objects in their sorted order.
      */
-    public Object[] topologicalSort(Object[] objs) {
+    public Object[] topologicalSort(Object[] objects) {
         _validate();
-        int N = objs.length;
+        int N = objects.length;
         int[] ids = new int[N];
         for (int i = 0; i < N; i++) {
-            ids[i] = _getNodeId(objs[i]);
+            ids[i] = _getNodeId(objects[i]);
         }
         for (int i = 0; i < N-1; i++) {
             for (int j = i+1; j < N; j++) {

@@ -21,6 +21,8 @@
  MARYLAND HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
  ENHANCEMENTS, OR MODIFICATIONS.
 
+@ProposedRating Red (cxh@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.graph;
@@ -34,7 +36,7 @@ import java.util.Iterator;
 A weighted node for an undirected or directed graph. A node consists
 of a <em>weight</em> (an arbitrary object that is associated with the
 node), and information about the edges that are incident to the node.
-The incidence information inolves the set of input edges, set of
+The incidence information involves the set of input edges, set of
 output eges, and set of all incident edges (all input and output
 edges).  For run-time efficiency, there is some redundancy in the way
 this information is stored.  For undirected graphs, it does not matter
