@@ -52,7 +52,7 @@ ME =		ptolemy/actor/lib
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJXTA_DIR is empty.
 
 DIRS = 		conversions gui logic hoc image javasound net io xslt \
-		test comm $(PTJAI_DIR) \
+		test comm string $(PTJAI_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
 		$(PTJYTHON_DIR) $(PTJXTA_DIR) #$(PTJSPACES_DIR)
 
