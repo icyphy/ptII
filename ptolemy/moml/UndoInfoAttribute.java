@@ -165,6 +165,22 @@ public class UndoInfoAttribute extends SingletonAttribute
     }
 
     /**
+     *  Returns the redo entry at the top of the stack without removing it
+     *  from the stack. If there is no redo entry on the stack then return
+     *  null. 
+     *
+     * @return    the MoML from the first redo entry, or null if there are no
+     *      redo entries
+     */
+    public String peekRedoEntry() {
+        if (_redoEntries.isEmpty()) {
+            return null;
+        }
+        MoMLUndoEntry entry = (MoMLUndoEntry)_redoEntries.peek();
+        return entry.getUndoMoML();
+    }
+
+    /**
      *  Returns the undo entry at the top of the stack without removing it
      *  fromthe stack. If there is no undo entry on the stack then return null.
      *
