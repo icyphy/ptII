@@ -68,7 +68,9 @@ remainder, and loses the input when the function is changed back.
 @version $Id$
 @see AbsoluteValue
 @see Scale
-@see conversions.RectangularToPolar
+@see RectangularToPolar
+@see Round
+@see TrigFunction
 */
 
 public class MathFunction extends TypedAtomicActor {
