@@ -306,6 +306,8 @@ public class SCTransition extends ComponentRelation {
                 (VariableList)src.getAttribute(SCState.LOCAL_INPUT_STATUS_VAR_LIST);
         VariableList localInputVarV =
                 (VariableList)src.getAttribute(SCState.LOCAL_INPUT_VALUE_VAR_LIST);
+
+
         VariableList inputVarS = null;
         VariableList inputVarV = null;
         VariableList localVars = null;
@@ -315,32 +317,38 @@ public class SCTransition extends ComponentRelation {
             inputVarV = (VariableList)ctrl.getAttribute(SCController.INPUT_VALUE_VAR_LIST);
             localVars = (VariableList)ctrl.getAttribute(SCController.LOCAL_VARIABLE_LIST);
         }
-        _te.addToScope(inputVarS);
-        _te.addToScope(localVars);
-        _tc.addToScope(inputVarV);
-        _tc.addToScope(localVars);
-        if (!isPreemptive()) {
-            _te.addToScope(localInputVarS);
-            _tc.addToScope(localInputVarV);
+        
+        if (inputVarS != null) {
+            _te.addToScope(inputVarS.getVariables());
+            _tc.addToScope(inputVarV.getVariables());
+
+        }        
+        if (localVars != null) {
+            _te.addToScope(localVars.getVariables());
+            _tc.addToScope(localVars.getVariables());
+        }
+        if (!isPreemptive() && localInputVarS != null) {
+            _te.addToScope(localInputVarS.getVariables());
+            _tc.addToScope(localInputVarV.getVariables());
         }
         Enumeration actvars = _actions.getVariables();
         Variable act;
         while (actvars.hasMoreElements()) {
             act = (Variable)actvars.nextElement();
-            act.addToScope(inputVarV);
-            act.addToScope(localVars);
+            act.addToScope(inputVarV.getVariables());
+            act.addToScope(localVars.getVariables());
             if (!isPreemptive()) {
-                act.addToScope(localInputVarV);
+                act.addToScope(localInputVarV.getVariables());
             }
         }
         Enumeration varUpdates = _localVarUpdates.getVariables();
         Variable update;
         while (varUpdates.hasMoreElements()) {
             update = (Variable)varUpdates.nextElement();
-            update.addToScope(inputVarV);
-            update.addToScope(localVars);
+            update.addToScope(inputVarV.getVariables());
+            update.addToScope(localVars.getVariables());
             if (!isPreemptive()) {
-                update.addToScope(localInputVarV);
+                update.addToScope(localInputVarV.getVariables());
             }
         }
 
