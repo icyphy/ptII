@@ -127,7 +127,7 @@ clean:
 	@echo "#"
 	@echo "# Now cleaning old tar files in ~ptII/adm/gen-latest"
 	@echo "#"
-	@echo "#ptIInightly-mail#: Starting make clean at `date`
+	@echo "#ptIInightly-mail#: Starting make clean at `date`"
 	rm -f $(PTII_FULL) $(PTII_FULL_ZIP) $(PTII_DEVEL_SRC) $(PTII_SRC)
 	rm -rf $(PTIIDIST) src installshield/*
 
