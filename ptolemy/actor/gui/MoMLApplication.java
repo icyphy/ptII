@@ -634,7 +634,8 @@ public class MoMLApplication implements ExecutionListener {
         } else if (arg.equals("-test")) {
             _test = true;
         } else if (arg.equals("-version")) {
-            System.out.println("Version " + VersionAttribute.CURRENT_VERSION
+            System.out.println("Version "
+                    + VersionAttribute.CURRENT_VERSION.getExpression()
                     + ", Build $Id$");
 
             // NOTE: This means the test suites cannot test -version
