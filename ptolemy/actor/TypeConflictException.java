@@ -58,7 +58,7 @@ public class TypeConflictException extends KernelException {
     /** Construct an Exception with an Enumeration of TypedIOPorts.
      *  The ports are the places where type conflicts
      *  occurred.  The detailed message of this Exception will be
-     *  the string "Type conflicts occured on the following ports:",
+     *  the string "Type conflicts occurred on the following ports:",
      *  followed by a list of ports and their resolved types. The
      *  type is represented by the corresponding class name. For
      *  example, the type "Int" is represented by "ptolemy.data.IntToken"
@@ -68,7 +68,7 @@ public class TypeConflictException extends KernelException {
      *  @param ports an Enumeration of TypedIOPorts.
      */
     public TypeConflictException(Enumeration ports) {
-	this(ports, "Type conflicts occured on the following ports:");
+	this(ports, "Type conflicts occurred on the following ports:");
     }
 
     /** Construct an Exception with an Enumeration of TypedIOPorts
