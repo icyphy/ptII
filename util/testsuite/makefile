@@ -52,6 +52,7 @@ TCL_SRCS = \
 	jdktools.tcl \
 	lcompare.tcl \
 	models.tcl \
+	saveAsJava.tcl \
 	tclshrc.tcl \
 	testDefs.tcl \
 	testEnums.tcl \
