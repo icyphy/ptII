@@ -51,7 +51,8 @@ test StateSampler-1.1 {test constructor and clone} {
             $stateSamplerBase] input]
     $inputbase setTypeEquals $t1
 
-    set stateSampler [java::cast ptolemy.domains.hde.lib.StateSampler [$stateSamplerBase clone]]
+    set stateSampler [java::cast ptolemy.domains.hde.lib.StateSampler \
+	    [$stateSamplerBase clone [$e0 workspace]]]
 
     set input [java::field [java::cast ptolemy.domains.de.lib.DETransformer \
             $stateSamplerBase] input]
