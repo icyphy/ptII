@@ -78,7 +78,7 @@ public final class CrossRefList implements Serializable  {
      *  @param container The container of the object to be constructed.
      */
     public CrossRefList(Object container) {
-	_container = container;
+        _container = container;
     }
 
     /** Create a new CrossRefList that is linked to the same
@@ -92,20 +92,20 @@ public final class CrossRefList implements Serializable  {
      *  @param originalList The model to copy.
      */
     public CrossRefList(Object container, CrossRefList originalList) {
-	this(container);
-	synchronized(originalList) {
-	    if (originalList.size() == 0) return; // List to copy is empty.
-	    for (CrossRef p = originalList._headNode; p != null; p = p._next) {
-		if (p._far._nearList() != null) {
-		    try {
-			link(p._far._nearList());
-		    } catch (IllegalActionException ex) {
-			// This should not be thrown.
-			throw new InternalErrorException(null, ex, null);
-		    }
-		}
-	    }
-	}
+        this(container);
+        synchronized(originalList) {
+            if (originalList.size() == 0) return; // List to copy is empty.
+            for (CrossRef p = originalList._headNode; p != null; p = p._next) {
+                if (p._far._nearList() != null) {
+                    try {
+                        link(p._far._nearList());
+                    } catch (IllegalActionException ex) {
+                        // This should not be thrown.
+                        throw new InternalErrorException(null, ex, null);
+                    }
+                }
+            }
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -120,11 +120,11 @@ public final class CrossRefList implements Serializable  {
      *  @return The first entry, or null if there is none.
      */
     public synchronized Object first() {
-	if (_headNode != null) {
-	    return _headNode._farContainer();
-	} else {
-	    return null;
-	}
+        if (_headNode != null) {
+            return _headNode._farContainer();
+        } else {
+            return null;
+        }
     }
 
     /** Get the container at the specified index.  If there is no such
@@ -133,17 +133,17 @@ public final class CrossRefList implements Serializable  {
      *  @return The container at the specified index.
      */
     public synchronized Object get(int index) {
-	if (index < 0 || index >= _size) return null;
-	int count = 0;
-	CrossRef result = _headNode;
-	while (result != null && count++ < index) {
-	    result = result._next;
-	}
-	if (result != null) {
-	    return result._farContainer();
-	} else {
-	    return null;
-	}
+        if (index < 0 || index >= _size) return null;
+        int count = 0;
+        CrossRef result = _headNode;
+        while (result != null && count++ < index) {
+            result = result._next;
+        }
+        if (result != null) {
+            return result._farContainer();
+        } else {
+            return null;
+        }
     }
 
     /** Enumerate the containers linked to this list.  The
@@ -160,7 +160,7 @@ public final class CrossRefList implements Serializable  {
      *  @return An enumeration of remote referenced objects.
      */
     public synchronized Enumeration getContainers() {
-	return new CrossRefEnumeration();
+        return new CrossRefEnumeration();
     }
 
     /** Insert a link to the specified CrossRefList (<i>farList</i>) at
@@ -189,16 +189,16 @@ public final class CrossRefList implements Serializable  {
      *   itself.
      */
     public synchronized void insertLink(int index, CrossRefList farList)
-	throws IllegalActionException {
-	if (farList == this) {
-	    throw new IllegalActionException(
-					     "CrossRefLink.link: Illegal self-link.");
-	}
-	++_listVersion;
-	CrossRef localCrossRef = new CrossRef(index);
-	if (farList != null) {
-	    localCrossRef._far = farList.new CrossRef(localCrossRef);
-	}
+        throws IllegalActionException {
+        if (farList == this) {
+            throw new IllegalActionException(
+                                             "CrossRefLink.link: Illegal self-link.");
+        }
+        ++_listVersion;
+        CrossRef localCrossRef = new CrossRef(index);
+        if (farList != null) {
+            localCrossRef._far = farList.new CrossRef(localCrossRef);
+        }
     }
 
     /** Return true if the specified container is linked to this
@@ -209,14 +209,14 @@ public final class CrossRefList implements Serializable  {
      *  @return A boolean indicating whether the object is referenced.
      */
     public synchronized boolean isLinked(Object obj) {
-	if (obj == null || _size == 0) return false;
-	for (CrossRef p = _headNode; p != null; p = p._next) {
-	    Object far = p._farContainer();
-	    if (far != null && far.equals(obj)) {
-		return true;
-	    }
-	}
-	return false;
+        if (obj == null || _size == 0) return false;
+        for (CrossRef p = _headNode; p != null; p = p._next) {
+            Object far = p._farContainer();
+            if (far != null && far.equals(obj)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /** Link this list to a different CrossRefList (<i>farList</i>).
@@ -235,16 +235,16 @@ public final class CrossRefList implements Serializable  {
      *  itself.
      */
     public synchronized void link(CrossRefList farList)
-	throws IllegalActionException {
-	if (farList == this) {
-	    throw new IllegalActionException(
-					     "CrossRefLink.link: Illegal self-link.");
-	}
-	++_listVersion;
-	CrossRef localCrossRef = new CrossRef();
-	if (farList != null) {
-	    localCrossRef._far = farList.new CrossRef(localCrossRef);
-	}
+        throws IllegalActionException {
+        if (farList == this) {
+            throw new IllegalActionException(
+                                             "CrossRefLink.link: Illegal self-link.");
+        }
+        ++_listVersion;
+        CrossRef localCrossRef = new CrossRef();
+        if (farList != null) {
+            localCrossRef._far = farList.new CrossRef(localCrossRef);
+        }
     }
 
     /** Return size of this list.
@@ -252,7 +252,7 @@ public final class CrossRefList implements Serializable  {
      *  @return A non-negative integer.
      */
     public synchronized int size() {
-	return _size;
+        return _size;
     }
 
     /** Delete the link at the specified index.  If there is no such
@@ -263,14 +263,14 @@ public final class CrossRefList implements Serializable  {
      *  @param index The index of the link to delete.
      */
     public synchronized void unlink(int index) {
-	int count = 0;
-	CrossRef toDelete = _headNode;
-	while (toDelete != null && count++ < index) {
-	    toDelete = toDelete._next;
-	}
-	if (toDelete != null) {
-	    toDelete._dissociate();
-	}
+        int count = 0;
+        CrossRef toDelete = _headNode;
+        while (toDelete != null && count++ < index) {
+            toDelete = toDelete._next;
+        }
+        if (toDelete != null) {
+            toDelete._dissociate();
+        }
     }
 
     /** Delete all links to the specified container.  If there is no such
@@ -281,35 +281,35 @@ public final class CrossRefList implements Serializable  {
      *  @param obj The object to delete.
      */
     public synchronized void unlink(Object obj) {
-	if (obj == null || _size == 0) return;
-	CrossRef p = _headNode;
-	while (p != null) {
-	    CrossRef n = p._next;
-	    Object far = p._farContainer();
-	    if (far != null && far.equals(obj)) {
-		p._dissociate();
-	    }
-	    p = n;
-	}
+        if (obj == null || _size == 0) return;
+        CrossRef p = _headNode;
+        while (p != null) {
+            CrossRef n = p._next;
+            Object far = p._farContainer();
+            if (far != null && far.equals(obj)) {
+                p._dissociate();
+            }
+            p = n;
+        }
     }
 
     /** Delete all cross references.
      *  Time complexity: O(n).
      */
     public synchronized void unlinkAll() {
-	if (_size == 0) return;
+        if (_size == 0) return;
 
-	CrossRef p = _headNode;
-	while (p != null) {
-	    CrossRef n = p._next;
-	    p._dissociate();
-	    p = n;
-	}
+        CrossRef p = _headNode;
+        while (p != null) {
+            CrossRef n = p._next;
+            p._dissociate();
+            p = n;
+        }
 
-	// Mark the list empty.
-	_headNode = null;
-	_lastNode = null;
-	_size = 0;
+        // Mark the list empty.
+        _headNode = null;
+        _lastNode = null;
+        _size = 0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -352,122 +352,122 @@ public final class CrossRefList implements Serializable  {
      */
     protected class CrossRef implements Serializable{
 
-	/** The far CrossRef. */
-	protected CrossRef _far;
+        /** The far CrossRef. */
+        protected CrossRef _far;
 
-	private CrossRef _next;
+        private CrossRef _next;
 
-	private CrossRef _previous;
+        private CrossRef _previous;
 
-	private CrossRef() { this(null); }
+        private CrossRef() { this(null); }
 
-	private CrossRef(CrossRef spouse) {
-	    _far = spouse;
-	    if (_size > 0) {
-		_previous = _lastNode;
-		_lastNode._next = this;
-		_lastNode = this;
-	    } else {
-		// List is empty.
-		_lastNode = this;
-		_headNode = this;
-	    }
-	    ++_size;
-	}
+        private CrossRef(CrossRef spouse) {
+            _far = spouse;
+            if (_size > 0) {
+                _previous = _lastNode;
+                _lastNode._next = this;
+                _lastNode = this;
+            } else {
+                // List is empty.
+                _lastNode = this;
+                _headNode = this;
+            }
+            ++_size;
+        }
 
-	// Insert an empty link at the specified index number, which
-	// can be any non-negative integer.
-	// This may result in empty links being created at lower
-	// index numbers, if there are not already links present.
-	private CrossRef(int index) {
-	    if (index == 0) {
-		if (_size == 0) {
-		    // list is empty
-		    _lastNode = this;
-		    _headNode = this;
-		} else {
-		    _next = _headNode;
-		    _headNode._previous = this;
-		    _headNode = this;
-		}
-	    } else {
-		// Index is not the first.
+        // Insert an empty link at the specified index number, which
+        // can be any non-negative integer.
+        // This may result in empty links being created at lower
+        // index numbers, if there are not already links present.
+        private CrossRef(int index) {
+            if (index == 0) {
+                if (_size == 0) {
+                    // list is empty
+                    _lastNode = this;
+                    _headNode = this;
+                } else {
+                    _next = _headNode;
+                    _headNode._previous = this;
+                    _headNode = this;
+                }
+            } else {
+                // Index is not the first.
 
-		// Chain down the list, creating empty links if necessary.
-		// First chaining step is special, setting "previous" to
-		// get us started.
-		CrossRef previous = _headNode;
-		if (previous == null && index > 0) {
-		    // List is empty.
-		    previous = new CrossRef();
-		    _headNode = previous;
-		    _lastNode = previous;
-		}
-		int ind = 1;
-		while (ind++ < index) {
-		    // previous cannot possibly be null here.
-		    if (previous._next == null) {
-			// We are off the end of the list.
-			CrossRef newCrossRef = new CrossRef();
-			previous._next = newCrossRef;
-			newCrossRef._previous = previous;
-			_lastNode = newCrossRef;
-			previous = newCrossRef;
-		    } else {
-			// There is an entry in the list.
-			previous = previous._next;
-		    }
-		}
-		// Now we are assured that there are at least index-1 entries
-		// in the list.
-		if (previous != null) {
-		    // There is at least one entry.
-		    // If the new node is the last in the list, update the
-		    // list's pointer to the last node.
-		    if (_lastNode == previous) _lastNode = this;
-		    _next = previous._next;
-		    previous._next = this;
-		    _previous = previous;
-		} else {
-		    // List is empty.
-		    _lastNode = this;
-		    _headNode = this;
-		}
-	    }
-	    ++_size;
-	}
+                // Chain down the list, creating empty links if necessary.
+                // First chaining step is special, setting "previous" to
+                // get us started.
+                CrossRef previous = _headNode;
+                if (previous == null && index > 0) {
+                    // List is empty.
+                    previous = new CrossRef();
+                    _headNode = previous;
+                    _lastNode = previous;
+                }
+                int ind = 1;
+                while (ind++ < index) {
+                    // previous cannot possibly be null here.
+                    if (previous._next == null) {
+                        // We are off the end of the list.
+                        CrossRef newCrossRef = new CrossRef();
+                        previous._next = newCrossRef;
+                        newCrossRef._previous = previous;
+                        _lastNode = newCrossRef;
+                        previous = newCrossRef;
+                    } else {
+                        // There is an entry in the list.
+                        previous = previous._next;
+                    }
+                }
+                // Now we are assured that there are at least index-1 entries
+                // in the list.
+                if (previous != null) {
+                    // There is at least one entry.
+                    // If the new node is the last in the list, update the
+                    // list's pointer to the last node.
+                    if (_lastNode == previous) _lastNode = this;
+                    _next = previous._next;
+                    previous._next = this;
+                    _previous = previous;
+                } else {
+                    // List is empty.
+                    _lastNode = this;
+                    _headNode = this;
+                }
+            }
+            ++_size;
+        }
 
-	private synchronized Object _nearContainer() {
-	    return _container;
-	}
+        private synchronized Object _nearContainer() {
+            return _container;
+        }
 
-	private synchronized Object _farContainer() {
-	    if (_far != null) return _far._nearContainer();
-	    else return null;
-	}
+        private synchronized Object _farContainer() {
+            if (_far != null) return _far._nearContainer();
+            else return null;
+        }
 
-	private synchronized CrossRefList _nearList() {
-	    return CrossRefList.this;
-	}
+        private synchronized CrossRefList _nearList() {
+            return CrossRefList.this;
+        }
 
-	private synchronized void _dissociate() {
-	    _unlink(); // Remove this.
-	    if (_far != null) _far._unlink(); // Remove far
-	}
+        private synchronized void _dissociate() {
+            _unlink(); // Remove this.
+            if (_far != null) _far._unlink(); // Remove far
+        }
 
-	private synchronized void _unlink() {
-	    ++_listVersion;
-	    // Removes this from enclosing CrossRefList.
-	    if (_next != null)
-		_next._previous = _previous; // Modify next.
-	    else
-		_lastNode = _previous;
-	    if (_previous != null)
-		_previous._next = _next; // Modify previous.
-	    else
-		_headNode = _next;
-	    _size--; // Modify list.
-	}
+        private synchronized void _unlink() {
+            ++_listVersion;
+            // Removes this from enclosing CrossRefList.
+            if (_next != null)
+                _next._previous = _previous; // Modify next.
+            else
+                _lastNode = _previous;
+            if (_previous != null)
+                _previous._next = _next; // Modify previous.
+            else
+                _headNode = _next;
+            _size--; // Modify list.
+        }
     }
 
 
@@ -476,49 +476,49 @@ public final class CrossRefList implements Serializable  {
      */
     private class CrossRefEnumeration implements Enumeration {
 
-	public CrossRefEnumeration() {
-	    _enumeratorVersion = _listVersion;
-	    _ref = _headNode;
-	}
+        public CrossRefEnumeration() {
+            _enumeratorVersion = _listVersion;
+            _ref = _headNode;
+        }
 
-	/** Return true if there are more elements to enumerate. */
-	public boolean hasMoreElements() {
-	    if (_enumeratorVersion != _listVersion) {
-		throw new InvalidStateException(
-						"CrossRefList.hasMoreElements(): "
-						+ "The list has been modified.");
-	    }
+        /** Return true if there are more elements to enumerate. */
+        public boolean hasMoreElements() {
+            if (_enumeratorVersion != _listVersion) {
+                throw new InvalidStateException(
+                                                "CrossRefList.hasMoreElements(): "
+                                                + "The list has been modified.");
+            }
 
-	    if (_ref == null)
-		return false;
-	    else
-		return true;
-	}
+            if (_ref == null)
+                return false;
+            else
+                return true;
+        }
 
-	/** Return the next element in the enumeration.
-	 *  @exception java.util.NoSuchElementException If the enumeration is
-	 *  exhausted.
-	 */
-	public Object nextElement()
-	    throws NoSuchElementException {
-	    if (_enumeratorVersion != _listVersion) {
-		throw new InvalidStateException(
-						"CrossRefList.nextElement(): "
-						+ "The list has been modified.");
-	    }
+        /** Return the next element in the enumeration.
+         *  @exception java.util.NoSuchElementException If the enumeration is
+         *  exhausted.
+         */
+        public Object nextElement()
+            throws NoSuchElementException {
+            if (_enumeratorVersion != _listVersion) {
+                throw new InvalidStateException(
+                                                "CrossRefList.nextElement(): "
+                                                + "The list has been modified.");
+            }
 
-	    if (_ref == null) {
-		throw new NoSuchElementException("exhausted enumeration");
-	    } else {
-		CrossRef p = _ref;
-		Object v = _ref._farContainer();
-		_ref = p._next;
-		return v;
-	    }
-	}
+            if (_ref == null) {
+                throw new NoSuchElementException("exhausted enumeration");
+            } else {
+                CrossRef p = _ref;
+                Object v = _ref._farContainer();
+                _ref = p._next;
+                return v;
+            }
+        }
 
-	private long _enumeratorVersion;
+        private long _enumeratorVersion;
 
-	private CrossRef _ref;
+        private CrossRef _ref;
     }
 }
