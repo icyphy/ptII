@@ -87,7 +87,7 @@ public class RcvrTimeTriple extends NamedObj {
     /**  FIXME: Do I need this method?
      */
     public void setTime( double time ) throws IllegalActionException {
-        if( time < _rcvrTime ) {
+        if( time < _rcvrTime && time != -1 ) {
             throw new IllegalActionException( getContainer(), 
                     "Rcvr times must be monotonically non-decreasing.");
         }
