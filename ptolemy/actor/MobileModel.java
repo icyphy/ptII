@@ -29,12 +29,11 @@
 
 package ptolemy.actor;
 
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.Const;
 import ptolemy.data.expr.Parameter;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
 import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
@@ -45,11 +44,9 @@ import ptolemy.kernel.Port;
 import ptolemy.kernel.Entity;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
-import ptolemy.moml.filter.RemoveGraphicalClasses;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.domains.de.kernel.DEDirector;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.io.IOException;
 import java.io.Writer;
 import java.io.StringWriter;

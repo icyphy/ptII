@@ -33,11 +33,8 @@ package ptolemy.actor;
 import ptolemy.graph.DirectedGraph;
 import ptolemy.graph.Graph;
 import ptolemy.graph.Node;
-import ptolemy.kernel.Port;
-
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
 
 ///////////////////////////////////////////////////////////////////////

@@ -43,7 +43,6 @@ import ptolemy.data.Token;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.ComponentPort;
 import ptolemy.kernel.ComponentRelation;
-import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.IllegalActionException;
@@ -52,7 +51,8 @@ import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
+
+
 import ptolemy.kernel.util.Workspace;
 
 import java.io.IOException;
@@ -60,7 +60,6 @@ import java.io.Writer;
 import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Map;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;

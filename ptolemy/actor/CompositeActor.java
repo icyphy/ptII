@@ -50,15 +50,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import ptolemy.kernel.util.Settable;
-
 import java.util.Iterator;
 import java.util.List;
 import java.util.LinkedList;
-import java.util.Collections;
-
-import java.io.IOException;
-import java.io.Writer;
 
 
 

@@ -32,7 +32,6 @@
 package ptolemy.actor;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.data.Token;
 
 //////////////////////////////////////////////////////////////////////////

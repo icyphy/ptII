@@ -30,14 +30,7 @@
 
 package ptolemy.actor;
 
-import ptolemy.data.type.Type;
-import ptolemy.data.type.Typeable;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NamedObj;
-
-import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;

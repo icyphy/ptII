@@ -33,11 +33,6 @@ package ptolemy.actor;
 
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.data.Token;
-import ptolemy.actor.util.FIFOQueue;        /* Needed by javadoc */
-
-import java.util.NoSuchElementException;
-import java.util.Collections;
-import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
 //// AbstractReceiver
