@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Green (eal@eecs.berkeley.edu)
-@AcceptedRating Yellow (neuendor@eecs.berkeley.edu)
+@AcceptedRating Red (neuendor@eecs.berkeley.edu)
 Review vectorized methods.
 Review broadcast/get/send/hasRoom/hasToken.
 Review setInput/setOutput/setMultiport.
@@ -50,6 +50,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
@@ -485,7 +486,7 @@ public class IOPort extends ComponentPort {
 	    LinkedList result = new LinkedList();
 
 	    Iterator ports = deepConnectedPortList().iterator();
-            int myDepth = depthInHierarchy();
+            //int myDepth = depthInHierarchy();
             while (ports.hasNext()) {
 		IOPort port = (IOPort)ports.next();
 		if (port.isInput()) {
@@ -529,7 +530,7 @@ public class IOPort extends ComponentPort {
 	    LinkedList result = new LinkedList();
 
 	    Iterator ports = deepConnectedPortList().iterator();
-            int myDepth = depthInHierarchy();
+            //int myDepth = depthInHierarchy();
             while (ports.hasNext()) {
 		IOPort port = (IOPort)ports.next();
 		if (port.isOutput()) {
@@ -1401,6 +1402,42 @@ public class IOPort extends ComponentPort {
         _invalidate();
     }
 
+    /** Return a list of the ports connected to this port on the
+     *  inside that can accept data from this port.  This include
+     *  both input ports and composite output ports that are 
+     *  connected on the inside to this port. This port must 
+     *  be an opaque input port, otherwise return an empty list.
+     *  @return A list of IOPort objects.
+     */
+    public List insideSinkPortList() {
+        try {
+            _workspace.getReadAccess();
+            Nameable container = getContainer();
+            if (!(container instanceof CompositeActor && isInput() 
+                    && isOpaque())) {
+                // Return an empty list, since this port cannot send data 
+                // to the inside.
+              return new LinkedList();
+            }
+            Director dir = ((CompositeActor) container).getDirector();
+            int depthOfDirector = dir.depthInHierarchy();
+            LinkedList result = new LinkedList();
+            Iterator ports = deepInsidePortList().iterator();
+            while (ports.hasNext()) {
+                IOPort port = (IOPort)ports.next();
+                int depth = ((NamedObj)port.getContainer()).depthInHierarchy();
+                if (port.isInput() && depth >= depthOfDirector) {
+                    result.addLast(port);
+                } else if (port.isOutput() && depth < depthOfDirector) {
+                    result.addLast(port);
+                }
+            }
+            return result;
+	} finally {
+	    _workspace.doneReading();
+	}
+    }
+
     /** Return true if the port is an input.  The port is an input
      *  if either setInput() has been called with a <i>true</i> argument, or
      *  it is connected on the inside to an input port, or if it is
@@ -1835,6 +1872,8 @@ public class IOPort extends ComponentPort {
      *  outside that can accept data from this port.  This include
      *  input ports that are connected on the outside to this port,
      *  and output ports that are connected on the inside to this one.
+     *  If the port is an input port of an atomic actor, then return an
+     *  empty list.
      *  @return A list of IOPort objects.
      */
     public List sinkPortList() {
@@ -1847,7 +1886,7 @@ public class IOPort extends ComponentPort {
             Iterator ports = deepConnectedPortList().iterator();
             while (ports.hasNext()) {
                 IOPort port = (IOPort)ports.next();
-                int depth = port.depthInHierarchy();
+                int depth = ((NamedObj)port.getContainer()).depthInHierarchy();
                 if (port.isInput() && depth >= depthOfDirector) {
                     result.addLast(port);
                 } else if (port.isOutput() && depth < depthOfDirector) {
@@ -1876,7 +1915,7 @@ public class IOPort extends ComponentPort {
 	    Iterator ports = deepConnectedPortList().iterator();
             while (ports.hasNext()) {
 		IOPort port = (IOPort)ports.next();
-                int depth = port.depthInHierarchy();
+                int depth = ((NamedObj)port.getContainer()).depthInHierarchy();
                 if (port.isInput() && depth <= depthOfDirector) {
                     result.addLast(port);
                 } else if (port.isOutput() && depth > depthOfDirector) {
