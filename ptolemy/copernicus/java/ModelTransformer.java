@@ -215,12 +215,12 @@ public class ModelTransformer extends SceneTransformer {
             CompositeEntity composite, EntitySootClass modelClass,
             Map options) {
 
-        _ports(body, containerLocal, container, thisLocal, composite, modelClass);
-        _entities(body, containerLocal, container, thisLocal, composite, modelClass, options);
         // create fields for attributes.
         createFieldsForAttributes(body, container, containerLocal,
                 composite, thisLocal, modelClass);
-       
+        _ports(body, containerLocal, container, thisLocal, composite, modelClass);
+        _entities(body, containerLocal, container, thisLocal, composite, modelClass, options);
+      
         // handle the communication
         if(Options.getBoolean(options, "deep")) {
             SootMethod clinitMethod;
@@ -322,6 +322,7 @@ public class ModelTransformer extends SceneTransformer {
 	body.getLocals().add(settableLocal);
 
         NamedObj classObject = _findDeferredInstance(namedObj);
+
         for(Iterator attributes = namedObj.attributeList().iterator();
 	    attributes.hasNext();) {
 	    Attribute attribute = (Attribute)attributes.next();
@@ -361,12 +362,18 @@ public class ModelTransformer extends SceneTransformer {
                                 local,
                                 PtolemyUtilities.settableType)));
                 String expression = ((Settable)attribute).getExpression();
+                System.out.println("expression for " + attribute + " =*" + expression + "*");
 		// call setExpression.
 		body.getUnits().add(Jimple.v().newInvokeStmt(
                         Jimple.v().newInterfaceInvokeExpr(
                                 settableLocal,
                                 PtolemyUtilities.setExpressionMethod,
                                 StringConstant.v(expression))));
+                // call validate to ensure that attributeChanged is called.
+                body.getUnits().add(Jimple.v().newInvokeStmt(
+                        Jimple.v().newInterfaceInvokeExpr(
+                                settableLocal,
+                                PtolemyUtilities.validateMethod)));
 	    }
             // FIXME: configurable??
             // recurse so that we get all parameters deeply.
@@ -380,29 +387,59 @@ public class ModelTransformer extends SceneTransformer {
             CompositeEntity container, Local thisLocal, 
             CompositeEntity composite, EntitySootClass modelClass,
             Map options) {
+        CompositeEntity classObject = (CompositeEntity)
+            _findDeferredInstance(composite);
+        // A local that we will use to get existing entities
+        Local entityLocal = Jimple.v().newLocal("entity",
+                RefType.v(PtolemyUtilities.entityClass));
+        body.getLocals().add(entityLocal);
+
 	for(Iterator entities = composite.entityList().iterator();
 	    entities.hasNext();) {
 	    Entity entity = (Entity)entities.next();
 	    System.out.println("ModelTransformer: entity: " + entity);
-	    String className;
+            Local local;
             if(Options.getBoolean(options, "deep")) {
 		// If we are doing deep codegen, then use the actor
 		// classes we created earlier.
-		className = ActorTransformer.getInstanceClassName(entity, options);
+		String className = ActorTransformer.getInstanceClassName(entity, options);
+                // Create a new local variable.
+                // The name of the local is determined automatically.
+                // The name of the NamedObj is the same as in the model.  (Note that
+                // this might not be a valid Java identifier.)
+                local = PtolemyUtilities.createNamedObjAndLocal(body, className,
+                        thisLocal, entity.getName());
 	    } else {
-            
-		// If we are doing shallow, then use the base actor
-		// classes.
-		className = entity.getClass().getName();
+                if(classObject.getEntity(entity.getName()) != null) {
+                    // Get a reference to the previously created entity.
+                    local = entityLocal;
+                    body.getUnits().add(Jimple.v().newAssignStmt(entityLocal,
+                            Jimple.v().newVirtualInvokeExpr(containerLocal,
+                                    PtolemyUtilities.getEntityMethod,
+                                    StringConstant.v(entity.getName(container)))));
+                } else {
+                    // If we are doing shallow, then use the base actor
+                    // classes.  Note that the entity might actually be 
+                    // a MoML class (like Sinewave). 
+                    String className = entity.getClass().getName();
+                    // Create a new local variable.
+                    // The name of the local is determined automatically.
+                    // The name of the NamedObj is the same as in the model.  (Note that
+                    // this might not be a valid Java identifier.)
+                    local = PtolemyUtilities.createNamedObjAndLocal(body, className,
+                            thisLocal, entity.getName());
+                    if(!className.equals(entity.getMoMLInfo().className)) {
+                        // If the entity is a moml class.... then we need to create
+                        // the stuff inside the moml class before we keep going...
+                        // FIXME: what about not composite classes?
+                        CompositeEntity classEntity = (CompositeEntity)
+                            _findDeferredInstance(entity);
+                        _composite(body, containerLocal, container, local, classEntity, modelClass, options);
+                        
+                    }
+                }
             }
             
-	    // Create a new local variable.
-            // The name of the local is determined automatically.
-            // The name of the NamedObj is the same as in the model.  (Note that
-            // this might not be a valid Java identifier.)
-	    Local local = 
-                PtolemyUtilities.createNamedObjAndLocal(body, className,
-                        thisLocal, entity.getName());
 	    _entityLocalMap.put(entity, local);
 
             if(entity instanceof CompositeEntity) {
