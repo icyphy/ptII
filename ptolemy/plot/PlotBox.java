@@ -1936,6 +1936,17 @@ public class PlotBox extends JPanel implements Printable {
         _resetButton.setVisible(vis);
     }
 
+    /** Set the padding multiple.
+     *  The plot rectangle is "padded" in each direction -x, +x, -y, and +y.
+     *  If the padding is set to 0.05, then there is 10% more length to each
+     *  axis, 5% in each direction.
+     */
+    // See the private methods _setYRange() and -setXRange() where the padding
+    // is used.
+    protected void _setPadding(double padding) {
+	_padding = padding;
+    }
+
     /** Write plot information to the specified output stream in PlotML.
      *  Derived classes should override this method to first call
      *  the parent class method, then add whatever additional information
@@ -2038,6 +2049,11 @@ public class PlotBox extends JPanel implements Printable {
 
     // The factor we pad by so that we don't plot points on the axes.
     protected transient static final double _PADDING = 0.05;
+    // _padding was added to allow a setPadding() method.  _PADDING was not
+    // replaced by _padding because of the complication of finding all of the
+    // places where _PADDING is used (possibly in subclasses).  _padding is
+    // used in place of _PADDING, so far, only in _setYRange() and _setXRange. 
+    protected double _padding = _PADDING;
 
     // Whether the ranges have been given.
     protected transient boolean _xRangeGiven = false;
@@ -2637,8 +2653,8 @@ public class PlotBox extends JPanel implements Printable {
 	//    _xMax = max;
 	//} else {
         // Pad slightly so that we don't plot points on the axes.
-        _xMin = min - ((max - min) * _PADDING);
-        _xMax = max + ((max - min) * _PADDING);
+        _xMin = min - ((max - min) * _padding);
+        _xMax = max + ((max - min) * _padding);
 	//}
 
         // Find the exponent.
@@ -2675,8 +2691,8 @@ public class PlotBox extends JPanel implements Printable {
 	//    _yMax = max;
 	//} else {
         // Pad slightly so that we don't plot points on the axes.
-        _yMin = min - ((max - min) * _PADDING);
-        _yMax = max + ((max - min) * _PADDING);
+        _yMin = min - ((max - min) * _padding);
+        _yMax = max + ((max - min) * _padding);
 	//}
 
         // Find the exponent.
