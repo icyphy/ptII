@@ -122,7 +122,6 @@ public class SignatureVerifier extends SignatureActor {
      *  or if the signature does not properly verify.
      */
     public void fire() throws IllegalActionException {
-        System.out.println("SignatureVerifier.fire()");
         if (publicKey.hasToken(0)) {
             ObjectToken objectToken = (ObjectToken)publicKey.get(0);
             _publicKey = (PublicKey)objectToken.getValue(); 
@@ -145,7 +144,6 @@ public class SignatureVerifier extends SignatureActor {
             throws IllegalActionException {
         ByteArrayOutputStream byteArrayOutputStream =
             new ByteArrayOutputStream();
-        System.out.println("SignatureVerifier: _process");
         try {
             _signature.initVerify(_publicKey);
             _signature.update(_data);

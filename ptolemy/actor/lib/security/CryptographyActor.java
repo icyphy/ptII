@@ -221,7 +221,6 @@ public class CryptographyActor extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
-        System.out.println("CrypoActor: fire()");
         try {
             if (input.hasToken(0)) {
                 byte[] dataBytes =

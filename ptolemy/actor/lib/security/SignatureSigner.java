@@ -210,7 +210,6 @@ public class SignatureSigner extends SignatureActor {
     protected byte[] _process(byte[] dataBytes) throws IllegalActionException{
         ByteArrayOutputStream byteArrayOutputStream =
             new ByteArrayOutputStream();
-        System.out.println("SignatureSigner._process()");
         try {
             // The data port contains the unsigned data.
             data.send(0,
