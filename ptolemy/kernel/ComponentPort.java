@@ -154,7 +154,9 @@ public class ComponentPort extends Port {
      *  Begin by listing the ports that are connected to this port.
      *  If any of those are transparent ports that we are connected to
      *  from the inside, then list all the ports deeply connected
-     *  on the outside to that transparent port.  Note that a port may
+     *  on the outside to that transparent port.  If any are transparent
+     *  ports that we are connected to from the outside, then list
+     *  opaque ports deeply inside that port. Note that a port may
      *  be listed more than once. This method is read synchronized on the
      *  workspace.
      *  @return An unmodifiable list of ComponentPort objects.
@@ -653,7 +655,9 @@ public class ComponentPort extends Port {
      *  Begin by listing the ports that are connected to this port.
      *  If any of those are transparent ports that we are connected to
      *  from the inside, then list all the ports deeply connected
-     *  on the outside to that transparent port.  Note that a port may
+     *  on the outside to that transparent port.  If any are transparent
+     *  ports that we are connected to from the outside, then list
+     *  opaque ports deeply inside that port. Note that a port may
      *  be listed more than once. The path argument is the path from
      *  the port that originally calls this method to this port.
      *  If this port is already on the list of ports on the path to this
