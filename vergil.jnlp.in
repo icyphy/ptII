@@ -39,6 +39,9 @@
   <resources os="Windows">
   	<nativelib href="signed/lib/matlabWindows.jar"/>
   </resources>
+  <resources os="SunOS">
+  	<nativelib href="signed/lib/matlabSunOS.jar"/>
+  </resources>
   <application-desc main-class="ptolemy.actor.gui.jnlp.FullApplication"/>
   <!-- Need to deal with Java 3D -->
 </jnlp>
