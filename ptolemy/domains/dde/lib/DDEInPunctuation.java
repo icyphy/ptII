@@ -1,6 +1,6 @@
-/* ODFPut
+/* 
 
- Copyright (c) 1998-1999 The Regents of the University of California.
+ Copyright (c) 1997-1999 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -28,42 +28,68 @@
 
 */
 
-package ptolemy.domains.odf.kernel.test;
+package ptolemy.domains.dde.lib;
 
-import ptolemy.domains.odf.kernel.*;
+import ptolemy.domains.dde.kernel.*;
+import ptolemy.kernel.util.*;
 import ptolemy.actor.*;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.data.Token;
-import ptolemy.data.StringToken;
-
+import ptolemy.data.*;
+import collections.LinkedList;
 
 //////////////////////////////////////////////////////////////////////////
-//// ODFPut
-/**
+//// DDEInPunctuation
+/** 
+
 
 @author John S. Davis II
-@version $Id$
-
+@version @(#)DDEInPunctuation.java	1.1	11/12/98
 */
+public class DDEInPunctuation extends DDEPunctuation {
 
-public class ODFPut extends TypedAtomicActor {
-
-    /**
+    /** 
      */
-    public ODFPut(TypedCompositeActor cont, String name)
+    public DDEInPunctuation(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
-         super(cont, name);
+        super(container, name);
+	_input = new TypedIOPort(this, "input", true, false);
+    }
+ 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
-         outputPort = new TypedIOPort(this, "output", false, true);
-	 outputPort.setMultiport(true);
+    /** Return the current time of this actor.
+    public LinkedList setUpStrings() {
+    }
+     */
+    
+    public void wrapup() throws IllegalActionException {
+        //System.out.println("DDEInPunctuation current time = "+getCurrentTime());
+        super.wrapup();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                        private variables                  ////
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                        private variables                       ////
-
-    public TypedIOPort outputPort;
+    private TypedIOPort _input;
+    
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

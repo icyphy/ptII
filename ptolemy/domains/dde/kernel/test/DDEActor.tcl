@@ -1,8 +1,8 @@
-# Tests for the RcvrTimeTriple class
+# Tests for the ODActor class
 #
 # @Author: John S. Davis II
 #
-# @Version: @(#)RcvrTimeTriple.tcl	1.1	11/17/98
+# @Version: $Id$
 #
 # @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
@@ -50,32 +50,53 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test RcvrTimeTriple-2.1 {Check for correct receiver} {
-    set iop [java::new ptolemy.actor.IOPort]
-    set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
-    set rtt [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $tqr 0.0 0]
-    list [expr { $tqr == [$rtt getReceiver] } ]
+test DDEActor-2.1 {getNextToken() - Send One Token} {
+    set wspc [java::new ptolemy.kernel.util.Workspace]
+    set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
+    $toplevel setDirector $dir
+    $toplevel setManager $mgr
+    
+    set actorRcvr [java::new ptolemy.domains.dde.kernel.test.DDEGet $toplevel "actorRcvr"]
+    set actorSend [java::new ptolemy.domains.dde.kernel.test.DDEPut $toplevel "actorSend"]
+    set ioprcvr [$actorRcvr getPort "input"]
+    set iopsend [$actorSend getPort "output"]
+    set rel [$toplevel connect $ioprcvr $iopsend "rel"]
+    $actorRcvr createReceivers
+    $actorSend createReceivers
+    $actorRcvr initialize 
+    $actorSend initialize 
+
+    set odr [java::new ptolemy.domains.dde.kernel.DDEReceiver $ioprcvr]
+    set rcvrkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
+	    $actorRcvr]
+    $odr setReceivingTimeKeeper $rcvrkeeper
+    set sendkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
+	    $actorSend]
+    $odr setSendingTimeKeeper $sendkeeper
+
+    set rcvrs [ [java::cast ptolemy.actor.TypedIOPort $ioprcvr] getReceivers]
+    if { $rcvrs == [java::null] } {
+	set null 1
+    }
+
+    set token0 [java::new ptolemy.data.Token]
+    $odr put $token0 5.0
+    set outToken0 $token0
+    #set outToken0 [$actorRcvr getNextToken] 
+
+    if { $outToken0 == $token0 } {
+	set val 1
+    }
+
+    list $val
+
 } {1}
 
-######################################################################
-####
-#
-test RcvrTimeTriple-2.2 {Check for correct time} {
-    set iop [java::new ptolemy.actor.IOPort]
-    set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
-    set rtt [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $tqr 30.0 0]
-    list [expr { 30.0 == [$rtt getTime] } ]
-} {1}
 
-######################################################################
-####
-#
-test RcvrTimeTriple-2.3 {Check for correct priority} {
-    set iop [java::new ptolemy.actor.IOPort]
-    set tqr [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $iop]
-    set rtt [java::new ptolemy.domains.odf.kernel.RcvrTimeTriple $tqr 30.0 8]
-    list [expr { 8 == [$rtt getPriority] } ]
-} {1}
+
+
 
 
 

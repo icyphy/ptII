@@ -1,4 +1,4 @@
-/* ODFGetToken
+/* DDEGet
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -28,9 +28,9 @@
 
 */
 
-package ptolemy.domains.odf.kernel.test;
+package ptolemy.domains.dde.kernel.test;
 
-import ptolemy.domains.odf.kernel.*;
+import ptolemy.domains.dde.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -39,7 +39,7 @@ import ptolemy.data.StringToken;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// ODFGetToken
+//// DDEGet
 /**
 
 @author John S. Davis II
@@ -47,18 +47,16 @@ import ptolemy.data.StringToken;
 
 */
 
-public class ODFGetToken extends ODFGet {
+public class DDEGet extends DDEActor {
 
     /**
      */
-    public ODFGetToken(TypedCompositeActor cont, String name, int numTokens)
+    public DDEGet(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
-	 _numTokens = numTokens;
-	 _tokens = new Token[_numTokens];
-	 _threadTimes = new double[_numTokens];
-	 _rcvrTimes = new double[_numTokens];
+         inputPort = new TypedIOPort(this, "input", true, false);
+	 inputPort.setMultiport(true);
     }
 
     ////////////////////////////////////////////////////////////////////////
@@ -66,66 +64,12 @@ public class ODFGetToken extends ODFGet {
 
     /**
      */
-    public double getRcvrTime(int cntr) {
-	return _rcvrTimes[cntr];
-    }
-
-    /**
-     */
-    public double getThreadTime(int cntr) {
-	return _threadTimes[cntr];
-    }
-
-    /**
-     */
-    public Token getToken(int cntr) {
-	return _tokens[cntr];
-    }
-
-    /**
-     */
-    public void fire() throws IllegalActionException {
-	int aCntr = 0;
-	Receiver[][] theRcvrs = inputPort.getReceivers();
-	for( int i = 0; i < theRcvrs.length; i++ ) {
-	    for( int j = 0; j < theRcvrs[i].length; j++ ) {
-		aCntr++;
-	    }
-	}
-	System.out.println("There are "+aCntr+" receivers in "+getName());
-	int cnt = 0; 
-	while(cnt < _numTokens) {
-	    Receiver[][] rcvrs = inputPort.getReceivers();
-	    for( int i = 0; i < rcvrs.length; i++ ) {
-		for( int j = 0; j < rcvrs[i].length; j++ ) {
-		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j]; 
-		    System.out.println("ODFGetToken receiver["+i+"]["+j+"]; cnt = "+cnt);
-		    if( rcvr.hasToken() ) {
-			_rcvrTimes[cnt] = rcvr.getRcvrTime();
-	                _tokens[cnt] = rcvr.get(); 
-			Thread thread = Thread.currentThread(); 
-			if( thread instanceof ODFThread ) {
-			    TimeKeeper timeKeeper = 
-				    ((ODFThread)thread).getTimeKeeper();
-			    _threadTimes[cnt] = 
-				    timeKeeper.getCurrentTime();
-			}
-		    } else {
-			System.out.println("No token for cnt "+cnt);
-		    }
-		}
-	    }
-	    cnt++;
-	}
-	System.out.println("ODFGetToken() ends with cnt = "+cnt);
+    public boolean postfire() throws IllegalActionException {
+	return false;
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                        private variables                       ////
 
-    private int _numTokens;
-    private Token[] _tokens = null;
-    private double[] _threadTimes = null;
-    private double[] _rcvrTimes = null;
-    
+    public TypedIOPort inputPort;
 }

@@ -1,8 +1,8 @@
-# Load test bed definitions
+# Makefile for the Ptolemy II DDE domain, lib directory
 #
-# @Author: Christopher Hylands
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: @(#)testDefs.tcl	1.1	11/15/98
+# @Version: $Id$
 #
 # @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
@@ -28,29 +28,60 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-#######################################################################
 
-# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
-if [info exist env(PTOLEMY)] {
-    set PTII $env(PTOLEMY)/tycho/java
-}
+ME =		ptolemy/domains/dde/lib
 
-if [info exist env(TYCHO)] {
-    set PTII $env(TYCHO)/java
-}
+DIRS = 		test #doc
 
-if [info exist env(PTII)] {
-    set PTII $env(PTII)
-}
+# Root of the Ptolemy II directory
+ROOT =		../../../..
 
-if {![info exist PTII]} {
-    # If we are here, then we are probably running jacl and we can't
-    # read environment variables
-    set PTII [file join [pwd] .. .. .. .. ..]
-}
+CLASSPATH =	$(ROOT)
 
-# Load up the test definitions.
-if {[string compare test [info procs test]] == 1} then {
-    source [file join $PTII util testsuite testDefs.tcl]
-} {}
+# Get configuration info
+CONFIG =	$(ROOT)/mk/ptII.mk
+include $(CONFIG)
+
+# Used to build jar files
+PTPACKAGE = 	lib
+PTDIST =	$(PTPACKAGE)$(PTVERSION)
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
+JSRCS = \
+	DDEConsonants.java \
+	DDEInPunctuation.java \
+	DDEPrintString.java \
+	DDEPunctuation.java \
+	DDEStringMerge.java \
+	DDEStringSource.java \
+	DDEVowels.java
+
+EXTRA_SRCS =	$(JSRCS)
+
+# Files or directories that are present, but that 'make checkjunk'
+# should not complain about
+MISC_FILES =	$(DIRS) doc test demo
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	$(PTCLASSJAR)
+
+JCLASS = $(JSRCS:%.java=%.class)
+
+all: jclass
+install: jclass $(PTCLASSJAR)
+docs: javadocs
+
+depend:
+	@echo "no dependencies in this directory"
+
+# Get the rest of the rules
+include $(ROOT)/mk/ptcommon.mk
+
+
+
+
+
+

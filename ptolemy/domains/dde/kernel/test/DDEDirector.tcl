@@ -1,14 +1,14 @@
-# Tests for the ODFThread class
+# Tests for the ODDirector class
 #
 # @Author: John S. Davis II
 #
-# @Version: $Id$
+# @Version: %W%	%G%
 #
 # @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
-# license or royalty fees, to use, copy, modify, and distribute this
+# license or royalty fees, to use, copy, mddeify, and distribute this
 # software and its documentation for any purpose, provided that the
 # above copyright notice and the following two paragraphs appear in all
 # copies of this software.
@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 #######################################################################
 
-# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
+# Tycho test bed, see $TYCHO/doc/cddeing/testing.html for more information.
 
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
@@ -50,24 +50,50 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test ODFThread-2.1 {getTimeKeeper()} {
-    
+test DDEDirector-2.1 {Check that actor threads are alive after director initialize} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
-    set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
-    set man [java::new ptolemy.actor.Manager $wspc "manager"]
-    
+    set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
+    set manager [java::new ptolemy.actor.Manager $wspc "manager"]
     $topLevel setDirector $dir
-    $topLevel setManager $man
-
-    set actor1 [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
-    set thread [java::new ptolemy.domains.odf.kernel.ODFThread $actor1 $dir]
-    set keeper [$thread getTimeKeeper]
-    set newactor [$keeper getActor]
-    set actor2 [java::cast ptolemy.actor.TypedAtomicActor $newactor]
-
-    list [ expr {$actor1 == $actor2}]
-
+    set actorA [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorA"] 
+    set actorB [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorB"] 
+    
+    set portA [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorA "portA"]
+    $portA setOutput true
+    
+    set portB [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorB "portB"]
+    $portB setInput true
+    
+    set rel [$topLevel connect $portA $portB "rel"]
+    
+    $dir initialize
+    $dir prefire
+    
+    list [expr {$portA != $portB} ] 
 } {1}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 

@@ -1,6 +1,6 @@
-# Makefile for the Java classes used to implement the Ptolemy PN domain kernel
+# Makefile for the Java classes used to implement the Ptolemy DDE domain kernel
 #
-# @Authors: Mudit Goel, Christopher Hylands, based on a file by Thomas M. Parks
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/domains/odf/kernel
+ME =		ptolemy/domains/dde/lib/demo
 
-DIRS = 		test #doc
+DIRS = 		#test #doc
 
-# Root of the Java directory
-ROOT =		../../../..
+# Root of the Ptolemy II directory
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -42,28 +42,29 @@ CLASSPATH =	$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Flags to pass to javadoc. (Override value in ptII.mk)
+JDOCFLAGS = 	-author -version -public
+
 # Used to build jar files
-PTPACKAGE = 	kernel
+PTPACKAGE = 	demo
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-JSRCS = \
-	NullToken.java \
-        ODFActor.java \
-        ODFDirector.java \
-        ODFIOPort.java \
-        ODFReceiver.java \
-        ODFSourceActor.java \
-        ODFThread.java \
-        TimeKeeper.java \
-        TimedQueueReceiver.java
+JSRCS =
+
+# Non-graphical Java demos written in Tcl
+# Since there are no demos, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a demo, be sure to add
+# $(JSIMPLE_TESTS) to EXTRA_SRCS
+JSIMPLE_TESTS = \
+        dummy.tcl
 
 
 EXTRA_SRCS =	$(JSRCS)
 
 # Files or directories that are present, but that 'make checkjunk'
 # should not complain about
-MISC_FILES =	$(DIRS) doc test #demo
+MISC_FILES =	$(DIRS) doc test demo
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
@@ -76,6 +77,7 @@ JCLASS = $(JSRCS:%.java=%.class)
 all: jclass
 install: jclass $(PTCLASSJAR)
 docs: javadocs
+demo:
 
 depend:
 	@echo "no dependencies in this directory"

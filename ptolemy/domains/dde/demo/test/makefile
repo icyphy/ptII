@@ -1,4 +1,4 @@
-# Makefile for the Ptolemy II ODF domain test directory
+# Makefile for the Ptolemy II DDE demo tests
 #
 # @Authors: Christopher Hylands
 #
@@ -30,7 +30,7 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/domains/odf/kernel/test
+ME =		ptolemy/domains/dde/demo/test
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
@@ -46,18 +46,11 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	ODFGet.java \
-	ODFGetNToken.java \
-	ODFGetToken.java \
-	ODFPut.java \
-	ODFPutToken.java
+	
 
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
-	ODFReceiver.tcl \
-	ODFThread.tcl \
-	TimeKeeper.tcl \
-	TimedQueueReceiver.tcl 
+	
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds

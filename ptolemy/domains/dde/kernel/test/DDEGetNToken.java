@@ -1,4 +1,4 @@
-/* ODFGetNToken
+/* DDEGetNToken
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -28,9 +28,9 @@
 
 */
 
-package ptolemy.domains.odf.kernel.test;
+package ptolemy.domains.dde.kernel.test;
 
-import ptolemy.domains.odf.kernel.*;
+import ptolemy.domains.dde.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -39,7 +39,7 @@ import ptolemy.data.StringToken;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// ODFGetNToken
+//// DDEGetNToken
 /**
 
 @author John S. Davis II
@@ -47,11 +47,11 @@ import ptolemy.data.StringToken;
 
 */
 
-public class ODFGetNToken extends ODFGet {
+public class DDEGetNToken extends DDEGet {
 
     /**
      */
-    public ODFGetNToken(TypedCompositeActor cont, String name, int numTokens)
+    public DDEGetNToken(TypedCompositeActor cont, String name, int numTokens)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
@@ -90,7 +90,7 @@ public class ODFGetNToken extends ODFGet {
 	Receiver[][] rcvrs = inputPort.getReceivers();
 	for( int i = 0; i < rcvrs.length; i++ ) {
 	    for( int j = 0; j < rcvrs[i].length; j++ ) {
-		ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j]; 
+		DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j]; 
 	        timeKeeper = rcvr.getReceivingTimeKeeper();
 		break;
 	    }
@@ -102,8 +102,8 @@ public class ODFGetNToken extends ODFGet {
 	Token token;
 	while(cnt < _numTokens) {
             Thread thread = Thread.currentThread(); 
-	    if( thread instanceof ODFThread ) {
-		TimeKeeper timeKeeper = ((ODFThread)thread).getTimeKeeper();
+	    if( thread instanceof DDEThread ) {
+		TimeKeeper timeKeeper = ((DDEThread)thread).getTimeKeeper();
 	        _tokens[cnt] = getNextToken(); 
 		_threadTimes[cnt] = timeKeeper.getCurrentTime(); 
 		cnt++;
@@ -112,11 +112,11 @@ public class ODFGetNToken extends ODFGet {
 	    Receiver[][] rcvrs = inputPort.getReceivers();
 	    for( int i = 0; i < rcvrs.length; i++ ) {
 		for( int j = 0; j < rcvrs[i].length; j++ ) {
-		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j]; 
+		    DDEReceiver rcvr = (DDEReceiver)rcvrs[i][j]; 
 		    if( rcvr.hasToken() ) {
 			_rcvrTimes[cnt] = rcvr.getRcvrTime();
 	                _tokens[cnt] = rcvr.get();
-	                ODFThread thread = rcvr.getThread();
+	                DDEThread thread = rcvr.getThread();
 			_threadTimes[cnt] = thread.getCurrentTime();
 		    }
 		}

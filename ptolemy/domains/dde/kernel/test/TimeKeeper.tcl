@@ -54,14 +54,14 @@ test TimeKeeper-2.1 {hasMinRcvrTime - No simultaneous Events} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
 
-    set rcvr1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set rcvr2 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set rcvr3 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
 
-    set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
+    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
     $keeper updateRcvrList $rcvr1 0.0 1
     $keeper updateRcvrList $rcvr2 0.5 2
@@ -78,14 +78,14 @@ test TimeKeeper-2.2 {hasMinRcvrTime - Simultaneous Events} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
 
-    set rcvr1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set rcvr2 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set rcvr3 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
     
-    set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
+    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
     $keeper updateRcvrList $rcvr1 5.0 1
     $keeper updateRcvrList $rcvr2 5.0 2
@@ -102,14 +102,14 @@ test TimeKeeper-2.3 {hasMinRcvrTime - Negative Events} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
 
-    set rcvr1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set rcvr2 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set rcvr3 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
 
-    set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
+    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
     $keeper updateRcvrList $rcvr1 -1.0 2
     set time1 [$keeper getNextTime]
@@ -129,17 +129,17 @@ test TimeKeeper-3.1 {hasMinRcvrTime, getNextTime - With Negative Events} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
 
-    set rcvr1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set rcvr2 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set rcvr3 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set rcvr4 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set rcvr5 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set rcvr6 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set rcvr4 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set rcvr5 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set rcvr6 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
 
-    set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
+    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
     $keeper updateRcvrList $rcvr1 -1.0 2
     set time1 [$keeper getNextTime]
@@ -165,15 +165,15 @@ test TimeKeeper-4.1 {getNextTime()} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
     set port [java::new ptolemy.actor.TypedIOPort $actor "port"]
 
-    set rcvr1 [java::new ptolemy.domains.odf.kernel.ODFReceiver $port]
-    set rcvr2 [java::new ptolemy.domains.odf.kernel.ODFReceiver $port]
-    set rcvr3 [java::new ptolemy.domains.odf.kernel.ODFReceiver $port]
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.DDEReceiver $port]
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.DDEReceiver $port]
+    set rcvr3 [java::new ptolemy.domains.dde.kernel.DDEReceiver $port]
 
-    set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
+    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
     $keeper updateRcvrList $rcvr1 15.0 2
     $keeper updateRcvrList $rcvr2 5.0 1
@@ -191,9 +191,9 @@ test TimeKeeper-5.1 {Call Methods On Uninitialized TimeKeeper} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
-    set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
+    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
     set val 1
     if { ![java::isnull [$keeper getHighestPriorityReceiver]] } {
@@ -223,14 +223,14 @@ test TimeKeeper-6.1 {getHighestPriorityTriple - Simultaneous Events} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
 
-    set rcvr1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set rcvr2 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
-    set rcvr3 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver]
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
+    set rcvr3 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver]
 
-    set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
+    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
     $keeper updateRcvrList $rcvr1 5.0 1
     $keeper updateRcvrList $rcvr2 5.0 2
@@ -248,14 +248,14 @@ test TimeKeeper-6.2 {getHighestPriorityTriple - No Simultaneous Events} {
     
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
     set actor [java::new ptolemy.actor.TypedAtomicActor $topLevel "actor"] 
     set port [java::new ptolemy.actor.TypedIOPort $actor "port"]
 
-    set rcvr1 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $port]
-    set rcvr2 [java::new ptolemy.domains.odf.kernel.TimedQueueReceiver $port]
+    set rcvr1 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $port]
+    set rcvr2 [java::new ptolemy.domains.dde.kernel.TimedQueueReceiver $port]
 
-    set keeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actor]
+    set keeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actor]
 
     $keeper updateRcvrList $rcvr1 15.0 1
     $keeper updateRcvrList $rcvr2 5.0 2

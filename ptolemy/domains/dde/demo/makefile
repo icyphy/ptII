@@ -1,7 +1,8 @@
-# Makefile for the Java classes used to implement the Ptolemy ODF domain
+# Makefile for Ptolemy II DDE domain demos
+#
+# @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
-# @Author: Christopher Hylands
 #
 # @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
@@ -27,37 +28,69 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-ME =		ptolemy/domains/odf
+ME =		ptolemy/domains/dde/demo
 
-DIRS =		kernel lib demo
+DIRS = 		helloWorld test #doc
 
-# Root of Ptolemy II directory
-ROOT =		../../..
+# Root of the Java directory
+ROOT =		../../../..
+
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Flags to pass to javadoc. (Override value in ptII.mk)
+JDOCFLAGS = 	-author -version -public
+
 # Used to build jar files
-PTPACKAGE = 	odf
+PTPACKAGE = 	demo
 PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		kernel/kernel.jar \
-		lib/lib.jar \
-		demo/demo.jar
+JSRCS = 
 
-PTCLASSALLJAR = $(PTPACKAGE).jar
+# Non-graphical Java demos written in Tcl
+# Since there are no demos, we use a dummy file so that the script that builds
+# alljtests.tcl works.  If you add a demo, be sure to add
+# $(JSIMPLE_TESTS) to EXTRA_SRCS
+JSIMPLE_TESTS = \
+        dummy.tcl
+
+
+EXTRA_SRCS =	$(JSRCS)
+
+# Files or directories that are present, but that 'make checkjunk'
+# should not complain about
+MISC_FILES =	$(DIRS) doc test
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	$(PTCLASSJAR)
+
+JCLASS = $(JSRCS:%.java=%.class)
 
 
 all: jclass
-install: jclass jars
+
+install: jclass $(PTCLASSJAR)
+
 docs: javadocs
+
+#demo:
+#	CLASSPATH=$(CLASSPATH) $(JAVA) ptolemy.domains.dde.demo.DDEStringDemo
+
+depend:
+	@echo "no dependencies in this directory"
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
+
+
+
+
 

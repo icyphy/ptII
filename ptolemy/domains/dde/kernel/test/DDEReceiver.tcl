@@ -1,4 +1,4 @@
-# Tests for the ODReceiver class
+# Tests for the DDEReceiver class
 #
 # @Author: John S. Davis II
 #
@@ -50,10 +50,10 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test ODFReceiver-2.1 {get(), single arg put(), check _rcvrTime and _lastTime} {
+test DDEReceiver-2.1 {get(), single arg put(), check _rcvrTime and _lastTime} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set toplevel [java::new ptolemy.actor.TypedCompositeActor $wspc]
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
     set mgr [java::new ptolemy.actor.Manager $wspc "manager"]
     $toplevel setDirector $dir
     $toplevel setManager $mgr
@@ -67,11 +67,11 @@ test ODFReceiver-2.1 {get(), single arg put(), check _rcvrTime and _lastTime} {
     set rel [$toplevel connect $ioprcvr $iopsend "rel"]
     $actorRcvr createReceivers
     $actorSend createReceivers
-    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actorRcvr]
-    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper $actorSend]
+    set rcvrkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actorRcvr]
+    set sendkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper $actorSend]
 
     set rcvrs [$ioprcvr getReceivers]
-    set odr [java::cast ptolemy.domains.odf.kernel.ODFReceiver [$rcvrs get {0 0}]]
+    set odr [java::cast ptolemy.domains.dde.kernel.DDEReceiver [$rcvrs get {0 0}]]
 
     $odr setReceivingTimeKeeper $rcvrkeeper
     $odr setSendingTimeKeeper $sendkeeper
@@ -99,16 +99,16 @@ test ODFReceiver-2.1 {get(), single arg put(), check _rcvrTime and _lastTime} {
 ######################################################################
 ####
 #
-test ODFReceiver-2.2 {Put delayed event into non-empty queue; \
+test DDEReceiver-2.2 {Put delayed event into non-empty queue; \
 	check rcvrTime and lastTime} {
     set actorRcvr [java::new ptolemy.actor.TypedAtomicActor]
     set actorSend [java::new ptolemy.actor.TypedAtomicActor]
     set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
-    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
-    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set odr [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorRcvr]
-    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set sendkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorSend]
     $odr setReceivingTimeKeeper $rcvrkeeper
     $odr setSendingTimeKeeper $sendkeeper
@@ -122,16 +122,16 @@ test ODFReceiver-2.2 {Put delayed event into non-empty queue; \
 ######################################################################
 ####
 #
-test ODFReceiver-3.1 {Set event time = -1.0  and place into \
+test DDEReceiver-3.1 {Set event time = -1.0  and place into \
 	empty queue; check rcvrTime and lastTime} {
     set actorRcvr [java::new ptolemy.actor.TypedAtomicActor]
     set actorSend [java::new ptolemy.actor.TypedAtomicActor]
     set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
-    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
-    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set odr [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorRcvr]
-    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set sendkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorSend]
     $odr setReceivingTimeKeeper $rcvrkeeper
     $odr setSendingTimeKeeper $sendkeeper
@@ -146,7 +146,7 @@ test ODFReceiver-3.1 {Set event time = -1.0  and place into \
 ######################################################################
 ####
 #
-test ODFReceiver-3.2 {Set negative delay time} {
+test DDEReceiver-3.2 {Set negative delay time} {
     set wkspc [java::new ptolemy.kernel.util.Workspace]
     set comp [java::new ptolemy.actor.TypedCompositeActor $wkspc]
     set actorRcvr [java::new ptolemy.actor.TypedAtomicActor \
@@ -155,10 +155,10 @@ test ODFReceiver-3.2 {Set negative delay time} {
 	    $comp "Sender"]
     set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
-    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
-    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set odr [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorRcvr]
-    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set sendkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorSend]
     $odr setReceivingTimeKeeper $rcvrkeeper
     $odr setSendingTimeKeeper $sendkeeper
@@ -171,7 +171,7 @@ test ODFReceiver-3.2 {Set negative delay time} {
 ######################################################################
 ####
 #
-test ODFReceiver-3.3 {Set negative current time} {
+test DDEReceiver-3.3 {Set negative current time} {
     set wkspc [java::new ptolemy.kernel.util.Workspace]
     set comp [java::new ptolemy.actor.TypedCompositeActor $wkspc]
     set actorRcvr [java::new ptolemy.actor.TypedAtomicActor \
@@ -180,10 +180,10 @@ test ODFReceiver-3.3 {Set negative current time} {
 	    $comp "Sender"]
     set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
-    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
-    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set odr [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorRcvr]
-    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set sendkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorSend]
     $odr setReceivingTimeKeeper $rcvrkeeper
     $odr setSendingTimeKeeper $sendkeeper
@@ -197,15 +197,15 @@ test ODFReceiver-3.3 {Set negative current time} {
 ######################################################################
 ####
 #
-test ODFReceiver-4.1 {Three gets followed by three puts} {
+test DDEReceiver-4.1 {Three gets followed by three puts} {
     set actorRcvr [java::new ptolemy.actor.TypedAtomicActor]
     set actorSend [java::new ptolemy.actor.TypedAtomicActor]
     set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
-    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
-    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set odr [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorRcvr]
-    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set sendkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorSend]
     $odr setReceivingTimeKeeper $rcvrkeeper
     $odr setSendingTimeKeeper $sendkeeper
@@ -226,15 +226,15 @@ test ODFReceiver-4.1 {Three gets followed by three puts} {
 ######################################################################
 ####
 #
-test ODFReceiver-4.2 {Insert events in wrong order} {
+test DDEReceiver-4.2 {Insert events in wrong order} {
     set actorRcvr [java::new ptolemy.actor.TypedAtomicActor]
     set actorSend [java::new ptolemy.actor.TypedAtomicActor]
     set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
-    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
-    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set odr [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorRcvr]
-    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set sendkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorSend]
     $odr setReceivingTimeKeeper $rcvrkeeper
     $odr setSendingTimeKeeper $sendkeeper
@@ -247,15 +247,15 @@ test ODFReceiver-4.2 {Insert events in wrong order} {
 ######################################################################
 ####
 #
-test ODFReceiver-5.1 {hasToken() - tokens available} {
+test DDEReceiver-5.1 {hasToken() - tokens available} {
     set actorRcvr [java::new ptolemy.actor.TypedAtomicActor]
     set actorSend [java::new ptolemy.actor.TypedAtomicActor]
     set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
-    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
-    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set odr [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorRcvr]
-    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set sendkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorSend]
     $odr setReceivingTimeKeeper $rcvrkeeper
     $odr setSendingTimeKeeper $sendkeeper
@@ -270,15 +270,15 @@ test ODFReceiver-5.1 {hasToken() - tokens available} {
 ######################################################################
 ####
 # FIXME
-test ODFReceiver-5.1 {hasToken() - tokens available} {
+test DDEReceiver-5.1 {hasToken() - tokens available} {
     set actorRcvr [java::new ptolemy.actor.TypedAtomicActor]
     set actorSend [java::new ptolemy.actor.TypedAtomicActor]
     set iop [java::new ptolemy.actor.TypedIOPort $actorRcvr \
 	    "port"]
-    set odr [java::new ptolemy.domains.odf.kernel.ODFReceiver $iop]
-    set rcvrkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set odr [java::new ptolemy.domains.dde.kernel.DDEReceiver $iop]
+    set rcvrkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorRcvr]
-    set sendkeeper [java::new ptolemy.domains.odf.kernel.TimeKeeper \
+    set sendkeeper [java::new ptolemy.domains.dde.kernel.TimeKeeper \
 	    $actorSend]
     $odr setReceivingTimeKeeper $rcvrkeeper
     $odr setSendingTimeKeeper $sendkeeper

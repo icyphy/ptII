@@ -50,18 +50,18 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 #
-test ODFIOPort-2.1 {Send/receive multiple Tokens across one channel} {
+test DDEIOPort-2.1 {Send/receive multiple Tokens across one channel} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
     $topLevel setDirector $dir
-    set actorA [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actorA"] 
-    set actorB [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actorB"] 
+    set actorA [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorA"] 
+    set actorB [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorB"] 
     
-    set portA [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorA "portA"]
+    set portA [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorA "portA"]
     $portA setOutput true
     
-    set portB [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorB "portB"]
+    set portB [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorB "portB"]
     $portB setInput true
     
     set rel [$topLevel connect $portA $portB "rel"]
@@ -88,25 +88,25 @@ test ODFIOPort-2.1 {Send/receive multiple Tokens across one channel} {
 ######################################################################
 ####
 #
-test ODFIOPort-2.2 {Send/receive tokens at different times along two channels} {
+test DDEIOPort-2.2 {Send/receive tokens at different times along two channels} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
     $topLevel setDirector $dir
-    set actorA [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actorA"] 
-    set actorB [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actorB"] 
-    set actorC [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actorC"] 
+    set actorA [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorA"] 
+    set actorB [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorB"] 
+    set actorC [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorC"] 
     
-    set portA [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorA "portA"]
+    set portA [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorA "portA"]
     $portA setOutput true
     
-    set portB [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorB "portB"]
+    set portB [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorB "portB"]
     $portB setOutput true
     
-    set portC1 [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorC "portC1"]
+    set portC1 [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorC "portC1"]
     $portC1 setInput true
     
-    set portC2 [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorC "portC2"]
+    set portC2 [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorC "portC2"]
     $portC2 setInput true
     
     set rel1 [$topLevel connect $portA $portC1 "rel1"]
@@ -140,25 +140,25 @@ test ODFIOPort-2.2 {Send/receive tokens at different times along two channels} {
 ######################################################################
 ####
 #
-test ODFIOPort-2.3 {Send/receive tokens at identical times with different priorities along two channels} {
+test DDEIOPort-2.3 {Send/receive tokens at identical times with different priorities along two channels} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
     $topLevel setDirector $dir
-    set actorA [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actorA"] 
-    set actorB [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actorB"] 
-    set actorC [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actorC"] 
+    set actorA [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorA"] 
+    set actorB [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorB"] 
+    set actorC [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorC"] 
     
-    set portA [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorA "portA"]
+    set portA [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorA "portA"]
     $portA setOutput true
     
-    set portB [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorB "portB"]
+    set portB [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorB "portB"]
     $portB setOutput true
     
-    set portC1 [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorC "portC1"]
+    set portC1 [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorC "portC1"]
     $portC1 setInput true
     
-    set portC2 [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorC "portC2"]
+    set portC2 [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorC "portC2"]
     $portC2 setInput true
     $portC2 setPriority 10
     
@@ -193,23 +193,23 @@ test ODFIOPort-2.3 {Send/receive tokens at identical times with different priori
 ######################################################################
 ####
 #
-test ODFIOPort-3.1 {Broadcast tokens to two different actors.} {
+test DDEIOPort-3.1 {Broadcast tokens to two different actors.} {
     set wspc [java::new ptolemy.kernel.util.Workspace]
     set topLevel [java::new ptolemy.actor.CompositeActor $wspc]
-    set dir [java::new ptolemy.domains.odf.kernel.ODFDirector $wspc "director"]
+    set dir [java::new ptolemy.domains.dde.kernel.DDEDirector $wspc "director"]
     $topLevel setDirector $dir
-    set actorA [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actorA"] 
-    set actorB [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actorB"] 
-    set actorC [java::new ptolemy.domains.odf.kernel.ODFActor $topLevel "actorC"] 
+    set actorA [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorA"] 
+    set actorB [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorB"] 
+    set actorC [java::new ptolemy.domains.dde.kernel.DDEActor $topLevel "actorC"] 
     
-    set portA [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorA "portA"]
+    set portA [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorA "portA"]
     $portA setOutput true
     $portA setMultiport true
     
-    set portB [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorB "portB"]
+    set portB [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorB "portB"]
     $portB setInput true
     
-    set portC [java::new ptolemy.domains.odf.kernel.ODFIOPort $actorC "portC"]
+    set portC [java::new ptolemy.domains.dde.kernel.DDEIOPort $actorC "portC"]
     $portC setInput true
     
     set rel1 [$topLevel connect $portA $portB "rel1"]

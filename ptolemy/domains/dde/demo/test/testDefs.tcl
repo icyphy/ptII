@@ -1,7 +1,8 @@
-# Makefile for Java classes used to implement Ptolemy domains
+# Load test bed definitions
 #
-# @Version: $Id$
 # @Author: Christopher Hylands
+#
+# @Version: @(#)testDefs.tcl	1.1	11/15/98
 #
 # @Copyright (c) 1997-1999 The Regents of the University of California.
 # All rights reserved.
@@ -27,40 +28,29 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
+#######################################################################
 
-ME =		ptolemy/domains
+# Tycho test bed, see $TYCHO/doc/coding/testing.html for more information.
 
-# Domains, in alphabetical order
-DIRS =		csp ct dde de pn sc sdf
+if [info exist env(PTOLEMY)] {
+    set PTII $env(PTOLEMY)/tycho/java
+}
 
-# Root of Ptolemy II directory
-ROOT =		../..
+if [info exist env(TYCHO)] {
+    set PTII $env(TYCHO)/java
+}
 
-# Get configuration info
-CONFIG =	$(ROOT)/mk/ptII.mk
-include $(CONFIG)
+if [info exist env(PTII)] {
+    set PTII $env(PTII)
+}
 
-# Used to build jar files
-PTPACKAGE = 	domains
-PTDIST =	$(PTPACKAGE)$(PTVERSION)
-PTCLASSJAR =
+if {![info exist PTII]} {
+    # If we are here, then we are probably running jacl and we can't
+    # read environment variables
+    set PTII [file join [pwd] .. .. .. ]
+}
 
-# Include the .class files from these jars in PTCLASSALLJAR
-PTCLASSALLJARS = \
-		csp/csp.jar \
-		ct/ct.jar \
-		dde/dde.jar \
-		de/de.jar \
-		pn/pn.jar \
-		sc/sc.jar \
-		sdf/sdf.jar
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-all: jclass
-install: jclass jars
-docs: javadocs
-
-# Get the rest of the rules
-include $(ROOT)/mk/ptcommon.mk
+# Load up the test definitions.
+if {[string compare test [info procs test]] == 1} then {
+    source [file join $PTII util testsuite testDefs.tcl]
+} {}

@@ -1,4 +1,4 @@
-/* ODFPutToken
+/* DDEPut
 
  Copyright (c) 1998-1999 The Regents of the University of California.
  All rights reserved.
@@ -28,9 +28,9 @@
 
 */
 
-package ptolemy.domains.odf.kernel.test;
+package ptolemy.domains.dde.kernel.test;
 
-import ptolemy.domains.odf.kernel.*;
+import ptolemy.domains.dde.kernel.*;
 import ptolemy.actor.*;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -39,7 +39,7 @@ import ptolemy.data.StringToken;
 
 
 //////////////////////////////////////////////////////////////////////////
-//// ODFPutToken
+//// DDEPut
 /**
 
 @author John S. Davis II
@@ -47,70 +47,23 @@ import ptolemy.data.StringToken;
 
 */
 
-public class ODFPutToken extends ODFPut {
+public class DDEPut extends TypedAtomicActor {
 
     /**
      */
-    public ODFPutToken(TypedCompositeActor cont, String name, int numTokens)
+    public DDEPut(TypedCompositeActor cont, String name)
             throws IllegalActionException, NameDuplicationException {
          super(cont, name);
 
-	 _numTokens = numTokens;
-	 _tokens = new Token[_numTokens];
-	 _times = new double[_numTokens];
+         outputPort = new TypedIOPort(this, "output", false, true);
+	 outputPort.setMultiport(true);
     }
 
     ////////////////////////////////////////////////////////////////////////
     ////                         public methods                         ////
 
-    /**
-     */
-    public void fire() throws IllegalActionException {
-	int cnt = 0; 
-	Token token = new Token();
-	while(cnt < _numTokens) {
-	    Receiver[][] rcvrs = outputPort.getRemoteReceivers();
-	    for( int i = 0; i < rcvrs.length; i++ ) {
-		for( int j = 0; j < rcvrs[i].length; j++ ) {
-		    ODFReceiver rcvr = (ODFReceiver)rcvrs[i][j];
-		    System.out.println("ODFPutToken receiver["+i+"]["+j+"]; cnt = "+cnt);
-                    if( _oneArg ) {
-                        rcvr.put( _tokens[cnt] );
-                    } else {
-		        rcvr.put( _tokens[cnt], _times[cnt] );
-                    }
-		}
-	    }
-	    cnt++;
-	}
-	System.out.println("ODFPutToken() ends with cnt = "+cnt);
-    }
-
-    /**
-     */
-    public boolean postfire() {
-	return false;
-    }
-
-    /**
-     */
-    public void setOneArgPut(boolean oneArg) {
-	_oneArg = oneArg;
-    }
-
-    /**
-     */
-    public void setToken(Token token, double time, int cntr) {
-	_tokens[cntr] = token;
-	_times[cntr] = time;
-    }
-
     ////////////////////////////////////////////////////////////////////////
     ////                        private variables                       ////
 
-    private int _numTokens;
-    private int _pauseCnt = -1;
-    private Token[] _tokens = null;
-    private double[] _times = null;
-    private boolean _oneArg = false;
+    public TypedIOPort outputPort;
 }
