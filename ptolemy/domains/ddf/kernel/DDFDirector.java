@@ -35,6 +35,7 @@ import java.util.List;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.Director;
+import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedCompositeActor;
@@ -64,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
    on the production and consumption behavior of actors and the schedulers make 
    no attempt to construct a compile-time schedule. Instead, each actor has a set 
    of firing rules and can be fired if one of them is satisfied, i.e. one set 
-   of firing patterns form a prefix of sequences of unconsumed tokens at input 
+   of firing patterns forms a prefix of sequences of unconsumed tokens at input 
    ports .
    <p>
    The scheduler implemented in this director fires all enabled and non 
@@ -77,19 +78,23 @@ import ptolemy.kernel.util.Workspace;
    particular actor must be fired in a single iteration.
    <p>
    The algorithm implementing one basic iteration goes like this:
-   E = enabled actors
-   D = deferrable enabled actors
-   F = actors that have fired once already in this one iteration
+   <pre>
+   E = set of enabled actors
+   D = set of deferrable enabled actors
+   F = set of actors that have fired once already in this one iteration
+   </pre>
    
    One default iteration consists of:
+   <pre>
    if (E-D != 0) fire(E-D)
    else if (D != 0) fire minimax(D)
    else deadlocked.
+   </pre>
    
    The function "minimax(D)" returns the one actor with the smallest
    maximum number of tokens on its output paths.
  
-   Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee   
+   Based on DDFSimpleSched in Ptolemy Classic, by Edward Lee.
    
    @author Gang Zhou
 */
@@ -151,17 +156,19 @@ public class DDFDirector extends Director {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
     
-    /**Prior to each basic iteration, scan all actors to put all enabled 
-     * and not deferrable actors in a list and find the minimax actor.
-     * Fire all actors in the list. If no actor has been fired, fire the 
-     * minimax actor. If still no actor has been fired, a deadlock has 
-     * been detected. This concludes one basic iteration. If some actors
-     * has a parameter named _requiredFiringsPerIteration defined, continue to 
-     * execute basic iterations until the actors have been fired at 
-     * least the number of times given in that parameter.
+    /** Prior to each basic iteration, scan all actors to put all enabled 
+     *  and not deferrable actors in a list and find the minimax actor.
+     *  Fire all actors in the list. If no actor has been fired, fire the 
+     *  minimax actor. If still no actor has been fired, a deadlock has 
+     *  been detected. This concludes one basic iteration. If some actor
+     *  has a parameter named "requiredFiringsPerIteration" defined, continue to 
+     *  execute basic iterations until the actor has been fired at 
+     *  least the number of times given in that parameter. If more than
+     *  one actor has such a parameter, then the iteration will continue
+     *  until all are satisfied.
      * 
-     * @exception IllegalActionException If any actor executed by this
-     * actor return false in prefire.
+     *  @exception IllegalActionException If any actor executed by this
+     *   actor return false in prefire.
      */
     public void fire() throws IllegalActionException {
     	
@@ -222,7 +229,9 @@ public class DDFDirector extends Director {
             // If still no actor has been fired, declare deadlock.
             if(!_firedOne) {
         	    _postfireReturns = false;
-        	    System.out.println("deadlock detected");
+                if (_debugging) {
+        	       _debug("deadlock detected");
+                }
         	    return;
             }     
         
@@ -235,8 +244,8 @@ public class DDFDirector extends Director {
         	    int requiredFirings = flags[_requiredFiringsPerIteration];
                 int firingsDone = flags[_numberOfFirings];
         		if (firingsDone < requiredFirings) {
-        		 repeatBasicIteration = true;
-        		 break;
+                    repeatBasicIteration = true;
+                    break;
         	    }
             }
     	}
@@ -384,9 +393,14 @@ public class DDFDirector extends Director {
      *  IllegalActionException or actor is not ready.
      */
     protected int _fireActor(Actor actor) throws IllegalActionException {
-    	      	
+    	if (_debugging) {
+            _debug(new FiringEvent(this, actor, FiringEvent.BEFORE_ITERATE));
+    	}
     	// Iterate once.
     	int returnValue = actor.iterate(1);
+        if (_debugging) {
+            _debug(new FiringEvent(this, actor, FiringEvent.AFTER_ITERATE));
+        }
         if (returnValue == STOP_ITERATING) {
             _postfireReturns = false;
             return returnValue;
