@@ -28,6 +28,8 @@ COPYRIGHTENDKEY
 
 package ptolemy.kernel.util;
 
+import java.util.Iterator;
+
 
 //////////////////////////////////////////////////////////////////////////
 //// Attribute
@@ -167,6 +169,20 @@ public class Attribute extends NamedObj {
             _container = container;
             if (previousContainer != null) {
                 previousContainer._removeAttribute(this);
+            }
+            if (container != null) {
+                // Transfer any queued change requests to the
+                // new container.  There could be queued change
+                // requests if this component is deferring change
+                // requests.
+                if (_changeRequests != null) {
+                    Iterator requests = _changeRequests.iterator();
+                    while (requests.hasNext()) {
+                        ChangeRequest request = (ChangeRequest)requests.next();
+                        container.requestChange(request);
+                    }
+                    _changeRequests = null;
+                }
             }
         } finally {
             _workspace.doneWriting();

@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
+import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.CrossRefList;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -409,6 +410,19 @@ public class Port extends NamedObj {
             }
             if (entity == null) {
                 unlinkAll();
+            } else {
+                // Transfer any queued change requests to the
+                // new container.  There could be queued change
+                // requests if this component is deferring change
+                // requests.
+                if (_changeRequests != null) {
+                    Iterator requests = _changeRequests.iterator();
+                    while (requests.hasNext()) {
+                        ChangeRequest request = (ChangeRequest)requests.next();
+                        entity.requestChange(request);
+                    }
+                    _changeRequests = null;
+                }
             }
             // Validate all deeply contained settables, since
             // they may no longer be valid in the new context.

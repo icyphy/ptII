@@ -376,12 +376,17 @@ public class NamedObj implements
      *  It then adjusts the workspace reference and clones the
      *  attributes on the attribute list, if there is one.  The attributes
      *  are set to the attributes of the new object.
+     *  The new object will be set to defer change requests, so change
+     *  requests can be safely issued during cloning. However, it is
+     *  up to the caller of this clone() method to then executed the
+     *  the change requests, or to call setDeferringChangeRequests(false).
      *  This method read-synchronizes on the workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new NamedObj.
      *  @exception CloneNotSupportedException If any of the attributes
      *   cannot be cloned.
      *  @see #exportMoML(Writer, int, String)
+     *  @see #setDeferringChangeRequests(boolean)
      */
     public Object clone(Workspace workspace)
             throws CloneNotSupportedException {
@@ -396,6 +401,17 @@ public class NamedObj implements
         try {
             _workspace.getReadAccess();
             NamedObj newObject = (NamedObj)super.clone();
+            
+            // During the cloning process, change requests might
+            // be issued (e.g. in an actor's _addEntity() method).
+            // Execution of these change requests need to be deferred
+            // until after cloning is complete.  To ensure that,
+            // we set the following.  Note that when the container
+            // of an object being cloned is set, any queued change
+            // requests will be delegated to the new container, and
+            // the value of this private variable will no longer
+            // have any effect.
+            newObject._deferChangeRequests = true;
             
             // Occassionally, a derived object needs to know what
             // it is being cloned from to manage the adjustments
@@ -583,7 +599,7 @@ public class NamedObj implements
                 _changeRequests.clear();
 
                 Iterator requests = copy.iterator();
-                boolean previousDeferStatus = _deferChangeRequests;
+                boolean previousDeferStatus = isDeferringChangeRequests();
                 try {
                     // Get write access once on the outside, to make
                     // getting write access on each individual
