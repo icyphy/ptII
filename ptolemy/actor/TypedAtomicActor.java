@@ -154,12 +154,12 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     /** Return the type constraints of this actor.
      *  The constraints have the form of an enumeration of inequalities.
      *  In this base class, the default implementation of type constraints
-     *  is: If all the ports of this actor have undeclared type,
-     *  then the type of any input port must be less than or equal to
-     *  the type of any output port, unless the input port and the output
-     *  port are the same; If at least one of the ports has a declared
-     *  type, then no constraint is generated.  In the latter case, an empty
-     *  enumeration is returned.
+     *  is that the type of any input port with undeclared type must be less
+     *  than or equal to the type of any output port, and the type of any
+     *  output port with undeclared type must be greater than or equal
+     *  to the type of any input port. If all the ports have declared
+     *  type, then no constraints are generated, and an empty enumeration
+     *  is returned.
      *  This method is read-synchronized on the workspace.
      *  @return an Enumeration of Inequality.
      *  @see ptolemy.graph.Inequality
@@ -169,17 +169,6 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 	    workspace().getReadAccess();
 
 	    LinkedList result = new LinkedList();
-	    // check if all the ports are undeclared
-	    Enumeration ports = getPorts();
-            while (ports.hasMoreElements()) {
-            	TypedIOPort p = (TypedIOPort)ports.nextElement();
-            	if (p.getDeclaredType() != null) {
-		    // at least one port has a declared type,
-		    // return an empty Enumerations.
-		    return result.elements();
-	    	}
-	    }
-
 	    Enumeration inPorts = inputPorts();
 	    while (inPorts.hasMoreElements()) {
 	        TypedIOPort inport = (TypedIOPort)inPorts.nextElement();
@@ -189,9 +178,12 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 
 		    if (inport != outport) {
 		        // not bi-directional port
-		        Inequality ineq = new Inequality(inport.getTypeTerm(),
-							outport.getTypeTerm());
-			result.insertLast(ineq);
+			if (inport.getDeclaredType() == null ||
+			    outport.getDeclaredType() == null) {
+		            Inequality ineq = new Inequality(
+				inport.getTypeTerm(), outport.getTypeTerm());
+			    result.insertLast(ineq);
+			}
 		    }
 		}
 	    }
