@@ -1,6 +1,6 @@
 /* A Port is the interface of an Entity to any number of Relations.
 
- Copyright (c) 1997 The Regents of the University of California.
+ Copyright (c) 1997- The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -118,26 +118,85 @@ public class Port extends NamedObj {
      *  @param verbose The level of verbosity.
      */
     public String description(int verbose){
-        String closingCurly = "}";
+        String results = new String();
+        Enumeration enum;
         switch (verbose) {
+        case pt.kernel.Nameable.RELATIONS:
         case pt.kernel.Nameable.PRETTYPRINT:
-            closingCurly = "}\n";
-        case pt.kernel.Nameable.VERBOSE:
-        case pt.kernel.Nameable.NAMES:
-            Enumeration enum = getLinkedRelations();
-            String results = new String("{" + toString() );
-            boolean sawFirstOutput = false;
-            while (enum.hasMoreElements()) {
-                Relation relation = (Relation)enum.nextElement();
-                if (sawFirstOutput) {
-                    results = results.concat(" " +
-                            relation.description(verbose));
-                } else {
-                    sawFirstOutput = true;
-                    results = results.concat(relation.description(verbose));
+            try {
+                results = " { " + getClass().getName() + " {";
+                if (getContainer() != null) {
+                    results = results.concat(getContainer().getFullName());
+                }
+                results = results.concat("} {" + getFullName()+ "} }\n");
+             } catch (InvalidStateException e) {
+                results = results.concat(getName() + " " + e);
+             }
+
+            if (verbose == RELATIONS) {
+                enum = getConnectedPorts();
+                while (enum.hasMoreElements()) {
+                    Port port = (Port)enum.nextElement();
+                    results = results.concat("  {" +
+                                port.getClass().getName() + "} {");
+                    try {
+                        results = results.concat(port.getFullName() + "}");
+                    } catch (InvalidStateException e) {
+                        results = results.concat(port.getName() + " " +
+                                e + "}");
+                    }
+                }
+                return results;
+            } else {
+                // verbose == PRETTYPRINT
+                // Get the connected ports and print their names so
+                // we can connect them up later.
+                enum = getConnectedPorts();
+                while (enum.hasMoreElements()) {
+                    Port port = (Port)enum.nextElement();
+                    String name;
+                    // Don't call port.description() or we will loop forever.
+                    try {
+                        results = results.concat("  { " +
+                                port.getClass().getName() + " {");
+                        if (port.getContainer() != null) {
+                            results = results.concat(
+                                    port.getContainer().getFullName());
+                        }
+                        results = results.concat("} {" + port.getFullName()+
+                                "} }\n");
+                    } catch (InvalidStateException e) {
+                        results = results.concat(port.getName() + " " + e);
+                    }
                 }
             }
-            return results + closingCurly;
+            return results;
+        case pt.kernel.Nameable.VERBOSE:
+        case pt.kernel.Nameable.NAMES:
+            results = _descriptionStart(verbose);
+            enum = getLinkedRelations();
+            while (enum.hasMoreElements()) {
+                Relation relation = (Relation)enum.nextElement();
+                results = results.concat(" " + relation.description(verbose));
+            }
+            enum = getConnectedPorts();
+            while (enum.hasMoreElements()) {
+                Port port = (Port)enum.nextElement();
+                String name;
+                // Don't call port.description() or we will loop forever.
+                if (verbose == NAMES) {
+                    try {
+                        name = " " + port.getFullName();
+                    } catch (InvalidStateException e) {
+                        name = e + ": " + port.getName();
+                    }
+                } else {
+                    name = "{ " + port.toString() + " }";
+                }
+
+                results = results.concat(" " + name);
+            }
+            return results + " }";
         case pt.kernel.Nameable.QUIET:
         default:
             return toString();

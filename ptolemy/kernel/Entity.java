@@ -132,25 +132,37 @@ public class Entity extends NamedObj {
      *  @param verbose The level of verbosity.
      */
     public String description(int verbose){
-        String closingCurly = "}";
+        String results = new String();;
+        Enumeration enum;
         switch (verbose) {
         case pt.kernel.Nameable.PRETTYPRINT:
-            closingCurly = "}\n";
-        case pt.kernel.Nameable.VERBOSE:
-        case pt.kernel.Nameable.NAMES:
-            Enumeration enum = getPorts();
-            String results = new String("{" + toString() );
-            boolean sawFirstOutput = false;
+            try {
+                results = "{ " + getClass().getName() + " {";
+                if (getContainer() != null) {
+                    results = results.concat(getContainer().getFullName());
+                }
+                results = results.concat("} {" + getFullName()+ "} }\n");
+             } catch (InvalidStateException e) {
+                results = results.concat(getName() + " " + e);
+            }
+
+            enum = getPorts();
             while (enum.hasMoreElements()) {
                 Port port = (Port)enum.nextElement();
-                if (sawFirstOutput) {
-                    results = results.concat(" " + port.description(verbose));
-                } else {
-                    sawFirstOutput = true;
-                    results = results.concat(port.description(verbose));
-                }
+                results = results.concat(" {\n " + port.description(verbose) +
+                    " }\n");
             }
-            return results + closingCurly;
+            return results;
+        case pt.kernel.Nameable.VERBOSE:
+        case pt.kernel.Nameable.NAMES:
+            results = _descriptionStart(verbose);
+        case pt.kernel.Nameable.RELATIONS:
+            enum = getPorts();
+            while (enum.hasMoreElements()) {
+                Port port = (Port)enum.nextElement();
+                results = results.concat(" " + port.description(verbose));
+            }
+            return results + " }";
         case pt.kernel.Nameable.QUIET:
         default:
             return toString();
