@@ -41,7 +41,6 @@ import diva.canvas.FigureDecorator;
 import diva.canvas.FigureLayer;
 import diva.canvas.event.MouseFilter;
 import diva.canvas.interactor.Interactor;
-import diva.canvas.interactor.SelectionDragger;
 import diva.canvas.interactor.SelectionModel;
 
 /**
