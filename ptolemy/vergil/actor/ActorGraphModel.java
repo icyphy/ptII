@@ -47,6 +47,7 @@ import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
@@ -1279,8 +1280,29 @@ public class ActorGraphModel extends AbstractBasicGraphModel {
             if (locationList.size() > 0) {
                 return locationList.get(0);
             } else {
-                throw new InternalErrorException(
-                        "Found an entity that does not contain an icon.");
+                try {
+                    // NOTE: We need the location right away, so we go ahead
+                    // and create it. However, we also issue a MoMLChangeRequest
+                    // so that the change propagates, and any models that defer
+                    // to this one (e.g. subclasses) also have locations.
+                    // This is necessary so that if the location later moves,
+                     // then the move can be duplicated in the deferrers.
+                    Locatable location = new Location(entity, "_location");
+                
+                    // To ensure propagation.
+                    MoMLChangeRequest request = new MoMLChangeRequest(
+                              this,
+                              entity,
+                              "<property name=\"_location\" " +
+                            "class=\"ptolemy.kernel.util.Location\"/>");
+                    entity.requestChange(request);
+                
+                     return location;
+                 } catch (Exception e) {
+                     throw new InternalErrorException("Failed to create " +
+                             "location, even though one does not exist:" +
+                            e.getMessage());
+                }
             }
         }
 
