@@ -52,13 +52,6 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 EXTRA_SRCS = \
-
-
-MISC_FILES =	figures
-
-# make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
 	actor.fm \
 	actorLib.fm \
 	csp.fm \
@@ -86,7 +79,15 @@ OPTIONAL_FILES = \
 	title.fm \
 	type.fm
 
+MISC_FILES =	figures
+
 WPUBLISH_OUTPUT_DIR = Output
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES = \
+	$(WPUBLISH_OUTPUT_DIR)
+
 DESIGNDOC =	/users/ptII/doc/design/src
 
 all: $(WPUBLISH_OUTPUT_DIR) $(WPUBLISH_OUTPUT_DIR)/introduction.html
