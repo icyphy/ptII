@@ -67,8 +67,8 @@ port will accept boolean tokens and compute the Hamming distance.
 If the parameter <i>softDecoding</i> is set to be true, the input port
 will accept double tokens and compute the Euclidean distance.
 The parameter <i>constellation</i> should be a double array of length 2.
-The first element specifies the amplitude of "true" input. The second
-element specifies the amplitude of "false" input.  At this time,
+The first element specifies the amplitude of "false" input. The second
+element specifies the amplitude of "true" input.  At this time,
 this actor can only handle binary antipodal constellations, but
 we expect to generalize this.
 <p>
@@ -138,7 +138,7 @@ public class ViterbiDecoder extends Transformer {
 
         constellation = new Parameter(this, "constellation");
         constellation.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        constellation.setExpression("{1.0, 0.0}");
+        constellation.setExpression("{-1.0, 1.0}");
 
         // Declare data types, consumption rate and production rate.
         _type = new ptolemy.actor.TypeAttribute(input, "inputType");
@@ -184,8 +184,8 @@ public class ViterbiDecoder extends Transformer {
     /** The constellation for soft decoding.  Inputs are expected to be
      *  symbols from this constellation with added noise.
      *  This parameter should be a double array of length 2. The first
-     *  element defines the amplitude of "true" input. The second element
-     *  defines the amplitude of "false" input.
+     *  element defines the amplitude of "false" input. The second element
+     *  defines the amplitude of "true" input.
      */
     public Parameter constellation;
 
@@ -274,8 +274,8 @@ public class ViterbiDecoder extends Transformer {
                 throw new IllegalActionException(this,
                         "Invalid amplitudes for soft decoding!");
             }
-            _trueAmp = ((DoubleToken)ampToken.getElement(0)).doubleValue();
-            _falseAmp = ((DoubleToken)ampToken.getElement(1)).doubleValue();
+            _falseAmp = ((DoubleToken)ampToken.getElement(0)).doubleValue();
+            _trueAmp = ((DoubleToken)ampToken.getElement(1)).doubleValue();
             if (_trueAmp == _falseAmp) {
                 throw new IllegalActionException(this,
                         "Amplitudes for true input and false input cannot "
@@ -327,7 +327,7 @@ public class ViterbiDecoder extends Transformer {
             // Compute the truth table.
             // _truthTable[m][n][1:3] has the following meanings:
             // "m" is the possible current state of the shift register.
-            // It has 2<i>k</i> possible previous states, where "k"
+            // It has 2<sup>k</sup> possible previous states, where "k"
             // is the <i>uncodedRate</i>.
             // Hence _truthTable[m][n][1:3] stores the truth values for
             // the n-th possible previous state for state "m".
@@ -637,6 +637,7 @@ public class ViterbiDecoder extends Transformer {
     private double[] _tempDistance;
     private int[][] _path;
     private int[][] _tempPath;
+    
     // A flag used to indicate the positions that new values
     // should be inserted in the buffers.
     private int _flag;

@@ -336,7 +336,7 @@
         </property>
         <property name="softDecoding" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="constellation" class="ptolemy.data.expr.Parameter" value="{trueLevel, falseLevel}">
+        <property name="constellation" class="ptolemy.data.expr.Parameter" value="{falseLevel, trueLevel}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="590.0, 330.0">
         </property>

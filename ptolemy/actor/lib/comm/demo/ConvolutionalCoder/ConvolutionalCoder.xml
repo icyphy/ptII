@@ -103,32 +103,6 @@ The ViterbiDecoder actor does hard decoding.</text></svg></configure>
         <property name="_location" class="ptolemy.kernel.util.Location" value="0.0, 545.0">
         </property>
     </property>
-    <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
-        <property name="uncodedRate" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="{05, 07}">
-        </property>
-        <property name="initialState" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="uncodeBlockSize" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="initial" class="ptolemy.data.expr.Parameter" value="0">
-        </property>
-        <property name="inputNumber" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="215.0, 155.0">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
-            </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
-            </property>
-        </port>
-    </entity>
     <entity name="Bernoulli" class="ptolemy.actor.lib.Bernoulli">
         <property name="seed" class="ptolemy.data.expr.Parameter" value="0L">
         </property>
@@ -574,7 +548,7 @@ the error rate.</text></svg></configure>
         <link port="MultiplyDivide.output" relation="relation6"/>
     </entity>
     <entity name="Error Rate on Coded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0013545546901">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="9.367681498829E-4">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -591,7 +565,7 @@ the error rate.</text></svg></configure>
         </port>
     </entity>
     <entity name="Errors on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="85">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="146">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -608,7 +582,7 @@ the error rate.</text></svg></configure>
         </port>
     </entity>
     <entity name="Error Rate on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0287745429926">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0341840318427">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -825,6 +799,26 @@ the error rate.</text></svg></configure>
             <property name="multiport"/>
         </port>
     </entity>
+    <entity name="ConvolutionalCoder" class="ptolemy.actor.lib.comm.ConvolutionalCoder">
+        <property name="uncodedRate" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="polynomialArray" class="ptolemy.data.expr.Parameter" value="{05, 07}">
+        </property>
+        <property name="initialState" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="230.0, 155.0">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="tokenConsumptionRate" class="ptolemy.data.expr.Parameter" value="1">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="2">
+            </property>
+        </port>
+    </entity>
     <entity name="ViterbiDecoder" class="ptolemy.actor.lib.comm.ViterbiDecoder">
         <property name="uncodedRate" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -834,7 +828,7 @@ the error rate.</text></svg></configure>
         </property>
         <property name="softDecoding" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="constellation" class="ptolemy.data.expr.Parameter" value="{1.0, 0.0}">
+        <property name="constellation" class="ptolemy.data.expr.Parameter" value="{-1.0, 1.0}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="420.0, 195.0">
         </property>
@@ -889,12 +883,6 @@ the error rate.</text></svg></configure>
             </property>
         </property>
     </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="2">
-            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
-            </property>
-        </property>
-    </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="2">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
@@ -937,6 +925,12 @@ the error rate.</text></svg></configure>
             </property>
         </property>
     </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="2">
+            <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
+            </property>
+        </property>
+    </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="bufferSize" class="ptolemy.data.expr.NotEditableParameter" value="2">
             <property name="_style" class="ptolemy.actor.gui.style.NotEditableLineStyle">
@@ -949,8 +943,6 @@ the error rate.</text></svg></configure>
             </property>
         </property>
     </relation>
-    <link port="ConvolutionalCoder.input" relation="relation2"/>
-    <link port="ConvolutionalCoder.output" relation="relation7"/>
     <link port="Bernoulli.output" relation="relation8"/>
     <link port="Count Errors.data" relation="relation11"/>
     <link port="Count Errors.reference" relation="relation12"/>
@@ -967,8 +959,8 @@ the error rate.</text></svg></configure>
     <link port="Scrambler.input" relation="relation"/>
     <link port="Scrambler.output" relation="relation2"/>
     <link port="Const.output" relation="relation"/>
-    <link port="LogicFunction.input" relation="relation7"/>
     <link port="LogicFunction.input" relation="relation8"/>
+    <link port="LogicFunction.input" relation="relation7"/>
     <link port="LogicFunction.output" relation="relation9"/>
     <link port="DeScrambler.input" relation="relation10"/>
     <link port="DeScrambler.output" relation="relation11"/>
@@ -980,6 +972,8 @@ the error rate.</text></svg></configure>
     <link port="DeScrambler2.input" relation="relation14"/>
     <link port="DeScrambler2.output" relation="relation15"/>
     <link port="Const3.output" relation="relation16"/>
+    <link port="ConvolutionalCoder.input" relation="relation2"/>
+    <link port="ConvolutionalCoder.output" relation="relation7"/>
     <link port="ViterbiDecoder.input" relation="relation9"/>
     <link port="ViterbiDecoder.output" relation="relation10"/>
 </entity>

@@ -264,7 +264,7 @@ The ViterbiDecoder actor does soft decoding.</text></svg></configure>
         </port>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
-        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="repeat(delay*2, false)">
+        <property name="initialOutputs" class="ptolemy.data.expr.Parameter" value="repeat(delay*uncodedRate, false)">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="initialOutputs">
@@ -574,7 +574,7 @@ the error rate.</text></svg></configure>
         <link port="MultiplyDivide.output" relation="relation6"/>
     </entity>
     <entity name="Errors on Coded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="2">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -591,7 +591,7 @@ the error rate.</text></svg></configure>
         </port>
     </entity>
     <entity name="Error Rate on Coded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="7.4349442379182E-4">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -804,7 +804,7 @@ the error rate.</text></svg></configure>
         <link port="MultiplyDivide.output" relation="relation6"/>
     </entity>
     <entity name="Errors on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="20">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="62">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -821,7 +821,7 @@ the error rate.</text></svg></configure>
         </port>
     </entity>
     <entity name="Error Rate on Uncoded Channel" class="ptolemy.actor.lib.MonitorValue">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0389105058366">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="0.0230312035661">
         </property>
         <doc>Monitor and display values</doc>
         <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
@@ -884,7 +884,7 @@ the error rate.</text></svg></configure>
         </property>
         <property name="softDecoding" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="constellation" class="ptolemy.data.expr.Parameter" value="{trueLevel, falseLevel}">
+        <property name="constellation" class="ptolemy.data.expr.Parameter" value="{falseLevel, trueLevel}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="465.0, 205.0">
         </property>
