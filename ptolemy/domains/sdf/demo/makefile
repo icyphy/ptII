@@ -60,7 +60,7 @@ PTCLASSALLJARS = \
 	LMSAdaptive/LMSAdaptive.jar \
 	MaximumEntropySpectrum/MaximumEntropySpectrum.jar \
 	OrthogonalCom/OrthogonalCom.jar \
-	RijndaelEncryption\RijndaelEncryption.jar \
+	RijndaelEncryption/RijndaelEncryption.jar \
 	Sketch/Sketch.jar \
 	SoundSpectrum/SoundSpectrum.jar \
 	Spectrum/Spectrum.jar \

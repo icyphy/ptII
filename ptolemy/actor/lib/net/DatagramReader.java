@@ -476,7 +476,7 @@ public class DatagramReader extends TypedAtomicActor {
                         } catch (IOException exp) {
                             throw new IllegalActionException(this, exp,
                                     "Disconnecting from the multicast group "
-                                    "failed.");
+                                    + "failed.");
                         }
                     }
                 }

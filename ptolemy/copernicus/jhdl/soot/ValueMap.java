@@ -57,10 +57,10 @@ import java.util.*;
 
  @author Mike Wirthlin
  @version $Id$
- @since Ptolemy II 2.0 */
+ @since Ptolemy II 2.0
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
-
+ */
 public class ValueMap extends HashListMap {
 
     /**
