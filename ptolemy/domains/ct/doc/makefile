@@ -50,6 +50,7 @@ OTHER_FILES_TO_BE_JARED = \
 	acks.htm \
 	body.htm \
 	buttons.htm \
+	ct_lattice.gif \
 	docs.htm \
 	index.htm \
 	main.htm \
