@@ -75,7 +75,13 @@ public abstract class RandomSource extends Source {
     /** The seed that controls the random number generation.
      *  A seed of zero is interpreted to mean that no seed is specified,
      *  which means that each execution of the model could result in
-     *  distinct data.
+     *  distinct data. For the value 0, the seed is set to
+     *  System.currentTimeMillis() + hashCode(), which means that
+     *  with extremely high probability, two distinct actors will have
+     *  distinct seeds.  However, current time may not have enough
+     *  resolution to ensure that two subsequent executions of the
+     *  same model have distinct seeds.
+     *  
      *  This parameter contains a LongToken, initially with value 0.
      */
     public Parameter seed;
