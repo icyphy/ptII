@@ -1,4 +1,4 @@
-nl	This file is an input file used by the GNU "autoconf" program to
+dnl	This file is an input file used by the GNU "autoconf" program to
 dnl	generate the file "configure", which is run to configure the 
 dnl	Makefile in this directory.
 
@@ -1150,14 +1150,14 @@ fi
 if test ! -d "$PTII/ptolemy/data/expr"; then
     AC_MSG_RESULT([$PTII/ptolemy/data/expr is not present,
 	so we need not find JavaCC.])
-    JAVACC_DIR=$PTII/vendors/sun/javacc-3.0
+    JAVACC_DIR=$PTII/vendors/sun/javacc-3.2
     JAVACC=javacc
     JJTREE=jjtree
 else
     AC_MSG_CHECKING([for JavaCC])
     AC_ARG_WITH(javacc, [  --with-javacc=DIR       use JavaCC.zip from DIR,
-                           defaults to \$PTII/vendors/sun/javacc-3.0],
-	JAVACC_DIR=$withval, JAVACC_DIR=$PTII/vendors/sun/javacc-3.0)
+                           defaults to \$PTII/vendors/sun/javacc-3.2],
+	JAVACC_DIR=$withval, JAVACC_DIR=$PTII/vendors/sun/javacc-3.2)
 
     if test "`uname -s`" = "CYGWIN_NT-4.0" -o \
 		"`uname -s`" = "CYGWIN_NT-5.0" ; then
@@ -1205,12 +1205,12 @@ Be sure that your CLASSPATH includes JavaCC.zip, which is located in]);
     You need not download JavaCC unless you plan on modifying .jjt files
     in ptolemy/data/expr.
     JavaCC is available from	
-    http://www.webgain.com/download/javacc/details.html
+    http://javacc.dev.java.net/
 
     Note that the zip file that gets downloaded is actually an installer
     that must be run to install the JavaCC.zip file that contains the classes.
 
-    Configure looks for JavaCC in $PTII/vendors/sun/javacc-3.0, so either
+    Configure looks for JavaCC in $PTII/vendors/sun/javacc-3.2, so either
     install JavaCC in that location or use the --with-javacc= flag
     and then rerun configure'])
 	JJTREE=touch
