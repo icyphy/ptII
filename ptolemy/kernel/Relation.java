@@ -132,20 +132,25 @@ public class Relation extends NamedObj {
         return false;
     }
 
-    /** Description
-     * @see full-classname#method-name()
-     * @param parameter-name description
-     * @param parameter-name description
-     * @return description
-     * @exception full-classname description
+    /** Add a source port. If this is a source Relation, first verify
+     *  that the source port is not already set. 
+     * @param port The port which will be added as a source port.
+     * @return Return true if the port was successfully added. Return
+     * false if this is a source Relation and the source was already
+     * set (in which case changeSourcePort() should be used). 
      */	
-    public boolean setSourcePort(GenPort port) {
+    public boolean addSourcePort(GenPort port) {
 	if( isSource() && _sourcePorts == null )
 	{
-	     port.newConnection();
-	     _sourcePorts.insertFirst( port );
+	     _sourcePorts.insertFirst( port.newConnection() ); 
+	     return true;
 	}
-        return true;
+	else if( isDestination() )
+	{
+	     _sourcePorts.insertFirst( port.newConnection() ); 
+	     return true;
+	}
+	return false;
     }
 
     /** Clear all port references.
