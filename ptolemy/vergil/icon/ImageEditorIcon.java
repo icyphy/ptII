@@ -33,13 +33,10 @@ package ptolemy.vergil.icon;
 import diva.canvas.Figure;
 import diva.canvas.toolbox.BasicRectangle;
 import diva.canvas.toolbox.ImageFigure;
-import diva.gui.toolbox.FigureIcon;
 import ptolemy.kernel.util.*;
 
 import java.awt.Color;
 import java.awt.Image;
-import java.io.IOException;
-import java.io.Writer;
 
 //////////////////////////////////////////////////////////////////////////
 //// ImageEditorIcon
