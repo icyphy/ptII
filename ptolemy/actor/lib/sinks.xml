@@ -7,44 +7,20 @@
       <group>
 <doc>Domain-polymorphic sinks</doc>
 
-<entity name="Discard" class="ptolemy.actor.lib.Discard">
-</entity>
-
-<entity name="Display" class="ptolemy.actor.lib.gui.Display">
-</entity>
-
-<entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter">
-</entity>
-
-<entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer">
-</entity>
-
-<entity name="MatrixVisualizer" class="ptolemy.actor.lib.gui.MatrixVisualizer">
-</entity>
-
-<entity name="Recorder" class="ptolemy.actor.lib.Recorder">
-</entity>
-
-<entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter">
-</entity>
-
-<entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope">
-</entity>
-
-<entity name="Test" class="ptolemy.actor.lib.Test">
-</entity>
-
-<entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-</entity>
-
-<entity name="TimedScope" class="ptolemy.actor.lib.gui.TimedScope">
-</entity>
-
-<entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter">
-</entity>
-
-<entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope">
-</entity>
+<entity name="BarGraph" class="ptolemy.actor.lib.gui.BarGraph"/>
+<entity name="Discard" class="ptolemy.actor.lib.Discard"/>
+<entity name="Display" class="ptolemy.actor.lib.gui.Display"/>
+<entity name="HistogramPlotter" class="ptolemy.actor.lib.gui.HistogramPlotter"/>
+<entity name="MatrixViewer" class="ptolemy.actor.lib.gui.MatrixViewer"/>
+<entity name="MatrixVisualizer" class="ptolemy.actor.lib.gui.MatrixVisualizer"/>
+<entity name="Recorder" class="ptolemy.actor.lib.Recorder"/>
+<entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter"/>
+<entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope"/>
+<entity name="Test" class="ptolemy.actor.lib.Test"/>
+<entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter"/>
+<entity name="TimedScope" class="ptolemy.actor.lib.gui.TimedScope"/>
+<entity name="XYPlotter" class="ptolemy.actor.lib.gui.XYPlotter"/>
+<entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope"/>
 
       </group>
     ?>
