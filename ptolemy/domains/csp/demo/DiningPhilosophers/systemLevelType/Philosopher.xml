@@ -11,48 +11,78 @@
             <entity name="state library" class="ptolemy.kernel.CompositeEntity"><entity name="state" class="ptolemy.domains.fsm.kernel.State"></entity></entity>
           </configure>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 454]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[604, 484]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 116]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[71, 4]">
     </property>
     <port name="g1" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="14.0, 66.0">
+        <property name="_location" class="ptolemy.moml.Location" value="48.0, 31.0">
         </property>
     </port>
     <port name="g1R" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="18.0, 118.0">
+        <property name="_location" class="ptolemy.moml.Location" value="52.0, 83.0">
         </property>
     </port>
     <port name="g2" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="575.0, 66.0">
+        <property name="_location" class="ptolemy.moml.Location" value="504.0, 26.0">
         </property>
     </port>
     <port name="g2R" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="576.0, 116.0">
+        <property name="_location" class="ptolemy.moml.Location" value="505.0, 76.0">
         </property>
     </port>
     <port name="p1" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="20.0, 316.0">
+        <property name="_location" class="ptolemy.moml.Location" value="18.0, 187.0">
         </property>
     </port>
     <port name="p1R" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="23.0, 374.0">
+        <property name="_location" class="ptolemy.moml.Location" value="21.0, 245.0">
         </property>
     </port>
     <port name="p2" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_location" class="ptolemy.moml.Location" value="577.0, 310.0">
+        <property name="_location" class="ptolemy.moml.Location" value="566.0, 164.0">
         </property>
     </port>
     <port name="p2R" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_location" class="ptolemy.moml.Location" value="578.0, 362.0">
+        <property name="_location" class="ptolemy.moml.Location" value="569.0, 218.0">
+        </property>
+    </port>
+    <port name="iGW1" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.moml.Location" value="21.0, 315.0">
+        </property>
+    </port>
+    <port name="iGW1T" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.moml.Location" value="26.0, 365.0">
+        </property>
+    </port>
+    <port name="iGW1F" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.moml.Location" value="27.5, 411.0">
+        </property>
+    </port>
+    <port name="iGW2" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.moml.Location" value="575.0, 307.0">
+        </property>
+    </port>
+    <port name="iGW2T" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.moml.Location" value="579.0, 355.0">
+        </property>
+    </port>
+    <port name="iGW2F" class="ptolemy.actor.TypedIOPort">
+        <property name="input"/>
+        <property name="_location" class="ptolemy.moml.Location" value="578.5, 399.0">
         </property>
     </port>
     <entity name="0" class="ptolemy.domains.fsm.kernel.State">
