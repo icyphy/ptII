@@ -88,8 +88,8 @@ public class BranchController implements Runnable {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the Actor that creates the branch and owns this
-     *  controller.
+    /** Return the MultiBranchActor that creates the branch 
+     *  and owns this controller.
      *  @return The MultiBranchActor that owns this controller.
      */
     public MultiBranchActor getParent() {
@@ -120,6 +120,9 @@ public class BranchController implements Runnable {
      */
     public boolean canBranchEngage(Branch branch) {
         synchronized(this) {
+	    if( !_engagementsAllowed ) {
+		return false;
+	    }
             if( _maxEngagements < 0 && _maxEngagers < 0 ) {
                 return true;
             }
@@ -148,12 +151,6 @@ public class BranchController implements Runnable {
 	    return true;
 	}
 	return areEngagementsComplete();
-    }
-
-    /**
-     */
-    public void clearBranches() {
-	_branches.clear();
     }
 
     /**
@@ -193,7 +190,6 @@ public class BranchController implements Runnable {
 
 	    branch = new Branch( prodRcvr, consRcvr, this );
 	    _branches.add(branch);
-	    _numberOfBranches++;
 	}
     }
 
@@ -222,8 +218,9 @@ public class BranchController implements Runnable {
         }
     }
 
-    /** Registers the calling branch as the successful branch. It
-     *  reduces the count of active branches, and notifies chooseBranch()
+    /** Register the calling branch as having successfully completed
+     *  an engagement. It reduces the count of active branches, and 
+     *  notifies chooseBranch()
      *  that a branch has succeeded. The chooseBranch() method then
      *  proceeds to terminate the remaining branches. It is called by
      *  the first branch that succeeds with a rendezvous.
@@ -248,7 +245,13 @@ public class BranchController implements Runnable {
         }
     }
 
-    /**
+    /** Activate the branches that are managed by this Branch
+     *  Controller. This method should be invoked once when
+     *  a BranchController first starts the Branches it controls.
+     *  Invokation of this method will cause the Branches to
+     *  begin iterating. Each iteration will last until all
+     *  branch engagements for that iteration are complete. 
+     *  To begin a subsequent iteration, call startIteration().
      */
     public void activateBranches() {
         synchronized(this) {
@@ -273,22 +276,39 @@ public class BranchController implements Runnable {
             while( threads.hasNext() ) {
                 thread = (BranchThread)threads.next();
                 branch = thread.getBranch();
-                branch._reset();
+                branch.reset();
                 thread.start();
             }
+
+	    _engagementsAllowed = true;
         }
     }
     
-    /** Terminate abruptly any threads created by this actor. Note that
-     *  this method does not allow the threads to terminate gracefully.
+    /** 
      */
-    public void stopBranches() {
+    public synchronized void eset() {
+	_engagementsAllowed = false;
+	_engagements.clear();
+
+	_branchesBlocked = 0;
+        _branchesActive = 0;
+
+	Iterator branches = _branches.iterator();
+	Branch branch = null;
+	while( branches.hasNext() ) {
+	    branch = (Branch)branches.next();
+	    branch.reset();
+	}
+
+	_engagementsAllowed = true;
+	notifyAll();
     }
 
     /** Terminate abruptly any threads created by this actor. Note that
      *  this method does not allow the threads to terminate gracefully.
      */
-    public void deactivateBranches() {
+    public synchronized void deactivateBranches() {
+	setActive(false);
         if (_threadList != null) {
             Iterator threads = _threadList.iterator();
             BranchThread bThread = null;
@@ -308,6 +328,7 @@ public class BranchController implements Runnable {
                 }
             }
         }
+	notifyAll();
     }
 
     /**
@@ -320,11 +341,13 @@ public class BranchController implements Runnable {
 		branch = (Branch)engagements.next();
 		if( branch.numberOfCompletedEngagements() 
 			< _maxEngagements ) {
+		    _engagementsAllowed = false;
 		    return false;
 		}
 	    }
 	    return true;
 	}
+	_engagementsAllowed = false;
 	return false;
     }
 
@@ -367,34 +390,22 @@ public class BranchController implements Runnable {
 			    }
 			    _getDirector()._branchUnBlocked(this);
 			}
-
-			if( isIterationOver() ) {
-			    activateBranches();
-			}
 		    }
 
-		    /*
-		    wait();
-
-		    if( isDeadlocked() ) {
-			while( isDeadlocked() ) {
+		    if( isIterationOver() && isActive() ) {
+			while( isIterationOver() && isActive() ) {
 			    _getDirector()._branchBlocked(this);
 			    wait();
 			}
 			_getDirector()._branchUnBlocked(this);
 		    }
-
-		    if( areEngagementsComplete() ) {
-			setActive(false);
-		    }
-		    */
-		    deactivateBranches();
 		}
 	    } catch( InterruptedException e ) {
 		// Do something
 	    }
 	}
     }
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -425,20 +436,19 @@ public class BranchController implements Runnable {
     /** Resets the internal state controlling the execution of a conditional
      *  branching construct (CIF or CDO). It is only called by chooseBranch()
      *  so that it starts with a consistent state each time.
-     */
-    protected void _reset() {
+    public void reset() {
         synchronized(this) {
-	    deactivateBranches();
 	    _branchesBlocked = 0;
             _branchesActive = 0;
-	    _numberOfBranches = 0;
+	    notifyAll();
         }
     }
+     */
 
     /**
      */
     public int getNumberOfBranches() {
-	return _numberOfBranches;
+	return _branches.size();;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -484,6 +494,6 @@ public class BranchController implements Runnable {
 
     private boolean _active = false;
 
-    private int _numberOfBranches = 0;
+    private boolean _engagementsAllowed = false;
 
 }

@@ -182,7 +182,8 @@ public class Branch {
 
     /**
      */
-    protected void _reset() {
+    protected void reset() {
+	_active = true;
 	_rcvrBlocked = false;
 	_completedEngagements = 0;
 	_currentlyEngaged = false;
@@ -200,8 +201,10 @@ public class Branch {
 
     /**
      */
-    public void endIteration(boolean endIteration) {
+    public synchronized void endIteration(boolean endIteration) {
 	_isIterationOver = endIteration;
+	// FIXME: Here I wake up the branch; What about the receiver?
+	notifyAll();
     }
 
     /** 
@@ -215,7 +218,7 @@ public class Branch {
 	    // completeEngagement();
         } catch( TerminateBranchException e ) {
 	    // Iteration is over
-	    _reset();
+	    reset();
             return;
         }
     }

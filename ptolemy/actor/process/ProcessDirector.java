@@ -104,9 +104,9 @@ public class ProcessDirector extends Director {
     ////                         public methods                    ////
 
     /**
-     */
     public void _branchBlocked(boolean isInput) {
     }
+     */
 
     /** Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (It must be added
