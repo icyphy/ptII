@@ -61,6 +61,13 @@ PTJACL_JAR=@PTJACL_JAR@
 # Flag to pass to java.  Solaris JDK1.2 reference version needs -native
 PTJACL_JFLAG=@PTJACL_JFLAG@
 
+# Directory that contains the Java Serial Comm API, see 
+# http://java.sun.com/products/javacomm/
+COMMAPI_DIR=@COMMAPI_DIR@
+
+# If Commapi is present, then set to yes, otherwise set to no
+COMMAPI_PRESENT=@COMMAPI_PRESENT@
+
 ################
 # You probably don't want to edit below here
 
@@ -227,6 +234,8 @@ if [ -z "$JAVAHOME" ]; then
     fi
 fi
 
+COMMAPI_CLASSPATH=""
+
 # This section looks complex, but really all it does is
 # branch between windows/unix, jarfile set/not set, CLASSPATH set/not set
 if [ "$windows" = "yes" ]; then
@@ -234,34 +243,41 @@ if [ "$windows" = "yes" ]; then
     # chdir prints the current directory in DOS format.
     # The tr command deletes the \r at the end
     WINPTII=`(cd $PTII; cmd /c chdir) | tr -d '\r'`
+    if [ "$COMMAPI_PRESENT" ]; then 
+	COMMAPI_CLASSPATH=";$COMMAPI_DIR/comm.jar"
+    fi
     if [ "${jarfile-no}" != "no" ]; then
 	if [ "${CLASSPATH}" != "no" ]; then
-	    $JAVAHOME/bin/java $javaflag -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip\;$jarfile\;$CLASSPATH $javastartupclass ${1+"$@"}
+	    $JAVAHOME/bin/java $javaflag -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip\;$jarfile\;$CLASSPATH$COMMAPI_CLASSPATH $javastartupclass ${1+"$@"}
 	else
-	    $JAVAHOME/bin/java $javaflag -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip\;$jarfile $javastartupclass ${1+"$@"}
+	    $JAVAHOME/bin/java $javaflag -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip\;$jarfile$COMMAPI_CLASSPATH $javastartupclass ${1+"$@"}
 	fi    
     else
 	if [ "${CLASSPATH}" != "no" ]; then
-	    $JAVAHOME/bin/java -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip\;$CLASSPATH $javaflag $javastartupclass ${1+"$@"}
+	    $JAVAHOME/bin/java -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip\;$CLASSPATH$COMMAPI_CLASSPATH $javaflag $javastartupclass ${1+"$@"}
 	else
-	    $JAVAHOME/bin/java -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip $javaflag $javastartupclass ${1+"$@"}
+	    $JAVAHOME/bin/java -classpath $WINPTII\;$JAVAHOME\\lib\\classes.zip $javaflag$COMMAPI_CLASSPATH $javastartupclass ${1+"$@"}
 	fi
     fi
 else
+    # Unix
+    if [ "$COMMAPI_PRESENT" ]; then 
+	COMMAPI_CLASSPATH=":$COMMAPI_DIR/comm.jar"
+    fi
     if [ "${jarfile-no}" != "no" ]; then
 	if [ "${CLASSPATH}" != "no" ]; then
-	    CLASSPATH=$PTII:$jarfile:$CLASSPATH
+	    CLASSPATH=$PTII:$jarfile:$CLASSPATH$COMMAPI_CLASSPATH
 	    export CLASSPATH
         else
-	    CLASSPATH=$PTII:$jarfile
+	    CLASSPATH=$PTII:$jarfile$COMMAPI_CLASSPATH
 	    export CLASSPATH
 	fi
     else
 	if [ "${CLASSPATH}" != "no" ]; then
-	    CLASSPATH=$PTII:$CLASSPATH
+	    CLASSPATH=$PTII:$CLASSPATH$COMMAPI_CLASSPATH
 	    export CLASSPATH
 	else
-	    CLASSPATH=$PTII
+	    CLASSPATH=$PTII$COMMAPI_CLASSPATH
 	    export CLASSPATH
         fi
     fi	
