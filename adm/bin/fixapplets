@@ -1,0 +1,90 @@
+#!/bin/sh
+# This script reads in applets and updates the html to
+# handle the latest version of the plugin
+#
+# $Id$
+# Usage: fixapplets file.html [...]
+
+# 1)Get the current parameters
+
+for file in $@
+do
+	awk '
+ BEGIN {
+	    appletParamNames["codebase"] = 1
+	    appletParamNames["code"] = 1
+	    appletParamNames["archive"] = 1
+	    appletParamNames["width"] = 1
+	    appletParamNames["height"] = 1
+	}
+ $1 ~ /<OBJECT/ { sawObject = 1}
+ sawObject == 0 { print $0 }
+ $1 ~ /<EMBED/ { sawEmbed = 1
+		 paramCount = 0
+		 appletParamCount = 0
+	       }
+ $1 ~ /<NOEMBED/    {
+			sawNoEmbed = 1
+			alternateHTML = ""    
+		    }
+ sawEmbed == 1 && sawNoEmbed == 0 && $1 !~ /<EMBED/ { 
+		    if ( $0 ~ /=/) {
+			# Line like   background="#faf0e6"
+		        # We call split twice so that we get the
+		        # name that is in $1 without leading spaces
+			split($1, n, "=")
+			split($0, f, "=")
+
+
+			sawAppletParam = 0
+			for (appletParamName in appletParamNames) {
+			    if (n[1] == appletParamName) {
+				sawAppletParam = 1
+				appletParams[appletParamName] = f[2]
+				lastAppletParam = appletParamName
+			    }
+			}
+			if (sawAppletParam == 0 \
+				    && n[1] != "type" \
+				    && n[1] != "pluginspage") {
+			    paramName[paramCount] = n[1]
+			    paramValue[paramCount++] = f[2]
+			}
+		    } else {
+			if ($1 !~ /</ && lastAppletParam == "archive") {
+			    # continuation lines like: 
+			    # archive="
+			    #    ptolemy/ptsupport.jar,
+			    #    ptolemy/domains/sdf/sdf.jar"
+			    appletParams["archive"] = appletParams["archive"] "\n" $0
+			}
+		    }
+		}
+ sawNoEmbed == 1 && $1 !~ /NOEMBED>/   {
+		    alternateHTML = alternateHTML "\n" $0
+		    }
+ $1 ~ /<\/NOEMBED/  { sawNoEmbed = 0 }
+ $1 ~ /<\/EMBED/    { sawEmbed = 0}
+ $1 ~ /<\/OBJECT>/  { 
+		    sawObject = 0
+		    print "<applet"
+		    for (appletParam in appletParams) {
+			if (appletParams[appletParam] != "") {
+			    printf("\t%s = %s\n", appletParam, appletParams[appletParam])
+			}
+		    }
+		    print ">"
+		    for (i = 0; i < paramCount; i++) {
+			printf("<param name = %s value = %s>\n", paramName[i], paramValue[i])
+		    }
+		    print alternateHTML
+		    print "</applet>"
+		}
+
+ ' $file > foo.htm
+
+c:/j2sdk1.4.0/bin/java -jar c:/j2sdk1.4.0/lib/htmlconverter.jar  -progress -template -log c:/tmp/foo.log templates/extend.tpl -f foo.htm 
+
+diff $file foo.htm
+
+done
