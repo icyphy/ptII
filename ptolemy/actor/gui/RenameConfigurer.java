@@ -98,7 +98,8 @@ public class RenameConfigurer extends Query
             // The context for the MoML should be the first container
             // above this object in the hierarchy that defers its
             // MoML definition, or the immediate parent if there is none.
-            NamedObj parent = MoMLChangeRequest.getDeferredToParent(_object);
+            NamedObj parent = MoMLChangeRequest.getDeferredToParent(
+                    (NamedObj)_object.getContainer());
             if (parent == null) {
                 parent = (NamedObj)_object.getContainer();
             }
