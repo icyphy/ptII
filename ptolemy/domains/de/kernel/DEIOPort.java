@@ -148,12 +148,13 @@ public class DEIOPort extends TypedIOPort {
      *  by calling the overloaded version of send() that takes a delay
      *  argument, or the similarly overloaded version of broadcast().
      *  After setting the delay in all the receivers, the base class
-     *  send() method is invoked.
+     *  send() method is invoked.  If the channel index is out of range,
+     *  then the token is not sent anywhere.
      *
      *  @param channelindex The index of the channel, from 0 to width-1
      *  @param token The token to send
      *  @exception IllegalActionException If the port is not an output,
-     *   or if the index is out of range, or if the token to be sent cannot
+     *   or if the token to be sent cannot
      *   be converted to the type of this port, or if the token is null.
      *  @exception NoRoomException If there is no room in the receiver.
      *   This should not occur in the DE domain.
@@ -166,10 +167,6 @@ public class DEIOPort extends TypedIOPort {
                 workspace().getReadAccess();
                 Receiver[][] fr = getRemoteReceivers();
                 if (fr == null) return;
-                if (channelindex >= fr.length || channelindex < 0) {
-                    throw new IllegalActionException(this,
-                    "send: channel index is out of range.");
-                }
                 if (fr[channelindex] == null) return;
                 for (int j = 0; j < fr[channelindex].length; j++) {
                     try {
@@ -180,6 +177,8 @@ public class DEIOPort extends TypedIOPort {
                     }
                 }
                 super.send(channelindex, token);
+            } catch (ArrayIndexOutOfBoundsException ex) {
+                // Ignore... send token nowhere.
             } finally {
                 workspace().doneReading();
             }
