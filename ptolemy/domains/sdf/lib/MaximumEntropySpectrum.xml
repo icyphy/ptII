@@ -225,7 +225,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </port>
     </entity>
     <entity name="DB" class="ptolemy.actor.lib.DB">
-        <property name="inputIsPower" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="inputIsPower" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="min" class="ptolemy.data.expr.Parameter" value="-100.0">
         </property>
@@ -239,7 +239,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </port>
     </entity>
     <entity name="ArrayElement" class="ptolemy.actor.lib.ArrayElement">
-        <property name="index" class="ptolemy.data.expr.Parameter" value="0">
+        <property name="index" class="ptolemy.data.expr.Parameter" value="order">
         </property>
         <property name="_location" class="ptolemy.moml.Location" value="492.0, 190.0">
         </property>
@@ -255,7 +255,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
         </property>
         <property name="blockSize" class="ptolemy.data.expr.Parameter" value="1">
         </property>
-        <property name="_location" class="ptolemy.moml.Location" value="582.0, 190.0">
+        <property name="_location" class="ptolemy.moml.Location" value="581.0, 190.0">
         </property>
         <port name="input" class="ptolemy.domains.sdf.kernel.SDFIOPort">
             <property name="input"/>
@@ -272,7 +272,7 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
             </property>
             <property name="tokenInitProduction" class="ptolemy.data.expr.Parameter" value="0">
             </property>
-            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="1">
+            <property name="tokenProductionRate" class="ptolemy.data.expr.Parameter" value="256">
             </property>
         </port>
     </entity>
@@ -306,6 +306,32 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
             </property>
         </port>
     </entity>
+    <entity name="MathFunction" class="ptolemy.actor.lib.MathFunction">
+        <property name="function" class="ptolemy.kernel.util.StringAttribute" value="square">
+            <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+                <property name="exp" class="ptolemy.kernel.util.StringAttribute" value="exp">
+                </property>
+                <property name="log" class="ptolemy.kernel.util.StringAttribute" value="log">
+                </property>
+                <property name="modulo" class="ptolemy.kernel.util.StringAttribute" value="modulo">
+                </property>
+                <property name="sign" class="ptolemy.kernel.util.StringAttribute" value="sign">
+                </property>
+                <property name="square" class="ptolemy.kernel.util.StringAttribute" value="square">
+                </property>
+                <property name="sqrt" class="ptolemy.kernel.util.StringAttribute" value="sqrt">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.moml.Location" value="250.0, 499.0">
+        </property>
+        <port name="firstOperand" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -317,8 +343,6 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" class="ptolemy.moml.Vertex" value="93.0, 407.0">
@@ -342,6 +366,10 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="input" relation="relation"/>
     <link port="output" relation="relation20"/>
     <link port="Pulse.output" relation="relation2"/>
@@ -362,9 +390,9 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
     <link port="FFT.input" relation="relation10"/>
     <link port="FFT.output" relation="relation15"/>
     <link port="AbsoluteValue.input" relation="relation15"/>
-    <link port="AbsoluteValue.output" relation="relation14"/>
+    <link port="AbsoluteValue.output" relation="relation11"/>
     <link port="MultiplyDivide11.multiply" relation="relation19"/>
-    <link port="MultiplyDivide11.divide" relation="relation14"/>
+    <link port="MultiplyDivide11.divide" relation="relation12"/>
     <link port="MultiplyDivide11.output" relation="relation16"/>
     <link port="DB.input" relation="relation16"/>
     <link port="DB.output" relation="relation20"/>
@@ -374,4 +402,6 @@ radians per second, centered at zero frequency, in decibels (dB).</text>
     <link port="Repeat.output" relation="relation19"/>
     <link port="Chop.input" relation="relation9"/>
     <link port="Chop.output" relation="relation10"/>
+    <link port="MathFunction.firstOperand" relation="relation11"/>
+    <link port="MathFunction.output" relation="relation12"/>
 </class>
