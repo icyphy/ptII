@@ -1,6 +1,6 @@
 /* A channel with a distance-dependent power loss.
 
- Copyright (c) 1998-2003 The Regents of the University of California.
+ Copyright (c) 2004 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -25,7 +25,7 @@
                                         COPYRIGHTENDKEY
 
 @ProposedRating Yellow (eal@eecs.berkeley.edu)
-@AcceptedRating Red (pjb2e@eecs.berkeley.edu)
+@AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
 package ptolemy.domains.wireless.lib;
