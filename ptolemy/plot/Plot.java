@@ -67,7 +67,7 @@ When calling the public methods, in most cases the changes will not
 be visible until paintComponent() is called.  To request that this
 be done, call repaint().  One exception is addPoint(), which
 makes the new point visible immediately if the plot is visible on
-the screen.
+the screen and addPoint() is called from the event dispatching thread.
 <p>
 This base class supports a simple file syntax that has largely been
 replaced by the XML-based PlotML syntax.  To read a file or a
@@ -183,14 +183,14 @@ then the order in which changes to the plot take effect may be
 surprising.  We recommend that any code you write that changes
 the plot in visible ways be executed in the event thread. You
 can accomplish this using the following template:
-
+<pre>
          Runnable doAction = new Runnable() {
              public void run() {
                 ... make changes here (e.g. setMarksStyle()) ...
             }
          };
          plot.deferIfNecessary(doAction);
-<pre>
+</pre>
 <p>
 This plotter has some <A NAME="ptplot limitations">limitations</a>:
 <ul>
