@@ -41,6 +41,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.moml.SharedParameter;
 import ptolemy.util.StringUtilities;
 
 
@@ -78,6 +79,9 @@ collect the reference data, then set <i>trainingMode</i> to
 <i>false</i>.  Any subsequent run of the actor will throw an
 exception if the input data does not match the training data.
 The value of the reference token is set in the wrapup() method.
+The <i>trainingMode</i> parameter is a shared parameter,
+meaning that if you change it for any one instance of this
+actor in the model, then it will be changed for all instances.
 
 @see Test
 @author Paul Whitaker, Christopher Hylands, Edward A. Lee
@@ -116,8 +120,7 @@ public class NonStrictTest extends Sink {
         tolerance.setExpression("1.0E-9");
         tolerance.setTypeEquals(BaseType.DOUBLE);
 
-        trainingMode = new Parameter(this, "trainingMode");
-        trainingMode.setExpression("false");
+        trainingMode = new SharedParameter(this, "trainingMode", NonStrictTest.class, "false");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
 
         input.setMultiport(false);
@@ -139,9 +142,11 @@ public class NonStrictTest extends Sink {
 
     /** If true, then do not check inputs, but rather collect them into
      *  the <i>correctValues</i> array.  This parameter is a boolean,
-     *  and it defaults to false.
+     *  and it defaults to false. It is a shared parameter, meaning
+     *  that changing it for any one instance in a model will change
+     *  it for all instances in the model.
      */
-    public Parameter trainingMode;
+    public SharedParameter trainingMode;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
