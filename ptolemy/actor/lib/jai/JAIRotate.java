@@ -197,12 +197,12 @@ public class JAIRotate extends Transformer {
         }
         RenderedOp newImage = JAI.create("Rotate", parameters);
         if (_debugging) {
-            _debug("newimage width " + newImage.getWidth());
-            _debug("newimage height " + newImage.getHeight());
-            _debug("newimage min x " + newImage.getMinX());
-            _debug("newimage max x " + newImage.getMaxX());
-            _debug("newimage min y " + newImage.getMinY());
-            _debug("newimage max y " + newImage.getMaxY());
+            _debug("newImage width " + newImage.getWidth());
+            _debug("newImage height " + newImage.getHeight());
+            _debug("newImage min x " + newImage.getMinX());
+            _debug("newImage max x " + newImage.getMaxX());
+            _debug("newImage min y " + newImage.getMinY());
+            _debug("newImage max y " + newImage.getMaxY());
         }
         output.send(0, new JAIImageToken(newImage));
     }
