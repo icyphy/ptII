@@ -46,6 +46,9 @@ Use setExpression() to define the value, as in for example
 By default, an instance of this class is fully visible in a user interface.
 This is indicated to the user interface by returning FULL to the
 getVisibility() method.
+<p>
+The default value of the string contained by this attribute is the empty 
+string.
 
 @author Edward A. Lee
 @version $Id$
@@ -70,6 +73,7 @@ public class StringAttribute extends Attribute implements Settable {
     public StringAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        _value = "";
     }
 
     ///////////////////////////////////////////////////////////////////
