@@ -495,7 +495,7 @@ public class Transition extends ComponentRelation {
     public boolean isEnabled() throws IllegalActionException {
         try {
             if (!_relationList.isEmpty()) {
-                _parseTreeEvaluator.setEvaluationPhase(false);
+                _parseTreeEvaluator.setEvaluationMode(false);
             }
             Token token = _guard.getToken();
             if (token == null) {

@@ -86,6 +86,7 @@ public class RelationList extends Attribute {
      *  @param difference The difference of the relation.
      */
     public void addRelation(int type, double difference) {
+        //System.out.println("Adding " + type + " " + difference);
         _relationList.add(new RelationNode(type, difference));
         _relationNumber++;
     }
@@ -122,13 +123,13 @@ public class RelationList extends Attribute {
     public boolean hasEvent(){
         boolean result = false;
         ListIterator relations = _relationList.listIterator();
-        while (relations.hasNext()) {
+        while (relations.hasNext() && !result) {
             result = result || ((RelationNode)relations.next()).hasEvent();
         }
-        /*
+
         if (result) {
-            System.out.println("Detected event!");
-        }*/
+            //System.out.println("Detected event!");
+        }
         return result;
     }
 
@@ -173,23 +174,17 @@ public class RelationList extends Attribute {
      *  @parameter type The current type of the relation.
      *  @parameter difference The current difference of the relation.
      */
-    public void setRelation(int type, double difference) {
-        RelationNode relationNode = (RelationNode) _relationList.get(_index);
+    public void setRelation(int relationIndex, int type, double difference) {
+        int index = relationIndex - relationIndex/_relationNumber*_relationNumber;
+        //System.out.println("Setting " + index + " " + type + " " + difference);
+        RelationNode relationNode = (RelationNode) _relationList.get(index);
         relationNode.setValue(type);
         relationNode.setDifference(difference);
-        _index++;
-        if (_index == _relationNumber) {
-            _index -= _relationNumber;
-        }
-        //System.out.println("the relation index is: " + _index);
-        //System.out.println("the relation number is: " + _relationNumber);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
-    // The private varialbe indicating which relation is updated.
-    private int _index;
     // The index for the relation with the maximum current difference.
     private int _maximumDifferenceIndex;
     // The relation list.
@@ -213,6 +208,7 @@ public class RelationList extends Attribute {
             _currentType = type;
             _formerType = type;
             _difference = difference;
+            _formerDifference = difference;
         }
 
         ///////////////////////////////////////////////////////////////
@@ -231,12 +227,11 @@ public class RelationList extends Attribute {
          *  with the current information.
          */
         public void commit() {
-            /*
-            if(typeChanged()){
-                System.out.println("committing change ...");
-                System.out.println(_formerType + " <== " + _currentType);
-                System.out.println(_formerDifference + " <== " + _difference);
-            }*/
+
+            //System.out.println("committing change ...");
+            //System.out.println(_formerType + " <== " + _currentType);
+            //System.out.println(_formerDifference + " <== " + _difference);
+
             _formerType = _currentType;
             _formerDifference = _difference;
         }
@@ -264,6 +259,8 @@ public class RelationList extends Attribute {
          *  @return True If event has been detected.
          */
         public boolean hasEvent(){
+            //System.out.println("former type " + _formerType
+            //                   + " current type " + _currentType);
             if (typeChanged()) {
                 return (_currentType == 3) || ( _formerType * _currentType == 20);
             }

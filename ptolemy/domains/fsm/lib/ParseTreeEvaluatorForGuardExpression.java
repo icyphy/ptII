@@ -42,6 +42,7 @@ import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Hashtable;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
@@ -115,17 +116,19 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
             _construction = false;
         }
         _relationList = relationList;
+        _relationIndex = 0;
+        _absentDiscreteVariables = new LinkedList();
+        _variableCollector = new ParseTreeFreeVariableCollector();
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Set the evaluation mode. There are two modes. One is for constructing
-     *  the relation list, with the mode argument set to true. The other one
-     *  is for updating the relation list, with the argument mode set to false.
-     *  @param mode The mode indication.
+    /** Set the mode of parse tree evaluator to constrction mode with mode
+     *  as true, to update mode with mode as false.
+     *  @param mode The mode of the parse tree evaluator.
      */
-    public void setEvaluationPhase(boolean mode) {
+    public void setEvaluationMode(boolean mode) {
         _construction = mode;
     }
 
@@ -142,6 +145,39 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
     public void visitLeafNode(ASTPtLeafNode node)
         throws IllegalActionException {
 
+        // FIXME: based on the *_isPresent variable, we figure out
+        // the discrete variables and do not evaluate it when it is
+        // not present.
+        // This is not the decent solution, we should use the signalType
+        // attribute to differentiate the signal type. Unfortunately, the
+        // signalType is not passed along as the type system does.
+        String nodeName = node.getName();
+        String discreteVariableName = "";
+        if (nodeName != null) {
+            int variableNameEndIndex = nodeName.indexOf("_isPresent");
+            if (variableNameEndIndex != -1) {
+                discreteVariableName = nodeName.substring(0,
+                    variableNameEndIndex);
+            }
+        }
+
+        if (_absentDiscreteVariables.contains(nodeName)) {
+            // Set the result token to be false token
+            // because the variable is discrete and has no value.
+            // Note usually the usage is "x_isPresent && x"
+            node.setToken(new BooleanToken(false));
+
+            if (_construction) {
+                _relationList.addRelation(0, 0.0);
+            }
+
+            // Only increment the relation index but do not update
+            // the relation node.
+            _relationIndex ++;
+
+            return;
+        }
+
         // evaluate the leaf node.
         super.visitLeafNode(node);
 
@@ -151,21 +187,30 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
         if (((BooleanToken) result).booleanValue()) {
             _relationType = 1;
+            if (_absentDiscreteVariables.contains(discreteVariableName)) {
+                //System.out.println("Found a discrete variable is present: "
+                //                    + discreteVariableName);
+                // remove the discrete variable from the absent discrete variables list
+                _absentDiscreteVariables.remove(discreteVariableName);
+            }
         } else {
             _relationType = 2;
+            if (!_absentDiscreteVariables.contains(discreteVariableName)) {
+                //System.out.println("Found a discrete variable is not present: "
+                //                    + discreteVariableName);
+                // add the discrete variable from the absent discrete variables list
+                _absentDiscreteVariables.add(discreteVariableName);
+            }
         }
         _difference = 0.0;
 
         if (_construction) {
             _relationList.addRelation(_relationType, _difference);
-            //System.out.println("add a relation node to relation list " +
-            //                  _relationType + " the difference " + _difference );
+        } else {
+            _relationList.setRelation(_relationIndex, _relationType, _difference);
         }
-        else {
-            _relationList.setRelation(_relationType, _difference);
-            //System.out.println("set a relation node to relation list " +
-            //                  _relationType + " the difference " + _difference );
-        }
+
+        _relationIndex ++;
     }
 
     /** Visit the logical node. This visitor does not use short-circuit
@@ -184,6 +229,8 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         // We evaluate al the children in order until the final value is
         // determined.
 
+        // FIXME: Discrete variables should be treated differently.
+
         int numChildren = node.jjtGetNumChildren();
         _assert(numChildren > 0, node,
                 "The number of child nodes must be greater than zero");
@@ -191,6 +238,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         _evaluateChild(node, 0);
 
         ptolemy.data.Token result = node.jjtGetChild(0).getToken();
+
         if(!(result instanceof BooleanToken)) {
             throw new IllegalActionException("Cannot perform logical "
                     + "operation on " + result + " which is a "
@@ -204,6 +252,7 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         boolean flag = node.isLogicalAnd();
         for(int i = 1; i < numChildren; i++) {
             ASTPtRootNode child = (ASTPtRootNode)node.jjtGetChild(i);
+
             // Evaluate the child
             child.visit(this);
             // Get its value.
@@ -237,6 +286,28 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
         if(node.isConstant() && node.isEvaluated()) {
             return;
         }
+
+        // Check whether the relation node has the absent discrete variable.
+        // If yes, skip the node, otherwise, evaluate (visit) the node.
+        Set variablesOfNode =
+            _variableCollector.collectFreeVariables(node);
+        Iterator absentDiscreteVariables = _absentDiscreteVariables.listIterator();
+        while (absentDiscreteVariables.hasNext()) {
+            String variableName = (String) absentDiscreteVariables.next();
+            if (variablesOfNode.contains(variableName)) {
+                // Set the result token to be false token
+                // because the variable is discrete and has no value.
+                // Note usually the usage is "x_isPresent && x == 1.0"
+                node.setToken(new BooleanToken(false));
+
+                if (_construction) {
+                    _relationList.addRelation(0, 0.0);
+                }
+                _relationIndex++;
+                return;
+            }
+        }
+
         ptolemy.data.Token[] tokens = _evaluateAllChildren(node);
 
         int numChildren = node.jjtGetNumChildren();
@@ -315,27 +386,30 @@ public class ParseTreeEvaluatorForGuardExpression extends ParseTreeEvaluator {
 
         if (_construction) {
             _relationList.addRelation(_relationType, _difference);
-            //System.out.println("add a relation node to relation list: " +
-            //                  " with relation value as " + _relationType + " the difference " + _difference );
         } else {
-            _relationList.setRelation(_relationType, _difference);
-            //System.out.println("set a relation node to relation list " +
-            //                  _relationType + " the difference " + _difference );
+            _relationList.setRelation(_relationIndex, _relationType, _difference);
         }
 
+        _relationIndex++;
         return;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    // the list of discrete variables without values
+    private LinkedList _absentDiscreteVariables;
+    // flag to indicate the parse tree evaluator in construction mode of update mode
+    private boolean _construction;
     // the metric for relations
     private double _difference;
-    // the flag to indicate the mode of evaluator as construction or update
-    private boolean _construction;
     // the list to store the relation nodes and leaf nodes with boolean tokens
     // inside a guard expression
     private RelationList _relationList;
     // the relation types have 5 integer values with meaning:
     // 1: true; 2: false; 3: equal/inequal; 4: less_than: 5: bigger_than.
     private int _relationType;
+    // variable collector
+    private ParseTreeFreeVariableCollector _variableCollector;
+    // private relation node index
+    private int _relationIndex;
 }
