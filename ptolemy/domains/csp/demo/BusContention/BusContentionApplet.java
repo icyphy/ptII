@@ -114,8 +114,10 @@ public class BusContentionApplet extends CSPApplet {
 
 	getContentPane().setLayout( new BorderLayout(5, 5) );
 
-	// The '3' argument specifies a 'go', 'stop' and 'layout' buttons.
-	getContentPane().add( _createRunControls(3), BorderLayout.NORTH );
+	// The '2' argument specifies 'go' and 'stop' buttons.
+	// If we need a layout button in the future, then change the '2' to 
+	// a '3'.
+	getContentPane().add( _createRunControls(2), BorderLayout.NORTH );
 
 	constructPtolemyModel();
 
@@ -123,32 +125,26 @@ public class BusContentionApplet extends CSPApplet {
         _divaPanel.setBorder(new TitledBorder(
                 new LineBorder(Color.black), "Animation"));
         _divaPanel.setBackground(getBackground());
-	_divaPanel.setSize( new Dimension(600, 350) );
+	_divaPanel.setPreferredSize( new Dimension(500, 450) );
 	_divaPanel.setBackground(getBackground());
-	getContentPane().add( _divaPanel, BorderLayout.CENTER );
+	getContentPane().add( _divaPanel, BorderLayout.SOUTH );
 
-        _graph = constructDivaGraph();
-	final MutableGraphModel finalGraphModel = _graph;
+        _graph = constructGraph();
+	
+	final BasicGraphModel finalGraphModel = _graph;
 	// display the graph.
 	final GraphController gc = new BusContentionGraphController();
+	
 	final GraphPane gp = new GraphPane(gc, _graph);
 	_jgraph = new JGraph(gp);
-	_divaPanel.add(_jgraph, BorderLayout.NORTH );
-	_jgraph.setPreferredSize( new Dimension(600, 400) );
+	_jgraph.repaint();
 
-        try {
-	    SwingUtilities.invokeAndWait(new Runnable(){
-		public void run() {
-		    doLayout(finalGraphModel, gp);
-		}
-	    });
-        } catch(Exception ex) {
-            ex.printStackTrace();
-            System.exit(0);
-        }
+	// Adding it to the center so that it fills the containing panel.
+	_divaPanel.add(_jgraph, BorderLayout.CENTER );
+		
 	_jgraph.setBackground(getBackground());
 	
-        StateListener listener =
+	StateListener listener =
             new StateListener((GraphPane)_jgraph.getCanvasPane());
 	_processActor1.addListeners(listener);
 	_processActor2.addListeners(listener);
@@ -159,7 +155,7 @@ public class BusContentionApplet extends CSPApplet {
      * This is sort of bogus because it's totally hard-wired,
      * but it will do for now...
      */
-    public BasicGraphModel constructDivaGraph() {
+    public BasicGraphModel constructGraph() {
 	BasicGraphModel model = new BasicGraphModel();
 	Object root = model.getRoot();
 
@@ -215,8 +211,8 @@ public class BusContentionApplet extends CSPApplet {
 	e = model.createEdge(null);
 	model.setEdgeHead(this, e, n3);
 	model.setEdgeTail(this, e, n6);
-
-        return model;
+	
+	return model;
     }
 
     /** Construct the Ptolemy system */
@@ -294,10 +290,10 @@ public class BusContentionApplet extends CSPApplet {
 	    SwingUtilities.invokeLater(new Runnable() {
 		public void run() {
 		    // Layout is a bit stupid
-		    LevelLayout staticLayout = new LevelLayout();
-		    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
 		    LayoutTarget target = new BasicLayoutTarget(gc);
-		    staticLayout.layout(target, layoutGraph.getRoot());
+		    LevelLayout staticLayout = new LevelLayout(target);
+		    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
+		    staticLayout.layout(layoutGraph.getRoot());
 		    pane.repaint();
 		}
 	    });
@@ -309,9 +305,12 @@ public class BusContentionApplet extends CSPApplet {
     /** Override the baseclass start method so that the model
      *  does not immediately begin executing as soon as the
      *  the applet page is displayed. Execution begins once
-     *  the "Go" button is depressed.
+     *  the "Go" button is depressed. Layout the graph visualization,
+     *  since this can't be done in the init method, because the graph
+     *  hasn't yet been displayed.
      */
     public void start() {
+ 	doLayout(_graph, _jgraph.getGraphPane());
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -356,7 +355,7 @@ public class BusContentionApplet extends CSPApplet {
     private JPanel _divaPanel;
 
     // The Diva graph
-    private MutableGraphModel _graph;
+    private BasicGraphModel _graph;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////

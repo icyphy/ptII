@@ -87,10 +87,10 @@ public class LocalZenoApplet extends DDEApplet {
         getContentPane().setBackground(getBackground());
         topPanel.setBackground(getBackground());
 
-	// The '3' argument specifies a 'go', 'stop' and
-        // 'layout' buttons.
-	topPanel.add( _createRunControls(3),
-        	BorderLayout.NORTH );
+	// The '3' argument specifies 'go' and 'stop' buttons.
+	// If we need a layout button in the future, then change the '2' to 
+	// a '3'.
+	topPanel.add( _createRunControls(2), BorderLayout.NORTH );
 
 	_plotPanel = new JPanel();
 	_plotPanel.setSize( new Dimension(600, 200) );
@@ -112,20 +112,7 @@ public class LocalZenoApplet extends DDEApplet {
 	final GraphController gc = new LocalZenoGraphController();
 	final GraphPane gp = new GraphPane(gc, _graph);
 	_jgraph = new JGraph(gp);
-	_divaPanel.add(_jgraph, BorderLayout.NORTH );
-	_jgraph.setPreferredSize( new Dimension(600, 400) );
-
-        try {
-	    SwingUtilities.invokeAndWait(new Runnable(){
-		public void run() {
-		    doLayout(finalGraphModel, gp);
-		}
-	    });
-        } 
-        catch(Exception ex) {
-            ex.printStackTrace();
-            System.exit(0);
-        }
+	_divaPanel.add(_jgraph, BorderLayout.CENTER );
 
         StateListener listener =
             new StateListener((GraphPane)_jgraph.getCanvasPane());
@@ -311,10 +298,10 @@ public class LocalZenoApplet extends DDEApplet {
 	    SwingUtilities.invokeLater(new Runnable() {
 		public void run() {
 		    // Layout is a bit stupid
-		    LevelLayout staticLayout = new LevelLayout();
-		    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
 		    LayoutTarget target = new BasicLayoutTarget(gc);
-		    staticLayout.layout(target, layoutGraph.getRoot());
+		    LevelLayout staticLayout = new LevelLayout(target);
+		    staticLayout.setOrientation(LevelLayout.HORIZONTAL);
+		    staticLayout.layout(layoutGraph.getRoot());
 		    pane.repaint();
 		}
 	    });
@@ -326,9 +313,12 @@ public class LocalZenoApplet extends DDEApplet {
     /** Override the baseclass start method so that the model
      *  does not immediately begin executing as soon as the
      *  the applet page is displayed. Execution begins once
-     *  the "Go" button is depressed.
+     *  the "Go" button is depressed. Layout the graph visualization,
+     *  since this can't be done in the init method, because the graph
+     *  hasn't yet been displayed.
      */
     public void start() {
+   	doLayout(_graph, _jgraph.getGraphPane());
     }
 
     ///////////////////////////////////////////////////////////////////
