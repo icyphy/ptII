@@ -104,7 +104,8 @@ CVS_REPOSITORY = :ext:gigasource.eecs.berkeley.edu:/home/cvs
 # Files to be produced
 
 PTII_SRC = 	  $(GENDIR)/ptII$(VERSION).src.tar.$(SUFFIX)
-PTII_SRC_ZIP =   $(GENDIR)/ptII$(VERSION).src.zip
+PTII_SRC_ZIP =    $(GENDIR)/ptII$(VERSION).src.zip
+PTII_SRC_ONLY =   $(GENDIR)/ptII$(VERSION).src_only.tar.$(SUFFIX)
 
 VERGIL = 	  $(GENDIR)/vergil$(VERSION).src.tar.$(SUFFIX)
 
@@ -183,6 +184,15 @@ $(PTII_SRC_ZIP): $(PTIIDIST)
 	chmod g+w $@
 	chgrp ptolemy $@
 	ls -l $@
+
+
+ptii_src_only: $(PTII_SRC_ONLY)
+$(PTII_SRC_ONLY): #$(PTII_SRC)
+	@echo "Creating $@"
+	(cd tmp; \
+		$(TAR) -zxf $(PTII_SRC); cd ptII$(VERSION); \
+		./configure; make clean; 
+		$(TAR) -zcf $(PTII_SRC_ONLY) ptII$(VERSION));
 
 
 vergil: $(VERGIL)
