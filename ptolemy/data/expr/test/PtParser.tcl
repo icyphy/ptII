@@ -50,12 +50,12 @@ if {[string compare test [info procs test]] == 1} then {
 ######################################################################
 ####
 # 
-test PtParser-2.1 {Construct Parse objects using different constructors} {
+test PtParser-2.1 {Construct Parser objects using different constructors} {
     set p1 [java::new ptolemy.data.expr.PtParser]
     set e [java::new {ptolemy.kernel.Entity String} parent]
     set tok1 [java::new  {ptolemy.data.DoubleToken double} 4.5]
     set param1 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id1 $tok1]
-    set p2 [java::new {ptolemy.data.expr.PtParser java.util.Observer} $param1]
+    set p2 [java::new {ptolemy.data.expr.PtParser ptolemy.data.expr.ParameterListner} $param1]
 
     set c1 [$p1 getClass]
     set c2 [$p2 getClass]
@@ -233,7 +233,7 @@ test PtParser-6.0 {Construct a Parser, test use of params passed in a namedlist}
     set param3 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id3 $tok3]
     set param4 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id4 $tok4]
 
-    set parser [java::new {ptolemy.data.expr.PtParser java.util.Observer} $param1]
+    set parser [java::new {ptolemy.data.expr.PtParser ptolemy.data.expr.ParameterListner} $param1]
     $param1 setContainer $e
     $param2 setContainer $e
     $param3 setContainer $e
@@ -256,10 +256,10 @@ test PtParser-6.1 {Test reEvaluation of parse Tree} {
     set tok2 [java::new  {ptolemy.data.DoubleToken double} 2.45]
     set tok3 [java::new  {ptolemy.data.IntToken int} 9]
     set tok4 [java::new  {ptolemy.data.StringToken String} { hello world}]
-    set param1 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id1 $tok1]
-    set param2 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id2 $tok2]
-    set param3 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id3 $tok3]
-    set param4 [java::new {ptolemy.data.expr.Parameter ptolemy.kernel.util.NamedObj String ptolemy.data.Token} $e id4 $tok4]
+    set param1 [java::new ptolemy.data.expr.Parameter  $e id1 $tok1]
+    set param2 [java::new ptolemy.data.expr.Parameter  $e id2 $tok2]
+    set param3 [java::new ptolemy.data.expr.Parameter  $e id3 $tok3]
+    set param4 [java::new ptolemy.data.expr.Parameter  $e id4 $tok4]
 
    
     set parser [java::new ptolemy.data.expr.PtParser]
@@ -272,7 +272,8 @@ test PtParser-6.1 {Test reEvaluation of parse Tree} {
     set root1 [ $parser {generateParseTree String ptolemy.kernel.util.NamedList} "id2 + id3 + id4\n" $nl]
     set res1  [ $root1 evaluateParseTree ]
 
-    $tok2 {setValue double} 102.45
+    set newTok [java::new ptolemy.data.DoubleToken 102.45]
+    $param2 setToken $newTok
     set res2  [ $root1 {evaluateParseTree} ]
     
     list [$res1 toString] [$res2 toString] 
