@@ -122,7 +122,7 @@ public final class ImageScale extends SDFAtomicActor {
         SDFIOPort outputport = (SDFIOPort) getPort("contrast");
         SDFIOPort inputport = (SDFIOPort) getPort("figure");
 
-        ImageToken message = (ImageToken) inputport.get(0);
+        IntMatrixToken message = (IntMatrixToken) inputport.get(0);
         int frame[] = message.intArray();
 
         //look into the image to find and set the most dark spot (inMin) and
@@ -152,7 +152,7 @@ public final class ImageScale extends SDFAtomicActor {
                         (frame[xframesize*j+i] - inMin)* (outmax - outmin) /
                         (inMax-inMin) + outmin;
                 }
-        message = new ImageToken(frame, yframesize, xframesize);
+        message = new IntMatrixToken(frame, yframesize, xframesize);
         outputport.send(0, message);
 
     }
