@@ -48,7 +48,7 @@ Parameters.
 */
 public class AddEditorFactory implements MoMLFilter {
 
-    /**  Identify Parameters that need a VisibleParameterEditoryFactory
+    /**  Identify Parameters that need a VisibleParameterEditorFactory
      *   named _editorFactory added.
      *
      *  @param container  The container for this attribute.
