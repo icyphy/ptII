@@ -28,8 +28,10 @@ COPYRIGHTENDKEY
 
 package ptolemy.domains.de.kernel;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.util.CQComparator;
 import ptolemy.actor.util.CalendarQueue;
+import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.DebugListener;
 
 //////////////////////////////////////////////////////////////////////////
@@ -64,7 +66,8 @@ public class DECQEventQueue implements DEEventQueue {
      *  default parameter, i.e. minBinCount is 2, binCountFactor is 2,
      *  and isAdaptive is true.
      */
-    public DECQEventQueue() {
+    public DECQEventQueue(Director director) {
+        _director = director;
         _cQueue = new CalendarQueue(new DECQComparator());
     }
 
@@ -76,8 +79,9 @@ public class DECQEventQueue implements DEEventQueue {
      *  @param isAdaptive If the queue changes its number of bins
      *     at run time.
      */
-    public DECQEventQueue(int minBinCount, int binCountFactor,
-            boolean isAdaptive) {
+    public DECQEventQueue(Director director, int minBinCount, 
+        int binCountFactor, boolean isAdaptive) {
+        _director = director;
         _cQueue = new CalendarQueue(new DECQComparator(),
                 minBinCount, binCountFactor);
         _cQueue.setAdaptive(isAdaptive);
@@ -202,8 +206,9 @@ public class DECQEventQueue implements DEEventQueue {
          *   an instance of DEEvent.
          */
         public final long getVirtualBinNumber(Object event) {
-            long value = (long)((((DEEvent) event).timeStamp()
-                                        - _zeroReference.timeStamp())/_binWidth.timeStamp());
+            long value = (long)((((DEEvent) event).timeStamp().getTimeValue()
+                - _zeroReference.timeStamp().getTimeValue())
+                / _binWidth.timeStamp().getTimeValue());
             if (value != Long.MAX_VALUE) {
                 return value;
             } else {
@@ -230,21 +235,22 @@ public class DECQEventQueue implements DEEventQueue {
         public void setBinWidth(Object[] entryArray) {
 
             if ( entryArray == null || entryArray.length < 2) {
-                _zeroReference = new DEEvent(null, 0.0, 0, 0);
+                _zeroReference = 
+                    new DEEvent(null, new Time(_director, 0.0), 0, 0);
                 return;
             }
 
             double[] diff = new double[entryArray.length - 1];
 
             double average =
-                (((DEEvent)entryArray[entryArray.length - 1]).timeStamp() -
-                        ((DEEvent)entryArray[0]).timeStamp()) /
-                (entryArray.length-1);
+                (((DEEvent)entryArray[entryArray.length - 1]).timeStamp()
+                .subtract(((DEEvent)entryArray[0]).timeStamp())).getTimeValue() 
+                / (entryArray.length-1);
             double effectiveAverage = 0.0;
             int effectiveSamples = 0;
             for (int i = 0; i < entryArray.length - 1; ++i) {
-                diff[i] = ((DEEvent)entryArray[i+1]).timeStamp() -
-                    ((DEEvent)entryArray[i]).timeStamp();
+                diff[i] = ((DEEvent)entryArray[i+1]).timeStamp().subtract(
+                    ((DEEvent)entryArray[i]).timeStamp()).getTimeValue();
                 if (diff[i] < 2.0 * average) {
                     effectiveSamples++;
                     effectiveAverage += diff[i];
@@ -258,7 +264,9 @@ public class DECQEventQueue implements DEEventQueue {
                 return;
             }
             effectiveAverage /= (double)effectiveSamples;
-            _binWidth = new DEEvent(null, 3.0 * effectiveAverage, 0, 0);
+            _binWidth = 
+                new DEEvent(null, new Time(_director, 3.0 * effectiveAverage), 
+                0, 0);
         }
 
         /** Set the zero reference, to be used in calculating the virtual
@@ -276,10 +284,12 @@ public class DECQEventQueue implements DEEventQueue {
         ////                         private members                   ////
 
         // The bin width.
-        private DEEvent _binWidth = new DEEvent(null, 1.0, 0, 0);
+        private DEEvent _binWidth 
+            = new DEEvent(null, new Time(_director, 1.0), 0, 0);
 
         // The zero reference.
-        private DEEvent _zeroReference = new DEEvent(null, 0.0, 0, 0);
+        private DEEvent _zeroReference
+            = new DEEvent(null, new Time(_director, 0.0), 0, 0);
     }
 
 
@@ -288,4 +298,7 @@ public class DECQEventQueue implements DEEventQueue {
 
     // The instance of CalendarQueue used for sorting.
     private CalendarQueue _cQueue;
+    // The director that contains this event queue.
+    private Director _director;
+    
 }

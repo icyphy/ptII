@@ -36,6 +36,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoTokenException;
+import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -168,7 +169,7 @@ public class DEReceiver extends AbstractReceiver {
                     dir._enqueueEvent(this, token);
                 } else {
                     dir._enqueueEvent(this, token,
-                            dir.getCurrentTime() + _delay);
+                            dir.getCurrentTime().add(_delay));
                 }
             } else {
                 dir._enqueueEvent(this, token, dir.getCurrentTime());
@@ -190,15 +191,15 @@ public class DEReceiver extends AbstractReceiver {
      *  @exception IllegalActionException If time is less than the
      *     current time of the director, or no director is available.
      */
-    public synchronized void put(Token token, double time)
+    public synchronized void put(Token token, Time time)
             throws IllegalActionException{
         DEDirector dir = _getDirector();
-        double now = dir.getCurrentTime();
-        if (time < now) {
+        Time now = dir.getCurrentTime();
+        if (time.compareTo(now) < 0) {
             throw new IllegalActionException(getContainer(),
                     "Cannot enqueue a token in the past.");
         }
-        if (time == now) {
+        if (time.equalTo(now)) {
             // Use special enqueue method to increment microstep.
             dir._enqueueEvent(this, token);
         } else {

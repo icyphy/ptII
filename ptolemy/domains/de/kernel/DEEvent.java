@@ -31,6 +31,7 @@ package ptolemy.domains.de.kernel;
 import ptolemy.actor.Actor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.Receiver;
+import ptolemy.actor.util.Time;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.NamedObj;
 
@@ -78,7 +79,7 @@ public final class DEEvent implements Comparable {
      *  @exception NullPointerException If the receiver is null or is
      *   not contained by a port contained by an actor.
      */
-    public DEEvent(Receiver receiver, Token token, double timeStamp,
+    public DEEvent(Receiver receiver, Token token, Time timeStamp,
             int microstep, int depth) {
         _receiver = receiver;
         // FIXME: should we check whether the receiver is null?
@@ -104,7 +105,7 @@ public final class DEEvent implements Comparable {
      *  @param microstep The phase of execution within a fixed time.
      *  @param depth The topological depth of the destination receiver.
      */
-    public DEEvent(Actor actor, double timeStamp, int microstep, int depth) {
+    public DEEvent(Actor actor, Time timeStamp, int microstep, int depth) {
         _actor = actor;
         _ioPort = null;
         _timeStamp = timeStamp;
@@ -145,9 +146,9 @@ public final class DEEvent implements Comparable {
      */
     public final int compareTo(DEEvent event) {
 
-        if ( _timeStamp > event._timeStamp)  {
+        if ( _timeStamp.compareTo(event._timeStamp) > 0 ) {
             return 1;
-        } else if ( _timeStamp < event._timeStamp) {
+        } else if ( _timeStamp.compareTo(event._timeStamp) < 0) {
             return -1;
         } else if ( _microstep > event._microstep) {
             return 1;
@@ -174,7 +175,7 @@ public final class DEEvent implements Comparable {
      *  @param event The event to compare against.
      */
     public final boolean hasTheSameTagAs(DEEvent event) {
-        return (_timeStamp == event._timeStamp) &&
+        return (_timeStamp.equalTo(event._timeStamp)) &&
             (_microstep == event._microstep);
     }
 
@@ -226,7 +227,7 @@ public final class DEEvent implements Comparable {
     /** Return the time stamp.
      *  @return The time stamp.
      */
-    public final double timeStamp() {
+    public final Time timeStamp() {
         return _timeStamp;
     }
 
@@ -271,7 +272,7 @@ public final class DEEvent implements Comparable {
     private int _receiverDepth;
 
     // The time stamp of the event.
-    private double _timeStamp;
+    private Time _timeStamp;
 
     // The token contained by this event.
     private Token _token;
