@@ -118,8 +118,8 @@ public class PNRDController extends AtomicActor {
 	    
 	    //Creating initial subtrees for each block
 	    //FIXME: LIst as mutations!
-	    TopologyChangeRequest request = new TopologyChangeRequest(this) {
-		public void constructEventQueue() {
+	    ChangeRequest request = new ChangeRequest(this, "") {
+		public void execute() {
 		    try {
 			_outsignal = new IOPort[_numberofblocks];
 			IOPort inport;
@@ -233,7 +233,7 @@ public class PNRDController extends AtomicActor {
 	    
 	    //Inform the director to schedule all the mutations
 	    //FIXME!!
-	    ((PNDirector)getDirector()).queueTopologyChangeRequest(request);
+	    ((BasePNDirector)getDirector()).requestChange(request);
 	    
 	    //Writing the blocks to each subtree
 	    for (int j1=0; j1<_numberofblocks; j1++) {

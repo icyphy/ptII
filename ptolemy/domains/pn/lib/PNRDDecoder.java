@@ -84,8 +84,8 @@ public class PNRDDecoder extends AtomicActor {
      */
     public void fire() throws IllegalActionException {
         
-	TopologyChangeRequest r = new TopologyChangeRequest(this) {
-	    public void constructEventQueue() {
+	ChangeRequest r = new ChangeRequest(this, "") {
+	    public void execute() {
 		try {
 		    ObjectToken data = (ObjectToken)_infoport.get(0);
 		    PNRDInfo[] infoarray = (PNRDInfo[])data.getValue();
@@ -223,7 +223,7 @@ public class PNRDDecoder extends AtomicActor {
 	};
 	
 	//FIXME!!!
-	((PNDirector)getDirector()).queueTopologyChangeRequest(r);
+	((BasePNDirector)getDirector()).requestChange(r);
 	
 	IntToken done = null;
 	done = (IntToken)_donein.get(0);

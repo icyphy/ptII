@@ -67,10 +67,10 @@ public class RadioController extends AtomicActor {
 	//System.out.println("Sieve gotten data");
 	if (data.doubleValue() >= 0.95) {
 	    // yes - make the mutation for it
-	    TopologyChangeRequest m = makeMutation();
+	    ChangeRequest m = makeMutation();
 	    BasePNDirector director = (BasePNDirector)getDirector();
 	    // Queue the new mutation
-	    director.queueTopologyChangeRequest(m);
+	    director.requestChange(m);
 	    //System.out.println("Queued mutation");
 	}
     }
@@ -97,16 +97,15 @@ public class RadioController extends AtomicActor {
 
     /** Create and return a new mutation object that adds a new sieve.
      */
-    private TopologyChangeRequest makeMutation() {
-        TopologyChangeRequest request = new TopologyChangeRequest(this) {
-            public void constructEventQueue() {
+    private ChangeRequest makeMutation() {
+        ChangeRequest request = new ChangeRequest(this, "") {
+            public void execute() {
                 //System.out.println("TopologyRequest event q being constructed!");
                 CompositeActor container =  (CompositeActor)getContainer();
                 try {
                     PNPlot newplot = new PNPlot (container, _count + "_radio");
-		    queueEntityAddedEvent(container, newplot);
 		    IOPort radioport = (IOPort)newplot.getPort("input");
-		    queuePortLinkedEvent(_relation, radioport);
+		    radioport.link(_relation);
                 } catch (NameDuplicationException ex) {
                     throw new InvalidStateException("Cannot create " +
                             "new sieve.");

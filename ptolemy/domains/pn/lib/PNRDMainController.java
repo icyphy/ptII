@@ -170,8 +170,8 @@ public class PNRDMainController extends AtomicActor {
         _highpass = highpass;
         _lowpass = lowpass;
 
-	TopologyChangeRequest request = new TopologyChangeRequest(this) {
-	    public void constructEventQueue() {
+	ChangeRequest request = new ChangeRequest(this, "") {
+	    public void execute() {
 		try {
                     for (int i = 0; i < _diffNumBlocks; i++) {
                         _infoIn[i] = new IOPort(PNRDMainController.this, 
@@ -182,15 +182,12 @@ public class PNRDMainController extends AtomicActor {
                 } catch (IllegalActionException e) {
 		    System.err.println("IllegalActionException: "+e.getMessage());
 		}
-		for (int i=0; i<_diffNumBlocks; i++) {
-		    queuePortAddedEvent(PNRDMainController.this, _infoIn[i]);
-		}
 	    }
 	};
 
-	PNDirector director = (PNDirector)getDirector();
+	BasePNDirector director = (BasePNDirector)getDirector();
 	// Queue the new mutation
-	director.queueTopologyChangeRequest(request);
+	director.requestChange(request);
 
 	//Set the param values
 	_segmentSize = ((IntToken)_paramsegsize.getToken()).intValue() ;
@@ -301,8 +298,8 @@ public class PNRDMainController extends AtomicActor {
     }
     
     private void makeInitUnlink() {
-	TopologyChangeRequest request = new TopologyChangeRequest(this) {
-	    public void constructEventQueue() {
+	ChangeRequest request = new ChangeRequest(this, "") {
+	    public void execute() {
 		//Mutation m = new Mutation() {
 		//public void perform() {
                 _signalOut.unlinkAll();
@@ -311,42 +308,21 @@ public class PNRDMainController extends AtomicActor {
                 for (int j=0; j<_infoIn.length; j++) {
                     _infoIn[j].unlinkAll();
                 }
-		Enumeration relations = _signalOut.linkedRelations();
-		while (relations.hasMoreElements()) {
-		    IORelation rel = (IORelation)relations.nextElement();
-		    queuePortUnlinkedEvent(rel, _signalOut);
-		}
-		relations = _done.linkedRelations();
-		while (relations.hasMoreElements()) {
-		    IORelation rel = (IORelation)relations.nextElement();
-		    queuePortUnlinkedEvent(rel, _done);
-		}
-		relations = _infoOut.linkedRelations();
-		while (relations.hasMoreElements()) {
-		    IORelation rel = (IORelation)relations.nextElement();
-		    queuePortUnlinkedEvent(rel, _infoOut);
-		}
-		for (int j=0; j<_infoIn.length; j++) {
-		    relations = _infoIn[j].linkedRelations();
-		    while (relations.hasMoreElements()) {
-			IORelation rel = (IORelation)relations.nextElement();
-			queuePortUnlinkedEvent(rel, _infoIn[j]);
-		    }
-		}
 	    }
 	    
 	};
-        PNDirector director = (PNDirector)getDirector();
+        BasePNDirector director = (BasePNDirector)getDirector();
         // Queue the new mutation
-	director.queueTopologyChangeRequest(request);
+	director.requestChange(request);
     }
 
 
     private void createEncoders() {
         // create encoder galaxies.
-        PNDirector director = (PNDirector)PNRDMainController.this.getDirector();   
-        TopologyChangeRequest request = new TopologyChangeRequest(this) {
-	    public void constructEventQueue() {
+        BasePNDirector director = 
+               (BasePNDirector)PNRDMainController.this.getDirector();   
+        ChangeRequest request = new ChangeRequest(this, "") {
+	    public void execute() {
 		IOPort[] galports = new IOPort[_diffNumBlocks];
 		IOPort[] infogalports = new IOPort[_diffNumBlocks];
 		PNRDController[] encoders = new PNRDController[_diffNumBlocks];
@@ -390,37 +366,11 @@ public class PNRDMainController extends AtomicActor {
                     //This should never be thrown
                     System.err.println("Exception: " + e.toString());
                 }
-		
-		//public void update(MutationListener listener) {
-		for (int j = 0; j < _diffNumBlocks; j++) {
-		    //listener.addEntity(myContainer, _encodingGal[j]);
-		    queueEntityAddedEvent(myContainer, _encodingGal[j]);
-		    // listener.addPort(_encodingGal[j], galports[j]);
-		    // listener.addPort(_encodingGal[j], infogalports[j]);
-		    queueRelationAddedEvent(myContainer, (ComponentRelation)rel1);
-		    // Fool the graph viewer into thinking this
-		    // is acyclic...
-		    //galports[j].ISINPUT = true;
-		    //_signalOut.ISINPUT = false;
-		    queuePortLinkedEvent(rel1, galports[j]);
-		    queuePortLinkedEvent(rel1, _signalOut);
-		    
-		    //_infoIn[j].ISINPUT = false;
-		    //infogalports[j].ISINPUT = true;
-		    
-		    queueRelationAddedEvent(myContainer, (ComponentRelation)rel2);
-		    queuePortLinkedEvent(rel2, _infoIn[j]);
-		    queuePortLinkedEvent(rel2, infogalports[j]);
-		    
-		    //listener.addEntity(mycontainer, );
-		    //listener.done();
-		}
-		//listener.done();
-	    }
+            }		
         };
 	//PNDirector director = (PNDirector)getDirector();
 	// Queue the new mutation
-	director.queueTopologyChangeRequest(request);
+	director.requestChange(request);
         //director.queueMutation(m);
         //director.processPendingMutations();
         //director.startNewActors();
@@ -428,11 +378,13 @@ public class PNRDMainController extends AtomicActor {
     }
 
     private void createDecoders(final int bestNumBlocks) {
-        PNDirector director = (PNDirector)PNRDMainController.this.getDirector();
-	TopologyChangeRequest request = new TopologyChangeRequest(this) {
-            public void constructEventQueue() {
+        BasePNDirector director = 
+            (BasePNDirector)PNRDMainController.this.getDirector();
+	ChangeRequest request = new ChangeRequest(this, "") {
+            public void execute() {
 		//Mutation m = new Mutation() {
-		CompositeActor myContainer = (CompositeActor)PNRDMainController.this.getContainer();
+		CompositeActor myContainer = 
+                    (CompositeActor)PNRDMainController.this.getContainer();
 		Relation rel1 = null;
 		Relation rel2 = null;
 		IOPort decodport = null;
@@ -482,30 +434,10 @@ public class PNRDMainController extends AtomicActor {
 		    //This should never be thrown
 		    System.err.println("Exception: " + e.toString());
 		}
-		//}
-		//public void update(MutationListener listener) {
-                queueEntityAddedEvent(myContainer, _decoderGal);
-                // listener.addPort(_decoderGal, decodport);
-                // listener.addPort(_decoderGal, doneport);
- 
-                // Fool the graph viewer into thinking this
-                // is acyclic...
-                //decodport.ISINPUT = true;
-                //_infoOut.ISINPUT = false;
-                queueRelationAddedEvent(myContainer, (ComponentRelation)rel1);
-                queuePortLinkedEvent(rel1, decodport);
-                queuePortLinkedEvent(rel1, _infoOut);
-
-                //doneport.ISINPUT = true;
-                //_done.ISINPUT = false;
-                queueRelationAddedEvent(myContainer, (ComponentRelation)rel2);
-                queuePortLinkedEvent(rel2, _done);
-                queuePortLinkedEvent(rel2, doneport);
-                //listener.done();
             }
         };
 	// Queue the new mutation
-	director.queueTopologyChangeRequest(request);
+	director.requestChange(request);
         //System.out.println("Mutating ");
         //((PNDirector)getDirector()).setMutate(true);
     }
@@ -514,9 +446,10 @@ public class PNRDMainController extends AtomicActor {
 
     //Kill the encoding galaxies and remove them from the container
     private void killGalaxy(final CompositeActor galaxy) {
-        PNDirector director =(PNDirector)PNRDMainController.this.getDirector();
-	TopologyChangeRequest request = new TopologyChangeRequest(this) {
-            public void constructEventQueue() {
+        BasePNDirector director = 
+            (BasePNDirector)PNRDMainController.this.getDirector();
+	ChangeRequest request = new ChangeRequest(this, "") {
+            public void execute() {
 		//Mutation m = new Mutation() {
 		CompositeActor myContainer = 
 		        (CompositeActor)PNRDMainController.this.getContainer();
@@ -525,7 +458,6 @@ public class PNRDMainController extends AtomicActor {
 		Enumeration ports = galaxy.getPorts();
 		LinkedList allrels = new LinkedList();
 		
-		//public void perform() {
 		// kill encoder galaxy
                 while (ports.hasMoreElements()) {
                     Port port = (Port)ports.nextElement();
@@ -557,28 +489,9 @@ public class PNRDMainController extends AtomicActor {
                     System.err.println("Exception: " + e.toString());
                 }
 		
-		//public void update(MutationListener listener) {
-                //Delete the relations
-                Enumeration enumrel = rel.elements();
-                Enumeration enumpo  = po.elements();
-                while (enumpo.hasMoreElements()) {
-                    Relation r = (Relation)enumrel.nextElement();
-                    Port p = (Port)enumpo.nextElement();
-		    queuePortUnlinkedEvent(r, p);
-                }
-                enumrel = allrels.elements();
-                while (enumrel.hasMoreElements()) {
-                    Relation r = (Relation)enumrel.nextElement();
-		    queueRelationRemovedEvent(myContainer, (ComponentRelation)r);
-                }
-                rel = null;
-                po = null;
-                allrels = null;
-                queueEntityRemovedEvent(myContainer, galaxy);
-                //listener.done();
             }
         };
-	director.queueTopologyChangeRequest(request);
+	director.requestChange(request);
     }
         
     //////////////////////////////////////////////////////////////////////////
