@@ -45,6 +45,7 @@ TCL_SRCS = \
 	RampSystem2.tcl
 
 JSRCS = \
+	ComSystem.java \
 	VideoTest.java \
 	SDFdemo.java \
 	SDFdemo2.java \
