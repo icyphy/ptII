@@ -25,70 +25,59 @@
                                         COPYRIGHTENDKEY
 */
 
-package ptolemy.plot;
+package pt.plot;
 
 import java.awt.*;
+import java.awt.event.*;
 import java.util.*;
 
-/** Class that implements a simple message display with a close button.
- * @author Christopher Hylands
- * @version $Id$
+/** A simple message display with a close button.
+ *  This will eventually replaced by a class from JFC.
+ *
+ *  @author Christopher Hylands
+ *  @version $Id$
  */
 public class Message extends Frame {
+
+    /** Pop up a text widget with a close button.
+     */
+    public Message(String msg) {
+        this(msg, null, null);
+    }
+
     /** Pop up a text widget with a close button.
      */
     public Message(String msg, Color background, Color foreground) {
-        setBackground(background);
-        setForeground(foreground);
+        if (background != null) setBackground(background);
+        if (foreground != null) setForeground(foreground);
 
-        // TextArea.SCROLLABARS_NONE is not in jdk1.0.2
         _txtarea = new TextArea(msg, 12, 40, TextArea.SCROLLBARS_NONE);
         _txtarea.setEditable(false);
         add("Center", _txtarea);
 
         Button button = new Button("Close");
         Panel panel = new Panel();
+        button.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent event) {
+                dispose();
+            }
+        });
         panel.add(button);
         add("South", panel);
 
-    }
-
-    //     public static void main(String args[]){
-    //      Message message = new Message("A message",
-    //                             Color.white, Color.black);
-    //      message.setTitle("A Message");
-    //      message.pack();
-    //      message.show();
-    //     }
-
-    /**
-     * Handle an event.
-     * @deprecated As of JDK1.1 in java.awt.component, but we need
-     * to compile under 1.0.2 for netscape3.x compatibility.
-     */
-    public boolean handleEvent(Event event) {
-        if (event.id == Event.WINDOW_DESTROY) {
-            if (_inapplet) {
+        // Closing the window has the same effect as hitting the close button.
+        addWindowListener(new WindowAdapter() {
+            public void windowClosing(WindowEvent e) {
                 dispose();
-            } else {
-                //System.exit(0);
             }
-        }
-        return super.handleEvent(event); // FIXME: handleEvent() is deprecated.
+        });
+
+        pack();
+        setVisible(true);
     }
 
-    /**
-     * @deprecated As of JDK1.1 in java.awt.component, but we need
-     * to compile under 1.0.2 for netscape3.x compatibility.
-     */
-    public boolean action(Event event, Object arg) {
-        dispose();
-        return true;
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    //////////////////////////////////////////////////////////////////////////
+    ////                         private variables                        ////
 
     private TextArea _txtarea;
-    private boolean _inapplet = true;
 }
