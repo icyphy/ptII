@@ -359,7 +359,7 @@ public class CTMultiSolverDirector extends CTDirector {
         return true;
     }
 
-   /**  Return true always, indicating that the system is always ready
+    /**  Return true always, indicating that the system is always ready
      *  for one iteration.
      *  Note that no actors are prefired in this method.
      *
@@ -664,7 +664,7 @@ public class CTMultiSolverDirector extends CTDirector {
                         actor.predictedStepSize());
             }
             actors = schedule.get(
-                CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS).actorIterator();
+                    CTSchedule.OUTPUT_STEP_SIZE_CONTROL_ACTORS).actorIterator();
             while (actors.hasNext()) {
                 CTStepSizeControlActor actor =
                     (CTStepSizeControlActor) actors.next();
@@ -694,7 +694,7 @@ public class CTMultiSolverDirector extends CTDirector {
         double refinedStep = getCurrentStepSize();
         CTSchedule schedule = (CTSchedule)getScheduler().getSchedule();
         Iterator actors = schedule.get(
-            CTSchedule.STATE_STEP_SIZE_CONTROL_ACTORS).actorIterator();
+                CTSchedule.STATE_STEP_SIZE_CONTROL_ACTORS).actorIterator();
         while (actors.hasNext()) {
             CTStepSizeControlActor actor =
                 (CTStepSizeControlActor)actors.next();
@@ -739,7 +739,7 @@ public class CTMultiSolverDirector extends CTDirector {
         }
         if (_debugging)
             _debug(getFullName(), "refine step with respect to output to"
-                   + refinedStep);
+                    + refinedStep);
         return refinedStep;
     }
 

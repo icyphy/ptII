@@ -53,6 +53,6 @@ public interface CTWaveformGenerator extends Actor{
      *  If there are no such events, do nothing.
      *  @exception IllegalActionException If the action failed.
      *
-    public void consumeCurrentEvents() throws IllegalActionException;
+     public void consumeCurrentEvents() throws IllegalActionException;
     */
 }

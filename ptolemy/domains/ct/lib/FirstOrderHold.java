@@ -60,7 +60,7 @@ output by projecting the value with the derivative.
 public class FirstOrderHold extends Transformer
     implements CTWaveformGenerator {
 
-     /** Construct an actor in the specified container with the specified
+    /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.

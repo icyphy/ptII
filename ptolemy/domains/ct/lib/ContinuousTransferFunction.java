@@ -274,7 +274,7 @@ public class ContinuousTransferFunction extends TypedCompositeActor {
                     feedback[i].factor.setToken(new DoubleToken(-a[i+1]/a[0]));
                     feedforward[i] = new Scale(this, "Feedforward" +i);
                     feedforward[i].factor.setToken(new
-                            DoubleToken((b[i+1] - d * a[i+1])/a[0]));
+                        DoubleToken((b[i+1] - d * a[i+1])/a[0]));
                     // connections
                     nodes[i] = (IORelation)connect(integrators[i].output,
                             feedforward[i].input, "node" + i);

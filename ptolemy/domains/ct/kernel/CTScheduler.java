@@ -181,7 +181,7 @@ public class CTScheduler extends Scheduler {
      *   an attribute already in the container.
      */
     public CTScheduler(Director container, String name)
-        throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
 
@@ -458,13 +458,13 @@ public class CTScheduler extends Scheduler {
                 if (predecessorList(a).isEmpty()) {
                     ports = ((Entity)a).portList().iterator();
                     while (ports.hasNext()) {
-                         IOPort port = (IOPort)ports.next();
-                         if (_signalTypes.getType(port).equals(UNKNOWN)) {
-                             _signalTypes.setType(port, CONTINUOUS);
-                             if (port.isOutput()) {
-                                 _signalTypes.propagateType(port);
-                             }
-                         }
+                        IOPort port = (IOPort)ports.next();
+                        if (_signalTypes.getType(port).equals(UNKNOWN)) {
+                            _signalTypes.setType(port, CONTINUOUS);
+                            if (port.isOutput()) {
+                                _signalTypes.propagateType(port);
+                            }
+                        }
                     }
                 }
             }
@@ -564,7 +564,7 @@ public class CTScheduler extends Scheduler {
         Object[] discreteSorted = discreteGraph.topologicalSort();
         for (int i = 0; i < discreteSorted.length; i++) {
             discreteActorSchedule.add(new
-                    Firing((Actor)discreteSorted[i]));
+                Firing((Actor)discreteSorted[i]));
         }
 
         // Actors remain in the continuousActors list are real continuous
@@ -626,8 +626,8 @@ public class CTScheduler extends Scheduler {
             for (int i = 0; i < eventSorted.length; i++) {
                 eventGeneratorSchedule.add(new Firing((Actor)eventSorted[i]));
                 //if (continuousActors.contains(eventSorted[i])) {
-                    // Also add them to the sink actor list in
-                    // topological order.
+                // Also add them to the sink actor list in
+                // topological order.
                 //  sinkActors.addLast(eventSorted[i]);
                 //}
             }
@@ -735,7 +735,7 @@ public class CTScheduler extends Scheduler {
             Actor actor = (Actor) actors.next();
 
             if (!(actor instanceof CTDynamicActor) &&
-               !(actor instanceof CTEventGenerator)) {
+                    !(actor instanceof CTEventGenerator)) {
                 // Find the successors of the actor
                 Iterator successors = successorList(actor).iterator();
                 while (successors.hasNext()) {
@@ -856,11 +856,11 @@ public class CTScheduler extends Scheduler {
                     _discreteActors.add(actor);
                 }
             } else {
-               Integer previousType = (Integer)_map.get(port);
-               if (!previousType.equals(type)) {
-                   throw new NotSchedulableException(port.getFullName()
-                           + " has a signal type conflict.");
-               }
+                Integer previousType = (Integer)_map.get(port);
+                if (!previousType.equals(type)) {
+                    throw new NotSchedulableException(port.getFullName()
+                            + " has a signal type conflict.");
+                }
             }
         }
 

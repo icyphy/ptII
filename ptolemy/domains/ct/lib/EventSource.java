@@ -68,7 +68,7 @@ This is an event generator for the CT domain.
 public class EventSource extends TypedAtomicActor
     implements CTEventGenerator {
 
-     /** Construct an actor in the specified container with the specified
+    /** Construct an actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
      *  is thrown. The container argument must not be null, or a
      *  NullPointerException will be thrown.
@@ -158,7 +158,7 @@ public class EventSource extends TypedAtomicActor
             double previous = 0.0;
             for (int i = 0; i < offsetsValue.length(); i++) {
                 _offsets[i] = ((DoubleToken)offsetsValue.getElement(i))
-                        .doubleValue();
+                    .doubleValue();
                 // Check nondecreasing property.
                 if (_offsets[i] < previous) {
                     throw new IllegalActionException(this,

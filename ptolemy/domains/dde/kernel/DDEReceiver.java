@@ -129,8 +129,8 @@ public class DDEReceiver extends PrioritizedTimedQueue
      */
     public DDEReceiver(IOPort container, int priority)
             throws IllegalActionException {
-        super(container, priority);
-	_boundaryDetector = new BoundaryDetector(this);
+                super(container, priority);
+                _boundaryDetector = new BoundaryDetector(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -167,7 +167,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 		    + "have the earliest time stamp.");
 	}
         DDEDirector director = (DDEDirector)
-            ((Actor)getContainer().getContainer()).getDirector();
+    ((Actor)getContainer().getContainer()).getDirector();
 	synchronized( this ) {
 	    if ( _terminate ) {
 		throw new TerminateProcessException("");
@@ -182,7 +182,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
 	    Thread thread = Thread.currentThread();
 	    if ( thread instanceof DDEThread ) {
 		TimeKeeper timeKeeper =
-                    ((DDEThread)thread).getTimeKeeper();
+    ((DDEThread)thread).getTimeKeeper();
 		timeKeeper.sendOutNullTokens(this);
 	    }
 	    _hasTokenCache = false;
@@ -349,7 +349,7 @@ public class DDEReceiver extends PrioritizedTimedQueue
      */
     public boolean isConsumerReceiver() {
         if ( isConnectedToBoundary() ) {
-             return true;
+            return true;
         }
     	return false;
     }
