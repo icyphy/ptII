@@ -29,18 +29,29 @@ public class StreamDemo extends EventDemo {
     throws Exception
   {
     StreamDemo handler = new StreamDemo();
-    InputStream is;
+    InputStream is = null;
 
     if (args.length != 1) {
       System.err.println("Usage: java StreamDemo <file>");
       System.exit(1);
     }
 
-    is = new FileInputStream(args[0]);
+    try {
+        is = new FileInputStream(args[0]);
 
-    XmlParser parser = new XmlParser();
-    parser.setHandler(handler);
-    parser.parse(makeAbsoluteURL(args[0]), null, is, null);
+        XmlParser parser = new XmlParser();
+        parser.setHandler(handler);
+        parser.parse(makeAbsoluteURL(args[0]), null, is, null);
+    } finally { 
+        if (is != null) {
+            try {
+                is.close();
+            } catch (Throwable throwable) {
+                System.out.println("Failed to close '" + args[0] + "'");
+                throwable.printStackTrace();
+            }
+        }
+    }        
   }
 
 }
