@@ -85,7 +85,8 @@ EXTRA_SRCS = \
 	toc.css \
 	toc.htm \
 	troubleshooting.htm \
-	types.htm
+	types.htm \
+	webStartHelp.htm
 
 # Derived files that are preprocessed for use within vergil.
 VERGIL_DOCS = \
