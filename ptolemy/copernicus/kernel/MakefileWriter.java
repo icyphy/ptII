@@ -103,6 +103,57 @@ public class MakefileWriter extends SceneTransformer {
     }
 
 
+    /** Convert targetPackage "foo/bar" to codeBase
+     *  "../../.."  
+     *  @param targetPackage The package where we are creating the code
+     *  @param outputDirectory The directory where we are producing code.
+     *  @param ptIIDirectory The Ptolemy II directory, usually the value 
+     *  of $PTII 
+     *  @returns The codebase.  If the codebase is ".", then we may
+     *  want to copy jar files.
+     */   
+    public static String codeBase(String targetPackage,
+            String outputDirectory,
+            String ptIIDirectory) {
+        // There is something a little bit strange
+        // here, since we actually create the code in a sub
+        // package of _targetPackage We could rename the
+        // targetPackage parameter to parentTargetPackage but I'd
+        // rather keep things uniform with the other generators?
+
+	int start = targetPackage.indexOf('.');
+	// codeBase has one more level than targetPackage.
+	StringBuffer buffer = new StringBuffer("..");
+	while (start != -1) {
+	    buffer.append("/..");
+	    start = targetPackage.indexOf('.', start + 1);
+	}
+	String codeBase = buffer.toString();
+
+        if (JNLPUtilities.isRunningUnderWebStart()) {
+            // If we are under WebStart, we always copy jar files 
+            // because under WebStart the jar files have munged names,
+            // and the applet will not find them even if
+            codeBase = ".";
+        } else {
+            try {
+                if (!_isSubdirectory(ptIIDirectory, outputDirectory)) {
+                    // System.out.println("'" + outputDirectory + "' is not a "
+                    //        + "subdirectory of '" + ptIIDirectory + "', so "
+                    //        + "we copy the jar files and set the "
+                    //        + "codebase to '.'");
+                    codeBase = ".";
+                }
+            } catch (IOException ex) {
+                System.out.println("_isSubdirectory threw an exception: "
+                        + ex);
+                ex.printStackTrace();
+            }
+        }
+        return codeBase;
+    }
+
+
     /** Generate a makefile to that can be used to run the generated code.
      *  <p>For example, if the model is called MyModel, and
      *  this phase is called with:
@@ -153,6 +204,8 @@ public class MakefileWriter extends SceneTransformer {
                     + "=\"$PTII\"");
         }
 
+	_ptIIUserDirectory = Options.getString(options, "putIIUserDir");
+
 	// If the targetPackage is foo.bar, and the model is MyModel,
 	// the we will do mkdir $PTII/foo/bar/MyModel/
 	_targetPackage = Options.getString(options, "targetPackage");
@@ -172,9 +225,11 @@ public class MakefileWriter extends SceneTransformer {
 	// in the value of _codeBase.
 	_substituteMap = new HashMap();
 	_substituteMap.put("@outDir@", _outputDirectory);
+	_substituteMap.put("@ptIIDirectory@", _ptIIDirectory);
+	_substituteMap.put("@ptIIUserDirectory@", _ptIIUserDirectory);
 	_substituteMap.put("@sanitizedModelName@",
                 _sanitizedModelName);
-	_substituteMap.put("@ptIIDirectory@", _ptIIDirectory);
+	_substituteMap.put("@targetPackage@", _targetPackage);
 
 	// Print out the map for debugging purposes
 	Iterator keys = _substituteMap.keySet().iterator();
@@ -216,8 +271,34 @@ public class MakefileWriter extends SceneTransformer {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
+    ////                         private methods                   ////
 
+
+    /** Return true if _possibleSubdirectory is a subdirectory of parent. */
+    private static boolean _isSubdirectory(String parent,
+				    String possibleSubdirectory)
+	throws IOException {
+	//System.out.println("_isSubdirectory: start \n\t" + parent + "\n\t" +
+        //			   possibleSubdirectory);
+	File parentFile = new File(parent);
+	File possibleSubdirectoryFile = new File(possibleSubdirectory);
+	if (parentFile.isFile() || possibleSubdirectoryFile.isFile()) {
+	    throw new IOException ("'" + parent + "' or '" 
+				   + possibleSubdirectory + "' is a file, "
+				   + "it should be a directory");
+	}
+	String parentCanonical = parentFile.getCanonicalPath();
+	String possibleSubdirectoryCanonical =
+	    possibleSubdirectoryFile.getCanonicalPath();
+	// System.out.println("\n\n_isSubdirectory: \n\t"
+	//		   + parentCanonical + "\n\t"
+	//		   + possibleSubdirectoryCanonical);
+	return possibleSubdirectoryCanonical.startsWith(parentCanonical);
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The relative path to $PTII, for example "../../..".
     private String _codeBase;
@@ -233,6 +314,10 @@ public class MakefileWriter extends SceneTransformer {
 
     // The value of the ptolemy.ptII.dir property.
     private String _ptIIDirectory;
+
+    // The user directory where we are writing.  _ptIIUserDirectory
+    // will be a parent directory of _outputDirectory.
+    private String _ptIIUserDirectory;
 
     // Map used to map @model@ to MyModel.
     private Map _substituteMap;
