@@ -39,13 +39,13 @@ import ptolemy.kernel.CompositeEntity;
 //// Synchronizer
 /**
 This actor implements a token synchronizer.  It has one input port and
-one output port, both of which are multiports.  When at least one token 
+one output port, both of which are multiports.  When at least one token
 exists on every input channel, exactly one token is consumed from each
-input channel, and the tokens are output on the corresponding output 
+input channel, and the tokens are output on the corresponding output
 channels.
 <p>
 Note that the ordering of channels of a multiport is determined by the
-order of connection.  Thus the n<sup>th</sup> input channel connected 
+order of connection.  Thus the n<sup>th</sup> input channel connected
 corresponds to the n<sup>th</sup> output channel connected.
 
 @author Paul Whitaker
@@ -88,7 +88,7 @@ public class Synchronizer extends Transformer {
 
     /** Return true if all input channels have at least one token,
      *  and return false otherwise.
-     *  @return True If there is at least one token on each input channel, 
+     *  @return True If there is at least one token on each input channel,
      *   false otherwise.
      *  @exception IllegalActionException If there is no director.
      */
