@@ -23,7 +23,7 @@
                                         PT_COPYRIGHT_VERSION_2
                                         COPYRIGHTENDKEY
 
-@ProposedRating Red (vogel@eecs.berkeley.edu)
+@ProposedRating Red (zhouye@eecs.berkeley.edu)
 @AcceptedRating Red (cxh@eecs.berkeley.edu)
 */
 
@@ -215,10 +215,6 @@ public class HDFDirector extends SDFDirector {
                     SDFScheduler.getTokenProductionRate(outputPort);
                 rates = rates + String.valueOf(rate);
             }
-            if (_debug_info) {
-                System.out.println(this.getFullName()
-                    + " Port rates = " + rates);
-            }
             String rateKey = rates;
             int cacheSize =
                 ((IntToken)(scheduleCacheSize.getToken())).intValue();
@@ -238,9 +234,6 @@ public class HDFDirector extends SDFDirector {
             } else if (_scheduleCache.containsKey(rateKey)) {
                 // cache hit.
                 _mostRecentRates = rateKey;
-                if (_debug_info) {
-                    System.out.println(getName() + " : Cache hit!");
-                }
                 if (cacheSize > 0) {
                     // Remove the key from its old position in
                     // the list and add it to the head of the list.
@@ -255,14 +248,9 @@ public class HDFDirector extends SDFDirector {
             } else {
                 // cache miss.
                 _mostRecentRates = rateKey;
-                if (_debug_info) {
-                    System.out.println(getName() +
-                            " : Cache miss!");
-                }
                 if (cacheSize > 0) {
                     while (_scheduleKeyList.size() >= cacheSize) {
-                        // cache is  full.
-                        // remove tail of list.
+                        // Cache is  full. Remove tail of list.
                         Object object = _scheduleKeyList.get(cacheSize - 1);
                         _scheduleKeyList.remove(cacheSize - 1);
                         _externalRatesKeyList.remove(cacheSize - 1);
@@ -296,7 +284,6 @@ public class HDFDirector extends SDFDirector {
 
         if (_preinitializeFlag) {
             _preinitializeFlag = false;
-
         } else {
             SDFScheduler scheduler = (SDFScheduler)getScheduler();
             getSchedule();
@@ -319,7 +306,7 @@ public class HDFDirector extends SDFDirector {
         if (exeDirector == null
             || ((! (exeDirector instanceof SDFDirector))
                && (! (exeDirector instanceof HDFFSMDirector))
-               &&(! (exeDirector instanceof HDFDirector)))) {
+               && (! (exeDirector instanceof HDFDirector)))) {
             _directorFiringsPerIteration = 1;
             updateFiringsPerIteration(1, false);
         }
@@ -421,11 +408,6 @@ public class HDFDirector extends SDFDirector {
                 temporaryInputPortList.iterator();
             while (inputPortIterator.hasNext()) {
                 IOPort inputPort = (IOPort)inputPortIterator.next();
-                if (_debug_info) {
-                    System.out.println(getName() +
-                            "Found input port : " +
-                            inputPort.getName());
-                }
                 inputPortList.add(inputPort);
             }
         }
@@ -450,11 +432,6 @@ public class HDFDirector extends SDFDirector {
                 temporaryOutputPortList.iterator();
             while (outputPortIterator.hasNext()) {
                 IOPort outputPort = (IOPort)outputPortIterator.next();
-                if (_debug_info) {
-                    System.out.println(getName() +
-                            "Found output port : " +
-                            outputPort.getName());
-                }
                 outputPortList.add(outputPort);
             }
         }
@@ -509,15 +486,8 @@ public class HDFDirector extends SDFDirector {
     private List _outputPortList;
     private int _cacheSize = 100;
 
-    // A flag indicating whether the initialize() method is
-    // called immediately after the preinitialize() method.
-    //private boolean _preinitializeFlag;
-
     // Number of firings per global iteration
     // of the current director.
     private int _directorFiringsPerIteration = 1;
 
-    // Set to true to enable debugging.
-    //private boolean _debug_info = true;
-    private boolean _debug_info = false;
 }
