@@ -43,8 +43,8 @@ called Vergil, as shown below:
     if (_ie == true) document.writeln('\
         <OBJECT \
             classid="clsid:8AD9C840-044E-11D1-B3E9-00805F499D93" \
-            width = "600" \
-            height = "800"  \
+            width = "@vergilWidth@" \
+            height = "@vergilHeight@"  \
             codebase="http://java.sun.com/products/plugin/autodl/jinstall-1_4_2-windows-i586.cab#Version=1,4,2"> \
             <PARAM NAME = "code" \
                    VALUE = "ptolemy.vergil.MoMLViewerApplet" > \
@@ -70,8 +70,8 @@ called Vergil, as shown below:
             code = "ptolemy.vergil.MoMLViewerApplet" \
             codebase = "@codeBase@" \
             archive = "@modelJarFiles@" \
-            width = "600" \
-            height = "800" \
+            width = "@vergilWidth@" \
+            height = "@vergilHeight@" \
             NAME = "@sanitizedModelName@Viewer" background = "#faf0e6" modelURL = "@sanitizedModelName@.xml" controls = "buttons" includeRunPanel = "true"  \
             scriptable = "false" \
             pluginspage = "http://java.sun.com/j2se/1.4.2/download.html"> \
@@ -86,8 +86,8 @@ called Vergil, as shown below:
             code = "ptolemy.vergil.MoMLViewerApplet" \
             codebase = "@codeBase@" \
             archive = "@modelJarFiles@" \
-            width = "600" \
-            height = "800" \
+            width = "@vergilWidth@" \
+            height = "@vergilHeight@" \
             > \
             <PARAM NAME = "NAME" VALUE = "@sanitizedModelName@Viewer" > \
 	    <PARAM NAME = "background" VALUE = "#faf0e6" > \

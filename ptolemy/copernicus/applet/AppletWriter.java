@@ -33,8 +33,14 @@ package ptolemy.copernicus.applet;
 import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
+import ptolemy.actor.gui.SizeAttribute;
+import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.copernicus.kernel.Copernicus;
 import ptolemy.copernicus.kernel.MakefileWriter;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.IntMatrixToken;
+import ptolemy.data.RecordToken;
 import ptolemy.data.expr.UtilityFunctions;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.ClassUtilities;
@@ -205,16 +211,60 @@ public class AppletWriter extends SceneTransformer implements HasPhaseOptions {
                     "Problem writing the makefile or htm files.");
         }
 
+        // Get the size of the vergil window from the model.
+        int appletWidth = 400;
+        int appletHeight = 450;
+        int vergilWidth = 600;
+        int vergilHeight = 800;
+        try {
+            WindowPropertiesAttribute windowProperties =
+                (WindowPropertiesAttribute) _model.getAttribute(
+                        "_windowProperties");
+            ArrayToken boundsToken =
+                (ArrayToken)((RecordToken)windowProperties.getToken())
+                .get("bounds");
+
+            appletWidth = ((IntToken)boundsToken.getElement(2)).intValue();
+            appletHeight = ((IntToken)boundsToken.getElement(3)).intValue();
+        } catch (Exception ex) {
+            System.out.println("Warning: Failed to get applet width "
+                    + "and height, using defaults: " + ex.getMessage());
+        }
+
+        try {
+            SizeAttribute vergilSize =
+                (SizeAttribute) _model.getAttribute(
+                        "_vergilSize");
+
+            IntMatrixToken vergilSizeToken =
+                (IntMatrixToken) vergilSize.getToken();
+
+            vergilWidth = vergilSizeToken.getElementAt(0, 0);
+            vergilHeight = vergilSizeToken.getElementAt(0, 1);
+        } catch (Exception ex) {
+            System.out.println("Warning: Failed to get vergil width "
+                    + "and height, using defaults: " + ex.getMessage());
+        }
+
+        // The vergil applet shows the model and the top level window.
+        vergilHeight += appletHeight;
+        // Add 200 to the applet height to include the control panels.
+        appletHeight += 200;
+
         // Set up the HashMap we will use when we read in files like
         // model.htm.in and search for strings like @codebase@ and
         // substitute in the value of _codeBase.
         _substituteMap = new HashMap();
+        _substituteMap.put("@appletHeight@", Integer.toString(appletHeight));
+        _substituteMap.put("@appletWidth@", Integer.toString(appletWidth));
         _substituteMap.put("@codeBase@", _codeBase);
         _substituteMap.put("@modelJarFiles@", _modelJarFiles);
         _substituteMap.put("@outDir@", _outputDirectory);
         _substituteMap.put("@sanitizedModelName@",
                 _sanitizedModelName);
         _substituteMap.put("@ptIIDirectory@", _ptIIDirectory);
+        _substituteMap.put("@vergilHeight@", Integer.toString(vergilHeight));
+        _substituteMap.put("@vergilWidth@", Integer.toString(vergilWidth));
 
         // Print out the map for debugging purposes
         Iterator keys = _substituteMap.keySet().iterator();
