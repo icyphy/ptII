@@ -50,10 +50,15 @@ Five controllers are applied sequentially to the modes.</text>
         <property name="_hideName" class="ptolemy.data.expr.Parameter">
         </property>
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1073, 919]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[821, 667]">
     </property>
-    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-4, -4]">
+    <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[-6, -6]">
     </property>
+    <port name="port" class="ptolemy.actor.TypedIOPort">
+        <property name="output"/>
+        <property name="_location" class="ptolemy.moml.Location" value="800.0, 335.0">
+        </property>
+    </port>
     <entity name="Controllers" class="ptolemy.domains.ct.kernel.CTCompositeActor">
         <property name="HSDirector" class="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="HSController">
