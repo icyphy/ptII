@@ -140,7 +140,7 @@ public class GiottoScheduler extends Scheduler {
 
     private List _treeSchedule(ListIterator iterator,
             int lastFrequency, int frequency)
-	throws NotSchedulableException {
+            throws NotSchedulableException {
 
 	List sameFrequencyList = new LinkedList();
 	List higherFrequencyList = null;

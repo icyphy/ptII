@@ -136,7 +136,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
         GiottoDirector newObject = (GiottoDirector)(super.clone(workspace));
         newObject.iterations = (Parameter)newObject.getAttribute("iterations");
         return newObject
-    }
+            }
 
     /** Return the real start time.
      *  @return The real start time in terms of milliseconds counting
@@ -331,7 +331,7 @@ public class GiottoDirector extends StaticSchedulingDirector {
     }
 
     private boolean _fire(Enumeration schedule)
-	throws IllegalActionException {
+            throws IllegalActionException {
 
 	boolean postfire = true;
 
