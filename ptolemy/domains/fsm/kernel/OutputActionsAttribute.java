@@ -82,11 +82,11 @@ import ptolemy.kernel.util.Workspace;
    Ptolemy II expression language.  The expression may include references
    to variables and parameters contained by the FSM actor.
 
-   @author Xiaojun Liu and Edward A. Lee
+   @author Xiaojun Liu, Edward A. Lee, Haiyang Zheng
    @version $Id$
    @since Ptolemy II 1.0
-   @Pt.ProposedRating Yellow (eal)
-   @Pt.AcceptedRating Red (eal)
+   @Pt.ProposedRating Red (hyzheng)
+   @Pt.AcceptedRating Red (hyzheng)
    @see CommitActionsAttribute
    @see Transition
    @see FSMActor
@@ -133,6 +133,10 @@ public class OutputActionsAttribute
      *   channels of the port throws a NoRoomException.
      */
     public void execute() throws IllegalActionException {
+        // FIXME: check CommitActionsAttribute also.
+        // The first sentence of CommitActionsAttribute is misleading. The
+        // question is which actions handle outputs and which actions handle
+        // state change.
         super.execute();
         if (_destinations != null) {
             Iterator destinations = _destinations.iterator();
@@ -156,7 +160,8 @@ public class OutputActionsAttribute
                 } catch (IllegalActionException ex) {
                     // Chain exceptions to get the actor that
                     // threw the exception.
-                    throw new IllegalActionException(this, ex, "Expression invalid.");
+                    throw new IllegalActionException(
+                            this, ex, "Expression invalid.");
                 }
                 try {
                     if (token != null) {
@@ -166,27 +171,28 @@ public class OutputActionsAttribute
                         Receiver[][] localReceivers 
                             = destination.getReceivers();
                         if (channel != null) {
-                            destination.send(channel.intValue(), token);
-//                            if (isInput) {
-//                                // If the destination is both input and output, 
-//                                // also send the tokens to local receivers.
-//                                localReceivers[channel.intValue()][0].put(token);
-//                            }
+                            int chanelValue = channel.intValue();
+                            destination.send(chanelValue, token);
+                            if (isInput) {
+                                // If the destination is both input and output, 
+                                // also send the tokens to local receivers.
+                                localReceivers[chanelValue][0].put(token);
+                            }
                             if (_debugging) {
                                 _debug(getFullName()+ " port: "
                                         + destination.getName() + " channel: "
-                                        + channel.intValue() + ", token: "
+                                        + chanelValue + ", token: "
                                         + token);
                             }
                         } else {
                             destination.broadcast(token);
-//                            if (isInput) {
-//                                // If the destination is both input and output, 
-//                                // also send the tokens to local receivers.
-//                                for(int i = 0; i < localReceivers.length; i++) {
-//                                    localReceivers[i][0].put(token);
-//                                }
-//                            }
+                            if (isInput) {
+                                // If the destination is both input and output, 
+                                // also send the tokens to local receivers.
+                                for(int i = 0; i < localReceivers.length; i++) {
+                                    localReceivers[i][0].put(token);
+                                }
+                            }
                             if (_debugging) {
                                 _debug(getFullName() + " port: "
                                         + destination.getName()
