@@ -1125,10 +1125,10 @@ remote4javatest:
 # except for the shallow codegen
 
 # Host to run on
-REMOTE5HOST = bennett
+REMOTE5HOST = maury
 
 # Directory to build in
-REMOTE5HOME = /vol/$(REMOTE5HOST)/$(REMOTE5HOST)1/ptII
+REMOTE5HOME = /vol/$(REMOTE5HOST)/$(REMOTE5HOST)1/ptIIsrc
 
 REMOTE5PTIIDIST = $(REMOTE5HOME)/ptII$(VERSION)
 
