@@ -50,6 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = \
 	IllegalOutputException.java \
 	SRDirector.java \
+	SROptimizedScheduler.java \
 	SRRandomizedScheduler.java \
 	SRReceiver.java \
 	UnknownTokenException.java
