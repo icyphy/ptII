@@ -859,6 +859,29 @@ public class DEDirector extends Director {
     }
 
     /** Request that execution of the current iteration stop.
+     *  This is similar to stopFire(), except that the current iteration
+     *  is not allowed to complete.  This is useful if there is actor
+     *  in the model that has a bug where it fails to consume inputs.
+     *  An iteration will never terminate if such an actor receives
+     *  an event.
+     *  If the director is paused waiting for events to appear in the
+     *  event queue, then it stops waiting,
+     *  and calls stopFire() for all actors
+     *  that are deeply contained by the container of this director.
+     */
+    public void stop() {
+        if (_eventQueue != null) {
+            synchronized(_eventQueue) {
+                // NOTE: The stopFire() method, unlike this one, allows
+                // the iteration to complete. This does not.
+                _stopRequested = true;
+                _eventQueue.notifyAll();
+            }
+        }
+        super.stop();
+    }
+
+    /** Request that execution of the current iteration complete.
      *  If the director is paused waiting for events to appear in the
      *  event queue, then it stops waiting,
      *  and calls stopFire() for all actors
@@ -867,7 +890,10 @@ public class DEDirector extends Director {
     public void stopFire() {
         if (_eventQueue != null) {
             synchronized(_eventQueue) {
-                _stopRequested = true;
+                // NOTE: The stop() method requests stopping.
+                // This does not, to allow the current iteration to
+                // complete.
+                // _stopRequested = true;
                 _eventQueue.notifyAll();
             }
         }
