@@ -131,6 +131,7 @@ public class CTBaseIntegrator extends TypedAtomicActor
         output.setTypeEquals(BaseType.DOUBLE);
         initialState = new Parameter(this, "initialState",
                 new DoubleToken(0.0));
+        initialState.setTypeEquals(BaseType.DOUBLE);
         _history = new History(this);
     }
 
