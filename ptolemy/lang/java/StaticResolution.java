@@ -670,11 +670,11 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         // Proceed only if this is first attempt to initialize static resolution
         if (_alreadyInitialized) return;
  	    long startTime= System.currentTimeMillis();
-        System.out.println("StaticResolution<static>: " 
+        System.out.println("StaticResolution<setup>: " 
                 + "--- Creating SYSTEM_PACKAGE PackageDecl ---" 
                 + (System.currentTimeMillis() - startTime) + " ms");
         SYSTEM_PACKAGE  = new PackageDecl("", null);
-        System.out.println("StaticResolution<static>: "
+        System.out.println("StaticResolution<setup>: "
                 + "--- Creating UNNAMED_PACKAGE PackageDecl ---" 
                 + (System.currentTimeMillis() - startTime) + " ms");
         UNNAMED_PACKAGE = new PackageDecl("", SYSTEM_PACKAGE);
@@ -682,30 +682,30 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         // dummy scope
         Scope scope = new Scope();
 
-        System.out.println("StaticResolution<static>: --- loading java.lang package ---" 
+        System.out.println("StaticResolution<setup>: --- loading java.lang package ---" 
                 + (System.currentTimeMillis() - startTime));
 
 	    // JAVA_LANG_PACKAGE is only used in FindExtraImportsVisitor
 	    NameNode javaLangName = (NameNode) makeNameNode("java.lang");
-        System.out.println("StaticResolution<static>: scope: " + scope.toString());
+        System.out.println("StaticResolution<setup>: scope: " + scope.toString());
 	    JAVA_LANG_PACKAGE = _importPackage(scope, javaLangName);
 
-        System.out.println("StaticResolution<static>: --- require class on Object ---" + 
+        System.out.println("StaticResolution<setup>: --- require class on Object ---" + 
                 (System.currentTimeMillis() - startTime));
 
         OBJECT_DECL = _requireClass(scope, "Object");
 
-        System.out.println("\nStaticResolution<static>: --- done require class on Object ---" + (System.currentTimeMillis() - startTime));
+        System.out.println("\nStaticResolution<setup>: --- done require class on Object ---" + (System.currentTimeMillis() - startTime));
 
         OBJECT_TYPE = OBJECT_DECL.getDefType();
 
-        System.out.println("StaticResolution<static>: --- require class on Cloneable ---" + (System.currentTimeMillis() - startTime));
+        System.out.println("StaticResolution<setup>: --- require class on Cloneable ---" + (System.currentTimeMillis() - startTime));
         CLONEABLE_DECL = _requireClass(scope, "Cloneable");
         CLONEABLE_TYPE = CLONEABLE_DECL.getDefType();
 
         // virtual class for arrays
 
-        System.out.println("StaticResolution<static>: --- virtual class for arrays ---" + (System.currentTimeMillis() - startTime));
+        System.out.println("StaticResolution<setup>: --- virtual class for arrays ---" + (System.currentTimeMillis() - startTime));
         List arrayClassMembers = new LinkedList();
 
         FieldDeclNode arrayLengthNode = new FieldDeclNode(PUBLIC_MOD | FINAL_MOD,
@@ -734,18 +734,18 @@ public class StaticResolution implements JavaStaticSemanticConstants {
         arrayCompileUnitNode.setProperty(IDENT_KEY, "<array>");
 
         // resolve the names of the virtual class
-        System.out.println("StaticResolution<static>: --- load arrayCompileUnitNode ---" + (System.currentTimeMillis() - startTime));
+        System.out.println("StaticResolution<setup>: --- load arrayCompileUnitNode ---" + (System.currentTimeMillis() - startTime));
         loadCompileUnit(arrayCompileUnitNode, 0);
 
         ARRAY_CLASS_DECL = (ClassDecl) JavaDecl.getDecl((NamedNode) arrayClassNode);
         ARRAY_LENGTH_DECL = (FieldDecl) JavaDecl.getDecl((NamedNode) arrayLengthNode);
         ARRAY_CLONE_DECL  = (MethodDecl) JavaDecl.getDecl((NamedNode) arrayCloneNode);
 
-        System.out.println("StaticResolution<static>: --- require class on String ---" + (System.currentTimeMillis() - startTime));
+        System.out.println("StaticResolution<setup>: --- require class on String ---" + (System.currentTimeMillis() - startTime));
         STRING_DECL = _requireClass(scope, "String");
         STRING_TYPE = STRING_DECL.getDefType();
 
-        System.out.println("StaticResolution<static>: --- require class on Class ---" + (System.currentTimeMillis() - startTime));
+        System.out.println("StaticResolution<setup>: --- require class on Class ---" + (System.currentTimeMillis() - startTime));
         CLASS_DECL  = _requireClass(scope, "Class");
         CLASS_TYPE  = CLASS_DECL.getDefType();
 
@@ -758,9 +758,9 @@ public class StaticResolution implements JavaStaticSemanticConstants {
                     JAVA_LANG_PACKAGE.getScope().toString());
         }
 
-        System.out.println("StaticResolution<static>: --- 1st buildScopes ---" + (System.currentTimeMillis() - startTime));
+        System.out.println("StaticResolution<setup>: --- 1st buildScopes ---" + (System.currentTimeMillis() - startTime));
         buildScopes();
-        System.out.println("StaticResolution<static>: --- after buildScopes ---" + (System.currentTimeMillis() - startTime));
+        System.out.println("StaticResolution<setup>: --- after buildScopes ---" + (System.currentTimeMillis() - startTime));
         _alreadyInitialized = true;
     }
 
