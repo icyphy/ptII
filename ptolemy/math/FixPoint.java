@@ -317,7 +317,7 @@ public class FixPoint implements Cloneable, Serializable {
     }
 
     /** Return a precision to represent this number. This is constructed
-     *  from the necessary fraction precusiona and the integer precision
+     *  from the necessary fraction precision and the integer precision
      *  annotation.
      *  @return The Precision of this number.
      */
