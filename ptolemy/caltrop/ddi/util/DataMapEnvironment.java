@@ -45,27 +45,39 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+//////////////////////////////////////////////////////////////////////////
+//// DataMapEnvironment
 /**
- * A read-only Environment that wraps a Map of data read from input ports.
- * FIXME: assumes repeat expressions can be evaluated in the environment passed in to the constructor.
- */
+A read-only Environment that wraps a Map of data read from input ports.
 
+@author Jörn W. Janneck <janneck@eecs.berkeley.edu>
+@version $Id$
+@since Ptolemy II 3.1
+ */
 public class DataMapEnvironment implements Environment {
+    // FIXME: assumes repeat expressions can be evaluated in the
+    // environment passed in to the constructor.
     public Object get(Object variable) {
         String varName = (String) variable;
         PortVarInfo pvi = (PortVarInfo) _varNameToVarInfo.get(varName);
         if (pvi != null) {
-            // try to find it. if we don't find it, throw an UnboundPortVarException.
+            // try to find it. if we don't find it,
+            // throw an UnboundPortVarException.
             String portName = pvi.getPortName();
-            List data = (List) _dataFromInputPorts.get(new ChannelID(portName, 0));
+            List data =
+                (List) _dataFromInputPorts.get(new ChannelID(portName, 0));
             if (data == null)
                 throw new UnboundPortVarException(varName + "unbound.");
             if (pvi.isList()) {
-                // if we have read the entire list, return it. otherwise, throw an exception.
-                if (data.size() > (pvi._repeatVal * pvi.getLength() - (pvi.getLength()) - pvi.getIndex())) {
+                // if we have read the entire list, return it. otherwise,
+                // throw an exception.
+                if (data.size()
+                        > (pvi._repeatVal * pvi.getLength()
+                                - (pvi.getLength()) - pvi.getIndex())) {
                     // we've read enough tokens to construct the entire list.
                     List result = new ArrayList();
-                    for (int i = pvi.getIndex(); i < data.size(); i = i + pvi.getLength()) {
+                    for (int i = pvi.getIndex(); i < data.size();
+                         i = i + pvi.getLength()) {
                         result.add(data.get(i));
                     }
                     return _context.createList(result);
@@ -85,7 +97,8 @@ public class DataMapEnvironment implements Environment {
     }
 
     public Object get(Object variable, Object[] location) {
-         throw new InterpreterException("Indices not yet implemented.");  // FIXME
+        // FIXME
+        throw new InterpreterException("Indices not yet implemented.");
     }
 
     public void set(Object variable, Object value) {
@@ -101,31 +114,39 @@ public class DataMapEnvironment implements Environment {
     }
 
     public Set localVars() {
-        throw new InterpreterException("localVars() not yet implemented."); // FIXME
+        // FIXME
+        throw new InterpreterException("localVars() not yet implemented.");
     }
 
     public boolean  isLocalVar(Object variable) {
-        throw new InterpreterException("isLocalVar() not yet implemented."); // FIXME
+        // FIXME
+        throw new InterpreterException("isLocalVar() not yet implemented.");
     }
 
     public Environment newFrame() {
-        throw new InterpreterException("Cannot make a new frame in DataMapEnvironment.");
+        throw new InterpreterException("Cannot make a new frame in "
+                + "DataMapEnvironment.");
     }
 
     public void freezeLocal() {
-        throw new InterpreterException("Cannot freezeLocal() in DataMapEnvironment.");
+        throw new InterpreterException("Cannot freezeLocal() in "
+                + "DataMapEnvironment.");
     }
 
-    public DataMapEnvironment(InputPattern [] inputPatterns, Map dataFromInputPorts, Environment parentEnv,
-                              Context context) {
+    public DataMapEnvironment(InputPattern [] inputPatterns,
+            Map dataFromInputPorts, Environment parentEnv,
+            Context context) {
         _inputPatterns = inputPatterns;
         _dataFromInputPorts = dataFromInputPorts;
         _parentEnv = parentEnv;
         _context = context;
         _eval = new ExprEvaluator(_context, _parentEnv);
-        _varNameToVarInfo = createNameToPortVarInfoMap(_inputPatterns);
+        _varNameToVarInfo = _createNameToPortVarInfoMap(_inputPatterns);
     }
 
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private InputPattern [] _inputPatterns;
     private Environment     _parentEnv;
@@ -134,7 +155,10 @@ public class DataMapEnvironment implements Environment {
     private ExprEvaluator   _eval;
     private Map             _varNameToVarInfo; //String varName -> PortVarInfo
 
-    private Map createNameToPortVarInfoMap(InputPattern [] inputPatterns) {
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                 ////
+
+    private Map _createNameToPortVarInfoMap(InputPattern [] inputPatterns) {
         Map result = new HashMap();
         for (int i = 0; i < inputPatterns.length; i++) {
             InputPattern inputPattern = inputPatterns[i];
@@ -144,18 +168,24 @@ public class DataMapEnvironment implements Environment {
             if (isList) {
                 repeatVal = _context.intValue(_eval.evaluate(repeatExpr));
                 if (repeatVal < 0) {
-                    throw new InterpreterException("Repeat expressions must evaluate to nonnegative values.");
+                    throw new InterpreterException("Repeat expressions "
+                            + "must evaluate to nonnegative values.");
                 }
             }
             String [] variables = inputPattern.getVariables();
             for (int j = 0; j < variables.length; j++) {
                 String variable = variables[j];
-                result.put(variable, new PortVarInfo(inputPattern.getPortname(), j, variables.length, isList,
-                        repeatVal));
+                result.put(variable,
+                        new PortVarInfo(inputPattern.getPortname(),
+                                j, variables.length, isList,
+                                repeatVal));
             }
         }
         return result;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
 
     public static class UnboundPortVarException extends InterpreterException {
         public UnboundPortVarException(String msg) {
@@ -170,7 +200,8 @@ public class DataMapEnvironment implements Environment {
         private boolean _isList;
         private int _repeatVal;
 
-        public PortVarInfo(String portName, int index, int length, boolean isList, int repeatVal) {
+        public PortVarInfo(String portName, int index,
+                int length, boolean isList, int repeatVal) {
             this._portName = portName;
             this._index = index;
             this._length = length;
