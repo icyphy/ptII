@@ -315,6 +315,7 @@ public class ActorEditorGraphController extends ActorViewerGraphController {
      */
     private MouseFilter _shortcutFilter = new MouseFilter(
             InputEvent.BUTTON1_MASK,
+            Toolkit.getDefaultToolkit().getMenuShortcutKeyMask(),
             Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
 
     ///////////////////////////////////////////////////////////////////
