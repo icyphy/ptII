@@ -65,7 +65,7 @@ public class GRScheduler extends Scheduler {
 
     /** Construct a scheduler in the given workspace with the name
      *  "GRScheduler". If the workspace argument is null, use the default
-     *  workspace. The scheduler is added to the list of objects in the 
+     *  workspace. The scheduler is added to the list of objects in the
      *  workspace. Increment the version number of the workspace.
      *
      *  @param workspace Object for synchronization and version tracking.
@@ -104,10 +104,10 @@ public class GRScheduler extends Scheduler {
     /** Return the scheduling sequence.  An exception will be thrown if the
      *  graph is not schedulable.  This occurs in the following circumstances:
      *  <ul>
-     *  <li>The graph is not a connected graph. 
+     *  <li>The graph is not a connected graph.
      *  <li>The graph is not acyclic
      *  <li>Multiple output ports are connected to the same broadcast
-     *  relation. (equivalent to a non-deterministic merge) 
+     *  relation. (equivalent to a non-deterministic merge)
      *  </ul>
      *
      * @return A Schedule type of the deeply contained opaque entities
@@ -117,7 +117,7 @@ public class GRScheduler extends Scheduler {
      */
     protected Schedule _getSchedule() {
        // FIXME: should check whether graph is connected
-       // FIXME: should check whether multiple output ports are 
+       // FIXME: should check whether multiple output ports are
        //        connected to the same broadcast relation.
 
        // Clear the graph
@@ -208,7 +208,7 @@ public class GRScheduler extends Scheduler {
         setValid(true);
         return schedule;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

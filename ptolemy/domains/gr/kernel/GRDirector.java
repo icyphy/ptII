@@ -55,8 +55,8 @@ synchronous/reactive (SR) semantics.
 
 The basic idea behind the GR domain is to arrange geometry and transform
 actors in a directed acyclic graph to represent the location and orientation
-of objects in a scene. This topology of connected GR actors form what is 
-commonly called a scene graph in computer graphics literature. 
+of objects in a scene. This topology of connected GR actors form what is
+commonly called a scene graph in computer graphics literature.
 The GR director converts the GR scene graph into a Java3D representation for
 rendering on the computer screen.
 
@@ -112,11 +112,11 @@ public class GRDirector extends StaticSchedulingDirector {
     /** A parameter representing the number of times that postfire may be
      *  called before it returns false.  If the value is less than or
      *  equal to zero, the execution will never return false in postfire,
-     *  and thus the execution continues indefinitely. 
+     *  and thus the execution continues indefinitely.
      *  The default value is an IntToken with the value zero.
      */
     public Parameter iterations;
-    
+
     /** A parameter that indicates the time lower bound of each iteration.
      *  This parameter is useful for guaranteeing that each frame of an
      *  animation takes at least a certain amount of time before proceeding
@@ -147,7 +147,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
 
     /** Make sure that <i>iterationLowerUpperBound</i> milliseconds have
-     *  elapsed since the last iteration.  Go through the schedule and 
+     *  elapsed since the last iteration.  Go through the schedule and
      *  iterate every actor if an actor returns false in its prefire(),
      *  fire() and postfire() will not be called on it.
      *
@@ -180,21 +180,21 @@ public class GRDirector extends StaticSchedulingDirector {
         if (scheduler == null)
             throw new IllegalActionException(this,"Attempted to fire " +
                     "GR system with no scheduler");
-                    
+
         Schedule schedule = scheduler.getSchedule();
-        
+
         Iterator allActors = schedule.actorIterator();
         while (allActors.hasNext()) {
 
             Actor actor = (Actor)allActors.next();
-            
+
             // If an actor returns true to prefire(), fire() and postfire()
             // will be called.
             if(actor.prefire() == true) {
                 if (actor instanceof CompositeActor) {
                     CompositeActor compositeActor = (CompositeActor) actor;
                     Director  insideDirector = compositeActor.getDirector();
-    
+
                     _insideDirector = insideDirector;
                     _pseudoTimeEnabled = true;
                     actor.fire();
@@ -211,10 +211,10 @@ public class GRDirector extends StaticSchedulingDirector {
     }
 
 
-    /** Advance "time" to the next requested firing time.  The GR domain is 
-     *  not a timed domain, so this method is semantically meaningless.  
-     *  However, this method is implemented in order to get other timed 
-     *  domains to work inside the GR domain. In particular, this method 
+    /** Advance "time" to the next requested firing time.  The GR domain is
+     *  not a timed domain, so this method is semantically meaningless.
+     *  However, this method is implemented in order to get other timed
+     *  domains to work inside the GR domain. In particular, this method
      *  will give actors a fake impression of the advancement of time.
      *
      *  @param actor The actor to be fired.
@@ -224,13 +224,13 @@ public class GRDirector extends StaticSchedulingDirector {
             throws IllegalActionException {
         _currentTime = time;
     }
-    
-    /** Return the current "time". The GR domain is not a timed domain, 
-     *  so this method is semantically meaningless.  However, this method 
-     *  is implemented in order to get timed domains to work inside the 
-     *  GR domain. In particular, this method will give actors a "fake" 
+
+    /** Return the current "time". The GR domain is not a timed domain,
+     *  so this method is semantically meaningless.  However, this method
+     *  is implemented in order to get timed domains to work inside the
+     *  GR domain. In particular, this method will give actors a "fake"
      *  impression of advancement of time.
-     *  
+     *
      *  @return The current "time"
      */
     public double getCurrentTime() {
@@ -241,7 +241,7 @@ public class GRDirector extends StaticSchedulingDirector {
         }
     }
 
-    /** Return maximum value for type double. Since the GR domain is not a 
+    /** Return maximum value for type double. Since the GR domain is not a
      *  timed domain, so this method does not return any meaningful value.
      *  However, this method is implemented in order to get timed domains
      *  to work inside the GR domain.
@@ -256,7 +256,7 @@ public class GRDirector extends StaticSchedulingDirector {
 
     /** Initialize all the actors associated with this director. Perform
      *  some internal initialization for this director.
-     * 
+     *
      *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
      */
@@ -269,8 +269,8 @@ public class GRDirector extends StaticSchedulingDirector {
 
 
     /** Process the mutation that occurred.  Reset this director
-     *  to an uninitialized state to prepare for rescheduling.  
-     *  Notify parent class about invalidated schedule.  
+     *  to an uninitialized state to prepare for rescheduling.
+     *  Notify parent class about invalidated schedule.
      *
      *  see other mutation methods:
      *
@@ -278,8 +278,8 @@ public class GRDirector extends StaticSchedulingDirector {
      *  @see ptolemy.kernel.util.NamedObj#attributeTypeChanged
      */
     public void invalidateSchedule() {
-        // This method is called when an entity is instantiated under 
-        // this director. This method is also called when a link is 
+        // This method is called when an entity is instantiated under
+        // this director. This method is also called when a link is
         // made between ports and/or relations.
         _reset();
         super.invalidateSchedule();
@@ -331,7 +331,7 @@ public class GRDirector extends StaticSchedulingDirector {
      *  <i>iterations</i>
      */
     public boolean postfire() throws IllegalActionException {
-        // Note: actors return false on postfire(), if they wish never to be 
+        // Note: actors return false on postfire(), if they wish never to be
         // fired again during the execution. This can be interpreted as the
         // actor being dead. Also, fireAt() calls by the actor will be ignored.
         // In SDF, an actor returning false on postfire will effectively
@@ -383,7 +383,7 @@ public class GRDirector extends StaticSchedulingDirector {
         if (currentScheduler== null)
             throw new IllegalActionException(this,"Attempted to fire " +
                     "GR system with no scheduler");
-        
+
         Schedule schedule = currentScheduler.getSchedule();
         Iterator allActorsScheduled = schedule.actorIterator();
 
@@ -402,11 +402,11 @@ public class GRDirector extends StaticSchedulingDirector {
             actorsInSchedule++;
         }
 
-        // include the container as an actor. 
+        // include the container as an actor.
         // This is needed for TypedCompositeActors
         String name = getContainer().getFullName();
         Actor actor = (Actor) getContainer();
-        _allActorsTable.put(actor, 
+        _allActorsTable.put(actor,
                             new ContainedGRActor((Actor)getContainer()));
         ContainedGRActor grActor =
                             (ContainedGRActor) _allActorsTable.get(actor);
@@ -440,7 +440,7 @@ public class GRDirector extends StaticSchedulingDirector {
             _outputPortTable.add(new GRIOPort(port));
         }
     }
-    
+
     /** Build the internal cache of all the receivers directed by this
      *  director.
      *
@@ -512,7 +512,7 @@ public class GRDirector extends StaticSchedulingDirector {
             debug.println(" ");
         }
     }
-    
+
 
     /** For debugging purposes.  Display the list of contained receivers
      *  and other pertinent information about them.
@@ -749,8 +749,8 @@ public class GRDirector extends StaticSchedulingDirector {
             _shouldTransferOutputs = false;
         }
     }
-    
-    // TO DO: 
+
+    // TO DO:
     // 1.) AttributeChanged on several actors
     // 2.)
 }
