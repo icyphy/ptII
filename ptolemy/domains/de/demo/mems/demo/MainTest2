@@ -1,0 +1,2 @@
+#! /bin/sh
+java ptolemy.domains.de.demo.mems.demo.MainTest2 $@
