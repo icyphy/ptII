@@ -128,13 +128,13 @@ public class ComponentPort extends Port {
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
      */	
-    public Enumeration deepGetConnectedPorts() {
+    public Enumeration deepConnectedPorts() {
         synchronized(workspace()) {
             if (_deeplinkedportsversion == workspace().getVersion()) {
                 // Cache is valid.  Use it.
                 return _deeplinkedports.elements();
             }
-            Enumeration nearrelations = getLinkedRelations();
+            Enumeration nearrelations = linkedRelations();
             LinkedList result = new LinkedList();
             
             while( nearrelations.hasMoreElements() ) {
@@ -142,7 +142,7 @@ public class ComponentPort extends Port {
                     (ComponentRelation)nearrelations.nextElement();
 
                 Enumeration connectedports =
-                    relation.getLinkedPortsExcept(this);
+                    relation.linkedPortsExcept(this);
                 while (connectedports.hasMoreElements()) {
                     ComponentPort port =
                         (ComponentPort)connectedports.nextElement();
@@ -151,13 +151,13 @@ public class ComponentPort extends Port {
                     if (port._outside(relation.getContainer())) {
                         // Port is transparent, and we are coming at it from
                         // the inside.
-                        result.appendElements(port.deepGetConnectedPorts());
+                        result.appendElements(port.deepConnectedPorts());
                     } else {
                         // We are coming at the port from the outside.
                         // Is it transparent?
                         if (port.numInsideLinks() > 0) {
                             // It is transparent.
-                            result.appendElements(port.deepGetInsidePorts());
+                            result.appendElements(port.deepInsidePorts());
                         } else {
                             result.insertLast(port);
                         }
@@ -179,7 +179,7 @@ public class ComponentPort extends Port {
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
      */	
-    public Enumeration deepGetInsidePorts() {
+    public Enumeration deepInsidePorts() {
         synchronized(workspace()) {
             if (_deeplinkedinportsversion == workspace().getVersion()) {
                 // Cache is valid.  Use it.
@@ -188,20 +188,20 @@ public class ComponentPort extends Port {
             LinkedList result = new LinkedList();
             if (numInsideLinks() > 0) {
                 // Port is transparent.
-                Enumeration relations = getInsideRelations();
+                Enumeration relations = insideRelations();
                 while (relations.hasMoreElements()) {
                     Relation relation = (Relation)relations.nextElement();
                     Enumeration insideports =
-                        relation.getLinkedPortsExcept(this);
+                        relation.linkedPortsExcept(this);
                     while (insideports.hasMoreElements()) {
                         ComponentPort downport =
                             (ComponentPort)insideports.nextElement();
                         if (downport._outside(relation.getContainer())) {
                             result.appendElements(
-                                    downport.deepGetConnectedPorts());
+                                    downport.deepConnectedPorts());
                         } else {
                             result.appendElements(
-                                    downport.deepGetInsidePorts());
+                                    downport.deepInsidePorts());
                         }
                     }
                 }
@@ -227,13 +227,13 @@ public class ComponentPort extends Port {
             return toString() + "\n";
         case pt.kernel.Nameable.LIST_CONNECTIONS:
         case pt.kernel.Nameable.CONNECTIONS:
-            Enumeration enum = getInsideRelations();
+            Enumeration enum = insideRelations();
             while (enum.hasMoreElements()) {
                 Relation relation = (Relation)enum.nextElement();
                 results = results.concat(toString() + " link "
                         + relation.toString() + "\n");
             }
-            enum = getLinkedRelations();
+            enum = linkedRelations();
             while (enum.hasMoreElements()) {
                 Relation relation = (Relation)enum.nextElement();
                 results = results.concat(toString() + " link "
@@ -254,13 +254,13 @@ public class ComponentPort extends Port {
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentPort objects.
      */	
-    public Enumeration getInsidePorts() {
+    public Enumeration insidePorts() {
         synchronized(workspace()) {
             LinkedList result = new LinkedList();
-            Enumeration relations = getInsideRelations();
+            Enumeration relations = insideRelations();
             while (relations.hasMoreElements()) {
                 Relation relation = (Relation)relations.nextElement();
-                result.appendElements(relation.getLinkedPortsExcept(this));
+                result.appendElements(relation.linkedPortsExcept(this));
             }
             return result.elements();
         }
@@ -270,12 +270,23 @@ public class ComponentPort extends Port {
      *  This method is synchronized on the workspace.
      *  @return An enumeration of ComponentRelation objects.
      */	
-    public Enumeration getInsideRelations() {
+    public Enumeration insideRelations() {
         synchronized(workspace()) {
             return _insideLinks.getLinks();
         }
     }
 
+    /**
+     */
+    public boolean isDeeplyConnected(ComponentPort port) {
+        if(port == null) return false;
+        synchronized(workspace()){
+            // Call deepConnectedPort to refresh the cache.
+            Enumeration dummy = deepConnectedPorts();
+            return _deeplinkedports.includes(port);
+        }
+    }
+            
     /** Link this port with a relation.  The only constraints are
      *  that the port and the relation share the same workspace, and
      *  that the relation be of a compatible type (ComponentRelation).
