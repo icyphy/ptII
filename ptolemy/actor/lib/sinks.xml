@@ -31,6 +31,12 @@
 </rendition>
 </entity>
 
+<entity name="MatrixVisualizer" class="ptolemy.actor.lib.gui.MatrixVisualizer">
+<rendition class="ptolemy.vergil.toolbox.LibraryIcon">
+<configure>generic.sink</configure>
+</rendition>
+</entity>
+
 <entity name="Recorder" class="ptolemy.actor.lib.Recorder">
 <rendition class="ptolemy.vergil.toolbox.LibraryIcon">
 <configure>generic.sink</configure>
