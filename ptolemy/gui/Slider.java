@@ -51,7 +51,7 @@ Create a slider.
 @author Manda Sutijono
 @version $Id: Slider.java
 */
-public class Slider {
+public class Slider extends JPanel {
     
     /** Construct a slider with the following properties on it.
      */
@@ -76,8 +76,8 @@ public class Slider {
      */
     public void setNewMax(int newMax) 
             throws ChangeFailedException {
-            _maximum = newMax;
-            _slider.setMaximum(newMax);
+        _maximum = newMax;
+        _slider.setMaximum(newMax);
     }
 
     /** Specify the preferred minimum value of the slider.
