@@ -681,7 +681,7 @@ The affected actors are:
 	ptolemy.actor.lib.MathFunction
 	ptolemy.actor.lib.Expression
 } {ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
-Below are original class names followed bythe new class names.
+Below are original class names followed by the new class names.
 	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location} {ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
 'annotation1', then add _hideName if necessary.
 } {ptolemy.moml.filter.PortNameChanges: Update any actor port names that have been
@@ -695,10 +695,10 @@ with the old port name and the new port name:	ptolemy.actor.lib.Sleep
 	ptolemy.actor.lib.conversions.CartesianToComplex
 		imag	 -> y
 		real	 -> x
-} {ptolemy.moml.filter.PropertyClassChanges: Update any actor port class names that have
-been renamed.
-Below are the actors that are affected, along
-with the port name and the new classname:	ptolemy.domains.sdf.lib.vq.ImageUnpartition
+} {ptolemy.moml.filter.PropertyClassChanges: Update any actor port class names
+that have been renamed.
+Below are the actors that are affected, alongwith the port name
+and the new classname:	ptolemy.domains.sdf.lib.vq.ImageUnpartition
 		output	 -> ptolemy.actor.TypedIOPort
 		input	 -> ptolemy.actor.TypedIOPort
 	ptolemy.actor.lib.javasound.AudioReader
@@ -728,7 +728,70 @@ ptolemy.vergil.icon.BoxedValueIconwill be removed
 ptolemy.vergil.icon.ValueIconwill be replaced by ptolemy.kernel.util.Attribute
 }}
 
-test BackwardCompatiblity-11.1 {Try running old models, first check that the makefile created the compat/ directory} { 
+test BackwardCompatiblity-11.2 {Call BackwardCompatibility.toString} {
+    # This is a little strange because when we call 
+    # BackwardCompatibility.allFilters(), we add the individual filters 
+    # so when we call toString in the test above, we never actually
+    # call BackwardCompatibility.toString()
+
+    # Ideally, we would like to make toString() static, but we
+    # can't do that because Object.toString() is not static
+    set bc [java::new ptolemy.moml.filter.BackwardCompatibility]
+    $bc toString
+} {This filter contains the following filters:
+ptolemy.moml.filter.AddEditorFactory: If a parameter has a _location, then
+add a VisibleParameterEditorFactory named _editorFactory.
+
+ptolemy.moml.filter.AddIcon: Add specialized icons that display the value
+of one of the parameters.
+The affected actors are:
+	ptolemy.actor.lib.Scale
+	ptolemy.actor.lib.Const
+	ptolemy.actor.lib.TrigFunction
+	ptolemy.actor.lib.MathFunction
+	ptolemy.actor.lib.Expression
+
+ptolemy.moml.filter.ClassChanges: change any class names that have been renamed
+Below are original class names followed by the new class names.
+	ptolemy.moml.Location	 -> ptolemy.kernel.util.Location
+ptolemy.moml.filter.HideAnnotationNames: If an annotation name ends with
+'annotation1', then add _hideName if necessary.
+
+ptolemy.moml.filter.PortNameChanges: Update any actor port names that have been
+renamed.
+Below are the actors that are affected, along
+with the old port name and the new port name:	ptolemy.actor.lib.Sleep
+		delay	 -> sleepTime
+	ptolemy.actor.lib.conversions.ComplexToCartesian
+		imag	 -> y
+		real	 -> x
+	ptolemy.actor.lib.conversions.CartesianToComplex
+		imag	 -> y
+		real	 -> x
+
+ptolemy.moml.filter.PropertyClassChanges: Update any actor port class names
+that have been renamed.
+Below are the actors that are affected, alongwith the port name
+and the new classname:	ptolemy.domains.sdf.lib.vq.ImageUnpartition
+		output	 -> ptolemy.actor.TypedIOPort
+		input	 -> ptolemy.actor.TypedIOPort
+	ptolemy.actor.lib.javasound.AudioReader
+		sourceURL	 -> ptolemy.data.expr.Parameter
+	ptolemy.actor.lib.Expression
+		expression	 -> ptolemy.kernel.util.StringAttribute
+	ptolemy.domains.sdf.lib.vq.VQDecode
+		output	 -> ptolemy.actor.TypedIOPort
+		input	 -> ptolemy.actor.TypedIOPort
+	ptolemy.domains.sdf.lib.vq.HTVQEncode
+		output	 -> ptolemy.actor.TypedIOPort
+		input	 -> ptolemy.actor.TypedIOPort
+	ptolemy.domains.sdf.lib.vq.ImagePartition
+		output	 -> ptolemy.actor.TypedIOPort
+		input	 -> ptolemy.actor.TypedIOPort
+
+}
+
+test BackwardCompatiblity-20.1 {Try running old models, first check that the makefile created the compat/ directory} { 
     if {! [file exists compat]} {
 	error "compat directory does not exist.  This could happen\
 		If you do not have access to old Ptolemy II tests"
