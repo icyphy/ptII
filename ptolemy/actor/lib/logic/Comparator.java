@@ -143,7 +143,7 @@ public class Comparator extends TypedAtomicActor {
         if (attribute == tolerance) {
             _tolerance = ((DoubleToken)tolerance.getToken()).doubleValue();
         } else if (attribute == comparison) {
-            String comparisonName = comparison.getExpression();
+            String comparisonName = comparison.getExpression().trim();
 
             if (comparisonName.equals(">")) {
                 _comparison = _GT;
