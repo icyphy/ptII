@@ -30,9 +30,10 @@
 
 package ptolemy.vergil.tree;
 
-import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 
+import java.util.LinkedList;
 import java.util.List;
 
 //////////////////////////////////////////////////////////////////////////
@@ -46,8 +47,12 @@ the following child elements, in this order:
 <li> relations
 <li> contained entities
 </ul>
-
-FIXME: More information.
+The indexes of the attributes are 0 to a-1, where a is the
+number of attributes.  The indexes of the ports are a to a+p-1,
+where p is the number of ports, and so on.
+Subclasses may return a subset of the attributes, ports, and
+relations by overriding the protected methods that list these
+contained objects.
 
 @author Steve Neuendorffer and Edward A. Lee
 @version $Id$
@@ -72,17 +77,26 @@ public class FullTreeModel extends EntityTreeModel {
      *  @return A node, or null if there is no such child.
      */
     public Object getChild(Object parent, int index) {
-        // FIXME: doing attributes only.
-	if (!(parent instanceof NamedObj)) return null;
-        NamedObj obj = (NamedObj)parent;
-        List attributes = obj.attributeList();
+        List attributes = _attributes(parent);
         int numAttributes = attributes.size();
-	if (index >= numAttributes) {
-            return super.getChild(parent, index - numAttributes);
-        } else if (index < 0) {
-            return null;
-        } else {
+
+        List ports = _ports(parent);
+        int numPorts = ports.size();
+
+        List relations = _relations(parent);
+        int numRelations = relations.size();
+
+        if (index >= numAttributes + numPorts + numRelations) {
+            return super.getChild(parent,
+                    index - numAttributes - numPorts - numRelations);
+        } else if (index >= numAttributes + numPorts) {
+            return relations.get(index - numAttributes - numPorts);
+        } else if (index >= numAttributes) {
+            return ports.get(index - numAttributes);
+        } else if (index >= 0) {
             return attributes.get(index);
+        } else {
+            return null;
         }
     }
 
@@ -94,13 +108,17 @@ public class FullTreeModel extends EntityTreeModel {
      *  @return The number of children.
      */
     public int getChildCount(Object parent) {
-        // FIXME: Only doing attributes for now.
-	if (!(parent instanceof NamedObj)) return 0;
-        NamedObj obj = (NamedObj)parent;
-        List attributes = obj.attributeList();
+        List attributes = _attributes(parent);
         int numAttributes = attributes.size();
-        int result = numAttributes + super.getChildCount(parent);
-        return result;
+
+        List ports = _ports(parent);
+        int numPorts = ports.size();
+
+        List relations = _relations(parent);
+        int numRelations = relations.size();
+
+        return numAttributes + numPorts + numRelations
+                + super.getChildCount(parent);
     }
 
     /** Return the index of the given child within the given parent.
@@ -108,13 +126,40 @@ public class FullTreeModel extends EntityTreeModel {
      *  @return The index of the specified child.
      */
     public int getIndexOfChild(Object parent, Object child) {
-        // FIXME: doing attributes only.
-	if (!(parent instanceof NamedObj)) return -1;
-        NamedObj obj = (NamedObj)parent;
-        List attributes = obj.attributeList();
+
+        List attributes = _attributes(parent);
+
         int index = attributes.indexOf(child);
-	if (index >= 0) return index;
-        else return super.getIndexOfChild(parent, child);
+	if (index >= 0) {
+            return index;
+        } else {
+            // Object is not an attribute.  See whether it's a port.
+            List ports = _ports(parent);
+
+            index = ports.indexOf(child);
+            int numAttributes = attributes.size();
+            if (index >= 0) {
+                return index + numAttributes;
+            } else {
+                // Not an attribute or port. Try relation.
+                List relations = _relations(parent);
+
+                index = relations.indexOf(child);
+                int numPorts = ports.size();
+                if (index >= 0) {
+                    return index + numAttributes + numPorts;
+                } else {
+                    // Not an attribute, port, or relation. Defer to base
+                    // class.
+                    index = super.getIndexOfChild(parent, child);
+                    if (index >= 0) {
+                        int numRelations = relations.size();
+                        return index + numAttributes + numPorts + numRelations;
+                    }
+                }
+            }
+        }
+        return -1;
     }
 
     /** Return true if the object is a leaf node.  An object is a leaf
@@ -123,12 +168,51 @@ public class FullTreeModel extends EntityTreeModel {
      *  @return True if the node has no children.
      */
     public boolean isLeaf(Object object) {
-        // FIXME: Only doing attributes for now.
-	if (!(object instanceof NamedObj)) return true;
-        NamedObj obj = (NamedObj)object;
-        List attributes = obj.attributeList();
-        int numAttributes = attributes.size();
-        if (numAttributes > 0) return false;
-        else return super.isLeaf(object);
+        // FIXME: Ignoring setFilter for now.
+
+        if (_attributes(object).size() > 0) return false;
+        if (_ports(object).size() > 0) return false;
+        if (_relations(object).size() > 0) return false;
+
+        return super.isLeaf(object);
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return the list of attributes, or an empty list if there are none.
+     *  Override this method if you wish to show only a subset of the
+     *  attributes.
+     *  @return A list of attributes.
+     */
+    protected List _attributes(Object object) {
+	if (!(object instanceof NamedObj)) return _emptyList;
+        return ((NamedObj)object).attributeList();
+    }
+
+    /** Return the list of ports, or an empty list if there are none.
+     *  Override this method if you wish to show only a subset of the
+     *  ports.
+     *  @return A list of ports.
+     */
+    protected List _ports(Object object) {
+	if (!(object instanceof Entity)) return _emptyList;
+        return ((Entity)object).portList();
+    }
+
+    /** Return the list of relations, or an empty list if there are none.
+     *  Override this method if you wish to show only a subset of the
+     *  relations.
+     *  @return A list of relations.
+     */
+    protected List _relations(Object object) {
+	if (!(object instanceof CompositeEntity)) return _emptyList;
+        return ((CompositeEntity)object).relationList();
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected members                 ////
+
+    /** Empty list. */
+    protected static List _emptyList = new LinkedList();
 }
