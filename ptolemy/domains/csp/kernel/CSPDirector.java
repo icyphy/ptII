@@ -189,7 +189,7 @@ public class CSPDirector extends ProcessDirector {
     }
 
     /** Returns the current model time. 
-     *  Note: this method may dissappear if time is implemented in 
+     *  Note: this method may disappear if time is implemented in 
      *  super classes.
      *  @return The current model time.
      */
@@ -234,7 +234,7 @@ public class CSPDirector extends ProcessDirector {
      *  This method should only be called when no processes are delayed, as 
      *  the director stores the model time at which to resume them. If 
      *  the current model time changed while one or more processes are 
-     *  delayed, then the state of the diretor would be undefined as 
+     *  delayed, then the state of the director would be undefined as 
      *  the resumption time of the delayed processes would not be 
      *  comparable with the new model time.
      *  <P>
@@ -299,7 +299,7 @@ public class CSPDirector extends ProcessDirector {
      *  <P>
      *  The method waitForDeadlock() in CSPActor calls this method 
      *  with a zero argument. Thus the process will continue the 
-     *  next occasion time deadock occurs. 
+     *  next occasion time deadlock occurs. 
      *  <p>
      *  @param delta The length of time to delay the actor.
      *  @param actor The actor being delayed.
@@ -411,11 +411,7 @@ public class CSPDirector extends ProcessDirector {
 	      }
 	      _topologyChangesPending = false;
 
-	      // FIXME: removeNote that we return here so that this method does
-	      // not wait. This is because the result of the
-	      // topology change might not resolve the deadlock
-	      // that caused these changes to be carried out.
-	  } else if (_actorsDelayed > 0) {
+          } else if (_actorsDelayed > 0) {
 	      // Time deadlock.
 	      double nextTime = _getNextTime();
 	      System.out.println("\nCSPDirector: advancing time " +
@@ -445,6 +441,7 @@ public class CSPDirector extends ProcessDirector {
 	      // Real deadlock. Return true so that the fire method can return.
 	      return true;
 	  }
+          // Return false for topology changes and time deadlock.
 	  return false;
         } catch (TopologyChangeFailedException ex ) {
             throw new InvalidStateException("CSPDirector: failed to " +
@@ -505,7 +502,7 @@ public class CSPDirector extends ProcessDirector {
     // sufficiently advances.
     private int _actorsDelayed = 0;
 
-    // The cuurent model time.
+    // The current model time.
     private double _currentTime = 0.0;
 
     // A sorted list of the times of delayed actors. The time the model

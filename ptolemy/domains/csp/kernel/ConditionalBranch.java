@@ -46,7 +46,7 @@ guarded communication statement is of the form
 If the guard is true, or absent which implies true, then the branch
 is enabled. Guarded communication statements are used to perform
 both forms of conditional communication constructs: "conditional if" (CIF)
-and "conditional do" (CDO). These constructs are analagous to, 
+and "conditional do" (CDO). These constructs are analogous to, 
 but different from, the common <I>if</I> and <I>do</I> statements.
 Each guarded communication statement is one branch of a CIF or CDO.
 <p>
@@ -60,10 +60,10 @@ A CDO has the form
 <br>&nbsp;&nbsp;&nbsp&nbsp;&nbsp;&nbsp;&nbsp;       ...
 <br>&nbsp;&nbsp;&nbsp                          }
 <P>
-The G1, G2 etc. repersent the guards. The C1, C2 etc. represent the 
+The G1, G2 etc. represent the guards. The C1, C2 etc. represent the 
 communication associated with that branch, and may be either a send() 
 or a get(). The S1, S2 etc. represent the blocks of statements 
-asssociated with that branch. They are executed if that branch is 
+associated with that branch. They are executed if that branch is 
 successful. The "[]" hints at the fact that the guards are all evaluated 
 in parallel (as opposed to sequentially in a common <I>if</I> statement). 
 <p>
@@ -195,7 +195,7 @@ public abstract class ConditionalBranch {
          _receiver = rec;
     }
 
-    /** Set the token contianed by this branch. For a ConditionalSend
+    /** Set the token contained by this branch. For a ConditionalSend
      *  it is set upon creation, and set to null after the rendezvous.
      *  For a ConditionalReceive it is set after the rendezvous has
      *  occurred, and is null before that.
@@ -209,7 +209,7 @@ public abstract class ConditionalBranch {
     ////                         protected methods                      ////
 
     /** Called by subclasses to wait. It wraps a wait() call, on the 
-     *  receiver associated with this branch, with chacks on the state 
+     *  receiver associated with this branch, between checks on the state 
      *  of the receiver. It also takes care of registering
      *  branches as blocked which is needed for deadlock detection.
      *  @exception InterruptedException If this method is interrupted

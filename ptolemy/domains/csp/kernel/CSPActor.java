@@ -49,14 +49,14 @@ non-deterministic communication and timed features of  the communicating
 sequential processes(CSP) domain.
 <p>
 Two conditional communication constructs are available: "Conditional if" 
-(CIF) and "Conditional do" (CDO). The constructs are analagous to, 
+(CIF) and "Conditional do" (CDO). The constructs are analogous to, 
 but different from, the common <I>if</I> and <I>do</I> statements. The 
 steps involved in using both of these are 
 <BR>(1) create the branches involved and assign an identification number 
 to each branch.
 <BR>(2) call the chooseBranch() method to determine which branch should 
 succeed.
-<BR>(3) execute the statements associated with the sucessful branch.
+<BR>(3) execute the statements associated with the successful branch.
 <P>
 Each branch is either an instance of ConditionalSend or ConditionalReceive, 
 depending on the communication in the branch. Please see these classes for 
@@ -70,15 +70,15 @@ are evaluated in parallel, as opposed to sequentially.
 <P>
 The chooseBranch() method takes an array of the branches as an argument, and 
 controls which branch is successful. The successful branch is the branch 
-that succeeds with its communication. To determine which branch is succesful, 
+that succeeds with its communication. To determine which branch is successful, 
 the guards of <I>all</I> branches are checked. If the guard for a branch is 
 true then that branch is <I>enabled</I>. If no branches are enabled, 
 i.e. if all the guards are false, then -1 is returned to indicate this.
-If exactly one branch is enabled, the corresponding comunication is 
+If exactly one branch is enabled, the corresponding communication is 
 carried out and the identification number of the branch is returned. 
 If more than one branch is enabled, a separate thread is created and 
 started for each enabled branch. The method then waits for one of 
-the branches to suceed, after which it wakes up and terminates the 
+the branches to succeed, after which it wakes up and terminates the 
 remaining branches. When the last conditional branch thread has finished, 
 the method returns allowing the actor thread to continue.
 <p>
@@ -460,7 +460,7 @@ public class CSPActor extends AtomicActor {
 
     /** Registers the calling branch as the successful branch. It 
      *  reduces the count of active branches, and notifies chooseBranch() 
-     *  that a branch has suceeded. The chooseBranch() method then 
+     *  that a branch has succeeded. The chooseBranch() method then 
      *  proceeds to terminate the remaining branches. It is called by 
      *  the first branch that succeeds with a rendezvous.
      *  @param branchID The ID assigned to the calling branch upon creation.
