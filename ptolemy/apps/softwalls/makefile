@@ -55,6 +55,10 @@ CLASSPATH =	$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	softwalls
+PTCLASSJAR = 	$(PTPACKAGE).jar
+
 JSRCS = \
 	ThreeDFunction.java \
 	ImplicitSurface.java \
@@ -73,7 +77,7 @@ OPTIONAL_FILES =
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
-install: all
+install: all $(PTCLASSJAR)
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
