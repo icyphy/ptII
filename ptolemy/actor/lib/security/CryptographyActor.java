@@ -30,6 +30,22 @@
 
 package ptolemy.actor.lib.security;
 
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.UnsignedByteToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -40,23 +56,14 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
+import java.security.Provider;
 import java.security.SecureRandom;
+import java.security.Security;
+import java.util.Iterator;
+import java.util.Set;
 
 import javax.crypto.KeyGenerator;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-import ptolemy.data.UnsignedByteToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CryptographyActor
@@ -107,16 +114,26 @@ public class CryptographyActor extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
-        algorithm = new Parameter(this, "algorithm");
-        algorithm.setTypeEquals(BaseType.STRING);
-        algorithm.setExpression("\"\"");
+        algorithm = new StringParameter(this, "algorithm");
+        Set algorithms = Security.getAlgorithms("Cipher");
+        Iterator algorithmsIterator = algorithms.iterator();
+        for(int i = 0; algorithmsIterator.hasNext(); i++) {
+            String algorithmName = (String)algorithmsIterator.next();
+            if (i == 0) {
+                algorithm.setExpression(algorithmName);
+            }
+            algorithm.addChoice(algorithmName);
+        }
 
-        provider = new Parameter(this, "provider");
-        provider.setTypeEquals(BaseType.STRING);
-        provider.setExpression("\"SystemDefault\"");
+        provider = new StringParameter(this, "provider");
+        provider.setExpression("SystemDefault");
+        provider.addChoice("SystemDefault");
+        Provider [] providers = Security.getProviders();
+        for (int i = 0; i < providers.length; i++) {
+            provider.addChoice(providers[i].getName());
+        }
 
-        keySize = new Parameter(this, "keySize");
-        keySize.setTypeEquals(BaseType.INT);
+        keySize = new Parameter(this, "keySize", new IntToken(1024));
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -126,18 +143,31 @@ public class CryptographyActor extends TypedAtomicActor {
      *  specified as a string. The algorithms are limited to those
      *  implemented by providers using the Java JCE which are found on the
      *  system.
+     *  The initial default is the first value returned by
+     *  Security.getAlgorithms();
+     *  
      */
-    public Parameter algorithm;
+    public StringParameter algorithm;
 
     /** Specify a provider for the given algorithm.  Takes the algorithm name
      *  as a string. The default value is "SystemDefault" which allows the
      *  system chooses the provider based on the JCE architecture.
      */
-    public Parameter provider;
+    public StringParameter provider;
 
-    /** Specify the size of the key to be created.  This is an int value
-     *  representing the number of bits. Refer to the readme.txt for a
-     *  list of possible key sizes for certain algorithms.
+    /** Specify the size of the key to be created.  This is an integer value
+     *  representing the number of bits in the key.  The initial default
+     *  depends on the algorithm that is selected, not all algorithms use
+     *  keySize.  
+     *  <p>DSA is the most common algorithm that uses keySize, the Sun
+     *  documentation says:
+     *  "The length, in bits, of the modulus p. This must range from
+     *  512 to 1024, and must be a multiple of 64. The default keysize
+     *  is 1024."
+     *  Refer to 
+     *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB"><code>http://java.sun.com/j2se/1.4.2/docs/guide/security/CryptoSpec.html#AppB</code></a>
+     *  for a list of possible key sizes for certain algorithms.
+     *  The initial default is 1024.
      */
     public Parameter keySize;
 
@@ -154,6 +184,25 @@ public class CryptographyActor extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to reinitialize the state if
+     *  the <i>algorith</i>, <i>provider</i>, or <i>keysize</i>
+     *  parameter is changed.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == algorithm) {
+            _algorithm = ((StringToken)algorithm.getToken()).stringValue();
+        } else if (attribute == provider) {
+            _provider = ((StringToken)provider.getToken()).stringValue();
+        } else if (attribute == keySize) {
+            _keySize = ((IntToken)keySize.getToken()).intValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
     /** This method takes the data from the <i>input</i> and processes the
      *  data based on the <i>algorithm</i>, and <i>provider</i>.  The
      *  transformed data is then sent on the <i>output</i>.
@@ -162,6 +211,7 @@ public class CryptographyActor extends TypedAtomicActor {
      */
     public void fire() throws IllegalActionException {
         super.fire();
+        System.out.println("CryptographyActor.fire()");
         try {
             if (input.hasToken(0)) {
                 byte[] dataBytes =
@@ -253,7 +303,8 @@ public class CryptographyActor extends TypedAtomicActor {
 
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to create asymmetric keys, "
+                    "Failed to create asymmetric keys. "
+                    + "algorithm: '"
                     + _algorithm + "', keyAlgorithm: '"
                     + _keyAlgorithm + "', keySize: '"
                     + _keySize + "', provider: '"
@@ -279,6 +330,7 @@ public class CryptographyActor extends TypedAtomicActor {
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Failed to create symmetric key, "
+                    + "algorithm: '"
                     + _algorithm + "', keyAlgorithm: '"
                     + _keyAlgorithm + "', keySize: '"
                     + _keySize + "', provider: '"

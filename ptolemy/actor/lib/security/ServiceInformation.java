@@ -34,9 +34,13 @@ package ptolemy.actor.lib.security;
 import java.security.Provider;
 import java.security.Security;
 import java.util.Iterator;
+import java.util.Set;
 
-import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.lib.Source;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.actor.TypedIOPort;
@@ -74,7 +78,7 @@ Information about JCE can be found at
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class ServiceInformation extends TypedAtomicActor {
+public class ServiceInformation extends Source {
     // FIXME: Isn't this a source?
 
     /** Construct an actor with the given container and name.
@@ -89,12 +93,15 @@ public class ServiceInformation extends TypedAtomicActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(BaseType.STRING);
+        output.setTypeEquals(new ArrayType(BaseType.STRING));
 
-        service = new StringAttribute(this, "service");
+        service = new StringParameter(this, "service");
         service.setExpression("Providers");
-
+        service.addChoice("Cipher");
+        service.addChoice("KeyGenerator");
+        service.addChoice("KeyPairGenerator");
+        service.addChoice("MessageDigest");
+        service.addChoice("Signature");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -112,49 +119,45 @@ public class ServiceInformation extends TypedAtomicActor {
      *  </ul>
      *  The default value is Providers.
      */
-    public StringAttribute service;
+    public StringParameter service;
 
-    /** Multi-port channel that sends the requested information as Strings.
-     */
-    public TypedIOPort output;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Determine what information to send to a display.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If attribute being changed is
-     *  the service attribute and its value cannot be decoded.
+    /** Send the token in the <i>value</i> parameter to the output.
+     *  @exception IllegalActionException If it is thrown by the
+     *   send() method sending out the token.
      */
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
+    public void fire() throws IllegalActionException {
+        super.fire();
+        String request = service.getExpression();
 
-        if (attribute == service) {
-            request = service.getExpression();
+        if (request.equals("Cipher") || request.equals("Signature")
+                || request.equals("MessageDigest")
+                || request.equals("KeyGenerator")
+                || request.equals("KeyPairGenerator")) {
 
-            if (request.equals("Cipher") || request.equals("Signature")
-                    || request.equals("MessageDigest")
-                    || request.equals("KeyGenerator")
-                    || request.equals("KeyPairGenerator")) {
-
-                // FIXME: this just always sends the same data?
-                Iterator it = (Security.getAlgorithms("Request")).iterator();
-                int i = 0;
-                while (it.hasNext()) {
-                    output.send(i, new StringToken((String)it.next()));
-                    i++;
-                }
-            } else if (request.equals("Providers")) {
-                Provider [] providers = Security.getProviders();
-                for (int i = 0; i < providers.length; i++) {
-                    output.send(i, new StringToken(providers[i].getName()));
-                }
-            } else {
-                throw new IllegalActionException(this,
-                        "Service request '" + request + "' is not valid.");
+            // FIXME: this just always sends the same data?
+            Set algorithms = Security.getAlgorithms(request);
+            Iterator algorithmsIterator = algorithms.iterator();
+            Token [] outputArray = new StringToken[algorithms.size()];
+            for(int i = 0; algorithmsIterator.hasNext(); i++) {
+                outputArray[i] =
+                    new StringToken((String)algorithmsIterator.next());
             }
-        } else super.attributeChanged(attribute);
+            output.send(0, new ArrayToken(outputArray));
+        } else if (request.equals("Providers")) {
+            Provider [] providers = Security.getProviders();
+            Token [] outputArray = new StringToken[providers.length];
+            for (int i = 0; i < providers.length; i++) {
+                outputArray[i] =
+                    new StringToken((String)providers[i].toString());
+            }
+            output.send(0, new ArrayToken(outputArray));
+        } else {
+            throw new IllegalActionException(this,
+                    "Service request '" + request + "' is not valid.");
+        }
     }
-
-    private String request;
 }

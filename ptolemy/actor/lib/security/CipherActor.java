@@ -39,10 +39,13 @@ import javax.crypto.NoSuchPaddingException;
 
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.InternalErrorException;
 
 //////////////////////////////////////////////////////////////////////////
 //// CipherActor
@@ -89,41 +92,124 @@ public class CipherActor extends CryptographyActor {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        mode = new Parameter(this, "mode");
-        mode.setTypeEquals(BaseType.STRING);
-        mode.setExpression("\"\"");
+        mode = new StringParameter(this, "mode");
+        mode.setExpression("");
+        mode.addChoice("");
+        mode.addChoice("NONE");
+        mode.addChoice("CBC");
+        mode.addChoice("CFB");
+        mode.addChoice("ECB");
+        mode.addChoice("OFB");
+        mode.addChoice("PCBC");
 
-        padding = new Parameter(this, "padding");
-        padding.setTypeEquals(BaseType.STRING);
-        padding.setExpression("\"\"");
+        padding = new StringParameter(this, "padding");
+        padding.setExpression("");
+        padding.addChoice("");
+        padding.addChoice("NoPadding");        
+        padding.addChoice("OAEPWithMD5AndMGF1Padding");        
+        padding.addChoice("PKCS5Padding");
+        padding.addChoice("SSL3Padding");
     }
 
 
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The padding scheme used by the cipher during encryption.  The padding
-     *  is specified as a string.  Names for modes and modes implemented vary
-     *  based on the provider.  For detail on this information refer to the
-     *  provider specifications or use the implementation of this actor based
-     *  on the BouncyCastle provider that list the options.  If left
-     *  blank the default setting for the algorithm is used.
+    /** The mode component when the Cipher is instantiated.
+     *  The mode is specified as a string.
+     *  Names for modes and modes implemented vary based on the provider.
+     *  Possible values include
+     * <dl>
+     * <dt><code></code> (<i>The empty string</i>)
+     * <dd>Use the default setting for the algorithm
+     *
+     * <dt><code>NONE</code>
+     * <dd>No mode.
+     *
+     * <dt><code>CBC</code>
+     * <dd>Cipher Block Chaining Mode, as defined in FIPS PUB 81.
+     *
+     * <dt><code>CFB</code>
+     * <dd>Cipher Feedback Mode, as defined in FIPS PUB 81.
+     *
+     * <dt><code>ECB</code>
+     * <dd>Electronic Codebook Mode, as defined in: The National
+     * Institute of Standards and Technology (NIST) Federal
+     * Information Processing Standard (FIPS) PUB 81, "DES Modes of
+     * Operation," U.S. Department of Commerce, Dec 1980.
+     *
+     * <dt><code>OFB</code>
+     * <dd>Output Feedback Mode, as defined in FIPS PUB 81.
+     *
+     * <dt><code>PCBC</code>
+     * <dd>Propagating Cipher Block Chaining, as defined by Kerberos V4. 
+     * </dl>
+     *
+     *  The initial default is the empty string, which indicates that
+     *  the default setting for the algorithm should be used.
+     *  <p>
+     *  See the 
+     *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/jce/JCERefGuide.html#AppA">Java Cryptography Extension (JCE) Reference Guide</a>
+     *  for details.
      */
-    public Parameter padding;
+    public StringParameter mode;
 
-    /** The mode of the block cipher that was for used encryption.  Names
-     *  for padding schemes and padding schemes implemented vary
-     *  based on the provider.  For detail on this information refer to the
-     *  provider specifications or use the implementation of this actor based
-     *  on the BouncyCastle provider that list the options.  If left
-     *  blank, the default setting for the algorithm used.
+    /** The padding scheme used by the cipher during encryption.
+     *  The padding is specified as a string.
+     *  Names for parameter and parameters implemented vary based on the
+     *  provider. 
+     *  Possible values include
+     * <dl>
+     * <dt><code></code> (<i>The empty string</i>)
+     * <dd>Use the default setting for the algorithm
+     *
+     * <dt><code>NoPadding</code>
+     * <dd>No padding.
+     *
+     * <dt><code> OAEPWith<digest>And<mgf>Padding</code>
+     * <dd>Optimal Asymmetric Encryption Padding scheme defined in
+     * PKCS #1, where <digest> should be replaced by the message
+     * digest and <mgf> by the mask generation function. Example:
+     * OAEPWithMD5AndMGF1Padding.
+     *
+     * <dt><code>PKCS5Padding</code>
+     * <dd>The padding scheme described in: RSA Laboratories, "PKCS
+     * #5: Password-Based Encryption Standard," version 1.5, November
+     * 1993.
+     * 
+     * <dt><code>SSL3Padding</code>
+     * <dd>The padding scheme defined in the SSL Protocol Version 3.0,
+     * November 18, 1996, section 5.2.3.2 (CBC block cipher):
+     * </dt>
+     *
+     *  The initial default is the empty string, which indicates that
+     *  the default setting for the algorithm should be used.
+     *  <p>
+     *  See the 
+     *  <a href="http://java.sun.com/j2se/1.4.2/docs/guide/security/jce/JCERefGuide.html#AppA">Java Cryptography Extension (JCE) Reference Guide</a>
+     *  for details.
      */
-    public Parameter mode;
-
+    public StringParameter padding;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Override the base class to reinitialize the state if
+     *  the <i>algorith</i>, <i>provider</i>, or <i>keysize</i>
+     *  parameter is changed.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == mode) {
+            _mode = ((StringToken)mode.getToken()).stringValue();
+        } else if (attribute == padding) {
+            _padding = ((StringToken)padding.getToken()).stringValue();
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
     /** This method retrieves the <i>algorithm</i>, <i>provider</i>,
      *  <i>mode</i>, <i>keySize</i> and <i>padding</i>.  The cipher is also
      *  initialized.  If provider is left as "SystemDefault" the system
@@ -135,23 +221,36 @@ public class CipherActor extends CryptographyActor {
      */
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _padding = ((StringToken)padding.getToken()).stringValue();
-        _mode = ((StringToken)mode.getToken()).stringValue();
         _keyAlgorithm = _algorithm;
+        _mode = ((StringToken)mode.getToken()).stringValue();
+        _padding = ((StringToken)padding.getToken()).stringValue();
         try {
-            if (_provider.equalsIgnoreCase("default")) {
+            // If the mode or padding parameters are the empty
+            // string, then we use the default for the algorithm
+            // If they are not empty
+            String modeArgument = (_mode.length() > 0) ?
+                "/" + _mode : "";
+            String paddingArgument = (_padding.length() > 0) ?
+                "/" + _padding : "";
+            if (_mode.length() == 0
+                    && _padding.length() > 0) {
+                modeArgument = "/";
+            }
+
+            if (_provider.equalsIgnoreCase("SystemDefault")) {
                 _cipher = Cipher.getInstance(
-                        _algorithm + "/" + _mode + "/" + _padding);
+                        _algorithm + modeArgument + paddingArgument);
             } else {
                 _cipher = Cipher.getInstance(
-                        _algorithm + "/" + _mode + "/" + _padding, _provider);
+                        _algorithm + modeArgument + paddingArgument,
+                        _provider);
             }
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
-                    "Failed to initialize Cipher with algorithm: '"
-                    + _algorithm + "', padding: '"
-                    + _padding + "', provider: '"
-                    + _provider + "'");
+                    "Failed to initialize Cipher with "
+                    + "algorithm: '"+ _algorithm
+                    + "', padding: '" + _padding
+                    + "', provider: '" + _provider + "'");
         }
     }
 
