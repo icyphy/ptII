@@ -491,18 +491,22 @@ public class GeneratorAttribute extends SingletonAttribute implements ChangeList
 	    // Set the iterations parameter.
 	    CompositeActor compositeActor = (CompositeActor)toplevel;
 	    Director director = compositeActor.getDirector();
-	    Attribute directorIterations =
-		director.getAttribute("iterations");
+	    // If we save a blank model, then there might not be a director.
 	    Parameter iterations = (Parameter)getAttribute("iterations");
-	    if (directorIterations != null) {
-		Token iterationsToken = 
-		 ((Parameter)directorIterations)
-		    .getToken();
-		iterations.setExpression(iterationsToken.toString());
+	    if (director == null) {
+		    iterations.setExpression("1000");
 	    } else {
-		iterations.setExpression("1000");
+		Attribute directorIterations =
+		    director.getAttribute("iterations");
+		if (directorIterations != null) {
+		    Token iterationsToken = 
+			((Parameter)directorIterations)
+			.getToken();
+		    iterations.setExpression(iterationsToken.toString());
+		} else {
+		    iterations.setExpression("1000");
+		}
 	    }
-
 	} catch (Exception ex) {
 	    throw new IllegalActionException(this, ex,
 					     "Failed to parse '"

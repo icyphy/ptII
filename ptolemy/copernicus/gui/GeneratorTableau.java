@@ -53,6 +53,7 @@ import ptolemy.gui.JTextAreaExec;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.SwingWorker;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
@@ -170,6 +171,23 @@ public class GeneratorTableau extends Tableau {
 	    // read a .xml file so that xml file should be updated.
 	    if( isModified()) {
 		_save();
+	    }
+
+	    if (getEffigy().url == null 
+		|| getEffigy().url.getURL() == null) { 
+		// If the user does File -> New -> GraphEditor,
+		// View -> Code Generator, then we might end up 
+		// dealing with an Effigy that has a null url.
+		_save();
+		if (getEffigy() == null
+		    || getEffigy().url == null 
+		    || getEffigy().url.getURL() == null) { 
+		    throw new IllegalActionException(model, ex, 
+				     "Could not read the URL of this "
+				     + "model.  getEffigy(): "
+				     + getEffigy());
+		    }
+		}
 	    }
 
             // Caveats panel.
@@ -327,10 +345,7 @@ public class GeneratorTableau extends Tableau {
 			    // parameter should name a subdirectory of
 			    // ptolemy/copernnicus such as "java" or "shallow".
 			    String codeGenerator = 
-				((StringToken)
-				 ((Parameter)options
-				  .getAttribute("codeGenerator"))
-				 .getToken()).stringValue();
+				getStringToken(options, "codeGenerator");
 
 			    // Convert "java" to java.
 			    //codeGenerator =
@@ -338,16 +353,10 @@ public class GeneratorTableau extends Tableau {
 			    //				.length() - 1);
 								    
 			    String targetPath =
-				((StringToken)
-				 ((Variable)options
-				  .getAttribute("targetPath"))
-				 .getToken()).stringValue();
+				getStringToken(options, "targetPath");
 
 			    String ptIIUserDirectory =
-				((StringToken)
-				 ((Parameter)options
-				  .getAttribute("ptIIUserDirectory"))
-				 .getToken()).stringValue();
+				getStringToken(options, "ptIIUserDirectory");
 
 			    //targetPath =
 				//targetPath.substring(1, targetPath
@@ -388,6 +397,19 @@ public class GeneratorTableau extends Tableau {
 				} catch (Exception ex) {
 				    throw new IllegalActionException(model, ex, null);
 				}
+			    } else if (codeGenerator.equals("c")
+				       && compile) {
+				exec.updateStatusBar("Starting c "
+                                        + "code generation");
+				// FIXME: How come the status bar
+				// does not get updated?
+				ptolemy.copernicus.c
+				    .Main.generate((CompositeActor)model,
+                                            targetPath);
+				exec.updateStatusBar("C Code generation "
+                                        + "complete.");
+				decompile = true;
+
 			    } else if (codeGenerator.equals("java")) {
 				// Soot is a memory pig, so we run
 				// it in a separate process.
@@ -401,6 +423,19 @@ public class GeneratorTableau extends Tableau {
 				    throw new IllegalActionException(model,
 								     ex, null);
 				}
+			    } else if (codeGenerator.equals("jhdl")
+				       && compile) {
+				exec.updateStatusBar("Starting jhdl "
+                                        + "code generation");
+				// FIXME: How come the status bar
+				// does not get updated?
+				ptolemy.copernicus.jhdl
+				    .Main.generate((CompositeActor)model,
+                                            targetPath);
+				exec.updateStatusBar("JHDL Code generation "
+                                        + "complete.");
+
+
 			    } else if (codeGenerator.equals("shallow")) {
 				// Soot is a memory pig, so we run
 				// it in a separate process.
@@ -428,10 +463,7 @@ public class GeneratorTableau extends Tableau {
 
 			    if (show && decompile) {
 				String targetPackage =
-				    ((StringToken)
-				     ((Parameter)options
-				      .getAttribute("targetPackage"))
-				     .getToken()).stringValue();
+				    getStringToken(options, "targetPackage");
 
 				//targetPackage =
 				//    targetPackage.substring(1, targetPackage
@@ -451,10 +483,7 @@ public class GeneratorTableau extends Tableau {
 				}
 
 				String classPath =
-				    ((StringToken)
-				     ((Parameter)options
-				      .getAttribute("classPath"))
-				     .getToken()).stringValue();
+				    getStringToken(options, "classPath");
 
 				execCommands.add("javap "
                                         + "-classpath \"" 
@@ -564,5 +593,24 @@ public class GeneratorTableau extends Tableau {
 	}
 	return results;
     }
+
+    // Get a StringToken by name, throw IllegalActionException if
+    // a StringToken by that name cannot be found.
+    private String getStringToken(Attribute attribute, String tokenName)
+	throws IllegalActionException {
+	try {
+	    return ((StringToken)
+		    ((Variable)attribute
+		     .getAttribute(tokenName))
+		    .getToken()).stringValue();
+	} catch (Exception ex) {
+	    throw new IllegalActionException(attribute, ex,
+					     "Could not find an attribute "
+					     + "named '"
+					     + tokenName + "' in "
+					     + attribute);
+	}
+    }
+
 }
 
