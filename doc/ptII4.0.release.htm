@@ -998,6 +998,17 @@ see <a href="http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/mac.htm#in_brows
 <li> Applet issues:
 	<ul>
 
+	<li> Applets seems to be trying to download tmp.jar, which
+	is not found.
+
+	<li> FSM ChainedTransitions and the TM applets
+	should show the insides of the composite actors.
+ 
+        <li> The SDF TrellisDecoder and VitebiDecoder applets do
+	not properly display the result values.
+	
+	<li> The model in Wireless AntennaPattern is offset
+
 	<li> We've experienced problems with the browser freezing
 	when between applets.  What happens is that the previous
 	applet gets a InterruptedException and pops up a modal dialog
@@ -1098,6 +1109,9 @@ Attempted to find as a moml class, but got:
 
 <li> Windows Installer Issues:
  	<ul>
+
+	<li> The HyVisual HSIF translater does not work when HyVisual
+	is installed using the Windows Installer or Web Start.
 
 	<li> Sometimes running a model that uses the Matlab interface
 	will cause Ptolemy II to exit.  Usually this occurs if Vergil
