@@ -167,8 +167,8 @@ public class Locator extends TypedAtomicActor {
      *  such as Vergil will create this icon, so the location will
      *  be determined by the visual editor.  Derived classes can
      *  override this method to specify the location in some other way.
-     *  @returns An array identifying the location.
-     *  @throws IllegalActionException If the location attribute does
+     *  @return An array identifying the location.
+     *  @exception IllegalActionException If the location attribute does
      *   not exist or cannot be evaluated.
      */
     protected double[] _getLocation() throws IllegalActionException {
