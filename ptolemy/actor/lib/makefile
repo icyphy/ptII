@@ -59,7 +59,7 @@ JSRCS = \
 	Commutator.java \
 	Const.java \
 	Distributor.java \
-	Plot.java \
+	TimePlot.java \
 	Ramp.java
 
 EXTRA_SRCS =	$(JSRCS)

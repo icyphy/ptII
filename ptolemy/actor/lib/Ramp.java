@@ -1,4 +1,4 @@
-/* An actor that outputs monotonically increasing values.
+/* An actor that outputs a sequence with a given step in values.
 
  Copyright (c) 1998 The Regents of the University of California.
  All rights reserved.
@@ -35,87 +35,136 @@ import ptolemy.data.expr.Parameter;
 //////////////////////////////////////////////////////////////////////////
 //// Ramp
 /**
-An actor that produces output token with monotonically increasing value.
-The value of the output event starts from an initial value and increases
-by a fixed step each time the actor fires.
+Produce an output token on each firing with a value that is
+incremented by the specified step each time the actor fires. The
+first output and the step value are given by parameters.
+The type of the output is inferred from the types of the parameters
+at the time that the actor is initialized. The type of the output
+is the type of the result of adding the two parameters.
+Thus, this actor is
+polymorphic in the sense that its output data type can be that
+of any token type that supports addition.
 
-@author Yuhong Xiong
+@author Yuhong Xiong, Edward A. Lee
 @version $Id$
 */
 
 public class Ramp extends TypedAtomicActor {
 
-    /** Construct a Ramp. The initial value and the step size of the output
-     *  is determined by the specified expressions. If an expression is
-     *  null, it is set to the default value "0".
+    /** Construct a Ramp with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @param initValue The String expression of the initial value.
-     *  @param step The String expression of the step size.
-     *  @exception IllegalActionException If the entity cannot be contained
+     *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public Ramp(TypedCompositeActor container, String name,
-	        String initValue, String step)
+    public Ramp(TypedCompositeActor container, String name)
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
-        _initValue = new Parameter(this, "Value");
-	if (initValue == null) {
-	    _initValue.setExpression("0");
-	} else {
-	    _initValue.setExpression(initValue);
-	}
-	_initValue.evaluate();
-        _step = new Parameter(this, "Step");
-	if (_step == null) {
-            _step.setExpression("0");
-        } else {
-            _step.setExpression(step);
-        }
-        _step.evaluate();
+        output = new TypedIOPort(this, "output", false, true);
 
-        _output = new TypedIOPort(this, "Output", false, true);
+        init = new Parameter(this, "init");
+        step = new Parameter(this, "step");
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The output port. */
+    public TypedIOPort output;
+
+    /** The value produced by the ramp on its first firing.
+     *  This parameter contains a DoubleToken, initially with value 0.
+     */
+    public Parameter init;
+
+    /** The amount by which the ramp output is incremented on each firing.
+     *  This parameter contains a DoubleToken, initially with value 1.
+     */
+    public Parameter step;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Evaluate the value and step size parameters and set the
-     *  declared type.
-     *  @exception IllegalActionException Not thrown in this class.
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
      */
-    // FIXME: this might not work if user change the parameter during
-    // simulation.
-    public void initialize()
-	    throws IllegalActionException {
+    public Object clone(Workspace ws) {
+        try {
+            Ramp newobj = (Ramp)super.clone(ws);
+            newobj.output = new TypedIOPort(this, "output", false, true);
+            newobj.init = new Parameter(this, "init");
+            newobj.step = new Parameter(this, "step");
+            return newobj;
+        } catch (KernelException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Internal error: " + ex.getMessage());
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
 
-	_stateToken = _initValue.getToken();
+    /** Infer the type of the output from the types of the parameters.
+     *  If the parameters have not been set, then they are set
+     *  to type DoubleToken with value 0.0 for init and 1.0 for step.
+     *  @exception IllegalActionException If the parameters cannot be
+     *   added together.
+     */
+    public void initialize() throws IllegalActionException {
+
+	_stateToken = init.getToken();
+        if(_stateToken == null) {
+            _stateToken = new DoubleToken(0.0);
+            init.setToken(_stateToken);
+        }
+
+        Token stepToken = step.getToken();
+        if(stepToken == null) {
+            stepToken = new DoubleToken(1.0);
+            step.setToken(stepToken);
+        }
 
 	// Add up the value and step parameters and use the type of
 	// the result token as the type of the output port.
-	Class type = (_stateToken.add(_step.getToken())).getClass();
-        _output.setDeclaredType(type);
+	Class type = (_stateToken.add(stepToken)).getClass();
+        output.setDeclaredType(type);
     }
 
     /** Send out the next ramp output.
-     *  @exception IllegalActionException Not thrown in this class.
      */
-    public void fire()
-	    throws IllegalActionException {
-        _output.broadcast(_stateToken);
-	_stateToken = _stateToken.add(_step.getToken());
+    public void fire() {
+        try {
+            output.broadcast(_stateToken);
+        } catch (IllegalActionException ex) {
+            // Should not be thrown because this is an output port.
+            throw new InternalErrorException(ex.getMessage());
+        }
+    }
+
+    /** Update the state.
+     */
+    public boolean postfire() {
+        try {
+            _stateToken = _stateToken.add(step.getToken());
+        } catch (IllegalActionException ex) {
+            // Should not be thrown because
+            // we have already verified that the tokens can be added.
+            throw new InternalErrorException(ex.getMessage());
+        }
+        // This actor never requests termination.
+        return true;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private Parameter _initValue = null;
-    private Parameter _step = null;
     private Token _stateToken = null;
-
-    private TypedIOPort _output;
 }
 

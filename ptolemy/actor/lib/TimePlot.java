@@ -29,69 +29,121 @@ package ptolemy.actor.lib;
 import ptolemy.kernel.*;
 import ptolemy.kernel.util.*;
 import ptolemy.data.*;
+import ptolemy.data.expr.*;
 import ptolemy.actor.*;
 import ptolemy.plot.*;
 import java.awt.Panel;
-import java.util.Enumeration;
-import ptolemy.domains.sdf.kernel.*;
 
 /** A signal plotter.
  *
  *  @author  Edward A. Lee
  *  @version $Id$
  */
-public class Plot extends TypedAtomicActor implements Placeable {
+public class TimePlot extends TypedAtomicActor implements Placeable {
 
-// FIXME: Override clone() to create the port.
-
-    public Plot(TypedCompositeActor container, String name)
+    public TimePlot(TypedCompositeActor container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container,name);
+
         // create the input port and make it a multiport.
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
         input.setDeclaredType(DoubleToken.class);
+
+        // create parameters.
+        timed = new Parameter(this, "timed", new BooleanToken(true));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public members                    ////
+
+    /** Input port. */
+    public TypedIOPort input;
+
+    /** The plot object. */
+    public Plot plot;
+
+    /** Specify whether to use token count (vs. current time)
+     *  for the X axis value.  Using current time is the default.
+     *  This parameter contains a BooleanToken.
+     */
+    public Parameter timed;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    public void fire() throws IllegalActionException {
+    /** Clone the actor into the specified workspace. This calls the
+     *  base class and then creates new ports and parameters.
+     *  @param ws The workspace for the new object.
+     *  @return A new actor.
+     */
+    public Object clone(Workspace ws) {
+        try {
+            TimePlot newobj = (TimePlot)super.clone(ws);
+            newobj.input = new TypedIOPort(this, "input", true, false);
+            newobj.input.setMultiport(true);
+            newobj.input.setDeclaredType(DoubleToken.class);
+            newobj.timed
+                    = new Parameter(this, "timed", new BooleanToken(true));
+            return newobj;
+        } catch (KernelException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Internal error: " + ex.getMessage());
+        } catch (CloneNotSupportedException ex) {
+            // Errors should not occur here...
+            throw new InternalErrorException(
+                    "Clone failed: " + ex.getMessage());
+        }
+    }
 
-        double curTime =((Director)getDirector()).getCurrentTime();
+    /** Read all available inputs and plot them as a function of time.
+     */
+    public void fire() throws IllegalActionException {
+        // FIXME: eliminate the above "throws".
+        if (_useCurrentTime) {
+            _xvalue =((Director)getDirector()).getCurrentTime();
+        } else {
+            _xvalue += 1.0;
+        }
         int width = input.getWidth();
         for (int i = 0; i<width; i++) {
             while (input.hasToken(i)) {
                 DoubleToken curToken = (DoubleToken)input.get(i);
                 double curValue = curToken.doubleValue();
-                _plot.addPoint(i, curTime, curValue, true);
+                plot.addPoint(i, _xvalue, curValue, true);
             }
         }
     }
 
     /** If the plot has not already been created, create it.
-     *  If a panel has been specified, place the plot in that panel
+     *  If a panel has been specified, and that panel is an instance of
+     *  of Plot, then plot data to that instance.  If a panel has been
+     *  specified but it is not an instance of Plot, then create a new
+     *  instance of Plot and place the plot in that panel
      *  using its add() method.
-     *
-     *  @exception IllegalActionException Not thrown in this class.
      */
     public void initialize() throws IllegalActionException {
-        if (_plot == null) {
+        // FIXME: remove "throws" clause.
+        if (plot == null) {
             if (_panel == null) {
                 // place the plot in its own frame.
                 PlotFrame frame = new PlotFrame(getFullName());
                 // FIXME: Is this cast right?
-                _plot = (ptolemy.plot.Plot)(frame.plot);
+                plot = (Plot)(frame.plot);
             } else {
-                // place the plot in the specified panel.
-                _plot = new ptolemy.plot.Plot();
-                _panel.add(_plot);
+                plot = new Plot();
+                _panel.add(plot);
+                plot.setButtons(true);
             }
-            // FIXME: This should be parameterized?
-            _plot.setButtons(true);
         } else {
-            _plot.clear(true);
+            plot.clear(false);
         }
+        // Process parameters.
+        _useCurrentTime = ((BooleanToken)timed.getToken()).booleanValue();
+
+        plot.repaint();
+        _xvalue = -1.0;
     }
 
     /** Specify the panel into which this plot should be placed.
@@ -102,6 +154,13 @@ public class Plot extends TypedAtomicActor implements Placeable {
      */
     public void setPanel(Panel panel) {
         _panel = panel;
+        if (_panel instanceof Plot) {
+            plot = (Plot)_panel;
+        } else {
+            plot = new Plot();
+            _panel.add(plot);
+            plot.setButtons(true);
+        }
     }
 
     /** Rescale the plot so that all the data is visible.
@@ -109,20 +168,16 @@ public class Plot extends TypedAtomicActor implements Placeable {
      *  @exception IllegalActionException If the parent class throws it.
      */
     public void wrapup() throws IllegalActionException {
-	_plot.fillPlot();
+        // FIXME: Control with parameters.
+	// plot.fillPlot();
         // FIXME: Do we really want this?
         super.wrapup();
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public members                    ////
-
-    /** Input port. */
-    public TypedIOPort input;
-
-    ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
 
     private Panel _panel;
-    private ptolemy.plot.Plot _plot;
+    private boolean _useCurrentTime = true;
+    private double _xvalue;
 }
