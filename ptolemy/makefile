@@ -86,8 +86,10 @@ PTAUXALLJAR =	ptsupport.jar
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
 		$(PTAUXALLJARS) \
-		copernicus/copernicus.jar \
 		domains/domains.jar
+
+#		copernicus/copernicus.jar
+
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
