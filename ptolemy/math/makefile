@@ -72,7 +72,6 @@ MISC_FILES =	$(DIRS)
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc \
-	filter \
 	$(PTCLASSJAR) \
 	'ArrayStringFormat$$ExprArrayStringFormat.class' \
 	'ArrayStringFormat$$JavaArrayStringFormat.class' \
