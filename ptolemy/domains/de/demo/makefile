@@ -58,6 +58,7 @@ JSIMPLE_TESTS = \
 
 # Graphical Java demos that use Tcl.
 JGRAPHICAL_TESTS = \
+	ClockApplet.tcl \
 	ClockSystem.tcl \
 	Demo.tcl \
 	RampSystem.tcl \
