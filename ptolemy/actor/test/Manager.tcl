@@ -270,7 +270,7 @@ executing number 1
 wrapping up
 idle
 Completed execution with 2 iterations
-Manager.run(): Elapsed Time: xxx ms
+Manager.run(): Elapsed Time:xxx ms
 } idle}
 
 ######################################################################
@@ -311,12 +311,12 @@ executing number 1
 wrapping up
 idle
 Completed execution with 2 iterations
-Manager.run(): Elapsed Time: xxx ms
+Manager.run(): Elapsed Time:xxx ms
 Execution error.
 This exception is testing the execution listener
 ptolemy.actor.NoRoomException: This exception is testing the execution listener
 	at java.lang.reflect.Constructor.newInstance(Native Method)
-....................................}}
+.........................................................}}
 
 ######################################################################
 ####
