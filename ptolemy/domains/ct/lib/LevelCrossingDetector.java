@@ -188,8 +188,13 @@ public class LevelCrossingDetector extends Transformer
         if (director.isDiscretePhase()) {
             if (hasCurrentEvent()) {
                 // Emit event.
-                if (_debugging) _debug(getFullName() + " Emitting event: " +
-                        _inputToken.toString());
+                if (_debugging) {
+		    _debug(getFullName() + " Emitting event: " +
+                        (_inputToken != null
+			 ? _inputToken.toString()
+			 : "inputToken == null, sending "
+			 + "defaultEventValue.getToken()"));
+		}
                 if (_inputToken != null) {
                     output.send(0, _inputToken);
                 } else {
