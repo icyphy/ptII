@@ -362,7 +362,11 @@ public class UtilityFunctions {
      *  using System.loadLibrary(), then search for the library using
      *  {@link #findFile(String)} and if the library is found,
      *  load it using System.load().  If the library is not found
-     *  by findFile(), then we through the initial exception.
+     *  by findFile() and the pathname contains a /
+     *  then we call System.loadLibrary() the filename after the last
+     *  /.  This step is necessary to support native methods under 
+     *  Webstart, which looks for libraries at the top level.
+     *  If all of the above fails, we throw the initial exception.
      *
      *  @param library the name of the library to be loaded.  The name
      *  should not include the platform dependent suffix.
@@ -378,6 +382,10 @@ public class UtilityFunctions {
             }
         } catch (UnsatisfiedLinkError ex) {
             String sharedLibrarySuffix = "dll";
+
+            // The name of the library (everything after the last /)
+            String shortLibraryName = null;
+
             String osName = StringUtilities.getProperty("os.name");
             if (osName.startsWith("SunOS") || osName.startsWith("Linux")) {
                 sharedLibrarySuffix = "so";
@@ -385,23 +393,48 @@ public class UtilityFunctions {
                 // we find the last /, and if the next chars are not "lib"
                 // then we insert "lib".
                 int index = library.lastIndexOf("/");
+                
                 if (index == -1) {
                     if (!library.startsWith("lib")) {
                         library = "lib" + library;
                     }
+                    shortLibraryName = library;
                 } else {
                     if (!library.substring(index, index + 4).equals("/lib")) {
-                        library = library.substring(0, index) + "/lib"
+                        shortLibraryName = "/lib"
                             + library.substring(index + 1);
+                        library = library.substring(0, index)
+                            + shortLibraryName;
                     }
                 }
+            } else {
+                // Windows
+                int index = library.lastIndexOf("/");                
+                if (index != -1) {
+                    // Everything after the trailing /
+                    shortLibraryName = library.substring(index + 1); 
+                }
             }
+
             String libraryWithSuffix =
                 library + "." + sharedLibrarySuffix;
 
             String libraryPath = UtilityFunctions.findFile(libraryWithSuffix);
 
             if (libraryPath.equals(libraryWithSuffix)) {
+                
+                try {
+                    // findFile did not find the library, so we try using
+                    // just the short library name.  This is necessary
+                    // for Web Start because Web Start requires that
+                    // native code be in the top level of a jar file
+                    // that is specially marked.  Matlab under Web Start
+                    // requires this.
+                    System.loadLibrary(shortLibraryName);
+                } catch (UnsatisfiedLinkError ex2) {
+                    // Ignore this, report the original error.
+                } 
+
                 // UnsatisfiedLinkError does not have a (String, Throwable)
                 // constructor, so we call initCause().
 
