@@ -92,7 +92,7 @@ public class DEPlot extends AtomicActor{
             throws CloneNotSupportedException, IllegalActionException{
 
 	if (_frame == null) {
-            _frame = new DEPlotFrame();
+            _frame = new DEPlotFrame(getName());
             _frame.resize(800, 400);
             _frame.setXRange(_exe.startTime(), _exe.stopTime());
             _frame.setYRange(getYMin(), getYMax());
@@ -147,6 +147,15 @@ public class DEPlot extends AtomicActor{
           }
     */
 
+    /** Rescales the plot, so the entire data plotted just fits.
+     *
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    public void wrapup() throws IllegalActionException {
+	_frame.fillPlot();
+    }
+
+
     public void setYRange(double ymin, double ymax) {
         _yMin = ymin;
         _yMax = ymax;
@@ -167,8 +176,8 @@ public class DEPlot extends AtomicActor{
 
         // constructors
 
-        public DEPlotFrame() {
-            super("DE Plot");
+        public DEPlotFrame(String title) {
+            super(title);
             _plotter = new Plot();
             _plotter.setPointsPersistence(0);
             pack();
@@ -204,6 +213,10 @@ public class DEPlot extends AtomicActor{
 		_plotter.addLegend(i, "Data " + i);
 	    }
         }
+
+	public void fillPlot() {
+	    _plotter.fillPlot();
+	}
 
         public boolean handleEvent(java.awt.Event event) {
             Object pEvtSource = event.target;

@@ -328,8 +328,8 @@ public class DECQDirector extends Director {
 
     // Construct a directed graph with the nodes representing input ports and
     // directed edges representing zero delay path.
-    // FIXME: this method is too complicated and I probably got the wrong
-    // concept... :(
+    // FIXME: this method is too complicated and probably means
+    // there's a flaw in the design.
     private void _constructDirectedGraph() {
 
         LinkedList portList = new LinkedList();
@@ -521,16 +521,6 @@ public class DECQDirector extends Director {
 		// events. Therefore, one can simply put the token into
 		// the receiver.
 		cqValue.deReceiver.triggerEvent(cqValue.token);
-
-		/*
-		// FIXME: start debug stuff
-		NamedObj b = (NamedObj) _currentActor;
-		System.out.println("Dequeueing event: " +
-			b.description(CLASSNAME | FULLNAME) +
-                        " at time: " +
-                        cqValue.key.timeStamp());
-		// FIXME: end debug stuff
-		*/
 
 	    } else {
 		// put it into a FIFOQueue to be returned to queue later.

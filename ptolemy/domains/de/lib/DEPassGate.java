@@ -102,7 +102,7 @@ public class DEPassGate extends AtomicActor {
             if (gate.hasToken(0)) {
 		DoubleToken gateToken = null;
                 try {
-		    gateToken=(DoubleToken)(input.get(0));
+		    gateToken=(DoubleToken)(gate.get(0));
                 } catch (NoSuchItemException e) {
                     // Can't occur
                     throw new InvalidStateException("Check DEPassGate.fire()"+
