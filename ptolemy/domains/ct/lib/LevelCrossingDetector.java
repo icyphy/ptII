@@ -97,10 +97,6 @@ public class LevelCrossingDetector extends Transformer
         level = new Parameter(this, "level", new DoubleToken(0.0));
         level.setTypeEquals(BaseType.DOUBLE);
 
-        initialState = new Parameter(this, "initialState", 
-                new DoubleToken(Double.NEGATIVE_INFINITY));
-        initialState.setTypeEquals(BaseType.DOUBLE);
-
         defaultEventValue = new Parameter(this, "defaultEventValue",
                 new DoubleToken(0.0));
         output.setTypeAtLeast(defaultEventValue);
@@ -128,13 +124,6 @@ public class LevelCrossingDetector extends Transformer
      *  it contains a DoubleToken of 1e-4.
      */
     public Parameter errorTolerance;
-
-    /** The parameter that specifies the initial state of this actor.
-     *  This initial state is used to check level crossing at the first 
-     *  firing of this actor.
-     *  By default, it contains a DoubleToken of value negative infinity.
-     */
-    public Parameter initialState;
 
     /** The parameter that specifies the level threshold. By default, it
      *  contains a DoubleToken of value 0.0. Note, a change of this
@@ -211,6 +200,11 @@ public class LevelCrossingDetector extends Transformer
         super.fire();
         //record the input.
         _thisTrigger = ((DoubleToken) trigger.get(0)).doubleValue();
+        
+        if (_levelCrossingDetectionDisabled) {
+            _lastTrigger = _thisTrigger;
+        }
+        
         if (_debugging) {
             _debug("Consuming a trigger token: " + _thisTrigger);
         }
@@ -261,15 +255,29 @@ public class LevelCrossingDetector extends Transformer
         super.initialize();
         _eventMissed = false;
         _eventNow = false;
-        _lastTrigger = ((DoubleToken)initialState.getToken()).doubleValue();
-        _thisTrigger = 0.0;
         _level = ((DoubleToken)level.getToken()).doubleValue();;
+        _levelCrossingDetectionDisabled = true;
+        // Note that _lastTrigger and _thisTrigger are not initialized.
+        // Instead, they will be assigned some values at the first firing.
     }
 
     /** Return true if there is no event detected during the current step size.
      *  @return true if there is no event detected in the current iteration.
      */
     public boolean isOutputAccurate() {
+        if (_levelCrossingDetectionDisabled) {
+            if (_debugging && _verbose) {
+                _debug("First firing of this actor, " +
+                        "the output is always accurate. " +
+                        "Note that if the initial step size is too big, " +
+                        "an event may be missing.");
+            }
+            _levelCrossingDetectionDisabled = false;
+            _eventNow = false;
+            _eventMissed = false;
+            return !_eventMissed;
+        }
+        
         if (_debugging && _verbose) {
             _debug("The last trigger is " + _lastTrigger);
             _debug("The current trigger is " + _thisTrigger);
@@ -401,6 +409,10 @@ public class LevelCrossingDetector extends Transformer
     // flag indicating if there is an event at the current time.
     private boolean _eventNow = false;
 
+    // flag indicating that level-crossing detection is disabled 
+    // due to the lack of history information 
+    private boolean _levelCrossingDetectionDisabled = true;
+    
     // last trigger input.
     private double _lastTrigger;
 

@@ -163,9 +163,9 @@
             </property>
             <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="3.0">
             </property>
-            <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+            </property>
+            <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[325.19578552246094, 90.24985885620117]">
             </property>
@@ -190,9 +190,9 @@
             </property>
             <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="3.0">
             </property>
-            <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+            </property>
+            <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[325.19578552246094, 154.26548385620117]">
             </property>
@@ -217,9 +217,9 @@
             </property>
             <property name="defaultEventValue" class="ptolemy.data.expr.Parameter" value="3.0">
             </property>
-            <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
             <property name="errorTolerance" class="ptolemy.data.expr.Parameter" value="1.0E-4">
+            </property>
+            <property name="useEventValue" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[325.19578552246094, 218.27329635620117]">
             </property>
@@ -305,7 +305,7 @@
             </property>
         </entity>
         <entity name="NonStrictTest3" class="ptolemy.actor.lib.NonStrictTest">
-            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0.0, 1.50005, 1.50005}">
+            <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.50005, 1.50005}">
             </property>
             <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
             </property>
@@ -363,7 +363,7 @@
         <link port="NonStrictTest4.input" relation="relation9"/>
     </entity>
     <entity name="signal with glitches" class="ptolemy.domains.fsm.modal.ModalModel">
-        <property name="directorClass" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.fsm.kernel.HSDirector">
             <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
                 <property name="style0" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.fsm.kernel.HSDirector">
                 </property>
@@ -371,12 +371,6 @@
                 </property>
                 <property name="style2" class="ptolemy.kernel.util.StringAttribute" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
                 </property>
-            </property>
-        </property>
-        <property name="_Director" class="ptolemy.domains.fsm.kernel.HSDirector">
-            <property name="timePrecisionInDigits" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-            <property name="controllerName" class="ptolemy.kernel.util.StringAttribute" value="_Controller">
             </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
