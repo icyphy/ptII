@@ -61,7 +61,7 @@ data, then the current value is that most recently received on the port
 since the last update of the persistent value.
 The getExpression() methods always return the persistent
 value, regardless of whether an override value has been received on the
-input port.  On each call to getToken(), this actor first checks
+input port.  On each call to getToken(), this parameter first checks
 to see whether an input has arrived at the associated port
 since the last setExpression() or setToken(), and if so, returns a token
 read from that port.  Also, any call to get() on the associated
