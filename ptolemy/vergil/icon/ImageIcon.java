@@ -158,6 +158,9 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
 
         if ((infoflags & ImageObserver.ALLBITS) != 0) {
             // The image is now fully loaded.
+            // FIXME: The following is a no-op. Forcing it to execute,
+            // however, causes the image to be continually repainted,
+            // and causes a stack overflow on opening the library.
             scaleImage(_scalePercentage);
 
             // The ports may need to be laid out again.
@@ -213,7 +216,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
         if (percentage == _scalePercentage) {
             return;
         }
-
+        
         _scalePercentage = percentage;
 
         // This needs to be in the swing thread.
@@ -303,6 +306,9 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
                         ((ImageFigure) figure).setImage(_scaledImage);
 
                         if (_scalePercentage != 100.0) {
+                            // FIXME: The following is a no-op. Forcing it to execute,
+                            // however, causes the image to be continually repainted,
+                            // and causes a stack overflow on opening the library.
                             scaleImage(_scalePercentage);
                         }
                     }
