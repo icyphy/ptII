@@ -37,6 +37,7 @@ import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.actor.gui.MoMLApplication;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.gui.GraphicalMessageHandler;
 import ptolemy.gui.MessageHandler;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.ComponentEntity;
@@ -119,24 +120,26 @@ public class VergilApplication extends MoMLApplication {
      *  @param args The command-line arguments.
      */
     public static void main(final String args[]) {
-	// NOTE: Java superstition dictates that if you want something
+	// FIXME: Java superstition dictates that if you want something
 	// to work, you should invoke it in event thread.  Otherwise,
 	// weird things happens at the user interface level.  This
         // seems to prevent occasional errors rending HTML under Web Start.
 	try {
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    try {
-                        new VergilApplication(args);
-                    } catch (Exception ex) {
-                        MessageHandler.error("Command failed", ex);
-                        System.exit(0);
-                    }
-                }
-            });
+	    SwingUtilities.invokeLater(new Runnable() {
+		    public void run() {
+			try {
+			    new VergilApplication(args);
+
+			} catch (Exception ex) {
+			    _errorAndExit("Command failed", args, ex);
+			}
+		    }
+ 		});
         } catch (Error ex2) {
-            MessageHandler.error("Command failed" + ex2.toString());
-            System.exit(0);
+	    // We are not likely to get here, but just to be safe
+	    // we try to print the error message and display it in a 
+	    // graphical widget. 
+	    _errorAndExit("Command failed", args, ex2);
         }
 
         // If the -test arg was set, then exit after 2 seconds.
@@ -321,11 +324,10 @@ public class VergilApplication extends MoMLApplication {
     protected void _parseArgs(final String args[]) throws Exception {
         _commandTemplate = "vergil [ options ] [file ...]";
 
-//         // NOTE: Java superstition dictates that if you want something
+//         // FIXME: Java superstition dictates that if you want something
 //         // to work, you should invoke it in event thread.  Otherwise,
 //         // weird things happens at the user interface level.  This
 //         // seems to prevent occasional errors rending HTML.
-//         // This is now done in main().
 //         SwingUtilities.invokeLater(new Runnable() {
 //                 public void run() {
 //                     try {
@@ -506,6 +508,48 @@ public class VergilApplication extends MoMLApplication {
             return false;
         }
         return true;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                 ////
+
+    // Print out an error message and stack trace on stderr and then
+    // display a dialog box.  This method is used as a fail safe
+    // in case there are problems with the configuration
+    private static void _errorAndExit(String message,
+				      String [] args, Throwable ex) {
+	StringBuffer argsBuffer =
+	    new StringBuffer("Command failed");
+
+	if (args.length > 0) {
+	    argsBuffer.append("\nArguments: " + args[0]);
+	    for(int i = 1; i < args.length; i++) {
+		argsBuffer.append(" " + args[i]);
+	    }
+	    argsBuffer.append("\n");
+	}
+
+	// First, print out the stack trace so that
+	// if the next step fails the user has
+	// a chance of seeing the message.
+	System.out.println(argsBuffer.toString());
+	ex.printStackTrace();
+
+	// Display the error message in a stack trace
+	// If there are problems with the configuration,
+	// then there is a chance that we have not 
+	// registered the GraphicalMessageHandler yet
+	// so we do so now so that we are sure
+	// the user can see the message.
+	// One way to test this is to run vergil -conf foo
+
+	MessageHandler.setMessageHandler(new GraphicalMessageHandler());
+	if (!(ex instanceof Exception)) {
+	    MessageHandler.error(argsBuffer.toString() + " " + ex.toString());
+	} else {
+	    MessageHandler.error(argsBuffer.toString(), (Exception)ex);
+	}
+	System.exit(0);
     }
 
     ///////////////////////////////////////////////////////////////////
