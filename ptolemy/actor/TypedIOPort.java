@@ -1,4 +1,4 @@
-/* An IOPort with a type.
+/* Anx IOPort with a type.
 
  Copyright (c) 1997-2003 The Regents of the University of California.
  All rights reserved.
@@ -547,8 +547,9 @@ public class TypedIOPort extends IOPort implements Typeable {
                 // Note that the getRemoteReceivers() method doesn't throw
                 // any non-runtime exception.
                 farReceivers = getRemoteReceivers();
-                if (farReceivers == null || farReceivers.length == 0 ||
-                        farReceivers[channelIndex] == null) {
+                if (farReceivers == null
+                        || farReceivers.length <= channelIndex
+                        || farReceivers[channelIndex] == null) {
                     return;
                 }
             } finally {
