@@ -35,9 +35,10 @@ package ptolemy.math;
 /**
 This class provides algorithms to do interpolation. Currently, zero,
 first, and third order interpolations are supported. These are the
-interpolation orders most often used in practice. Third order
-interpolation is based on the Hermite curves in chapter 11 of
-"Computer Graphic, Principles and Practice", by Foley, van Dam, Feiner
+interpolation orders most often used in practice. zero order interpolation
+holds the last reference value; first order does linear interpolation;
+and third order interpolation is based on the Hermite curves in chapter
+11 of "Computer Graphic, Principles and Practice", by Foley, van Dam, Feiner
 and Hughes, 2nd ed. in C, 1996.
 <p>
 The setValues() method specifies the reference values as a double
@@ -48,7 +49,7 @@ The values are periodic if a positive period is set by setPeriod(). In
 this case, the period must be greater than the largest index, and
 values within the index range 0 to (period-1) are repeated indefinitely.
 If the period is zero, the values are not periodic, and the values
-outside the range of the indexes are considered 0.0.
+outside the range of the indexes are considered to be 0.0.
 The interpolation order is set by setOrder().
 <p>
 The default reference values are {1.0, 0.0} and the indexes are {0, 1}.
@@ -117,8 +118,13 @@ public class Interpolation {
  
     /** Set the value repetition period.
      *  @param period An int.
+     *  @exception IllegalArgumentException If the period is negative.
      */
     public void setPeriod(int period) {
+	if (period < 0) {
+	    throw new IllegalArgumentException("Interpolation.setPeriod: " +
+		"The period is negative.");
+	}
 	_period = period;
     }
 
