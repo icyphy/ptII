@@ -36,7 +36,7 @@ DIRS = 		test #lib doc demo
 # Root of the Java directory
 ROOT =		../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(DIVA_JAR)$(CLASSPATHSEPARATOR)$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

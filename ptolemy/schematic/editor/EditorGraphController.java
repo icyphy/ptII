@@ -1,53 +1,49 @@
-/*
- * $Id$
- *
- * Copyright (c) 1998 The Regents of the University of California.
- * All rights reserved.  See the file COPYRIGHT for details.
- */
+/* The graph controller for the ptolemy schematic editor
+
+ Copyright (c) 1998-1999 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+                                        PT_COPYRIGHT_VERSION_2
+                                        COPYRIGHTENDKEY
+
+@ProposedRating Red (eal@eecs.berkeley.edu)
+@AcceptedRating Red (johnr@eecs.berkeley.edu)
+*/
+
 package ptolemy.schematic.editor;
 
 import ptolemy.schematic.util.*;
 import ptolemy.schematic.xml.*;
 import diva.graph.*; 
-
-import diva.graph.model.Graph;
-import diva.graph.model.GraphImpl;
-import diva.graph.model.Node;
-import diva.graph.model.Edge;
-
-import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
-import diva.canvas.GraphicsPane;
-import diva.canvas.Site;
-
-import diva.canvas.connector.AutonomousSite;
-import diva.canvas.connector.CenterSite;
-import diva.canvas.connector.PerimeterSite;
-import diva.canvas.connector.PerimeterTarget;
-import diva.canvas.connector.Connector;
-import diva.canvas.connector.ConnectorAdapter;
-import diva.canvas.connector.ConnectorManipulator;
-import diva.canvas.connector.ConnectorEvent;
-import diva.canvas.connector.ConnectorListener;
-import diva.canvas.connector.ConnectorTarget;
-
-import diva.canvas.event.LayerAdapter;
-import diva.canvas.event.LayerEvent;
-import diva.canvas.event.MouseFilter;
-
-import diva.canvas.interactor.Interactor;
-import diva.canvas.interactor.AbstractInteractor;
-import diva.canvas.interactor.GrabHandle;
-import diva.canvas.interactor.SelectionInteractor;
-import diva.canvas.interactor.SelectionModel;
-import diva.canvas.interactor.SelectionDragger;
-import diva.canvas.interactor.BoundsManipulator;
-
+import diva.graph.model.*;
+import diva.canvas.*;
+import diva.canvas.connector.*;
+import diva.canvas.event.*;
+import diva.canvas.interactor.*;
 import diva.util.Filter;
-
 import java.awt.event.InputEvent;
 import java.util.HashMap;
 
+//////////////////////////////////////////////////////////////////////////
+//// SchematicTerminal
 /**
  * A Graph Controller for the Ptolemy II schematic editor.  
  * Terminal creation: Ctrl-button 1
@@ -55,9 +51,8 @@ import java.util.HashMap;
  * Entity creation: Shift-Button 1
  * Edges can connect to Terminals, but not entities.
  *
- * @author Steve Neuendorffer (neuendor@eecs.berkeley.edu)
+ * @author Steve Neuendorffer 
  * @version $Id$
- * @rating Red
  */
 public class EditorGraphController extends GraphController {
  

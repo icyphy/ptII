@@ -52,7 +52,7 @@ In these cases, the terminal is fixed to the position of the template.
 @version $Id$
 */
 public class SchematicTerminal extends PTMLTemplateObject 
-implements diva.graph.model.Node {
+    implements diva.graph.model.Node {
 
     //FIXME: hack to get unique names.
     //   private static int _instance = 0;
