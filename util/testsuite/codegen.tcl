@@ -86,16 +86,18 @@ proc sootCodeGeneration {modelPath {codeGenType Shallow}} {
     set results ""
     # make -C is a GNU make extension that changes to a directory
     set results ""
-    if [catch {set results [exec make -C .. MODEL=$model \
-	    SOURCECLASS=$modelPath compile${codeGenType}Demo]} errMsg] {
+    set command "make -C .. MODEL=$model SOURCECLASS=$modelPath compile${codeGenType}Demo"
+    puts "Command is\n $command"
+    if [catch {set results [exec $command]} errMsg] {
 	puts $results
-	error $errMsg
+	puts $errMsg
     }
     puts $results
     # If the model has a different name than the file name, we
     # handle it here.
+    set command run${codeGenType}Demo
     set results [exec make -C .. MODEL=$modelName \
-	    SOURCECLASS=$modelPath run${codeGenType}Demo]
+	    SOURCECLASS=$modelPath $command]
     puts $results
 
 } 
