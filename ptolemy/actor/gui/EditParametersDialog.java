@@ -246,6 +246,10 @@ public class EditParametersDialog extends ComponentDialog
         // in whatever thread is processing mutations.
         SwingUtilities.invokeLater(new Runnable() {
                 public void run() {
+                    // When a parameter is removed, and something depends on
+                    // it, this gets called when _query is null.
+                    // FIXME: Is this the right thing to do?
+                    if (_query == null) return;
                     String newName = _query.getStringValue("name");
                     ComponentDialog dialog =
                         _openAddDialog(exception.getMessage()
