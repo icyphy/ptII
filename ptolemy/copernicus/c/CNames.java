@@ -230,7 +230,7 @@ public class CNames {
 
 
     /** Return the C name of the method that performs lookups to
-     * diambiguate interface references.
+     * disambiguate interface references.
      * @param source The class for which this method needs to be generated.
      * @return The name of the lookup method.
      */
