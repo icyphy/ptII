@@ -35,7 +35,7 @@ import java.util.*;
 A basic graph.
 This class is evolved from the staticGraph class written by Jie Liu.
 Each node in the graph is represented by an Object. To construct a graph,
-use <code>add()</code> to add nodes and <code>addEdge()</code> to add
+use <code>add</code> to add nodes and <code>addEdge</code> to add
 edges between nodes.
 <p>
 NOTE: This class is a starting point for building graph related
@@ -101,8 +101,8 @@ public class Graph {
      *  between the same nodes are allowed, and are considered different
      *  edges.  Self loop is also allowed.
      *
-     *  @param o1 the Object representing one graph node
-     *  @param o2 the Object representing another graph node
+     *  @param o1 the Object representing a graph node
+     *  @param o2 the Object representing a graph node
      *  @exception IllegalArgumentException at least one of the arguments
      *   is not a graph node, i.e., the argument is not equal to an
      *   Object specified in a successful <code>add</code> call. Equality
@@ -172,8 +172,8 @@ public class Graph {
      *  array. Each row of the array represents an edge, corresponding
      *  to a successful <code>addEdge</code> call, but the order of the
      *  rows is not necessarily the same as the calls. The array always
-     *  has two columns, corresponding to the two arguments of the
-     *  <code>addEdge</code> calls, in the order the arguments are
+     *  has two columns, corresponding to the two arguments of
+     *  <code>addEdge</code>, in the order the arguments are
      *  listed.
      *  @return a 2-D Object array.
      */
@@ -203,7 +203,7 @@ public class Graph {
     }
 
     /** Return all the nodes in this graph in the form of an Objects array.
-     *  The Objects are the ones passed in successful <code>add()</code>
+     *  The Objects are the ones passed in successful <code>add</code>
      *  calls.
      *  @return an Object array
      */
@@ -283,7 +283,7 @@ public class Graph {
     // done with _nodeObject.indexOf(), but Hashtable is faster.
     private Hashtable _nodeIdTable;
 
-    // Tranlation from nodeId to node.
+    // Translation from nodeId to node.
     // This vector is indexed by node ID. The entries are the Objects
     // representing the graph nodes with the corresponding node IDs.
     private Vector _nodeObject;

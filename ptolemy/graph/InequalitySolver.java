@@ -35,7 +35,7 @@ import ptolemy.kernel.util.InvalidStateException;
 //////////////////////////////////////////////////////////////////////////
 //// InequalitySolver
 /**
-An algorithm to solve a set of inequalities.
+An algorithm to solve a set of inequalities constraints.
 This algorithm is based on J. Rehof and T. Mogensen, "Tractable
 Constraints in Finite Semilattices," Third International Static Analysis
 Symposium, pp. 285-301, Vol 1145 of Lecture Notes in Computer Science,
@@ -135,9 +135,11 @@ public class InequalitySolver {
      *  In any case, if this method returns <code>false</code>, the
      *  variables are set to the least solution for the subset of
      *  inequalities whose greater terms are a single variable.
-     *  See the paper refered in the class document for details.
+     *  See the paper referred in the class document for details.
      *  @return <code>true</code> if a solution for the inequalities is found,
      *   <code>false</code> otherwise.
+     *  @IllegalArgumentException the value of some of the terms in the
+     *   inequalities is not a CPO element.
      *  @exception InvalidStateException the CPO over which the
      *   inequalities are defined is not a lattice.
      */
@@ -166,9 +168,11 @@ public class InequalitySolver {
      *  In any case, if this method returns <code>false</code>, the
      *  variables are set to the greatest solution for the subset of
      *  inequalities whose lesser terms are a single variable.
-     *  See the paper refered in the class document for details.
+     *  See the paper referred in the class document for details.
      *  @return <code>true</code> if a solution for the inequalities is found,
      *   <code>false</code> otherwise.
+     *  @IllegalArgumentException the value of some of the terms in the
+     *   inequalities is not a CPO element.
      *  @exception InvalidStateException the CPO over which the
      *   inequalities are defined is not a lattice.
      */

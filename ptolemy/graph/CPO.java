@@ -36,11 +36,11 @@ import java.util.*;
 An interface defining the operations on complete partial order (CPO).
 The definitions of these operations can be found in "Introduction to
 Lattices and Order",  Cambridge University Press, 1990, by B.A. Davey
-and H.A. Priestley.
+and H.A. Priestley. Informal definition are given in the code comments.
 
 Each element in the CPO is represented by an Object.
 For infinite CPOs, the result of some of the operations may be an
-infinite set. In this case, the class implementing this interface
+infinite set, in which case, the class implementing those operations
 can throw an Exception.
 
 @author Yuhong Xiong
@@ -53,6 +53,8 @@ public interface CPO
     ////                         public methods                    ////
 
     /** Return the bottom element of this CPO.
+     *  The bottom element is the element in the CPO that is lower than
+     *  all the other elements.
      *  @return an Object representing the bottom element, or
      *   <code>null</code> if the bottom does not exist.
      */
@@ -61,16 +63,18 @@ public interface CPO
     /** Compare two elements in this CPO.
      *  @param e1 an Object representing a CPO element.
      *  @param e2 an Object representing a CPO element.
-     *  @return one of <code>CPO.STRICT_LESS, CPO.EQUAL,
-     *   CPO.STRICT_GREATER, CPO.INCOMPARABLE</code>.
+     *  @return one of <code>CPO.LOWER, CPO.SAME,
+     *   CPO.HIGHER, CPO.INCOMPARABLE</code>.
      *  @exception IllegalArgumentException at least one of the 
      *   specified Objects is not an element of this CPO.
      */
     public int compare(Object e1, Object e2);
 
     /** Compute the down-set of an element in this CPO.
+     *  The down-set of an element is the subset consisting of
+     *  all the elements lower than or the same as that element.
      *  @param e an Object representing an element in this CPO.
-     *  @return an array of of Objects representing the elements in the
+     *  @return an array of Objects representing the elements in the
      *   down-set of the specified element.
      *  @exception IllegalArgumentException the specified Object is not
      *   an element in this CPO.
@@ -78,6 +82,8 @@ public interface CPO
     public Object[] downSet(Object e);    
 
     /** Compute the greatest lower bound (GLB) of two elements.
+     *  The GLB of two elements is the greatest element in the CPO
+     *  that is lower than or the same as both of the two elements.
      *  @param e1 an Object representing an element in this CPO.
      *  @param e2 an Object representing an element in this CPO.
      *  @return an Object representing the GLB of the two specified
@@ -88,6 +94,9 @@ public interface CPO
     public Object greatestLowerBound(Object e1, Object e2);
     
     /** Compute the greatest lower bound (GLB) of a subset.
+     *  The GLB of a subset is the greatest element in the CPO that
+     *  is lower than or the same as all the elements in the
+     *  subset.
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the GLB of the subset, or
      *   <code>null</code> if the GLB does not exist.
@@ -97,6 +106,9 @@ public interface CPO
     public Object greatestLowerBound(Object[] subset);
 
     /** Compute the greatest element of a subset.
+     *  The greatest element of a subset is an element in the
+     *  subset that is higher than all the other element in the
+     *  subset.
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the greatest element of the subset,
      *   or <code>null</code> if the greatest element does not exist.
@@ -106,6 +118,9 @@ public interface CPO
     public Object greatestElement(Object[] subset);
 
     /** Compute the least element of a subset.
+     *  The least element of a subset is an element in the
+     *  subset that is lower than all the other element in the
+     *  subset.
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the least element of the subset,
      *   or <code>null</code> if the least element does not exist.
@@ -115,8 +130,11 @@ public interface CPO
     public Object leastElement(Object[] subset);
     
     /** Compute the least upper bound (LUB) of two elements.
+     *  The LUB of two elements is the greatest element in the CPO
+     *  that is greater than or the same as both of the two elements.
+     *  subset.
      *  @param e1 an Object representing an element in this CPO.
-     *  @param e2 an Object representing element in this CPO.
+     *  @param e2 an Object representing an element in this CPO.
      *  @return an Object representing the LUB of the two specified
      *   elements, or <code>null</code> if the LUB does not exist.
      *  @exception IllegalArgumentException at least one of the
@@ -125,6 +143,9 @@ public interface CPO
     public Object leastUpperBound(Object e1, Object e2);
     
     /** Compute the least upper bound (LUB) of a subset.
+     *  The LUB of a subset is the least element in the CPO that
+     *  is greater than or the same as all the elements in the
+     *  subset.
      *  @param subset an array of Objects representing the subset.
      *  @return an Object representing the LUB of the subset, or
      *   <code>null</code> if the LUB does not exist.
@@ -134,12 +155,16 @@ public interface CPO
     public Object leastUpperBound(Object[] subset);
  
     /** Return the top element of this CPO.
-     *  @return an Object representing the top element, or null if
-     *   the top does not exist.
+     *  The top element is the element in the CPO that is higher than
+     *  all the other elements.
+     *  @return an Object representing the top element, or
+     *   <code>null</code> if the top does not exist.
      */
     public Object top();
 
     /** Compute the up-set of an element in this CPO.
+     *  The up-set of an element is the subset consisting of
+     *  all the elements higher than or the same as that element.
      *  @param e an Object representing an element in this CPO.
      *  @return an array of Objects representing the elements in the
      *   up-set of the specified element.

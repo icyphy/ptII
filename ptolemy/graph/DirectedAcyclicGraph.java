@@ -90,7 +90,7 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     ////                         public methods                    ////
 
     /** Add a node to this DAG.  The node is represented by the
-     *  spedified <code>Object</code>. The <code>Object</code> cannot
+     *  specified <code>Object</code>. The <code>Object</code> cannot
      *  be <code>null</code>.  In addition, two <code>Object</code>s
      *  equal to each other, as determined by the <code>equals</code>
      *  method, cannot both be added.
@@ -254,8 +254,8 @@ public class DirectedAcyclicGraph extends DirectedGraph implements CPO
     }
 
     /** Return the top element of this CPO.
-     *  @return an Object representing the top element, or null if
-     *   the top does not exist.
+     *  @return an Object representing the top element, or
+     *   <code>null</code> if the top does not exist.
      */
     public Object top() {
         _check();
