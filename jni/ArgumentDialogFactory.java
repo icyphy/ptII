@@ -32,22 +32,19 @@ Largely inspired by PortDialogFactory
 package jni;
 
 import diva.gui.toolbox.JContextMenu;
+
 import ptolemy.actor.gui.Configuration;
-import ptolemy.actor.gui.PortConfigurerDialog;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 
-import javax.swing.AbstractAction;
-import javax.swing.Action;
-import javax.swing.JMenuItem;
 import java.awt.Component;
 import java.awt.Frame;
 import java.awt.event.ActionEvent;
 
-//TRT
-import ptolemy.vergil.basic.BasicGraphController;
-import ptolemy.vergil.debugger.BreakpointConfigurerDialog;
+import javax.swing.AbstractAction;
+import javax.swing.Action;
+import javax.swing.JMenuItem;
 //////////////////////////////////////////////////////////////////////////
 //// ArgumentDialogFactory
 /**

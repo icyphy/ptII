@@ -35,13 +35,9 @@ package ptolemy.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.Reader;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
-
-import java.net.MalformedURLException;
 import java.net.URL;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.StringTokenizer;

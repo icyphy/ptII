@@ -32,15 +32,15 @@ COPYRIGHTENDKEY
 
 package jni;
 
-import ptolemy.actor.gui.PtolemyEffigy;
-import ptolemy.actor.gui.TableauFactory;
 import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.gui.Tableau;
+import ptolemy.actor.gui.TableauFactory;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Workspace;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.vergil.actor.ActorGraphTableau;
 
 import java.awt.Color;

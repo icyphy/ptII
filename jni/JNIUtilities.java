@@ -31,8 +31,8 @@ COPYRIGHTENDKEY
 package jni;
 
 import ptolemy.actor.Actor;
-import ptolemy.data.expr.Parameter;
 import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
 import ptolemy.gui.MessageHandler;
 import ptolemy.gui.StreamExec;
 import ptolemy.kernel.CompositeEntity;

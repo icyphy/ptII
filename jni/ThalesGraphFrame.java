@@ -30,46 +30,32 @@ COPYRIGHTENDKEY
 
 package jni;
 
+import diva.graph.GraphPane;
+
+import ptolemy.actor.Actor;
+import ptolemy.actor.Director;
+import ptolemy.actor.gui.DebugListenerTableau;
+import ptolemy.actor.gui.Effigy;
+import ptolemy.actor.gui.TextEffigy;
+import ptolemy.gui.CancelException;
+import ptolemy.gui.ComponentDialog;
+import ptolemy.gui.MessageHandler;
+import ptolemy.gui.Query;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.vergil.actor.ActorEditorGraphController;
+import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.actor.ActorGraphTableau;
+import ptolemy.vergil.basic.BasicGraphFrame;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.net.URL;
+
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
-import java.util.List;
-import java.util.Vector;
-import java.util.Iterator;
-import java.io.File;
-import java.io.FileWriter;
-
-import diva.graph.GraphPane;
-
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.StringToken;
-import ptolemy.actor.Actor;
-import ptolemy.actor.Director;
-
-import ptolemy.actor.gui.TextEffigy;
-import ptolemy.actor.gui.Effigy;
-import ptolemy.actor.gui.Tableau;
-import ptolemy.actor.gui.DebugListenerTableau;
-
-import ptolemy.gui.CancelException;
-import ptolemy.gui.ComponentDialog;
-import ptolemy.gui.Query;
-import ptolemy.gui.MessageHandler;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.NamedList;
-import ptolemy.vergil.basic.BasicGraphFrame;
-import ptolemy.vergil.actor.ActorGraphModel;
-import ptolemy.vergil.actor.ActorGraphFrame;
-import ptolemy.vergil.actor.ActorGraphTableau;
-import ptolemy.vergil.actor.ActorEditorGraphController;
 
 //////////////////////////////////////////////////////////////////////////
 //// ThalesGraphFrame

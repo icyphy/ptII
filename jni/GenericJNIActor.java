@@ -33,11 +33,16 @@ package jni;
 import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.*;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.Token;
+import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.Port;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InvalidStateException;
@@ -46,18 +51,16 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedList;
 import ptolemy.kernel.util.Workspace;
-
 import ptolemy.util.StringUtilities;
 
 import java.io.File;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
+import java.net.URL;
+import java.net.URLClassLoader;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Vector;
-import java.lang.reflect.Method;
-import java.net.URLClassLoader;
-import java.net.URL;
 
 //////////////////////////////////////////////////////////////////////////
 ///// JNIActor

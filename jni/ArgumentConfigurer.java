@@ -30,25 +30,17 @@ COPYRIGHTENDKEY
 
 package jni;
 
-import ptolemy.actor.TypedIOPort;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.Port;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.ChangeRequest;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
+import ptolemy.gui.MessageHandler;
 import ptolemy.gui.Query;
 import ptolemy.gui.QueryListener;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.gui.MessageHandler;
 
-import java.awt.Component;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-import java.util.StringTokenizer;
+
 import javax.swing.BoxLayout;
 
 //////////////////////////////////////////////////////////////////////////

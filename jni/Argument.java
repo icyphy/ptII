@@ -37,17 +37,10 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.ValueListener;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.KernelException;
 import ptolemy.util.StringUtilities;
 
 import java.io.IOException;
 import java.io.Writer;
-import java.util.List;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
 import java.util.StringTokenizer;
 
 //////////////////////////////////////////////////////////////////////////
