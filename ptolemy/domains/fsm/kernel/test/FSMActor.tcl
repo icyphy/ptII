@@ -162,6 +162,44 @@ test FSMActor-5.1 {test creating input variables} {
     listToNames [$fsm attributeList]
 } {_iconDescription initialStateName finalStateNames _nonStrictMarker p0_isPresent p0 p0Array p1_0_isPresent p1_0 p1_0Array p1_1_isPresent p1_1 p1_1Array}
 
+test FSMActor-5.2 {test handling port name change} {
+    set e0 [java::new ptolemy.actor.TypedCompositeActor]
+    set dir [java::new ptolemy.actor.Director $e0 dir]
+    set ramp [java::new ptolemy.actor.lib.Ramp $e0 ramp]
+    set fsm [java::new ptolemy.domains.fsm.kernel.FSMActor $e0 fsm]
+    set s0 [java::new ptolemy.domains.fsm.kernel.State $fsm s0]
+    [java::field $fsm initialStateName] setExpression s0
+    set t0 [java::new ptolemy.domains.fsm.kernel.Transition $fsm t0]
+    [java::field $s0 outgoingPort] link $t0
+    [java::field $s0 incomingPort] link $t0
+    $t0 setGuardExpression "p1 > 5"
+    set p1 [java::new ptolemy.actor.TypedIOPort $fsm p1]
+    $p1 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+    set p2 [java::field [java::cast ptolemy.actor.lib.Source $ramp] output]
+    $p2 setTypeEquals [java::field ptolemy.data.type.BaseType INT]
+    $p1 setInput true
+    $e0 connect $p1 $p2
+    $dir preinitialize
+    $dir initialize
+    $dir iterate 1
+    $dir wrapup
+    $p1 setName p0
+    $dir preinitialize
+    $dir initialize
+    catch {$dir iterate 1} msg
+    $dir wrapup
+    $p1 setName pp
+    $t0 setGuardExpression "pp > 5"
+    $dir preinitialize
+    $dir initialize
+    $dir iterate 1
+    $dir wrapup
+    list $msg
+} {{ptolemy.kernel.util.IllegalActionException: Error evaluating expression: p1 > 5
+  in .<Unnamed Object>.fsm.t0._guard
+Because:
+The ID p1 is undefined.}}
+    
 ######################################################################
 ####
 #
@@ -206,11 +244,11 @@ test FSMActor-6.1 {test action methods} {
     $dir preinitialize
     $dir initialize
 
-    set v0 [java::cast ptolemy.data.expr.Variable [$fsm getAttribute p1_0_isPresent]]
-    set v1 [java::cast ptolemy.data.expr.Variable [$fsm getAttribute p1_0]]
     set re0 [[$fsm currentState] getFullName]
     $fsm prefire
     $fsm fire
+    set v0 [java::cast ptolemy.data.expr.Variable [$fsm getAttribute p1_0_isPresent]]
+    set v1 [java::cast ptolemy.data.expr.Variable [$fsm getAttribute p1_0]]
     set re1 [[$v0 getToken] toString]
     set re2 [expr {[$v1 getToken] == [java::null]}]
     $fsm postfire

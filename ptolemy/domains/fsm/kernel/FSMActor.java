@@ -221,6 +221,7 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         newObject._connectionMaps = null;
         newObject._initialStateVersion = -1;
         newObject._inputVariableMap = new HashMap();
+        newObject._inputVariableVersion = -1;
         return newObject;
     }
 
@@ -934,8 +935,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
             
         }
         _inputVariableMap.put(port, shadowVariables);
+        _inputVariableVersion = _workspace.getVersion();
     }
-
+    
     /** Return true if the channel of the port is connected to an output
      *  port of the refinement of current state. If the current state
      *  does not have refinement, return false.
@@ -1019,6 +1021,12 @@ public class FSMActor extends CompositeEntity implements TypedActor {
      *   the token read from its corresponding channel (should not occur).
      */
     protected void _setInputVariables() throws IllegalActionException {
+        // If the workspace version is different from when the last input
+        // variables were created, possibly due to changing the name of a
+        // port, update the input variables to reflect the name change.
+        if (_workspace.getVersion() != _inputVariableVersion) {
+            _updateInputVariables();
+        }
         Iterator inPorts = inputPortList().iterator();
         while (inPorts.hasNext() && !_stopRequested) {
             IOPort p = (IOPort)inPorts.next();
@@ -1283,6 +1291,36 @@ public class FSMActor extends CompositeEntity implements TypedActor {
         }
         */
     }
+    
+    // Check whether the names of the input variables match the names of the
+    // input ports. If a mismatch is found, create new input variables for
+    // the port.
+    private void _updateInputVariables() throws IllegalActionException {
+        Iterator inPorts = inputPortList().iterator();
+        while (inPorts.hasNext() && !_stopRequested) {
+            IOPort port = (IOPort)inPorts.next();
+            if (port.getWidth() == 0) {
+                continue;
+            } 
+            Variable[][] shadowVariables
+                    = (Variable[][])_inputVariableMap.get(port);
+            if (shadowVariables == null) {
+                throw new InternalErrorException(getName() + ": "
+                        + "Cannot find input variables for port "
+                        + port.getName() + ".\n");
+            }
+            // NOTE: this shadow name is the name of the input variable 
+            // that stores the last token read from channel 0 of the port.
+            // See _createInputVariables().
+            String shadowName = port.getName();
+            if (port.isMultiport()) {
+                shadowName += "_" + 0;
+            }
+            if (shadowVariables[0][0].getName() != shadowName) {
+                _createInputVariables(port);
+            }
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -1313,6 +1351,9 @@ public class FSMActor extends CompositeEntity implements TypedActor {
 
     // Version of the reference to the initial state.
     private long _initialStateVersion = -1;
+    
+    // Version of the workspace when the last input variables were created.
+    private long _inputVariableVersion = -1;
 
     // The set of names of final states.
     private HashSet _finalStateNames;
