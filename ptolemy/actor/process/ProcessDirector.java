@@ -140,19 +140,21 @@ public class ProcessDirector extends Director {
     }
 
     /** Wait until a deadlock is detected. Then handle the deadlock
-     *  (by calling the protected method _handleDeadlock()) and return. This
-     *  method is synchronized on the director.
+     *  (by calling the protected method _handleDeadlock()) and return. 
+     *  This method is synchronized on the director.
      *  @exception IllegalActionException If a derived class throws it.
      */
     public void fire() throws IllegalActionException {
 	Workspace workspace = workspace();
         synchronized (this) {
-            while (!_isDeadlocked() && !_areAllThreadsStopped()) {
-                workspace.wait(this);
+            while( !_areAllThreadsStopped() && !_isDeadlocked() ) {
+		workspace.wait(this);
             }
-            if( !_areAllThreadsStopped() ) {
+            if( _isDeadlocked() ) {
                 _notdone = !_handleDeadlock();
-            }
+            } else {
+		_notdone = true;
+	    }
         }
     }
 
@@ -180,18 +182,12 @@ public class ProcessDirector extends Director {
 	_notdone = true;
 	_actorsActive = 0;
 	_actorsPaused = 0;
+	_threadsStopped = 0;
 	_pausedReceivers = new LinkedList();
 	_threadList = new LinkedList();
 	_newthreads = new LinkedList();
         CompositeActor container = ((CompositeActor)getContainer());
         if (container!= null) {
-            Enumeration allActors = container.deepGetEntities();
-            //Creating receivers and threads for all actors;
-            while (allActors.hasMoreElements()) {
-                Actor actor = (Actor)allActors.nextElement();
-                actor.initialize();
-            }
-
 	    CompositeActor containersContainer =
                 (CompositeActor)container.getContainer();
 	    if( containersContainer == null ) {
@@ -201,6 +197,13 @@ public class ProcessDirector extends Director {
                     containersContainer.getDirector().getCurrentTime();
                 setCurrentTime(time);
 	    }
+
+            Enumeration allActors = container.deepGetEntities();
+            //Creating receivers and threads for all actors;
+            while (allActors.hasMoreElements()) {
+                Actor actor = (Actor)allActors.nextElement();
+                actor.initialize();
+            }
         }
     }
 
@@ -427,19 +430,15 @@ public class ProcessDirector extends Director {
      */
     public void wrapup() throws IllegalActionException {
 	// First wake up threads if they are stopped.
-        //Enumeration threads = _newthreads.elements();
         ProcessThread thread = null;
 	if( _areAllThreadsStopped() ) {
 	    Enumeration threads = _threadList.elements();
 	    while( threads.hasMoreElements() ) {
-		thread = (ProcessThread)threads.nextElement();
-		thread.restartThread();
-		synchronized(thread) {
-		    thread.notifyAll();
-		}
 		if( _threadsStopped > 0 ) {
 		    _threadsStopped--;
 		}
+		thread = (ProcessThread)threads.nextElement();
+		thread.restartThread();
 	    }
 	}
 
@@ -500,11 +499,18 @@ public class ProcessDirector extends Director {
 
     /** Determine if all of the threads containing actors controlled
      *  by this director have stopped due to a call of stopFire().
+     *  Override this method in subclasses to account for possible
+     *  deadlock situations due to additional flags that are not 
+     *  present in this base class.
      * @return True if all active threads containing actors controlled
      *  by this thread have stopped; otherwise return false.
      */
     protected synchronized boolean _areAllThreadsStopped() {
-        return ( _threadsStopped != 0 && _threadsStopped == _actorsActive);
+	// All threads are stopped due to stopFire()
+	if( _threadsStopped > 0 && _threadsStopped >= _actorsActive ) {
+	    return true; 
+	} 
+	return false;
     }
 
     /** Return true if the count of active processes in the container is 0.
@@ -657,4 +663,5 @@ public class ProcessDirector extends Director {
     // A count of the active threads controlled by this director that
     // have been stopped
     private int _threadsStopped = 0;
+
 }
