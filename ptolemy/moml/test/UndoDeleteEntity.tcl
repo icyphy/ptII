@@ -228,3 +228,154 @@ test UndoDeleteEntity-1.2b {Test undoing an entity deletion: complex name} {
 
 
 
+######################################################################
+####
+#
+test UndoDeleteEntity-1.3a {Delete an entity in a composite actor} {
+    # Create a base model.
+    set parser [java::new ptolemy.moml.MoMLParser]
+    set toplevel [java::cast ptolemy.actor.CompositeActor \
+		      [$parser parseFile UndoDeleteEntityComposite.xml]]
+    set manager [java::new ptolemy.actor.Manager [$toplevel workspace] "w"]
+    $toplevel setManager $manager
+
+    set change [java::new ptolemy.moml.MoMLChangeRequest $toplevel $toplevel {
+        <entity name=".UndoDeleteEntityComposite.composite actor">
+	       <deleteEntity name="AddSubtract" />
+        </entity>
+    }]
+    # Mark the change as being undoable
+    $change setUndoable true
+
+    # NOTE: Request is filled immediately because the model is not running.
+    $manager requestChange $change
+
+    # Export the modified MoML
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="UndoDeleteEntityComposite" class="ptolemy.actor.TypedCompositeActor">
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Delete the add actor inside and the redo</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 95.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <entity name="composite actor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 195.0">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 200.0">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 190.0">
+            </property>
+        </port>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation2"/>
+        <link port="port2" relation="relation"/>
+    </entity>
+</entity>
+}
+
+test UndoDeleteEntity-1.3a {Delete an entity in a composite actor: Now call undo} {
+    # Now create the MoMLUndoChangeRequest which will undo the change
+    set undochange [java::new ptolemy.moml.MoMLUndoChangeRequest $toplevel $toplevel]
+
+    # NOTE: Request is filled immediately because the model is not running.
+    $manager requestChange $undochange
+
+    # Should be back to the base model...
+    $toplevel exportMoML
+} {<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="UndoDeleteEntityComposite" class="ptolemy.actor.TypedCompositeActor">
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Delete the add actor inside and the redo</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="165.0, 95.0">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={104, 126, 815, 516}}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[600, 400]">
+    </property>
+    <entity name="composite actor" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="245.0, 195.0">
+        </property>
+        <port name="port" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="20.0, 200.0">
+            </property>
+        </port>
+        <port name="port2" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="575.0, 190.0">
+            </property>
+        </port>
+        <entity name="AddSubtract" class="ptolemy.actor.lib.AddSubtract">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="235.0, 190.0">
+            </property>
+            <port name="plus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="minus" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="multiport"/>
+            </port>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="port" relation="relation2"/>
+        <link port="port2" relation="relation"/>
+        <link port="AddSubtract.plus" relation="relation2"/>
+        <link port="AddSubtract.output" relation="relation"/>
+    </entity>
+</entity>
+}
