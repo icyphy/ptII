@@ -49,7 +49,8 @@ class PNInterleavingExample {
             NameDuplicationException {
 	CompositeActor myUniverse = new CompositeActor();
 	PNDirector exec = new PNDirector("exec");
-	myUniverse.setExecutiveDirector(exec);
+        // FIXME FIXME FIXME
+        // myUniverse.setExecutiveDirector(exec);
 	PNDirector local = new PNDirector("Local");
 	myUniverse.setDirector(local);
         //myUniverse.setCycles(Integer.parseInt(args[0]));

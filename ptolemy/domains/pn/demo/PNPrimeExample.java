@@ -52,7 +52,8 @@ public class PNPrimeExample {
         CompositeActor myUniverse = new CompositeActor();
         myUniverse.setName("Prime_example");
 	PNDirector exec = new PNDirector("exec");
-	myUniverse.setExecutiveDirector(exec);
+        // FIXME FIXME FIXME
+	// myUniverse.setExecutiveDirector(exec);
 	PNDirector local = new PNDirector("Local");
 	myUniverse.setDirector(local);
         //myUniverse.setCycles(Integer.parseInt(args[0]));
