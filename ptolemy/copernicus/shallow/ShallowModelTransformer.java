@@ -594,7 +594,7 @@ public class ShallowModelTransformer extends SceneTransformer {
             methods.hasNext();) {
             SootMethod method = (SootMethod)methods.next();
             JimpleBody body = (JimpleBody)method.retrieveActiveBody();
-             for(Iterator units = body.getUnits().snapshotIterator();
+            for(Iterator units = body.getUnits().snapshotIterator();
                 units.hasNext();) {
                 Unit unit = (Unit)units.next();
                 Iterator boxes = unit.getUseBoxes().iterator();
@@ -606,7 +606,7 @@ public class ShallowModelTransformer extends SceneTransformer {
                         if(PtolemyUtilities.executableInterface.declaresMethod(
                                 r.getMethod().getSubSignature())) {
                             if(r.getMethod().getName().equals("prefire") ||
-                               r.getMethod().getName().equals("postfire")) {
+                                    r.getMethod().getName().equals("postfire")) {
                                 box.setValue(IntConstant.v(1));
                             } else {
                                 body.getUnits().remove(unit);
@@ -657,33 +657,33 @@ public class ShallowModelTransformer extends SceneTransformer {
                 }
                 Class theClass = Class.forName(deferredClass,
                         true, ClassLoader.getSystemClassLoader());
-                    // System.out.println("reflecting " + theClass);
-                    // OK..  try reflecting using a workspace constructor
-                    _reflectionArguments[0] = _reflectionWorkspace;
-                    Constructor[] constructors =
-                        theClass.getConstructors();
-                    for (int i = 0; i < constructors.length; i++) {
-                        Constructor constructor = constructors[i];
-                        Class[] parameterTypes =
-                            constructor.getParameterTypes();
-                        if (parameterTypes.length !=
-                                _reflectionArguments.length)
-                            continue;
-                        boolean match = true;
-                        for (int j = 0; j < parameterTypes.length; j++) {
-                            if (!(parameterTypes[j].isInstance(
-                                    _reflectionArguments[j]))) {
-                                match = false;
-                                break;
-                            }
-                        }
-                        if (match) {
-                            deferredObject = (NamedObj)
-                                constructor.newInstance(
-                                        _reflectionArguments);
+                // System.out.println("reflecting " + theClass);
+                // OK..  try reflecting using a workspace constructor
+                _reflectionArguments[0] = _reflectionWorkspace;
+                Constructor[] constructors =
+                    theClass.getConstructors();
+                for (int i = 0; i < constructors.length; i++) {
+                    Constructor constructor = constructors[i];
+                    Class[] parameterTypes =
+                        constructor.getParameterTypes();
+                    if (parameterTypes.length !=
+                            _reflectionArguments.length)
+                        continue;
+                    boolean match = true;
+                    for (int j = 0; j < parameterTypes.length; j++) {
+                        if (!(parameterTypes[j].isInstance(
+                                _reflectionArguments[j]))) {
+                            match = false;
                             break;
                         }
                     }
+                    if (match) {
+                        deferredObject = (NamedObj)
+                            constructor.newInstance(
+                                    _reflectionArguments);
+                        break;
+                    }
+                }
 
 
                 //String source = "<" + objectType + " name=\""
