@@ -134,14 +134,6 @@ COPERNICUSPACKAGES = \
 			ptolemy.copernicus.java \
 			ptolemy.copernicus.jhdl
 
-# Java packages for codegen
-CODEGENPACKAGES = \
-			ptolemy.codegen.saveasjava
-
-CODEGENJSRCS = \
-			../ptolemy/codegen/saveasjava/*.java
-
-
 PTINYPACKAGES = \
 			ptolemy.actor.lib \
 			ptolemy.actor.lib.conversions \
@@ -166,8 +158,7 @@ JAVASOUNDPACKAGES =	ptolemy.actor.lib.javasound \
 RTOSPACKAGES =		ptolemy.domains.rtos.kernel \
 			ptolemy.domains.rtos.lib
 
-ALLPACKAGES =		$(CODEGENPACKAGES) \
-			$(COPERNICUSPACKAGES) \
+ALLPACKAGES =		$(COPERNICUSPACKAGES) \
 			$(PTINYPACKAGES) \
 			$(GRPACKAGES) \
 			$(JAVASOUNDPACKAGES) \
@@ -242,8 +233,7 @@ troubleshootingVergil.htm: troubleshooting.htm
 
 docs: codeDoc/tree.html
 javadocs: codeDoc/tree.html
-codeDoc/tree.html:	$(CODEGENJSRCS) \
-			../ptolemy/plot/*.java \
+codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/plot/compat/*.java \
 			../ptolemy/plot/plotml/*.java \
 			../ptolemy/kernel/*.java \
