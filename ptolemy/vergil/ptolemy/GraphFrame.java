@@ -185,10 +185,9 @@ public abstract class GraphFrame extends PtolemyFrame
 	// Set the default size.
         // Note that the location is of the frame, while the size
         // is of the scrollpane.
-        Dimension jgraphSize = new Dimension(200, 200);
-        _jgraph.setMinimumSize(jgraphSize);
-        _jgraph.setPreferredSize(jgraphSize);
-	_jgraph.setSize(200, 200);
+        _jgraph.setMinimumSize(new Dimension(200, 200));
+        _jgraph.setPreferredSize(new Dimension(600, 400));
+	_jgraph.setSize(600, 400);
 
 	// wrap the graph editor in a scroll pane.
 
