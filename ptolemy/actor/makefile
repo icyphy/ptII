@@ -103,6 +103,10 @@ MISC_FILES =	$(DIRS) lib
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
+	'Manager$$1.class' \
+	'Manager$$State.class' \
+	'TypedIOPort$$1.class' \
+	'TypedIOPort$$TypeTerm.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
