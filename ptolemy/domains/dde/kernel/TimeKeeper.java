@@ -333,9 +333,16 @@ public class TimeKeeper {
         return time;
         */
         
+        if( !((ComponentEntity)_actor).isAtomic() ) {
+            System.out.println("Call to CompositeActor's TimeKeeper.getOutputTime() at time "+_outputTime);
+            return _outputTime;
+        }
+        
+        
         if( _outputTime < _currentTime ) {
             _outputTime = _currentTime;
         }
+        // System.out.println("Call to AtomicActor's TimeKeeper.getOutputTime() at time "+_outputTime);
         return _outputTime;
     }
 
@@ -384,22 +391,99 @@ public class TimeKeeper {
 
     /** If the actor managed by this time keeper is atomic, then send a 
      *  NullToken to all output channels that have a receiver time less 
-     *  than or equal to the current time of this time keeper. Associate 
-     *  a time i stamp with each NullToken that is equal to the current 
-     *  time of this thread. If this is an opaque composite actor that
-     *  contains a DDE model and the receiver argument is contained on
-     *  outside of an input boundary port, then send NullTokens to the 
-     *  inside of that receiver's port. If this is an opaque composite
-     *  actor and the receiver argument is contained on the inside of an
-     *  output boundary port, then set the output time of this TimeKeeper
-     *  to be equivalent to the receiver's rcvr time. 
+     *  than or equal to the current time of this time keeper. In this
+     *  case, set the time stamp of the NullTokens to be equal to the
+     *  current time of this TimeKeeper.
+     *  <P>
+     *  If the receiver argument of this method is contained on the 
+     *  inside of a boundary port and the outer model of computation is 
+     *  DDE, then send a NullToken to each receiver linked to the receiver 
+     *  argument. In this case, set the time stamp of the NullTokens to be
+     *  equal to the output time of this TimeKeeper.
+     *  <P>
+     *  If the receiver argument of this method is contained on the
+     *  outside of a boundary port and the inner model of computation is
+     *  DDE, then send a NullToken to each receiver linked to the receiver
+     *  argument. In this case, set the time stamp of the NullTokens to be
+     *  equal to the current time of this TimeKeeper.
      *  <P>
      *  This method is not synchronized so the calling method should be. 
-     *  Note that the actor controlled by this TimeKeeper is necessarily 
-     *  opaque.
      * @params rcvr The receiver that is causing this method to be invoked.
      */
     public void sendOutNullTokens(DDEReceiver rcvr) {
+        if( rcvr.isInsideBoundary() ) {
+        String name = ((Nameable)rcvr.getContainer()).getName();
+        if( name.equals("wormout") ) {
+            double time = getOutputTime(); 
+            System.out.println(name+": sending out null tokens at "+time);
+        }
+            
+            if( _actor.getExecutiveDirector() instanceof DDEDirector ){
+                IOPort port = (IOPort)rcvr.getContainer();
+                Receiver[][] rcvrs = null;
+                rcvrs = port.getRemoteReceivers();
+                double time = getOutputTime();
+                for (int i = 0; i < rcvrs.length; i++) {
+            	    for (int j = 0; j < rcvrs[i].length; j++ ) {
+                        if( time > ((DDEReceiver)
+                                rcvrs[i][j]).getLastTime() ) {
+                            ((DDEReceiver)rcvrs[i][j]).put(
+                                    new NullToken(), time );
+                        }
+                    }
+                }
+            }
+            return;
+        }
+        
+        else if( rcvr.isOutsideBoundary() ) {
+            if( _actor.getDirector() instanceof DDEDirector ){
+                IOPort port = (IOPort)rcvr.getContainer();
+                Receiver[][] rcvrs = null;
+                try {
+                    rcvrs = port.deepGetReceivers();
+                } catch( IllegalActionException e ) {
+                    // FIXME: Do Something
+                }
+                double time = getCurrentTime();
+                for (int i = 0; i < rcvrs.length; i++) {
+            	    for (int j = 0; j < rcvrs[i].length; j++ ) {
+                        if( time > ((DDEReceiver)
+                                rcvrs[i][j]).getLastTime() ) {
+                            ((DDEReceiver)rcvrs[i][j]).put(
+                                    new NullToken(), time );
+                        }
+                    }
+                }
+            }
+            return;
+        }
+        
+        else {
+	    Enumeration ports = _actor.outputPorts(); 
+            double time = getCurrentTime(); 
+            while( ports.hasMoreElements() ) {
+            	IOPort port = (IOPort)ports.nextElement(); 
+                Receiver rcvrs[][] = 
+                        (Receiver[][])port.getRemoteReceivers();
+            	for (int i = 0; i < rcvrs.length; i++) {
+                    for (int j = 0; j < rcvrs[i].length; j++) {
+                        if( time >
+			        ((DDEReceiver)rcvrs[i][j]).getLastTime() ) {
+                            ((DDEReceiver)rcvrs[i][j]).put(
+                                    new NullToken(), time );
+                        }
+		    }
+		}
+            }
+            return;
+        }
+        
+        
+        
+        
+        
+        /*
         if( ((ComponentEntity) _actor).isAtomic() ) {
 	    Enumeration ports = _actor.outputPorts(); 
             double time = getCurrentTime(); 
@@ -429,7 +513,9 @@ public class TimeKeeper {
                 return;
             }
             
-            double time = getCurrentTime(); 
+            double time = getOutputTime(); 
+            // double time = getCurrentTime(); 
+            
             Receiver[][] rcvrs = null;
             try {
                 rcvrs = port.deepGetReceivers();
@@ -448,6 +534,7 @@ public class TimeKeeper {
                 }
             }
         }
+        */
     }
 
     /** Set the current time of this TimeKeeper. If the specified
@@ -530,14 +617,32 @@ public class TimeKeeper {
      *  less than the current time.
      * @param outputTime The output time of this time keeper.
      */
-    public synchronized void setOutputTime(double outputTime)
+    synchronized void setOutputTime(double outputTime)
             throws IllegalActionException {
+        if( _outputTime > _currentTime ) {
+            if( _outputTime > outputTime ) {
+                return;
+            }
+        }
 	if( outputTime < _currentTime ) {
 	    throw new IllegalActionException(
 		    ((NamedObj)_actor).getName() + " - Attempt to "
 		    + "set the output time to be less than the "
                     + "current time.");
 	}
+        String name = ((Nameable)_actor).getName();
+        if( name.equals("wormhole") ) {
+            System.out.println(name+": TimeKeeper.setOutputTime = " + outputTime); 
+            try {
+                if( outputTime == 15.0 ) {
+                    throw new IllegalActionException("Uggghhh");
+                }
+            } catch( IllegalActionException e ) {
+                e.printStackTrace();
+            }
+            /*
+            */
+        }
 	_outputTime = outputTime;
     }
 
@@ -606,12 +711,14 @@ public class TimeKeeper {
             new RcvrTimeTriple(tqr, time, priority);
 	_removeRcvrTriple( triple );
 	_addRcvrTriple( triple );
+        /*
         try {
             setOutputTime( getCurrentTime() );
         } catch( IllegalActionException e ) {
             // This exception will never be thrown since 
             // the current time is never in the past.
         }
+        */
     }
 
     ///////////////////////////////////////////////////////////////////
