@@ -1393,7 +1393,46 @@ incorrectly shows the slider as a subitem of the actor.
   copy and paste them into a new one, they sometimes all get
   placed at the origin.  Strangely, if I then auto-place,
   and then undo, they get their original (correct) placement!
+
+
+<li> Printing a model that contains transparent objects can result
+in problems when printing to Encapsulated Postscript (EPS).
+
+ <br>If a model has transparent objects, then when it is printed to
+EPS, the resulting file is a bitmap instead of a Postscript
+description of the graphics.  You can tell by the file size (several
+Meg vs. several K) and by opening it in Illustrator, where in theory
+you should be able to ungroup and select and edit individual
+components.
+
+ <br>The way Java prints EPS is that there is an implementation of
+Graphics2D that literally translates each graphics2D call into a
+Postscript snippet.  If Java detects any transparent colors or images,
+then the literal translation of each element independently doesn't
+work, so the printing code reverts to writing everything to an image
+and then sending the image, encapsulated in Postscript to the printer.
+
+ <br>Solution1: Use one of these pdf writing programs to generate
+pdf-1.4 compliant pdf files, which have extensions to support
+transparency that Postscript lacks, and then print them to eps, which
+would use the distill implementation of the above algorithm.
+Or alternatively, we could switch to using pdftex instead of 
+latex-&gt;dvips-&gt;distill which should
+embed pdf for figures directly at the expense of less robust latex support.
+<a href="http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html#in_browser" target="_top"><CODE>http://www.geocities.com/marcoschmidt.geo/java-libraries-pdf.html</CODE></a>
+
+ <br>Solution 2: Use the undocumented flag
+-Dsun.java2d.print.pipeline=pdl on the command line to force the
+printing to use the postscript path, ignoring transparency.
+Under Cygwin:
+<pre>
+export JAVAFLAGS=-Dsun.java2d.print.pipeline=pdl
+vergil
+</pre>
+Then edit the file by hand in Illustrator to add the transparency back in.
+
 </ul>
+
 <h3>Limitations in JNI</h3>
 <menu>
 <li> The Interface to C actors using the Java Native Interface
