@@ -46,7 +46,7 @@ The channels it can accept from is set at the start of each firing.
 <p>
 @author Neil Smyth
 @version $Id$
-@see ptolemy.domains.csp.kernel
+@see ptolemy.domains.csp.kernel.CSPActor
 */
 public class CSPMultiSink extends CSPActor {
     public CSPMultiSink() {
