@@ -30,7 +30,8 @@
 
 package ptolemy.actor.lib.security;
 
-import ptolemy.actor.lib.Transformer;
+import ptolemy.actor.TypedCompositeActor;
+import ptolemy.actor.TypedIOPort;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.ArrayType;
@@ -52,8 +53,7 @@ import java.util.Set;
 //////////////////////////////////////////////////////////////////////////
 //// SignatureActor
 /**
-
-General and helper functions used by signature actors.
+A common base class for actors that use cryptographic signatures.
 
 <p>In cryptography, digital signatures can be used to verify that the
 data was not modified in transit.  However, the data itself is passed
@@ -79,7 +79,7 @@ Information about JCE can be found at
 @version $Id$
 @since Ptolemy II 3.1
 */
-public class SignatureActor extends Transformer {
+public class SignatureActor extends TypedCompositeActor {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -93,7 +93,10 @@ public class SignatureActor extends Transformer {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
 
+        input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
+
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
         provider = new StringParameter(this, "provider");
@@ -120,6 +123,15 @@ public class SignatureActor extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
+    /** This port takes in an UnsignedByteArray and processes the data.
+     */
+    public TypedIOPort input;
+
+    /** This port sends out the processed data received from <i>input</i> in
+     *  the form of an UnsignedByteArray.
+     */
+    public TypedIOPort output;
+
     /** Specify a provider for the given algorithm.  Takes the algorithm name
      *  as a string. The default value is "SystemDefault" which allows the
      *  system chooses the provider based on the JCE architecture.
@@ -130,10 +142,10 @@ public class SignatureActor extends Transformer {
      *  specified as a string. The algorithms are limited to those
      *  implemented by providers using the Java JCE which are found on the
      *  system.
-     *  Depending on your JDK installation is, possible values might
+     *  Depending on your JDK installation, possible values might
      *  be SHA1WITHDSA or MD5WITHRSA.
      *  The initial default is the first value returned by
-     *  Security.getAlgorithms("Signature").
+     *  java.security.Security.getAlgorithms("Signature").
      */
     public StringParameter signatureAlgorithm;
 
@@ -141,7 +153,7 @@ public class SignatureActor extends Transformer {
     ////                         public methods                    ////
 
     /** Override the base class to reinitialize the state if
-     *  the <i>signatureAlgorithm</i>, or <i>provider</i>
+     *  the the <i>signatureAlgorithm</i>, or <i>provider</i>
      *  parameter is changed.
      *  @param attribute The attribute that changed.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -158,9 +170,11 @@ public class SignatureActor extends Transformer {
         }
     }
 
-    /** This method initializes the Signature object.  If provider is
-     *  left as "SystemDefault" the system chooses the provider based
-     *  on the JCE.
+    /** Use the values of the <i>signatureAlgorithm</i> and
+     *  <i>provider</i> parameters to initialize the Signature object.
+     *   
+     *  If provider is left as "SystemDefault" the system chooses the
+     *  provider based on the JCE.
      *
      * @exception IllegalActionException If the base class throws it,
      * if the algorithm is not found, or if the specified provider does
@@ -188,11 +202,11 @@ public class SignatureActor extends Transformer {
     ///////////////////////////////////////////////////////////////////
     ////                         Protected Methods                 ////
 
-    /** The provider to be used for a provider specific implementation. */
+    /** The name of the provider to be used for a provider specific
+     *  implementation. */
     protected String _provider;
 
-    /** The signature that will be used to process the data.
-     */
+    /** The signature that will be used to process the data. */
     protected Signature _signature;
 
     /** The name of the signature algorithm to be used. */

@@ -53,15 +53,22 @@ Verify the signature of the input data.
 data was not modified in transit.  However, the data itself is passed
 in cleartext.
 
-<p>This actor reads an objectToken public key from the
-<i>publicKey</i> port and then verifies the signature of
-each unsigned byte array that appears on the <i>input</i> port.
-If the signature is legitimate, then the unsigned byte array
-data on the <i>data</i> port is passed to the <i>output</i> port.
+<p>The <i>provider</i> and <i>signatureAlgorithm</i>
+parameters should be set to the values used to generate the publicKey.
+See {@link PublicKeyReader} and {@link SignatureActor} 
+for possible values.
 
-<p>The algorithm and keySize parameters should be set to the same
-value as the corresponding parameter in the SignatureSigner actor.
-Two common values for the algorithm parameter are DSA and RSA.
+<p>The <i>provider</i> and <i>signatureAlgorithm</i>
+parameters should be set to the same
+value as the corresponding parameter in the SignatureVerifier actor.
+
+<p>This actor reads an ObjectToken public key from the
+<i>publicKey</i> port and then reads unsigned byte arrays from
+the <i>signature</i> port and verifies the signature of
+each unsigned byte array that appears on the <i>input</i> port.
+If the signature is valid, then the unsigned byte array
+data on the <i>input</i> port is passed to the <i>output</i> port.
+If the signature is not valid, then an exception is thrown.
 
 <p>This actor relies on the Java Cryptography Architecture (JCA) and Java
 Cryptography Extension (JCE).
@@ -100,20 +107,22 @@ public class SignatureVerifier extends SignatureActor {
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
-    /** The signature of the data.  The type is unsigned byte array.
+    /** The signature of the data.  The type of this input port
+     *  is unsigned byte array.
      */
     public TypedIOPort signature;
 
     /** This port receives the public key to be used from the
-     *  The type is an ObjectToken containin a java.security.Key.
+     *  The type of this input port is an ObjectToken containing
+     *  a java.security.Key.
      */
     public TypedIOPort publicKey;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Read in the publicKey, input and signature tokens and verify
-     *  the signature.  
+    /** Read in the publicKey, input and signature tokens, verify
+     *  the signature and write the input data on the output port.
      *
      *  @exception IllegalActionException If thrown by base class
      *  or if the signature does not properly verify.

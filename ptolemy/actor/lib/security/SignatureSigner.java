@@ -62,8 +62,17 @@ import java.util.Set;
 data was not modified in transit.  However, the data itself is passed
 in cleartext.
 
+<p>The <i>provider</i> and <i>signatureAlgorithm</i>
+parameters should be set to the values used to generate the privateKey.
+See {@link PrivateKeyReader} and {@link SignatureActor} 
+for possible values.
+
+<p>The <i>provider</i> and <i>signatureAlgorithm</i>
+parameters should be set to the same
+value as the corresponding parameters in the SignatureVerifier actor.
+
 <p>Each time fire() is called, the <i>privateKey</i> is used to create a
-signature for each block of unsigned byte array read from the
+signature for each block of unsigned byte array data read from the
 <i>input</i> port.  The signed data is passed to a SignatureVerifier
 actor on the <i>signature</i> port as an unsigned byte array.
 
@@ -109,11 +118,13 @@ public class SignatureSigner extends SignatureActor {
 
     /** The private key to be used by the SignatureVerifier actor
      *  to verify the data on the <i>output</i> port.
-     *  The type is an ObjectToken containin a java.security.Key.
+     *  The type of this input port is an ObjectToken containing
+     *  a java.security.Key.
      */
     public TypedIOPort privateKey;
 
-    /** The signature of the data.  The type is unsigned byte array.
+    /** The signature of the data.  The type of this input port 
+     *  is unsigned byte array.
      */
     public TypedIOPort signature;
 
@@ -135,7 +146,7 @@ public class SignatureSigner extends SignatureActor {
 
         if (input.hasToken(0)) {
             try {
-                // Process the input data to generate a signature
+                // Process the input data to generate a signature.
                 byte[] dataBytes =
                     CryptographyActor.arrayTokenToUnsignedByteArray(
                             (ArrayToken)input.get(0));
