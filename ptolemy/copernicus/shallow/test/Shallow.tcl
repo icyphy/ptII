@@ -41,10 +41,6 @@ if {[info procs sootCodeGeneration] == "" } then {
     source [file join $PTII util testsuite codegen.tcl]
 }
 
-if {[string compare test [info procs autoShallowCG]] == 1} then {
-    source sootShallowCodeGeneration.tcl
-} {}
-
 # Uncomment this to get a full report, or set in your Tcl shell window.
 # set VERBOSE 1
 
