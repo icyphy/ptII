@@ -96,12 +96,12 @@ public class TypeTest extends Discard {
             throws NameDuplicationException, IllegalActionException  {
         super(container, name);
         parameterTypes = new Parameter(this, "parameterTypes");
-        parameterTypes.setExpression("{}");
+        parameterTypes.setExpression("");
        //  parameterTypes.setTypeEquals(
 //                 new RecordType(new String[0], new Type[0]));
 
         portTypes = new Parameter(this, "portTypes");
-        portTypes.setExpression("{}");
+        portTypes.setExpression("");
        //  portTypes.setTypeEquals(
 //                 new RecordType(new String[0], new Type[0]));
 
@@ -142,13 +142,17 @@ public class TypeTest extends Discard {
         super.initialize();
         
         // Accumulate the types of ports and Parameters
-        ArrayList actorNameList = new ArrayList();
+        ArrayList portActorNameList = new ArrayList();
+        ArrayList parameterActorNameList = new ArrayList();
         ArrayList portAssignments = new ArrayList();
         ArrayList parameterAssignments = new ArrayList();
         List entityList = ((CompositeEntity) getContainer()).entityList();
         for(Iterator i = entityList.iterator(); i.hasNext();) {
             ComponentEntity entity = (ComponentEntity)i.next();
-            actorNameList.add(entity.getName());
+            // Skip the type test actor itself.
+            if(entity.equals(this)) {
+                continue;
+            }
             ArrayList portNames = new ArrayList();
             ArrayList portTypes = new ArrayList();
             for(Iterator ports = entity.portList().iterator(); ports.hasNext();) {
@@ -156,10 +160,13 @@ public class TypeTest extends Discard {
                 portNames.add(port.getName());
                 portTypes.add(new StringToken(port.getType().toString()));
             }
-            portAssignments.add(
-                    new RecordToken(
-                            (String[])portNames.toArray(new String[portNames.size()]), 
-                            (Token[])portTypes.toArray(new Token[portTypes.size()])));
+            if(portNames.size() > 0) {
+                portActorNameList.add(entity.getName());
+                portAssignments.add(
+                        new RecordToken(
+                                (String[])portNames.toArray(new String[portNames.size()]), 
+                                (Token[])portTypes.toArray(new Token[portTypes.size()])));
+            }
             ArrayList paramNames = new ArrayList();
             ArrayList paramTypes = new ArrayList();
             for(Iterator params = entity.attributeList(Parameter.class).iterator();
@@ -168,19 +175,28 @@ public class TypeTest extends Discard {
                 paramNames.add(param.getName());
                 paramTypes.add(new StringToken(param.getType().toString()));
             }
-            parameterAssignments.add(
-                    new RecordToken(
-                            (String[])paramNames.toArray(new String[paramNames.size()]), 
-                            (Token[])paramTypes.toArray(new Token[paramTypes.size()])));
+            if(paramNames.size() > 0) {
+                parameterActorNameList.add(entity.getName());
+                parameterAssignments.add(
+                        new RecordToken(
+                                (String[])paramNames.toArray(
+                                        new String[paramNames.size()]), 
+                                (Token[])paramTypes.toArray(
+                                        new Token[paramTypes.size()])));
+            }
         }
         RecordToken actualPortTypes =
             new RecordToken(
-                    (String[])actorNameList.toArray(new String[actorNameList.size()]),
-                    (Token[])portAssignments.toArray(new Token[portAssignments.size()]));
+                    (String[])portActorNameList.toArray(
+                            new String[portActorNameList.size()]),
+                    (Token[])portAssignments.toArray(
+                            new Token[portAssignments.size()]));
         RecordToken actualParameterTypes = 
             new RecordToken(
-                    (String[])actorNameList.toArray(new String[actorNameList.size()]),
-                    (Token[])parameterAssignments.toArray(new Token[parameterAssignments.size()]));
+                    (String[])parameterActorNameList.toArray(
+                            new String[parameterActorNameList.size()]),
+                    (Token[])parameterAssignments.toArray(
+                            new Token[parameterAssignments.size()]));
 
                 
         if(((BooleanToken)trainingMode.getToken()).booleanValue()) {
