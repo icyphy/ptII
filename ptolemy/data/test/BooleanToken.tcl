@@ -105,7 +105,7 @@ test BooleanToken-4.0 {Test addition of booleans} {
     set r2 [$trueToken add $falseToken]
     set r3 [$falseToken add $trueToken]
     set r4 [$trueToken add $trueToken]
-    list [$r1 stringValue] [$r2 stringValue] [$r3 stringValue] [$r4 stringValue]
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
 } {false true true false}
 
 test BooleanToken-4.1 {Test reverse addition of booleans} {
@@ -113,13 +113,13 @@ test BooleanToken-4.1 {Test reverse addition of booleans} {
     set r2 [$trueToken addReverse $falseToken]
     set r3 [$falseToken addReverse $trueToken]
     set r4 [$trueToken addReverse $trueToken]
-    list [$r1 stringValue] [$r2 stringValue] [$r3 stringValue] [$r4 stringValue]
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
 } {false true true false}
 
 test BooleanToken-5.0 {Test division of booleans} {
     set r1 [$falseToken divide $trueToken]
     set r2 [$trueToken divide $trueToken]
-    list [$r1 stringValue] [$r2 stringValue]
+    list [$r1 toString] [$r2 toString]
 } {false true}
 
 test BooleanToken-5.1 {Test division by zero} {
@@ -131,7 +131,7 @@ test BooleanToken-5.1 {Test division by zero} {
 test BooleanToken-5.2 {Test reverse division of booleans} {
     set r3 [$trueToken divideReverse $falseToken]
     set r4 [$trueToken divideReverse $trueToken]
-    list [$r1 stringValue] [$r2 stringValue]
+    list [$r1 toString] [$r2 toString]
 } {false true}
 
 test BooleanToken-5.3 {Test division by zero} {
@@ -146,7 +146,7 @@ test BooleanToken-6.0 {Test equality test} {
     set r2 [$trueToken isEqualTo $falseToken]
     set r3 [$falseToken isEqualTo $trueToken]
     set r4 [$trueToken isEqualTo $trueToken]
-    list [$r1 stringValue] [$r2 stringValue] [$r3 stringValue] [$r4 stringValue]
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
 } {true false false true}
 
 
@@ -155,7 +155,7 @@ test BooleanToken-7.0 {Test multiplication} {
     set r2 [$trueToken multiply $falseToken]
     set r3 [$falseToken multiply $trueToken]
     set r4 [$trueToken multiply $trueToken]
-    list [$r1 stringValue] [$r2 stringValue] [$r3 stringValue] [$r4 stringValue]
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
 } {false false false true}
 
 test BooleanToken-7.1 {Test reverse multiplication} {
@@ -163,19 +163,19 @@ test BooleanToken-7.1 {Test reverse multiplication} {
     set r2 [$trueToken multiplyReverse $falseToken]
     set r3 [$falseToken multiplyReverse $trueToken]
     set r4 [$trueToken multiplyReverse $trueToken]
-    list [$r1 stringValue] [$r2 stringValue] [$r3 stringValue] [$r4 stringValue]
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
 } {false false false true}
 
 test BooleanToken-8.0 {Test not} {
     set r1 [$falseToken not]
     set r2 [$trueToken not]
-    list [$r1 stringValue] [$r2 stringValue]
+    list [$r1 toString] [$r2 toString]
 } {true false}
 
 test BooleanToken-9.0 {Test identities} {
     set r1 [$falseToken one]
     set r2 [$trueToken zero]
-    list [$r1 stringValue] [$r2 stringValue]
+    list [$r1 toString] [$r2 toString]
 } {true false}
 
 test BooleanToken-10.0 {Test subtraction of booleans} {
@@ -183,7 +183,7 @@ test BooleanToken-10.0 {Test subtraction of booleans} {
     set r2 [$trueToken subtract $falseToken]
     set r3 [$falseToken subtract $trueToken]
     set r4 [$trueToken subtract $trueToken]
-    list [$r1 stringValue] [$r2 stringValue] [$r3 stringValue] [$r4 stringValue]
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
 } {false true true false}
 
 test BooleanToken-4.1 {Test reverse subtraction of booleans} {
@@ -191,5 +191,5 @@ test BooleanToken-4.1 {Test reverse subtraction of booleans} {
     set r2 [$trueToken subtractReverse $falseToken]
     set r3 [$falseToken subtractReverse $trueToken]
     set r4 [$trueToken subtractReverse $trueToken]
-    list [$r1 stringValue] [$r2 stringValue] [$r3 stringValue] [$r4 stringValue]
+    list [$r1 toString] [$r2 toString] [$r3 toString] [$r4 toString]
 } {false true true false}

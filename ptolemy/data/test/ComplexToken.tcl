@@ -112,9 +112,9 @@ test ComplexToken-2.3 {Test longValue} {
 ######################################################################
 ####
 # 
-test ComplexToken-2.4 {Test stringValue} {
+test ComplexToken-2.4 {Test toString} {
     # use the Complex above
-    $p stringValue
+    $p toString
 } {3.3 + 4.4i}
 
 ######################################################################

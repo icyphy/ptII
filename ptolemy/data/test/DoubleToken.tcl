@@ -130,7 +130,7 @@ test DoubleToken-2.3 {Create a non-empty instance and query its value as a long}
 # 
 test DoubleToken-2.4 {Create a non-empty instance and query its value as a string} {
     set p [java::new {ptolemy.data.DoubleToken double} 12.2]
-    $p stringValue
+    $p toString
 } {12.2}
 
 ######################################################################

@@ -65,7 +65,7 @@ test Parameter-2.0 {Check constructors} {
     set name2 [$param2 getFullName]    
     set name3 [$param3 getFullName]
     set name4 [$param4 getFullName]
-    set value3 [[$param3 getToken] stringValue]
+    set value3 [[$param3 getToken] toString]
     list $name1 $name2 $name3 $name4 $value3 
 } {. . .entity.id2 .entity.id1 4.5}
 
@@ -78,14 +78,14 @@ test Parameter-3.1 {Check setting the contained Token with another Token} {
 
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 $tok1]
     set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] stringValue]
+    set value1 [[$param1 getToken] toString]
 
     # Now put a new token into the Param
     set tok2 [java::new  {ptolemy.data.DoubleToken double} 7.3]
     $param1 setToken $tok2
     
     set name2 [$param1 getFullName]
-    set value2 [[$param1 getToken] stringValue]
+    set value2 [[$param1 getToken] toString]
 
     list $name1 $value1 $name2 $value2
 } {.entity.id1 4.5 .entity.id1 7.3}
@@ -99,7 +99,7 @@ test Parameter-3.2 {Check that type changes with new Token type} {
 
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 $tok1]
     set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] stringValue]
+    set value1 [[$param1 getToken] toString]
 
     # Now put a new token into the Param
     set tok2 [java::new  {ptolemy.data.DoubleToken double} 7.3]
@@ -108,7 +108,7 @@ test Parameter-3.2 {Check that type changes with new Token type} {
     set type2 [[$param1 getType] toString]
 
     set name2 [$param1 getFullName]
-    set value2 [[$param1 getToken] stringValue]
+    set value2 [[$param1 getToken] toString]
 
     list $name1 $value1 $type1 $type2
 } {.entity.id1 11 int double}
@@ -122,14 +122,14 @@ test Parameter-3.3 {Check type constraints: ok to put int in a double} {
 
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 $tok1]
     set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] stringValue]
+    set value1 [[$param1 getToken] toString]
 
     # Now put a new token of a lower type into the Param
     set tok2 [java::new  {ptolemy.data.IntToken int} 7]
     $param1 setToken $tok2
     
     set name2 [$param1 getFullName]
-    set value2 [[$param1 getToken] stringValue]
+    set value2 [[$param1 getToken] toString]
 
     list $name1 $value1 $name2 $value2 
 } {.entity.id1 4.4 .entity.id1 7}
@@ -137,7 +137,7 @@ test Parameter-3.3 {Check type constraints: ok to put int in a double} {
 test Parameter-3.4 {Check setting type constraints (conversion)} {
     set doubleClass [java::field ptolemy.data.type.BaseType DOUBLE]
     $param1 setTypeEquals $doubleClass
-    [$param1 getToken] stringValue
+    [$param1 getToken] toString
 } {7.0}
 
 test Parameter-3.5 {Check that we can't convert down} {
@@ -150,12 +150,12 @@ Variable.setTypeEquals(): the currently contained token ptolemy.data.DoubleToken
 test Parameter-3.6 {Check that a new token is converted} {
     set int [java::new ptolemy.data.IntToken 0]
     $param1 setToken $int
-    [$param1 getToken] stringValue
+    [$param1 getToken] toString
 } {0.0}
 
 test Parameter-3.7 {Check that a new expression is converted} {
     $param1 setExpression {1}
-    [$param1 getToken] stringValue
+    [$param1 getToken] toString
 } {1.0}
 
 #################################
@@ -166,21 +166,21 @@ test Parameter-4.0 {Check setting the contained Token from a String or another T
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 ]
     $param1 setExpression "1.6 + 8.3"
     set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] stringValue]
+    set value1 [[$param1 getToken] toString]
 
     # Now put a new token into the Parameter
     set tok1 [java::new  {ptolemy.data.DoubleToken double} 7.7]
     $param1 setToken $tok1    
-    set value2 [[$param1 getToken] stringValue]
+    set value2 [[$param1 getToken] toString]
 
     # Now set the Token contained from a String
     $param1 setExpression "-((true) ? 5.5 : \"string\")" 
-    set value3 [[$param1 getToken] stringValue]
+    set value3 [[$param1 getToken] toString]
 
     # Now put a new token into the Param
     set tok2 [java::new {ptolemy.data.DoubleToken double} 3.3]
     $param1 setToken $tok2    
-    set value4 [[$param1 getToken] stringValue]
+    set value4 [[$param1 getToken] toString]
 
     list $name1 $value1 $value2 $value3 $value4
 } {.parent.id1 9.9 7.7 -5.5 3.3}
@@ -193,24 +193,24 @@ test Parameter-5.0 {Check reseting the Parameter to its original String} {
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 ]
     $param1 setExpression "1.6 + 8.3"
     set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] stringValue]
+    set value1 [[$param1 getToken] toString]
 
     # Now put a new token into the Param
     set tok1 [java::new  {ptolemy.data.DoubleToken double} 7.7]
     $param1 setToken $tok1    
-    set value2 [[$param1 getToken] stringValue]
+    set value2 [[$param1 getToken] toString]
 
     # Now reset the Token 
     $param1 reset
-    set value3 [[$param1 getToken] stringValue]
+    set value3 [[$param1 getToken] toString]
 
     # Put a new Token in the Parameter from a String
     $param1 setExpression "((true) ? 5.5 : \"string\")" 
-    set value4 [[$param1 getToken] stringValue]
+    set value4 [[$param1 getToken] toString]
     
     # Reset the Token 
     $param1 reset
-    set value5 [[$param1 getToken] stringValue]
+    set value5 [[$param1 getToken] toString]
 
     list $name1 $value1 $value2 $value3 $value4 $value5 
 } {.parent.id1 9.9 7.7 9.9 5.5 9.9}
@@ -224,24 +224,24 @@ test Parameter-5.1 {Check reseting the Parameter to its original Token} {
     set tok1 [java::new {ptolemy.data.DoubleToken double} 9.9]
     set param1 [java::new ptolemy.data.expr.Parameter $e id1 $tok1]
     set name1 [$param1 getFullName]
-    set value1 [[$param1 getToken] stringValue]
+    set value1 [[$param1 getToken] toString]
 
     # Put a new token into the Parameter from a String 
     $param1 setExpression "((true) ? 7.7 : \"string\")" 
-    set value2 [[$param1 getToken] stringValue]
+    set value2 [[$param1 getToken] toString]
     
     # Reset the Token 
     $param1 reset
-    set value3 [[$param1 getToken] stringValue]
+    set value3 [[$param1 getToken] toString]
 
     # Put a new Token in the Param from a Token
     set tok1 [java::new  {ptolemy.data.DoubleToken double} 5.5]
     $param1 setToken $tok1    
-    set value4 [[$param1 getToken] stringValue]
+    set value4 [[$param1 getToken] toString]
     
     # Reset the Token 
     $param1 reset
-    set value5 [[$param1 getToken] stringValue]
+    set value5 [[$param1 getToken] toString]
 
     list $name1 $value1 $value2 $value3 $value4 $value5 
 } {.parent.id1 9.9 7.7 9.9 5.5 9.9}

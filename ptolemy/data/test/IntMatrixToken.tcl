@@ -202,7 +202,7 @@ test IntMatrixToken-2.2 {Create a non-empty instance and query its value as a lo
 
 test IntMatrixToken-2.3 {Create a non-empty instance and query its value as a string} {
 
-    set res1 [$p stringValue]
+    set res1 [$p toString]
 
     list $res1
 

@@ -118,7 +118,7 @@ test PtParser-2.4 {Construct a Parser, try simple double expressions} {
     set root [ $p1 {generateParseTree String} "12.0 / 2.4 / 2.5"]
     set res4  [ $root evaluateParseTree ]
 
-    set reslist [list [$res stringValue] [$res1 stringValue] [$res2 stringValue] [$res3 stringValue] [$res4 stringValue]]
+    set reslist [list [$res toString] [$res1 toString] [$res2 toString] [$res3 toString] [$res4 toString]]
     ptclose $reslist {9.7 -5.6 29.4 1.6 2.0}
 } {1}
 ######################################################################
@@ -424,7 +424,7 @@ test PtParser-9.0 {Check that evaluation of the parse tree does not change the p
     set res5a [ $root5 evaluateParseTree ]
     set res5b [ $root5 evaluateParseTree ]
 
-    list [$res1a stringValue] [$res1b stringValue] [$res2a stringValue] [$res2b stringValue] [$res3a stringValue] [$res3b stringValue] [$res4a stringValue] [$res4b stringValue] [$res5a stringValue] [$res5b stringValue]
+    list [$res1a toString] [$res1b toString] [$res2a toString] [$res2b toString] [$res3a toString] [$res3b toString] [$res4a toString] [$res4b toString] [$res5a toString] [$res5b toString]
 } {5 5 -1 -1 6 6 0 0 2 2}
 ######################################################################
 ####
@@ -492,7 +492,7 @@ test PtParser-11.0 {Test constants} {
     $v1 setExpression i
     set v2 [java::new ptolemy.data.expr.Variable $e v2]
     $v2 setExpression {v1*j}
-    [$v2 getToken] stringValue
+    [$v2 getToken] toString
 } {-1.0 + 0.0i}
 ######################################################################
 ####
@@ -632,7 +632,7 @@ test PtParser-14.0 {Test constant expressions.} {
     set ta [ $ra evaluateParseTree ]
     set tb [ $ra evaluateParseTree ]
     set va [ $ta equals $tb ]
-    set vb [ [ $ta isEqualTo $tb ] stringValue ]
+    set vb [ [ $ta isEqualTo $tb ] toString ]
 
     set nl [java::new ptolemy.kernel.util.NamedList]
     set vara [java::new ptolemy.data.expr.Variable]
@@ -643,13 +643,13 @@ test PtParser-14.0 {Test constant expressions.} {
     set ta [ $rb evaluateParseTree ]
     set tb [ $rb evaluateParseTree ]
     set vc [ $ta equals $tb ]
-    set vd [ [ $ta isEqualTo $tb ] stringValue ]
+    set vd [ [ $ta isEqualTo $tb ] toString ]
 
     set rc [ $p generateParseTree "eval(\"1+1\")" ]
     set ta [ $rc evaluateParseTree ]
     set tb [ $rc evaluateParseTree ]
     set ve [ $ta equals $tb ]
-    set vf [ [ $ta isEqualTo $tb ] stringValue ]
+    set vf [ [ $ta isEqualTo $tb ] toString ]
 
     list $va $vb $vc $vd $ve $vf
 } {1 true 0 true 0 true}

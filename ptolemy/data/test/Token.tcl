@@ -186,9 +186,9 @@ test Token-3.1 {Test zero} {
 ######################################################################
 ####
 # 
-test Token-4.0 {Test stringValue} {
+test Token-4.0 {Test toString} {
     set p [java::new ptolemy.data.Token]
-    list [$p stringValue]
+    list [$p toString]
 } {present}
 
 ######################################################################

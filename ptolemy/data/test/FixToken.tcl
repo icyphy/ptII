@@ -156,8 +156,8 @@ test FixToken-4.3 {Test longValue} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Cannot convert the value in ptolemy.data.FixToken to a long losslessly.}}
 
-test FixToken-4.4 {Test stringValue} {
-    $p stringValue
+test FixToken-4.4 {Test toString} {
+    $p toString
 } {fix(5.573486328125,16,4)}
 
 ######################################################################

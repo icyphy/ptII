@@ -105,7 +105,7 @@ test LongToken-2.2 {Create a non-empty instance and query its value as an int} {
 # 
 test LongToken-2.3 {Create a non-empty instance and query its value as a string} {
     set p [java::new {ptolemy.data.LongToken long} 12]
-    $p stringValue
+    $p toString
 } {12}
 
 ######################################################################
