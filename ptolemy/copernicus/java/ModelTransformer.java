@@ -44,6 +44,7 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.Relation;
 import ptolemy.kernel.util.*;
+import ptolemy.moml.MoMLParser;
 
 import soot.*;
 import soot.jimple.*;
@@ -62,6 +63,8 @@ import soot.toolkits.scalar.LocalSplitter;
 import soot.dava.*;
 import soot.toolkits.graph.*;
 import soot.util.*;
+
+import java.lang.reflect.Constructor;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -192,7 +195,7 @@ public class ModelTransformer extends SceneTransformer {
         _entities(body, thisLocal, composite, modelClass, options);
         // create fields for attributes.
         createFieldsForAttributes(body, composite, thisLocal, 
-                composite, modelClass);
+                composite, thisLocal, modelClass);
        
         // handle the communication
         if(Options.getBoolean(options, "deep")) {
@@ -264,35 +267,58 @@ public class ModelTransformer extends SceneTransformer {
     }
 
     // Create and set attributes.
-    public static void createFieldsForAttributes(JimpleBody body, NamedObj container,
-            Local containerLocal, NamedObj namedObj, SootClass theClass) {
+    public static void createFieldsForAttributes(JimpleBody body, NamedObj context,
+            Local contextLocal, NamedObj namedObj, Local namedObjLocal, 
+            SootClass theClass) {
+        // A local that we will use to set the value of our
+        // settable attributes.
+        Local attributeLocal = Jimple.v().newLocal("attribute",
+                PtolemyUtilities.attributeType);
+        body.getLocals().add(attributeLocal);
 	Local settableLocal = Jimple.v().newLocal("settable",
 						  PtolemyUtilities.settableType);
 	body.getLocals().add(settableLocal);
 
-	Chain units = body.getUnits();
-       	for(Iterator attributes = namedObj.attributeList().iterator();
+        NamedObj classObject = _findDeferredInstance(namedObj);
+        for(Iterator attributes = namedObj.attributeList().iterator();
 	    attributes.hasNext();) {
 	    Attribute attribute = (Attribute)attributes.next();
-	    String className = attribute.getClass().getName();
+            String className = attribute.getClass().getName();
             Type attributeType = RefType.v(className);
-            String fieldName = 
-                SootUtilities.sanitizeName(attribute.getName(container));
-            // FIXME: This is a hack.  We should be able to statically determine this
-            // like the MoMLWriter does.
-            Local local = PtolemyUtilities.createNamedObjAndLocal(body, className,
-                    containerLocal, fieldName);
+            String attributeName = attribute.getName(context);
+            String fieldName = SootUtilities.sanitizeName(attributeName);
+           
+            Local local;
+            if(classObject.getAttribute(attribute.getName()) != null) {
+                // If the class for the object already creates the
+                // attribute, then get a reference to the existing attribute.
+                local = attributeLocal;
+                body.getUnits().add(Jimple.v().newAssignStmt(attributeLocal,
+                        Jimple.v().newVirtualInvokeExpr(contextLocal,
+                                PtolemyUtilities.getAttributeMethod,
+                                StringConstant.v(attributeName))));
+            } else {
+                // If the class does not create the attribute,
+                // then create a new attribute with the right name.
+                local = PtolemyUtilities.createNamedObjAndLocal(body, className,
+                        namedObjLocal, attribute.getName());
+            }
+
+            // Create a new field for the attribute, and initialize
+            // it to the the attribute above.
 	    SootUtilities.createAndSetFieldFromLocal(body, local, 
                     theClass, attributeType, fieldName);
+            // If the attribute is settable, then set its
+            // expression.
 	    if(attribute instanceof Settable) {
 		// cast to Settable.
-		units.add(Jimple.v().newAssignStmt(
+		body.getUnits().add(Jimple.v().newAssignStmt(
                         settableLocal,
                         Jimple.v().newCastExpr(
                                 local,
                                 PtolemyUtilities.settableType)));
 		// call setExpression.
-		units.add(Jimple.v().newInvokeStmt(
+		body.getUnits().add(Jimple.v().newInvokeStmt(
                         Jimple.v().newInterfaceInvokeExpr(
                                 settableLocal,
                                 PtolemyUtilities.setExpressionMethod,
@@ -301,7 +327,7 @@ public class ModelTransformer extends SceneTransformer {
 	    }
             // FIXME: configurable??
             // recurse so that we get all parameters deeply.
-            createFieldsForAttributes(body, container, local, attribute, theClass);
+            createFieldsForAttributes(body, context, contextLocal, attribute, local, theClass);
 	}
     }
 
@@ -337,18 +363,19 @@ public class ModelTransformer extends SceneTransformer {
                 _composite(body, local, (CompositeEntity)entity, modelClass, options);
             }
 
-	    if(Options.getBoolean(options, "deep")) {
+            if(Options.getBoolean(options, "deep")) {
 		// If we are doing deep codegen, then we
 		// include a field for each actor.
 		SootUtilities.createAndSetFieldFromLocal(body, local, modelClass,
                         PtolemyUtilities.actorType, entity.getName());
-	    } else {
+            } else {
 		// If we are doing shallow code generation, then
 		// include code to initialize the parameters of this
 		// entity.
-		_initializeParameters(body, composite,
-				      entity, thisLocal);
-	    }
+                // FIXME: flag to not create fields?
+                createFieldsForAttributes(body, composite, thisLocal, 
+                        entity, local, modelClass);
+            }
 	}
     }
 
@@ -370,51 +397,6 @@ public class ModelTransformer extends SceneTransformer {
                     local, modelClass, PtolemyUtilities.portType,
                     fieldName);
 	}
-    }
-
-    // Generate code in the given body to initialize all of the attributes
-    // in the given container.
-    private void _initializeParameters(JimpleBody body,
-            NamedObj context, NamedObj container, Local contextLocal) {
-        Chain units = body.getUnits();
-        // First create a local variable.
-        Local attributeLocal = Jimple.v().newLocal("attribute",
-                PtolemyUtilities.attributeType);
-        body.getLocals().add(attributeLocal);
-
-        Local settableLocal = Jimple.v().newLocal("settable",
-                PtolemyUtilities.settableType);
-        body.getLocals().add(settableLocal);
-
-        // now initialize each settable.
-        for(Iterator attributes =
-                container.attributeList(Settable.class).iterator();
-            attributes.hasNext();) {
-            Attribute attribute = (Attribute)attributes.next();
-            if(attribute instanceof ptolemy.moml.Location) {
-                // ignore locations.
-                // FIXME: this is a bit of a hack.
-                continue;
-            }
-            Settable settable = (Settable)attribute;
-
-            // first assign to temp
-            units.add(Jimple.v().newAssignStmt(attributeLocal,
-                    Jimple.v().newVirtualInvokeExpr(contextLocal,
-                            PtolemyUtilities.getAttributeMethod,
-                            StringConstant.v(attribute.getName(context)))));
-            // cast to Settable.
-            units.add(Jimple.v().newAssignStmt(settableLocal,
-                    Jimple.v().newCastExpr(attributeLocal,
-                            PtolemyUtilities.settableType)));
-            // call setExpression.
-            units.add(Jimple.v().newInvokeStmt(
-                    Jimple.v().newInterfaceInvokeExpr(settableLocal,
-                            PtolemyUtilities.setExpressionMethod,
-                            StringConstant.v(((Settable)attribute)
-                                    .getExpression()))));
-
-        }
     }
 
     // Create and set links.
@@ -593,6 +575,128 @@ public class ModelTransformer extends SceneTransformer {
         }
     }
 
+    /** Return an instance that represents the class that
+     *  the given object defers to.
+     */
+    // FIXME: duplicate with MoMLWriter.
+    public static NamedObj _findDeferredInstance(NamedObj object) {
+        // System.out.println("findDeferred =" + object.getFullName());
+        NamedObj deferredObject = null;
+        NamedObj.MoMLInfo info = object.getMoMLInfo();
+        if(info.deferTo != null) {
+            deferredObject = info.deferTo;
+            // System.out.println("object = " + object.getFullName());
+            //System.out.println("deferredDirectly = " + deferredObject);
+            //(new Exception()).printStackTrace(System.out);
+        } else if(info.className != null) {
+            try {
+                // First try to find the local moml class that
+                // we extend
+                String deferredClass;
+                if(info.elementName.equals("class")) {
+                    deferredClass = info.superclass;
+                } else {
+                    deferredClass = info.className;
+                }
+                
+                // No moml class..  must have been a java class.
+                // FIXME: This sucks.  We should integrate with 
+                // the classloader mechanism.
+                String objectType;
+                if(object instanceof Attribute) {
+                    objectType = "property";
+                } else if(object instanceof Port) {
+                    objectType = "port";
+                } else {
+                    objectType = "entity";
+                }
+                Class theClass = Class.forName(deferredClass, 
+                        true, ClassLoader.getSystemClassLoader());
+                    // System.out.println("reflecting " + theClass);
+                    // OK..  try reflecting using a workspace constructor
+                    _reflectionArguments[0] = _reflectionWorkspace;
+                    Constructor[] constructors = 
+                        theClass.getConstructors();
+                    for (int i = 0; i < constructors.length; i++) {
+                        Constructor constructor = constructors[i];
+                        Class[] parameterTypes = 
+                            constructor.getParameterTypes();
+                        if (parameterTypes.length !=
+                                _reflectionArguments.length)
+                            continue;
+                        boolean match = true;
+                        for (int j = 0; j < parameterTypes.length; j++) {
+                            if (!(parameterTypes[j].isInstance(
+                                    _reflectionArguments[j]))) {
+                                match = false;
+                                break;
+                            }
+                        }
+                        if (match) {
+                            deferredObject = (NamedObj)
+                                constructor.newInstance(
+                                        _reflectionArguments);
+                            break;
+                        }
+                    }
+                
+                
+                //String source = "<" + objectType + " name=\""
+                //    + object.getName() + "\" class=\""
+                //    + deferredClass + "\"/>";
+                //deferredObject = parser.parse(source);
+                //System.out.println("class with workspace = " + 
+                //        deferredClass);
+                if(deferredObject == null) {
+                    // Damn, no workspace constructor.  Let's
+                    // try a container, name constructor.
+                    // It really would be nice if all of 
+                    // our actors had workspace constructors,
+                    // but version 1.0 only specified the
+                    // (container,name) constructor, and 
+                    // now we're stuck with it. 
+                    String source = "<entity name=\"parsedClone\""
+                        + "class=\"ptolemy.kernel.CompositeEntity\">\n"
+                        + "<" + objectType + " name=\""
+                        + object.getName() + "\" class=\""
+                        + deferredClass + "\"/>\n" 
+                        + "</entity>";
+                    _reflectionParser.reset();
+                    CompositeEntity toplevel;
+                    try {
+                        toplevel = (CompositeEntity)
+                            _reflectionParser.parse(source);
+                    } catch (Exception ex) {
+                        throw new InternalErrorException("Attempt "
+                                + "to create an instance of "
+                                + deferredClass + " failed because "
+                                + "it does not have a Workspace "
+                                + "constructor.  Original error:\n"
+                                + ex.getMessage());
+                    }
+                    if(object instanceof Attribute) {
+                        deferredObject = 
+                            toplevel.getAttribute(object.getName());
+                    } else if(object instanceof Port) {
+                        deferredObject = 
+                            toplevel.getPort(object.getName());
+                    } else {
+                        deferredObject = 
+                            toplevel.getEntity(object.getName()); 
+                    }
+                    //  System.out.println("class without workspace = " + 
+                    //   deferredClass);
+                }
+            }
+            catch (Exception ex) {
+                System.err.println("Exception occured during parsing:\n");
+                ex.printStackTrace();
+                deferredObject = null;
+            }
+        }
+        return deferredObject;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -607,5 +711,10 @@ public class ModelTransformer extends SceneTransformer {
 
     // The model we are generating code for.
     public CompositeActor _model;
+
+    private static Object[] _reflectionArguments = new Object[1];
+    private static Workspace _reflectionWorkspace = new Workspace();
+    private static MoMLParser _reflectionParser =
+    new MoMLParser(_reflectionWorkspace);
 }
 

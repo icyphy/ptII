@@ -83,6 +83,9 @@ public class UnreachableMethodRemover extends SceneTransformer {
     }
 
     protected void internalTransform(String phaseName, Map options) {
+        System.out.println("UnreachableMethodRemover.internalTransform("
+                + phaseName + ", " + options + ")");
+
         boolean debug = Options.getBoolean(options, "debug");
 
         // Construct the graph of all method invocations, so we know what

@@ -81,6 +81,9 @@ public class Main extends KernelMain {
     public Main(String [] args) throws IllegalActionException {
 	// args[0] contains the MoML class name.
 	super(args[0]);
+        if(args[1].equals("-deep")) {
+            _isDeep = true;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -200,8 +203,8 @@ public class Main extends KernelMain {
      *  @exception NameDuplicationException If the name of the
      *  model cannot be changed to a Java identifier String.
      */ 
-   public static void main(String[] args)
-	throws IllegalActionException, NameDuplicationException {
+    public static void main(String[] args)
+            throws IllegalActionException, NameDuplicationException {
 
 	Main main = new Main(args);
 
@@ -215,7 +218,9 @@ public class Main extends KernelMain {
 	main.addTransforms();
 	    
 	main.generateCode(args); 
-   }
+    }
+    
+    private boolean _isDeep = false;
 }
 
 
