@@ -67,7 +67,7 @@ If the LTE is less than the error tolerance, then this step is considered
 successful, and the next integration step is predicted as:
 <pre>
     h' = 0.8*Math.pow((ErrorTolerance/LTE), 1.0/3.0)
-<pre>
+</pre>
 This is a second order method, but uses a third order procedure to estimate
 the local truncation error.
 
