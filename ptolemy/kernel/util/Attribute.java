@@ -87,8 +87,8 @@ public class Attribute extends NamedObj {
         setContainer(container);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -179,8 +179,8 @@ public class Attribute extends NamedObj {
     public void update() {
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private NamedObj _container;
 }

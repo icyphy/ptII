@@ -474,7 +474,7 @@ public class IORelation extends ComponentRelation {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         private methods                    ////
+    ////                         private methods                   ////
 
     // Cascade two Receiver arrays to form a new array. For each row, each
     // element of the second array is appended behind the elements of the

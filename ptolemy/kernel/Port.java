@@ -128,8 +128,8 @@ public class Port extends NamedObj {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -354,8 +354,8 @@ public class Port extends NamedObj {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
@@ -430,8 +430,8 @@ public class Port extends NamedObj {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                         private variables                     ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The list of relations for this port.
     // This member is protected to allow access from derived classes only.

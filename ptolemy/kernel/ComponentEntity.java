@@ -96,8 +96,8 @@ public class ComponentEntity extends Entity {
         setContainer(container);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -233,8 +233,8 @@ public class ComponentEntity extends Entity {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Add a port to this entity. This overrides the base class to
      *  throw an exception if the added port is not an instance of
@@ -263,8 +263,8 @@ public class ComponentEntity extends Entity {
         super._addPort(port);
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The entity that contains this entity.
     private CompositeEntity _container;

@@ -93,8 +93,8 @@ public class StaticSchedulingDirector extends Director{
     }
 
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the director into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -185,8 +185,8 @@ public class StaticSchedulingDirector extends Director{
         return _scheduler.valid();
     }
         
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.

@@ -51,16 +51,16 @@ public class InternalErrorException extends RuntimeException {
         _setMessage(detail);
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Get the detail message. */
     public String getMessage() {
         return _message;
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Sets the error message to the specified string.
      *  @param msg The message.
@@ -69,8 +69,8 @@ public class InternalErrorException extends RuntimeException {
         _message = msg;
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The detail message.
     private String _message ;

@@ -103,8 +103,8 @@ public class ComponentRelation extends Relation {
         setContainer(container);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -219,8 +219,8 @@ public class ComponentRelation extends Relation {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Throw an exception if the specified port cannot be linked to this
      *  relation (is not of class ComponentPort).
@@ -234,8 +234,8 @@ public class ComponentRelation extends Relation {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                        private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The entity that contains this entity.
     private CompositeEntity _container;

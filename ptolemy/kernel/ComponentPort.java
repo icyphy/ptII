@@ -146,8 +146,8 @@ public class ComponentPort extends Port {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -507,8 +507,8 @@ public class ComponentPort extends Port {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
@@ -626,8 +626,8 @@ public class ComponentPort extends Port {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The list of inside relations for this port.
     private CrossRefList _insideLinks;

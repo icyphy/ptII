@@ -51,8 +51,8 @@ the descriptions returned by the description() method.
 
 public interface Nameable {
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         public methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return a description of the object. The general
      *  form of the description is a space-delimited list of the form

@@ -86,8 +86,8 @@ public class FIFOQueue implements Cloneable {
         _container = container;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the capacity, or -1 if it is unbounded.
      */
@@ -252,8 +252,8 @@ public class FIFOQueue implements Cloneable {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The container, if there is one.
     private Nameable _container = null;

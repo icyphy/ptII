@@ -116,8 +116,8 @@ public class CalendarQueue {
         _thresholdFactor = thresholdFactor;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Check whether the queue is empty.
      * @return True if empty, false otherwise.
@@ -532,13 +532,13 @@ public class CalendarQueue {
         return _qSize;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     // do local initialization on bucket[] array starting from index qbase,
     // as many as nbuckets. This method is called inside resize() method and
     // during the first invocation of put.
-    //
+    ///////////////////////////////////////////////////////////////////
     // nbuckets: number of total buckets
     // bwidth: bucket width
     // startprio: starting date of the new calendar
@@ -683,8 +683,8 @@ public class CalendarQueue {
         return _cqComparator.getBinWidth(sampledKey);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // _nBuckets: number of buckets in the current calendar
     private int _nBuckets;
@@ -799,7 +799,7 @@ public class CalendarQueue {
     // is only a Object structure (as opposed to RBTree being Sorted
     // structure). This means we need to explicitly invoke sort() method to
     // tell the LinkedList to sort itself.
-    //
+    ///////////////////////////////////////////////////////////////////
     // This derived class implement a function ( insertAndSort) that does
     // both the insertion of entry into the linked list and then call sort
     private class SortedLinkedList extends LinkedList {

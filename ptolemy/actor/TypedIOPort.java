@@ -113,8 +113,8 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
     }
 
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         public methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Returns the declared type of this port.  The type is represented
      *  by an instance of a token of the correct type.  If the type is
@@ -259,16 +259,16 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
 	}
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** Indicate that the description(int) method should include information
      *  about the type of this port.
      */
     public static final int TYPE = 4096;
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return a description of the object.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
@@ -329,8 +329,8 @@ public class TypedIOPort extends IOPort implements InequalityTerm {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                        private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private Token _declaredType = null;
     private Token _resolvedType = null;

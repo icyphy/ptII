@@ -96,8 +96,8 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
         super(container, name);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
@@ -200,8 +200,8 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
 	}
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Override the base class to throw an exception if the added port
      *  is not an instance of TypedIOPort.  This method should not be used
@@ -231,8 +231,8 @@ public class TypedAtomicActor extends AtomicActor implements TypedActor {
     // NOTE: There is nothing new to report in the _description() method,
     // so we do not override it.
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
 }
 

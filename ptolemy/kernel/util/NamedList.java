@@ -91,8 +91,8 @@ public class NamedList implements Cloneable, Serializable {
         _container = null;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Add an element to the end of the list.
      *  The element is required to have a name that does not coincide with
@@ -264,8 +264,8 @@ public class NamedList implements Cloneable, Serializable {
     }
 
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     /*  Get the index of the element with the specified name.
      *  This is private because the
@@ -311,8 +311,8 @@ public class NamedList implements Cloneable, Serializable {
         throw new NameDuplicationException(_container, element);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The container (owner) of this list.
     private Nameable _container;

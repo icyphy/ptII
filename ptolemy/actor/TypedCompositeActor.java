@@ -104,8 +104,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
         super(container, name);
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Create a new TypedIOPort with the specified name.
      *  The container of the port is set to this actor.
@@ -225,8 +225,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
 	}
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Add an actor to this container with minimal error checking.
      *  This overrides the base-class method to make sure the argument
@@ -280,8 +280,8 @@ public class TypedCompositeActor extends CompositeActor implements TypedActor {
     // NOTE: There is nothing new to report in the _description() method,
     // so we do not override it.
 
-    /////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
 }
 

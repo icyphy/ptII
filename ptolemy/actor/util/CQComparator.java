@@ -51,8 +51,8 @@ CalendarQueue instances, because it doesn't contain any state information.
 
 public interface CQComparator extends Comparator{
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Given a key, a zero reference, and a bin width, return the index of 
      *  the bin containing the key.

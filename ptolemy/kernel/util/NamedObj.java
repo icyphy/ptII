@@ -140,8 +140,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         setName(name);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the object into the current workspace by calling the clone()
      *  method that takes a Workspace argument.
@@ -384,8 +384,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         return _workspace;
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         public variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
 
     /** Indicate that the description(int) method should include everything.
      */
@@ -429,8 +429,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
      */
     public static final int ATTRIBUTES = 32;
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Add an attribute.  This method should not be used directly.
      *  Instead, call setContainer() on the attribute.
@@ -546,8 +546,8 @@ public class NamedObj implements Nameable, Serializable, Cloneable {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Instance of a workspace that can be used if no other is specified.
     private static Workspace _defaultworkspace = new Workspace();

@@ -106,8 +106,8 @@ public class Entity extends NamedObj {
         _portList = new NamedList(this);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Clone the object into the specified workspace. The new object is
      *  <i>not</i> added to the directory of that workspace (you must do this
@@ -287,8 +287,8 @@ public class Entity extends NamedObj {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Add a port to this entity. This method should not be used
      *  directly.  Call the setContainer() method of the port instead.
@@ -367,8 +367,8 @@ public class Entity extends NamedObj {
         _portList.remove(port);
     }
 
-    /////////////////////////////////////////////////////////////////////////
-    ////                         private variables                       ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // A list of Ports owned by this Entity.
     private NamedList _portList;

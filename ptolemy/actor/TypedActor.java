@@ -46,8 +46,8 @@ $Id$
 */
 public interface TypedActor extends Actor {
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the type constraints of this actor.
      *  The constraints is an enumeration of inequalities.

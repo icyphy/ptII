@@ -49,8 +49,8 @@ by an instance of IOPort.
 */
 public interface Receiver {
 
-    /////////////////////////////////////////////////////////////////////
-    ////                      public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Get a token from this receiver.
      *  @exception NoSuchItemException If there is no token.

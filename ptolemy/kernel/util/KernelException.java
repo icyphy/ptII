@@ -89,8 +89,8 @@ public class KernelException extends Exception {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Get the detail message.
      *  @return The error message.
@@ -99,8 +99,8 @@ public class KernelException extends Exception {
         return _message;
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Get the name of a Nameable object.
      *  If the argument is a null reference, return an empty string.
@@ -151,8 +151,8 @@ public class KernelException extends Exception {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The detail message.
     private String _message ;

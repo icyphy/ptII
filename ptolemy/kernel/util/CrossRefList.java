@@ -109,8 +109,8 @@ public final class CrossRefList implements Serializable  {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the first container linked to this list, or
      *  null if the list is empty.  
@@ -233,8 +233,8 @@ public final class CrossRefList implements Serializable  {
         _size = 0;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Version number is incremented each time the list is modified.
     // This is used to make sure that elements accessed via an enumeration
@@ -254,7 +254,7 @@ public final class CrossRefList implements Serializable  {
     // make the variable immutable.
     private Object _container;
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                            ////
 
     // Class CrossRef.

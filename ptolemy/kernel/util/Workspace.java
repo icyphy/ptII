@@ -113,8 +113,8 @@ public class Workspace implements Nameable, Serializable {
         setName(name);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Add an item to the directory. The names of the objects
      *  in the directory are not required to be unique.
@@ -383,8 +383,8 @@ public class Workspace implements Nameable, Serializable {
         return getClass().getName() + " {" + getFullName()+ "}";
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Return a description of the workspace.  The level of detail depends
      *  on the argument, which is an or-ing of the static final constants
@@ -434,8 +434,8 @@ public class Workspace implements Nameable, Serializable {
         return result;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // List of contained objects.
     private LinkedList _directory = new LinkedList();
@@ -459,7 +459,7 @@ public class Workspace implements Nameable, Serializable {
     // read permission.
     private Hashtable _readers = new Hashtable();
 
-    //////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     ////                         inner classes                            ////
 
     // Class ReadDepth

@@ -119,8 +119,8 @@ public class CompositeEntity extends ComponentEntity {
         super(container, name);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Allow or disallow connections that are created using the connect()
      *  method to cross levels of the hierarchy.
@@ -538,8 +538,8 @@ public class CompositeEntity extends ComponentEntity {
         }
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Add an entity to this container. This method should not be used
      *  directly.  Call the setContainer() method of the entity instead.
@@ -659,8 +659,8 @@ public class CompositeEntity extends ComponentEntity {
         _containedRelations.remove(relation);
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private methods                          ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
 
     // Return a name that is not the name of any contained entity.
     // This can be used when it is necessary to name an entity, but you
@@ -690,8 +690,8 @@ public class CompositeEntity extends ComponentEntity {
         return name;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // List of contained entities.
     private NamedList _containedEntities = new NamedList(this);

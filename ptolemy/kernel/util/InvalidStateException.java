@@ -100,16 +100,16 @@ public class InvalidStateException extends RuntimeException {
         }
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Get the detail message. */
     public String getMessage() {
         return _message;
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      protected methods                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Get the name of a Nameable object.
      *  If the argument is a null reference, return an empty string.
@@ -156,8 +156,8 @@ public class InvalidStateException extends RuntimeException {
         _message = msg;
     }
 
-    ///////////////////////////////////////////////////////////////////////
-    ////                      private variables                        ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // The detail message.
     private String _message ;

@@ -41,8 +41,8 @@ a ClassCastException will be thrown.
 @see CQComparator
 */
 public class DoubleCQComparator implements CQComparator{
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Compare its two argument for order. Return a negative integer,
      *  zero, or a positive integer as the first argument is less than,

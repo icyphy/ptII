@@ -91,8 +91,8 @@ public class Scheduler extends NamedObj implements MutationListener{
         super(ws, _staticname);
     }
         
-    ////////////////////////////////////////////////////////////////////////
-    ////                         public methods                         ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Notify the scheduler that an entity has been added to a composite.
      *  This will invalidate the current schedule.
@@ -279,8 +279,8 @@ public class Scheduler extends NamedObj implements MutationListener{
         return _valid;
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         protected methods                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
 
     /** Make this scheduler the scheduler of the specified director, and 
      *  register itself as a mutation listener of the director.
@@ -318,8 +318,8 @@ public class Scheduler extends NamedObj implements MutationListener{
         return ca.deepGetEntities();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     // Private variables should not have doc comments, they should
     // have regular C++ comments.

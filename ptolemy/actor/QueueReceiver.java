@@ -70,8 +70,8 @@ public class QueueReceiver implements Receiver {
 	_container = container;
     }
 
-    //////////////////////////////////////////////////////////////////////////
-    ////                         public methods                           ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     /** Return the capacity, or -1 if it is unbounded.
      */
@@ -225,8 +225,8 @@ public class QueueReceiver implements Receiver {
         return _queue.size();
     }
 
-    ////////////////////////////////////////////////////////////////////////
-    ////                         private variables                      ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private FIFOQueue _queue = new FIFOQueue();
     private IOPort _container;
