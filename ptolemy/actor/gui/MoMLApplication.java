@@ -78,8 +78,14 @@ model can be set on the command line.  The syntax is:
 <pre>
     ptolemy <i>modelfile.xml</i> -<i>paramname</i> "<i>value</i>"
 </pre>
-where <i>paramname</i> is the name of a parameter at the top level
-of a model or in the director of a model.
+where <i>paramname</i> is the name of a parameter relative to the top level
+of a model or the director of a model.  For instance, if foo.xml defines
+a toplevel entity named "x" and x contains an entity named "y" and a parameter
+named "a", and y contains a parameter named "b", then:
+<pre>
+    ptolemy foo.xml -a 5 -y.b 10
+</pre>
+would set the values of the two parameters.
 <p>
 Derived classes may provide default configurations. In particular, the
 protected method _createDefaultConfiguration() is called before any
@@ -349,7 +355,12 @@ public class MoMLApplication {
         for (int i = 0; i < args.length; i++) {
             String arg = args[i];
             if (_parseArg(arg) == false) {
-                if (arg.startsWith("-") && i < args.length - 1) {
+                if (arg.trim().startsWith("-")) {
+                    if(i >= args.length - 1) {
+                       throw new IllegalActionException("Cannot set " +
+                               "parameter " + arg + " when no value is " + 
+                               "given.");
+                    }
                     // Save in case this is a parameter name and value.
                     _parameterNames.add(arg.substring(1));
                     _parameterValues.add(args[i + 1]);
@@ -383,6 +394,7 @@ public class MoMLApplication {
 		Effigy effigy = (Effigy)proxies.next();
 		if(effigy instanceof PtolemyEffigy) {
 		    NamedObj model = ((PtolemyEffigy)effigy).getModel();
+                    System.out.println("model = " + model.getFullName());
 		    Attribute attribute = model.getAttribute(name);
 		    if (attribute instanceof Settable) {
 			match = true;
@@ -412,8 +424,8 @@ public class MoMLApplication {
             }
             if (!match) {
                 // Unrecognized option.
-                throw new IllegalActionException("Unrecognized option: "
-                        + "-" + name);
+                throw new IllegalActionException("Unrecognized option: " +
+                        "No parameter exists with name " + name);
             }
         }
         // If the default configuration contains any Tableaux,
