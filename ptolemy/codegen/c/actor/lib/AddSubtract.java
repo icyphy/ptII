@@ -75,12 +75,6 @@ public class AddSubtract extends CCodeGeneratorHelper {
             else
                 tmpStream.append(";\n");
         }
-        _codeBlock = tmpStream.toString();
-        stream.append(processCode(_codeBlock));
+        stream.append(processCode(tmpStream.toString()));
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variable                ////
-
-    protected String _codeBlock;
 }
