@@ -63,18 +63,22 @@ test FixFunctions-1.0 {Check Fix method for a single FixPoint} {
 test FixFunctions-1.1 {Check Fix method for a array of FixPoints} {
     set parser [java::new ptolemy.data.expr.PtParser]
 
-    set tree [$parser generateParseTree "fix(\[ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 \], 10,  2)"]
+    set tree [$parser generateParseTree "fix(\[ -.040609, -.001628,\
+	.17853, .37665, .37665, .17853, -.001628, -.040609 \], 10,  2)"]
     set res [$tree evaluateParseTree]
 
     set value [$res toString]
     list $value
 
-} {{[fix(-0.0390625,10,2), fix(0.0,10,2), fix(0.1796875,10,2), fix(0.375,10,2), fix(0.375,10,2), fix(0.1796875,10,2), fix(0.0,10,2), fix(-0.0390625,10,2)]}}
+} {{[fix(-0.0390625,10,2), fix(0.0,10,2), fix(0.1796875,10,2),\
+fix(0.375,10,2), fix(0.375,10,2), fix(0.1796875,10,2),\
+fix(0.0,10,2), fix(-0.0390625,10,2)]}}
 
 test FixFunctions-2.0 {Check quantize method, returning an array of FixPoints} {
     set parser [java::new ptolemy.data.expr.PtParser]
 
-    set tree [$parser generateParseTree "quantize(\[ -.040609, -.001628, .17853, .37665, .37665, .17853, -.001628, -.040609 \], 10,  2)" ]
+    set tree [$parser generateParseTree "quantize(\[ -.040609, -.001628,\
+.17853, .37665, .37665, .17853, -.001628, -.040609 \], 10,  2)" ]
 
     #$tree displayParseTree " "
     set res [$tree evaluateParseTree]
