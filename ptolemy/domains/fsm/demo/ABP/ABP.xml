@@ -5,8 +5,6 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="5.0-beta">
     </property>
     <property name="DEDirector" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1E-10">
-        </property>
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -21,7 +19,9 @@
         </property>
         <property name="binCountFactor" class="ptolemy.data.expr.Parameter" value="2">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="60.0, 29.0">
+        <property name="timeResolution" class="ptolemy.moml.SharedParameter" value="1E-10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 40.0]">
         </property>
     </property>
     <property name="forwardLossRate" class="ptolemy.data.expr.Parameter" value="0.3">
@@ -43,7 +43,7 @@
     <property name="annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model demonstrates the use of the discrete event (DE) domain&#10;and hierarchical finite state machines (FSMs) to model the alternating&#10;bit protocol (ABP). ABP is a simple mechanism for achieving reliable,&#10;ordered delivery of messages over channels with unreliable delivery and&#10;variable delay.&#10;&#10;This demo shows that:&#10;* Hierarchical FSMs can efficiently capture complex sequential control behavior.&#10;* Embedding FSMs within other models of computation is a clean and flexible&#10;way to model the concurrent execution of FSMs.&#10;&#10;A detailed discussion of this model is in&#10;$PTII/ptolemy/domains/fsm/demo/ABP/ABP.htm&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 290.0]">
         </property>
     </property>
     <class name="Channel" extends="ptolemy.actor.TypedCompositeActor">
@@ -202,11 +202,11 @@
     <entity name="MessageSource" class="ptolemy.domains.fsm.demo.ABP.DEMessageSource">
         <property name="maxDelay" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[112.5, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 140.0]">
         </property>
     </entity>
     <entity name="Timer" class="ptolemy.domains.fsm.demo.ABP.DETimer">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[207.5, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 190.0]">
         </property>
     </entity>
     <entity name="Plot" class="ptolemy.actor.lib.gui.TimedPlotter">
@@ -220,7 +220,7 @@
         </property>
         <property name="startingDataset" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[487.5, 60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 65.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -237,7 +237,7 @@
         </configure>
     </entity>
     <entity name="Receiver" class="ptolemy.domains.fsm.demo.ABP.Receiver">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[622.5, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 165.0]">
         </property>
         <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[102, 116]">
         </property>
@@ -260,7 +260,7 @@
     <entity name="Sender" class="ptolemy.domains.fsm.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.fsm.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[322.5, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 175.0]">
         </property>
         <port name="request" class="ptolemy.domains.fsm.modal.ModalPort">
             <property name="input"/>
@@ -910,7 +910,7 @@
         <link port="Sending.connected" relation="connectedRelation"/>
     </entity>
     <entity name="ForwardChannel" class="Channel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[477.5, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 165.0]">
         </property>
         <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
@@ -920,7 +920,7 @@
         </property>
     </entity>
     <entity name="BackwardChannel" class="Channel">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[542.5, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 250.0]">
         </property>
         <property name="minimumDelay" class="ptolemy.data.expr.Parameter" value="0.2">
         </property>
@@ -940,7 +940,7 @@
         </port>
     </entity>
     <relation name="msgIn" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex" value="[192.5, 130.0]">
+        <vertex name="vertex" value="[165.0, 130.0]">
         </vertex>
     </relation>
     <relation name="msgOut" class="ptolemy.actor.TypedIORelation">
@@ -956,19 +956,19 @@
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[157.5, 240.0]">
+        <vertex name="vertex1" value="[90.0, 235.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[50.0, 95.0]">
+        <vertex name="vertex1" value="[25.0, 95.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[432.5, 170.0]">
+        <vertex name="vertex1" value="[345.0, 165.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[542.5, 170.0]">
+        <vertex name="vertex1" value="[475.0, 165.0]">
         </vertex>
     </relation>
     <link port="MessageSource.output" relation="msgIn"/>
